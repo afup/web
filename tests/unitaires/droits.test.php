@@ -93,6 +93,6 @@ class tests_Droits extends UnitTestCase {
         $pages = $droits->dechargerToutesLesPages();
         $this->assertEqual($pages['accueil'], $this->pages['accueil']);
         $this->assertEqual($pages['membre'], $this->pages['membre']);
-        $this->assertFalse($pages['membres']);
+        $this->assertFalse(isset($pages['membres']));
     }
 }
