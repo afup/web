@@ -1,0 +1,56 @@
+{if $action == 'lister'}
+    <h2>Liste des présences de l'assemblée générale</h2>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=preparer" title="Préparer une assemblée générale">Préparer une assemblée générale</a><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=envoyer" title="Envoyer les convocations pour une assemblée générale">Envoyer les convocations pour une assemblée générale</a><br />
+    <br/>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Convocations : {$convocations}<br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Présences et pouvoirs : {$presences}<br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Quorum : <span class="{if $quorum > 0}OK{else}KO{/if}">{$quorum}</span><br />
+    <br/>
+    <table>
+      <form method="GET" name="filtre">
+      <input type="hidden" name="page" value="assemblee_generale" />
+      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+        <tr>
+            <td width="150" nowrap="nowrap">Date (JJ/MM/AAAA) : </td>
+            <td width="120" nowrap="nowrap"><input type="text" name="date" value="{$smarty.get.date|stripslashes}"></td>
+            <td><input type="submit" value="OK" name="submit_date"></td>
+        </tr>
+      </form>
+    </table>
+    <br/>
+    <table>
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+            <th align="left"><a href="index.php?page=assemblee_generale&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a> Prénom</th>
+            <th><a href="index.php?page=assemblee_generale&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Consultation</a></th>
+            <th><a href="index.php?page=assemblee_generale&amp;tri=presence&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'presence'}desc{else}asc{/if}">Présence</a></th>
+            <th><a href="index.php?page=assemblee_generale&amp;tri=personnes_avec_pouvoir_nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'personnes_avec_pouvoir_nom'}desc{else}asc{/if}">Pouvoir</a></th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$personnes item=personne}
+        <tr>
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$personne.nom} {$personne.prenom}</td>
+            <td>{$personne.date_consultation|convertirTimestampEnDate}</td>
+            <td style="text-align: center">{if $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI}Présent{elseif $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON}Absent{else}??{/if}</td>
+            <td>{$personne.personnes_avec_pouvoir_nom} {$personne.personnes_avec_pouvoir_prenom}</td>
+            <td style="text-align: right">
+                <a href="index.php?hash={$personne.hash}&page=membre_assemblee_generale" title="Gérer la présence et le pouvoir de {$personne.nom} {$personne.prenom}"><img src="{$chemin_template}images/icone_link.png" alt="Gérer la présence et le pouvoir" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune personne physique</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'preparer'}
+        <h2>Préparer une assemblée générale</h2>
+    {else}
+        <h2>Envoyer les convocations pour une assemblée générale</h2>
+    {/if}    
+    {include file="formulaire.html"}
+{/if}

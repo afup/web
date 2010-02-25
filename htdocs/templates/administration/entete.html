@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+    <head>
+        {include file="head.html"}
+    </head>
+
+    <body id="{$id_page}">
+
+        <!-- Conteneur -->
+        <div id="conteneur">
+
+            <!-- Entête -->
+            <div id="entete">
+                <h1>{$titre_page|escape}</h1>
+            </div>
+
+            <!-- Menu -->
+            <ul id="menu">
+			{foreach from=$pages key=clef item=page}
+				<li>
+				{if $page.elements}
+					{$page.nom}
+					<ul>
+					{foreach from=$page.elements key=clef2 item=element}
+						<li>
+							<a href="index.php?page={$clef2}">{$element.nom}</a>
+						</li>
+					{/foreach}
+					</ul>
+				{else}
+					{if !$page.masquee}
+						<a href="index.php?page={$clef}">{$page.nom}</a>
+					{/if}
+				{/if}
+				</li>
+			{/foreach}
+            </ul>			
+
+            <!-- Contenu -->
+            <div id="contenu">

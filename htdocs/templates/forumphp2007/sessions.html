@@ -1,0 +1,220 @@
+{include file="entete.html"}
+        <div id="cartouche-milieu">
+            <img id="cartouchepage" src="{$chemin_template}images/cartouche-page.png" usemap="#m_cartouchepage" />
+            <map name="m_cartouchepage">
+            <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="inscription.php" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+            <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="acces.php" title="Accès" alt="Accès" >
+            </map>
+            <h1>Le programme des deux jours</h1>
+
+            <h2><a href="#jour1">21 novembre : Journée fonctionnelle</a></h2>
+  <ul>
+    <li>
+      
+      <strong>Temps forts</strong><br />
+         <ul>
+          <li>Comment faire vivre son site Web2.0 avec PHP5 ?</li>
+          <li>Les clients riches avec PHP : Flex pour l'exemple</li>
+          <li>Optimistations, méthodes, sécurité : des retours d'expérience dans les grands comptes</li>
+        </ul>
+      <br />
+      Orientée fonctionnelle cette première journée convient parfaitement aux
+      responsables informatiques et décideurs qui souhaitent découvrir le potentiel
+      de la plate-forme PHP. Les intervenants sont à la fois des entreprises utilisatrices
+      et des experts. De multiples démonstrations et retours d'expérience auront
+      lieu.<br />
+    </li>
+    </ul>
+    <h2><a href="#jour2-0">22 novembre : Journée technique</a></h2>
+    <ul>
+    <li>
+      
+      <strong>Temps fort</strong><br />
+        <ul>
+          <li>Les nouveautés de PHP6 : une première en France</li>
+          <li>Comment Facebook tient la charge avec APC</li>
+          <li>Sécurité : MySQL et PHP sous surveillance</li>
+        </ul>
+      <p>
+      Cette seconde journée est destinée à des profils techniques qui possèdent
+      déjà de solides connaissances sur PHP. Placée sous le signe de l'optimisation,
+      elle abordera différentes problématiques telles que la sécurité ou la gestion
+      des erreurs avec des démonstrations et un parcours approfondi des codes
+      sources.
+      </p>
+      <p>
+      Deux salles annexes seront utilisés pour des ateliers pratiques et des démonstrations
+      (techniques, produits Open Source, projets communautaires) : un véritable espace pour
+      l'échange et l'émerveillement.
+      </p>
+    </li>
+  </ul>
+	
+    <h1>Les horaires</h1>
+    <ul>
+        <li>ouverture des portes : 8h30</li>
+        <li>début des sessions : 9h</li>
+        <li>fin des sessions : vers 18h</li>
+    </ul>
+
+  <a name="jour1"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>21 novembre : Journée Fonctionnelle</strong></td>
+    </tr>
+    {foreach from=$sessions_fonctionnelles item=session} 
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{$session.horaire} : <strong>{$session.nom}</strong></td>
+            <td align="right">
+			    {foreach from=$session.conferenciers item=conferencier} 
+            		<span class="conferencier"><a href="./conferenciers.php?#{$conferencier.code}">{$conferencier.nom}</a></span><br />
+				{/foreach}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {foreach from=$session.conferenciers item=conferencier} 
+    		<a href="conferenciers.php#{$conferencier.code}"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+		{/foreach}
+      </td>
+      <td align="justify" valign="top">
+        {$session.resume}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {/foreach} 
+  </table>
+  
+  <a name="jour2-0"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (conférences)</strong></td>
+    </tr>
+    {foreach from=$sessions_techniques item=session} 
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{$session.horaire} : <strong>{$session.nom}</strong></td>
+            <td align="right">
+			    {foreach from=$session.conferenciers item=conferencier} 
+            		<span class="conferencier"><a href="./conferenciers.php?#{$conferencier.code}">{$conferencier.nom}</a></span><br />
+				{/foreach}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {foreach from=$session.conferenciers item=conferencier} 
+    		<a href="conferenciers.php#{$conferencier.code}"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+		{/foreach}
+      </td>
+      <td align="justify" valign="top">
+        {$session.resume}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {/foreach} 
+  </table>
+  
+  <a name="jour2-1"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (ateliers 1)</strong></td>
+    </tr>
+    {foreach from=$sessions_atelier_1 item=session} 
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{$session.horaire} : <strong>{$session.nom}</strong></td>
+            <td align="right">
+			    {foreach from=$session.conferenciers item=conferencier} 
+            		<span class="conferencier"><a href="./conferenciers.php?#{$conferencier.code}">{$conferencier.nom}</a></span><br />
+				{/foreach}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {foreach from=$session.conferenciers item=conferencier} 
+    		<a href="conferenciers.php#{$conferencier.code}"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+		{/foreach}
+      </td>
+      <td align="justify" valign="top">
+        {$session.resume}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {/foreach} 
+  </table>
+  
+  <a name="jour2-2"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (ateliers 2)</strong></td>
+    </tr>
+    {foreach from=$sessions_atelier_2 item=session} 
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{$session.horaire} : <strong>{$session.nom}</strong></td>
+            <td align="right">
+			    {foreach from=$session.conferenciers item=conferencier} 
+            		<span class="conferencier"><a href="./conferenciers.php?#{$conferencier.code}">{$conferencier.nom}</a></span><br />
+				{/foreach}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {foreach from=$session.conferenciers item=conferencier} 
+    		<a href="conferenciers.php#{$conferencier.code}"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+		{/foreach}
+      </td>
+      <td align="justify" valign="top">
+        {$session.resume}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {/foreach} 
+  </table>
+
+	<p><em>Le programme ci-dessus est donné à titre indicatif : il peut encore évoluer.</em></p>
+
+
+</div>
+{include file="pied_de_page.html"}

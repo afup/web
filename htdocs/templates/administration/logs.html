@@ -1,0 +1,15 @@
+<h2>Logs</h2>
+
+<ul class="liste">
+{foreach from=$logs item=log}
+    <li>
+        <h4>{$log.date|date_format:"%d/%m/%y %H:%M:%S"} - {$log.prenom|escape} {$log.nom|escape}</h4>
+        <p>{$log.texte|escape|nl2br}</p>        
+    </li>
+{foreachelse}
+    <li><em>Aucun log</em></li>
+{/foreach}
+</ul>
+<br />
+
+{include file="pagination.html"}

@@ -1,0 +1,18 @@
+{include file="entete.html"}
+<div id="cartouche-milieu">
+    <img id="cartouchepage" src="{$chemin_template}images/cartouche-page.png" usemap="#m_cartouchepage" />
+    <map name="m_cartouchepage">
+    <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="inscription.php" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+    <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="acces.php" title="Accès" alt="Accès" >
+    </map>
+
+    <h1>Les sponsors</h1>
+    {assign var=personnes value=$sponsors}
+    {include file="liste_personnes.html"}<br />
+
+    <h1>Les partenaires</h1>
+    {assign var=personnes value=$partenaires}
+    {include file="liste_personnes.html"}
+    
+</div>
+{include file="pied_de_page.html"}

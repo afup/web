@@ -1,0 +1,11 @@
+Vous avez demandÃ© l'envoi du message suivant Ã  la sociÃ©tÃ© {$raisonSociale|stripslashes} :
+
+==>
+{$message|stripslashes}
+<==
+
+Pour confirmer l'envoi du message, veuillez cliquer sur le lien suivant : 
+{$application_url}?action=send&key={$contactKey}
+
+Bien cordialement, 
+L'assocation FranÃ§aise des Utilisateurs de PHP

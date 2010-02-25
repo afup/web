@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+    <head>
+        {include file="head.html"}
+    </head>
+
+    <body id="connexion" onload="donnerFocus('utilisateur');">
+        <div id="contenu">
+            <h1>Administration</h1>    
+
+
+            <form action="index.php?page=accueil" method="post" onsubmit="return soumettreUneSeuleFois(this);">
+                {if $echec}<p class="erreur">La connexion a échoué.</p>{/if}
+                
+                <fieldset>
+                    <div class="rangee">
+                        <label for="utilisateur">Utilisateur</label>                
+                        <span class="element">
+                          <input type="text" id="utilisateur" name="utilisateur" size="30" maxlength="30" value="{$ctx_login}"/>
+                        </span>
+                    </div>
+                
+                    <div class="rangee">
+                        <label for="utilisateur">Mot de passe</label>                
+                        <span class="element">
+                          <input type="password" name="mot_de_passe" size="30" maxlength="30" />
+                        </span>
+                    </div>
+
+                    <!-- Vilain hack pour Opera -->
+                    <div>&nbsp;</div>
+                </fieldset>
+                
+                <fieldset>
+                    <input type="submit" name="soumettre" value="Se connecter" />
+                    <input type="hidden" name="connexion" value="1" />
+                </fieldset>               
+            </form>
+            <p><a href="index.php?page=mot_de_passe_perdu">Mot de passe perdu ?</a></p>
+            <p><a href="index.php?page=inscription">Vous souhaitez vous inscrire à l'AFUP?</a></p>
+        </div>
+    </body>
+</html>    

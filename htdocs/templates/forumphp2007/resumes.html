@@ -1,0 +1,225 @@
+{include file="entete.html"}
+        <div id="cartouche-milieu">
+            <img id="cartouchepage" src="{$chemin_template}images/cartouche-page.png" usemap="#m_cartouchepage" />
+            <map name="m_cartouchepage">
+            <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="inscription.php" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+            <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="acces.php" title="Accès" alt="Accès" >
+            </map>
+            <h1>Les résumés de chaque session du Forum PHP 2007</h1>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><b>9 Novembre : Journée Fonctionnelle</b></td>
+    </tr>
+    {foreach from=$sessions_fonctionnelles item=session}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{$session.horaire} : <b>{$session.nom}</b></td>
+            <td align="right">
+			    {foreach from=$session.conferenciers item=conferencier}
+            		<span class="conferencier"><a href="./conferenciers.php?#{$conferencier.code}">{$conferencier.nom}</a></span><br />
+				{/foreach}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {foreach from=$session.conferenciers item=conferencier}
+    		<a href="conferenciers.php#{$conferencier.code}"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+		{/foreach}
+      </td>
+      <td align="justify" valign="top">
+        {$session.resume}
+      </td>
+    </tr>
+    <tr>
+      <td>...
+      </td>
+      <td align="left" valign="top">
+	    {foreach from=$session.talks item=talk}
+		    {if $talk.nom!="" and $talk.code neq "html"}
+    			<a href="{$chemin_template}talks/{$talk.nom}">télécharger la présentation {$talk.code}</a><br />
+			{/if}
+		    {if $talk.code eq "html"}
+    			<a href="{$talk.nom}">Voir cette présentation</a><br />
+			{/if}
+		{/foreach}
+      </td>
+    </tr>
+    {if $session.podcast != ""}
+        <tr>
+           <td><a href="{$session.podcast}" title="podcast session {$session.nom}">Ecouter la session</a></td>
+        </tr>
+    {/if}
+    {if $session.interactif != ""}
+        <tr>
+           <td><a href="{$session.interactif}" title="session slides plus audio {$session.nom}">Voir les slides avec l'audio</a></td>
+        </tr>
+    {/if}
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {/foreach}
+  </table>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><b>10 Novembre : Journée Technique</b></td>
+    </tr>
+    {foreach from=$sessions_techniques item=session}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{$session.horaire} : <b>{$session.nom}</b></td>
+            <td align="right">
+			    {foreach from=$session.conferenciers item=conferencier}
+            		<span class="conferencier"><a href="./conferenciers.php?#{$conferencier.code}">{$conferencier.nom}</a></span><br />
+				{/foreach}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {foreach from=$session.conferenciers item=conferencier}
+    		<a href="conferenciers.php#{$conferencier.code}"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+		{/foreach}
+      </td>
+      <td align="justify" valign="top">
+        {$session.resume}
+      </td>
+    </tr>
+    <tr>
+      <td>
+      </td>
+      <td align="left" valign="top">
+	    {foreach from=$session.talks item=talk}
+		    {if $talk.nom!=""}
+    			<a href="{$chemin_template}talks/{$talk.nom}">télécharger la présentation {$talk.code}</a><br />
+			{/if}
+		{/foreach}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {/foreach}
+  </table>
+
+<a name="jour2-1"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (ateliers 1)</strong></td>
+    </tr>
+    {foreach from=$sessions_atelier_1 item=session}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{$session.horaire} : <strong>{$session.nom}</strong></td>
+            <td align="right">
+			    {foreach from=$session.conferenciers item=conferencier}
+            		<span class="conferencier"><a href="./conferenciers.php?#{$conferencier.code}">{$conferencier.nom}</a></span><br />
+				{/foreach}
+		    	</td>
+          </tr>
+	    <tr>
+	      <td>
+	      </td>
+	      <td align="left" valign="top">
+		    {foreach from=$session.talks item=talk}
+			    {if $talk.nom!=""}
+	    			<a href="{$chemin_template}talks/{$talk.nom}">télécharger la présentation {$talk.code}</a><br />
+				{/if}
+			{/foreach}
+	      </td>
+	    </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {foreach from=$session.conferenciers item=conferencier}
+    		<a href="conferenciers.php#{$conferencier.code}"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+		{/foreach}
+      </td>
+      <td align="justify" valign="top">
+        {$session.resume}
+      </td>
+    </tr>
+	    <tr>
+	      <td>
+	      </td>
+	      <td align="left" valign="top">
+		    {foreach from=$session.talks item=talk}
+			    {if $talk.nom!=""}
+	    			<a href="{$chemin_template}talks/{$talk.nom}">télécharger la présentation {$talk.code}</a><br />
+				{/if}
+			{/foreach}
+	      </td>
+	    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {/foreach}
+  </table>
+
+  <a name="jour2-2"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (ateliers 2)</strong></td>
+    </tr>
+    {foreach from=$sessions_atelier_2 item=session}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{$session.horaire} : <strong>{$session.nom}</strong></td>
+            <td align="right">
+			    {foreach from=$session.conferenciers item=conferencier}
+            		<span class="conferencier"><a href="./conferenciers.php?#{$conferencier.code}">{$conferencier.nom}</a></span><br />
+				{/foreach}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {foreach from=$session.conferenciers item=conferencier}
+    		<a href="conferenciers.php#{$conferencier.code}"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+		{/foreach}
+      </td>
+      <td align="justify" valign="top">
+        {$session.resume}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {/foreach}
+  </table>
+
+<p>Auteur des résumés :<br />
+<strong>Henry Cesbron Lavau</strong>, rédacteur expert</p>
+
+</div>
+{include file="pied_de_page.html"}

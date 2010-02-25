@@ -1,0 +1,59 @@
+{if $action == 'lister'}
+    <form method="GET" name="forum">
+    <input type="hidden" name="page" value="forum_facturation" />
+    <h2>Liste des factures pour <select name="id_forum" onchange="this.form.submit(); return false;">
+    {foreach from=$forums item=forum}
+    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+    {/foreach}
+    </select></h2>
+    </form>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=forum_facturation&amp;action=envoyer_tout&amp;id_forum={$id_forum}">Envoyer les factures réglées à tous !</a><br/>
+    <br/>
+    <table>
+      <form method="GET" name="filtre">
+      <input type="hidden" name="page" value="forum_facturation" />
+      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+      <input type="hidden" name="forum_id" value="{$id_forum}" />
+        <tr>
+            <td width="50" nowrap>Filtre : </td>
+            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
+            <td><input type="submit" value="OK" name="submit_filtre"></td>
+        </tr>
+      </form>
+    </table>
+    <br/>
+    <table class="afup_tab">
+        <tr>
+            <th align="left"><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_facture'}desc{else}asc{/if}">Date facture</a></th>
+            <th align="left"><a href="index.php?page=forum_facturation&amp;tri=societe&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'societe'}desc{else}asc{/if}">Société</a></th>
+            <th align="left"><a href="index.php?page=forum_facturation&amp;tri=montant&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'montant'}desc{else}asc{/if}">Montant</a></th>
+            <th><a href="index.php?page=forum_facturation&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
+            <th><a href="index.php?page=forum_facturation&amp;tri=facturation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Facturation</a></th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$facturations item=facturation}
+        <tr class="{cycle values="odd,even"}">
+            <td nowrap="nowrap">{$facturation.date_facture|date_format:"%d/%m/%y"}</td>
+            <td><strong>{$facturation.societe}</strong></td>
+            <td>{$facturation.montant} &euro;</td>
+            <td style="text-align: center">{if $facturation.etat == 4}Reglée{elseif $facturation.etat == 6}En attente règlement{elseif $facturation.etat == 7}Confirmée{else}--{/if}</td>
+            <td style="text-align: center">{if $facturation.facturation == 0}A facturer{elseif $facturation.facturation == 1}Facturée{elseif $facturation.facturation == 2}Reçue{else}--{/if}</td>
+            <td style="text-align: right" nowrap="nowrap">
+{if $facturation.facturation == 0}
+                <a href="index.php?page=forum_facturation&amp;action=facturer_facture&amp;ref={$facturation.reference}" title="Passer à l'état facturée"><img src="{$chemin_template}images/icone_change.png" alt="Envoi de la facture par mail" /></a>
+{/if}
+{if $facturation.facturation == 1}
+                <a href="index.php?page=forum_facturation&amp;action=envoyer_facture&amp;ref={$facturation.reference}" title="Envoyer la facture par mail"><img src="{$chemin_template}images/icone_envoyer_facture.png" alt="Envoi de la facture par mail" /></a>
+                <a href="index.php?page=forum_facturation&amp;action=telecharger_facture&amp;ref={$facturation.reference}" title="Télécharger la facture"><img src="{$chemin_template}images/icone_telecharger_facture.png" alt="Téléchargement de la facture" /></a>
+                <a href="index.php?page=forum_facturation&amp;action=supprimer_facture&amp;ref={$facturation.reference}" title="Supprimer la facture" onclick="return confirm('Etes-vous certain de vouloir supprimer la facture de {$facturation.societe} ?');" ><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer la facture" /></a>
+{/if}
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune facturation</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{/if}

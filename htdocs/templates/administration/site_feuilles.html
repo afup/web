@@ -1,0 +1,52 @@
+{if $action == 'lister'}
+    <h2>Liste des feuilles</h2>
+    <blockquote>Si vous ne savez pas à quoi correspondent les feuilles : merci de ne pas les modifier.<br />
+    <small>(Cela correspond au menu de gauche sur le site web.)</small></blockquote>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=site_feuilles&amp;action=ajouter" title="Ajouter une feuille">Ajouter une feuille</a><br />
+    <br/>
+    <table>
+      <form method="get" name="filtre">
+      <input type="hidden" name="page" value="site_feuilles" />
+      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+      </form>
+    </table>
+    <br/>
+    <table class="afup_tab">
+        <tr>
+            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a></th>
+            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
+            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
+            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=pos&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pos'}desc{else}asc{/if}">Pos.</a></th>
+            <th width="40"></th>
+        </tr>
+    {foreach from=$feuilles item=feuille}
+        <tr  class="{cycle values="odd,even"}">
+            <td>{$css_tr}{$feuille.date|date_format:"%d/%m/%Y"}</td>
+            <td style="white-space : normal">
+              {$feuille.nom}
+              {if $feuille.image}
+              <br/><img src="../../templates/site/images/{$feuille.image}" />
+              {/if}
+            </td>
+            <td>{if $feuille.etat == 1}En ligne{elseif $feuille.etat == -1}Hors ligne{else}En attente{/if}</td>
+            <td>{$feuille.position}</td>
+            <td style="text-align: right">
+                <a id="modifier_{$feuille.id}" href="index.php?page=site_feuilles&amp;action=modifier&amp;id={$feuille.id}" title="Modifier la feuille {$feuille.nom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a id="supprimer_{$feuille.id}" href="index.php?page=site_feuilles&amp;action=supprimer&amp;id={$feuille.id}" title="Supprimer la feuille {$feuille.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la feuille {$feuille.nom} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune feuille</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter une feuille</h2>
+    {else}
+        <h2>Modifier une feuille</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}

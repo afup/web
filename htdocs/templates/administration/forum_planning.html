@@ -1,0 +1,51 @@
+{if $action == 'lister'}
+    <form method="GET" name="forum">
+    <input type="hidden" name="page" value="forum_sessions" />
+    <h2>Planning des sessions pour <select name="id_forum" onchange="this.form.submit(); return false;">
+    {foreach from=$forums item=forum}
+    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+    {/foreach}
+    </select></h2>
+    </form>
+
+         {$sessions|@count} Sessions
+         
+          <div class="bloc_jour">
+{$agenda}
+          </div>
+    <br/>
+    <br/>
+    <table class="afup_tab">
+        <tr>
+            <th align="left">Titre</th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$sessions item=session}
+        <tr class="{cycle values="odd,even"}">
+            <td style="white-space : normal;">
+              <a name="{$session.session_id}" href="#ag_sess_{$session.session_id}" >
+                {$session.titre}              
+              </a>
+              <br/>{$session.conf1} / {$session.conf2} 
+              {assign var=formulaire value=$session.formulaire}
+              {include file="formulaire.html"}
+            </td>
+            <td style="text-align: right" nowrap="nowrap">
+                <a href="index.php?page=forum_planning&amp;action=modifier&amp;id={$session.id}&amp;id_session={$session.session_id}" title="Modifier la session {$session.titre}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=forum_planning&amp;action=supprimer&amp;id={$session.id}" title="Supprimer la session {$session.titre}" onclick="return confirm('Etes-vous sÃ»r de vouloir supprimer la session {$session.titre} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune session</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter les horaires d'un session pour le {$forum_name}</h2>
+    {else}
+        <h2>Modifier les horaires d'une session pour le {$forum_name}</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}

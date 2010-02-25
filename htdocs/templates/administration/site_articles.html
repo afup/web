@@ -1,0 +1,48 @@
+{if $action == 'lister'}
+    <h2>Liste des articles</h2>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=site_articles&amp;action=ajouter" title="Ajouter une article ">Ajouter un article</a><br />
+    <br/>
+    <table>
+      <form method="GET" name="filtre">
+      <input type="hidden" name="page" value="site_articles" />
+      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+        <tr>
+            <td width="50" nowrap>Filtre : </td>
+            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
+            <td><input type="submit" value="OK" name="submit_filtre"></td>
+        </tr>
+      </form>
+    </table>
+    <br/>
+    <table class="afup_tab">
+        <tr>
+            <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a></th>
+            <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Titre</a></th>
+            <th style="text-align: left" width="60"><a href="index.php?page=site_articles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}" >Etat</a></th>
+            <th width="40"></th>
+        </tr>
+    {foreach from=$articles item=article}
+        <tr class="{cycle values="odd,even"}">
+            <td>{$article.date|date_format:"%d/%m/%Y"}</td>
+            <td style="white-space : normal;">{$article.titre}</td>
+            <td>{if $article.etat == 1}En ligne{elseif $article.etat == -1}Hors ligne{else}En attente{/if}</td>
+            <td style="text-align: right">
+                <a id="modifier_{$article.id}" href="index.php?page=site_articles&amp;action=modifier&amp;id={$article.id}" title="Modifier l'article {$article.titre}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a id="supprimer_{$article.id}" href="index.php?page=site_articles&amp;action=supprimer&amp;id={$article.id}" title="Supprimer l'article {$article.titre}" onclick="return confirm('Etes-vous sï¿½r de vouloir supprimer l'article {$article.titre} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune article </em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter un article</h2>
+    {else}
+        <h2>Modifier un article</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}

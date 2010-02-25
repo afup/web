@@ -1,0 +1,52 @@
+{include file="entete.html"}
+<div id="cartouche-milieu">
+	{include file="cartouche.html"}
+    <h1>Les projets PHP</h1>
+<img src="{$chemin_template}images/visuel-projet.jpg" alt="barcamp" width="169" height="126" align="right" longdesc="projets-php.php" />
+
+<div>A l'occasion de ce forum PHP, l'AFUP va mettre en avant les <strong>projets Open Source français développés autour de PHP</strong>
+(frameworks, applicatifs, utilitaires, ...).
+<p> Nous allons donc mettre à disposition des personnes qui portent ces projets un espace à proximité des amphithéâtres et salles où se dérouleront les conférences. </p> 
+<p>Vous participez à un projet PHP Opensource et vous souhaitez être présent  <a href="projets-php-inscription.php">inscrivez-vous</a></p>
+</div>
+
+
+  <h3>Les projets présents</h3>
+  <ul>
+    {foreach from=$projets item=projet} 
+    <li><a href="#{$projet.session_id}" > {$projet.titre}</a></li>
+  
+    {/foreach} 
+    </ul>
+  </div>
+  <div class="sessions">
+      {foreach from=$projets item=projet} 
+    {if $projet.abstract}
+  <div class="session {$projet.journee}">
+    <a name="{$projet.session_id}" ></a>
+    <h3>
+      {$projet.titre}
+    </h3>
+    <div class="spacer"></div>
+    <div class="details">
+      <div class="abstract">
+        {$projet.abstract}
+      </div>
+        <div class="conferenciers">
+        {foreach from=$projet.conferenciers item=conferencier} 
+                <div class="conferencier">
+              <a href="conferenciers.php?type=projet#{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+              <br />
+                  <a href="conferenciers.php?type=projet#{$conferencier.conferencier_id}&type=projet">{$conferencier.prenom} {$conferencier.nom}</a>
+                 {if $admin}<br/>{$conferencier.email}{/if}
+                </div>
+      {/foreach}
+      <div class="spacer"></div>
+    </div>
+      </div>
+  </div>
+    {/if}
+    {/foreach} 
+    </div>
+{include file="pied_de_page.html"}
+

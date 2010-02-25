@@ -1,0 +1,26 @@
+{if $rendezvous.est_futur }
+<em>Prochain rendez-vous :</em>
+{/if}
+
+<h1>{$rendezvous.titre}</h1>
+
+<blockquote>{$rendezvous.accroche}</blockquote>
+
+<div id="theme">{$rendezvous.theme}</div>
+<div id="infos">
+	<div>Date : {$rendezvous.date}</div>
+	<div>Horaire : {$rendezvous.debut} - {$rendezvous.fin}</div>
+	<div>Capacit&eacute; : {$rendezvous.capacite} places</div>
+    {if $rendezvous.url != ''}
+		<div>Lieu : <a href="{$rendezvous.url}">{$rendezvous.lieu}</a></div>
+	{else}
+		<div>Lieu : {$rendezvous.lieu}</div>
+	{/if}
+    {if $rendezvous.adresse != ''}
+		<div>Adresse : {$rendezvous.adresse}</div>
+	{/if}
+    {if $rendezvous.plan != ''}
+		<div><a href="{$rendezvous.plan}">Plan d'acc&egrave;s</a></div>
+	{/if}
+</div>
+

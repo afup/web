@@ -1,0 +1,36 @@
+{include file="entete.html"}
+<div id="cartouche-milieu">
+	<img id="cartouchepage" src="{$chemin_template}images/cartouche-page.png" usemap="#m_cartouchepage" />
+	<map name="m_cartouchepage">
+	<area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="inscription.php" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+	<area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="acces.php" title="Accès" alt="Accès" >
+	</map>
+	<h1>&nbsp;&nbsp;Les conférenciers</h1>
+	
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    {foreach from=$conferenciers item=conferencier} 
+    <tr> 
+      <td colspan="2">
+        <hr width="100%" noshade align="center" size="1" />
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"><a name="{$conferencier.code}" /> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td valign="bottom"> 
+              <div class="homme"><b>{$conferencier.nom}</b></div>
+            </td>
+            <td align="right" valign="bottom">{$conferencier.presentation}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td width="59"><img src="{$chemin_template}images/intervenants/{$conferencier.code}.jpg" border="0" align="left" /></td>
+      <td width="920" align="justify" valign="middle">{$conferencier.biographie}</td>
+    </tr>
+    {/foreach} 
+  </table>
+</div>
+{include file="pied_de_page.html"}

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		{$header}
+	</head>
+	<body>
+		<div id="HiddenLogo">
+			<img src="/templates/site/images/AFUP.gif" height="99" alt="ASSOCIATION FRANCAISE DES UTILISATEURS DE PHP" />
+		</div>
+		<div id="HiddenBaseLine">
+			<h1>ASSOCIATION FRANCAISE DES UTILISATEURS DE PHP</h1>
+		</div>
+		<div id="MainContainerWrapper">
+			<div id="MainContainer">
+				<a href="http://www.afup.org">
+					<ul id="HeaderContainer">
+						<li id="logo"></li>
+						<li id="Baseline"></li>
+					</ul>
+				</a>
+				<ul id="ContentContainer">
+					{$menu}
+					{$content}
+				</ul>
+				{$logos}
+				<ul id="Footer">
+					<li id="Left">
+						<h6><a href="#">&copy; AFUP 2003-2010</a></h6><br />
+						<h6>H&eacute;bergement <a href="http://www.alterwayhosting.fr/">AlterWay Hosting</a></h6><br />
+						<h6>Design <a href="http://blumbyte.com/">Blumbyte</a></h6>
+					</li>
+					<li>
+						{$questions}
+					</li>
+					<li>
+						{$articles}
+					</li>
+				</ul>
+			</div>
+		</div>
+		{literal}
+		<script type="text/javascript">
+		  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+			try {
+			var pageTracker = _gat._getTracker("UA-192127-3");
+			pageTracker._trackPageview();
+			} catch(err) {}
+		</script>
+		{/literal}
+	</body>
+</html>

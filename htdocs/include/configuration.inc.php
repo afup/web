@@ -1,0 +1,35 @@
+<?php
+$configuration['bdd']['hote']='localhost';
+$configuration['bdd']['base']='afup';
+$configuration['bdd']['utilisateur']='afup';
+$configuration['bdd']['mot_de_passe']='afup';
+$configuration['divers']['niveau_erreur']='6143';
+$configuration['divers']['afficher_erreurs']='1';
+$configuration['mails']['serveur_smtp']='smtp.free.fr';
+$configuration['mails']['email_expediteur']='bureau@afup.org';
+$configuration['mails']['nom_expediteur']='Bureau AFUP';
+$configuration['mails']['texte_adhesion_personne_physique']='Bienvenue &grave; l\'AFUP [prenom], Le bureau';
+$configuration['bureau'] = array('ArnaudLimbourg', 'SarahHaimLubczanski', 'ChristopheVilleneuve', 'xgorse', 'MickaelMithouard', 'CyrilleGrandval'); // id des membres du bureau
+$configuration['afup']['raison_sociale']='AFUP';
+$configuration['afup']['siret'] = '500 869 011 00014';
+$configuration['afup']['adresse']='119 rue du chemin vert';
+$configuration['afup']['code_postal']='75011';
+$configuration['afup']['ville']='Paris';
+$configuration['afup']['email']='bureau@afup.org';
+$configuration['web']['path']='http://localhost:8888/afup/site';
+$configuration['rib']['etablissement'] = '17515';
+$configuration['rib']['guichet'] = '90000';
+$configuration['rib']['compte'] = '04045168667';
+$configuration['rib']['cle'] = '70';
+$configuration['rib']['domiciliation'] = 'CE ILE DE FRANCE PARIS';
+$configuration['rib']['bic'] = 'CEPAFRPP751';
+$configuration['rib']['iban'] = 'FR76 1751 5900 0004 0451 6866 770';
+$configuration['paybox_prod']['site']='8316677';
+$configuration['paybox_prod']['rang']='001';
+$configuration['paybox_test']['site']='1999888';
+$configuration['paybox_test']['rang']='99';
+$configuration['paybox']['site']='8316677';
+$configuration['paybox']['rang']='001';
+$configuration['planete']['pertinence']='php|afup|pear|pecl|la|suite|question';
+$configuration['site']['prefix']='pages/site/';
+$configuration['site']['query_prefix'] = "?route=";

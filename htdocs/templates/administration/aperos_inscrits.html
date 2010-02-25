@@ -1,0 +1,52 @@
+{if $action == 'lister'}
+    <h2>Liste des inscrits aux apéros PHP</h2>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=aperos_inscrits&amp;action=ajouter" title="Ajouter un nouvel inscrit aux apéros PHP">Ajouter un nouvel inscrit aux apéros PHP</a><br />
+    <br/>
+<!--    <table>
+      <form method="GET" name="filtre">
+      <input type="hidden" name="page" value="aperos" />
+      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+        <tr>
+            <td width="50" nowrap>Filtre : </td>
+            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
+            <td><input type="submit" value="OK" name="submit_filtre"></td>
+        </tr>
+      </form>
+    </table>
+    <br/>-->
+    <table>
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+            <th align="left"><a href="index.php?page=aperos_inscrits&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
+            <th align="left"><a href="index.php?page=aperos_inscrits&amp;tri=prenom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'prenom'}desc{else}asc{/if}">Prénom</a></th>
+            <th align="left"><a href="index.php?page=aperos_inscrits&amp;tri=pseudo&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pseudo'}desc{else}asc{/if}">Pseudo</a></th>
+            <th><a href="index.php?page=aperos_inscrits&amp;tri=valide&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$inscrits item=inscrit}
+        <tr>
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$inscrit.nom}</td>
+            <td>{$inscrit.prenom}</td>
+            <td>{$inscrit.pseudo}</td>
+            <td style="text-align: center">{if $inscrit.valide == 1}Actif{else}Inactif{/if}</td>
+            <td style="text-align: right">
+                <a href="index.php?page=aperos_inscrits&amp;action=modifier&amp;id={$inscrit.id}" title="Modifier l'inscrit {$inscrit.pseudo}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=aperos_inscrits&amp;action=supprimer&amp;id={$inscrit.id}" title="Supprimer l'inscrit {$inscrit.pseudo}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l'inscrit {$inscrit.pseudo} aux apéros PHP ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucun inscrit</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter un inscrit</h2>
+    {else}
+        <h2>Modifier un inscrit</h2>
+    {/if}    
+    {include file="formulaire.html"}
+{/if}

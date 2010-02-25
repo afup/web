@@ -1,0 +1,940 @@
+{include file="entete.html"}
+        <div id="cartouche-milieu">
+            <img id="cartouchepage" src="{$chemin_template}images/cartouche-page.png" usemap="#m_cartouchepage" />
+            <map name="m_cartouchepage">
+            <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="inscription.php" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+            <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="acces.php" title="Accès" alt="Accès" >
+            </map>
+            <h1>Le programme des deux jours</h1>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="8" bgcolor="#000000">
+    <tr>
+      <td bgcolor="#E0E2ED" height="32"><b>9 Novembre : Journée Fonctionnelle</b></td>
+    </tr>
+  </table>
+  <br />
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="http://talks.php.net/show/afup05"><img src="{$chemin_template}images/html.gif" /></a><br />
+			9h30 - 10h15 : <b>Présentation de PHP</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#rlerdorf">Rasmus
+              LERDORF</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#rlerdorf"><img src="{$chemin_template}images/intervenants/rlerdorf.jpg" alt="Rasmus LERDORF" border="0" /></a></td>
+      <td align="justify">
+        <p>A tout seigneur, tout honneur! L'ouverture de ce
+			dixi&egrave;me anniversaire revenait naturellement &agrave;
+			l'inventeur du PHP. 
+			</p>
+			<p>Rasmus LERDORF nous a rappel&eacute; qu'il y a
+			dix ans, il trouvait bien lourd d'avoir sa logique applicative
+			&eacute;crite en C : &agrave; chaque modification, il fallait
+			repasser par les &eacute;tapes de compilation et de construction
+			de l'ex&eacute;cutable. La r&eacute;p&eacute;tition de ces
+			op&eacute;rations a fait na&icirc;tre en lui le d&eacute;sir d'une
+			solution plus simple, plus paresseuse m&ecirc;me, selon ses
+			propres termes : BE LAZY ! Et voil&agrave; comment l'un des
+			programmeurs les plus importants de la plan&egrave;te nous expose
+			tranquillement le peu de go&ucirc;t qu'il a de programmer : ce qui
+			l'int&eacute;resse, c'est de r&eacute;soudre des probl&egrave;mes
+			concrets. Pas n'importe lesquels : les probl&egrave;mes qui se
+			posent aujourd'hui, pas ceux qui ne se pr&eacute;senteront jamais.
+			Et ce n'est pas sans fiert&eacute; qu'il nous pr&eacute;sente le
+			site <a href="http://cvs.opensource.lk/sahana2/">SAHANA</a>
+			<em>(voir aussi
+			<a href="http://www.linux.lk/~chamindra/docs/Sahana-Pakistan.pdf">Sahana-Pakistan.pdf</a></em>)
+			: gr&acirc;ce au PHP un site construit en moins d'une semaine
+			permettait &agrave; des personnes s&eacute;par&eacute;es par le
+			tsunami de d&eacute;cembre 2004 de se retrouver. Et des milliers
+			d'entre elles ont pu r&eacute;tablir le contact.</p>
+			<p>Progressant r&eacute;guli&egrave;rement au fil de
+			ces 10 ans, PHP est devenu une entreprise s&eacute;rieuse : plus
+			de 1000 comptes CVS de d&eacute;veloppeurs, dont 463 pour le code,
+			260 pour la documentation, les autres pour la qualit&eacute;, la
+			r&eacute;vision du code. Quelles entreprises dans le monde peuvent
+			aujourd'hui mettre 500 d&eacute;veloppeurs sur un projet ? Une
+			dizaine, pas plus. Pour son cr&eacute;ateur, qui pensait que PHP
+			ne durerait pas plus de 6 mois, c'est une r&eacute;ussite qui
+			tient &agrave; la qualit&eacute; de la communaut&eacute; qui s'est
+			retrouv&eacute;e autour des caract&eacute;ristiques du langage.
+			Son architecture lui permet d'int&eacute;grer les nombreuses
+			technologies qui en font une plate-forme de d&eacute;veloppement
+			et d'exploitation tr&egrave;s compl&egrave;te. 
+			</p>
+			<p>Par exemple, PHP5 affirme cette capacit&eacute;
+			en int&eacute;grant tr&egrave;s bien le XML. Et l'une des
+			impl&eacute;mentations que Rasmsus affectionne pour sa facilit&eacute;
+			est le SimpleXML : elle permet de charger les noeuds XML dans des
+			objets PHP.</p>
+			<p>Autre technologie, AJAX, qui fera l'objet d'une
+			conf&eacute;rence enti&egrave;re permet d'enrichir le poste client
+			l&eacute;ger par la mise en place de granules PHP qui renvoient au
+			poste des fonctions javascript &agrave; l'int&eacute;rieur m&ecirc;me
+			de la page. Ainsi, apr&egrave;s avoir tap&eacute; les deux
+			premiers chiffres d'un code postal, la technologie AJAX va envoyer
+			une demande au serveur et recevoir en retour les codes postaux du
+			d&eacute;partement et les pr&eacute;senter &agrave; l'utilisateur
+			dans la liste d&eacute;roulante sans recharger la page. 
+			</p>
+			<p>Autre technologie encore, SOAP n'est pas termin&eacute;
+			mais c'est l'une des impl&eacute;mentations les plus compl&egrave;tes
+			apr&egrave;s celle de Java.</p>
+			<p>La pr&eacute;sentation de Rasmus s'est termin&eacute;e
+			tr&egrave;s brillamment par la mise en oeuvre du <em>Geocoding</em>
+			et de la <em>Simple Embedded DHTML map</em> qui permet de se
+			d&eacute;placer sur une carte.</p>
+			<p>Voil&agrave; ce qui
+			passionne Rasmus : des solutions simples et imm&eacute;diates. Et
+			voil&agrave; avec quoi il nous a passionn&eacute;.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/solutionslibres_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			10h15 - 11h15 : <b>Panorama des solutions libres</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#cpierredegeyer">Cyril
+              PIERRE de GEYER</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#cpierredegeyer"><img src="{$chemin_template}images/intervenants/cpierredegeyer.jpg" alt="Cyril PIERRE de GEYER" border="0" /></a></td>
+      <td align="justify">
+        <p>L'auteur du <strong>PHP5 avanc&eacute;</strong> nous a
+			ensuite fait parcourir le panorama des Solutions Libres. C'est &agrave;
+			dire, de ces <em>briques logicielles qui</em>, selon sa d&eacute;finition,
+			<em>constituent un &eacute;l&eacute;ment de factorisation</em>.</p>
+			<p>Souvent gratuites, pr&ecirc;tes &agrave; l'emploi
+			et soutenues par une communaut&eacute; importante, elles
+			permettent de r&eacute;pondre &agrave; des probl&eacute;matiques
+			exigeantes. Le d&eacute;faut de leurs qualit&eacute;s, est que
+			chacune de ces briques est le plus souvent construite avec son
+			propre template, illustrant le fait que &laquo;&nbsp;le template,
+			c'est bien, surtout quand c'est le sien&nbsp;&raquo;. Par exemple,
+			si vous voulez mettre en oeuvre un logiciel de commerce et un
+			forum, vous aurez &agrave; faire &agrave; deux gestions
+			d'utilisateurs diff&eacute;rentes. En cons&eacute;quence,
+			l'internaute devra s'inscrire deux fois. Ce probl&egrave;me est
+			parfois temp&eacute;r&eacute; par l'existence de passerelles.
+			Celles-ci doivent cependant &ecirc;tre souvent r&eacute;ajust&eacute;es
+			lors des changements de version.</p>
+			<p>A gauche de cette vue panoramique, on trouve des
+			utilitaires tr&egrave;s appr&eacute;ci&eacute;s, tels que EZPDF
+			qui offre toutes les fonctions n&eacute;cessaires &agrave; la
+			production &agrave; la vol&eacute;e de documents PDF ou tels que
+			HTML Mime Mail for PHP pour envoyer des courriels au format HTML
+			avec ou sans pi&egrave;ces jointes.</p>
+			<p>Au centre, on note des couches logicielles
+			d'abstraction de bases de donn&eacute;es, telle ADODB. Si elles
+			facilitent l'interop&eacute;rabilit&eacute; souhait&eacute;e plus
+			haut, c'est cependant au prix d'une r&eacute;duction au plus petit
+			d&eacute;nominateur commun : par exemple tous les SGBD
+			n'impl&eacute;mentent pas la clause LIMIT de MySQL.</p>
+			<p>Enfin, on aura, &agrave; droite du panorama, de
+			v&eacute;ritables applications compl&egrave;tes comme OsCommerce
+			pour g&eacute;rer un site de commerce ou SPIP pour disposer d'une
+			gestion de contenu.</p>
+			<p>Les parcours possibles dans ce panorama seront
+			rassembl&eacute;s par l'AFUP dans la publication annonc&eacute;e
+			d'un livre blanc des solutions libres. Des notes globales en
+			<strong>richesse fonctionnelle</strong> et en <strong>exploitation</strong> seront
+			attribu&eacute;es par les auteurs.</p>
+			<p>Devant ce foisonnement chaque jour plus riche,
+			les rep&eacute;rages propos&eacute;s par Cyril deviennent tr&egrave;s
+			pr&eacute;cieux.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/creditagricole_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			11h30 - 12h15 : <b>Retour d'expérience : Crédit Agricole</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#jbernard">Julien
+              BERNARD</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#jbernard"><img src="{$chemin_template}images/intervenants/jbernard.jpg" alt="Julien Bernard" border="0" /></a></td>
+      <td align="justify">
+        <p>Julien BERNARD de Cr&eacute;dit Agricole Asset
+			Management a pr&eacute;sent&eacute; la premi&egrave;re solution
+			d'entreprise de la journ&eacute;e. L'int&eacute;r&ecirc;t a &eacute;t&eacute;
+			de nous montrer comment une entreprise internationale de 3 400
+			personnes, la premi&egrave;re de son secteur en France (g&eacute;rant
+			390 Mds d'Euros), en est venue &agrave; adopter PHP : les &eacute;l&eacute;ments
+			de co&ucirc;t et de s&eacute;curit&eacute; ont &eacute;t&eacute;
+			d&eacute;terminant et la prise de risque faible pour le d&eacute;cideur.</p>
+			<p>Aujourd'hui 35 sites, tant en extra-, intra- et
+			inter- net sont g&eacute;r&eacute;s essentiellement en PHP par les
+			15 d&eacute;veloppeurs de l'&eacute;quipe.</p>
+			<p>Le choix d'un outil commun, Eclipse, et la mise
+			en place de normes de codage ont permis un partage du code. Pour
+			encourager cette standardisation, un plug-in a &eacute;t&eacute;
+			&eacute;crit pour Eclipse : apr&egrave;s une premi&egrave;re phase
+			de normalisation de pr&eacute;sentation, ce plug-in signale
+			ensuite par des commentaires dans le code les normalisations qui
+			restent &agrave; faire.</p>
+			<p>Dans une attitude responsable vis &agrave; vis de
+			la communaut&eacute; des d&eacute;veloppeurs de logiciels libres,
+			ce plug-in a &eacute;t&eacute; install&eacute; sur sourceforge.net
+			et les sources peuvent &ecirc;tre demand&eacute;s.</p>
+			<p>Pour en revenir &agrave; la gestion de l'&eacute;quipe
+			un certain nombre de r&egrave;gles de l'eXtreme Programming sont
+			d&eacute;j&agrave; en place, celle des tests unitaires &eacute;tant
+			en cours.</p>
+			<p>En r&eacute;sum&eacute; PHP s'est av&eacute;r&eacute;
+			simple, performant, complet, efficace et standard. Ce dernier
+			point permet de trouver facilement des d&eacute;veloppeurs.</p>
+			<p>Avec le choix de l'Open Source, la responsabilit&eacute;
+			des applications r&eacute;int&egrave;gre l'entreprise.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			12h15 - 13h00 : <b>MySQL 5 : les nouveautés</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#mcarney">Michael
+              CARNEY</a> &amp; <a href="./conferenciers.php?#svaroqui">Stéphane
+              VAROQUI</a>, MySQL AB</span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#mcarney"><img src="{$chemin_template}images/intervenants/mcarney.jpg" alt="Michael Carney" border="0" /></a>
+        <!--<a href="conferenciers.php#svaroqui"><img src="{$chemin_template}images/intervenants/svaroqui.jpg" alt="Stéphane Varoqui" border="0" /></a>-->
+      </td>
+      <td align="justify">
+        <p>St&eacute;phane VAROQUI nous a pr&eacute;sent&eacute;
+			les nouveaut&eacute;s tant attendues de MySQL 5 :</p>
+			<ul>
+				<li>Vues
+				<li>Procédures stock&eacute;es
+				<li>D&eacute;clencheurs et Pr&eacute;cision Math&eacute;matique
+				<li>Schemata
+				<li>SQL Mode v&eacute;rification du typage
+				<li>Moteur de stockage FEDERATED 
+				<li>Normalisation des syntaxes SQL
+				<li>Plus de variables et de statuts
+				<li>Protocole transactionnel XA
+				<li>Optimisation par &laquo;&nbsp;Index Merge&nbsp;&raquo;<p></p>
+			</ul>
+			<p>Apr&egrave;s nous avoir pr&eacute;sent&eacute; la
+			RoadMap de MySQL, il nous a d&eacute;clin&eacute; l'offre :</p>
+			<p>en terme de produit, &agrave; c&ocirc;t&eacute;
+			de l'offre sous licence GPL il existe une offre certifi&eacute;e
+			reconnue par les assurances.</p>
+			<p>Quatre consultants en France assurent
+			optimisations et migrations (proc&eacute;dures stock&eacute;es).
+			En ce qui concerne la formation, le partenaire privil&eacute;gi&eacute;
+			est Anaska.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/bestpracticesphp_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br>
+            14h30 - 15h30 : <b>Bonnes Pratiques PHP</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#gponcon">Guillaume PONÇON</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#gponcon"><img src="{$chemin_template}images/intervenants/gponcon.jpg" alt="Guillaume Ponçon" border="0" /></a></td>
+      <td align="justify"> 
+        <p>Quelles sont les pratiques de d&eacute;veloppement PHP &eacute;prouv&eacute;es 
+          &agrave; l'heure actuelle ? C'est ce que nous a pr&eacute;sent&eacute; 
+          l'auteur de <a href="http://php.openstates.org/ouvrage.html" target="_blank">Best 
+          practices PHP 5</a>.</p>
+			
+        <p>En premier lieu, le choix de l'organisation est important. Par exemple, 
+          faire appel aux m&eacute;thodes agiles, comme l'eXtreme Programming 
+          et aux outils qui en facilitent la mise en place : un bon &eacute;diteur 
+          comme Eclipse ou phpEdit.</p>
+        <p>Ensuite, il est pr&eacute;f&eacute;rable de s'appuyer sur de bonnes 
+          ressources (et savoir les choisir) pour ne pas r&eacute;inventer la 
+          roue : la librairie PEAR (en PHP) ou son extension PECL (en C) constituent 
+          deux exemples de r&eacute;f&eacute;rence.</p>
+        <p>Au niveau de l'exploitation, on s&eacute;parera les environnements 
+          d'ex&eacute;cution pour le d&eacute;veloppement et la production, qui 
+          n'ont pas les m&ecirc;mes objectifs. Pour la production par exemple, 
+          l'attention se portera sur les performances, la fiabilit&eacute; et 
+          la s&eacute;curit&eacute;. On disposera donc d'outils de remont&eacute;e 
+          de <em>bugs</em> et de gestion des performances offert par exemple par 
+          la plate-forme Zend. </p>
+			
+        <p>Si PHP est simple et souple, il est aussi tr&egrave;s permissif. L'avantage 
+          de l'imm&eacute;diatet&eacute; qui en r&eacute;sulte doit &ecirc;tre 
+          cadr&eacute; par une rigueur qui s'appuie sur les meilleures m&eacute;thodes 
+          de g&eacute;nie logiciel. </p>
+			
+        <p>Les bons r&eacute;flexes qui produisent des d&eacute;veloppements durables 
+          sont en g&eacute;n&eacute;ral : </p>
+			<ul>
+				
+          <li>le respect des conventions de codage et de documentation,
+          <li>la surveillance de la m&eacute;moire et des ressources &agrave; 
+            l'aide d'un d&eacute;bogueur comme Xdebug ou DBG,
+          <li>la rigueur dans les d&eacute;clarations de variables et le respect 
+            du mod&egrave;le choisi,
+          <li>la r&eacute;utilisation.
+        </ul>
+			
+        <p>En exploitation, l'utilisation d'un cache d'opcodes (codes machine) 
+          apportera un gain de rapidit&eacute; d'autant plus important que PHP 
+          est un langage interpr&eacute;t&eacute;. APC et eAccelerator sont les 
+          principaux caches utilis&eacute;s.</p>
+        <p>La gestion efficace des d&eacute;veloppements passe par le d&eacute;p&ocirc;t 
+          de donn&eacute;es : CVS ou Subversion. Les &eacute;volutions techniques 
+          s'appuient sur les couches d'abstraction offertes par la POO (Programmation 
+          Orient&eacute;e Objet), l'utilisation d'un outil de mod&eacute;lisation 
+          tel qu'UML (Unified Model Language) et les motifs de conception (Design 
+          Patterns). Pr&eacute;voir l'av&egrave;nement de MDA (Model Driven Architecture) 
+          et PHP 6 est un plus pour la p&eacute;rennit&eacute; des d&eacute;veloppements. 
+        </p>
+        <p>Tous ces points sont d&eacute;velopp&eacute;s dans le livre <a href="http://php.openstates.org/ouvrage.html" target="_blank">Best 
+          practices PHP 5</a> de Guillaume PON&Ccedil;ON qui para&icirc;t chez 
+          Eyrolles le 17 novembre 2005. </p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/lemonde.fr_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			15h30 - 16h15 : <b>PHP et <a href='http://www.lemonde.fr'>LeMonde.fr</a> : passé, présent (et avenir)</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#ograngelabat">Olivier
+              GRANGE LABAT</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#ograngelabat"><img src="{$chemin_template}images/intervenants/ograngelabat.jpg" alt="Olivier Grange Labat" border="0" /></a></td>
+      <td align="justify">
+        <p>Avec Olivier GRANGE LABAT du journal en ligne
+			lemonde.fr nous avons une autre exp&eacute;rience d'utilisation du
+			PHP en entreprise.</p>
+			<p>Pour servir 70 millions de pages lues par mois,il
+			faut un outil performant qui permettent &eacute;galement la mise
+			en ligne de plus de 200 nouveaux articles par jour.</p>
+			<p>C'est au moment d'une &eacute;volution
+			importante, aussi bien en terme de co&ucirc;ts que
+			d'investissements (nouveau langage impos&eacute; par l'&eacute;diteur)
+			qu'a &eacute;t&eacute; d&eacute;cid&eacute; l'abandon de la
+			plate-forme propri&eacute;taire.</p>
+			<p>Le choix de PHP s'est fait sous le paradigme
+			&laquo;&nbsp;Faire mieux avec moins&nbsp;&raquo;. La <em>short liste</em>
+			opposait 3 solutions. Et c'est finalement PHP qui l'a emport&eacute;
+			&agrave; cause de</p>
+			<ul>
+				<li>son faible co&ucirc;t (licence, formation, prestation, infrastructure) 
+				<li>son orientation Web
+				<li>ses performances
+				<li>ses r&eacute;f&eacute;rences : Times, El Pais, Google<p></p>
+			</ul>
+			<p>et ce, malgr&eacute; un faible support XML (ce
+			n'est plus vrai avec PHP5), l'absence de pooling et un interfa&ccedil;age
+			avec des syst&egrave;mes propri&eacute;taires parfois absent.</p>
+			<p>Un premier pas a &eacute;t&eacute; fiat sur un
+			plus petit site. Un <em>framework</em> a &eacute;t&eacute;
+			progressivement mis en place. Il constitue maintenant une base
+			saine et &eacute;prouv&eacute;e qui assure une grande homog&eacute;n&eacute;it&eacute;
+			de conception.</p>
+			<p>Du c&ocirc;t&eacute; client, XUL est utilis&eacute;
+			pour permettre une saisie ais&eacute;e des articles.</p>
+			<p>Par rapport au syst&egrave;me pr&eacute;c&eacute;dent,
+			sans parler du prix de licence qui s'est r&eacute;duit &agrave; sa
+			plus simple expression, les temps de d&eacute;veloppement ont &eacute;t&eacute;
+			divis&eacute;s par 2 et la fiabilit&eacute; multipli&eacute;e par
+			3. De plus, les 4 frontaux Linux utilis&eacute;s &agrave; 20 % ont
+			avantageusement remplac&eacute;s les quadriprocesseurs Sun
+			utilis&eacute;s &agrave; 70 %</p>
+			<p>Pour toutes ces raisons, le r&ocirc;le de PHP va
+			se d&eacute;velopper au fil de la prise en compte de nouvelles
+			applications.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/airturquoise_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			16h30 - 17h20 : <b>Retour d'expérience : Air Turquoise décolle
+              avec PHP</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#fbillardmadrieres">François
+              BILLARD MADRIÈRES</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#fbillardmadrieres"><img src="{$chemin_template}images/intervenants/fbillardmadrieres.jpg" alt="Francois Billard Madrieres" border="0" /></a></td>
+      <td align="justify">
+        <p>Nous avons termin&eacute; cette premi&egrave;re
+			journ&eacute;e orient&eacute;e vers les exp&eacute;riences de PHP
+			en entreprise par le cas d'une petite compagnie a&eacute;rienne
+			assurant 6 vols quotidiens sur un ATR42-500. Antoine de KERVILLER
+			de la Compagnie Air Turquoise et Fran&ccedil;ois BILLARD MADRI&Egrave;RES
+			son DSI externe ont mis en place en un temps record (3 mois) un
+			syst&egrave;me souple de r&eacute;servation et de gestion qu'ils
+			ont enti&egrave;rement &eacute;crit en PHP.</p>
+			<p>Le choix de la m&eacute;thode s'est av&eacute;r&eacute;
+			d&eacute;terminant : un syst&egrave;me d'&eacute;tats-transitions
+			qui s'appuie sur des descriptions XML qu'interpr&egrave;tent des
+			templates. Les requ&ecirc;tes SQL sont &eacute;galement g&eacute;n&eacute;r&eacute;es
+			automatiquement &agrave; partir de descriptions. Enfin le syst&egrave;me
+			de gestion d'&eacute;crans a &eacute;t&eacute; d&eacute;coupl&eacute;
+			et s'adapte aux donn&eacute;es et au profil de l'utilisateur.</p>
+			<p>Le <em>workflow</em> applicatif est totalement
+			int&eacute;gr&eacute; au syst&egrave;me qui est compos&eacute; de
+			petites applications modulaires versionn&eacute;es.</p>
+			<p>Il aurait &eacute;t&eacute; plus lourd de
+			param&eacute;trer de grosses applications existant par ailleurs.
+			Et le choix d'une architecture l&eacute;g&egrave;re a permis pour
+			dix fois moins cher de d&eacute;velopper une solution mieux
+			adapt&eacute;e &agrave; cette petite entreprise.</p>
+			<p>Tr&egrave;s belle d&eacute;monstration de
+			puissance et de simplicit&eacute; que permet l'utilisation du PHP
+			lorsqu'il est alli&eacute; &agrave; une architecture bien
+			construite.</p>
+      </td>
+    </tr>
+  </table>
+  <br />
+  <br />
+  <table width="100%" border="0" cellspacing="0" cellpadding="8" bgcolor="#000000">
+    <tr>
+      <td bgcolor="#E0E2ED"><b>10 Novembre : Journée Technique</b></td>
+    </tr>
+  </table>
+  <br />
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/keynote_forumphp2005_2.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			9h - 9h15 : <b>Key Note</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#ppenet">Perrick PENET</a>, <a href="./conferenciers.php?#dseguy">Damien SEGUY</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#ppenet"><img src="{$chemin_template}images/intervenants/ppenet.jpg" alt="Perrick PENET" border="0" /></a><a href="conferenciers.php#dseguy"><img src="{$chemin_template}images/intervenants/dseguy.jpg" alt="Damien SEGUY" border="0" /></a></td>
+      <td align="justify" valign="top">
+        <p>Perrick PENET et Damien SEGUY, respectivement
+			pr&eacute;sident et vice-pr&eacute;sident de l'AFUP, ont ouvert
+			cette journ&eacute;e davantage orient&eacute;e d&eacute;veloppeurs.</p>
+			
+        <p>Ils ont rappel&eacute; l'action de l'AFUP, qui au-del&agrave; de ce 
+          forum de deux jours, r&eacute;actualise le livre blanc du <strong>PHP 
+          en entreprise</strong> distribu&eacute; &agrave; chaque participant 
+          et disponible &eacute;galement sur le site Internet de l'AFUP: <a href="http://www.afup.org/">http://www.afup.org/</a>. 
+          L'AFUP organise &eacute;galement des journ&eacute;es &agrave; th&egrave;mes 
+          et facilite les &eacute;changes au sein de la communaut&eacute; professionnelle 
+          du PHP.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="http://talks.php.net/show/afup05_2"><img src="{$chemin_template}images/html.gif" /></a><br />
+			9h30 - 10h15 : <b>Présentation de PHP</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#rlerdorf">Rasmus LERDORF</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#rlerdorf"><img src="{$chemin_template}images/intervenants/rlerdorf.jpg" alt="Rasmus LERDORF" border="0" /></a></td>
+      <td align="justify">
+        <p>Rasmus a d'entr&eacute;e de jeu insist&eacute;
+			sur sa priorit&eacute; : se centrer sur le probl&egrave;me &agrave;
+			r&eacute;soudre sans se complaire dans la solution.</p>
+			<p>Pour illustrer cela, il a montr&eacute; comment
+			&eacute;crire simplement un compteur qui supporte la concurrence
+			d'acc&egrave;s. Au lieu de g&eacute;rer cela dans le code, autant
+			s'appuyer sur le syst&egrave;me d'exploitation qui g&egrave;re
+			cette concurrence. Cela donne une petit compteur tr&egrave;s
+			compact qui permet de conna&icirc;tre par page le nombre de
+			visites par heure. 
+			</p>
+			<p>Puis il nous a parl&eacute; de l'&eacute;volution
+			de PHP.</p>
+			<p>Par exemple, la gestion des variables temporaires
+			en PHP4 n'avait pas pr&eacute;vu que des programmeurs puisse
+			&eacute;crire du code comme cela :</p>
+			{literal}
+			<p><code>&lt;?php<br />
+			function foo() {<br />
+			&nbsp;&nbsp;&nbsp;return 3;<br />
+			}<br />
+			function&nbsp;bar(&amp;$arg)&nbsp;{<br />
+			&nbsp;&nbsp;&nbsp;$arg&nbsp;=&nbsp;&quot;banana&quot;;<br />
+			}<br />
+			bar(foo());<br />
+			?&gt;
+			</code></p>
+			{/literal}
+			<p><br /><br />
+			</p>
+			<p>Le probl&egrave;me est que foo() n'est plus une
+			variable, puisque c'est une constante 3. Or dans l'appel, bar
+			attend une variable.</p>
+			<p>Maintenant, en PHP5, seules des variables
+			peuvent &ecirc;tre pass&eacute;es par r&eacute;f&eacute;rence en
+			ligne 8.</p>
+			<p>Il y a une erreur commun&eacute;ment r&eacute;pandue
+			qui consiste &agrave; vouloir passer par un tableau par r&eacute;f&eacute;rence
+			m&ecirc;me dans le cas o&ugrave; on ne le modifie pas, sous
+			pr&eacute;texte d'&eacute;viter &agrave; PHP de le copier. En
+			fait, PHP ne le copie pas quand il est pass&eacute; par valeur. Et
+			c'est m&ecirc;me plus long de le passer par r&eacute;f&eacute;rence
+			que de le passer par valeur.</p>
+			<p>Rasmus a ensuite attir&eacute; notre attention
+			sur les questions de s&eacute;curit&eacute;. Par exemple sur la
+			n&eacute;cessit&eacute; de contr&ocirc;ler les saisies. A l'aide
+			de htmlspecialchar on peut v&eacute;rifier que l'internaute n'a
+			pas rajout&eacute; du code javascript au mot de passe. Plusieurs
+			techniques de s&eacute;curit&eacute; ont &eacute;t&eacute;
+			expos&eacute;es.</p>
+			<p>Efficacit&eacute; et s&eacute;curit&eacute; ont
+			&eacute;t&eacute; les deux th&egrave;mes principaux de
+			l'intervention tr&egrave;s applaudie de Rasmus.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/extension_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			10h15 - 11h15 : <b>Création d'une extension PHP</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#mhoel">Michel
+              HOEL</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#mhoel"><img src="{$chemin_template}images/intervenants/mhoel.jpg" alt="Michel Hoel" border="0" /></a></td>
+      <td align="justify">
+        <p>L'ouverture de PHP et la disponibilit&eacute; du
+			code permet d'aller jusqu'&agrave; cr&eacute;er des extensions. Et
+			c'est pour r&eacute;pondre &agrave; la probl&eacute;matique de
+			l'accessibilit&eacute; des sites pour les handicap&eacute;s que
+			Michel HOEL a cr&eacute;&eacute; une extension PHP.</p>
+			<p>Il s'agit en effet d'analyser les sites pour
+			d&eacute;terminer si des non-voyants peuvent y naviguer. Le
+			navigateur du poste client est dot&eacute; de plug-in qui par voix
+			synth&eacute;tique lisent le contenu des balises (le <em>alt</em>
+			des images, par exemple) et du texte. Encore faut-il que les
+			balises soient correctement remplies, que les textes soient
+			structur&eacute;s par des titres tagu&eacute;s par &lt;H?&gt; et
+			que les liens n'aient pas tous &laquo;&nbsp;Cliquez ici&nbsp;&raquo;
+			en <em>title</em>. Il y a donc tout un ensemble de mesures &agrave;
+			faire, et de r&egrave;gles &agrave; v&eacute;rifier pour donner
+			des conseils aux <em>webdesigners</em>.</p>
+			<p>Dans le cadre d'un projet mise en place avec
+			France-T&eacute;l&eacute;com, il a donc &eacute;t&eacute; d&eacute;cid&eacute;
+			d'utiliser un moteur d'inf&eacute;rence bas&eacute; sur CLIPS, un
+			langage d'intelligence artificielle &eacute;crit par la NAS, puis
+			repris par des universitaires. Ecrit en C ANSI, cet outil pouvait
+			s'int&eacute;grer en tant qu'extension au langage PHP.</p>
+			<p>Comme les sources de PHP sont disponibles, et que
+			le travail d'extension a d&eacute;j&agrave; &eacute;t&eacute; fait
+			par ailleurs, il suffisait de s'inspirer des structures
+			habituellement utilis&eacute;es.</p>
+			<p>La recompilation de PHP s'est faite avec 2
+			int&eacute;grations de CLIPS :</p>
+			<ul>
+				<li>une version statique - - with - clips<p></p>
+				<li>une version dynamique - - enable &ndash; clips<p></p>
+			</ul>
+			<p>Michel nous a montr&eacute;
+			concr&egrave;tement comment cr&eacute;er un squelette de fichiers
+			pr&ecirc;ts &agrave; recevoir l'extension et comment, au final,
+			phpinfo() nous pr&eacute;sente bien l'extension CLIPS au m&ecirc;me
+			titre que mbstring, mysql ou zlib. L'extension elle-m&ecirc;me a
+			bien &eacute;t&eacute; s&eacute;par&eacute;e en deux parties, la
+			premi&egrave;re g&eacute;rant les &eacute;changes avec CLIP, la
+			deuxi&egrave;me avec PHP. Et une fonction de callback permet au
+			moteur d'envoyer de renvoyer un flux de caract&egrave;res sur un
+			canal sp&eacute;cifique.</p>
+			<p>Gr&acirc;ce &agrave; l'architecture ouverte de
+			PHP, des fonctions externes aussi sophistiqu&eacute;es qu'un
+			moteur d'inf&eacute;rence peuvent ainsi devenir partie int&eacute;grante
+			du langage.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/pear_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			11h30 - 12h15 : <b>L'assurance qualité dans le projet PEAR</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#alimbourg">Arnaud
+              LIMBOURG</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#alimbourg"><img src="{$chemin_template}images/intervenants/alimbourg.jpg" alt="Arnaud Limbourg" border="0" /></a></td>
+      <td align="justify">
+        <p>C'est ensuite Arnaud LIMBOURG, bien connu pour
+			son implication depuis plusieurs ann&eacute;es dans le projet
+			PEAR, qui nous a parl&eacute; de l'assurance qualit&eacute;.</p>
+			<p>PEAR est une librairie d'extensions de PHP &eacute;crite
+			en PHP et qui dispose d'une grande base d'utilisateurs, de l'ordre
+			du million.</p>
+			<p>Elle contient notamment QuickForm ou Mail Mime.</p>
+			<p>La qualit&eacute; est d'abord affaire
+			d'organisation. Les &eacute;changes entre utilisateurs de PEAR se
+			font via des listes de diffusion &agrave; th&egrave;me :</p>
+			<ul>
+				<li>peargeneral pour les utilisateurs
+				<li>peardev pour les d&eacute;veloppeurs de PEAR
+				<li>pearqa pour l'assurance qualit&eacute; de PEAR
+				<li>pearwebmaster pour les site web <a href="http://pear.php.net/">http://pear.php.net</a>
+				<li>pearcvs pour le CVS de PEAR
+			</ul>
+			<p>Actuellement un gros travail est fait sur la
+			documentation et LiveDoc sera bient&ocirc;t disponible.</p>
+			<p>La qualit&eacute; passe aussi par une
+			standardisation des t&acirc;ches courantes comme par exemple
+			l'installation. Celle-ci est pr&eacute;vue en standard dans PEAR.</p>
+			<p>Et puis bien entendu la surveillance du respect
+			des r&egrave;gles de PEAR, comme par exemple, de ne pas intervenir
+			sur la configuration. Cette r&egrave;gle permet d'utiliser les
+			paquetages dans le cas de serveurs mutualis&eacute;s.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			<a href="{$chemin_template}talks/aspects_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			12h15 - 13h00 : <b>Programmation Orientée Aspects en PHP</b></td>
+            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#gvanwormhoudt">Gilles VANWORMHOUDT</a><br />
+			&amp; <a href="./conferenciers.php?#wcandillon">William CANDILLON</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#wcandillon"><img src="{$chemin_template}images/intervenants/wcandillon.jpg" alt="William Candillon" border="0" /></a><a href="conferenciers.php#gvanwormhoudt"><img src="{$chemin_template}images/intervenants/gvanwormhoudt.jpg" alt="Gilles Vanwormhout" border="0" /></a></td>
+      <td align="justify">
+        <p>Nous avons termin&eacute; la matin&eacute;e par
+			une tr&egrave;s brillante pr&eacute;sentation de la programmation
+			orient&eacute;e aspects en PHP par Gilles VANWORMHOUDT et William
+			CANDILLON.</p>
+			<p>Apr&egrave;s avoir situ&eacute; la m&eacute;thode
+			dans le champ g&eacute;n&eacute;ral des m&eacute;thodes actuelles,
+			Gilles a montr&eacute; les limites de la POO (programmation objet)
+			: une application est organis&eacute;e au moins autour de deux
+			p&ocirc;les, le p&ocirc;le <strong>m&eacute;tier</strong> et le p&ocirc;le
+			<strong>technique </strong>(s&eacute;curit&eacute;, authentification,
+			gestion transactionnelle, etc.). Le d&eacute;veloppeur est donc
+			&eacute;cartel&eacute; entre ces p&ocirc;les : faut-il privil&eacute;gier
+			la partie m&eacute;tier ou la partie technique dans le dessin de
+			l'architecture objet ? Cela se traduit soit par du <em>code
+			tangling</em> (entrelacement des aspects techniques avec les
+			aspects m&eacute;tiers) ou du <em>code scattering</em>
+			(&eacute;parpillement des aspects techniques) avec souvent des
+			redondances,que la programmation &eacute;tait cens&eacute; &eacute;viter.</p>
+			<p>Le mot aspect vient
+			donc d'appara&icirc;tre et va guider une nouvelle organisation du
+			code suivant l'&eacute;laboration de KicZales au Xerox Park en
+			1997 : sans remettre en cause les apports de la POO, il s'agit de
+			la compl&eacute;ter par une meilleure organisation des classes en
+			les regroupant par aspect (m&eacute;tier, persistance, login,
+			etc.). Lorsqu'une m&eacute;thode d'un aspect a besoin d'utiliser
+			une m&eacute;thode d'un autre aspect, une instruction de greffe
+			indiquera au pr&eacute;-compilateur o&ugrave; trouver cette
+			m&eacute;thode et avec quels param&egrave;tres.</p>
+			<p>Chaque aspect gagne
+			ainsi en homog&eacute;n&eacute;it&eacute;.</p>
+			<p>Le code applicatif va
+			donc &ecirc;tre produit ensuite au cours d'une op&eacute;ration de
+			tissage (<em>weaving</em>) qui impl&eacute;mentera les greffes l&agrave;
+			o&ugrave; elles sont attendues. Et c'est le code r&eacute;sultant
+			qui va &ecirc;tre ex&eacute;cut&eacute;. La POA (programmation
+			orient&eacute;e aspects) est impl&eacute;ment&eacute;e sur
+			diff&eacute;rentes plate&nbsp;formes. En ce qui concerne le PHP,
+			cela a donn&eacute; lieu au d&eacute;veloppement de phpaspect qui
+			nous a &eacute;t&eacute; pr&eacute;sent&eacute;.</p>
+			<p>La POA vient donc en
+			compl&eacute;ment de la POO.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="18">
+			<a href="{$chemin_template}talks/ajax_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			14h00 - 15h00 : <b>AJAX : Brillez avec vos applications web</b></td>
+            <td align="right" height="18"><span class="conferencier"><a href="./conferenciers.php?#shordeaux">Sébastien
+              HORDEAUX</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#shordeaux"><img src="{$chemin_template}images/intervenants/shordeaux.jpg" alt="Sébastien Hordeaux" border="0" /></a></td>
+      <td align="justify">
+        <p>S&eacute;bastien HORDEAUX, l'auteur bien connu de
+			l'excellent phpEdit nous a montr&eacute; l'apport d'AJAX
+			(<strong>A</strong>synchronous <strong>J</strong>avaScript <strong>a</strong>nd <strong>X</strong>ML) pour
+			enrichir le poste client en apportant aux applications Web
+			l'ergonomie des clients lourds.</p>
+			<p>Utilis&eacute; sur des produits aussi largement
+			r&eacute;pandus que GoogleMail ou GoogleMap, cette technologie
+			pr&eacute;sente l'avantage de na pas avoir &agrave; faire de
+			d&eacute;ploiement au niveau du poste client : au niveau du client
+			n'intervient que le DHTML qui est d&eacute;j&agrave; inclus dans
+			le navigateur, sauf peut-&ecirc;tre pour Mac.</p>
+			<p>Le principe consiste &agrave; lancer en
+			asynchrone vers le serveur de petites interrogations. Les r&eacute;ponses
+			viennent s'inscrire directement dans l'&eacute;l&eacute;ment du
+			DOM concern&eacute; sans qu'on ait &agrave; r&eacute;afficher
+			toute la page.</p>
+			<p>S&eacute;bastien nous en a fait la d&eacute;monstration
+			sur WIT, l'outil collaboratif de gestion de projets qu'il a
+			d&eacute;velopp&eacute; <a href="http://www.waterproof.fr/wit/">http://www.waterproof.fr/wit/</a></p>
+			<p>AJAX est l'une des r&eacute;ponses &agrave; la
+			demande croissante d'interactivit&eacute; sur le Web.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="18">
+			<a href="{$chemin_template}talks/performances_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			15h00 - 16h00 : <b>PHP et performances</b></td>
+            <td align="right" height="18"><span class="conferencier"><a href="./conferenciers.php?#edaspet">Eric
+              DASPET</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#edaspet"><img src="{$chemin_template}images/intervenants/edaspet.jpg" alt="Eric Daspet" border="0" /></a></td>
+      <td align="justify">
+        <p>Consultant bien au fait des questions de
+			performances sous PHP, Eric DASPET a attir&eacute; notre attention
+			sur les diff&eacute;rents facteurs &agrave; prendre en compte.</p>
+			<p>Commen&ccedil;ons par quelques id&eacute;es
+			re&ccedil;ues. Certains pensent que recompiler PHP va faire gagner
+			du temps. Que ce soit en statique ou en dynamique (la diff&eacute;rence
+			est infime) on se retrouve surtout avec une configuration &agrave;
+			maintenir et pas meilleure que celles que compilent les experts.</p>
+			<p>Mieux vaut s'attacher &agrave; mettre en place
+			des modules comme FastCGI et proc&eacute;der &agrave; divers
+			r&eacute;glages.</p>
+			<p>Par exemple, stocker les sessions en m&eacute;moire
+			(mm), multiplier les serveurs revient moins chers que des journ&eacute;es
+			de d&eacute;veloppement.</p>
+			<p>L'incidence de l'interpr&eacute;tation de PHP
+			peut &ecirc;tre limit&eacute;e par l'utilisation de fonction de
+			PECL &eacute;crite en C et donc tr&egrave;s rapide.</p>
+			<p>Pour gagner en performance avec les SGBD, on a
+			int&eacute;r&ecirc;t &agrave; mettre les gros fichiers LOB &agrave;
+			l'ext&eacute;rieur (en ne gardant dans la base que le lien vers le
+			fichier), ou encore &agrave; faire un choix judicieux d'index et
+			&agrave; ne pas abuser se sous-requ&ecirc;tes dans les ordres SQL.</p>
+			<p>Il y a un int&eacute;r&ecirc;t &agrave; monter
+			l'OPCODE en m&eacute;moire cache (APC, e-accelerator ou Zend). 
+			</p>
+			<p>Le profilage du code peut se faire avec Xdebug ou
+			Kcachegrind</p>
+			<p>Une bonne utilisation de HTTP, en particulier la
+			compression permet de gagner en bande passante.</p>
+			<p>C'est cet art souvent subtil de la pond&eacute;ration
+			de ces &eacute;l&eacute;ments qui fera la diff&eacute;rence. Et
+			c'est ce qu'Eric conna&icirc;t bien.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="18">
+			<a href="{$chemin_template}talks/pdo_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			16h15 - 17h15 : <b>PDO : Abstraction de base de données avec PHP 5.1</b></td>
+            <td align="right" height="18"><span class="conferencier"><a href="./conferenciers.php?#wfurlong">Wez
+              FURLONG</a></span></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><a href="conferenciers.php#wfurlong"><img src="{$chemin_template}images/intervenants/wfurlong.jpg" alt="Wez Furlong" border="0" /></a></td>
+      <td align="justify">
+        <p>Nous avons termin&eacute; les pr&eacute;sentations
+			techniques par celle de Wez FURLONG, Core Developer de PHP depuis
+			2001, le &laquo;&nbsp;roi du PECL&nbsp;&raquo; : c'est ainsi que l'ont
+			surnomm&eacute; ses coll&egrave;gues.</p>
+			<p>Il nous a pr&eacute;sent&eacute; PDO (PHP 5 Data
+			Object) dont le but est de permettre l'abstraction de l'acc&egrave;s
+			aux donn&eacute;es. Non pas l'abstraction de la base de donn&eacute;es
+			qui serait un tout autre sujet, trop long et trop co&ucirc;teux &agrave;
+			mettre en place.</p>
+			<p>Cette abstraction de l'accès aux donn&eacute;es permet d'obtenir la meilleure performance,
+			car</p>
+			<ul>
+				<li>elle est &eacute;crite en C</li>
+				<li>elle tire parti du PHP5</li>
+				<li>elle donne acc&egrave;s aux fonctions communes des bases de donn&eacute;es, mais aussi aux fonctions sp&eacute;cialis&eacute;es.</li>
+			</ul>
+			<ul>
+				<li>PDO pr&eacute;pare et ex&eacute;cute les param&egrave;tres li&eacute;s</li>
+				<li>G&egrave;re les transactions</li>
+				<li>Les LOBS</li>
+				<li>Les curseurs</li>
+				<li>Et rend coh&eacute;rente la gestion d'erreurs au travers de toutes les bases.</li>
+			</ul>
+			<p>Wez a termin&eacute; en nous montrant comment mettre en oeuvre ces diff&eacute;rentes techniques.</p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+	<tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="18">17h15 - 18h00 : <b>Session Questions & Réponses avec le PHP Core</b></td>
+            <td align="right" height="18">
+				<span class="conferencier"><a href="./conferenciers.php?#rlerdorf">Rasmus LERDORF</a></span><br />
+				<span class="conferencier"><a href="./conferenciers.php?#wfurlong">Wez FURLONG</a></span><br />
+				<span class="conferencier"><a>Zeev SURASKI</a></span><br />
+				<span class="conferencier"><a>Andrei ZMIEVSKI</a></span><br />
+				<span class="conferencier">...</span><br />
+			</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap><img src="{$chemin_template}images/intervenants/poweredbyphp.png" alt="PHP Core" border="0" /></td>
+      <td align="justify">
+        <p><cite>Le PHP Core est l'équipe qui pilote les développements autour de PHP. Ils étaient rassemblés pour une séance de Questions&nbsp;- Réponses avec le public&nbsp;: une occasion unique de les rencontrer et d'évoquer avec eux ce que PHP nous réserve pour les 10 ans à venir.</cite></p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+	<tr>
+      <td colspan="2">
+	  <p>La maturité a été également visible dans l'excellente organisation du Forum et dans le choix très cohérent des conférences.
+Légèrement moins nombreuses que l'an passé, mais d'autant plus approfondies. La formule a trouvé sa vitesse de croisière. Mais y a-t-il une vitesse de croisière dans un domaine en si forte expansion ? Rendez-vous donc au Forum 2006 pour faire le point de la réalisation des évolutions qui nous ont été si bien présentées cette année.</p>
+<p>Auteur des résumés :<br /><strong>Henry Cesbron Lavau</strong>, rédacteur expert</p>
+      </td>
+    </tr>
+  </table>
+  <p><br />
+  </p>
+</div>
+{include file="pied_de_page.html"}   

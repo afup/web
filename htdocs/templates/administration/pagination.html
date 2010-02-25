@@ -1,0 +1,16 @@
+<!-- Pagination -->
+<div class="pagination">
+    <div class="page_precedente">    
+    {if $numero_page > 1}
+        <a href="{$url}&amp;numero_page={math equation="x - 1" x=$numero_page}" style="float: left">&laquo; Page précédente</a>
+    {/if}
+    </div>
+
+    <div class="page_suivante">    
+    {if ($numero_page < $nombre_pages)}
+        <a href="{$url}&amp;numero_page={math equation="x + 1" x=$numero_page}" style="float: right">Page suivante &raquo;</a>
+    {/if}
+    </div>
+    
+    <div class="informations">{$numero_page}/{$nombre_pages}</div>
+</div>

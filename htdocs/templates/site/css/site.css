@@ -1,0 +1,643 @@
+/* +--------------------------------------------------------------+ */
+/* |  Contact : mb@blumbyte.com                                   | */
+/* +--------------------------------------------------------------+ */
+body { 
+	background-color: #FFFFFF;
+	text-align: center;
+	color: #000000; margin: 0px;
+	font-size: 11px; font-style: normal;
+	font-weight: normal;
+	font-family: Verdana, sans-serif;
+}
+img {
+	border: none;
+}
+a {
+	text-decoration: none;
+}	
+a:link {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a:visited {
+	text-decoration: none;
+}
+ul {
+	list-style-type: none;
+	float: left;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+li {
+	float: left;
+	width: 100%;
+}
+#HiddenLogo {
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	visibility: hidden;
+}
+#HiddenBaseLine {
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	visibility: hidden;
+}
+#HiddenBaseLine h1 {
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	visibility: hidden;
+}
+/* +------------------------------------------------------------+ */
+/* |  Main Containers                                           | */
+/* +------------------------------------------------------------+ */
+#MainContainerWrapper {
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 0;
+	height: 100%;
+	min-height: 600px;
+	width: 970px;
+}
+#MainContainer {
+	float: left;
+	width: 100%;
+	position: relative;
+	top: 37px;
+}
+/* +------------------------------------------------------------+ */
+/* |  Header                                                    | */
+/* +------------------------------------------------------------+ */
+#HeaderContainer {
+	width: 861px;
+}
+#HeaderContainer #logo {
+	width: 225px;
+	height: 71px;
+ 	background-image: url(../images/afup_a.gif);
+}
+#HeaderContainer #Baseline {
+	float: right;
+	margin-top: 38px;
+	width: 630px;
+	height: 15px;
+ 	background-image: url(../images/BaseLine.gif);
+}
+/* +------------------------------------------------------------+ */
+/* |  ContentContainer                                          | */
+/* +------------------------------------------------------------+ */
+#ContentContainer #NavL1 {
+	width: 274px;
+}
+#ContentContainer #ColLeftPageLevel1 {
+	width: 348px;
+}
+#ContentContainer #ColRightPageLevel1 {
+	width: 348px;
+}
+#ContentContainer #ColLeftPageLevel1 a {
+	text-decoration: none;
+}
+#ContentContainer #ColLeftPageLevel1 a:hover {
+	text-decoration: underline;
+}
+#ContentContainer #ColLeftPageLevel2 {
+	width: 348px;
+}
+#ContentContainer #ColRightPageLevel2 {
+	width: 348px;
+}
+#ContentContainer #NavL2PageLevel3 {
+	width: 232px;
+}
+#ContentContainer #ContentPageLevel3 {
+	width: 464px;
+}
+#ContentContainer .surtitre {
+	float: left;
+	font-size: 12px;
+	margin: 16px 0 0 16px;
+}
+#ContentContainer .chapeau {
+	float: left;
+	font-size: 12px;
+	margin: 16px 0 0 16px;
+}
+#ContentContainer .date {
+	float: left;
+	font-size: 12px;
+	margin: 16px 0 0 16px;
+}
+#ContentContainer .contenu {
+	float: left;
+	margin: 16px 0 0 16px;
+}
+/* +------------------------------------------------------------+ */
+/* |  Nav L 1                                                   | */
+/* +------------------------------------------------------------+ */
+
+#ContentContainer #NavL1 #MainNav {
+	float: right;
+	width: 239px;
+	height: 179px;
+ 	background-image: url(../images/mainMenuBg.gif);
+	background-position: top left;
+}
+#ContentContainer #NavL1 #MainNav li {
+	float: right;
+	width: 229px;
+	height: 35px;
+}
+#ContentContainer #NavL1 #MainNav li a {
+	font-family: Verdana, sans-serif;
+	font-size: 18px;
+	font-weight: 700;
+	color: #FFFFFF;
+}
+a:hover {
+	text-decoration: none;
+}
+#ContentContainer #NavL1 #MainNav #top {
+	margin-top: 50px;
+}
+#ContentContainer #NavL1 #NavAsso {
+	float: right;
+	width: 239px;
+}
+#ContentContainer #NavL1 #NavAsso li {
+	width: 239px;
+	height: 23px;
+ 	background-image: url(../images/bottonsAsso.gif);
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+#ContentContainer #NavL1 #NavAsso #top {
+	margin-top: 1px;
+	height: 23px;
+}
+#ContentContainer #NavL1 #NavAsso li a {
+	float: right;
+	margin-top: 4px;
+	width: 229px;
+	font-family: Georgia, serif;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: 700;
+	color: #161a59;
+}
+a:hover {
+	text-decoration: underline;
+}
+#ContentContainer #NavL1 #LogoB {
+	width: 274px;
+	height: 49px;
+ 	background-image: url(../images/afup_b.gif);
+}
+#ContentContainer #NavL1 #MainNavButtomA {
+	float: right;
+	width: 239px;
+	height: 13px;
+	background-color: #161a59;
+}
+#ContentContainer #NavL1 #MainNavButtomB {
+	float: right;
+	width: 239px;
+	height: 7px;
+ 	background-image: url(../images/ManNavButtomB.gif);
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+/* 20090524 START */
+/* +------------------------------------------------------------+ */
+/* |  ColLeftPageLevel1                                         | */
+/* +------------------------------------------------------------+ */
+#ContentContainer #ColLeftPageLevel1 h1 {
+	float: right;
+	border-top: 1px solid #c0cae1;
+	border-bottom: 1px solid #c0cae1;
+	padding: 8px 0 8px 0;
+	margin: 0;
+	width: 326px;
+	font-family: Verdana, sans-serif;
+	font-size: 20px;
+	font-weight: normal;
+	color: #2D4B96;
+}
+#ContentContainer #ColLeftPageLevel1 .extendednews {
+	float: right;
+	border-bottom: 1px solid #c0cae1;
+	padding: 8px 0 10px 0;
+	width: 326px;
+	color: #000000;
+}
+#ContentContainer #ColLeftPageLevel1 .extendednews h2 {
+	margin: 0 0 6px 0;
+	font-family: Georgia, serif;
+	font-size: 12px;
+	font-weight: 700;
+	color: #2D4B96;
+}
+#ContentContainer #ColLeftPageLevel1 .extendednews p {
+	margin: 0;
+	font-family: Verdana, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	line-height: 14px;
+	color: #000000;
+}
+#ContentContainer #ColLeftPageLevel1 h2 {
+	float: right;
+	margin: 8px 0 0 0;
+	width: 326px;
+	font-family: Georgia, serif;
+	font-size: 12px;
+	font-weight: 700;
+	font-style: italic;
+	letter-spacing: 0;
+	color: #2D4B96;
+}
+#ContentContainer #ColLeftPageLevel1 p {
+	float: right;
+	margin: 6px 0 0 0;
+	width: 326px;
+	line-height: 14px;
+}
+#ContentContainer #ColLeftPageLevel1 h2 a {
+	color: #2D4B96;
+	text-decoration: none;
+}
+#ContentContainer #ColLeftPageLevel1 a {
+	color: #000000;
+	text-decoration: none;
+}
+/* +------------------------------------------------------------+ */
+/* |  ColRightPageLevel1                                        | */
+/* +------------------------------------------------------------+ */
+#ContentContainer #ColRightPageLevel1 li {
+	float: right;
+	margin: 0 0 8px 0;
+	width: 323px;
+	height: 73px;
+}
+/* 20090524 END /*
+
+
+/* +------------------------------------------------------------+ */
+/* |  ColLeftPageLevel2                                           | */
+/* +------------------------------------------------------------+ */
+#ContentContainer #ColLeftPageLevel2 #Header {
+	float: right;
+	width: 326px;
+	height: 37px;
+ 	background-image: url(../images/Nav2HeaderBg.gif);
+	background-position: top left;
+	background-repeat: repeat-x;
+}
+#ContentContainer #ColLeftPageLevel2 #HeaderImg {
+	width: 43px;
+	height: 37px;
+	font-family: Verdana, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	color: #FFFFFF;	
+}
+#ContentContainer #ColLeftPageLevel2 #HeaderTitle {
+	float: right;
+	margin-top: 9px;
+	width: 156px;
+	font-family: Verdana, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	color: #FFFFFF;	
+}
+#ContentContainer #ColLeftPageLevel2 h1 {
+	float: right;
+	margin: 16px 0 0 0;
+	width: 326px;
+	font-family: Verdana, sans-serif;
+	font-size: 20px;
+	font-weight: normal;
+	color: #2D4B96;
+}
+#ContentContainer #ColLeftPageLevel2 h2 {
+	float: right;
+	margin: 24px 0 0 0;
+	width: 326px;
+	font-family: Georgia, serif;
+	font-size: 11px;
+	font-weight: 700;
+	font-style: italic;
+	letter-spacing: 0;
+	color: #2D4B96;
+}
+#ContentContainer #ColLeftPageLevel2 h6 {
+	float: right;
+	margin: 24px 0 0 0;
+	width: 326px;
+	font-family: Georgia, serif;
+	font-size: 11px;
+	font-weight: 700;
+	font-style: italic;
+	letter-spacing: 0;
+	color: #000000;
+}
+#ContentContainer #ColLeftPageLevel2 p {
+	float: right;
+	margin: 8px 0 0 0;
+	width: 326px;
+	line-height: 14px;
+}
+#ContentContainer #ColLeftPageLevel2 a {
+	color: #000000;
+	text-decoration: underline;
+}
+#ContentContainer #ColLeftPageLevel2 a:hover {
+	color: #3864B5;
+	text-decoration: underline;
+}
+/* +------------------------------------------------------------+ */
+/* |  ColRightPageLevel2                                        | */
+/* +------------------------------------------------------------+ */
+#ContentContainer #ColRightPageLevel2 #img {
+	float: right;
+	width: 326px;
+	margin: 0 0 8px 0;
+	list-style: none;
+}
+#ContentContainer #ColRightPageLevel2 h5 {
+	float: right;
+	margin: 0 0 8px 0;
+	width: 326px;
+	line-height: 14px;
+	font-family: Georgia, serif;
+	font-size: 11px;
+	font-weight: normal;
+	font-style: italic;
+	color: #333333;
+}
+/* +------------------------------------------------------------+ */
+/* |  NavL2PageLevel3                                           | */
+/* +------------------------------------------------------------+ */
+#ContentContainer #NavL2PageLevel3 #Header {
+	float: right;
+	width: 212px;
+	height: 37px;
+ 	background-image: url(../images/Nav2HeaderBg.gif);
+	background-position: top left;
+	background-repeat: repeat-x;
+}
+#ContentContainer #NavL2PageLevel3 #HeaderImg {
+	width: 43px;
+	height: 37px;
+	font-family: Verdana, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	color: #FFFFFF;	
+}
+#ContentContainer #NavL2PageLevel3 #HeaderTitle {
+	float: right;
+	margin-top: 9px;
+	width: 156px;
+	font-family: Verdana, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	color: #FFFFFF;	
+}
+#ContentContainer #NavL2PageLevel3 .Txt {
+	float: right;
+	width: 212px;
+	margin-top: 10px;
+}
+#ContentContainer #NavL2PageLevel3 .Txt {
+	margin: 10px 0 10px 0;
+	font-family: Georgia, serif;
+	font-size: 13px;
+	font-weight: normal;
+	font-style: italic;
+	color: #161a59;
+}
+#ContentContainer #NavL2PageLevel3 .Txt li {
+	margin: 0 0 6px 0;
+}
+#ContentContainer #NavL2PageLevel3 .Txt a {
+	font-family: Georgia, serif;
+	font-size: 13px;
+	font-weight: normal;
+	color: #161a59;
+	line-height: 20px;
+	line-height: 14px;
+}
+#ContentContainer #NavL2PageLevel3 .Txt a:hover {
+	text-decoration: underline;
+}
+#ContentContainer #NavL2PageLevel3 ul.Rubriques {
+	border-bottom: 1px solid #161a59;
+	padding-bottom: 10px;
+}
+#ContentContainer #NavL2PageLevel3 ul.Rubriques a {
+	font-weight: bold;
+}
+/* +------------------------------------------------------------+ */
+/* |  ContentPageLevel3                                         | */
+/* +------------------------------------------------------------+ */
+#ContentContainer #ContentPageLevel3 #Header {
+	float: right;
+	padding-top: 8px;
+	padding-bottom: 10px;
+	margin: 0 0 0 0;
+	width: 451px;
+	border-top: 1px solid #4681DA;
+	border-bottom: 1px solid #4681DA;
+	font-family: Verdana, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	color: #2D4B96;
+}
+#ContentContainer #ContentPageLevel3 #Header a {
+	font-family: Verdana, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #345bab;
+	text-decoration: none;
+}
+#ContentContainer #ContentPageLevel3 #Header a:hover {
+	text-decoration: underline;
+}
+#ContentContainer #ContentPageLevel3 h1 {
+	float: right;
+	margin: 16px 0 0 0;
+	width: 451px;
+	font-family: Verdana, sans-serif;
+	font-size: 20px;
+	font-weight: normal;
+	color: #2D4B96;
+}
+#ContentContainer #ContentPageLevel3 h1.DernierArticle {
+	border-top: 1px solid #2D4B96;
+	padding-top: 5px; 
+}
+#ContentContainer #ContentPageLevel3 h2 {
+	float: right;
+	margin: 24px 0 0 0;
+	width: 451px;
+	font-family: Georgia, serif;
+	font-size: 11px;
+	font-weight: 700;
+	font-style: italic;
+	letter-spacing: 0;
+	color: #2D4B96;
+}
+#ContentContainer #ContentPageLevel3 h3 {
+	float: right;
+	margin: 16px 0 0 0;
+	width: 451px;
+	font-family: Georgia, serif;
+	font-size: 13px;
+	font-weight: 700;
+	color: #000000;
+}
+#ContentContainer #ContentPageLevel3 h4 {
+	float: right;
+	margin: 8px 0 0 0;
+	width: 451px;
+}
+#ContentContainer #ContentPageLevel3 h6 {
+	float: right;
+	margin: 24px 0 0 0;
+	width: 451px;
+	font-family: Georgia, serif;
+	font-size: 11px;
+	font-weight: 700;
+	font-style: italic;
+	letter-spacing: 0;
+	color: #000000;
+}
+#ContentContainer #ContentPageLevel3 p {
+	margin: 8px 0 0 0;
+	width: 451px;
+	line-height: 14px;
+}
+#ContentContainer #ContentPageLevel3 ul {
+	float: right;
+	margin: 8px 0 0 0;
+	width: 451px;
+	list-style: disc;
+	list-style-position: inside;
+}
+#ContentContainer #ContentPageLevel3 li {
+	margin: 1px 0 0 0;
+	font-family: Georgia, serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #2D4B96;
+}
+#ContentContainer #ContentPageLevel3 a {
+	color: #000000;
+	text-decoration: underline;
+}
+#ContentContainer #ContentPageLevel3 a:hover {
+	color: #3864B5;
+	text-decoration: underline;
+}
+#ContentContainer #ContentPageLevel3 #img {
+	float: right;
+	width: 451px;
+	margin: 8px 0 0 0;
+	list-style: none;
+}
+#ContentContainer #ContentPageLevel3 #img #imgWrapper {
+	width: 301px;
+	margin: 8px 0 0 0;
+	overflow: hidden;
+}
+#ContentContainer #ContentPageLevel3 #img #legend {
+	float: right;
+	width: 130px;
+	margin-top: 25px;
+}
+#ContentContainer #ContentPageLevel3 #img #legend h5 {
+	font-family: Georgia, serif;
+	font-size: 11px;
+	font-weight: normal;
+	font-style: italic;
+	color: #333333;
+}
+/* +------------------------------------------------------------+ */
+/* |  Logos Bar                                                 | */
+/* +------------------------------------------------------------+ */
+#LogoBar {
+	float: right;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 32px;
+	width: 935px;
+	border-top: 1px solid #2D4B96;
+	border-bottom: 1px solid #2D4B96;
+}
+#LogoBar li {
+	width: 100%;
+	text-align: center;
+}
+#LogoBar img {
+	margin-right: 14px;
+}
+#LogoElement {
+	margin: 0 auto;
+	text-align: center;
+	float: none;
+	display: inline;
+	width: 250px;
+}
+#LogoElement li {
+	width: 50px;
+	text-align: center;
+	display: inline;
+	float: none;
+}
+/* +------------------------------------------------------------+ */
+/* |  Logos Bar                                                 | */
+/* +------------------------------------------------------------+ */
+#Footer {
+	float: right;
+	padding-top: 14px;
+	padding-bottom: 14px;
+	margin-bottom: 30px;
+	width: 935px;
+	background-color: #f4f8fd;
+}
+#Footer a {
+	color: #7e97c6;
+}
+#Footer #Left {
+	float: left;
+	width: 239px;
+}
+#Footer #Left h6 {
+	float: right;
+	margin: 3px 0 0 0;
+	width: 223px;
+	font-family: Verdana, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #7e97c6;
+}
+#Footer li {
+	float: right;
+	width: 338px;
+}
+#Footer li p {
+	float: left;
+	margin: 0 0 5px 0;
+	width: 318px;
+	font-family: Verdana, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #7e97c6;
+	text-align: justify;
+}

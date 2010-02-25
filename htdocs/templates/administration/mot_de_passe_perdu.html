@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+    <head>
+        {include file="head.html"}
+    </head>
+
+    <body id="motdepasse_perdu" onload="donnerFocus('email');">
+        <div id="contenu">
+            <h1>Mot de passe perdu ?</h1>
+            <form action="index.php?page=connexion" method="post" onsubmit="return soumettreUneSeuleFois(this);">
+                {if $echec}<p class="erreur">Impossible d'envoyer votre mot de passe</p>{else}
+                <p>Votre mot de passe vous sera renvoyé à l'adresse indiquée dans vos coordonnées et resaisie ci-dessous.</p>
+                {/if}
+                
+                <fieldset>
+                
+                    <div class="rangee">
+                        <label for="email">Email</label>                
+                        <span class="element">
+                          <input type="text" name="email" size="30" maxlength="100" />
+                        </span>
+                    </div>
+
+                    <!-- Vilain hack pour Opera -->
+                    <div>&nbsp;</div>
+                </fieldset>
+                
+                <fieldset>
+                    <input type="submit" name="soumettre" value="Renvoyer mot de passe" />
+                    <input type="hidden" name="motdepasse_perdu" value="1" />
+                </fieldset>               
+            </form>
+        </div>
+    </body>
+</html>    

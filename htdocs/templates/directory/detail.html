@@ -1,0 +1,55 @@
+{include file='_header.html'}
+{if count($errors)}
+{include file='_errors.html'}
+{else}
+           <p><strong>{$detail.RaisonSociale|utf8_decode|stripslashes|htmlspecialchars}</strong></p>
+            <table width="95%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF"><tr><td>
+	            <table border="0" cellspacing="1" cellpadding="3" width="100%" bgcolor="#c8cee2">
+	                <tr> 
+	                  <td width="200px" align="right"><font color="#656E99"><strong>Raison Sociale</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{$member->getRaisonSociale()|stripslashes|htmlspecialchars}</td>
+	                </tr>
+	                <tr> 
+	                  <td width="200px" align="right"><font color="#656E99"><strong>Forme Juridique</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{$formeJuridique}</td>
+	                </tr>
+	                <tr>
+	                  <td width="200px" align="right">&nbsp;<font color="#656E99"><strong>Siren</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{$member->getSiren()}</td>
+	                </tr>
+	                <tr>
+	                  <td width="200px" align="right">&nbsp;<font color="#656E99"><strong>T&eacute;l&eacute;phone</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{$member->getTelephone()}</td>
+	                </tr>
+	                <tr>
+	                  <td width="200px" align="right">&nbsp;<font color="#656E99"><strong>Fax</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{$member->getFax()}</td>
+	                </tr>
+	                <tr>
+	                  <td width="200px" align="right">&nbsp;<font color="#656E99"><strong>Zone</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{$zone}</td>
+	                </tr>
+	                <tr>
+	                  <td width="200px" align="right">&nbsp;<font color="#656E99"><strong>Adresse</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{$member->getAdresse()|stripslashes|htmlspecialchars}<br />{$member->getCodePostal()} {$member->getVille()|stripslashes|htmlspecialchars}</td>
+	                </tr>
+	                <tr>
+	                  <td width="200px" align="right">&nbsp;<font color="#656E99"><strong>Membre AFUP</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{if $member->getMembreAfup() == 1}Oui{else}Non{/if}</td>
+	                </tr>
+	                <tr>
+	                  <td width="200px" align="right">&nbsp;<font color="#656E99"><strong>Taille</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4">{$tailleSociete}</td>
+	                </tr>
+	                <tr>
+	                  <td width="200px" align="right">&nbsp;<font color="#656E99"><strong>Actions</strong></font>&nbsp;</td>
+	                  <td bgcolor="#edeff4"><a href="{$application_url}?action=contact&id={$member->getId()}">contacter</a>
+	                  {if $member->getSiteWeb()} | 
+	                                        <a href="{$member->getSiteWeb()}" target="_blank">site web</a>{/if}</td>
+	                </tr>
+	            </table>
+              </td>
+            </tr>
+         </table>
+{/if}
+{include file='_footer.html'}

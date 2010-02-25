@@ -1,0 +1,11 @@
+{if $action == 'index'}
+    <h2>Mailing</h2>
+    <a href="?page={$id_page}&action=mailing"> Mailing</a>
+{else}
+    {if $action == 'mailing'}
+        <h2>Mailing </h2>
+    {else}
+        <h2>Modifier un apéro</h2>
+    {/if}    
+    {include file="formulaire.html"}
+{/if}

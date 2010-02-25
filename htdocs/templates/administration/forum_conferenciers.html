@@ -1,0 +1,58 @@
+{if $action == 'lister'}
+    <form method="GET" name="forum">
+    <input type="hidden" name="page" value="forum_conferenciers" />
+    <h2>Liste des conférenciers pour <select name="id_forum" onchange="this.form.submit(); return false;">
+    {foreach from=$forums item=forum}
+    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+    {/foreach}
+    </select></h2>
+    </form>
+
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
+    <a href="index.php?page=forum_conferenciers&amp;action=ajouter&amp;id_forum={$id_forum}" title="Ajouter une session">Ajouter un conférencier</a><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
+    <a href="index.php?page=forum_conferenciers&amp;action=inscrire_forum&amp;id_forum={$id_forum}" title="Ajouter une session">Créer les insciptions conférencier pour le forum</a><br />
+    <br/>
+    <table>
+      <form method="GET" name="filtre">
+      <input type="hidden" name="page" value="forum_conferenciers" />
+      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+      <input type="hidden" name="forum_id" value="{$id_forum}" />
+        <tr>
+            <td width="50" nowrap>Filtre : </td>
+            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
+            <td><input type="submit" value="OK" name="submit_filtre"></td>
+        </tr>
+      </form>
+    </table>
+    <br/>
+    <table class="afup_tab">
+        <tr>
+            <th align="left"><a href="index.php?page=forum_conferenciers&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom Prénom</a></th>
+            <th align="left"><a href="index.php?page=forum_conferenciers&amp;tri=societe&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'f.societe'}desc{else}asc{/if}">Société</a></th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$conferenciers item=conferencier}
+        <tr class="{cycle values="odd,even"}">
+            <td><strong>{$conferencier.nom} {$conferencier.prenom}</strong></td>
+            <td>{$conferencier.societe}</td>
+            <td style="text-align: right" nowrap="nowrap">
+                <a href="index.php?page=forum_conferenciers&amp;action=modifier&amp;id={$conferencier.conferencier_id}&amp;id_forum={$forum.id}" title="Modifier la fiche de {$conferencier.nom} {$conferencier.prenom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=forum_conferenciers&amp;action=supprimer&amp;id={$conferencier.conferencier_id}" title="Supprimer la fiche de {$conferencier.nom} {$conferencier.prenom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$conferencier.nom} {$conferencier.prenom} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucun conférencier</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter un conférencier pour le {$forum_name}</h2>
+    {else}
+        <h2>Modifier un conférencier pour le {$forum_name}</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}

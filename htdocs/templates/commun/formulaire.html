@@ -1,0 +1,55 @@
+<form{$formulaire.attributes} onsubmit="return soumettreUneSeuleFois(this);">
+{$formulaire.hidden}
+    {if isset($erreur)}
+    <p class="erreur">{$erreur}</p>
+    {/if}
+
+    {foreach from=$formulaire.sections item=section}
+    <fieldset{if $section.name == 'boutons'} class="boutons"{/if}>
+        {if $section.header}<legend>{$section.header}</legend>{/if}
+        
+        {foreach from=$section.elements item=element}
+        <div class="rangee">
+            {if $element.type == 'submit'}
+                {$element.html}
+            {elseif $element.type == 'static' && ($element.name == 'html')}
+                <p class="html">{$element.html|nl2br}</p>
+            {elseif $element.type == 'static' && ($element.name == 'note')}
+                <p class="note">{$element.html|nl2br}</p>
+            {elseif $element.type == 'static' && ($element.name == 'raccourci')}
+                <p class="raccourci">{$element.html|nl2br}</p>
+            {elseif $element.type == 'group'}
+                {if $element.label != ''}
+                <label class="libelle">
+                    {if $element.required}<span class="obligatoire">*</span>{/if}
+                    {$element.label}
+                </label>
+                {/if}
+                <span class="element">
+                    {foreach from=$element.elements item=element_groupe name=groupe}
+                        {$element_groupe.html}
+                        {if !$smarty.foreach.groupe.last}{$element.separator}{/if}
+                    {/foreach}          
+                    {if $element.error}<br /><p class="erreur">{$element.error}</p>{/if}        
+                </span>
+            {else}
+                {if $element.label != ''}
+                <label class="libelle">
+                    {if $element.required}<span class="obligatoire">*</span>{/if}
+                    {$element.label}
+                </label>
+                {/if}
+                <span class="element">
+                  {$element.html}
+                  {if $element.error}<br /><p class="erreur">{$element.error}</p>{/if}        
+                </span>
+            {/if}
+        </div>
+        {/foreach}
+        
+        <!-- Vilain hack pour Opera -->
+        <div style="clear: both">&nbsp;</div>
+    </fieldset>
+    {/foreach}
+    <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+</form>

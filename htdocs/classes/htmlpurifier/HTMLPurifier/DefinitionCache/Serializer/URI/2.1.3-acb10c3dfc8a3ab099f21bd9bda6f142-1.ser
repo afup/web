@@ -1,0 +1,1 @@
+O:26:"HTMLPurifier_URIDefinition":6:{s:4:"type";s:3:"URI";s:7:"filters";a:1:{s:13:"HostBlacklist";O:36:"HTMLPurifier_URIFilter_HostBlacklist":2:{s:4:"name";s:13:"HostBlacklist";s:9:"blacklist";a:0:{}}}s:4:"base";N;s:4:"host";N;s:13:"defaultScheme";s:4:"http";s:5:"setup";b:1;}

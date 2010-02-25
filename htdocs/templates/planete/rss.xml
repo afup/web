@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+	<title>{$feed.title}</title>
+	<description>{$feed.title}</description>
+	<link>{$feed.link}</link>
+	<language>fr-fr</language>
+	<pubDate>{$feed.date}</pubDate>
+	<lastBuildDate>Tue, 10 Jun 2003 09:41:01 GMT</lastBuildDate>
+	<generator>AFUP - à la mano</generator>
+	<managingEditor>{$feed.email} ({$feed.author})</managingEditor>
+
+	{foreach from=$billets item=billet}
+	<item>
+		<title>{$billet.titre|htmlspecialchars}</title>
+		<link>{$billet.url|htmlspecialchars}</link>
+		<description>{$billet.contenu|htmlspecialchars}</description>
+		<pubDate>{$billet.maj}</pubDate>
+		<guid>{$billet.url|htmlspecialchars}</guid>
+	</item>
+	{/foreach}
+</channel>
+</rss>

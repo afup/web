@@ -1,0 +1,52 @@
+{include file="entete.html"}
+<div id="cartouche-gauche">
+    <div id="cartouche">
+        <img name="cartouchehaut" src="{$chemin_template}images/cartouche-haut.png" alt="" height="92" width="231" />
+        <div class="a-interieur">
+            <p>ASIEM<br />Paris 7ème<br />
+        <b>21 et 22 novembre 2007</b></p>
+            <p>Venez suivre la septième édition du Forum PHP organisé par l'Association Française des Utilisateurs de PHP.</p>
+        </div>
+        <a href="acces.php"><img name="cartoucheacces" src="{$chemin_template}images/cartouche-acces.png" alt="" border="0" height="60" width="88" /></a><a href="inscription.php"><img name="cartoucheinscriptions" src="{$chemin_template}images/cartouche-inscriptions.png" alt="" border="0" height="60" width="143" /></a></div>
+</div>
+
+<div id="cartouche-droit">
+    <img id="seront-presents" src="{$chemin_template}images/entete-seront-presents.png" alt="Ils seront présents" />
+    <br /><br />
+    <a href="conferenciers.php#rlerdorf"><span class="vip">Rasmus LERDORF</span></a> - 
+    <i>Inventeur de PHP</i>
+    <br />
+    <a href="conferenciers.php#azmievski"><span class="vip">Andrei ZMIEVSKI</span></a> - 
+    <i>Membre du PHPGroup</i>
+    <br /><br />
+    <a href="conferenciers.php#afup"><span class="vip">De nombreux acteurs français importants :</span></a><br />
+    <i>Romain BOURDON (WampServer)<br />Arnaud LIMBOURG (PEAR)<br />Perrick PENET (SimpleTest)<br />Cyril PIERRE de GEYER ("PHP 5 avancé")<br />Guillaume PON&Ccedil;ON ("Best Practices PHP5")<br />Damien SEGUY (NeXen.net)</i>
+    <br /><br />
+</div>
+
+<div class="spacer"></div>
+
+<div id="cartouche-milieu">
+  <table width="100%" border="0" cellspacing="0" cellpadding="8">
+    <tr>
+      <td width="231" valign="top">
+		{$alerte_avant_forum}
+
+	  <h2>Actualités</h2>
+		{foreach from=$actualites item=actualite}
+			<h3 class="actualite">{$actualite.titre}</h3>		
+			<div>{$actualite.contenu}</div>
+			<div class="maj">Mise à jour : {$actualite.date}</div>
+		{/foreach}
+
+      </td>
+      <td valign="top">
+		{foreach from=$infos_importantes item=info_importante}
+			<h2>{$info_importante.titre}</h2>
+			<div>{$info_importante.contenu}</div> 
+		{/foreach}
+      </td>
+    </tr>
+  </table>
+</div>
+{include file="pied_de_page.html"}

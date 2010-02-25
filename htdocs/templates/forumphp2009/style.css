@@ -1,0 +1,204 @@
+*     { font-family : arial, sans-serif; font-size : 12px; }
+body  { background: #FFFFFF; color: #000000; margin: 0; }
+img   { border : none; }
+h1    { font-size : 21px; }
+h2    { font-size : 18px; }
+h3    { font-size : 15px; color : #A6A6A6 }
+cite  { text-align : right; }
+a     { color : #5A669D; text-decoration : none; font-weight : bold;}
+td    { vertical-align : top;}
+
+#conteneur { margin: auto; width: 1000px; }
+
+#a-gauche   { float : left; padding-bottom : 50px; width : 180px; }
+#au-milieu  { float : left;
+      margin-left : 5px;
+            padding-left : 5px;
+      margin-right : 5px;
+            padding-right : 15px;
+            padding-bottom : 100px;
+            width : 590px;
+            border-left : 1px dashed #9EA6CD;
+            border-right : 1px dashed #9EA6CD;
+          }
+#a-droite   { float : left; padding-bottom : 50px; padding-left : 5px; width : 170px; }
+.a-interieur { margin-left : 0.5em; margin-right : 0.5em; }
+
+.vip { color : #5A669D; text-decoration : none; font-weight : bold; }
+.red { color : #AA0000; }
+.gris { color : #555555; }
+
+#cartouche { background-color : #C4C9E1; background-image : url("images/cartouche-milieu.png"); background-repeat : no-repeat; background-position : top left; float : left; margin : 0; margin-top : 16px; padding : 0; width : 231px; }
+#cartouche-gauche { float : left; margin-left : 10px; width : 231px; }
+#cartouche-milieu { margin-left : 10px; margin-top : 16px; }
+#cartouche-droit { float : left; margin-left : 20px; margin-top : 44px; width : 300px; }
+#menu { background-image : url("images/fond-menu.png"); background-repeat : no-repeat; background-position : top left; margin-top : 40px; }
+#dix-ans { margin-top : 20px; }
+#sponsors, #partenaires, #organisateurs { margin-top : 20px; }
+
+.spacer { clear: both; }
+
+
+a.menu { color : #31395A; display : block; font-size : 14px; font-weight : bold; margin-left : 30px; padding : 3px; text-decoration : none; }
+a.menu-english { display : block; margin-left : 30px; margin-top : 40px; }
+
+.todo { color: red; font-size: 2em; }
+.note { color : grey; margin-top : 10px; }
+.raccourci { color : grey; margin-top : 10px; }
+ul.conferenciers { list-style-type: none; }
+ul.conferenciers div.homme { margin: 10px 0 5px; padding : 5px 5px 5px 5px; font-size: 1em; width: 98%; background: #E1E4EF; }
+ul.conferenciers h2 { font-size: 1em; margin: 0px; }
+ul.conferenciers img { float: right; }
+span.titre { font-weight: bold; }
+
+p.note {
+  background: #EEEEEE url(images/icone_note.png) 5px 5px no-repeat;
+  border: 1px #A6A6A6 solid;
+  padding: 5px 5px 5px 30px;
+}
+
+p.raccourci {
+  background: #FAFAFA;
+  padding: 5px 5px 5px 30px;
+}
+
+p.raccourci a { background-image: url(images/icone_raccourci.png); background-repeat : no-repeat; background-position : top right; padding-right : 20px; }
+p.raccourci a.double { background-image: url(images/icone_raccourci_double.png); }
+/*********************
+ Formulaires
+*********************/
+form {
+  margin: 0 auto;
+}
+
+fieldset {
+  border: 1px #A6A6A6 solid;
+  margin: 0.5em 0;
+  padding-bottom: 0.5em;
+}
+
+fieldset.boutons {
+  border: 0;
+  text-align: center;
+  margin: 0;
+}
+
+legend {
+  font-weight: bold;
+  color: #6874A7;
+}
+
+form div.rangee {
+  clear: both;
+  padding-top: 5px;
+}
+
+form div.rangee label.libelle {
+  float: left;
+    width: 20%;
+  text-align: right;
+  font-weight: bold;
+}
+
+form div.rangee span.element {
+  float: right;
+  width: 78%;
+  text-align: left;
+}
+
+form span.obligatoire {
+  color: #FF0000;
+}
+
+form p.erreur {
+  background: #EEEEEE url(images/icone_erreur.png) 5px 5px no-repeat;
+  border: 1px #A6A6A6 solid;
+  padding: 5px 5px 5px 30px;
+  font-weight: bold;
+  color: #FF0000;
+}
+
+form span.element p.erreur {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.center { text-align: center; }
+.small { font-size: 9px !important; }
+.clearboth { clear: both; }
+.actualite { color : #5A669D; font-size : 18px; }
+.emphase { font-size : 2em; font-weight : bolder; text-align : center; display : block; }
+.maj { color : #6874A7; font-style : italic; margin-top : 0.5em; }
+
+.sessions, .conferenciers { margin-top : 25px; }
+.session, .conferencier { border-bottom : 1px solid #A6A6A6; padding-bottom : 10px; margin-bottom : 25px; }
+.sessions .conferencier { border: 0; }
+.session h3 { color : #5A669D; font-size : 18px; margin-top : 3px; }
+.session .horaire, .session .salle, .session .journee { margin-right : 50px; float : left; }
+.session .conferenciers { text-align : right; }
+.session .conferenciers .conferencier, .conferencier .photo { float : right; display : inline; margin : 10px; text-align : center; }
+.session .spacer, .conferencier .spacer { float : none; }
+.conferencier h3 { color : #5A669D; font-size : 18px; margin-top : 3px; float : left; margin-right : 50px; }
+.conferencier .societe { font-weight : bold; padding-top : 8px; float : left; margin-right: 50px; }
+.conferencier .conferencier_sessions { padding-top : 8px; float : left; margin : 0; }
+.conferencier .photo {float: left; width: 20%; }
+.conferencier .body {float: left; width: 75%; }
+.resume { float: left; }
+
+/* Style bloc agenda (tableau) */
+div.bloc_jour .keynote p {
+text-align: center;
+} 
+div.bloc_jour  p {
+padding: 5px;    
+margin:0;
+} 
+div.bloc_jour .conferencier {
+font-size:0.8em;
+font-style:italic;
+display: block;
+border:none;
+margin:0;
+color:black;
+font-weight: normal;
+}
+div.bloc_jour {
+    position:           relative;
+}
+div.col {
+    width:              45%;
+    float:              left;
+    padding-left:       0.5em;
+    padding-right:      0.5em;
+}
+h2 {
+    text-align:         center;
+    color:              inherit;
+    background-color:   #e0e3ee;
+}
+div.bloc_jour table {
+    border-collapse:    collapse;
+    width:              100%
+}
+div.bloc_jour table caption {
+    font-weight:        bold;
+    color:              inherit;
+    background-color:   #e0e3ee;
+    height:             30px;
+    line-height:        30px;
+
+}
+div.bloc_jour table tbody td {
+    border:             1px solid #ccc;
+}
+td.col_heure {
+    font-size:0.9em;
+    width:              8% !important;
+}
+
+tr.li td.col_heure{
+    color:              inherit;
+    background-color:   #e0e3ee;
+}

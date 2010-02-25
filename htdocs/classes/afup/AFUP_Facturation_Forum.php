@@ -1,0 +1,436 @@
+<?php
+require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Inscriptions_Forum.php';
+
+class AFUP_Facturation_Forum
+{
+    /**
+     * Instance de la couche d'abstraction à la base de données
+     * @var     object
+     * @access  private
+     */
+    var $_bdd;
+
+    /**
+     * Constructeur.
+     *
+     * @param  object    $bdd   Instance de la couche d'abstraction à la base de données
+     * @access public
+     * @return void
+     */
+    function AFUP_Facturation_Forum(&$bdd)
+    {
+        $this->_bdd = $bdd;
+    }
+
+    /**
+     * Renvoit les informations concernant une inscription
+     *
+     * @param  string   $reference  Reference de la facturation
+     * @param  string   $champs     Champs à renvoyer
+     * @access public
+     * @return array
+     */
+    function obtenir($reference, $champs = '*')
+    {
+        $requete  = 'SELECT';
+        $requete .= '  ' . $champs . ' ';
+        $requete .= 'FROM';
+        $requete .= '  afup_facturation_forum ';
+        $requete .= 'WHERE reference=' . $this->_bdd->echapper($reference);
+        return $this->_bdd->obtenirEnregistrement($requete);
+    }
+
+    /**
+     * Renvoit la liste des inscriptions à facturer ou facturé au forum
+     *
+     * @param  int      $id_forum       Id du forum
+     * @param  string   $champs         Champs à renvoyer
+     * @param  string   $ordre          Tri des enregistrements
+     * @param  bool     $associatif     Renvoyer un tableau associatif ?
+     * @access public
+     * @return array
+     */
+    function obtenirListe($id_forum   = null,
+                          $champs     = '*',
+                          $ordre      = 'date_reglement',
+                          $associatif = false,
+                          $filtre     = false)
+    {
+        $requete  = 'SELECT';
+        $requete .= '  ' . $champs . ' ';
+        $requete .= 'FROM';
+        $requete .= '  afup_facturation_forum ';
+        $requete .= 'WHERE etat IN ( '.AFUP_FORUM_ETAT_REGLE.', '.AFUP_FORUM_ETAT_ATTENTE_REGLEMENT.', '.AFUP_FORUM_ETAT_CONFIRME.') ';
+        $requete .= '  AND id_forum =' . $id_forum . ' ';
+        if ($filtre) {
+            $requete .= '  AND societe LIKE \'%' . $filtre . '%\') ';
+        }
+        $requete .= 'ORDER BY ' . $ordre;
+        if ($associatif) {
+            return $this->_bdd->obtenirAssociatif($requete);
+        } else {
+            return $this->_bdd->obtenirTous($requete);
+        }
+    }
+
+    function creerReference($id_forum, $label) {
+        $label = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', strtoupper(supprimerAccents($label)));
+
+        return 'F' . date('Y') . sprintf('%02d', $id_forum). '-' . date('dm') . '-' . substr($label, 0, 5) . '-' . substr(md5(date('r') . $label), -5);
+    }
+
+    function gererFacturation($reference, $type_reglement, $informations_reglement, $date_reglement, $email,
+                                $societe, $nom, $prenom, $adresse, $code_postal, $ville, $id_pays, $id_forum, $old_reference,
+                                $autorisation = null, $transaction = null,
+                                $etat = AFUP_FORUM_ETAT_CREE, $facturation = AFUP_FORUM_FACTURE_A_ENVOYER)
+    {
+        $ok = false;
+        $nb = $this->_getNbInscriptions($reference);
+        $facturation = (bool)$this->obtenir($old_reference, 'reference');
+        $old_reference = (!isset($old_reference) ? '' : $old_reference);
+
+        // Si la reference n'existe pas on l'ajoute sinon on la met à jour...
+        if ($nb == 0 || ($nb == 1 && empty($old_reference)) || !$facturation) {
+             $ok = $this->_ajouterFacturation($reference, $type_reglement, $informations_reglement, $date_reglement, $email,
+                                $societe, $nom, $prenom, $adresse, $code_postal, $ville, $id_pays, $id_forum,
+                                $autorisation, $transaction, $etat, $facturation);
+        } else {
+             $ok = $this->_modifierFacturation($reference, $type_reglement, $informations_reglement, $date_reglement, $email,
+                                $societe, $nom, $prenom, $adresse, $code_postal, $ville, $id_pays, $id_forum,
+                                $autorisation, $transaction, $etat, $facturation);
+        }
+
+        // Si on change de reference
+        if ($old_reference != $reference && !empty($old_reference)) {
+            $ok &= $this->supprimerFacturation($old_reference);
+        }
+
+        return $ok;
+    }
+
+    function _getNbInscriptions($reference)
+    {
+        $requete  = 'SELECT COUNT(*) ';
+        $requete .= 'FROM afup_inscription_forum ';
+        $requete .= 'WHERE reference=' . $this->_bdd->echapper($reference);
+        return $this->_bdd->obtenirUn($requete);
+    }
+
+    function _ajouterFacturation($reference, $type_reglement, $informations_reglement, $date_reglement, $email,
+                                $societe, $nom, $prenom, $adresse, $code_postal, $ville, $id_pays, $id_forum,
+                                $autorisation = null, $transaction = null, $etat = AFUP_FORUM_ETAT_CREE)
+    {
+        $requete  = 'INSERT INTO ';
+        $requete .= '  afup_facturation_forum (reference, montant, type_reglement, informations_reglement, date_reglement,
+                               societe, nom, prenom, email, adresse, code_postal, ville, id_pays, autorisation, transaction, etat, id_forum) ';
+        $requete .= 'VALUES (';
+        $requete .= $this->_bdd->echapper($reference)               . ',';
+        $requete .= '(SELECT IFNULL(SUM(montant), 0.0) FROM afup_inscription_forum WHERE reference = ' . $this->_bdd->echapper($reference) . '),';
+        $requete .= $this->_bdd->echapper($type_reglement)          . ',';
+        $requete .= $this->_bdd->echapper($informations_reglement)  . ',';
+        $requete .= $this->_bdd->echapper($date_reglement)          . ',';
+        $requete .= $this->_bdd->echapper($societe)                 . ',';
+        $requete .= $this->_bdd->echapper($nom)                     . ',';
+        $requete .= $this->_bdd->echapper($prenom)                  . ',';
+        $requete .= $this->_bdd->echapper($email)                   . ',';
+        $requete .= $this->_bdd->echapper($adresse)                 . ',';
+        $requete .= $this->_bdd->echapper($code_postal)             . ',';
+        $requete .= $this->_bdd->echapper($ville)                   . ',';
+        $requete .= $this->_bdd->echapper($id_pays)                 . ',';
+        $requete .= $this->_bdd->echapper($autorisation)            . ',';
+        $requete .= $this->_bdd->echapper($transaction)             . ',';
+        $requete .= $etat                                           . ',';
+        $requete .= $id_forum                                       . ')';
+
+        return $this->_bdd->executer($requete);
+    }
+
+	  function _modifierFacturation($reference, $type_reglement, $informations_reglement, $date_reglement, $email,
+                                $societe, $nom, $prenom, $adresse, $code_postal, $ville, $id_pays, $id_forum,
+                                $autorisation, $transaction, $etat, $facturation)
+    {
+        $requete  = 'UPDATE ';
+        $requete .= '  afup_facturation_forum ';
+        $requete .= 'SET ';
+        $requete .= '  type_reglement=        ' . $this->_bdd->echapper($type_reglement)          . ',';
+        $requete .= '  montant=               ' . '(SELECT IFNULL(SUM(montant), 0.0) FROM afup_inscription_forum WHERE reference = ' . $this->_bdd->echapper($reference) . '),';
+        $requete .= '  date_reglement=        ' . $this->_bdd->echapper($date_reglement)  . ',';
+        $requete .= '  informations_reglement=' . $this->_bdd->echapper($informations_reglement)  . ',';
+        $requete .= '  societe=               ' . $this->_bdd->echapper($societe)                 . ',';
+        $requete .= '  nom=                   ' . $this->_bdd->echapper($nom)                     . ',';
+        $requete .= '  prenom=                ' . $this->_bdd->echapper($prenom)                  . ',';
+        $requete .= '  email=                 ' . $this->_bdd->echapper($email)                   . ',';
+        $requete .= '  adresse=               ' . $this->_bdd->echapper($adresse)                 . ',';
+        $requete .= '  code_postal=           ' . $this->_bdd->echapper($code_postal)             . ',';
+        $requete .= '  ville=                 ' . $this->_bdd->echapper($ville)                   . ',';
+        $requete .= '  id_pays=               ' . $this->_bdd->echapper($id_pays)                 . ',';
+        $requete .= '  autorisation=          ' . $this->_bdd->echapper($autorisation)            . ',';
+        $requete .= '  transaction=           ' . $this->_bdd->echapper($transaction)             . ',';
+        $requete .= '  etat=                  ' . $etat                                           . ',';
+        $requete .= '  facturation=           ' . $this->_bdd->echapper($facturation)             . ',';
+        $requete .= '  id_forum=              ' . $id_forum                                       . ' ';
+        $requete .= 'WHERE';
+        $requete .= '  reference=' . $this->_bdd->echapper($reference);
+
+        return $this->_bdd->executer($requete);
+    }
+
+    function estFacture($reference)
+    {
+        $facture = $this->obtenir($reference, 'etat');
+
+        if ($facture['facturation'] == AFUP_FORUM_FACTURE_A_ENVOYER) {
+            $requete   = 'UPDATE afup_inscription_forum ';
+            $requete  .= 'SET facturation=' . AFUP_FORUM_FACTURE_ENVOYEE . ' ';
+            $requete  .= 'WHERE reference=' . $this->_bdd->echapper($reference);
+            $this->_bdd->executer($requete);
+
+            $requete   = 'UPDATE afup_facturation_forum ';
+            $requete  .= 'SET facturation=' . AFUP_FORUM_FACTURE_ENVOYEE . ', date_facture= ' . time() . ' ';
+            $requete  .= 'WHERE reference=' . $this->_bdd->echapper($reference);
+            return $this->_bdd->executer($requete);
+        }
+        return true;
+    }
+
+
+	  function supprimerFacturation($reference)
+	  {
+	      if ($this->_getNbInscriptions($reference) == 0)
+	      {
+            $requete = 'DELETE FROM afup_facturation_forum WHERE reference=' . $this->_bdd->echapper($reference);
+	          return $this->_bdd->executer($requete);
+	      }
+	      else
+	      {
+		        return $this->_actualiserFacturation($reference);
+		    }
+  	}
+
+  	function _actualiserFacturation($reference)
+  	{
+        $requete  = 'UPDATE ';
+        $requete .= '  afup_facturation_forum ';
+        $requete .= 'SET ';
+        $requete .= '  montant= (SELECT IFNULL(SUM(montant), 0.0) FROM afup_inscription_forum WHERE reference = ' . $this->_bdd->echapper($reference) . '),';
+        $requete .= 'WHERE';
+        $requete .= '  reference=' . $this->_bdd->echapper($reference);
+
+        return $this->_bdd->executer($requete);
+  	}
+
+    function enregistrerInformationsTransaction($reference, $autorisation, $transaction)
+    {
+        $requete   = 'UPDATE afup_facturation_forum ';
+        $requete  .= 'SET ';
+        $requete .= '  autorisation='   . $this->_bdd->echapper($autorisation) . ',';
+        $requete .= '  transaction='    . $this->_bdd->echapper($transaction)  . ',';
+        $requete .= '  date_reglement=' . time()                               . ',';
+        $requete  .= 'WHERE reference=' . $this->_bdd->echapper($reference);
+        return $this->_bdd->executer($requete);
+    }
+
+    /**
+     * Génère une facture au format PDF
+     *
+     * @param string    $reference      Reference de la facture
+     * @param string    $chemin         Chemin du fichier PDF à générer. Si ce chemin est omi, le PDF est renvoyé au navigateur.
+     * @access public
+     * @return bool
+     */
+    function genererFacture($reference, $chemin = null)
+    {
+        $requete    = 'SELECT * FROM afup_facturation_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $facture = $this->_bdd->obtenirEnregistrement($requete);
+
+        $requete    = 'SELECT * FROM afup_inscription_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $inscriptions = $this->_bdd->obtenirTous($requete);
+
+        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
+        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+
+        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
+        $pays = new AFUP_Pays($this->_bdd);
+
+        // Construction du PDF
+        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_PDF_Facture.php';
+        $pdf = new AFUP_PDF_Facture($configuration);
+        $pdf->AddPage();
+
+        // Haut de page [afup]
+        $pdf->SetFont('Arial', 'B', 20);
+        $pdf->Cell(130, 5, 'AFUP');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(60, 5, $configuration->obtenir('afup|raison_sociale'));
+        $pdf->Ln();
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
+        $pdf->Ln();
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(130, 5, 'http://www.afup.org');
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Cell(130, 5, 'SIRET : '. $configuration->obtenir('afup|siret'));
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
+        $pdf->Ln();
+        $pdf->Cell(130, 5);
+        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
+
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Cell(130, 5);
+        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture']) ? $facture['date_facture'] : time())));
+
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Ln();
+
+        if (empty($facture['societe'])) {
+            $facture['societe'] = $facture['nom']." ".$facture['prenom'];
+        }
+
+        // A l'attention du client [adresse]
+        $pdf->SetFont('Arial', 'BU', 10);
+        $pdf->Cell(130, 5, utf8_decode('Objet : Facture n°' . $reference));
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Ln(10);
+        $pdf->MultiCell(130, 5, utf8_decode($facture['societe']). "\n" . utf8_decode($facture['adresse']) . "\n" . utf8_decode($facture['code_postal']) . "\n" . utf8_decode($facture['ville']) ."\n". utf8_decode($pays->obtenirNom($facture['id_pays'])));
+
+        $pdf->Ln(15);
+
+        $pdf->MultiCell(180, 5, utf8_decode("Facture concernant votre participation au forum organisé par l'Association Française des Utilisateurs de PHP (AFUP)."));
+        // Cadre
+        $pdf->Ln(10);
+        $pdf->SetFillColor(200, 200, 200);
+        $pdf->Cell(50, 5, 'Type', 1, 0, 'L', 1);
+        $pdf->Cell(100, 5, 'Personne inscrite', 1, 0, 'L', 1);
+        $pdf->Cell(40, 5, 'Prix', 1, 0, 'L', 1);
+
+        $total = 0;
+        foreach ($inscriptions as $inscription) {
+            $pdf->Ln();
+            $pdf->SetFillColor(255, 255, 255);
+
+            switch ($inscription['type_inscription']) {
+                case AFUP_FORUM_PREMIERE_JOURNEE :
+                $code = 'FONC';
+                break;
+                case AFUP_FORUM_DEUXIEME_JOURNEE :
+                $code = 'TECH';
+                break;
+                case AFUP_FORUM_2_JOURNEES :
+                $code = '2JOU';
+                break;
+                case AFUP_FORUM_2_JOURNEES_AFUP :
+                $code = 'AFUP';
+                break;
+                case AFUP_FORUM_2_JOURNEES_ETUDIANT :
+                $code = 'ETUD';
+                break;
+            }
+
+            $pdf->Cell(50, 5, $code, 1);
+            $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
+            $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
+            $total += $inscription['montant'];
+        }
+
+        $pdf->Ln();
+        $pdf->SetFillColor(225, 225, 225);
+        $pdf->Cell(150, 5, 'TOTAL', 1, 0, 'L', 1);
+        $pdf->Cell(40, 5, $total . utf8_decode(' '), 1, 0, 'L', 1);
+
+        $pdf->Ln(15);
+        $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+
+        if (is_null($chemin)) {
+            $pdf->Output('facture.pdf', 'D');
+        } else {
+            $pdf->Output($chemin, 'F');
+        }
+    }
+
+    /**
+     * Envoi par mail d'une facture au format PDF
+     *
+     * @param   string     $reference      Reference de la facturation
+     * @access public
+     * @return bool Succès de l'envoi
+     */
+    function envoyerFacture($reference)
+    {
+        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
+        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+
+        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        $personne = $this->obtenir($reference, 'email, nom, prenom');
+
+        $mail = new PHPMailer;
+        $mail->AddAddress($personne['email'], $personne['nom']." ".$personne['prenom']);
+
+        $mail->From     = $configuration->obtenir('mails|email_expediteur');
+        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
+
+        if ($configuration->obtenir('mails|serveur_smtp')) {
+            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
+            $mail->Mailer   = "smtp";
+        } else {
+            $mail->Mailer   = "mail";
+        }
+
+        $sujet  = "Facture AFUP\n";
+        $mail->Subject = $sujet;
+
+        $corps  = "Bonjour, \n\n";
+        $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";
+        $corps .= "Nous restons à votre disposition pour toute demande complémentaire.\n\n";
+        $corps .= "Le bureau\n\n";
+        $corps .= $configuration->obtenir('afup|raison_sociale')."\n";
+        $corps .= $configuration->obtenir('afup|adresse')."\n";
+        $corps .= $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville')."\n";
+
+        $mail->Body = $corps;
+
+        $chemin_facture = AFUP_CHEMIN_RACINE . 'cache'. DIRECTORY_SEPARATOR .'fact' . $reference . '.pdf';
+        $this->genererFacture($reference, $chemin_facture);
+        $mail->AddAttachment($chemin_facture, 'facture.pdf');
+        $ok = $mail->Send();
+        @unlink($chemin_facture);
+
+        $ok = true;
+        if ($ok) {
+            $this->estFacture($reference);
+        }
+
+        return $ok;
+    }
+
+    function envoyerATous($id_forum)
+    {
+        $requete  = 'SELECT';
+        $requete .= '  reference ';
+        $requete .= 'FROM';
+        $requete .= '  afup_facturation_forum ';
+        $requete .= 'WHERE etat = '.AFUP_FORUM_ETAT_REGLE.' ';
+        $requete .= '  AND id_forum =' . $id_forum . ' ';
+        $factures = $this->_bdd->obtenirTous($requete);
+
+        $ok = true;
+        foreach($factures as $facture)
+        {
+            flush();
+            if ($this->envoyerFacture($facture['reference'])) {
+                AFUP_Logs::log('Envoi par email de la facture n°' . $facture['reference'].' OK');
+            } else {
+                $ok = false;
+                AFUP_Logs::log('Envoi par email de la facture n°' . $facture['reference'].' Erreur');
+            }
+        }
+
+        return $ok;
+    }
+}

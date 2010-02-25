@@ -1,0 +1,46 @@
+{if $action == 'lister'}
+    {if $type_personne == $smarty.const.AFUP_PERSONNES_PHYSIQUES}
+    <h2>Cotisations de {$personne.prenom} {$personne.nom}</h2>
+    {else}
+    <h2>Cotisations de {$personne.raison_sociale}</h2>
+    {/if}
+
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=cotisations&amp;action=ajouter&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}" title="Ajouter une cotisation">Ajouter une cotisation</a>
+    <br/>
+    <h3>Historique</h3>
+    <table>
+    {foreach from=$cotisations item=cotisation}
+        <tr>
+            <td>
+                <strong>{$cotisation.date_debut|date_format:'%d/%m/%y'} - {$cotisation.date_fin|date_format:'%d/%m/%y'}</strong> : {$cotisation.montant} &euro;
+                {if $cotisation.type_reglement == $smarty.const.AFUP_COTISATIONS_REGLEMENT_ESPECES}
+                    en espèces
+                {elseif $cotisation.type_reglement == $smarty.const.AFUP_COTISATIONS_REGLEMENT_CHEQUE}
+                    par chèque n° {$cotisation.informations_reglement}
+                {elseif $cotisation.type_reglement == $smarty.const.AFUP_COTISATIONS_REGLEMENT_VIREMENT}
+                    par virement n° {$cotisation.informations_reglement}
+                {elseif $cotisation.type_reglement == $smarty.const.AFUP_COTISATIONS_REGLEMENT_ENLIGNE}
+                    en ligne
+                {/if}
+            </td>
+            <td style="text-align: right">
+                <a href="index.php?page=cotisations&amp;action=envoyer_facture&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}" title="Envoyer la facture par mail"><img src="{$chemin_template}images/icone_envoyer_facture.png" alt="Envoi de la facture par mail" /></a>
+                <a href="index.php?page=cotisations&amp;action=telecharger_facture&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}" title="Télécharger la facture"><img src="{$chemin_template}images/icone_telecharger_facture.png" alt="Téléchargement de la facture" /></a>
+                <a href="index.php?page=cotisations&amp;action=modifier&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}" title="Modifier la cotisation"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=cotisations&amp;action=supprimer&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}" title="Supprimer la cotisation" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette cotisation ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune cotisation</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter une cotisation</h2>
+    {else}
+        <h2>Modifier une cotisation</h2>
+    {/if}    
+    {include file="formulaire.html"}
+{/if}

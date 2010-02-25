@@ -1,0 +1,51 @@
+{if $action == 'lister'}
+    <h2>Liste des personnes morales</h2>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=personnes_morales&amp;action=ajouter" title="Ajouter une personne morale">Ajouter une personne morale</a><br />
+    <br/>
+    <table>
+      <form method="GET" name="filtre">
+      <input type="hidden" name="page" value="personnes_morales" />
+      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+        <tr>
+            <td width="50" nowrap>Filtre : </td>
+            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
+            <td><input type="submit" value="OK" name="submit_filtre"></td>
+        </tr>
+      </form>
+    </table>
+    <br/>
+    <table class="afup_tab">
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+            <th align="left"><a href="index.php?page=personnes_morales&amp;tri=raison_sociale&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'raison_sociale'}desc{else}asc{/if}">Raison sociale</a></th>
+            <th><a href="index.php?page=personnes_morales&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+            <th><a href="index.php?page=personnes_morales&amp;tri=actifs&amp;sens={if $smarty.get.sens == 'desc' && $smarty.get.tri == 'actifs'}desc{else}asc{/if}">Actifs</a></th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$personnes item=personne}
+        <tr class="{cycle values="odd,even"}">
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$personne.raison_sociale}</td>
+            <td style="text-align: center">{if $personne.etat == 1}Actif{else}Inactif{/if}</td>
+            <td style="text-align: center">{$personne.actifs}</td>
+            <td style="text-align: right">
+                <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$personne.id}" title="Gérer les cotisations de {$personne.raison_sociale}"><img src="{$chemin_template}images/icone_cotisations_active.png" alt="Gérer les cotisations" /></a>
+                <a href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$personne.id}" title="Modifier la fiche de {$personne.raison_sociale}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=personnes_morales&amp;action=supprimer&amp;id={$personne.id}" title="Supprimer la fiche de {$personne.raison_sociale}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.raison_sociale} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune personne morale</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter une personne morale</h2>
+    {else}
+        <h2>Modifier une personne morale</h2>
+    {/if}    
+    {include file="formulaire.html"}
+{/if}

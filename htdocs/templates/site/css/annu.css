@@ -1,0 +1,16 @@
+/* +--------------------------------------------------------------+ */
+/* |  Css temporaire pour migration du nouveau site               | */
+/* +--------------------------------------------------------------+ */
+
+#ContentContainer #ContentPageLevel3 {
+        width: 696px;
+      } 
+      
+#ContentContainer #ContentPageLevel3 h1 {
+  float: left;
+  margin: 16px 0 0 16px;
+}
+
+#ContentContainer #ContentPageLevel3 p {
+  float: none;
+}

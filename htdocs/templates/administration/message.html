@@ -1,0 +1,14 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+    <head>
+        <meta http-equiv="refresh" content="2;url={$url|replace:'&':'&amp;'}" />
+        {include file="head.html"}
+    </head>
+
+    <body id="message">
+        <div id="contenu">
+            <p{if $erreur} class="erreur"{/if}><strong>{$message|escape|nl2br}</strong></p>
+            <p><a href="{$url|replace:'&':'&amp;'}">Poursuivre</a></p>
+        </div>
+    </body>
+</html>    

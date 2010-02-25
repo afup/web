@@ -1,0 +1,68 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="keywords" content="Planete PHP FR : tous les blogs PHP francophones" lang="fr" />
+    <link rel="stylesheet" href="{$chemin_template}styles.css" type="text/css" media="all" />
+	<link rel="alternate" type="application/atom+xml" title="Atom" href="http://feeds.feedburner.com/planetephpfr" />
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://planete-php.fr/rss.php" />
+	<title>Planete PHP FR : tous les blogs PHP francophones</title>
+</head>
+
+<body>
+<div id="le-contenu">
+	<div id="les-billets">
+	<img src="{$chemin_template}/images/planetephp.png" alt="planetePHP.fr" />
+	{foreach from=$billets item=billet} 
+		<div class="un-billet">
+			<span class="flux"><a href="{$billet.flux_url}">{$billet.flux_nom}</a></span>
+			<span class="auteur">{$billet.auteur}</span>
+			<span class="date">{$billet.maj}</span>
+			<h2 class="titre"><a href="{$billet.url}">{$billet.titre}</a></h2>
+			<div class="contenu">{$billet.contenu}</a></div>
+		</div>
+	{/foreach}
+	<div id="les-pages-suivantes">
+		{if $suivant >= 0}
+			<a href="?page={$suivant}">précédents</a>
+		{/if}
+		{if $precedant >= 0}
+			<a href="?page={$precedant}">suivants</a>
+		{/if}
+	</div>
+	</div>
+	
+	<div id="la-navigation">
+		<div id="les-flux">
+			<a href="http://feeds.feedburner.com/planetephpfr">
+				<img src="{$chemin_template}/images/atom.gif" alt="" />
+				<br />Flux ATOM
+			</a>
+			<br />
+			<a href="http://planete-php.fr/rss.php">Flux RSS</a>
+
+			<h3>Les sources</h3>
+			<ul>
+			{foreach from=$flux item=flux_simple} 
+				<li class="un-flux"><a href="{$flux_simple.url}">{$flux_simple.nom}</a></li>
+			{/foreach}
+			</ul>
+
+			<h3>Ajouter une source ?</h3>
+			Envoyez un email avec l'URL du site et du flux à planetephpfr AT afup POINT org
+
+			<h3>Infos</h3>
+			<ul>
+				<li>Gestion : <a href="http://afup.org/">AFUP</a></li>
+				<li>Réalisation : <a href="http://onpk.net/">Perrick Penet</a> (<a href="http://noparking.net/">No Parking</a>)</li>
+				<li>Hébergement : <a href="http://www.nexenservices.com/">Nexen Services</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<br />
+<br />
+
+<img src="{$chemin_template}/images/cron.php" alt="pseudo-cron pour le robot" />
+
+</body> 
