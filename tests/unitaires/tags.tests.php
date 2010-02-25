@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__)."/../simpletest/autorun.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Tags.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Tags.php";
 
 class tests_Tags extends UnitTestCase {
     function __construct() {
@@ -40,12 +40,12 @@ class tests_Tags extends UnitTestCase {
     function test_fichierDotAvecPlusieursLiens() {
          $this->elements[] = array (
 		  'id_source' => '2',
-		  'tag' => 'là',
+		  'tag' => 'lï¿½',
 		  'id_personne_physique' => '1',
 		);
         $this->assertPattern("/rien -- ici/", $this->tags->preparerFichierDot($this->elements));
-        $this->assertPattern("/rien -- là/", $this->tags->preparerFichierDot($this->elements));
-        $this->assertPattern("/ici -- là/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertPattern("/rien -- lï¿½/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertPattern("/ici -- lï¿½/", $this->tags->preparerFichierDot($this->elements));
     }
     
     function test_fichierDotSansDoublons() {
@@ -56,10 +56,10 @@ class tests_Tags extends UnitTestCase {
 		);
         $this->elements[] = array (
 		  'id_source' => '3',
-		  'tag' => 'là',
+		  'tag' => 'lï¿½',
 		  'id_personne_physique' => '2',
 		);
-		$this->assertEqual(substr_count($this->tags->preparerFichierDot($this->elements), "ici -- là;"), 1);
+		$this->assertEqual(substr_count($this->tags->preparerFichierDot($this->elements), "ici -- lï¿½;"), 1);
     }
     
     function test_fichierDotSansDoublonsMajuscules() {
@@ -70,16 +70,16 @@ class tests_Tags extends UnitTestCase {
 		);
         $this->elements[] = array (
 		  'id_source' => '3',
-		  'tag' => 'Là',
+		  'tag' => 'Lï¿½',
 		  'id_personne_physique' => '2',
 		);
-		$this->assertEqual(substr_count($this->tags->preparerFichierDot($this->elements), "ici -- là;"), 1);
+		$this->assertEqual(substr_count($this->tags->preparerFichierDot($this->elements), "ici -- lï¿½;"), 1);
     }
     
     function test_fichierDotSansDoublonInverses() {
 		$this->elements[] = array (
 		  'id_source' => '3',
-		  'tag' => 'là',
+		  'tag' => 'lï¿½',
 		  'id_personne_physique' => '3',
 		);
         $this->elements[] = array (
@@ -87,7 +87,7 @@ class tests_Tags extends UnitTestCase {
 		  'tag' => 'ici',
 		  'id_personne_physique' => '3',
 		);
-        $this->assertNoPattern("/là -- ici/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertNoPattern("/lï¿½ -- ici/", $this->tags->preparerFichierDot($this->elements));
     }
     
     function test_fichierDotSansElementVide() {
@@ -96,34 +96,34 @@ class tests_Tags extends UnitTestCase {
 		  'tag' => '',
 		  'id_personne_physique' => '3',
 		);
-        $this->assertNoPattern("/là -- /", $this->tags->preparerFichierDot($this->elements));
+        $this->assertNoPattern("/lï¿½ -- /", $this->tags->preparerFichierDot($this->elements));
     }
     
     function test_fichierDotSansTagsQuiCommencentAvecChiffre() {
 		$this->elements[] = array (
 		  'id_source' => '3',
-		  'tag' => '12là',
+		  'tag' => '12lï¿½',
 		  'id_personne_physique' => '3',
 		);
-        $this->assertNoPattern("/12là/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertNoPattern("/12lï¿½/", $this->tags->preparerFichierDot($this->elements));
     }
     
     function test_fichierDotSansTagsPonctuesNiEspaces() {
 		$this->elements[] = array (
 		  'id_source' => '3',
-		  'tag' => 'un.là',
+		  'tag' => 'un.lï¿½',
 		  'id_personne_physique' => '3',
 		);
-        $this->assertNoPattern("/un.là/", $this->tags->preparerFichierDot($this->elements));
-        $this->assertPattern("/unlà/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertNoPattern("/un.lï¿½/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertPattern("/unlï¿½/", $this->tags->preparerFichierDot($this->elements));
 
         $this->elements[] = array (
 		  'id_source' => '3',
-		  'tag' => 'deux là',
+		  'tag' => 'deux lï¿½',
 		  'id_personne_physique' => '3',
 		);
-        $this->assertNoPattern("/deux là/", $this->tags->preparerFichierDot($this->elements));
-        $this->assertPattern("/deuxlà/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertNoPattern("/deux lï¿½/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertPattern("/deuxlï¿½/", $this->tags->preparerFichierDot($this->elements));
     }
 }
 

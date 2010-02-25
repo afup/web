@@ -1,12 +1,12 @@
 <?php
 
 require_once dirname(__FILE__)."/../simpletest/autorun.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Base_De_Donnees.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Personnes_Physiques.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Oeuvres.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Logs.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Planete_Flux.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Planete_Billet.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Base_De_Donnees.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Personnes_Physiques.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Oeuvres.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Logs.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Planete_Flux.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Planete_Billet.php";
 
 class tests_Oeuvres extends UnitTestCase {
     public $bdd;
@@ -223,13 +223,13 @@ class tests_Oeuvres extends UnitTestCase {
         $this->assertFalse(isset($oeuvres->details['planete'][1][$premier_du_mois]));
         
         $billet = new AFUP_Planete_Billet($this->bdd);
-        $billet->ajouter(1, "key", "Titre", "http://example.com/billet", time(), "Auteur", "Résumé", "Contenu", AFUP_PLANETE_BILLET_CREUX);
+        $billet->ajouter(1, "key", "Titre", "http://example.com/billet", time(), "Auteur", "Rï¿½sumï¿½", "Contenu", AFUP_PLANETE_BILLET_CREUX);
 
         $this->assertTrue($oeuvres->extraireOeuvresDepuisPlanete());
         $this->assertFalse(isset($oeuvres->details['planete'][1][$premier_du_mois]));
         
         $billet = new AFUP_Planete_Billet($this->bdd);
-        $billet->ajouter(1, "key", "Titre bis", "http://example.com/billet", time(), "Auteur", "Résumé", "Contenu", AFUP_PLANETE_BILLET_PERTINENT);
+        $billet->ajouter(1, "key", "Titre bis", "http://example.com/billet", time(), "Auteur", "Rï¿½sumï¿½", "Contenu", AFUP_PLANETE_BILLET_PERTINENT);
 
         $this->assertTrue($oeuvres->extraireOeuvresDepuisPlanete());
         $this->assertTrue(isset($oeuvres->details['planete'][1][$premier_du_mois]));

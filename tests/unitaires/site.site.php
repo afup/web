@@ -1,8 +1,8 @@
 <?php
 
 require_once dirname(__FILE__)."/../simpletest/autorun.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Base_De_Donnees.php";
-require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Site.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Base_De_Donnees.php";
+require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Site.php";
 
 class tests_Site_Article extends UnitTestCase {
     public $article = null;
