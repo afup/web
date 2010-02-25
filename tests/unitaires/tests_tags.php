@@ -1,0 +1,130 @@
+<?php
+
+require_once dirname(__FILE__)."/../simpletest/autorun.php";
+require_once dirname(__FILE__)."/../../site/classes/afup/AFUP_Tags.php";
+
+class tests_Tags extends UnitTestCase {
+    function __construct() {
+        $this->elements = array();
+        $this->tags = new AFUP_Tags($bdd);
+    }
+    
+    function test_extraireTousLesTagsDUneChaine() {
+        $this->assertEqual($this->tags->extraireTags("tous les tags"), array("tous", "les", "tags"));   
+        $this->assertEqual($this->tags->extraireTags("'tous les' tags"), array("tous les", "tags"));   
+        $this->assertEqual($this->tags->extraireTags("'tous les tags"), array());   
+        $this->assertEqual($this->tags->extraireTags("afup:tous les tags"), array("afup:tous", "les", "tags"));   
+        $this->assertEqual($this->tags->extraireTags("1@tous les tags"), array("1@tous", "les", "tags"));   
+    }
+    
+    function test_preparerFichierDotVierge() {
+        $this->assertEqual($this->tags->preparerFichierDot(), "graph G {\n}\n");
+        
+        $this->elements[] = array (
+		  'id_source' => '2',
+		  'tag' => 'rien',
+		  'id_personne_physique' => '1',
+		);
+        $this->assertEqual($this->tags->preparerFichierDot($this->elements), "graph G {\n}\n");
+    }
+    
+    function test_fichierDotAvecUnLien() {
+        $this->elements[] = array (
+		  'id_source' => '2',
+		  'tag' => 'ici',
+		  'id_personne_physique' => '1',
+		);
+        $this->assertEqual($this->tags->preparerFichierDot($this->elements), "graph G {\n  rien -- ici;\n}\n");
+    }
+    
+    function test_fichierDotAvecPlusieursLiens() {
+         $this->elements[] = array (
+		  'id_source' => '2',
+		  'tag' => 'là',
+		  'id_personne_physique' => '1',
+		);
+        $this->assertPattern("/rien -- ici/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertPattern("/rien -- là/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertPattern("/ici -- là/", $this->tags->preparerFichierDot($this->elements));
+    }
+    
+    function test_fichierDotSansDoublons() {
+        $this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => 'ici',
+		  'id_personne_physique' => '2',
+		);
+        $this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => 'là',
+		  'id_personne_physique' => '2',
+		);
+		$this->assertEqual(substr_count($this->tags->preparerFichierDot($this->elements), "ici -- là;"), 1);
+    }
+    
+    function test_fichierDotSansDoublonsMajuscules() {
+        $this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => 'ICI',
+		  'id_personne_physique' => '2',
+		);
+        $this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => 'Là',
+		  'id_personne_physique' => '2',
+		);
+		$this->assertEqual(substr_count($this->tags->preparerFichierDot($this->elements), "ici -- là;"), 1);
+    }
+    
+    function test_fichierDotSansDoublonInverses() {
+		$this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => 'là',
+		  'id_personne_physique' => '3',
+		);
+        $this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => 'ici',
+		  'id_personne_physique' => '3',
+		);
+        $this->assertNoPattern("/là -- ici/", $this->tags->preparerFichierDot($this->elements));
+    }
+    
+    function test_fichierDotSansElementVide() {
+        $this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => '',
+		  'id_personne_physique' => '3',
+		);
+        $this->assertNoPattern("/là -- /", $this->tags->preparerFichierDot($this->elements));
+    }
+    
+    function test_fichierDotSansTagsQuiCommencentAvecChiffre() {
+		$this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => '12là',
+		  'id_personne_physique' => '3',
+		);
+        $this->assertNoPattern("/12là/", $this->tags->preparerFichierDot($this->elements));
+    }
+    
+    function test_fichierDotSansTagsPonctuesNiEspaces() {
+		$this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => 'un.là',
+		  'id_personne_physique' => '3',
+		);
+        $this->assertNoPattern("/un.là/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertPattern("/unlà/", $this->tags->preparerFichierDot($this->elements));
+
+        $this->elements[] = array (
+		  'id_source' => '3',
+		  'tag' => 'deux là',
+		  'id_personne_physique' => '3',
+		);
+        $this->assertNoPattern("/deux là/", $this->tags->preparerFichierDot($this->elements));
+        $this->assertPattern("/deuxlà/", $this->tags->preparerFichierDot($this->elements));
+    }
+}
+
+?>
