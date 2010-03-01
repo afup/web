@@ -13,7 +13,7 @@
 
 // 0. initialisation (bootstrap) de l'application
 
-require_once dirname(__FILE__) . '/../../include/prepend.inc.php';
+require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 // 1. chargement des classes nécessaires
 

@@ -1,5 +1,5 @@
 <?php
-require_once '../../include/prepend.inc.php';
+require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 $conferenciers=array(
     array('nom'          => '<span class="red">Rasmus LERDORF</span>',

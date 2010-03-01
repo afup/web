@@ -1,7 +1,7 @@
 <?php
 
 ini_set('display_errors',TRUE);
-require_once '../../include/prepend.inc.php';
+require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 require_once 'Afup/AFUP_Pays.php';
 $pays = new AFUP_Pays($bdd);

@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../include/prepend.inc.php';
+require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 // Gestion des droits
 require_once 'Afup/AFUP_Utils.php';
 $droits = AFUP_Utils::fabriqueDroits($bdd);

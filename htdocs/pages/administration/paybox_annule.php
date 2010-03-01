@@ -1,5 +1,5 @@
 <?php
-require_once '../../include/prepend.inc.php';
+require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 $paybox  = "<p>Votre paiement a été annulé. Désolé.</p>";
 $paybox .= "<p>Une questions ? N'hésitez pas à contacter <a href=\"mailto:tresorier@afup.org\">le trésorier</a>.</p>";
