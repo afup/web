@@ -1,8 +1,27 @@
 <?php
-require_once '../../include/prepend.inc.php';
+/**
+ * Fichier site 'RendezVous'
+ * 
+ * @author    Perrick Penet   <perrick@noparking.fr>
+ * @author    Olivier Hoareau <olivier@phppro.fr>
+ * @copyright 2010 Association FranÃ§aise des Utilisateurs de PHP
+ * 
+ * @category RendezVous
+ * @package  RendezVous
+ * @group    Pages
+ */
 
-require_once dirname(__FILE__) . '/../../classes/afup/AFUP_Rendez_Vous.php';
-require_once dirname(__FILE__) . '/../../classes/afup/AFUP_Logs.php';
+// 0. initialisation (bootstrap) de l'application
+
+require_once dirname(__FILE__) . '/../../include/prepend.inc.php';
+
+// 1. chargement des classes nÃ©cessaires
+
+require_once 'afup/AFUP_Rendez_Vous.php';
+require_once 'afup/AFUP_Logs.php';
+
+// 2. rÃ©cupÃ©ration et filtrage des donnÃ©es
+
 AFUP_Logs::initialiser($bdd, 0);
 
 $rendezvous = new AFUP_Rendez_Vous($bdd);
@@ -20,7 +39,7 @@ if (isset($archive_rendezvous) and is_array($archive_rendezvous)) {
 
 	if ($rendezvous->accepteSurListeAttenteUniquement($archive_rendezvous['id'])) {
         $smarty->assign('resultat', 'erreur');
-        $smarty->assign('message', 'Attention, les inscriptions sont closes. Votre inscription sera mise sur liste d\'attente. Si des places se libèrent, vous recevrez un email.');
+        $smarty->assign('message', 'Attention, les inscriptions sont closes. Votre inscription sera mise sur liste d\'attente. Si des places se libï¿½rent, vous recevrez un email.');
 	}
 	if ($rendezvous->estComplet($archive_rendezvous['id'])) {
 		$smarty->display('rendezvous-complet.html');
@@ -39,26 +58,26 @@ if (isset($archive_rendezvous) and is_array($archive_rendezvous)) {
 	$formulaire->addElement('text'    , 'nom'           , 'Nom');
 	$formulaire->addElement('text'    , 'entreprise'    , 'Entreprise');
 	$formulaire->addElement('text'    , 'email'         , 'Email');
-	$formulaire->addElement('text'    , 'telephone'     , 'Téléphone');
+	$formulaire->addElement('text'    , 'telephone'     , 'Tï¿½lï¿½phone');
     $formulaire->addElement('submit'  , 'soumettre'     , 'S\'inscrire');
     
     $formulaire->addRule('nom'        , 'Nom manquant'       , 'required');
     $formulaire->addRule('email'      , 'Email manquant'     , 'required');
     $formulaire->addRule('email'      , 'Email invalide'     , 'email');
-    $formulaire->addRule('telephone'  , 'Téléphone manquant' , 'required');
+    $formulaire->addRule('telephone'  , 'Tï¿½lï¿½phone manquant' , 'required');
     
     if ($formulaire->validate()) {
         $ok = $rendezvous->enregistrerInscrit($formulaire);
 
         if ($ok) {
-            AFUP_Logs::log('Pré-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
+            AFUP_Logs::log('Prï¿½-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
             $smarty->assign('resultat', 'succes');
-            $smarty->assign('message', 'Votre pré-inscription a bien été prise en compte.');
+            $smarty->assign('message', 'Votre prï¿½-inscription a bien ï¿½tï¿½ prise en compte.');
 			$smarty->display('message.html');
 			die();
         } else {
             $smarty->assign('resultat', 'erreur');
-            $smarty->assign('message', 'Il y a une erreur lors de votre pré-inscription. Merci de bien vouloir recommencer.');
+            $smarty->assign('message', 'Il y a une erreur lors de votre prï¿½-inscription. Merci de bien vouloir recommencer.');
         }
     }
     
@@ -68,5 +87,3 @@ if (isset($archive_rendezvous) and is_array($archive_rendezvous)) {
 } else {
 	$smarty->display('pas-de-rendezvous.html');
 }
-
-?>

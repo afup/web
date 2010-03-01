@@ -1,8 +1,27 @@
 <?php
-require_once '../../include/prepend.inc.php';
+/**
+ * Fichier site 'RendezVous'
+ * 
+ * @author    Perrick Penet   <perrick@noparking.fr>
+ * @author    Olivier Hoareau <olivier@phppro.fr>
+ * @copyright 2010 Association Française des Utilisateurs de PHP
+ * 
+ * @category RendezVous
+ * @package  RendezVous
+ * @group    Pages
+ */
 
-require_once dirname(__FILE__) . '/../../classes/afup/AFUP_Rendez_Vous.php';
-require_once dirname(__FILE__) . '/../../classes/afup/AFUP_Logs.php';
+// 0. initialisation (bootstrap) de l'application
+
+require_once dirname(__FILE__) . '/../../include/prepend.inc.php';
+
+// 1. chargement des classes nécessaires
+
+require_once 'afup/AFUP_Rendez_Vous.php';
+require_once 'afup/AFUP_Logs.php';
+
+// 2. récupération et filtrage des données
+
 AFUP_Logs::initialiser($bdd, 0);
 
 $rendezvous = new AFUP_Rendez_Vous($bdd);
@@ -14,12 +33,9 @@ if (isset($lister_rendezvous) and is_array($lister_rendezvous)) {
 		$rendezvous['debut'] = date("H\hi", $rendezvous['debut']);
 		$rendezvous['fin'] = date("H\hi", $rendezvous['fin']);
 	}
-	//die(print_r($lister_rendezvous));
 	$smarty->assign('listerendezvous', $lister_rendezvous);
 	$smarty->display('archives-rendezvous.html');
 
 } else {
 	$smarty->display('pas-de-rendezvous.html');
 }
-
-?>

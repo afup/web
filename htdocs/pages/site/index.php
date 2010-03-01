@@ -1,23 +1,40 @@
 <?php
-require_once '../../include/prepend.inc.php';
+/**
+ * Fichier principal site 'AFUP'
+ * 
+ * @author    Perrick Penet   <perrick@noparking.fr>
+ * @author    Olivier Hoareau <olivier@phppro.fr>
+ * @copyright 2010 Association Française des Utilisateurs de PHP
+ * 
+ * @category AFUP
+ * @package  AFUP
+ * @group    Pages
+ */
 
-require_once dirname(__FILE__) . '/../../classes/afup/AFUP_Site.php';
+// 0. initialisation (bootstrap) de l'application
 
-$route = "";
-if (isset($_GET['route'])) {
-	$route = $_GET['route'];
-}
+require_once dirname(__FILE__) . '/../../include/prepend.inc.php';
 
-$page = new AFUP_Site_Page($bdd);
-$page->definirRoute($route);
+// 1. chargement des classes nécessaires
 
-$smarty->assign('header', $page->header());
-$smarty->assign('menu', $page->menu());
-$smarty->assign('content', $page->content());
+require_once 'afup/AFUP_Site.php';
 
+// 2. récupération et filtrage des données
+
+$page   = new AFUP_Site_Page($bdd);
 $footer = new AFUP_Site_Footer($bdd);
-$smarty->assign('logos', $footer->logos());
+
+$page->definirRoute(isset($_GET['route']) ? $_GET['route'] : '');
+
+// 3. assignations des variables du template
+
+$smarty->assign('header',    $page->header());
+$smarty->assign('menu',      $page->menu());
+$smarty->assign('content',   $page->content());
+$smarty->assign('logos',     $footer->logos());
 $smarty->assign('questions', $footer->questions());
-$smarty->assign('articles', $footer->articles());
+$smarty->assign('articles',  $footer->articles());
+
+// 4. affichage de la page en utilisant le modèle spécifié
 
 $smarty->display('index.html');

@@ -1,24 +1,44 @@
 <?php
-require_once '../../include/prepend.inc.php';
+/**
+ * Fichier Feed ATOM site 'PlanetePHP'
+ * 
+ * @author    Perrick Penet   <perrick@noparking.fr>
+ * @author    Olivier Hoareau <olivier@phppro.fr>
+ * @copyright 2010 Association Française des Utilisateurs de PHP
+ * 
+ * @category PlanetePHP
+ * @package  PlanetePHP
+ * @group    Pages
+ */
 
-header('Content-Type: application/atom+xml; charset=UTF-8');
+// 0. initialisation (bootstrap) de l'application
 
-$feed = array();
-$feed['title'] = "planete php fr";
-$feed['url'] = 'http://planete-php.fr/';
-$feed['link'] = $feed['url'].'flux.php';
-$feed['email'] = "planetephpfr@afup.org";
-$feed['author'] = "Perrick Penet / AFUP";
-$feed['date'] = date(DATE_ATOM);
+require_once dirname(__FILE__) . '/../../include/prepend.inc.php';
+
+// 1. chargement des classes nécessaires
+
+require_once 'afup/AFUP_Planete_Billet.php';
+
+// 2. récupération et filtrage des données
+
+$feed = array(
+	'title'  => 'planete php fr',
+	'url'    => 'http://planete-php.fr/',
+	'link'   => 'http://planete-php.fr/flux.php',
+	'email'  => 'planetephpfr@afup.org',
+	'author' => 'Perrick Penet / AFUP',
+	'date'   => date(DATE_ATOM),
+);
+
+$billet                  = new AFUP_Planete_Billet($bdd);
+$derniersBilletsComplets = $billet->obtenirDerniersBilletsComplets(0, DATE_ATOM, 20);
+
+// 3. assignations des variables du template
 
 $smarty->assign('feed', $feed);
+$smarty->assign('billets', $derniersBilletsComplets);
 
-require_once dirname(__FILE__) . '/../../classes/afup/AFUP_Planete_Billet.php';
+// 4. affichage de la page en utilisant le modèle spécifié
 
-$planete_billet = new AFUP_Planete_Billet($bdd);
-$derniers_billets_complets = $planete_billet->obtenirDerniersBilletsComplets(0, DATE_ATOM, 20);
-$smarty->assign('billets', $derniers_billets_complets);
-
+header('Content-Type: application/atom+xml; charset=UTF-8');
 $smarty->display('flux.xml');
-
-?>

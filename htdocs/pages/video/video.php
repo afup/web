@@ -1,3 +1,17 @@
+<?php
+/**
+ * Fichier site 'Video'
+ * 
+ * @author    Perrick Penet   <perrick@noparking.fr>
+ * @author    Olivier Hoareau <olivier@phppro.fr>
+ * @copyright 2010 Association Française des Utilisateurs de PHP
+ * 
+ * @category Video
+ * @package  Video
+ * @group    Pages
+ */
+
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="#LANG">
 <head>
