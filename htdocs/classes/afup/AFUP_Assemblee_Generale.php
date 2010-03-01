@@ -192,7 +192,7 @@ class AFUP_Assemblee_Generale
         $personnes_physiques = $this->_bdd->obtenirTous($requete);  
 
         $succes = false;
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
         foreach ($personnes_physiques as $personne_physique) {
             $hash = md5($personne_physique['id'] . '_' . $personne_physique['email'] . '_' . $personne_physique['login']);
             $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash='.$hash;

@@ -196,7 +196,7 @@ class AFUP_Cotisations
 
 		list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
         if (AFUP_PERSONNES_MORALES == $type_personne) {
             $personnes = new AFUP_Personnes_Morales($this->_bdd);
         } else {
@@ -387,7 +387,7 @@ class AFUP_Cotisations
         require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
         $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
 	    $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
 
 		if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
@@ -568,7 +568,7 @@ class AFUP_Cotisations
         require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
         $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
         if (AFUP_PERSONNES_MORALES == $type_personne) {
             $personnes = new AFUP_Personnes_Morales($this->_bdd);
         } else {

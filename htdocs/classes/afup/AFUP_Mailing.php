@@ -64,7 +64,7 @@ class AFUP_Mailing
 
    function envoyeMail($from, $to, $subject,$body,$is_html =false) {
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
 
         $mail = new PHPMailer;
         $mail->IsHTML($is_html);

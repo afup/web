@@ -107,7 +107,7 @@ class AFUP_Rendez_Vous
         $inscrits = $this->_bdd->obtenirTous($requete);  
 
         $succes = false;
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
         foreach ($inscrits as $inscrit) {
             $hash = md5(implode("", $inscrit));
             $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash='.$hash;

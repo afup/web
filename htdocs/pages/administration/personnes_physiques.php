@@ -160,7 +160,7 @@ if ($action == 'lister') {
                 }
                 $corps = str_replace($motifs, $valeurs, $conf->obtenir('mails|texte_adhesion'));
 
-                require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+                require_once 'phpmailer/class.phpmailer.php';
                 $mail = new PHPMailer;
                 $mail->AddAddress($formulaire->exportValue('email'), $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
                 $mail->From = $conf->obtenir('mails|email_expediteur');

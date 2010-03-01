@@ -324,7 +324,7 @@ class AFUP_Personnes_Physiques {
                 $corps .= "Votre mot de passe : $mot_de_passe \n\n";
                 $corps .= "http://www.afup.org/pages/administration/index.php?ctx_login=$identifiant";
 
-                require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+                require_once 'phpmailer/class.phpmailer.php';
                 $mail = new PHPMailer;
                 if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
                     $mail->IsSMTP();

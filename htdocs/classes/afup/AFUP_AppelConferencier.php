@@ -646,7 +646,7 @@ class AFUP_AppelConferencier
 
         $conferenciers = $this->_bdd->obtenirTous($requete);
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
 
         $mail = new PHPMailer;
         foreach ($conferenciers as $personne) {
@@ -719,7 +719,7 @@ class AFUP_AppelConferencier
 
         $resultat = $this->_bdd->obtenirEnregistrement($requete);
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
 
         $mail = new PHPMailer;
         $mail->AddAddress($resultat['email'], $resultat['nom'] . " " . $resultat['prenom']);

@@ -148,7 +148,7 @@ class AFUP_Inscriptions_Forum
         $inscris  = $this->_bdd->obtenirTous($requete);
 
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
         foreach ($inscris as $nb => $personne)
         {
          if ($nb%100 == 0)

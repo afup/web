@@ -366,7 +366,7 @@ class AFUP_Facturation_Forum
         require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
         $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
         $personne = $this->obtenir($reference, 'email, nom, prenom');
 
         $mail = new PHPMailer;
