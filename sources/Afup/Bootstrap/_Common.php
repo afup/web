@@ -33,7 +33,6 @@ define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
  */
 set_include_path(
                        $root . '/htdocs/classes'
-    . PATH_SEPARATOR . $root . '/htdocs/classes/pear'
     . PATH_SEPARATOR . $root . '/dependencies'
     . PATH_SEPARATOR . $root . '/sources'
     . PATH_SEPARATOR . get_include_path()
