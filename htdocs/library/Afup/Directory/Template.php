@@ -1,6 +1,6 @@
 <?php
 
-Afup::includeOnce('../classes/smarty/Smarty.class.php');
+Afup::includeOnce('smarty/Smarty.class.php');
 
 /**
  * Moteur de template de l'annuaire, basé sur smarty. 
