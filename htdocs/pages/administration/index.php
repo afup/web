@@ -47,7 +47,7 @@ $_GET['page'] != 'message' and $_GET['page'] != 'inscription') {
     exit;
 }
 // On vérifie que l'utilisateur a le droit d'accéder à la page
-require_once '../../include/pages.inc.php';
+require_once dirname(__FILE__) . '/../../../configs/application/pages.php';
 $droits->chargerToutesLesPages($pages);
 if (!$droits->verifierDroitSurLaPage($_GET['page'])) {
     afficherMessage("Vous n'avez pas le droit d'accéder à cette page", 'index.php');
