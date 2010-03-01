@@ -25,6 +25,8 @@ define('AFUP_CHEMIN_RACINE', realpath(dirname(__FILE__) . '/../') . '/');
 set_include_path(
                        AFUP_CHEMIN_RACINE . 'classes'
     . PATH_SEPARATOR . AFUP_CHEMIN_RACINE . 'classes/pear'
+    . PATH_SEPARATOR . AFUP_CHEMIN_RACINE . '../dependencies'
+    . PATH_SEPARATOR . AFUP_CHEMIN_RACINE . '../sources'
     . PATH_SEPARATOR . get_include_path()
 );
 
