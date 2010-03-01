@@ -18,7 +18,7 @@
 // 1. chargement des classes nécessaires
 
 require '../../library/Afup.php';
-require '../../include/configuration.inc.php';
+require dirname(__FILE__) . '/../../../configs/application/config.php';
 
 if ($_SERVER["SERVER_NAME"] === 'localhost') {
     $dsn  = 'mysql:dbname=afup;host=localhost';

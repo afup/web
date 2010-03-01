@@ -45,7 +45,7 @@ require_once 'Afup/fonctions.php';
 
 require_once 'Afup/AFUP_Configuration.php';
 
-$conf = new AFUP_Configuration($root . '/htdocs/include/configuration.inc.php');
+$conf = new AFUP_Configuration($root . '/configs/application/config.php');
 
 // mets la configuration dans une 'clé de registre' accessible à tout moment
 
