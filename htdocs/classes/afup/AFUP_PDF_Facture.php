@@ -1,6 +1,6 @@
 <?php
 
-require_once AFUP_CHEMIN_RACINE . '/classes/fpdf/fpdf.php';
+require_once 'fpdf/fpdf.php';
 
 class AFUP_PDF_Facture extends FPDF
 {
