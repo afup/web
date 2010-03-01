@@ -133,7 +133,7 @@ class AFUP_Inscriptions_Forum
 
     public function envoyerEmailConvocation($id_forum)
     {
-        require_once 'afup/AFUP_Configuration.php';
+        require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $requete  = 'SELECT';
@@ -333,7 +333,7 @@ L'équipe organisatrice";
 	function ajouterRappel($email, $id_forum = null)
     {
         if ($id_forum == null) {
-			require_once 'afup/AFUP_Forum.php';
+			require_once 'Afup/AFUP_Forum.php';
 			$forum = new AFUP_Forum($this->_bdd);
         	$id_forum = $forum->obtenirDernier();
         }

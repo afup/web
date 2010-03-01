@@ -1,6 +1,6 @@
 <?php
-require_once 'afup/AFUP_Configuration.php';
-require_once 'afup/AFUP_Base_De_Donnees.php';
+require_once 'Afup/AFUP_Configuration.php';
+require_once 'Afup/AFUP_Base_De_Donnees.php';
 
 class AFUP_Site_Base_De_Donnees extends AFUP_Base_De_Donnees {
     function __construct() {

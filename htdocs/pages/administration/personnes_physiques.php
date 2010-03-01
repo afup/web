@@ -7,7 +7,7 @@ $tris_valides = array('nom' => 'nom <sens>, prenom',
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'afup/AFUP_Personnes_Physiques.php';
+require_once 'Afup/AFUP_Personnes_Physiques.php';
 $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
 
 if ($action == 'lister') {
@@ -40,9 +40,9 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de l\'envoi d\'un nouveau mot de passe à la personne physique', 'index.php?page=personnes_physiques&action=lister', true);
     }
 } else {
-    require_once 'afup/AFUP_Personnes_Morales.php';
+    require_once 'Afup/AFUP_Personnes_Morales.php';
     $personnes_morales = new AFUP_Personnes_Morales($bdd);
-    require_once 'afup/AFUP_Pays.php';
+    require_once 'Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();

@@ -1,9 +1,9 @@
 <?php
 require_once '../../include/prepend.inc.php';
 
-require_once 'afup/AFUP_Base_De_Donnees.php';
-require_once 'afup/AFUP_Cotisations.php';
-require_once 'afup/AFUP_Logs.php';
+require_once 'Afup/AFUP_Base_De_Donnees.php';
+require_once 'Afup/AFUP_Cotisations.php';
+require_once 'Afup/AFUP_Logs.php';
 AFUP_Logs::initialiser($bdd, 0);
 
 $cotisations = new AFUP_Cotisations($bdd);

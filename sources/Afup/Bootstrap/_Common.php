@@ -43,7 +43,7 @@ require_once 'Afup/fonctions.php';
 
 // chargement de la configuration
 
-require_once 'afup/AFUP_Configuration.php';
+require_once 'Afup/AFUP_Configuration.php';
 
 $conf = new AFUP_Configuration($root . '/htdocs/include/configuration.inc.php');
 
@@ -53,7 +53,7 @@ $GLOBALS['AFUP_CONF'] = $conf;
 
 // initialisation de la couche d'abstraction de la base de données
 
-require_once 'afup/AFUP_Base_De_Donnees.php';
+require_once 'Afup/AFUP_Base_De_Donnees.php';
 
 $bdd = new AFUP_Base_De_Donnees(
     $conf->obtenir('bdd|hote'),

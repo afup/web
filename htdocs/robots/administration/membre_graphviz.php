@@ -17,7 +17,7 @@ require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/Cli.php';
 
 // logique interne du script
 
-require_once 'afup/AFUP_Tags.php';
+require_once 'Afup/AFUP_Tags.php';
 $tags = new AFUP_Tags($bdd);
 
 if (isset($_GET['membres'])) {

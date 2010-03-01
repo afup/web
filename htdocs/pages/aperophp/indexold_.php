@@ -17,7 +17,7 @@ require_once dirname(__FILE__) . '/../../include/prepend.inc.php';
 
 // 1. chargement des classes nécessaires
 
-require_once 'afup/AFUP_Aperos.php';
+require_once 'Afup/AFUP_Aperos.php';
 
 // 2. récupération et filtrage des données
 

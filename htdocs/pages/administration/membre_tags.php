@@ -3,10 +3,10 @@
 $action = verifierAction(array('modifier', 'supprimer', 'contempler'));
 $smarty->assign('action', $action);
 
-require_once 'afup/AFUP_Tags.php';
+require_once 'Afup/AFUP_Tags.php';
 $tags = new AFUP_Tags($bdd);
 
-require_once 'afup/AFUP_Personnes_Physiques.php';
+require_once 'Afup/AFUP_Personnes_Physiques.php';
 $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
 
 $smarty->assign('tags_utilises', $tags->obtenirListeUnique());

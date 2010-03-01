@@ -1,5 +1,5 @@
 <?php
-require_once 'afup/AFUP_Inscriptions_Forum.php';
+require_once 'Afup/AFUP_Inscriptions_Forum.php';
 
 class AFUP_Facturation_Forum
 {
@@ -246,14 +246,14 @@ class AFUP_Facturation_Forum
         $requete    = 'SELECT * FROM afup_inscription_forum WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-        require_once 'afup/AFUP_Configuration.php';
+        require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'afup/AFUP_Pays.php';
+        require_once 'Afup/AFUP_Pays.php';
         $pays = new AFUP_Pays($this->_bdd);
 
         // Construction du PDF
-        require_once 'afup/AFUP_PDF_Facture.php';
+        require_once 'Afup/AFUP_PDF_Facture.php';
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
@@ -363,7 +363,7 @@ class AFUP_Facturation_Forum
      */
     function envoyerFacture($reference)
     {
-        require_once 'afup/AFUP_Configuration.php';
+        require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
         require_once 'phpmailer/class.phpmailer.php';

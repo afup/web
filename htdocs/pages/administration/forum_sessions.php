@@ -5,9 +5,9 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once 'afup/AFUP_AppelConferencier.php';
-require_once 'afup/AFUP_Forum.php';
-require_once 'afup/AFUP_Droits.php';
+require_once 'Afup/AFUP_AppelConferencier.php';
+require_once 'Afup/AFUP_Forum.php';
+require_once 'Afup/AFUP_Droits.php';
 
 $forum = new AFUP_Forum($bdd);
 $forum_appel = new AFUP_AppelConferencier($bdd);
@@ -89,7 +89,7 @@ if ($action == 'lister') {
 	    }
     }
 
-    require_once 'afup/AFUP_Configuration.php';
+    require_once 'Afup/AFUP_Configuration.php';
     $conf = $GLOBALS['AFUP_CONF'];
 
     if (in_array($_SESSION['afup_login'], $conf->obtenir('bureau'))
@@ -165,7 +165,7 @@ if ($action == 'lister') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } else {
-    require_once 'afup/AFUP_Pays.php';
+    require_once 'Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();

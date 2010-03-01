@@ -5,7 +5,7 @@ $tris_valides = array('date', 'organisateur', 'ville');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'afup/AFUP_Aperos.php';
+require_once 'Afup/AFUP_Aperos.php';
 $aperos = new AFUP_Aperos($bdd);
 
 if ($action == 'lister') {

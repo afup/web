@@ -374,7 +374,7 @@ class AFUP_AppelConferencier
 
         $sessionsAvecResumes = array();
         
-        require_once 'afup/AFUP_Forum.php';
+        require_once 'Afup/AFUP_Forum.php';
         $forum = new AFUP_Forum($this->_bdd);
         $forum_details = $forum->obtenir($id_forum);
         $annee = $forum_details['forum_annee'];
@@ -633,7 +633,7 @@ class AFUP_AppelConferencier
      */
     public function envoyerEmail($session_id)
     {
-        require_once 'afup/AFUP_Configuration.php';
+        require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $requete = '
@@ -724,7 +724,7 @@ class AFUP_AppelConferencier
         $mail = new PHPMailer;
         $mail->AddAddress($resultat['email'], $resultat['nom'] . " " . $resultat['prenom']);
 
-        require_once 'afup/AFUP_Configuration.php';
+        require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $mail->From     = $configuration->obtenir('mails|email_expediteur');

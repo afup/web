@@ -1,5 +1,5 @@
 <?php
-require_once 'afup/AFUP_iAuthentification.php';
+require_once 'Afup/AFUP_iAuthentification.php';
 
 /**
   * Gestion de l'authentification pour le Wiki de l'afup

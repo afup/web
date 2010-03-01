@@ -3,9 +3,9 @@
 ini_set('display_errors',TRUE);
 require_once '../../include/prepend.inc.php';
 
-require_once 'afup/AFUP_Pays.php';
+require_once 'Afup/AFUP_Pays.php';
 $pays = new AFUP_Pays($bdd);
-require_once 'afup/AFUP_Inscriptions_Forum.php';
+require_once 'Afup/AFUP_Inscriptions_Forum.php';
 $inscriptions = new AFUP_Inscriptions_Forum($bdd);
 
 // S'il ne reste plus de place, on ne permet pas l'inscription

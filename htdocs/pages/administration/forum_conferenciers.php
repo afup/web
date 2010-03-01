@@ -5,10 +5,10 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once 'afup/AFUP_AppelConferencier.php';
-require_once 'afup/AFUP_Inscriptions_Forum.php';
-require_once 'afup/AFUP_Facturation_Forum.php';
-require_once 'afup/AFUP_Forum.php';
+require_once 'Afup/AFUP_AppelConferencier.php';
+require_once 'Afup/AFUP_Inscriptions_Forum.php';
+require_once 'Afup/AFUP_Facturation_Forum.php';
+require_once 'Afup/AFUP_Forum.php';
 
 $forum = new AFUP_Forum($bdd);
 $forum_appel = new AFUP_AppelConferencier($bdd);
@@ -169,7 +169,7 @@ elseif ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression du conférencier', 'index.php?page=forum_conferenciers&action=lister', true);
     }
 } else {
-    require_once 'afup/AFUP_Pays.php';
+    require_once 'Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();

@@ -1,7 +1,7 @@
 <?php
 require_once '../../include/prepend.inc.php';
 // Gestion des droits
-require_once 'afup/AFUP_Utils.php';
+require_once 'Afup/AFUP_Utils.php';
 $droits = AFUP_Utils::fabriqueDroits($bdd);
 
 if (!isset($_GET['page'])) {
@@ -11,7 +11,7 @@ if (!empty($_POST['connexion'])) {
     $droits->seConnecter($_POST['utilisateur'], $_POST['mot_de_passe']);
 }
 if (!empty($_POST['motdepasse_perdu'])) {
-    require_once 'afup/AFUP_Personnes_Physiques.php';
+    require_once 'Afup/AFUP_Personnes_Physiques.php';
     $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
     $result = $personnes_physiques->envoyerMotDePasse($_POST['utilisateur'], $_POST['email']);
 
@@ -25,7 +25,7 @@ if (!empty($_POST['motdepasse_perdu'])) {
 
 if (!empty($_POST['inscription'])) {
     // Initialisation de AFUP_Log
-    require_once 'afup/AFUP_Logs.php';
+    require_once 'Afup/AFUP_Logs.php';
     AFUP_Logs::initialiser($bdd, $droits->obtenirIdentifiant());
 	require_once 'inscription.php';
 }
@@ -53,7 +53,7 @@ if (!$droits->verifierDroitSurLaPage($_GET['page'])) {
     afficherMessage("Vous n'avez pas le droit d'accéder à cette page", 'index.php');
 }
 // Initialisation de AFUP_Log
-require_once 'afup/AFUP_Logs.php';
+require_once 'Afup/AFUP_Logs.php';
 AFUP_Logs::initialiser($bdd, $droits->obtenirIdentifiant());
 // On inclut le fichier PHP de la page
 $smarty->assign('ctx_login', $_GET['ctx_login']);

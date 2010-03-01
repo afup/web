@@ -4,7 +4,7 @@ $tris_valides = array('titre', 'date');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'afup/AFUP_Site.php';
+require_once 'Afup/AFUP_Site.php';
 
 $feuilles = new AFUP_Site_Feuilles($bdd);
 

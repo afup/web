@@ -2,11 +2,11 @@
 $action = verifierAction(array('payer', 'telecharger_facture', 'envoyer_facture'));
 $smarty->assign('action', $action);
 
-require_once 'afup/AFUP_Personnes_Morales.php';
-require_once 'afup/AFUP_Personnes_Physiques.php';
+require_once 'Afup/AFUP_Personnes_Morales.php';
+require_once 'Afup/AFUP_Personnes_Physiques.php';
 $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
 
-require_once 'afup/AFUP_Pays.php';
+require_once 'Afup/AFUP_Pays.php';
 $pays = new AFUP_Pays($bdd);
 
 $formulaire = &instancierFormulaire();

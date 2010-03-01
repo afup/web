@@ -1,6 +1,6 @@
 <?php
 require_once '../../include/prepend.inc.php';
-require_once 'afup/AFUP_AppelConferencier.php';
+require_once 'Afup/AFUP_AppelConferencier.php';
 
 $fin_de_lappel = mktime(23, 59, 59, 5, 11, 2008);
 

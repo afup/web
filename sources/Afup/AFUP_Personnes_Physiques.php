@@ -1,5 +1,5 @@
 <?php
-require_once 'afup/AFUP_Droits.php';
+require_once 'Afup/AFUP_Droits.php';
 // Voir la classe AFUP_Personnes_Morales
 define('AFUP_PERSONNES_PHYSIQUES',          0);
 define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 20);
@@ -353,7 +353,7 @@ class AFUP_Personnes_Physiques {
      */
     function supprimer($id)
     {
-        require_once 'afup/AFUP_Cotisations.php';
+        require_once 'Afup/AFUP_Cotisations.php';
         $cotisation = new AFUP_Cotisations($this->_bdd);
         $cotisation_personne_physisque = $cotisation->obtenirListe(AFUP_PERSONNES_PHYSIQUES, $id, 'id');
 
@@ -374,7 +374,7 @@ class AFUP_Personnes_Physiques {
      */
 	function obtenirDerniereCotisation($id_personne_physique)
 	{
-		require_once 'afup/AFUP_Cotisations.php';
+		require_once 'Afup/AFUP_Cotisations.php';
 
         $requete  = 'SELECT';
         $requete .= '  id_personne_morale ';

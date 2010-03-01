@@ -3,7 +3,7 @@ require_once '../../include/prepend.inc.php';
 
 setlocale(LC_TIME, 'fr_FR');
 
-require_once 'afup/AFUP_AppelConferencier.php';
+require_once 'Afup/AFUP_AppelConferencier.php';
 
 $forum_appel = new AFUP_AppelConferencier($bdd);
 $sessions = $forum_appel->obtenirListeSessionsAvecResumes(2);

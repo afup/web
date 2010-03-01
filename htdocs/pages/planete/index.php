@@ -17,8 +17,8 @@ require_once dirname(__FILE__) . '/../../include/prepend.inc.php';
 
 // 1. chargement des classes nécessaires
 
-require_once 'afup/AFUP_Planete_Billet.php';
-require_once 'afup/AFUP_Planete_Flux.php';
+require_once 'Afup/AFUP_Planete_Billet.php';
+require_once 'Afup/AFUP_Planete_Flux.php';
 
 // 2. récupération et filtrage des données
 

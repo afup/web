@@ -24,7 +24,7 @@ require_once dirname(__FILE__) . '/_Common.php';
 
 define('CHEMIN_APPLICATION', 'http://localhost/gestafup/trunk/site/');
 
-require_once 'afup/AFUP_Base_De_Donnees.php';
+require_once 'Afup/AFUP_Base_De_Donnees.php';
 
 require_once 'simpletest/web_tester.php';
 require_once 'simpletest/reporter.php';

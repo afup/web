@@ -2,8 +2,8 @@
 
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
 
-require_once 'afup/AFUP_Base_De_Donnees.php';
-require_once 'afup/AFUP_Site.php';
+require_once 'Afup/AFUP_Base_De_Donnees.php';
+require_once 'Afup/AFUP_Site.php';
 
 class tests_Site_Article extends UnitTestCase {
     public $article = null;

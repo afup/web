@@ -3,9 +3,9 @@
 $action = verifierAction(array('ausculter', 'calculer'));
 $smarty->assign('action', $action);
 
-require_once 'afup/AFUP_Personnes_Physiques.php';
-require_once 'afup/AFUP_Planete_Billet.php';
-require_once 'afup/AFUP_Oeuvres.php';
+require_once 'Afup/AFUP_Personnes_Physiques.php';
+require_once 'Afup/AFUP_Planete_Billet.php';
+require_once 'Afup/AFUP_Oeuvres.php';
 $oeuvres = new AFUP_Oeuvres($bdd);
 
 if ($action == 'calculer') {

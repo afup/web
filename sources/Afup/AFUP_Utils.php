@@ -11,8 +11,8 @@ class AFUP_Utils {
      * @return object    AFUP_Droits
      */
     public static function fabriqueDroits($bdd) {
-        require_once 'afup/AFUP_Droits.php';
-        require_once 'afup/AFUP_AuthentificationWiki.php';
+        require_once 'Afup/AFUP_Droits.php';
+        require_once 'Afup/AFUP_AuthentificationWiki.php';
 
         // Gestion de l'authentification spécifique au Wiki
         $authentificationWiki = new AFUP_AuthentificationWiki();

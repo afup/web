@@ -11,8 +11,8 @@
  * @group    Controllers
  */
 
-require_once 'afup/AFUP_Aperos.php';
-require_once 'afup/AFUP_Aperos_Inscrits.php';
+require_once 'Afup/AFUP_Aperos.php';
+require_once 'Afup/AFUP_Aperos_Inscrits.php';
 
 class IndexController extends Zend_Controller_Action
 {

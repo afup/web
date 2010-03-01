@@ -3,10 +3,10 @@
 ini_set('display_errors',TRUE);
 require_once '../../include/prepend.inc.php';
 
-require_once 'afup/AFUP_Pays.php';
-require_once 'afup/AFUP_Forum.php';
-require_once 'afup/AFUP_Inscriptions_Forum.php';
-require_once 'afup/AFUP_Facturation_Forum.php';
+require_once 'Afup/AFUP_Pays.php';
+require_once 'Afup/AFUP_Forum.php';
+require_once 'Afup/AFUP_Inscriptions_Forum.php';
+require_once 'Afup/AFUP_Facturation_Forum.php';
 
 $pays = new AFUP_Pays($bdd);
 $forum = new AFUP_Forum($bdd);
