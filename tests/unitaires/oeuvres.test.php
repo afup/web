@@ -1,12 +1,13 @@
 <?php
 
-require_once dirname(__FILE__)."/../simpletest/autorun.php";
-require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Base_De_Donnees.php";
-require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Personnes_Physiques.php";
-require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Oeuvres.php";
-require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Logs.php";
-require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Planete_Flux.php";
-require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Planete_Billet.php";
+require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
+
+require_once 'afup/AFUP_Base_De_Donnees.php';
+require_once 'afup/AFUP_Personnes_Physiques.php';
+require_once 'afup/AFUP_Oeuvres.php';
+require_once 'afup/AFUP_Logs.php';
+require_once 'afup/AFUP_Planete_Flux.php';
+require_once 'afup/AFUP_Planete_Billet.php';
 
 class tests_Oeuvres extends UnitTestCase {
     public $bdd;

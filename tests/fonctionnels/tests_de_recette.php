@@ -1,23 +1,12 @@
 <?php
 
-define('AFUP_CHEMIN_RACINE', dirname(__FILE__) . '/../site/');
-define('CHEMIN_APPLICATION', 'http://localhost/gestafup/trunk/site/');
-
-require_once AFUP_CHEMIN_RACINE . 'include/configuration.inc.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Base_De_Donnees.php';
-
-require_once 'simpletest/web_tester.php';
-require_once 'simpletest/reporter.php';
-require_once 'simpletest/browser.php';
+require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Functional.php';
 
 class TestAdministration extends WebTestCase {
     
     function setUp() {
     	global $configuration;
-		$bdd = new AFUP_Base_De_Donnees($configuration['bdd']['hote'],
-	                                $configuration['bdd']['base'],
-	                                $configuration['bdd']['utilisateur'],
-	                                $configuration['bdd']['mot_de_passe']);
+		$bdd = $GLOBALS['AFUP_DB'];
         $bdd->executerFichier('../sql/desinstallation.sql');
         $bdd->executerFichier('../sql/installation.sql');
 
@@ -30,17 +19,17 @@ class TestAdministration extends WebTestCase {
 
     function testPasDeConnexionAvecMauvaisMotDePasse() {
         $this->assertTitle('Accueil - Administration AFUP');
-        $this->clickLink('Se déconnecter');
+        $this->clickLink('Se dï¿½connecter');
         $this->setField('utilisateur', 'bidon');
         $this->setField('mot_de_passe', 'bidon');
         $this->clickSubmit('Se connecter');
         $this->assertTitle('Connexion - Administration AFUP');
-        $this->assertWantedPattern('/La connexion a échoué./');
+        $this->assertWantedPattern('/La connexion a ï¿½chouï¿½./');
     }
 
     function testDeconnexion() {
         $this->assertTitle('Accueil - Administration AFUP');
-        $this->clickLink('Se déconnecter');
+        $this->clickLink('Se dï¿½connecter');
         $this->assertTitle('Connexion - Administration AFUP');
     }
 
@@ -116,7 +105,7 @@ class TestAdministration extends WebTestCase {
         $this->clickSubmit('Ajouter');
         $this->clickLink('Poursuivre');
         $this->assertWantedPattern('/10.00 &euro;/');
-        $this->assertWantedPattern('/par chèque/');
+        $this->assertWantedPattern('/par chï¿½que/');
         $this->clickLink('Ajouter une cotisation');
         $this->setField('montant', 100);
         $this->setField('date_fin[d]', 1);
@@ -126,11 +115,9 @@ class TestAdministration extends WebTestCase {
         $this->clickLink('Poursuivre');
         $this->showSource();
         $this->assertWantedPattern('/100.00 &euro;/');
-        $this->assertWantedPattern('/en espèces/');
+        $this->assertWantedPattern('/en espï¿½ces/');
 	}
 }
 	
 $test = &new TestAdministration();
 $test->run(new HtmlReporter());
-
-?>

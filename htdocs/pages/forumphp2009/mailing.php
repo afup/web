@@ -1,7 +1,7 @@
 <?php
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Mailing.php';
+require_once 'afup/AFUP_Mailing.php';
 $mailing = new AFUP_Mailing($bdd);
 $message = '';
 $email = isset($_GET['unsuscribe'])?$_GET['unsuscribe']:false;

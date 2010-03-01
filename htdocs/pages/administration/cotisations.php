@@ -4,8 +4,8 @@ $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'te
 $smarty->assign('action', $action);
 
 // Personne
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Physiques.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Morales.php';
+require_once 'afup/AFUP_Personnes_Physiques.php';
+require_once 'afup/AFUP_Personnes_Morales.php';
 if ($_GET['type_personne'] == AFUP_PERSONNES_PHYSIQUES) {
     $personnes = new AFUP_Personnes_Physiques($bdd);
 } else {
@@ -17,7 +17,7 @@ $personne = $personnes->obtenir($_GET['id_personne']);
 $smarty->assign('personne', $personne);
 
 // Cotisations
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Cotisations.php';
+require_once 'afup/AFUP_Cotisations.php';
 $cotisations = new AFUP_Cotisations($bdd);
 
 if ($action == 'lister') {

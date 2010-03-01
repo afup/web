@@ -5,7 +5,7 @@ $tris_valides = array('nom', 'entreprise', 'email', 'telephone', 'presence', 'co
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Rendez_Vous.php';
+require_once 'afup/AFUP_Rendez_Vous.php';
 $rendez_vous = new AFUP_Rendez_Vous($bdd);
 
 if ($action == 'lister') {

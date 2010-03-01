@@ -5,9 +5,9 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_AppelConferencier.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Forum.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Droits.php';
+require_once 'afup/AFUP_AppelConferencier.php';
+require_once 'afup/AFUP_Forum.php';
+require_once 'afup/AFUP_Droits.php';
 
 $forum = new AFUP_Forum($bdd);
 $forum_appel = new AFUP_AppelConferencier($bdd);
@@ -89,8 +89,8 @@ if ($action == 'lister') {
 	    }
     }
 
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-    $conf = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+    require_once 'afup/AFUP_Configuration.php';
+    $conf = $GLOBALS['AFUP_CONF'];
 
     if (in_array($_SESSION['afup_login'], $conf->obtenir('bureau'))
             && $forum_appel->dejaVote($droits->obtenirIdentifiant(), $id) === false) {
@@ -165,7 +165,7 @@ if ($action == 'lister') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } else {
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
+    require_once 'afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();

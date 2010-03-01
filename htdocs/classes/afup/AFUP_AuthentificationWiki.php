@@ -1,5 +1,5 @@
 <?php
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_iAuthentification.php';
+require_once 'afup/AFUP_iAuthentification.php';
 
 /**
   * Gestion de l'authentification pour le Wiki de l'afup

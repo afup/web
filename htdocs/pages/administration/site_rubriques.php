@@ -5,8 +5,8 @@ $tris_valides = array('titre', 'date');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Site.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Physiques.php';
+require_once 'afup/AFUP_Site.php';
+require_once 'afup/AFUP_Personnes_Physiques.php';
 
 $rubriques = new AFUP_Site_Rubriques($bdd);
 $personnes_physiques = new AFUP_Personnes_Physiques($bdd);

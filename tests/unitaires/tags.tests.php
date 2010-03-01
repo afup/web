@@ -1,7 +1,8 @@
 <?php
 
-require_once dirname(__FILE__)."/../simpletest/autorun.php";
-require_once dirname(__FILE__)."/../../htdocs/classes/afup/AFUP_Tags.php";
+require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
+
+require_once 'afup/AFUP_Tags.php';
 
 class tests_Tags extends UnitTestCase {
     function __construct() {
@@ -126,5 +127,3 @@ class tests_Tags extends UnitTestCase {
         $this->assertPattern("/deuxl�/", $this->tags->preparerFichierDot($this->elements));
     }
 }
-
-?>

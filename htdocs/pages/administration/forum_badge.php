@@ -2,7 +2,7 @@
 
 require_once '../../include/prepend.inc.php';
 // Gestion des droits
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Utils.php';
+require_once 'afup/AFUP_Utils.php';
 $droits = AFUP_Utils::fabriqueDroits($bdd);
 
 if (!$droits->estConnecte() ) {
@@ -12,9 +12,9 @@ if (!$droits->estConnecte() ) {
 
 
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Inscriptions_Forum.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Facturation_Forum.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Forum.php';
+require_once 'afup/AFUP_Inscriptions_Forum.php';
+require_once 'afup/AFUP_Facturation_Forum.php';
+require_once 'afup/AFUP_Forum.php';
 
 $forum = new AFUP_Forum($bdd);
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);

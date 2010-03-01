@@ -374,12 +374,12 @@ class AFUP_AppelConferencier
 
         $sessionsAvecResumes = array();
         
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Forum.php';
+        require_once 'afup/AFUP_Forum.php';
         $forum = new AFUP_Forum($this->_bdd);
         $forum_details = $forum->obtenir($id_forum);
         $annee = $forum_details['forum_annee'];
         
-        $repertoire = new DirectoryIterator(dirname(__FILE__)."/../../templates/forumphp".$annee."/resumes/");
+        $repertoire = new DirectoryIterator(dirname(__FILE__)."/../../htdocs/templates/forumphp".$annee."/resumes/");
         foreach($repertoire as $file) {
             if (preg_match("/^[1-9]/", $file->getFilename())) {
                 $id = (int)$file->getFilename();
@@ -633,8 +633,8 @@ class AFUP_AppelConferencier
      */
     public function envoyerEmail($session_id)
     {
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
         $requete = '
         select prenom, nom, email
@@ -724,8 +724,8 @@ class AFUP_AppelConferencier
         $mail = new PHPMailer;
         $mail->AddAddress($resultat['email'], $resultat['nom'] . " " . $resultat['prenom']);
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
         $mail->From     = $configuration->obtenir('mails|email_expediteur');
         $mail->FromName = $configuration->obtenir('mails|nom_expediteur');

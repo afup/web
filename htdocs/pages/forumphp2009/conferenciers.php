@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/_config.inc.php';
 
 setlocale(LC_TIME, 'fr_FR');
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_AppelConferencier.php';
+require_once 'afup/AFUP_AppelConferencier.php';
 
 $forum_appel = new AFUP_AppelConferencier($bdd);
 $type = isset($_GET['type'])?$_GET['type']:'session';

@@ -5,8 +5,8 @@ $tris_valides = array('nom', 'url', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Physiques.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Planete_Flux.php';
+require_once 'afup/AFUP_Personnes_Physiques.php';
+require_once 'afup/AFUP_Planete_Flux.php';
 $planete_flux = new AFUP_Planete_Flux($bdd);
 
 if ($action == 'lister') {

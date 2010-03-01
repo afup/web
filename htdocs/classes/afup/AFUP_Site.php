@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__) . '/AFUP_Configuration.php';
-require_once dirname(__FILE__) . '/AFUP_Base_De_Donnees.php';
+require_once 'afup/AFUP_Configuration.php';
+require_once 'afup/AFUP_Base_De_Donnees.php';
 
 class AFUP_Site_Base_De_Donnees extends AFUP_Base_De_Donnees {
     function __construct() {
-        $conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+        $conf = $GLOBALS['AFUP_CONF'];
         parent::AFUP_Base_De_Donnees($conf->obtenir('bdd|hote'),
                                      $conf->obtenir('bdd|base'),
                                      $conf->obtenir('bdd|utilisateur'),
@@ -290,13 +290,13 @@ class AFUP_Site_Header {
     }
 
     function addCSS($file) {
-        $conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+        $conf = $GLOBALS['AFUP_CONF'];
         $file = $conf->obtenir('web|path').'/'.$file;
         $this->css .= '<link rel="stylesheet" href="'.$file.'" type="text/css" media="all" />';
     }
 
     function addRSS() {
-        $conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+        $conf = $GLOBALS['AFUP_CONF'];
         $rssFile = $conf->obtenir('web|path').'/'.$conf->obtenir('site|prefix').'rss.php';
         $this->rss = '<link rel="alternate" type="application/rss+xml" href="' . $rssFile .'" title="Derni&egraves actus de l\'AFUP"/>';
     }
@@ -310,7 +310,7 @@ class AFUP_Site_Footer {
     private $conf;
 
     function __construct() {
-        $this->conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+        $this->conf = $GLOBALS['AFUP_CONF'];
     }
 
     function logos() {
@@ -357,7 +357,7 @@ class AFUP_Site_Branche {
         if ($conf) {
             $this->conf = $conf;
         } else {
-            $this->conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+            $this->conf = $GLOBALS['AFUP_CONF'];
         }
     }
 
@@ -584,7 +584,7 @@ class AFUP_Site_Article {
         if ($conf) {
             $this->conf = $conf;
         } else {
-            $this->conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+            $this->conf = $GLOBALS['AFUP_CONF'];
         }
     }
 
@@ -616,7 +616,7 @@ class AFUP_Site_Article {
     }
 
     function image_sous_navigation() {
-        $conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+        $conf = $GLOBALS['AFUP_CONF'];
         return '<img src="'.$conf->obtenir('web|path').'/templates/site/images/'.$this->rubrique->icone.'" />';
     }
 
@@ -847,7 +847,7 @@ class AFUP_Site_Rubrique {
         if ($conf) {
             $this->conf = $conf;
         } else {
-            $this->conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+            $this->conf = $GLOBALS['AFUP_CONF'];
         }
     }
 
@@ -882,7 +882,7 @@ class AFUP_Site_Rubrique {
     }
 
     function image_sous_navigation() {
-        $conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+        $conf = $GLOBALS['AFUP_CONF'];
         return '<img src="'.$conf->obtenir('web|path').'/templates/site/images/'.$this->icone.'" />';
     }
 

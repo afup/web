@@ -32,8 +32,7 @@ define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
  * @author Olivier Hoareau <olivier@phppro.fr>
  */
 set_include_path(
-                       $root . '/htdocs/classes'
-    . PATH_SEPARATOR . $root . '/dependencies'
+                       $root . '/dependencies'
     . PATH_SEPARATOR . $root . '/sources'
     . PATH_SEPARATOR . get_include_path()
 );
@@ -48,6 +47,9 @@ require_once 'afup/AFUP_Configuration.php';
 
 $conf = new AFUP_Configuration($root . '/htdocs/include/configuration.inc.php');
 
+// mets la configuration dans une 'clé de registre' accessible à tout moment
+
+$GLOBALS['AFUP_CONF'] = $conf;
 
 // initialisation de la couche d'abstraction de la base de données
 
@@ -59,3 +61,7 @@ $bdd = new AFUP_Base_De_Donnees(
     $conf->obtenir('bdd|utilisateur'),
     $conf->obtenir('bdd|mot_de_passe')
 );
+
+// mets la connexion db dans une 'clé de registre' accessible à tout moment
+
+$GLOBALS['AFUP_DB'] = $bdd;

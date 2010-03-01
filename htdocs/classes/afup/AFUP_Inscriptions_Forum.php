@@ -133,8 +133,8 @@ class AFUP_Inscriptions_Forum
 
     public function envoyerEmailConvocation($id_forum)
     {
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
         $requete  = 'SELECT';
         $requete .= '  i.*, f.societe, md5(CONCAT(i.id, i.reference)) as md5key ';
@@ -333,7 +333,7 @@ L'équipe organisatrice";
 	function ajouterRappel($email, $id_forum = null)
     {
         if ($id_forum == null) {
-			require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Forum.php';
+			require_once 'afup/AFUP_Forum.php';
 			$forum = new AFUP_Forum($this->_bdd);
         	$id_forum = $forum->obtenirDernier();
         }

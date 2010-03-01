@@ -1,7 +1,7 @@
 <?php
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Morales.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Physiques.php';
+require_once 'afup/AFUP_Personnes_Morales.php';
+require_once 'afup/AFUP_Personnes_Physiques.php';
 
 define('AFUP_COTISATIONS_REGLEMENT_ESPECES' , 0);
 define('AFUP_COTISATIONS_REGLEMENT_CHEQUE'  , 1);
@@ -191,8 +191,8 @@ class AFUP_Cotisations
 
 	function notifierRegelementEnLigneAuTresorier($cmd, $total, $autorisation, $transaction)
 	{
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
 		list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
 
@@ -297,11 +297,11 @@ class AFUP_Cotisations
         $requete  = 'SELECT * FROM ' . $table . ' WHERE id=' . $cotisation['id_personne'];
         $personne = $this->_bdd->obtenirEnregistrement($requete);
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
         // Construction du PDF
-        require_once AFUP_CHEMIN_RACINE . '/classes/afup/AFUP_PDF_Facture.php';
+        require_once 'afup/AFUP_PDF_Facture.php';
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
@@ -384,8 +384,8 @@ class AFUP_Cotisations
      */
     function envoyerFacture($id_cotisation)
     {
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
         require_once 'phpmailer/class.phpmailer.php';
 	    $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
@@ -565,8 +565,8 @@ class AFUP_Cotisations
      */
     function relancer($type_personne, $id_personne)
     {
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
         require_once 'phpmailer/class.phpmailer.php';
         if (AFUP_PERSONNES_MORALES == $type_personne) {

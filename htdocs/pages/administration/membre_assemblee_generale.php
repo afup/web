@@ -1,7 +1,7 @@
 <?php
 $action = 'modifier';
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Assemblee_Generale.php';
+require_once 'afup/AFUP_Assemblee_Generale.php';
 $assemblee_generale = new AFUP_Assemblee_Generale($bdd);
 
 $timestamp = $assemblee_generale->obternirDerniereDate();

@@ -1,5 +1,5 @@
 <?php
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Inscriptions_Forum.php';
+require_once 'afup/AFUP_Inscriptions_Forum.php';
 
 class AFUP_Facturation_Forum
 {
@@ -246,14 +246,14 @@ class AFUP_Facturation_Forum
         $requete    = 'SELECT * FROM afup_inscription_forum WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
+        require_once 'afup/AFUP_Pays.php';
         $pays = new AFUP_Pays($this->_bdd);
 
         // Construction du PDF
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_PDF_Facture.php';
+        require_once 'afup/AFUP_PDF_Facture.php';
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
@@ -363,8 +363,8 @@ class AFUP_Facturation_Forum
      */
     function envoyerFacture($reference)
     {
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(AFUP_CHEMIN_RACINE . 'include/configuration.inc.php');
+        require_once 'afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
 
         require_once 'phpmailer/class.phpmailer.php';
         $personne = $this->obtenir($reference, 'email, nom, prenom');

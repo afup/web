@@ -11,11 +11,8 @@ class AFUP_Utils {
      * @return object    AFUP_Droits
      */
     public static function fabriqueDroits($bdd) {
-        if (!defined('AFUP_CHEMIN_RACINE')) {
-        	throw new Exception("AFUP_CHEMIN_RACINE doit être défini.");
-        }
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Droits.php';
-        require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_AuthentificationWiki.php';
+        require_once 'afup/AFUP_Droits.php';
+        require_once 'afup/AFUP_AuthentificationWiki.php';
 
         // Gestion de l'authentification spécifique au Wiki
         $authentificationWiki = new AFUP_AuthentificationWiki();

@@ -179,8 +179,8 @@ class AFUP_Planete_Billet
 
     function avecContenuPertinent($contenu)
     {
-		require_once dirname(__FILE__) . '/../../classes/afup/AFUP_Configuration.php';
-		$conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+		require_once 'afup/AFUP_Configuration.php';
+		$conf = $GLOBALS['AFUP_CONF'];
 
     	$pertinent = AFUP_PLANETE_BILLET_CREUX;
 

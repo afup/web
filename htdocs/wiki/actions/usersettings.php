@@ -30,9 +30,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 if (!isset($_REQUEST["action"])) $_REQUEST["action"] = '';
 
-define('AFUP_CHEMIN_RACINE', '../');
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Base_De_Donnees.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Utils.php';
+require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/OtherToolPlugin.php';
+
+require_once 'afup/AFUP_Base_De_Donnees.php';
+require_once 'afup/AFUP_Utils.php';
 
 if ($_REQUEST["action"] == "logout")
 {

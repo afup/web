@@ -5,7 +5,7 @@ $tris_valides = array('RaisonSociale', 'SIREN', 'SiteWeb');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_AnnuairePro_Membres.php';
+require_once 'afup/AFUP_AnnuairePro_Membres.php';
 $annuairepro_membres = new AFUP_AnnuairePro_Membres($bdd);
 
 if ($action == 'lister') {
@@ -45,7 +45,7 @@ if ($action == 'lister') {
     }
 
 } else {
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
+    require_once 'afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();

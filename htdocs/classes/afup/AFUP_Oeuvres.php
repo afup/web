@@ -9,7 +9,7 @@ class AFUP_Oeuvres {
     function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
-        $this->logsvn = dirname(__FILE__).'/../../cache/robots/oeuvres/logsvn.xml';
+        $this->logsvn = dirname(__FILE__).'/../../htdocs/cache/robots/oeuvres/logsvn.xml';
         if (!file_exists($this->logsvn)) {
             file_put_contents($this->logsvn, "");
         }

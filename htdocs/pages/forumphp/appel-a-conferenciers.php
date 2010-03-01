@@ -1,7 +1,7 @@
 <?php
 require_once '../../include/prepend.inc.php';
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_AppelConferencier.php';
+require_once 'afup/AFUP_AppelConferencier.php';
 
 $formulaire = &instancierFormulaire();
 $formulaire->setDefaults(array('civilite'            => 'M.',

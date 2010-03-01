@@ -3,7 +3,7 @@
 $action = verifierAction(array('lister', 'relancer'));
 $smarty->assign('action', $action);
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Cotisations.php';
+require_once 'afup/AFUP_Cotisations.php';
 $cotisations = new AFUP_Cotisations($bdd);
 
 if ($action == 'lister') {

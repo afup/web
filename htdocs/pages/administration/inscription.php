@@ -6,12 +6,12 @@ $action = verifierAction(array('ajouter'));
 $smarty->assign('action', $action);
 
 if ($action == 'ajouter') {
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Physiques.php';
+    require_once 'afup/AFUP_Personnes_Physiques.php';
     $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
 
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Morales.php';
+    require_once 'afup/AFUP_Personnes_Morales.php';
     $personnes_morales = new AFUP_Personnes_Morales($bdd);
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
+    require_once 'afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();

@@ -6,11 +6,8 @@ setlocale(LC_TIME, 'fr_FR');
 define("DS", DIRECTORY_SEPARATOR);
 
 
-require_once(AFUP_CHEMIN_RACINE ."classes". DS ."afup". DS . "AFUP_Forum.php");
+require_once 'afup/AFUP_Forum.php';
 
-/**
- * Construction des tableaux
- */
 $oAfup = new AFUP_Forum($bdd);
 $sTable = $oAfup->genAgenda($config_forum['annee']);
 $smarty->assign('agenda', $sTable);

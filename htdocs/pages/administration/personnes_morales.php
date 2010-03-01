@@ -5,7 +5,7 @@ $tris_valides = array('raison_sociale', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Morales.php';
+require_once 'afup/AFUP_Personnes_Morales.php';
 $personnes_morales = new AFUP_Personnes_Morales($bdd);
 
 if ($action == 'lister') {
@@ -39,11 +39,11 @@ if ($action == 'lister') {
     /**
      * Personnes physiques
      */
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Physiques.php';
+    require_once 'afup/AFUP_Personnes_Physiques.php';
     $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
     $personnes_physiques_liste = empty($_GET['id'])? array() : $personnes_physiques->obtenirListe('*', 'nom, prenom', false, $_GET['id']);
 
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
+    require_once 'afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();

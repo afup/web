@@ -6,7 +6,7 @@
  
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_AppelConferencier.php';
+require_once 'afup/AFUP_AppelConferencier.php';
 
 $conferences_manager = new AFUP_AppelConferencier($bdd) ; 
 $session = $conferences_manager->obtenirSession($_GET['session_id'], '*') ;

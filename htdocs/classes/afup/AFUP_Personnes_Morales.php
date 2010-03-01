@@ -177,11 +177,11 @@ class AFUP_Personnes_Morales
      */
     function supprimer($id)
     {
-		require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Cotisations.php';
+		require_once 'afup/AFUP_Cotisations.php';
 		$cotisation = new AFUP_Cotisations($this->_bdd);
 		$cotisation_personne_morale = $cotisation->obtenirListe(AFUP_PERSONNES_MORALES, $id, 'id');
 
-		require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Personnes_Physiques.php';
+		require_once 'afup/AFUP_Personnes_Physiques.php';
 		$personne_physique = new AFUP_Personnes_Physiques($this->_bdd);
 		$personne_physique_de_personne_morale = $personne_physique->obtenirListe('id', 'nom', '', $id);
 

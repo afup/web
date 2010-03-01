@@ -4,8 +4,8 @@ $tris_valides = array('date_facture', 'email', 'societe', 'etat');
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Facturation_Forum.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Forum.php';
+require_once 'afup/AFUP_Facturation_Forum.php';
+require_once 'afup/AFUP_Forum.php';
 $forum = new AFUP_Forum($bdd);
 $forum_facturation = new AFUP_Facturation_Forum($bdd);
 

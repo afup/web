@@ -1,8 +1,8 @@
 <?php
 require_once '../../include/prepend.inc.php';
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Inscriptions_Forum.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Facturation_Forum.php';
+require_once 'afup/AFUP_Inscriptions_Forum.php';
+require_once 'afup/AFUP_Facturation_Forum.php';
 
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
 $forum_facturation = new AFUP_Facturation_Forum($bdd);
