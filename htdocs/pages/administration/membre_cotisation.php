@@ -61,7 +61,7 @@ $reference = supprimerAccents($reference);
 $reference = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', $reference);
 $reference .= '-' . strtoupper(substr(md5($reference), - 3));
 
-require_once AFUP_CHEMIN_RACINE . 'classes/paybox/payboxv2.inc';
+require_once 'paybox/payboxv2.inc';
 $paybox = new PAYBOX;
 $paybox->set_langue('FRA'); // Langue de l'interface PayBox
 $paybox->set_site($conf->obtenir('paybox|site'));

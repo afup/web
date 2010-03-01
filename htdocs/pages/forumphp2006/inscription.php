@@ -164,7 +164,7 @@ if ($formulaire->validate()) {
     } else {
         if ($valeurs['type_reglement'] == AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE) {
             // On passe la main à Paybox pour la suite
-            require_once AFUP_CHEMIN_RACINE . 'classes/paybox/payboxv2.inc';
+            require_once 'paybox/payboxv2.inc';
             $paybox = new PAYBOX;
             $paybox->set_langue('FRA'); // Langue de l'interface PayBox
             $paybox->set_site('8316677'); // TODO : Mettre dans le fichier de configuration
