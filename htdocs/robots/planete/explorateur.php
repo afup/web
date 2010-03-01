@@ -1,30 +1,34 @@
 <?php
-$lancement = microtime(TRUE);
+/**
+ * Script d'exploration des feeds pour le site PlanetePHP.
+ * 
+ * @author    Perrick Penet   <perrick@noparking.fr>
+ * @author    Olivier Hoareau <olivier@phppro.fr>
+ * @copyright 2010 Association Française des Utilisateurs de PHP
+ * 
+ * @category PlanetePHP
+ * @package  PlanetePHP
+ * @group    Batchs
+ */
 
-require dirname(__FILE__) . '/../../classes/afup/AFUP_Configuration.php';
-$conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+// chargement du fichier d'initialisation du contexte ligne de commande
 
-require dirname(__FILE__) . '/../../classes/afup/AFUP_Base_De_Donnees.php';
-$bdd = new AFUP_Base_De_Donnees($conf->obtenir('bdd|hote'),
-                                $conf->obtenir('bdd|base'),
-                                $conf->obtenir('bdd|utilisateur'),
-                                $conf->obtenir('bdd|mot_de_passe'));
+require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/Cli.php';
 
-require dirname(__FILE__) . '/../../classes/afup/AFUP_Logs.php';
-AFUP_Logs::initialiser($bdd, 0);
+// logique interne du script
 
 define('MAGPIE_CACHE_DIR', dirname(__FILE__).'/../../cache/robots/planete');
-require dirname(__FILE__) . '/../../classes/magpierss/rss_fetch.inc';
 
-require dirname(__FILE__) . '/../../classes/afup/AFUP_Planete_Flux.php';
-$planete_flux = new AFUP_Planete_Flux($bdd);
+require 'magpierss/rss_fetch.inc';
+require 'afup/AFUP_Planete_Flux.php';
+require 'afup/AFUP_Planete_Billet.php';
 
-require dirname(__FILE__) . '/../../classes/afup/AFUP_Planete_Billet.php';
+$planete_flux   = new AFUP_Planete_Flux($bdd);
 $planete_billet = new AFUP_Planete_Billet($bdd);
-
-$flux = $planete_flux->obtenirListeActifs();
+$flux           = $planete_flux->obtenirListeActifs();
 
 $billets = 0;
+
 foreach ($flux as $flux_simple) {
     $rss = fetch_rss($flux_simple['feed']);
 	$rss->items = array_reverse($rss->items);
@@ -71,7 +75,5 @@ foreach ($flux as $flux_simple) {
 }
 $erreurs = $billets - $succes;
 
-$duree = round(microtime(TRUE) - $lancement, 2);
+$duree = round(microtime(TRUE) - $startMicrotime, 2);
 AFUP_Logs::log('Exploration de ' . count($flux). ' flux -- ' . ($erreurs) . ' erreur(s) -- en ' . $duree . 's');
-
-?>

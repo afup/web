@@ -1,19 +1,23 @@
 <?php
-$lancement = microtime(TRUE);
+/**
+ * Script de génération du graphe de tag des membres
+ * 
+ * @author    Perrick Penet   <perrick@noparking.fr>
+ * @author    Olivier Hoareau <olivier@phppro.fr>
+ * @copyright 2010 Association Française des Utilisateurs de PHP
+ * 
+ * @category Administration
+ * @package  Administration
+ * @group    Batchs
+ */
 
-require dirname(__FILE__) . '/../../classes/afup/AFUP_Configuration.php';
-$conf = new AFUP_Configuration(dirname(__FILE__) . '/../../include/configuration.inc.php');
+// chargement du fichier d'initialisation du contexte ligne de commande
 
-require dirname(__FILE__) . '/../../classes/afup/AFUP_Base_De_Donnees.php';
-$bdd = new AFUP_Base_De_Donnees($conf->obtenir('bdd|hote'),
-                                $conf->obtenir('bdd|base'),
-                                $conf->obtenir('bdd|utilisateur'),
-                                $conf->obtenir('bdd|mot_de_passe'));
+require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/Cli.php';
 
-require dirname(__FILE__) . '/../../classes/afup/AFUP_Logs.php';
-AFUP_Logs::initialiser($bdd, 0);
+// logique interne du script
 
-require_once dirname(__FILE__) . '/../../classes/afup/AFUP_Tags.php';
+require_once 'afup/AFUP_Tags.php';
 $tags = new AFUP_Tags($bdd);
 
 if (isset($_GET['membres'])) {
@@ -40,5 +44,3 @@ header("Content-Type: image/png");
 header("Content-Length: " . filesize($img_file));
 fpassthru($fp);
 exit;
-
-?>
