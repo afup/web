@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 $smarty->caching = false;
 
@@ -35,7 +35,7 @@ Plusieurs conférences sont prévues sur la base de données MySQL avec des inte
 $infos_importantes[] = $info_importante;
 
 
-
+$infos_importantes = array();
 $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
@@ -49,7 +49,7 @@ $actualite['date'] = "15 septembre 2009";
 //$actualites[] = $actualite;
 
 $actualites[] = $actualite;
-
+$actualites = array();
 $smarty->assign('actualites', $actualites);
 
 $smarty->display('index.html');

@@ -1,8 +1,7 @@
 <?php
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
-require_once 'Afup/AFUP_AppelConferencier.php';
-
+require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_AppelConferencier.php';
 $fin_de_lappel = $config_forum['date_fin_appel_conferencier'];
 
 setlocale(LC_TIME, 'fr_FR');

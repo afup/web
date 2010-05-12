@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 require_once 'Afup/AFUP_Mailing.php';
 $mailing = new AFUP_Mailing($bdd);
