@@ -17,39 +17,34 @@ if ($jours_avant_forum < 0) {
 }
 $smarty->assign('alerte_avant_forum', $alerte_avant_forum);
 
-$infos_importantes = array();
-
-$info_importante['titre'] = "Les projets PHP au Forum";
-$info_importante['contenu'] = "A l'occasion de ce forum PHP, l'AFUP va mettre en avant les <a href='projets-php.php'>projets Open Source français développés autour de PHP </a>
-(frameworks, applicatifs, utilitaires, ...).</p>
-<p> Nous allons donc mettre à disposition des personnes qui portent ces projets un espace salle  à proximité des amphithéâtres et salles où se dérouleront les conférences. </p>
-<p>Vous participez à un projet PHP Opensource et vous souhaitez être présent contactez-nous à <a href='mailto:forum-projet@afup.org'>forum-projet@afup.org</a></p>";
+$info_importante['titre'] = "Forum PHP 2010 <br> les 09 et 10 novembre 2010";
+$info_importante['contenu'] =
+"<p>Le <strong>Forum PHP 2010</strong> est officiellement annoncé pour les <strong>09 et 10 novembre 2010</strong> à la <strong>Cité des Sciences de Paris la Villette</strong> (France).</p>".
+"<p>C'est le seul événement professionnel en France consacré à la plate-forme PHP et aux technologies Web.
+Il rassemble les différents acteurs de la profession et valorise le dynamisme français en terme de technologies
+de pointe sur Internet.</p>".
+"<p>Il sera placé sous le signe des <strong>15 ans de PHP</strong> et des <strong>10 ans de l'Afup</strong>.</p>".
+"<p>A cette occasion, l'Afup organise un Forum plus ambitieux que jamais, prévoyant de multiples conférences, des ateliers et débats, des invités renommés, mais aussi des espaces d'intervention et d'exposition plus nombreux !</p>".
+"<p>Venez à la rencontre des professionnels du monde PHP : développeurs, décideurs, presse...</p>";
 $infos_importantes[] = $info_importante;
 
-
-
-$info_importante['titre'] = "Participation de l’association LeMug.fr (MySQL User Group).";
-$info_importante['contenu'] = "<p>Le Forum PHP 2009 accueillera comme partenaire aux cotés de l’AFUP (Association Française des Utilisateurs PHP) l’association LeMug.fr (MySQL User Group).
-<br>
-Plusieurs conférences sont prévues sur la base de données MySQL avec des intervenants de renom.</p>";
-$infos_importantes[] = $info_importante;
-
-
-$infos_importantes = array();
 $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
 
-$actualite['titre'] = "Les sessions sont en lignes";
-$actualite['contenu'] = "<p>Cette 9ème édition sera axée sur le couple PHP/MySQL, avec 8 conférences dédiées.
-LEMUG.fr, l'association francophone des utilisateurs de MySQL et partenaire de l'événement
-animera 3 conférences</p>";
-$actualite['date'] = "15 septembre 2009";
-//$actualites[] = $actualite;
-
+$actualite['titre'] = "Appel à conférenciers !";
+$actualite['contenu'] = "<p>Experts francophones de PHP, l'AFUP vous invite à
+							<a href=\"appel-a-conferenciers.php\">envoyer vos propositions de sessions</a>
+							pour l'édition 2010 de son Forum PHP à Paris.</p>";
+$actualite['date'] = "02 juin 2010";
 $actualites[] = $actualite;
-$actualites = array();
+
+$actualite['titre'] = "Tarifs prévente !";
+$actualite['contenu'] = "<p>Bénéficiez de <strong>20 € de réduction</strong> sur l'<a href=\"inscription.php\">inscription au forum PHP 2010</a> jusqu'au 30 juin 2010.</p>";
+$actualite['date'] = "02 juin 2010";
+$actualites[] = $actualite;
+
 $smarty->assign('actualites', $actualites);
 
 $smarty->display('index.html');
