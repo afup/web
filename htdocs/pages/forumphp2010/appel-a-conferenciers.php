@@ -21,35 +21,37 @@ $formulaire->setDefaults(array('civilite'            => 'M.',
 
 $formulaire->addElement('hidden', 'id_forum', $config_forum['id']);
 
-$formulaire->addElement('header', null, 'Coordonnées des conférenciers (deux au maximum)');
+//$formulaire->addElement('header', null, 'Coordonnées des conférenciers (deux au maximum)');
 $groupe = array();
 
 for ($i = 1; $i < 3; $i++) {
-    $formulaire->addElement('select', 'civilite' . $i   , 'Civilité'       , array('M.' => 'M.', 'Mme' => 'Mme', 'Mlle' => 'Mlle'));
-    $formulaire->addElement('text'  , 'nom' . $i        , 'Nom (last name)'            , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'  , 'prenom' . $i     , 'Prénom (first name)'         , array('size' => 30, 'maxlength' => 40));
+	$html = $i == 1?'':' (optionnel)';
+	$formulaire->addElement('header', null, 'Conférencier '.$i.$html);
+	$formulaire->addElement('select', 'civilite' . $i   , 'Civilité'       , array('M.' => 'M.', 'Mme' => 'Mme', 'Mlle' => 'Mlle'));
+    $formulaire->addElement('text'  , 'nom' . $i        , 'Nom'            , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text'  , 'prenom' . $i     , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
     $formulaire->addElement('text'  , 'email' . $i      , 'Email'          , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'telephone' . $i  , 'Tél.'           , array('size' => 20, 'maxlength' => 20));
-    $formulaire->addElement('text'  , 'societe' . $i    , 'Société (company)'        , array('size' => 50, 'maxlength' => 100));
+    $formulaire->addElement('text'  , 'societe' . $i    , 'Société'        , array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('textarea', 'biographie' . $i, 'Biographie', array('cols' => 60, 'rows' => 5));
 }
 
 for ($i = 1;$i < 4; $i++) {
     $formulaire->addElement('header', null, 'Présentation ' . $i);
 
-    $formulaire->addElement('text', 'pres' . $i . '_titre', 'Titre (title)', array('size' => 40, 'maxlength' => 80));
-    $formulaire->addElement('textarea', 'pres' . $i . '_abstract', 'Résumé (abstract)', array('cols' => 60, 'rows' => 10));
+    $formulaire->addElement('text', 'pres' . $i . '_titre', 'Titre', array('size' => 40, 'maxlength' => 80));
+    $formulaire->addElement('textarea', 'pres' . $i . '_abstract', 'Résumé', array('cols' => 60, 'rows' => 10));
 
     $groupe = array();
     $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_journee', null, 'Fonctionnel', 1);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_journee', null, 'Technique'    , 2);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_journee', null, 'Les deux'             , 3);
-    $formulaire->addGroup($groupe, 'groupe_pres' . $i, "Public visé (audience)", '<br />', false);
+    $formulaire->addGroup($groupe, 'groupe_pres' . $i, "Public visé", '<br />', false);
 
     $groupe = array();
     $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Conférence plénière', 1);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Atelier'    , 2);
-    $formulaire->addGroup($groupe, 'groupe_type_pres' . $i, "Type de session (type of session)", '<br />', false);
+    $formulaire->addGroup($groupe, 'groupe_type_pres' . $i, "Type de session", '<br />', false);
 }
 
 $formulaire->addElement('header', null, 'Vous avez terminé');
