@@ -32,16 +32,17 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Prolongation des tarifs prévente !";
+$actualite['contenu'] = "<p><strong>Jusqu'au 15 juillet 2010, bénéficiez de 20 € de réduction sur le pass 2 jours</strong>.<br />
+La réduction s'applique aussi aux tarifs étudiants/demandeurs d'emploi et membres Afup, profitez-en !</p>".
+"<p><a href=\"inscription.php\">Inscription au tarif prévente pour le Forum PHP 2010</a>.</p>";
+$actualite['date'] = "24 juin 2010";
+$actualites[] = $actualite;
 
 $actualite['titre'] = "Appel à conférenciers !";
 $actualite['contenu'] = "<p>Experts francophones de PHP, l'AFUP vous invite à
 							<a href=\"appel-a-conferenciers.php\">envoyer vos propositions de sessions</a>
 							pour l'édition 2010 de son Forum PHP à Paris.</p>";
-$actualite['date'] = "02 juin 2010";
-$actualites[] = $actualite;
-
-$actualite['titre'] = "Tarifs prévente !";
-$actualite['contenu'] = "<p>Bénéficiez de <strong>20 € de réduction</strong> sur l'<a href=\"inscription.php\">inscription au forum PHP 2010</a> jusqu'au 30 juin 2010.</p>";
 $actualite['date'] = "02 juin 2010";
 $actualites[] = $actualite;
 
