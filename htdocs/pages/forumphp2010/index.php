@@ -32,6 +32,12 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Devenez sponsor du Forum PHP 2010";
+$actualite['contenu'] = "<p>Vous souhaitez positionner votre entreprise sur PHP, atteindre un public ciblé, bénéficier de retombées presse, rencontrer des acteurs reconnus... devenez l'un des sponsors du Forum PHP 2010 !</p>".
+"<p><a href=\"../../templates/forumphp2010/pdf/Forum-PHP-2010-dossier-sponsor.pdf\">Télécharger le dossier Sponsors</a> (PDF - 367 Ko).</p>";
+$actualite['date'] = "30 juin 2010";
+$actualites[] = $actualite;
+
 $actualite['titre'] = "Prolongation des tarifs prévente !";
 $actualite['contenu'] = "<p><strong>Jusqu'au 15 juillet 2010, bénéficiez de 20 € de réduction sur le pass 2 jours</strong>.<br />
 La réduction s'applique aussi aux tarifs étudiants/demandeurs d'emploi et membres Afup, profitez-en !</p>".
