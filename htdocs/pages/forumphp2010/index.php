@@ -32,6 +32,13 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Fin de l'appel à conférenciers, pré-programme";
+$actualite['contenu'] = "<p>Près de <strong>80 propositions de conférences</strong> nous sont parvenues, le choix promet d'être difficile...</p>
+						<p>On annonce notamment la venue de <strong>Rasmus Lerdorf</strong>, à l'occasion du 15e anniversaire, mais de nombreux autres acteurs reconnus seront là pour vous concocter un programme de très haute qualité.</p>
+						<p>Restez à l'écoute, nous publierons prochainement un pré-programme, pour vous donner un avant-goût de ce Forum 2010 !</p>";
+$actualite['date'] = "05 juillet 2010";
+$actualites[] = $actualite;
+
 $actualite['titre'] = "Devenez sponsor du Forum PHP 2010";
 $actualite['contenu'] = "<p>Vous souhaitez positionner votre entreprise sur PHP, atteindre un public ciblé, bénéficier de retombées presse, rencontrer des acteurs reconnus... devenez l'un des sponsors du Forum PHP 2010 !</p>".
 "<p><a href=\"../../templates/forumphp2010/pdf/Forum-PHP-2010-dossier-sponsor.pdf\">Télécharger le dossier Sponsors</a> (PDF - 367 Ko).</p>";
@@ -43,13 +50,6 @@ $actualite['contenu'] = "<p><strong>Jusqu'au 15 juillet 2010, bénéficiez de 20
 La réduction s'applique aussi aux tarifs étudiants/demandeurs d'emploi et membres Afup, profitez-en !</p>".
 "<p><a href=\"inscription.php\">Inscription au tarif prévente pour le Forum PHP 2010</a>.</p>";
 $actualite['date'] = "24 juin 2010";
-$actualites[] = $actualite;
-
-$actualite['titre'] = "Appel à conférenciers !";
-$actualite['contenu'] = "<p>Experts francophones de PHP, l'AFUP vous invite à
-							<a href=\"appel-a-conferenciers.php\">envoyer vos propositions de sessions</a>
-							pour l'édition 2010 de son Forum PHP à Paris.</p>";
-$actualite['date'] = "02 juin 2010";
 $actualites[] = $actualite;
 
 $smarty->assign('actualites', $actualites);
