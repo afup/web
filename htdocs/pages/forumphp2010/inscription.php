@@ -58,8 +58,8 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
 
   }
   else  {
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du jeudi 12 novembre 2009 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>', AFUP_FORUM_PREMIERE_JOURNEE);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du vendredi 13 novembre 2009 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>' , AFUP_FORUM_DEUXIEME_JOURNEE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du mardi 09 novembre 2010 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>', AFUP_FORUM_PREMIERE_JOURNEE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du mercredi 10 novembre 2010 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>' , AFUP_FORUM_DEUXIEME_JOURNEE);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES] . ' ' . EURO . '</strong>'                                         , AFUP_FORUM_2_JOURNEES);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours (membre AFUP) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP] . ' ' . EURO . '</strong>'                      , AFUP_FORUM_2_JOURNEES_AFUP);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours (étudiant, demandeur d\'emploi) * : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_ETUDIANT);
