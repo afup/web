@@ -56,7 +56,7 @@ if (!$droits->verifierDroitSurLaPage($_GET['page'])) {
 require_once 'Afup/AFUP_Logs.php';
 AFUP_Logs::initialiser($bdd, $droits->obtenirIdentifiant());
 // On inclut le fichier PHP de la page
-$smarty->assign('ctx_login', $_GET['ctx_login']);
+$smarty->assign('ctx_login', isset($_GET['ctx_login']) ? $_GET['ctx_login'] : "");
 $smarty->assign('id_page', $_GET['page']);
 $smarty->assign('titre_page', obtenirTitre($pages, $_GET['page']));
 $smarty->assign('web_path', $conf->obtenir('web|path'));
