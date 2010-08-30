@@ -150,11 +150,11 @@ form span.element p.erreur {
 /* Style bloc agenda (tableau) */
 div.bloc_jour .keynote p {
 text-align: center;
-} 
+}
 div.bloc_jour  p {
-padding: 5px;    
+padding: 5px;
 margin:0;
-} 
+}
 div.bloc_jour .conferencier {
 font-size:0.8em;
 font-style:italic;
@@ -201,4 +201,22 @@ td.col_heure {
 tr.li td.col_heure{
     color:              inherit;
     background-color:   #e0e3ee;
+}
+
+/* Styles page sponsors */
+.sponsor_title {
+	text-align: left;
+	background: url('images/sponsor_bronze.jpg') no-repeat left center transparent;
+	padding-left:150px;
+	padding-bottom: 10px;
+	padding-top: 10px
+}
+#SponsorPlatinium {
+	background: url('images/sponsor_platinium.jpg') no-repeat left center transparent;
+}
+#SponsorGold {
+	background: url('images/sponsor_gold.jpg') no-repeat left center transparent;
+}
+#SponsorSilver {
+	background: url('images/sponsor_silver.jpg') no-repeat left center transparent;
 }

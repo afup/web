@@ -35,6 +35,11 @@ $config_forum['date_debut'] = mktime(0, 0, 0, 11, 09, $config_forum['annee']);
 $config_forum['date_fin'] = mktime(0, 0, 0, 11, 10, $config_forum['annee']);
 $smarty->assign('forum_annee', $config_forum['annee'] );
 
+
+$sponsors_platinium=array();
+$smarty->assign('sponsors_platinium', $sponsors_platinium);
+$smarty->assign('sponsors_platinium', array());
+
 $sponsors_gold=array();
 $smarty->assign('sponsors_gold', $sponsors_gold);
 $smarty->assign('sponsors_gold', array());
