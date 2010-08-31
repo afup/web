@@ -100,6 +100,7 @@ class AFUP_Forum
             $tfin   = mktime(0,0,0,1,1,($annee + 1));
             $aWhere[] = "p.debut >= ". $tdebut;
             $aWhere[] = "p.fin < ". $tfin;
+            $aWhere[] = "s.plannifie = 1";
         }
         $sWhere = "WHERE ". implode(" AND ", $aWhere);
         $requete  = "SELECT ".
