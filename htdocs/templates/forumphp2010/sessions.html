@@ -9,7 +9,6 @@
 
     <div class="sessions">
     {foreach from=$sessions item=session} 
-    {if $session.abstract}
 	<div class="session {$session.journee}">
 		<a name="{$session.session_id}" ></a>
 		<h3>
@@ -40,7 +39,6 @@
 		</div>
    		</div>
 	</div>
-    {/if}
     {/foreach} 
 	</div>
 

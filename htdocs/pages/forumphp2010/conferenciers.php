@@ -7,30 +7,11 @@ setlocale(LC_TIME, 'fr_FR');
 require_once AFUP_CHEMIN_SOURCE . '/AFUP_AppelConferencier.php';
 
 $forum_appel = new AFUP_AppelConferencier($bdd);
-$type = isset($_GET['type'])?$_GET['type']:'session';
-switch ($type)
-{
-	case 'projet':
-	$sessions = $forum_appel->obtenirListeProjets($config_forum['id'],     's.*',
-                          's.titre',
-                         false,
-                           false,
-                          $config_forum['project_ids']);
-	  ;
-	break;
 
-	default:
-		$sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
-	  ;
-	break;
-}
-
+$sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
 $conferenciers = array();
 foreach ($sessions as $index => $session) {
-    if($session['abstract'])
-    {
-
-    $tmp_conferenciers = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
+	$tmp_conferenciers = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
     foreach ($tmp_conferenciers as $conferencier) {
         if (!isset($conferenciers[$conferencier['conferencier_id']])) {
             $conferenciers[$conferencier['conferencier_id']] = $conferencier;
@@ -39,7 +20,6 @@ foreach ($sessions as $index => $session) {
             'id' => $session['session_id'],
             'titre' => $session['titre'],
         );
-    }
     }
 }
 

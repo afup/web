@@ -10,7 +10,7 @@ $forum_appel = new AFUP_AppelConferencier($bdd);
 $sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
 
 foreach ($sessions as $index => $session) {
-    $sessions[$index]['conferenciers'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
+	$sessions[$index]['conferenciers'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
     $sessions[$index]['journees'] = explode(" ", $session['journee']);
 }
 
