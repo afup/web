@@ -13,6 +13,8 @@
 
 // Param de configuration sur site du Forum PHP
 
+define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../../sources/Afup/'));
+
 $config_forum['id'] = 5;
 $coupons = array('PHPFRANCE','POLENORD','DIGIPORT', 'WAMPSERVER',
                   'ALTERWAY','ADOBE','SENSIO','SENSIOLABS','4D',

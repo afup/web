@@ -405,6 +405,7 @@ class AFUP_AppelConferencier
         $requete .= '  pl.id, ';
         $requete .= '  pl.debut, ';
         $requete .= '  pl.fin, ';
+        $requete .= '  pl.keynote, ';
         $requete .= '  pl.id_salle ';
         $requete .= ' FROM ';
         $requete .= '  afup_sessions se ';

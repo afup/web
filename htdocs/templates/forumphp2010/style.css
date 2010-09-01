@@ -220,3 +220,6 @@ tr.li td.col_heure{
 #SponsorSilver {
 	background: url('images/sponsor_silver.jpg') no-repeat left center transparent;
 }
+
+.slot { border: 1px #e0e3ee solid; }
+.slot .session { border: 0; padding: 4px; margin: 0; }
