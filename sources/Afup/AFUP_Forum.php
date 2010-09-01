@@ -103,7 +103,7 @@ class AFUP_Forum
     	$passage_jour = 0;
     	foreach ($slots as $jour => $slots_avec_salle) {
     		$nb_salles = count($slots_avec_salle);
-    		$agenda .= "<div class=\"slots\" style=\"height: 1500px;\">";
+    		$agenda .= "<div class=\"slots\" style=\"height: 1700px;\">";
     		$agenda .= "<h3 style=\"position: absolute; top: ".round($passage_jour * 1600)."px;\">".date("d/m/Y", $jour)."</h3>";
     		foreach ($slots_avec_salle as $salle => $slots_avec_horaire) {
     			foreach ($slots_avec_horaire as $debut => $session) {
@@ -117,17 +117,19 @@ class AFUP_Forum
     				
     				$styles = array("position: absolute;");
     				if ($session['keynote'] == 1) {
-	    				$styles[] = "width: 100%;";
+    					$classes[] = "keynote";
+    					$styles[] = "width: 100%;";
 						$styles[] = "left: 0%;";
     				} else {
     					$styles[] = "width: ".round(100 / $nb_salles)."%;";
 	    				$styles[] = "left: ".($salles[$session['id_salle']] * round(100 / $nb_salles))."%;";
     				}
-    				$styles[] = "height: ".round(($session['fin'] - $session['debut']) / 20)."px;";
-    				$styles[] = "top: ".round(40 + $passage_jour * 1600 + ($session['debut'] - $debuts[$jour]) / 20)."px;";
+    				$styles[] = "height: ".round(($session['fin'] - $session['debut']) / 19)."px;";
+    				$styles[] = "top: ".round(40 + $passage_jour * 1600 + ($session['debut'] - $debuts[$jour]) / 19)."px;";
     				
     				$agenda .= "<div class=\"".join(" ", $classes)."\" style=\"".join(" ", $styles)."\">";
-    				$agenda .= "    <div class=\"session\"><a href=\"sessions.php#".$session['id']."\">".$session['titre']."</a></div>";
+    				$agenda .= "    <div class=\"session\"><a href=\"sessions.php#".$session['session_id']."\">".$session['titre']."</a></div>";
+    				$agenda .= "    <div class=\"conferenciers\">".$conferenciers."</div>";
     				$agenda .= "    <div class=\"horaire\">".date("H\hi", $session['debut'])." - ".date("H\hi", $session['fin'])."</div>";
     				$agenda .= "</div>";
     			}
