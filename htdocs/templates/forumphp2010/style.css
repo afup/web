@@ -224,3 +224,7 @@ tr.li td.col_heure{
 .slots .slot { border: 1px #e0e3ee solid; background-color: #fff; }
 .slots .keynote .session a, .slots .keynote .conferenciers { font-size: 15px; }
 .slots .slot .session, .slot .conferenciers, .slot .horaire { border: 0; padding: 4px; margin: 0; }
+
+.deroulements .deroulement .session { border: 0; margin: 0; padding: 0; }
+.deroulements .deroulement .session a { font-size: 18px; }
+.deroulements .deroulement .conferenciers { border-bottom : 1px solid #A6A6A6; padding: 0 0 1em 0; margin: 0 0 1em 0; }

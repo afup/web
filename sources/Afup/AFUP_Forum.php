@@ -82,6 +82,41 @@ class AFUP_Forum
         }
     }
 
+    function afficherDeroulement($sessions) {
+    	$deroulement = "<div class=\"deroulements\">";
+    	$jour = 0;
+    	$heure = 0;
+    	foreach ($sessions as $session) {
+    		if ($jour != mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']))) {
+    			$jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
+    			$deroulement .= "<h2 class=\"jour\">".date("d/m/Y", $jour)."</h2>";
+    		}
+    		if ($heure != $session['debut']) {
+    			$heure = $session['debut'];
+    			$deroulement .= "<h3 class=\"horaire\">".date("H\hi", $heure)."</h3>";
+    		}
+    		
+    		$classes = array("deroulement");
+    		$classes[] = $session['journee'];
+			if ($session['keynote'] == 1) {
+    			$classes[] = "keynote";
+			}
+    				
+    		$conferenciers = $session['conf1'];
+    		if (!empty($session['conf2'])) {
+    			$conferenciers .= "<br />".$session['conf2']; 
+    		}
+
+    		$deroulement .= "<div class=\"".join(" ", $classes)."\">";
+    		$deroulement .= "    <div class=\"session\"><a href=\"sessions.php#".$session['session_id']."\">".$session['titre']."</a></div>";
+    		$deroulement .= "    <div class=\"conferenciers\">".$conferenciers."</div>";
+    		$deroulement .= "</div>";
+    	}
+    	$deroulement .= "</div>";
+    	
+    	return $deroulement;
+    }
+
     function afficherAgenda($sessions) {
     	$slots = array();
     	$salles = array();
@@ -104,7 +139,7 @@ class AFUP_Forum
     	foreach ($slots as $jour => $slots_avec_salle) {
     		$nb_salles = count($slots_avec_salle);
     		$agenda .= "<div class=\"slots\" style=\"height: 1700px;\">";
-    		$agenda .= "<h3 style=\"position: absolute; top: ".round($passage_jour * 1600)."px;\">".date("d/m/Y", $jour)."</h3>";
+    		$agenda .= "<h2 style=\"position: absolute; width: 100%; top: ".round($passage_jour * 1600)."px;\">".date("d/m/Y", $jour)."</h2>";
     		foreach ($slots_avec_salle as $salle => $slots_avec_horaire) {
     			foreach ($slots_avec_horaire as $debut => $session) {
     				$classes = array("slot");
