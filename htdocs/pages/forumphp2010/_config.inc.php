@@ -61,6 +61,13 @@ $sponsors_silver=array(
 						<p><strong>LINAGORA édite ses <a href=\"http://www.linagora.com/-PRODUITS-\">propres logiciels Open Source</a></strong> et propose une <strong>gamme de <a href=\"http://www.linagora.com/-SERVICES-\">services professionnels</a></strong> pour réussir les grands projets du Libre.</p>
 						<p>Plus d'informations : <a href=\"www.linagora.com\">www.linagora.com</a></p>",
 	),
+	array('nom'   => 'Oxalide',
+          'site'  => 'http://www.oxalide.com/',
+          'logo'  => 'logo_oxalide.jpg',
+          'texte' => "<p><strong>Oxalide</strong>, hébergeur spécialisé dans les technologies open-source, conçoit des infrastructure sur-mesure qui respectent les contraintes de vos projets PHP.</p>
+						<p>Déléguez la gestion de vos serveurs grâce à nos services d'infogérance et assurez l'évolutivité et la qualité de service grâce à notre conseil et notre expertise.</p>
+						<p>Oxalide propulse de nombreux sites PHP : lexpress.fr, lanvin.com, la ligue nationale de Rugby, etc.</p>",
+	),
 );
 $smarty->assign('sponsors_silver', $sponsors_silver);
 
