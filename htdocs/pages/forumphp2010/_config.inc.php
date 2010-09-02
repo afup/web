@@ -68,40 +68,40 @@ $smarty->assign('sponsors_bronze', $sponsors_bronze);
 $smarty->assign('sponsors_bronze', array());
 
 $partenaires=array(
-//    array('nom'   => 'Developpez.com',
-//          'site'  => 'http://www.developpez.com/',
-//          'logo'  => 'logo_dvp-afup.gif',
-//          'texte' => 'Le club <a href="http://www.developpez.com">www.developpez.com</a> met à disposition gratuitement tous les
-//                      services utiles aux décideurs et professionnels en informatique :
-//                      newsletter, magazine, actualités, cours, tutoriels, articles, FAQ\'s,
-//                      tests, comparatifs, débats, sondages, outils, sources, composants et
-//                      exemples de codes, les BLOGs, et l\'hébergement gratuit de sites sur
-//                      l\'informatique. <a href="http://www.developpez.com">www.developpez.com</a> est la communauté en langue
-//                      française qui concentre le plus d\'informaticiens professionnel!'),
-//    array('nom'   => 'Eyrolles',
-//          'site'  => 'http://www.editions-eyrolles.com/',
-//          'logo'  => 'logo_eyrolles.gif',
-//          'texte' => 'Les Editions Eyrolles ont placé PHP au coeur de leur offre Développeurs,
-//                  de l\'initiation (<a href="http://www.editions-eyrolles.com/Livre/9782212114072/php-5">
-//                  manuels avec cours et exercices</a>,
-//                  <a href="http://www.editions-eyrolles.com/Livre/9782212116786/php-mysql-et-javascript">
-//                  apprentissage par la pratique</a>) à l\'exploitation professionnelle
-//                  (livres de référence dont <a href="http://www.editions-eyrolles.com/Livre/9782212123692/php-5-avance">PHP 5 avancé</a>,
-//                  études de cas détaillées dont une sur <a href="http://www.editions-eyrolles.com/Livre/9782212112344/php-5">PHP</a>).
-//                  Au-delà de la maîtrise de PHP, chaque ouvrage offre un véritable savoir-faire métier au développeur.<br/>
-//                  Suivez les nouveautés Eyrolles en vous abonnant au fil RSS
-//                  <a href="http://www.editions-eyrolles.com/rss.php?q=php">http://www.editions-eyrolles.com/rss.php?q=php</a> !'),
-//    array('nom'   => 'ENI',
-//          'site'  => 'http://www.editions-eni.fr/',
-//          'logo'  => 'logo_eni.jpg',
-//          'texte' => 'Le monde de l\'informatique est en perpétuelle évolution et les technologies liées notamment au
-//                  développement ne sont pas en reste. Editions ENI est au coeur de cette actualité technique et
-//                  accompagne les informaticiens dans leur apprentissage, leur évolution de carrière.
-//                  Nos différentes collections (manuels de référence, livres expert, mise en place de solution,
-//                  recueil d\'exercices) couvrent un grand nombre de besoins en proposant des approches pédagogique variées.
-//                  Nos livres sont écrits par des formateurs et/ou consultants.
-//                  Retrouvez tous les mois nos dernières nouveautés sur
-//                  <a href="http://www.editions-eni.fr">www.editions-eni.fr</a>.'),
+    array('nom'   => 'Developpez.com',
+          'site'  => 'http://www.developpez.com/',
+          'logo'  => 'logo_dvp-afup.gif',
+          'texte' => 'Le club <a href="http://www.developpez.com">www.developpez.com</a> met à disposition gratuitement tous les
+                      services utiles aux décideurs et professionnels en informatique :
+                      newsletter, magazine, actualités, cours, tutoriels, articles, FAQ\'s,
+                      tests, comparatifs, débats, sondages, outils, sources, composants et
+                      exemples de codes, les BLOGs, et l\'hébergement gratuit de sites sur
+                      l\'informatique. <a href="http://www.developpez.com">www.developpez.com</a> est la communauté en langue
+                      française qui concentre le plus d\'informaticiens professionnel!'),
+    array('nom'   => 'Eyrolles',
+          'site'  => 'http://www.editions-eyrolles.com/',
+          'logo'  => 'logo_eyrolles.gif',
+          'texte' => 'Les Editions Eyrolles ont placé PHP au coeur de leur offre Développeurs,
+                  de l\'initiation (<a href="http://www.editions-eyrolles.com/Livre/9782212114072/php-5">
+                  manuels avec cours et exercices</a>,
+                  <a href="http://www.editions-eyrolles.com/Livre/9782212116786/php-mysql-et-javascript">
+                  apprentissage par la pratique</a>) à l\'exploitation professionnelle
+                  (livres de référence dont <a href="http://www.editions-eyrolles.com/Livre/9782212123692/php-5-avance">PHP 5 avancé</a>,
+                  études de cas détaillées dont une sur <a href="http://www.editions-eyrolles.com/Livre/9782212112344/php-5">PHP</a>).
+                  Au-delà de la maîtrise de PHP, chaque ouvrage offre un véritable savoir-faire métier au développeur.<br/>
+                  Suivez les nouveautés Eyrolles en vous abonnant au fil RSS
+                  <a href="http://www.editions-eyrolles.com/rss.php?q=php">http://www.editions-eyrolles.com/rss.php?q=php</a> !'),
+    array('nom'   => 'ENI',
+          'site'  => 'http://www.editions-eni.fr/',
+          'logo'  => 'logo_eni.jpg',
+          'texte' => 'Le monde de l\'informatique est en perpétuelle évolution et les technologies liées notamment au
+                  développement ne sont pas en reste. Editions ENI est au coeur de cette actualité technique et
+                  accompagne les informaticiens dans leur apprentissage, leur évolution de carrière.
+                  Nos différentes collections (manuels de référence, livres expert, mise en place de solution,
+                  recueil d\'exercices) couvrent un grand nombre de besoins en proposant des approches pédagogique variées.
+                  Nos livres sont écrits par des formateurs et/ou consultants.
+                  Retrouvez tous les mois nos dernières nouveautés sur
+                  <a href="http://www.editions-eni.fr">www.editions-eni.fr</a>.'),
 //    array('nom'   => 'TooLinux',
 //          'site'  => 'www.toolinux.com',
 //          'logo'  => 'logo-toolinux.png',
@@ -110,21 +110,26 @@ $partenaires=array(
 //          'site'  => 'www.linagora.com',
 //          'logo'  => 'logo-linagora.png',
 //          'texte' => 'Créateur des concepts de SS2L et de TM2L, LINAGORA se définit désormais comme un Editeur Orienté Service. Sa vocation est d\'être un spécialiste de l\'Open Source et d\'être un intermédiaire de confiance entre les communautés du logiciel libre ou des éditeurs Open Source d\'une part et les utilisateurs ou intégrateurs d\'autre part.'),
-//    array('nom'   => 'Programmez !',
-//          'site'  => 'http://www.programmez.com/',
-//          'logo'  => 'logo_programmez.gif',
-//          'texte' => 'Avec plus de 30.000 lecteurs mensuels, PROGRAMMEZ ! s\'est imposé comme
-//                  un magazine de référence des développeurs.',
-//    ),
-//    array('nom'   => 'PHP Solutions',
-//          'site'  => 'http://www.phpsolmag.org/',
-//          'logo'  => 'logo-php-solutions.png',
-//          'texte' => 'PHP Solutions est un magazine international pour tous ceux qui s\'intéressent
-//                  à la programmation en PHP et à la création d\'applications Web. C\'est le seul
-//                  magazine consacré entièrement au language PHP sur le marché français. Nous
-//                  décrivons des technologies les plus récentes, des projets complets et des
-//                  problèmes de programmeurs.'
-//    ),
+    array('nom'   => 'Programmez !',
+          'site'  => 'http://www.programmez.com/',
+          'logo'  => 'logo_programmez.gif',
+          'texte' => 'Avec plus de 30.000 lecteurs mensuels, PROGRAMMEZ ! s\'est imposé comme
+                  un magazine de référence des développeurs.',
+    ),
+    array('nom'   => 'PHP Solutions',
+          'site'  => 'http://www.phpsolmag.org/',
+          'logo'  => 'logo-php-solutions.png',
+          'texte' => 'PHP Solutions est un magazine international pour tous ceux qui s\'intéressent
+                  à la programmation en PHP et à la création d\'applications Web. C\'est le seul
+                  magazine consacré entièrement au language PHP sur le marché français. Nous
+                  décrivons des technologies les plus récentes, des projets complets et des
+                  problèmes de programmeurs.'
+    ),
+    array('nom'   => 'Solutions & logiciels',
+          'site'  => 'http://www.solutions-logiciels.com/',
+          'logo'  => 'logo_solutions_et_logiciels.jpg',
+          'texte' => ''
+    ),
     array(),
 );
 $smarty->assign('partenaires', $partenaires);
