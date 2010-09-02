@@ -221,6 +221,6 @@ tr.li td.col_heure{
 	background: url('images/sponsor_silver.jpg') no-repeat left center transparent;
 }
 
-.slots .slot { border: 1px #e0e3ee solid; }
+.slots .slot { border: 1px #e0e3ee solid; background-color: #fff; }
 .slots .keynote .session a, .slots .keynote .conferenciers { font-size: 15px; }
 .slots .slot .session, .slot .conferenciers, .slot .horaire { border: 0; padding: 4px; margin: 0; }
