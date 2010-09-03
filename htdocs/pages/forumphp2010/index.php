@@ -32,25 +32,24 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
-$actualite['titre'] = "Fin de l'appel à conférenciers, pré-programme";
-$actualite['contenu'] = "<p>Rasmus Lerdorf, créateur de PHP, sera l'invité d'honneur de cette édition anniversaire : les 9 et 10 novembre 2010, Cité des Sciences de La Villette.</p>
+$actualite['titre'] = "15 ans de PHP, 10 ans d'AFUP : un programme riche pour cette anée 2010";
+$actualite['contenu'] = "<p><strong>Rasmus Lerdorf</strong>, créateur de PHP, sera l'invité d'honneur de cette édition anniversaire : les 9 et 10 novembre 2010, Cité des Sciences de La Villette.</p>
 						<p>En ouvrant un cycle de conférences dédié à des profils fonctionnels, l'Association Française des Utilisateurs de PHP entend intégrer un public plus large, avec la perspective nouvelle d'initier les chefs de projets à cette plateforme de programmation.</p>
 						<p>Parmi les thèmes abordés :</p>
 						<ul>
-							<li>PHP de A à Z : Débuter en PHP, Réussir un projet avec PHP, Choisir son hébergement</li>
-							<li>Les outils basés sur PHP : Drupal , outils de e-commerce et de business, CRM et ERP</li>
-							<li>L'industrialisation de PHP : Performances, tests, authentification centralisée, frameworks</li>
-							<li>Technologies autour de PHP :  HTML 5, référencement...</li>
+							<li><strong>PHP de A à Z</strong> : Débuter en PHP, Réussir un projet avec PHP, Choisir son hébergement</li>
+							<li><strong>Les outils basés sur PHP</strong> : Drupal , outils de e-commerce et de business, CRM et ERP</li>
+							<li><strong>L'industrialisation de PHP</strong> : Performances, tests, authentification centralisée, frameworks</li>
+							<li><strong>Technologies autour de PHP</strong> :  HTML 5, référencement...</li>
 						</ul>
 						<p>
 							<a href=\"http://afup.org/pages/forumphp2010/sessions.php\">=> Les sessions</a><br />
 							<a href=\"http://afup.org/pages/forumphp2010/conferenciers.php\">=> Les conférenciers</a><br />
-							<a href=\"http://afup.org/pages/forumphp2010/deroulement.php\">=> => Le déroulement</a>
+							<a href=\"http://afup.org/pages/forumphp2010/deroulement.php\">=> Le déroulement</a>
 						</p>
 						<p>Pour vous inscrire, ne perdez pas de temps, <a href=\"http://afup.org/pages/forumphp2010/inscription.php\">réservez votre place au forum PHP</a> !</p>";
 $actualite['date'] = "03 septembre 2010";
 $actualites[] = $actualite;
-
 
 $actualite['titre'] = "Fin de l'appel à conférenciers, pré-programme";
 $actualite['contenu'] = "<p>Près de <strong>80 propositions de conférences</strong> nous sont parvenues, le choix promet d'être difficile...</p>
@@ -63,13 +62,6 @@ $actualite['titre'] = "Devenez sponsor du Forum PHP 2010";
 $actualite['contenu'] = "<p>Vous souhaitez positionner votre entreprise sur PHP, atteindre un public ciblé, bénéficier de retombées presse, rencontrer des acteurs reconnus... devenez l'un des sponsors du Forum PHP 2010 !</p>".
 "<p><a href=\"../../templates/forumphp2010/pdf/Forum-PHP-2010-dossier-sponsor.pdf\">Télécharger le dossier Sponsors</a> (PDF - 367 Ko).</p>";
 $actualite['date'] = "30 juin 2010";
-$actualites[] = $actualite;
-
-$actualite['titre'] = "Prolongation des tarifs prévente !";
-$actualite['contenu'] = "<p><strong>Jusqu'au 15 juillet 2010, bénéficiez de 20 € de réduction sur le pass 2 jours</strong>.<br />
-La réduction s'applique aussi aux tarifs étudiants/demandeurs d'emploi et membres Afup, profitez-en !</p>".
-"<p><a href=\"inscription.php\">Inscription au tarif prévente pour le Forum PHP 2010</a>.</p>";
-$actualite['date'] = "24 juin 2010";
 $actualites[] = $actualite;
 
 $smarty->assign('actualites', $actualites);
