@@ -33,6 +33,26 @@ $smarty->assign('infos_importantes', $infos_importantes);
 $actualites = array();
 
 $actualite['titre'] = "Fin de l'appel à conférenciers, pré-programme";
+$actualite['contenu'] = "<p>Rasmus Lerdorf, créateur de PHP, sera l'invité d'honneur de cette édition anniversaire : les 9 et 10 novembre 2010, Cité des Sciences de La Villette.</p>
+						<p>En ouvrant un cycle de conférences dédié à des profils fonctionnels, l'Association Française des Utilisateurs de PHP entend intégrer un public plus large, avec la perspective nouvelle d'initier les chefs de projets à cette plateforme de programmation.</p>
+						<p>Parmi les thèmes abordés :</p>
+						<ul>
+							<li>PHP de A à Z : Débuter en PHP, Réussir un projet avec PHP, Choisir son hébergement</li>
+							<li>Les outils basés sur PHP : Drupal , outils de e-commerce et de business, CRM et ERP</li>
+							<li>L'industrialisation de PHP : Performances, tests, authentification centralisée, frameworks</li>
+							<li>Technologies autour de PHP :  HTML 5, référencement...</li>
+						</ul>
+						<p>
+							<a href=\"http://afup.org/pages/forumphp2010/sessions.php\">=> Les sessions</a><br />
+							<a href=\"http://afup.org/pages/forumphp2010/conferenciers.php\">=> Les conférenciers</a><br />
+							<a href=\"http://afup.org/pages/forumphp2010/deroulement.php\">=> => Le déroulement</a>
+						</p>
+						<p>Pour vous inscrire, ne perdez pas de temps, <a href=\"http://afup.org/pages/forumphp2010/inscription.php\">réservez votre place au forum PHP</a> !</p>";
+$actualite['date'] = "03 septembre 2010";
+$actualites[] = $actualite;
+
+
+$actualite['titre'] = "Fin de l'appel à conférenciers, pré-programme";
 $actualite['contenu'] = "<p>Près de <strong>80 propositions de conférences</strong> nous sont parvenues, le choix promet d'être difficile...</p>
 						<p>On annonce notamment la venue de <strong>Rasmus Lerdorf</strong>, à l'occasion du 15e anniversaire, mais de nombreux autres acteurs reconnus seront là pour vous concocter un programme de très haute qualité.</p>
 						<p>Restez à l'écoute, nous publierons prochainement un pré-programme, pour vous donner un avant-goût de ce Forum 2010 !</p>";
