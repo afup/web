@@ -136,7 +136,7 @@ $partenaires=array(
     array('nom'   => 'Solutions & logiciels',
           'site'  => 'http://www.solutions-logiciels.com/',
           'logo'  => 'logo_solutions_et_logiciels.jpg',
-          'texte' => ''
+          'texte' => 'Solutions-Logiciels : le magazine, le portail web, la newsletter des décideurs IT. Téléchargez gratuitement le dernier numéro du magazine&nbsp;: <a href="http://www.solutions-logiciels.com">www.solutions-logiciels.com</a>'
     ),
     array(),
 );
