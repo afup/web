@@ -209,16 +209,20 @@ tr.li td.col_heure{
 	background: url('images/sponsor_bronze.jpg') no-repeat left center transparent;
 	padding-left:150px;
 	padding-bottom: 10px;
-	padding-top: 10px
+	padding-top: 10px;
+	color: #974300;
 }
 #SponsorPlatinium {
 	background: url('images/sponsor_platinium.jpg') no-repeat left center transparent;
+	color:gray;
 }
 #SponsorGold {
 	background: url('images/sponsor_gold.jpg') no-repeat left center transparent;
+	color:gold;
 }
 #SponsorSilver {
 	background: url('images/sponsor_silver.jpg') no-repeat left center transparent;
+	color:silver;
 }
 
 .slots .slot { border: 1px #e0e3ee solid; background-color: #fff; }
