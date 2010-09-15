@@ -48,6 +48,11 @@ $smarty->assign('sponsors_gold', $sponsors_gold);
 $smarty->assign('sponsors_gold', array());
 
 $sponsors_silver=array(
+	array('nom'   => 'Alter Way',
+          'site'  => 'http://www.alterway.fr/',
+          'logo'  => 'logo-alterway-sponsor.png',
+          'texte' => "<p></p>",
+	),
     array('nom'   => 'E-Merchant',
           'site'  => 'http://www.e-merchant.com/',
           'logo'  => 'logo_e-merchant.gif',
@@ -71,9 +76,15 @@ $sponsors_silver=array(
 );
 $smarty->assign('sponsors_silver', $sponsors_silver);
 
-$sponsors_bronze=array();
+$sponsors_bronze=array(
+	array('nom'   => 'Clever Age',
+          'site'  => 'http://www.clever-age.com/',
+          'logo'  => 'logo-clever-age.png',
+          'texte' => "<p></p>",
+	),
+);
 $smarty->assign('sponsors_bronze', $sponsors_bronze);
-$smarty->assign('sponsors_bronze', array());
+
 
 $partenaires=array(
     array('nom'   => 'Developpez.com',
