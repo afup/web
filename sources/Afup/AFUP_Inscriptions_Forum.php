@@ -195,6 +195,74 @@ L'équipe organisatrice";
         return $ok;
     }
 
+    function obtenirSuivi($id_forum) {
+    	$forum = new AFUP_Forum($this->_bdd);
+    	$id_forum_precedent = $forum->obtenirPrecedent($id_forum);
+    	
+    	$requete  = 'SELECT ';
+    	$requete .= '  COUNT(*) as nombre, ';
+    	$requete .= '  UNIX_TIMESTAMP(FROM_UNIXTIME(date, \'%Y-%m-%d\')) as jour, ';
+    	$requete .= '  id_forum ';
+    	$requete .= 'FROM';
+        $requete .= '  afup_inscription_forum i ';
+        $requete .= 'WHERE ';
+        $requete .= '  i.id_forum IN ('.(int)$id_forum.', '.(int)$id_forum_precedent.') ';
+        $requete .= 'GROUP BY jour, id_forum ';
+        $requete .= 'ORDER BY jour DESC ';
+        $nombre_par_date = $this->_bdd->obtenirTous($requete);
+        
+        foreach ($nombre_par_date as $nombre) {
+        	$inscrits[$nombre['id_forum']][$nombre['jour']] = $nombre['nombre'];
+        }
+        
+        $debut = $forum->obtenirDebut($id_forum);
+        $debut_precedent = $forum->obtenirDebut($id_forum_precedent);
+        
+        $premiere_inscription = min(array_keys($inscrits[$id_forum]));
+        $premiere_inscription_precedent = min(array_keys($inscrits[$id_forum_precedent]));
+        
+        $debut_jd = gregoriantojd(date("m", $debut), date("d", $debut), date("Y", $debut));
+        $premiere_inscription_jd = gregoriantojd(date("m", $premiere_inscription), date("d", $premiere_inscription), date("Y", $premiere_inscription));
+        
+        $debut_precedent_jd = gregoriantojd(date("m", $debut_precedent), date("d", $debut_precedent), date("Y", $debut_precedent));
+        $premiere_inscription_precedent_jd = gregoriantojd(date("m", $premiere_inscription_precedent), date("d", $premiere_inscription_precedent), date("Y", $premiere_inscription_precedent));
+        
+        $ecart = max($debut_jd - $premiere_inscription_jd, $debut_precedent_jd - $premiere_inscription_precedent_jd);
+
+		$suivis = array();
+        $total_cumule = 0;
+        $total_cumule_precedent = 0;
+        $aujourdhui = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+        for ($i = $ecart; $i--; $i == 0) {
+        	$jour = mktime(0, 0, 0, date("m", $debut), date("d", $debut) - $i, date("Y", $debut));
+        	if (isset($inscrits[$id_forum][$jour])) {
+	        	$total_cumule += $inscrits[$id_forum][$jour];
+        	}
+			
+        	$jour_precedent = mktime(0, 0, 0, date("m", $debut_precedent), date("d", $debut_precedent) - $i, date("Y", $debut_precedent));
+			if (isset($inscrits[$id_forum_precedent][$jour_precedent])) {
+				$total_cumule_precedent += $inscrits[$id_forum_precedent][$jour_precedent];
+			}
+
+			if ($jour < $aujourdhui) {
+				$periode = "avant";
+			} elseif ($jour > $aujourdhui) {
+				$periode = "apres";
+			} else {
+				$periode = "aujourdhui";
+			}
+			
+        	$suivis[] = array(
+        		'periode' => $periode,
+        		'jour' => date("d/m/Y", $jour),
+        		'n' => $total_cumule,
+        		'n_1' => $total_cumule_precedent,
+        	);
+		}
+		
+		return $suivis;
+    }
+    
   /**
      * Renvoit la liste des inscriptions au forum pour l'impression des badges
      *

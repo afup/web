@@ -47,6 +47,24 @@ class AFUP_Forum
       return  $enregistrement['nb_places'];
     }
 
+    function obtenirDebut($id_forum) {
+        $requete  = 'SELECT UNIX_TIMESTAMP(date_debut)';
+        $requete .= 'FROM';
+        $requete .= '  afup_forum ';
+        $requete .= 'WHERE';
+        $requete .= '  id =  '.(int)$id_forum;
+        return $this->_bdd->obtenirUn($requete);
+    }
+    
+    function obtenirPrecedent($id_forum) {
+        $requete  = 'SELECT MAX(id)';
+        $requete .= 'FROM';
+        $requete .= '  afup_forum ';
+        $requete .= 'WHERE';
+        $requete .= '  id <  '.(int)$id_forum;
+        return $this->_bdd->obtenirUn($requete);
+    }
+    
     function obtenirDernier()
     {
         $requete  = 'SELECT MAX(id)';
