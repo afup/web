@@ -95,7 +95,11 @@ $pages = array(
     'forum' => array(
         'nom' => 'Forum',
         'elements' => array(
-		    'forum_inscriptions' => array(
+		    'forum_suivi' => array(
+		        'nom' => 'Suivi',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
+    		'forum_inscriptions' => array(
 		        'nom' => 'Inscriptions',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),

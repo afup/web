@@ -1,0 +1,40 @@
+<form method="GET" name="forum">
+<input type="hidden" name="page" value="forum_suivi" />
+<h2>Suivi du <select name="id_forum" onchange="this.form.submit(); return false;">
+{foreach from=$forums item=forum}
+<option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+{/foreach}
+</select></h2>
+</form>
+
+<br/>
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
+<a class="avant" href="#" title="Afficher / masquer les jours d'avant">Afficher / masquer les jours d'avant</a><br />
+
+{literal}
+<script language="JavaScript">
+$(document).ready(function(){
+	$("a.avant").click(function(){
+		$("tr.avant").toggle();
+	});
+
+});
+</script>
+{/literal}
+
+<br />
+<table class="afup_tab">
+    <tr>
+        <th>Jours</th>
+        <th>Année N</th>
+        <th>Année N-1</th>
+    </tr>
+{foreach from=$suivis item=suivi}
+    <tr class="{$suivi.periode}">
+        <td>{$suivi.jour}</td>
+        <td>{$suivi.n}</td>
+        <td>{$suivi.n_1}</td>
+    </tr>
+{/foreach}
+</table>
+	
