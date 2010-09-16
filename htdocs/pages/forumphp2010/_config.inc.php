@@ -51,7 +51,14 @@ $sponsors_silver=array(
 	array('nom'   => 'Alter Way',
           'site'  => 'http://www.alterway.fr/',
           'logo'  => 'logo-alterway-sponsor.png',
-          'texte' => "<p></p>",
+          'texte' => '<p>Créé en 2006, le groupe Alter Way a rapidement <strong>rassemblé les équipes emblématiques</strong> des principaux segments du marché de l\'Open Source&nbsp;:</p>
+                      <ul><li>Anaska (<a href="http://www.anaska.com">formation OpenSource</a> en général et <a href="http://www.anaska.com/formation-php.php">formation PHP</a> et <a href="http://www.anaska.com/formation-mysql.php">formation MySQL</a> en particulier),</li>
+                      <li>Ingeniweb (solutions Web d\'entreprise),</li>
+                      <li>Solinux (développements spécifiques, infogérance système et intégration d\'outils middleware),</li>
+                      <li>Kanopée (<a href="http://www.alterway.fr/technologies/planete-php">développement php</a>),</li>
+                      <li>O4DB (décisionnel et base de données) et ECLIP\'S Software (solution ouverte d\'administration et de configuration des services DNS et DHCP).</li>
+                      <li>Nexen-Services (<a href="http://www.nexenservices.com">hébergement</a> à valeur ajoutée)</li></ul>
+                      <p><strong>Alter Way continue de s\'inscrire clairement dans un projet de consolidation de marché</strong>.</p>',
 	),
     array('nom'   => 'E-Merchant',
           'site'  => 'http://www.e-merchant.com/',
