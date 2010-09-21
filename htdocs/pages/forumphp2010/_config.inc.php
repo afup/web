@@ -50,7 +50,7 @@ $smarty->assign('sponsors_gold', array());
 $sponsors_silver=array(
 	array('nom'   => 'Alter Way',
           'site'  => 'http://www.alterway.fr/',
-          'logo'  => 'logo-alterway-sponsor.png',
+          'logo'  => 'logo-alter-way-sponsor.png',
           'texte' => '<p>Créé en 2006, le groupe Alter Way a rapidement <strong>rassemblé les équipes emblématiques</strong> des principaux segments du marché de l\'Open Source&nbsp;:</p>
                       <ul><li>Anaska (<a href="http://www.anaska.com">formation OpenSource</a> en général et <a href="http://www.anaska.com/formation-php.php">formation PHP</a> et <a href="http://www.anaska.com/formation-mysql.php">formation MySQL</a> en particulier),</li>
                       <li>Ingeniweb (solutions Web d\'entreprise),</li>
@@ -62,20 +62,20 @@ $sponsors_silver=array(
 	),
     array('nom'   => 'E-Merchant',
           'site'  => 'http://www.e-merchant.com/',
-          'logo'  => 'logo_e-merchant.gif',
+          'logo'  => 'logo-e-merchant-sponsor.png',
           'texte' => "<p>Société du groupe Pixmania, E-merchant maîtrise et coordonne tous les métiers du e-commerce à votre demande : conception, hébergement, exploitation de votre activité.</p>
 						<p>Profitez de nos 10 ans de pratique et de réussite comme acteur majeur du e-commerce pour servir votre croissance.</p>",
 	),
     array('nom'   => 'Linagora',
           'site'  => 'http://www.linagora.com/',
-          'logo'  => 'logo_linagora.gif',
+          'logo'  => 'logo-linagora-sponsor.png',
           'texte' => "<p>LINAGORA, société spécialisée en Logiciel <strong>Open Source, est le leader français de ce marché</strong>, avec plus de 160 personnes et une présence <a href=\"http://www.linagora.com/-Nos-agences-\">en France (Paris, Toulouse, Lyon et Marseille), en Belgique (Bruxelles) et aux États-Unis (San Francisco)</a>.</p>
 						<p><strong>LINAGORA édite ses <a href=\"http://www.linagora.com/-PRODUITS-\">propres logiciels Open Source</a></strong> et propose une <strong>gamme de <a href=\"http://www.linagora.com/-SERVICES-\">services professionnels</a></strong> pour réussir les grands projets du Libre.</p>
 						<p>Plus d'informations : <a href=\"www.linagora.com\">www.linagora.com</a></p>",
 	),
 	array('nom'   => 'Oxalide',
           'site'  => 'http://www.oxalide.com/',
-          'logo'  => 'logo_oxalide.jpg',
+          'logo'  => 'logo-oxalide-sponsor.png',
           'texte' => "<p><strong>Oxalide</strong>, hébergeur spécialisé dans les technologies open-source, conçoit des infrastructure sur-mesure qui respectent les contraintes de vos projets PHP.</p>
 						<p>Déléguez la gestion de vos serveurs grâce à nos services d'infogérance et assurez l'évolutivité et la qualité de service grâce à notre conseil et notre expertise.</p>
 						<p>Oxalide propulse de nombreux sites PHP : lexpress.fr, lanvin.com, la ligue nationale de Rugby, etc.</p>",
@@ -86,8 +86,8 @@ $smarty->assign('sponsors_silver', $sponsors_silver);
 $sponsors_bronze=array(
 	array('nom'   => 'Clever Age',
           'site'  => 'http://www.clever-age.com/',
-          'logo'  => 'logo-clever-age.png',
-          'texte' => "<p></p>",
+          'logo'  => 'logo-clever-age-sponsor.png',
+          'texte' => "<p>Clever Age est un cabinet de conseil en architecture technique spécialisé dans la conception et l'intégration de systèmes informatiques flexibles reposant sur les nouvelles technologies (solutions éditeurs et/ou open source). Nous sommes présents à Paris et en régions.</p>",
 	),
 );
 $smarty->assign('sponsors_bronze', $sponsors_bronze);
