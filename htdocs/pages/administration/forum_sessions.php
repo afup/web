@@ -215,7 +215,6 @@ if ($action == 'lister') {
 	if ($action != 'ajouter') {
         $conferenciers = $forum_appel->obtenirConferenciersPourSession($id);
 		$formulaire->addElement('header'  , ''                   , 'Conférenciers associés');
-var_dump($conferenciers);
 		foreach ($conferenciers as $conferencier) {
             $nom = $conferencier['nom'] . ' ' . $conferencier['prenom'][0];
             $formulaire->addElement('static', 'info', $nom . '.',
