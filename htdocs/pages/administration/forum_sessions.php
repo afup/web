@@ -5,9 +5,9 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_AppelConferencier.php';
-require_once 'Afup/AFUP_Forum.php';
-require_once 'Afup/AFUP_Droits.php';
+require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_AppelConferencier.php';
+require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Forum.php';
+require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Droits.php';
 
 $forum = new AFUP_Forum($bdd);
 $forum_appel = new AFUP_AppelConferencier($bdd);
@@ -39,15 +39,16 @@ if ($action == 'lister') {
         $_GET['id_forum'] = $forum->obtenirDernier();
     }
     $smarty->assign('id_forum', $_GET['id_forum']);
+    $smarty->assign('list_type', $list_type);
 
     $smarty->assign('forums', $forum->obtenirListe());
     $smarty->assign('sessions', $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type));
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerSession($_GET['id'])) {
         AFUP_Logs::log('Suppression de la session ' . $_GET['id']);
-        afficherMessage('La session a été supprimée', 'index.php?page=forum_sessions&action=lister');
+        afficherMessage('La session a été supprimée', 'index.php?page=forum_sessions&action=lister&type='.$list_type);
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_sessions&action=lister', true);
+        afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_sessions&action=lister&type='.$list_type, true);
     }
 
 } elseif ($action == 'commenter') {
@@ -89,7 +90,7 @@ if ($action == 'lister') {
 	    }
     }
 
-    require_once 'Afup/AFUP_Configuration.php';
+    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Configuration.php';
     $conf = $GLOBALS['AFUP_CONF'];
 
     if (in_array($_SESSION['afup_login'], $conf->obtenir('bureau'))
@@ -165,7 +166,7 @@ if ($action == 'lister') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } else {
-    require_once 'Afup/AFUP_Pays.php';
+    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();
@@ -210,7 +211,17 @@ if ($action == 'lister') {
     $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'nom', true);
 	$formulaire->addElement('select', 'conferencier_id_1'    , 'N°1', $conferenciers);
 	$formulaire->addElement('select', 'conferencier_id_2'    , 'N°2', $conferenciers);
-
+    
+	if ($action != 'ajouter') {
+        $conferenciers = $forum_appel->obtenirConferenciersPourSession($id);
+		$formulaire->addElement('header'  , ''                   , 'Conférenciers associés');
+var_dump($conferenciers);
+		foreach ($conferenciers as $conferencier) {
+            $nom = $conferencier['nom'] . ' ' . $conferencier['prenom'][0];
+            $formulaire->addElement('static', 'info', $nom . '.',
+		    '<a href="index.php?page=forum_conferenciers&action=modifier&id=' . $conferencier['conferencier_id'] . '" title="Voir la fiche du conférencier">Voir la fiche</a>');
+        }
+    }
 
     $formulaire->addElement('header', null, 'Commentaires');
     $commentaires = $forum_appel->obtenirCommentairesPourSession($id);
