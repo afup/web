@@ -2,13 +2,12 @@
 	<div id="cartouche-milieu">
 	{include file="cartouche.html"}
 
-	<script type="text/javascript" src="{$chemin_template}jquery-1.2.6.min.js"></script>
 	<script type="text/javascript" src="{$chemin_template}jquery.journee.js"></script>
 
 
 
     <div class="sessions">
-    {foreach from=$sessions item=session} 
+    {foreach from=$sessions item=session}
 	<div class="session {$session.journee}">
 		<a name="{$session.session_id}" ></a>
 		<h3>
@@ -28,7 +27,7 @@
 				{$session.abstract}
 			</div>
 	   		<div class="conferenciers">
-		    {foreach from=$session.conferenciers item=conferencier} 
+		    {foreach from=$session.conferenciers item=conferencier}
 	          		<div class="conferencier">
 			    		<a href="conferenciers.php#{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/></a>
 			    		<br />
@@ -39,7 +38,7 @@
 		</div>
    		</div>
 	</div>
-    {/foreach} 
+    {/foreach}
 	</div>
 
 	<p><em>Le programme ci-dessus est donn&eacute; &agrave; titre indicatif : il peut encore &eacute;voluer.</em></p>
