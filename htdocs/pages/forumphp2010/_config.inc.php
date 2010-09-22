@@ -13,8 +13,8 @@
 
 // Param de configuration sur site du Forum PHP
 
-define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../classes/afup/')); // prod
-// trunk : define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../../sources/Afup/'));
+// define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../classes/afup/')); // prod
+define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../../sources/Afup/')); // trunk
 
 $config_forum['id'] = 5;
 $coupons = array('PHPFRANCE','POLENORD','DIGIPORT', 'WAMPSERVER',
@@ -39,9 +39,19 @@ $config_forum['date_fin'] = mktime(0, 0, 0, 11, 10, $config_forum['annee']);
 $smarty->assign('forum_annee', $config_forum['annee'] );
 
 
-$sponsors_platinium=array();
+$sponsors_platinium=array(
+	array('nom'   => 'Zend',
+          'site'  => 'http://www.zend.com/fr/',
+          'logo'  => 'logo_zend.png',
+          'texte' => '<p>Zend Technologies, Inc., la PHP Company, est le leader des produits et services de développement,
+          				déploiement et gestion d\'applications web critiques. PHP est utilisé par plus de 20 millions
+          				de site Internet et est rapidement devenu le langage le plus répandu pour développer
+          				des applications web stratégiques. Mondialement déployée dans plus de 25000 entreprises,
+          				la gamme de produits Zend apporte une solution complète durant tout le cycle de vie
+          				d\'une application PHP. Le siège de Zend est situé à Cupertino en Californie.</p>',
+	),
+);
 $smarty->assign('sponsors_platinium', $sponsors_platinium);
-$smarty->assign('sponsors_platinium', array());
 
 $sponsors_gold=array();
 $smarty->assign('sponsors_gold', $sponsors_gold);
