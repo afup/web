@@ -40,6 +40,22 @@ $smarty->assign('forum_annee', $config_forum['annee'] );
 
 
 $sponsors_platinium=array(
+	array('nom'   => 'Adobe',
+          'site'  => 'http://www.adobe.com/fr/',
+          'logo'  => 'logo-adobe-sponsor.png',
+          'texte' => "<p>Adobe révolutionne l'échange d'idées et d'informations. Depuis vingt cinq
+						ans, les technologies et les logiciels réputés de cet éditeur redéfinissent
+						la communication des entreprises, du marché des loisirs et des particuliers
+						en établissant de nouveaux standards de production et de diffusion de
+						contenus véritablement fascinants - partout et à tout moment. À travers des
+						images d'une remarquable richesse visuelle pour l'impression, la vidéo et
+						le cinéma ou du contenu numérique dynamique adapté à une multitude de sup-
+						ports, l'impact des solutions est évident et peut être ressenti par
+						quiconque crée, visualise et manipule des informations. Fort de sa
+						réputation d'excellence et d'une gamme consti- tuée de nombreux produits
+						parmi les plus appréciés et les plus connus du marché, Adobe est l'un des
+						principaux éditeurs de logiciels mondiaux les plus diversifiés.</p>",
+	),
 	array('nom'   => 'Zend',
           'site'  => 'http://www.zend.com/fr/',
           'logo'  => 'logo_zend.png',

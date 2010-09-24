@@ -132,5 +132,10 @@ $(document).ready( function(){
 	 speed: 'normal',
 	 timeout: 2000,
 	 type: 'sequence',
-	 containerheight: '60px' });
+	 containerheight: '70px' });
+ $('.fadelarge').innerfade({
+	 speed: 'normal',
+	 timeout: 2000,
+	 type: 'sequence',
+	 containerheight: '100px' });
 });
