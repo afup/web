@@ -1,5 +1,5 @@
 <?php
-$action = verifierAction(array('lister', 'telecharger_facture', 'envoyer_facture', 'envoyer_tout', 'facturer_facture', 'supprimer_facture'));
+$action = verifierAction(array('lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'envoyer_tout', 'facturer_facture', 'supprimer_facture'));
 $tris_valides = array('date_facture', 'email', 'societe', 'etat');
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
@@ -35,6 +35,8 @@ if ($action == 'lister') {
     // Mise en place de la liste dans le scope de smarty
     $smarty->assign('forums', $forum->obtenirListe());
     $smarty->assign('facturations', $forum_facturation->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
+} elseif ($action == 'telecharger_devis') {
+	$forum_facturation->genererDevis($_GET['ref']);
 } elseif ($action == 'telecharger_facture') {
 	$forum_facturation->genererFacture($_GET['ref']);
 } elseif ($action == 'envoyer_facture'){

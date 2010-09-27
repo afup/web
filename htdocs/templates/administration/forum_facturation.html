@@ -40,6 +40,7 @@
             <td style="text-align: center">{if $facturation.etat == 4}Reglée{elseif $facturation.etat == 6}En attente règlement{elseif $facturation.etat == 7}Confirmée{else}--{/if}</td>
             <td style="text-align: center">{if $facturation.facturation == 0}A facturer{elseif $facturation.facturation == 1}Facturée{elseif $facturation.facturation == 2}Reçue{else}--{/if}</td>
             <td style="text-align: right" nowrap="nowrap">
+                <a href="index.php?page=forum_facturation&amp;action=telecharger_devis&amp;ref={$facturation.reference}" title="Télécharger le devis"><img src="{$chemin_template}images/icone_telecharger_devis.png" alt="Téléchargement du devis" /></a>
 {if $facturation.facturation == 0}
                 <a href="index.php?page=forum_facturation&amp;action=facturer_facture&amp;ref={$facturation.reference}" title="Passer à l'état facturée"><img src="{$chemin_template}images/icone_change.png" alt="Envoi de la facture par mail" /></a>
 {/if}
