@@ -230,6 +230,122 @@ class AFUP_Facturation_Forum
         return $this->_bdd->executer($requete);
     }
 
+    function genererDevis($reference, $chemin = null)
+    {
+        $requete    = 'SELECT * FROM afup_facturation_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $facture = $this->_bdd->obtenirEnregistrement($requete);
+
+        $requete    = 'SELECT * FROM afup_inscription_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $inscriptions = $this->_bdd->obtenirTous($requete);
+
+        require_once 'Afup/AFUP_Configuration.php';
+        $configuration = $GLOBALS['AFUP_CONF'];
+
+        require_once 'Afup/AFUP_Pays.php';
+        $pays = new AFUP_Pays($this->_bdd);
+
+        // Construction du PDF
+        require_once 'Afup/AFUP_PDF_Facture.php';
+        $pdf = new AFUP_PDF_Facture($configuration);
+        $pdf->AddPage();
+
+        // Haut de page [afup]
+        $pdf->SetFont('Arial', 'B', 20);
+        $pdf->Cell(130, 5, 'AFUP');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(60, 5, $configuration->obtenir('afup|raison_sociale'));
+        $pdf->Ln();
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
+        $pdf->Ln();
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(130, 5, 'http://www.afup.org');
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Cell(130, 5, 'SIRET : '. $configuration->obtenir('afup|siret'));
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
+        $pdf->Ln();
+        $pdf->Cell(130, 5);
+        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
+
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Cell(130, 5);
+        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture']) ? $facture['date_facture'] : time())));
+
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Ln();
+
+        if (empty($facture['societe'])) {
+            $facture['societe'] = $facture['nom']." ".$facture['prenom'];
+        }
+
+        // A l'attention du client [adresse]
+        $pdf->SetFont('Arial', 'BU', 10);
+        $pdf->Cell(130, 5, utf8_decode('Objet : Devis n°' . $reference));
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Ln(10);
+        $pdf->MultiCell(130, 5, utf8_decode($facture['societe']). "\n" . utf8_decode($facture['adresse']) . "\n" . utf8_decode($facture['code_postal']) . "\n" . utf8_decode($facture['ville']) ."\n". utf8_decode($pays->obtenirNom($facture['id_pays'])));
+
+        $pdf->Ln(15);
+
+        $pdf->MultiCell(180, 5, utf8_decode("Devis concernant votre participation au forum organisé par l'Association Française des Utilisateurs de PHP (AFUP)."));
+        // Cadre
+        $pdf->Ln(10);
+        $pdf->SetFillColor(200, 200, 200);
+        $pdf->Cell(50, 5, 'Type', 1, 0, 'L', 1);
+        $pdf->Cell(100, 5, 'Personne inscrite', 1, 0, 'L', 1);
+        $pdf->Cell(40, 5, 'Prix', 1, 0, 'L', 1);
+
+        $total = 0;
+        foreach ($inscriptions as $inscription) {
+            $pdf->Ln();
+            $pdf->SetFillColor(255, 255, 255);
+
+            switch ($inscription['type_inscription']) {
+                case AFUP_FORUM_PREMIERE_JOURNEE :
+                $code = 'FONC';
+                break;
+                case AFUP_FORUM_DEUXIEME_JOURNEE :
+                $code = 'TECH';
+                break;
+                case AFUP_FORUM_2_JOURNEES :
+                $code = '2JOU';
+                break;
+                case AFUP_FORUM_2_JOURNEES_AFUP :
+                $code = 'AFUP';
+                break;
+                case AFUP_FORUM_2_JOURNEES_ETUDIANT :
+                $code = 'ETUD';
+                break;
+            }
+
+            $pdf->Cell(50, 5, $code, 1);
+            $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
+            $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
+            $total += $inscription['montant'];
+        }
+
+        $pdf->Ln();
+        $pdf->SetFillColor(225, 225, 225);
+        $pdf->Cell(150, 5, 'TOTAL', 1, 0, 'L', 1);
+        $pdf->Cell(40, 5, $total . utf8_decode(' '), 1, 0, 'L', 1);
+
+        $pdf->Ln(15);
+        $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+
+        if (is_null($chemin)) {
+            $pdf->Output('devis.pdf', 'D');
+        } else {
+            $pdf->Output($chemin, 'F');
+        }
+    }
+
     /**
      * Génère une facture au format PDF
      *
