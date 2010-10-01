@@ -110,6 +110,12 @@ $sponsors_silver=array(
 $smarty->assign('sponsors_silver', $sponsors_silver);
 
 $sponsors_bronze=array(
+	array('nom'   => 'Business & Decisions',
+          'site'  => 'http://www.fr.businessdecision.com/',
+          'logo'  => 'logo-business-decision-sponsor.png',
+          'texte' => "<p>Business & Decision est consultant et intégrateur de systèmes international (CIS). Leader de la Business Intelligence (BI) et du CRM, acteur majeur de l'e-Business, de l'Enterprise Information Management (EIM), des Enterprise Solutions ainsi que du Management Consulting, le Groupe contribue à la réussite des projets à forte valeur ajoutée des entreprises. Il est reconnu pour son expertise fonctionnelle et technologique par les plus grands éditeurs de logiciels du marché avec lesquels il a noué des partenariats.</p>
+						<p>Présent dans 18 pays, Business & Decision emploie actuellement plus de 2 500 personnes en France et dans le Monde.</p>",
+	),
 	array('nom'   => 'Clever Age',
           'site'  => 'http://www.clever-age.com/',
           'logo'  => 'logo-clever-age-sponsor.png',
