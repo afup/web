@@ -32,7 +32,17 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
-$actualite['titre'] = "15 ans de PHP, 10 ans d'AFUP : un programme riche pour cette anée 2010";
+$actualite['titre'] = "Devenez Fan !";
+$actualite['contenu'] = "<p>Suivez les préparatifs du Forum PHP en devenant Fan de l'AFUP sur Facebook ! News, programme définitif, et bien plus encore, <a href=\"http://www.facebook.com/pages/AFUP/148661101838283\">à suivre sur notre page Fan</a> !</p>";
+$actualite['date'] = "01 octobre 2010";
+$actualites[] = $actualite;
+
+$actualite['titre'] = "Projets PHP Open Source";
+$actualite['contenu'] = "<p>Vous avez un projet communautaire développé autour de PHP (frameworks, applicatifs, utilitaires, ...) ? Vous souhaitez le présenter à un public averti? L'AFUP vous propose un espace dédié lors du Forum PHP 2010 ! <a href=\"http://www.afup.org/pages/forumphp2010/projets-php-inscription.php\">Inscrivez-vous dès maintenant</a> !</p>";
+$actualite['date'] = "01 octobre 2010";
+$actualites[] = $actualite;
+
+$actualite['titre'] = "15 ans de PHP, 10 ans d'AFUP : un programme riche pour cette année 2010";
 $actualite['contenu'] = "<p><strong>Rasmus Lerdorf</strong>, créateur de PHP, sera l'invité d'honneur de cette édition anniversaire : les 9 et 10 novembre 2010, Cité des Sciences de La Villette.</p>
 						<p>En ouvrant un cycle de conférences dédié à des profils fonctionnels, l'Association Française des Utilisateurs de PHP entend intégrer un public plus large, avec la perspective nouvelle d'initier les chefs de projets à cette plateforme de programmation.</p>
 						<p>Parmi les thèmes abordés :</p>
