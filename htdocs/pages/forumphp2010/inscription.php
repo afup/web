@@ -3,10 +3,10 @@
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Forum.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Inscriptions_Forum.php';
-require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Facturation_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
 
 $pays = new AFUP_Pays($bdd);
 $forum = new AFUP_Forum($bdd);

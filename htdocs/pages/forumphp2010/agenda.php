@@ -4,8 +4,8 @@ require_once dirname(__FILE__) . '/_config.inc.php';
 
 setlocale(LC_TIME, 'fr_FR');
 
-require_once AFUP_CHEMIN_SOURCE . '/AFUP_Forum.php';
-require_once AFUP_CHEMIN_SOURCE . '/AFUP_AppelConferencier.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
 
 $appel = new AFUP_AppelConferencier($bdd);
 $sessions = $appel->obtenirListeSessionsPlannifies($config_forum['id']);

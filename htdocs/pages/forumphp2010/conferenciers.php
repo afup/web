@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/_config.inc.php';
 
 setlocale(LC_TIME, 'fr_FR');
 
-require_once AFUP_CHEMIN_SOURCE . '/AFUP_AppelConferencier.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
 
 $forum_appel = new AFUP_AppelConferencier($bdd);
 

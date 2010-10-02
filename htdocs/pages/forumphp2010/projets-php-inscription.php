@@ -2,7 +2,7 @@
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 
-require_once AFUP_CHEMIN_SOURCE . 'AFUP_AppelConferencier.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
 
 
 $formulaire = &instancierFormulaire();

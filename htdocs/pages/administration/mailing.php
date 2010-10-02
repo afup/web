@@ -3,7 +3,7 @@
 $action = verifierAction(array('index','mailing', 'ajouter', 'modifier', 'supprimer'));
 $smarty->assign('action', $action);
 set_time_limit(0);
-require_once AFUP_'afup/AFUP_Mailing.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Mailing.php';
 
 $mailing = new AFUP_Mailing($bdd);
 

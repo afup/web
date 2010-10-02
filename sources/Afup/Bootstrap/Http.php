@@ -31,6 +31,7 @@ session_start();
 
 ini_set('error_reporting', $conf->obtenir('divers|niveau_erreur'));
 ini_set('display_errors',  $conf->obtenir('divers|afficher_erreurs'));
+ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__).'/../../../dependencies/PEAR/');
 
 header('Content-type: text/html; charset=UTF-8');
 

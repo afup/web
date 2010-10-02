@@ -1,5 +1,5 @@
 <?php
-require_once 'Afup/AFUP_Inscriptions_Forum.php';
+require_once dirname(__FILE__).'/AFUP_Inscriptions_Forum.php';
 
 class AFUP_Facturation_Forum
 {
