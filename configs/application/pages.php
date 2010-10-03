@@ -131,7 +131,11 @@ $pages = array(
 		        'nom' => 'Vote Planning',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
-        ),
+		    'forum_joind_in' => array(
+		        'nom' => 'Joind.in',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
+	    ),
     ),
     'annuaire' => array(
         'nom' => 'Annuaire pro',
