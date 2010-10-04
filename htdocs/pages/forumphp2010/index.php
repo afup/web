@@ -32,6 +32,12 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Vous enseignez l'informatique dans le supérieur ?";
+$actualite['contenu'] = "<p>L'AFUP a le plaisir de vous inviter gratuitement au Forum PHP 2010 ! Pour recevoir votre invitation, <a href=\"mailto:communication@afup.org\">contactez-nous dès maintenant par mail</a>. Nous vous donnerons alors la
+marche à suivre pour bénéficier de votre invitation. Vous ne pouvez pas être présent lors de ces deux jours ? N'hésitez pas à faire circuler cette invitation : elle est valable pour tout professeur enseignant en informatique dans le supérieur !</p>";
+$actualite['date'] = "04 octobre 2010";
+$actualites[] = $actualite;
+
 $actualite['titre'] = "Devenez Fan !";
 $actualite['contenu'] = "<p>Suivez les préparatifs du Forum PHP en devenant Fan de l'AFUP sur Facebook ! News, programme définitif, et bien plus encore, <a href=\"http://www.facebook.com/pages/AFUP/148661101838283\">à suivre sur notre page Fan</a> !</p>";
 $actualite['date'] = "01 octobre 2010";
