@@ -123,6 +123,7 @@ elseif ($action == 'lister') {
 		AFUP_FORUM_ETAT_INVITE            => 'Invitation',
 		AFUP_FORUM_ETAT_ATTENTE_REGLEMENT => 'Attente règlement',
 		AFUP_FORUM_ETAT_CONFIRME          => 'Inscription confirmée',
+		AFUP_FORUM_ETAT_A_POSTERIORI      => 'Inscription à posteriori',
 		);
 	$formulaire->addElement('select', 'etat'        , 'Etat'        , $state);
 
