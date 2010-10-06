@@ -5,7 +5,7 @@ $tris_valides = array('nom', 'date_consultation', 'presence', 'personnes_avec_po
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_Assemblee_Generale.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Assemblee_Generale.php';
 $assemblee_generale = new AFUP_Assemblee_Generale($bdd);
 
 if ($action == 'lister') {

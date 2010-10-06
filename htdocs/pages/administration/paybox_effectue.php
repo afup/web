@@ -1,9 +1,9 @@
 <?php
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
-require_once 'Afup/AFUP_Base_De_Donnees.php';
-require_once 'Afup/AFUP_Cotisations.php';
-require_once 'Afup/AFUP_Logs.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Base_De_Donnees.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Cotisations.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Logs.php';
 AFUP_Logs::initialiser($bdd, 0);
 
 $cotisations = new AFUP_Cotisations($bdd);

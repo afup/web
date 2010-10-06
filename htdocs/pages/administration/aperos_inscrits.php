@@ -5,7 +5,7 @@ $tris_valides = array('nom', 'pseudo');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_Aperos_Inscrits.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos_Inscrits.php';
 $aperos_inscrits = new AFUP_Aperos_Inscrits($bdd);
 
 if ($action == 'lister') {

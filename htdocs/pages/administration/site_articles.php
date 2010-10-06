@@ -5,8 +5,8 @@ $tris_valides = array('titre', 'date');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_Site.php';
-require_once 'Afup/AFUP_Personnes_Physiques.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
 
 $articles = new AFUP_Site_Articles($bdd);
 $personnes_physiques = new AFUP_Personnes_Physiques($bdd);

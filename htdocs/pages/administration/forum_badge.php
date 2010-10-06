@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 // Gestion des droits
-require_once 'Afup/AFUP_Utils.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Utils.php';
 $droits = AFUP_Utils::fabriqueDroits($bdd);
 
 if (!$droits->estConnecte() ) {
@@ -12,9 +12,9 @@ if (!$droits->estConnecte() ) {
 
 
 
-require_once 'Afup/AFUP_Inscriptions_Forum.php';
-require_once 'Afup/AFUP_Facturation_Forum.php';
-require_once 'Afup/AFUP_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
 $forum = new AFUP_Forum($bdd);
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);

@@ -5,8 +5,8 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_Forum.php';
-require_once 'Afup/AFUP_Droits.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Droits.php';
 
 if ($action == 'afficher') {
     // Ne rien faire. L'écran affiche simplement un lien.

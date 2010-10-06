@@ -5,7 +5,7 @@ $tris_valides = array('nom', 'entreprise', 'email', 'telephone', 'presence', 'co
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_Rendez_Vous.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Rendez_Vous.php';
 $rendez_vous = new AFUP_Rendez_Vous($bdd);
 
 if ($action == 'lister') {

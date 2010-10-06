@@ -5,7 +5,7 @@ $tris_valides = array('raison_sociale', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_Personnes_Morales.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.php';
 $personnes_morales = new AFUP_Personnes_Morales($bdd);
 
 if ($action == 'lister') {

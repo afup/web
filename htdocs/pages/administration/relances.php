@@ -3,7 +3,7 @@
 $action = verifierAction(array('lister', 'relancer'));
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_Cotisations.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Cotisations.php';
 $cotisations = new AFUP_Cotisations($bdd);
 
 if ($action == 'lister') {

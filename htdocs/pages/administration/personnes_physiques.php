@@ -7,7 +7,7 @@ $tris_valides = array('nom' => 'nom <sens>, prenom',
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once 'Afup/AFUP_Personnes_Physiques.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
 $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
 
 if ($action == 'lister') {

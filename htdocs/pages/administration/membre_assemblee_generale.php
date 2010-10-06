@@ -1,7 +1,7 @@
 <?php
 $action = 'modifier';
 
-require_once 'Afup/AFUP_Assemblee_Generale.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Assemblee_Generale.php';
 $assemblee_generale = new AFUP_Assemblee_Generale($bdd);
 
 $timestamp = $assemblee_generale->obternirDerniereDate();
