@@ -31,6 +31,7 @@ define('AFUP_FORUM_CONFERENCIER'                , 12);
 define('AFUP_FORUM_INVITATION'                  , 13);
 define('AFUP_FORUM_PROJET'                      , 14);
 define('AFUP_FORUM_2_JOURNEES_SPONSOR'          , 15);
+define('AFUP_FORUM_PROF'                        , 16);
 
 define('AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE', 0);
 define('AFUP_FORUM_REGLEMENT_CHEQUE'        , 1);
@@ -45,6 +46,7 @@ $AFUP_Tarifs_Forum = array(
                            AFUP_FORUM_PRESSE => 0,
                            AFUP_FORUM_CONFERENCIER => 0,
                            AFUP_FORUM_PROJET => 0,
+                           AFUP_FORUM_PROF => 0,
                            AFUP_FORUM_PREMIERE_JOURNEE => 120,
                            AFUP_FORUM_DEUXIEME_JOURNEE => 120,
                            AFUP_FORUM_2_JOURNEES       => 180,
@@ -62,6 +64,7 @@ $AFUP_Tarifs_Forum_Lib = array(
                            AFUP_FORUM_PROJET => 'Projet PHP',
                            AFUP_FORUM_SPONSOR => 'Sponsor',
                            AFUP_FORUM_PRESSE => 'Presse',
+                           AFUP_FORUM_PROF => 'Enseignement supérieur',
                            AFUP_FORUM_CONFERENCIER => 'Conferencier',
                            AFUP_FORUM_PREMIERE_JOURNEE => 'Jour 1 ',
                            AFUP_FORUM_DEUXIEME_JOURNEE => 'Jour 2',
