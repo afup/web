@@ -90,7 +90,7 @@ if ($action == 'lister') {
 	    }
     }
 
-    require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Configuration.php';
+    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Configuration.php';
     $conf = $GLOBALS['AFUP_CONF'];
 
     if (in_array($_SESSION['afup_login'], $conf->obtenir('bureau'))
@@ -166,7 +166,7 @@ if ($action == 'lister') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } else {
-    require_once AFUP_CHEMIN_RACINE . 'classes/afup/AFUP_Pays.php';
+    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();
