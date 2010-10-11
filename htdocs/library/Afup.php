@@ -43,7 +43,9 @@ abstract class Afup
      */
     public static function includeOnce($file)
     {
-        include_once(Afup::getLibraryPath() . '/' . $file);
+        if (file_exists(Afup::getLibraryPath() . '/' . $file)) {
+	    	include_once(Afup::getLibraryPath() . '/' . $file);
+        }
     }
 
     /**
