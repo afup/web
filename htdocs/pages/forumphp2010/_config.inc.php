@@ -77,14 +77,15 @@ $sponsors_silver=array(
 	array('nom'   => 'Alter Way',
           'site'  => 'http://www.alterway.fr/',
           'logo'  => 'logo-alter-way-sponsor.png',
-          'texte' => '<p>Créé en 2006, le groupe Alter Way a rapidement <strong>rassemblé les équipes emblématiques</strong> des principaux segments du marché de l\'Open Source&nbsp;:</p>
-                      <ul><li>Anaska (<a href="http://www.anaska.com">formation OpenSource</a> en général et <a href="http://www.anaska.com/formation-php.php">formation PHP</a> et <a href="http://www.anaska.com/formation-mysql.php">formation MySQL</a> en particulier),</li>
-                      <li>Ingeniweb (solutions Web d\'entreprise),</li>
-                      <li>Solinux (développements spécifiques, infogérance système et intégration d\'outils middleware),</li>
-                      <li>Kanopée (<a href="http://www.alterway.fr/technologies/planete-php">développement php</a>),</li>
-                      <li>O4DB (décisionnel et base de données) et ECLIP\'S Software (solution ouverte d\'administration et de configuration des services DNS et DHCP).</li>
-                      <li>Nexen-Services (<a href="http://www.nexenservices.com">hébergement</a> à valeur ajoutée)</li></ul>
-                      <p><strong>Alter Way continue de s\'inscrire clairement dans un projet de consolidation de marché</strong>.</p>',
+          'texte' => '<p>Alter Way, opérateur de services open source, accompagne les grands comptes, administrations, collectivités locales et Pme/Pmi dans le développement et l\'usage de leur système d\'information. Alter Way propose une offre industrielle à 360&deg;, structurée autour de cinq activités clés :</p>
+                      <ul>
+                      <li>Conseil IT (Alter Way Consulting),</li>
+                      <li>Communication, studio graphique et e-marketing (Reciprok),</li>
+                      <li>Intégration, développement et infogérance (Alter Way Solutions),</li>
+                      <li>Hébergement à valeur ajoutée (Alter Way Hosting),</li>
+                      <li>Formation (Alter Way Formation)</li></ul>
+                      <p>Accordant une place essentielle à sa contribution et à son implication dans l\'écosystème Open Source, Alter Way se caractérise par le niveau élevé d\'expertise de ses consultants, reconnus par la communauté. La société se distingue également par un investissement permanent en matière d\'innovation, la plaçant ainsi à la pointe des plus récentes avancées technologiques.</p>
+                      <p>Alter Way fut la première entreprise à fédérer les acteurs historiques de l\'Open Source autour d\'un projet d\'industrialisation du marché. Elle compte aujourd\'hui une centaine de collaborateurs. En 2009, elle a réalisé une croissance de 10% avec un chiffre d\'affaires de 9 M€.</p>',
 	),
     array('nom'   => 'E-Merchant',
           'site'  => 'http://www.e-merchant.com/',
@@ -120,6 +121,11 @@ $sponsors_bronze=array(
           'site'  => 'http://www.clever-age.com/',
           'logo'  => 'logo-clever-age-sponsor.png',
           'texte' => "<p>Clever Age est un cabinet de conseil en architecture technique spécialisé dans la conception et l'intégration de systèmes informatiques flexibles reposant sur les nouvelles technologies (solutions éditeurs et/ou open source). Nous sommes présents à Paris et en régions.</p>",
+	),
+	array('nom'   => 'VA Consulting',
+          'site'  => 'http://www.vaconsulting.org/',
+          'logo'  => 'logo-va-consulting-sponsor.png',
+          'texte' => "<p>VA Consulting est une société de conseil et de service hyper-spécialisée sur l'écosystème PHP. L'offre de service est conçue pour augmenter siginificativement la productivité et la réactivité des équipes de développement, avec comme objectif final l'amélioration de la qualité et la garantie de la pérénnité des projets. Audits de compétences et de code, conseil et implémentation d'environnements de développement et d'architectures d'applications, formations, coaching... toutes les prestations de VA Consulting s'appuient sur les meilleures pratiques pour servir l'efficacité et le succès de ses clients.</p>",
 	),
 );
 $smarty->assign('sponsors_bronze', $sponsors_bronze);
