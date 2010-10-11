@@ -18,6 +18,7 @@
 // 1. chargement des classes nécessaires
 
 require '../../library/Afup.php';
+require_once dirname(__FILE__) . '/../../../dependencies/smarty/Smarty.class.php';
 require dirname(__FILE__) . '/../../../configs/application/config.php';
 
 if ($_SERVER["SERVER_NAME"] === 'localhost') {
