@@ -213,7 +213,7 @@ if ($formulaire->validate()) {
     $smarty->assign('erreur', 'Une erreur est survenue lors de votre inscription.<br />Veuillez contacter le responsable des inscriptions afin de régler le problème.');
   } else {
     if ($valeurs['type_reglement'] == AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE) {
-      require_once AFUP_CHEMIN_RACINE . 'classes/paybox/payboxv2.inc';
+      require_once dirname(__FILE__).'/../../../dependencies/paybox/payboxv2.inc';
       $paybox = new PAYBOX;
       $paybox->set_langue('FRA');
       $paybox->set_site($conf->obtenir('paybox|site'));
