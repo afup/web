@@ -123,7 +123,7 @@ $sponsors_bronze=array(
           'texte' => "<p>Clever Age est un cabinet de conseil en architecture technique spécialisé dans la conception et l'intégration de systèmes informatiques flexibles reposant sur les nouvelles technologies (solutions éditeurs et/ou open source). Nous sommes présents à Paris et en régions.</p>",
 	),
 	array('nom'   => 'VA Consulting',
-          'site'  => 'http://www.vaconsulting.org/',
+          'site'  => '',
           'logo'  => 'logo-va-consulting-sponsor.png',
           'texte' => "<p>VA Consulting est une société de conseil et de service hyper-spécialisée sur l'écosystème PHP. L'offre de service est conçue pour augmenter siginificativement la productivité et la réactivité des équipes de développement, avec comme objectif final l'amélioration de la qualité et la garantie de la pérénnité des projets. Audits de compétences et de code, conseil et implémentation d'environnements de développement et d'architectures d'applications, formations, coaching... toutes les prestations de VA Consulting s'appuient sur les meilleures pratiques pour servir l'efficacité et le succès de ses clients.</p>",
 	),
