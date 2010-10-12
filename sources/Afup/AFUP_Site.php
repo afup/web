@@ -1,6 +1,6 @@
 <?php
-require_once 'Afup/AFUP_Configuration.php';
-require_once 'Afup/AFUP_Base_De_Donnees.php';
+require_once dirname(__FILE__).'/AFUP_Configuration.php';
+require_once dirname(__FILE__).'/AFUP_Base_De_Donnees.php';
 
 class AFUP_Site_Base_De_Donnees extends AFUP_Base_De_Donnees {
     function __construct() {
