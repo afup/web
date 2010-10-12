@@ -11,14 +11,14 @@
  * @group    Pages
  */
 
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/Bootstrap/Http.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
 
 $articles         = new AFUP_Site_Articles($bdd);
 $derniersArticles = array();
 
 foreach($articles->chargerDerniersAjouts(20) as $article) {
-    $derniersArticles = array(
+	$derniersArticles[] = array(
     	'titre'   => $article->titre,
     	'contenu' => $article->contenu,
     	'url'     => $article->route ,
