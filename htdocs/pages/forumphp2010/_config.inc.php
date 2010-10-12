@@ -122,6 +122,12 @@ $sponsors_bronze=array(
           'logo'  => 'logo-clever-age-sponsor.png',
           'texte' => "<p>Clever Age est un cabinet de conseil en architecture technique spécialisé dans la conception et l'intégration de systèmes informatiques flexibles reposant sur les nouvelles technologies (solutions éditeurs et/ou open source). Nous sommes présents à Paris et en régions.</p>",
 	),
+	array('nom'   => 'Elao',
+          'site'  => 'http://www.elao.com/',
+          'logo'  => 'logo-elao-sponsor.png',
+          'texte' => "<p>Fondée en 2005 par Xavier Gorse, ELAO est une agence Web implantée à la fois en Région Parisienne et à Lyon. Spécialisée dans le conseil et l'accompagnement de projets d'envergure, ELAO est experte dans le framework Symfony. Ses prestations couvrent également l'hébergement de sites, la formation et le développement d'applications métiers en environnements PHP. Dans le cadre de ses activités, ELAO privilégie les technologies Open Source ; soucieuse de répondre aux attentes suscitées par les nouvelles technologies, elle propose également le développement d'applications iPhone et iPad.</p>
+          <p>Agence Web à dimension résolument humaine, ELAO est particulièrement attachée à la qualité de la relation clients. Sa structure lui permet de faire preuve de toute la souplesse et la réactivité nécessaires afin de mettre en &oelig;uvre les meilleures technologies actuelles au service du client.</p>",
+	),
 	array('nom'   => 'VA Consulting',
           'site'  => '',
           'logo'  => 'logo-va-consulting-sponsor.png',
