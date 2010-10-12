@@ -11,17 +11,13 @@
  * @group    Batchs
  */
 
-// chargement du fichier d'initialisation du contexte ligne de commande
-
 require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/Cli.php';
-
-// logique interne du script
 
 define('MAGPIE_CACHE_DIR', dirname(__FILE__).'/../../cache/robots/planete');
 
-require 'magpierss/rss_fetch.inc';
-require 'afup/AFUP_Planete_Flux.php';
-require 'afup/AFUP_Planete_Billet.php';
+require_once dirname(__FILE__) . '/../../../dependencies/magpierss/rss_fetch.inc';
+require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Planete_Flux.php';
+require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Planete_Billet.php';
 
 $planete_flux   = new AFUP_Planete_Flux($bdd);
 $planete_billet = new AFUP_Planete_Billet($bdd);
