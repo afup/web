@@ -11,15 +11,8 @@
  * @group    Pages
  */
 
-// 0. initialisation (bootstrap) de l'application
-
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-
-// 1. chargement des classes nécessaires
-
-require_once 'Afup/AFUP_Site.php';
-
-// 2. récupération et filtrage des données
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
 
 $articles         = new AFUP_Site_Articles($bdd);
 $derniersArticles = array();
@@ -46,12 +39,8 @@ $feed = array(
             : date('Y-m-d H:i:s', time()),
 );
 
-// 3. assignations des variables du template
-
 $smarty->assign('billets', $derniersArticles);
 $smarty->assign('feed',    $feed);
-
-// 4. affichage de la page en utilisant le modèle spécifié
 
 header('Content-Type: text/xml; charset=UTF-8');
 $smarty->display('rss.xml');
