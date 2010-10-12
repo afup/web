@@ -32,8 +32,8 @@ if (!isset($_REQUEST["action"])) $_REQUEST["action"] = '';
 
 require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/OtherToolPlugin.php';
 
-require_once 'Afup/AFUP_Base_De_Donnees.php';
-require_once 'Afup/AFUP_Utils.php';
+require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Base_De_Donnees.php';
+require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Utils.php';
 
 if ($_REQUEST["action"] == "logout")
 {
