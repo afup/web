@@ -18,16 +18,10 @@
  * @group    Bootstraps
  */
 
-// enregistrement du timestamp à des fins de logging
-
 $startMicrotime = microtime(true);
-
-// chargement des paramétrages génériques / multi-contextuels de l'application
 
 require_once dirname(__FILE__) . '/_Common.php';
 
-// initialisation du mécanisme de logging
-
-require 'afup/AFUP_Logs.php';
+require dirname(__FILE__) . '/../AFUP_Logs.php';
 
 AFUP_Logs::initialiser($bdd, 0);
