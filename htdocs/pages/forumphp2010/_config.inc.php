@@ -69,9 +69,20 @@ $sponsors_platinium=array(
 );
 $smarty->assign('sponsors_platinium', $sponsors_platinium);
 
-$sponsors_gold=array();
+$sponsors_gold=array(
+	array('nom'   => 'Weka entertainment',
+          'site'  => 'http://www.weka-entertainment.com/',
+          'logo'  => 'logo-weka-sponsor.png',
+          'texte' => "<p>Weka Entertainment est un éditeur français indépendant de jeux en ligne et
+						d'applications sociales destinés au grand public. Accessibles par tous sur
+						les réseaux sociaux tels que Facebook, ces jeux sont gratuits mais, pour
+						les joueurs les plus chevronnés, intègrent des fonctionnalités premium et des biens virtuels qu'il est possible d'acheter par des micro-transactions. En l'espace de 18 mois, Weka Entertainment a développé un savoir-faire unique en matière de technologies, de systèmes d'information, de marketing,
+						de gestion de communauté et de monétisation ; savoir-faire qu'elle exploite aujourd'hui sur toute sa gamme de jeux.</p>
+						<p>Avec plus de 10 millions d’utilisateurs inscrits, Weka Entertainment est le leader du marché français du social gaming. Weka Entertainment siège à Paris dans le 2ème arrondissement et compte plus de 50 collaborateurs.</p>",
+	),
+);
 $smarty->assign('sponsors_gold', $sponsors_gold);
-$smarty->assign('sponsors_gold', array());
+
 
 $sponsors_silver=array(
 	array('nom'   => 'Alter Way',
