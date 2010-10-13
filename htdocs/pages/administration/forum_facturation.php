@@ -13,7 +13,7 @@ if ($action == 'lister') {
     // Valeurs par défaut des paramètres de tri
     $list_champs = 'reference, date_facture, montant, email, societe, etat, facturation';
     $list_ordre = 'date_facture';
-    $list_sens = 'desc';
+    $list_sens = 'asc';
     $list_associatif = false;
     $list_filtre = false;
 
