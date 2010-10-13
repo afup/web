@@ -12,8 +12,7 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 if ($action == 'lister') {
     // Valeurs par défaut des paramètres de tri
     $list_champs = 'reference, date_facture, montant, email, societe, etat, facturation';
-    $list_ordre = 'date_facture';
-    $list_sens = 'asc';
+    $list_ordre = 'date_facture DESC';
     $list_associatif = false;
     $list_filtre = false;
 
