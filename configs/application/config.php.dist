@@ -33,3 +33,6 @@ $configuration['paybox']['rang']='001';
 $configuration['planete']['pertinence']='php|afup|pear|pecl|la|suite|question';
 $configuration['site']['prefix']='pages/site/';
 $configuration['site']['query_prefix'] = "?route=";
+$configuration['svn']['url'] = "svn://svn.afup.org";
+$configuration['svn']['username'] = "robot";
+$configuration['svn']['password'] = "afup";
