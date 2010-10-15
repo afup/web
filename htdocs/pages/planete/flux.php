@@ -11,15 +11,8 @@
  * @group    Pages
  */
 
-// 0. initialisation (bootstrap) de l'application
-
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-
-// 1. chargement des classes nécessaires
-
-require_once 'Afup/AFUP_Planete_Billet.php';
-
-// 2. récupération et filtrage des données
+require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Planete_Billet.php';
 
 $feed = array(
 	'title'  => 'planete php fr',
@@ -33,12 +26,8 @@ $feed = array(
 $billet                  = new AFUP_Planete_Billet($bdd);
 $derniersBilletsComplets = $billet->obtenirDerniersBilletsComplets(0, DATE_ATOM, 20);
 
-// 3. assignations des variables du template
-
 $smarty->assign('feed', $feed);
 $smarty->assign('billets', $derniersBilletsComplets);
-
-// 4. affichage de la page en utilisant le modèle spécifié
 
 header('Content-Type: application/atom+xml; charset=UTF-8');
 $smarty->display('flux.xml');
