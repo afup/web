@@ -53,6 +53,13 @@ $actualite['contenu'] = "<p>Vous avez un projet communautaire développé autour
 $actualite['date'] = "01 octobre 2010";
 $actualites[] = $actualite;
 
+
+$actualite['titre'] = "Communiqué de presse : Le rendez-vous incontournable de la scène PHP fête les 15 ans de PHP !";
+$actualite['contenu'] = "<p>Le communiqué de presse est désormais disponible : n'hésitez pas à le faire circuler autour de vous</p>
+            <p><a href=\"../../templates/forumphp2010/pdf/CP-ForumPHP_2010.pdf\">Télécharger le Communiqué de presse</a> (PDF - 220 Ko).</p><br />";
+$actualite['date'] = "09 septembre 2010";
+$actualites[] = $actualite;
+
 $actualite['titre'] = "15 ans de PHP, 10 ans d'AFUP : un programme riche pour cette année 2010";
 $actualite['contenu'] = "<p><strong>Rasmus Lerdorf</strong>, créateur de PHP, sera l'invité d'honneur de cette édition anniversaire : les 9 et 10 novembre 2010, Cité des Sciences de La Villette.</p>
 						<p>En ouvrant un cycle de conférences dédié à des profils fonctionnels, l'Association Française des Utilisateurs de PHP entend intégrer un public plus large, avec la perspective nouvelle d'initier les chefs de projets à cette plateforme de programmation.</p>
