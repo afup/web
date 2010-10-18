@@ -70,6 +70,21 @@ $sponsors_platinium=array(
 $smarty->assign('sponsors_platinium', $sponsors_platinium);
 
 $sponsors_gold=array(
+	array('nom'   => 'Microsoft',
+          'site'  => 'http://www.microsoft.com/fr/fr/',
+          'logo'  => 'logo_microsoft.png',
+          'texte' => "<p>Depuis plusieurs années, Microsoft a multiplié les actions et engagements
+concrets en faveur de l'ouverture et tout particulièrement à destination
+des environnements Open Source. De la livraison de code au noyau Linux en
+juillet 2009 en GPL, à la coopération permanente avec des sociétés et
+communautés Open Source, son engagement est maintenant reconnu et respecté.
+En ce qui concerne spécifiquement les actions les plus marquantes avec
+l'environnement PHP, Microsoft a développé en 2009 un accélérateur,
+WinCache, afin d'optimiser les performances sur Windows Server et a inclut
+le support de la technologie PHP à son offre de Cloud Computing, Windows
+Azure. Cette dernière permet ainsi aux développeurs PHP de profiter de la
+souplesse du Cloud, dès maintenant.</p>",
+	),
 	array('nom'   => 'Weka entertainment',
           'site'  => 'http://www.weka-entertainment.com/',
           'logo'  => 'logo-weka-sponsor.png',
