@@ -32,6 +32,14 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Le Forum met en avant les projets Open Source";
+$actualite['contenu'] = "<p>Après l'appel à candidature lancé il y a quelques semaines, la sélection
+est tombée ! Voici les projets Open Source développés en PHP et les communautés qui seront
+représentés lors du Forum PHP 2010, dans un espace qui leur sera
+entièrement dédié : Hoa, RBS Change, CakePHP-fr, Fine FS, Jelix, Magix CMS et Drupal.</p>";
+$actualite['date'] = "19 octobre 2010";
+$actualites[] = $actualite;
+
 $actualite['titre'] = "Gagnez des livres avec les éditions ENI !";
 $actualite['contenu'] = "<p>15 ans de PHP, 10 ans d'existence pour l'AFUP, ca se fête : à cette occasion les éditions ENI, en collaboration avec l'AFUP, vous font <a href=\"http://www.editions-eni.fr/Livres/Offres-promotionnelles/.25_3a6222cf-b921-41f5-886c-c989f77ba994_90ea0075-9afb-45af-a8a8-0701438f66ae_1_0_d9bd8b5e-f324-473f-b1fc-b41b421c950f.html\">gagner des livres</a> !</p>";
 $actualite['date'] = "11 octobre 2010";
