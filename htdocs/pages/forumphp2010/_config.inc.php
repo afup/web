@@ -146,7 +146,8 @@ $sponsors_bronze=array(
 	array('nom'   => 'Clever Age',
           'site'  => 'http://www.clever-age.com/',
           'logo'  => 'logo-clever-age-sponsor.png',
-          'texte' => "<p>Clever Age est un cabinet de conseil en architecture technique spécialisé dans la conception et l'intégration de systèmes informatiques flexibles reposant sur les nouvelles technologies (solutions éditeurs et/ou open source). Nous sommes présents à Paris et en régions.</p>",
+          'texte' => "<p>Clever Age se positionne sur l'ensemble de la chaine de production Web depuis près de 10 ans. Cette couverture 100% digitale, ainsi que les références notables du groupe, en font un prestataire majeur du marché francophone. Nous présence se répartit sur 4 agences: Paris, Lyon, Bordeaux et Nantes (dans l'ordre de lancement).</p>
+          				<p>Nous privilégions un usage pragmatique des technologies du Web, appliquant les bonnes pratiques techniques et méthodologiques en évolution perpétuelle, sur les standards, l'ergonomie et l'accessibilité, la performance, la capitalisation, etc. Nous partageons ces convictions avec l'association Forum PHP, et sommes fiers d'en être partenaire cette année pour l'organisation de l'événement Forum PHP, au cours duquel nous serons heureux d'échanger avec nos clients et confrères.</p>",
 	),
 	array('nom'   => 'Elao',
           'site'  => 'http://www.elao.com/',
