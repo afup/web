@@ -17,16 +17,16 @@ define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../classes/afup/'
 // define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../../sources/Afup/')); // trunk
 
 $config_forum['id'] = 5;
-$coupons = array('PHPFRANCE','POLENORD','DIGIPORT', 'WAMPSERVER',
+/*
+ * 'PHPFRANCE','POLENORD','DIGIPORT', 'WAMPSERVER',
                   'ALTERWAY','ADOBE','SENSIO','SENSIOLABS','4D',
                   'HSC','MICROSOFT','ZEND', 'CODEUR',
                   'AFUP','CONFERENCIER', 'TWITTER',
-                  'CAKEPHP','POLLEN', 'PIWAM',
-                  'FINEFS','HOA',  'PIC', 'DRUPAL',
-                  'FREEDOM','JELIX', 'HAVEFNUBB','PHPTV', 'ELAO','PRESTASHOP','DEVELOPPEZ',
+                  'POLLEN', 'PIWAM','PIC','FREEDOM', 'HAVEFNUBB','PHPTV','ELAO','PRESTASHOP','DEVELOPPEZ',
+ */
+$coupons = array(
+				'RBSCHANGE','JELIX','CAKEPHPFR','HOA','DRUPAL','MAGIXCMS','FINEFS'
                 );
-
-$coupons = array();
 
 $config_forum['project_ids'] = array();
 $config_forum['coupons'] = array_merge($coupons,array_map("strtolower",$coupons));
