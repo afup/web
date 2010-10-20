@@ -9,15 +9,12 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.ph
 $personnes_morales = new AFUP_Personnes_Morales($bdd);
 
 if ($action == 'lister') {
-
-    // Valeurs par dï¿½faut des paramï¿½tres de tri
     $list_champs = '*';
     $list_ordre = 'raison_sociale';
     $list_sens = 'asc';
     $list_associatif = false;
     $list_filtre = false;
 
-    // Modification des paramï¿½tres de tri en fonction des demandes passï¿½es en GET
     if (isset($_GET['tri']) && in_array($_GET['tri'], $tris_valides)
         && isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
         $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
@@ -26,24 +23,20 @@ if ($action == 'lister') {
         $list_filtre = $_GET['filtre'];
     }
 
-    // Mise en place de la liste dans le scope de smarty
     $smarty->assign('personnes', $personnes_morales->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre));
 } elseif ($action == 'supprimer') {
     if ($personnes_morales->supprimer($_GET['id'])) {
         AFUP_Logs::log('Suppression de la personne morale ' . $_GET['id']);
-        afficherMessage('La personne morale a ï¿½tï¿½ supprimï¿½e', 'index.php?page=personnes_morales&action=lister');
+        afficherMessage('La personne morale a été supprimée', 'index.php?page=personnes_morales&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de la personne morale', 'index.php?page=personnes_morales&action=lister', true);
     }
 } else {
-    /**
-     * Personnes physiques
-     */
-    require_once 'Afup/AFUP_Personnes_Physiques.php';
+    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
     $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
     $personnes_physiques_liste = empty($_GET['id'])? array() : $personnes_physiques->obtenirListe('*', 'nom, prenom', false, $_GET['id']);
 
-    require_once 'Afup/AFUP_Pays.php';
+    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
 
     $formulaire = &instancierFormulaire();
@@ -67,14 +60,14 @@ if ($action == 'lister') {
     $formulaire->addElement('select'  , 'id_pays'            , 'Pays'           , $pays->obtenirPays());
 
     $formulaire->addElement('header'  , ''                   , 'Contact administratif');
-    $formulaire->addElement('select'  , 'civilite'           , 'Civilitï¿½'       , array('M.', 'Mme', 'Mlle'));
+    $formulaire->addElement('select'  , 'civilite'           , 'Civilité'       , array('M.', 'Mme', 'Mlle'));
     $formulaire->addElement('text'    , 'nom'                , 'Nom'            , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'prenom'             , 'Prï¿½nom'         , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text'    , 'prenom'             , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
     $formulaire->addElement('text'    , 'email'              , 'Email'          , array('size' => 30, 'maxlength' => 100));
-    $formulaire->addElement('text'    , 'telephone_fixe'     , 'Tï¿½l. fixe'      , array('size' => 20, 'maxlength' => 20));
-    $formulaire->addElement('text'    , 'telephone_portable' , 'Tï¿½l. portable'  , array('size' => 20, 'maxlength' => 20));
+    $formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , array('size' => 20, 'maxlength' => 20));
+    $formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , array('size' => 20, 'maxlength' => 20));
     if($action != 'ajouter') {
-        $formulaire->addElement('header'  , ''                   , 'Personnes physiques associï¿½es');
+        $formulaire->addElement('header'  , ''                   , 'Personnes physiques associées');
         foreach ($personnes_physiques_liste as $personne_physique) {
             $nom = $personne_physique['nom'] . ' ' . $personne_physique['prenom'][0];
             empty($personne_physique['etat']) and $nom = "<del>$nom</del>";
@@ -82,7 +75,7 @@ if ($action == 'lister') {
 		    '<a href="index.php?page=personnes_physiques&action=modifier&id=' . $personne_physique['id'] . '" title="Voir la fiche de la personne physique">Voir la fiche</a>');
         }
     }
-    $formulaire->addElement('header'  , ''                   , 'Paramï¿½tres');
+    $formulaire->addElement('header'  , ''                   , 'Paramétres');
     $formulaire->addElement('select'  , 'etat'               , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',
                                                                                    AFUP_DROITS_ETAT_INACTIF => 'Inactif'));
 
@@ -90,7 +83,7 @@ if ($action == 'lister') {
     $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
 
     $formulaire->addRule('nom'         , 'Nom manquant'         , 'required');
-    $formulaire->addRule('prenom'      , 'Prï¿½nom manquant'      , 'required');
+    $formulaire->addRule('prenom'      , 'Prénom manquant'      , 'required');
     $formulaire->addRule('email'       , 'Email manquant'       , 'required');
     $formulaire->addRule('email'       , 'Email invalide'       , 'email');
     $formulaire->addRule('raison_sociale', 'Raison sociale manquante', 'required');
@@ -136,7 +129,7 @@ if ($action == 'lister') {
             } else {
                 AFUP_Logs::log('Modification de la personne morale ' . $formulaire->exportValue('raison_sociale') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('La personne morale a ï¿½tï¿½ ' . (($action == 'ajouter') ? 'ajoutï¿½e' : 'modifiï¿½e'), 'index.php?page=personnes_morales&action=lister');
+            afficherMessage('La personne morale a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=personnes_morales&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de la personne morale');
         }
@@ -144,5 +137,3 @@ if ($action == 'lister') {
 
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
-
-?>
