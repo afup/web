@@ -26,9 +26,8 @@
               <a name="{$session.session_id}" href="#ag_sess_{$session.session_id}" >
                 {$session.titre}              
               </a>
-              <br/>{$session.conf1} / {$session.conf2} 
-              {assign var=formulaire value=$session.formulaire}
-              {include file="formulaire.html"}
+              <br />{$session.conf1} / {$session.conf2}
+			  <br />{$session.debut|date_format:"%d/%m/%Y %H:%M"} -  {$session.fin|date_format:"%H:%M"} / {$session.nom_salle}
             </td>
             <td style="text-align: right" nowrap="nowrap">
                 <a href="index.php?page=forum_planning&amp;action=modifier&amp;id={$session.id}&amp;id_session={$session.session_id}" title="Modifier la session {$session.titre}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
