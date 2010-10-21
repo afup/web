@@ -27,7 +27,8 @@ $config_forum['id'] = 5;
 $coupons = array('INTERNIM','ADOBE','ZEND','ELAO','DEVELOPPEZ','MICROSOFT','WEKA',
 				'VACONSULTING','CLEVERAGE','ENI','ALTERWAY','EMERCHANT','LINAGORA',
 				'OXALIDE','BUSINESSDECISION','EYROLLES','PROGRAMMEZ','PHPSOLUTIONS',
-				'RBSCHANGE','JELIX','CAKEPHPFR','HOA','DRUPAL','MAGIXCMS','FINEFS','SOLUTIONSLOGICIELS'
+				'RBSCHANGE','JELIX','CAKEPHPFR','HOA','DRUPAL','MAGIXCMS','FINEFS','SOLUTIONSLOGICIELS',
+				'SYMFONY'
                 );
 
 $config_forum['project_ids'] = array();
@@ -167,6 +168,12 @@ avec nos clients et confrères.</p>",
           'logo'  => 'logo-elao-sponsor.png',
           'texte' => "<p>Fondée en 2005 par Xavier Gorse, ELAO est une agence Web implantée à la fois en Région Parisienne et à Lyon. Spécialisée dans le conseil et l'accompagnement de projets d'envergure, ELAO est experte dans le framework Symfony. Ses prestations couvrent également l'hébergement de sites, la formation et le développement d'applications métiers en environnements PHP. Dans le cadre de ses activités, ELAO privilégie les technologies Open Source ; soucieuse de répondre aux attentes suscitées par les nouvelles technologies, elle propose également le développement d'applications iPhone et iPad.</p>
           <p>Agence Web à dimension résolument humaine, ELAO est particulièrement attachée à la qualité de la relation clients. Sa structure lui permet de faire preuve de toute la souplesse et la réactivité nécessaires afin de mettre en &oelig;uvre les meilleures technologies actuelles au service du client.</p>",
+	),
+	array('nom'   => 'Elixis',
+          'site'  => 'http://www.elixis.fr/',
+          'logo'  => 'logo-elixis-sponsor.png',
+          'texte' => "<p>Elixis est un groupe Internet créé en 2005. Ses activités s'étendent du marketing à la performance à l'email marketing, en passant par l'édition de sites Internet.</p>
+          				<p>Elixis est en perpétuelle recherche de nouveaux talents pour compléter ses équipes.</p>",
 	),
 	array('nom'   => 'VA Consulting',
           'site'  => '',
