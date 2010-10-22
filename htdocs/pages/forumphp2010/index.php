@@ -33,7 +33,7 @@ $smarty->assign('infos_importantes', $infos_importantes);
 $actualites = array();
 
 $actualite['titre'] = "Communiqué de presse : l'AFUP reçoit en exclusivité SkySQL Ab et Monty Program Ab";
-$actualite['contenu'] = "<p>L'AFUP fédère l'ensemble des communautés PHP et reçoit en exclusivité SkySQL Ab et Monty Program Ab
+$actualite['contenu'] = "<p>L\'AFUP fédère l'ensemble des communautés PHP et reçoit en exclusivité SkySQL Ab et Monty Program Ab
 <br />
 Une édition exceptionnelle pour fêter les 15 ans de PHP</p><br />
 
