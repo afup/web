@@ -7,7 +7,7 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.ph
 $formulaire = &instancierFormulaire();
 $formulaire->setDefaults(array('civilite' => 'M.'));
 
-if (time() >$config_forum['date_fin_appel_projet']) {
+if (time() > $config_forum['date_fin_appel_projet']) {
 	$smarty->display('projets-php-fermeture.html');
 	die();
 }
