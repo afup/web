@@ -34,6 +34,7 @@ $coupons = array('INTERNIM','ADOBE','ZEND','ELAO','DEVELOPPEZ','MICROSOFT','WEKA
 $config_forum['project_ids'] = array();
 $config_forum['coupons'] = array_merge($coupons,array_map("strtolower",$coupons));
 $config_forum['annee'] = 2010;
+$config_forum['date_fin_appel_projet'] = mktime(23, 59, 59, 10, 25, $config_forum['annee']);
 $config_forum['date_fin_appel_conferencier'] = mktime(23, 59, 59, 6, 30, $config_forum['annee']);
 //$config_forum['date_fin_prevente'] = $config_forum['date_fin_appel_conferencier'] ;
 $config_forum['date_fin_prevente'] = mktime(0, 0, 0, 07, 15, $config_forum['annee']);
