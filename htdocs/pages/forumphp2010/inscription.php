@@ -32,7 +32,7 @@ if ($nombre_inscrits >= $nombre_places) {
 }
 
 //nombre possible d'inscrptions sur une même commande
-$nombre_personnes = 5;
+$nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;
 $nombre_tags = 3;
 
 // On créé le formulaire
