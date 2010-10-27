@@ -32,6 +32,20 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Forum PHP 2010 : Zeev Suraski répond présent.";
+$actualite['contenu'] = "<p>Zend Technologies, partenaire du Forum PHP 2010, nous propose une conférence intitulée <a href=\"http://afup.org/pages/forumphp2010/sessions.php#512\">« Le paradoxe des performances PHP »</a>, animée par Zeev Suraski (co-fondateur de Zend Technologies).
+Ces dernières années, de nombreuses fonctions ont été ajoutées à PHP 5, mais paradoxalement, il est également devenu significativement plus rapide avec chaque sortie majeure.
+Cette conférence décrira les composants de PHP, la machine virtuelle de PHP et les plus importants changements et optimisations de PHP5 liés à la performance.</p>";
+$actualite['date'] = "27 octobre 2010";
+$actualites[] = $actualite;
+
+$actualite['titre'] = "SkySQL en exclusivité pour le Forum PHP 2010 !";
+$actualite['contenu'] = "<p>Michael « Monty » Widenius – Monty Program Ab- et Kaj Arnö – SkySQL Ab- nous font l'honneur d'animer ensemble la conférence de clôture du Forum PHP 2010, ayant pour thème <a href=\"http://afup.org/pages/forumphp2010/sessions.php#511\">« Etat de l'art de l'écosystème MySQL »</a>.
+Au programme, le futur de MySQL et la présentation de leur alternative à Oracle, SkySQL. Que cela signifie-t-il pour l'écosystème des partenaires, développeurs, clients, utilisateurs professionnels et la communauté des contributeurs de MySQL ?
+Que peut-on attendre du futur de MySQL : forks, correction des bugs, support commercial et feuille de route ?</p>";
+$actualite['date'] = "26 octobre 2010";
+$actualites[] = $actualite;
+
 $actualite['titre'] = "Communiqué de presse : l'AFUP reçoit en exclusivité SkySQL Ab et Monty Program Ab";
 $actualite['contenu'] = "<p>L'AFUP fédère l'ensemble des communautés PHP et reçoit en exclusivité SkySQL Ab et Monty Program Ab.
 <br />
@@ -93,19 +107,6 @@ $actualite['contenu'] = "<p><strong>Rasmus Lerdorf</strong>, créateur de PHP, s
 						</p>
 						<p>Pour vous inscrire, ne perdez pas de temps, <a href=\"http://afup.org/pages/forumphp2010/inscription.php\">réservez votre place au forum PHP</a> !</p>";
 $actualite['date'] = "03 septembre 2010";
-$actualites[] = $actualite;
-
-$actualite['titre'] = "Fin de l'appel à conférenciers, pré-programme";
-$actualite['contenu'] = "<p>Près de <strong>80 propositions de conférences</strong> nous sont parvenues, le choix promet d'être difficile...</p>
-						<p>On annonce notamment la venue de <strong>Rasmus Lerdorf</strong>, à l'occasion du 15e anniversaire, mais de nombreux autres acteurs reconnus seront là pour vous concocter un programme de très haute qualité.</p>
-						<p>Restez à l'écoute, nous publierons prochainement un pré-programme, pour vous donner un avant-goût de ce Forum 2010 !</p>";
-$actualite['date'] = "05 juillet 2010";
-$actualites[] = $actualite;
-
-$actualite['titre'] = "Devenez sponsor du Forum PHP 2010";
-$actualite['contenu'] = "<p>Vous souhaitez positionner votre entreprise sur PHP, atteindre un public ciblé, bénéficier de retombées presse, rencontrer des acteurs reconnus... devenez l'un des sponsors du Forum PHP 2010 !</p>".
-"<p><a href=\"../../templates/forumphp2010/pdf/Forum-PHP-2010-dossier-sponsor.pdf\">Télécharger le dossier Sponsors</a> (PDF - 367 Ko).</p>";
-$actualite['date'] = "30 juin 2010";
 $actualites[] = $actualite;
 
 $smarty->assign('actualites', $actualites);
