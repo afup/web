@@ -10,17 +10,9 @@ $sort = 's.titre';
 if (isset($_GET['admin_preview']))
 {
 	$smarty->assign('admin', true);;
-	// on affiche tous les projets
-	$config_forum['project_ids'] = array();
-	$sort = 's.date_soumission DESC';
 }
 
-$sessions = $forum_appel->obtenirListeProjets($config_forum['id'],     's.*',
-                          $sort,
-                         false,
-                           false,
-                          $config_forum['project_ids']);
-
+$sessions = $forum_appel->obtenirListeProjetsPlannifies($config_forum['id']);
 
 foreach ($sessions as $index => $session) {
     $sessions[$index]['conferenciers'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
@@ -29,4 +21,3 @@ foreach ($sessions as $index => $session) {
 
 $smarty->assign('projets', $sessions);
 $smarty->display('projets-php.html');
-?>

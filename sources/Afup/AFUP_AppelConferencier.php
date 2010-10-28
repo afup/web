@@ -479,6 +479,36 @@ class AFUP_AppelConferencier
             return $this->_bdd->obtenirTous($requete);
         }
     }
+
+    function obtenirListeProjetsPlannifies($id_forum   = null,
+                          $champs     = 's.*',
+                          $ordre      = 's.date_soumission',
+                          $associatif = false)
+    {
+        $requete  = ' SELECT ';
+        $requete .= '  COUNT(co.id) as commentaires_nombre, ';
+        $requete .= '  ' . $champs . ' ';
+        $requete .= ' FROM ';
+        $requete .= '  afup_sessions s ';
+        $requete .= ' INNER JOIN afup_conferenciers_sessions cs ';
+        $requete .= '  ON cs.session_id = s.session_id ';
+        $requete .= ' INNER JOIN afup_conferenciers c ';
+        $requete .= '  ON c.conferencier_id = cs.conferencier_id ';
+        $requete .= ' LEFT JOIN afup_forum_sessions_commentaires co ';
+        $requete .= '  ON cs.session_id = co.id_session ';
+        $requete .= ' WHERE c.id_forum = '.$this->_bdd->echapper($id_forum);
+        $requete .= ' AND s.plannifie = 1 ';
+        $requete .= ' AND s.genre = 9 ';
+        $requete .= ' GROUP BY s.session_id ';
+        $requete .= ' ORDER BY ' . $ordre;
+
+        if ($associatif) {
+            return $this->_bdd->obtenirAssociatif($requete);
+        } else {
+            return $this->_bdd->obtenirTous($requete);
+        }
+    }
+
     function obtenirListeSessions($id_forum   = null,
                           $champs     = 's.*',
                           $ordre      = 's.date_soumission',
