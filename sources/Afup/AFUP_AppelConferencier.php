@@ -358,10 +358,9 @@ class AFUP_AppelConferencier
         $requete .= ' LEFT JOIN ';
         $requete .= '  afup_forum_planning pl ';
         $requete .= ' ON se.session_id = pl.id_session';
-        $requete .= ' WHERE ';
-        $requete .= '  se.id_forum = '.$this->_bdd->echapper($id_forum);
-        $requete .= ' AND ';
-        $requete .= '  se.plannifie = 1';
+        $requete .= ' WHERE se.id_forum = '.$this->_bdd->echapper($id_forum);
+        $requete .= ' AND se.plannifie = 1';
+        $requete .= ' AND se.genre != 9 ';
         $requete .= ' ORDER BY ';
         $requete .= '  pl.debut, se.titre';
 
@@ -415,10 +414,9 @@ class AFUP_AppelConferencier
         $requete .= ' LEFT JOIN ';
         $requete .= '  afup_forum_salle sa ';
         $requete .= ' ON sa.id = pl.id_salle';
-        $requete .= ' WHERE ';
-        $requete .= '  se.id_forum = '.$this->_bdd->echapper($id_forum);
-        $requete .= ' AND ';
-        $requete .= '  se.plannifie = 1';
+        $requete .= ' WHERE se.id_forum = '.$this->_bdd->echapper($id_forum);
+        $requete .= ' AND se.genre != 9 ';
+        $requete .= ' AND se.plannifie = 1';
         $requete .= ' ORDER BY ';
         $requete .= '  pl.debut, sa.nom ,se.titre';
 
