@@ -34,7 +34,7 @@ $actualites = array();
 
 
 $actualite['titre'] = "Weka complète notre thématique sur les performances du PHP!";
-$actualite['contenu'] = "<p>Cette année, l\'AFUP souhaite notamment mettre l'accent sur l'optimisation des performances des sites. Qui de mieux pour l'illustrer que Weka, leader du marché français du social gaming, accueillant tous les jours plus de 600
+$actualite['contenu'] = "<p>Cette année, l'AFUP souhaite notamment mettre l'accent sur l'optimisation des performances des sites. Qui de mieux pour l'illustrer que Weka, leader du marché français du social gaming, accueillant tous les jours plus de 600
 000 visiteurs uniques et délivrant plus de 30 millions de pages vues par jour sur des applications sociales et interactives? Comment faire face à une telle problématique de très forte volumétrie? Weka nous fera bénéficier de son expérience lors de la conférence 'Jeux sociaux & Cloud Computing : une histoire de scalabilité'.</p>";
 $actualite['date'] = "3 novembre 2010";
 $actualites[] = $actualite;
