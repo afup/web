@@ -32,6 +32,22 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+
+$actualite['titre'] = "Weka complète notre thématique sur les performances du PHP!";
+$actualite['contenu'] = "<p>Cette année, l\'AFUP souhaite notamment mettre l'accent sur l'optimisation des performances des sites. Qui de mieux pour l'illustrer que Weka, leader du marché français du social gaming, accueillant tous les jours plus de 600
+000 visiteurs uniques et délivrant plus de 30 millions de pages vues par jour sur des applications sociales et interactives? Comment faire face à une telle problématique de très forte volumétrie? Weka nous fera bénéficier de son expérience lors de la conférence 'Jeux sociaux & Cloud Computing : une histoire de scalabilité'.</p>";
+$actualite['date'] = "3 novembre 2010";
+$actualites[] = $actualite;
+
+
+$actualite['titre'] = "Roy Rubin, fondateur de Magento, invité de dernière minute au Forum PHP
+2010!";
+$actualite['contenu'] = "<p>Roy Rubin nous fera l'honneur de sa présence lors de la conférence 'Magento, un framework du E-commerce' menée par Hubert Desmarest et Guillaume Babik.  Magento, ou la meilleure solution de ecommerce open 
+source? Tous les deux, accompagnés de leur invité de marque, nous en parleront à travers l'exemple du site SmartBox.fr, développé sous Magento 
+en fonction des besoins propres aux métiers de SmartBox.</p>";
+$actualite['date'] = "3 novembre 2010";
+$actualites[] = $actualite;
+
 $actualite['titre'] = "Forum PHP 2010 : Zeev Suraski répond présent.";
 $actualite['contenu'] = "<p>Zend Technologies, partenaire du Forum PHP 2010, nous propose une conférence intitulée <a href=\"http://afup.org/pages/forumphp2010/sessions.php#512\">« Le paradoxe des performances PHP »</a>, animée par Zeev Suraski (co-fondateur de Zend Technologies).
 Ces dernières années, de nombreuses fonctions ont été ajoutées à PHP 5, mais paradoxalement, il est également devenu significativement plus rapide avec chaque sortie majeure.
