@@ -33,11 +33,7 @@ $smarty->assign('infos_importantes', $infos_importantes);
 $actualites = array();
 
 $actualite['titre'] = "Le Forum PHP 2010 est COMPLET !";
-$actualite['contenu'] = "<p>Pour la première fois de son histoire, le Forum PHP clôture ses
-inscriptions quelques jours avant l'évènement ! Vous serez plus de 450 à
-nous rejoindre pour cette édition exceptionnelle. Rendez-vous mardi 9 et
-mercredi 10 novembre pour célébrer avec nous les 15 ans du PHP en compagnie
-des meilleurs experts mondiaux du langage ! Et merci à vous !
+$actualite['contenu'] = "<p>Encore une fois, le Forum PHP clôture ses inscriptions quelques jours avant l'évènement! Vous serez plus de 450 à nous rejoindre pour cette édition exceptionnelle. Rendez-vous mardi 9 et mercredi 10 novembre pour célébrer avec nous les 15 ans du PHP en compagnie des meilleurs experts mondiaux ! Et merci à vous !
 </p>";
 $actualite['date'] = "4 novembre 2010";
 $actualites[] = $actualite;
