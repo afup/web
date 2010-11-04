@@ -39,10 +39,10 @@ foreach ($badges as $nb => $badge )
   switch ($badge['type_inscription'])
   {
     case AFUP_FORUM_PREMIERE_JOURNEE:
-      $lib_pass = 'PASS JOUR 1 (Jeudi)';
+      $lib_pass = 'PASS JOUR 1 (Mardi)';
       break;
     case AFUP_FORUM_DEUXIEME_JOURNEE:
-      $lib_pass = 'PASS JOUR 2 (Vendredi)';
+      $lib_pass = 'PASS JOUR 2 (Mercredi)';
       break;
     case AFUP_FORUM_2_JOURNEES:
     case AFUP_FORUM_2_JOURNEES_AFUP:
@@ -120,9 +120,13 @@ $badge_prints[$badge_page]= $last_page_badges;
 
 $programme = $forum->genAgenda('2010',true,true);
 
-$code_salle[4]= "AM";
-$code_salle[5]= "S1";
-$code_salle[6]= "S4";
+$code_salle[8]= "LA1";
+$code_salle[9]= "LA2";
+$code_salle[10]= "S1";
+$code_salle[11]= "S3";
+$code_salle[12]= "SAB";
+$code_salle[13]= "SCD";
+$code_salle[14]= "S2";
 //var_dump( $programme);die;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -198,20 +202,21 @@ th {
   <tr>
     <th valign="bottom" align="left">__</th>
     <?php foreach(array(1,2,3) as $col): ?>
+    <?php $nb = 0;?>
     <td>
-    <div style="padding: 20px;"><?php foreach($programme as $date => $programme_jour): ?>
-    <div style="font-size: 15px; font-weight: bold; padding: 5px;"><?php echo $date == '12-11-2009'?'Jeudi 12':'Vendredi 13';?>
-    Novembre 2009</div>
+    <div style="padding:0px 20px;"><?php foreach($programme as $date => $programme_jour): ?>
+    <div style="font-size: 12px; font-weight: bold; padding: 3px;"><?php echo $date == '09-11-2010'?'Mardi 09':'Mercredi 10';?>
+    Novembre 2010</div>
     <?php foreach($programme_jour as $hour => $session_hours): ?> <?php $nb++;$session = $session_hours[0];?>
     <div style="padding: 3px;background-color:<?php echo $nb % 2 ==0?'white':'#E7E7E7'; ?>;">
     <div
       style="float: left; width: 70px; border: 0px solid; padding: 0px; text-align: center; vertical-align: middle;"><?php echo $hour;?></div>
-    <div style="float: right;padding: 0px;border:0px solid;width: 410px;height:<?php echo $session['keynote']==1 ?'13':'40' ?>px;text-align: left;vertical-align: middle;" >
-    <?php foreach($session_hours as $session): ?><span style="width: 50px;font-size: 9px;font-family: Lucida Sans Typewriter "><?php echo $code_salle[$session['id_salle']]?> -</span> <?php echo $session['titre']?><br />
+    <div style="float: right;padding: 0px;border:0px solid;width: 410px;height:<?php echo count($session_hours)*13; ?>px;text-align: left;vertical-align: middle;" >
+    <?php foreach($session_hours as $session): ?><span style="width: 50px;font-size: 8px;font-family: Lucida Sans Typewriter "><?php echo $code_salle[$session['id_salle']]?> -</span> <?php echo $session['titre']?><br />
     <?php endforeach; ?></div>
     <br style="clear: both;" />
     </div>
-    <?php endforeach; ?> <?php endforeach; ?> <i>AM (Amphi) - S1 (Salle 1) - S4 (Salle 4)</i></div>
+    <?php endforeach; ?> <?php endforeach; ?> <i>LA1 (Amphi 1) - LA2 (Amphi 2) - S1 (Salle 1) - S2 (Salle 2) - S3 (Salle 3) - SAB (Salle AB) - SCD (Salle CD)</i></div>
     </td>
     <?php endforeach;?>
     <th valign="bottom" align="right">__</th>
