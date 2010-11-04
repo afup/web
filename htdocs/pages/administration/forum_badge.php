@@ -118,7 +118,7 @@ for ($empty_rows = 1; $empty_rows <= $nb_rows; $empty_rows++)
 }
 $badge_prints[$badge_page]= $last_page_badges;
 
-$programme = $forum->genAgenda('2009',true,true);
+$programme = $forum->genAgenda('2010',true,true);
 
 $code_salle[4]= "AM";
 $code_salle[5]= "S1";
