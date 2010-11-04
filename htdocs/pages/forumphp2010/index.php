@@ -32,6 +32,15 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Le Forum PHP 2010 est COMPLET !";
+$actualite['contenu'] = "<p>Pour la première fois de son histoire, le Forum PHP clôture ses
+inscriptions quelques jours avant l'évènement ! Vous serez plus de 450 à
+nous rejoindre pour cette édition exceptionnelle. Rendez-vous mardi 9 et
+mercredi 10 novembre pour célébrer avec nous les 15 ans du PHP en compagnie
+des meilleurs experts mondiaux du langage ! Et merci à vous !
+</p>";
+$actualite['date'] = "4 novembre 2010";
+$actualites[] = $actualite;
 
 $actualite['titre'] = "Weka complète notre thématique sur les performances du PHP!";
 $actualite['contenu'] = "<p>Cette année, l'AFUP souhaite notamment mettre l'accent sur l'optimisation des performances des sites. Qui de mieux pour l'illustrer que Weka, leader du marché français du social gaming, accueillant tous les jours plus de 600
@@ -42,8 +51,8 @@ $actualites[] = $actualite;
 
 $actualite['titre'] = "Roy Rubin, fondateur de Magento, invité de dernière minute au Forum PHP
 2010!";
-$actualite['contenu'] = "<p>Roy Rubin nous fera l'honneur de sa présence lors de la conférence 'Magento, un framework du E-commerce' menée par Hubert Desmarest et Guillaume Babik.  Magento, ou la meilleure solution de ecommerce open 
-source? Tous les deux, accompagnés de leur invité de marque, nous en parleront à travers l'exemple du site SmartBox.fr, développé sous Magento 
+$actualite['contenu'] = "<p>Roy Rubin nous fera l'honneur de sa présence lors de la conférence 'Magento, un framework du E-commerce' menée par Hubert Desmarest et Guillaume Babik.  Magento, ou la meilleure solution de ecommerce open
+source? Tous les deux, accompagnés de leur invité de marque, nous en parleront à travers l'exemple du site SmartBox.fr, développé sous Magento
 en fonction des besoins propres aux métiers de SmartBox.</p>";
 $actualite['date'] = "3 novembre 2010";
 $actualites[] = $actualite;
