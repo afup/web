@@ -251,4 +251,3 @@ if ($formulaire->validate()) {
 
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 $smarty->display($is_prevente?'inscription_prevente.html':'inscription.html');
-?>
