@@ -20,6 +20,10 @@ $nombre_inscrits = $forum_inscriptions->obtenirNombreInscrits($id_forum);
 //$smarty->display('inscriptions_a_venir.html');
 //die();
 
+if (time() > $config_forum['date_fin_vente']) {
+  $smarty->display('inscriptions_fermes.html');
+  die();
+}
 if (time() > $config_forum['date_debut']) {
   $smarty->display('inscriptions_fermes.html');
   die();
