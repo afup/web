@@ -18,7 +18,7 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
 $forum = new AFUP_Forum($bdd);
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
-$id_forum = 4;
+$id_forum = 5;
 $badges =  $forum_inscriptions->obtenirListePourBadges($id_forum);
 $badge_prints =array();
 $nb_cols = 3;
