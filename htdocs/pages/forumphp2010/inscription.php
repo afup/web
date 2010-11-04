@@ -20,19 +20,20 @@ $nombre_inscrits = $forum_inscriptions->obtenirNombreInscrits($id_forum);
 //$smarty->display('inscriptions_a_venir.html');
 //die();
 
-if (time() > $config_forum['date_fin_vente']) {
-  $smarty->display('inscriptions_fermes.html');
-  die();
+if (!isset($_GET['passage_en_force'])) {
+	if (time() > $config_forum['date_fin_vente']) {
+	  $smarty->display('inscriptions_fermes.html');
+	  die();
+	}
+	$is_prevente = time() < $config_forum['date_fin_prevente'];
+	if ($nombre_inscrits >= $nombre_places) {
+	  $smarty->display('inscriptions_completes.html');
+	  die();
+	}
 }
 if (time() > $config_forum['date_debut']) {
-  $smarty->display('inscriptions_fermes.html');
-  die();
-}
-$is_prevente = time() < $config_forum['date_fin_prevente'];
-
-if ($nombre_inscrits >= $nombre_places) {
-  //$smarty->display('inscriptions_completes.html');
-  //die();
+	$smarty->display('inscriptions_fermes.html');
+	die();
 }
 
 //nombre possible d'inscrptions sur une même commande
