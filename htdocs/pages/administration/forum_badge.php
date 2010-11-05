@@ -268,7 +268,7 @@ th {
     <th valign="bottom" align="left">__</th>
     <?php foreach($row as $badge): ?>
     <td valign="top">
-    <img src="/templates/administration/images/bf09h.png" alt=""  style="padding-top:10px;"/>
+    <img src="/templates/administration/images/bf10h.png" alt=""  style="padding-top:10px;"/>
     <div style="height:250px;vertical-align: middle;padding-top: 80px;">
     <?php if($badge) :?>
    <div style="height: 300px;">
