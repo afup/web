@@ -173,7 +173,7 @@ th {
 
 <body style="margin: 0; padding: 0px; ">
 <?php foreach($badge_prints as $nb_page => $page): ?>
-<?php if($nb_page == 1) :?>
+<?php if(false && $nb_page == 1) :?>
 <table border="0" cellpadding="0" cellspacing="0" align="center" class="programme">
   <tr>
     <th class="coin" valign="bottom">
@@ -271,12 +271,14 @@ th {
     <img src="/templates/administration/images/bf09h.png" alt=""  style="padding-top:10px;"/>
     <div style="height:250px;vertical-align: middle;padding-top: 80px;">
     <?php if($badge) :?>
-
-    <div style="font-size: 30px;padding: 10px;font-weight: bold;"><?php echo $badge['prenom']?> <?php echo $badge['nom']?></div>
+   <div style="height: 300px;">
+    <div style="font-size: 45px;padding: 10px;font-weight: bold;"><?php echo $badge['prenom']?><br/><?php echo strtoupper(str_replace(array('é'), array('e'), $badge['nom']))?></div>
     <div style="font-size: 25px;padding: 10px;"><?php echo $badge['societe']?></div>
     <div style="font-size: 18px;padding: 10px;"><?php echo $badge['type_pass']?></div>
     <div style="font-size: 16px;padding: 10px;font-weight: bold;"><?php echo $badge['tags']?> </div>
+    </div>
      <?php endif;?>
+     <div style="font-size:12px; height:50px;vertical-align: middle;padding-top: 0px;">Programme format mobile : www.afup.org/m <br/>Twitter : @afup - Hash #forumphp</div>
      </div>
     </td>
 
