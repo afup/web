@@ -127,6 +127,14 @@ $pages = array(
 		        'nom' => 'Planning',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
+		    'forum_emargement' => array(
+		        'nom' => 'Feuille d\'émargement',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
+		    'forum_badges' => array(
+		        'nom' => 'Badges',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
 		    'forum_planning_vote' => array(
 		        'nom' => 'Vote Planning',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,

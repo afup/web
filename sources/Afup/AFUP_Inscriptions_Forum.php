@@ -253,14 +253,36 @@ class AFUP_Inscriptions_Forum
 		return $suivis;
     }
     
-  /**
-     * Renvoit la liste des inscriptions au forum pour l'impression des badges
-     *
-     * @param  int   $id_forum         Id du forum
-     * @return array
-     */
-    function obtenirListePourBadges($id_forum   = null )
-    {
+    function obtenirListePourEmargement($id_forum = null) {
+        $requete  = 'SELECT';
+        $requete .= '  i.*, f.societe ';
+        $requete .= 'FROM';
+        $requete .= '  afup_inscription_forum i ';
+        $requete .= 'LEFT JOIN';
+        $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
+        $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
+        $requete .= 'ORDER BY i.nom ASC';
+        
+        $liste_emargement = array();
+        $liste = $this->_bdd->obtenirTous($requete);
+        
+        $derniere_lettre = "";
+        foreach ($liste as $inscrit) {
+        	$premiere_lettre = $inscrit['nom'][0];
+        	if ($derniere_lettre != $premiere_lettre) {
+        		$liste_emargement[] = array(
+        			'nom' => $premiere_lettre,
+        			'etat' => -1,
+        		);
+        		$derniere_lettre = $premiere_lettre;
+        	}
+        	$liste_emargement[] = $inscrit;
+        }
+        
+        return $liste_emargement;
+    }
+
+    function obtenirListePourBadges($id_forum   = null ) {
         $requete  = 'SELECT';
         $requete .= '  i.*, f.societe ';
         $requete .= 'FROM';
