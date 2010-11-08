@@ -131,7 +131,7 @@ $pages = array(
 		        'nom' => 'Feuille d\'émargement',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
-		    'forum_badges' => array(
+		    'forum_badge' => array(
 		        'nom' => 'Badges',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
