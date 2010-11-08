@@ -150,17 +150,16 @@ class AFUP_Inscriptions_Forum
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
         $requete .= 'ORDER BY i.date';
         $requete .= ' LIMIT 1';
-        $inscris  = $this->_bdd->obtenirTous($requete);
+        $inscrits  = $this->_bdd->obtenirTous($requete);
 
 
         require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
-        foreach ($inscris as $nb => $personne) {
+        foreach ($inscrits as $nb => $inscrit) {
 			if ($nb % 100 == 0) {
 				sleep(5);
 			}
 			$mail = new PHPMailer;
-			$personne['email'] = 'tresorier@afup.org';
-			$mail->AddAddress($personne['email'], $personne['prenom'] . " " . $personne['nom']);
+			$mail->AddAddress($inscrit['email'], $inscrit['prenom'] . " " . $inscrit['nom']);
 
 			$mail->From = $configuration->obtenir('mails|email_expediteur');
 			$mail->FromName = $configuration->obtenir('mails|nom_expediteur');
@@ -174,10 +173,10 @@ class AFUP_Inscriptions_Forum
 
 			$mail->Subject = $sujet;
 
-			$qui = $personne['prenom'].' '.$personne['nom'];
+			$qui = $inscrit['prenom'].' '.$inscrit['nom'];
 			$corps = str_replace("%INSCRIT", $qui, $corps);
 
-			$lien = "http://www.afup.org/pages/forumphp2010/convocation_visiteurs.php?id=".$personne['md5key'];
+			$lien = "http://www.afup.org/pages/forumphp2010/convocation_visiteurs.php?id=".$inscrit['md5key'];
 			$corps = str_replace("%LIEN", $lien, $corps);
 			$mail->Body = $corps;
 
