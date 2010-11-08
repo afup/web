@@ -149,7 +149,7 @@ class AFUP_Inscriptions_Forum
         $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
         $requete .= 'ORDER BY i.date';
-        $requete .= ' LIMIT 1';
+        $requete .= ' LIMIT 5000';
         $inscrits  = $this->_bdd->obtenirTous($requete);
 
 
