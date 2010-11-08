@@ -268,7 +268,7 @@ class AFUP_Inscriptions_Forum
         
         $derniere_lettre = "";
         foreach ($liste as $inscrit) {
-        	$premiere_lettre = $inscrit['nom'][0];
+        	$premiere_lettre = strtoupper($inscrit['nom'][0]);
         	if ($derniere_lettre != $premiere_lettre) {
         		$liste_emargement[] = array(
         			'nom' => $premiere_lettre,
