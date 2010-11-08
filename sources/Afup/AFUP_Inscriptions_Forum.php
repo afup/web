@@ -109,8 +109,7 @@ class AFUP_Inscriptions_Forum
      * @access public
      * @return array
      */
-    function obtenir($id, $champs = 'i.*')
-    {
+    function obtenir($id, $champs = 'i.*') {
         $requete  = 'SELECT';
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
@@ -130,8 +129,7 @@ class AFUP_Inscriptions_Forum
      * @param string $champs Liste des champs à récupérer en BD
      * @return array
      */
-    function obtenirInscription($code_md5, $champs = 'i.*')
-    {
+    function obtenirInscription($code_md5, $champs = 'i.*') {
       $requete  = "SELECT $champs FROM afup_inscription_forum i " ;
       $requete .= "LEFT JOIN afup_facturation_forum f ON i.reference = f.reference " ;
       $requete .= "WHERE md5(CONCAT(i.id, i.reference)) = '$code_md5'" ;
@@ -139,9 +137,8 @@ class AFUP_Inscriptions_Forum
       return $this->_bdd->obtenirEnregistrement($requete) ;
     }
 
-    public function envoyerEmailConvocation($id_forum)
-    {
-        require_once 'Afup/AFUP_Configuration.php';
+    public function envoyerEmailConvocation($id_forum, $sujet, $corps) {
+        require_once dirname(__FILE__).'/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $requete  = 'SELECT';
@@ -152,55 +149,41 @@ class AFUP_Inscriptions_Forum
         $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
         $requete .= 'ORDER BY i.date';
-        $requete .= ' LIMIT 50000';
+        $requete .= ' LIMIT 1';
         $inscris  = $this->_bdd->obtenirTous($requete);
 
 
-        require_once 'phpmailer/class.phpmailer.php';
-        foreach ($inscris as $nb => $personne)
-        {
-         if ($nb%100 == 0)
-         {
-           sleep(5);
-         }
-        $mail = new PHPMailer;
-        //$personne['email'] = 'xgorse@elao.com';
-        $mail->AddAddress($personne['email'], $personne['prenom'] . " " . $personne['nom']);
-        //$mail->AddBCC('bureau@fup.org', 'Bureau');
+        require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
+        foreach ($inscris as $nb => $personne) {
+			if ($nb % 100 == 0) {
+				sleep(5);
+			}
+			$mail = new PHPMailer;
+			$personne['email'] = 'tresorier@afup.org';
+			$mail->AddAddress($personne['email'], $personne['prenom'] . " " . $personne['nom']);
 
-        $mail->From     = $configuration->obtenir('mails|email_expediteur');
-        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
+			$mail->From = $configuration->obtenir('mails|email_expediteur');
+			$mail->FromName = $configuration->obtenir('mails|nom_expediteur');
 
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
-            $mail->Mailer   = "smtp";
-        } else {
-            $mail->Mailer   = "mail";
-        }
+			if ($configuration->obtenir('mails|serveur_smtp')) {
+				$mail->Host = $configuration->obtenir('mails|serveur_smtp');
+				$mail->Mailer = "smtp";
+			} else {
+				$mail->Mailer = "mail";
+			}
 
-        $sujet  = "Convocation Forum PHP 2009\n";
-        $mail->Subject = $sujet;
+			$mail->Subject = $sujet;
 
-        $lien = "http://www.afup.org/pages/forumphp2009/convocation_visiteurs.php?id=".$personne['md5key'];
-        $qui = $personne['prenom'] . " " . $personne['nom'];
-$corps="Bonjour $qui,
+			$qui = $personne['prenom'].' '.$personne['nom'];
+			$corps = str_replace("%INSCRIT", $qui, $corps);
 
-Voici la confirmation de votre participation au forum PHP 2009 :
+			$lien = "http://www.afup.org/pages/forumphp2010/convocation_visiteurs.php?id=".$personne['md5key'];
+			$corps = str_replace("%LIEN", $lien, $corps);
+			$mail->Body = $corps;
 
-$lien
-
-Vous y trouverez des informations pratiques. Imprimez-la seulement si vous le souhaitez. Il n'est pas nécessaire de la présenter le jour de votre arrivée au forum ; une simple pièce justifiant votre identité suffira (carte d'identité, permis de conduire ...).
-
-Cordialement,
-L'équipe organisatrice";
-
-
-        $mail->Body = $corps;
-
-        $ok = $mail->Send();
-         ;
-        }
-        return $ok;
+			$ok = $mail->Send();
+		}
+		return $ok;
     }
 
     function obtenirSuivi($id_forum) {
@@ -409,7 +392,7 @@ L'équipe organisatrice";
 	function ajouterRappel($email, $id_forum = null)
     {
         if ($id_forum == null) {
-			require_once 'Afup/AFUP_Forum.php';
+			require_once dirname(__FILE__).'/AFUP_Forum.php';
 			$forum = new AFUP_Forum($this->_bdd);
         	$id_forum = $forum->obtenirDernier();
         }

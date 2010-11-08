@@ -13,21 +13,92 @@ $forum = new AFUP_Forum($bdd);
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
 $forum_facturation = new AFUP_Facturation_Forum($bdd);
 
-if ($action == 'envoyer_convocation')
-{
-    die('Désactivé pour eviter les bétises');
-		$forum_inscriptions->envoyerEmailConvocation($_GET['id_forum']);
-    die('ok');
-}
-elseif ($action == 'lister') {
-    // Valeurs par défaut des paramètres de tri
+if ($action == 'envoyer_convocation') {
+	$formulaire = &instancierFormulaire();
+	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2010',
+								'corps' => 'Bonjour %INSCRIT,
+
+Le Forum PHP 2010 approche à grands pas... Voici toutes les informations et les dernières (bonnes) nouvelles à savoir avant votre arrivée !
+
+
+- Le Forum, où, quand, comment ?
+
+Le Forum PHP 2010 se tiendra à la Cité des Sciences de la Villette mardi 9 et mercredi 10 novembre. Nous ouvrirons les portes à 8h30, soyez là à l\'heure les premières conférences débutent 30 minutes après l\'ouverture des portes.
+
+Pour vous rendre à la Cité des Sciences :
+Métro : ligne 7, station Porte de la Villette.
+Bus : 75, 139, 150, 152, 249, PC.
+
+Arrivé dans la Cité des Sciences de la Villette, dirigez vous vers les escalators qui vous conduiront au niveau -1, à l\'entrée du Forum PHP 2010. Présentez-vous à l\'accueil muni d\'une pièce d\'identité afin de retirer votre badge auprès de notre équipe.
+
+
+- A ne pas manquer au Forum PHP 2010 !
+
+Cette année, l\'AFUP met notamment l\'accent sur l\'optimisation des sites. En effet, deux conférences importantes ont été ajoutées au programme, proposant ainsi une thématique complète sur les performances du PHP. Zeev Suraski, co-fondateur de Zend technologies, nous a confirmé sa venue il y a quelques jours pour une conférence intitulée "Le paradoxe des performances PHP". Quant à Weka, notre sponsor Gold, il nous fera bénéficier de son retour d\'expérience lors de la conférence "Jeux sociaux & Cloud Computing : une histoire de scalabilité".
+
+Notons également la venue surprise de Roy Rubin, fondateur de Magento, qui co-animera la conférence "Magento, un framework de E-Commerce".
+
+Cette année, l\'AFUP fête ses 10 ans et les 15 ans du PHP. A cette occasion, l\'association en profite pour inviter une quinzaine de communautés PHP, qui présenteront leur projet Open Source lors d\'ateliers et de mini-conférences, planifiés au fil des disponibilités des salles. Retrouvez la liste complète sur notre site :
+http://www.afup.org/pages/forumphp2010/projets-php.php
+
+
+- Un double-anniversaire, ca se fête !
+
+Vous ne vous y êtes pas trompés : cette édition anniversaire s\'annonce exceptionnelle ! Nous affichons d\'ailleurs complet, le Forum accueillant plus de 500 personnes : jamais le Forum PHP n\'avait attiré autant de visiteurs !
+
+Nombre d\'auteurs d\'ouvrages traitant de PHP seront présents lors du Forum PHP 2010 : c\'est pourquoi nous organisons une séance de dédicaces le mardi 9 novembre à 12h30, en partenariat avec les éditions Eyrolles. Seront présents Cyril Pierre de Geyer, Julien Pauli, Christophe Villeneuve, Hugo Hamon et Eric Daspet. N\'hésitez pas à apporter vos livres si vous le souhaitez. Une librairie temporaire sera installée pour tout ceux qui souhaiteraient compléter leur bibliothèque. De plus, de nombreux ouvrages seront mis en jeu durant les deux jours du Forum PHP : bonne chance à tous les participants !
+
+Encore bien d\'autres surprises marqueront ces deux jours, mais nous préférons garder le secret... Rendez-vous donc mardi 9 et mercredi 10 novembre pour célébrer les 15 ans de PHP et les 10 ans de l\'AFUP comme il se doit !
+
+L\'équipe AFUP
+
+
+
+PS : si finalement, vous ne pouvez pas venir, merci d\'envoyer un email à tresorier@afup.org. Vous ferez une heureux parmi les personnes sur liste d\'attente.
+
+
+
+PS 2 : un lien pour la convocation,
+%LIEN
+
+
+
+
+'));
+	
+	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
+	$formulaire->addElement('hidden', 'action', 'envoyer_convocation');
+	$formulaire->addElement('header', null, 'Convocation');
+    $formulaire->addElement('textarea', 'sujet', 'Sujet', array('cols' => 42, 'rows' => 5));
+	$formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 42, 'rows' => 20));
+	$formulaire->addElement('header', 'boutons' , '');
+	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
+
+	$formulaire->addRule('sujet', 'Sujet manquant', 'required');
+	$formulaire->addRule('corps', 'Corps manquant', 'required');
+	
+    if ($formulaire->validate()) {
+		$valeurs = $formulaire->exportValues();
+		$resultat = $forum_inscriptions->envoyerEmailConvocation($valeurs['id_forum'], $valeurs['sujet'], $valeurs['corps']);
+		if ($resultat) {
+			AFUP_Logs::log('Envoi de la convocation pour le Forum PHP');
+			afficherMessage('La convocation a été envoyée', 'index.php?page=forum_inscriptions&action=lister');
+		} else {
+			AFUP_Logs::log('Echec de l\'envoi de la convocation pour le Forum PHP');
+			afficherMessage('L\'envoi de la convocation a échouée', 'index.php?page=forum_inscriptions&action=lister');
+		}
+    }
+    $current = $forum->obtenir($_GET['id_forum'], 'titre');
+    $smarty->assign('forum_name', $current['titre']);
+    $smarty->assign('formulaire', genererFormulaire($formulaire));
+	
+} elseif ($action == 'lister') {
     $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription';
     $list_ordre = 'date desc';
     $list_sens = 'desc';
     $list_associatif = false;
     $list_filtre = false;
 
-    // Modification des paramètres de tri en fonction des demandes passées en GET
     if (isset($_GET['tri']) && in_array($_GET['tri'], $tris_valides)
         && isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
         $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
@@ -41,14 +112,13 @@ elseif ($action == 'lister') {
     }
     $smarty->assign('id_forum', $_GET['id_forum']);
 
-	// Statistiques
     $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
     $smarty->assign('forum_tarifs',$AFUP_Tarifs_Forum);
     $smarty->assign('statistiques', $forum_inscriptions->obtenirStatistiques($_GET['id_forum']));
 
-    // Mise en place de la liste dans le scope de smarty
     $smarty->assign('forums', $forum->obtenirListe());
     $smarty->assign('inscriptions', $forum_inscriptions->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
+
 } elseif ($action == 'supprimer') {
     if ($forum_inscriptions->supprimerInscription($_GET['id']) && $forum_facturation->supprimerFacturation($_GET['id'])) {
         AFUP_Logs::log('Suppression de l\'inscription ' . $_GET['id']);
@@ -56,6 +126,7 @@ elseif ($action == 'lister') {
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', 'index.php?page=forum_inscriptions&action=lister', true);
     }
+
 } else {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
@@ -272,5 +343,3 @@ elseif ($action == 'lister') {
     $smarty->assign('forum_name', $current['titre']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
-
-?>

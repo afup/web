@@ -126,7 +126,9 @@
     {/foreach}
     </table>
 {else}
-    {if $action == 'ajouter'}
+    {if $action == 'envoyer_convocation'}
+        <h2>Envoyer la convocation pour le {$forum_name}</h2>
+    {elseif $action == 'ajouter'}
         <h2>Ajouter une inscription pour le {$forum_name}</h2>
     {else}
         <h2>Modifier une inscription pour le {$forum_name}</h2>
