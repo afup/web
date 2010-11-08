@@ -178,7 +178,7 @@ class AFUP_Inscriptions_Forum
 
 			$lien = "http://www.afup.org/pages/forumphp2010/convocation_visiteurs.php?id=".$inscrit['md5key'];
 			$body = str_replace("%LIEN", $lien, $body);
-			$mail->Body = $corps;
+			$mail->Body = $body;
 
 			$ok = $mail->Send();
 		}
