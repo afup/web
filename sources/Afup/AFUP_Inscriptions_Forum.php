@@ -158,7 +158,7 @@ class AFUP_Inscriptions_Forum
 			if ($nb % 100 == 0) {
 				sleep(5);
 			}
-			$mail = new PHPMailer;
+			$mail = new PHPMailer();
 			$mail->AddAddress($inscrit['email'], $inscrit['prenom'] . " " . $inscrit['nom']);
 
 			$mail->From = $configuration->obtenir('mails|email_expediteur');
@@ -174,10 +174,10 @@ class AFUP_Inscriptions_Forum
 			$mail->Subject = $sujet;
 
 			$qui = $inscrit['prenom'].' '.$inscrit['nom'];
-			$corps = str_replace("%INSCRIT", $qui, $corps);
+			$body = str_replace("%INSCRIT", $qui, $corps);
 
 			$lien = "http://www.afup.org/pages/forumphp2010/convocation_visiteurs.php?id=".$inscrit['md5key'];
-			$corps = str_replace("%LIEN", $lien, $corps);
+			$body = str_replace("%LIEN", $lien, $body);
 			$mail->Body = $corps;
 
 			$ok = $mail->Send();
