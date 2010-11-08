@@ -269,16 +269,16 @@ th {
     <?php foreach($row as $badge): ?>
     <td valign="top">
     <img src="/templates/administration/images/bf10h.png" alt=""  style="padding-top:10px;"/>
-    <div style="height:250px;vertical-align: middle;padding-top: 80px;">
+    <div style="height:250px;vertical-align: middle;padding-top: 50px;">
     <?php if($badge) :?>
-   <div style="height: 300px;">
+   <div style="height: 330px;">
     <div style="font-size: 45px;padding: 10px;font-weight: bold;"><?php echo $badge['prenom']?><br/><?php echo strtoupper(str_replace(array('é'), array('e'), $badge['nom']))?></div>
     <div style="font-size: 25px;padding: 10px;"><?php echo $badge['societe']?></div>
     <div style="font-size: 18px;padding: 10px;"><?php echo $badge['type_pass']?></div>
     <div style="font-size: 16px;padding: 10px;font-weight: bold;"><?php echo $badge['tags']?> </div>
     </div>
      <?php endif;?>
-     <div style="font-size:12px; height:50px;vertical-align: middle;padding-top: 0px;">Programme format mobile : www.afup.org/m <br/>Twitter : @afup - Hash #forumphp</div>
+     <div style="font-size:12px; height:50px;vertical-align: middle;padding-top: 0px;">Programme format mobile : afup.org/m <br/>Twitter : @afup - Hash #forumphp</div>
      </div>
     </td>
 
