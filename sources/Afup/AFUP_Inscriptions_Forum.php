@@ -282,7 +282,7 @@ class AFUP_Inscriptions_Forum
         return $liste_emargement;
     }
 
-    function obtenirListePourBadges($id_forum   = null ) {
+    function obtenirListePourBadges($id_forum = null, $id = null) {
         $requete  = 'SELECT';
         $requete .= '  i.*, f.societe ';
         $requete .= 'FROM';
@@ -290,8 +290,10 @@ class AFUP_Inscriptions_Forum
         $requete .= 'LEFT JOIN';
         $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
+        if (isset($id) and $id > 0) {
+        	$requete .= 'AND  i.id =' . $id . ' ';
+        }
         $requete .= 'ORDER BY i.date';
-        //$requete .= ' LIMIT 12';
         return $this->_bdd->obtenirTous($requete);
 
     }

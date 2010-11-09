@@ -10,8 +10,6 @@ if (!$droits->estConnecte() ) {
    exit;
 }
 
-
-
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
@@ -19,7 +17,8 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 $forum = new AFUP_Forum($bdd);
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
 $id_forum = 5;
-$badges =  $forum_inscriptions->obtenirListePourBadges($id_forum);
+$id_personne = isset($_GET['id_personne']) ? (int)$_GET['id_personne'] : 0;
+$badges = $forum_inscriptions->obtenirListePourBadges($id_forum, $id_personne);
 $badge_prints =array();
 $nb_cols = 3;
 $nb_rows = 4;
@@ -27,10 +26,8 @@ $badge_row = 1;
 $badge_col = 1;
 $badge_page = 1;
 
-foreach ($badges as $nb => $badge )
-{
-
-  preg_match('@\<tag\>(.*)\</tags\>@i', $badge['commentaires'], $matches);
+foreach ($badges as $nb => $badge) {
+	preg_match('@\<tag\>(.*)\</tags\>@i', $badge['commentaires'], $matches);
   $tags =  isset($matches[1]) ? $matches[1] : '';
   $tags = explode(';',$tags);
   $tags = implode(' - ',array_filter($tags));
