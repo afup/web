@@ -15,4 +15,3 @@ foreach ($sessions as $index => $session) {
 
 $smarty->assign('sessions', $sessions);
 $smarty->display('resumes.html');
-?>
