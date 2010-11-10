@@ -1,6 +1,7 @@
 <?php
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
+
 setlocale(LC_TIME, 'fr_FR');
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
