@@ -373,7 +373,7 @@ class AFUP_AppelConferencier
 
         $sessionsAvecResumes = array();
         
-        require_once 'Afup/AFUP_Forum.php';
+        require_once dirname(__FILE__).'/AFUP_Forum.php';
         $forum = new AFUP_Forum($this->_bdd);
         $forum_details = $forum->obtenir($id_forum);
         $annee = $forum_details['forum_annee'];
