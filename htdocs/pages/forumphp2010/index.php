@@ -32,6 +32,13 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Communiqué de presse : Bilan du Forum PHP 2010";
+$actualite['contenu'] = "<p>L'AFUP propulse le Forum PHP au sommet pour sa 10ème édition
+<br /><br />
+<a href='http://www.afup.org/templates/forumphp2010/pdf/3-CP Bilan_ForumPHP2010_FINAL.pdf'>Télécharger le Communiqué de presse</a> (PDF - 109 Ko).</p><br />";
+$actualite['date'] = "18 novembre 2010";
+$actualites[] = $actualite;
+
 $actualite['titre'] = "Le Forum PHP 2010 est COMPLET !";
 $actualite['contenu'] = "<p>Encore une fois, le Forum PHP clôture ses inscriptions quelques jours avant l'évènement! Vous serez plus de 450 à nous rejoindre pour cette édition exceptionnelle. Rendez-vous mardi 9 et mercredi 10 novembre pour célébrer avec nous les 15 ans du PHP en compagnie des meilleurs experts mondiaux ! Et merci à vous !
 </p>";
