@@ -35,7 +35,7 @@ $actualites = array();
 $actualite['titre'] = "Communiqué de presse : L'AFUP propulse le Forum PHP au sommet pour sa 10ème édition";
 $actualite['contenu'] = "<p>2010 est l'année de tous les records : espace d'échanges et de mutualisation des compétences, le Forum PHP, via le soutien sans faille d'une équipe d'experts passionnés, a réuni les 9 et 10 novembre derniers plus de 500 visiteurs par jour, soit 35% de plus qu'en 2009.
 <br /><br />
-<a href='http://www.afup.org/templates/forumphp2010/pdf/3-CP_Bilan_ForumPHP2010_FINAL.pdf'>Télécharger le Communiqué de presse</a> (PDF - 85 Ko).</p><br />";
+<a href='http://www.afup.org/templates/forumphp2010/pdf/bilan_forum_php_2010.pdf'>Télécharger le Communiqué de presse</a> (PDF - 85 Ko).</p><br />";
 $actualite['date'] = "18 novembre 2010";
 $actualites[] = $actualite;
 
