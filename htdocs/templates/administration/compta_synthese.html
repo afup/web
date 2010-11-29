@@ -1,0 +1,69 @@
+{if $action == 'lister'}
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a><br />
+     <br/>
+    <h2>synthese evenement</h2>
+    <table>
+    <form method="GET" name="forum">
+      <input type="hidden" name="page" value="compta_synthese" />
+      <input type="hidden" name="idevnt" value="{$idevnt}" />
+      
+     <h2>Evenement <select name="idevnt" onchange="this.form.submit(); return false;">
+    {foreach from=$evenements item=evnt}
+    <option value="{$evnt.id}" {if $idevnt == $evnt.id} selected{/if}>{$evnt.evenement}</option>
+    {/foreach}
+    </select></h2>
+    </form>
+    </table>
+    <br/>
+    <table><tr><td>Débit
+    <table>
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+            <th>catégorie</th>
+            <th>Description</th>
+            <th>Montant</th>
+       </tr>
+    {foreach from=$debit item=debits}
+        <tr>
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$debits.categorie}</td>
+            <td>{$debits.description}</td>
+             <td>{$debits.montant}</td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+    </table>
+	</td><td>Crédit
+	  <table>
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+            <th>catégorie</th>
+            <th>Description</th>
+            <th>Montant</th>
+       </tr>
+    {foreach from=$credit item=credits}
+        <tr>
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$credits.categorie}</td>
+            <td>{$credits.description}</td>
+             <td>{$credits.montant}</td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+    </table>
+	</td></tr></table>
+
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter une écriture (facture)</h2>
+    {else}
+        <h2>Modifier une écriture (facture)</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
