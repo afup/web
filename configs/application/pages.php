@@ -156,7 +156,7 @@ $pages = array(
         ),
     ),
     'tresorerie' => array(
-        'nom' => 'Tresorerie',
+        'nom' => 'Trésorerie',
         'elements' => array(
 		    'compta_journal' => array(
 		        'nom' => 'Journal',
