@@ -155,6 +155,36 @@ $pages = array(
             ),
         ),
     ),
+    'tresorerie' => array(
+        'nom' => 'Tresorerie',
+        'elements' => array(
+		    'compta_journal' => array(
+		        'nom' => 'Journal',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 1,
+            ),
+		    'compta_banque' => array(
+		        'nom' => 'Compte Banques',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 1,
+            ),
+		    'compta_synthese' => array(
+		        'nom' => 'Synthese Evenement',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 1,
+            ),
+		    'compta_balance' => array(
+		        'nom' => 'Balance comptable',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 1,
+            ),
+		    'compta_bilan' => array(
+		        'nom' => 'Bilan',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 1,
+            ),
+       ),
+    ),
     'trophee' => array(
         'nom' => 'Trophée',
         'elements' => array(
