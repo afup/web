@@ -14,8 +14,7 @@ $smarty->assign('action', $action);
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
 $compta = new AFUP_Compta($bdd);
 
-	$evenement = $compta->obtenirFormesEvenements();
-	$smarty->assign('evenements', $evenement);
+
 
 if ($action == 'lister' ) {
  /*   $list_ordre = 'date';
@@ -23,10 +22,22 @@ if ($action == 'lister' ) {
     $list_associatif = false;
     $list_filtre = false;
 	*/
-if (isset($idevnt) && $idevnt=='') $idevnt='8'; else $idvent=$_GET['idevnt'];
-$smarty->assign('idevnt', $idevnt);
+	$ev = $compta->obtenirFormesEvenements();
+	$smarty->assign('evenements', $ev);
+
+	if (!isset($_GET['idevnt']) || intval($_GET['idevnt']) == 0) {
+        $idevnt= 8;
+    }
+    else
+    {
+    	$idevnt=$_GET['idevnt']; 
+    }
+    $smarty->assign('idevnt', $idevnt);
 
 	$debit = $compta->obtenirSyntheseEvenement(1,$idevnt);
+echo "<pre>";
+	print_r($debit);
+	echo "</pre>";
 	$smarty->assign('debit', $debit);
 	
 	$credit = $compta->obtenirSyntheseEvenement(2,$idevnt);
