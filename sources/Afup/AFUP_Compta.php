@@ -141,6 +141,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		}
 		return $formesCategories;		
 	}
+
 	function obtenirFormesEvenements()
 	{
 		$requete  = 'SELECT ';
@@ -240,11 +241,11 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 	function obtenirSyntheseEvenement($idoperation='1',$idevenement='') 
     {    
 		$requete  = 'SELECT ';
-		$requete .= 'compta.*, ';
+		$requete .= 'compta*, ';
 		$requete .= 'compta_categorie.id, compta_categorie.categorie   '; 
 		$requete .= 'FROM  ';
 		$requete .= 'compta,  ';
-		$requete .= 'compta_categorie, ';  
+		$requete .= 'compta_categorie ';  
 		$requete .= 'WHERE  ';
 		$requete .= 'compta.idoperation = \''.$idoperation.'\' '; 
 		$requete .= 'AND compta.idevenement = \''.$idevenement.'\'  ';
@@ -252,8 +253,9 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'ORDER BY ';
 		$requete .= 'compta_categorie.categorie, ';
 		$requete .= 'compta.date_ecriture ';
-echo $requete;		
+
 		return $this->_bdd->obtenirTous($requete);
+
     }
  
     function obtenirBilan($idoperation='1',$periode_debut='',$periode_fin='')
