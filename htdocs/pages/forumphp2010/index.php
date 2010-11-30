@@ -32,6 +32,23 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Résultat mots-melés";
+$actualite['contenu'] = "<p>Participants au Forum PHP, les 71 réponses de la grille de mots mêlés!
+A vous qui vous vous usez encore les yeux sur les mots mêlés diffusés par
+AlterWay lors du Forum PHP, à vous qui tournez et retournez entre vos mains
+la grille, à la recherche de tous les mots cachés en rapport avec PHP, à
+vous qui l'avez tellement épluchée que vous avez trouvé plus de réponses
+que les concepteurs avaient conscience d'en avoir dissimulées, à vous qui
+bloquez sur le 71ème mot après avoir trouvé facilement les 70 premiers...
+Nous mettons fin à vos souffrances! Retrouvez ici toutes les réponses à ce
+jeu diabolique.
+<br /><br />
+<a href='http://www.afup.org/templates/forumphp2010/pdf/Jeu-Concours-Forum-PHP.png'>Télécharger la grille</a> (PNG - 206 Ko).</p><br />";
+$actualite['date'] = "29 novembre 2010";
+$actualites[] = $actualite;
+
+
+
 $actualite['titre'] = "Communiqué de presse : L'AFUP propulse le Forum PHP au sommet pour sa 10ème édition";
 $actualite['contenu'] = "<p>2010 est l'année de tous les records : espace d'échanges et de mutualisation des compétences, le Forum PHP, via le soutien sans faille d'une équipe d'experts passionnés, a réuni les 9 et 10 novembre derniers plus de 500 visiteurs par jour, soit 35% de plus qu'en 2009.
 <br /><br />
