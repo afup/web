@@ -40,7 +40,11 @@ class AFUP_Compta
      $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
      
-if ($compte=="courant") $typeJournal=" AND idevenement!='18' AND idmode_regl!='1' AND idmode_regl!='7' AND idmode_regl!='8' ";
+if ($compte=="courant") $typeJournal="  AND idevenement!='18' 
+					AND idmode_regl!='1' 
+					AND idmode_regl!='7' 
+					AND idmode_regl!='8' 
+				    ";
 if ($compte=="livreta") $typeJournal=" AND idevenement='18' ";
 if ($compte=="espece") $typeJournal=" AND idmode_regl='1' ";
 if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
@@ -142,7 +146,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		return $formesCategories;		
 	}
 
-	function obtenirFormesEvenements()
+	function obtenirFormesEvenements($associatif='false')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, evenement ';
@@ -150,14 +154,19 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'compta_evenement  ';
 		$requete .= 'ORDER BY ';
 		$requete .= 'evenement ';
-		$data=$this->_bdd->obtenirTous($requete);
+		return $this->_bdd->obtenirTous($requete);
 		
-		foreach ($data as $row)
+/*		foreach ($data as $row)
 		{
 			$formesEvenements[$row['id']] = $row['evenement'];
 		}
-		
-		return $formesEvenements;		
+*/
+/*	    if ($associatif) {
+            return $this->_bdd->obtenirAssociatif($data);
+        } else {*/
+  //          return $this->_bdd->obtenirTous($data);
+//        }
+//		return $formesEvenements;		
 	}
 	
 	function obtenirFormesReglements()
@@ -264,11 +273,11 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
 
      	$requete  = 'SELECT ';
-		$requete .= 'compta.*, ';
+		$requete .= 'compta.montant, ';
 		$requete .= 'compta_categorie.id, compta_categorie.categorie   '; 
 		$requete .= 'FROM  ';
 		$requete .= 'compta,  ';
-		$requete .= 'compta_categorie, ';  
+		$requete .= 'compta_categorie ';  
 		$requete .= 'WHERE  ';
 		$requete .= 'compta.idoperation = \''.$idoperation.'\' '; 
 		$requete .= 'AND compta.date_regl >= \''.$periode_debut.'\' '; 
@@ -277,14 +286,15 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'AND compta.idcategorie = compta_categorie.id ';
 		$requete .= 'ORDER BY ';
 		$requete .= 'compta.date_ecriture, ';
-		$requete .= 'compta_categorie.categorie ';
-		
+		$requete .= 'compta.idcategorie ';
+	/*	
 $sql="SELECT compta.*,compta_categorie.id,compta_categorie.categorie   
 	FROM compta, compta_categorie  
 	WHERE compta.idoperation='1' AND compta.idevenement=$idevenement 
 	         AND compta.date_ecriture>='$periode_debut' AND compta.date_ecriture<='$periode_fin' 
 		  AND compta.idcategorie = compta_categorie.id     
 	ORDER BY compta.date_ecriture,compta.idevenement,compta.idcategorie";    	
+*/
 echo $requete;		
 		return $this->_bdd->obtenirTous($requete);
     }
