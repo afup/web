@@ -22,8 +22,9 @@ if ($action == 'lister' ) {
     $list_associatif = false;
     $list_filtre = false;
 	*/
-	$ev = $compta->obtenirFormesEvenements();
-	$smarty->assign('evenements', $ev);
+	$formEvenement = $compta->obtenirFormesEvenements();
+
+	$smarty->assign('formEvenement', $formEvenement );
 
 	if (!isset($_GET['idevnt']) || intval($_GET['idevnt']) == 0) {
         $idevnt= 8;
@@ -35,9 +36,6 @@ if ($action == 'lister' ) {
     $smarty->assign('idevnt', $idevnt);
 
 	$debit = $compta->obtenirSyntheseEvenement(1,$idevnt);
-echo "<pre>";
-	print_r($debit);
-	echo "</pre>";
 	$smarty->assign('debit', $debit);
 	
 	$credit = $compta->obtenirSyntheseEvenement(2,$idevnt);
