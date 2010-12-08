@@ -1,51 +1,35 @@
 {if $action == 'lister'}
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a><br />
-     <br/>
     <h2>Bilan</h2>
     <table>
-    <form method="GET" name="forum">
-      <input type="hidden" name="page" value="compta_journal" />
-      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-     <h2>Année comptable <select name="id_forum" onchange="this.form.submit(); return false;">
-    {foreach from=$forums item=forum}
-    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+    <form method="GET" name="evnt">
+      <input type="hidden" name="page" value="compta_synthese" />
+    {foreach from=$evenements item=row}
+    {$row.id}-{$row.evenement}<br>
     {/foreach}
-    </select></h2>
+     <h2>Sélectionner un évènement 
+     <select name="idevnt" onchange="this.form.submit(); return false;">
+    {foreach from=$evenements item=row}
+    <option value="{$row.id}" {if $idevnt == $row.id} selected{/if}> {$row.id} {$row}</option>
+    {/foreach}
+    </select>
+    </h2>
     </form>
     </table>
     <br/>
+    <table><tr><td>Débit
     <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
-           <th><a href="index.php?page=compta_journal&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
-           <th><a href="index.php?page=compta_journal&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Evenement</a></th>
-           <th><a href="index.php?page=compta_journal&amp;tri=categorie&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Catégorie</a></th>
-            <th>Description</th>
-            <th>Debit</th>
-            <th>Crédit</th>
-            <th>Reglement</th>
-            <th>&nbsp;</th>
+            <th>Evenement</th>
+            <th></th>
+            <th>Montant</th>
        </tr>
-    {foreach from=$journal item=ecriture}
+    {foreach from=$debit item=debits}
         <tr>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$ecriture.date_ecriture}</td>
-            <td>{$ecriture.evenement}</td>
-             <td>{$ecriture.categorie}</td>
-             <td>{$ecriture.description}</td>
-		{if $ecriture.idoperation == 1} 
-			<td align='right'>{$ecriture.montant}</td> 
-			<td> </td>  
-		{else} 
-			<td> </td> 
-			<td align='right'>{$ecriture.montant}</td> 
-		{/if}
-
-              <td>{$ecriture.reglement}</td>
-            <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
-               </td>
+            <td>{$debits.categorie}</td>
+            <td></td>
+             <td>{$debits.montant}</td>
         </tr>
     {foreachelse}
         <tr>
@@ -53,11 +37,29 @@
         </tr>
     {/foreach}
     </table>
+	</td><td valign="top">Crédit
+	  <table>
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+            <th>catégorie</th>
+            <th></th>
+            <th>Montant</th>
+       </tr>
+    {foreach from=$credit item=credits}
+        <tr>
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$credits.categorie}</td>
+            <td></td>
+             <td>{$credits.montant}</td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+    </table>
+	</td></tr></table>
+
 {else}
-    {if $action == 'ajouter'}
-        <h2>Ajouter une écriture (facture)</h2>
-    {else}
-        <h2>Modifier une écriture (facture)</h2>
-    {/if}
-    {include file="formulaire.html"}
+
 {/if}
