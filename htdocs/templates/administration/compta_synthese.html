@@ -3,10 +3,11 @@
     <table>
     <form method="GET" name="evnt">
       <input type="hidden" name="page" value="compta_synthese" />
+      <input type="hidden" name="action" value="lister" />
      <h2>Sélectionner un évènement 
      <select name="idevnt" onchange="this.form.submit(); return false;">
-    {foreach from=$formEvenement item=formsEvenement }
-    <option value="{$formsEvenement.id}" {if $idevnt == $formsEvenement.id} selected{/if}> {$formsEvenement.evenement}</option>
+    {foreach from=$listEvenement item=listsEvenement }
+    <option value="{$listsEvenement.id}" {if $idevnt == $listsEvenement.id} selected{/if}> {$listsEvenement.evenement}</option>
     {/foreach}
     </select>
     </h2>

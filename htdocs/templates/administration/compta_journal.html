@@ -2,14 +2,12 @@
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a><br />
      <br/>
     <h2>Liste journal</h2>
-    <table>
+    <table>{$id_periode}
     <form method="GET" name="forum">
       <input type="hidden" name="page" value="compta_journal" />
-      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-     <h2>Année comptable <select name="id_forum" onchange="this.form.submit(); return false;">
-    {foreach from=$forums item=forum}
-    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+     <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
+    {foreach from=$listPeriode item=periode}
+    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
     {/foreach}
     </select></h2>
     </form>

@@ -13,11 +13,11 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
 $compta = new AFUP_Compta($bdd);
 
 if ($action == 'lister') {
-    $list_ordre = 'date';
+/*    $list_ordre = 'date';
     $list_sens = 'asc';
     $list_associatif = false;
     $list_filtre = false;
-	
+*/	
 	$journal = $compta->obtenirBalance($compte);
 	$smarty->assign('balance', $journal);
 
