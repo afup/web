@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier'));
+$action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier'));
 $tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -10,7 +10,8 @@ $compta = new AFUP_Compta($bdd);
 
 
 //$id_periode = $compta->obtenir($_GET['id_periode']);
-$id_periode = $compta->obtenirPeriodeEnCours($_GET['id_periode']);
+$id_periode =isset ($_GET['id_periode']);
+$id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
 
 $listPeriode = $compta->obtenirListPeriode();
@@ -34,29 +35,52 @@ if ($action == 'lister') {
 	$journal = $compta->obtenirJournal();
 	$smarty->assign('journal', $journal);
 
-//    $smarty->assign('formulaire', genererFormulaire($formulaire));
 
+//    $smarty->assign('formulaire', genererFormulaire($formulaire));
+}
+elseif ($action == 'debit') {
+	$journal = $compta->obtenirJournal(1);
+	$smarty->assign('journal', $journal);
+}
+elseif ($action == 'credit') {
+	$journal = $compta->obtenirJournal(2);
+	$smarty->assign('journal', $journal);
+	
 } elseif ($action == 'ajouter' || $action == 'modifier') {
 
   	$formulaire = &instancierFormulaire();
 	
    if ($action == 'modifier')
    {
-           $champs = $compta->obtenir($_GET['id']);
-           $formulaire->setDefaults($champs);
+        $champs = $compta->obtenir($_GET['id']);
+        $formulaire->setDefaults($champs);
    		$formulaire->addElement('hidden', 'id', $_GET['id']);
    }
-
-           
+   
 // facture associé à un évènement
    $formulaire->addElement('header'  , ''                         , 'Sélectionner un Journal');
-   $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération *', $compta->obtenirFormesOperations());
-   $formulaire->addElement('select'  , 'idevenement', 'Evenement *', $compta->obtenirFormesEvenements());
+   $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération *', $compta->obtenirListOperations());
+   $formulaire->addElement('select'  , 'idevenement', 'Evenement *', $compta->obtenirListEvenements());
 
 //detail facture       
    $formulaire->addElement('header'  , ''                         , 'Détail Facture');
-  $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 'minYear' => date('Y'), 'maxYear' => date('Y')));
-   $formulaire->addElement('select'  , 'idcategorie', 'Type de compte *', $compta->obtenirFormesCategories());
+   
+//$mois=10;
+   $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
+                                                                                'format'   => 'd F Y',
+  																				'minYear' => date('Y'), 
+  																				'maxYear' => date('Y')+1));
+
+/* $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
+                                                                                'format'   => 'd F Y',
+  																				'month' => date('F'), 
+  																				'minYear' => date('Y')-1, 
+  																				'maxYear' => date('Y')+1));
+*/
+  
+  
+  
+  $formulaire->addElement('select'  , 'idcategorie', 'Type de compte *', $compta->obtenirListCategories());
   $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , array('size' => 30, 'maxlength' => 40));
    	$formulaire->addElement('text', 'numero', 'Numero facture' , array('size' => 30, 'maxlength' => 40));
    	$formulaire->addElement('textarea', 'description', 'Description', array('cols' => 42, 'rows' => 5));
@@ -64,7 +88,7 @@ if ($action == 'lister') {
 
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
-   $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirFormesReglements());
+   $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 'minYear' => date('Y'), 'maxYear' => date('Y')));
    $formulaire->addElement('textarea', 'obs_regl'           , 'Observation', array('cols' => 42, 'rows' => 5));
    
@@ -113,13 +137,13 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['M']."-"
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de l\'article ' . $formulaire->exportValue('titre'));
+                AFUP_Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
             } else {
-                AFUP_Logs::log('Modification de l\'article ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                AFUP_Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('l\'article a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=site_articles&action=lister');
+            afficherMessage('l\'écriture a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=compta_journal&action=lister');
         } else {
-            $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'article');
+            $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
         }
     }
     $smarty->assign('formulaire', genererFormulaire($formulaire));   

@@ -2,8 +2,8 @@
 
 $action = verifierAction(array('lister', 'editer'));
 
-$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
-$sens_valides = array('asc', 'desc');
+//$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
+//$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
 //$idevnt=isset($_GET['idevnt']);
@@ -23,7 +23,6 @@ if ($action == 'lister' ) {
     $list_filtre = false;
 	*/
 	$listEvenement = $compta->obtenirListEvenements();
-
 	$smarty->assign('listEvenement', $listEvenement );
 
 	if (!isset($_GET['idevnt']) || intval($_GET['idevnt']) == 0) {
@@ -37,10 +36,19 @@ if ($action == 'lister' ) {
 
 	$debit = $compta->obtenirSyntheseEvenement(1,$idevnt);
 	$smarty->assign('debit', $debit);
-	
+
 	$credit = $compta->obtenirSyntheseEvenement(2,$idevnt);
 	$smarty->assign('credit', $credit);
+
+	$totalDepense = $compta->obtenirTotalSyntheseEvenement(1,$idevnt);
+	$smarty->assign('totalDepense', $totalDepense);
 	
+	$totalRecette = $compta->obtenirTotalSyntheseEvenement(2,$idevnt);
+	$smarty->assign('totalRecette', $totalRecette);
+	
+	$difMontant = $totalRecette - $totalDepense ;
+	$smarty->assign('difMontant', $difMontant);
+
 }
 
 ?>
