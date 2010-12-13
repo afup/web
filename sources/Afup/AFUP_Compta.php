@@ -158,53 +158,53 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		return $this->_bdd->obtenirTous($requete);
 	}
 	
-	function obtenirListOperations()
+	function obtenirListOperations($filtre='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, operation ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_operation  ';
 
-
-  
+		if (!$filtre)	{
+			return $this->_bdd->obtenirTous($requete);					
+		} else {
+			$data=$this->_bdd->obtenirTous($requete);		
+			$result[]="";
+			foreach ($data as $row)
+			{
+				$result[$row['id']]=$row['operation'];
+			}
+			
+			return $result;
+		}
     
-	//	return $this->_bdd->obtenirTous($requete);		
 
-	$data=$this->_bdd->obtenirTous($requete);		
-	$result[]="";
-	foreach ($data as $row)
-	{
-		$result[$row['id']]=$row['operation'];
-	}
-	
-	return $result;
+
 	}
 
-	function obtenirListCategories()
+	function obtenirListCategories($filtre='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, idevenement, categorie ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_categorie  ';
-//		return $this->_bdd->obtenirTous($requete);
-		
-/*		foreach ($data as $row)
-		{
-			$formesCategories[$row['id']] = $row['categorie'];
+
+		if (!$filtre)	{
+			return $this->_bdd->obtenirTous($requete);					
+		} else {		
+			$data=$this->_bdd->obtenirTous($requete);		
+			$result[]="";
+			foreach ($data as $row)
+			{
+				$result[$row['id']]=$row['categorie'];
+			}
+			
+			return $result;
 		}
-		return $formesCategories; */		
-
-		$data=$this->_bdd->obtenirTous($requete);		
-	$result[]="";
-	foreach ($data as $row)
-	{
-		$result[$row['id']]=$row['categorie'];
-	}
-	
-	return $result;
+		
 	}
 
-	function obtenirListEvenements()
+	function obtenirListEvenements($filtre='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, evenement ';
@@ -213,34 +213,39 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'ORDER BY ';
 		$requete .= 'evenement ';
 
-//		return $this->_bdd->obtenirTous($requete);
-	$data=$this->_bdd->obtenirTous($requete);		
-	$result[]="";
-	foreach ($data as $row)
-	{
-		$result[$row['id']]=$row['evenement'];
+		if (!$filtre)	{
+			return $this->_bdd->obtenirTous($requete);					
+		} else {		
+			$data=$this->_bdd->obtenirTous($requete);		
+			$result[]="";
+			foreach ($data as $row)
+			{
+				$result[$row['id']]=$row['evenement'];
+			}
+			
+			return $result;
+		}
 	}
 	
-	return $result;
-
-	}
-	
-	function obtenirListReglements()
+	function obtenirListReglements($filtre)
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, reglement ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_reglement  ';
 
-//		return $this->_bdd->obtenirTous($requete);
-	$data=$this->_bdd->obtenirTous($requete);		
-	$result[]="";
-	foreach ($data as $row)
-	{
-		$result[$row['id']]=$row['reglement'];
-	}
-	
-	return $result;				
+		if (!$filtre)	{
+			return $this->_bdd->obtenirTous($requete);					
+		} else {		
+			$data=$this->_bdd->obtenirTous($requete);		
+			$result[]="";
+			foreach ($data as $row)
+			{
+				$result[$row['id']]=$row['reglement'];
+			}
+			
+			return $result;				
+		}
 	}
 
 	function ajouter($idoperation,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
