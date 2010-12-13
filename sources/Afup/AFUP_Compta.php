@@ -41,7 +41,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
      
      
 		$requete  = 'SELECT ';
-		$requete .= 'compta.date_ecriture, compta.description, compta.montant, compta.idoperation, compta.date_regl, ';
+		$requete .= 'compta.date_ecriture, compta.description, compta.montant, compta.idoperation, compta.date_regl, compta.id as idtmp, ';
 		$requete .= 'compta_reglement.reglement ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta,  ';
@@ -62,7 +62,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
      * 
      */
    
-	function obtenirJournal($ordre      = '',
+	function obtenirJournal($debitCredit = '',
                           $periode_debut= '',
                           $periode_fin=''
                           ) 
@@ -71,7 +71,11 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
      $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
     	    
-
+		if ($debitCredit == 1 || $debitCredit == 2)			
+			$filtre = 'AND compta.idoperation =\''.$debitCredit.'\'  '; 
+		else 
+			$filtre="";
+		
 		$requete  = 'SELECT ';
 		$requete .= 'compta.date_ecriture, compta.description, compta.montant, compta.idoperation,compta.id as idtmp, ';
 		$requete .= 'compta_reglement.reglement, ';
@@ -83,14 +87,15 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'compta_reglement, ';  
 		$requete .= 'compta_evenement ';  
 		$requete .= 'WHERE  ';
-		$requete .= 'compta.date_ecriture >= \''.$periode_debut.'\' '; 
+		$requete .= ' compta.date_ecriture >= \''.$periode_debut.'\' '; 
 		$requete .= 'AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
 		$requete .= 'AND compta.idcategorie = compta_categorie.id ';
 		$requete .= 'AND compta.idmode_regl = compta_reglement.id ';
 		$requete .= 'AND compta.idevenement  = compta_evenement.id ';
+		$requete .= $filtre;
 		$requete .= 'ORDER BY ';
 		$requete .= 'compta.date_ecriture ';
-		
+	
 		return $this->_bdd->obtenirTous($requete);
     }
     
@@ -119,7 +124,6 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
     
     function obtenirPeriodeEnCours($id_periode)
 	{
-		echo $id_periode;
 		// Si la periode existe
 		if ($id_periode != "")
 		{
@@ -160,8 +164,20 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'id, operation ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_operation  ';
-		
-		return $this->_bdd->obtenirTous($requete);		
+
+
+  
+    
+	//	return $this->_bdd->obtenirTous($requete);		
+
+	$data=$this->_bdd->obtenirTous($requete);		
+	$result[]="";
+	foreach ($data as $row)
+	{
+		$result[$row['id']]=$row['operation'];
+	}
+	
+	return $result;
 	}
 
 	function obtenirListCategories()
@@ -170,13 +186,22 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'id, idevenement, categorie ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_categorie  ';
-		return $this->_bdd->obtenirTous($requete);
+//		return $this->_bdd->obtenirTous($requete);
 		
 /*		foreach ($data as $row)
 		{
 			$formesCategories[$row['id']] = $row['categorie'];
 		}
 		return $formesCategories; */		
+
+		$data=$this->_bdd->obtenirTous($requete);		
+	$result[]="";
+	foreach ($data as $row)
+	{
+		$result[$row['id']]=$row['categorie'];
+	}
+	
+	return $result;
 	}
 
 	function obtenirListEvenements()
@@ -188,7 +213,16 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'ORDER BY ';
 		$requete .= 'evenement ';
 
-		return $this->_bdd->obtenirTous($requete);
+//		return $this->_bdd->obtenirTous($requete);
+	$data=$this->_bdd->obtenirTous($requete);		
+	$result[]="";
+	foreach ($data as $row)
+	{
+		$result[$row['id']]=$row['evenement'];
+	}
+	
+	return $result;
+
 	}
 	
 	function obtenirListReglements()
@@ -198,8 +232,15 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'FROM  ';
 		$requete .= 'compta_reglement  ';
 
-		return $this->_bdd->obtenirTous($requete);
-				
+//		return $this->_bdd->obtenirTous($requete);
+	$data=$this->_bdd->obtenirTous($requete);		
+	$result[]="";
+	foreach ($data as $row)
+	{
+		$result[$row['id']]=$row['reglement'];
+	}
+	
+	return $result;				
 	}
 
 	function ajouter($idoperation,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
@@ -223,7 +264,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= $this->_bdd->echapper($obs_regl) . ',';
 		$requete .= $this->_bdd->echapper($idevenement) . ' ';
 		$requete .= ');';
-	
+
 		return $this->_bdd->executer($requete);
 	}
 
@@ -267,21 +308,48 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
     {    
 		$requete  = 'SELECT ';
 		$requete .= 'compta.*, ';
-		$requete .= 'compta_evenement.id, compta_evenement.evenement   '; 
+		$requete .= 'compta_categorie.id, compta_categorie.categorie   '; 
 		$requete .= 'FROM  ';
 		$requete .= 'compta,  ';
-		$requete .= 'compta_evenement ';  
+		$requete .= 'compta_categorie ';  
 		$requete .= 'WHERE  ';
 		$requete .= 'compta.idevenement = \''.$idevenement.'\' '; 
-		$requete .= 'AND compta.idevenement = compta_evenement.id ';
+		$requete .= 'AND compta.idoperation = \''.$idoperation.'\' '; 
+		$requete .= 'AND compta.idcategorie = compta_categorie.id ';
 		$requete .= 'ORDER BY ';
-		$requete .= 'compta_evenement.evenement, ';
+		$requete .= 'compta_categorie.categorie, ';
 		$requete .= 'compta.date_ecriture ';
-echo $requete;
+
 		return $this->_bdd->obtenirTous($requete);
 
     }
- 
+
+    
+	function obtenirTotalSyntheseEvenement($idoperation='1',$idevenement) 
+    {    
+		$requete  = 'SELECT ';
+		$requete .= 'compta.montant ';
+		$requete .= 'FROM  ';
+		$requete .= 'compta  ';
+		$requete .= 'WHERE  ';
+		$requete .= 'compta.idevenement = \''.$idevenement.'\' '; 
+		$requete .= 'AND compta.idoperation = \''.$idoperation.'\' '; 
+
+		$data = $this->_bdd->obtenirTous($requete);
+	
+		$total=0;
+		foreach ($data as $id=>$row)
+		{
+/*			echo "<pre>";
+			print_r($row);
+			echo "</pre>";*/
+//echo $row['montant']."<br>";
+			$total += $row['montant'];
+		}
+//§		print_r($total);
+		return $total;
+    }
+    
     function obtenirBilan($idoperation='1',$periode_debut='',$periode_fin='')
     {
      $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
@@ -313,6 +381,60 @@ $sql="SELECT compta.*,compta_categorie.id,compta_categorie.categorie
 echo $requete;		
 		return $this->_bdd->obtenirTous($requete);
     }
+
+
+   function obtenirBalance($periode_debut='',$periode_fin='')
+   {
+     $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
+     $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
+   	
+     
+     	$requete  = 'SELECT ';
+		$requete .= ' compta.montant,compta.idoperation, ';
+		$requete .= ' compta_evenement.id,compta_evenement.evenement ';
+		$requete .= 'FROM  ';
+		$requete .= ' compta,  ';
+		$requete .= ' compta_evenement ';  
+		$requete .= 'WHERE  ';
+		$requete .= ' compta.idevenement = compta_evenement.id ';
+		$requete .= ' AND compta.date_ecriture >= \''.$periode_debut.'\' '; 
+		$requete .= ' AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
+		$requete .= 'GROUP BY ';
+		$requete .= ' compta_evenement.evenement ';
+		$requete .= 'ORDER BY  ';
+		$requete .= ' compta_evenement.evenement ';
+echo $requete;
+
+		return $this->_bdd->obtenirTous($requete);
+   } 
+
+   
+   function obtenirBalanceDetails($idevenement='',$periode_debut='',$periode_fin='')
+   {
+     $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
+     $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
+   	
+     
+     	$requete  = 'SELECT ';
+		$requete .= ' compta.*, ';
+		$requete .= ' compta_categorie.id,compta_categorie.categorie ';
+		$requete .= 'FROM  ';
+		$requete .= ' compta,  ';
+		$requete .= ' compta_categorie ';  
+		$requete .= 'WHERE  ';
+		$requete .= ' compta.idevenement = $idevenement ';
+		$requete .= ' AND compta.date_ecriture >= \''.$periode_debut.'\' '; 
+		$requete .= ' AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
+		$requete .= ' AND compta.id_categorie=compta_categorie.id ';
+		$requete .= 'ORDER BY  ';
+		$requete .= ' compta.idevenement, ';
+		$requete .= ' compta.idcategorie ';
+	
+		echo $requete;
+
+		return $this->_bdd->obtenirTous($requete);
+   } 
+   
 }
 
 ?>
