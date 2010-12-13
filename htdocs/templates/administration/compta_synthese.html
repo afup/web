@@ -14,7 +14,7 @@
     </form>
     </table>
     <br/>
-    <table><tr><td>Débit
+    <table><tr><td valign="top"  align="center">Débit
     <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
@@ -35,7 +35,7 @@
         </tr>
     {/foreach}
     </table>
-	</td><td>Crédit
+	</td><td valign="top" align="center">Crédit
 	  <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
@@ -48,7 +48,7 @@
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$credits.categorie}</td>
             <td>{$credits.description}</td>
-             <td>{$credits.montant}</td>
+             <td  align='right' width='80'>{$credits.montant}</td>
         </tr>
     {foreachelse}
         <tr>
@@ -56,7 +56,13 @@
         </tr>
     {/foreach}
     </table>
-	</td></tr></table>
+	</td></tr>
+	<tr>
+	<td align='center'>{$totalDepense}</td>
+	<td align='center'>{$totalRecette}</td>
+	</tr>
+	<tr><td colspan='2'  align='center'>{$difMontant}</tr>
+	</table>
 
 {else}
     {if $action == 'ajouter'}
