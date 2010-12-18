@@ -52,8 +52,13 @@ elseif ($action == 'credit') {
 	
    if ($action == 'modifier')
    {
-        $champs = $compta->obtenir($_GET['id']);
-        $formulaire->setDefaults($champs);
+        $champsRecup = $compta->obtenir($_GET['id']);
+echo "<pre>";
+print_r($champsRecup);
+echo "</pre>";
+        $champs['date_saisie']          = $champsRecup['date_ecriture'];
+
+		$formulaire->setDefaults($champsRecup);
    		$formulaire->addElement('hidden', 'id', $_GET['id']);
    }
    

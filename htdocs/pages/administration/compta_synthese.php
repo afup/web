@@ -22,7 +22,7 @@ if ($action == 'lister' ) {
     $list_associatif = false;
     $list_filtre = false;
 	*/
-	$listEvenement = $compta->obtenirListEvenements();
+	$listEvenement = $compta->obtenirListEvenements('liste');
 	$smarty->assign('listEvenement', $listEvenement );
 
 	if (!isset($_GET['idevnt']) || intval($_GET['idevnt']) == 0) {
