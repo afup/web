@@ -378,41 +378,44 @@ exit;
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
 
      	$requete  = 'SELECT ';
-		$requete .= 'compta.montant, ';
-		$requete .= 'compta_categorie.id, compta_categorie.categorie   '; 
+		$requete .= ' SUM(compta.montant) as montant, ';
+		$requete .= ' compta_evenement.id, compta_evenement.evenement   '; 
 		$requete .= 'FROM  ';
-		$requete .= 'compta,  ';
-		$requete .= 'compta_categorie ';  
+		$requete .= ' compta,  ';
+		$requete .= ' compta_evenement ';  
 		$requete .= 'WHERE  ';
-		$requete .= 'compta.idoperation = \''.$idoperation.'\' '; 
-		$requete .= 'AND compta.date_regl >= \''.$periode_debut.'\' '; 
-		$requete .= 'AND compta.date_regl <= \''.$periode_fin.'\'  ';
-		//	$requete .= 'AND compta.idevenement = \''.$idevenement.'\'  ';
-		$requete .= 'AND compta.idcategorie = compta_categorie.id ';
+		$requete .= ' compta.idoperation = \''.$idoperation.'\' '; 
+		$requete .= ' AND compta.date_ecriture >= \''.$periode_debut.'\' '; 
+		$requete .= ' AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
+		$requete .= ' AND compta.idevenement = compta_evenement.id ';
+		$requete .= 'GROUP BY';
+		$requete .= ' compta_evenement.evenement ';
 		$requete .= 'ORDER BY ';
-		$requete .= 'compta.date_ecriture, ';
-		$requete .= 'compta.idcategorie ';
-	/*	
-$sql="SELECT compta.*,compta_categorie.id,compta_categorie.categorie   
-	FROM compta, compta_categorie  
-	WHERE compta.idoperation='1' AND compta.idevenement=$idevenement 
-	         AND compta.date_ecriture>='$periode_debut' AND compta.date_ecriture<='$periode_fin' 
-		  AND compta.idcategorie = compta_categorie.id     
-	ORDER BY compta.date_ecriture,compta.idevenement,compta.idcategorie";    	
-*/
-echo $requete;		
+		$requete .= ' compta_evenement.evenement ';
+
 		return $this->_bdd->obtenirTous($requete);
     }
 
+    function obtenirTotalBilan($idoperation='1',$periode_debut,$periode_fin) 
+    {    
+    	
+	    $data=$this->obtenirBilan($idoperation,$periode_debut,$periode_fin);	
+
+		$total=0;
+		foreach ($data as $id=>$row)
+		{
+				$total += $row['montant'];
+		}
+
+		return $total;
+    }
+ 
 
    function obtenirBalance($periode_debut='',$periode_fin='')
    {
      $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
    	
-// $this->obtenirBalanceDetails('1','11',$periode_debut='',$periode_fin='');
-// exit;    
-
      	$requete  = 'SELECT ';
      	$requete .= ' SUM( IF( compta.idoperation =1, compta.montant, "" ) ) AS debit, ';
      	$requete .= ' SUM( IF( compta.idoperation =2, compta.montant, "" ) ) AS credit, ';
