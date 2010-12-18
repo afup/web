@@ -183,7 +183,12 @@ $pages = array(
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
                 'module' => 1,
             ),
-       ),
+		    'compta_config' => array(
+		        'nom' => 'Configuration',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 1,
+            ),
+        ),
     ),
     'trophee' => array(
         'nom' => 'Trophée',
