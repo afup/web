@@ -2,17 +2,13 @@
     <h2>Bilan</h2>
     <table>
     <form method="GET" name="evnt">
-      <input type="hidden" name="page" value="compta_synthese" />
-    {foreach from=$evenements item=row}
-    {$row.id}-{$row.evenement}<br>
+      <input type="hidden" name="page" value="compta_bilan" />
+     <h2>Bilan <select name="id_periode" onchange="this.form.submit(); return false;">
+    {foreach from=$listPeriode item=periode}
+    <option value="{$periode.id}"{if $smarty.get.id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
     {/foreach}
-     <h2>Sélectionner un évènement 
-     <select name="idevnt" onchange="this.form.submit(); return false;">
-    {foreach from=$evenements item=row}
-    <option value="{$row.id}" {if $idevnt == $row.id} selected{/if}> {$row.id} {$row}</option>
-    {/foreach}
-    </select>
-    </h2>
+    </select></h2>
+
     </form>
     </table>
     <br/>
@@ -27,7 +23,7 @@
     {foreach from=$debit item=debits}
         <tr>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$debits.categorie}</td>
+            <td>{$debits.evenement}</td>
             <td></td>
              <td>{$debits.montant}</td>
         </tr>
@@ -41,14 +37,14 @@
 	  <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
-            <th>catégorie</th>
+            <th>Evenement</th>
             <th></th>
             <th>Montant</th>
        </tr>
     {foreach from=$credit item=credits}
         <tr>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$credits.categorie}</td>
+            <td>{$credits.evenement}</td>
             <td></td>
              <td>{$credits.montant}</td>
         </tr>
@@ -58,6 +54,11 @@
         </tr>
     {/foreach}
     </table>
+	<tr>
+	<td align='center'>{$totalDepense}</td>
+	<td align='center'>{$totalRecette}</td>
+	</tr>
+	<tr><td colspan='2'  align='center'>{$difMontant}</tr>    
 	</td></tr></table>
 
 {else}
