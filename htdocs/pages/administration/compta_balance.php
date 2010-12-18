@@ -9,6 +9,8 @@ $smarty->assign('action', $action);
 
 if (isset($_GET['details']) && $_GET['details'])
 	$details=$_GET['details'];
+else
+	$details ="";
 
 	
 //$compte=$_GET['compte'];
@@ -45,7 +47,7 @@ if ($action == 'lister') {
 	$difMontant = $totalRecette - $totalDepense ;
 	$smarty->assign('difMontant', $difMontant);
 
-	if ($details)
+	if ($details!='')
 	{
 		$details = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
 		$smarty->assign('details', $details);
