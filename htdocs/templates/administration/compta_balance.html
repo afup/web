@@ -3,12 +3,10 @@
     <h2>Balance comptable</h2>
     <table>
     <form method="GET" name="forum">
-      <input type="hidden" name="page" value="compta_journal" />
-      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-      <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
+      <input type="hidden" name="page" value="compta_balance" />
+     <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
     {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+    <option value="{$periode.id}"{if $smarty.get.id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
     {/foreach}
     </select></h2>
     </form>
@@ -22,26 +20,62 @@
             <th>Dépense</th>
             <th>Recette</th>
        </tr>
-    {foreach from=$journal item=ecriture}
+      
+    {foreach from=$balance item=ecriture}
         <tr>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$ecriture.evenement}</td>
             <td> 
-             <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+             <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_raccourci.png" alt="raccourci" /></a>
+            <a href="index.php?page=compta_balance_views&amp;action=lister&amp;id={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement} (autre page)"><img src="{$chemin_template}images/icone_raccourci_double.png" alt="raccourci double" /></a>
             </td>
-		{if $ecriture.idoperation == 1} 
-			<td align='right'>{$ecriture.montant}</td> 
-			<td>&nbsp;</td>  
-		{else} 
-			<td>&nbsp;</td> 
-			<td align='right'>{$ecriture.montant}</td> 
-		{/if}
+			<td align='right'>{$ecriture.debit}</td> 
+			<td align='right'>{$ecriture.credit}</td> 
         </tr>
+{if ($smarty.get.details==$ecriture.idevenement) }
+		<tr><td colspan='2'>
+    <table>
+        <tr>
+            <th>Date ecriture</th>
+            <th>categorie</th>
+            <th>Descritpion</th>
+            <th>Dépense</th>
+            <th>Recette</th>
+            <th>&nbsp;</th>
+       </tr>
+
+    {foreach from=$details item=detail}
+        <tr>
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$detail.date_ecriture}</td>
+            <td>{$detail.categorie}</td>
+            <td>{$detail.description}</td>
+			<td align='right'>{$detail.debit}</td> 
+			<td align='right'>{$detail.credit}</td>
+			<td>edit</td> 
+        </tr>
+
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
         </tr>
     {/foreach}
+   	</table>
+
+{/if}
+	</td></tr>
+
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+    <tr>
+	<td colspan='2' align='right'>Total</td>
+	<td align='center'>{$totalDepense}</td>
+	<td align='center'>{$totalRecette}</td>
+	</tr>
+	<tr><td colspan='2' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</tr>
     </table>
 {else}
 

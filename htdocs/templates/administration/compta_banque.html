@@ -1,9 +1,9 @@
 {if $action == 'lister'}
     <h2>Journal de banque</h2>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?page=compta_banque&amp;compte=espece&amp;action=lister" title="journal compte espece">Journal banque : compte espece</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?page=compta_banque&amp;compte=paypal&amp;action=lister" title="journal compte paypal">Journal banque : compte paypal</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?page=compta_banque&amp;compte=courant&amp;action=lister" title="journal compte courant">Journal banque : compte courant</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?page=compta_banque&amp;compte=livreta&amp;action=lister" title="journal compte livret A">Journal banque : compte livret A</a><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=espece&amp;action=lister" title="journal compte espece">Journal banque : compte espece</a><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=paypal&amp;action=lister" title="journal compte paypal">Journal banque : compte paypal</a><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=courant&amp;action=lister" title="journal compte courant">Journal banque : compte courant</a><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=livreta&amp;action=lister" title="journal compte livret A">Journal banque : compte livret A</a><br />
     <br/>
     <table>
     <form method="GET" name="forum">
@@ -11,7 +11,7 @@
       <input type="hidden" name="page" value="compta_banque" />
      <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
     {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+    <option value="{$periode.id}"{if $smarty.get.id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
     {/foreach}
     </select></h2>
     </form>
@@ -46,11 +46,18 @@
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                </td>
         </tr>
+        
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
         </tr>
     {/foreach}
+    <tr>
+	<td colspan='3' align='right'>Total</td>
+	<td align='center'>{$totalDepense}</td>
+	<td align='center'>{$totalRecette}</td>
+	</tr>
+	<tr><td colspan='3' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</tr>
     </table>
 {else}
 {/if}
