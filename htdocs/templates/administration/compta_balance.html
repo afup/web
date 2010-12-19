@@ -52,7 +52,9 @@
             <td>{$detail.description}</td>
 			<td align='right'>{$detail.debit}</td> 
 			<td align='right'>{$detail.credit}</td>
-			<td>edit</td> 
+            <td style="text-align: right">
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+               </td>
         </tr>
 
     {foreachelse}
