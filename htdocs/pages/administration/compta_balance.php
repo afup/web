@@ -35,7 +35,7 @@ if ($action == 'lister') {
 		$periode_fin="";	
 	}
 	
-	$balance = $compta->obtenirBalance($periode_debut,$periode_fin);
+	$balance = $compta->obtenirBalance('',$periode_debut,$periode_fin);
 	$smarty->assign('balance', $balance);
 	
 	$totalDepense = $compta->obtenirTotalBalance(1,$periode_debut,$periode_fin);
