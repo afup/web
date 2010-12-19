@@ -1,6 +1,7 @@
 <?php
 //@TODO
 // Ajout période comptable automatiquement
+/// revoir sous totaux balance
 
 class AFUP_Compta
 {
@@ -362,13 +363,8 @@ exit;
 		$total=0;
 		foreach ($data as $id=>$row)
 		{
-/*			echo "<pre>";
-			print_r($row);
-			echo "</pre>";*/
-//echo $row['montant']."<br>";
 			$total += $row['montant'];
 		}
-//§		print_r($total);
 		return $total;
     }
     
@@ -404,14 +400,15 @@ exit;
 		$total=0;
 		foreach ($data as $id=>$row)
 		{
-				$total += $row['montant'];
+
+			$total += $row['montant'];
 		}
 
 		return $total;
     }
  
 
-   function obtenirBalance($periode_debut='',$periode_fin='')
+   function obtenirBalance($idoperation='',$periode_debut='',$periode_fin='')
    {
      $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
@@ -419,7 +416,7 @@ exit;
      	$requete  = 'SELECT ';
      	$requete .= ' SUM( IF( compta.idoperation =1, compta.montant, "" ) ) AS debit, ';
      	$requete .= ' SUM( IF( compta.idoperation =2, compta.montant, "" ) ) AS credit, ';
-     	$requete .= ' compta.date_ecriture,compta.montant,compta.idoperation, compta.idevenement, ';
+     	$requete .= ' compta.date_ecriture,compta.montant,compta.idoperation, compta.idevenement, compta.id as idtmp, ';
 		$requete .= ' compta_evenement.id,compta_evenement.evenement ';
 		$requete .= 'FROM  ';
 		$requete .= ' compta,  ';
@@ -428,6 +425,9 @@ exit;
 		$requete .= ' compta.idevenement = compta_evenement.id ';
 		$requete .= ' AND compta.date_ecriture >= \''.$periode_debut.'\' '; 
 		$requete .= ' AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
+		if ($idoperation !='')
+			$requete .= ' AND compta.idoperation = \''.$idoperation.'\' ';
+		
 		$requete .= 'GROUP BY ';
 		$requete .= ' compta_evenement.evenement ';
 		$requete .= 'ORDER BY  ';
@@ -439,16 +439,15 @@ exit;
     function obtenirTotalBalance($idoperation='1',$periode_debut,$periode_fin) 
     {    
     	
-	    $data=$this->obtenirBalance($periode_debut,$periode_fin);	
-     
+	    $data=$this->obtenirBalance($idoperation,$periode_debut,$periode_fin);	
+
 		$total=0;
 		foreach ($data as $id=>$row)
 		{
+			if ($idoperation==1)			$total += $row['debit'];
+			if ($idoperation==2)			$total += $row['credit'];
 			
-			if ($idoperation==$row['idoperation'])
-				$total += $row['montant'];
 		}
-
 		return $total;
     }
    
