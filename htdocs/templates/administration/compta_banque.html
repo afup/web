@@ -29,17 +29,17 @@
             <th>&nbsp;</th>
        </tr>
     {foreach from=$journal item=ecriture}
-        <tr>
+        <tr class="{cycle values="odd,even"}>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$ecriture.date_ecriture}</td>
+            <td>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$ecriture.reglement}</td>
              <td>{$ecriture.description}</td>
 		{if $ecriture.idoperation == 1} 
-			<td align='right'>{$ecriture.montant}</td> 
+			<td align='right'>{$ecriture.montant|number_format:2:',':' '}</td> 
 			<td> </td>  
 		{else} 
 			<td> </td> 
-			<td align='right'>{$ecriture.montant}</td> 
+			<td align='right'>{$ecriture.montant|number_format:2:',':' '}</td> 
 		{/if}
             <td style="text-align: right">
 
@@ -54,8 +54,8 @@
     {/foreach}
     <tr>
 	<td colspan='3' align='right'>Total</td>
-	<td align='center'>{$totalDepense}</td>
-	<td align='center'>{$totalRecette}</td>
+	<td align='center'>{$totalDepense|number_format:2:',':' '}</td>
+	<td align='center'>{$totalRecette|number_format:2:',':' '}</td>
 	</tr>
 	<tr><td colspan='3' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</tr>
     </table>

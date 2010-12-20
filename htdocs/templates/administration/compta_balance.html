@@ -22,7 +22,7 @@
        </tr>
       
     {foreach from=$balance item=ecriture}
-        <tr>
+        <tr class="{cycle values="odd,even"}>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$ecriture.evenement}</td>
             <td> 
@@ -33,7 +33,8 @@
 			<td align='right'>{$ecriture.credit}</td> 
         </tr>
 {if ($smarty.get.details==$ecriture.idevenement) }
-		<tr><td colspan='2'>
+	<tr class="{cycle values="odd,even"}>
+		<td colspan='2'>
     <table>
         <tr>
             <th>Date ecriture</th>
@@ -45,13 +46,13 @@
        </tr>
 
     {foreach from=$details item=detail}
-        <tr>
+        <tr class="{cycle values="odd,even"}>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$detail.date_ecriture}</td>
+            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$detail.categorie}</td>
             <td>{$detail.description}</td>
-			<td align='right'>{$detail.debit}</td> 
-			<td align='right'>{$detail.credit}</td>
+			<td align='right'>{$detail.debit|number_format:2:',':' '}</td> 
+			<td align='right'>{$detail.credit|number_format:2:',':' '}</td>
             <td style="text-align: right">
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                </td>
@@ -74,8 +75,8 @@
     {/foreach}
     <tr>
 	<td colspan='2' align='right'>Total</td>
-	<td align='center'>{$totalDepense}</td>
-	<td align='center'>{$totalRecette}</td>
+	<td align='center'>{$totalDepense|number_format:2:',':' '}</td>
+	<td align='center'>{$totalRecette|number_format:2:',':' '}</td>
 	</tr>
 	<tr><td colspan='2' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</tr>
     </table>
