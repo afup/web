@@ -1,7 +1,7 @@
 <?php
 //@TODO
 // Ajout période comptable automatiquement
-/// revoir sous totaux balance
+// revoir sous totaux balance
 
 class AFUP_Compta
 {
