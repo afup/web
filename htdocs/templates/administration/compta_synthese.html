@@ -23,11 +23,11 @@
             <th>Montant</th>
        </tr>
     {foreach from=$debit item=debits}
-        <tr>
+        <tr class="{cycle values="odd,even"}>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$debits.categorie}</td>
             <td>{$debits.description}</td>
-             <td>{$debits.montant}</td>
+             <td>{$debits.montant|number_format:2:',':' '}</td>
         </tr>
     {foreachelse}
         <tr>
@@ -44,24 +44,24 @@
             <th>Montant</th>
        </tr>
     {foreach from=$credit item=credits}
-        <tr>
+        <tr class="{cycle values="odd,even"}>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$credits.categorie}</td>
             <td>{$credits.description}</td>
-             <td  align='right' width='80'>{$credits.montant}</td>
+             <td  align='right' width='80'>{$credits.montant|number_format:2:',':' '}</td>
         </tr>
     {foreachelse}
-        <tr>
+        <tr class="{cycle values="odd,even"}>
             <td><em>Aucune ecriture actuellement</em></td>
         </tr>
     {/foreach}
     </table>
 	</td></tr>
 	<tr>
-	<td align='center'>{$totalDepense}</td>
-	<td align='center'>{$totalRecette}</td>
+	<td align='center'>{$totalDepense|number_format:2:',':' '}</td>
+	<td align='center'>{$totalRecette|number_format:2:',':' '}</td>
 	</tr>
-	<tr><td colspan='2'  align='center'>{$difMontant}</tr>
+	<tr><td colspan='2'  align='center'>{$difMontant|number_format:2:',':' '}</tr>
 	</table>
 
 {else}
