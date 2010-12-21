@@ -309,9 +309,8 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'obs_regl='.$this->_bdd->echapper($obs_regl) . ',';
 		$requete .= 'idevenement='.$this->_bdd->echapper($idevenement) . ' ';
 		$requete .= 'WHERE ';
-		$requete .= 'id=' . $id;
-echo $requete;
-exit;
+		$requete .= 'id=' . $id. ' ';
+
 		return $this->_bdd->executer($requete);
 	}
 	
