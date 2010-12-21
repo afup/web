@@ -53,13 +53,22 @@ elseif ($action == 'credit') {
    if ($action == 'modifier')
    {
         $champsRecup = $compta->obtenir($_GET['id']);
-echo "<pre>";
-print_r($champsRecup);
-echo "</pre>";
-        $champs['date_saisie']          = $champsRecup['date_ecriture'];
 
-		$formulaire->setDefaults($champsRecup);
-   		$formulaire->addElement('hidden', 'id', $_GET['id']);
+        $champs['date_saisie']          = $champsRecup['date_ecriture'];
+        $champs['idoperation']          = $champsRecup['idoperation'];
+        $champs['idcategorie']          = $champsRecup['idcategorie'];
+        $champs['nom_frs']          = $champsRecup['nom_frs'];
+        $champs['montant']          = $champsRecup['montant'];
+        $champs['description']          = $champsRecup['description'];
+        $champs['numero']          = $champsRecup['numero'];
+        $champs['idmode_regl']          = $champsRecup['idmode_regl'];
+        $champs['date_reglement']          = $champsRecup['date_regl'];
+        $champs['obs_regl']          = $champsRecup['obs_regl'];
+        $champs['idevenement']          = $champsRecup['idevenement'];
+        
+		$formulaire->setDefaults($champs);
+		//$formulaire->setDefaults($champsRecup);
+		$formulaire->addElement('hidden', 'id', $_GET['id']);
    }
    
 // facture associé à un évènement
@@ -75,15 +84,6 @@ echo "</pre>";
                                                                                 'format'   => 'd F Y',
   																				'minYear' => date('Y'), 
   																				'maxYear' => date('Y')+1));
-
-/* $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
-                                                                                'format'   => 'd F Y',
-  																				'month' => date('F'), 
-  																				'minYear' => date('Y')-1, 
-  																				'maxYear' => date('Y')+1));
-*/
-  
-  
   
   $formulaire->addElement('select'  , 'idcategorie', 'Type de compte *', $compta->obtenirListCategories());
   $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , array('size' => 30, 'maxlength' => 40));
@@ -94,7 +94,10 @@ echo "</pre>";
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
    $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
-   $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 'minYear' => date('Y'), 'maxYear' => date('Y')));
+   $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 
+                                                                            'format'   => 'd F Y',
+   																			'minYear' => date('Y'), 
+   																			'maxYear' => date('Y')+1));
    $formulaire->addElement('textarea', 'obs_regl'           , 'Observation', array('cols' => 42, 'rows' => 5));
    
 
@@ -106,8 +109,8 @@ echo "</pre>";
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
 
-$date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['M']."-".$valeur['date_saisie']['d'] ;
-$date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['M']."-".$valeur['date_reglement']['d'] ;
+$date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".$valeur['date_saisie']['d'] ;
+$date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-".$valeur['date_reglement']['d'] ;
        
     	if ($action == 'ajouter') {
    			$ok = $compta->ajouter(
