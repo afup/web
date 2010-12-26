@@ -413,8 +413,8 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
    	
      	$requete  = 'SELECT ';
-     	$requete .= ' SUM( IF( compta.idoperation =1, compta.montant, "" ) ) AS debit, ';
-     	$requete .= ' SUM( IF( compta.idoperation =2, compta.montant, "" ) ) AS credit, ';
+     	$requete .= ' SUM( IF( compta.idoperation = 1, compta.montant, "" ) ) AS debit, ';
+     	$requete .= ' SUM( IF( compta.idoperation = 2, compta.montant, "" ) ) AS credit, ';
      	$requete .= ' compta.date_ecriture,compta.montant,compta.idoperation, compta.idevenement, compta.id as idtmp, ';
 		$requete .= ' compta_evenement.id,compta_evenement.evenement ';
 		$requete .= 'FROM  ';
