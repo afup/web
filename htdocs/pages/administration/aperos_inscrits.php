@@ -1,17 +1,20 @@
 <?php
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
-$tris_valides = array('nom', 'pseudo');
+$tris_valides = array('nom', 'pseudo', 'prenom', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos_Inscrits.php';
-$aperos_inscrits = new AFUP_Aperos_Inscrits($bdd);
+$inscrits = new AFUP_Aperos_Inscrits($bdd);
+
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos_Villes.php';
+$villes = new AFUP_Aperos_Villes($bdd);
 
 if ($action == 'lister') {
 
     // Valeurs par dfaut des paramtres de tri
-    $list_ordre = 'nom ASC';
+    $list_ordre = 'pseudo';
     $list_sens = 'asc';
     $list_associatif = false;
     $list_filtre = false;
@@ -23,11 +26,11 @@ if ($action == 'lister') {
     }
     
     // Mise en place de la liste dans le scope de smarty
-    $inscrits = $aperos_inscrits->obtenirListe($list_ordre, $list_associatif, $list_filtre);
+    $inscrits = $inscrits->obtenirListe($list_ordre, $list_associatif, $list_filtre);
     $smarty->assign('inscrits', $inscrits);
 
 } elseif ($action == 'supprimer') {
-    if ($aperos_inscrits->supprimer($_GET['id'])) {
+    if ($inscrits->supprimer($_GET['id'])) {
         AFUP_Logs::log('Suppression de l\'inscrit ' . $_GET['id'] . ' aux apéros PHP');
         afficherMessage('L\'inscrit aux apéros PHP a été supprimé', 'index.php?page=aperos_inscrits&action=lister');
     } else {
@@ -35,70 +38,52 @@ if ($action == 'lister') {
     }
 
 } else {
-    $formulaire = &instancierFormulaire();
+	$formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
-//        $formulaire->setDefaults(array('id_pays' => 'FR',
-//                                       'SIREN-Test'    => 'KO',    
-//                                       'etat'    => AFUP_DROITS_ETAT_ACTIF));
+        $formulaire->setDefaults(array('validation' => '0'));
     } else {
-        $champs = $aperos_inscrits->obtenir($_GET['id']);
+        $champs = $inscrits->obtenir($_GET['id']);
+        unset($champs['mot_de_passe']);
+        $champs['date_inscription'] = $champs['date_inscription'] ? date("d/m/Y", $champs['date_inscription']) : "";
         $formulaire->setDefaults($champs);    
     }
 
+    $formulaire->addElement('header', '', 'Inscrit');
+    $formulaire->addElement('text', 'nom', 'Nom', array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text', 'prenom', 'Prénom', array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text', 'pseudo', 'Pseudo', array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('password', 'mot_de_passe', 'Mot de passe', array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text', 'email', 'Email', array('size' => 30, 'maxlength' => 40));
 
-    $formulaire->addElement('header'  , ''                   , 'Inscrit');
-    $formulaire->addElement('text'    , 'nom'                , 'Nom'          , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'prenom'             , 'Prénom'       , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'pseudo'             , 'Pseudo'       , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'passwd'             , 'Mot de passe' , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'mail'               , 'Email'        , array('size' => 30, 'maxlength' => 40));
-
-    $formulaire->addElement('header'  , ''                   , 'Informations');
-    $formulaire->addElement('text'    , 'age'                , 'Age'                , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'ville'              , 'Ville'              , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'id_dept'            , 'Département'        , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'site_web'            , 'Site web'           , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'photo'              , 'Photo'              , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'mailinglist'        , 'Liste de diffusion' , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'descriptif'         , 'Descriptif'         , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'date_entree'        , 'Date d\'entrée'     , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'clef'               , 'Clef'               , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('header', '', 'Informations');
+    $formulaire->addElement('text', 'site_web', 'Site web', array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('select', 'id_ville', 'Ville', array(0 => '--') + $villes->obtenirListe('nom ASC', true));
+    $formulaire->addElement('select', 'etat', 'Etat', $inscrits->obtenirListeEtat());
+    $formulaire->addElement('static', 'date_inscription', 'Date d\'inscription');
     
-    $formulaire->addElement('header'  , 'boutons'            , '');
-    $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
+    $formulaire->addElement('header', 'boutons', '');
+    $formulaire->addElement('submit', 'soumettre', ucfirst($action));
     
     if ($formulaire->validate()) {
         if ($action == 'ajouter') {
-            $ok = $aperos_inscrits->ajouter($formulaire->exportValue('pseudo'),
-                                            $formulaire->exportValue('passwd'),
+            $ok = $inscrits->ajouter($formulaire->exportValue('pseudo'),
+                                            $formulaire->exportValue('mot_de_passe'),
                                             $formulaire->exportValue('nom'),
                                             $formulaire->exportValue('prenom'),
-                                            $formulaire->exportValue('age'),
-                                            $formulaire->exportValue('ville'),
-                                            $formulaire->exportValue('id_dept'),
-                                            $formulaire->exportValue('mail'),
+                                            $formulaire->exportValue('email'),
                                             $formulaire->exportValue('site_web'),
-                                            $formulaire->exportValue('photo'),
-                                            $formulaire->exportValue('mailinglist'),
-                                            $formulaire->exportValue('descriptif'),
-                                            $formulaire->exportValue('date_entree'),
-                                            $formulaire->exportValue('clef'));
+                                            $formulaire->exportValue('id_ville'),
+                                            $formulaire->exportValue('etat'));
         } else {
-            $ok = $aperos_inscrits->modifier($_GET['id'],
+            $ok = $inscrits->modifier($_GET['id'],
                                              $formulaire->exportValue('pseudo'),
-                                             $formulaire->exportValue('passwd'),
+                                             $formulaire->exportValue('mot_de_passe'),
                                              $formulaire->exportValue('nom'),
                                              $formulaire->exportValue('prenom'),
-                                             $formulaire->exportValue('age'),
-                                             $formulaire->exportValue('ville'),
-                                             $formulaire->exportValue('id_dept'),
-                                             $formulaire->exportValue('mail'),
+                                             $formulaire->exportValue('email'),
                                              $formulaire->exportValue('site_web'),
-                                             $formulaire->exportValue('photo'),
-                                             $formulaire->exportValue('mailinglist'),
-                                             $formulaire->exportValue('descriptif'),
-                                             $formulaire->exportValue('date_entree'),
-                                             $formulaire->exportValue('clef'));
+                                             $formulaire->exportValue('id_ville'),
+                                             $formulaire->exportValue('etat'));
         }
         
         if ($ok) {

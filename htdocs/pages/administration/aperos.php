@@ -8,6 +8,12 @@ $smarty->assign('action', $action);
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos.php';
 $aperos = new AFUP_Aperos($bdd);
 
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos_Inscrits.php';
+$inscrits = new AFUP_Aperos_Inscrits($bdd);
+
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos_Villes.php';
+$villes = new AFUP_Aperos_Villes($bdd);
+
 if ($action == 'lister') {
 
     // Valeurs par dfaut des paramtres de tri
@@ -37,48 +43,48 @@ if ($action == 'lister') {
 } else {
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
-//        $formulaire->setDefaults(array('id_pays' => 'FR',
-//                                       'SIREN-Test'    => 'KO',    
-//                                       'etat'    => AFUP_DROITS_ETAT_ACTIF));
+    	$champs['date'] = time();
+        $formulaire->setDefaults(array('etat' => 0, 'date' => time()));
     } else {
         $champs = $aperos->obtenir($_GET['id']);
         $formulaire->setDefaults($champs);    
+		$formulaire->setDefaults(array('participants' => array_keys($aperos->obtenirListeParticipants($_GET['id']))));
     }
 
+    $formulaire->addElement('header', '', 'Informations');
+	$formulaire->addElement('date', 'date', 'Date', array('language' => 'fr', 'format' => "dMY H:i", 'minYear' => min(date('Y') - 10, date('Y', $champs['date'])), 'maxYear' => max(date('Y') + 1, date('Y', $champs['date'])), 'optionIncrement' => array('i' => 15)));
+	$formulaire->addElement('select', 'id_organisateur', 'Organisateur', array(0 => '--') + $inscrits->obtenirSelect('pseudo ASC', true));
+    $formulaire->addElement('select', 'id_ville', 'Ville', array(0 => '--') + $villes->obtenirListe('nom ASC', true));
+    $formulaire->addElement('textarea', 'lieu', 'Lieu');
 
-    $formulaire->addElement('header'  , ''                   , 'Informations');
-    $formulaire->addElement('text'    , 'date'               , 'Date'         , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('select'  , 'ID_organisateur'    , 'Organisateur' , $aperos->obtenirOrganisateurs());
-    $formulaire->addElement('select'  , 'ID_ville'           , 'Ville'        , $aperos->obtenirVilles());
-    $formulaire->addElement('text'    , 'lieu'               , 'Lieu'         , array('size' => 30, 'maxlength' => 40));
-
-    $formulaire->addElement('header'  , ''                   , 'Paramètres');
-    $formulaire->addElement('select'  , 'valide'             , 'Etat'         , array(AFUP_APERO_ETAT_ACTIF   => 'Actif',
-                                                                                      AFUP_APERO_ETAT_INACTIF => 'Inactif'));
-    $formulaire->addElement('text'    , 'NB_messages'        , 'NB_messages'  , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'NB_phpautes'        , 'NB_phpautes'  , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('header', '', 'Paramètres');
+    $formulaire->addElement('select', 'etat', 'Etat', $aperos->obtenirListeEtat());
+    if (isset($_GET['id']) and $_GET['id'] > 0) {
+		$element =& $formulaire->addElement('altselect', 'participants', 'Participants', $inscrits->obtenirSelect('pseudo ASC'));
+		$element->setMultiple(true);
+    }
     
-    $formulaire->addElement('header'  , 'boutons'            , '');
-    $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
+    $formulaire->addElement('header', 'boutons', '');
+    $formulaire->addElement('submit', 'soumettre', ucfirst($action));
     
     if ($formulaire->validate()) {
-        if ($action == 'ajouter') {
-            $ok = $aperos->ajouter($formulaire->exportValue('ID_organisateur'),
-                                   $formulaire->exportValue('ID_ville'),
-                                   $formulaire->exportValue('date'),
+		$date = $formulaire->exportValue('date');
+		$date = mktime($date['H'], $date['i'], 0, $date['M'], $date['d'], $date['Y']);
+
+		if ($action == 'ajouter') {
+            $ok = $aperos->ajouter($formulaire->exportValue('id_organisateur'),
+                                   $formulaire->exportValue('id_ville'),
+                                   $date,
                                    $formulaire->exportValue('lieu'),
-                                   $formulaire->exportValue('valide'),
-                                   $formulaire->exportValue('NB_messages'),
-                                   $formulaire->exportValue('NB_phpautes'));
+                                   $formulaire->exportValue('etat'));
         } else {
             $ok = $aperos->modifier($_GET['id'],
-                                    $formulaire->exportValue('ID_organisateur'),
-                                    $formulaire->exportValue('ID_ville'),
-                                    $formulaire->exportValue('date'),
+                                    $formulaire->exportValue('id_organisateur'),
+                                    $formulaire->exportValue('id_ville'),
+                                    $date,
                                     $formulaire->exportValue('lieu'),
-                                    $formulaire->exportValue('valide'),
-                                    $formulaire->exportValue('NB_messages'),
-                                    $formulaire->exportValue('NB_phpautes'));
+                                    $formulaire->exportValue('etat'));
+			$aperos->modifierParticipants($_GET['id'], $formulaire->exportValue('participants'));
         }
         
         if ($ok) {
@@ -95,5 +101,3 @@ if ($action == 'lister') {
     
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
-
-?>

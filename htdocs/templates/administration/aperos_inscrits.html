@@ -18,19 +18,19 @@
     <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
+            <th align="left"><a href="index.php?page=aperos_inscrits&amp;tri=pseudo&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pseudo'}desc{else}asc{/if}">Pseudo</a></th>
             <th align="left"><a href="index.php?page=aperos_inscrits&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
             <th align="left"><a href="index.php?page=aperos_inscrits&amp;tri=prenom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'prenom'}desc{else}asc{/if}">Prénom</a></th>
-            <th align="left"><a href="index.php?page=aperos_inscrits&amp;tri=pseudo&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pseudo'}desc{else}asc{/if}">Pseudo</a></th>
-            <th><a href="index.php?page=aperos_inscrits&amp;tri=valide&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+            <th><a href="index.php?page=aperos_inscrits&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
             <th>&nbsp;</th>
         </tr>
     {foreach from=$inscrits item=inscrit}
         <tr>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$inscrit.pseudo}</td>
             <td>{$inscrit.nom}</td>
             <td>{$inscrit.prenom}</td>
-            <td>{$inscrit.pseudo}</td>
-            <td style="text-align: center">{if $inscrit.valide == 1}Actif{else}Inactif{/if}</td>
+            <td style="text-align: center">{if $inscrit.etat == 1}Actif{elseif $inscrit.etat == -1}Inactif{else}En attente{/if}</td>
             <td style="text-align: right">
                 <a href="index.php?page=aperos_inscrits&amp;action=modifier&amp;id={$inscrit.id}" title="Modifier l'inscrit {$inscrit.pseudo}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                 <a href="index.php?page=aperos_inscrits&amp;action=supprimer&amp;id={$inscrit.id}" title="Supprimer l'inscrit {$inscrit.pseudo}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l'inscrit {$inscrit.pseudo} aux apéros PHP ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>

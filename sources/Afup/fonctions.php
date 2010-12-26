@@ -30,6 +30,7 @@ function &instancierFormulaire($url = null, $nom = 'formulaire') {
     }    
     
     require_once 'HTML/QuickForm.php';
+    require_once 'HTML/QuickForm/altselect.php';
     $formulaire = new HTML_QuickForm($nom, 'post', $url);
     $formulaire->removeAttribute('name');
     return $formulaire;     

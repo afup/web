@@ -27,10 +27,10 @@
     {foreach from=$evenements item=evenement}
         <tr>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$evenement.date}</td>
+            <td>{$evenement.date|date_format:"%d/%m/%Y"}</td>
             <td>{$evenement.ville}</td>
             <td>{$evenement.organisateur}</td>
-            <td style="text-align: center">{if $evenement.valide == 1}Actif{else}Inactif{/if}</td>
+            <td style="text-align: center">{if $evenement.etat == 1}Actif{elseif $evenement.etat == -1}Inactif{else}En attente{/if}</td>
             <td style="text-align: right">
                 <a href="index.php?page=aperos&amp;action=modifier&amp;id={$evenement.id}" title="Modifier l'apéro du {$evenement.date}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                 <a href="index.php?page=aperos&amp;action=supprimer&amp;id={$evenement.id}" title="Supprimer l'apéro du {$evenement.date}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l'apéro du {$evenement.date} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
