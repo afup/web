@@ -6,7 +6,7 @@
       <input type="hidden" name="page" value="compta_balance" />
      <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
     {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $smarty.get.id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
     {/foreach}
     </select></h2>
     </form>
@@ -27,13 +27,12 @@
             <td>{$ecriture.evenement}</td>
             <td> 
              <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_raccourci.png" alt="raccourci" /></a>
-            <a href="index.php?page=compta_balance_views&amp;action=lister&amp;id={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement} (autre page)"><img src="{$chemin_template}images/icone_raccourci_double.png" alt="raccourci double" /></a>
             </td>
-			<td align='right'>{$ecriture.debit}</td> 
-			<td align='right'>{$ecriture.credit}</td> 
+             <td align='right' width='100'>{$ecriture.debit|number_format:2:',':' '}</td>
+             <td align='right' width='100'>{$ecriture.credit|number_format:2:',':' '}</td>
         </tr>
 {if ($smarty.get.details==$ecriture.idevenement) }
-	<tr class="{cycle values="odd,even"}>
+	<tr class="{cycle values="odd,even"}">
 		<td colspan='2'>
     <table>
         <tr>
@@ -46,7 +45,7 @@
        </tr>
 
     {foreach from=$details item=detail}
-        <tr class="{cycle values="odd,even"}>
+        <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$detail.categorie}</td>
@@ -64,9 +63,10 @@
         </tr>
     {/foreach}
    	</table>
-
+		</td>
+	<td></td><td></td>
+	</tr>
 {/if}
-	</td></tr>
 
     {foreachelse}
         <tr>
@@ -81,5 +81,5 @@
 	<tr><td colspan='2' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</tr>
     </table>
 {else}
-
 {/if}
+

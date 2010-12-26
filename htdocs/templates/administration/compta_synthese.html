@@ -23,11 +23,11 @@
             <th>Montant</th>
        </tr>
     {foreach from=$debit item=debits}
-        <tr class="{cycle values="odd,even"}>
+        <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$debits.categorie}</td>
             <td>{$debits.description}</td>
-             <td>{$debits.montant|number_format:2:',':' '}</td>
+             <td align='right' width='100'>{$debits.montant|number_format:2:',':' '}</td>
         </tr>
     {foreachelse}
         <tr>
@@ -44,14 +44,14 @@
             <th>Montant</th>
        </tr>
     {foreach from=$credit item=credits}
-        <tr class="{cycle values="odd,even"}>
+        <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$credits.categorie}</td>
             <td>{$credits.description}</td>
-             <td  align='right' width='80'>{$credits.montant|number_format:2:',':' '}</td>
+             <td  align='right' width='100'>{$credits.montant|number_format:2:',':' '}</td>
         </tr>
     {foreachelse}
-        <tr class="{cycle values="odd,even"}>
+        <tr class="{cycle values="odd,even"}">
             <td><em>Aucune ecriture actuellement</em></td>
         </tr>
     {/foreach}

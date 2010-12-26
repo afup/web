@@ -29,17 +29,17 @@
             <th>&nbsp;</th>
        </tr>
     {foreach from=$journal item=ecriture}
-        <tr class="{cycle values="odd,even"}>
+        <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$ecriture.reglement}</td>
              <td>{$ecriture.description}</td>
 		{if $ecriture.idoperation == 1} 
-			<td align='right'>{$ecriture.montant|number_format:2:',':' '}</td> 
+			<td  align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td> 
 			<td> </td>  
 		{else} 
 			<td> </td> 
-			<td align='right'>{$ecriture.montant|number_format:2:',':' '}</td> 
+			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td> 
 		{/if}
             <td style="text-align: right">
 

@@ -5,14 +5,16 @@
       <input type="hidden" name="page" value="compta_bilan" />
      <h2>Bilan <select name="id_periode" onchange="this.form.submit(); return false;">
     {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $smarty.get.id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
     {/foreach}
     </select></h2>
 
     </form>
     </table>
     <br/>
-    <table><tr><td>Débit
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=espece&amp;action=lister" title="imprimer pdf">Imprimer PDF</a><br />
+<br />
+    <table><tr><td align="center">Débit
     <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
@@ -21,11 +23,11 @@
             <th>Montant</th>
        </tr>
     {foreach from=$debit item=debits}
-        <tr class="{cycle values="odd,even"}>
+        <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$debits.evenement}</td>
             <td></td>
-             <td>{$debits.montant|number_format:2:',':' '}</td>
+             <td align='right' width='100'>{$debits.montant|number_format:2:',':' '}</td>
         </tr>
     {foreachelse}
         <tr>
@@ -33,20 +35,20 @@
         </tr>
     {/foreach}
     </table>
-	</td><td valign="top">Crédit
+	</td><td align="center" valign="top">Crédit
 	  <table>
-        <tr class="{cycle values="odd,even"}>
+        <tr class="{cycle values="odd,even"}">
             <!-- th width="20px">&nbsp;</th -->
             <th>Evenement</th>
             <th></th>
             <th>Montant</th>
        </tr>
     {foreach from=$credit item=credits}
-        <tr class="{cycle values="odd,even"}>
+        <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$credits.evenement}</td>
             <td></td>
-             <td>{$credits.montant|number_format:2:',':' '}</td>
+             <td align='right' width='100'>{$credits.montant|number_format:2:',':' '}</td>
         </tr>
     {foreachelse}
         <tr>
