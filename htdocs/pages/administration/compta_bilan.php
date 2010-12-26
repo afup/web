@@ -12,30 +12,22 @@ $smarty->assign('action', $action);
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
 $compta = new AFUP_Compta($bdd);
 
-$id_periode =isset ($_GET['id_periode']);
+if (isset($_GET['id_periode']) && $_GET['id_periode']) 
+	$id_periode=$_GET['id_periode'];
+else
+	$id_periode="";
+	 
 $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
 
 $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode );
 
+
 if ($action == 'lister') {
-	if (isset($_GET['id_periode']) && $_GET['id_periode'])
-	{
-		$periode_debut=$listPeriode[$_GET['id_periode']-1]['date_debut'];
-		$periode_fin=$listPeriode[$_GET['id_periode']-1]['date_fin'];
-	} else {
-		$periode_debut="";
-		$periode_fin="";	
-	}
+	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
+	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 	
-/*    $list_ordre = 'date';
-    $list_sens = 'asc';
-    $list_associatif = false;
-    $list_filtre = false;
-*/	
-
-
 	$debit = $compta->obtenirBilan(1,$periode_debut,$periode_fin);
 	$smarty->assign('debit', $debit);
 	

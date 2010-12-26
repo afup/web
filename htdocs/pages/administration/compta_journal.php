@@ -9,41 +9,35 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
 $compta = new AFUP_Compta($bdd);
 
 
-//$id_periode = $compta->obtenir($_GET['id_periode']);
-$id_periode =isset ($_GET['id_periode']);
+if (isset($_GET['id_periode']) && $_GET['id_periode']) 
+	$id_periode=$_GET['id_periode'];
+else
+	$id_periode="";
+	 
 $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
 
 $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode );
-	
+
 	
 if ($action == 'lister') {
 
-    // Valeurs par défaut des paramÃtres de tri
-  //  $timestamp = $assemblee_generale->obternirDerniereDate();
-//    $list_date_assemblee_generale = convertirTimestampEnDate($timestamp);
-//    $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription';
-
-/*    $list_ordre = 'date';
-    $list_sens = 'asc';
-    $list_associatif = false;
-    $list_filtre = false;
-*/	
-  //  $smarty->assign('inscriptions', $forum_inscriptions->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
-
-	$journal = $compta->obtenirJournal();
+	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
+	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
+	
+	$journal = $compta->obtenirJournal('',$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
 
 
 //    $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
 elseif ($action == 'debit') {
-	$journal = $compta->obtenirJournal(1);
+	$journal = $compta->obtenirJournal(1,$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
 }
 elseif ($action == 'credit') {
-	$journal = $compta->obtenirJournal(2);
+	$journal = $compta->obtenirJournal(2,$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
 	
 } elseif ($action == 'ajouter' || $action == 'modifier') {
