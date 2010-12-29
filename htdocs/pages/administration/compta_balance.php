@@ -12,8 +12,6 @@ if (isset($_GET['details']) && $_GET['details'])
 else
 	$details ="";
 
-	
-//$compte=$_GET['compte'];
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
 $compta = new AFUP_Compta($bdd);
