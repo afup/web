@@ -1,0 +1,39 @@
+{if $action == 'lister' }
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_evenement&amp;action=ajouter" title="ajouter un evenement">Ajouter un evenement</a><br />
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_categorie" title="Liste des catégories">Liste des catégories</a><br />
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_operation" title="Liste des opérations">Liste des opérations</a><br />
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_reglement" title="Liste des modes de réglements">Liste des modes de réglements</a><br />
+<br>
+
+    <h2>Liste des modes de reglement </h2>
+ 
+    <br/>
+    <table>
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+           <th><a href="index.php?page=compta_conf_evenement&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'evenement'}desc{else}asc{/if}">Mode reglement</a></th>
+            <th>&nbsp;</th>
+       </tr>
+    {foreach from=$journal item=ecriture}
+         <tr class="{cycle values="odd,even"}">
+            <td>{$ecriture.reglement}</td>
+            <td style="text-align: right">
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+               </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+     </table>
+
+
+{else}	
+    {if $action == 'ajouter'}
+        <h2>Ajouter une écriture (facture)</h2>
+    {else}
+        <h2>Modifier une écriture (facture)</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
