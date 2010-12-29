@@ -21,7 +21,7 @@
         <tr>
             <!-- th width="20px">&nbsp;</th -->
 
-			<th>Date ecriture</th>
+			<th>Date</th>
 			<th>Operation</th>
 			<th>Description</th>
             <th>Dépense</th>
@@ -31,7 +31,7 @@
     {foreach from=$journal item=ecriture}
         <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
+            <td>{$ecriture.date_regl|date_format:"%d/%m/%Y"}</td>
             <td>{$ecriture.reglement}</td>
              <td>{$ecriture.description}</td>
 		{if $ecriture.idoperation == 1} 
