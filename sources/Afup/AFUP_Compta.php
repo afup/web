@@ -42,7 +42,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
      
      
 		$requete  = 'SELECT ';
-		$requete .= 'compta.date_ecriture, compta.description, compta.montant, compta.idoperation, compta.date_regl, compta.id as idtmp, ';
+		$requete .= 'compta.date_regl, compta.description, compta.montant, compta.idoperation, compta.date_regl, compta.id as idtmp, ';
 		$requete .= 'compta_reglement.reglement ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta,  ';
@@ -175,16 +175,16 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		return $this->_bdd->obtenirTous($requete);
 	}
 	
-	function obtenirListOperations()
+	function obtenirListOperations($filtre='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, operation ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_operation  ';
 
-	/*	if ($filtre)	{
+		if ($filtre)	{
 			return $this->_bdd->obtenirTous($requete);					
-		} else {*/
+		} else {
 			$data=$this->_bdd->obtenirTous($requete);		
 			$result[]="";
 			foreach ($data as $row)
@@ -193,22 +193,22 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 			}
 			
 			return $result;
-//		}
+		}
     
 
 
 	}
 
-	function obtenirListCategories()
+	function obtenirListCategories($filtre='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, idevenement, categorie ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_categorie  ';
 
-	/*	if ($filtre)	{
+		if ($filtre)	{
 			return $this->_bdd->obtenirTous($requete);					
-		} else {	*/	
+		} else {		
 			$data=$this->_bdd->obtenirTous($requete);		
 			$result[]="";
 			foreach ($data as $row)
@@ -217,7 +217,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 			}
 			
 			return $result;
-	//	}
+		}
 		
 	}
 
@@ -244,16 +244,16 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		}
 	}
 	
-	function obtenirListReglements()
+	function obtenirListReglements($filtre='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, reglement ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_reglement  ';
 
-	/*	if ($filtre)	{
+		if ($filtre)	{
 			return $this->_bdd->obtenirTous($requete);					
-		} else {		*/
+		} else {		
 			$data=$this->_bdd->obtenirTous($requete);		
 			$result[]="";
 			foreach ($data as $row)
@@ -262,7 +262,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 			}
 			
 			return $result;				
-	//*	}
+		}
 	}
 
 	function ajouter($idoperation,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
