@@ -183,7 +183,7 @@ $pages = array(
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
                 'module' => 1,
             ),
-		    'compta_config' => array(
+		    'compta_conf_evenement' => array(
 		        'nom' => 'Configuration',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
                 'module' => 1,
