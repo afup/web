@@ -5,20 +5,20 @@
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_reglement" title="Liste des modes de réglements">Liste des modes de réglements</a><br />
 <br>
 
-    <h2>Liste des evenements </h2>
+    <h2>Liste des evenements en mémoire </h2>
  
     <br/>
     <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
-           <th><a href="index.php?page=compta_conf_evenement&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'evenement'}desc{else}asc{/if}">Evenement</a></th>
+           <th>Evenement</th>
             <th>&nbsp;</th>
        </tr>
-    {foreach from=$journal item=ecriture}
+    {foreach from=$data item=ecriture}
          <tr class="{cycle values="odd,even"}">
             <td>{$ecriture.evenement}</td>
             <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_conf_evenement&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                </td>
         </tr>
     {foreachelse}
@@ -31,9 +31,9 @@
 
 {else}	
     {if $action == 'ajouter'}
-        <h2>Ajouter une écriture (facture)</h2>
+        <h2>Ajouter une ligne configuration 'Evenement'</h2>
     {else}
-        <h2>Modifier une écriture (facture)</h2>
+        <h2>Modifier une ligne configuration 'Evenement'</h2>
     {/if}
     {include file="formulaire.html"}
 {/if}
