@@ -175,14 +175,20 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		return $this->_bdd->obtenirTous($requete);
 	}
 	
-	function obtenirListOperations($filtre='')
+	function obtenirListOperations($filtre='',$where='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, operation ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_operation  ';
+        if ($where)		$requete .= 'WHERE id=' . $where. ' ';		
+		
+        $requete .= 'ORDER BY ';
+		$requete .= 'operation ';
 
-		if ($filtre)	{
+		if ($where) {
+		        return $this->_bdd->obtenirEnregistrement($requete);
+		}elseif ($filtre)	{
 			return $this->_bdd->obtenirTous($requete);					
 		} else {
 			$data=$this->_bdd->obtenirTous($requete);		
@@ -194,19 +200,22 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 			
 			return $result;
 		}
-    
-
-
 	}
 
-	function obtenirListCategories($filtre='')
+	function obtenirListCategories($filtre='',$where='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, idevenement, categorie ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_categorie  ';
+        if ($where)		$requete .= 'WHERE id=' . $where. ' ';		
+		
+        $requete .= 'ORDER BY ';
+		$requete .= 'categorie ';
 
-		if ($filtre)	{
+		if ($where) {
+		        return $this->_bdd->obtenirEnregistrement($requete);
+		}elseif ($filtre)	{
 			return $this->_bdd->obtenirTous($requete);					
 		} else {		
 			$data=$this->_bdd->obtenirTous($requete);		
@@ -248,14 +257,20 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		}
 	}
 	
-	function obtenirListReglements($filtre='')
+	function obtenirListReglements($filtre='',$where='')
 	{
 		$requete  = 'SELECT ';
 		$requete .= 'id, reglement ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta_reglement  ';
+        if ($where)		$requete .= 'WHERE id=' . $where. ' ';		
 
-		if ($filtre)	{
+        $requete .= 'ORDER BY ';
+		$requete .= 'reglement ';
+
+		if ($where) {
+		        return $this->_bdd->obtenirEnregistrement($requete);
+		}elseif ($filtre)	{
 			return $this->_bdd->obtenirTous($requete);					
 		} else {		
 			$data=$this->_bdd->obtenirTous($requete);		
@@ -318,28 +333,27 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		return $this->_bdd->executer($requete);
 	}
 
-	function ajouterConfEvenement($evenement)
+	function ajouterConfig($table,$champ,$valeur)
 	{
-	
 		$requete = 'INSERT INTO ';
-		$requete .= 'compta_evenement (';
-		$requete .= 'evenement) ';
+		$requete .= ''.$table.' (';
+		$requete .= ''.$champ.') ';
 		$requete .= 'VALUES (';
-		$requete .= $this->_bdd->echapper($evenement) . ' ';
+		$requete .= $this->_bdd->echapper($valeur) . ' ';
 		$requete .= ');';
 
 		return $this->_bdd->executer($requete);
 	}
 	
-	function modifierConfEvenement($id,$evenement)
+	function modifierConfig($table,$id,$champ,$valeur)
 	{
 	
 		$requete = 'UPDATE ';
-		$requete .= ' compta_evenement ';
+		$requete .= ''.$table.' ';
 		$requete .= 'SET ';
-		$requete .= 'evenement='.$this->_bdd->echapper($evenement) . ' ';
+		$requete .= ''.$champ.' = '.$this->_bdd->echapper($valeur) . ' ';
 		$requete .= 'WHERE ';
-		$requete .= 'id=' . $id. ' ';
+		$requete .= 'id = ' . $id. ' ';
 
 		return $this->_bdd->executer($requete);
 	}
