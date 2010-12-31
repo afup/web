@@ -1,8 +1,6 @@
 <?php
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier'));
-//$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
-//$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
@@ -20,7 +18,7 @@ if ($action == 'lister') {
 	
    if ($action == 'modifier')
    {
-        $champsRecup = $compta->obtenirListEvenements(true,$_GET['id']);
+        $champsRecup = $compta->obtenirListEvenements('',$_GET['id']);
         $champs['evenement']          = $champsRecup['evenement'];
 
 		$formulaire->setDefaults($champs);
@@ -28,7 +26,7 @@ if ($action == 'lister') {
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
    }
    
-// facture associé à un évènement
+// partie saisie
    $formulaire->addElement('header'  , ''                         , '');
 	$formulaire->addElement('text', 'evenement', 'Nom Evenement' , array('size' => 30, 'maxlength' => 40));
     
@@ -43,14 +41,17 @@ if ($action == 'lister') {
 
        
     	if ($action == 'ajouter') {
-   			$ok = $compta->ajouterConfEvenement(
+   			$ok = $compta->ajouterConfig(
+   									'compta_evenement',
+   									'evenement',
             						$valeur['evenement']
             						);
         } else {
-   			$ok = $compta->modifierConfEvenement(
+   			$ok = $compta->modifierConfig(
+   									'compta_evenement',
            							$valeur['id'],
-   			           				$valeur['evenement']
-           						
+           							'evenement',
+   			           				$valeur['evenement']          						
              						);
         }
 

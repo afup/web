@@ -1,8 +1,10 @@
 {if $action == 'lister' }
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_evenement&amp;action=ajouter" title="ajouter un evenement">Ajouter un evenement</a><br />
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_categorie" title="Liste des evenements">Liste des evenements</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_categorie" title="Liste des catégories">Liste des catégories</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_operation" title="Liste des opérations">Liste des opérations</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_reglement" title="Liste des modes de réglements">Liste des modes de réglements</a><br />
+<br>
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_categorie&amp;action=ajouter" title="ajouter une catagorie">Ajouter une catégorie</a><br />
 <br>
 
     <h2>Liste des categories </h2>
@@ -11,14 +13,14 @@
     <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
-           <th><a href="index.php?page=compta_conf_categorie&amp;tri=categorie&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'categorie'}desc{else}asc{/if}">Categorie</a></th>
+           <th>Categorie</th>
             <th>&nbsp;</th>
        </tr>
-    {foreach from=$journal item=ecriture}
+    {foreach from=$data item=ecriture}
          <tr class="{cycle values="odd,even"}">
             <td>{$ecriture.categorie}</td>
             <td style="text-align: right">
-                <a href="index.php?page=compta_categorie&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_conf_categorie&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                </td>
         </tr>
     {foreachelse}
@@ -31,9 +33,9 @@
 
 {else}	
     {if $action == 'ajouter'}
-        <h2>Ajouter une écriture (facture)</h2>
+        <h2>Ajouter une categorie</h2>
     {else}
-        <h2>Modifier une écriture (facture)</h2>
+        <h2>Modifier une categorie</h2>
     {/if}
     {include file="formulaire.html"}
 {/if}
