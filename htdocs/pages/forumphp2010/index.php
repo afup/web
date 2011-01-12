@@ -32,6 +32,14 @@ $smarty->assign('infos_importantes', $infos_importantes);
 
 $actualites = array();
 
+$actualite['titre'] = "Le Forum PHP 2010, filmé à un rythme d'enfer";
+$actualite['contenu'] = "<p>Le journaliste Ludovic Tichit a couvert l'actualité du Libre tout le mois de novembre 2010 pour le magazine DSIsionnel. Vidéo décalée et décoiffante, avec l'elephpant et Rasmus Lerdorf en guest stars! C'est par ici: 
+<br /><br />
+<a href='http://www.dsisionnel.com/Article,42,Paris,-novembre-2010-:-l'Open-Source-dans-tous-ses-etats.html'>http://www.dsisionnel.com/Article,42,Paris,-novembre-2010-:-l'Open-Source-dans-tous-ses-etats.html</a> (PNG - 206 Ko).</p><br />";
+$actualite['date'] = "7 janvier 2011";
+$actualites[] = $actualite;
+
+
 $actualite['titre'] = "Résultat mots-melés";
 $actualite['contenu'] = "<p>Participants au Forum PHP, les 71 réponses de la grille de mots mêlés!
 A vous qui vous vous usez encore les yeux sur les mots mêlés diffusés par
