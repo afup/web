@@ -90,7 +90,7 @@ elseif ($action == 'credit') {
    $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 
                                                                             'format'   => 'd F Y',
-   																			'minYear' => date('Y'), 
+   																			'minYear' => date('Y')-1, 
    																			'maxYear' => date('Y')+1));
    $formulaire->addElement('textarea', 'obs_regl'           , 'Observation', array('cols' => 42, 'rows' => 5));
    
