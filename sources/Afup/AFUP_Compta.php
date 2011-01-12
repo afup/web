@@ -146,18 +146,43 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		{
 			return $id_periode;
 		}
-
+	
 		// Sinon definir la periode en cours
 		$date_debut=$this->periodeDebutFin ('debut');
 		$date_fin=$this->periodeDebutFin ('fin');
 		$result=$this->obtenirListPeriode($date_debut,$date_fin);
 
-		return $result[0]['id'];		
+		if ($result)
+		{
+			return $result[0]['id'];			
+		} 
+		else				// ajout d'une nouvelle periode 
+		{
+			$result=$this->ajouterListPeriode();
+			return $result[0]['id'];			
+		}
+	}
 
-		// prevoir ajout période automatique
+	function ajouterListPeriode()
+	{
+	
+		$date_debut=DATE ("Y").'-01-01';
+		$date_fin=DATE ("Y").'-12-31';
+		
+		$requete = 'INSERT INTO ';
+		$requete .= 'compta_periode (';
+		$requete .= 'date_debut,date_fin,verouiller) ';
+		$requete .= 'VALUES (';
+		$requete .= $this->_bdd->echapper($date_debut) . ',';
+		$requete .= $this->_bdd->echapper($date_fin) . ',';
+		$requete .= $this->_bdd->echapper(0) . ' ';
+		$requete .= ');';
+
+		$this->_bdd->executer($requete);
+		return $this->obtenirListPeriode($date_debut,$date_fin);
 		
 	}
-    
+	
     function obtenirListPeriode($date_debut='',$date_fin='')
 	{
 		$requete  = 'SELECT ';
