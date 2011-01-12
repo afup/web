@@ -10,8 +10,8 @@
     <form method="GET" name="forum">
       <input type="hidden" name="page" value="compta_journal" />
      <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
-     {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $smarty.get.id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+    {foreach from=$listPeriode item=periode}
+    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
     {/foreach}
     </select></h2>
     </form>
