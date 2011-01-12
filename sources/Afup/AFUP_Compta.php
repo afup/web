@@ -541,7 +541,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= ' AND compta.idevenement = \''.$evenement.'\' ';
 		$requete .= 'ORDER BY  ';
 		$requete .= ' compta_categorie.categorie ';
-echo $requete."<br>";
+
 		return $this->_bdd->obtenirTous($requete);
       } 
    
