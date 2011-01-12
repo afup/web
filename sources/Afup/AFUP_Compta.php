@@ -528,7 +528,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
      	$requete  = 'SELECT ';
      	$requete .= ' IF( compta.idoperation =1, compta.montant, "" )  AS debit, ';
      	$requete .= ' IF( compta.idoperation =2, compta.montant, "" )  AS credit, ';
-     	$requete .= 'compta.description, ';
+     	$requete .= 'compta.description, compta.id as idtmp, ';
      	$requete .= ' compta.date_ecriture,compta.montant,compta.idoperation, compta.idevenement, ';
 		$requete .= ' compta_categorie.id,compta_categorie.categorie ';
 		$requete .= 'FROM  ';
@@ -541,7 +541,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= ' AND compta.idevenement = \''.$evenement.'\' ';
 		$requete .= 'ORDER BY  ';
 		$requete .= ' compta_categorie.categorie ';
-
+echo $requete."<br>";
 		return $this->_bdd->obtenirTous($requete);
       } 
    
