@@ -35,7 +35,9 @@ $actualites = array();
 $actualite['titre'] = "Le Forum PHP 2010, filmé à un rythme d'enfer";
 $actualite['contenu'] = "<p>Le journaliste Ludovic Tichit a couvert l'actualité du Libre tout le mois de novembre 2010 pour le magazine DSIsionnel. Vidéo décalée et décoiffante, avec l'elephpant et Rasmus Lerdorf en guest stars! C'est par ici: 
 <br /><br />
-http://www.dsisionnel.com/Article,42,Paris,-novembre-2010-:-l'Open-Source-dans-tous-ses-etats.html</p><br />";
+
+<a href='http://www.dsisionnel.com/Article,42,Paris,-novembre-2010-:-l%27Open-Source-dans-tous-ses-etats.html'>http://www.dsisionnel.com/Article,42,Paris,-novembre-2010-:-l'Open-Source-dans-tous-ses-etats.html</a></p><br />";
+
 $actualite['date'] = "28 décembre 2010";
 $actualites[] = $actualite;
 
