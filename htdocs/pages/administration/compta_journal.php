@@ -76,7 +76,7 @@ elseif ($action == 'credit') {
 //$mois=10;
    $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y'), 
+  																				'minYear' => date('Y')-1, 
   																				'maxYear' => date('Y')+1));
   
   $formulaire->addElement('select'  , 'idcategorie', 'Type de compte *', $compta->obtenirListCategories());
