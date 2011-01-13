@@ -13,12 +13,10 @@ if (isset($_GET['id_periode']) && $_GET['id_periode'])
 	$id_periode=$_GET['id_periode'];
 else
 	$id_periode="";
-echo "*".$id_periode."<br>";	 
+
 $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
-echo "<pre>";
-print_r($id_periode);
-echo "</pre>";
+
 $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode );
 

@@ -34,6 +34,9 @@ if ($action == 'lister') {
 	$journal = $compta->obtenirJournalBanque($compte,$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
 
+	$sousTotal = $compta->obtenirSousTotalJournalBanque($compte,$periode_debut,$periode_fin);
+	$smarty->assign('sousTotal', $sousTotal);
+	
 	$totalDepense = $compta->obtenirTotalJournalBanque(1,$compte,$periode_debut,$periode_fin);
 	$smarty->assign('totalDepense', $totalDepense);
 	
