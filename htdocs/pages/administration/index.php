@@ -37,8 +37,9 @@ if ($_GET['page'] == 'se_deconnecter') {
 }
 
 if (!empty($_GET['hash'])) {
-    $droits->seDeconnecter();
+	$droits->seDeconnecter();
     $droits->seConnecterEnAutomatique($_GET['hash']);
+    $_GET['page'] = 'accueil';
 }
 
 if (!$droits->estConnecte() and $_GET['page'] != 'connexion' and $_GET['page'] != 'mot_de_passe_perdu' and
@@ -62,11 +63,12 @@ $smarty->assign('titre_page', obtenirTitre($pages, $_GET['page']));
 $smarty->assign('web_path', $conf->obtenir('web|path'));
 $smarty->assign('pages', $droits->dechargerToutesLesPages());
 
-if ($_GET['page']=='index' or !file_exists(AFUP_CHEMIN_RACINE . 'pages/administration/' . $_GET['page'] . '.php')) {
+if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__).'/' . $_GET['page'] . '.php')) {
 	$_GET['page'] = 'accueil';
 }
 
-require_once AFUP_CHEMIN_RACINE . 'pages/administration/' . $_GET['page'] . '.php';
+
+require_once dirname(__FILE__).'/'.$_GET['page'] . '.php';
 // Affichage de la page
 $smarty->display('entete.html');
 $smarty->display($_GET['page'] . '.html');
