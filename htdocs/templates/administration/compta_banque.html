@@ -41,11 +41,20 @@
 			<td> </td> 
 			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td> 
 		{/if}
-            <td style="text-align: right">
-
+            <td style="text-align: right"> 
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                </td>
         </tr>
+    {foreach from=$sousTotal item=txt}
+		{if $ecriture.mois == $txt.mois} 
+    <tr>
+	<td colspan='3' align='right'>sous Total</td>
+	<td align='center'><b>{$txt.debit|number_format:2:',':' '}</b></td>
+	<td align='center'><b>{$txt.credit|number_format:2:',':' '}</b></td>
+	<td>{($txt.dif)|number_format:2:',':' '}</td>
+	</tr>
+		{/if} 
+    {/foreach}
         
     {foreachelse}
         <tr>
