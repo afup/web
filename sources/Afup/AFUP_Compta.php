@@ -92,7 +92,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'mois ';
 		$requete .= 'ORDER BY ';
 		$requete .= 'mois ';
-echo $requete;    
+//echo $requete;    
 //exit;
 	/*	$total=0;
 		foreach ($requete as $id=>$row)
