@@ -41,32 +41,37 @@
 			<td> </td> 
 			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td> 
 		{/if}
+
             <td style="text-align: right"> 
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                </td>
         </tr>
     {foreach from=$sousTotal item=txt}
-		{if $ecriture.mois == $txt.mois} 
+		{if $ecriture.mois == $txt.mois &&  $compteurLigne==$txt.nligne} 
     <tr>
-	<td colspan='3' align='right'>sous Total</td>
+	<td colspan='3' align='right'> sous Total</td>
 	<td align='center'><b>{$txt.debit|number_format:2:',':' '}</b></td>
 	<td align='center'><b>{$txt.credit|number_format:2:',':' '}</b></td>
-	<td>{($txt.dif)|number_format:2:',':' '}</td>
+	<td><b>{$txt.dif|number_format:2:',':' '}</b></td>
 	</tr>
 		{/if} 
     {/foreach}
-        
+
+ 	{$compteurLigne++}
+ 	
+    
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
         </tr>
     {/foreach}
+
     <tr>
 	<td colspan='3' align='right'>Total</td>
-	<td align='center'>{$totalDepense|number_format:2:',':' '}</td>
-	<td align='center'>{$totalRecette|number_format:2:',':' '}</td>
+	<td align='center'>{$total.debit|number_format:2:',':' '}</td>
+	<td align='center'>{$total.credit|number_format:2:',':' '}</td>
 	</tr>
-	<tr><td colspan='3' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</tr>
+	<tr><td colspan='3' align='right'>Solde</td><td colspan='2'  align='center'>{$total.dif}</tr>
     </table>
 {else}
 {/if}
