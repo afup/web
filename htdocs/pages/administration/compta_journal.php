@@ -20,17 +20,13 @@ $smarty->assign('id_periode', $id_periode);
 $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode );
 
-	
-if ($action == 'lister') {
 
 	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
 	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 	
+if ($action == 'lister') {
 	$journal = $compta->obtenirJournal('',$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
-
-
-//    $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
 elseif ($action == 'debit') {
 	$journal = $compta->obtenirJournal(1,$periode_debut,$periode_fin);

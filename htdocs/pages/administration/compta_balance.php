@@ -45,8 +45,11 @@ if ($action == 'lister') {
 
 	if ($details!='')
 	{
-		$details = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
-		$smarty->assign('details', $details);
+		$dataDetails = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
+		$smarty->assign('dataDetails', $dataDetails);
+
+		$sousTotal = $compta->obtenirSousTotalBalance($details,$periode_debut,$periode_fin);
+		$smarty->assign('sousTotal', $sousTotal);		
 	}
 
 }
