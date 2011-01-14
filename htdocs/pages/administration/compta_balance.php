@@ -30,6 +30,8 @@ $smarty->assign('listPeriode', $listPeriode );
 if ($action == 'lister') {
 	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
 	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
+
+	$smarty->assign('compteurLigne',1);
 	
 	$balance = $compta->obtenirBalance('',$periode_debut,$periode_fin);
 	$smarty->assign('balance', $balance);

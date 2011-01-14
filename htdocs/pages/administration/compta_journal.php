@@ -64,7 +64,7 @@ elseif ($action == 'credit') {
 // facture associé à un évènement
    $formulaire->addElement('header'  , ''                         , 'Sélectionner un Journal');
    $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération *', $compta->obtenirListOperations());
-   $formulaire->addElement('select'  , 'idevenement', 'Evenement *', $compta->obtenirListEvenements());
+   $formulaire->addElement('select'  , 'idevenement', 'Evenement', $compta->obtenirListEvenements());
 
 //detail facture       
    $formulaire->addElement('header'  , ''                         , 'Détail Facture');
@@ -95,7 +95,12 @@ elseif ($action == 'credit') {
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
 
-   
+// ajoute des regles
+	$formulaire->addRule('idoperation'                 , 'Type d\'opération manquant'          , 'required');
+	$formulaire->addRule('idevenement'                 , 'Evenement manquant'          , 'required');
+	$formulaire->addRule('idcategorie'                 , 'Type de compte manquant'          , 'required');
+	$formulaire->addRule('montant'                 , 'Montant manquant'          , 'required');
+	
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
 
