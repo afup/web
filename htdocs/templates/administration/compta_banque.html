@@ -49,10 +49,10 @@
     {foreach from=$sousTotal item=txt}
 		{if $ecriture.mois == $txt.mois &&  $compteurLigne==$txt.nligne} 
     <tr>
-	<td colspan='3' align='right'> sous Total</td>
-	<td align='center'><b>{$txt.debit|number_format:2:',':' '}</b></td>
-	<td align='center'><b>{$txt.credit|number_format:2:',':' '}</b></td>
-	<td><b>{$txt.dif|number_format:2:',':' '}</b></td>
+	<td colspan='3' align='right'><b><i>Sous Total</i></b></td>
+	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
+	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
+	<td><b><i>{$txt.dif|number_format:2:',':' '}</i></b></td>
 	</tr>
 		{/if} 
     {/foreach}
