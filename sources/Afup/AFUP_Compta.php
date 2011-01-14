@@ -627,31 +627,36 @@ echo "</pre>";*/
     {    
 //	    	echo $evenement."*".$periode_debut."*".$periode_fin;
 	    $data=$this->obtenirBalanceDetails($evenement,$periode_debut,$periode_fin);	
-	
-    for ($i=1;$i<=30;$i++)
+
+for ($i=1;$i<=30;$i++)
 {
 	$credit[$i]='';
 	$debit[$i]='';
+	$nligne[$i]=0;
 
 }
 		foreach ($data as $id=>$row)
 		{
 			if ($row['idoperation']=="1")		$debit[$row['id']] += $row['montant'];
 			if ($row['idoperation']=="2")		$credit[$row['id']] += $row['montant'];
+			if ($row['idoperation']=="1" || $row['idoperation']=="2") $nligne[$row['id']]++;
 			
 		}
 
+
+
 for ($i=1;$i<=30;$i++)
 {
-if ($debit[$i] || $credit[$i])
-{
-	$tableau[$i] = array("idevenement"=>$i,
-						"debit"=>$debit[$i],
-						"credit"=>$credit[$i]
+	if ($debit[$i] || $credit[$i])
+	{
+		$tableau[$i] = array("idevenement"=>$i,
+							"debit"=>$debit[$i],
+							"credit"=>$credit[$i],
+							"nligne"=>$nligne[$i]
 						);
+	}		
 }		
-}		
-		
+
 		return $tableau;
     }
       
