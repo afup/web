@@ -30,13 +30,18 @@ if ($action == 'lister') {
 	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
 	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 	
+	$smarty->assign('compteurLigne',1);
 	
 	$journal = $compta->obtenirJournalBanque($compte,$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
 
 	$sousTotal = $compta->obtenirSousTotalJournalBanque($compte,$periode_debut,$periode_fin);
 	$smarty->assign('sousTotal', $sousTotal);
+
+	$total = $compta->obtenirTotalJournalBanque($compte,$periode_debut,$periode_fin);
+	$smarty->assign('total', $total);
 	
+/*
 	$totalDepense = $compta->obtenirTotalJournalBanque(1,$compte,$periode_debut,$periode_fin);
 	$smarty->assign('totalDepense', $totalDepense);
 	
@@ -45,6 +50,7 @@ if ($action == 'lister') {
 	
 	$difMontant = $totalRecette - $totalDepense ;
 	$smarty->assign('difMontant', $difMontant);
+	*/
 }
 
 ?>
