@@ -63,7 +63,7 @@ elseif ($action == 'credit') {
    
 // facture associé à un évènement
    $formulaire->addElement('header'  , ''                         , 'Sélectionner un Journal');
-   $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération *', $compta->obtenirListOperations());
+   $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération', $compta->obtenirListOperations());
    $formulaire->addElement('select'  , 'idevenement', 'Evenement', $compta->obtenirListEvenements());
 
 //detail facture       
@@ -75,11 +75,11 @@ elseif ($action == 'credit') {
   																				'minYear' => date('Y')-1, 
   																				'maxYear' => date('Y')+1));
   
-  $formulaire->addElement('select'  , 'idcategorie', 'Type de compte *', $compta->obtenirListCategories());
+  $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
   $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , array('size' => 30, 'maxlength' => 40));
    	$formulaire->addElement('text', 'numero', 'Numero facture' , array('size' => 30, 'maxlength' => 40));
    	$formulaire->addElement('textarea', 'description', 'Description', array('cols' => 42, 'rows' => 5));
-	$formulaire->addElement('text', 'montant', 'Montant *' , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text', 'montant', 'Montant' , array('size' => 30, 'maxlength' => 40));
 
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
@@ -96,10 +96,10 @@ elseif ($action == 'credit') {
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
 
 // ajoute des regles
-	$formulaire->addRule('idoperation'                 , 'Type d\'opération manquant'          , 'required');
-	$formulaire->addRule('idevenement'                 , 'Evenement manquant'          , 'required');
-	$formulaire->addRule('idcategorie'                 , 'Type de compte manquant'          , 'required');
-	$formulaire->addRule('montant'                 , 'Montant manquant'          , 'required');
+	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required');
+	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required');
+	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required');
+	$formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
 	
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
@@ -149,6 +149,8 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
         }
     }
+
+       
     $smarty->assign('formulaire', genererFormulaire($formulaire));   
 }
 
