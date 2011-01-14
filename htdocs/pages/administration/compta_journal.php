@@ -1,8 +1,8 @@
 <?php
 
 $action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier'));
-$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
-$sens_valides = array('asc', 'desc');
+//$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
+//$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
