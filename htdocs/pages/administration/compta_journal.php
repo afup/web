@@ -98,12 +98,12 @@ elseif ($action == 'credit') {
 // ajoute des regles
 	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required','/^\d+$/');
 	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required','/^\d+$/');
-	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required','/^\d+$/');
+	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required','0');
 	$formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
 	
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
-print_r($valeur);
+
 $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".$valeur['date_saisie']['d'] ;
 $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-".$valeur['date_reglement']['d'] ;
        
