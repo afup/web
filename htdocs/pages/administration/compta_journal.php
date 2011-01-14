@@ -96,9 +96,9 @@ elseif ($action == 'credit') {
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
 
 // ajoute des regles
-	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required');
-	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required');
-	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required');
+	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required',0);
+	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required',0);
+	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required',0);
 	$formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
 	
     if ($formulaire->validate()) {
