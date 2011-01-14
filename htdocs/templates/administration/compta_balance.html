@@ -16,9 +16,9 @@
         <tr>
             <!-- th width="20px">&nbsp;</th -->
             <th>Evenement</th>
-            <th>&nbsp;</th>
             <th>Dépense</th>
             <th>Recette</th>
+            <th>&nbsp;</th>
        </tr>
 
       
@@ -61,9 +61,10 @@
     {foreach from=$sousTotal item=txt}
 		{if $detail.id == $txt.idevenement && $compteurLigne == $txt.nligne } 
     <tr>
-	<td colspan='3' align='right'><b><i> Sous Total</i></b></td>
+	<td colspan='2' align='right'><b><i> Sous Total</i></b></td>
 	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
 	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
+	<td></td>
 	</tr>
 	 	{assign var=compteurLigne value=0}	
 		{/if} 
