@@ -61,7 +61,7 @@
     {foreach from=$sousTotal item=txt}
 		{if $detail.id == $txt.idevenement && $compteurLigne == $txt.nligne } 
     <tr>
-	<td colspan='2' align='right'><b><i> Sous Total</i></b></td>
+	<td colspan='3' align='right'><b><i> Sous Total</i></b></td>
 	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
 	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
 	<td></td>
@@ -91,11 +91,12 @@
         </tr>
     {/foreach}
     <tr>
-	<td colspan='2' align='right'>Total</td>
+	<td align='right'>Total</td>
 	<td align='center'>{$totalDepense|number_format:2:',':' '}</td>
 	<td align='center'>{$totalRecette|number_format:2:',':' '}</td>
-	</tr>
-	<tr><td colspan='2' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</tr>
+	<td></td></tr>
+	<tr><td colspan='2' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</td>
+	<td></td></tr>
     </table>
 {else}
 {/if}
