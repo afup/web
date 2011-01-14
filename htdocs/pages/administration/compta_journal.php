@@ -97,8 +97,8 @@ elseif ($action == 'credit') {
 
 // ajoute des regles
 	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required','/^\d+$/');
-	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required','/^\d+$/');
-	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required','0');
+	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required',null,'idevenement');
+	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required',null);
 	$formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
 	
     if ($formulaire->validate()) {
