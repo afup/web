@@ -20,6 +20,7 @@
             <th>Dépense</th>
             <th>Recette</th>
        </tr>
+
       
     {foreach from=$balance item=ecriture}
         <tr class="{cycle values="odd,even"}">
@@ -43,8 +44,8 @@
             <th>Recette</th>
             <th>&nbsp;</th>
        </tr>
-
-    {foreach from=$dataDetails item=detail}
+	{assign var=compteurLigne value=1}
+	    {foreach from=$dataDetails item=detail}
         <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
@@ -57,14 +58,20 @@
             </td>
         </tr>
     {foreach from=$sousTotal item=txt}
-		{if $detail.id == $txt.idevenement} 
+		{if $detail.id == $txt.idevenement && $compteurLigne == $txt.nligne } 
     <tr>
 	<td colspan='3' align='right'><b><i> Sous Total</i></b></td>
 	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
 	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
 	</tr>
+	 	{assign var=compteurLigne value=0}	
 		{/if} 
     {/foreach}
+    
+ 	{assign var=compteurLigne value=$compteurLigne+1}		
+	
+    
+    
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>

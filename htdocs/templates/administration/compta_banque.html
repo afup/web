@@ -28,6 +28,7 @@
             <th>Recette</th>
             <th>&nbsp;</th>
        </tr>
+	{assign var=compteurLigne value=1}
     {foreach from=$journal item=ecriture}
         <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
@@ -46,18 +47,23 @@
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                </td>
         </tr>
-    {foreach from=$sousTotal item=txt}
-		{if $ecriture.mois == $txt.mois &&  $compteurLigne==$txt.nligne} 
+    {foreach from=$sousTotal item=txt} 
+
+		{if $ecriture.mois == $txt.mois && $compteurLigne == $txt.nligne  } 
     <tr>
 	<td colspan='3' align='right'><b><i>Sous Total</i></b></td>
 	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
 	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
 	<td><b><i>{$txt.dif|number_format:2:',':' '}</i></b></td>
 	</tr>
+ 	{assign var=compteurLigne value=0}		
 		{/if} 
+		
+ 		
     {/foreach}
 
- 	{$compteurLigne++}
+ 	{assign var=compteurLigne value=$compteurLigne+1}		
+	
  	
     
     {foreachelse}
