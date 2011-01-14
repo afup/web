@@ -27,7 +27,8 @@
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$ecriture.evenement}</td>
             <td> 
-             <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_link.png" alt="raccourci" /></a>
+             <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_raccourci.png" alt="raccourci" /></a>
+             <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_raccourci_double.png" alt="raccourci" /></a>
             </td>
              <td align='right' width='100'>{$ecriture.debit|number_format:2:',':' '}</td>
              <td align='right' width='100'>{$ecriture.credit|number_format:2:',':' '}</td>
