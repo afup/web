@@ -58,60 +58,71 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirSousTotalJournalBanque($compte='courant',$periode_debut,$periode_fin) 
-    {    
- //    $data=$this->obtenirJournalBanque($compte,$periode_debut,$periode_fin);	
-     $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
-     $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
-     
-if ($compte=="courant") $typeJournal="  AND idevenement!='18' 
-					AND idmode_regl!='1' 
-					AND idmode_regl!='7' 
-					AND idmode_regl!='8' 
-				    ";
-if ($compte=="livreta") $typeJournal=" AND idevenement='18' ";
-if ($compte=="espece") $typeJournal=" AND idmode_regl='1' ";
-if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
    
-     
-		$requete  = 'SELECT ';
-   		$requete .= ' SUM(IF( compta.idoperation =1, compta.montant, 0 ))  AS debit, ';
-   		$requete .= ' SUM(IF( compta.idoperation =2, compta.montant, 0 ))  AS credit, ';
-	//	$requete .= ' ABS(credit-debit) as dif, ';
-   		$requete .= ' month(compta.date_regl) as mois ';
-		$requete .= 'FROM  ';
-		$requete .= 'compta  ';
-//		$requete .= 'compta_reglement  ';
-		$requete .= 'WHERE  ';
-		$requete .= 'compta.date_regl >= \''.$periode_debut.'\' '; 
-		$requete .= 'AND compta.date_regl <= \''.$periode_fin.'\'  ';
-		$requete .= 'AND compta.montant != \'0.00\' ';
-//		$requete .= 'AND compta.idmode_regl = compta_reglement.id ';
-		$requete .= $typeJournal;
-		$requete .= 'GROUP BY ';
-		$requete .= 'mois ';
-		$requete .= 'ORDER BY ';
-		$requete .= 'mois ';
-//echo $requete;    
-//exit;
-	/*	$total=0;
-		foreach ($requete as $id=>$row)
-		{
-			
-			if ($idoperation==$row['idoperation'])
-			$total += $row['montant'];
-		}
-*/
-//		return $total;
-		return $this->_bdd->obtenirTous($requete);
-    }
-  
-    function obtenirTotalJournalBanque($idoperation='1',$compte='courant',$periode_debut,$periode_fin) 
+    function obtenirSousTotalJournalBanque($compte='courant',$periode_debut,$periode_fin) 
     {    
     	
     $data=$this->obtenirJournalBanque($compte,$periode_debut,$periode_fin);	
- 
-		$total=0;
+
+for ($i=1;$i<=12;$i++)
+{
+	$credit[$i]='';
+	$debit[$i]='';
+	$nligne[$i]='';
+}
+    	foreach ($data as $id=>$row)
+		{
+			if ($row['idoperation']=="1")				$debit[$row['mois']] += $row['montant'];
+			if ($row['idoperation']=="2")				$credit[$row['mois']] += $row['montant'];
+			if ($row['idoperation']=="1" || $row['idoperation']=="2") $nligne[$row['mois']]++;
+		}
+
+$dif_old=0;
+for ($i=1;$i<=12;$i++)
+{
+	$dif=$dif_old+$credit[$i]-$debit[$i];
+	$tableau[$i] = array("mois"=>$i,
+						"debit"=>$debit[$i],
+						"credit"=>$credit[$i],
+						"dif"=>$dif,
+						"nligne"=>$nligne[$i]
+						);
+	$dif_old=$dif;
+}
+
+		return $tableau;
+    }
+    
+    function obtenirTotalJournalBanque($compte='courant',$periode_debut,$periode_fin) 
+    {    
+    	
+    $data=$this->obtenirJournalBanque($compte,$periode_debut,$periode_fin);	
+ /* echo "<pre>";
+print_r($data);
+echo "</pre>";*/
+	$credit=0;
+	$debit=0;
+
+    	foreach ($data as $id=>$row)
+		{
+			if ($row['idoperation']=="1")				$debit += $row['montant'];
+			if ($row['idoperation']=="2")				$credit += $row['montant'];
+		}
+//print_r($credit);
+//$dif_old=0;
+//for ($i=1;$i<=12;$i++)
+//{
+//	$dif=$dif_old+$credit[$i]-$debit[$i];
+	$tableau = array(
+						"debit"=>$debit,
+						"credit"=>$credit,
+						"dif"=>$credit-$debit
+						);
+//	$dif_old=$dif;
+//}
+
+		return $tableau;
+/*		$total=0;
 		foreach ($data as $id=>$row)
 		{
 			
@@ -120,6 +131,8 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		}
 
 		return $total;
+		*/
+		
     }
     
     /* Journal des opération
