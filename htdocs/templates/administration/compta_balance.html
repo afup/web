@@ -26,7 +26,7 @@
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$ecriture.evenement}</td>
             <td> 
-             <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_raccourci.png" alt="raccourci" /></a>
+             <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_link.png" alt="raccourci" /></a>
             </td>
              <td align='right' width='100'>{$ecriture.debit|number_format:2:',':' '}</td>
              <td align='right' width='100'>{$ecriture.credit|number_format:2:',':' '}</td>
@@ -44,7 +44,7 @@
             <th>&nbsp;</th>
        </tr>
 
-    {foreach from=$details item=detail}
+    {foreach from=$dataDetails item=detail}
         <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
@@ -53,10 +53,18 @@
 			<td align='right'>{$detail.debit|number_format:2:',':' '}</td> 
 			<td align='right'>{$detail.credit|number_format:2:',':' '}</td>
             <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_link.png" alt="Modifier" /></a> 
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a> 
             </td>
         </tr>
-
+    {foreach from=$sousTotal item=txt}
+		{if $detail.id == $txt.idevenement} 
+    <tr>
+	<td colspan='3' align='right'><b><i> Sous Total</i></b></td>
+	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
+	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
+	</tr>
+		{/if} 
+    {/foreach}
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
