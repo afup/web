@@ -103,7 +103,7 @@ elseif ($action == 'credit') {
 	
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
-
+print_r($valeur);
 $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".$valeur['date_saisie']['d'] ;
 $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-".$valeur['date_reglement']['d'] ;
        
