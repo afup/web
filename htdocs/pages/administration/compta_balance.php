@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'editer','raccourci'));
+$action = verifierAction(array('lister', 'editer','raccourci','view'));
 //$compte = verifierAction(array('espece','paypal','courant','livreta'));
 
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
@@ -27,11 +27,12 @@ $smarty->assign('id_periode', $id_periode);
 $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode );
 
-if ($action == 'lister') {
 	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
 	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 
 	$smarty->assign('compteurLigne',1);
+	
+if ($action == 'lister') {
 	
 	$balance = $compta->obtenirBalance('',$periode_debut,$periode_fin);
 	$smarty->assign('balance', $balance);
@@ -55,5 +56,17 @@ if ($action == 'lister') {
 	}
 
 }
+
+if ($action == 'view' && $details) {
+
+		$dataDetails = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
+		$smarty->assign('dataDetails', $dataDetails);
+
+		$sousTotal = $compta->obtenirSousTotalBalance($details,$periode_debut,$periode_fin);
+		$smarty->assign('sousTotal', $sousTotal);		
+		
+
+}		
+
 
 ?>
