@@ -27,32 +27,24 @@ $smarty->assign('id_periode', $id_periode);
 $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode );
 
-if ($action == 'lister') {
+if ($action == 'lister' && $details) {
 	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
 	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 
 	$smarty->assign('compteurLigne',1);
 	
-//	$balance = $compta->obtenirBalance('',$periode_debut,$periode_fin);
-/*	$smarty->assign('balance', $balance);
-	
-	$totalDepense = $compta->obtenirTotalBalance(1,$periode_debut,$periode_fin);
-	$smarty->assign('totalDepense', $totalDepense);
-	
-	$totalRecette = $compta->obtenirTotalBalance(2,$periode_debut,$periode_fin);
-	$smarty->assign('totalRecette', $totalRecette);
-	
-	$difMontant = $totalRecette - $totalDepense ;
-	$smarty->assign('difMontant', $difMontant);
-*/
-	if ($details!='')
-	{
+
+//	if ($details!='')
+///	{
 		$dataDetails = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
 		$smarty->assign('dataDetails', $dataDetails);
 
 		$sousTotal = $compta->obtenirSousTotalBalance($details,$periode_debut,$periode_fin);
 		$smarty->assign('sousTotal', $sousTotal);		
-	}
+		
+
+		
+//	}
 
 }
 
