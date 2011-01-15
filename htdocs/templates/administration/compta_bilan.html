@@ -27,9 +27,9 @@
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$debits.evenement}</td>
             <td>
+               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_raccourci.png" alt="Modifier" /></a> 
                <a href="index.php?page=compta_bilan&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_link.png" alt="Modifier" /></a> 
-               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_link.png" alt="Modifier" /></a> 
-               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_link.png" alt="Modifier" /></a> 
+               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_pdf.png" alt="Modifier" /></a> 
             </td>
              <td align='right' width='100'>{$debits.montant|number_format:2:',':' '}</td>
         </tr>

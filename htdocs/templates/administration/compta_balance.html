@@ -30,7 +30,7 @@
              <td align='right' width='100'>{$ecriture.credit|number_format:2:',':' '}</td>
             <td> 
              <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_raccourci.png" alt="raccourci" /></a>
-             <a href="index.php?page=compta_balance_view&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_link.png" alt="raccourci" /></a>
+             <a href="index.php?page=compta_balance_view&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_link.png" alt="Visualiser sur une autre page" /></a>
             </td>
         </tr>
 {if ($smarty.get.details==$ecriture.idevenement) }

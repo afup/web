@@ -1,6 +1,8 @@
 {if $action == 'lister'}
      <br/>
     <h2>Balance view</h2>
+<br>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_balance&amp;action=lister&id_periode={$smarty.get.id_periode}" title="retour balance">Retour balance</a><br />
 
     <br/>
 
@@ -13,6 +15,7 @@
             <th>Recette</th>
             <th>&nbsp;</th>
        </tr>
+       	{assign var=compteurLigne value=1}
 	    {foreach from=$dataDetails item=detail}
         <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
@@ -38,13 +41,19 @@
     {/foreach}
     
  	{assign var=compteurLigne value=$compteurLigne+1}		
-	
-    
+	   
     
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
         </tr>
     {/foreach}
-
+    <tr>
+	<td colspan='3' align='right'>Total</td>
+	<td align='center'>{$totalDepense|number_format:2:',':' '}</td>
+	<td align='center'>{$totalRecette|number_format:2:',':' '}</td>
+	<td></td></tr>
+	<tr><td colspan='3' align='right'>Solde</td><td colspan='2'  align='center'>{$difMontant}</td>
+	<td></td></tr>
 </table>
+{/if}
