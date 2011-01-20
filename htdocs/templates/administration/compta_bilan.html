@@ -1,4 +1,3 @@
-{if $action == 'lister'}
     <h2>Bilan</h2>
     <table>
     <form method="GET" name="evnt">
@@ -11,9 +10,13 @@
 
     </form>
     </table>
-    <br/>
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=espece&amp;action=lister" title="imprimer pdf">Imprimer PDF</a><br />
+   <br/>
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_bilan&amp;action=bilanpdf&amp;details={$debits.id}" title="imprimer pdf">Imprimer PDF</a><br />
+
 <br />
+
+{if $action == 'lister'}
+ 
     <table><tr><td align="center">Débit
     <table>
         <tr>
@@ -27,12 +30,46 @@
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$debits.evenement}</td>
             <td>
-               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_raccourci.png" alt="Modifier" /></a> 
-               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_link.png" alt="Modifier" /></a> 
-               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_pdf.png" alt="Modifier" /></a> 
+               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_raccourci.png" alt="details" /></a> 
+               <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_link.png" alt="details autre page" /></a> 
+               <a href="index.php?page=compta_bilan&amp;action=pdf&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_telecharger_facture.png" alt="PDF" /></a> 
             </td>
              <td align='right' width='100'>{$debits.montant|number_format:2:',':' '}</td>
         </tr>
+{if ($smarty.get.details==$debits.id) }
+	<tr class="{cycle values="odd,even"}">
+		<td colspan='2'>
+    <table>
+        <tr>
+            <th>Date ecriture</th>
+            <th>Descritpion</th>
+            <th>Montant</th>
+            <th>&nbsp;</th>
+       </tr>
+
+	    {foreach from=$dataDetailsDebit item=detail}
+        <tr class="{cycle values="odd,even"}">
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
+            <td>{$detail.description}</td>
+			<td align='right'>{$detail.montant|number_format:2:',':' '}</td> 
+            <td style="text-align: right">
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a> 
+            </td>
+        </tr>
+   
+    
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+   	</table>
+		</td>
+	<td></td>
+	</tr>
+{/if}
+
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
@@ -51,9 +88,47 @@
         <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$credits.evenement}</td>
-            <td></td>
+            <td>
+               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_raccourci.png" alt="details" /></a> 
+               <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_link.png" alt="details autre page" /></a> 
+               <a href="index.php?page=compta_bilan&amp;action=pdf&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_telecharger_facture.png" alt="PDF" /></a> 
+            </td>
              <td align='right' width='100'>{$credits.montant|number_format:2:',':' '}</td>
         </tr>
+{if ($smarty.get.details==$credits.id) }
+	<tr class="{cycle values="odd,even"}">
+		<td colspan='2'>
+    <table>
+        <tr>
+            <th>Date ecriture</th>
+            <th>Descritpion</th>
+            <th>Montant</th>
+            <th>&nbsp;</th>
+       </tr>
+
+	    {foreach from=$dataDetailsCredit item=detail}
+        <tr class="{cycle values="odd,even"}">
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
+            <td>{$detail.description}</td>
+			<td align='right'>{$detail.montant|number_format:2:',':' '}</td> 
+            <td style="text-align: right">
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a> 
+            </td>
+        </tr>
+   
+    
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+   	</table>
+		</td>
+	<td></td>
+	</tr>
+{/if}
+
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
@@ -66,6 +141,71 @@
 	</tr>
 	<tr><td colspan='2'  align='center'>{$difMontant|number_format:2:',':' '}</tr>    
 	</td></tr></table>
+
+{elseif $action == 'view'}
+<br />  
+  <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_bilan&amp;action=lister&id_periode={$smarty.get.id_periode}" title="retour bilan">Retour au bilan</a><br />
+<br />
+    <table><tr><td align="center">Débit
+
+    <table>
+        <tr>
+            <th>Date ecriture</th>
+            <th>Descritpion</th>
+            <th>Montant</th>
+            <th>&nbsp;</th>
+       </tr>
+
+	    {foreach from=$dataDetailsDebit item=detail}
+        <tr class="{cycle values="odd,even"}">
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
+            <td>{$detail.description}</td>
+			<td align='right'>{$detail.montant|number_format:2:',':' '}</td> 
+
+        </tr>
+   
+    
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+   	</table>
+	
+	</td><td align="center" valign="top">Crédit
+	      <table>
+        <tr>
+            <th>Date ecriture</th>
+            <th>Descritpion</th>
+            <th>Montant</th>
+            <th>&nbsp;</th>
+       </tr>
+
+	    {foreach from=$dataDetailsCredit item=detail}
+        <tr class="{cycle values="odd,even"}">
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
+            <td>{$detail.description}</td>
+			<td align='right'>{$detail.montant|number_format:2:',':' '}</td> 
+
+        </tr>
+   
+    
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+   	</table>
+	 
+	<tr>
+	<td align='center'>{$sousTotalDebit|number_format:2:',':' '}</td>
+	<td align='center'>{$sousTotalCredit|number_format:2:',':' '}</td>
+	</tr>
+	<tr><td colspan='2'  align='center'>{$difMontant|number_format:2:',':' '}</tr>    
+	</td></tr></table>
+
 
 {else}
 
