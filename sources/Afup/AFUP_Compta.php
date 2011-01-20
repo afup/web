@@ -553,7 +553,51 @@ echo "</pre>";*/
 		return $total;
     }
  
+   function obtenirBilanDetails($idoperation,$periode_debut='',$periode_fin='',$idevenement)
+   {
+    $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
+     $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
 
+     	$requete  = 'SELECT ';
+     	$requete .= ' IF( compta.idoperation =1, compta.montant, "" )  AS debit, ';
+     	$requete .= ' IF( compta.idoperation =2, compta.montant, "" )  AS credit, ';
+     	$requete .= ' compta.date_ecriture, compta.description, ';
+     	$requete .= ' montant, ';
+		$requete .= ' compta_evenement.id, compta_evenement.evenement   '; 
+		$requete .= 'FROM  ';
+		$requete .= ' compta,  ';
+		$requete .= ' compta_evenement ';  
+		$requete .= 'WHERE  ';
+		$requete .= ' compta.idoperation = \''.$idoperation.'\' '; 
+		$requete .= ' AND compta.date_ecriture >= \''.$periode_debut.'\' '; 
+		$requete .= ' AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
+		$requete .= ' AND compta.idevenement = compta_evenement.id ';
+		$requete .= ' AND compta.idevenement = \''.$idevenement.'\' ';
+		//$requete .= 'GROUP BY';
+		//$requete .= ' compta_evenement.evenement ';
+		$requete .= 'ORDER BY ';
+		$requete .= ' compta.date_ecriture ';
+//echo $requete."<br>";
+		return $this->_bdd->obtenirTous($requete);
+   	
+   } 
+
+   function obtenirSousTotalBilan($idoperation='1',$periode_debut,$periode_fin,$idevenement) 
+    {    
+    	
+	    $data=$this->obtenirBilanDetails($idoperation,$periode_debut,$periode_fin,$idevenement);	
+
+		$total=0;
+		foreach ($data as $id=>$row)
+		{
+
+			$total += $row['montant'];
+		}
+
+		return $total;
+    }
+   
+    
    function obtenirBalance($idoperation='',$periode_debut='',$periode_fin='')
    {
      $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
@@ -659,7 +703,60 @@ for ($i=1;$i<=30;$i++)
 
 		return $tableau;
     }
-      
+
+    
+    function genererBilanPDF($periode_debut,$periode_fin)
+    {
+
+       // Construction du PDF
+        require_once 'Afup/AFUP_Compta_PDF.php';
+$pdf=new AFUP_Compta_PDF('L','mm','A4');
+        //       $pdf = new AFUP_PDF_Compta();
+ //       $pdf->AddPage();
+$pdf->AliasNbPages();
+
+
+$pdf->AddPage();
+
+$pdf->SetFont('Times','B',18);
+$pdf->Cell(0,5,"Bilan ",0,0,'C');
+        
+
+$debit=$this->obtenirBilan(1,$periode_debut='',$periode_fin='');    	
+$credit=$this->obtenirBilan(2,$periode_debut='',$periode_fin='');    	
+
+    	     
+$header[]= array ("Categorie","Description","Montant");
+
+$depense=0;
+//while( $row=$qid->fetch(PDO::FETCH_OBJ) ) 
+foreach ($debit as $debits)
+{
+
+$data[]= array ($debits->evenement ,
+				$debits->description,
+				$debits->montant
+				);
+$depense+=$debits->montant;
+}
+
+$data[]=array('','Total Dépenses',$depense);	
+
+$pdf->Ln(10);  
+//$pdf->$this->tableau(1,$header,$data);
+    	
+    
+        if (is_null($chemin)) {
+            $pdf->Output('bilan.pdf', 'D');
+        } else {
+            $pdf->Output($chemin, 'F');
+        }    	
+    	
+    }
+    
+    
+
+
 }
 
 ?>
