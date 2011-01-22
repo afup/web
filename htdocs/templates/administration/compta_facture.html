@@ -1,0 +1,41 @@
+{if $action == 'lister'}
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_facture&amp;action=ajouter" title="ajouter une écriture">Ajouter une facture</a><br />
+<br>
+     <h2>Liste facture </h2>
+
+    <table>
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+           <th><a href="index.php?page=compta_facture&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+           <th><a href="index.php?page=compta_facture&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
+            <th>Description</th>
+            <th>Montant</th>
+            <th>&nbsp;</th>
+       </tr>
+    {foreach from=$ecritures item=ecriture}
+         <tr class="{cycle values="odd,even"}">
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td nowrap="nowrap">{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
+             <td>{$ecriture.societe}</td>
+             <td  width="250">{$ecriture.observation}</td>
+			<td  align='right' width='100'>{$ecriture.ref_clt1}</td> 
+            <td style="text-align: right">
+                <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+               </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+     </table>
+
+
+{else}	
+    {if $action == 'ajouter'}
+        <h2>Ajouter une écriture (facture)</h2>
+    {else}
+        <h2>Modifier une écriture (facture)</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
