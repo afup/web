@@ -104,7 +104,7 @@ class AFUP_Compta_Facture
 		$requete .= 'observation='.$this->_bdd->echapper($observation) . ', ';
 		$requete .= 'ref_clt1='.$this->_bdd->echapper($ref_clt1) . ',';
 		$requete .= 'ref_clt2='.$this->_bdd->echapper($ref_clt2) . ',';
-		$requete .= 'ref_clt3='.$this->_bdd->echapper($ref_clt3) . ',';
+		$requete .= 'ref_clt3='.$this->_bdd->echapper($ref_clt3) . ' ';
 		$requete .= 'WHERE ';
 		$requete .= 'id=' . $id. ' ';
 
