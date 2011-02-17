@@ -3,6 +3,7 @@
 // Ajout période comptable automatiquement
 // revoir sous totaux balance
 // test champ obligatoire lors de la saisie
+// ajout filtre par mois pour les journaux banques
 
 class AFUP_Compta
 {
