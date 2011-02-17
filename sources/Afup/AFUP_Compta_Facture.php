@@ -67,7 +67,7 @@ class AFUP_Compta_Facture
 		$requete = 'INSERT INTO ';
 		$requete .= 'compta_facture (';
 		$requete .= 'date_ecriture,societe,service,adresse,code_postal,ville,id_pays,';
-		$requete .= 'email,observation,ref_clt1,ref_clt2,ref_clt3) ';
+		$requete .= 'email,observation,ref_clt1,ref_clt2,ref_clt3,reference) ';
 		$requete .= 'VALUES (';
 		$requete .= $this->_bdd->echapper($date_ecriture) . ',';
 		$requete .= $this->_bdd->echapper($societe) . ',';
@@ -80,12 +80,30 @@ class AFUP_Compta_Facture
 		$requete .= $this->_bdd->echapper($observation) . ',';
 		$requete .= $this->_bdd->echapper($ref_clt1) . ',';
 		$requete .= $this->_bdd->echapper($ref_clt2) . ',';
-		$requete .= $this->_bdd->echapper($ref_clt3) . ' ';
+		$requete .= $this->_bdd->echapper($ref_clt3) . ',';
+		$requete .= $this->_bdd->echapper($reference) . ' ';
 		$requete .= ');';
 
 		return $this->_bdd->executer($requete);
 	}
 
+	function ajouter_details($ref,$designation,$quantite,$pu)
+	{
+	
+		$requete = 'INSERT INTO ';
+		$requete .= 'idcompta_facture,compta_facture_details (';
+		$requete .= 'ref,designation,quantite,pu) ';
+		$requete .= 'VALUES (';
+		$requete .= $this->obtenirDernier() .','; 
+		$requete .= $this->_bdd->echapper($ref) . ',';
+		$requete .= $this->_bdd->echapper($designation) . ',';
+		$requete .= $this->_bdd->echapper($quantite) . ',';
+		$requete .= $this->_bdd->echapper($pu) . ' ';
+		$requete .= ');';
+
+		return $this->_bdd->executer($requete);
+	}
+	
 	function modifier($id,$date_ecriture,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
 					$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3)
 	{
@@ -111,7 +129,13 @@ class AFUP_Compta_Facture
 		return $this->_bdd->executer($requete);
 	}
     
-
+    function obtenirDernier()
+    {
+        $requete  = 'SELECT MAX(id)';
+        $requete .= 'FROM';
+        $requete .= '  afup_facture ';
+        return $this->_bdd->obtenirUn($requete);
+    }
 }
 
 ?>
