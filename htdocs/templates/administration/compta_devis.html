@@ -1,0 +1,45 @@
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=ajouter" title="ajouter un devis">Ajouter un devis</a><br />
+<br>
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="<script>alert ('Obligation de passer par un devis.  Merci');</script>" title="ajouter une facture">Ajouter une facture</a><br />
+<br>
+
+{if $action == 'liste'}
+
+     <h2>Liste devis </h2>
+
+    <table>
+        <tr>
+            <!-- th width="20px">&nbsp;</th -->
+           <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+           <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
+            <th>Description</th>
+            <th>Montant</th>
+            <th>&nbsp;</th>
+       </tr>
+    {foreach from=$ecritures item=ecriture}
+         <tr class="{cycle values="odd,even"}">
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td nowrap="nowrap">{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
+             <td>{$ecriture.societe}</td>
+             <td  width="250">{$ecriture.observation}</td>
+			<td  align='right' width='100'>{$ecriture.ref_clt1}</td> 
+            <td style="text-align: right">
+                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+               </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune ecriture actuellement</em></td>
+        </tr>
+    {/foreach}
+     </table>
+
+
+{else}	
+    {if $action == 'ajouter'}
+        <h2>Ajouter un devis</h2>
+    {else}
+        <h2>Modifier un devis</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
