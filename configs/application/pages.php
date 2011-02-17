@@ -158,7 +158,12 @@ $pages = array(
     'tresorerie' => array(
         'nom' => 'Trésorerie',
         'elements' => array(
-		    'compta_journal' => array(
+		    'compta_devis' => array(
+		        'nom' => 'Devis - Facture',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 1,
+            ),
+    		'compta_journal' => array(
 		        'nom' => 'Journal',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
                 'module' => 1,
