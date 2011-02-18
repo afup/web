@@ -61,7 +61,7 @@ class AFUP_Compta_Facture
     }
 
     function ajouter($date_ecriture,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
-					$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3)
+					$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3,$reference)
 	{
 	
 		$requete = 'INSERT INTO ';
@@ -89,10 +89,9 @@ class AFUP_Compta_Facture
 
 	function ajouter_details($ref,$designation,$quantite,$pu)
 	{
-	
 		$requete = 'INSERT INTO ';
-		$requete .= 'idcompta_facture,compta_facture_details (';
-		$requete .= 'ref,designation,quantite,pu) ';
+		$requete .= 'compta_facture_details (';
+		$requete .= 'idcompta_facture,ref,designation,quantite,pu) ';
 		$requete .= 'VALUES (';
 		$requete .= $this->obtenirDernier() .','; 
 		$requete .= $this->_bdd->echapper($ref) . ',';
@@ -133,9 +132,25 @@ class AFUP_Compta_Facture
     {
         $requete  = 'SELECT MAX(id)';
         $requete .= 'FROM';
-        $requete .= '  afup_facture ';
+        $requete .= '  compta_facture ';
+
         return $this->_bdd->obtenirUn($requete);
     }
+
+
+
+   function _genererNumeroFacture()
+    {
+        $requete  = 'SELECT';
+        $requete .= "  MAX(CAST(SUBSTRING_INDEX(numero_facture, '-', -1) AS UNSIGNED)) + 1 ";
+        $requete .= 'FROM';
+        $requete .= '  afup_cotisations ';
+        $requete .= 'WHERE';
+        $requete .= '  LEFT(numero_facture, 4)=' . $this->_bdd->echapper(date('Y'));
+        $index = $this->_bdd->obtenirUn($requete);
+        return date('Y') . '-' . (is_null($index) ? 1 : $index);
+    }
+    
 }
 
 ?>
