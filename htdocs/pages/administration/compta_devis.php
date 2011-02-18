@@ -1,6 +1,7 @@
 <?php
+$action = verifierAction(array('lister', 'devis','facture','ajouter','modifier','telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'envoyer_tout', 'facturer_facture', 'supprimer_facture'));
 
-$action = verifierAction(array('lister', 'devis','facture','ajouter', 'modifier'));
+//$action = verifierAction(array('lister', 'devis','facture','ajouter', 'modifier'));
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
 //$sens_valides = array('asc', 'desc'); 
 $smarty->assign('action', $action);
