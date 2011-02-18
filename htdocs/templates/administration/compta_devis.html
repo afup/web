@@ -1,19 +1,18 @@
+{if $action == 'lister'}
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=ajouter" title="ajouter un devis">Ajouter un devis</a><br />
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Ajouter une facture (obligation de passer par la saisie d'un devis)<br />
 <br>
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="<script>alert ('Obligation de passer par un devis.  Merci');</script>" title="ajouter une facture">Ajouter une facture</a><br />
-<br>
-
-{if $action == 'liste'}
-
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp" title="ajouter un devis">Liste des devis</a><br />
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_facture" title="ajouter un devis">Liste des factures</a><br />
      <h2>Liste devis </h2>
-
     <table>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
            <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
            <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
-            <th>Description</th>
-            <th>Montant</th>
+            <th>Ville</th>
+            <th>référence</th>
+            <th>ref client</th>
             <th>&nbsp;</th>
        </tr>
     {foreach from=$ecritures item=ecriture}
@@ -21,10 +20,22 @@
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td nowrap="nowrap">{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
              <td>{$ecriture.societe}</td>
-             <td  width="250">{$ecriture.observation}</td>
+             <td  width="250">{$ecriture.ville}</td>
+			<td  align='right' width='100'>{$ecriture.reference}</td> 
 			<td  align='right' width='100'>{$ecriture.ref_clt1}</td> 
             <td style="text-align: right">
-                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.reference}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.reference}" title="Télécharger le devis"><img src="{$chemin_template}images/icone_telecharger_devis.png" alt="Téléchargement du devis" /></a>
+{if $facturation.facturation == 0}
+                <a href="index.php?page=compta_devis&amp;action=facturer_facture&amp;ref={$ecriture.reference}" title="Passer à l'état facturée"><img src="{$chemin_template}images/icone_change.png" alt="Envoi devis par mail" /></a>
+{/if}
+{if $facturation.facturation == 1}
+                <a href="index.php?page=compta_devis&amp;action=envoyer_facture&amp;ref={$ecriture.reference}" title="Envoyer la facture par mail"><img src="{$chemin_template}images/icone_envoyer_facture.png" alt="Envoi de la facture par mail" /></a>
+                <a href="index.php?page=compta_devis&amp;action=telecharger_facture&amp;ref={$ecriture.reference}" title="Télécharger la facture"><img src="{$chemin_template}images/icone_telecharger_facture.png" alt="Téléchargement de la facture" /></a>
+                <a href="index.php?page=compta_devis&amp;action=supprimer_facture&amp;ref={$ecriture.reference}" title="Supprimer la facture" onclick="return confirm('Etes-vous certain de vouloir supprimer la facture de {$facturation.societe} ?');" ><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer la facture" /></a>
+{/if}
+               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.reference}" title="Transférer la ligne {$ecriture.description} en facture"><img src="{$chemin_template}images/icone_modifier.png" alt="Transfert en facture" /></a>
+
                </td>
         </tr>
     {foreachelse}
