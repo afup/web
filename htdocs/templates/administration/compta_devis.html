@@ -2,7 +2,7 @@
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=ajouter" title="ajouter un devis">Ajouter un devis</a><br />
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Ajouter une facture (obligation de passer par la saisie d'un devis)<br />
 <br>
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp" title="ajouter un devis">Liste des devis</a><br />
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis" title="ajouter un devis">Liste des devis</a><br />
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_facture" title="ajouter un devis">Liste des factures</a><br />
      <h2>Liste devis </h2>
     <table>
@@ -11,7 +11,7 @@
            <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
            <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
             <th>Ville</th>
-            <th>référence</th>
+            <th>numero devis</th>
             <th>ref client</th>
             <th>&nbsp;</th>
        </tr>
@@ -21,10 +21,10 @@
             <td nowrap="nowrap">{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
              <td>{$ecriture.societe}</td>
              <td  width="250">{$ecriture.ville}</td>
-			<td  align='right' width='100'>{$ecriture.reference}</td> 
+			<td  align='right' width='100'>{$ecriture.numero_devis}</td> 
 			<td  align='right' width='100'>{$ecriture.ref_clt1}</td> 
             <td style="text-align: right">
-                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.reference}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                 <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.reference}" title="Télécharger le devis"><img src="{$chemin_template}images/icone_telecharger_devis.png" alt="Téléchargement du devis" /></a>
 {if $facturation.facturation == 0}
                 <a href="index.php?page=compta_devis&amp;action=facturer_facture&amp;ref={$ecriture.reference}" title="Passer à l'état facturée"><img src="{$chemin_template}images/icone_change.png" alt="Envoi devis par mail" /></a>
