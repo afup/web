@@ -1,5 +1,15 @@
 <?php
-$action = verifierAction(array('lister', 'devis','facture','ajouter','modifier','telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'envoyer_tout', 'facturer_facture', 'supprimer_facture'));
+$action = verifierAction(array(
+					'lister', 
+					'devis',
+					'facture',
+					'ajouter',
+					'modifier',
+					'telecharger_devis', 
+					'telecharger_facture', 
+					'envoyer_devis', 
+					'envoyer_facture'
+					));
 
 //$action = verifierAction(array('lister', 'devis','facture','ajouter', 'modifier'));
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
@@ -8,27 +18,28 @@ $smarty->assign('action', $action);
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta_Facture.php';
 $comptaFact = new AFUP_Compta_Facture($bdd);
-
-/*
-if (isset($_GET['id_periode']) && $_GET['id_periode']) 
-	$id_periode=$_GET['id_periode'];
-else
-	$id_periode="";
-
-$id_periode = $comptaFact->obtenirPeriodeEnCours($id_periode);
-$smarty->assign('id_periode', $id_periode);
-
-$listPeriode = $comptaFact->obtenirListPeriode();
-$smarty->assign('listPeriode', $listPeriode );
-
-
-	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
-	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
-*/	
+	
 if ($action == 'lister') {
 	$ecritures = $comptaFact->obtenirFacture();
 	$smarty->assign('ecritures', $ecritures);
-
+} elseif ($action == 'telecharger_devis') {
+	$comptaFact->genererDevis($_GET['ref']);
+} elseif ($action == 'telecharger_facture') {
+	$comptaFact->genererFacture($_GET['ref']);
+} elseif ($action == 'envoyer_facture'){
+	if($comptaFact->envoyerFacture($_GET['ref'])){
+		AFUP_Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
+		afficherMessage('La facture a été envoyée', 'index.php?page=forum_facturation&action=lister');
+	} else {
+		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=forum_facturation&action=lister', true);
+	}
+} elseif ($action == 'envoyer_devis'){
+	if($comptaFact->envoyerDevis($_GET['ref'])){
+		AFUP_Logs::log('Envoi par email de la devis n°' . $_GET['ref']);
+		afficherMessage('Le devis a été envoyé', 'index.php?page=compta_devis&action=lister');
+	} else {
+		afficherMessage("Le devis n'a pas pu être envoyé", 'index.php?page=compta_devis&action=lister', true);
+	}
 } elseif ($action == 'ajouter' || $action == 'modifier') {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
@@ -65,8 +76,8 @@ if ($action == 'lister') {
 //$mois=10;
    $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y')-1, 
-  																				'maxYear' => date('Y')+1));
+  																				'minYear' => date('Y'), 
+  																				'maxYear' => date('Y')));
 
 	$formulaire->addElement('header'  , ''                       , 'Facturation');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
@@ -137,8 +148,7 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
 									$valeur['observation'],
 									$valeur['ref_clt1'],
 									$valeur['ref_clt2'],
-									$valeur['ref_clt3'],
-									$valeur['reference']
+									$valeur['ref_clt3']
             						);
            						
   			$ok = $comptaFact->ajouter_details(
@@ -162,9 +172,17 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
 									$valeur['observation'],
 									$valeur['ref_clt1'],
 									$valeur['ref_clt2'],
-									$valeur['ref_clt3']
-             						);
-        }
+									$valeur['ref_clt3'],
+									$valeur['reference']
+									);
+  			$ok = $comptaFact->modifier_details(
+									$_GET['id'],
+  									$valeur['ref'],
+            						$valeur['designation'],
+            						$valeur['quantite'],
+									$valeur['pu']
+            						);
+    	}
 
         if ($ok) {
             if ($action == 'ajouter') {
@@ -172,7 +190,7 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
             } else {
                 AFUP_Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('l\'écriture a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=compta_facture&action=lister');
+            afficherMessage('l\'écriture a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=compta_devis&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
         }
