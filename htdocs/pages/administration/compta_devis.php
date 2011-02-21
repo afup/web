@@ -2,37 +2,28 @@
 $action = verifierAction(array(
 					'lister', 
 					'devis',
-					'facture',
 					'ajouter',
 					'modifier',
 					'telecharger_devis', 
-					'telecharger_facture', 
 					'envoyer_devis', 
-					'envoyer_facture'
+					'transfert_devis', 
 					));
 
+					
 //$action = verifierAction(array('lister', 'devis','facture','ajouter', 'modifier'));
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
 //$sens_valides = array('asc', 'desc'); 
 $smarty->assign('action', $action);
 
+
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta_Facture.php';
 $comptaFact = new AFUP_Compta_Facture($bdd);
 	
 if ($action == 'lister') {
-	$ecritures = $comptaFact->obtenirFacture();
+	$ecritures = $comptaFact->obtenirDevis();
 	$smarty->assign('ecritures', $ecritures);
 } elseif ($action == 'telecharger_devis') {
 	$comptaFact->genererDevis($_GET['ref']);
-} elseif ($action == 'telecharger_facture') {
-	$comptaFact->genererFacture($_GET['ref']);
-} elseif ($action == 'envoyer_facture'){
-	if($comptaFact->envoyerFacture($_GET['ref'])){
-		AFUP_Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
-		afficherMessage('La facture a été envoyée', 'index.php?page=forum_facturation&action=lister');
-	} else {
-		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=forum_facturation&action=lister', true);
-	}
 } elseif ($action == 'envoyer_devis'){
 	if($comptaFact->envoyerDevis($_GET['ref'])){
 		AFUP_Logs::log('Envoi par email de la devis n°' . $_GET['ref']);
@@ -52,7 +43,7 @@ if ($action == 'lister') {
 
         $champs['date_saisie']          = $champsRecup['date_ecriture'];
         $champs['societe']          = $champsRecup['societe'];
-        $champs['reference']          = $champsRecup['reference'];
+        $champs['numero_devis']          = $champsRecup['numero_devis'];
         $champs['societe']          = $champsRecup['societe'];
         $champs['service']          = $champsRecup['service'];
         $champs['adresse']          = $champsRecup['adresse'];
@@ -91,7 +82,7 @@ if ($action == 'lister') {
 
 	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
-	$formulaire->addElement('text'  , 'reference'   , 'Référence'   , array('size' => 50, 'maxlength' => 100));
+	$formulaire->addElement('text'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
 	
 	$formulaire->addElement('header', null          , 'Référence client');
 	$formulaire->addElement('static'  , 'note'  , '', 'Possible d\'avoir plusieurs références à mettre (obligation client)<br /><br />');
