@@ -55,7 +55,10 @@ if ($action == 'lister') {
         $champs['ref_clt1']          = $champsRecup['ref_clt1'];
         $champs['ref_clt2']          = $champsRecup['ref_clt2'];
         $champs['ref_clt3']          = $champsRecup['ref_clt3'];
-         
+        $champs['nom']          = $champsRecup['nom'];
+        $champs['prenom']          = $champsRecup['prenom'];
+        $champs['tel']          = $champsRecup['tel'];
+        
 		$formulaire->setDefaults($champs);
 		//$formulaire->setDefaults($champsRecup);
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
@@ -78,6 +81,11 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'    , 'code_postal', 'Code postal'    , array('size' =>  6, 'maxlength' => 10));
 	$formulaire->addElement('text'    , 'ville'      , 'Ville'          , array('size' => 30, 'maxlength' => 50));
 	$formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $pays->obtenirPays());
+
+	$formulaire->addElement('header', null          , 'Contact');
+	$formulaire->addElement('text'    , 'nom'        , 'Nom'            , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text'    , 'prenom'     , 'Prénom'            , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text'    , 'tel'        , 'tel'            , array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
 
 	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
@@ -135,6 +143,9 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
 									$valeur['code_postal'],
 									$valeur['ville'],
 									$valeur['id_pays'],
+									$valeur['nom'],
+									$valeur['prenom'],
+									$valeur['tel'],
 									$valeur['email'],
 									$valeur['observation'],
 									$valeur['ref_clt1'],
@@ -148,6 +159,13 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
             						$valeur['quantite'],
 									$valeur['pu']
             						);
+
+ 			$ok = $comptaFact->ajouter_details(
+            						$valeur['ref2'],
+            						$valeur['designation2'],
+            						$valeur['quantite2'],
+									$valeur['pu2']
+            						);
             						
     	} else {
    			$ok = $comptaFact->modifier(
@@ -159,6 +177,9 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
 									$valeur['code_postal'],
 									$valeur['ville'],
 									$valeur['id_pays'],
+									$valeur['nom'],
+									$valeur['prenom'],
+									$valeur['tel'],
 									$valeur['email'],
 									$valeur['observation'],
 									$valeur['ref_clt1'],
