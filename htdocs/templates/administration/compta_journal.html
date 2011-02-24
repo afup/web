@@ -47,6 +47,7 @@
               <td>{$ecriture.reglement}</td>
             <td style="text-align: right">
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_journal&amp;action=supprimer&amp;id={$ecriture.idtmp}" title="Supprimer la fiche de {$ecriture.description} " onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$ecriture.description} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
                </td>
         </tr>
     {foreachelse}

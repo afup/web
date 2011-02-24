@@ -58,7 +58,6 @@ if ($action == 'lister') {
 	
 } elseif ($action == 'view' && $details) {
 
-
 		$dataDetailsDebit = $compta->obtenirBilanDetails(1,$periode_debut,$periode_fin,$details);
 		$smarty->assign('dataDetailsDebit', $dataDetailsDebit);
 
@@ -76,5 +75,12 @@ if ($action == 'lister') {
 		
 } elseif ($action == 'bilanpdf') {
 	$compta->genererBilanPDF($periode_debut,$periode_fin);
+} elseif ($action == 'supprimer') {
+    if ($compta->supprimerEcriture($_GET['id']) ) {
+        AFUP_Logs::log('Suppression de l\'écriture ' . $_GET['id']);
+        afficherMessage('L\'écriture a été supprimée', 'index.php?page=compta_journal&action=lister');
+    } else {
+        afficherMessage('Une erreur est survenue lors de la suppression de l\'écriture', 'index.php?page=compta_journal&action=lister', true);
+    }
 }
 ?>

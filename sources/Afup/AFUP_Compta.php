@@ -757,6 +757,10 @@ $pdf->Ln(10);
     
     
 
+	function supprimerEcriture($id) {
+		$requete = 'DELETE FROM compta WHERE id=' . $id;
+		return $this->_bdd->executer($requete);
+	}
 
 }
 

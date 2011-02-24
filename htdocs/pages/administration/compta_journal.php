@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier'));
+$action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier','supprimer'));
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
 //$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -88,7 +88,7 @@ elseif ($action == 'credit') {
                                                                             'format'   => 'd F Y',
    																			'minYear' => date('Y')-1, 
    																			'maxYear' => date('Y')+1));
-   $formulaire->addElement('textarea', 'obs_regl'           , 'Observation', array('cols' => 42, 'rows' => 5));
+   $formulaire->addElement('text', 'obs_regl', 'Info reglement' , array('size' => 30, 'maxlength' => 40));
    
 
 // boutons
@@ -155,6 +155,14 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 
        
     $smarty->assign('formulaire', genererFormulaire($formulaire));   
+
+} elseif ($action == 'supprimer') {
+    if ($compta->supprimerEcriture($_GET['id']) ) {
+        AFUP_Logs::log('Suppression de l\'écriture ' . $_GET['id']);
+        afficherMessage('L\'écriture a été supprimée', 'index.php?page=compta_journal&action=lister');
+    } else {
+        afficherMessage('Une erreur est survenue lors de la suppression de l\'écriture', 'index.php?page=compta_journal&action=lister', true);
+    }
 }
 
 ?>
