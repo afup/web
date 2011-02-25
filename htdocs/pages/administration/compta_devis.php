@@ -58,10 +58,26 @@ if ($action == 'lister') {
         $champs['nom']          = $champsRecup['nom'];
         $champs['prenom']          = $champsRecup['prenom'];
         $champs['tel']          = $champsRecup['tel'];
+        $champs['numero_devis']          = $champsRecup['numero_devis'];
+        $champs['numero_facture']          = $champsRecup['numero_facture'];
         
+
+       $champsRecup = $comptaFact->obtenir_details($_GET['id']);
+
+       $i=1;
+		foreach ($champsRecup as $row)
+   		{
+        	$champs['id'.$i]          = $row['id'];
+        	$champs['ref'.$i]          = $row['ref'];
+        	$champs['designation'.$i]          = $row['designation'];
+        	$champs['quantite'.$i]          = $row['quantite'];
+        	$champs['pu'.$i]          = $row['pu'];
+        	$i++;      
+   		}
+
 		$formulaire->setDefaults($champs);
-		//$formulaire->setDefaults($champsRecup);
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
+   
    }
    
 //detail devis       
@@ -88,17 +104,24 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'    , 'tel'        , 'tel'            , array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
 
-	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
-	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
-	$formulaire->addElement('text'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
+	if ($champs['numero_devis'] || $champs['numero_facture'] )
+	{
+		$formulaire->addElement('header', null          , 'Réservé à l\'administration');
+		$formulaire->addElement('static'  , 'note'                   , ''               , 'Numéro généré automatiquement et affiché en automatique');
+		if ($champs['numero_devis'])
+			$formulaire->addElement('text'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
+		if ($champs['numero_facture'])
+			$formulaire->addElement('text'  , 'numero_facture'   , 'Numéro facture'   , array('size' => 50, 'maxlength' => 100));
+	} else {
+		$formulaire->addElement('hidden'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
+		$formulaire->addElement('hidden'  , 'numero_facture'   , 'Numéro facture'   , array('size' => 50, 'maxlength' => 100));
+	}
 	
 	$formulaire->addElement('header', null          , 'Référence client');
 	$formulaire->addElement('static'  , 'note'  , '', 'Possible d\'avoir plusieurs références à mettre (obligation client)<br /><br />');
 	$formulaire->addElement('text'  , 'ref_clt1'   , 'Référence client'   , array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'ref_clt2' , 'Référence client 2', array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'ref_clt3' , 'Référence client 3' , array('size' => 50, 'maxlength' => 100));
-
-
 	  
    $formulaire->addElement('header'  , '', 'Observation');
 	$formulaire->addElement('static'  , 'note'     , ''  , 'Ces informations seront écrites à la fin du document<br /><br />');
@@ -106,13 +129,16 @@ if ($action == 'lister') {
   
 
    
-   
+   for ($i=1;$i<6;$i++)
+   {
   $formulaire->addElement('header'  , '', 'Contenu');
-	$formulaire->addElement('text'    , 'ref'    , 'Référence'        , array('size' => 50, 'maxlength' => 100));
-	$formulaire->addElement('textarea', 'designation'  , 'Désignation', array('cols' => 42, 'rows' => 5));
-	$formulaire->addElement('text'    , 'quantite'    , 'Quantite'        , array('size' => 50, 'maxlength' => 100));
-	$formulaire->addElement('text'    , 'pu'    , 'Prix Unitaire'        , array('size' => 50, 'maxlength' => 100));
-	
+	$formulaire->addElement('static'  , 'note'     , ''  , 'Ligne '.$i.'<br /><br />');
+  $formulaire->addElement('hidden'    , 'id'.$i    , 'id'        );
+  $formulaire->addElement('text'    , 'ref'.$i    , 'Référence'        , array('size' => 50, 'maxlength' => 100));
+  $formulaire->addElement('textarea', 'designation'.$i  , 'Désignation', array('cols' => 42, 'rows' => 5));
+	$formulaire->addElement('text'    , 'quantite'.$i    , 'Quantite'        , array('size' => 50, 'maxlength' => 100));
+	$formulaire->addElement('text'    , 'pu'.$i    , 'Prix Unitaire'        , array('size' => 50, 'maxlength' => 100));
+   }
   
    
    
@@ -153,20 +179,15 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
 									$valeur['ref_clt3']
             						);
            						
-  			$ok = $comptaFact->ajouter_details(
-            						$valeur['ref'],
-            						$valeur['designation'],
-            						$valeur['quantite'],
-									$valeur['pu']
+       		for ($i=1;$i<6;$i++)
+   			{
+ 				$ok = $comptaFact->ajouter_details(
+            						$valeur['ref'.$i],
+            						$valeur['designation'.$i],
+            						$valeur['quantite'.$i],
+									$valeur['pu'.$i]
             						);
-
- 			$ok = $comptaFact->ajouter_details(
-            						$valeur['ref2'],
-            						$valeur['designation2'],
-            						$valeur['quantite2'],
-									$valeur['pu2']
-            						);
-            						
+   			}    						
     	} else {
    			$ok = $comptaFact->modifier(
 									$_GET['id'],
@@ -185,15 +206,20 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
 									$valeur['ref_clt1'],
 									$valeur['ref_clt2'],
 									$valeur['ref_clt3'],
-									$valeur['reference']
+									$valeur['numero_devis'],
+									$valeur['numero_facture']
 									);
-  			$ok = $comptaFact->modifier_details(
-									$_GET['id'],
-  									$valeur['ref'],
-            						$valeur['designation'],
-            						$valeur['quantite'],
-									$valeur['pu']
+       		for ($i=1;$i<6;$i++)
+   			{
+					$ok = $comptaFact->modifier_details(
+									$valeur['id'.$i],
+   				    				$valeur['ref'.$i],
+            						$valeur['designation'.$i],
+            						$valeur['quantite'.$i],
+									$valeur['pu'.$i]
             						);
+   			} 
+
     	}
 
         if ($ok) {
