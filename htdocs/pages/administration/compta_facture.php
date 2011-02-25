@@ -19,23 +19,21 @@ $comptaFact = new AFUP_Compta_Facture($bdd);
 if ($action == 'lister') {
 	$ecritures = $comptaFact->obtenirFacture();
 	$smarty->assign('ecritures', $ecritures);
-} elseif ($action == 'telecharger_devis') {
-	$comptaFact->genererDevis($_GET['ref']);
 } elseif ($action == 'telecharger_facture') {
 	$comptaFact->genererFacture($_GET['ref']);
 } elseif ($action == 'envoyer_facture'){
+	if($comptaFact->envoyerfacture($_GET['ref'])){
+		AFUP_Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
+		afficherMessage('La facture a été envoyée', 'index.php?page=compta_facture&action=lister');
+	} else {
+		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=compta_facture&action=lister', true);
+	}
+} elseif ($action == 'envoyer_facture'){
 	if($comptaFact->envoyerFacture($_GET['ref'])){
 		AFUP_Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
-		afficherMessage('La facture a été envoyée', 'index.php?page=forum_facturation&action=lister');
+		afficherMessage('La facture a été envoyée', 'index.php?page=compta_facture&action=lister');
 	} else {
-		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=forum_facturation&action=lister', true);
-	}
-} elseif ($action == 'envoyer_devis'){
-	if($comptaFact->envoyerDevis($_GET['ref'])){
-		AFUP_Logs::log('Envoi par email de la devis n°' . $_GET['ref']);
-		afficherMessage('Le devis a été envoyé', 'index.php?page=compta_devis&action=lister');
-	} else {
-		afficherMessage("Le devis n'a pas pu être envoyé", 'index.php?page=compta_devis&action=lister', true);
+		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=compta_facture&action=lister', true);
 	}
 } elseif ($action == 'ajouter' || $action == 'modifier') {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
@@ -49,7 +47,6 @@ if ($action == 'lister') {
 
         $champs['date_saisie']          = $champsRecup['date_ecriture'];
         $champs['societe']          = $champsRecup['societe'];
-        $champs['reference']          = $champsRecup['reference'];
         $champs['societe']          = $champsRecup['societe'];
         $champs['service']          = $champsRecup['service'];
         $champs['adresse']          = $champsRecup['adresse'];
@@ -61,7 +58,28 @@ if ($action == 'lister') {
         $champs['ref_clt1']          = $champsRecup['ref_clt1'];
         $champs['ref_clt2']          = $champsRecup['ref_clt2'];
         $champs['ref_clt3']          = $champsRecup['ref_clt3'];
-         
+       $champs['nom']          = $champsRecup['nom'];
+        $champs['prenom']          = $champsRecup['prenom'];
+        $champs['tel']          = $champsRecup['tel'];
+        $champs['numero_devis']          = $champsRecup['numero_devis'];
+        $champs['numero_facture']          = $champsRecup['numero_facture'];
+
+        
+      $champsRecup = $comptaFact->obtenir_details($_GET['id']);
+
+       $i=1;
+		foreach ($champsRecup as $row)
+   		{
+        	$champs['id'.$i]          = $row['id'];
+        	$champs['ref'.$i]          = $row['ref'];
+        	$champs['designation'.$i]          = $row['designation'];
+        	$champs['quantite'.$i]          = $row['quantite'];
+        	$champs['pu'.$i]          = $row['pu'];
+        	$i++;      
+   		}
+        
+        
+        
 		$formulaire->setDefaults($champs);
 		//$formulaire->setDefaults($champsRecup);
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
@@ -84,8 +102,26 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'    , 'code_postal', 'Code postal'    , array('size' =>  6, 'maxlength' => 10));
 	$formulaire->addElement('text'    , 'ville'      , 'Ville'          , array('size' => 30, 'maxlength' => 50));
 	$formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $pays->obtenirPays());
-	$formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
 
+	$formulaire->addElement('header', null          , 'Contact');
+	$formulaire->addElement('text'    , 'nom'        , 'Nom'            , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text'    , 'prenom'     , 'Prénom'            , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text'    , 'tel'        , 'tel'            , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
+	
+	if ($champs['numero_devis'] || $champs['numero_facture'] )
+	{
+		$formulaire->addElement('header', null          , 'Réservé à l\'administration');
+		$formulaire->addElement('static'  , 'note'                   , ''               , 'Numéro généré automatiquement et affiché en automatique');
+		if ($champs['numero_devis'])
+			$formulaire->addElement('text'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
+		if ($champs['numero_facture'])
+			$formulaire->addElement('text'  , 'numero_facture'   , 'Numéro facture'   , array('size' => 50, 'maxlength' => 100));
+	} else {
+		$formulaire->addElement('hidden'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
+		$formulaire->addElement('hidden'  , 'numero_facture'   , 'Numéro facture'   , array('size' => 50, 'maxlength' => 100));
+	}
+	
 	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
 	$formulaire->addElement('text'  , 'reference'   , 'Référence'   , array('size' => 50, 'maxlength' => 100));
@@ -112,7 +148,19 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'    , 'pu'    , 'Prix Unitaire'        , array('size' => 50, 'maxlength' => 100));
 	
   
-   
+
+   for ($i=1;$i<6;$i++)
+   {
+  $formulaire->addElement('header'  , '', 'Contenu');
+	$formulaire->addElement('static'  , 'note'     , ''  , 'Ligne '.$i.'<br /><br />');
+  $formulaire->addElement('hidden'    , 'id'.$i    , 'id'        );
+  $formulaire->addElement('text'    , 'ref'.$i    , 'Référence'        , array('size' => 50, 'maxlength' => 100));
+  $formulaire->addElement('textarea', 'designation'.$i  , 'Désignation', array('cols' => 42, 'rows' => 5));
+	$formulaire->addElement('text'    , 'quantite'.$i    , 'Quantite'        , array('size' => 50, 'maxlength' => 100));
+	$formulaire->addElement('text'    , 'pu'.$i    , 'Prix Unitaire'        , array('size' => 50, 'maxlength' => 100));
+   }
+  
+     
    
    
    
@@ -133,28 +181,7 @@ if ($action == 'lister') {
 $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".$valeur['date_saisie']['d'] ;
       
     	if ($action == 'ajouter') {
-   			$ok = $comptaFact->ajouter(
-            						$date_ecriture,
-            						$valeur['societe'],
-            						$valeur['service'],
-            						$valeur['adresse'],
-									$valeur['code_postal'],
-									$valeur['ville'],
-									$valeur['id_pays'],
-									$valeur['email'],
-									$valeur['observation'],
-									$valeur['ref_clt1'],
-									$valeur['ref_clt2'],
-									$valeur['ref_clt3']
-            						);
-           						
-  			$ok = $comptaFact->ajouter_details(
-            						$valeur['ref'],
-            						$valeur['designation'],
-            						$valeur['quantite'],
-									$valeur['pu']
-            						);
-            						
+ // il faut passser obligatoirement par un devis            						
     	} else {
    			$ok = $comptaFact->modifier(
 									$_GET['id'],
@@ -165,20 +192,29 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
 									$valeur['code_postal'],
 									$valeur['ville'],
 									$valeur['id_pays'],
+									$valeur['nom'],
+									$valeur['prenom'],
+									$valeur['tel'],
 									$valeur['email'],
 									$valeur['observation'],
 									$valeur['ref_clt1'],
 									$valeur['ref_clt2'],
 									$valeur['ref_clt3'],
-									$valeur['reference']
+									$valeur['numero_devis'],
+									$valeur['numero_facture']
 									);
-  			$ok = $comptaFact->modifier_details(
-									$_GET['id'],
-  									$valeur['ref'],
-            						$valeur['designation'],
-            						$valeur['quantite'],
-									$valeur['pu']
+       		for ($i=1;$i<6;$i++)
+   			{
+					$ok = $comptaFact->modifier_details(
+									$valeur['id'.$i],
+   				    				$valeur['ref'.$i],
+            						$valeur['designation'.$i],
+            						$valeur['quantite'.$i],
+									$valeur['pu'.$i]
             						);
+   			} 
+
+    		
     	}
 
         if ($ok) {
