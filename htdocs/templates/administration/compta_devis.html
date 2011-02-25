@@ -27,8 +27,9 @@
                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                 <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.numero_devis}" title="Télécharger le devis"><img src="{$chemin_template}images/icone_telecharger_devis.png" alt="Téléchargement du devis" /></a>
                <a href="index.php?page=compta_devis&amp;action=facturer_facture&amp;ref={$ecriture.numero_devis}" title="Passer à l'état facturée"><img src="{$chemin_template}images/icone_change.png" alt="Envoi devis par mail" /></a>
-               <a href="index.php?page=compta_devis&amp;action=modifier&amp;ref={$ecriture.numero_devis}" title="Transférer la ligne {$ecriture.description} en facture"><img src="{$chemin_template}images/icone_modifier.png" alt="Transfert en facture" /></a>
-
+{if $ecriture.numero_facture == ''}
+               <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}" title="Transférer la ligne {$ecriture.description} en facture"><img src="{$chemin_template}images/icone_modifier.png" alt="Transfert en facture" /></a>
+{/if}
                </td>
         </tr>
     {foreachelse}
