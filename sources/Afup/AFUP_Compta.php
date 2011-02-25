@@ -663,7 +663,7 @@ echo "</pre>";*/
 		$requete .= ' AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
 		$requete .= ' AND compta.idevenement = \''.$evenement.'\' ';
 		$requete .= 'ORDER BY  ';
-		$requete .= ' compta_categorie.categorie ';
+		$requete .= ' compta_categorie.categorie,compta.date_ecriture ';
 
 		return $this->_bdd->obtenirTous($requete);
       } 
