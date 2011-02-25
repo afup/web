@@ -72,7 +72,7 @@ elseif ($action == 'credit') {
 //$mois=10;
    $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y')-1, 
+  																				'minYear' => date('Y')-5, 
   																				'maxYear' => date('Y')+1));
   
   $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
@@ -86,7 +86,7 @@ elseif ($action == 'credit') {
    $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 
                                                                             'format'   => 'd F Y',
-   																			'minYear' => date('Y')-1, 
+   																			'minYear' => date('Y')-5, 
    																			'maxYear' => date('Y')+1));
    $formulaire->addElement('text', 'obs_regl', 'Info reglement' , array('size' => 30, 'maxlength' => 40));
    
