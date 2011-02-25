@@ -353,7 +353,7 @@ class AFUP_Compta_Facture
 
     function genererFacture($reference, $chemin = null)
     {
-            $requete    = 'SELECT * FROM compta_facture WHERE numero_devis=' . $this->_bdd->echapper($reference);
+        $requete    = 'SELECT * FROM compta_facture WHERE numero_facture=' . $this->_bdd->echapper($reference);
         $coordonnées = $this->_bdd->obtenirEnregistrement($requete);
 
         $requete    = 'SELECT * FROM compta_facture_details WHERE idcompta_facture=' . $this->_bdd->echapper($coordonnées['id']);
@@ -416,7 +416,7 @@ class AFUP_Compta_Facture
 
         $pdf->Ln(10);
        $pdf->SetFont('Arial', 'BU', 10);
-        $pdf->Cell(0, 5, utf8_decode('Devis n° ' . $reference),0,0,"C");
+        $pdf->Cell(0, 5, utf8_decode('Facture n° ' . $reference),0,0,"C");
          $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(15);
       	$pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
@@ -476,10 +476,11 @@ class AFUP_Compta_Facture
         $pdf->Cell(130, 5, $coordonnées['observation'], 0, 0, 'L', 0);
          
         if (is_null($chemin)) {
-            $pdf->Output('devis.pdf', 'D');
+            $pdf->Output('facture.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
+
     }
 
     /**
