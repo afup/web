@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier','supprimer'));
+$action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier','supprimer', 'importer'));
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
 //$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -9,10 +9,11 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
 $compta = new AFUP_Compta($bdd);
 
 
-if (isset($_GET['id_periode']) && $_GET['id_periode']) 
+if (isset($_GET['id_periode']) && $_GET['id_periode']) {
 	$id_periode=$_GET['id_periode'];
-else
+} else {
 	$id_periode="";
+}
 
 $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
@@ -163,6 +164,31 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'écriture', 'index.php?page=compta_journal&action=lister', true);
     }
+} elseif ($action == 'importer') {
+    $formulaire = &instancierFormulaire();
+	$formulaire->addElement('header', null          , 'Import CSV');
+    $formulaire->addElement('file', 'fichiercsv', 'Fichier banque'     );
+
+	$formulaire->addElement('header', 'boutons'  , '');
+	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
+
+    if ($formulaire->validate()) {
+		$valeurs = $formulaire->exportValues();
+        $file =& $formulaire->getElement('fichiercsv');
+        $tmpDir = dirname(__FILE__) . '/../../../tmp';
+        if ($file->isUploadedFile()) {
+            $file->moveUploadedFile($tmpDir, 'banque.csv');
+            $lignes = file($tmpDir . '/banque.csv');
+            if ($compta->extraireComptaDepuisCSVBanque($lignes)) {
+                AFUP_Logs::log('Chargement fichier banque');
+                afficherMessage('Le fichier a été importé', 'index.php?page=compta_journal&action=lister');
+            } else {
+                afficherMessage('Le fichier n\'a pas été importé', 'index.php?page=compta_journal&action=lister');
+            }
+        }
+    }
+    $smarty->assign('formulaire', genererFormulaire($formulaire));
+
 }
 
 ?>

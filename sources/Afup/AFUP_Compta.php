@@ -1,6 +1,6 @@
 <?php
 //@TODO
-// Ajout période comptable automatiquement
+// Ajout pÃ©riode comptable automatiquement
 // revoir sous totaux balance
 // test champ obligatoire lors de la saisie
 // ajout filtre par mois pour les journaux banques
@@ -137,7 +137,7 @@ echo "</pre>";*/
 		
     }
     
-    /* Journal des opération
+    /* Journal des opÃ©ration
      * 
      */
    
@@ -389,13 +389,13 @@ echo "</pre>";*/
 	}
 
 	function ajouter($idoperation,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
-					$numero,$idmode_regl,$date_regl,$obs_regl,$idevenement)
+					$numero,$idmode_regl,$date_regl,$obs_regl,$idevenement, $numero_operation = null)
 	{
 	
 		$requete = 'INSERT INTO ';
 		$requete .= 'compta (';
 		$requete .= 'idoperation,idcategorie,date_ecriture,nom_frs,montant,description,';
-		$requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement) ';
+		$requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation) ';
 		$requete .= 'VALUES (';
 		$requete .= $this->_bdd->echapper($idoperation) . ',';
 		$requete .= $this->_bdd->echapper($idcategorie) . ',';
@@ -407,14 +407,15 @@ echo "</pre>";*/
 		$requete .= $this->_bdd->echapper($idmode_regl) . ',';
 		$requete .= $this->_bdd->echapper($date_regl) . ',';
 		$requete .= $this->_bdd->echapper($obs_regl) . ',';
-		$requete .= $this->_bdd->echapper($idevenement) . ' ';
+		$requete .= $this->_bdd->echapper($idevenement) . ',';
+		$requete .= $this->_bdd->echapper($numero_operation) . ' ';
 		$requete .= ');';
 
-		return $this->_bdd->executer($requete);
+        return $this->_bdd->executer($requete);
 	}
 
 	function modifier($id,$idoperation,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
-					$numero,$idmode_regl,$date_regl,$obs_regl,$idevenement)
+					$numero,$idmode_regl,$date_regl,$obs_regl,$idevenement, $numero_operation = null)
 	{
 	
 		$requete = 'UPDATE ';
@@ -430,7 +431,8 @@ echo "</pre>";*/
 		$requete .= 'idmode_regl='.$this->_bdd->echapper($idmode_regl) . ',';
 		$requete .= 'date_regl='.$this->_bdd->echapper($date_regl) . ',';
 		$requete .= 'obs_regl='.$this->_bdd->echapper($obs_regl) . ',';
-		$requete .= 'idevenement='.$this->_bdd->echapper($idevenement) . ' ';
+		$requete .= 'idevenement='.$this->_bdd->echapper($idevenement) . ',';
+		$requete .= 'numero_operation='.$this->_bdd->echapper($numero_operation) . ' ';
 		$requete .= 'WHERE ';
 		$requete .= 'id=' . $id. ' ';
 
@@ -741,7 +743,7 @@ $data[]= array ($debits->evenement ,
 $depense+=$debits->montant;
 }
 
-$data[]=array('','Total Dépenses',$depense);	
+$data[]=array('','Total Dépenses',$depense);
 
 $pdf->Ln(10);  
 //$pdf->$this->tableau(1,$header,$data);
@@ -762,6 +764,81 @@ $pdf->Ln(10);
 		return $this->_bdd->executer($requete);
 	}
 
+    function obtenirParNumeroOperation($numero_operation)
+    {
+        $requete  = 'SELECT';
+        $requete .= '  * ';
+        $requete .= 'FROM';
+        $requete .= '  compta ';
+        $requete .= 'WHERE numero_operation=' . $this->_bdd->echapper($numero_operation);
+
+        return $this->_bdd->obtenirEnregistrement($requete);
+    }
+
+    function obtenirTous()
+    {
+        $requete  = 'SELECT';
+        $requete .= '  * ';
+        $requete .= 'FROM';
+        $requete .= '  compta ';
+
+        return $this->_bdd->obtenirTous($requete);
+    }
+
+    /**
+     *
+     * @param array $csvFile
+     */
+    function extraireComptaDepuisCSVBanque($csvFile)
+    {
+        if (!is_array($csvFile) || !count($csvFile)) {
+            return false;
+        }
+        // On vérifie la première ligne
+        if (!substr($csvFile[0], 0, 17) == 'Code de la banque') {
+            return false;
+        }
+        // On efface les 4 premières lignes
+        $csvFile = array_slice($csvFile, 4);
+        foreach ($csvFile as $ligne) {
+            $donnees = explode(';', $ligne);
+            if (count($donnees) == 7) {
+                $numero_operation = $donnees[1];
+                // On vérife si l'enregistrement existe déjà
+                $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
+                if (!is_array($enregistrement)) {
+                    $date_ecriture = '20' . implode('-', array_reverse(explode('/', $donnees[0])));
+                    $description = $donnees[2] . '-' . $donnees[5];
+                    $donnees[3] = abs(str_replace(',', '.', $donnees[3]));
+                    $donnees[4] = abs(str_replace(',', '.', $donnees[4]));
+                    if ($donnees[4] == '') {
+                        $idoperation = 1;
+                        $montant = $donnees[3];
+                    } else {
+                        $idoperation = 2;
+                        $montant = $donnees[4];
+                    }
+                    $idmode_regl = 0;
+                    switch (strtoupper(substr($donnees[2], 0, 3))) {
+                        case 'CB ':
+                            $idmode_regl = 2;
+                            break;
+                        case 'VIR':
+                            $idmode_regl = 3;
+                            break;
+                        case 'CHE':
+                        case 'REM':
+                            $idmode_regl = 4;
+                            break;
+                    }
+                    // Catégorie 26 = "A déterminer"
+                    // Evénement 8 = "A déterminer"
+                    $this->ajouter($idoperation, 26, $date_ecriture, '', $montant, $description, '', $idmode_regl, $date_ecriture, '', 8, $numero_operation);
+                }
+            }
+        }
+        return true;
+    }
 }
 
 ?>

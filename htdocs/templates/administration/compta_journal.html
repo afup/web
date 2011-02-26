@@ -1,5 +1,6 @@
 {if $action == 'lister' || $action == 'debit' || $action == 'credit' }
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a><br />
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=importer" title="importer un fichier csv">Importer un fichier CSV</a><br />
 <br>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}" title="ajouter une écriture">Journal Dépenses/Recettes</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}" title="ajouter une écriture">Journal des dépenses</a><br />
@@ -59,7 +60,9 @@
 
 
 {else}	
-    {if $action == 'ajouter'}
+    {if $action == 'importer'}
+        <h2>Importer un fichier</h2>
+    {elseif $action == 'ajouter'}
         <h2>Ajouter une écriture (facture)</h2>
     {else}
         <h2>Modifier une écriture (facture)</h2>

@@ -38,10 +38,14 @@ class tests_Compta extends UnitTestCase {
         $this->assertTrue($compta->extraireComptaDepuisCSVBanque($fichierBanque));
         $toutCompta = $compta->obtenirTous();
         $this->assertEqual(4, count($toutCompta));
-        $this->assertEqual('2009-11-10', $toutCompta[0]['date_ecriture']);
+        $this->assertEqual('2011-11-09', $toutCompta[0]['date_ecriture']);
         $this->assertEqual(3, $toutCompta[0]['idmode_regl']);
         $this->assertEqual(2, $toutCompta[1]['idmode_regl']);
         $this->assertEqual(4, $toutCompta[2]['idmode_regl']);
         $this->assertEqual(4, $toutCompta[3]['idmode_regl']);
+        $this->assertEqual(180, $toutCompta[0]['montant']);
+        $this->assertEqual(0.65, $toutCompta[1]['montant']);
+        $this->assertEqual(0.65, $toutCompta[2]['montant']);
+        $this->assertEqual(0.65, $toutCompta[3]['montant']);
    }
 }
