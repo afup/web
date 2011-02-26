@@ -51,3 +51,7 @@ $bdd = new AFUP_Base_De_Donnees($conf->obtenir('bdd|hote'),
                                 $conf->obtenir('bdd|utilisateur'),
                                 $conf->obtenir('bdd|mot_de_passe'));
 $bdd->executer("SET NAMES 'utf8'");
+
+// Inclusion de la classe permettant l envoi de mail
+require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Mailing.php';
+
