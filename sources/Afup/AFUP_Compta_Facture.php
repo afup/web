@@ -495,24 +495,9 @@ class AFUP_Compta_Facture
         require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'phpmailer/class.phpmailer.php';
         $personne = $this->obtenir($reference, 'email, nom, prenom');
 
-        $mail = new PHPMailer;
-        $mail->AddAddress($personne['email'], $personne['nom']." ".$personne['prenom']);
-
-        $mail->From     = $configuration->obtenir('mails|email_expediteur');
-        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
-
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
-            $mail->Mailer   = "smtp";
-        } else {
-            $mail->Mailer   = "mail";
-        }
-
         $sujet  = "Facture AFUP\n";
-        $mail->Subject = $sujet;
 
         $corps  = "Bonjour, \n\n";
         $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";
@@ -522,18 +507,20 @@ class AFUP_Compta_Facture
         $corps .= $configuration->obtenir('afup|adresse')."\n";
         $corps .= $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville')."\n";
 
-        $mail->Body = $corps;
-
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache'. DIRECTORY_SEPARATOR .'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
-        $mail->AddAttachment($chemin_facture, 'facture.pdf');
-        $ok = $mail->Send();
+
+        AFUP_Mailing::envoyerMail(
+                    $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                    array($personne['email'], $personne['nom']),
+                    $sujet,
+                    $corps,
+                    array('file'=>$chemin_facture)
+                );
+
         @unlink($chemin_facture);
 
-        $ok = true;
-        if ($ok) {
-            $this->estFacture($reference);
-        }
+        $this->estFacture($reference);
 
         return $ok;
     }
