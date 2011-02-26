@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Afup/AFUP_Droits.php';
-require_once 'Afup/AFUP_Mailing.php';
 
 // Voir la classe AFUP_Personnes_Morales
 define('AFUP_PERSONNES_PHYSIQUES',          0);
