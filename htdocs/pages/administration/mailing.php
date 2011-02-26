@@ -39,7 +39,7 @@ if ($action == 'mailing')
       foreach ($email_tos as $nb =>$email_to)
       {
       	
-        AFUP_Mailing::envoyerMail(array($valeurs['from_email'],$valeurs['from_name']),$email_to, $valeurs['subject'],$valeurs['body'],true);
+        AFUP_Mailing::envoyerMail(array($valeurs['from_email'],$valeurs['from_name']),$email_to, $valeurs['subject'],$valeurs['body'],array('html'=> true));
       	$nb++ ;
         if ($nb%200 == 0)
       	 {
