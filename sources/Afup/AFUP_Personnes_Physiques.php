@@ -324,20 +324,15 @@ class AFUP_Personnes_Physiques {
                 $corps .= "Votre mot de passe : $mot_de_passe \n\n";
                 $corps .= "http://www.afup.org/pages/administration/index.php?ctx_login=$identifiant";
 
-                require_once 'phpmailer/class.phpmailer.php';
-                $mail = new PHPMailer;
-                if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
-                    $mail->IsSMTP();
-                    $mail->Host = $GLOBALS['conf']->obtenir('mails|serveur_smtp');
-                    $mail->SMTPAuth = false;
-                }
-                $mail->AddAddress($email);
-                $mail->From = $GLOBALS['conf']->obtenir('mails|email_expediteur');
-                $mail->FromName = $GLOBALS['conf']->obtenir('mails|nom_expediteur');
-                $mail->Subject = "AFUP : Mot de passe perdu ?";
-                $mail->Body = $corps;
+                
+                $check = AFUP_Mailing::envoyerMail(
+                            $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                            $email,
+                            "AFUP : Mot de passe perdu ?",
+                            $corps);
 
-                return $mail->Send();
+                return($check);
+
             }
         }
 
