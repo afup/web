@@ -60,7 +60,7 @@ class AFUP_Mailing
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-   function envoyerMail($from, $to, $subject,$body, Array $options=array()) {
+   static function envoyerMail($from, $to, $subject,$body, Array $options=array()) {
 
        $optionsDefault = array(
             'html' => FALSE,
