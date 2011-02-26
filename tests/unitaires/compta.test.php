@@ -1,8 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
-
-require_once 'Afup/AFUP_Base_De_Donnees.php';
+require_once dirname(__FILE__) . '/../../sources/Afup/AFUP_Base_De_Donnees.php';
 
 class tests_Compta extends UnitTestCase {
     public $bdd;
