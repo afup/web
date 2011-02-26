@@ -2856,7 +2856,30 @@ CREATE TABLE `compta_categorie` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-
+INSERT INTO `compta_categorie` (`id`, `idevenement`, `categorie`) VALUES
+(1, 0, 'Facture'),
+(2, 0, 'Remboursement'),
+(3, 1, 'Inscription'),
+(4, 0, 'Cotisation AFUP'),
+(5, 12, 'Banque - Compte courant'),
+(6, 12, 'Banque - Remise Cheque'),
+(7, 12, 'Banque - Retour Impaye'),
+(8, 0, 'La Poste'),
+(10, 12, 'Banque - Livret A'),
+(11, 1, 'Communication'),
+(12, 1, 'Divers'),
+(13, 1, 'Goodies'),
+(14, 1, 'Hotel'),
+(15, 1, 'Location'),
+(16, 1, 'Nourriture'),
+(17, 1, 'Sponsor'),
+(18, 1, 'Transport'),
+(20, 0, 'Stock'),
+(22, 0, 'Administratif'),
+(23, 0, 'Banque - Espece'),
+(24, 0, 'Banque - Paypal'),
+(25, 0, 'Prestation'),
+(26, 8, 'A déterminer');
 
 # Dump of table compta_evenement
 # ------------------------------------------------------------
@@ -2869,6 +2892,31 @@ CREATE TABLE `compta_evenement` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+
+
+INSERT INTO `compta_evenement` (`id`, `evenement`) VALUES
+(1, 'Forum 2008'),
+(2, 'RV AFUP'),
+(3, 'Tresorerie'),
+(4, 'Forum 2007'),
+(5, 'AG'),
+(8, 'A déterminer'),
+(9, 'Barcamp'),
+(10, 'Salon Linux'),
+(11, 'Adhesion AFUP'),
+(12, 'Compte Courant'),
+(13, 'Site Internet'),
+(14, 'PHP TV'),
+(15, 'Journee Dev'),
+(16, 'Stock'),
+(17, 'Forum 2009'),
+(18, 'Compte Livret A'),
+(19, 'Livre blanc'),
+(20, 'Compte Espece'),
+(21, 'Symfony live 2009'),
+(22, 'Forum 2010'),
+(23, 'Compte Paypal'),
+(24, 'Forum 2011');
 
 
 # Dump of table compta_operation
