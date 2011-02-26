@@ -86,7 +86,14 @@ class AFUP_Tags
         return $this->obtenirListe('*', 'date DESC', false, $where);
     }
     
-    function obtenirPersonnesPhysisquesTagues($tag)
+    /**
+     * 
+     * @deprecated Use obtenirPersonnesPhysiquesTagues()
+     */
+    function obtenirPersonnesPhysisquesTagues($tag) {
+    	return $this->obtenirPersonnesPhysiquesTagues($tag);
+    }
+    function obtenirPersonnesPhysiquesTagues($tag)
     {
         $requete  = ' SELECT ';
         $requete .= '  t.*, ';
@@ -129,7 +136,14 @@ class AFUP_Tags
         return $this->_bdd->obtenirTous($requete);
     }
     
-    function obtenirNoeudsPersonnesPhysiqyes()
+    /**
+     * 
+     * @deprecated Use obtenirNoeudsPersonnesPhysiques()
+     */
+    function obtenirNoeudsPersonnesPhysiqyes() {
+    	return $this->obtenirNoeudsPersonnesPhysiques();
+    }
+    function obtenirNoeudsPersonnesPhysiques()
     {
         $requete  = ' SELECT ';
         $requete .= '  pp.login as noeud, ';

@@ -7,12 +7,23 @@
 		<legend>{$membre.prenom} {$membre.nom}
 		{if $membre.id_personne_morale} - <em>{$entreprises[$membre.id_personne_morale]}</em>{/if}
 		</legend>        
+		<table>
+		<tr><td width="80%>">
 		<ul class="liste_membres">
 			<li>{$membre.adresse}<br />{$membre.code_postal} {$membre.ville}<br />{$pays[$membre.id_pays]}</li>
 			<li>{$membre.telephone_fixe}</li>
 			<li>{$membre.telephone_portable}</li>
 			<li><a href="mailto:{$membre.email}">{$membre.email}</a></li>
+			<li>&nbsp;</li>
+			<li>Tags : 
+			{foreach from=$membre.tags item=tag}
+				<a href="index.php?page=membre_tags&tag={$tag.tag}">{$tag.tag}</a> 
+			{/foreach}
+			</li>
 		</ul>
+		</td>
+		<td><img src="{$membre.gravatar}"></td></tr>
+		</table>
 		<br />
 	</fieldset>
 {/foreach}

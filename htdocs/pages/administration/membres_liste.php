@@ -27,21 +27,13 @@ $tags = new AFUP_Tags($bdd);
     $personnes_physiques_liste = $personnes_physiques->obtenirListe($list_champs, $list_ordre, $list_filtre, false, false, false, $is_active);
     foreach($personnes_physiques_liste as &$personne_physique) {
     	$personne_physique["gravatar"] = AFUP_Utils::get_gravatar($personne_physique["email"]);
+    	$personne_physique["tags"] = $tags->obtenirTagsSurPersonnePhysique($personne_physique["id"]);
     }
-    
+   // var_dump($personnes_physiques_liste);die;
     $smarty->assign('membres', $personnes_physiques_liste);
     $smarty->assign('entreprises', $personnes_morales->obtenirListe('id, raison_sociale', 'raison_sociale', true));
     $smarty->assign('pays', $pays->obtenirPays());
 
-    /*
-    $tags_liste = $tags->obtenirListe('*', 'date DESC', true);
-    var_dump($tags->obtenirNoeudsPersonnesPhysiques());die;
-    $tag_clean = Array();
-    foreach($tags_liste as $tag) {
-    	$tag_clean;
-    }
-    $smarty->assign('tags', 'a');
-	*/
     
     $formulaire = &instancierFormulaire();
 
