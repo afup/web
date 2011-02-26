@@ -24,6 +24,8 @@ $root = realpath(dirname(__FILE__) . '/../../..');
 
 define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
 
+date_default_timezone_set('Europe/Paris');
+
 /**
  * Ajout des répertoires contenant les différentes classes et script à inclure
  * dans l'include path pour éviter de les inclure avec chemin absolu
