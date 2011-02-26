@@ -798,7 +798,8 @@ class AFUP_Site_Article {
         if (empty($rubrique->raccourci)) {
             $rubrique->raccourci = 'rubrique';
         }
-        return $this->conf->obtenir('web|path').'/'.$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$rubrique->raccourci.'/'.$this->id.'/'.$this->raccourci;
+		$current_domain = "http://" . $_SERVER["SERVER_NAME"] . (($_SERVER["SERVER_PORT"] != "80")? ":".$_SERVER["SERVER_PORT"] : "");
+		return $current_domain . '/' . $this->conf->obtenir('site|prefix') . $this->conf->obtenir('site|query_prefix') . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
     }
 
     function fil_d_ariane() {
