@@ -2879,8 +2879,14 @@ CREATE TABLE `compta_operation` (
   `id` tinyint(5) NOT NULL AUTO_INCREMENT,
   `operation` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
+LOCK TABLES `compta_operation` WRITE;
+INSERT INTO `compta_operation` (`id`,`operation`)
+VALUES
+	(1,'Depense'),
+	(2,'Recette');
+UNLOCK TABLES;
 
 
 # Dump of table compta_periode
@@ -2907,7 +2913,20 @@ CREATE TABLE `compta_reglement` (
   `id` tinyint(5) NOT NULL AUTO_INCREMENT,
   `reglement` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+LOCK TABLES `compta_reglement` WRITE;
+INSERT INTO `compta_reglement` (`id`,`reglement`)
+VALUES
+	(1,'Espece'),
+	(2,'Carte Bleue'),
+	(3,'Virement'),
+	(4,'Cheque'),
+	(5,'Prelevement'),
+	(6,'Solde banque'),
+	(7,'Provision'),
+	(8,'paypal');
+UNLOCK TABLES;
 
 
 
