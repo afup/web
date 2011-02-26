@@ -1,4 +1,0 @@
-AuthName "Accès protégé"
-AuthType Basic
-Require valid-user
-AuthUserFile /opt3/local/apache/htdocs/sites/n/naoss.fr/_master_/.htpasswd
