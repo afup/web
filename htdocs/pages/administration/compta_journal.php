@@ -185,6 +185,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
             } else {
                 afficherMessage('Le fichier n\'a pas été importé', 'index.php?page=compta_journal&action=lister');
             }
+            unlink($tmpDir . '/banque.csv');
         }
     }
     $smarty->assign('formulaire', genererFormulaire($formulaire));
