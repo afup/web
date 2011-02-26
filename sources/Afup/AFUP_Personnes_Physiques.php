@@ -53,10 +53,10 @@ class AFUP_Personnes_Physiques {
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'WHERE 1 = 1 ';
         if ($filtre) {
-            $requete .= 'AND nom LIKE \'%' . $filtre . '%\' ';
+            $requete .= 'AND (nom LIKE \'%' . $filtre . '%\' ';
             $requete .= 'OR prenom LIKE \'%' . $filtre . '%\' ';
             $requete .= 'OR code_postal LIKE \'%' . $filtre . '%\' ';
-            $requete .= 'OR ville LIKE \'%' . $filtre . '%\' ';
+            $requete .= 'OR ville LIKE \'%' . $filtre . '%\') ';
         }
         if ($id_personne_morale) {
             $requete .= 'AND id_personne_morale = ' . $id_personne_morale . ' ';
