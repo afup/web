@@ -675,27 +675,6 @@ class AFUP_AppelConferencier
 
         $conferenciers = $this->_bdd->obtenirTous($requete);
 
-        require_once 'phpmailer/class.phpmailer.php';
-
-        $mail = new PHPMailer;
-        foreach ($conferenciers as $personne) {
-            $mail->AddAddress($personne['email'], $personne['nom'] . " " . $personne['prenom']);
-        }
-        $mail->AddBCC('bureau@fup.org', 'Bureau');
-
-        $mail->From     = $configuration->obtenir('mails|email_expediteur');
-        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
-
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
-            $mail->Mailer   = "smtp";
-        } else {
-            $mail->Mailer   = "mail";
-        }
-
-        $sujet  = "Soumission de proposition au Forum PHP\n";
-        $mail->Subject = $sujet;
-
         $corps  = "Bonjour, \n\n";
         $corps .= "Nous avons bien enregistré votre soumission pour le forum PHP.\n";
         $corps .= "Vous recevrez une réponse prochainement.\n\n";
@@ -704,9 +683,14 @@ class AFUP_AppelConferencier
         $corps .= $configuration->obtenir('afup|adresse')."\n";
         $corps .= $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville')."\n";
 
-        $mail->Body = $corps;
-
-        $ok = $mail->Send();
+        foreach ($conferenciers as $personne) {
+            $ok = AFUP_Mailing::envoyerMail(
+                            $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                            array($personne['email'], $personne['nom']. ' ' . $personne['prenom']),
+                            "Soumission de proposition au Forum PHP\n",
+                            $corps);
+            // $mail->AddBCC('bureau@fup.org', 'Bureau');
+        }
         return $ok;
     }
 
@@ -748,26 +732,8 @@ class AFUP_AppelConferencier
 
         $resultat = $this->_bdd->obtenirEnregistrement($requete);
 
-        require_once 'phpmailer/class.phpmailer.php';
-
-        $mail = new PHPMailer;
-        $mail->AddAddress($resultat['email'], $resultat['nom'] . " " . $resultat['prenom']);
-
         require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
-
-        $mail->From     = $configuration->obtenir('mails|email_expediteur');
-        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
-
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
-            $mail->Mailer   = "smtp";
-        } else {
-            $mail->Mailer   = "mail";
-        }
-
-        $sujet = "Vos votes de session\n";
-        $mail->Subject = $sujet;
 
         $requete = 'select titre, note
             from afup_sessions_note inner join afup_sessions on
@@ -776,21 +742,23 @@ class AFUP_AppelConferencier
 
         $resultat = $this->_bdd->obtenirEnregistrement($requete);
 
+        $sujet = "Vos votes de session\n";
+
         $corps  = "Bonjour, \n\n";
         $corps .= "Nous avons bien enregistré votre vote sur les sessions du forum.\n\n";
-
         $corps .= $resultat['titre'] . ' ' . $resultat['note'] . "\n";
-
         $corps .= "le grain de sel pour retrouver l'enregistrement dans la base est $salt";
-
         $corps .= "\nLe bureau\n\n";
         $corps .= $configuration->obtenir('afup|raison_sociale')."\n";
         $corps .= $configuration->obtenir('afup|adresse')."\n";
         $corps .= $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville')."\n";
 
-        $mail->Body = $corps;
+        $ok = AFUP_Mailing::envoyerMail(
+                $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                array($resultat['email'], $resultat['nom']. ' ' . $resultat['prenom']),
+                $sujet,
+                $corps);
 
-        $ok = $mail->Send();
         return $ok;
     }
 
