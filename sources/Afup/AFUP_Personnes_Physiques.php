@@ -1,5 +1,8 @@
 <?php
+
 require_once 'Afup/AFUP_Droits.php';
+require_once 'Afup/AFUP_Mailing.php';
+
 // Voir la classe AFUP_Personnes_Morales
 define('AFUP_PERSONNES_PHYSIQUES',          0);
 define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 20);
@@ -332,7 +335,20 @@ class AFUP_Personnes_Physiques {
                             $corps);
 
                 return($check);
+                /*require_once 'phpmailer/class.phpmailer.php';
+                $mail = new PHPMailer;
+                if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
+                    $mail->IsSMTP();
+                    $mail->Host = $GLOBALS['conf']->obtenir('mails|serveur_smtp');
+                    $mail->SMTPAuth = false;
+                }
+                $mail->AddAddress($email);
+                $mail->From = $GLOBALS['conf']->obtenir('mails|email_expediteur');
+                $mail->FromName = $GLOBALS['conf']->obtenir('mails|nom_expediteur');
+                $mail->Subject = "AFUP : Mot de passe perdu ?";
+                $mail->Body = $corps;
 
+                return $mail->Send();*/
             }
         }
 
