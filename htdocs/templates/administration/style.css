@@ -406,6 +406,7 @@ ul.tags { display: inline; border-left: 0; padding-left: 0; }
 ul.tags li { list-style: none; display : inline; border-left: 0; padding-left: 0; padding-right : 0.8em; }
 ul.liste_membres { border-left: 0; padding-left: 0; }
 ul.liste_membres li { list-style: none; border-left: 0; padding-left: 0; padding-right : 0.8em; }
+ul.liste_membres li td { white-space: normal; }
 
 ul.sparklines li span.minimum { color: #f00; }
 ul.sparklines li span.maximum { color: #0f0; }

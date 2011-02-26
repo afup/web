@@ -14,12 +14,14 @@
 			<li>{$membre.telephone_fixe}</li>
 			<li>{$membre.telephone_portable}</li>
 			<li><a href="mailto:{$membre.email}">{$membre.email}</a></li>
+			{if $membre.tags}
 			<li>&nbsp;</li>
 			<li>Tags : 
-			{foreach from=$membre.tags item=tag}
+				{foreach from=$membre.tags item=tag}
 				<a href="index.php?page=membre_tags&tag={$tag.tag}">{$tag.tag}</a> 
-			{/foreach}
+				{/foreach}
 			</li>
+			{/if}
 		</ul>
 		</td>
 		<td><img src="{$membre.gravatar}"></td></tr>
