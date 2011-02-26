@@ -8,22 +8,6 @@ $pages = array(
     'membre' => array(
         'nom' => 'Mon compte',
         'elements' => array(
-		    'membre_tags' => array(
-		        'nom' => 'Tags',
-		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
-		    ),
-		    'membre_oeuvres' => array(
-		        'nom' => 'Oeuvres',
-		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
-		    ),
-		    'membre_assemblee_generale' => array(
-		        'nom' => 'Présence prochaine AG',
-		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
-		    ),
-		    'membre_cotisation' => array(
-		        'nom' => 'Ma cotisation',
-		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
-		    ),
 		    'membre_coordonnees' => array(
 		        'nom' => 'Mes coordonnées',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
@@ -32,6 +16,28 @@ $pages = array(
 		        'nom' => 'Accès  wiki',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
+		    'membre_cotisation' => array(
+		        'nom' => 'Ma cotisation',
+		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+		    ),
+		    'membre_assemblee_generale' => array(
+		        'nom' => 'Présence prochaine AG',
+		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+		    ),
+		    'membre_tags' => array(
+		        'nom' => 'Tags',
+		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+		    ),
+		    'membre_oeuvres' => array(
+		        'nom' => 'Oeuvres',
+		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+		    ),
+		    'membres_liste' => array(
+		        'nom' => 'Annuaire',
+		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+		    ),
+		    
+		    
 		),
     ),
     'membres' => array(
