@@ -60,12 +60,19 @@ class AFUP_Mailing
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-   function envoyerMail($from, $to, $subject,$body,$is_html =false ,$campaing_id =null) {
+   function envoyerMail($from, $to, $subject,$body, Array $options=array()) {
+
+       $optionsDefault = array(
+            'html' => FALSE,
+            'bcc'  => array(),
+            'file' => array());
+
+       $options = array_merge($optionsDefault,$options);
 
         require_once 'phpmailer/class.phpmailer.php';
 
         $mail = new PHPMailer();
-        $mail->IsHTML($is_html);
+        $mail->IsHTML($options['html']);
         
         if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
             $mail->IsSMTP();
@@ -88,11 +95,17 @@ class AFUP_Mailing
         if ($GLOBALS['conf']->obtenir('mails|force_destinataire')) {
             $to = $GLOBALS['conf']->obtenir('mails|force_destinataire');
         }
-        if ($GLOBALS['conf']->obtenir('mails|bcc')) {
-            $mail->BCC = $GLOBALS['conf']->obtenir('mails|bcc');
+
+        //Gestion BCC
+        $mail->AddBCC($GLOBALS['conf']->obtenir('mails|bcc'));
+        foreach ($options['bcc'] as $valeurBcc) {
+            $mail->AddBCC($valeurBcc);
         }
 
-        
+        //Gestion Attachement
+        foreach ($options['file'] as $filePath) {
+            $mail->AddAttachment($filePath);
+        }
         
         $from_email = is_array($from)?$from[0]:$from;
         $from_name = is_array($from)?$from[1]:'';
