@@ -45,7 +45,8 @@ class AFUP_Personnes_Physiques {
         $filtre = false,
         $id_personne_morale = false,
         $associatif = false,
-        $id_personne_physique = false)
+        $id_personne_physique = false,
+        $is_active = NULL)
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -66,6 +67,9 @@ class AFUP_Personnes_Physiques {
                 $id_personne_physique = array($id_personne_physique);
             }
             $requete .= 'AND id IN (' . join(",", $id_personne_physique) . ') ';
+        }
+        if ($is_active !== NULL) {
+        	$requete .= 'AND etat = ' . $is_active . ' ';
         }
         $requete .= 'ORDER BY ' . $ordre;
         if ($associatif) {

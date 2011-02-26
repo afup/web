@@ -1,0 +1,21 @@
+<h2>Liste des membres</h2>
+{include file="formulaire.html"}
+<br/>
+
+{foreach from=$membres item=membre}
+	<fieldset>
+		<legend>{$membre.prenom} {$membre.nom}
+		{if $membre.id_personne_morale} - <em>{$entreprises[$membre.id_personne_morale]}</em>{/if}
+		</legend>        
+		<ul class="liste_membres">
+			<li>{$membre.adresse}<br />{$membre.code_postal} {$membre.ville}<br />{$pays[$membre.id_pays]}</li>
+			<li>{$membre.telephone_fixe}</li>
+			<li>{$membre.telephone_portable}</li>
+			<li><a href="mailto:{$membre.email}">{$membre.email}</a></li>
+		</ul>
+		<br />
+	</fieldset>
+{/foreach}
+
+
+<br />
