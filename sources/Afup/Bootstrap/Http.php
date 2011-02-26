@@ -52,9 +52,13 @@ if (empty($sous_site) and strpos($_SERVER['HTTP_HOST'], "planete") !== false) {
 	$serveur = "http://afup.org";
 }
 
+require_once dirname(__FILE__).'/../AFUP_Mailing.php';
+
 // initialisation de Smarty, le moteur de template (html)
 
 require_once 'smarty/Smarty.class.php';
+
+
 
 $smarty = new Smarty;
 $smarty->template_dir  = array(
