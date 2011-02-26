@@ -2,12 +2,13 @@
 
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
 require_once dirname(__FILE__) . '/../../sources/Afup/AFUP_Base_De_Donnees.php';
+require_once dirname(__FILE__) . '/../../sources/Afup/AFUP_Compta.php';
 
 class tests_Compta extends UnitTestCase {
     public $bdd;
     
     function __construct() {
-        $this->bdd = new AFUP_Base_De_Donnees('localhost', 'afup_test', 'root', '');
+        $this->bdd = new AFUP_Base_De_Donnees('localhost', 'afup_test', 'afup', 'afup');
         
         $this->bdd->executer("DROP TABLE IF EXISTS `compta`");
         $this->bdd->executer("CREATE TABLE `compta` (
@@ -16,7 +17,8 @@ class tests_Compta extends UnitTestCase {
 		  `idoperation` tinyint(5) NOT NULL,
 		  `idcategorie` int(11) NOT NULL,
 		  `date_ecriture` date NOT NULL,
-		  `nom_frs` varchar(50) NOT NULL,
+          `numero_operation` varchar(100) DEFAULT NULL,
+          `nom_frs` varchar(50) NOT NULL,
 		  `montant` double(11,2) NOT NULL,
 		  `description` varchar(255) NOT NULL,
 		  `numero` varchar(50) NOT NULL,
@@ -29,5 +31,17 @@ class tests_Compta extends UnitTestCase {
     }
     
     function test_importerFichierBanque() {
+        $compta = new AFUP_Compta($this->bdd);
+        $this->assertFalse($compta->extraireComptaDepuisCSVBanque(null));
+        $this->assertFalse($compta->extraireComptaDepuisCSVBanque(array()));
+        $fichierBanque = file(dirname(__FILE__)."/data/banque.csv");
+        $this->assertTrue($compta->extraireComptaDepuisCSVBanque($fichierBanque));
+        $toutCompta = $compta->obtenirTous();
+        $this->assertEqual(4, count($toutCompta));
+        $this->assertEqual('2009-11-10', $toutCompta[0]['date_ecriture']);
+        $this->assertEqual(3, $toutCompta[0]['idmode_regl']);
+        $this->assertEqual(2, $toutCompta[1]['idmode_regl']);
+        $this->assertEqual(4, $toutCompta[2]['idmode_regl']);
+        $this->assertEqual(4, $toutCompta[3]['idmode_regl']);
    }
 }
