@@ -2830,6 +2830,7 @@ CREATE TABLE `compta` (
   `idoperation` tinyint(5) NOT NULL,
   `idcategorie` int(11) NOT NULL,
   `date_ecriture` date NOT NULL,
+  `numero_operation` varchar(100) DEFAULT NULL,
   `nom_frs` varchar(50) NOT NULL,
   `montant` double(11,2) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -2839,7 +2840,7 @@ CREATE TABLE `compta` (
   `obs_regl` varchar(255) NOT NULL,
   `idevenement` tinyint(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM;
 
 
 
