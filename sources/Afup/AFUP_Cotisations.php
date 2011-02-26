@@ -189,50 +189,39 @@ class AFUP_Cotisations
         return $this->_bdd->obtenirUn($requete);
     }
 
-	function notifierRegelementEnLigneAuTresorier($cmd, $total, $autorisation, $transaction)
-	{
-        require_once 'Afup/AFUP_Configuration.php';
-        $configuration = $GLOBALS['AFUP_CONF'];
+	function notifierRegelementEnLigneAuTresorier($cmd, $total, $autorisation, $transaction){
+            require_once 'Afup/AFUP_Configuration.php';
+            $configuration = $GLOBALS['AFUP_CONF'];
 
-		list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
+            list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
 
-        require_once 'phpmailer/class.phpmailer.php';
-        if (AFUP_PERSONNES_MORALES == $type_personne) {
-            $personnes = new AFUP_Personnes_Morales($this->_bdd);
-        } else {
-            $personnes = new AFUP_Personnes_Physiques($this->_bdd);
-        }
-        $infos = $personnes->obtenir($id_personne, 'nom, prenom, email');
+            if (AFUP_PERSONNES_MORALES == $type_personne) {
+                $personnes = new AFUP_Personnes_Morales($this->_bdd);
+            } else {
+                $personnes = new AFUP_Personnes_Physiques($this->_bdd);
+            }
+            $infos = $personnes->obtenir($id_personne, 'nom, prenom, email');
 
-        $mail = new PHPMailer;
-        $mail->AddAddress("tresorier@afup.org", "Trésorier AFUP");
-        $mail->AddBCC("perrick@noparking.net", "Trésorier AFUP");
+            $sujet  = "Paiement cotisation AFUP\n";
 
-        $mail->From     = "toutenligne@afup.org";
-        $mail->FromName = "ToutEnLigne AFUP";
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
-            $mail->Mailer   = "smtp";
-        } else {
-            $mail->Mailer   = "mail";
-        }
+            $corps  = "Bonjour, \n\n";
+            $corps .= "Une cotisation annuelle AFUP a été réglée.\n\n";
+            $corps .= "Personne : " . $infos['nom'] . " " . $infos['prenom'] . " (" . $infos['email'] . ")\n";
+            $corps .= "URL : http://" . $_SERVER['SERVER_NAME'].$configuration->obtenir('web|path')."/pages/administration/index.php?page=cotisations&type_personne=" . $type_personne . "&id_personne=" . $id_personne . "\n";
+            $corps .= "Commande : " . $cmd."\n";
+            $corps .= "Total : " . $total."\n";
+            $corps .= "Autorisation : " . $autorisation."\n";
+            $corps .= "Transaction : " . $transaction."\n\n";
 
-        $sujet  = "Paiement cotisation AFUP\n";
-        $mail->Subject = $sujet;
+            $ok = AFUP_Mailing::envoyerMail(
+                        $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                        array('tresorier@afup.org'),
+                        $sujet,
+                        $corps);
 
-        $corps  = "Bonjour, \n\n";
-        $corps .= "Une cotisation annuelle AFUP a été réglée.\n\n";
-        $corps .= "Personne : " . $infos['nom'] . " " . $infos['prenom'] . " (" . $infos['email'] . ")\n";
-        $corps .= "URL : http://" . $_SERVER['SERVER_NAME'].$configuration->obtenir('web|path')."/pages/administration/index.php?page=cotisations&type_personne=" . $type_personne . "&id_personne=" . $id_personne . "\n";
-        $corps .= "Commande : " . $cmd."\n";
-        $corps .= "Total : " . $total."\n";
-        $corps .= "Autorisation : " . $autorisation."\n";
-        $corps .= "Transaction : " . $transaction."\n\n";
-        $mail->Body = $corps;
-        $ok = $mail->Send();
-        if (false === $ok) {
-            return false;
-        }
+            if (false === $ok) {
+                return false;
+            }
 	}
 
     function validerReglementEnLigne($cmd, $total, $autorisation, $transaction)
@@ -387,32 +376,18 @@ class AFUP_Cotisations
         require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'phpmailer/class.phpmailer.php';
-	    $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
+	$personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
 
-		if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
+        if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
 	        $personnePhysique = new AFUP_Personnes_Morales($this->_bdd);
-		} else {
+	} else {
 	        $personnePhysique = new AFUP_Personnes_Physiques($this->_bdd);
-		}
-	    $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email');
-
-        $mail = new PHPMailer;
-		$mail->AddAddress($contactPhysique['email'], $contactPhysique['nom']." ".$contactPhysique['prenom']);
-
-		$mail->From     = $configuration->obtenir('mails|email_expediteur');
-        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
-		if ($configuration->obtenir('mails|serveur_smtp')) {
-			$mail->Host     = $configuration->obtenir('mails|serveur_smtp');
-			$mail->Mailer   = "smtp";
-		} else {
-			$mail->Mailer   = "mail";
-		}
+	}
+	$contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email');
 
         $sujet  = "Facture AFUP\n";
-        $mail->Subject = $sujet;
 
-		$corps  = "Bonjour, \n\n";
+	$corps  = "Bonjour, \n\n";
         $corps .= "Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.\n";
         $corps .= "Nous restons à votre disposition pour toute demande complémentaire.\n\n";
         $corps .= "Le bureau\n\n";
@@ -420,12 +395,16 @@ class AFUP_Cotisations
         $corps .= $configuration->obtenir('afup|adresse')."\n";
         $corps .= $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville')."\n";
 
-        $mail->Body = $corps;
-
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $this->genererFacture($id_cotisation, $chemin_facture);
-        $mail->AddAttachment($chemin_facture, 'facture.pdf');
-        $ok = $mail->Send();
+        
+        $ok = AFUP_Mailing::envoyerMail(
+                    $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                    array($contactPhysique['email'], $contactPhysique['nom']." ".$contactPhysique['prenom']),
+                    $sujet,
+                    $corps,
+                    array('file'=>$chemin_facture));
+
         @unlink($chemin_facture);
         return $ok;
     }
@@ -568,7 +547,6 @@ class AFUP_Cotisations
         require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'phpmailer/class.phpmailer.php';
         if (AFUP_PERSONNES_MORALES == $type_personne) {
             $personnes = new AFUP_Personnes_Morales($this->_bdd);
         } else {
@@ -576,21 +554,7 @@ class AFUP_Cotisations
         }
         $infos = $personnes->obtenir($id_personne, 'nom, prenom, email');
 
-        $mail = new PHPMailer;
-        $mail->AddAddress($infos['email'], $infos['nom'] . ' ' . $infos['prenom']);
-        $mail->AddBCC("tresorier@afup.org", "Trésorier AFUP");
-
-        $mail->From     = "tresorier@afup.org";
-        $mail->FromName = "Trésorier AFUP";
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
-            $mail->Mailer   = "smtp";
-        } else {
-            $mail->Mailer   = "mail";
-        }
-
         $sujet  = "Relance cotisation AFUP\n";
-        $mail->Subject = $sujet;
 
         $montant = AFUP_PERSONNES_MORALES == $type_personne ? 50 : 20;
 
@@ -603,17 +567,20 @@ class AFUP_Cotisations
         $corps .= "BAT C1 - Appt 37\n";
         $corps .= "Résidence Les Millepertuis\n";
         $corps .= "91940 LES ULIS\n\n";
-		//$corps .= "AFUP chez Anaska\n";
-        //$corps .= "39 avenue du Raincy\n";
-        //$corps .= "93250 Villemomble\n\n";
         $corps .= "Vous pouvez aussi la renvoueller directement :\n\n";
         $corps .= "* En ligne via l'espace d'administration:\n";
         $corps .= "  http://www.afup.org/pages/administration/\n\n";
         $corps .= "* Par virement bancaire en contactant le trésorier tresorier@afup.org:\n";
         $corps .= "Cordialement\n\n";
         $corps .= "Le trésorier";
-        $mail->Body = $corps;
-        $ok = $mail->Send();
+
+
+        $ok = AFUP_Mailing::envoyerMail(
+                    $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                    array($infos['email'], $infos['nom'] . " " . $infos['prenom']),
+                    $sujet,
+                    $corps . $link);
+
         if (false === $ok) {
             return false;
         }
