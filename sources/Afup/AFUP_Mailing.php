@@ -62,7 +62,7 @@ class AFUP_Mailing
 
 
    public static function envoyerMail($from, $to, $subject,$body,$is_html =false) {
-        self::envoyeMail($from, $to, $subject,$body,$is_html);
+        return(self::envoyeMail($from, $to, $subject,$body,$is_html));
     }
 
    function envoyeMail($from, $to, $subject,$body,$is_html =false) {
