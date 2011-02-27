@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/config.dist.php';
+
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
 
 require_once 'Afup/AFUP_Base_De_Donnees.php';
@@ -10,7 +12,7 @@ class tests_Site_Article extends UnitTestCase {
     public $bdd;
     
     function __construct() {
-        $this->bdd = new AFUP_Base_De_Donnees('localhost', 'afup_test', 'root', '');
+        $this->bdd = new AFUP_Base_De_Donnees(TEST_HOST, TEST_DB, TEST_USER, TEST_PWD);
         $this->bdd->executer('DROP TABLE IF EXISTS `afup_site_article`');
         $this->bdd->executer('CREATE TABLE `afup_site_article` (
 		  `id` int(11) NOT NULL auto_increment,

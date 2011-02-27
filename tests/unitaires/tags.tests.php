@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/config.dist.php';
+
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
 
 require_once 'Afup/AFUP_Tags.php';

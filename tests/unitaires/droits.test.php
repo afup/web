@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/config.dist.php';
+
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
 
 require_once 'Afup/AFUP_Base_De_Donnees.php';
@@ -12,7 +14,7 @@ class tests_Droits extends UnitTestCase {
     function __construct() {
         $_SESSION['afup_login'] = true;
         $_SESSION['afup_mot_de_passe'] = true;
-        $this->bdd = new AFUP_Base_De_Donnees('localhost', 'afup_test', 'root', '');
+        $this->bdd = new AFUP_Base_De_Donnees(TEST_HOST, TEST_DB, TEST_USER, TEST_PWD);
         $this->pages = array(
 			'accueil' => array(
 				'nom' => 'Accueil',
