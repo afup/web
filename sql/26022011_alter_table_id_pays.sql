@@ -1,0 +1,1 @@
+ALTER TABLE annuairepro_membreannuaire ADD id_pays VARCHAR( 2 ) NOT NULL AFTER Zone
