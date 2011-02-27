@@ -158,6 +158,14 @@ class AFUP_Droits {
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'WHERE';
         $requete .= '  etat=' . AFUP_DROITS_ETAT_ACTIF;
+        /**
+         * Interdit à un admin de se connecter par un hash
+         * si son hash est dévoilé, qu'une personne se connecte via ce hash,
+         * change le mot de passe, se déconnecte et se reconnecte => il devient admin
+         */
+        $requete .= 'AND';
+        $requete .= '  niveau < 2';
+
         $personnes_physiques = $this->_bdd->obtenirTous($requete);
 
         foreach ($personnes_physiques as $personne_physique) {
