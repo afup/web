@@ -17,8 +17,8 @@
             <!-- Menu -->
             <ul id="menu">
 			{foreach from=$pages key=clef item=page}
-				<li>
 				{if $page.elements}
+				<li>
 					{$page.nom}
 					<ul>
 					{foreach from=$page.elements key=clef2 item=element}
@@ -27,12 +27,14 @@
 						</li>
 					{/foreach}
 					</ul>
+				</li>
 				{else}
 					{if !$page.masquee}
+    				<li>
 						<a href="index.php?page={$clef}">{$page.nom}</a>
+    				</li>
 					{/if}
 				{/if}
-				</li>
 			{/foreach}
             </ul>			
 
