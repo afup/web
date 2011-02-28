@@ -561,7 +561,7 @@ class AFUP_Compta_Facture
 
         $chemin_devis = AFUP_CHEMIN_RACINE . 'cache'. DIRECTORY_SEPARATOR .'devis' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
-        $mail->AddAttachment($chemin_facture, 'devis.pdf');
+        $mail->AddAttachment(array($chemin_facture, 'devis.pdf'));
         $ok = $mail->Send();
         @unlink($chemin_devis);
 
