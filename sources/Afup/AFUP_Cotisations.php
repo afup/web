@@ -408,9 +408,9 @@ class AFUP_Cotisations
          TODO : Il faut debugguer l envoi de PJ dans la classe AFUP_Mailing
          */
 
-         require_once 'phpmailer/class.phpmailer.php';
+        require_once 'phpmailer/class.phpmailer.php';
         $mail = new PHPMailer;
-        $mail->AddAddress($personne['email'], $personne['nom']." ".$personne['prenom']);
+        $mail->AddAddress($contactPhysique['email'], $contactPhysique['nom']." ".$contactPhysique['prenom']);
         $mail->From     = $configuration->obtenir('mails|email_expediteur');
         $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
 
