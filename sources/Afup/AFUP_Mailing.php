@@ -105,7 +105,7 @@ class AFUP_Mailing
         //Gestion Attachement
         foreach ($options['file'] as $filePath) {
             $mail->AddAttachment($filePath[0],$filePath[1]);
-            echo "<!--".$filePath[0] .$filePath[1] ."-->";
+            echo "TEST FICHIER". $filePath[0] .$filePath[1];
         }
         
         $from_email = is_array($from)?$from[0]:$from;
