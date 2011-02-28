@@ -397,13 +397,37 @@ class AFUP_Cotisations
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $this->genererFacture($id_cotisation, $chemin_facture);
-        
+
+        /*
         $ok = AFUP_Mailing::envoyerMail(
                     $GLOBALS['conf']->obtenir('mails|email_expediteur'),
                     array($contactPhysique['email'], $contactPhysique['nom']." ".$contactPhysique['prenom']),
                     $sujet,
                     $corps,
                     array('file'=>array($chemin_facture,'facture.pdf')));
+         TODO : Il faut debugguer l envoi de PJ dans la classe AFUP_Mailing
+         */
+
+         require_once 'phpmailer/class.phpmailer.php';
+        $mail = new PHPMailer;
+        $mail->AddAddress($personne['email'], $personne['nom']." ".$personne['prenom']);
+        $mail->From     = $configuration->obtenir('mails|email_expediteur');
+        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
+
+        if ($configuration->obtenir('mails|serveur_smtp')) {
+            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
+            $mail->Mailer   = "smtp";
+        } else {
+            $mail->Mailer   = "mail";
+        }
+
+        $mail->Subject = $sujet;
+        $mail->Body = $corps;
+        $mail->AddAttachment($chemin_facture, 'facture.pdf');
+        $ok = $mail->Send();
+        @unlink($chemin_facture);
+
+
 
         @unlink($chemin_facture);
         return $ok;
