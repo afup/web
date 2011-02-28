@@ -403,7 +403,7 @@ class AFUP_Cotisations
                     array($contactPhysique['email'], $contactPhysique['nom']." ".$contactPhysique['prenom']),
                     $sujet,
                     $corps,
-                    array('file'=>$chemin_facture));
+                    array('file'=>$chemin_facture,'facture.pdf'));
 
         @unlink($chemin_facture);
         return $ok;
