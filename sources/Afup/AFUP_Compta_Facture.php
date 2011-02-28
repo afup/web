@@ -515,7 +515,7 @@ class AFUP_Compta_Facture
                     array($personne['email'], $personne['nom']),
                     $sujet,
                     $corps,
-                    array('file'=>$chemin_facture)
+                    array('file'=>array($chemin_facture,'facture.pdf'))
                 );
 
         @unlink($chemin_facture);

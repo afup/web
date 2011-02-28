@@ -65,7 +65,7 @@ class AFUP_Mailing
        $optionsDefault = array(
             'html' => FALSE,
             'bcc'  => array(),
-            'file' => array());
+            'file' => array()); // chaque item doit contenir : (pathFichier, nom fichier)
 
        $options = array_merge($optionsDefault,$options);
 
@@ -104,7 +104,8 @@ class AFUP_Mailing
 
         //Gestion Attachement
         foreach ($options['file'] as $filePath) {
-            $mail->AddAttachment($filePath);
+            $mail->AddAttachment($filePath[0],$filePath[1]);
+            echo "<!--".$filePath[0] .$filePath[1] ."-->";
         }
         
         $from_email = is_array($from)?$from[0]:$from;
