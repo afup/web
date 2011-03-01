@@ -41,7 +41,8 @@ if ($action == 'lister') {
    {
         $champsRecup = $comptaFact->obtenir($_GET['id']);
 
-        $champs['date_saisie']          = $champsRecup['date_ecriture'];
+        $champs['date_devis']          = $champsRecup['date_devis'];
+        $champs['date_facture']          = $champsRecup['date_facture'];
         $champs['societe']          = $champsRecup['societe'];
         $champs['numero_devis']          = $champsRecup['numero_devis'];
         $champs['societe']          = $champsRecup['societe'];
@@ -84,11 +85,11 @@ if ($action == 'lister') {
    $formulaire->addElement('header'  , ''                         , 'Détail Devis');
    
 //$mois=10;
-   $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
+   $formulaire->addElement('date'    , 'date_devis'     , 'Date devis', array('language' => 'fr', 
                                                                                 'format'   => 'd F Y',
   																				'minYear' => date('Y'), 
   																				'maxYear' => date('Y')));
-
+  
 	$formulaire->addElement('header'  , ''                       , 'Facturation');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
 	$formulaire->addElement('text'    , 'societe'    , 'Société'        , array('size' => 50, 'maxlength' => 100));
@@ -158,11 +159,11 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
 
-$date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".$valeur['date_saisie']['d'] ;
-      
+$date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$valeur['date_devis']['d'] ;
+     
     	if ($action == 'ajouter') {
    			$ok = $comptaFact->ajouter(
-            						$date_ecriture,
+            						$date_devis,
             						$valeur['societe'],
             						$valeur['service'],
             						$valeur['adresse'],
@@ -191,7 +192,7 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
     	} else {
    			$ok = $comptaFact->modifier(
 									$_GET['id'],
-   									$date_ecriture,
+   									$date_devis,
             						$valeur['societe'],
             						$valeur['service'],
             						$valeur['adresse'],
