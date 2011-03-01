@@ -18,13 +18,13 @@ class AFUP_Compta_Facture
     {
 
 		$requete  = 'SELECT ';
-		$requete .= ' compta_facture.* '; 
+		$requete .= ' afup_compta_facture.* '; 
 		$requete .= 'FROM  ';
-		$requete .= ' compta_facture  ';
+		$requete .= ' afup_compta_facture  ';
 		$requete .= 'WHERE  ';
 		$requete .= ' numero_devis != "" ';
 		$requete .= 'ORDER BY ';
-		$requete .= ' compta_facture.date_ecriture ';
+		$requete .= ' afup_compta_facture.date_ecriture ';
 
 		return $this->_bdd->obtenirTous($requete);
     }
@@ -33,14 +33,14 @@ class AFUP_Compta_Facture
     {
 
 		$requete  = 'SELECT ';
-		$requete .= 'compta_facture.*, ';
-		$requete .= 'compta_facture_details.ref,compta_facture_details.designation,compta_facture_details.quantite,compta_facture_details.pu '; 
+		$requete .= 'afup_compta_facture.*, ';
+		$requete .= 'afup_compta_facture_details.ref,afup_compta_facture_details.designation,afup_compta_facture_details.quantite,afup_compta_facture_details.pu '; 
 		$requete .= 'FROM  ';
-		$requete .= 'compta_facture,  ';
-		$requete .= 'compta_facture_details ';
+		$requete .= 'afup_compta_facture,  ';
+		$requete .= 'afup_compta_facture_details ';
 		$requete .= 'WHERE  ';
 		$requete .= ' numero_devis != "" ';
-		$requete .= 'compta_facture.id = compta_facture_details.idcompta_facture ';
+		$requete .= 'afup_compta_facture.id = afup_compta_facture_details.idafup_compta_facture ';
 		$requete .= 'ORDER BY ';
 		$requete .= 'compta.date_ecriture ';
 	
@@ -51,13 +51,13 @@ class AFUP_Compta_Facture
     {
 
 		$requete  = 'SELECT ';
-		$requete .= ' compta_facture.* '; 
+		$requete .= ' afup_compta_facture.* '; 
 		$requete .= 'FROM  ';
-		$requete .= 'compta_facture  ';
+		$requete .= 'afup_compta_facture  ';
 		$requete .= 'WHERE  ';
 		$requete .= ' numero_facture != "" ';
 		$requete .= 'ORDER BY ';
-		$requete .= 'compta_facture.date_ecriture ';
+		$requete .= 'afup_compta_facture.date_ecriture ';
 
 		return $this->_bdd->obtenirTous($requete);
     }
@@ -66,14 +66,14 @@ class AFUP_Compta_Facture
     {
 
 		$requete  = 'SELECT ';
-		$requete .= 'compta_facture.*, ';
-		$requete .= 'compta_facture_details.ref,compta_facture_details.designation,compta_facture_details.quantite,compta_facture_details.pu '; 
+		$requete .= 'afup_compta_facture.*, ';
+		$requete .= 'afup_compta_facture_details.ref,afup_compta_facture_details.designation,afup_compta_facture_details.quantite,afup_compta_facture_details.pu '; 
 		$requete .= 'FROM  ';
-		$requete .= 'compta_facture,  ';
-		$requete .= 'compta_facture_details ';
+		$requete .= 'afup_compta_facture,  ';
+		$requete .= 'afup_compta_facture_details ';
 		$requete .= 'WHERE  ';
 		$requete .= ' numero_facture != "" ';
-		$requete .= 'compta_facture.id = compta_facture_details.idcompta_facture ';
+		$requete .= 'afup_compta_facture.id = afup_compta_facture_details.idafup_compta_facture ';
 		$requete .= 'ORDER BY ';
 		$requete .= 'compta.date_ecriture ';
 	
@@ -85,7 +85,7 @@ class AFUP_Compta_Facture
         $requete  = 'SELECT';
         $requete .= '  * ';
         $requete .= 'FROM';
-        $requete .= '  compta_facture ';
+        $requete .= '  afup_compta_facture ';
         $requete .= 'WHERE id=' . $id;
 
         return $this->_bdd->obtenirEnregistrement($requete);
@@ -96,23 +96,23 @@ class AFUP_Compta_Facture
         $requete  = 'SELECT';
         $requete .= '  * ';
         $requete .= 'FROM';
-        $requete .= '  compta_facture_details ';
-        $requete .= 'WHERE idcompta_facture=' . $id;
+        $requete .= '  afup_compta_facture_details ';
+        $requete .= 'WHERE idafup_compta_facture=' . $id;
 		
         return $this->_bdd->obtenirTous($requete);
     }
     
-    function ajouter($date_ecriture,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
+    function ajouter($date_devis,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
 					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3)
 	{
 	
 		$requete = 'INSERT INTO ';
-		$requete .= 'compta_facture (';
-		$requete .= 'date_ecriture,societe,service,adresse,code_postal,ville,id_pays,';
+		$requete .= 'afup_compta_facture (';
+		$requete .= 'date_devis,societe,service,adresse,code_postal,ville,id_pays,';
 		$requete .= 'nom,prenom,tel,';
 		$requete .= 'email,observation,ref_clt1,ref_clt2,ref_clt3,numero_devis) ';
 		$requete .= 'VALUES (';
-		$requete .= $this->_bdd->echapper($date_ecriture) . ',';
+		$requete .= $this->_bdd->echapper($date_devis) . ',';
 		$requete .= $this->_bdd->echapper($societe) . ',';
 		$requete .= $this->_bdd->echapper($service) . ',';
 		$requete .= $this->_bdd->echapper($adresse) . ',';
@@ -136,8 +136,8 @@ class AFUP_Compta_Facture
 	function ajouter_details($ref,$designation,$quantite,$pu)
 	{
 		$requete = 'INSERT INTO ';
-		$requete .= 'compta_facture_details (';
-		$requete .= 'idcompta_facture,ref,designation,quantite,pu) ';
+		$requete .= 'afup_compta_facture_details (';
+		$requete .= 'idafup_compta_facture,ref,designation,quantite,pu) ';
 		$requete .= 'VALUES (';
 		$requete .= $this->obtenirDernier() .','; 
 		$requete .= $this->_bdd->echapper($ref) . ',';
@@ -149,15 +149,15 @@ class AFUP_Compta_Facture
 		return $this->_bdd->executer($requete);
 	}
 	
-	function modifier($id,$date_ecriture,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
+	function modifier($id,$date_devis,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
 					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3,
 					$numero_devis,$numero_facture)
 	{
 	
 		$requete = 'UPDATE ';
-		$requete .= 'compta_facture ';
+		$requete .= 'afup_compta_facture ';
 		$requete .= 'SET ';
-		$requete .= 'date_ecriture='.$this->_bdd->echapper($date_ecriture) . ',';
+		$requete .= 'date_devis='.$this->_bdd->echapper($date_devis) . ',';
 		$requete .= 'societe='.$this->_bdd->echapper($societe) . ',';
 		$requete .= 'service='.$this->_bdd->echapper($service) . ',';
 		$requete .= 'adresse='.$this->_bdd->echapper($adresse) . ',';
@@ -183,7 +183,7 @@ class AFUP_Compta_Facture
 	function modifier_details($id,$ref,$designation,$quantite,$pu)
 	{
 		$requete = 'UPDATE ';
-		$requete .= 'compta_facture_details ';
+		$requete .= 'afup_compta_facture_details ';
 		$requete .= 'SET ';
 		$requete .= 'ref='.$this->_bdd->echapper($ref) . ',';
 		$requete .= 'designation='.$this->_bdd->echapper($designation) . ',';
@@ -199,7 +199,7 @@ class AFUP_Compta_Facture
     {
         $requete  = 'SELECT MAX(id)';
         $requete .= 'FROM';
-        $requete .= '  compta_facture ';
+        $requete .= '  afup_compta_facture ';
 
         return $this->_bdd->obtenirUn($requete);
     }
@@ -212,7 +212,7 @@ class AFUP_Compta_Facture
         $requete  = 'SELECT';
         $requete .= "  MAX(CAST(SUBSTRING_INDEX(numero_devis, '-', -1) AS UNSIGNED)) + 1 ";
         $requete .= 'FROM';
-        $requete .= ' compta_facture ';
+        $requete .= ' afup_compta_facture ';
         $requete .= 'WHERE';
         $requete .= '  LEFT(numero_devis, 4)=' . $this->_bdd->echapper(date('Y'));
         $index = $this->_bdd->obtenirUn($requete);
@@ -221,10 +221,10 @@ class AFUP_Compta_Facture
 
     function genererDevis($reference, $chemin = null)
     {
-        $requete    = 'SELECT * FROM compta_facture WHERE numero_devis=' . $this->_bdd->echapper($reference);
+        $requete    = 'SELECT * FROM afup_compta_facture WHERE numero_devis=' . $this->_bdd->echapper($reference);
         $coordonnées = $this->_bdd->obtenirEnregistrement($requete);
 
-        $requete    = 'SELECT * FROM compta_facture_details WHERE idcompta_facture=' . $this->_bdd->echapper($coordonnées['id']);
+        $requete    = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnées['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
         require_once 'Afup/AFUP_Configuration.php';
@@ -353,10 +353,10 @@ class AFUP_Compta_Facture
 
     function genererFacture($reference, $chemin = null)
     {
-        $requete    = 'SELECT * FROM compta_facture WHERE numero_facture=' . $this->_bdd->echapper($reference);
+        $requete    = 'SELECT * FROM afup_compta_facture WHERE numero_facture=' . $this->_bdd->echapper($reference);
         $coordonnées = $this->_bdd->obtenirEnregistrement($requete);
 
-        $requete    = 'SELECT * FROM compta_facture_details WHERE idcompta_facture=' . $this->_bdd->echapper($coordonnées['id']);
+        $requete    = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnées['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
         require_once 'Afup/AFUP_Configuration.php';

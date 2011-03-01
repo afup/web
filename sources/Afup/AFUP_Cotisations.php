@@ -591,7 +591,7 @@ class AFUP_Cotisations
         $corps .= "BAT C1 - Appt 37\n";
         $corps .= "Résidence Les Millepertuis\n";
         $corps .= "91940 LES ULIS\n\n";
-        $corps .= "Vous pouvez aussi la renvoueller directement :\n\n";
+        $corps .= "Vous pouvez aussi la renouveller directement :\n\n";
         $corps .= "* En ligne via l'espace d'administration:\n";
         $corps .= "  http://www.afup.org/pages/administration/\n\n";
         $corps .= "* Par virement bancaire en contactant le trésorier tresorier@afup.org:\n";
