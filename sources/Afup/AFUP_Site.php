@@ -237,6 +237,7 @@ class AFUP_Site_Articles {
         $requete .= '  * ';
         $requete .= ' FROM';
         $requete .= '  afup_site_article ';
+        $requete .= ' WHERE etat = 1 ';
         $requete .= ' ORDER BY date DESC';
         $requete .= ' LIMIT 0, '.(int)$rowcount;
 
