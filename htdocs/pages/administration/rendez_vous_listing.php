@@ -15,7 +15,7 @@ if ($action == 'listing')
     $inscrits = $rendez_vous->obtenirListeInscrits($rendezvous['id'], $list_ordre, FALSE);
 
     $smarty->assign('rendezvous', $rendezvous);
-    $smarty->assign('lesrendezvous', $rendezvous->obtenirListe());
+ //   $smarty->assign('lesrendezvous', $rendezvous->obtenirListe());
     $smarty->assign('inscrits', $inscrits);
 
 }    
