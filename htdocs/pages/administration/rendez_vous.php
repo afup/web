@@ -162,6 +162,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('header'  , ''              , 'Inscription');
 	$formulaire->addElement('text'    , 'nom'           , 'Nom');
+	$formulaire->addElement('text'    , 'prenom'        , 'Prénom');
 	$formulaire->addElement('text'    , 'entreprise'    , 'Entreprise');
 	$formulaire->addElement('text'    , 'email'         , 'Email');
 	$formulaire->addElement('text'    , 'telephone'     , 'Téléphone');
