@@ -13,7 +13,7 @@ if ($action == 'listing')
 	$rendezvous = $rendez_vous->obtenir((int)$_GET['id']);
 	$list_ordre=" nom ";
     $inscrits = $rendez_vous->obtenirListeInscrits($rendezvous['id'], $list_ordre, FALSE);
-
+echo $inscrits;
     $smarty->assign('lesrendezvous', $rendezvous->obtenirListe());
     $smarty->assign('rendezvous', $rendezvous['titre']);
     $smarty->assign('inscrits', $inscrits);
