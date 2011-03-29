@@ -1,0 +1,36 @@
+<form method="GET" name="forum">
+<input type="hidden" name="page" value="rendez_vous" />
+<h2>Liste des inscription pour le RV AFUP : 
+    <select name="id" onchange="this.form.submit(); return false;">
+    {foreach from=$lesrendezvous item=unrendezvous}
+	    <option value="{$unrendezvous.id}"{if $rendezvous.id == $unrendezvous.id} selected{/if}>{if $unrendezvous.debut < $now}* {/if}{$unrendezvous.titre}</option>
+    {/foreach}
+    </select>
+    
+</h2>
+</form>
+
+
+<br/>
+<table class="afup_tab">
+    <tr class="{cycle values="odd,even"}">
+        <th align="left">Nom Prénom</th>
+        <th align="left">Entreprise</th>
+        <th align="left">Présence</th>
+        <th align="left">Confimé</th>
+        <th align="left" style="width: 30%;">Pointage</th>
+    </tr>
+{foreach from=$inscrits item=inscrit}
+	    <tr class="{cycle values="odd,even"}">
+	        <td><strong>{$inscrit.nom} {// $inscrit.prenom}</strong></td>
+	        <td>{$inscrit.entreprise}</td>  
+	        <td style="text-align: center">{if $inscrit.presence==1}Vient{elseif $inscrit.presence==2}En attente{else}Refusé{/if}</td>
+	        <td style="text-align: center">{if $inscrit.confirme==1}Oui{elseif $inscrit.confirme==-1}Non{else} {/if}</td>
+			<td></td>   
+	    </tr>
+{foreachelse}
+    <tr>
+        <td><em>Aucune inscription</em></td>
+    </tr>
+{/foreach}
+</table>
