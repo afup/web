@@ -96,6 +96,8 @@ class AFUP_Planete_Flux
     	$requete .= '  afup_planete_billet.afup_planete_flux_id = afup_planete_flux.id ';
     	$requete .= 'WHERE '; 
     	$requete .= '  afup_planete_billet.etat = 1 ';
+    	$requete .= 'AND '; 
+    	$requete .= '  afup_planete_flux.etat = 1 ';
     	$requete .= 'GROUP BY '; 
     	$requete .= '  afup_planete_flux.id ';
     	$requete .= 'ORDER BY ';
