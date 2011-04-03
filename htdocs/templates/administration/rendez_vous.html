@@ -18,7 +18,7 @@
     	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=rendez_vous&amp;action=envoyer&amp;id={$rendezvous.id}" title="Envoyer les demandes de confirmation">Envoyer les demandes de confirmation</a><br />
     	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=rendez_vous&amp;action=remplir&amp;id={$rendezvous.id}" title="Remplir avec la liste d'attente">Remplir avec la liste d'attente</a><br />
     	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=rendez_vous&amp;action=exporter&amp;id={$rendezvous.id}" title="Exporter vers un BarCamp">Exporter vers un BarCamp</a><br />
-    	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=rendez_vous_listing&amp;action=listing&amp;id={$rendezvous.id}" title="Imprimer le prochain rendez-vous">Imprimer le Rendez-vous</a><br />
+    	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=rendez_vous&amp;action=listing&amp;id={$rendezvous.id}" title="Imprimer le prochain rendez-vous">Imprimer le Rendez-vous</a><br />
 	    <br/>
 		<ul>
 			<li>Inscrits : {$nb_inscrits}</li>
@@ -82,6 +82,38 @@
         &lt;/tr&gt;
 {/foreach}
 </textarea>
+{elseif $action == 'listing'}
+    <h2>Liste des inscrits du rendez-vous
+    {foreach from=$lesrendezvous item=unrendezvous}
+	    {if $rendezvous.id == $unrendezvous.id} 
+	    {$unrendezvous.titre}
+	    {/if}
+    {/foreach}
+    <br />
+
+
+<table class="afup_tab">
+    <tr class="{cycle values="odd,even"}">
+        <th align="left">Nom Prénom</th>
+        <th align="left">Entreprise</th>
+        <th align="left">Présence</th>
+        <th align="left">Confimé</th>
+        <th align="left" style="width: 30%;">Pointage</th>
+    </tr>
+{foreach from=$inscrits item=inscrit}
+	    <tr class="{cycle values="odd,even"}">
+	        <td><strong>{$inscrit.nom} {$inscrit.prenom}</strong></td>
+	        <td>{$inscrit.entreprise}</td>  
+	        <td style="text-align: center">{if $inscrit.presence==1}Vient{elseif $inscrit.presence==2}En attente{else}Refusé{/if}</td>
+	        <td style="text-align: center">{if $inscrit.confirme==1}Oui{elseif $inscrit.confirme==-1}Non{else} {/if}</td>
+			<td></td>   
+	    </tr>
+{foreachelse}
+    <tr>
+        <td><em>Aucune inscription</em></td>
+    </tr>
+{/foreach}
+</table>
 {else}
     {if $action == 'preparer'}
         <h2>Préparer un rendez-vous</h2>
