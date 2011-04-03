@@ -26,6 +26,15 @@ AFUP_Logs::initialiser($bdd, 0);
 
 $rendezvous = new AFUP_Rendez_Vous($bdd);
 
+$rendezvous->obtenirInscritAConfirmer($_GET['hash']);
+
+echo "<pre>";
+print_r($_GET['hash']);
+print_r($rendezvous);
+echo "<hr>";
+print_r($tmp);
+echo "</pre>";
+
 if (isset($_GET['hash']) and $champs = $rendezvous->obtenirInscritAConfirmer($_GET['hash'])) {
 	if (isset($champs['id_rendezvous']) and is_numeric($champs['id_rendezvous'])) {
 		$prochain_rendezvous = $rendezvous->obtenirRendezVousFutur($champs['id_rendezvous']);
@@ -51,12 +60,13 @@ if (is_array($prochain_rendezvous)) {
 	
 	    $formulaire->addElement('header'  , ''              , 'Inscription');
 		$formulaire->addElement('text'    , 'nom'           , 'Nom');
+		$formulaire->addElement('text'    , 'prenom'        , 'Prénom');
 		$formulaire->addElement('text'    , 'entreprise'    , 'Entreprise');
 		$formulaire->addElement('text'    , 'email'         , 'Email');
 		$formulaire->addElement('text'    , 'telephone'     , 'Téléphone');
 	    $formulaire->addElement('select'  , 'confirme'      , 'Confirmation', array(null                        => '',
 	                                                                            AFUP_RENDEZ_VOUS_CONFIRME       => 'OUI, je serai bien présent',
-	                                                                            AFUP_RENDEZ_VOUS_DECLINE        => 'NON, je ne serai pas là finalement',
+                                                                            AFUP_RENDEZ_VOUS_DECLINE        => 'NON, je ne serai pas là finalement',
 	                                                                            ));
 	
 	    $formulaire->addElement('header'  , 'boutons'   , '');

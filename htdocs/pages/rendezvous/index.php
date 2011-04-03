@@ -57,6 +57,7 @@ if (isset($prochain_rendezvous) and is_array($prochain_rendezvous)) {
 
     $formulaire->addElement('header'  , ''              , 'Inscription');
 	$formulaire->addElement('text'    , 'nom'           , 'Nom');
+	$formulaire->addElement('text'    , 'prenom'        , 'Prénom');
 	$formulaire->addElement('text'    , 'entreprise'    , 'Entreprise');
 	$formulaire->addElement('text'    , 'email'         , 'Email');
 	$formulaire->addElement('text'    , 'telephone'     , 'Téléphone');
