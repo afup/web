@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'preparer', 'envoyer', 'ajouter', 'modifier', 'supprimer', 'remplir', 'exporter'));
+$action = verifierAction(array('lister', 'preparer', 'envoyer', 'ajouter', 'modifier', 'supprimer', 'remplir', 'exporter','listing'));
 $tris_valides = array('nom', 'entreprise', 'email', 'telephone', 'presence', 'confirme', 'creation');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -8,7 +8,7 @@ $smarty->assign('action', $action);
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Rendez_Vous.php';
 $rendez_vous = new AFUP_Rendez_Vous($bdd);
 
-if ($action == 'lister') {
+if ($action == 'lister' || $action== 'listing' ) {
     if (isset($_GET['id'])) {
 		$rendezvous = $rendez_vous->obtenir((int)$_GET['id']);
        } else {
