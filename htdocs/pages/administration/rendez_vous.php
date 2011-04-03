@@ -27,6 +27,11 @@ if ($action == 'lister' || $action== 'listing' ) {
         && isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
         $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
     }
+
+    if ($action == "listing")
+    {
+    	$list_ordre="nom";
+    }   
     
     $inscrits = $rendez_vous->obtenirListeInscrits($rendezvous['id'], $list_ordre, $list_associatif);
     $smarty->assign('lesrendezvous', $rendez_vous->obtenirListe());
