@@ -83,7 +83,7 @@
 {/foreach}
 </textarea>
 {elseif $action == 'listing'}
-    <h2>Liste des inscrits du rendez-vous
+    Liste des inscrits du rendez-vous<br />
     {foreach from=$lesrendezvous item=unrendezvous}
 	    {if $rendezvous.id == $unrendezvous.id} 
 	    {$unrendezvous.titre}
