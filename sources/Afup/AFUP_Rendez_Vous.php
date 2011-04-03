@@ -93,6 +93,7 @@ class AFUP_Rendez_Vous
         $requete .= '  id, ';
         $requete .= '  id_rendezvous, ';
         $requete .= '  nom, ';
+        $requete .= '  prenom, ';
         $requete .= '  email ';
         $requete .= 'FROM';
         $requete .= '  afup_rendezvous_inscrits ';
@@ -108,10 +109,16 @@ class AFUP_Rendez_Vous
 
         $succes = false;
         require_once 'phpmailer/class.phpmailer.php';
+		// correction pour gérer les accents dans les validations des RV
+        // (c) Christophe villeneuve
         foreach ($inscrits as $inscrit) {
-            $hash = md5(implode("", $inscrit));
+        	$hash=md5(
+					utf8_decode(
+						$inscrit['id'].$inscrit['id_rendezvous'].$inscrit['nom'].$inscrit['prenom'].$inscrit['email']
+					)
+				);
             $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash='.$hash;
-			$link = str_replace('administration/index.php', 'rendezvous/confirmation.php', $link);
+            $link = str_replace('administration/index.php', 'rendezvous/confirmation.php', $link);
             $mail = new PHPMailer;
             if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
                 $mail->IsSMTP();
@@ -128,7 +135,7 @@ class AFUP_Rendez_Vous
             $mail->Send();
             $succes += 1;
         }
-        
+  
         return $succes;    	
     }
 
@@ -153,10 +160,11 @@ class AFUP_Rendez_Vous
 	{
 		$requete  = 'SELECT';
         $requete .= '  ' . $champs . ' ';
+        $requete .= ',  CONCAT(id, id_rendezvous, nom, prenom, email)  ';
         $requete .= 'FROM';
         $requete .= '  afup_rendezvous_inscrits ';
         $requete .= 'WHERE';
-        $requete .= '  MD5(CONCAT(id, id_rendezvous, nom, email)) = ' . $this->_bdd->echapper($hash);
+        $requete .= '  MD5(CONCAT(id, id_rendezvous, nom, prenom, email)) = ' . $this->_bdd->echapper($hash);
 
         $champs = $this->_bdd->obtenirEnregistrement($requete);
         if (isset($champs['presence']) and $champs['presence'] == AFUP_RENDEZ_VOUS_REFUSE) {
@@ -388,6 +396,7 @@ class AFUP_Rendez_Vous
         $requete .= ' SET ';
         $requete .= ' id_rendezvous = '.$this->_bdd->echapper($formulaire->exportValue('id_rendezvous')) . ',';
         $requete .= ' nom = '.$this->_bdd->echapper($formulaire->exportValue('nom')) . ',';
+        $requete .= ' prenom = '.$this->_bdd->echapper($formulaire->exportValue('prenom')) . ',';
         $requete .= ' entreprise = '.$this->_bdd->echapper($formulaire->exportValue('entreprise')) . ',';
         $requete .= ' email = '.$this->_bdd->echapper($formulaire->exportValue('email')) . ',';
         $requete .= ' telephone = '.$this->_bdd->echapper($formulaire->exportValue('telephone')) . ',';
@@ -420,6 +429,7 @@ class AFUP_Rendez_Vous
         $requete .= ' SET ';
         $requete .= ' id_rendezvous = '.$this->_bdd->echapper($formulaire->exportValue('id_rendezvous')) . ',';
         $requete .= ' nom = '.$this->_bdd->echapper($formulaire->exportValue('nom')) . ',';
+        $requete .= ' prenom = '.$this->_bdd->echapper($formulaire->exportValue('prenom')) . ','; 
         $requete .= ' entreprise = '.$this->_bdd->echapper($formulaire->exportValue('entreprise')) . ',';
         $requete .= ' email = '.$this->_bdd->echapper($formulaire->exportValue('email')) . ',';
         $requete .= ' telephone = '.$this->_bdd->echapper($formulaire->exportValue('telephone')) . ',';
