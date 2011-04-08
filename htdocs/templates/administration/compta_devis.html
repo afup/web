@@ -2,8 +2,8 @@
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=ajouter" title="ajouter un devis">Ajouter un devis</a><br />
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Ajouter une facture (obligation de passer par la saisie d'un devis)<br />
 <br>
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis" title="ajouter un devis">Liste des devis</a><br />
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_facture" title="ajouter un devis">Liste des factures</a><br />
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=lister" title="ajouter un devis">Liste des devis</a><br />
+<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_facture&amp;action=lister" title="ajouter un devis">Liste des factures</a><br />
      <h2>Liste devis </h2>
     <table>
         <tr>
@@ -18,7 +18,7 @@
     {foreach from=$ecritures item=ecriture}
          <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td nowrap="nowrap">{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
+            <td nowrap="nowrap">{$ecriture.date_devis|date_format:"%d/%m/%Y"}</td>
              <td>{$ecriture.societe}</td>
              <td  width="250">{$ecriture.ville}</td>
 			<td  align='right' width='100'>{$ecriture.ref_clt1}</td> 
