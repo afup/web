@@ -24,7 +24,7 @@ class AFUP_Compta_Facture
 		$requete .= 'WHERE  ';
 		$requete .= ' numero_devis != "" ';
 		$requete .= 'ORDER BY ';
-		$requete .= ' afup_compta_facture.date_ecriture ';
+		$requete .= ' afup_compta_facture.date_devis ';
 
 		return $this->_bdd->obtenirTous($requete);
     }
@@ -42,7 +42,7 @@ class AFUP_Compta_Facture
 		$requete .= ' numero_devis != "" ';
 		$requete .= 'afup_compta_facture.id = afup_compta_facture_details.idafup_compta_facture ';
 		$requete .= 'ORDER BY ';
-		$requete .= 'compta.date_ecriture ';
+		$requete .= 'compta.date_devis ';
 	
 		return $this->_bdd->obtenirTous($requete);
     }
@@ -57,7 +57,7 @@ class AFUP_Compta_Facture
 		$requete .= 'WHERE  ';
 		$requete .= ' numero_facture != "" ';
 		$requete .= 'ORDER BY ';
-		$requete .= 'afup_compta_facture.date_ecriture ';
+		$requete .= 'afup_compta_facture.date_facture ';
 
 		return $this->_bdd->obtenirTous($requete);
     }
@@ -75,7 +75,7 @@ class AFUP_Compta_Facture
 		$requete .= ' numero_facture != "" ';
 		$requete .= 'afup_compta_facture.id = afup_compta_facture_details.idafup_compta_facture ';
 		$requete .= 'ORDER BY ';
-		$requete .= 'compta.date_ecriture ';
+		$requete .= 'compta.date_facture ';
 	
 		return $this->_bdd->obtenirTous($requete);
     }
@@ -172,10 +172,15 @@ class AFUP_Compta_Facture
 		$requete .= 'ref_clt1='.$this->_bdd->echapper($ref_clt1) . ',';
 		$requete .= 'ref_clt2='.$this->_bdd->echapper($ref_clt2) . ',';
 		$requete .= 'ref_clt3='.$this->_bdd->echapper($ref_clt3) . ', ';
-		$requete .= 'numero_devis='.$this->_bdd->echapper($numero_devis) . ' ';
-		$requete .= 'numero_facture='.$this->_bdd->echapper($numero_facture) . ' ';
+		$requete .= 'numero_devis='.$this->_bdd->echapper($numero_devis) .' '; 
+		
+		if ($numero_facture)
+		{
+			$requete .= ', ';
+			$requete .= 'numero_facture='.$this->_bdd->echapper($numero_facture) . ' ';
+		}
 		$requete .= 'WHERE ';
-		$requete .= 'id=' . $id. ' ';
+		$requete .= 'id=' . $this->_bdd->echapper($id). ' ';
 
 		return $this->_bdd->executer($requete);
 	}
@@ -205,10 +210,36 @@ class AFUP_Compta_Facture
     }
 
 
+   function transfertDevis($numero_devis)
+   {
+		$numero_facture=$this->genererNumeroFacture();
+   	
+		$requete = 'UPDATE ';
+		$requete .= 'afup_compta_facture ';
+		$requete .= 'SET ';
+		$requete .= 'date_facture='.$this->_bdd->echapper(DATE('Y-m-d')) . ',';
+		$requete .= 'numero_facture='.$this->_bdd->echapper($numero_facture) . ' ';
+		$requete .= 'WHERE ';
+		$requete .= 'numero_devis=' . $this->_bdd->echapper($numero_devis). ' ';
 
-   function genererNumeroDevis()
+		return $this->_bdd->executer($requete); 		   		
+   }    
+
+   function genererNumeroFacture()
     {
     	// afup_cotisations
+        $requete  = 'SELECT';
+        $requete .= "  MAX(CAST(SUBSTRING_INDEX(numero_facture, '-', -1) AS UNSIGNED)) + 1 ";
+        $requete .= 'FROM';
+        $requete .= ' afup_compta_facture ';
+        $requete .= 'WHERE';
+        $requete .= '  LEFT(numero_facture, 4)=' . $this->_bdd->echapper(date('Y'));
+        $index = $this->_bdd->obtenirUn($requete);
+        return date('Y') . '-' . (is_null($index) ? 1 : $index);
+    }
+    
+  function genererNumeroDevis()
+    {
         $requete  = 'SELECT';
         $requete .= "  MAX(CAST(SUBSTRING_INDEX(numero_devis, '-', -1) AS UNSIGNED)) + 1 ";
         $requete .= 'FROM';
@@ -218,7 +249,8 @@ class AFUP_Compta_Facture
         $index = $this->_bdd->obtenirUn($requete);
         return date('Y') . '-' . (is_null($index) ? 1 : $index);
     }
-
+	
+    
     function genererDevis($reference, $chemin = null)
     {
         $requete    = 'SELECT * FROM afup_compta_facture WHERE numero_devis=' . $this->_bdd->echapper($reference);
@@ -306,6 +338,7 @@ class AFUP_Compta_Facture
         $pdf->Ln(10);
         
         $pdf->MultiCell(180, 5, utf8_decode("Comme convenu, nous vous prions de trouver votre devis"));
+
         // Cadre
         $pdf->Ln(5);
         $pdf->SetFillColor(200, 200, 200);
@@ -314,23 +347,26 @@ class AFUP_Compta_Facture
         $pdf->Cell(20, 5, 'Quantite', 1, 0, 'L', 1);
         $pdf->Cell(30, 5, 'Prix', 1, 0, 'L', 1);
         $pdf->Cell(30, 5, 'Total', 1, 0, 'L', 1);
-        
+		
         $total = 0;
         foreach ($details as $detail) {
-			$montant=$detail['quantite']*$detail['pu'];
-        	
-        	$pdf->Ln();
-            $pdf->SetFillColor(255, 255, 255);
+           	if ($detail['quantite'] != 0)
+			{
+ 				$montant=$detail['quantite']*$detail['pu'];
 
-            $pdf->Cell(30, 5, $detail['ref'], 1);
-            $pdf->Cell(80, 5, utf8_decode($detail['designation']) , 1);
-            $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1,0,"C");
-            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . utf8_decode(' '), 1,0,"R");
-            $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1,0,"R");
-                       
+        		$pdf->Ln();
+            	$pdf->SetFillColor(255, 255, 255);
+				
+            	$pdf->Cell(30, 5, $detail['ref'], 1);
+	            $pdf->Cell(80, 5, utf8_decode($detail['designation']) , 1);
+	            $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1,0,"C");
+	            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . utf8_decode(' '), 1,0,"R");
+	            $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1,0,"R");
+	                       
             $total += $montant;
-        }
 
+			}
+        }
         $pdf->Ln();
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
@@ -449,18 +485,21 @@ class AFUP_Compta_Facture
         
         $total = 0;
         foreach ($details as $detail) {
-			$montant=$detail['quantite']*$detail['pu'];
-        	
-        	$pdf->Ln();
-            $pdf->SetFillColor(255, 255, 255);
-
-            $pdf->Cell(30, 5, $detail['ref'], 1);
-            $pdf->Cell(80, 5, utf8_decode($detail['designation']) , 1);
-            $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1,0,"C");
-            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . utf8_decode(' '), 1,0,"R");
-            $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1,0,"R");
-                       
-            $total += $montant;
+           	if ($detail['quantite'] != 0)
+			{
+	        	$montant=$detail['quantite']*$detail['pu'];
+	        	
+	        	$pdf->Ln();
+	            $pdf->SetFillColor(255, 255, 255);
+	
+	            $pdf->Cell(30, 5, $detail['ref'], 1);
+	            $pdf->Cell(80, 5, utf8_decode($detail['designation']) , 1);
+	            $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1,0,"C");
+	            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . utf8_decode(' '), 1,0,"R");
+	            $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1,0,"R");
+	                       
+	            $total += $montant;
+			}
         }
 
         $pdf->Ln();
