@@ -6,7 +6,7 @@ $action = verifierAction(array(
 					'modifier',
 					'telecharger_devis', 
 					'envoyer_devis', 
-					'transfert_devis', 
+					'transfert', 
 					));
 
 					
@@ -22,6 +22,8 @@ $comptaFact = new AFUP_Compta_Facture($bdd);
 if ($action == 'lister') {
 	$ecritures = $comptaFact->obtenirDevis();
 	$smarty->assign('ecritures', $ecritures);
+} elseif ($action == 'transfert') {
+	$comptaFact->transfertDevis($_GET['ref']);
 } elseif ($action == 'telecharger_devis') {
 	$comptaFact->genererDevis($_GET['ref']);
 } elseif ($action == 'envoyer_devis'){
@@ -80,7 +82,12 @@ if ($action == 'lister') {
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
    
    }
-   
+	else
+	{
+		$champs['numero_devis']          = "";
+        $champs['numero_facture']          = "";
+		
+	}   
 //detail devis       
    $formulaire->addElement('header'  , ''                         , 'Détail Devis');
    
@@ -105,7 +112,7 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'    , 'tel'        , 'tel'            , array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
 
-	if ($champs['numero_devis'] || $champs['numero_facture'] )
+	if (isset($champs['numero_devis']) || isset($champs['numero_facture']) )
 	{
 		$formulaire->addElement('header', null          , 'Réservé à l\'administration');
 		$formulaire->addElement('static'  , 'note'                   , ''               , 'Numéro généré automatiquement et affiché en automatique');

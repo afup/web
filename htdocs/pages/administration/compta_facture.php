@@ -45,8 +45,7 @@ if ($action == 'lister') {
    {
         $champsRecup = $comptaFact->obtenir($_GET['id']);
 
-        $champs['date_saisie']          = $champsRecup['date_ecriture'];
-        $champs['societe']          = $champsRecup['societe'];
+        $champs['date_facture']          = $champsRecup['date_facture'];
         $champs['societe']          = $champsRecup['societe'];
         $champs['service']          = $champsRecup['service'];
         $champs['adresse']          = $champsRecup['adresse'];
@@ -58,7 +57,7 @@ if ($action == 'lister') {
         $champs['ref_clt1']          = $champsRecup['ref_clt1'];
         $champs['ref_clt2']          = $champsRecup['ref_clt2'];
         $champs['ref_clt3']          = $champsRecup['ref_clt3'];
-       $champs['nom']          = $champsRecup['nom'];
+        $champs['nom']          = $champsRecup['nom'];
         $champs['prenom']          = $champsRecup['prenom'];
         $champs['tel']          = $champsRecup['tel'];
         $champs['numero_devis']          = $champsRecup['numero_devis'];
@@ -89,7 +88,7 @@ if ($action == 'lister') {
    $formulaire->addElement('header'  , ''                         , 'Détail Devis');
    
 //$mois=10;
-   $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
+   $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', array('language' => 'fr', 
                                                                                 'format'   => 'd F Y',
   																				'minYear' => date('Y'), 
   																				'maxYear' => date('Y')));
@@ -105,8 +104,8 @@ if ($action == 'lister') {
 
 	$formulaire->addElement('header', null          , 'Contact');
 	$formulaire->addElement('text'    , 'nom'        , 'Nom'            , array('size' => 30, 'maxlength' => 40));
-	$formulaire->addElement('text'    , 'prenom'     , 'Prénom'            , array('size' => 30, 'maxlength' => 40));
-	$formulaire->addElement('text'    , 'tel'        , 'tel'            , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text'    , 'prenom'     , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text'    , 'tel'        , 'Numero de tél'	, array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
 	
 	if ($champs['numero_devis'] || $champs['numero_facture'] )
@@ -121,11 +120,7 @@ if ($action == 'lister') {
 		$formulaire->addElement('hidden'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
 		$formulaire->addElement('hidden'  , 'numero_facture'   , 'Numéro facture'   , array('size' => 50, 'maxlength' => 100));
 	}
-	
-	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
-	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
-	$formulaire->addElement('text'  , 'reference'   , 'Référence'   , array('size' => 50, 'maxlength' => 100));
-	
+
 	$formulaire->addElement('header', null          , 'Référence client');
 	$formulaire->addElement('static'  , 'note'  , '', 'Possible d\'avoir plusieurs références à mettre (obligation client)<br /><br />');
 	$formulaire->addElement('text'  , 'ref_clt1'   , 'Référence client'   , array('size' => 50, 'maxlength' => 100));
