@@ -37,3 +37,4 @@ $actualites[] = $actualite;
 $smarty->assign('actualites', $actualites);
 
 $smarty->display('index.html');
+?>
