@@ -1,0 +1,34 @@
+{include file="entete.html"}
+<div id="cartouche-milieu">  
+<img alt="" src="/templates/forumphp2010/images/cartouche-site.png" name="cartouchehaut"/>
+
+<h1>Convocation Forum PHP 2010</h1><br/>
+     
+<div style="font-size:20px;text-align:center" >
+{$inscrit.civilite} {$inscrit.prenom} {$inscrit.nom}<br/>
+{if $inscrit.type_inscription <= 1 }
+PASS 1 Jour
+{else}
+PASS 2 Jours
+{/if} 
+</div>  
+
+<p>Bonjour <strong>{$inscrit.prenom} {$inscrit.nom}</strong>, </p>
+
+<p>Vous trouverez ci-dessous votre convocation au Forum PHP qui se déroulera à la Cité des Sciences et de l'Industrie les 9 et 10 novembre prochains.</p>
+
+<p>L'accueil du public débutera le <strong>mardi 9 novembre à 8h30 heures</strong>, et à <strong>8h30 pour le lendemain</strong>.</p>
+<p>Vous trouverez ci-dessous toutes les <strong>informations pratiques</strong> pour accéder à la Cité des Sciences et de l'Industrie de la Villette.
+<br>Votre badge vous sera remis sur place.</p>  
+
+<p><b>Rappel</b> : les repas du midi ne sont pas compris dans les prestations.</p>
+
+<p>L'équipe organisatrice vous souhaite un très agréable forum.</p><br/>
+
+<hr/>
+
+
+
+{include file="acces_plan.html"}
+</div>
+{include file="pied_de_page.html"}

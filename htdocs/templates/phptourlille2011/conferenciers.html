@@ -1,0 +1,38 @@
+{include file="entete.html"}
+<div id="cartouche-milieu">
+  {include file="cartouche.html"}
+  <h1>&nbsp;&nbsp;Les conf&eacute;renciers</h1>
+
+  <div class="conferenciers">
+    {foreach from=$conferenciers item=conferencier}
+    <div class="conferencier">  
+      <div class="photo" >
+      <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" border="0" align="left" />
+    </div> 
+    <div  class="body">  
+      <a name="{$conferencier.conferencier_id}" ></a>
+      <h3>
+        {$conferencier.prenom} {$conferencier.nom}
+      </h3>
+        <div class="societe">
+      {$conferencier.societe}
+    </div>
+    <div class="spacer"></div>
+    <div class="biographie">
+      {$conferencier.biographie}
+    </div>
+      <ul class="conferencier_sessions">
+      {foreach from=$conferencier.sessions item=session}
+      <li class="conferencier_session">
+      <a href="sessions.php#{$session.id}">{$session.titre}</a>
+    </li>
+      {/foreach}
+    </ul>    
+         </div>
+    <div class="spacer"></div>
+  </div>
+    {/foreach}
+  </div>
+
+</div>
+{include file="pied_de_page.html"}

@@ -1,0 +1,44 @@
+{include file="entete.html"}
+
+<div id="cartouche-milieu">
+{include file="cartouche.html"}
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="8">
+    <tr>
+    	<td valign="top">
+			<img src="../../templates/forumphp2010/images/forumafup2009.jpg" alt="Forum Afup" style="margin-top:2em" />
+    	</td>
+      <td valign="top">
+      	{$alerte_avant_forum}
+		{foreach from=$infos_importantes item=info_importante}
+			<!--<h2>{$info_importante.titre}</h2>-->
+			<div>{$info_importante.contenu}</div>
+		{/foreach}
+
+	    <!--<h2>Actualités</h2>
+		{foreach from=$actualites item=actualite}
+			<h3 class="actualite">{$actualite.titre}</h3>
+			<div>{$actualite.contenu}</div>
+			<div class="maj">Mise à jour : {$actualite.date}</div>
+		{/foreach}
+
+      --></td>
+     </tr>
+     <tr>
+      <td colspan="2" valign="top"><!--
+		{foreach from=$infos_importantes item=info_importante}
+			<h2>{$info_importante.titre}</h2>
+			<div>{$info_importante.contenu}</div>
+		{/foreach}
+      -->
+      <h2>Actualités</h2>
+		{foreach from=$actualites item=actualite}
+			<h3 class="actualite">{$actualite.titre}</h3>
+			<div>{$actualite.contenu}</div>
+			<div class="maj">Mise à jour : {$actualite.date}</div>
+		{/foreach}</td>
+    </tr>
+  </table>
+</div>
+{include file="pied_de_page.html"}
