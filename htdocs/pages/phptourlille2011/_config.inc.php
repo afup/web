@@ -15,6 +15,7 @@
 
 define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../classes/afup/'));
 date_default_timezone_set("Europe/Paris");
+ini_set('display_errors',  $conf->obtenir('divers|afficher_erreurs'));
 
 $config_forum['id'] = 6;
 /*
