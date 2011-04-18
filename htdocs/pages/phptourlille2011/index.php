@@ -19,11 +19,8 @@ $smarty->assign('alerte_avant_forum', $alerte_avant_forum);
 
 $info_importante['titre'] = "PHP Tour Lille 2011<br>les 24 et 25 novembre 2011";
 $info_importante['contenu'] = "<p>Le <strong>PHP Tour Lille 2011</strong> est officiellement annoncé pour les <strong>24 et 25 novembre 2011</strong> à <strong>Euratechnologies / Lille</strong> (France).</p>
-
 <p>Nouvel événement annuel et itinérant lancé par l'AFUP, <strong>le PHP Tour se penche sur les problématiques et thématiques propres à la région d'accueil</strong>. Experts nationaux et internationaux animeront conférences, retours d'expérience et ateliers en lien avec le tissu économique local, pour aider la communauté PHP à parvenir au top de ses capacités ! </p>
-
-<p>Le PHP Tour Lille 2011 mettra notamment l'accent sur le <strong>commerce en ligne</strong>, <strong>l'intégration d'application hétérogènes au sein des systèmes d'informations</strong> et <strong>l'échelle du web</strong>. </p>
- 
+<p>Le PHP Tour Lille 2011 mettra notamment l'accent sur le <strong>commerce en ligne</strong>, <strong>l'intégration d'application hétérogènes au sein des systèmes d'informations</strong> et <strong>l'échelle du web</strong>.</p>
 <p>Évènement itinérant, mais ambition nationale: l'AFUP se donne pour mission de faire du PHP Tour un rendez-vous annuel incontournable pour les professionnels du monde PHP. Developpeurs, décideurs, journalistes, venez découvrir le PHP Tour Lille 2011 !</p>";
 $infos_importantes[] = $info_importante;
 
