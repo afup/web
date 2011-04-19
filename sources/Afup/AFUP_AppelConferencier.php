@@ -662,8 +662,8 @@ class AFUP_AppelConferencier
      */
     public function envoyerEmail($session_id)
     {
-        require_once 'Afup/AFUP_Configuration.php';
-        $configuration = $GLOBALS['AFUP_CONF'];
+        require_once dirname(__FILE__).'/AFUP_Configuration.php';
+        $configuration = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/config.php');
 
         $requete = '
         select prenom, nom, email
@@ -685,7 +685,7 @@ class AFUP_AppelConferencier
 
         foreach ($conferenciers as $personne) {
             $ok = AFUP_Mailing::envoyerMail(
-                            $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                            $configuration->obtenir('mails|email_expediteur'),
                             array($personne['email'], $personne['nom']. ' ' . $personne['prenom']),
                             "Soumission de proposition au Forum PHP\n",
                             $corps);

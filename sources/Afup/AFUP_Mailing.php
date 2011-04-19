@@ -61,7 +61,9 @@ class AFUP_Mailing
     }
 
    static function envoyerMail($from, $to, $subject,$body, Array $options=array()) {
-
+        require_once dirname(__FILE__).'/AFUP_Configuration.php';
+        $configuration = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/config.php');
+   	
        $optionsDefault = array(
             'html' => FALSE,
             'bcc'  => array(),
@@ -69,35 +71,35 @@ class AFUP_Mailing
 
        $options = array_merge($optionsDefault,$options);
 
-        require_once 'phpmailer/class.phpmailer.php';
+        require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
 
         $mail = new PHPMailer();
         $mail->IsHTML($options['html']);
         
-        if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
+        if ($configuration->obtenir('mails|serveur_smtp')) {
             $mail->IsSMTP();
-            $mail->Host = $GLOBALS['conf']->obtenir('mails|serveur_smtp');
+            $mail->Host = $configuration->obtenir('mails|serveur_smtp');
             $mail->SMTPAuth = false;
         }
-        if ($GLOBALS['conf']->obtenir('mails|tls') == true ) {
-            $mail->SMTPAuth = $GLOBALS['conf']->obtenir('mails|tls');
+        if ($configuration->obtenir('mails|tls') == true ) {
+            $mail->SMTPAuth = $configuration->obtenir('mails|tls');
             $mail->SMTPSecure = 'tls';
         }
-        if ($GLOBALS['conf']->obtenir('mails|username')) {
-            $mail->Username = $GLOBALS['conf']->obtenir('mails|username');
+        if ($configuration->obtenir('mails|username')) {
+            $mail->Username = $configuration->obtenir('mails|username');
         }
-        if ($GLOBALS['conf']->obtenir('mails|password')) {
-            $mail->Password = $GLOBALS['conf']->obtenir('mails|password');
+        if ($configuration->obtenir('mails|password')) {
+            $mail->Password = $configuration->obtenir('mails|password');
         }
-        if ($GLOBALS['conf']->obtenir('mails|port')) {
-            $mail->Port = $GLOBALS['conf']->obtenir('mails|port');
+        if ($configuration->obtenir('mails|port')) {
+            $mail->Port = $configuration->obtenir('mails|port');
         }
-        if ($GLOBALS['conf']->obtenir('mails|force_destinataire')) {
-            $to = $GLOBALS['conf']->obtenir('mails|force_destinataire');
+        if ($configuration->obtenir('mails|force_destinataire')) {
+            $to = $configuration->obtenir('mails|force_destinataire');
         }
 
         //Gestion BCC
-        $mail->AddBCC($GLOBALS['conf']->obtenir('mails|bcc'));
+        $mail->AddBCC($configuration->obtenir('mails|bcc'));
         foreach ($options['bcc'] as $valeurBcc) {
             $mail->AddBCC($valeurBcc);
         }
