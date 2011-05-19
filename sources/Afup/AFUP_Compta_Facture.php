@@ -315,11 +315,15 @@ class AFUP_Compta_Facture
         				utf8_decode($pays->obtenirNom($coordonnées['id_pays'])));
 
         $pdf->Ln(10);
-       $pdf->SetFont('Arial', 'BU', 10);
+        $pdf->SetFont('Arial', 'BU', 10);
         $pdf->Cell(0, 5, utf8_decode('Devis n° ' . $reference),0,0,"C");
          $pdf->SetFont('Arial', '', 10);
-        $pdf->Ln(15);
-      	$pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
+       	if ($coordonnées['ref_clt1'] || $coordonnées['ref_clt2'] || $coordonnées['ref_clt3']) 
+       	{ 
+        	$pdf->Ln(15);
+        	$pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
+       	}
+         
         if ($coordonnées['ref_clt1']) { 
         	$pdf->setx(30);
         	$pdf->Cell(100, 5, utf8_decode($coordonnées['ref_clt1']));
@@ -454,8 +458,12 @@ class AFUP_Compta_Facture
        $pdf->SetFont('Arial', 'BU', 10);
         $pdf->Cell(0, 5, utf8_decode('Facture n° ' . $reference),0,0,"C");
          $pdf->SetFont('Arial', '', 10);
-        $pdf->Ln(15);
-      	$pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
+        
+       	if ($coordonnées['ref_clt1'] || $coordonnées['ref_clt2'] || $coordonnées['ref_clt3']) 
+       	{ 
+        	$pdf->Ln(15);
+        	$pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
+       	}
         if ($coordonnées['ref_clt1']) { 
         	$pdf->setx(30);
         	$pdf->Cell(100, 5, utf8_decode($coordonnées['ref_clt1']));
@@ -473,7 +481,7 @@ class AFUP_Compta_Facture
         }
         $pdf->Ln(10);
         
-        $pdf->MultiCell(180, 5, utf8_decode("Comme convenu, nous vous prions de trouver votre devis"));
+        $pdf->MultiCell(180, 5, utf8_decode("Comme convenu, nous vous prions de trouver votre facture"));
         // Cadre
         $pdf->Ln(5);
         $pdf->SetFillColor(200, 200, 200);
