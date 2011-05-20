@@ -246,17 +246,18 @@ class AFUP_Compta_Facture
         $requete .= ' afup_compta_facture ';
         $requete .= 'WHERE';
         $requete .= '  LEFT(numero_devis, 4)=' . $this->_bdd->echapper(date('Y'));
+
         $index = $this->_bdd->obtenirUn($requete);
-        return date('Y') . '-' . (is_null($index) ? 1 : $index);
+        return date('Y').'-'. (is_null($index) ? 1 : $index);
     }
 	
     
     function genererDevis($reference, $chemin = null)
     {
         $requete    = 'SELECT * FROM afup_compta_facture WHERE numero_devis=' . $this->_bdd->echapper($reference);
-        $coordonnées = $this->_bdd->obtenirEnregistrement($requete);
+        $coordonnees = $this->_bdd->obtenirEnregistrement($requete);
 
-        $requete    = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnées['id']);
+        $requete    = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
         require_once 'Afup/AFUP_Configuration.php';
@@ -307,36 +308,36 @@ class AFUP_Compta_Facture
          $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
-        $pdf->MultiCell(130, 5, utf8_decode($coordonnées['societe']). "\n" . 
-        				utf8_decode($coordonnées['service']) . "\n" . 
-        				utf8_decode($coordonnées['adresse']) . "\n" . 
-        				utf8_decode($coordonnées['code_postal']) . "\n" . 
-        				utf8_decode($coordonnées['ville']) ."\n".       				
-        				utf8_decode($pays->obtenirNom($coordonnées['id_pays'])));
+        $pdf->MultiCell(130, 5, utf8_decode($coordonnees['societe']). "\n" . 
+        				utf8_decode($coordonnees['service']) . "\n" . 
+        				utf8_decode($coordonnees['adresse']) . "\n" . 
+        				utf8_decode($coordonnees['code_postal']) . "\n" . 
+        				utf8_decode($coordonnees['ville']) ."\n".       				
+        				utf8_decode($pays->obtenirNom($coordonnees['id_pays'])));
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);
         $pdf->Cell(0, 5, utf8_decode('Devis n° ' . $reference),0,0,"C");
          $pdf->SetFont('Arial', '', 10);
-       	if ($coordonnées['ref_clt1'] || $coordonnées['ref_clt2'] || $coordonnées['ref_clt3']) 
+       	if ($coordonnees['ref_clt1'] || $coordonnees['ref_clt2'] || $coordonnees['ref_clt3']) 
        	{ 
         	$pdf->Ln(15);
         	$pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
        	}
          
-        if ($coordonnées['ref_clt1']) { 
+        if ($coordonnees['ref_clt1']) { 
         	$pdf->setx(30);
-        	$pdf->Cell(100, 5, utf8_decode($coordonnées['ref_clt1']));
+        	$pdf->Cell(100, 5, utf8_decode($coordonnees['ref_clt1']));
         	$pdf->Ln(5);
         }
-        if ($coordonnées['ref_clt2']) {         
+        if ($coordonnees['ref_clt2']) {         
         	$pdf->setx(30);
-        	$pdf->Cell(100, 5, utf8_decode( $coordonnées['ref_clt2']));
+        	$pdf->Cell(100, 5, utf8_decode( $coordonnees['ref_clt2']));
         	$pdf->Ln(5);
         }
-        if ($coordonnées['ref_clt3']) {      
+        if ($coordonnees['ref_clt3']) {      
         	$pdf->setx(30);
-        	$pdf->Cell(100, 5, utf8_decode( $coordonnées['ref_clt3']));
+        	$pdf->Cell(100, 5, utf8_decode( $coordonnees['ref_clt3']));
         	$pdf->Ln(5);
         }
         $pdf->Ln(10);
@@ -381,7 +382,7 @@ class AFUP_Compta_Facture
         $pdf->Ln(10);
         $pdf->Cell(10, 5, 'Observations : ');
         $pdf->Ln(5);
-        $pdf->Cell(130, 5, $coordonnées['observation'], 0, 0, 'L', 0);
+        $pdf->Cell(130, 5, $coordonnees['observation'], 0, 0, 'L', 0);
          
         if (is_null($chemin)) {
             $pdf->Output('devis.pdf', 'D');
@@ -394,9 +395,9 @@ class AFUP_Compta_Facture
     function genererFacture($reference, $chemin = null)
     {
         $requete    = 'SELECT * FROM afup_compta_facture WHERE numero_facture=' . $this->_bdd->echapper($reference);
-        $coordonnées = $this->_bdd->obtenirEnregistrement($requete);
+        $coordonnees = $this->_bdd->obtenirEnregistrement($requete);
 
-        $requete    = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnées['id']);
+        $requete    = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
         require_once 'Afup/AFUP_Configuration.php';
@@ -447,36 +448,36 @@ class AFUP_Compta_Facture
          $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
-        $pdf->MultiCell(130, 5, utf8_decode($coordonnées['societe']). "\n" . 
-        				utf8_decode($coordonnées['service']) . "\n" . 
-        				utf8_decode($coordonnées['adresse']) . "\n" . 
-        				utf8_decode($coordonnées['code_postal']) . "\n" . 
-        				utf8_decode($coordonnées['ville']) ."\n".       				
-        				utf8_decode($pays->obtenirNom($coordonnées['id_pays'])));
+        $pdf->MultiCell(130, 5, utf8_decode($coordonnees['societe']). "\n" . 
+        				utf8_decode($coordonnees['service']) . "\n" . 
+        				utf8_decode($coordonnees['adresse']) . "\n" . 
+        				utf8_decode($coordonnees['code_postal']) . "\n" . 
+        				utf8_decode($coordonnees['ville']) ."\n".       				
+        				utf8_decode($pays->obtenirNom($coordonnees['id_pays'])));
 
         $pdf->Ln(10);
        $pdf->SetFont('Arial', 'BU', 10);
         $pdf->Cell(0, 5, utf8_decode('Facture n° ' . $reference),0,0,"C");
          $pdf->SetFont('Arial', '', 10);
         
-       	if ($coordonnées['ref_clt1'] || $coordonnées['ref_clt2'] || $coordonnées['ref_clt3']) 
+       	if ($coordonnees['ref_clt1'] || $coordonnees['ref_clt2'] || $coordonnees['ref_clt3']) 
        	{ 
         	$pdf->Ln(15);
         	$pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
        	}
-        if ($coordonnées['ref_clt1']) { 
+        if ($coordonnees['ref_clt1']) { 
         	$pdf->setx(30);
-        	$pdf->Cell(100, 5, utf8_decode($coordonnées['ref_clt1']));
+        	$pdf->Cell(100, 5, utf8_decode($coordonnees['ref_clt1']));
         	$pdf->Ln(5);
         }
-        if ($coordonnées['ref_clt2']) {         
+        if ($coordonnees['ref_clt2']) {         
         	$pdf->setx(30);
-        	$pdf->Cell(100, 5, utf8_decode( $coordonnées['ref_clt2']));
+        	$pdf->Cell(100, 5, utf8_decode( $coordonnees['ref_clt2']));
         	$pdf->Ln(5);
         }
-        if ($coordonnées['ref_clt3']) {      
+        if ($coordonnees['ref_clt3']) {      
         	$pdf->setx(30);
-        	$pdf->Cell(100, 5, utf8_decode( $coordonnées['ref_clt3']));
+        	$pdf->Cell(100, 5, utf8_decode( $coordonnees['ref_clt3']));
         	$pdf->Ln(5);
         }
         $pdf->Ln(10);
@@ -518,10 +519,12 @@ class AFUP_Compta_Facture
         $pdf->Ln(15);
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
         $pdf->Ln(10);
-        $pdf->Cell(10, 5, 'Observations : ');
-        $pdf->Ln(5);
-        $pdf->Cell(130, 5, $coordonnées['observation'], 0, 0, 'L', 0);
-         
+	if ($coordonnees['observation']) {
+	        $pdf->Cell(10, 5, 'Observations : ');
+	        $pdf->Ln(5);
+	        $pdf->Cell(130, 5, $coordonnees['observation'], 0, 0, 'L', 0);
+        }
+ 
         if (is_null($chemin)) {
             $pdf->Output('facture.pdf', 'D');
         } else {

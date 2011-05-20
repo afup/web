@@ -39,23 +39,18 @@ function tableau($position,$header,$data)
   	$w=array(30,85,20);
     
   //  Categorie","Description","Montant
-    //for($i=0;$i<count($header);$i++)
-    //$this->Cell($w[$i],7,$header[$i],1,0,'C',1);
 	$this->SETXY($position,$y); 	
 	$y +=5;
 	$this->Cell($w[0],6,'Categorie','LR',0,'C');
     $this->Cell($w[1],6,'Description','LR',0,'C');
     $this->Cell($w[2],6,'Montant','LR',0,'C');
-//	$this->Cell($w[0],6,'Categorie','LR',0,'C',$fill);
-//    $this->Cell($w[1],6,'Description','LR',0,'C',$fill);
-//    $this->Cell($w[2],6,'Montant','LR',0,'C',$fill);
+
        
     $this->Ln();
     
     //Restauration des couleurs et de la police
     $this->SetFillColor(224,224,224);
     $this->SetTextColor(0);
- //   $this->SetFont(8);
 	$this->SetFont('Times','',10);
     //Données
     $fill=false;
@@ -66,12 +61,7 @@ function tableau($position,$header,$data)
     	$this->Cell($w[0],6,$row[0],'LR',0,'L',$fill);
 
         $this->Cell($w[1],6,substr($row[1],0,54),'LR',0,'L',$fill);
- //       $this->SETXY($position,$y);
         $this->Cell($w[2],6,number_format($row[2],2,',', ' '),'LR',0,'R',$fill);
-//        $this->Cell($w[2],6,number_format($row[2],0,',',' '),'LR',0,'R',$fill);
-        //$this->Cell($w[3],6,number_format($row[3],0,',',' '),'LR',0,'R',$fill);
-//$montant=number_format($row->montant_theo, 2, ',', ' ');
-
         
         $this->Ln();
         $fill=!$fill;
