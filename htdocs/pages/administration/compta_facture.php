@@ -94,7 +94,7 @@ if ($action == 'lister') {
                                                                                 'format'   => 'd F Y',
   																				'minYear' => date('Y'), 
   																				'maxYear' => date('Y')));
-   } esle {
+   } else {
    $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', array('language' => 'fr', 
                                                                                 'format'   => 'd F Y',
   																				'minYear' => date('Y')-3, 
