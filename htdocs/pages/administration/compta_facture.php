@@ -88,11 +88,19 @@ if ($action == 'lister') {
    $formulaire->addElement('header'  , ''                         , 'Détail Devis');
    
 //$mois=10;
+   if ($action == 'modifier')
+   {
    $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', array('language' => 'fr', 
                                                                                 'format'   => 'd F Y',
   																				'minYear' => date('Y'), 
   																				'maxYear' => date('Y')));
-
+   } esle {
+   $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', array('language' => 'fr', 
+                                                                                'format'   => 'd F Y',
+  																				'minYear' => date('Y')-3, 
+  																				'maxYear' => date('Y')));
+   	
+   }
 	$formulaire->addElement('header'  , ''                       , 'Facturation');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
 	$formulaire->addElement('text'    , 'societe'    , 'Société'        , array('size' => 50, 'maxlength' => 100));
