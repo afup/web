@@ -26,7 +26,7 @@ blockquote, q {quotes: "" "";}
 .clearfix:after {clear:both;}
 .clearfix {zoom:1;} /* For IE 6/7 (trigger hasLayout) */
 a{color:#000;text-decoration:none;}
-a:hover{color:#333;text-decoration:none;}
+a:hover{color:#333;text-decoration:underline;}
 .corner-4 {border-radius:4px;-moz-border-radius:4px;-webkit-border-radius:4px;}
 .corner-8 {border-radius:8px;-moz-border-radius:8px;-webkit-border-radius:8px;}
 .corner-12 {border-radius:12px;-moz-border-radius:12px;-webkit-border-radius:12px;}
@@ -108,6 +108,10 @@ body {
 	color:#FFF;
 }
 
+.header .description a {
+	color:#FFF;		
+}
+
 /*========================/
 	Navigation
 /========================*/
@@ -161,6 +165,7 @@ body {
 	color:#FFF;
 	text-shadow:0 1px 1px rgba(0, 0, 0, 0.6);
 	background:url(../images/btn-nav-hover.png) no-repeat center bottom;
+	text-decoration:none;
 }
 
 /*//// Lvl 1 ////*/
@@ -196,6 +201,7 @@ body {
 
 .navigation ul.lvl-1  li a:hover {
 	color:#FFF;
+	text-decoration:none;
 	background:#7b7b7b;
 	background-image: -moz-linear-gradient(top, 
 							#bcbcbc, 
@@ -349,6 +355,7 @@ body {
 }
 
 .news .news-txt img {
+	float:left;
 	margin:0 16px 16px 0;
 }
 
@@ -404,7 +411,8 @@ body {
 }
 
 .news .read-more:hover {
-	text-decoration:underline;
+	background-position:left bottom;
+	text-decoration:none;
 }
 
 
@@ -572,6 +580,7 @@ body {
 	padding:16px 16px 1px 16px;
 	position:relative;
 	z-index:5;
+	text-align:center;
 	box-shadow:0 1px 4px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
 	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
@@ -584,12 +593,8 @@ body {
 	margin-bottom:10px;
 }
 
-.sidebar .bloc-sidebar-content > div {
+.sidebar .bloc-sidebar-content img {
 	margin-bottom:20px;
-}
-
-.sidebar .bloc-sidebar-content > div > img {
-	margin-bottom:10px;
 }
 
 
