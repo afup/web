@@ -1,44 +1,47 @@
 {include file="entete.html"}
 
-<div id="cartouche-milieu">
-{include file="cartouche.html"}
+			<div class="left-content">
+				
+				<!--  
+				<div class="slide">
+					<div class="txt">
+						<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed sem quis tellus venenatis faucibus id sed justo. Aenean sagittis faucibus tempus. </p>
+						<a class="read-more" href="#"><span>Lire la suite ></span></a>
+					</div>
+					<img src="{$chemin_template}/medias/images/img-slide.jpg" alt="" />
+				</div>
+				-->
+				
+				{foreach from=$actualites item=actualite}
+				<article class="news">
+					<div class="title">
+						<h2>{$actualite.titre}</h2>
+						<span>Mise à jour : {$actualite.date}</span>
+					</div>
+					<div class="news-txt clearfix">
+						<img align="left" src="../../templates/forumphp2010/images/forumafup2009.jpg" alt="Forum Afup" />
+						{$actualite.contenu} 
+					</div>
+					<a class="read-more" href="appel-a-conferenciers.php"><span>Lire la suite ></span></a>
+				</article>
+				{/foreach}
+				
+				{foreach from=$infos_importantes item=info_importante}
+				<article class="news">
+					<div class="title">
+						<h2>{$info_importante.titre}</h2>
+					</div>
+					<div class="news-txt clearfix">
+						<img align="left" src="{$chemin_template}/medias/images/logo.png" alt="Forum Afup" />
+						{$info_importante.contenu}
+					</div>
+				</article>
+				{/foreach}
+				
+			</div><!-- End Left Content -->
+			
+			{include file="sidebar.html"}
 
 
-<table width="100%" border="0" cellspacing="0" cellpadding="8">
-    <tr>
-    	<td valign="top">
-			<img src="../../templates/forumphp2010/images/forumafup2009.jpg" alt="Forum Afup" style="margin-top:2em" />
-    	</td>
-      <td valign="top">
-      	{$alerte_avant_forum}
-		{foreach from=$infos_importantes item=info_importante}
-			<!--<h2>{$info_importante.titre}</h2>-->
-			<div>{$info_importante.contenu}</div>
-		{/foreach}
-
-	    <!--<h2>Actualités</h2>
-		{foreach from=$actualites item=actualite}
-			<h3 class="actualite">{$actualite.titre}</h3>
-			<div>{$actualite.contenu}</div>
-			<div class="maj">Mise à jour : {$actualite.date}</div>
-		{/foreach}
-
-      --></td>
-     </tr>
-     <tr>
-      <td colspan="2" valign="top"><!--
-		{foreach from=$infos_importantes item=info_importante}
-			<h2>{$info_importante.titre}</h2>
-			<div>{$info_importante.contenu}</div>
-		{/foreach}
-      -->
-      <h2>Actualités</h2>
-		{foreach from=$actualites item=actualite}
-			<h3 class="actualite">{$actualite.titre}</h3>
-			<div>{$actualite.contenu}</div>
-			<div class="maj">Mise à jour : {$actualite.date}</div>
-		{/foreach}</td>
-    </tr>
-  </table>
-</div>
 {include file="pied_de_page.html"}
