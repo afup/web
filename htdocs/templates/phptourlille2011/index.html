@@ -21,8 +21,10 @@
 					</div>
 					<div class="news-txt clearfix">
 						<img align="left" src="../../templates/forumphp2010/images/forumafup2009.jpg" alt="Forum Afup" />
-						{$actualite.contenu} 
+						{$actualite.contenu}
+						{$actualite.link} 
 					</div>
+					
 					<a class="read-more" href="appel-a-conferenciers.php"><span>Lire la suite ></span></a>
 				</article>
 				{/foreach}
@@ -35,6 +37,8 @@
 					<div class="news-txt clearfix">
 						<img src="{$chemin_template}medias/images/logo.png" alt="Forum Afup" />
 						{$info_importante.contenu}
+						<a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="afup" data-lang="fr">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+						
 					</div>
 				</article>
 				{/foreach}

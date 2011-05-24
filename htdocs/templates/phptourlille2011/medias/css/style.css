@@ -587,6 +587,11 @@ body {
 	position:relative;
 	z-index:9;
 }
+
+.sidebar .share .bloc-sidebar-content {
+	text-align:left;
+}
+
 .sidebar .bloc-sidebar-content p {
 	color:#666;
 	text-align:center;
