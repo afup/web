@@ -28,13 +28,6 @@ $rendezvous = new AFUP_Rendez_Vous($bdd);
 
 $rendezvous->obtenirInscritAConfirmer($_GET['hash']);
 
-echo "<pre>";
-print_r($_GET['hash']);
-print_r($rendezvous);
-echo "<hr>";
-print_r($tmp);
-echo "</pre>";
-
 if (isset($_GET['hash']) and $champs = $rendezvous->obtenirInscritAConfirmer($_GET['hash'])) {
 	if (isset($champs['id_rendezvous']) and is_numeric($champs['id_rendezvous'])) {
 		$prochain_rendezvous = $rendezvous->obtenirRendezVousFutur($champs['id_rendezvous']);
