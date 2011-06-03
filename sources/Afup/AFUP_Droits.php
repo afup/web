@@ -339,7 +339,6 @@ class AFUP_Droits {
         if ($this->_niveau == AFUP_DROITS_NIVEAU_ADMINISTRATEUR) {
             return true;
         }
-
         foreach ($this->_pages as $_page => $_page_details) {
             if ($page == $_page) {
                 if (isset($_page_details['niveau']) and $_page_details['niveau'] <= $this->_niveau) {

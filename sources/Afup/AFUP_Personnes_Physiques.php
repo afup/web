@@ -105,6 +105,9 @@ class AFUP_Personnes_Physiques {
 		if (isset($resultats['niveau_modules'][2])) {
 			$resultats['niveau_site'] = $resultats['niveau_modules'][2];
 		}
+		if (isset($resultats['niveau_modules'][3])) {
+			$resultats['niveau_forum'] = $resultats['niveau_modules'][3];
+		}
 		unset($resultats["niveau_modules"]);
 
 		return $resultats;

@@ -53,6 +53,7 @@ if ($action == 'lister') {
                 'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_apero' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_annuaire' => AFUP_DROITS_NIVEAU_MEMBRE,
+                'niveau_forum' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_site' => AFUP_DROITS_NIVEAU_MEMBRE,
         		'etat' => AFUP_DROITS_ETAT_ACTIF,
                 'mot_de_passe' => $mot_de_passe,
@@ -98,6 +99,8 @@ if ($action == 'lister') {
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
     $formulaire->addElement('select' , 'niveau_annuaire' , 'Annuaire des prestataires', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
+    $formulaire->addElement('select' , 'niveau_forum' , 'Forum PHP & PHP Tour', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
+            AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
     $formulaire->addElement('select' , 'niveau_site' , 'Site web', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
             
@@ -131,7 +134,8 @@ if ($action == 'lister') {
             // Construction du champ niveau_modules : concaténation dse différentes valeurs
             $niveau_modules = $formulaire->exportValue('niveau_apero').
                               $formulaire->exportValue('niveau_annuaire').
-                              $formulaire->exportValue('niveau_site');
+                              $formulaire->exportValue('niveau_site').
+                              $formulaire->exportValue('niveau_forum');
 
             $ok = $personnes_physiques->ajouter($formulaire->exportValue('id_personne_morale'),
                 $formulaire->exportValue('login'),
@@ -176,7 +180,8 @@ if ($action == 'lister') {
             */
             $niveau_modules = $formulaire->exportValue('niveau_apero').
                               $formulaire->exportValue('niveau_annuaire').
-                              $formulaire->exportValue('niveau_site');
+                              $formulaire->exportValue('niveau_site').
+                              $formulaire->exportValue('niveau_forum');
 
             $ok = $personnes_physiques->modifier($_GET['id'],
                 $formulaire->exportValue('id_personne_morale'),

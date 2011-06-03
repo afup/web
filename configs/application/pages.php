@@ -116,22 +116,27 @@ $pages = array(
 		    'forum_projet' => array(
 		        'nom' => 'Projet PHP',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+    			'module' => 3,
 		    ),
 		    'forum_sessions' => array(
 		        'nom' => 'Sessions',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+    			'module' => 3,
 		    ),
 		    'forum_sessions_notees' => array(
 		        'nom' => 'Vote des sessions',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+    			'module' => 3,
 		    ),
 		    'forum_conferenciers' => array(
 		        'nom' => 'Conférenciers',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+    			'module' => 3,
 		    ),
 		    'forum_planning' => array(
 		        'nom' => 'Planning',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+    			'module' => 3,
 		    ),
 		    'forum_emargement' => array(
 		        'nom' => 'Feuille d\'émargement',
