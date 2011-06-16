@@ -188,9 +188,9 @@ if ($action == 'lister') {
                                                                                '1' => 'Non'));
 	    $formulaire->addElement('header', 'boutons'  , '');
 		$formulaire->addElement('submit', 'soumettre', 'Soumettre');
-		$formulaire->addElement('submit', 'passer'   , 'Passer');
     }
-
+	
+    $formulaire->addElement('submit', 'passer'   , 'Passer');
 
 	if (isset($_POST['passer'])) {
 	    $url = 'index.php?page=forum_sessions&action=lister';
