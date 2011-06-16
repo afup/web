@@ -178,9 +178,10 @@ if ($action == 'lister') {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Configuration.php';
     $conf = $GLOBALS['AFUP_CONF'];
 
+    $formulaire->addElement('header', null, 'Noter');
+
     if (in_array($_SESSION['afup_login'], $conf->obtenir('bureau'))
             && $forum_appel->dejaVote($droits->obtenirIdentifiant(), $id) === false) {
-        $formulaire->addElement('header', null, 'Noter');
         $formulaire->addElement('select', 'vote', 'Noter cette session', array(''  => '',
                                                                                '5' => 'Oui',
                                                                                '3' => 'Plutôt oui',
