@@ -93,16 +93,6 @@ if ($action == 'lister') {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Configuration.php';
     $conf = $GLOBALS['AFUP_CONF'];
 
-    if (in_array($_SESSION['afup_login'], $conf->obtenir('bureau'))
-            && $forum_appel->dejaVote($droits->obtenirIdentifiant(), $id) === false) {
-        $formulaire->addElement('header', null, 'Noter');
-        $formulaire->addElement('select', 'vote', 'Noter cette session', array(''  => '',
-                                                                               '5' => 'Oui',
-                                                                               '3' => 'Plutôt oui',
-                                                                               '2' => 'Plutôt non',
-                                                                               '1' => 'Non'));
-    }
-
     $formulaire->addElement('header', null, 'Nouveau commentaire');
     $formulaire->addElement('textarea', 'commentaire', 'Commentaire', array('cols' => 40, 'rows' => 15,'class'=>'tinymce'));
 
@@ -121,26 +111,7 @@ if ($action == 'lister') {
         $identifiant = $droits->obtenirIdentifiant();
 		$valeurs = $formulaire->exportValues();
 
-        if (isset($valeurs['vote'])
-                && !empty($valeurs['vote'])
-                && $forum_appel->dejaVote($identifiant, $id) === false) {
-            $today = date('Y-m-d');
-            $salt = $forum_appel->obtenirGrainDeSel($identifiant);
-            $res = $forum_appel->noterLaSession($valeurs['id'], $valeurs['vote'], $salt, $today);
-            $forum_appel->aVote($identifiant, $id);
-            if ($res) {
-                AFUP_Logs::log($_SESSION['afup_login'] . ' a voté sur la session n°' . $formulaire->exportValue('id'));
-                $forum_appel->envoyerResumeVote($salt, $identifiant);
-	            $url = 'index.php?page=forum_sessions&action=lister';
-	            if ($id_next = $forum_appel->obtenirSessionSuivanteSansVote($id_forum, $droits->obtenirIdentifiant())) {
-	                $url = 'index.php?page=forum_sessions&action=commenter&id=' . $id_next . '&id_forum=' . $id_forum;
-	            }
-	            afficherMessage('La note sur la session n°' . $formulaire->exportValue('id'). ' a été enregistrée', $url);
-            } else {
-	            $smarty->assign('erreur', 'Une erreur est survenue lors de l\'enregistrement du vote sur la session');
-            }
-
-        } elseif (!empty($valeurs['commentaire'])) {
+        if (!empty($valeurs['commentaire'])) {
 	        $ok = $forum_appel->ajouterCommentaire($id,
 				                                   $identifiant,
 	            								   $valeurs['commentaire'],
@@ -158,6 +129,100 @@ if ($action == 'lister') {
 	            $smarty->assign('erreur', 'Une erreur est survenue lors de l\'ajout du commentaire sur la session');
 	        }
 	    }
+
+    }
+
+    $current = $forum->obtenir($_GET['id_forum'], 'titre');
+    $smarty->assign('forum_name', $current['titre']);
+    $smarty->assign('formulaire', genererFormulaire($formulaire));
+
+} elseif ($action == 'voter') {
+    $journees = array();
+    $journees[1] = 'Fonctionnel';
+    $journees[2] = 'Technique';
+    $journees[3] = 'Les deux';
+
+    $genres = array();
+    $genres[1] = 'Conférence plénière';
+    $genres[2] = 'Atelier';
+    $genres[9] = 'Projet PHP';
+
+    $formulaire = &instancierFormulaire();
+    $id = isset($_GET['id']) ? $_GET['id'] : 0;
+    $id_forum = isset($_GET['id_forum']) ? $_GET['id_forum'] : $forum->obtenirDernier();
+    $formulaire->addElement('hidden', 'id'      , $id);
+
+    $champs = $forum_appel->obtenirSession($_GET['id']);
+    $conferenciers = $forum_appel->obtenirConferenciersPourSession($_GET['id']);
+    $formulaire->addElement('header', null, 'Présentation');
+    $formulaire->addElement('static', 'titre'            , 'Titre' , '<strong>'.$champs['titre'].'</strong>');
+    $formulaire->addElement('static', 'abstract'         , 'Résumé', $champs['abstract']);
+    foreach ($conferenciers as $conferencier) {
+    	$formulaire->addElement('static', 'conferencier_id_'.$conferencier['conferencier_id'], 'Conférencier', $conferencier['nom'].' '.$conferencier['prenom'].' ('.$conferencier['societe'].')');
+    }
+    $formulaire->addElement('static', 'date_soumission', 'Soumission'     , $champs['date_soumission']);
+    $formulaire->addElement('static', 'journee'        , 'Public visé'    , $journees[$champs['journee']]);
+    $formulaire->addElement('static', 'genre'          , 'Type de session', $genres[$champs['genre']]);
+
+    $formulaire->addElement('header', null, 'Commentaires');
+    $commentaires = $forum_appel->obtenirCommentairesPourSession($_GET['id']);
+    if (is_array($commentaires)) {
+	    foreach ($commentaires as $commentaire) {
+	        $formulaire->addElement('static',
+	        						'id_commentaire_'.$commentaire['id'],
+	                                date('d/m/Y h:i', $commentaire['date']),
+	                                $commentaire['commentaire'].'<br /><br /><em>'.$commentaire['nom'].' '.$commentaire['prenom'].'</em>');
+	    }
+    }
+
+    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Configuration.php';
+    $conf = $GLOBALS['AFUP_CONF'];
+
+    if (in_array($_SESSION['afup_login'], $conf->obtenir('bureau'))
+            && $forum_appel->dejaVote($droits->obtenirIdentifiant(), $id) === false) {
+        $formulaire->addElement('header', null, 'Noter');
+        $formulaire->addElement('select', 'vote', 'Noter cette session', array(''  => '',
+                                                                               '5' => 'Oui',
+                                                                               '3' => 'Plutôt oui',
+                                                                               '2' => 'Plutôt non',
+                                                                               '1' => 'Non'));
+	    $formulaire->addElement('header', 'boutons'  , '');
+		$formulaire->addElement('submit', 'soumettre', 'Soumettre');
+		$formulaire->addElement('submit', 'passer'   , 'Passer');
+    }
+
+
+	if (isset($_POST['passer'])) {
+	    $url = 'index.php?page=forum_sessions&action=lister';
+	    if ($id_next = $forum_appel->obtenirSessionSuivanteSansVote($id_forum, $droits->obtenirIdentifiant())) {
+            $url = 'index.php?page=forum_sessions&action=voter&id=' . $id_next . '&id_forum=' . $id_forum;
+        }
+        afficherMessage('Direction une autre session sans vote', $url);
+
+	} elseif ($formulaire->validate()) {
+        $identifiant = $droits->obtenirIdentifiant();
+		$valeurs = $formulaire->exportValues();
+
+        if (isset($valeurs['vote'])
+                && !empty($valeurs['vote'])
+                && $forum_appel->dejaVote($identifiant, $id) === false) {
+            $today = date('Y-m-d');
+            $salt = $forum_appel->obtenirGrainDeSel($identifiant);
+            $res = $forum_appel->noterLaSession($valeurs['id'], $valeurs['vote'], $salt, $today);
+            $forum_appel->aVote($identifiant, $id);
+            if ($res) {
+                AFUP_Logs::log($_SESSION['afup_login'] . ' a voté sur la session n°' . $formulaire->exportValue('id'));
+                $forum_appel->envoyerResumeVote($salt, $identifiant);
+	            $url = 'index.php?page=forum_sessions&action=lister';
+	            if ($id_next = $forum_appel->obtenirSessionSuivanteSansVote($id_forum, $droits->obtenirIdentifiant())) {
+	                $url = 'index.php?page=forum_sessions&action=voter&id=' . $id_next . '&id_forum=' . $id_forum;
+	            }
+	            afficherMessage('La note sur la session n°' . $formulaire->exportValue('id'). ' a été enregistrée', $url);
+            } else {
+	            $smarty->assign('erreur', 'Une erreur est survenue lors de l\'enregistrement du vote sur la session');
+            }
+
+        }
 
     }
 
@@ -286,5 +351,3 @@ if ($action == 'lister') {
     $smarty->assign('forum_name', $current['titre']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
-
-?>

@@ -50,6 +50,7 @@
             </td>
             <td style="text-align: center">{if $session.etat == 0}Créé{elseif $session.etat == 1}Annulé{else}--{/if}</td>
             <td style="text-align: right" nowrap="nowrap">
+                <a href="index.php?page=forum_sessions&amp;action=voter&amp;id={$session.session_id}&amp;id_forum={$id_forum}" title="Commenter la session {$session.titre}"><img src="{$chemin_template}images/icone_vote.png" alt="Voter" /></a>
                 <a href="index.php?page=forum_sessions&amp;action=commenter&amp;id={$session.session_id}&amp;id_forum={$id_forum}" title="Commenter la session {$session.titre}"><img src="{$chemin_template}images/icone_commentaire.png" alt="Commenter" /></a>
                 <a href="index.php?page=forum_sessions&amp;action=modifier&amp;id={$session.session_id}" title="Modifier la session {$session.titre}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                 <a href="index.php?page=forum_sessions&amp;action=supprimer&amp;id={$session.session_id}" title="Supprimer la session {$session.titre}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la session {$session.titre} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
