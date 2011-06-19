@@ -37,8 +37,8 @@ $config_forum['coupons'] = array_merge($coupons,array_map("strtolower",$coupons)
 $config_forum['annee'] = 2011;
 $config_forum['date_fin_appel_projet'] = mktime(23, 59, 59, 10, 20, $config_forum['annee']);
 $config_forum['date_fin_appel_conferencier'] = mktime(23, 59, 59, 5, 31, $config_forum['annee']);
-$config_forum['date_fin_prevente'] = mktime(0, 0, 0, 07, 15, $config_forum['annee']);
-$config_forum['date_fin_vente'] = mktime(0, 0, 0, 11, 4, $config_forum['annee']);
+$config_forum['date_fin_prevente'] = mktime(0, 0, 0, 8, 31, $config_forum['annee']);
+$config_forum['date_fin_vente'] = mktime(0, 0, 0, 11, 23, $config_forum['annee']);
 $config_forum['date_debut'] = mktime(0, 0, 0, 11, 24, $config_forum['annee']);
 $config_forum['date_fin'] = mktime(0, 0, 0, 11, 25, $config_forum['annee']);
 $smarty->assign('forum_annee', $config_forum['annee'] );
