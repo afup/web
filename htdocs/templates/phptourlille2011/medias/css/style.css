@@ -251,16 +251,17 @@ body {
 	
 }
 
+
 /*========================/
 	News
 /========================*/
 
-.left-content {
+.left-container {
 	float:left;
 	width:710px;
 }
 
-.content .news {
+.left-container .news {
 	position:relative;
 	z-index:10;	
 	margin-bottom:120px;
@@ -415,6 +416,73 @@ body {
 	text-decoration:none;
 }
 
+
+/*========================/
+	Page interne
+/========================*/
+.left-content {
+	float:left;
+	width:670px;
+	background:#FFF;
+	padding:32px 20px;
+	position:relative;
+	z-index:5;
+	box-shadow:0 1px 4px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.left-content h1 {
+	position:absolute;
+	font: 20px/1em 'MuseoSans500', Helvetica, Arial, sans-serif;
+	color:#FFF;
+	text-shadow:0 1px 1px rgba(0, 0, 0, 0.3);
+	background:url(../images/bg-titre-actu.png) no-repeat left top;
+	width:700px;
+	height:46px;
+	padding:10px 0 0 28px;
+	position:absolute;
+	z-index:10;
+	top:-42px;
+	left:-12px;
+}
+
+.left-content  h2 {
+	line-height:1.4em;
+	color:#7666da;
+	font-size:18px;
+	margin:10px 0 6px 0;
+}
+
+.left-content h3 {
+	line-height:1.4em;
+	margin:10px 0 6px 0;
+	font-size:14px;
+}
+
+.left-content p {
+	line-height:1.4em;
+	color:#333;
+}
+
+.left-content a {
+	line-height:1.4em;
+	color:#7666da;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.left-content ul {
+	line-height:1.4em;
+	list-style-type:disc;
+	padding-left:20px;
+	margin:10px 0 10px 10px;
+	display:block;
+}
+
+.left-content ul li:first-letter {
+	text-transform:uppercase;
+}
 
 /*========================/
 	Tarifs/inscription
