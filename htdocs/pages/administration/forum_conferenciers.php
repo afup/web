@@ -227,7 +227,7 @@ elseif ($action == 'lister') {
         											$valeurs['biographie']);
         } else {
           $file =& $formulaire->getElement('photo');
-        $file->moveUploadedFile(AFUP_CHEMIN_RACINE . 'templates/forumphp'.$annee_forum.'/images/intervenants',$_GET['id'].'.jpg');
+        $file->moveUploadedFile(AFUP_CHEMIN_RACINE . 'templates/phptourlille'.$annee_forum.'/images/intervenants',$_GET['id'].'.jpg');
             $ok = $forum_appel->modifierConferencier($_GET['id'],
                                                      $valeurs['id_forum'],
         											 $valeurs['civilite'],
