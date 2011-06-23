@@ -440,8 +440,8 @@ body {
 	text-shadow:0 1px 1px rgba(0, 0, 0, 0.3);
 	background:url(../images/bg-titre-actu.png) no-repeat left top;
 	width:700px;
-	height:46px;
-	padding:10px 0 0 28px;
+	height:40px;
+	padding:16px 0 0 28px;
 	position:absolute;
 	z-index:10;
 	top:-42px;
@@ -680,6 +680,56 @@ body {
 	background:#f9f9f9;
 }
 
+/*========================/
+	Conferenciers
+/========================*/
+.conferenciers .conferencier {
+	margin-bottom:20px;
+	padding:10px;
+	border-bottom:4px solid #f9f9f9;
+	
+}
+
+.conferenciers .conferencier .photo {
+	float:left;
+	width:90px;
+	/*background:#f9f9f9;
+	min-height:120px;*/
+}
+
+.conferenciers .conferencier .photo img {
+	float:none;
+	border-bottom:4px solid #5284DA;
+}
+
+.conferenciers .conferencier .body {
+	float:right;
+	width:540px;
+}
+
+.conferenciers .conferencier .body h3 {
+	color: #5284DA;
+    font-size: 18px;
+    line-height: 1.4em;
+    margin:0;
+}
+
+.conferenciers .conferencier .body .societe {
+	color: #333;
+	font-size:14px;
+   
+}
+.conferenciers .conferencier .biographie {
+	lin-height:1.4em;
+	color:#666;
+	margin-top:10px;
+	border-left:1px dotted #f9f9f9
+}
+
+
+.conferenciers .conferencier .spacer {
+	clear:both;
+}
 /*========================/
 	Acces
 /========================*/
