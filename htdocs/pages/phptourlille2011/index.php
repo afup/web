@@ -22,8 +22,20 @@ $actualites = array(
 		'date' => "23 juin 2011",
 		'titre' => "Demandez le programme !",
 		'contenu' => "<p>Le choix est ardu, les débats sont animés, pour satisfaire décideurs comme techniciens, amateurs comme développeurs expérimentés... Les premiers conférenciers pour le PHP Tour Lille 2011 sont enfin confirmés !</p>
-			<p>Nous pouvons d'ores et déjà annoncer les retours d'expériences vécues au sein de Mediapart, Conforama ou 20 Minutes, des sujets pointus et innovants tels que &laquo;les services asynchrones et multilangages avec Mongrel2 et ZeroMQ&raquo; , &laquo;le traitement XML de pointe avec PHP et XQuery&raquo; et &laquo;concevoir de puissantes applications VoIP grâce à PHP&raquo;, et des interventions des Community Managers de SugarCRM et eZ Systems.</p>
-			<p>Découvrez en détail notre programmation dans notre rubrique <strong>Programme</strong>. Et ce n'est que le début : affaire à suivre !</p>",
+			<p>Nous pouvons d'ores et déjà annoncer les retours d'expériences vécues au sein
+			de <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#597\">Mediapart</a>,
+			<a href=\"http://afup.org/pages/phptourlille2011/sessions.php#526\">Conforama</a>
+			ou <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#556\">20 Minutes</a>,
+			des sujets pointus et innovants tels que
+			<a href=\"http://afup.org/pages/phptourlille2011/sessions.php#567\">&laquo;les services asynchrones et multilangages avec Mongrel2 et ZeroMQ&raquo;</a>,
+			<a href=\"http://afup.org/pages/phptourlille2011/sessions.php#596\">&laquo;le traitement XML de pointe avec PHP et XQuery&raquo;</a>
+			et <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#601\">&laquo;concevoir de puissantes applications VoIP grâce à PHP&raquo;</a>,
+			et des interventions des Community Managers
+			de <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#566\">SugarCRM</a>
+			et <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#572\">eZ Systems</a>.</p>
+			<p>Découvrez en détail notre programmation dans notre rubrique
+			<a href=\"http://afup.org/pages/phptourlille2011/deroulement.php\"><strong>Programme</strong></a>.
+			Et ce n'est que le début : affaire à suivre !</p>",
 	),
 	array(
 		'date' => "30 avril 2011",
