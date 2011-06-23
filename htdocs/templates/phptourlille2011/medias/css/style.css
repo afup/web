@@ -730,6 +730,83 @@ body {
 .conferenciers .conferencier .spacer {
 	clear:both;
 }
+
+/*========================/
+	Conferenciers
+/========================*/
+.sessions .session {
+	margin-bottom:40px;
+	/*padding-bottom:20px;*/
+	border-bottom: 4px solid #F9F9F9;
+}
+
+.sessions .session h3 {
+	color: #5284DA;
+    font-size: 18px;
+    line-height: 1.4em;
+    margin:0;
+}
+
+.sessions .session .horaire {
+	/*background:#f9f9f9;
+	display:inline-block;*/
+	font-size:14px;
+	color:#333;
+}
+
+.sessions .session .salle {
+	background:#52D4B7;
+	padding:1px 4px;
+	display:inline-block;
+	color:#FFF;
+}
+
+.sessions .session .details .abstract {
+	float:left;
+	width:500px;
+	padding-bottom:20px;
+}
+
+.sessions .session .details .abstract p {
+	text-align:justify;
+	color:#333;
+	line-height:1.4em;
+}
+
+.sessions .session .details .conferenciers {
+	float:right;
+	width:130px;
+	background:#f9f9f9;
+	padding:10px;
+}
+
+.sessions .session .details:before,.sessions .session .details:after {content:"";display:table;}
+.sessions .session .details:after {clear:both;}
+.sessions .session .details {zoom:1;}
+
+
+
+.sessions .session .details .conferenciers .conferencier {
+    border-bottom: none;
+    margin-bottom:0;
+    padding:0;
+}
+
+
+.sessions .session .details .conferenciers .conferencier a {
+	/*float:left;*/
+}
+
+.sessions .session .details .conferenciers .conferencier img {
+	float:none;
+	border-bottom:4px solid #5284DA;
+}
+
+.sessions .session .details .spacer {
+	clear:both;
+}
+
+
 /*========================/
 	Acces
 /========================*/
