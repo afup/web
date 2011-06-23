@@ -17,6 +17,12 @@ if ($jours_avant_forum < 0) {
 }
 $smarty->assign('alerte_avant_forum', $alerte_avant_forum);
 
+$info_importante['titre'] = "Demandez le programme !";
+$info_importante['contenu'] = "<p>Le choix est ardu, les débats sont animés, pour satisfaire décideurs comme techniciens, amateurs comme développeurs expérimentés... Les premiers conférenciers pour le PHP Tour Lille 2011 sont enfin confirmés !</p>
+<p>Nous pouvons d'ores et déjà annoncer les retours d'expériences vécues au sein de Mediapart, Conforama ou 20 Minutes, des sujets pointus et innovants tels que &laquo;les services asynchrones et multilangages avec Mongrel2 et ZeroMQ&raquo; , &laquo;le traitement XML de pointe avec PHP et XQuery&raquo; et &laquo;concevoir de puissantes applications VoIP grâce à PHP&raquo;, et des interventions des Community Managers de SugarCRM et eZ Systems.</p>
+<p>Découvrez en détail notre programmation dans notre rubrique <strong>Programme</strong>. Et ce n'est que le début : affaire à suivre !</p>";
+$infos_importantes[] = $info_importante;
+
 $info_importante['titre'] = "PHP Tour Lille 2011<br>les 24 et 25 novembre 2011";
 $info_importante['contenu'] = "<p>Le <strong>PHP Tour Lille 2011</strong> est officiellement annoncé pour les <strong>24 et 25 novembre 2011</strong> à <strong>Euratechnologies / Lille</strong> (France).</p>
 <p>Nouvel événement annuel et itinérant lancé par l'AFUP, <strong>le PHP Tour se penche sur les problématiques et thématiques propres à la région d'accueil</strong>. Experts nationaux et internationaux animeront conférences, retours d'expérience et ateliers en lien avec le tissu économique local, pour aider la communauté PHP à parvenir au top de ses capacités ! </p>
