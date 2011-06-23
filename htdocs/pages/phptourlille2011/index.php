@@ -17,7 +17,7 @@ if ($jours_avant_forum < 0) {
 }
 $smarty->assign('alerte_avant_forum', $alerte_avant_forum);
 
-$infos_importantes = array(
+$actualites = array(
 	array(
 		'date' => "23 juin 2011",
 		'titre' => "Demandez le programme !",
@@ -28,13 +28,10 @@ $infos_importantes = array(
 	array(
 		'date' => "30 avril 2011",
 		'titre' => "L'appel à conférenciers est lancé !",
-		'contenu' => "<p>Expert PHP, devenez conférencier lors du PHP Tour Lille 2011, le nouvel événement itinérant de l'AFUP ! Vous êtes expert dans le domaine du commerce en ligne, vous avez des connaissances pointues dans le domaine de l'intégration d'application hétérogènes dans les systèmes d'informations, vous pouvez nous faire bénéficier d'un retour d'expérience et de vos outils et astuces pour résister aux montées en charge: venez partager vos connaissances, en solo ou en groupe ! </p>
+		'contenu' => "<img align=\"left\" src=\"../../templates/forumphp2010/images/forumafup2009.jpg\" alt=\"PHP Tour\" />
+			<p>Expert PHP, devenez conférencier lors du PHP Tour Lille 2011, le nouvel événement itinérant de l'AFUP ! Vous êtes expert dans le domaine du commerce en ligne, vous avez des connaissances pointues dans le domaine de l'intégration d'application hétérogènes dans les systèmes d'informations, vous pouvez nous faire bénéficier d'un retour d'expérience et de vos outils et astuces pour résister aux montées en charge: venez partager vos connaissances, en solo ou en groupe ! </p>
 			<p>Rendez-vous dans la rubrique « Appel à conférenciers » et remplissez le formulaire avant le 31 mai 2011, minuit. </p>",
 	),
-);
-$smarty->assign('infos_importantes', $infos_importantes);
-
-$actualites = array(
 	array(
 		'date' => "18 avril 2011",
 		'titre' => "PHP Tour Lille 2011<br>les 24 et 25 novembre 2011",
