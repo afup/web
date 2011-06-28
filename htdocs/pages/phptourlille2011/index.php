@@ -19,6 +19,12 @@ $smarty->assign('alerte_avant_forum', $alerte_avant_forum);
 
 $actualites = array(
 	array(
+		'date' => "28 juin 2011",
+		'titre' => "Les inscriptions sont ouvertes !",
+		'contenu' => "<p>Le Forum PHP 2010 annonçait complet : nous espérons que le PHP Tour Lille 2011 suivra la même voie ! Pour être sûr d'assister à ce nouveau
+			cycle de conférences itinérant de l'AFUP, réservez dès maintenant votre place et profitez des tarifs préférentiels en pré-vente. Et vous aussi, vous pourrez dire <cite>&laquo;J'y étais !&raquo;</cite></p>",
+	),
+	array(
 		'date' => "23 juin 2011",
 		'titre' => "Demandez le programme !",
 		'contenu' => "<p>Le choix est ardu, les débats sont animés, pour satisfaire décideurs comme techniciens, amateurs comme développeurs expérimentés... Les premiers conférenciers pour le PHP Tour Lille 2011 sont enfin confirmés !</p>
