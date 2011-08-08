@@ -323,6 +323,18 @@ class AFUP_Facturation_Forum
                 case AFUP_FORUM_2_JOURNEES_ETUDIANT :
                 $code = 'ETUD';
                 break;
+                case AFUP_FORUM_2_JOURNEES_PREVENTE :
+                $code = 'PREV';
+                break;
+                case AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE :
+                $code = 'AFUP-PRE';
+                break;
+                case AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE :
+                $code = 'ETUD-PRE';
+                break;
+                case AFUP_FORUM_2_JOURNEES_COUPON :
+                $code = 'COUPON';
+                break;
             }
 
             $pdf->Cell(50, 5, $code, 1);
@@ -447,16 +459,16 @@ class AFUP_Facturation_Forum
                 case AFUP_FORUM_2_JOURNEES_ETUDIANT :
                 $code = 'ETUD';
                 break;
-				case AFUP_FORUM_2_JOURNEES_PREVENTE :
-                $code = 'ETUD';
+                case AFUP_FORUM_2_JOURNEES_PREVENTE :
+                $code = 'PREV';
                 break;
-				case AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE :
-                $code = '2JOU-PRE';
+                case AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE :
+                $code = 'AFUP-PRE';
                 break;
-				case AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE :
+                case AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE :
                 $code = 'ETUD-PRE';
                 break;
-				case AFUP_FORUM_2_JOURNEES_COUPON :
+                case AFUP_FORUM_2_JOURNEES_COUPON :
                 $code = 'COUPON';
                 break;
             }
