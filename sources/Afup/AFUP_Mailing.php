@@ -60,14 +60,14 @@ class AFUP_Mailing
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-   static function envoyerMail($from, $to, $subject,$body, Array $options=array()) {
-        require_once dirname(__FILE__).'/AFUP_Configuration.php';
-        $configuration = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/config.php');
+	static function envoyerMail($from, $to, $subject,$body, Array $options=array()) {
+		require_once dirname(__FILE__).'/AFUP_Configuration.php';
+		$configuration = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/config.php');
    	
-       $optionsDefault = array(
-            'html' => FALSE,
-            'bcc'  => array(),
-            'file' => array()); // chaque item doit contenir : (pathFichier, nom fichier)
+		$optionsDefault = array(
+			'html' => FALSE,
+			'bcc'  => array(),
+			'file' => array()); // chaque item doit contenir : (pathFichier, nom fichier)
 
        $options = array_merge($optionsDefault,$options);
 
@@ -98,30 +98,26 @@ class AFUP_Mailing
             $to = $configuration->obtenir('mails|force_destinataire');
         }
 
-        //Gestion BCC
         $mail->AddBCC($configuration->obtenir('mails|bcc'));
         foreach ($options['bcc'] as $valeurBcc) {
             $mail->AddBCC($valeurBcc);
         }
 
-        //Gestion Attachement
         foreach ($options['file'] as $filePath) {
-            $mail->AddAttachment($filePath[0],$filePath[1]);
+            $mail->AddAttachment($filePath[0], $filePath[1]);
             // TODO : deboguer la méthode
         }
         
-        $from_email = is_array($from)?$from[0]:$from;
-        $from_name = is_array($from)?$from[1]:'';
-        $to_email = is_array($to)?$to[0]:$to;
-        $to_name = is_array($to)?$to[1]:'';
+        $from_email = is_array($from) ? $from[0]:$from;
+        $from_name = (is_array($from) and isset($from[1])) ? $from[1] : '';
+        $to_email = is_array($to) ? $to[0] : $to;
+        $to_name = (is_array($to) and isset($to[1])) ? $to[1] : '';
         $mail->AddAddress($to_email, $to_name);
-        $mail->From     = $from_email;
+        $mail->From = $from_email;
         $mail->FromName = $from_name;        
-        $mail->Subject  = $subject;
-        $mail->Body     = str_replace('$EMAIL$',$to_email,$body);
+        $mail->Subject = $subject;
+        $mail->Body = str_replace('$EMAIL$',$to_email,$body);
         return  $mail->Send();
 
     }
-
 }
-?>
