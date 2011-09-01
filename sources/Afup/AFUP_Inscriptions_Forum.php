@@ -197,6 +197,8 @@ class AFUP_Inscriptions_Forum
         $requete .= '  afup_inscription_forum i ';
         $requete .= 'WHERE ';
         $requete .= '  i.id_forum IN ('.(int)$id_forum.', '.(int)$id_forum_precedent.') ';
+        $requete .= 'AND ';
+        $requete .= '  etat <> 0 ';
         $requete .= 'GROUP BY jour, id_forum ';
         $requete .= 'ORDER BY jour DESC ';
         $nombre_par_date = $this->_bdd->obtenirTous($requete);
