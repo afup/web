@@ -188,7 +188,7 @@ class AFUP_Inscriptions_Forum
     function obtenirSuivi($id_forum) {
     	$forum = new AFUP_Forum($this->_bdd);
     	$id_forum_precedent = $forum->obtenirPrecedent($id_forum);
-    	
+
     	$requete  = 'SELECT ';
     	$requete .= '  COUNT(*) as nombre, ';
     	$requete .= '  UNIX_TIMESTAMP(FROM_UNIXTIME(date, \'%Y-%m-%d\')) as jour, ';
@@ -198,27 +198,27 @@ class AFUP_Inscriptions_Forum
         $requete .= 'WHERE ';
         $requete .= '  i.id_forum IN ('.(int)$id_forum.', '.(int)$id_forum_precedent.') ';
         $requete .= 'AND ';
-        $requete .= '  etat <> 0 ';
+        $requete .= '  etat <> 1 ';
         $requete .= 'GROUP BY jour, id_forum ';
         $requete .= 'ORDER BY jour DESC ';
         $nombre_par_date = $this->_bdd->obtenirTous($requete);
-        
+
         foreach ($nombre_par_date as $nombre) {
         	$inscrits[$nombre['id_forum']][$nombre['jour']] = $nombre['nombre'];
         }
-        
+
         $debut = $forum->obtenirDebut($id_forum);
         $debut_precedent = $forum->obtenirDebut($id_forum_precedent);
-        
+
         $premiere_inscription = min(array_keys($inscrits[$id_forum]));
         $premiere_inscription_precedent = min(array_keys($inscrits[$id_forum_precedent]));
-        
+
         $debut_jd = gregoriantojd(date("m", $debut), date("d", $debut), date("Y", $debut));
         $premiere_inscription_jd = gregoriantojd(date("m", $premiere_inscription), date("d", $premiere_inscription), date("Y", $premiere_inscription));
-        
+
         $debut_precedent_jd = gregoriantojd(date("m", $debut_precedent), date("d", $debut_precedent), date("Y", $debut_precedent));
         $premiere_inscription_precedent_jd = gregoriantojd(date("m", $premiere_inscription_precedent), date("d", $premiere_inscription_precedent), date("Y", $premiere_inscription_precedent));
-        
+
         $ecart = max($debut_jd - $premiere_inscription_jd, $debut_precedent_jd - $premiere_inscription_precedent_jd);
 
 		$suivis = array();
@@ -230,7 +230,7 @@ class AFUP_Inscriptions_Forum
         	if (isset($inscrits[$id_forum][$jour])) {
 	        	$total_cumule += $inscrits[$id_forum][$jour];
         	}
-			
+
         	$jour_precedent = mktime(0, 0, 0, date("m", $debut_precedent), date("d", $debut_precedent) - $i, date("Y", $debut_precedent));
 			if (isset($inscrits[$id_forum_precedent][$jour_precedent])) {
 				$total_cumule_precedent += $inscrits[$id_forum_precedent][$jour_precedent];
@@ -243,7 +243,7 @@ class AFUP_Inscriptions_Forum
 			} else {
 				$periode = "aujourdhui";
 			}
-			
+
         	$suivis[] = array(
         		'periode' => $periode,
         		'jour' => date("d/m/Y", $jour),
@@ -251,10 +251,10 @@ class AFUP_Inscriptions_Forum
         		'n_1' => $total_cumule_precedent,
         	);
 		}
-		
+
 		return $suivis;
     }
-    
+
     function obtenirListePourEmargement($id_forum = null) {
         $requete  = 'SELECT';
         $requete .= '  i.*, f.societe ';
@@ -264,10 +264,10 @@ class AFUP_Inscriptions_Forum
         $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
         $requete .= 'ORDER BY i.nom ASC';
-        
+
         $liste_emargement = array();
         $liste = $this->_bdd->obtenirTous($requete);
-        
+
         $derniere_lettre = "";
         foreach ($liste as $inscrit) {
         	$premiere_lettre = strtoupper($inscrit['nom'][0]);
@@ -280,7 +280,7 @@ class AFUP_Inscriptions_Forum
         	}
         	$liste_emargement[] = $inscrit;
         }
-        
+
         return $liste_emargement;
     }
 
