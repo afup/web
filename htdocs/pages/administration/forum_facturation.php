@@ -1,5 +1,5 @@
 <?php
-$action = verifierAction(array('lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'envoyer_tout', 'facturer_facture', 'supprimer_facture'));
+$action = verifierAction(array('lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'envoyer_tout', 'facturer_facture', 'supprimer_facture', 'changer_date_reglement'));
 $tris_valides = array('date_facture', 'email', 'societe', 'etat');
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
@@ -11,7 +11,7 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 
 if ($action == 'lister') {
     // Valeurs par défaut des paramètres de tri
-    $list_champs = 'reference, date_facture, montant, email, societe, etat, facturation';
+    $list_champs = 'reference, date_facture, montant, email, societe, etat, facturation, date_reglement';
     $list_ordre = 'date_facture DESC';
     $list_associatif = false;
     $list_filtre = false;
@@ -24,7 +24,7 @@ if ($action == 'lister') {
     if (isset($_GET['filtre'])) {
         $list_filtre = $_GET['filtre'];
     }
-    
+
     if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
         $_GET['id_forum'] = $forum->obtenirDernier();
     }
@@ -65,6 +65,12 @@ if ($action == 'lister') {
 	} else {
 		afficherMessage("La facture n'a pas pu être supprimée", 'index.php?page=forum_facturation&action=lister', true);
 	}
+} elseif ($action == 'changer_date_reglement'){
+    $reglement = strtotime(implode('-', array_reverse(explode('/', $_GET['reglement']))));
+    if ($forum_facturation->changerDateReglement($_GET['ref'], $reglement)) {
+		afficherMessage('La date de réglement a été changée', 'index.php?page=forum_facturation&action=lister');
+    } else {
+		afficherMessage('La date de réglement n\'a pas été changée', 'index.php?page=forum_facturation&action=lister');
+    }
 }
-
 ?>

@@ -573,4 +573,20 @@ class AFUP_Facturation_Forum
 
         return $ok;
     }
+
+    /**
+     * Changement de la date de réglement d'une facture
+     * @param integer $reference
+     * @param integer $date_reglement
+     */
+    public function changerDateReglement($reference, $date_reglement)
+    {
+        $requete  = 'UPDATE ';
+        $requete .= '  afup_facturation_forum ';
+        $requete .= 'SET ';
+        $requete .= '  date_reglement = ' . intval($date_reglement) . ' ';
+        $requete .= 'WHERE';
+        $requete .= '  reference=' . $this->_bdd->echapper($reference);
+        return $this->_bdd->executer($requete);
+    }
 }

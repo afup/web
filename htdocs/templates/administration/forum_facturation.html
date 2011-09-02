@@ -34,10 +34,10 @@
         </tr>
     {foreach from=$facturations item=facturation}
         <tr class="{cycle values="odd,even"}">
-            <td nowrap="nowrap">{$facturation.date_facture|date_format:"%d/%m/%y"}</td>
+            <td nowrap="nowrap">{$facturation.date_facture|date_format:"%d/%m/%Y"}</td>
             <td><strong>{$facturation.societe}</strong></td>
             <td>{$facturation.montant} &euro;</td>
-            <td style="text-align: center">{if $facturation.etat == 4}Reglée{elseif $facturation.etat == 6}En attente règlement{elseif $facturation.etat == 7}Confirmée{else}--{/if}</td>
+            <td style="text-align: center">{if $facturation.etat == 4}<span class="regle" title="{$facturation.reference}" alt="{$facturation.date_reglement|date_format:"%d/%m/%Y"}">Reglée<br/><em style="color:#999">{$facturation.date_reglement|date_format:"%d/%m/%Y"}</em></span>{elseif $facturation.etat == 6}En attente règlement{elseif $facturation.etat == 7}Confirmée{else}--{/if}</td>
             <td style="text-align: center">{if $facturation.facturation == 0}A facturer{elseif $facturation.facturation == 1}Facturée{elseif $facturation.facturation == 2}Reçue{else}--{/if}</td>
             <td style="text-align: right" nowrap="nowrap">
                 <a href="index.php?page=forum_facturation&amp;action=telecharger_devis&amp;ref={$facturation.reference}" title="Télécharger le devis"><img src="{$chemin_template}images/icone_telecharger_devis.png" alt="Téléchargement du devis" /></a>
@@ -58,3 +58,20 @@
     {/foreach}
     </table>
 {/if}
+
+{literal}
+<script type="text/javascript">
+    $(".regle").dblclick(function() {
+        ref=$(this).attr('title');
+        dateCourante=$(this).attr('alt');
+        if ((dateCourante=='')) {
+            today = new Date();
+            dateCourante = today.getDate() + '/' + (today.getMonth()+1) + '/' + today.getFullYear();
+        }
+        nouvelleDate=prompt('Entrez la nouvelle date', dateCourante);
+        if (nouvelleDate) {
+            window.location='index.php?page=forum_facturation&action=changer_date_reglement&ref=' + ref + '&reglement=' + nouvelleDate;
+        }
+    });
+</script>
+{/literal}
