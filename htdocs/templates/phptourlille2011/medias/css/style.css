@@ -1,13 +1,13 @@
 /*-----------------------------------------------------------------------------------------------------
-		Projet : 
-		Website : 
+		Projet :
+		Website :
 		Auteur : MrRayures
 
 		Sommaire :  General
 					Header
 					Contenu
 					Footer
-					
+
 -------------------------------------------------------------------------------------------------------*/
 
 
@@ -56,7 +56,7 @@ body {
 }
 
 .path-content {
-	background:url(../images/bg-path.jpg) no-repeat center top;	
+	background:url(../images/bg-path.jpg) no-repeat center top;
 }
 
 
@@ -88,7 +88,7 @@ body {
 	display:block;
 	text-indent:-9999px;
 	margin: 16px 0 0 20px;
-	
+
 }
 
 .header .description {
@@ -109,7 +109,7 @@ body {
 }
 
 .header .description a {
-	color:#FFF;		
+	color:#FFF;
 }
 
 /*========================/
@@ -203,8 +203,8 @@ body {
 	color:#FFF;
 	text-decoration:none;
 	background:#7b7b7b;
-	background-image: -moz-linear-gradient(top, 
-							#bcbcbc, 
+	background-image: -moz-linear-gradient(top,
+							#bcbcbc,
 							#7b7b7b);
 	background-image: -webkit-gradient(linear,left top,left bottom,
 		color-stop(0, 		#bcbcbc),
@@ -248,7 +248,7 @@ body {
 .content {
 	width:980px;
 	margin:80px auto 0 auto;
-	
+
 }
 
 
@@ -261,9 +261,13 @@ body {
 	width:710px;
 }
 
+.left-container p{
+	font-size: 13px;
+}
+
 .left-container .news {
 	position:relative;
-	z-index:10;	
+	z-index:10;
 	margin-bottom:120px;
 }
 
@@ -278,7 +282,7 @@ body {
 .content .slide img {
 	box-shadow:0 1px 4px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);	
+	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .content .slide .txt {
@@ -288,7 +292,7 @@ body {
 	position:absolute;
 	z-index:9;
 	right:0;
-	top:-30px;	
+	top:-30px;
 }
 
 .content .slide .txt h2 {
@@ -463,6 +467,7 @@ body {
 
 .left-content p {
 	line-height:1.4em;
+	font-size:13px;
 	color:#333;
 }
 
@@ -618,7 +623,7 @@ body {
 }
 
 #formulaire input[type="radio"] {
-	
+
 }
 
 #formulaire input[type="text"]:focus,
@@ -687,7 +692,7 @@ body {
 	margin-bottom:20px;
 	padding:10px;
 	border-bottom:4px solid #f9f9f9;
-	
+
 }
 
 .conferenciers .conferencier .photo {
@@ -717,7 +722,7 @@ body {
 .conferenciers .conferencier .body .societe {
 	color: #333;
 	font-size:14px;
-   
+
 }
 .conferenciers .conferencier .biographie {
 	lin-height:1.4em;
@@ -834,7 +839,7 @@ body {
 .sidebar {
 	float:right;
 	width:210px;
-		
+
 }
 
 .sidebar .bloc-sidebar {
