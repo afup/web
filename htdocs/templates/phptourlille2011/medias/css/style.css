@@ -815,18 +815,35 @@ body {
 	Acces
 /========================*/
 
+.block-leftbar {
+	margin:16px 0 30px 16px;
+	padding:8px 10px;
+	border-left:4px solid #52D4B7;
+	background:#f9f9f9;
+}
 
+.acces .map {
+	margin:16px 0 30px 0;
+}
 
-/*========================/
-	Contact
-/========================*/
+.acces .map a {
+	color:#999;
+}
 
+.acces .covoiturage {
+	margin-bottom:16px;
+	background:#f9f9f9;
+}
 
+.acces .covoiturage img {
+	margin:10px 16px 10px 10px;
+}
 
-/*========================/
-	Sponsors
-/========================*/
-
+.acces .covoiturage p {
+	padding:10px 16px 0 0;
+	text-align:justify;
+}
+ 
 
 
 
