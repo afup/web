@@ -109,8 +109,6 @@ class AFUP_Rendez_Vous
 
         $succes = false;
         require_once 'phpmailer/class.phpmailer.php';
-		// correction pour gérer les accents dans les validations des RV
-        // (c) Christophe villeneuve
         foreach ($inscrits as $inscrit) {
         	$hash=md5(
 					utf8_decode(
