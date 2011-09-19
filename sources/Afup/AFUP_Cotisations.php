@@ -587,10 +587,9 @@ class AFUP_Cotisations
         $corps .= "Afin de la renouveller, il vous suffit d'envoyer un chèque de " . $montant;
         $corps .= " euros libellé à l'ordre de l'AFUP ainsi que votre identité à l'adresse suivante :\n\n";
         $corps .= "AFUP\n";
-        $corps .= "Villeneuve Christophe \n";
-        $corps .= "BAT C1 - Appt 37\n";
-        $corps .= "Résidence Les Millepertuis\n";
-        $corps .= "91940 LES ULIS\n\n";
+        $corps .= "Le Trésorier\n";
+        $corps .= "119 rue du chemin vert\n";
+        $corps .= "75011 Paris\n\n";
         $corps .= "Vous pouvez aussi la renouveller directement :\n\n";
         $corps .= "* En ligne via l'espace d'administration:\n";
         $corps .= "  http://www.afup.org/pages/administration/\n\n";
