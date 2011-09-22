@@ -19,6 +19,30 @@ $smarty->assign('alerte_avant_forum', $alerte_avant_forum);
 
 $actualites = array(
 	array(
+		'date' => "22 septembre 2011",
+		'titre' => "Le programme définitif du PHP Tour Lille 2011 est tombé :<br/>invités d'honneur et exclusivités à prévoir !",
+		'contenu' => "<p>Le programme définitif du <strong>PHP Tour Lille 2011</strong> est tombé, et avec lui la nouvelle de la venue d'un invité d'exception : <a href=\"http://twitter.com/#!/dsp_\">David Soria Parra</a>,
+            co-release master de <strong>PHP 5.4</strong>. Il nous fera l'honneur d'inaugurer cette première édition du <strong>PHP Tour Lille 2011</strong> en donnant une <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#607\">conférence dans
+            l'auditorium le jeudi 24 novembre</a>. De quoi lancer le PHP Tour sous les meilleurs auspices !</p>
+            <p>Le programme de qualité réunira les meilleurs experts du moment : il proposera des conférences abordant les enjeux économiques locaux, tels que
+            le e-commerce et la performance.  Il se penchera sur des  sujets plus novateurs tels que
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#601\">la VoIP avec PHP</a>,
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#602\">Cheyenne</a>,
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#592\">Sonar</a>,
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#567\">les services asynchrones</a>,
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#576\">XHProf</a>,
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#596\">XQuery...</a>
+            Des retours d'expérience seront proposés par des représentants de
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#556\">20 Minutes</a>,
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#526\">La maison de Valérie</a>,
+            <a href=\"http://afup.org/pages/phptourlille2011/sessions.php#597\">Mediapart</a>, qui
+            utilisent PHP dans des contextes stratégiques.</p>
+            <p>Enfin, notons que le <strong>PHP Tour Lille 2011</strong> a l'honneur d'avoir été choisi pour accueillir la toute première présentation officielle
+            d'<a href=\"http://afup.org/pages/phptourlille2011/sessions.php#527\">Atoum</a>, un
+            nouveau framework de tests unitaires innovant qui va probablement faire beaucoup de bruit.</p>
+            <p><a href=\"http://afup.org/pages/phptourlille2011/inscription.php\">Réservez dès maintenant votre place</a> pour le PHP Tour Lille 2011 <strong>les jeudi 24 et vendredi 25 novembre 2011</strong> !</p>",
+	),
+	array(
 		'date' => "28 juin 2011",
 		'titre' => "Les inscriptions sont ouvertes !",
 		'contenu' => "<p>Le Forum PHP 2010 annonçait complet : nous espérons que le PHP Tour Lille 2011 suivra la même voie ! Pour être sûr d'assister à ce nouveau

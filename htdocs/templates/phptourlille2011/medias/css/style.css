@@ -351,7 +351,7 @@ body {
 /*//// Contenu ////*/
 .news .news-txt {
 	background:#FFF;
-	padding:32px 20px;
+	padding:20px 20px;
 	position:relative;
 	z-index:5;
 	box-shadow:0 1px 4px rgba(0, 0, 0, 0.2);
@@ -367,6 +367,7 @@ body {
 .news .news-txt  p {
 	line-height:1.4em;
 	color:#333;
+    margin-top:1em;
 }
 
 .news .news-txt h3 {
@@ -843,7 +844,7 @@ body {
 	padding:10px 16px 0 0;
 	text-align:justify;
 }
- 
+
 
 
 
