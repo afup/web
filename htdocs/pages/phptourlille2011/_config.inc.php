@@ -18,18 +18,12 @@ date_default_timezone_set("Europe/Paris");
 ini_set('display_errors',  $conf->obtenir('divers|afficher_erreurs'));
 
 $config_forum['id'] = 6;
-/*
- * 'PHPFRANCE','POLENORD','DIGIPORT', 'WAMPSERVER',
-                  'ALTERWAY','ADOBE','SENSIO','SENSIOLABS','4D',
-                  'HSC','MICROSOFT', 'CODEUR',
-                  'AFUP','CONFERENCIER', 'TWITTER',
-                  'POLLEN', 'PIWAM','PIC','FREEDOM', 'HAVEFNUBB','PHPTV','PRESTASHOP'
- */
 $coupons = array('INTERNIM','ADOBE','ZEND','ELAO','DEVELOPPEZ','MICROSOFT','WEKA',
 				'VACONSULTING','CLEVERAGE','ENI','ALTERWAY','EMERCHANT','LINAGORA',
 				'OXALIDE','BUSINESSDECISION','EYROLLES','PROGRAMMEZ','PHPSOLUTIONS',
 				'RBSCHANGE','JELIX','CAKEPHPFR','HOA','DRUPAL','MAGIXCMS','FINEFS','SOLUTIONSLOGICIELS',
-				'SYMFONY','DOLIBARR','PICPHPSQLI','CRISISCAMP','RBS','OBM'
+				'SYMFONY','DOLIBARR','PICPHPSQLI','CRISISCAMP','RBS','OBM',
+				'EURATECH','POLENORD'
                 );
 
 $config_forum['project_ids'] = array();
