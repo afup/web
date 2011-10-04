@@ -236,10 +236,13 @@ class AFUP_Site_Articles {
 
     function chargerDerniersAjouts($rowcount = 10) {
         $requete =  ' SELECT';
-        $requete .= '  * ';
+        $requete .= '  afup_site_article.* ';
         $requete .= ' FROM';
         $requete .= '  afup_site_article ';
-        $requete .= ' WHERE etat = 1 ';
+        $requete .= ' INNER JOIN';
+        $requete .= '  afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id';
+        $requete .= ' WHERE afup_site_article.etat = 1 ';
+        $requete .= ' AND id_parent <> 52 '; // On affiche pas les articles des forums
         $requete .= ' ORDER BY date DESC';
         $requete .= ' LIMIT 0, '.(int)$rowcount;
 
