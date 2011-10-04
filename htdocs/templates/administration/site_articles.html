@@ -19,6 +19,7 @@
         <tr>
             <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a></th>
             <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Titre</a></th>
+            <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=nom_rubrique&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Rubrique</a></th>
             <th style="text-align: left" width="60"><a href="index.php?page=site_articles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}" >Etat</a></th>
             <th width="40"></th>
         </tr>
@@ -26,6 +27,7 @@
         <tr class="{cycle values="odd,even"}">
             <td>{$article.date|date_format:"%d/%m/%Y"}</td>
             <td style="white-space : normal;">{$article.titre}</td>
+            <td>{$article.nom_rubrique}</td>
             <td>{if $article.etat == 1}En ligne{elseif $article.etat == -1}Hors ligne{else}En attente{/if}</td>
             <td style="text-align: right">
                 <a id="modifier_{$article.id}" href="index.php?page=site_articles&amp;action=modifier&amp;id={$article.id}" title="Modifier l'article {$article.titre}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>

@@ -193,9 +193,11 @@ class AFUP_Site_Articles {
         $associatif = false)
     {
         $requete = 'SELECT';
-        $requete .= '  ' . $champs . ' ';
+        $requete .= '  afup_site_article.' . $champs . ', afup_site_rubrique.nom as nom_rubrique ';
         $requete .= 'FROM';
         $requete .= '  afup_site_article ';
+        $requete .= 'INNER JOIN';
+        $requete .= '  afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id ';
         $requete .= 'WHERE 1 = 1 ';
         if ($filtre) {
             $requete .= 'AND (titre LIKE \'%' . $filtre . '%\' ';
@@ -569,7 +571,7 @@ class AFUP_Site_Article {
     public $date;
     public $etat;
     public $route;
-    
+
     protected $rubrique;
     protected $bdd;
 
@@ -605,7 +607,7 @@ class AFUP_Site_Article {
     function rubrique() {
         $this->rubrique = new AFUP_Site_Rubrique($this->id_site_rubrique, $this->bdd);
         $this->rubrique->charger();
-        
+
         return '<ul id="Header">'.
                '<li id="HeaderImg">'.
                $this->image_sous_navigation().
