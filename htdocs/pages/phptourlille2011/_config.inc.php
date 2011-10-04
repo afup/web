@@ -107,18 +107,49 @@ $smarty->assign('sponsors_bronze', $sponsors_bronze);
 
 
 $partenaires=array(
-//    array('nom'   => 'Eyrolles',
-//          'site'  => 'http://www.editions-eyrolles.com/',
-//          'logo'  => 'logo_eyrolles.gif',
-//          'texte' => 'Les Editions Eyrolles ont placé PHP au coeur de leur offre Développeurs,
-//                  de l\'initiation (<a href="http://www.editions-eyrolles.com/Livre/9782212114072/php-5">
-//                  manuels avec cours et exercices</a>,
-//                  <a href="http://www.editions-eyrolles.com/Livre/9782212116786/php-mysql-et-javascript">
-//                  apprentissage par la pratique</a>) à l\'exploitation professionnelle
-//                  (livres de référence dont <a href="http://www.editions-eyrolles.com/Livre/9782212123692/php-5-avance">PHP 5 avancé</a>,
-//                  études de cas détaillées dont une sur <a href="http://www.editions-eyrolles.com/Livre/9782212112344/php-5">PHP</a>).
-//                  Au-delà de la maîtrise de PHP, chaque ouvrage offre un véritable savoir-faire métier au développeur.<br/>
-//                  Suivez les nouveautés Eyrolles en vous abonnant au fil RSS
-//                  <a href="http://www.editions-eyrolles.com/rss.php?q=php">http://www.editions-eyrolles.com/rss.php?q=php</a> !'),
+        array('nom'   => 'EuraTechnologies',
+              'site'  => 'http://www.euratechnologies.com/',
+              'logo'  => 'logo_euratechnologies.png',
+              'texte' => 'Lieu de convergence des acteurs des projets et des innovations, le pôle
+                    d\'excellence EuraTechnologies a pour vocation de développer le parc
+                    d\'activités à un échelon international, d\'accompagner les entreprises du
+                    pôle dans leur développement technologique, commercial et stratégique, de
+                    favoriser l\'émergence de projets TIC et de nouveaux talents, et de proposer
+                    des outils et un environnement répondant aux besoins des entreprises.'),
+        array('nom'   => 'Pôle Nord',
+              'site'  => 'http://www.polenord.info/',
+              'logo'  => 'logo_polenord.png',
+              'texte' => 'Pôle Nord est l\'association d\'éditeurs de logiciels libre et open-source
+                    du Nord-Pas-de-Calais. Elle a pour objet la promotion et le développement
+                    des acteurs du Free/Libre and Open Source Software (FLOSS) de la région
+                    Nord-Pas-de-Calais.'),
+        array('nom'   => 'Pôle Ubiquitaire',
+              'site'  => 'http://www.pole-ubiquitaire.fr/',
+              'logo'  => 'logo_pole-ubiquitaire.png',
+              'texte' => 'LE POLE UBIQUITAIRE est un réseau informel piloté par une gouvernance
+                    d\'experts qui s\'appuie sur un outil unique, pour installer la région
+                    Nord-Pas-de-Calais comme leader d\'un écosystème économique d\'avenir,
+                    l\'ubiquitaire.'),
+        array('nom'   => 'FrenchWeb',
+              'site'  => 'http://frenchweb.fr/',
+              'logo'  => 'logo_frenchweb.png',
+              'texte' => 'Le magazine des professionnels du net francophone, a pour mission de présenter
+                    les initiatives des acteurs français d\'internet. Il regroupe une communauté de plus
+                    de 12 000 professionnels, entrepreneurs, experts.<br/>L\'information multimédia en
+                    continu, les interviews des experts, les fiches pratiques : rejoignez vite le CLUB
+                    Frenchweb pour tout savoir sur l\'internet B2B !'),
+        array('nom'   => 'TooLinux',
+              'site'  => 'http://www.toolinux.com',
+              'logo'  => 'logo_toolinux.png',
+              'texte' => 'TOOLINUX.com est un quotidien d\'information sur Linux et les logiciels Libres.
+                    Généraliste, il offre chaque jour une revue de presse en ligne et des articles traitant
+                    du mouvement opensource, de l\'économie du libre ainsi que des logiciels Linux ou
+                    multi-plateformes. Depuis l\'été 2006, TOOLINUX.com s\'ouvre à la problématique de
+                    l\'interopérabilité des solutions informatiques.'),
+        array('nom'   => 'Programmez !',
+              'site'  => 'http://www.programmez.com/',
+              'logo'  => 'logo_programmez.png',
+              'texte' => 'Avec plus de 30.000 lecteurs mensuels, PROGRAMMEZ ! s\'est imposé comme
+                      un magazine de référence des développeurs.'),
 );
 $smarty->assign('partenaires', $partenaires);

@@ -811,6 +811,56 @@ body {
 	clear:both;
 }
 
+/*========================/
+	Sponsors
+/========================*/
+.sponsors .sponsor {
+	margin-bottom:20px;
+	padding:10px;
+	border-bottom:4px solid #f9f9f9;
+
+}
+
+.sponsors .sponsor .logo {
+	float:right;
+	width:150px;
+	/*background:#f9f9f9;
+	min-height:120px;*/
+}
+
+.sponsors .sponsor .logo img {
+	float:none;
+	border-bottom:4px solid #5284DA;
+}
+
+.sponsors .sponsor .body {
+	float:left;
+	width:490px;
+}
+
+.sponsors .sponsor .body h3, .sponsors .sponsor .body h3 a {
+	color: #5284DA;
+    font-size: 18px;
+    line-height: 1.4em;
+    margin:0;
+}
+
+.sponsors .sponsor .body .societe {
+	color: #333;
+	font-size:14px;
+
+}
+.sponsors .sponsor .biographie {
+	lin-height:1.4em;
+	color:#666;
+	margin-top:10px;
+	border-left:1px dotted #f9f9f9
+}
+
+
+.sponsors .sponsor .spacer {
+	clear:both;
+}
 
 /*========================/
 	Acces
@@ -879,6 +929,11 @@ body {
 	margin:14px 16px 0 16px;
 	color:#FFF;
 	text-shadow:0 1px 1px rgba(0, 0, 0, 0.3);
+}
+.sidebar .bloc-sidebar .title a {
+	color:#FFF;
+	text-shadow:0 1px 1px rgba(0, 0, 0, 0.3);
+    text-decoration:none;
 }
 
 .sidebar .bloc-sidebar-content {
