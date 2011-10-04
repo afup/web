@@ -9,6 +9,7 @@ require_once dirname(__FILE__).'/../../sources/Afup/fonctions.php';
 // Configuration
 require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Configuration.php';
 $conf = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/config.php');
+$GLOBALS['AFUP_CONF'] = $conf;
 error_reporting($conf->obtenir('divers|niveau_erreur'));
 ini_set('display_errors', $conf->obtenir('divers|afficher_erreurs'));
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__).'/../../dependencies/PEAR/');
