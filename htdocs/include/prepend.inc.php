@@ -12,7 +12,7 @@ $conf = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/con
 $GLOBALS['AFUP_CONF'] = $conf;
 error_reporting($conf->obtenir('divers|niveau_erreur'));
 ini_set('display_errors', $conf->obtenir('divers|afficher_erreurs'));
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__).'/../../dependencies/PEAR/');
+ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__).'/../../dependencies/PEAR/' . PATH_SEPARATOR . dirname(__FILE__).'/../../dependencies/');
 header('Content-type: text/html; charset=UTF-8');
 
 // On détermine sur quel sous-site on est
