@@ -36,8 +36,8 @@ $pages = array(
 		        'nom' => 'Annuaire',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
-		    
-		    
+
+
 		),
     ),
     'membres' => array(
@@ -152,6 +152,10 @@ $pages = array(
 		    ),
 		    'forum_joind_in' => array(
 		        'nom' => 'Joind.in',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
+		    'forum_accreditation_presse' => array(
+		        'nom' => 'Accréditation presse',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
 	    ),

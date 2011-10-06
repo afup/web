@@ -39,6 +39,23 @@ class AFUP_Accreditation_Presse
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
+    function obtenirListe($ordre = 'date DESC', $associatif = false)
+    {
+		$requete = 'SELECT';
+		$requete .= '  afup_accreditation_presse.*, afup_forum.titre as nom_forum';
+		$requete .= ' FROM';
+		$requete .= '  afup_accreditation_presse';
+		$requete .= ' INNER JOIN';
+		$requete .= '  afup_forum ON afup_forum.id=afup_accreditation_presse.id_forum';
+		$requete .= ' ORDER BY '.$ordre;
+
+		if ($associatif) {
+			return $this->_bdd->obtenirAssociatif($requete);
+		} else {
+			return $this->_bdd->obtenirTous($requete);
+		}
+	}
+
     /**
      * Ajout d'une demande d'accréditation presse
      *
@@ -90,12 +107,44 @@ class AFUP_Accreditation_Presse
             $requete .= $this->_bdd->echapper($commentaires)       . ',';
             $requete .= (int)$id_forum                             . ',';
             $requete .= (int)$valide                               . ')';
-            
+
             return $this->_bdd->executer($requete);
         }
 
         return false;
     }
+
+    function modifier($id, $titre_revue, $civilite, $nom, $prenom, $carte_presse,
+                     $adresse, $code_postal, $ville, $id_pays, $telephone, $email,
+                     $commentaires, $id_forum, $valide)
+    {
+        $requete  = 'UPDATE ';
+        $requete .= '  afup_accreditation_presse ';
+        $requete .= 'SET';
+        $requete .= '  titre_revue='             . $this->_bdd->echapper($titre_revue)             . ',';
+        $requete .= '  civilite='                . $this->_bdd->echapper($civilite)                . ',';
+        $requete .= '  nom='                     . $this->_bdd->echapper($nom)                     . ',';
+        $requete .= '  prenom='                  . $this->_bdd->echapper($prenom)                  . ',';
+        $requete .= '  carte_presse='            . $this->_bdd->echapper($carte_presse)            . ',';
+        $requete .= '  adresse='                 . $this->_bdd->echapper($adresse)                 . ',';
+        $requete .= '  code_postal='             . $this->_bdd->echapper($code_postal)             . ',';
+        $requete .= '  ville='                   . $this->_bdd->echapper($ville)                   . ',';
+        $requete .= '  id_pays='                 . $this->_bdd->echapper($id_pays)                 . ',';
+        $requete .= '  telephone='               . $this->_bdd->echapper($telephone)               . ',';
+        $requete .= '  email='                   . $this->_bdd->echapper($email)                   . ',';
+        $requete .= '  commentaires='            . $this->_bdd->echapper($commentaires)            . ',';
+        $requete .= '  id_forum='                . $this->_bdd->echapper($id_forum)                . ',';
+        $requete .= '  valide='                  . $this->_bdd->echapper($valide)                  . ' ';
+        $requete .= 'WHERE';
+        $requete .= '  id=' . $id;echo $requete;
+
+        return $this->_bdd->executer($requete);
+    }
+
+	function supprimer($id) {
+		$requete = 'DELETE FROM afup_accreditation_presse WHERE id=' . $id;
+		return $this->_bdd->executer($requete);
+	}
 
     /**
      * Contrôle si l'id_pays existe
