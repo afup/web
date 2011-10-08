@@ -86,9 +86,9 @@ class AFUP_PDF_Facture extends FPDF
         $this->Ln();
 
         $this->SetFont('Arial','B',6);
-        $this->Cell(170, 3, 'N° SIRET', 0, 0,'C');
+        $this->Cell(170, 3, utf8_decode('N°') . ' SIRET', 0, 0,'C');
         $this->SetFont('Arial',null,6);
-        $this->Cell(-140, 3, $this->configuration->obtenir('afup|siret'), 0, 0,'C');        
+        $this->Cell(-140, 3, $this->configuration->obtenir('afup|siret'), 0, 0,'C');
         $this->Ln();
 
         $this->SetFont('Arial','B',6);
@@ -124,7 +124,7 @@ class AFUP_PDF_Facture extends FPDF
         $this->Cell(-90, 3, $this->configuration->obtenir('rib|bic'), 0, 0,'C');
 
        $this->Ln();
-        
+
     }
-    
+
 }
