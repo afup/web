@@ -136,7 +136,7 @@ class AFUP_Accreditation_Presse
         $requete .= '  id_forum='                . $this->_bdd->echapper($id_forum)                . ',';
         $requete .= '  valide='                  . $this->_bdd->echapper($valide)                  . ' ';
         $requete .= 'WHERE';
-        $requete .= '  id=' . $id;echo $requete;
+        $requete .= '  id=' . $id;
 
         return $this->_bdd->executer($requete);
     }

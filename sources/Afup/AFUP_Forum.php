@@ -562,5 +562,46 @@ return  $sTable;
 
         return $csv;
     }
+
+    function ajouter($titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
+                      $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente)
+    {
+        $requete = 'INSERT INTO ';
+        $requete .= '  afup_forum (id, titre, nb_places, date_debut, date_fin, annee, date_fin_appel_projet,';
+        $requete .= '  date_fin_appel_conferencier, date_fin_prevente, date_fin_vente) ';
+        $requete .= 'VALUES (null,';
+        $requete .= $this->_bdd->echapper($titre)                                                 . ',';
+        $requete .= (int) $nb_places                                                              . ',';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_debut)                        . ',';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin)                          . ',';
+        $requete .= (int) $date_debut['Y']                                                        . ',';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true)       . ',';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true)           . ',';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true)              . ')';
+
+        return $this->_bdd->executer($requete);
+    }
+
+    function modifier($id, $titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
+                       $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente)
+    {
+        $requete  = 'UPDATE ';
+        $requete .= '  afup_forum ';
+        $requete .= 'SET';
+        $requete .= '  titre='                 . $this->_bdd->echapper($titre)                                           . ',';
+        $requete .= '  nb_places='             . (int) $nb_places                                                        . ',';
+        $requete .= '  date_debut='            . $this->_bdd->echapperSqlDateFromQuickForm($date_debut)                  . ',';
+        $requete .= '  date_fin='              . $this->_bdd->echapperSqlDateFromQuickForm($date_fin)                    . ',';
+        $requete .= '  annee='                 . (int) $date_debut['Y']                                                  . ',';
+        $requete .= '  date_fin_appel_projet=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true) . ',';
+        $requete .= '  date_fin_appel_conferencier=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
+        $requete .= '  date_fin_prevente='     . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true)     . ',';
+        $requete .= '  date_fin_vente='        . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true)        . ' ';
+        $requete .= 'WHERE';
+        $requete .= '  id=' . $id;
+
+        return $this->_bdd->executer($requete);
+    }
 }
 ?>

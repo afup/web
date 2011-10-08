@@ -178,6 +178,27 @@ class AFUP_Base_De_Donnees
     }
 
     /**
+     *
+     * @param array $date
+     * @param boolean $timestamp
+     */
+    function echapperSqlDateFromQuickForm($date, $timestamp = false)
+    {
+        $dateChaine = $date['Y'] . '-' . $date['M'] . '-' . $date['d'];
+        if (isset($date['H']) && isset($date['i'])) {
+            $dateChaine .= ' ' . $date['H'] . ':' . $date['i'];
+            if (isset($date['s'])) {
+                $dateChaine .= ':' . $date['s'];
+            }
+        }
+        if ($timestamp) {
+            return strtotime($dateChaine);
+        } else {
+            return $this->echapper($dateChaine);
+        }
+    }
+
+    /**
      * Exécute une requête SQL
      *
      * @param string    $requete    Requête à exécuter
@@ -329,7 +350,7 @@ class AFUP_Base_De_Donnees
         return mysql_insert_id();
     }
 
-    
+
  }
 
 ?>

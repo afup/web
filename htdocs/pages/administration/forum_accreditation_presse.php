@@ -36,10 +36,9 @@ if ($action == 'lister') {
     }
 } else {
     $formulaire = &instancierFormulaire();
-    $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
-		$formulaire->setDefaults(array('civilite'            => 'M.',
-									   'id_pays' => 'FR'));
+		$formulaire->setDefaults(array('civilite' => 'M.',
+									   'id_pays'  => 'FR'));
     } else {
         $champs = $accreditations->obtenir($_GET['id']);
 
