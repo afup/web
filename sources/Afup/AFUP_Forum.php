@@ -31,7 +31,7 @@ class AFUP_Forum
     function obtenir($id, $champs = '*')
     {
         $requete  = 'SELECT';
-        $requete .= '  ' . $champs . ', year(date_debut) as forum_annee ';
+        $requete .= '  ' . $champs . ', annee as forum_annee ';
         $requete .= 'FROM';
         $requete .= '  afup_forum ';
         $requete .= 'WHERE id=' . $id;
