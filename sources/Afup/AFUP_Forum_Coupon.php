@@ -41,10 +41,26 @@ class AFUP_Forum_Coupon
     function obtenirCouponsForum($id_forum)
     {
         $requete  = 'SELECT';
-        $requete .= '  texte, texte ';
+        $requete .= '  id, texte ';
         $requete .= 'FROM';
         $requete .= '  afup_forum_coupon ';
         $requete .= 'WHERE id_forum=' . $id_forum;
-        return array_values($this->_bdd->obtenirAssociatif($requete));
+        return $this->_bdd->obtenirAssociatif($requete);
+    }
+
+    function ajouter($id_forum, $texte)
+    {
+        $requete = 'INSERT INTO ';
+        $requete .= '  afup_forum_coupon (id, id_forum, texte) ';
+        $requete .= 'VALUES (null,';
+        $requete .= (int)$id_forum                . ',';
+        $requete .= $this->_bdd->echapper(strtoupper($texte)) . ')';
+        return $this->_bdd->executer($requete);
+    }
+
+    function supprimer($id)
+    {
+		$requete = 'DELETE FROM afup_forum_coupon WHERE id=' . $id;
+		return $this->_bdd->executer($requete);
     }
 }

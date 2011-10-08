@@ -1,0 +1,69 @@
+{if $action == 'lister'}
+    <h2>Liste des forums</h2>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=forum_gestion&amp;action=ajouter" title="Ajouter un forum">Ajouter un forum</a><br />
+    <br/>
+    <p style="color:#f00">
+        Informations : on ajoute ou on supprime (en double-cliquant dessus) un coupon mais on ne peut pas le modifier.
+    </p>
+    <table>
+        <tr>
+            <th align="left">Forum</th>
+            <th align="left">Informations</th>
+            <th align="left">Coupons</th>
+        </tr>
+    {foreach from=$evenements item=evenement}
+        <tr>
+            <td>{$evenement.titre}</td>
+            <td>
+                Chemin sur le site : {$evenement.path}<br/>
+                Nombre places : {$evenement.nb_places}<br/>
+                Année : {$evenement.annee}<br/>
+                Du {$evenement.date_debut|date_format:"%d/%m/%Y"} au {$evenement.date_fin|date_format:"%d/%m/%Y"}<br/>
+                Fin appel projet : {$evenement.date_fin_appel_projet|date_format:"%d/%m/%Y"}<br/>
+                Fin appel conférencier : {$evenement.date_fin_appel_conferencier|date_format:"%d/%m/%Y"}<br/>
+                Fin prévente : {$evenement.date_fin_prevente|date_format:"%d/%m/%Y"}<br/>
+                Fin vente : {$evenement.date_fin_vente|date_format:"%d/%m/%Y"}<br/>
+            </td>
+            <td>
+                <div style="width:300px">
+                {foreach from=$evenement.coupons key=idCoupon item=coupon}
+                <span class="coupon" style="float:left;" title="{$coupon}" id="coupon_{$idCoupon}">{$coupon}&nbsp;</span>
+                {/foreach}
+                <div class="ajoutCoupon" style="text-align:center;color:#6874A7;clear:both;" id="forum_{$evenement.id}"><em>Ajouter</em></div>
+                </div>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucun inscrit</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter un forum</h2>
+    {else}
+        <h2>Modifier un forum</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
+
+
+{literal}
+<script type="text/javascript">
+    $(".ajoutCoupon").click(function() {
+        id_forum=$(this).attr('id').substr(6);
+        nouveauCoupon=prompt('Entrez le nouveau coupon');
+        if (nouveauCoupon) {
+            window.location='index.php?page=forum_gestion&action=ajouter_coupon&id_forum=' + id_forum + '&coupon=' + nouveauCoupon;
+        }
+    });
+    $(".coupon").dblclick(function() {
+        ref=$(this).attr('id').substr(7);
+        title=$(this).attr('title');
+        if (confirm("Etes-vous sûr de vouloir supprimer le coupon '" + title + "'")) {
+            window.location='index.php?page=forum_gestion&action=supprimer_coupon&id=' + ref;
+        }
+    });
+</script>
+{/literal}
