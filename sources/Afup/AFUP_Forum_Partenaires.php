@@ -45,8 +45,6 @@ class AFUP_Forum_Partenaires
         $requete .= 'FROM';
         $requete .= '  afup_forum_partenaires ';
         $requete .= 'INNER JOIN';
-        $requete .= '  afup_partenaires ON afup_partenaires.id = afup_forum_partenaires.id_partenaire ';
-        $requete .= 'INNER JOIN';
         $requete .= '  afup_niveau_partenariat ON afup_niveau_partenariat.id = afup_forum_partenaires.id_niveau_partenariat ';
         $requete .= 'WHERE';
         $requete .= ' id_forum=' . $id_forum . ' ';
