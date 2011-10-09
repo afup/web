@@ -158,6 +158,10 @@ $pages = array(
 		        'nom' => 'Joind.in',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
+		    'forum_partenaire' => array(
+		        'nom' => 'Sponsors/Partenaires',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
 		    'forum_accreditation_presse' => array(
 		        'nom' => 'Accréditation presse',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,

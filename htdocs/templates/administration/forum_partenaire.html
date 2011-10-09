@@ -1,0 +1,41 @@
+{if $action == 'lister'}
+    <h2>Liste des sponsors/partenaires de forum</h2>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=forum_partenaire&amp;action=ajouter" title="Ajouter un partenaire">Ajouter un partenaire</a><br />
+    <br/>
+    <table>
+        <tr>
+            <th>Forum</th>
+            <th>Niveau</th>
+            <th>Nom</th>
+            <th>Site</th>
+            <th>Logo</th>
+            <th>Position</th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$sponsors item=sponsor}
+        <tr>
+            <td>{$sponsor.nom_forum}</td>
+            <td>{$sponsor.niveau_partenariat}</td>
+            <td>{$sponsor.nom}</td>
+            <td>{$sponsor.site}</td>
+            <td>{$sponsor.logo}</td>
+            <td>{$sponsor.ranking}</td>
+            <td style="text-align: right">
+                <a href="index.php?page=forum_partenaire&amp;action=modifier&amp;id={$sponsor.id}" title="Modifier le partenaire {$sponsor.nom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=forum_partenaire&amp;action=supprimer&amp;id={$sponsor.id}" title="Supprimer le partenaire {$sponsor.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer le partenaire {$sponsor.nom} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucun inscrit</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter un partenaire</h2>
+    {else}
+        <h2>Modifier un partenaire</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
