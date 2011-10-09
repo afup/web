@@ -1,4 +1,33 @@
+                </div>
+                <div class="col2">
+                    <ul id="menu">
+                    {foreach from=$pages key=clef item=page}
+                        {if $page.elements}
+                        <li>
+                            {$page.nom}
+                            <ul>
+                            {foreach from=$page.elements key=clef2 item=element}
+                                <li>
+                                    <a href="index.php?page={$clef2}">{$element.nom}</a>
+                                </li>
+                            {/foreach}
+                            </ul>
+                        </li>
+                        {else}
+                            {if !$page.masquee}
+                            <li>
+                                <a href="index.php?page={$clef}">{$page.nom}</a>
+                            </li>
+                            {/if}
+                        {/if}
+                    {/foreach}
+                    </ul>
+                </div>
             </div>
+        </div>
+
+        <div id="footer">
+            &nbsp;
         </div>
     </body>
 </html>

@@ -1,32 +1,152 @@
 /*********************
   Structure
 *********************/
-#conteneur {
-	width: 1000px;
-	margin: 0 auto;
-	
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  background: #fff;
+  min-width: 600px;
+  font-size: 90%;
+}
+body:before {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    content: "";
+    height: 10px;
+    left: 0;
+    position: fixed;
+    top: -10px;
+    width: 100%;
+    z-index: 100;
+}
+#header {
+  clear: both;
+  float: left;
+  width: 100%;
+  background: url("images/fond_entete_afup.png") no-repeat scroll 10px 5px #6874A7;
+  color: #fff;
+  height:70px;
 }
 
-#entete {
-	height: 91px;
-	background: url(images/fond_entete_1000.png) no-repeat;
+#header {
+  border-bottom: 1px solid #000;
 }
 
-#entete h1 {
-	text-indent: -100em;
-	margin: 0;
+#header p,
+#header h1,
+#header h2 {
+  padding: .7em 15px 0 15px;
+  margin: 0;
+  color: #fff;
 }
 
-#menu {
-	float: left;
-	width: 180px;
+#header h1{
+    font-size:28px;
+    margin: 0 0 5px 150px;
 }
 
-#contenu {
-	margin-left: 200px;
-	padding: 0 10px 10px 10px;
+#header ul {
+  clear: left;
+  float: left;
+  width: 100%;
+  list-style: none;
+  margin: 10px 0 0 0;
+  padding: 0;
 }
 
+#header ul li {
+  display: inline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#header ul li a {
+  display: block;
+  float: left;
+  margin: 0 0 0 1px;
+  padding: 3px 10px;
+  text-align: center;
+  background: #eee;
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  left: 15px;
+  line-height: 1.3em;
+}
+
+#header ul li a:hover {
+  background: #369;
+  color: #fff;
+}
+
+#header ul li a.active,
+#header ul li a.active:hover
+{
+  color: #fff;
+  background: #008000;
+  font-weight: bold;
+}
+
+#header ul li a span {
+  display: block;
+}
+
+.colmask {
+  position: relative;
+  clear: both;
+  float: left;
+  width: 100%;
+}
+
+.colright,
+.colmid,
+.colleft {
+  float: left;
+  width: 100%;
+  position: relative;
+}
+
+.col1,
+.col2,
+.col3 {
+  float: left;
+  position: relative;
+  padding: 0 0 1em 0;
+}
+.col2{overflow: hidden;}
+
+.leftmenu {
+  background: #fff;
+}
+
+.leftmenu .colleft {
+  right: 81%;
+  background: #f4f4f4;
+}
+
+.leftmenu .col1 {
+  width: 77%;
+  left: 102%;
+}
+
+.leftmenu .col2 {
+  width: 15%;
+  left: 6%;
+}
+
+#footer {
+  clear: both;
+  float: left;
+  width: 100%;
+  border-top: 1px solid #000;
+}
+
+#footer p {
+  padding: 10px;
+  margin: 0;
+}
 /*********************
  Formulaires
 *********************/
@@ -114,7 +234,7 @@ th {
 	vertical-align: top;
 }
 
-table.afup_tab 
+table.afup_tab
 {
   border-spacing: 2px;
 	border-collapse: collapse;
@@ -128,17 +248,17 @@ table.afup_tab td
 	border-left: 1px dotted graytext;
 	 white-space: normal;
 }
-	
+
 table.afup_tab td:FIRST-CHILD
 {
   border-left: none;
   }
-	
+
 table.afup_tab tr.even
 {
 	background-color: #EFF2FF;
 }
-	
+
 table.afup_tab th
 {
   background-color:#6874A7;
@@ -146,23 +266,23 @@ table.afup_tab th
   padding:5px;
   border-left: 1px solid white
   }
-  
+
 table.afup_tab th:FIRST-CHILD
 {
   border-left: none;
 }
-  
+
   table.afup_tab th a
 {
   color: white;
   text-decoration: underline;
 }
-  
+
   table.afup_tab td a
 {
   text-decoration: underline;
   }
-  
+
   table.afup_tab th a:hover, table.afup_tab td a:hover
 {
   text-decoration: none;
@@ -206,7 +326,6 @@ div.pagination div.informations {
   Divers
 *********************/
 body {
-	background: #CCCCCC url(images/fond_page_1000.png) center repeat-y;
 	font-family: Verdana, Arial, Helevetica, sans-serif;
 	font-size: 80%;
 	color: #333333;
@@ -412,7 +531,7 @@ ul.sparklines li span.minimum { color: #f00; }
 ul.sparklines li span.maximum { color: #0f0; }
 ul.sparklines li span.dernier { color: #000; }
 
-/* Agenda Forum */ 
+/* Agenda Forum */
 
 div.bloc_jour .keynote p { text-align: center; }
 div.bloc_jour .conferencier { font-size:0.8em; font-style:italic; display: block; }
@@ -428,4 +547,3 @@ tr.li td.col_heure { background-color:#E0E3EE; color:inherit; }
 tr.avant { display: none; }
 tr.aujourdhui td { font-weight: bolder; }
 tr.apres td { color: #CCCCCC; }
- 

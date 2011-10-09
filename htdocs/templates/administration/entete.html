@@ -5,38 +5,10 @@
     </head>
 
     <body id="{$id_page}">
+        <div id="header">
+            <h1>{$titre_page|escape} - Administration AFUP</h1>
+        </div>
 
-        <!-- Conteneur -->
-        <div id="conteneur">
-
-            <!-- Entête -->
-            <div id="entete">
-                <h1>{$titre_page|escape}</h1>
-            </div>
-
-            <!-- Menu -->
-            <ul id="menu">
-			{foreach from=$pages key=clef item=page}
-				{if $page.elements}
-				<li>
-					{$page.nom}
-					<ul>
-					{foreach from=$page.elements key=clef2 item=element}
-						<li>
-							<a href="index.php?page={$clef2}">{$element.nom}</a>
-						</li>
-					{/foreach}
-					</ul>
-				</li>
-				{else}
-					{if !$page.masquee}
-    				<li>
-						<a href="index.php?page={$clef}">{$page.nom}</a>
-    				</li>
-					{/if}
-				{/if}
-			{/foreach}
-            </ul>			
-
-            <!-- Contenu -->
-            <div id="contenu">
+        <div class="colmask leftmenu">
+            <div class="colleft">
+                <div class="col1">
