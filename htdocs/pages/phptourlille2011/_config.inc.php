@@ -23,6 +23,8 @@ $partenairesForum = new AFUP_Forum_Partenaires($bdd);
 
 $idForum = 6; // 6 = PHPTour
 $config_forum = $forums->obtenir($idForum);
+$config_forum['date_debut'] = strtotime($config_forum['date_debut']);
+$config_forum['date_fin'] = strtotime($config_forum['date_fin']);
 $detailsCoupon = array_values($coupons->obtenirCouponsForum($idForum));
 $config_forum['coupons'] = array_merge($detailsCoupon, array_map("strtolower",$detailsCoupon));
 
