@@ -81,6 +81,7 @@ if ($action == 'lister') {
 	{
 		$champs['numero_devis']          = "";
         $champs['numero_facture']          = "";
+        $formulaire->setDefaults(array('date_devis' => date('d/m/Y')));
 
 	}
 //detail devis

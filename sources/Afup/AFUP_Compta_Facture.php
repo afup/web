@@ -127,7 +127,7 @@ class AFUP_Compta_Facture
 		$requete .= $this->_bdd->echapper($ref_clt1) . ',';
 		$requete .= $this->_bdd->echapper($ref_clt2) . ',';
 		$requete .= $this->_bdd->echapper($ref_clt3) . ', ';
-		$requete .= $this->genererNumeroDevis(). ' ';
+		$requete .= $this->_bdd->echapper($this->genererNumeroDevis()). ' ';
 		$requete .= ');';
 
 		return $this->_bdd->executer($requete);
@@ -248,7 +248,7 @@ class AFUP_Compta_Facture
         $requete .= '  LEFT(numero_devis, 4)=' . $this->_bdd->echapper(date('Y'));
 
         $index = $this->_bdd->obtenirUn($requete);
-        return date('Y').'-'. (is_null($index) ? 1 : $index);
+        return date('Y').'-'. sprintf('%02d', (is_null($index) ? 1 : $index));
     }
 
 
