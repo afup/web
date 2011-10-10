@@ -1,24 +1,19 @@
 <?php
 $action = verifierAction(array(
-					'lister', 
+					'lister',
 					'devis',
 					'ajouter',
 					'modifier',
-					'telecharger_devis', 
-					'envoyer_devis', 
-					'transfert', 
+					'telecharger_devis',
+					'envoyer_devis',
+					'transfert',
 					));
-
-					
-//$action = verifierAction(array('lister', 'devis','facture','ajouter', 'modifier'));
-//$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
-//$sens_valides = array('asc', 'desc'); 
 $smarty->assign('action', $action);
 
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta_Facture.php';
 $comptaFact = new AFUP_Compta_Facture($bdd);
-	
+
 if ($action == 'lister') {
 	$ecritures = $comptaFact->obtenirDevis();
 	$smarty->assign('ecritures', $ecritures);
@@ -36,9 +31,9 @@ if ($action == 'lister') {
 } elseif ($action == 'ajouter' || $action == 'modifier') {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
-	
+
   	$formulaire = &instancierFormulaire();
-	
+
    if ($action == 'modifier')
    {
         $champsRecup = $comptaFact->obtenir($_GET['id']);
@@ -63,7 +58,7 @@ if ($action == 'lister') {
         $champs['tel']          = $champsRecup['tel'];
         $champs['numero_devis']          = $champsRecup['numero_devis'];
         $champs['numero_facture']          = $champsRecup['numero_facture'];
-        
+
 
        $champsRecup = $comptaFact->obtenir_details($_GET['id']);
 
@@ -75,35 +70,35 @@ if ($action == 'lister') {
         	$champs['designation'.$i]          = $row['designation'];
         	$champs['quantite'.$i]          = $row['quantite'];
         	$champs['pu'.$i]          = $row['pu'];
-        	$i++;      
+        	$i++;
    		}
 
 		$formulaire->setDefaults($champs);
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
-   
+
    }
 	else
 	{
 		$champs['numero_devis']          = "";
         $champs['numero_facture']          = "";
-		
-	}   
-//detail devis       
+
+	}
+//detail devis
    $formulaire->addElement('header'  , ''                         , 'Détail Devis');
-   
+
 //$mois=10;
    if ($action == 'modifier')
    {
-   	$formulaire->addElement('date'    , 'date_devis'     , 'Date devis', array('language' => 'fr', 
+   	$formulaire->addElement('date'    , 'date_devis'     , 'Date devis', array('language' => 'fr',
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y')-3, 
+  																				'minYear' => date('Y')-3,
   																				'maxYear' => date('Y')));
    } else {
-  	$formulaire->addElement('date'    , 'date_devis'     , 'Date devis', array('language' => 'fr', 
+  	$formulaire->addElement('date'    , 'date_devis'     , 'Date devis', array('language' => 'fr',
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y'), 
+  																				'minYear' => date('Y'),
   																				'maxYear' => date('Y')));
-   	
+
    }
 	$formulaire->addElement('header'  , ''                       , 'Facturation');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
@@ -132,19 +127,19 @@ if ($action == 'lister') {
 		$formulaire->addElement('hidden'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
 		$formulaire->addElement('hidden'  , 'numero_facture'   , 'Numéro facture'   , array('size' => 50, 'maxlength' => 100));
 	}
-	
+
 	$formulaire->addElement('header', null          , 'Référence client');
 	$formulaire->addElement('static'  , 'note'  , '', 'Possible d\'avoir plusieurs références à mettre (obligation client)<br /><br />');
 	$formulaire->addElement('text'  , 'ref_clt1'   , 'Référence client'   , array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'ref_clt2' , 'Référence client 2', array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'ref_clt3' , 'Référence client 3' , array('size' => 50, 'maxlength' => 100));
-	  
+
    $formulaire->addElement('header'  , '', 'Observation');
 	$formulaire->addElement('static'  , 'note'     , ''  , 'Ces informations seront écrites à la fin du document<br /><br />');
    $formulaire->addElement('textarea', 'observation'  , 'Observation', array('cols' => 42, 'rows' => 5));
-  
 
-   
+
+
    for ($i=1;$i<6;$i++)
    {
   $formulaire->addElement('header'  , '', 'Contenu');
@@ -155,11 +150,11 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'    , 'quantite'.$i    , 'Quantite'        , array('size' => 50, 'maxlength' => 100));
 	$formulaire->addElement('text'    , 'pu'.$i    , 'Prix Unitaire'        , array('size' => 50, 'maxlength' => 100));
    }
-  
-   
-   
-   
-   
+
+
+
+
+
 // boutons
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
@@ -170,12 +165,12 @@ if ($action == 'lister') {
 	$formulaire->addRule('societe'       , 'Société manquant'      , 'required');
 	$formulaire->addRule('adresse'       , 'Adresse manquant'      , 'required');
 	$formulaire->addRule('email'       , 'Email manquant'      , 'required');
-	
+
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
 
 $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$valeur['date_devis']['d'] ;
-     
+
     	if ($action == 'ajouter') {
    			$ok = $comptaFact->ajouter(
             						$date_devis,
@@ -194,7 +189,7 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
 									$valeur['ref_clt2'],
 									$valeur['ref_clt3']
             						);
-           						
+
        		for ($i=1;$i<6;$i++)
    			{
  				$ok = $comptaFact->ajouter_details(
@@ -203,7 +198,7 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
             						$valeur['quantite'.$i],
 									$valeur['pu'.$i]
             						);
-   			}    						
+   			}
     	} else {
    			$ok = $comptaFact->modifier(
 									$_GET['id'],
@@ -234,24 +229,24 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
             						$valeur['quantite'.$i],
 									$valeur['pu'.$i]
             						);
-   			} 
+   			}
 
     	}
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
+                AFUP_Logs::log('Ajout de l\'écriture ' . $formulaire->exportValue('titre'));
             } else {
-                AFUP_Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                AFUP_Logs::log('Modification de l\'écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('l\'écriture a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=compta_devis&action=lister');
+            afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=compta_devis&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
         }
     }
 
-       
-    $smarty->assign('formulaire', genererFormulaire($formulaire));   
+
+    $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
 
 ?>

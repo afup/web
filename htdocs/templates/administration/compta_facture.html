@@ -1,11 +1,12 @@
 {if $action == 'lister'}
+     <h2>Liste facture </h2>
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=ajouter" title="ajouter un devis">Ajouter un devis</a><br />
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Ajouter une facture (obligation de passer par la saisie d'un devis)<br />
 <br>
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis" title="ajouter un devis">Liste des devis</a><br />
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_facture" title="ajouter un devis">Liste des factures</a><br />
-     <h2>Liste facture </h2>
-    <table>
+<br/>
+    <table class="afup_tab">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
            <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
@@ -20,7 +21,7 @@
             <td nowrap="nowrap">{$ecriture.date_facture|date_format:"%d/%m/%Y"}</td>
              <td>{$ecriture.societe}</td>
              <td  width="250">{$ecriture.ville}</td>
-			<td  align='right' width='100'>{$ecriture.numero_facture}</td>  
+			<td  align='right' width='100'>{$ecriture.numero_facture}</td>
             <td style="text-align: right">
                <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                 <a href="index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={$ecriture.numero_facture}" title="Télécharger la facture"><img src="{$chemin_template}images/icone_telecharger_facture.png" alt="Téléchargement de la facture" /></a>
@@ -35,7 +36,7 @@
      </table>
 
 
-{else}	
+{else}
     {if $action == 'modifier'}
         <h2>Modifier une facture</h2>
     {/if}
