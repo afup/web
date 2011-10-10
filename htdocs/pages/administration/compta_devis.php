@@ -236,9 +236,9 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de l\'écriture ' . $formulaire->exportValue('titre'));
+                AFUP_Logs::log('Ajout de l\'écriture pour ' . $valeur['societe']);
             } else {
-                AFUP_Logs::log('Modification de l\'écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                AFUP_Logs::log('Modification de l\'écriture ' . $valeur['numero_devis'] . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=compta_devis&action=lister');
         } else {
