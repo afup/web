@@ -2,7 +2,7 @@
     <h2>Liste des accréditations presse</h2>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=forum_accreditation_presse&amp;action=ajouter" title="Ajouter une accréditation">Ajouter une accréditation</a><br />
     <br/>
-    <table>
+    <table class="afup_tab">
         <tr>
             <th align="left"><a href="index.php?page=forum_accreditation_presse&amp;tri=nom_forum&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pseudo'}desc{else}asc{/if}">Forum</a></th>
             <th align="left"><a href="index.php?page=forum_accreditation_presse&amp;tri=titre_revue&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pseudo'}desc{else}asc{/if}">Titre revue</a></th>

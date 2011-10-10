@@ -218,15 +218,6 @@ $pages = array(
             ),
         ),
     ),
-    'trophee' => array(
-        'nom' => 'Trophée',
-        'elements' => array(
-		    'trophee_projets' => array(
-		        'nom' => 'Projets nominés',
-		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-		    ),
-        ),
-    ),
     'apero' => array(
         'nom' => 'Apéros PHP',
         'elements' => array(
