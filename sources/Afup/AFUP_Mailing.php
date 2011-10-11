@@ -79,7 +79,7 @@ class AFUP_Mailing
         if ($configuration->obtenir('mails|serveur_smtp')) {
             $mail->IsSMTP();
             $mail->Host = $configuration->obtenir('mails|serveur_smtp');
-            $mail->SMTPAuth = true;
+            $mail->SMTPAuth = false;
         }
         if ($configuration->obtenir('mails|tls') == true ) {
             $mail->SMTPAuth = $configuration->obtenir('mails|tls');

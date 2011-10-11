@@ -51,14 +51,11 @@ if ($action == 'mailing')
             $mail->Subject = $valeurs['subject'];
             $mail->Body = $valeurs['body'];
             $mail->Send();
-            echo 'envoi mail<br/>';
             if (((++$nb) % 200) == 0) {
                 sleep(5);
-                echo 'pause<br/>';
             }
         }
         AFUP_Logs::log('Envoi mailing ' .$valeurs['subject']);
-        die();
         afficherMessage('Le mail a été envoyé', 'index.php?page=mailing');
     }
     $smarty->assign('formulaire', genererFormulaire($formulaire));
