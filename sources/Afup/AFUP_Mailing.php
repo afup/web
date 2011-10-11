@@ -63,7 +63,7 @@ class AFUP_Mailing
 	static function envoyerMail($from, $to, $subject,$body, Array $options=array()) {
 		require_once dirname(__FILE__).'/AFUP_Configuration.php';
 		$configuration = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/config.php');
-   	
+
 		$optionsDefault = array(
 			'html' => FALSE,
 			'bcc'  => array(),
@@ -75,11 +75,11 @@ class AFUP_Mailing
 
         $mail = new PHPMailer();
         $mail->IsHTML($options['html']);
-        
+
         if ($configuration->obtenir('mails|serveur_smtp')) {
             $mail->IsSMTP();
             $mail->Host = $configuration->obtenir('mails|serveur_smtp');
-            $mail->SMTPAuth = false;
+            $mail->SMTPAuth = true;
         }
         if ($configuration->obtenir('mails|tls') == true ) {
             $mail->SMTPAuth = $configuration->obtenir('mails|tls');
@@ -107,14 +107,14 @@ class AFUP_Mailing
             $mail->AddAttachment($filePath[0], $filePath[1]);
             // TODO : deboguer la méthode
         }
-        
+
         $from_email = is_array($from) ? $from[0]:$from;
         $from_name = (is_array($from) and isset($from[1])) ? $from[1] : '';
         $to_email = is_array($to) ? $to[0] : $to;
         $to_name = (is_array($to) and isset($to[1])) ? $to[1] : '';
         $mail->AddAddress($to_email, $to_name);
         $mail->From = $from_email;
-        $mail->FromName = $from_name;        
+        $mail->FromName = $from_name;
         $mail->Subject = $subject;
         $mail->Body = str_replace('$EMAIL$',$to_email,$body);
         return  $mail->Send();
