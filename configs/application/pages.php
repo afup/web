@@ -265,6 +265,10 @@ $pages = array(
 		        'nom' => 'Mise à jour via SVN',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
+		    'info_serveur' => array(
+		        'nom' => 'Information serveur',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
         ),
     ),
     'se_deconnecter' => array(
@@ -288,6 +292,11 @@ $pages = array(
     ),
 	'inscription' => array(
 	    'nom' => 'Inscription',
+		'masquee' => true,
+		'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+	),
+	'desinscription_mailing' => array(
+	    'nom' => 'Désinscription mailing',
 		'masquee' => true,
 		'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 	),
