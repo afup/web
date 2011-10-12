@@ -36,6 +36,15 @@ if ($_GET['page'] == 'se_deconnecter') {
 	exit;
 }
 
+if ($_GET['page'] == 'desinscription_mailing') {
+    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_BlackList.php';
+    $blackList = new AFUP_BlackList($bdd);
+    $mail = trim(mcrypt_cbc (MCRYPT_TripleDES, 'MailingAFUP', base64_decode(urldecode($_GET['hash'])), MCRYPT_DECRYPT, '@Mailing'));
+    $blackList->blackList($mail);
+    afficherMessage("Votre email a été effacé.\nYour email has been deleted.", '/');
+	exit;
+}
+
 if (!empty($_GET['hash'])) {
 	$droits->seDeconnecter();
     $droits->seConnecterEnAutomatique($_GET['hash']);

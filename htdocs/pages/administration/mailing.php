@@ -6,10 +6,11 @@ set_time_limit(0);
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Mailing.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_BlackList.php';
 require_once 'phpmailer/class.phpmailer.php';
 
 $forum = new AFUP_Forum($bdd);
-
+$blackList = new AFUP_BlackList($bdd);
 $mailing = new AFUP_Mailing($bdd);
 
 if ($action == 'mailing')
@@ -43,16 +44,22 @@ if ($action == 'mailing')
         $valeurs = $formulaire->exportValues();
         $email_tos = explode(';',$valeurs['tos']);
         $nb = 0;
+        $liste = $blackList->obtenirListe();
         foreach ($email_tos as $nb =>$email_to) {
-            $mail = new PHPMailer;
-            $mail->AddAddress($email_to);
-            $mail->From = $valeurs['from_email'];
-            $mail->FromName = $valeurs['from_name'];
-            $mail->Subject = $valeurs['subject'];
-            $mail->Body = $valeurs['body'];
-            $mail->Send();
-            if (((++$nb) % 200) == 0) {
-                sleep(5);
+            if (!(in_array($email_to, $liste))) {
+                $mail = new PHPMailer;
+                $mail->AddAddress($email_to);
+                $mail->From = $valeurs['from_email'];
+                $mail->FromName = $valeurs['from_name'];
+                $mail->Subject = $valeurs['subject'];
+                $body = $valeurs['body'] . "\n\n--\nAFUP Mailing List\nPour se désinscrire / To unsubscribe\n";
+                $body .= "http://afup.org/pages/administration/index.php?page=desinscription_mailing&hash=";
+                $body .= urlencode(base64_encode(mcrypt_cbc(MCRYPT_TripleDES, 'MailingAFUP', $email_to, MCRYPT_ENCRYPT, '@Mailing')));
+                $mail->Body = $body;
+                $mail->Send();
+                if (((++$nb) % 200) == 0) {
+                    sleep(5);
+                }
             }
         }
         AFUP_Logs::log('Envoi mailing ' .$valeurs['subject']);
