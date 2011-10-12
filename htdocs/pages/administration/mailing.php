@@ -46,19 +46,22 @@ if ($action == 'mailing')
         $nb = 0;
         $liste = $blackList->obtenirListe();
         foreach ($email_tos as $nb =>$email_to) {
-            if (!(in_array($email_to, $liste))) {
-                $mail = new PHPMailer;
-                $mail->AddAddress($email_to);
-                $mail->From = $valeurs['from_email'];
-                $mail->FromName = $valeurs['from_name'];
-                $mail->Subject = $valeurs['subject'];
-                $body = $valeurs['body'] . "\n\n--\nAFUP Mailing List\nPour se désinscrire / To unsubscribe\n";
-                $body .= "http://afup.org/pages/administration/index.php?page=desinscription_mailing&hash=";
-                $body .= urlencode(base64_encode(mcrypt_cbc(MCRYPT_TripleDES, 'MailingAFUP', $email_to, MCRYPT_ENCRYPT, '@Mailing')));
-                $mail->Body = $body;
-                $mail->Send();
-                if (((++$nb) % 200) == 0) {
-                    sleep(5);
+            $email_to = trim($email_to);
+            if ((filter_var($email_to, FILTER_VALIDATE_EMAIL))) {
+                if (!(in_array($email_to, $liste))) {
+                    $mail = new PHPMailer;
+                    $mail->AddAddress($email_to);
+                    $mail->From = $valeurs['from_email'];
+                    $mail->FromName = $valeurs['from_name'];
+                    $mail->Subject = $valeurs['subject'];
+                    $body = $valeurs['body'] . "\n\n--\nAFUP Mailing List\nPour se désinscrire / To unsubscribe\n";
+                    $body .= "http://afup.org/pages/administration/index.php?page=desinscription_mailing&hash=";
+                    $body .= urlencode(base64_encode(mcrypt_cbc(MCRYPT_TripleDES, 'MailingAFUP', $email_to, MCRYPT_ENCRYPT, '@Mailing')));
+                    $mail->Body = $body;
+                    $mail->Send();
+                    if (((++$nb) % 200) == 0) {
+                        sleep(5);
+                    }
                 }
             }
         }
