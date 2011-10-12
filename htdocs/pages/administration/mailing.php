@@ -21,15 +21,15 @@ if ($action == 'mailing')
     $formulaire->setDefaults(array('from_email' => $GLOBALS['conf']->obtenir('mails|email_expediteur'),
                                    'from_name'  => $GLOBALS['conf']->obtenir('mails|nom_expediteur'),
                                    'subject'    => $rs_forum['titre'],
-                                   'body'       => '',
-                                   'tos'        => 'Listes des adresses mails séparées par des points-virgules'));
+                                   'body'       => ''));
 
     $formulaire->addElement('header'  , null        , 'Mailling');
-    $formulaire->addElement('text'    , 'from_name' , 'Nom From'  , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'from_email', 'Email From', array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'subject'   , 'Subject'   , array('size' => 50, 'maxlength' => 50));
-    $formulaire->addElement('textarea', 'body'      , 'Body'      , array('cols' => 60, 'rows' => 20));
-    $formulaire->addElement('textarea', 'tos'       , 'To'        , array('cols' => 60, 'rows' => 15));
+    $formulaire->addElement('text'    , 'from_name' , 'Expéditeur   ', array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text'    , 'from_email', 'Email'        , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text'    , 'subject'   , 'Sujet'        , array('size' => 50, 'maxlength' => 50));
+    $formulaire->addElement('textarea', 'body'      , 'Texte'        , array('cols' => 60, 'rows' => 20));
+    $formulaire->addElement('static'  , 'note'      , ''          , 'Listes des adresses mails séparées par des points-virgules');
+    $formulaire->addElement('textarea', 'tos'       , 'Destinataires', array('cols' => 60, 'rows' => 15));
     $formulaire->addElement('header'  , 'boutons'   , '');
     $formulaire->addElement('submit'  , 'soumettre' , 'Soumettre');
 
