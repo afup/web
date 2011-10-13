@@ -20,7 +20,7 @@ if ($action == 'supprimer') {
         afficherMessage('Une erreur est survenue lors de la suppression du tag', 'index.php?page=membre_tags&id_personne_physique=' . $id_personne_physique, true);
     }
 } elseif ($action == 'contempler') {
-    
+
 }
 
 if (isset($_GET['tag'])) {
@@ -42,14 +42,26 @@ $formulaire = &instancierFormulaire();
 if (!isset($id_source)) {
     $id_source = $droits->obtenirIdentifiant();
 }
-$formulaire->setDefaults(array('id_source' => $id_source));
+$tagsMembre = $tags->obtenirTagsSurPersonnePhysique($id_source, 'id, tag', 'tag', true);
+foreach ($tagsMembre as $k => $t) {
+    $t = trim($t);
+    if (!$t) {
+        unset($tagsMembre[$k]);
+    } else {
+        if (str_word_count($t) > 1) {
+            $tagsMembre[$k] = "'$t'";
+        }
+    }
+}
+$formulaire->setDefaults(array('id_source' => $id_source,
+                               'tag'       => implode(' ', array_values($tagsMembre))));
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 $formulaire->addElement('hidden', 'id'       , $id);
 $formulaire->addElement('hidden', 'source'   , 'afup_personnes_physiques');
 
 $formulaire->addElement('header'  , ''         , 'Taguer un membre');
-$formulaire->addElement('static',   'note'     , ' '                , 'Pour inscrire plusieurs tags, des espaces suffisent.<br />Pour un tag de plusieurs mots, pensez aux guillemets simples.<br />Exemple complet : <em>blog tdd \'php mysql\' \'php oracle\'</em>');
-$formulaire->addElement('text'    , 'tag'      , 'Tag(s)'           , array('size' => 40, 'maxlength' => 40));
+$formulaire->addElement('static'  , 'note'     , ' '                , 'Pour inscrire plusieurs tags, des espaces suffisent.<br />Pour un tag de plusieurs mots, pensez aux guillemets simples.<br />Exemple complet : <em>blog tdd \'php mysql\' \'php oracle\'</em>');
+$formulaire->addElement('textarea', 'tag'      , 'Tag(s)'           , array('rows' => 10, 'cols' => 50));
 $formulaire->addElement('select'  , 'id_source', 'Membre'           , $liste_personnes_physiques);
 
 $formulaire->addElement('header'  , 'boutons'  , '');
