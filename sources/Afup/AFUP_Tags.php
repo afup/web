@@ -20,11 +20,11 @@ class AFUP_Tags
     {
         $this->_bdd = $bdd;
     }
-    
+
     function preparerFichierDot($elements=array())
     {
         $dot  = "graph G {\n";
-        
+
         $noeuds_par_lien = array();
         foreach ($elements as $element) {
             $element['noeud'] = strtolower($element['noeud']);
@@ -34,7 +34,7 @@ class AFUP_Tags
                 $noeuds_par_lien[$element['lien']][] = $element['noeud'];
             }
         }
-        
+
         $dots = array();
         foreach ($noeuds_par_lien as $lien => $noeuds) {
             while (sizeof($noeuds) > 0) {
@@ -55,7 +55,7 @@ class AFUP_Tags
 
         return $dot;
     }
-    
+
     function extraireTags($chaine)
     {
         if (empty($chaine)) {
@@ -65,7 +65,7 @@ class AFUP_Tags
         if (substr_count($chaine, "'") % 2 != 0) {
             return array();
         }
-        
+
         if (strpos($chaine, "'") === false) {
             return explode(" ", $chaine);
         } else {
@@ -78,16 +78,16 @@ class AFUP_Tags
             return $tags;
         }
     }
-    
-    function obtenirTagsSurPersonnePhysique($id_personne_physique)
+
+    function obtenirTagsSurPersonnePhysique($id_personne_physique, $champs = '*', $order = 'date DESC', $associatif = false)
     {
         $where  = ' AND source = "afup_personnes_physiques" ';
         $where .= ' AND id_source = ' . $this->_bdd->echapper($id_personne_physique);
-        return $this->obtenirListe('*', 'date DESC', false, $where);
+        return $this->obtenirListe($champs, $order, $associatif, $where);
     }
-    
+
     /**
-     * 
+     *
      * @deprecated Use obtenirPersonnesPhysiquesTagues()
      */
     function obtenirPersonnesPhysisquesTagues($tag) {
@@ -121,7 +121,7 @@ class AFUP_Tags
                 $tags_uniques[$tag['tag']] = $tag;
             }
         }
-        
+
         return $tags_uniques;
     }
 
@@ -135,9 +135,9 @@ class AFUP_Tags
 
         return $this->_bdd->obtenirTous($requete);
     }
-    
+
     /**
-     * 
+     *
      * @deprecated Use obtenirNoeudsPersonnesPhysiques()
      */
     function obtenirNoeudsPersonnesPhysiqyes() {
@@ -159,7 +159,7 @@ class AFUP_Tags
 
         return $this->_bdd->obtenirTous($requete);
     }
-    
+
     function obtenirListe($champs = '*',
         $ordre = 'date DESC',
         $associatif = false,
@@ -178,17 +178,17 @@ class AFUP_Tags
             return $this->_bdd->obtenirTous($requete);
         }
     }
-    
+
     function supprimer($id)
     {
         $requete = 'DELETE FROM afup_tags WHERE id=' . $id;
         return $this->_bdd->executer($requete);
     }
-    
+
     function enregistrerTags($formulaire, $id_personne_physique, $date)
     {
         $ok = true;
-        
+
         $tags = $this->extraireTags($formulaire->exportValue('tag'));
         foreach ($tags as $tag) {
             $ok += (bool)$this->enregistrer($formulaire->exportValue('source'),
@@ -198,10 +198,10 @@ class AFUP_Tags
                                             $date,
                                             $formulaire->exportValue('id'));
         }
-        
+
         return $ok;
     }
-    
+
     function enregistrer($source, $id_source, $tag, $id_personne_physique, $date, $id)
     {
 		if ($id > 0) {
