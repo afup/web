@@ -1,11 +1,11 @@
 <?php
 /**
  * Script de génération du graphe de tag des membres
- * 
+ *
  * @author    Perrick Penet   <perrick@noparking.fr>
  * @author    Olivier Hoareau <olivier@phppro.fr>
  * @copyright 2010 Association Française des Utilisateurs de PHP
- * 
+ *
  * @category Administration
  * @package  Administration
  * @group    Batchs
@@ -35,7 +35,7 @@ if (!file_exists($dot_file) or !file_exists($img_file) or fileatime($dot_file) <
 	    $noeuds = $tags->obtenirNoeudsTags();
 	}
 	file_put_contents($dot_file, $tags->preparerFichierDot($noeuds));
-    $cmd = "neato -o ".$img_file." -Tpng -Goverlap=false ".$dot_file;
+    $cmd = "neato -o ".$img_file." -Tpng -Goverlap=false -Gcharset=latin1 ".$dot_file;
     shell_exec($cmd);
 }
 
