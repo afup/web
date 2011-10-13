@@ -1,4 +1,6 @@
 {if $action == 'lister' || $action == 'debit' || $action == 'credit' }
+    <h2>Liste journal {$action} </h2>
+
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=importer" title="importer un fichier csv">Importer un fichier CSV</a><br />
 <br>
@@ -6,8 +8,8 @@
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}" title="ajouter une écriture">Journal des dépenses</a><br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}" title="ajouter une écriture">journal des recettes</a><br />
       <br/>
-    <h2>Liste journal {$action} </h2>
-    <table>
+
+  <table>
     <form method="GET" name="forum">
       <input type="hidden" name="page" value="compta_journal" />
      <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
@@ -18,7 +20,7 @@
     </form>
     </table>
     <br/>
-    <table>
+    <table class="afup_tab">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
            <th><a href="index.php?page=compta_journal&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
@@ -37,12 +39,12 @@
             <td>{$ecriture.evenement}</td>
              <td>{$ecriture.categorie}</td>
              <td  width="250">{$ecriture.description}</td>
-		{if $ecriture.idoperation == 1} 
-			<td  align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td> 
-			<td> </td>  
-		{else} 
-			<td> </td> 
-			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td> 
+		{if $ecriture.idoperation == 1}
+			<td  align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
+			<td> </td>
+		{else}
+			<td> </td>
+			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
 		{/if}
 
               <td>{$ecriture.reglement}</td>
@@ -59,7 +61,7 @@
      </table>
 
 
-{else}	
+{else}
     {if $action == 'importer'}
         <h2>Importer un fichier</h2>
     {elseif $action == 'ajouter'}

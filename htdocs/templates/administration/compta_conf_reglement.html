@@ -1,17 +1,16 @@
 {if $action == 'lister' }
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_evenement" title="Liste des evenements">Liste des evenements</a><br />
+    <h2>Liste des modes de reglement </h2>
+
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_evenement" title="Liste des evenements">Liste des evenements</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_categorie" title="Liste des catégories">Liste des catégories</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_operation" title="Liste des opérations">Liste des opérations</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_reglement" title="Liste des modes de réglements">Liste des modes de réglements</a><br />
 <br>
   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_reglement&amp;action=ajouter" title="ajouter un reglement">Ajouter un reglement</a><br />
 
-    <h2>Liste des modes de reglement </h2>
- 
     <br/>
-    <table>
+    <table class="afup_tab">
         <tr>
-            <!-- th width="20px">&nbsp;</th -->
            <th>Mode reglement</a></th>
             <th>&nbsp;</th>
        </tr>
@@ -30,7 +29,7 @@
      </table>
 
 
-{else}	
+{else}
     {if $action == 'ajouter'}
         <h2>Ajouter un type de reglement</h2>
     {else}

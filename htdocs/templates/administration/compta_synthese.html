@@ -1,69 +1,77 @@
 {if $action == 'lister'}
     <h2>Synthese des évènements</h2>
-    <table>
-    <form method="GET" name="evnt">
-      <input type="hidden" name="page" value="compta_synthese" />
-      <input type="hidden" name="action" value="lister" />
-     <h2>Sélectionner un évènement 
-     <select name="idevnt" onchange="this.form.submit(); return false;">
-    {foreach from=$listEvenement item=listsEvenement }
-    <option value="{$listsEvenement.id}" {if $idevnt == $listsEvenement.id} selected{/if}> {$listsEvenement.evenement}</option>
-    {/foreach}
-    </select>
-    </h2>
-    </form>
-    </table>
-    <br/>
-    <table><tr><td valign="top"  align="center">Débit
-    <table>
-        <tr>
-            <!-- th width="20px">&nbsp;</th -->
-            <th>catégorie</th>
-            <th>Description</th>
-            <th>Montant</th>
-       </tr>
-    {foreach from=$debit item=debits}
-        <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$debits.categorie}</td>
-            <td>{$debits.description}</td>
-             <td align='right' width='100'>{$debits.montant|number_format:2:',':' '}</td>
-        </tr>
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
-    </table>
-	</td><td valign="top" align="center">Crédit
-	  <table>
-        <tr>
-            <!-- th width="20px">&nbsp;</th -->
-            <th>catégorie</th>
-            <th>Description</th>
-            <th>Montant</th>
-       </tr>
-    {foreach from=$credit item=credits}
-        <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$credits.categorie}</td>
-            <td>{$credits.description}</td>
-             <td  align='right' width='100'>{$credits.montant|number_format:2:',':' '}</td>
-        </tr>
-    {foreachelse}
-        <tr class="{cycle values="odd,even"}">
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
-    </table>
-	</td></tr>
-	<tr>
-	<td align='center'>{$totalDepense|number_format:2:',':' '}</td>
-	<td align='center'>{$totalRecette|number_format:2:',':' '}</td>
-	</tr>
-	<tr><td colspan='2'  align='center'>{$difMontant|number_format:2:',':' '}</tr>
-	</table>
 
+    <form method="GET" name="evnt">
+        <input type="hidden" name="page" value="compta_synthese" />
+        <input type="hidden" name="action" value="lister" />
+        <h3>Sélectionner un évènement
+        <select name="idevnt" onchange="this.form.submit(); return false;">
+        {foreach from=$listEvenement item=listsEvenement }
+        <option value="{$listsEvenement.id}" {if $idevnt == $listsEvenement.id} selected{/if}> {$listsEvenement.evenement}</option>
+        {/foreach}
+        </select>
+        </h3>
+    </form>
+
+    <br/>
+    <table class="afup_tab">
+        <tr>
+            <th valign="top"  align="center">Débit</th>
+            <th valign="top"  align="center">Crédit</th>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="afup_tab">
+                    <tr>
+                        <th>Catégorie</th>
+                        <th>Description</th>
+                        <th>Montant</th>
+                    </tr>
+                {foreach from=$debit item=debits}
+                    <tr class="{cycle values="odd,even"}">
+                        <td>{$debits.categorie}</td>
+                        <td>{$debits.description}</td>
+                         <td align='right' width='100'>{$debits.montant|number_format:2:',':' '}</td>
+                    </tr>
+                {foreachelse}
+                    <tr>
+                        <td><em>Aucune ecriture actuellement</em></td>
+                    </tr>
+                {/foreach}
+                </table>
+        </td>
+        <td>
+            <table class="afup_tab">
+                <tr>
+                    <th>Catégorie</th>
+                    <th>Description</th>
+                    <th>Montant</th>
+                </tr>
+                {foreach from=$credit item=credits}
+                <tr class="{cycle values="odd,even"}">
+                    <td>{$credits.categorie}</td>
+                    <td>{$credits.description}</td>
+                    <td  align='right' width='100'>{$credits.montant|number_format:2:',':' '}</td>
+                </tr>
+                {foreachelse}
+                <tr class="{cycle values="odd,even"}">
+                    <td><em>Aucune ecriture actuellement</em></td>
+                </tr>
+                {/foreach}
+            </table>
+        </td>
+    </tr>
+
+	<tr>
+        <th align='center'>Total dépenses : {$totalDepense|number_format:2:',':' '}</th>
+        <th align='center'>Total recettes : {$totalRecette|number_format:2:',':' '}</th>
+	</tr>
+
+	<tr>
+        <th colspan='2' align='center'>Différence : {$difMontant|number_format:2:',':' '}</th>
+    </tr>
+</table>
 {else}
     {if $action == 'ajouter'}
         <h2>Ajouter une écriture (facture)</h2>

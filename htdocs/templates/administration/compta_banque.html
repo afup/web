@@ -17,7 +17,7 @@
     </form>
     </table>
     <br/>
-    <table>
+    <table class="afup_tab">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
 
@@ -35,37 +35,37 @@
             <td>{$ecriture.date_regl|date_format:"%d/%m/%Y"}</td>
             <td>{$ecriture.reglement}</td>
              <td>{$ecriture.description}</td>
-		{if $ecriture.idoperation == 1} 
-			<td  align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td> 
-			<td> </td>  
-		{else} 
-			<td> </td> 
-			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td> 
+		{if $ecriture.idoperation == 1}
+			<td  align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
+			<td> </td>
+		{else}
+			<td> </td>
+			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
 		{/if}
 
-            <td style="text-align: right"> 
+            <td style="text-align: right">
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
                </td>
         </tr>
-    {foreach from=$sousTotal item=txt} 
+    {foreach from=$sousTotal item=txt}
 
-		{if $ecriture.mois == $txt.mois && $compteurLigne == $txt.nligne  } 
+		{if $ecriture.mois == $txt.mois && $compteurLigne == $txt.nligne  }
     <tr>
 	<td colspan='3' align='right'><b><i>Sous Total</i></b></td>
 	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
 	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
 	<td><b><i>{$txt.dif|number_format:2:',':' '}</i></b></td>
 	</tr>
- 	{assign var=compteurLigne value=0}		
-		{/if} 
-		
- 		
+ 	{assign var=compteurLigne value=0}
+		{/if}
+
+
     {/foreach}
 
- 	{assign var=compteurLigne value=$compteurLigne+1}		
-	
- 	
-    
+ 	{assign var=compteurLigne value=$compteurLigne+1}
+
+
+
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>

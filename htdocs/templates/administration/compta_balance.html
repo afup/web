@@ -1,35 +1,32 @@
-<br/>
 <h2>Balance comptable</h2>
-<br>
-    <table>
-    <form method="GET" name="forum">
-      <input type="hidden" name="page" value="compta_balance" />
-     <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
+<br/>
+
+<form method="GET" name="forum">
+    <input type="hidden" name="page" value="compta_balance" />
+    <h3>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
     {foreach from=$listPeriode item=periode}
     <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
     {/foreach}
-    </select></h2>
-    </form>
-    </table>
-    <br/>
+    </select></h3>
+</form>
+
+<br/>
 {if $action == 'lister'}
-    <table>
+    <table class="afup_tab">
         <tr>
-            <!-- th width="20px">&nbsp;</th -->
             <th>Evenement</th>
             <th>Dépense</th>
             <th>Recette</th>
             <th>&nbsp;</th>
        </tr>
 
-      
+
     {foreach from=$balance item=ecriture}
         <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$ecriture.evenement}</td>
              <td align='right' width='100'>{$ecriture.debit|number_format:2:',':' '}</td>
              <td align='right' width='100'>{$ecriture.credit|number_format:2:',':' '}</td>
-            <td> 
+            <td>
              <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_raccourci.png" alt="raccourci" /></a>
              <a href="index.php?page=compta_balance&amp;action=view&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_link.png" alt="Visualiser sur une autre page" /></a>
             </td>
@@ -37,7 +34,7 @@
 {if ($smarty.get.details==$ecriture.idevenement) }
 	<tr class="{cycle values="odd,even"}">
 		<td>
-    <table>
+    <table class="afup_tab">
         <tr>
             <th>Date ecriture</th>
             <th>categorie</th>
@@ -53,28 +50,28 @@
             <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$detail.categorie}</td>
             <td>{$detail.description}</td>
-			<td align='right'>{$detail.debit|number_format:2:',':' '}</td> 
+			<td align='right'>{$detail.debit|number_format:2:',':' '}</td>
 			<td align='right'>{$detail.credit|number_format:2:',':' '}</td>
             <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a> 
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
             </td>
         </tr>
     {foreach from=$sousTotal item=txt}
-		{if $detail.id == $txt.idevenement && $compteurLigne == $txt.nligne } 
+		{if $detail.id == $txt.idevenement && $compteurLigne == $txt.nligne }
     <tr>
 	<td colspan='3' align='right'><b><i> Sous Total</i></b></td>
 	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
 	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
 	<td></td>
 	</tr>
-	 	{assign var=compteurLigne value=0}	
-		{/if} 
+	 	{assign var=compteurLigne value=0}
+		{/if}
     {/foreach}
-    
- 	{assign var=compteurLigne value=$compteurLigne+1}		
-	
-    
-    
+
+ 	{assign var=compteurLigne value=$compteurLigne+1}
+
+
+
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
@@ -104,7 +101,7 @@
 
     <br/>
 
-    <table>
+    <table class="afup_tab">
         <tr>
             <th>Date ecriture</th>
             <th>categorie</th>
@@ -120,27 +117,27 @@
             <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$detail.categorie}</td>
             <td>{$detail.description}</td>
-			<td align='right'>{$detail.debit|number_format:2:',':' '}</td> 
+			<td align='right'>{$detail.debit|number_format:2:',':' '}</td>
 			<td align='right'>{$detail.credit|number_format:2:',':' '}</td>
             <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a> 
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
             </td>
         </tr>
     {foreach from=$sousTotal item=txt}
-		{if $detail.id == $txt.idevenement && $compteurLigne == $txt.nligne } 
+		{if $detail.id == $txt.idevenement && $compteurLigne == $txt.nligne }
     <tr>
 	<td colspan='3' align='right'><b><i> Sous Total</i></b></td>
 	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
 	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
 	<td></td>
 	</tr>
-	 	{assign var=compteurLigne value=0}	
-		{/if} 
+	 	{assign var=compteurLigne value=0}
+		{/if}
     {/foreach}
-    
- 	{assign var=compteurLigne value=$compteurLigne+1}		
-	   
-    
+
+ 	{assign var=compteurLigne value=$compteurLigne+1}
+
+
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
