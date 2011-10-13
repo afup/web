@@ -547,3 +547,10 @@ tr.li td.col_heure { background-color:#E0E3EE; color:inherit; }
 tr.avant { display: none; }
 tr.aujourdhui td { font-weight: bolder; }
 tr.apres td { color: #CCCCCC; }
+
+/*********************
+ Accueil
+*********************/
+#accueil .rangee {margin: 0.3em 1em}
+#accueil .libelle {display:inline-block; width: 100px}
+#accueil img {float:right; margin: 1em}
