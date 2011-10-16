@@ -262,7 +262,7 @@ table.afup_tab tr.even
 
 table.afup_tab th
 {
-  background-color:#6874A7;
+  background: url("images/ui-bg_glass_20_6874a7_1x400.png") 50% 50% #6874A7;
   color: white;
   padding:5px;
   border-left: 1px solid white
