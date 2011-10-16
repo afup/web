@@ -156,20 +156,26 @@ form {
 }
 
 fieldset {
-	border: 1px #A6A6A6 solid;
-	margin: 0.5em 0;
-	padding-bottom: 0.5em;
+    padding-bottom: 0.5em;
+    border: 1px solid #6874A7;
+    margin: 0.5em 0;
+}
+
+legend {
+	font-weight: bold;
+    padding: 4px 35px;
+    border: 1px solid #6874A7;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    background: url("images/ui-bg_glass_20_6874a7_1x400.png") 50% 50% #6874A7;
+    color: #fff;
 }
 
 fieldset.boutons {
 	border: 0;
 	text-align: center;
 	margin: 0;
-}
-
-legend {
-	font-weight: bold;
-	color: #6874A7;
 }
 
 form div.rangee {
