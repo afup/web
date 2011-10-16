@@ -28,8 +28,8 @@
             <td>{$flux_simple.url}</td>
             <td style="text-align: center">{if $flux_simple.etat == 1}Actif{else}Inactif{/if}</td>
             <td style="text-align: right">
-                <a href="index.php?page=planete_flux&amp;action=modifier&amp;id={$flux_simple.id}" title="Modifier la fiche de {$flux_simple.nom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
-                <a href="index.php?page=planete_flux&amp;action=supprimer&amp;id={$flux_simple.id}" title="Supprimer la fiche de {$flux_simple.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer le flux de {$flux_simple.nom} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+                <a href="index.php?page=planete_flux&amp;action=modifier&amp;id={$flux_simple.id}" title="Modifier la fiche de {$flux_simple.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="index.php?page=planete_flux&amp;action=supprimer&amp;id={$flux_simple.id}" title="Supprimer la fiche de {$flux_simple.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer le flux de {$flux_simple.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
             </td>
         </tr>
     {foreachelse}
@@ -43,6 +43,6 @@
         <h2>Ajouter un flux</h2>
     {else}
         <h2>Modifier un flux</h2>
-    {/if}    
+    {/if}
     {include file="formulaire.html"}
 {/if}

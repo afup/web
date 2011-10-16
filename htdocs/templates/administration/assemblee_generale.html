@@ -37,7 +37,7 @@
             <td style="text-align: center">{if $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI}Présent{elseif $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON}Absent{else}??{/if}</td>
             <td>{$personne.personnes_avec_pouvoir_nom} {$personne.personnes_avec_pouvoir_prenom}</td>
             <td style="text-align: right">
-                <a href="index.php?hash={$personne.hash}&page=membre_assemblee_generale" title="Gérer la présence et le pouvoir de {$personne.nom} {$personne.prenom}"><img src="{$chemin_template}images/icone_link.png" alt="Gérer la présence et le pouvoir" /></a>
+                <a href="index.php?hash={$personne.hash}&page=membre_assemblee_generale" title="Gérer la présence et le pouvoir de {$personne.nom} {$personne.prenom}"><img src="{$chemin_template}images/famfamfam/group_link.png" alt="Gérer la présence et le pouvoir" /></a>
             </td>
         </tr>
     {foreachelse}
@@ -51,6 +51,6 @@
         <h2>Préparer une assemblée générale</h2>
     {else}
         <h2>Envoyer les convocations pour une assemblée générale</h2>
-    {/if}    
+    {/if}
     {include file="formulaire.html"}
 {/if}

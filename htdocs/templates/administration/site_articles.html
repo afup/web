@@ -30,8 +30,8 @@
             <td>{$article.nom_rubrique}</td>
             <td>{if $article.etat == 1}En ligne{elseif $article.etat == -1}Hors ligne{else}En attente{/if}</td>
             <td style="text-align: right">
-                <a id="modifier_{$article.id}" href="index.php?page=site_articles&amp;action=modifier&amp;id={$article.id}" title="Modifier l'article {$article.titre}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
-                <a id="supprimer_{$article.id}" href="index.php?page=site_articles&amp;action=supprimer&amp;id={$article.id}" title="Supprimer l'article {$article.titre}" onclick="return confirm('Etes-vous sï¿½r de vouloir supprimer l'article {$article.titre} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+                <a id="modifier_{$article.id}" href="index.php?page=site_articles&amp;action=modifier&amp;id={$article.id}" title="Modifier l'article {$article.titre}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a id="supprimer_{$article.id}" href="index.php?page=site_articles&amp;action=supprimer&amp;id={$article.id}" title="Supprimer l'article {$article.titre}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l'article {$article.titre} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
             </td>
         </tr>
     {foreachelse}

@@ -25,11 +25,11 @@
 			<td  align='right' width='100'>{$ecriture.ref_clt1}</td>
 			<td  align='right' width='100'>{$ecriture.numero_devis}</td>
             <td style="text-align: right">
-               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
-                <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.numero_devis}" title="Télécharger le devis"><img src="{$chemin_template}images/icone_telecharger_devis.png" alt="Téléchargement du devis" /></a>
-               <a href="index.php?page=compta_devis&amp;action=facturer_facture&amp;ref={$ecriture.numero_devis}" title="Passer à l'état facturée"><img src="{$chemin_template}images/icone_change.png" alt="Envoi devis par mail" /></a>
+               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.numero_devis}" title="Télécharger le devis"><img src="{$chemin_template}images/famfamfam/report.png" alt="Téléchargement du devis" /></a>
+               <a href="index.php?page=compta_devis&amp;action=facturer_facture&amp;ref={$ecriture.numero_devis}" title="Passer à l'état facturée"><img src="{$chemin_template}images/famfamfam/cart_go.png" alt="Envoi devis par mail" /></a>
 {if $ecriture.numero_facture == ''}
-               <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}" title="Transférer la ligne {$ecriture.description} en facture"><img src="{$chemin_template}images/icone_modifier.png" alt="Transfert en facture" /></a>
+               <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}" title="Transférer la ligne {$ecriture.description} en facture"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Transfert en facture" /></a>
 {/if}
                </td>
         </tr>

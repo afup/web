@@ -59,8 +59,8 @@
 				{/if}
             </td>
 			<td>
-                <a id="modifier_{$inscrit.id}" href="index.php?page=rendez_vous&amp;action=modifier&amp;id={$inscrit.id}" title="Modifier l'inscription de {$inscrit.nom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
-                <a id="supprimer_{$inscrit.id}" href="index.php?page=rendez_vous&amp;action=supprimer&amp;id={$inscrit.id}" title="Supprimer l'inscription de {$inscrit.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l'inscription de {$inscrit.nom} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+                <a id="modifier_{$inscrit.id}" href="index.php?page=rendez_vous&amp;action=modifier&amp;id={$inscrit.id}" title="Modifier l'inscription de {$inscrit.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a id="supprimer_{$inscrit.id}" href="index.php?page=rendez_vous&amp;action=supprimer&amp;id={$inscrit.id}" title="Supprimer l'inscription de {$inscrit.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l'inscription de {$inscrit.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
 			</td>
         </tr>
     {foreachelse}
@@ -69,7 +69,7 @@
         </tr>
     {/foreach}
     </table>
-    
+
 {elseif $action == 'exporter'}
     <h2>Exporter vers un wiki BarCamp</h2>
 <textarea cols="70" rows="70" wrap="softwrap">
@@ -85,7 +85,7 @@
 {elseif $action == 'listing'}
     Liste des inscrits du rendez-vous<br />
     {foreach from=$lesrendezvous item=unrendezvous}
-	    {if $rendezvous.id == $unrendezvous.id} 
+	    {if $rendezvous.id == $unrendezvous.id}
 	    {$unrendezvous.titre}
 	    {/if}
     {/foreach}
@@ -103,10 +103,10 @@
 {foreach from=$inscrits item=inscrit}
 	    <tr class="{cycle values="odd,even"}">
 	        <td><strong>{$inscrit.nom} {$inscrit.prenom}</strong></td>
-	        <td>{$inscrit.entreprise}</td>  
+	        <td>{$inscrit.entreprise}</td>
 	        <td style="text-align: center">{if $inscrit.presence==1}Vient{elseif $inscrit.presence==2}En attente{else}Refusé{/if}</td>
 	        <td style="text-align: center">{if $inscrit.confirme==1}Oui{elseif $inscrit.confirme==-1}Non{else} {/if}</td>
-			<td></td>   
+			<td></td>
 	    </tr>
 {foreachelse}
     <tr>
@@ -125,6 +125,6 @@
         <h2>Remplir un rendez-vous</h2>
     {else}
         <h2>Envoyer les convocations pour un rendez-vous</h2>
-    {/if}    
+    {/if}
     {include file="formulaire.html"}
 {/if}

@@ -115,8 +115,8 @@
 			<td>{$inscription.coupon}</td>
             <td style="text-align: center{if $inscription.etat == 4 or $inscription.etat == 5};background-color:#73f084{/if}{if $inscription.etat == 0 or $inscription.etat == 6};background-color:#FBD61A{/if}{if $inscription.etat == 2 or $inscription.etat == 3};background-color:#EF3215{/if}">{if $inscription.etat == 0}Créé{elseif $inscription.etat == 1}Annulé{elseif $inscription.etat == 2}Erreur{elseif $inscription.etat == 3}Refusé{elseif $inscription.etat == 4}Reglé{elseif $inscription.etat == 5}Invité{elseif $inscription.etat == 6}Attente règlement{elseif $inscription.etat == 7}Facturé{else}--{/if}</td>
             <td style="text-align: right" nowrap="nowrap">
-                <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}" title="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
-                <a href="index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={$inscription.id}" title="Supprimer la fiche de {$inscription.nom} {$inscription.prenom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$inscription.nom} {$inscription.prenom} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+                <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}" title="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={$inscription.id}" title="Supprimer la fiche de {$inscription.nom} {$inscription.prenom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$inscription.nom} {$inscription.prenom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
             </td>
         </tr>
     {foreachelse}

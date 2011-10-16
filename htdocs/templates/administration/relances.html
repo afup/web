@@ -20,8 +20,8 @@
         <td>{$relance.nombre_relances}</td>
         <td>{$relance.date_derniere_relance|date_format:"%d/%m/%y"}</td>
         <td style="text-align: right">
-            <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$relance.id_personne}" title="Gérer les cotisations de {$relance.nom}"><img src="{$chemin_template}images/icone_cotisations_active.png" alt="Gérer les cotisations" /></a>
-            <a href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$relance.id_personne}" title="Modifier la fiche de {$relance.nom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+            <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$relance.id_personne}" title="Gérer les cotisations de {$relance.nom}"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
+            <a href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$relance.id_personne}" title="Modifier la fiche de {$relance.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
 		    {if $relance.email == ""}
 	            <input type="checkbox" name="{$relance.type_personne}_{$relance.id_personne}" value="1" disabled="disabled" />
 		    {else}
@@ -45,8 +45,8 @@
         <td>{$relance.nombre_relances}</td>
         <td>{$relance.date_derniere_relance|date_format:"%d/%m/%y"}</td>
         <td style="text-align: right">
-            <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_PHYSIQUES}&amp;id_personne={$relance.id_personne}" title="Gérer les cotisations de {$relance.nom}"><img src="{$chemin_template}images/icone_cotisations_active.png" alt="Gérer les cotisations" /></a>
-            <a href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$relance.id_personne}" title="Modifier la fiche de {$relance.nom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+            <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_PHYSIQUES}&amp;id_personne={$relance.id_personne}" title="Gérer les cotisations de {$relance.nom}"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
+            <a href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$relance.id_personne}" title="Modifier la fiche de {$relance.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
 		    {if $relance.email == ""}
 	            <input type="checkbox" name="{$relance.type_personne}_{$relance.id_personne}" value="1" disabled="disabled" />
 		    {else}

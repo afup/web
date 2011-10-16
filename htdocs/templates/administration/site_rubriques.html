@@ -28,8 +28,8 @@
             <td style="white-space : normal;">{$rubrique.nom}</td>
             <td>{if $rubrique.etat == 1}En ligne{elseif $rubrique.etat == -1}Hors ligne{else}En attente{/if}</td>
             <td style="text-align: right">
-                <a id="modifier_{$rubrique.id}" href="index.php?page=site_rubriques&amp;action=modifier&amp;id={$rubrique.id}" title="Modifier l'rubrique {$rubrique.nom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
-                <a id="supprimer_{$rubrique.id}" href="index.php?page=site_rubriques&amp;action=supprimer&amp;id={$rubrique.id}" title="Supprimer l'rubrique {$rubrique.nom}" onclick="return confirm('Etes-vous sï¿½r de vouloir supprimer l'rubrique {$rubrique.nom} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+                <a id="modifier_{$rubrique.id}" href="index.php?page=site_rubriques&amp;action=modifier&amp;id={$rubrique.id}" title="Modifier l'rubrique {$rubrique.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a id="supprimer_{$rubrique.id}" href="index.php?page=site_rubriques&amp;action=supprimer&amp;id={$rubrique.id}" title="Supprimer l'rubrique {$rubrique.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l'rubrique {$rubrique.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
             </td>
         </tr>
     {foreachelse}

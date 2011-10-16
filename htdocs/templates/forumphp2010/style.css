@@ -52,7 +52,7 @@ ul.conferenciers img { float: right; }
 span.titre { font-weight: bold; }
 
 p.note {
-  background: #EEEEEE url(images/icone_note.png) 5px 5px no-repeat;
+  background: #EEEEEE url(images/error.png) 5px 5px no-repeat;
   border: 1px #A6A6A6 solid;
   padding: 5px 5px 5px 30px;
 }

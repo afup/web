@@ -27,8 +27,8 @@
              <td align='right' width='100'>{$ecriture.debit|number_format:2:',':' '}</td>
              <td align='right' width='100'>{$ecriture.credit|number_format:2:',':' '}</td>
             <td>
-             <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_raccourci.png" alt="raccourci" /></a>
-             <a href="index.php?page=compta_balance&amp;action=view&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/icone_link.png" alt="Visualiser sur une autre page" /></a>
+             <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/famfamfam/application_side_expand.png" alt="raccourci" /></a>
+             <a href="index.php?page=compta_balance&amp;action=view&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/famfamfam/book_go.png" alt="Visualiser sur une autre page" /></a>
             </td>
         </tr>
 {if ($smarty.get.details==$ecriture.idevenement) }
@@ -53,7 +53,7 @@
 			<td align='right'>{$detail.debit|number_format:2:',':' '}</td>
 			<td align='right'>{$detail.credit|number_format:2:',':' '}</td>
             <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
             </td>
         </tr>
     {foreach from=$sousTotal item=txt}
@@ -120,7 +120,7 @@
 			<td align='right'>{$detail.debit|number_format:2:',':' '}</td>
 			<td align='right'>{$detail.credit|number_format:2:',':' '}</td>
             <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
             </td>
         </tr>
     {foreach from=$sousTotal item=txt}

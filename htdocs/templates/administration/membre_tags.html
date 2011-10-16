@@ -4,7 +4,7 @@
 
 {if $id_personne_physique != ''}
 	<fieldset>
-		<legend>{$membre.nom} {$membre.prenom}</legend>        
+		<legend>{$membre.nom} {$membre.prenom}</legend>
 		<ul>
 			<li>{$membre.email}</li>
 			<li>{$membre.adresse}<br />{$membre.code_postal} {$membre.ville}<br />{$membre.id_pays}</li>
@@ -17,7 +17,7 @@
 			<li>
 				<a href="index.php?page=membre_tags&tag={$tag.tag}">{$tag.tag}</a>
 				{if $tag.id_source == $id_personne_connectee or $tag.id_personne_physique == $id_personne_connectee}
-	                <a id="supprimer_{$tag.id}" href="index.php?page=membre_tags&amp;action=supprimer&amp;id_personne_physique={$tag.id_source}&amp;id={$tag.id}" title="Supprimer le tag {$tag.tag} sur {$membre.nom} {$membre.prenom}" onclick="return confirm('Etes-vous s&ucirc;r de vouloir supprimer le tag \'{$tag.tag}\' sur {$membre.nom} {$membre.prenom} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+	                <a id="supprimer_{$tag.id}" href="index.php?page=membre_tags&amp;action=supprimer&amp;id_personne_physique={$tag.id_source}&amp;id={$tag.id}" title="Supprimer le tag {$tag.tag} sur {$membre.nom} {$membre.prenom}" onclick="return confirm('Etes-vous s&ucirc;r de vouloir supprimer le tag \'{$tag.tag}\' sur {$membre.nom} {$membre.prenom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
 				{/if}
 			</li>
 		{/foreach}
@@ -28,7 +28,7 @@
 
 {if $tag_selectionne != ''}
 	<fieldset>
-		<legend>Tagu&eacute;(e)s avec "{$tag_selectionne}"</legend>        
+		<legend>Tagu&eacute;(e)s avec "{$tag_selectionne}"</legend>
 		<ul class="tags">
 	    {foreach from=$membres_tagues item=membre}
 			<li><a href="index.php?page=membre_tags&tag={$tag_selectionne}&id_personne_physique={$membre.id}">{$membre.nom} {$membre.prenom}</a></li>
@@ -39,7 +39,7 @@
 {/if}
 
 <fieldset>
-	<legend>Tous les tags utilis&eacute;s</legend>        
+	<legend>Tous les tags utilis&eacute;s</legend>
 	<ul class="tags">
     {foreach from=$tags_utilises item=tag}
 		<li><a href="index.php?page=membre_tags&tag={$tag.tag}">{$tag.tag}</a></li>

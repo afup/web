@@ -21,8 +21,8 @@
             <td>{$journaliste.date|date_format:"%d/%m/%Y"}</td>
             <td style="text-align: center">{if $journaliste.valide == 1}Actif{else}Inactif{/if}</td>
             <td style="text-align: right">
-                <a href="index.php?page=forum_accreditation_presse&amp;action=modifier&amp;id={$journaliste.id}" title="Modifier l'accréditation {$journaliste.nom}"><img src="{$chemin_template}images/icone_modifier.png" alt="Modifier" /></a>
-                <a href="index.php?page=forum_accreditation_presse&amp;action=supprimer&amp;id={$journaliste.id}" title="Supprimer l'accréditation {$journaliste.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l\'accréditation {$journaliste.nom} au {$journaliste.nom_forum} ?');"><img src="{$chemin_template}images/icone_supprimer.png" alt="Supprimer" /></a>
+                <a href="index.php?page=forum_accreditation_presse&amp;action=modifier&amp;id={$journaliste.id}" title="Modifier l'accréditation {$journaliste.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="index.php?page=forum_accreditation_presse&amp;action=supprimer&amp;id={$journaliste.id}" title="Supprimer l'accréditation {$journaliste.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer l\'accréditation {$journaliste.nom} au {$journaliste.nom_forum} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
             </td>
         </tr>
     {foreachelse}
