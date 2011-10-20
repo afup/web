@@ -36,8 +36,8 @@
          <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td nowrap="nowrap">{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
-            <td>{$ecriture.evenement}</td>
-             <td>{$ecriture.categorie}</td>
+            <td {if $ecriture.evenement=='A déterminer'}style="color:#999"{/if}>{$ecriture.evenement}</td>
+             <td {if $ecriture.categorie=='A déterminer'}style="color:#999"{/if}>{$ecriture.categorie}</td>
              <td  width="250">{$ecriture.description}</td>
 		{if $ecriture.idoperation == 1}
 			<td  align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
@@ -47,9 +47,10 @@
 			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
 		{/if}
 
-              <td>{$ecriture.reglement}</td>
+              <td {if $ecriture.reglement=='A déterminer'}style="color:#999"{/if}>{$ecriture.reglement}</td>
             <td style="text-align: right">
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="#" title="Ventiler la fiche de {$ecriture.description} " onclick="javascript:ventiler({$ecriture.idtmp}, {$ecriture.montant});return false;"><img src="{$chemin_template}images/famfamfam/arrow_divide.png" alt="Ventiler" /></a>
                 <a href="index.php?page=compta_journal&amp;action=supprimer&amp;id={$ecriture.idtmp}" title="Supprimer la fiche de {$ecriture.description} " onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$ecriture.description} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
                </td>
         </tr>
@@ -60,6 +61,20 @@
     {/foreach}
      </table>
 
+    {literal}
+    <script>
+        function ventiler(idLigne, montant) {
+            ventilation = prompt('Combien souhaitez-vous ventiler ?', montant);
+            if (ventilation) {
+                if (ventilation >= montant) {
+                    alert('Vous ne pouvez pas saisir une valeur égale ou supérieur à la valeur initiale !')
+                } else {
+                    window.location='index.php?page=compta_journal&action=ventiler&id=' + idLigne + '&montant=' + ventilation;
+                }
+            }
+        }
+    </script>
+    {/literal}
 
 {else}
     {if $action == 'importer'}

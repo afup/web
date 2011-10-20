@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier','supprimer', 'importer'));
+$action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier','supprimer', 'importer', 'ventiler'));
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
 //$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -24,7 +24,7 @@ $smarty->assign('listPeriode', $listPeriode );
 
 	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
 	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
-	
+
 if ($action == 'lister') {
 	$journal = $compta->obtenirJournal('',$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
@@ -36,11 +36,11 @@ elseif ($action == 'debit') {
 elseif ($action == 'credit') {
 	$journal = $compta->obtenirJournal(2,$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
-	
+
 } elseif ($action == 'ajouter' || $action == 'modifier') {
 
   	$formulaire = &instancierFormulaire();
-	
+
    if ($action == 'modifier')
    {
         $champsRecup = $compta->obtenir($_GET['id']);
@@ -56,26 +56,26 @@ elseif ($action == 'credit') {
         $champs['date_reglement']          = $champsRecup['date_regl'];
         $champs['obs_regl']          = $champsRecup['obs_regl'];
         $champs['idevenement']          = $champsRecup['idevenement'];
-        
+
 		$formulaire->setDefaults($champs);
 		//$formulaire->setDefaults($champsRecup);
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
    }
-   
+
 // facture associé à un évènement
    $formulaire->addElement('header'  , ''                         , 'Sélectionner un Journal');
    $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération', $compta->obtenirListOperations());
    $formulaire->addElement('select'  , 'idevenement', 'Evenement', $compta->obtenirListEvenements());
 
-//detail facture       
+//detail facture
    $formulaire->addElement('header'  , ''                         , 'Détail Facture');
-   
+
 //$mois=10;
-   $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr', 
+   $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr',
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y')-5, 
+  																				'minYear' => date('Y')-5,
   																				'maxYear' => date('Y')+1));
-  
+
   $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
   $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , array('size' => 30, 'maxlength' => 40));
    	$formulaire->addElement('text', 'numero', 'Numero facture' , array('size' => 30, 'maxlength' => 40));
@@ -85,12 +85,12 @@ elseif ($action == 'credit') {
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
    $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
-   $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 
+   $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr',
                                                                             'format'   => 'd F Y',
-   																			'minYear' => date('Y')-5, 
+   																			'minYear' => date('Y')-5,
    																			'maxYear' => date('Y')+1));
    $formulaire->addElement('text', 'obs_regl', 'Info reglement' , array('size' => 30, 'maxlength' => 40));
-   
+
 
 // boutons
     $formulaire->addElement('header'  , 'boutons'                  , '');
@@ -104,13 +104,13 @@ elseif ($action == 'credit') {
 	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required');
 	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'nonzero');
 	$formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
-	
+
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
 
 $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".$valeur['date_saisie']['d'] ;
 $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-".$valeur['date_reglement']['d'] ;
-       
+
     	if ($action == 'ajouter') {
    			$ok = $compta->ajouter(
             						$valeur['idoperation'],
@@ -154,8 +154,8 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
         }
     }
 
-       
-    $smarty->assign('formulaire', genererFormulaire($formulaire));   
+
+    $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } elseif ($action == 'supprimer') {
     if ($compta->supprimerEcriture($_GET['id']) ) {
@@ -189,7 +189,34 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
         }
     }
     $smarty->assign('formulaire', genererFormulaire($formulaire));
-
+} elseif ($action == 'ventiler') {
+    $idCompta = (int)$_GET['id'];
+    $montant = (float) $_GET['montant'];
+    $ligneCompta = $compta->obtenir($idCompta);
+    $compta->ajouter($ligneCompta['idoperation'],
+                     26, // A déterminer
+                     $ligneCompta['date_ecriture'],
+                     $ligneCompta['nom_frs'],
+                     $montant,
+                     $ligneCompta['description'],
+                     $ligneCompta['numero'],
+                     $ligneCompta['idmode_regl'],
+                     $ligneCompta['date_regl'],
+                     $ligneCompta['obs_regl'],
+                     8, // A déterminer
+                     $ligneCompta['numero_operation']);
+    $compta->modifier($ligneCompta['id'],
+                      $ligneCompta['idoperation'],
+                      $ligneCompta['idcategorie'],
+                      $ligneCompta['date_ecriture'],
+                      $ligneCompta['nom_frs'],
+                      $ligneCompta['montant'] - $montant,
+                      $ligneCompta['description'],
+                      $ligneCompta['numero'],
+                      $ligneCompta['idmode_regl'],
+                      $ligneCompta['date_regl'],
+                      $ligneCompta['obs_regl'],
+                      $ligneCompta['idevenement'],
+                      $ligneCompta['numero_operation']);
+    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal&action=lister');
 }
-
-?>
