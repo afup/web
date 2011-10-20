@@ -175,7 +175,7 @@ echo "</pre>";*/
 		$requete .= 'AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
 		$requete .= $filtre;
 		$requete .= 'ORDER BY ';
-		$requete .= 'compta.date_ecriture ';
+		$requete .= 'compta.date_ecriture, numero_operation';
 
 		return $this->_bdd->obtenirTous($requete);
     }
