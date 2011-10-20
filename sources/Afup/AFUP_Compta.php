@@ -9,6 +9,7 @@ require_once dirname(__FILE__) . '/AFUP_Forum.php';
 class AFUP_Compta
 {
     var $_bdd;
+    public $lastId = null;
 
     function AFUP_Compta(&$bdd)
     {
@@ -412,7 +413,11 @@ echo "</pre>";*/
 		$requete .= $this->_bdd->echapper($numero_operation) . ' ';
 		$requete .= ');';
 
-        return $this->_bdd->executer($requete);
+        $resultat = $this->_bdd->executer($requete);
+        if ($resultat) {
+            $this->lastId = $this->_bdd->obtenirDernierId();
+        }
+        return $resultat;
 	}
 
 	function modifier($id,$idoperation,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,

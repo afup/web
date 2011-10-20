@@ -218,5 +218,5 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                       $ligneCompta['obs_regl'],
                       $ligneCompta['idevenement'],
                       $ligneCompta['numero_operation']);
-    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal&action=lister');
+    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal&action=modifier&id=' . $compta->lastId);
 }
