@@ -485,21 +485,23 @@ class AFUP_Facturation_Forum
         $pdf->Cell(40, 5, $total . utf8_decode(' '), 1, 0, 'L', 1);
 
         $pdf->Ln(15);
-        switch ($facture['type_reglement']) {
-            case 0:
-                $type = 'par CB';
-                break;
-            case 1:
-                $type = 'par chèque';
-                break;
-            case 2:
-                $type = 'par virement';
-                break;
+        if ($facture['etat'] == 4) {
+            switch ($facture['type_reglement']) {
+                case 0:
+                    $type = 'par CB';
+                    break;
+                case 1:
+                    $type = 'par chèque';
+                    break;
+                case 2:
+                    $type = 'par virement';
+                    break;
+            }
+            $pdf->SetTextColor(255, 0, 0);
+            $pdf->Cell(130, 5);
+            $pdf->Cell(60, 5, utf8_decode('Payé ' . $type . ' le ' . date('d/m/Y', $facture['date_reglement'])));
+            $pdf->SetTextColor(0, 0, 0);
         }
-        $pdf->SetTextColor(255, 0, 0);
-        $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, utf8_decode('Payé ' . $type . ' le ' . date('d/m/Y', $facture['date_reglement'])));
-        $pdf->SetTextColor(0, 0, 0);
         $pdf->Ln();
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
