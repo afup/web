@@ -35,7 +35,7 @@
     {foreach from=$journal item=ecriture}
          <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td nowrap="nowrap">{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
+            <td nowrap="nowrap"><a name="L{$ecriture.idtmp}"></a>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td {if $ecriture.evenement=='A déterminer'}style="color:#999"{/if}>{$ecriture.evenement}</td>
              <td {if $ecriture.categorie=='A déterminer'}style="color:#999"{/if}>{$ecriture.categorie}</td>
              <td  width="250">{$ecriture.description}</td>
