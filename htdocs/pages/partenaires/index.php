@@ -10,10 +10,11 @@ $partenariat = new AFUP_Partenariat($bdd);
 
 $formulaire = &instancierFormulaire();
 
-$formulaire->addElement('header'  , ''  , 'Vérifier l\'existance d\'un membre');
+$formulaire->addElement('header'  , ''  , 'Vérifier l\'existence d\'un membre');
 $formulaire->addElement('text', 'nom', 'Nom');
 $formulaire->addElement('text', 'prenom', 'Prénom');
 $formulaire->addElement('text', 'email', 'Email');
+$formulaire->addElement('header' , 'boutons' , '');
 $formulaire->addElement('submit'  , 'verifier' , 'Vérifier');
 
 if ($formulaire->validate()) {
