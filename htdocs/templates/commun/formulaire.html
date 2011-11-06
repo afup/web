@@ -1,3 +1,4 @@
+{assign var='auMoinsUnChampsRequis' value=false}
 <form{$formulaire.attributes} onsubmit="return soumettreUneSeuleFois(this);">
 {$formulaire.hidden}
     {if isset($erreur)}
@@ -7,8 +8,9 @@
     {foreach from=$formulaire.sections item=section}
     <fieldset{if $section.name == 'boutons'} class="boutons"{/if}>
         {if $section.header}<legend>{$section.header}</legend>{/if}
-        
+
         {foreach from=$section.elements item=element}
+        {if $element.required}{assign var='auMoinsUnChampsRequis' value=true}{/if}
         <div class="rangee">
             {if $element.type == 'submit'}
                 {$element.html}
@@ -29,8 +31,8 @@
                     {foreach from=$element.elements item=element_groupe name=groupe}
                         {$element_groupe.html}
                         {if !$smarty.foreach.groupe.last}{$element.separator}{/if}
-                    {/foreach}          
-                    {if $element.error}<br /><p class="erreur">{$element.error}</p>{/if}        
+                    {/foreach}
+                    {if $element.error}<br /><p class="erreur">{$element.error}</p>{/if}
                 </span>
             {else}
                 {if $element.label != ''}
@@ -41,15 +43,17 @@
                 {/if}
                 <span class="element">
                   {$element.html}
-                  {if $element.error}<br /><p class="erreur">{$element.error}</p>{/if}        
+                  {if $element.error}<br /><p class="erreur">{$element.error}</p>{/if}
                 </span>
             {/if}
         </div>
         {/foreach}
-        
+
         <!-- Vilain hack pour Opera -->
         <div style="clear: both">&nbsp;</div>
     </fieldset>
     {/foreach}
+    {if $auMoinsUnChampsRequis}
     <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+    {/if}
 </form>
