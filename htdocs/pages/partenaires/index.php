@@ -15,6 +15,8 @@ $formulaire->addElement('text', 'nom', 'Nom');
 $formulaire->addElement('text', 'prenom', 'Prénom');
 $formulaire->addElement('header' , 'boutons' , '');
 $formulaire->addElement('submit'  , 'verifier' , 'Vérifier');
+$formulaire->addRule('nom' , 'Nom manquant' , 'required');
+$formulaire->addRule('prenom' , 'Prénom manquant' , 'required');
 
 if ($formulaire->validate()) {
 	AFUP_Logs::log('Vérification par un partenaire de : '.$formulaire->exportValue('nom').' - '.$formulaire->exportValue('prenom'));
