@@ -13,18 +13,16 @@ $formulaire = &instancierFormulaire();
 $formulaire->addElement('header'  , ''  , 'Vérifier l\'existence d\'un membre');
 $formulaire->addElement('text', 'nom', 'Nom');
 $formulaire->addElement('text', 'prenom', 'Prénom');
-$formulaire->addElement('text', 'email', 'Email');
 $formulaire->addElement('header' , 'boutons' , '');
 $formulaire->addElement('submit'  , 'verifier' , 'Vérifier');
 
 if ($formulaire->validate()) {
-	AFUP_Logs::log('Vérification par un partenaire de : '.$formulaire->exportValue('nom').' - '.$formulaire->exportValue('prenom').' - '.$formulaire->exportValue('email'));
+	AFUP_Logs::log('Vérification par un partenaire de : '.$formulaire->exportValue('nom').' - '.$formulaire->exportValue('prenom'));
 	$smarty->assign(
 		'resultat',
 		$partenariat->verifierMembre(
 			$formulaire->exportValue('nom'),
-			$formulaire->exportValue('prenom'),
-			$formulaire->exportValue('email')
+			$formulaire->exportValue('prenom')
 		)
 	);
 }
