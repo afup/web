@@ -24,7 +24,7 @@ body:before {
   clear: both;
   float: left;
   width: 100%;
-  background: url("images/ui-bg_highlight-soft_50_6874a7_1x100.png") 50% 50% #6874A7;
+  background: url("images/ui-bg_highlight-hard_40_5779c5_1x100.png") 50% 50% #5779c5;
   color: #fff;
   height:75px;
 }
@@ -157,18 +157,18 @@ form {
 
 fieldset {
     padding-bottom: 0.5em;
-    border: 1px solid #6874A7;
+    border: 1px solid #5779c5;
     margin: 0.5em 0;
 }
 
 legend {
 	font-weight: bold;
     padding: 4px 35px;
-    border: 1px solid #6874A7;
+    border: 1px solid #5779c5;
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    background: url("images/ui-bg_glass_20_6874a7_1x400.png") 50% 50% #6874A7;
+    background: url("images/ui-bg_glass_20_5779c5_1x400.png") 50% 50% #5779c5;
     color: #fff;
 }
 
@@ -247,7 +247,7 @@ table.afup_tab
 	border-collapse: collapse;
 	width : 100%;
 	background-color: white;
-	border: 1px solid #6874A7;
+	border: 1px solid #5779c5;
 }
 table.afup_tab td
 {
@@ -268,7 +268,7 @@ table.afup_tab tr.even
 
 table.afup_tab th
 {
-  background: url("images/ui-bg_glass_20_6874a7_1x400.png") 50% 50% #6874A7;
+  background: url("images/ui-bg_glass_20_5779c5_1x400.png") 50% 50% #5779c5;
   color: white;
   padding:5px;
   border-left: 1px solid white
@@ -302,7 +302,7 @@ ul {
 	list-style: square;
 	margin: 0;
 	padding: 0 0 0 20px;
-	color: #6874A7;
+	color: #5779c5;
 }
 
 
@@ -333,7 +333,7 @@ div.pagination div.informations {
   Divers
 *********************/
 body {
-	font-family: Verdana, Arial, Helevetica, sans-serif;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 80%;
 	color: #333333;
 	margin: 0;
@@ -344,7 +344,7 @@ h2,
 h3,
 h4 {
 	font-family: Arial, Helvetica, sans-serif;
-	color: #6874A7;
+	color: #5779c5;
 }
 
 h2 {
