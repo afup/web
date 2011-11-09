@@ -1,7 +1,6 @@
 <?php
 
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-// Gestion des droits
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Utils.php';
 $droits = AFUP_Utils::fabriqueDroits($bdd);
 
@@ -16,9 +15,9 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
 $forum = new AFUP_Forum($bdd);
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
-$id_forum = 5;
+$forum_id = $forum->obtenirDernier();
 $id_personne = isset($_GET['id_personne']) ? (int)$_GET['id_personne'] : 0;
-$badges = $forum_inscriptions->obtenirListePourBadges($id_forum, $id_personne);
+$badges = $forum_inscriptions->obtenirListePourBadges($forum_id, $id_personne);
 $badge_prints =array();
 $nb_cols = 3;
 $nb_rows = 4;
@@ -265,17 +264,17 @@ th {
     <th valign="bottom" align="left">__</th>
     <?php foreach($row as $badge): ?>
     <td valign="top">
-    <img src="/templates/administration/images/bf10h.png" alt=""  style="padding-top:10px;"/>
+    <img src="<?php echo $conf->obtenir('web|path'); ?>/templates/administration/images/badge-entete-<?php echo $forum_id; ?>.png" alt=""  style="padding-top:10px;"/>
     <div style="height:250px;vertical-align: middle;padding-top: 50px;">
    <div style="height: 330px;">
     <?php if($badge) :?>
-    <div style="font-size: 45px;padding: 10px;font-weight: bold;"><?php echo $badge['prenom']?><br/><?php echo strtoupper(str_replace(array('é'), array('e'), $badge['nom']))?></div>
-    <div style="font-size: 25px;padding: 10px;"><?php echo $badge['societe']?></div>
-    <div style="font-size: 18px;padding: 10px;"><?php echo $badge['type_pass']?></div>
-    <div style="font-size: 16px;padding: 10px;font-weight: bold;"><?php echo $badge['tags']?> </div>
+    <div style="font-size: 45px; padding: 10px; font-weight: bold;"><?php echo $badge['prenom']?><br/><?php echo strtoupper(str_replace(array('é'), array('e'), $badge['nom']))?></div>
+    <div style="font-size: 25px; padding: 10px;"><?php echo $badge['societe']?></div>
+    <div style="font-size: 18px; padding: 10px;"><?php echo $badge['type_pass']?></div>
+    <div style="font-size: 16px; padding: 10px; font-weight: bold; "><?php echo substr($badge['tags'], 0, 40); ?></div>
      <?php endif;?>
     </div>
-     <div style="font-size:12px; height:50px;vertical-align: middle;padding-top: 0px;">Twitter : @afup - Hash #forumphp<br/>Programme format mobile : afup.org/m </div>
+     <div style="font-size:12px; height:50px;vertical-align: middle;padding-top: 0px;">Twitter : @afup - Hash #phptour<br/>Programme format mobile : afup.org/m </div>
      </div>
     </td>
 
