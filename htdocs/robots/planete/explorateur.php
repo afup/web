@@ -26,6 +26,7 @@ $flux           = $planete_flux->obtenirListeActifs();
 $billets = 0;
 
 foreach ($flux as $flux_simple) {
+	echo $flux_simple['feed']." : début...\n";
     $rss = fetch_rss($flux_simple['feed']);
 	$rss->items = array_reverse($rss->items);
 	foreach ($rss->items as $item) {
@@ -68,6 +69,7 @@ foreach ($flux as $flux_simple) {
 		}
 
 	}
+	echo $flux_simple['feed']." : fin !\n\n";
 }
 $erreurs = $billets - $succes;
 
