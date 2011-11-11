@@ -20,6 +20,7 @@
             <th align="left"><a href="index.php?page=personnes_physiques&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
             <th align="left"><a href="index.php?page=personnes_physiques&amp;tri=prenom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'prenom'}desc{else}asc{/if}">Prénom</a></th>
             <th><a href="index.php?page=personnes_physiques&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+            <th>&nbsp;</th>
         </tr>
     {foreach from=$personnes item=personne}
         <tr class="{cycle values="odd,even"}">

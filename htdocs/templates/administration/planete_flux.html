@@ -2,20 +2,17 @@
     <h2>Liste des flux</h2>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=planete_flux&amp;action=ajouter" title="Ajouter un flux">Ajouter un flux</a><br />
     <br/>
-    <table>
+
       <form method="GET" name="filtre">
       <input type="hidden" name="page" value="planete_flux" />
       <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
       <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-        <tr>
-            <td width="50" nowrap>Filtre : </td>
-            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
-            <td><input type="submit" value="OK" name="submit_filtre"></td>
-        </tr>
+        Filtre : <input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}">
+        <input type="submit" value="OK" name="submit_filtre">
       </form>
-    </table>
+
     <br/>
-    <table>
+    <table class="afup_tab">
         <tr>
             <th align="left"><a href="index.php?page=planete_flux&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
             <th align="left"><a href="index.php?page=planete_flux&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'url'}desc{else}asc{/if}">URL</a></th>

@@ -1,7 +1,10 @@
 <h2>Liste des relances</h2>
 <form method="post" action="index.php?page=relances&action=relancer">
 <input type="submit" value="Relancer" />
-<table>
+<table class="afup_tab">
+    <tr>
+        <th colspan="5">Personnes morales</th>
+    </tr>
     <tr>
         <th align="left">Nom</th>
         <th align="left">Date fin</th>
@@ -10,9 +13,6 @@
         <th>&nbsp;</th>
     </tr>
 
-    <tr>
-        <th>Personnes morales</th>
-    </tr>
     {foreach from=$relances_personnes_morales item=relance}
     <tr style="background: {cycle values="#EEEEEE,#FFFFFF}">
         <td><a href="mailto:{$relance.email}" title="Gérer les cotisations de {$relance.nom}">{$relance.nom|truncate:25}</a></td>
@@ -34,9 +34,18 @@
         <td><em>Aucune personne à relancer</em></td>
     </tr>
     {/foreach}
-
+</table>
+<br/>
+<table class="afup_tab">
     <tr>
-        <th>Personnes physiques</th>
+        <th colspan="5">Personnes physiques</th>
+    </tr>
+    <tr>
+        <th align="left">Nom</th>
+        <th align="left">Date fin</th>
+        <th align="left">Nbr rel.</th>
+        <th align="left">Dern. rel.</th>
+        <th>&nbsp;</th>
     </tr>
     {foreach from=$relances_personnes_physiques item=relance}
     <tr style="background: {cycle values="#EEEEEE,#FFFFFF}">
