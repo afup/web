@@ -268,10 +268,15 @@ th {
     <div style="height:250px;vertical-align: middle;padding-top: 50px;">
    <div style="height: 330px;">
     <?php if($badge) :?>
-    <div style="font-size: 45px; padding: 10px; font-weight: bold;"><?php echo $badge['prenom']?><br/><?php echo strtoupper(str_replace(array('é'), array('e'), $badge['nom']))?></div>
+    <div style="font-size: 45px; padding: 10px; font-weight: bold;"><?php echo ucfirst($badge['prenom'])?><br/><?php echo strtoupper(str_replace(array('é'), array('e'), $badge['nom']))?></div>
     <div style="font-size: 25px; padding: 10px;"><?php echo $badge['societe']?></div>
     <div style="font-size: 18px; padding: 10px;"><?php echo $badge['type_pass']?></div>
-    <div style="font-size: 16px; padding: 10px; font-weight: bold; "><?php echo substr($badge['tags'], 0, 40); ?></div>
+    <?php $tags = explode(' - ', $badge['tags'])?>
+    <div style="font-size: 16px; padding: 10px; font-weight: bold; ">
+    <?php foreach ($tags as $k => $t):?>
+    <?php echo ($k <= 2 ? substr($t, 0, 40) . '<br/>' : '') // Pas plus de 3 : au cas où !?>
+    <?php endforeach?>
+    </div>
      <?php endif;?>
     </div>
      <div style="font-size:12px; height:50px;vertical-align: middle;padding-top: 0px;">Twitter : @afup - Hash #phptour<br/>Programme format mobile : afup.org/m </div>
