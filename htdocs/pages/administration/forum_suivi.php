@@ -13,4 +13,12 @@ if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
 $smarty->assign('id_forum', $_GET['id_forum']);
 $smarty->assign('forums', $forum->obtenirListe());
 
-$smarty->assign('suivis', $forum_inscriptions->obtenirSuivi($_GET['id_forum']));
+$suiviBrut = $forum_inscriptions->obtenirSuivi($_GET['id_forum']);
+$smarty->assign('suivis', $suiviBrut);
+
+foreach ($suiviBrut as $s) {
+    $n[] = $s['n'];
+    $n_1[] = $s['n_1'];
+}
+$smarty->assign('n', implode(', ' , $n));
+$smarty->assign('n_1', implode(', ' , $n_1));
