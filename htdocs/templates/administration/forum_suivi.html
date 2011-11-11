@@ -1,3 +1,5 @@
+<script type="text/javascript" src="{$chemin_template}medias/js/highcharts.js"></script>
+
 <form method="GET" name="forum">
 <input type="hidden" name="page" value="forum_suivi" />
 <h2>Suivi du <select name="id_forum" onchange="this.form.submit(); return false;">
@@ -6,6 +8,8 @@
 {/foreach}
 </select></h2>
 </form>
+
+<div id="container"></div>
 
 <br/>
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
@@ -37,4 +41,35 @@ $(document).ready(function(){
     </tr>
 {/foreach}
 </table>
-	
+
+{literal}
+<script language="JavaScript">
+var chart;
+$(document).ready(function() {
+   chart = new Highcharts.Chart({
+      chart: {renderTo: 'container',
+              zoomType: 'x',
+              spacingRight: 20},
+      title: {text: 'Evolution des inscriptions'},
+      subtitle: {text: 'Cliquez/glissez dans la zone pour zoomer'},
+      xAxis: {type: 'datetime',
+              maxZoom: 14 * 24 * 3600000, // 14 jours
+              title: {text: null}},
+      yAxis: {title: {text: 'Inscriptions'},
+              min: 0.1,
+              startOnTick: false,
+              showFirstLabel: false},
+      tooltip: {shared: true},
+      legend: {enabled: true},
+      series: [{name: 'PHP Tour Lille 2011',
+                pointInterval: 24 * 3600 * 1000,
+                pointStart: Date.UTC(2011, 5, 20),
+                data: [{/literal}{$n}{literal}]},
+               {name: 'Forum 2010',
+                pointInterval: 24 * 3600 * 1000,
+                pointStart: Date.UTC(2011, 5, 20),
+                data: [{/literal}{$n_1}{literal}]}]
+   });
+});
+</script>
+{/literal}
