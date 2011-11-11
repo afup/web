@@ -152,12 +152,16 @@ body:before {
  Formulaires
 *********************/
 form {
-	margin: 0 auto;
+	margin: 0;
+    width: 790px;
 }
 
 fieldset {
     padding-bottom: 0.5em;
     border: 1px solid #5779c5;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
     margin: 0.5em 0;
 }
 
@@ -231,7 +235,7 @@ p.html {
   Tableaux
 *********************/
 table {
-	width: 100%;
+	min-width: 790px;
 	border: 0;
 }
 
@@ -245,7 +249,7 @@ table.afup_tab
 {
   border-spacing: 2px;
 	border-collapse: collapse;
-	width : 100%;
+	min-width : 790px;
 	background-color: white;
 	border: 1px solid #5779c5;
 }
