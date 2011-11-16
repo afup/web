@@ -563,6 +563,61 @@ return  $sTable;
         return $csv;
     }
 
+    function obtenirXmlPourAppliIphone($id_forum)
+    {
+        $id_forum = $this->_bdd->echapper($id_forum);
+
+        // Récupération des données
+        $requete = "
+        SELECT afup_sessions.titre, afup_sessions.abstract, afup_sessions.genre, afup_sessions.journee,
+        	   afup_forum_planning.debut,
+			   afup_forum_planning.fin,
+			   afup_forum_planning.keynote,
+
+        	(SELECT CONCAT(CONCAT(CONCAT(afup_conferenciers1.prenom, ' ', afup_conferenciers1.nom), '#'), afup_conferenciers1.societe)
+        	 FROM afup_conferenciers_sessions AS afup_conferenciers_sessions
+                INNER JOIN afup_conferenciers AS afup_conferenciers1 ON afup_conferenciers1.conferencier_id = afup_conferenciers_sessions.conferencier_id
+        	 WHERE afup_conferenciers_sessions.session_id = afup_sessions.session_id
+                LIMIT 0,1) AS conferencier1,
+
+        	(SELECT CONCAT(CONCAT(CONCAT(afup_conferenciers2.prenom, ' ', afup_conferenciers2.nom), '#'), afup_conferenciers2.societe)
+        	 FROM afup_conferenciers_sessions AS afup_conferenciers_sessions
+                INNER JOIN afup_conferenciers AS afup_conferenciers2 ON afup_conferenciers2.conferencier_id = afup_conferenciers_sessions.conferencier_id
+        	 WHERE afup_conferenciers_sessions.session_id = afup_sessions.session_id
+                LIMIT 1,1) AS conferencier2
+
+        FROM afup_sessions
+        INNER JOIN afup_forum_planning ON afup_forum_planning.id_session = afup_sessions.session_id
+        WHERE afup_sessions.id_forum = $id_forum AND afup_sessions.plannifie = 1
+        ORDER BY afup_forum_planning.debut;";
+        $donnees = $this->_bdd->obtenirTous($requete);
+
+        // Génération des données XML
+        $xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data></data>";
+        $xml = new SimpleXMLElement($xmlstr);
+        $sessions = $xml->addChild('sessions');
+        foreach ($donnees as $d) {
+            $session = $sessions->addChild('session');
+            $session->addAttribute('title', $d['titre']);
+            $session->addAttribute('starts', date(DATE_ISO8601, $d['debut']));
+            $session->addAttribute('ends', date(DATE_ISO8601, $d['fin']));
+            if ($d['conferencier1'])  {
+                $details = explode("#", $d['conferencier1']);
+                $speaker = $session->addChild('speaker');
+                $speaker->addAttribute('name', $details[0]);
+                $speaker->addAttribute('org', $details[1]);
+            }
+            if ($d['conferencier2'])  {
+                $details = explode("#", $d['conferencier2']);
+                $speaker = $session->addChild('speaker');
+                $speaker->addAttribute('name', $details[0]);
+                $speaker->addAttribute('org', $details[1]);
+            }
+            $sujet = $session->addChild('abstract', str_replace('"', '\"', htmlspecialchars($d['abstract'])));
+        }
+        return $xml->asXml();
+    }
+
     function ajouter($titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
                       $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente)
     {

@@ -155,7 +155,7 @@ $pages = array(
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
 		    'forum_joind_in' => array(
-		        'nom' => 'Joind.in',
+		        'nom' => 'Export sites externes',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
 		    'forum_partenaire' => array(
