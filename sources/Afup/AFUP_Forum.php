@@ -100,6 +100,42 @@ class AFUP_Forum
         }
     }
 
+    function afficherDeroulementMobile($sessions) {
+    	$deroulement = "<div class=\"deroulements\">";
+    	$jour = 0;
+    	$heure = 0;
+    	foreach ($sessions as $session) {
+    		if ($jour != mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']))) {
+    			$jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
+    			$deroulement .= "<h2 class=\"jour\">".date("d/m/Y", $jour)."</h2>";
+    		}
+    		if ($heure != $session['debut']) {
+    			$heure = $session['debut'];
+    			$deroulement .= "<h3 class=\"horaire\">".date("H\hi", $heure)."</h3>";
+    		}
+
+    		$classes = array("deroulement");
+    		$classes[] = $session['journee'];
+			if ($session['keynote'] == 1) {
+    			$classes[] = "keynote";
+			}
+
+    		$conferenciers = $session['conf1'];
+    		if (!empty($session['conf2'])) {
+    			$conferenciers .= "<br />".$session['conf2'];
+    		}
+
+    		$deroulement .= "<div class=\"".join(" ", $classes)."\">";
+    		$deroulement .= "    <div class=\"session\"><a href=\"sessions.php#".$session['session_id']."\">".$session['titre']."</a></div>";
+    		$deroulement .= "    <div class=\"conferenciers\">".$conferenciers."</div>";
+    		$deroulement .= "    <div class=\"salle\">".$session['nom_salle']."</div>";
+    		$deroulement .= "</div>";
+    	}
+    	$deroulement .= "</div>";
+
+    	return $deroulement;
+    }
+
     function afficherDeroulement($sessions) {
     	$deroulement = "<div class=\"deroulements\">";
     	$jour = 0;
@@ -659,4 +695,3 @@ return  $sTable;
         return $this->_bdd->executer($requete);
     }
 }
-?>
