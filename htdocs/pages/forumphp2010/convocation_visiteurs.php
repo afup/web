@@ -1,4 +1,6 @@
 <?php 
+header('Location: /pages/phptourlille2011/convocation_visiteurs.php?id='.$_GET['id']);
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
