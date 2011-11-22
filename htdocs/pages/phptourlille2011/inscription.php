@@ -17,9 +17,9 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 $nombre_places   = $forum->obtenirNombrePlaces($id_forum);
 $nombre_inscrits = $forum_inscriptions->obtenirNombreInscrits($id_forum);
 
-//$smarty->display('inscriptions_a_venir.html');
-//die();
-
+$smarty->display('inscriptions_completes.html');
+die();
+	  
 if (!isset($_GET['passage_en_force'])) {
 	if (time() > $config_forum['date_fin_vente']) {
 	  $smarty->display('inscriptions_fermes.html');
