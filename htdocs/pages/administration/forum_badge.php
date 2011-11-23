@@ -25,6 +25,18 @@ $badge_row = 1;
 $badge_col = 1;
 $badge_page = 1;
 
+$nombre = count($badges);
+while (count($badges) % $nb_cols != 0) {
+	$badges[] = array(
+		'prenom' => "__",
+		'nom' => "__",
+		'commentaires' => "",
+		'type_inscription' => AFUP_FORUM_2_JOURNEES,
+		'societe' => "",
+		'tags' => "__",
+	);
+}
+
 $i = 0;
 $html = "";
 foreach ($badges as $nb => $badge) {
