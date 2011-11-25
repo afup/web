@@ -376,9 +376,8 @@ class AFUP_AppelConferencier
         require_once dirname(__FILE__).'/AFUP_Forum.php';
         $forum = new AFUP_Forum($this->_bdd);
         $forum_details = $forum->obtenir($id_forum);
-        $annee = $forum_details['forum_annee'];
         
-        $repertoire = new DirectoryIterator(dirname(__FILE__)."/../../htdocs/templates/forumphp".$annee."/resumes/");
+        $repertoire = new DirectoryIterator(dirname(__FILE__)."/../../htdocs/templates/".$forum_details['path']."/resumes/");
         foreach($repertoire as $file) {
             if (preg_match("/^[1-9]/", $file->getFilename())) {
                 $id = (int)$file->getFilename();
