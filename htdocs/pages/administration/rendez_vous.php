@@ -31,8 +31,8 @@ if ($action == 'lister' || $action== 'listing' ) {
     if ($action == "listing")
     {
     	$list_ordre="nom";
-    }   
-    
+    }
+
     $inscrits = $rendez_vous->obtenirListeInscrits($rendezvous['id'], $list_ordre, $list_associatif);
     $smarty->assign('lesrendezvous', $rendez_vous->obtenirListe());
     $smarty->assign('nb_inscrits', $rendez_vous->obtenirNombreInscritsQuiViennent($rendezvous['id']));
@@ -44,31 +44,31 @@ if ($action == 'lister' || $action== 'listing' ) {
 
 } elseif ($action == 'exporter') {
     $smarty->assign('inscrits', $rendez_vous->exporterVersBarCampListeInscritsQuiViennent($_GET['id']));
-    
+
 } elseif ($action == 'remplir') {
 	$ok = $rendez_vous->remplirAvecListeAttente($_GET['id']);
 
     if ($ok) {
         AFUP_Logs::log('Remplissage du rendez-vous avec la liste d\'attente');
-        afficherMessage('Le remplissage avec la liste d\'attente a été effectué', 'index.php?page=rendez_vous&action=lister');    
+        afficherMessage('Le remplissage avec la liste d\'attente a été effectué', 'index.php?page=rendez_vous&action=lister');
     } else {
-        $smarty->assign('erreur', 'Une erreur est survenue lors du remplissage avec la liste d\'attente pour le prochain rendez-vous');    
-    }    
-	
+        $smarty->assign('erreur', 'Une erreur est survenue lors du remplissage avec la liste d\'attente pour le prochain rendez-vous');
+    }
+
 } elseif ($action == 'envoyer') {
     $formulaire = &instancierFormulaire();
     $sujet = $rendez_vous->preparerSujetDuMessage();
     $corps = $rendez_vous->preparerCorpsDuMessage($_GET['id']);
     $formulaire->setDefaults(array('sujet' => $sujet,
-                                   'corps' => $corps));    
-	
+                                   'corps' => $corps));
+
     $formulaire->addElement('header'  , ''     , 'Message pour la demande de confirmation du prochain rendez-vous');
     $formulaire->addElement('text'    , 'sujet', 'Sujet');
     $formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 42, 'rows' => 10));
 
     $formulaire->addElement('header'  , 'boutons'            , '');
     $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
-    
+
     $formulaire->addRule('sujet'      , 'Sujet manquant'     , 'required');
     $formulaire->addRule('corps'      , 'Corps manquant'   , 'required');
 
@@ -76,21 +76,22 @@ if ($action == 'lister' || $action== 'listing' ) {
         $ok = $rendez_vous->envoyerDemandesConfirmation($_GET['id'],
                                                        $formulaire->exportValue('sujet'),
                                                        $formulaire->exportValue('corps'));
-        
+
         if ($ok) {
             AFUP_Logs::log('Envoi des emails de demande de confirmation aux inscrits');
-            afficherMessage('L\'envoi des emails de demande de confirmation aux inscrits pour le prochain rendez-vous a été effectué', 'index.php?page=rendez_vous&action=lister');    
+            afficherMessage('L\'envoi des emails de demande de confirmation aux inscrits pour le prochain rendez-vous a été effectué', 'index.php?page=rendez_vous&action=lister');
         } else {
-            $smarty->assign('erreur', 'Une erreur est survenue lors de l\'envoi des emails de demande de confirmation aux inscrits pour le prochain rendez-vous');    
-        }    
-    } 
-    
+            $smarty->assign('erreur', 'Une erreur est survenue lors de l\'envoi des emails de demande de confirmation aux inscrits pour le prochain rendez-vous');
+        }
+    }
+
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } elseif ($action == 'preparer') {
     $formulaire = &instancierFormulaire();
 
 	$id = 0;
+	$current_year = date('Y');
 	if (isset($_GET['id'])) {
 		$id = (int)$_GET['id'];
         $champs = $rendez_vous->obtenir($id);
@@ -99,7 +100,7 @@ if ($action == 'lister' || $action== 'listing' ) {
         $champs['fin'] = date("H\hi", $champs['fin']);
         $formulaire->setDefaults($champs);
 	} else {
-	    $formulaire->setDefaults(array('date' => date("Y/m/d", time())));    
+	    $formulaire->setDefaults(array('date' => date("Y/m/d", time())));
 	}
 
     $formulaire->addElement('hidden'  , 'id'       , $id);
@@ -110,10 +111,10 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addElement('textarea', 'theme'    , 'Thème'    , array('cols' => 42, 'rows' => 10));
 
     $formulaire->addElement('header'  , ''         , 'Horaires');
-	$options = array('language' => 'fr', 'format' => 'd/m/Y', 'minYear' => 2007, 'maxYear' => 2015);
+	$options = array('language' => 'fr', 'format' => 'd/m/Y', 'minYear' => $current_year, 'maxYear' => $current_year + 3);
 	$formulaire->addElement('date'    , 'date'     , 'Date'     , $options);
-	$formulaire->addElement('text'    , 'debut'    , 'Début'    , array('size' => 6, 'maxlength' => 5));
-	$formulaire->addElement('text'    , 'fin'      , 'Fin'      , array('size' => 6, 'maxlength' => 5));
+	$formulaire->addElement('text'    , 'debut'    , 'Heure début (00:00)'    , array('size' => 6, 'maxlength' => 5));
+	$formulaire->addElement('text'    , 'fin'      , 'Heure fin (00:00)'      , array('size' => 6, 'maxlength' => 5));
 
     $formulaire->addElement('header'  , ''         , 'Pratique');
     $formulaire->addElement('textarea', 'lieu'     , 'Lieu'     , array('cols' => 42, 'rows' => 3));
@@ -124,12 +125,12 @@ if ($action == 'lister' || $action== 'listing' ) {
 
     $formulaire->addElement('header'  , 'boutons'   , '');
     $formulaire->addElement('submit'  , 'soumettre' , ucfirst($action));
-    
+
     $formulaire->addRule('titre'      , 'Titre manquant'     , 'required');
     $formulaire->addRule('date'       , 'Date manquante'     , 'required');
     $formulaire->addRule('debut'      , 'Début manquant'     , 'required');
     $formulaire->addRule('fin'        , 'Fin manquante'      , 'required');
-    
+
     if ($formulaire->validate()) {
         $ok = $rendez_vous->enregistrer($formulaire);
 
@@ -141,7 +142,7 @@ if ($action == 'lister' || $action== 'listing' ) {
             $smarty->assign('erreur', 'Une erreur est survenue lors de l\'enregistrement du rendez-vous');
         }
     }
-    
+
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } elseif (in_array($action, array('ajouter', 'modifier'))) {
@@ -185,12 +186,12 @@ if ($action == 'lister' || $action== 'listing' ) {
 
     $formulaire->addElement('header'  , 'boutons'   , '');
     $formulaire->addElement('submit'  , 'soumettre' , ucfirst($action));
-    
+
     $formulaire->addRule('nom'        , 'Nom manquant'       , 'required');
     $formulaire->addRule('email'      , 'Email manquant'     , 'required');
     $formulaire->addRule('email'      , 'Email invalide'     , 'email');
     $formulaire->addRule('telephone'  , 'Téléphone manquant' , 'required');
-    
+
     if ($formulaire->validate()) {
         $ok = $rendez_vous->enregistrerInscrit($formulaire);
 
@@ -201,7 +202,7 @@ if ($action == 'lister' || $action== 'listing' ) {
             $smarty->assign('erreur', 'Une erreur est survenue lors de l\'enregistrement de l\'inscription');
         }
     }
-    
+
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 } elseif ($action == 'supprimer') {
     if ($rendez_vous->supprimerInscrit($_GET['id'])) {
