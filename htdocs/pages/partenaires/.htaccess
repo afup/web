@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Partenaires AFUP"
+AuthUserFile .htpasswd
+Require valid-user
