@@ -70,6 +70,7 @@ class AFUP_Forum_Partenaires
         $requete .= 'ORDER BY';
         $requete .= ' id_niveau_partenariat, ranking';
         $partenaires = $this->_bdd->obtenirTous($requete);
+        $parType = array();
         foreach($partenaires as $p) {
             $parType[$p['titre']][] = $p;
         }
