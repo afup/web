@@ -1,0 +1,4 @@
+#a-gauche { display: none; }
+#a-droite { display: none; }
+#center { display: none; }
+.pagebreak { page-break-before: always; }
