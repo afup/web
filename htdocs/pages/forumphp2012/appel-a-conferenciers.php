@@ -5,12 +5,12 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.ph
 
 $fin_de_lappel = $config_forum['date_fin_appel_conferencier'];
 
-setlocale(LC_TIME, 'fr_FR');
+setlocale(LC_TIME, 'fr_FR.utf8');
 $smarty->assign('date_fin_appel_fr', strftime('%A %d %B %Y à %H:%M:%S', $fin_de_lappel));
-setlocale(LC_TIME, 'en_US');
+setlocale(LC_TIME, 'en_US.utf8');
 $smarty->assign('date_fin_appel_en', strftime('%A %B %d, %Y at %H:%M:%S', $fin_de_lappel));
 
-setlocale(LC_TIME, 'fr_FR');
+setlocale(LC_TIME, 'fr_FR.utf8');
 if ((time() - $fin_de_lappel) > 0) {
     $smarty->display('fin_appel.html');
     exit();
