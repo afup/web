@@ -66,11 +66,12 @@ $formulaire->addRule('pres1_abstract', 'Abstract is missing', 'required');
 $formulaire->addGroupRule('groupe_type_pres1', 'Select type of session' , 'required', null, 1);
 $formulaire->addRule('pres1_genre', 'Type of session is missing', 'required');
 
-$formulaire->addRule('civilite1' , 'Civility is missing', 'required');
-$formulaire->addRule('nom1'      , 'Last name is missing'             , 'required');
-$formulaire->addRule('prenom1'   , 'First name is missing'          , 'required');
-$formulaire->addRule('email1'    , 'Email is missing'           , 'required');
-$formulaire->addRule('email1'    , 'Invalid email'           , 'email');
+$formulaire->addRule('civilite1'  , 'Civility is missing'   , 'required');
+$formulaire->addRule('nom1'       , 'Last name is missing'  , 'required');
+$formulaire->addRule('prenom1'    , 'First name is missing' , 'required');
+$formulaire->addRule('email1'     , 'Email is missing'      , 'required');
+$formulaire->addRule('email1'     , 'Invalid email'         , 'email');
+$formulaire->addRule('biographie1', 'Biography is missing'  , 'required');
 
 if ($formulaire->validate()) {
     $valeurs = $formulaire->exportValues();

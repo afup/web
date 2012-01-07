@@ -66,11 +66,12 @@ $formulaire->addRule('pres1_abstract', 'Résumé manquant', 'required');
 $formulaire->addGroupRule('groupe_type_pres1', 'Indiquez le type de session' , 'required', null, 1);
 $formulaire->addRule('pres1_genre', 'Type de session manquant', 'required');
 
-$formulaire->addRule('civilite1' , 'Civilité non sélectionnée', 'required');
-$formulaire->addRule('nom1'      , 'Nom manquant'             , 'required');
-$formulaire->addRule('prenom1'   , 'Prénom manquant'          , 'required');
-$formulaire->addRule('email1'    , 'Email manquant'           , 'required');
-$formulaire->addRule('email1'    , 'Email invalide'           , 'email');
+$formulaire->addRule('civilite1'  , 'Civilité non sélectionnée', 'required');
+$formulaire->addRule('nom1'       , 'Nom manquant'             , 'required');
+$formulaire->addRule('prenom1'    , 'Prénom manquant'          , 'required');
+$formulaire->addRule('email1'     , 'Email manquant'           , 'required');
+$formulaire->addRule('email1'     , 'Email invalide'           , 'email');
+$formulaire->addRule('biographie1', 'Biographie manquante'     , 'required');
 
 if ($formulaire->validate()) {
     $valeurs = $formulaire->exportValues();
