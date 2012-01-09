@@ -174,9 +174,7 @@ div.col {
     padding-right:      0.5em;
 }
 h2 {
-    text-align:         center;
-    color:              inherit;
-    background-color:   #e0e3ee;
+	border-bottom: 1px solid #e0e3ee;
 }
 div.bloc_jour table {
     border-collapse:    collapse;
