@@ -35,6 +35,8 @@ for ($i = 1; $i < 3; $i++) {
     $formulaire->addElement('text'  , 'telephone' . $i  , 'Tél.'           , array('size' => 20, 'maxlength' => 20));
     $formulaire->addElement('text'  , 'societe' . $i    , 'Société'        , array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('textarea', 'biographie' . $i, 'Biographie', array('cols' => 60, 'rows' => 5));
+    $formulaire->addElement('file'  , 'logo' . $i       , 'Photo');
+    $formulaire->addElement('static', 'note'            , '', 'Image JPEG ou PNG de 90x120 pixels (sera redimensionnée si taille différente)');
 }
 
 for ($i = 1;$i < 4; $i++) {
@@ -72,9 +74,12 @@ $formulaire->addRule('prenom1'    , 'Prénom manquant'          , 'required');
 $formulaire->addRule('email1'     , 'Email manquant'           , 'required');
 $formulaire->addRule('email1'     , 'Email invalide'           , 'email');
 $formulaire->addRule('biographie1', 'Biographie manquante'     , 'required');
+$formulaire->addRule('logo1'      , 'Photo manquante'          , 'uploadedfile');
+$formulaire->addRule('logo1'      , 'Type d\'image incorrect (PNG ou JPEG)'  , 'mimetype' , array('image/png', 'image/jpeg'));
 
 if ($formulaire->validate()) {
     $valeurs = $formulaire->exportValues();
+    $forum = $forums->obtenir($valeurs['id_forum']);
 
     $conf = new AFUP_AppelConferencier($bdd);
 
@@ -89,6 +94,26 @@ if ($formulaire->validate()) {
             $valeurs['id_forum'], $valeurs['civilite' . $i], $valeurs['nom' . $i], $valeurs['prenom' . $i],
             $valeurs['email' . $i], $valeurs['societe' . $i], $valeurs['biographie' . $i]
         );
+        $file = $formulaire->getElement('logo'.$i);
+        $data = $file->getValue();
+        if ($data['name']) {
+            $imageDir = realpath('../../templates/'.$forum['path'].'/images/intervenants/');
+            // Transformation en 90x120 JPG pour simplifier
+            $data = $file->getValue();
+            if ($data['type'] == 'image/png') {
+                $img = imagecreatefrompng($data['tmp_name']);
+            } else {
+                $img = imagecreatefromjpeg($data['tmp_name']);
+            }
+            $width = imagesx($img);
+            $height = imagesy($img);
+            if ($width != 90 || $height != 120) {
+                $oldImg = $img;
+                $img = imagecreatetruecolor(90, 120);
+                imagecopyresampled($img, $oldImg, 0, 0, 0, 0, 90, 120, $width, $height);
+            }
+            imagejpeg($img, $imageDir . '/' . $$var . '.jpg', 90);
+        }
     }
 
     // ajouter les sessions
