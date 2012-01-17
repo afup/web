@@ -351,3 +351,13 @@ section article .links a:hover, section article a.external:hover {
 #root {
   background: transparent url(./img/background-header.png) top left repeat-x;
 }
+
+.sponsors .logo {
+	float:right;
+	width:150px;
+}
+
+.sponsors .logo img {
+	float:none;
+}
+
