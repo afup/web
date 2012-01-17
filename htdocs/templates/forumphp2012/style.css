@@ -1,8 +1,25 @@
 @font-face {
-  font-family: 'League Gothic';
-  font-style: normal;
-  font-weight: normal;
-  src: local('League Gothic Regular'), url('./fonts/League Gothic.otf') format('opentype');
+    font-family: 'League Gothic';
+    src: url('./fonts/league_gothic-webfont.eot');
+    src: url('./fonts/league_gothic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/league_gothic-webfont.woff') format('woff'),
+         url('./fonts/league_gothic-webfont.ttf') format('truetype'),
+         url('./fonts/league_gothic-webfont.svg#LeagueGothicRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Museo Slab 500';
+    src: url('./fonts/museo_slab_500-webfont.eot');
+    src: url('./fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/museo_slab_500-webfont.woff') format('woff'),
+         url('./fonts/museo_slab_500-webfont.ttf') format('truetype'),
+         url('./fonts/museo_slab_500-webfont.svg#MuseoSlab500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
 
 @font-face {
@@ -10,13 +27,6 @@
   font-style: normal;
   font-weight: normal;
   src: local('Myriad Pro'), url('./fonts/MyriadPro-Regular.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Museo Slab 500';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Museo Slab 500'), url('./fonts/Museo_Slab_500.ttf') format('truetype');
 }
 
 * {
@@ -100,14 +110,15 @@ header .event .date {
   display: block;
   font-family: 'League Gothic';
   font-size: 48px;
-  height: 36px;
+  line-height: 40px;
   text-transform: uppercase;
 }
 
 header .event .summary {
   color: #f7f6f1;
   font-family: 'Myriad Pro Regular';
-  font-size: 29px;
+  font-size: 28px;
+  line-height: 28px;
 }
 
 header #logos img {
