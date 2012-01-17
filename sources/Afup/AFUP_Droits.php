@@ -157,7 +157,7 @@ class AFUP_Droits {
         $requete .= 'FROM';
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'WHERE';
-        $requete .= '  etat=' . AFUP_DROITS_ETAT_ACTIF;
+        $requete .= '  etat=' . AFUP_DROITS_ETAT_ACTIF . ' ';
         /**
          * Interdit à un admin de se connecter par un hash
          * si son hash est dévoilé, qu'une personne se connecte via ce hash,
