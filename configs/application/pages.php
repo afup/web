@@ -152,7 +152,7 @@ $pages = array(
 		    ),
 		    'forum_planning_vote' => array(
 		        'nom' => 'Vote Planning',
-		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
 		    'forum_joind_in' => array(
 		        'nom' => 'Export sites externes',
