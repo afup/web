@@ -1,8 +1,8 @@
-ALTER TABLE `afup`.`afup_forum` ADD COLUMN `annee` INT(11) NULL DEFAULT NULL  AFTER `date_fin` , ADD COLUMN `date_fin_appel_projet` INT(11) NULL DEFAULT NULL  AFTER `annee` , ADD COLUMN `date_fin_appel_conferencier` INT(11) NULL DEFAULT NULL  AFTER `date_fin_appel_projet` , ADD COLUMN `date_fin_prevente` INT(11) NULL DEFAULT NULL  AFTER `date_fin_appel_conferencier` , ADD COLUMN `date_fin_vente` INT(11) NULL DEFAULT NULL  AFTER `date_fin_prevente` ;
+ALTER TABLE `afup_forum` ADD COLUMN `annee` INT(11) NULL DEFAULT NULL  AFTER `date_fin` , ADD COLUMN `date_fin_appel_projet` INT(11) NULL DEFAULT NULL  AFTER `annee` , ADD COLUMN `date_fin_appel_conferencier` INT(11) NULL DEFAULT NULL  AFTER `date_fin_appel_projet` , ADD COLUMN `date_fin_prevente` INT(11) NULL DEFAULT NULL  AFTER `date_fin_appel_conferencier` , ADD COLUMN `date_fin_vente` INT(11) NULL DEFAULT NULL  AFTER `date_fin_prevente` ;
 
 ALTER TABLE `afup_forum` ADD `path` VARCHAR( 100 ) NULL AFTER `titre` ;
 
-CREATE  TABLE IF NOT EXISTS `afup`.`afup_forum_coupon` (
+CREATE  TABLE IF NOT EXISTS `afup_forum_coupon` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `id_forum` INT(11) NOT NULL ,
   `texte` VARCHAR(45) NOT NULL ,
@@ -11,7 +11,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1
 COLLATE = latin1_swedish_ci;
 
-CREATE  TABLE IF NOT EXISTS `afup`.`afup_partenaires` (
+CREATE  TABLE IF NOT EXISTS `afup_partenaires` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `nom` VARCHAR(100) NOT NULL ,
   `logo` VARCHAR(100) NULL DEFAULT NULL ,
@@ -22,7 +22,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1
 COLLATE = latin1_swedish_ci;
 
-CREATE  TABLE IF NOT EXISTS `afup`.`afup_forum_partenaires` (
+CREATE  TABLE IF NOT EXISTS `afup_forum_partenaires` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `id_forum` INT(11) NOT NULL ,
   `id_partenaire` INT(11) NOT NULL ,
@@ -33,7 +33,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1
 COLLATE = latin1_swedish_ci;
 
-CREATE  TABLE IF NOT EXISTS `afup`.`afup_niveau_partenariat` (
+CREATE  TABLE IF NOT EXISTS `afup_niveau_partenariat` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `titre` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -41,7 +41,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1
 COLLATE = latin1_swedish_ci;
 
-UPDATE `afup`.`afup_forum` SET `path` = 'phptourlille2011',
+UPDATE `afup_forum` SET `path` = 'phptourlille2011',
 `annee` = '2011',
 `date_fin_appel_projet` = '1319147999',
 `date_fin_appel_conferencier` = '1306879199',

@@ -1,6 +1,6 @@
 DROP TABLE `afup_forum_partenaires`, `afup_partenaires`;
 
-CREATE  TABLE `afup`.`afup_forum_partenaires` (
+CREATE  TABLE `afup_forum_partenaires` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `id_forum` INT(11) NOT NULL ,
   `id_niveau_partenariat` INT(11) NOT NULL ,
