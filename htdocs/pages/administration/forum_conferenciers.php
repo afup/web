@@ -200,11 +200,23 @@ elseif ($action == 'lister') {
     $formulaire->addElement('text'  , 'email'       , 'Email'          , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'societe'     , 'Société'        , array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('textarea', 'biographie', 'Biographie'     , array('cols' => 40, 'rows' => 15));
-    if($_GET['id'])
-    {
-    $formulaire->addElement('file', 'photo', 'Photo (90x120)'     );
-
+    if($_GET['id']) {
+        $formulaire->addElement('file', 'photo', 'Photo (90x120)'     );
     }
+    if ($action == 'modifier') {
+        $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg" /><br />');
+        $chemin = realpath('../../templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg');
+        if (file_exists($chemin)) {
+            if ((function_exists('getimagesize'))) {
+                $info = getimagesize($chemin);
+                $formulaire->addElement('static'  , 'html'                     , '', 'Taille actuelle : ' . $info[3]);
+                $formulaire->addElement('static'  , 'html'                     , '', 'Type MIME : ' . $info['mime']);
+            } else {
+                $formulaire->addElement('static'  , 'html'                     , '', 'L\'extension GD n\'est pas présente sur ce serveur');
+            }
+        }
+    }
+
 
 	$formulaire->addElement('header', 'boutons'  , '');
 	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
@@ -226,8 +238,6 @@ elseif ($action == 'lister') {
         											$valeurs['societe'],
         											$valeurs['biographie']);
         } else {
-          $file =& $formulaire->getElement('photo');
-        $file->moveUploadedFile(AFUP_CHEMIN_RACINE . 'templates/phptourlille'.$annee_forum.'/images/intervenants',$_GET['id'].'.jpg');
             $ok = $forum_appel->modifierConferencier($_GET['id'],
                                                      $valeurs['id_forum'],
         											 $valeurs['civilite'],
@@ -236,6 +246,26 @@ elseif ($action == 'lister') {
                                                      $valeurs['email'],
                                                      $valeurs['societe'],
                                                      $valeurs['biographie']);
+            $file = $formulaire->getElement('photo');
+            $data = $file->getValue();
+            if ($data['name']) {
+                $imageDir = realpath('../../templates/'.$rs['path'].'/images/intervenants/');
+                // Transformation en 90x120 JPG pour simplifier
+                $data = $file->getValue();
+                if ($data['type'] == 'image/png') {
+                    $img = imagecreatefrompng($data['tmp_name']);
+                } else {
+                    $img = imagecreatefromjpeg($data['tmp_name']);
+                }
+                $width = imagesx($img);
+                $height = imagesy($img);
+                if ($width != 90 || $height != 120) {
+                    $oldImg = $img;
+                    $img = imagecreatetruecolor(90, 120);
+                    imagecopyresampled($img, $oldImg, 0, 0, 0, 0, 90, 120, $width, $height);
+                }
+                imagejpeg($img, $imageDir . '/' . $_GET['id'] . '.jpg', 90);
+            }
         }
 
         if ($ok) {
