@@ -9,28 +9,28 @@
                   {if count($partenaires.Platine) > 0}
                     <h4>Platine</h4>
                     {foreach from=$partenaires.Platine item=partenaire}
-                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
                     {/foreach}
                   {/if}
 
                   {if count($partenaires.Or) > 0}
                     <h4>Or</h4>
                     {foreach from=$partenaires.Or item=partenaire}
-                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
                     {/foreach}
                   {/if}
 
                   {if count($partenaires.Argent) > 0}
                     <h4>Argent</h4>
                     {foreach from=$partenaires.Argent item=partenaire}
-                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
                     {/foreach}
                   {/if}
 
                   {if count($partenaires.Bronze) > 0}
                     <h4>Bronze</h4>
                     {foreach from=$partenaires.Bronze item=partenaire}
-                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
                     {/foreach}
                   {/if}
                 </div>
