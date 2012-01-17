@@ -1,98 +1,73 @@
-				<div class="bloc-sidebar share">
-					<div class="title">
-						<p>Partagez le!</p>
-					</div>
-					<div class="bloc-sidebar-content">
-						<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="afup" data-lang="fr">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-						<br/><br/>
-						<iframe src="http://www.facebook.com/plugins/like.php?href=http://afup.org/pages/forumphp2012/&amp;layout=standard&amp;show_faces=true&amp;width=178&amp;action=like&amp;colorscheme=light" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:178px; height:100px;" allowTransparency="true"></iframe>
-					</div>
-				</div>
-            </div>
+              <div class="end">&nbsp;</div>
+            </section>
 
-            <div id="a-droite">
-                <div id="php">
-                    <center>
-                    <br />
-					<a href="http://www.php.net/" target="_blank"><img src="{$chemin_template}/medias/images/logo_php.png" alt="Logo Php" /></a>
-                    </center>
+            <aside class="span4">
+              <article>
+                <h3>Sponsors</h3>
+
+                <div class="content">
+                  {if count($partenaires.Platinium) > 0}
+                    <h4>Platine</h4>
+                    {foreach from=$partenaires.Platinium item=partenaire}
+                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                    {/foreach}
+                  {/if}
+
+                  {if count($partenaires.Gold) > 0}
+                    <h4>Or</h4>
+                    {foreach from=$partenaires.Gold item=partenaire}
+                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                    {/foreach}
+                  {/if}
+
+                  {if count($partenaires.Silver) > 0}
+                    <h4>Argent</h4>
+                    {foreach from=$partenaires.Silver item=partenaire}
+                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                    {/foreach}
+                  {/if}
+
+                  {if count($partenaires.Bronze) > 0}
+                    <h4>Bronze</h4>
+                    {foreach from=$partenaires.Bronze item=partenaire}
+                      <a href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                    {/foreach}
+                  {/if}
                 </div>
+              </article>
 
-                <div id="platine-or-argent">
-                    <img style="margin-top:2em" src="{$chemin_template}images/entete-sponsors.png" alt="sponsors du Forum PHP {$forum_annee} Paris" />
-					<div class="bloc-sidebar-content">
-						{if count($partenaires.Platinium) > 0}
-							<p>"Platine"</p>
-	                        {foreach from=$partenaires.Platinium item=partenaire}
-	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
-	                           title="{$partenaire.nom} | {$partenaire.presentation}">
-	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
-	                        {/foreach}
-						{/if}
-						{if count($partenaires.Gold) > 0}
-							<p>"Or"</p>
-	                        {foreach from=$partenaires.Gold item=partenaire}
-	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
-	                           title="{$partenaire.nom} | {$partenaire.presentation}">
-	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
-	                        {/foreach}
-						{/if}
-						{if count($partenaires.Silver) > 0}
-							<p>"Argent"</p>
-	                        {foreach from=$partenaires.Silver item=partenaire}
-	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
-	                           title="{$partenaire.nom} | {$partenaire.presentation}">
-	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
-	                        {/foreach}
-						{/if}
-						{if count($partenaires.Bronze) > 0}
-							<p>"Bronze"</p>
-	                        {foreach from=$partenaires.Bronze item=partenaire}
-	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
-	                           title="{$partenaire.nom} | {$partenaire.presentation}">
-	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
-	                        {/foreach}
-						{/if}
-					</div>
+              <article>
+                <h3>Partenaires</h3>
+                <div class="content">
+                  {foreach from=$partenaires.Partenaires item=partenaire}
+                    <a  href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
+                  {/foreach}
                 </div>
+              </article>
 
-				<div id="partenaires">
-                    <img style="margin-top:2em" src="{$chemin_template}images/entete-partenaires.png" alt="partenaires du Forum PHP {$forum_annee} Paris" />
-					<div class="bloc-sidebar-content">
-                        {foreach from=$partenaires.Partenaires item=partenaire}
-                            {if $partenaire.nom=='Pôle Ubiquitaire'}
-                                <br />
-                                Le Forum PHP 2012 est labellisé :
-                            {/if}
-                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
-                           title="{$partenaire.nom} | {$partenaire.presentation}">
-                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
-                        {/foreach}
-					</div>
-				</div>
-				
-                <div id="organisateurs">
-                    <img style="margin-top:2em" src="{$chemin_template}images/entete-organisateurs.png" alt="organisateurs du Forum PHP {$forum_annee} Paris" />
-					<div class="bloc-sidebar-content">
-					</div>
+              <article>
+                <h3>Organisateurs</h3>
+                <div class="content">
                 </div>
-            </div>
-
-            <div class="center clearboth">
-                <a href="http://www.alterwayhosting.fr/"><img class="entreprise" src="{$chemin_template}images/logo_alterway_hosting.png" alt="Alterway Hosting" /></a>
-                <br />
-                <a href="http://www.alterwayhosting.fr/" class="small">Hébergement Alterway Hosting</a>
-            	<br /><br />
-            </div>
+              </article>
+            </aside>
+          </div>
         </div>
-<script type="text/javascript">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-    var pageTracker = _gat._getTracker("UA-192127-3");
-    pageTracker._initData();
-    pageTracker._trackPageview();
-</script>
-    </body>
+      </div>
+
+      <footer>
+        <div class="container">
+          <a href="http://www.alterwayhosting.fr/">Hébergement Alterway Hosting</a>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+      var pageTracker = _gat._getTracker("UA-192127-3");
+      pageTracker._initData();
+      pageTracker._trackPageview();
+    </script>
+  </body>
 </html>

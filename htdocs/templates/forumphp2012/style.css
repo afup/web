@@ -1,232 +1,342 @@
-*     { font-family : arial, sans-serif; font-size : 12px; }
-body  { background: #FFFFFF; color: #000000; margin: 0; }
-img   { border : none; }
-h1    { font-size : 21px; }
-h2    { font-size : 18px; }
-h3    { font-size : 15px; color : #A6A6A6 }
-cite  { text-align : right; }
-a     { color : #5A669D; text-decoration : none; font-weight : bold;}
-td    { vertical-align : top;}
-
-#conteneur { margin: auto; width: 1000px; }
-
-#a-gauche   { float : left; padding-bottom : 50px; width : 180px; }
-#au-milieu  { float : left;
-      margin-left : 5px;
-            padding-left : 5px;
-      margin-right : 5px;
-            padding-right : 15px;
-            padding-bottom : 100px;
-            width : 590px;
-            border-left : 1px dashed #9EA6CD;
-            border-right : 1px dashed #9EA6CD;
-          }
-#a-droite   { float : left; padding-bottom : 50px; padding-left : 5px; width : 170px; }
-.a-interieur { margin-left : 0.5em; margin-right : 0.5em; }
-
-.vip { color : #5A669D; text-decoration : none; font-weight : bold; }
-.red { color : #AA0000; }
-.gris { color : #555555; }
-
-#cartouche { background-color : #C4C9E1; background-image : url("images/cartouche-milieu.png"); background-repeat : no-repeat; background-position : top left; float : left; margin : 0; margin-top : 16px; padding : 0; width : 231px; }
-#cartouche-gauche { float : left; margin-left : 10px; width : 231px; }
-#cartouche-milieu { margin-left : 10px; margin-top : 16px; }
-#cartouche-droit { float : left; margin-left : 20px; margin-top : 44px; width : 300px; }
-#menu { background-image : url("images/fond-menu.png"); background-repeat : no-repeat; background-position : top left; margin-top : 40px; }
-#dix-ans { margin-top : 20px; }
-#sponsors, #partenaires, #organisateurs { margin-top : 20px; }
-
-.spacer { clear: both; }
-
-
-a.menu { color : #31395A; display : block; font-size : 14px; font-weight : bold; margin-left : 30px; padding : 3px; text-decoration : none; }
-a.menu-english { display : block; margin-left : 30px; margin-top : 40px; }
-
-.todo { color: red; font-size: 2em; }
-.note { color : grey; margin-top : 10px; }
-.raccourci { color : grey; margin-top : 10px; }
-ul.conferenciers { list-style-type: none; }
-ul.conferenciers div.homme { margin: 10px 0 5px; padding : 5px 5px 5px 5px; font-size: 1em; width: 98%; background: #E1E4EF; }
-ul.conferenciers h2 { font-size: 1em; margin: 0px; }
-ul.conferenciers img { float: right; }
-span.titre { font-weight: bold; }
-
-p.note {
-  background: #EEEEEE url(images/error.png) 5px 5px no-repeat;
-  border: 1px #A6A6A6 solid;
-  padding: 5px 5px 5px 30px;
+@font-face {
+  font-family: 'League Gothic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('League Gothic Regular'), url('./fonts/League Gothic.otf') format('opentype');
 }
 
-p.raccourci {
-  background: #FAFAFA;
-  padding: 5px 5px 5px 30px;
+@font-face {
+  font-family: 'Myriad Pro Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Myriad Pro'), url('./fonts/MyriadPro-Regular.otf') format('opentype');
 }
 
-p.raccourci a { background-image: url(images/icone_raccourci.png); background-repeat : no-repeat; background-position : top right; padding-right : 20px; }
-p.raccourci a.double { background-image: url(images/icone_raccourci_double.png); }
-/*********************
- Formulaires
-*********************/
-form {
-  margin: 0 auto;
+@font-face {
+  font-family: 'Museo Slab 500';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Museo Slab 500'), url('./fonts/Museo_Slab_500.ttf') format('truetype');
 }
 
-fieldset {
-  border: 1px #A6A6A6 solid;
-  margin: 0.5em 0;
-  padding-bottom: 0.5em;
+* {
+  color: #37372b;
+  font-family: 'Lucida Grande';
 }
 
-fieldset.boutons {
-  border: 0;
+aside article {
+  background: transparent url(./img/background-block-footer.png) bottom left no-repeat;
+  margin-bottom: 40px;
+  padding-bottom: 8px;
+}
+
+aside article h3 {
+  background: transparent url(./img/background-block-header.png) top left no-repeat;
+  color: #63604f;
+  font-family: 'League Gothic';
+  font-size: 22px;
+  font-weight: normal;
+  height: 20px;
+  padding: 0 0 35px 30px;
+  text-transform: uppercase;
+}
+
+aside article h4 {
+  border-bottom: 1px #f6f5f1 solid;
+  border-top: 1px #f6f5f1 solid;
+  color: #63604f;
+  font-family: 'League Gothic';
+  font-size: 22px;
+  font-weight: normal;
+  height: 20px;
+  padding: 0 0 10px 20px;
+  text-align: left;
+}
+
+aside article .content {
   text-align: center;
+}
+
+aside article .content img {
+  display: block;
+  margin: 20px auto 5px auto;
+}
+
+aside article .content {
+  background: transparent url(./img/background-block.png) top left repeat-y;
+  min-height: 20px;
+  padding: 5px;
+}
+
+body {
+  background: transparent url(./img/background.png) top left repeat;
+}
+
+footer {
+  background: transparent url(./img/background-footer.png) top left repeat;
+  font-size: 12px;
+  height: 20px;
+  padding: 14px 0;
+  text-align: center;
+}
+
+footer a, footer a:hover {
+  color: #f2eee6;
+  font-family: 'Lucida grande';
+  text-decoration: none;
+}
+
+header {
+  height: 137px;
+  padding-top: 25px;
+}
+
+header .event {
+  padding-top: 55px;
+}
+
+header .event .date {
+  color: #f7f6f1;
+  display: block;
+  font-family: 'League Gothic';
+  font-size: 48px;
+  height: 36px;
+  text-transform: uppercase;
+}
+
+header .event .summary {
+  color: #f7f6f1;
+  font-family: 'Myriad Pro Regular';
+  font-size: 29px;
+}
+
+header #logos img {
+  margin-bottom: 12px;
+}
+
+nav {
+  width: 194px;
+}
+
+nav a, nav a:hover {
+  color: #045e80;
+  font-family: 'League Gothic';
+  font-size: 30px;
+  text-decoration: none;
+}
+
+nav li {
+  height: 72px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li a {
+  background: transparent url(./img/background-menu.png) bottom left repeat-x;
+  display: block;
+  height: 22px;
+  padding: 25px 0;
+}
+
+nav li a:hover {
+  color: #a62700
+}
+
+nav li.last a {
+  background: none;
+  height: 1px;
+  padding: 25px 0;
+}
+
+nav ul {
   margin: 0;
 }
 
-legend {
+section article {
+  border-left: 1px #b8b6a9 solid;
+  border-right: 1px #b8b6a9 solid;
+}
+
+section article a {
+  color: #37372b;
+  text-decoration: underline;
+}
+
+section article a:hover, section article a:hover * {
+  color: #045e80;
+}
+
+section article h3 {
+  padding: 12px 20px 3px 20px;
+}
+
+section article dl {
+  background: transparent url(./img/background-metadata.png) top left no-repeat;
+  height: 20px;
+  margin: 0 20px;
+  padding: 9px 0;
+}
+
+section article dl dd, article dl dt {
+  display: inline;
   font-weight: bold;
-  color: #6874A7;
 }
 
-form div.rangee {
-  clear: both;
-  padding-top: 5px;
+section article dl dd.dtstart {
+  color: #045e80;
+  padding-left: 10px;
 }
 
-form div.rangee label.libelle {
-  float: left;
-    width: 20%;
+section article h3, section article h3 a, article h3 a:hover {
+  color: #a62700;
+  font-family: 'Museo Slab 500';
+  text-decoration: none;
+}
+
+section article li {
+  list-style-image: url(./img/puce.png);
+}
+
+section article p {
+  font-size: 14px;
+}
+
+section article .article-body {
+  padding: 5px 20px 10px 20px;
+}
+
+section article .article-body .chapo {
+  font-family: 'Museo Slab 500';
+  font-size: 16px;
+  line-height: 20px;
+}
+
+section article .article-body .chapo em {
+  color: #045e80;
+  font-weight: bold;
+  font-style: normal;
+}
+
+section article.first {
+  background: transparent url(./img/background-first-news.png) top left repeat-y;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px #b8b6a9 solid;
+}
+
+section article.first h3 {
+  background: transparent url(./img/background-first-news-title.png) top left no-repeat;
+}
+
+section article .links a, section article a.external {
+  background: transparent url(./img/out-link-off.png) right 3px no-repeat;
+  padding-right: 16px;
+}
+
+section article .links a:hover, section article a.external:hover {
+  background: transparent url(./img/out-link-on.png) right 3px no-repeat;
+}
+
+.alert-message p {
+  color: #fff;
+  font-size: 13px;
+}
+
+.container {
+  width: 970px;
+}
+
+.map {
+  margin: 15px -19px;
+}
+
+.social-button {
+  background: transparent url(./img/social-networks.png) top left no-repeat;
+  display: block;
+  height: 54px;
+  margin-top: 10px;
+  width: 174px;
+  text-indent: -9999px;
+}
+
+.social-button.facebook {
+  background: transparent url(./img/social-networks.png) bottom left no-repeat;
+}
+
+#container {
+  background: transparent url(./img/background-section.png) 0 -15px repeat-x;
+}
+
+#container aside.span4 {
+  margin-left: 11px;
+  width: 195px;
+}
+
+#container .row {
+  margin: 0;
+}
+
+#container #baseline {
+  display: block;
+  font-size: 16px;
+  font-style: normal;
+  padding: 10px 0 30px 0;
+}
+
+#content {
+  background: transparent url(./img/background-header-news.png) top left no-repeat;
+  margin-left: 0;
+  width: 568px;
+}
+
+#content h2 {
+  color: #63604f;
+  font-family: 'League Gothic';
+  font-size: 30px;
+  font-weight: normal;
+  height: 31px;
+  padding: 9px 0 10px 84px;
+}
+
+#content .end {
+  background: transparent url(./img/background-article-bottom.png) bottom left no-repeat;
+  height: 120px;
+}
+
+#english-cfp-link {
+  margin: 30px 0;
   text-align: right;
-  font-weight: bold;
 }
 
-form div.rangee span.element {
-  float: right;
-  width: 78%;
-  text-align: left;
+#formulaire .input {
+  margin-left: 120px;
 }
 
-form span.obligatoire {
-  color: #FF0000;
+#formulaire fieldset legend {
+  padding-top: 20px;
+  padding-left: 120px;
 }
 
-form p.erreur {
-  background: #EEEEEE url(images/icone_erreur.png) 5px 5px no-repeat;
-  border: 1px #A6A6A6 solid;
-  padding: 5px 5px 5px 30px;
-  font-weight: bold;
-  color: #FF0000;
+#formulaire label {
+  width: 100px;
 }
 
-form span.element p.erreur {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  text-align: left;
+#logos {
+  background: transparent url(./img/background-logos.png) top left repeat;
+  height: 127px;
+  margin-top: -16px;
+  padding-top: 25px;
+  text-align: center;
 }
 
-.center { text-align: center; }
-.small { font-size: 9px !important; }
-.clearboth { clear: both; }
-.actualite { color : #5A669D; font-size : 18px; }
-.emphase { font-size : 2em; font-weight : bolder; text-align : center; display : block; }
-.maj { color : #6874A7; font-style : italic; margin-top : 0.5em; }
-
-.sessions, .conferenciers { margin-top : 25px; }
-.session, .conferencier { border-bottom : 1px solid #A6A6A6; padding-bottom : 10px; margin-bottom : 25px; }
-.sessions .conferencier { border: 0; }
-.session h3 { color : #5A669D; font-size : 18px; margin-top : 3px; }
-.session .horaire, .session .salle, .session .journee { margin-right : 50px; float : left; }
-.session .conferenciers { text-align : right; }
-.session .conferenciers .conferencier, .conferencier .photo { float : right; display : inline; margin : 10px; text-align : center; }
-.session .spacer, .conferencier .spacer { float : none; }
-.conferencier h3 { color : #5A669D; font-size : 18px; margin-top : 3px; float : left; margin-right : 50px; }
-.conferencier .societe { font-weight : bold; padding-top : 8px; float : left; margin-right: 50px; }
-.conferencier .conferencier_sessions { padding-top : 8px; float : left; margin : 0; }
-.conferencier .photo {float: left; width: 20%; }
-.conferencier .body {float: left; width: 75%; }
-.resume { float: left; }
-
-/* Style bloc agenda (tableau) */
-div.bloc_jour .keynote p {
-text-align: center;
-}
-div.bloc_jour  p {
-padding: 5px;
-margin:0;
-}
-div.bloc_jour .conferencier {
-font-size:0.8em;
-font-style:italic;
-display: block;
-border:none;
-margin:0;
-color:black;
-font-weight: normal;
-}
-div.bloc_jour {
-    position:           relative;
-}
-div.col {
-    width:              45%;
-    float:              left;
-    padding-left:       0.5em;
-    padding-right:      0.5em;
-}
-h2 {
-	border-bottom: 1px solid #e0e3ee;
-}
-div.bloc_jour table {
-    border-collapse:    collapse;
-    width:              100%
-}
-div.bloc_jour table caption {
-    font-weight:        bold;
-    color:              inherit;
-    background-color:   #e0e3ee;
-    height:             30px;
-    line-height:        30px;
-
-}
-div.bloc_jour table tbody td {
-    border:             1px solid #ccc;
-}
-td.col_heure {
-    font-size:0.9em;
-    width:              8% !important;
+#menu {
+  background: transparent url(./img/left-menu-shadow.png) top right repeat-y;
+  margin-left: 0;
+  padding-bottom: 50px;
+  width: 194px;
 }
 
-tr.li td.col_heure{
-    color:              inherit;
-    background-color:   #e0e3ee;
+#root {
+  background: transparent url(./img/background-header.png) top left repeat-x;
 }
-
-/* Styles page sponsors */
-.sponsor_title {
-	text-align: left;
-	background: url('images/sponsor_bronze.jpg') no-repeat left center transparent;
-	padding-left:150px;
-	padding-bottom: 10px;
-	padding-top: 10px;
-	color: #974300;
-}
-#SponsorPlatinium {
-	background: url('images/sponsor_platinium.jpg') no-repeat left center transparent;
-	color:gray;
-}
-#SponsorGold {
-	background: url('images/sponsor_gold.jpg') no-repeat left center transparent;
-	color:gold;
-}
-#SponsorSilver {
-	background: url('images/sponsor_silver.jpg') no-repeat left center transparent;
-	color:silver;
-}
-
-.slots .slot { border: 1px #e0e3ee solid; background-color: #fff; }
-.slots .keynote .session a, .slots .keynote .conferenciers { font-size: 15px; }
-.slots .slot .session, .slot .conferenciers, .slot .horaire { border: 0; padding: 4px; margin: 0; }
-
-.deroulements .deroulement .session { border: 0; margin: 0; padding: 0; }
-.deroulements .deroulement .session a { font-size: 18px; }
-.deroulements .deroulement .conferenciers { border-bottom : 1px solid #A6A6A6; padding: 0 0 1em 0; margin: 0 0 1em 0; }

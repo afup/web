@@ -1,21 +1,23 @@
 {include file="entete.html"}
 
-<div class="left-container">
+  <h2>Actualités</h2>
 
-    {foreach from=$actualites item=actualite}
-    <article class="news">
-        <div class="title">
-            <h2>{$actualite->titre}</h2>
-            <span>Mise à jour : {$actualite->date|date_format:"%d %B %Y"}</span>
-        </div>
-        <div class="news-txt clearfix">
-            {$actualite->contenu}
-            {$actualite->link}
-        </div>
+  {foreach from=$actualites item=actualite}
+    <article class="first">
+      <h3><a href="#">{$actualite->titre}</a></h3>
+      <dl class="vevent">
+        <dt class="summary">Mise à jour</dt>
+        <dd class="dtstart" title="{$actualite->date|date_format:"%Y-%M-%d"}">{$actualite->date|date_format:"%d %B %Y"}</dd>
+      </dl>
+
+      <div class="article-body">
+        {$actualite->contenu}
+        <p class="links">
+          {$actualite->link}
+        </p>
+      </div>
     </article>
-    {/foreach}
-
-</div>
+  {/foreach}
 
 {include file="sidebar.html"}
 {include file="pied_de_page.html"}

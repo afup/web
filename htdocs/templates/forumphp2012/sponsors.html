@@ -1,31 +1,34 @@
 {include file="entete.html"}
 
-<div class="left-content">
+<h2>Sponsors et partenaires du Forum PHP 2012</h2>
 
-	<h1>Sponsors et partenaires du Forum PHP 2012</h1>
+{foreach from=$partenaires key=niveau item=typePartenaire}
+  <article class="first">
+    <h3 class="{$niveau|lower}">Les {if $niveau=='Partenaires'}partenaires{else} sponsors {$niveau}{/if}</h3>
 
-	{foreach from=$partenaires key=niveau item=typePartenaire}
-        <h2 class="{$niveau|lower}">Les {if $niveau=='Partenaires'}partenaires{else} sponsors {$niveau}{/if}</h2>
+    <div class="article-body">
+      <div class="sponsors {$niveau|lower}">
+      {foreach from=$typePartenaire item=partenaire}
+        <h4><a href="{$partenaire.site}" class="external">{$partenaire.nom}</a></h4>
+        <div class="information">{$partenaire.presentation}</div>
+        {if $partenaire.logo}
+          <div class="logo">
+            <a href="{$partenaire.site}"><img src="{$chemin_template}images/{$partenaire.logo}" border="0" align="left" /></a>
+          </div>
+        {/if}
+      {/foreach}
+      </div>
+    </div>
+  </article>
+{/foreach}
 
-        <div class="sponsors {$niveau|lower}">
-        {foreach from=$typePartenaire item=partenaire}
-            <div class="sponsor">
-                <div class="body">
-                    <a name="euratechnologies" ></a>
-                    <h3><a href="{$partenaire.site}">{$partenaire.nom}</a></h3>
-                    <div class="spacer"></div>
-                    <div class="information">{$partenaire.presentation}</div>
-                </div>
-                <div class="logo" >
-                    <a href="{$partenaire.site}"><img src="{$chemin_template}images/{$partenaire.logo}" border="0" align="left" /></a>
-                </div>
-                <div class="spacer"></div>
-            </div>
-        {/foreach}
-        </div>
-    {/foreach}
-</div>
+<article>
+  <h3>Devenir sponsor</h3>
+
+  <div class="article-body">
+    <p>Vous souhaitez devenir sponsor du Forum PHP ? C'est une bonne idée, vous pouvez <a href="contact.php">nous contacter pour avoir plus d'informations</a>.</p>
+  </div>
+</article>
 
 {include file="sidebar.html"}
-
 {include file="pied_de_page.html"}

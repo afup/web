@@ -29,12 +29,12 @@ for ($i = 1; $i < 3; $i++) {
 	$html = $i == 1?'':' (optional)';
 	$formulaire->addElement('header', null, 'Speaker '.$i.$html);
     $formulaire->addElement('select', 'civilite' . $i   , 'Civility'       , array('M.' => 'Mr', 'Mme' => 'Mrs', 'Mlle' => 'Miss'));
-    $formulaire->addElement('text'  , 'nom' . $i        , 'Last name'            , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'  , 'prenom' . $i     , 'First name'         , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'  , 'email' . $i      , 'Email'          , array('size' => 30, 'maxlength' => 100));
-    $formulaire->addElement('text'  , 'telephone' . $i  , 'Phone'           , array('size' => 20, 'maxlength' => 20));
-    $formulaire->addElement('text'  , 'societe' . $i    , 'Company'        , array('size' => 50, 'maxlength' => 100));
-    $formulaire->addElement('textarea', 'biographie' . $i, 'Biography', array('cols' => 60, 'rows' => 5));
+    $formulaire->addElement('text'  , 'nom' . $i        , 'Last name'            , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+    $formulaire->addElement('text'  , 'prenom' . $i     , 'First name'         , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+    $formulaire->addElement('text'  , 'email' . $i      , 'Email'          , array('size' => 30, 'maxlength' => 100, 'class' => 'span7'));
+    $formulaire->addElement('text'  , 'telephone' . $i  , 'Phone'           , array('size' => 20, 'maxlength' => 20, 'class' => 'span7'));
+    $formulaire->addElement('text'  , 'societe' . $i    , 'Company'        , array('size' => 50, 'maxlength' => 100, 'class' => 'span7'));
+    $formulaire->addElement('textarea', 'biographie' . $i, 'Biography', array('cols' => 60, 'rows' => 5, 'class' => 'span7'));
     $formulaire->addElement('file'  , 'logo' . $i       , 'Picture');
     $formulaire->addElement('static', 'note'            , '', 'Image JPEG or PNG of 90x120 pixels (will be resized if different)');
 }
@@ -42,8 +42,8 @@ for ($i = 1; $i < 3; $i++) {
 for ($i = 1;$i < 4; $i++) {
     $formulaire->addElement('header', null, 'Presentation ' . $i);
 
-    $formulaire->addElement('text', 'pres' . $i . '_titre', 'Title', array('size' => 40, 'maxlength' => 80));
-    $formulaire->addElement('textarea', 'pres' . $i . '_abstract', 'Abstract', array('cols' => 60, 'rows' => 10));
+    $formulaire->addElement('text', 'pres' . $i . '_titre', 'Title', array('size' => 40, 'maxlength' => 80, 'class' => 'span7'));
+    $formulaire->addElement('textarea', 'pres' . $i . '_abstract', 'Abstract', array('cols' => 60, 'rows' => 10, 'class' => 'span7'));
 
     $groupe = array();
     $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_journee', null, 'Functional', 1);
@@ -57,9 +57,7 @@ for ($i = 1;$i < 4; $i++) {
     $formulaire->addGroup($groupe, 'groupe_type_pres' . $i, "Type of session", '<br />', false);
 }
 
-$formulaire->addElement('header', null, 'You have finished');
-
-$formulaire->addElement('submit', 'soumettre', 'Submit');
+$formulaire->addElement('submit', 'soumettre', 'Submit', array('class' => 'btn primary'));
 
 $formulaire->addGroupRule('groupe_pres1', 'Select audience' , 'required', null, 1);
 $formulaire->addRule('pres1_titre', 'Title is missing', 'required');
