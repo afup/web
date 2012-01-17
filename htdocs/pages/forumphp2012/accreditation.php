@@ -14,19 +14,19 @@ $formulaire->setDefaults(array('civilite' => 'M.',
                                'id_pays'  => 'FR'));
 
 $formulaire->addElement('header'  , ''            , 'Demande d\'accr&eacute;ditation');
-$formulaire->addElement('text'    , 'titre_revue' , 'Titre de la revue' , array('size' => 30, 'maxlength' => 100));
+$formulaire->addElement('text'    , 'titre_revue' , 'Titre du média' , array('size' => 30, 'maxlength' => 100, 'class' => 'span7'));
 $formulaire->addElement('select'  , 'civilite'    , 'Civilité'       , array('M.' => 'M.', 'Mme' => 'Mme', 'Mlle' => 'Mlle'));
-$formulaire->addElement('text'    , 'nom'         , 'Nom'            , array('size' => 30, 'maxlength' => 40));
-$formulaire->addElement('text'    , 'prenom'      , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
-$formulaire->addElement('text'    , 'carte_presse', 'N° de carte de presse', array('size' => 30, 'maxlength' => 50));
-$formulaire->addElement('textarea', 'adresse'     , 'Adresse'        , array('cols' => 42, 'rows' => 2));
-$formulaire->addElement('text'    , 'code_postal' , 'Code postal'    , array('size' => 6, 'maxlength' => 10));
-$formulaire->addElement('text'    , 'ville'       , 'Ville'          , array('size' => 30, 'maxlength' => 50));
+$formulaire->addElement('text'    , 'nom'         , 'Nom'            , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+$formulaire->addElement('text'    , 'prenom'      , 'Prénom'         , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+$formulaire->addElement('text'    , 'carte_presse', 'N° de carte de presse', array('size' => 30, 'maxlength' => 50, 'class' => 'span7'));
+$formulaire->addElement('textarea', 'adresse'     , 'Adresse'        , array('cols' => 42, 'rows' => 2, 'class' => 'span7'));
+$formulaire->addElement('text'    , 'code_postal' , 'Code postal'    , array('size' => 6, 'maxlength' => 10, 'class' => 'span2'));
+$formulaire->addElement('text'    , 'ville'       , 'Ville'          , array('size' => 30, 'maxlength' => 50, 'class' => 'span7'));
 $formulaire->addElement('select'  , 'id_pays'     , 'Pays'           , $pays->obtenirPays());
-$formulaire->addElement('text'    , 'telephone'   , 'Téléphone'      , array('size' => 20, 'maxlength' => 20));
-$formulaire->addElement('text'    , 'email'       , 'Email'          , array('size' => 30, 'maxlength' => 100));
-$formulaire->addElement('textarea', 'commentaires', 'Commentaires'   , array('cols' => 42, 'rows' => 4));
-$formulaire->addElement('submit'  , 'soumettre'   , 'Soumettre');
+$formulaire->addElement('text'    , 'telephone'   , 'Téléphone'      , array('size' => 20, 'maxlength' => 20, 'class' => 'span4'));
+$formulaire->addElement('text'    , 'email'       , 'Email'          , array('size' => 30, 'maxlength' => 100, 'class' => 'span7'));
+$formulaire->addElement('textarea', 'commentaires', 'Commentaires'   , array('cols' => 42, 'rows' => 4, 'class' => 'span7'));
+$formulaire->addElement('submit'  , 'soumettre'   , 'Soumettre', array('class' => 'btn primary', 'style' => 'float: right'));
 
 $formulaire->addRule('titre_revue' , 'Titre de la revue manquante' , 'required');
 $formulaire->addRule('nom' , 'Nom manquant' , 'required');

@@ -1,25 +1,32 @@
 {include file="entete.html"}
 
-<div class="left-content contact">
-    <h1>Accr&eacute;ditation presse</h1>
+<h2>Accr&eacute;ditation presse</h2>
 
-    <h3>Service presse</h3>
-    <div class="block-leftbar">
-    	<p><strong>Amélie DEGUERRY</strong></p>
-        <p>Just in Com'</p>
-    	<p>Contact : <a href="mailto:amelie.deguerry@justin-com.fr">amelie.deguerry@justin-com.fr</a></p>
-    	<p>Contact téléphonique : 06 60 17 06 27</p>
-	</div>
+<article class="first">
+  <h3>Service presse</h3>
+  <div class="article-body">
+    Notre service de presse est joignable aux coordonnées suivantes :
+    <ul>
+      <li><strong>Amélie DEGUERRY</strong></li>
+      <li>Just in Com'</li>
+      <li>Email : <a href="mailto:amelie.deguerry@justin-com.fr" class="external">amelie.deguerry@justin-com.fr</a></li>
+      <li>Téléphone : 06 60 17 06 27</li>
+    </ul>
 
     <p>
-        Vous êtes journaliste et vous souhaitez visiter le Forum PHP 2012.
-        Nous vous invitons à remplir le formulaire ci-dessous afin de recevoir
-        votre accréditation presse. Pour en savoir plus sur l'AFUP, téléchargez
-        <a href="{$chemin_template}medias/kitpresse-afup.pdf">le kit presse</a>.
+      Vous êtes journaliste et vous souhaitez visiter le Forum PHP 2012.
+      Nous vous invitons à remplir le formulaire ci-dessous afin de recevoir
+      votre accréditation presse. Pour en savoir plus sur l'AFUP, téléchargez
+      <a href="{$chemin_template}medias/kitpresse-afup.pdf">le kit presse</a>.
     </p>
+  </div>
+</article>
 
+<article>
+  <div class="article-body">
     {include file="formulaire.html"}
-</div>
+  </div>
+</article>
 
 {include file="sidebar.html"}
 {include file="pied_de_page.html"}
