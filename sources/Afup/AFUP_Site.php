@@ -376,7 +376,8 @@ class AFUP_Site_Branche {
     function naviguer($id, $profondeur=1, $identification="") {
         $requete = 'SELECT *
                     FROM afup_site_feuille
-                    WHERE id = '.$this->bdd->echapper($id);
+                    WHERE id = '.$this->bdd->echapper($id).'
+                    AND etat = 1';
         $racine = $this->bdd->obtenirUn($requete);
 
         if ($identification !== "") {
@@ -395,6 +396,7 @@ class AFUP_Site_Branche {
         $requete = 'SELECT *
                     FROM afup_site_feuille
                     WHERE id_parent = '.$this->bdd->echapper($id).'
+                    AND etat = 1
                     ORDER BY position';
         $feuilles = $this->bdd->obtenirTous($requete);
 
