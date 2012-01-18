@@ -1,4 +1,5 @@
 <?php
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-$smarty->display('index.html');
+// Renvoi vers le Forum PHP courant.
+header('Location: http://afup.org/pages/forumphp2012/', true, 302);
+exit;
 ?>
