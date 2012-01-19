@@ -303,7 +303,7 @@ class AFUP_Cotisations
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
         $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
+        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
         $pdf->Ln();
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(130, 5, 'http://www.afup.org');
