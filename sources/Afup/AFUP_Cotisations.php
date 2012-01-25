@@ -569,9 +569,6 @@ class AFUP_Cotisations
         $corps .= "Afin de la renouveller, il vous suffit d'envoyer un chèque de " . $montant;
         $corps .= " euros libellé à l'ordre de l'AFUP ainsi que votre identité à l'adresse suivante :\n\n";
         $corps .= "AFUP\n";
-//         $corps .= "Le Trésorier\n";
-//         $corps .= "119 rue du chemin vert\n";
-//         $corps .= "75011 Paris\n\n";
         $corps .= "32 boulevard de Strasbourg\n";
         $corps .= "CS 30108\n";
         $corps .= "75468 Paris Cedex 10\n\n";
@@ -601,6 +598,8 @@ class AFUP_Cotisations
         $requete .= 'WHERE';
         $requete .= '  type_personne=' . $type_personne;
         $requete .= '  AND id_personne=' . $id_personne;
-        return $this->_bdd->executer($requete);
+        $this->_bdd->executer($requete);
+        
+        return true;
     }
 }
