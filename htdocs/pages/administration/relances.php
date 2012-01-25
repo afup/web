@@ -7,13 +7,13 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Cotisations.php';
 $cotisations = new AFUP_Cotisations($bdd);
 
 if ($action == 'lister') {
-    $relances_personne_morales = $cotisations->obtenirListeRelances(AFUP_PERSONNES_MORALES);
+    $relances_personne_morales = $cotisations->obtenirListeRelancesPersonnesMorales();
     if (empty($relances_personne_morales)) {
         $relances_personne_morales = null;
     }
     $smarty->assign('relances_personnes_morales', $relances_personne_morales);
 
-    $relances_personne_physiques = $cotisations->obtenirListeRelances(AFUP_PERSONNES_PHYSIQUES);
+    $relances_personne_physiques = $cotisations->obtenirListeRelancesPersonnesPhysiques();
     if (empty($relances_personne_physiques)) {
         $relances_personne_physiques = null;
     }
