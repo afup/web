@@ -484,74 +484,54 @@ class AFUP_Cotisations
         }
     }
 
-    /**
-     * Renvoit la liste des cotisations concernant une personne
-     *
-     * @access public
-     * @param	int	$type_personne	Type de personne concerné
-     * @return array
-     */
-    function obtenirListeRelances($type_personne)
-    {
-        // On récupère la date de fin de la dernière cotisation de chacun
-        $requete = 'SELECT';
-        $requete .= '  cotisations.id_personne, MAX(cotisations.date_fin) AS date_fin ';
-        $requete .= 'FROM';
-        $requete .= '  afup_cotisations AS cotisations ';
-
-        if (AFUP_PERSONNES_MORALES === $type_personne) {
-            $requete .= 'INNER JOIN afup_personnes_morales AS personnes ON personnes.id=cotisations.id_personne ';
-        } else {
-            $requete .= 'INNER JOIN afup_personnes_physiques AS personnes ON personnes.id=cotisations.id_personne ';
-        }
-
-        $requete .= 'WHERE';
-        $requete .= '  cotisations.type_personne=' . $type_personne;
-        $requete .= '  AND personnes.etat=' . AFUP_DROITS_ETAT_ACTIF . ' ';
-
-        if (AFUP_PERSONNES_PHYSIQUES === $type_personne) {
-            $requete .= '  AND personnes.id_personne_morale = 0 ';
-        }
-
-        $requete .= 'GROUP BY ';
-        $requete .= '  cotisations.id_personne ';
-        $requete .= 'HAVING ';
-        $requete .= '  MAX(cotisations.date_fin) < '.time();
-        $resultat = $this->_bdd->obtenirTous($requete);
-
-        // On récupère les relances
-        $where = '';
-        for ($i = 0, $taille = count($resultat); $i < $taille; $i++) {
-            $where .= ' OR (cotisations.id_personne=' . $resultat[$i]['id_personne'];
-            $where .= '     AND cotisations.date_fin=' . $resultat[$i]['date_fin'] . ')';
-        }
-
-        $requete  = 'SELECT';
-
-        if (AFUP_PERSONNES_MORALES === $type_personne) {
-            $requete .= '  personnes.raison_sociale AS nom,';
-        } else {
-            $requete .= '  CONCAT(personnes.nom, " ",  personnes.prenom) AS nom,';
-        }
-
+    function obtenirListeRelancesPersonnesPhysiques() {
+    	$requete  = 'SELECT ';
+        $requete .= '  CONCAT(personnes.nom, " ",  personnes.prenom) AS nom,';
         $requete .= '  personnes.email, ';
         $requete .= '  cotisations.type_personne, ';
-        $requete .= '  cotisations.id_personne,';
-        $requete .= '  cotisations.date_fin,';
-        $requete .= '  IF(cotisations.nombre_relances IS NULL, 0, cotisations.nombre_relances) AS nombre_relances, ';
+        $requete .= '  cotisations.id_personne, ';
+        $requete .= '  cotisations.date_fin, ';
+        $requete .= '  IF (cotisations.nombre_relances IS NULL, 0, cotisations.nombre_relances) AS nombre_relances, ';
         $requete .= '  cotisations.date_derniere_relance ';
-        $requete .= 'FROM';
+        $requete .= 'FROM ';
+        $requete .= '  afup_personnes_physiques AS personnes ';
+        $requete .= 'LEFT JOIN ';
         $requete .= '  afup_cotisations AS cotisations ';
+        $requete .= 'ON ';
+        $requete .= '  personnes.id = cotisations.id_personne ';
+        $requete .= 'AND ';
+        $requete .= '  cotisations.id IN (SELECT MAX(id) FROM afup_cotisations WHERE type_personne = 0 GROUP BY id_personne) ';
+        $requete .= 'WHERE ';
+        $requete .= '  personnes.etat = 1 ';
+        $requete .= 'AND ';
+        $requete .= '  cotisations.date_fin < '.time().' ';
+        $requete .= 'ORDER BY';
+        $requete .= '  date_fin';
 
-        if (AFUP_PERSONNES_MORALES === $type_personne) {
-            $requete .= 'JOIN afup_personnes_morales AS personnes ON personnes.id=cotisations.id_personne ';
-        } else {
-            $requete .= 'JOIN afup_personnes_physiques AS personnes ON personnes.id=cotisations.id_personne ';
-        }
+        return $this->_bdd->obtenirTous($requete);
+    }
 
-        $requete .= 'WHERE';
-        $requete .= '  type_personne=' . $type_personne;
-        $requete .= '  AND (0' . $where . ') ';
+    function obtenirListeRelancesPersonnesMorales() {
+    	$requete  = 'SELECT ';
+        $requete .= '  personnes.raison_sociale AS nom, ';
+        $requete .= '  personnes.email, ';
+        $requete .= '  cotisations.type_personne, ';
+        $requete .= '  cotisations.id_personne, ';
+        $requete .= '  cotisations.date_fin, ';
+        $requete .= '  IF (cotisations.nombre_relances IS NULL, 0, cotisations.nombre_relances) AS nombre_relances, ';
+        $requete .= '  cotisations.date_derniere_relance ';
+        $requete .= 'FROM ';
+        $requete .= '  afup_personnes_morales AS personnes ';
+        $requete .= 'LEFT JOIN ';
+        $requete .= '  afup_cotisations AS cotisations ';
+        $requete .= 'ON ';
+        $requete .= '  personnes.id = cotisations.id_personne ';
+        $requete .= 'AND ';
+        $requete .= '  cotisations.id IN (SELECT MAX(id) FROM afup_cotisations WHERE type_personne = 1 GROUP BY id_personne) ';
+        $requete .= 'WHERE ';
+        $requete .= '  personnes.etat = 1 ';
+        $requete .= 'AND ';
+        $requete .= '  cotisations.date_fin < '.time().' ';
         $requete .= 'ORDER BY';
         $requete .= '  date_fin';
 
