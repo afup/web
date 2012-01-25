@@ -486,10 +486,10 @@ class AFUP_Cotisations
 
     function obtenirListeRelancesPersonnesPhysiques() {
     	$requete  = 'SELECT ';
+        $requete .= '  personnes.id as id_personne, ';
         $requete .= '  CONCAT(personnes.nom, " ",  personnes.prenom) AS nom,';
         $requete .= '  personnes.email, ';
         $requete .= '  cotisations.type_personne, ';
-        $requete .= '  cotisations.id_personne, ';
         $requete .= '  cotisations.date_fin, ';
         $requete .= '  IF (cotisations.nombre_relances IS NULL, 0, cotisations.nombre_relances) AS nombre_relances, ';
         $requete .= '  cotisations.date_derniere_relance ';
@@ -506,7 +506,7 @@ class AFUP_Cotisations
         $requete .= 'AND ';
         $requete .= '  personnes.id_personne_morale = 0 ';
         $requete .= 'AND ';
-        $requete .= '  cotisations.date_fin < '.time().' ';
+        $requete .= '  (cotisations.date_fin < '.time().' or cotisations.date_fin IS NULL) ';
         $requete .= 'ORDER BY';
         $requete .= '  date_fin';
 
@@ -515,10 +515,10 @@ class AFUP_Cotisations
 
     function obtenirListeRelancesPersonnesMorales() {
     	$requete  = 'SELECT ';
-        $requete .= '  personnes.raison_sociale AS nom, ';
+        $requete .= '  personnes.id as id_personne, ';
+    	$requete .= '  personnes.raison_sociale AS nom, ';
         $requete .= '  personnes.email, ';
         $requete .= '  cotisations.type_personne, ';
-        $requete .= '  cotisations.id_personne, ';
         $requete .= '  cotisations.date_fin, ';
         $requete .= '  IF (cotisations.nombre_relances IS NULL, 0, cotisations.nombre_relances) AS nombre_relances, ';
         $requete .= '  cotisations.date_derniere_relance ';
@@ -533,7 +533,7 @@ class AFUP_Cotisations
         $requete .= 'WHERE ';
         $requete .= '  personnes.etat = 1 ';
         $requete .= 'AND ';
-        $requete .= '  cotisations.date_fin < '.time().' ';
+        $requete .= '  (cotisations.date_fin < '.time().' or cotisations.date_fin IS NULL) ';
         $requete .= 'ORDER BY';
         $requete .= '  date_fin';
 
