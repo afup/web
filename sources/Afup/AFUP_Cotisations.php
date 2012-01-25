@@ -604,5 +604,3 @@ class AFUP_Cotisations
         return $this->_bdd->executer($requete);
     }
 }
-
-?>
