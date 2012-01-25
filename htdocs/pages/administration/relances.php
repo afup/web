@@ -28,28 +28,13 @@ if ($action == 'lister') {
             $id_personne   = substr($donnees[$i], 2);
             $ok = $cotisations->relancer($type_personne, $id_personne);
             if (false === $ok) {
-            	//ajout d'OlivierLeCorre le 18/06/2007
-                //liste des $id_personne provoquant une erreur
                 $liste .= $id_personne."-";
-
-                //ligne d'origine
-				//break;
             }
         }
     }
-    //ajout d'OlivierLeCorre le 18/06/2007
     if($liste===""){
 		afficherMessage('Les relances ont été effectuées.', 'index.php?page=relances');
 	}else{
 		afficherMessage('Toutes les relances n\'ont pas pu être effectuées.<br />'.$liste, 'index.php?page=relances', true);
 	}
-
-    //code d'origine
-    /*
-    if (true === $ok) {
-        afficherMessage('Les relances ont été effectuées.', 'index.php?page=relances');
-    } else {
-        afficherMessage('Toutes les relances n\'ont pas pu être effectuées.', 'index.php?page=relances', true);
-    }*/
 }
-?>

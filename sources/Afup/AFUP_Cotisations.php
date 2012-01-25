@@ -504,6 +504,8 @@ class AFUP_Cotisations
         $requete .= 'WHERE ';
         $requete .= '  personnes.etat = 1 ';
         $requete .= 'AND ';
+        $requete .= '  personnes.id_personne_morale = 0 ';
+        $requete .= 'AND ';
         $requete .= '  cotisations.date_fin < '.time().' ';
         $requete .= 'ORDER BY';
         $requete .= '  date_fin';
