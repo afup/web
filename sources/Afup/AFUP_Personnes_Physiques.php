@@ -153,7 +153,7 @@ class AFUP_Personnes_Physiques {
             $requete .= '  afup_personnes_physiques (id_personne_morale, login, mot_de_passe, niveau, niveau_modules, civilite, nom, prenom, email, ';
             $requete .= '  adresse, code_postal, ville, id_pays, telephone_fixe, telephone_portable, etat, compte_svn) ';
             $requete .= 'VALUES (';
-            $requete .= $this->_bdd->echapper($id_personne_morale) . ',';
+            $requete .= (int)$id_personne_morale                   . ',';
             $requete .= $this->_bdd->echapper($login)              . ',';
             $requete .= $this->_bdd->echapper($mot_de_passe)       . ',';
             $requete .= (int)$niveau                               . ',';
@@ -218,7 +218,7 @@ class AFUP_Personnes_Physiques {
                 $requete .= '  mot_de_passe=' . $this->_bdd->echapper(md5($mot_de_passe)) . ',';
             }
 
-            $requete .= '  id_personne_morale=' . $this->_bdd->echapper($id_personne_morale) . ',';
+            $requete .= '  id_personne_morale=' . (int)$id_personne_morale                   . ',';
             $requete .= '  login='              . $this->_bdd->echapper($login)              . ',';
             $requete .= '  niveau='             . $this->_bdd->echapper($niveau)             . ',';
 			$requete .= '  niveau_modules='     . $this->_bdd->echapper($niveau_modules)     . ',';
