@@ -438,7 +438,7 @@ class AFUP_Personnes_Physiques {
         $requete .= 'FROM';
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'WHERE';
-        $requete .= '  id_personne_morale IS NULL';
+        $requete .= '  id_personne_morale = 0';
 
         if (!is_null($etat)) {
             $requete .= '  AND etat=' . $etat;
