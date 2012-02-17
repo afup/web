@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'preparer', 'envoyer'));
+$action = verifierAction(array('lister', 'preparer', 'envoyer','listing'));
 $tris_valides = array('nom', 'date_consultation', 'presence', 'personnes_avec_pouvoir_nom');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -8,7 +8,7 @@ $smarty->assign('action', $action);
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Assemblee_Generale.php';
 $assemblee_generale = new AFUP_Assemblee_Generale($bdd);
 
-if ($action == 'lister') {
+if ($action == 'lister' || $action== 'listing' ) {
 
     // Valeurs par défaut des paramÃtres de tri
     $timestamp = $assemblee_generale->obternirDerniereDate();
@@ -28,6 +28,11 @@ if ($action == 'lister') {
 	    	$_GET['date'] = $list_date_assemblee_generale;
     }
 
+    if ($action == "listing")
+    {
+    	$list_ordre="nom";
+    }
+    
     // Mise en place de la liste dans le scope de smarty
 	$convocations = $assemblee_generale->obtenirNombreConvocations($timestamp);
 	$presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
