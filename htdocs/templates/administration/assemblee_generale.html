@@ -2,6 +2,7 @@
     <h2>Liste des présences de l'assemblée générale</h2>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=preparer" title="Préparer une assemblée générale">Préparer une assemblée générale</a><br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=envoyer" title="Envoyer les convocations pour une assemblée générale">Envoyer les convocations pour une assemblée générale</a><br />
+   	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=listing" title="Imprimer la feuille d'émargement">Imprimer la feuille d'émargement</a><br />
     <br/>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Convocations : {$convocations}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Présences et pouvoirs : {$presences}<br />
@@ -46,6 +47,34 @@
         </tr>
     {/foreach}
     </table>
+{elseif $action == 'listing'}
+     Liste des présences de l'assemblée générale le (JJ/MM/AAAA)<br />
+    <br />
+
+
+<table class="afup_tab">
+    <tr class="{cycle values="odd,even"}">
+        <th align="left">Nom Prénom</th>
+        <th align="left">Consultation</th>
+        <th align="left">Présence</th>
+        <th align="left">Pouvoir</th>
+        <th align="left" style="width: 30%;">Emargement</th>
+    </tr>
+    {foreach from=$personnes item=personne}
+        <tr>
+            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+            <td>{$personne.nom} {$personne.prenom}</td>
+            <td>{$personne.date_consultation|convertirTimestampEnDate}</td>
+            <td style="text-align: center">{if $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI}Présent{elseif $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON}Absent{else}??{/if}</td>
+            <td>{$personne.personnes_avec_pouvoir_nom} {$personne.personnes_avec_pouvoir_prenom}</td>
+			<td></td>
+        </tr>
+    {foreachelse}
+    <tr>
+        <td><em>Aucune inscription</em></td>
+    </tr>
+{/foreach}
+</table>
 {else}
     {if $action == 'preparer'}
         <h2>Préparer une assemblée générale</h2>
