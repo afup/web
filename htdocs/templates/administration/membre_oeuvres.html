@@ -16,7 +16,45 @@
 </fieldset>
 <br />
 
-{foreach from=$les_sparklines_actives key=categorie item=les_sparklines}
+{foreach from=$les_sparklines_actives_logs key=categorie item=les_sparklines}
+	<fieldset>
+		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>        
+		<ul class="sparklines">
+	    {foreach from=$les_sparklines key=id_personne_physique item=sparkline}
+			<li>
+				<span class="sparkline">{$sparkline.liste}</span>
+				<span class="minimum">{$sparkline.minimum}</span>
+				<span class="maximum">{$sparkline.maximum}</span>
+				<span class="dernier">{$sparkline.dernier}</span>
+				<a href="index.php?page=membre_oeuvres&amp;id_personne_physique={$id_personne_physique}">
+					{$les_personnes_physiques[$id_personne_physique].prenom} {$les_personnes_physiques[$id_personne_physique].nom}
+				</a>
+			</li>
+	    {/foreach}
+		</ul>
+	</fieldset>
+	<br />
+{/foreach}
+{foreach from=$les_sparklines_actives_svn key=categorie item=les_sparklines}
+	<fieldset>
+		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>        
+		<ul class="sparklines">
+	    {foreach from=$les_sparklines key=id_personne_physique item=sparkline}
+			<li>
+				<span class="sparkline">{$sparkline.liste}</span>
+				<span class="minimum">{$sparkline.minimum}</span>
+				<span class="maximum">{$sparkline.maximum}</span>
+				<span class="dernier">{$sparkline.dernier}</span>
+				<a href="index.php?page=membre_oeuvres&amp;id_personne_physique={$id_personne_physique}">
+					{$les_personnes_physiques[$id_personne_physique].prenom} {$les_personnes_physiques[$id_personne_physique].nom}
+				</a>
+			</li>
+	    {/foreach}
+		</ul>
+	</fieldset>
+	<br />
+{/foreach}
+{foreach from=$les_sparklines_actives_planete key=categorie item=les_sparklines}
 	<fieldset>
 		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>        
 		<ul class="sparklines">

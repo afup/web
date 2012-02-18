@@ -20,9 +20,12 @@ $id_personne_physique = isset($_GET['id_personne_physique']) ? (int)$_GET['id_pe
 $mes_sparklines = $oeuvres->obtenirSparklinePersonnelleSur12Mois($id_personne_physique);
 $smarty->assign('mes_sparklines', $mes_sparklines);
 
-$id_personnes_physiques = $oeuvres->obtenirPersonnesPhysiquesLesPlusActives();
-$les_sparklines = $oeuvres->obtenirSparklinesParCategorieDes12DerniersMois($id_personnes_physiques);
-$smarty->assign('les_sparklines_actives', $les_sparklines);
+$categories = $oeuvres->obtenirCategories();
+foreach($categories as $categorie) {
+	$id_personnes_physiques = $oeuvres->obtenirPersonnesPhysiquesLesPlusActives($categorie);
+	$les_sparklines = $oeuvres->obtenirSparklinesParCategorieDes12DerniersMois($id_personnes_physiques, $categorie);
+	$smarty->assign('les_sparklines_actives_'.$categorie, $les_sparklines);
+}
 
 $persone_physique = new AFUP_Personnes_Physiques($bdd);
 $les_personnes_physiques = $persone_physique->obtenirListe('*', 'nom, prenom', false, false, true, $id_personnes_physiques);

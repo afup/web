@@ -172,7 +172,7 @@ class AFUP_Oeuvres {
 		return $this->_bdd->executer($requete);
     }
     
-    function obtenirOeuvresSur12Mois($id_personne_physique = null)
+    function obtenirOeuvresSur12Mois($id_personne_physique = null, $categorie = null)
     {
         $oeuvresSur12Mois = array();
         
@@ -183,6 +183,10 @@ class AFUP_Oeuvres {
         	AND date <= '.time()
         ;
         
+				if($categorie) {
+					$requete .= '
+					 AND categorie = "' . $categorie . '"';
+				}
         if ($id_personne_physique) {
             switch (true) {
                 case is_numeric($id_personne_physique):
@@ -216,7 +220,7 @@ class AFUP_Oeuvres {
         return $sparkline[$id_personne_physique];
     }
     
-    function obtenirSparklinesSur12Mois($id_personne_physique = null)
+    function obtenirSparklinesSur12Mois($id_personne_physique = null, $categorie = null)
     {
         $liste_mois = array();
         $debut = mktime(0, 0, 0, date('m') - 11, 1, date('Y'));
@@ -239,7 +243,7 @@ class AFUP_Oeuvres {
             }
         }
         
-        $oeuvresSur12Mois = $this->obtenirOeuvresSur12Mois($id_personne_physique);
+        $oeuvresSur12Mois = $this->obtenirOeuvresSur12Mois($id_personne_physique, $categorie);
         foreach ($oeuvresSur12Mois as $id_personne_physique => $categorieAvecOeuvres) {
             foreach ($categorieAvecOeuvres as $categorie => $datesAvecOeuvres) {
                 $sparkline = $liste_mois;
@@ -256,10 +260,10 @@ class AFUP_Oeuvres {
         return $sparklinesSur12Mois;
     }
     
-    function obtenirSparklinesParCategorieDes12DerniersMois($id_personne_physique)
+    function obtenirSparklinesParCategorieDes12DerniersMois($id_personne_physique, $categorie = null)
     {
         $sparklinesParCategorieSur12Mois = array();
-        $sparklinesSur12Mois = $this->obtenirSparklinesSur12Mois($id_personne_physique);
+        $sparklinesSur12Mois = $this->obtenirSparklinesSur12Mois($id_personne_physique, $categorie);
 
         foreach ($sparklinesSur12Mois as $id => $oeuvresAvecCategorieSur12Mois) {
             foreach ($oeuvresAvecCategorieSur12Mois as $categorie => $oeuvre) {
@@ -270,14 +274,20 @@ class AFUP_Oeuvres {
         return $sparklinesParCategorieSur12Mois;
     }
     
-    function obtenirPersonnesPhysiquesLesPlusActives()
+    function obtenirPersonnesPhysiquesLesPlusActives($categorie = null)
     {
+				$categorie_sql = null;
+				if($categorie !== null) {
+					$categorie_sql = " AND categorie = '" .$categorie . "'";
+				}
+				
         $requete = '
         	SELECT *,
         	SUM(valeur) as compte
         	FROM afup_oeuvres
         	WHERE date >= '.mktime(0, 0, 0, date('m') - 11, 1, date('Y')).'
-        	AND date <= '.time().'
+        	AND date <= '.time().
+					$categorie_sql .'
         	GROUP BY id_personne_physique, categorie
         	ORDER BY compte DESC'
         ;
@@ -295,5 +305,25 @@ class AFUP_Oeuvres {
         }
         
         return array_unique($id_personnes_physiques);
+    }
+
+		function obtenirCategories()
+    {
+        $requete = '
+        	SELECT *,
+        	categorie
+        	FROM afup_oeuvres
+        	WHERE date >= '.mktime(0, 0, 0, date('m') - 11, 1, date('Y')).'
+        	AND date <= '.time().'
+        	GROUP BY categorie
+					'
+        ;
+        
+        $liste_categories = $this->_bdd->obtenirTous($requete);
+        foreach ($liste_categories as $unique_categorie) {
+            $categories[] = $unique_categorie["categorie"];
+        }
+        
+        return array_unique($categories);
     }
 }
