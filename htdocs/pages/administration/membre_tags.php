@@ -62,10 +62,10 @@ if ($formulaire->validate()) {
 
     // Suppression des tags existants
     if ($tags->supprimerParPersonnesPhysiques($droits->obtenirIdentifiant())) {
-        AFUP_Logs::log('Suppression des tags de l\'utilisateur');
+        AFUP_Logs::log('Suppression des tags de l\'utilisateur ' . $droits->obtenirIdentifiant());
     }
 
-    // Enregistrement des nouveaux tags
+    // Enregsitrement des nouveaux tags
     $ok = $tags->enregistrerTags($formulaire, $droits->obtenirIdentifiant(), time());
 
     if ($ok) {

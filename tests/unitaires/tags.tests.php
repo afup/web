@@ -15,9 +15,10 @@ class tests_Tags extends UnitTestCase {
     function test_extraireTousLesTagsDUneChaine() {
         $this->assertEqual($this->tags->extraireTags("tous les tags"), array("tous", "les", "tags"));   
         $this->assertEqual($this->tags->extraireTags("'tous les' tags"), array("tous les", "tags"));   
-        $this->assertEqual($this->tags->extraireTags("'tous les tags"), array());   
+        $this->assertEqual($this->tags->extraireTags("'tous les tags"), array("'tous", "les", "tags"));   
         $this->assertEqual($this->tags->extraireTags("afup:tous les tags"), array("afup:tous", "les", "tags"));   
         $this->assertEqual($this->tags->extraireTags("1@tous les tags"), array("1@tous", "les", "tags"));   
+        $this->assertEqual($this->tags->extraireTags("aaa test 'test te'"), array("aaa", "test", "test te"));   
     }
     
     function test_preparerFichierDotVierge() {

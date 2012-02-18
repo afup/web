@@ -58,25 +58,17 @@ class AFUP_Tags
 
     function extraireTags($chaine)
     {
-        if (empty($chaine)) {
-            return array();
-        }
+        $regex = <<<HERE
+/  "  ( (?:[^"\\\\]++|\\\\.)*+ ) \"
+| '  ( (?:[^'\\\\]++|\\\\.)*+ ) \'
+| \( ( [^)]*                  ) \)
+| [\s,]+
+/x
+HERE;
 
-        if (substr_count($chaine, "'") % 2 != 0) {
-            return array();
-        }
-
-        if (strpos($chaine, "'") === false) {
-            return explode(" ", $chaine);
-        } else {
-            $premier_guillemet = strpos($chaine, "'", 0);
-            $deuxieme_guillemet = strpos($chaine, "'", 1);
-            $tags = $this->extraireTags(substr($chaine, 0, $premier_guillemet));
-            $tags[] = substr($chaine, $premier_guillemet + 1, $premier_guillemet + $deuxieme_guillemet - 1);
-            $tags = array_merge($tags, $this->extraireTags(substr($chaine, $deuxieme_guillemet + 2)));
-
-            return $tags;
-        }
+    return preg_split($regex, $chaine, -1,
+                         PREG_SPLIT_NO_EMPTY
+                       | PREG_SPLIT_DELIM_CAPTURE);
     }
 
     function obtenirTagsSurPersonnePhysique($id_personne_physique, $champs = '*', $order = 'date DESC', $associatif = false)
@@ -194,7 +186,6 @@ class AFUP_Tags
     function enregistrerTags($formulaire, $id_personne_physique, $date)
     {
         $ok = true;
-
         $tags = $this->extraireTags($formulaire->exportValue('tag'));
         foreach ($tags as $tag) {
             $ok += (bool)$this->enregistrer($formulaire->exportValue('source'),
@@ -218,7 +209,7 @@ class AFUP_Tags
         $requete .= ' SET ';
         $requete .= ' source = '.$this->_bdd->echapper($source) . ',';
         $requete .= ' id_source = '.$this->_bdd->echapper($id_source) . ',';
-        $requete .= ' tag = '.$this->_bdd->echapper($tag) . ',';
+        $requete .= ' tag = '.$this->_bdd->echapper($tag, true) . ',';
         $requete .= ' id_personne_physique = '.$this->_bdd->echapper($id_personne_physique) . ',';
         $requete .= ' date = '.$this->_bdd->echapper($date);
 		if ($id > 0) {
