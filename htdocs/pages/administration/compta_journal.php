@@ -96,7 +96,19 @@ elseif ($action == 'credit') {
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
 
-// ajoute des regles
+	// 2012-02-18 A. Gendre
+	$passer = null;
+	if($action != 'ajouter'){
+		$res = $compta->obtenirSuivantADeterminer($_GET['id']);
+		if(is_array($res)){
+			$passer = $res['id'];
+			$formulaire->addElement('submit', 'soumettrepasser'   , 'Soumettre & passer');
+			$formulaire->addElement('submit', 'passer'   , 'Passer');
+			echo "###".$passer;
+		}
+	}	
+
+	// ajoute des regles
 	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required');
 	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'nonzero');
 	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required');
@@ -104,6 +116,13 @@ elseif ($action == 'credit') {
 	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required');
 	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'nonzero');
 	$formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
+
+	
+	// 2012-02-18 A. Gendre
+	if (isset($_POST['passer']) && isset($passer)) {
+		 afficherMessage('L\'écriture n\'a pas été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_journal&action=modifier&id=' . $passer);
+		 return;
+	}
 
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
@@ -148,7 +167,13 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
             } else {
                 AFUP_Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_journal&action=lister#L' . $valeur['id']);
+			// 2012-02-18 A. Gendre
+			if (isset($_POST['soumettrepasser']) && isset($passer)) {
+				$urlredirect = 'index.php?page=compta_journal&action=modifier&id=' . $passer;
+			} else {
+				$urlredirect = 'index.php?page=compta_journal&action=lister#L' . $valeur['id'];
+			} 
+			afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), $urlredirect);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
         }
