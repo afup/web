@@ -55,7 +55,7 @@ if ($action == 'lister') {
                 'niveau_annuaire' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_forum' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_site' => AFUP_DROITS_NIVEAU_MEMBRE,
-        		'etat' => AFUP_DROITS_ETAT_ACTIF,
+        		'etat' => AFUP_DROITS_ETAT_INACTIF,
                 'mot_de_passe' => '',
                 'confirmation_mot_de_passe' => ''));
     } else {
@@ -104,7 +104,8 @@ if ($action == 'lister') {
     $formulaire->addElement('select' , 'niveau_site' , 'Site web', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
             
-    $formulaire->addElement('select' , 'etat' , 'Etat' , array(AFUP_DROITS_ETAT_ACTIF => 'Actif',
+    $formulaire->addElement('select' , 'etat' , 'Etat' , array(AFUP_DROITS_ETAT_NON_FINALISE => 'Non finalisé',
+	    AFUP_DROITS_ETAT_ACTIF => 'Actif',
             AFUP_DROITS_ETAT_INACTIF => 'Inactif'));
     $formulaire->addElement('text' , 'login' , 'Login' , array('size' => 30, 'maxlength' => 30));
     if ($action == 'modifier') {
