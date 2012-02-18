@@ -56,8 +56,8 @@ if ($action == 'lister') {
                 'niveau_forum' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_site' => AFUP_DROITS_NIVEAU_MEMBRE,
         		'etat' => AFUP_DROITS_ETAT_ACTIF,
-                'mot_de_passe' => $mot_de_passe,
-                'confirmation_mot_de_passe' => $mot_de_passe));
+                'mot_de_passe' => '',
+                'confirmation_mot_de_passe' => ''));
     } else {
         $champs = $personnes_physiques->obtenir($_GET['id']);
         unset($champs['mot_de_passe']);
@@ -109,6 +109,8 @@ if ($action == 'lister') {
     $formulaire->addElement('text' , 'login' , 'Login' , array('size' => 30, 'maxlength' => 30));
     if ($action == 'modifier') {
         $formulaire->addElement('static', 'note' , '    ' , 'Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer');
+    } else {
+        $formulaire->addElement('static', 'note' , '    ' , 'Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le définir');
     }
     $formulaire->addElement('password', 'mot_de_passe' , 'Mot de passe' , array('size' => 30, 'maxlength' => 30));
     $formulaire->addElement('password', 'confirmation_mot_de_passe', '' , array('size' => 30, 'maxlength' => 30));
@@ -124,9 +126,6 @@ if ($action == 'lister') {
     $formulaire->addRule('code_postal' , 'Code postal manquant' , 'required');
     $formulaire->addRule('ville' , 'Ville manquante' , 'required');
     $formulaire->addRule('login' , 'Login manquant' , 'required');
-    if ($action == 'ajouter') {
-        $formulaire->addRule('mot_de_passe', 'Mot de passe manquant', 'required');
-    }
     $formulaire->addRule(array('mot_de_passe', 'confirmation_mot_de_passe'), 'Le mot de passe et sa confirmation ne concordent pas', 'compare');
 
     if ($formulaire->validate()) {
@@ -139,7 +138,7 @@ if ($action == 'lister') {
 
             $ok = $personnes_physiques->ajouter($formulaire->exportValue('id_personne_morale'),
                 $formulaire->exportValue('login'),
-                $formulaire->exportValue('mot_de_passe'),
+                rand(1,100000),
                 $formulaire->exportValue('niveau'),
                 $niveau_modules,
                 $formulaire->exportValue('civilite'),
