@@ -11,18 +11,6 @@ $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
 
 $smarty->assign('tags_utilises', $tags->obtenirListeUnique());
 
-if ($action == 'supprimer') {
-    $id_personne_physique = isset($_GET['id_personne_physique']) ? $_GET['id_personne_physique'] : 0;
-    if ($tags->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression du tag ' . $_GET['id']);
-        afficherMessage('Le tag a été supprimé', 'index.php?page=membre_tags&id_personne_physique=' . $id_personne_physique);
-    } else {
-        afficherMessage('Une erreur est survenue lors de la suppression du tag', 'index.php?page=membre_tags&id_personne_physique=' . $id_personne_physique, true);
-    }
-} elseif ($action == 'contempler') {
-
-}
-
 if (isset($_GET['tag'])) {
     $smarty->assign('tag_selectionne', $_GET['tag']);
     $smarty->assign('membres_tagues', $tags->obtenirPersonnesPhysisquesTagues($_GET['tag']));
@@ -71,6 +59,13 @@ $formulaire->addRule('tag'      , 'Tag manquant'    , 'required');
 $formulaire->addRule('id_source', 'Membre manquante', 'required');
 
 if ($formulaire->validate()) {
+
+    // Suppression des tags existants
+    if ($tags->supprimerParPersonnesPhysiques($droits->obtenirIdentifiant())) {
+        AFUP_Logs::log('Suppression des tags de l\'utilisateur');
+    }
+
+    // Enregistrement des nouveaux tags
     $ok = $tags->enregistrerTags($formulaire, $droits->obtenirIdentifiant(), time());
 
     if ($ok) {

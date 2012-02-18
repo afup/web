@@ -185,6 +185,12 @@ class AFUP_Tags
         return $this->_bdd->executer($requete);
     }
 
+    function supprimerParPersonnesPhysiques($id)
+    {
+        $requete = 'DELETE FROM afup_tags WHERE id_personne_physique=' . $id;
+        return $this->_bdd->executer($requete);
+    }
+
     function enregistrerTags($formulaire, $id_personne_physique, $date)
     {
         $ok = true;
