@@ -1,5 +1,5 @@
 <form method="GET" name="forum">
-<input type="hidden" name="page" value="forum_inscriptions" />
+<input type="hidden" name="page" value="forum_emargement" />
 <h2>Feuille d'émargement pour <select name="id_forum" onchange="this.form.submit(); return false;">
 {foreach from=$forums item=forum}
 <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
