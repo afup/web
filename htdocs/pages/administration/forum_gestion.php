@@ -43,6 +43,7 @@ if ($action == 'lister') {
 									   'id_pays'  => 'FR'));
     } else {
         $champs = $forums->obtenir($_GET['id']);
+        $champs['coupons'] = implode(', ',$coupons->obtenirCouponsForum($_GET['id']));
 
         $formulaire->setDefaults($champs);
 
@@ -56,12 +57,16 @@ if ($action == 'lister') {
     $formulaire->addElement('header', ''                     , 'Gestion de forum');
     $formulaire->addElement('text'  , 'titre'                , 'Titre du forum'                     , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'nb_places'            , 'Nombre de places'                   , array('size' => 30, 'maxlength' => 100));
-	$formulaire->addElement('date'  , 'date_debut'           , 'Date de début'                      , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
+    $formulaire->addElement('date'  , 'date_debut'           , 'Date de début'                      , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin'             , 'Date de fin'                        , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_appel_projet', 'Date de fin de l\'appel aux projets', array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_appel_conferencier', 'Date de fin de l\'appel aux conférenciers', array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_prevente'    , 'Date de fin de pré-vente'           , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_vente'       , 'Date de fin de vente'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
+
+    $formulaire->addElement('header', ''                     , 'Coupons');
+    $legend = "Ici c'est une liste de coupons séparées par des virgules";
+    $formulaire->addElement('textarea', 'coupons'             , 'Liste des coupons'                 , array( 'title' => $legend, 'placeholder' => $legend,'rows' => 5,'cols' => 50));
     $formulaire->addElement('submit'  , 'soumettre'   , 'Soumettre');
 
     $formulaire->addRule('titre' , 'Titre du forum manquant' , 'required');
@@ -77,8 +82,10 @@ if ($action == 'lister') {
                                    $formulaire->exportValue('date_fin_appel_projet'),
                                    $formulaire->exportValue('date_fin_appel_conferencier'),
                                    $formulaire->exportValue('date_fin_prevente'),
-                                   $formulaire->exportValue('date_fin_vente'));
+                                   $formulaire->exportValue('date_fin_vente'));     
+            $id_forum = $forums->obtenirDernier();
         } else {
+            $id_forum = $_GET['id'];
             $ok = $forums->modifier($formulaire->exportValue('id'),
                                     $formulaire->exportValue('titre'),
                                     $formulaire->exportValue('nb_places'),
@@ -90,6 +97,13 @@ if ($action == 'lister') {
                                     $formulaire->exportValue('date_fin_vente'));
         }
 
+        $coupons->supprimerParForum($id_forum);
+        $couponsPost = explode(',',$formulaire->exportValue('coupons'));
+        foreach ($couponsPost as $c) {
+            $c = trim($c);
+            $coupons->ajouter($_GET['id'], $c);
+        }
+        
         if ($ok) {
             if ($action == 'ajouter') {
                 AFUP_Logs::log('Ajout du forum ' . $formulaire->exportValue('titre'));

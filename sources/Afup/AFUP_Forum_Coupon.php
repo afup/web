@@ -63,4 +63,10 @@ class AFUP_Forum_Coupon
 		$requete = 'DELETE FROM afup_forum_coupon WHERE id=' . $id;
 		return $this->_bdd->executer($requete);
     }
+
+    function supprimerParForum($id_forum)
+    {
+        $requete = 'DELETE FROM afup_forum_coupon WHERE id_forum =' . $id_forum;
+        return $this->_bdd->executer($requete);
+    }
 }
