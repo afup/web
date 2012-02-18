@@ -783,6 +783,23 @@ $pdf->Ln(10);
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
+    function obtenirSuivantADeterminer($numero_operation)
+    {
+        $requete  = 'SELECT';
+        $requete .= '  id ';
+        $requete .= 'FROM';
+        $requete .= '  compta ';
+        $requete .= 'WHERE ';
+		$requete .= '  (';
+		$requete .= '    idcategorie = 26 ';
+		$requete .= '      OR ';
+		$requete .= '    idevenement = 8';
+		$requete .= '   )';
+		$requete .= ' AND id > ' . $this->_bdd->echapper($numero_operation);
+		$requete .= ' LIMIT 1;';
+		return $this->_bdd->obtenirEnregistrement($requete);
+    }
+
     function obtenirTous()
     {
         $requete  = 'SELECT';
