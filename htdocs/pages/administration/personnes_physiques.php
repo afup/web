@@ -138,7 +138,7 @@ if ($action == 'lister') {
 
             $ok = $personnes_physiques->ajouter($formulaire->exportValue('id_personne_morale'),
                 $formulaire->exportValue('login'),
-                rand(1,100000),
+                md5(time()),
                 $formulaire->exportValue('niveau'),
                 $niveau_modules,
                 $formulaire->exportValue('civilite'),
