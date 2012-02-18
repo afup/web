@@ -137,10 +137,10 @@ class AFUP_AnnuairePro_Membres
 		return $this->_bdd->obtenirEnregistrement($requete);
 	}
 
-	function ajouter($FormeJuridique, $RaisonSociale, $SIREN, $Email, $SiteWeb, $Telephone, $Fax, $Adresse, $CodePostal, $Ville, $Zone, $NumeroFormateur, $MembreAFUP, $Valide, $DateCreation, $TailleSociete, $Password)
+	function ajouter($FormeJuridique, $RaisonSociale, $SIREN, $Email, $SiteWeb, $Telephone, $Fax, $Adresse, $CodePostal, $Ville, $Zone, $id_pays, $NumeroFormateur, $MembreAFUP, $Valide, $DateCreation, $TailleSociete, $Password)
 	{
 		$requete = 'INSERT INTO ';
-		$requete .= '   annuairepro_MembreAnnuaire (FormeJuridique, RaisonSociale, SIREN, Email, SiteWeb, Telephone, Fax, Adresse, CodePostal, Ville, Zone, NumeroFormateur, MembreAFUP, Valide, DateCreation, TailleSociete, Password) ';
+		$requete .= '   annuairepro_MembreAnnuaire (FormeJuridique, RaisonSociale, SIREN, Email, SiteWeb, Telephone, Fax, Adresse, CodePostal, Ville, Zone, id_pays, NumeroFormateur, MembreAFUP, Valide, DateCreation, TailleSociete, Password) ';
 		$requete .= 'VALUES (';
 		$requete .= $this->_bdd->echapper($FormeJuridique) . ',';
 		$requete .= $this->_bdd->echapper($RaisonSociale) . ',';
@@ -153,6 +153,7 @@ class AFUP_AnnuairePro_Membres
 		$requete .= $this->_bdd->echapper($CodePostal) . ',';
 		$requete .= $this->_bdd->echapper($Ville) . ',';
 		$requete .= $this->_bdd->echapper($Zone) . ',';
+		$requete .= $this->_bdd->echapper($id_pays) . ',';
 		$requete .= $this->_bdd->echapper($NumeroFormateur) . ',';
 		$requete .= $this->_bdd->echapper($MembreAFUP) . ',';
 		$requete .= $this->_bdd->echapper($Valide) . ',';
@@ -166,7 +167,7 @@ class AFUP_AnnuairePro_Membres
 	/**
 	 * @param string $Valide 0 = Inactif,  1 = Actif, 9 = A modérer
 	 */
-	function modifier($id, $FormeJuridique, $RaisonSociale, $SIREN, $Email, $SiteWeb, $Telephone, $Fax, $Adresse, $CodePostal, $Ville, $Zone, $NumeroFormateur, $MembreAFUP, $Valide, $DateCreation, $TailleSociete, $Password)
+	function modifier($id, $FormeJuridique, $RaisonSociale, $SIREN, $Email, $SiteWeb, $Telephone, $Fax, $Adresse, $CodePostal, $Ville, $Zone, $id_pays, $NumeroFormateur, $MembreAFUP, $Valide, $DateCreation, $TailleSociete, $Password)
 	{
 		$requete = 'UPDATE ';
 		$requete .= '   annuairepro_MembreAnnuaire ';
@@ -182,6 +183,7 @@ class AFUP_AnnuairePro_Membres
 		$requete .= '  CodePostal=' . $this->_bdd->echapper($CodePostal) . ',';
 		$requete .= '  Ville=' . $this->_bdd->echapper($Ville) . ',';
 		$requete .= '  Zone=' . $this->_bdd->echapper($Zone) . ',';
+		$requete .= '  id_pays=' . $this->_bdd->echapper($id_pays) . ',';
 		$requete .= '  NumeroFormateur=' . $this->_bdd->echapper($NumeroFormateur) . ',';
 		$requete .= '  MembreAFUP=' . $this->_bdd->echapper($MembreAFUP) . ',';
 		$requete .= '  Valide=' . $this->_bdd->echapper($Valide) . ',';
