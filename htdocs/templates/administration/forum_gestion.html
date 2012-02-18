@@ -13,12 +13,12 @@
             <th align="left">Forum</th>
             <th align="left">Informations</th>
             <th align="left">Coupons</th>
+            <th align="left"></th>
         </tr>
     {foreach from=$evenements item=evenement}
         <tr>
             <td style="border-top: 1px solid #6874A7">
                 <strong>{$evenement.titre}</strong><br/><br/>
-                <div style="text-align:center"><a href="index.php?page=forum_gestion&amp;action=modifier&amp;id={$evenement.id}" title="Modifier le forum {$evenement.titre}">Modifier</a></div><br/><br/>
                 <div class="ajoutCoupon" style="text-align:center" id="forum_{$evenement.id}"><a href="#" onclick="return false;">Ajouter un coupon</a></div>
             </td>
             <td style="border-top: 1px solid #6874A7">
@@ -38,10 +38,17 @@
                 {/foreach}
                 </div>
             </td>
+            <td style="text-align: right" nowrap="nowrap">
+                <a href="index.php?page=forum_gestion&amp;action=modifier&amp;id={$evenement.id}" title="Modifier le forum {$evenement.titre}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+
+                {if $evenement.supprimable}
+                <a href="index.php?page=forum_gestion&amp;action=supprimer_forum&amp;id={$evenement.id}" title="Supprimer le forum {$evenement.titre}"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce forum?');"/></a>
+                {/if}
+            </td>
         </tr>
     {foreachelse}
         <tr>
-            <td><em>Aucun inscrit</em></td>
+            <td colspan="4"><em>Aucun inscrit</em></td>
         </tr>
     {/foreach}
     </table>

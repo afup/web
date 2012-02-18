@@ -38,6 +38,16 @@ class AFUP_Forum
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
+    function supprimable($id) {
+        $requete  = 'SELECT';
+        $requete .= '  count(*) ';
+        $requete .= 'FROM';
+        $requete .= '  afup_sessions ';
+        $requete .= 'WHERE id_forum=' . $id;
+
+        return (int)$this->_bdd->obtenirUn($requete) == 0;
+    }
+
     function obtenirNombrePlaces($id=NULL) {
       if (empty($id)) {
         $id = $this->obtenirDernier();
@@ -693,5 +703,13 @@ return  $sTable;
         $requete .= '  id=' . $id;
 
         return $this->_bdd->executer($requete);
+    }
+
+    function supprimer($id_forum) {
+        $id_forum = $this->_bdd->echapper($id_forum);
+        
+        $requete  = 'DELETE FROM afup_forum WHERE id = '.$id_forum;
+
+        return $this->_bdd->executer($requete);   
     }
 }

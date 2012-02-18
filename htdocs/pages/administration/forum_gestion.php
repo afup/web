@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'ajouter_coupon', 'supprimer_coupon'));
+$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'ajouter_coupon', 'supprimer_coupon'));
 $smarty->assign('action', $action);
 
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
@@ -11,6 +11,7 @@ $coupons = new AFUP_Forum_Coupon($bdd);
 if ($action == 'lister') {
     $evenements = $forums->obtenirListe(null, '*', 'date_debut desc');
     foreach ($evenements as &$e) {
+        $e['supprimable'] = $forums->supprimable($e['id']);
         $e['coupons'] = $coupons->obtenirCouponsForum($e['id']);
     }
     $smarty->assign('evenements', $evenements);
@@ -27,6 +28,14 @@ if ($action == 'lister') {
         afficherMessage('Le coupon a été supprimé', 'index.php?page=forum_gestion&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du coupon', 'index.php?page=forum_gestion&action=lister', true);
+    }
+} elseif ($action == 'supprimer') {
+    var_dump('pouet');
+    if ($forums->supprimer($_GET['id'])) {
+        AFUP_Logs::log('Suppression du forum ' . $_GET['id']);
+        afficherMessage('Le forum a été supprimé', 'index.php?page=forum_gestion&action=lister');
+    } else {
+        afficherMessage('Une erreur est survenue lors de la suppression du forum', 'index.php?page=forum_gestion&action=lister', true);
     }
 } else {
     $formulaire = &instancierFormulaire();
