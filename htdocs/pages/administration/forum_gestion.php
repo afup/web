@@ -30,7 +30,6 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression du coupon', 'index.php?page=forum_gestion&action=lister', true);
     }
 } elseif ($action == 'supprimer') {
-    var_dump('pouet');
     if ($forums->supprimer($_GET['id'])) {
         AFUP_Logs::log('Suppression du forum ' . $_GET['id']);
         afficherMessage('Le forum a été supprimé', 'index.php?page=forum_gestion&action=lister');

@@ -40,12 +40,17 @@ class AFUP_Forum
 
     function supprimable($id) {
         $requete  = 'SELECT';
-        $requete .= '  count(*) ';
+        $requete .= '  f.id, count(session_id) as sessions,count(i.id) as inscriptions ';
         $requete .= 'FROM';
-        $requete .= '  afup_sessions ';
-        $requete .= 'WHERE id_forum=' . $id;
+        $requete .= '  afup_forum f ';
+        $requete .= 'LEFT JOIN afup_sessions s ON (f.id = s.id_forum) ';
+        $requete .= 'LEFT JOIN afup_inscription_forum i ON (f.id = i.id_forum) ';
+        $requete .= 'WHERE f.id=' . $id;
 
-        return (int)$this->_bdd->obtenirUn($requete) == 0;
+        $forum = $this->_bdd->obtenirEnregistrement($requete);
+
+        var_dump($forum);
+        return $forum['sessions'] == 0 && $forum['inscriptions'] == 0;
     }
 
     function obtenirNombrePlaces($id=NULL) {
@@ -707,7 +712,7 @@ return  $sTable;
 
     function supprimer($id_forum) {
         $id_forum = $this->_bdd->echapper($id_forum);
-        
+
         $requete  = 'DELETE FROM afup_forum WHERE id = '.$id_forum;
 
         return $this->_bdd->executer($requete);   
