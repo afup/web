@@ -49,7 +49,6 @@ class AFUP_Forum
 
         $forum = $this->_bdd->obtenirEnregistrement($requete);
 
-        var_dump($forum);
         return $forum['sessions'] == 0 && $forum['inscriptions'] == 0;
     }
 
