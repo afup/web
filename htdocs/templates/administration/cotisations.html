@@ -5,7 +5,12 @@
     <h2>Cotisations de {$personne.raison_sociale}</h2>
     {/if}
 
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=cotisations&amp;action=ajouter&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}" title="Ajouter une cotisation">Ajouter une cotisation</a>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=cotisations&amp;action=ajouter&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}" title="Ajouter une cotisation">Ajouter une cotisation</a><br />
+    {if $type_personne == 0}
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$id_personne}" title="Voir la fiche de la personne physique">Voir la fiche de la personne physique</a>
+    {else}
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$id_personne}" title="Voir la fiche de la personne morale">Voir la fiche de la personne morale</a>
+    {/if}
     <br/>
     <h3>Historique</h3>
     <table>
