@@ -218,6 +218,7 @@ class AFUP_Site_Articles {
         $requete .= '  afup_site_article ';
         $requete .= ' WHERE ';
         $requete .= '  id_site_rubrique = '.(int)$id_site_rubrique;
+        $requete .= '  AND etat = 1';
         $requete .= ' ORDER BY date DESC';
         $elements = $this->bdd->obtenirTous($requete);
 
@@ -1107,7 +1108,8 @@ class AFUP_Site_Rubrique {
         $requete .= ' FROM';
         $requete .= '  afup_site_article ';
         $requete .= ' WHERE ';
-        $requete .= '  id_site_rubrique = '.(int)$this->id;
+        $requete .= '  etat = 1 ';
+        $requete .= ' AND id_site_rubrique = '.(int)$this->id;
         $requete .= ' ORDER BY date DESC';
         $articles = $this->bdd->obtenirTous($requete);
 
