@@ -304,7 +304,7 @@ class AFUP_Personnes_Physiques {
         $succes = false;
 
         $selection = 'SELECT ';
-        $selection .= ' id, login ';
+        $selection .= ' id, login, email ';
         $selection .= 'FROM ';
         $selection .= '  afup_personnes_physiques ';
         $selection .= 'WHERE ';
@@ -316,6 +316,7 @@ class AFUP_Personnes_Physiques {
         $data = $this->_bdd->obtenirEnregistrement($selection);
         $id = $data['id'];
         $identifiant = $data['login'];
+        $email = $data['email'];
         if (is_numeric($id) and $id > 0) {
             $mot_de_passe = substr(md5(uniqid(rand(), true)), 0, 10);
 
@@ -338,6 +339,75 @@ class AFUP_Personnes_Physiques {
                             $GLOBALS['conf']->obtenir('mails|email_expediteur'),
                             $email,
                             "AFUP : Mot de passe perdu ?",
+                            $corps);
+
+                return($check);
+
+            }
+        }
+
+        return $succes;
+    }
+
+    /**
+     * Envoi un message de bienvenue lorsque l'utilisateur le demande
+     *
+     * @param string $login Login de la personne physique
+     * @param string $email Email de la personne physique
+     * @access public
+     * @return bool Succès de l'envoi
+     */
+    function envoyerCourrierBienvenue($login, $email, $id = null)
+    {
+        $succes = false;
+
+        $selection = 'SELECT ';
+        $selection .= ' id, login, email ';
+        $selection .= 'FROM ';
+        $selection .= '  afup_personnes_physiques ';
+        $selection .= 'WHERE ';
+        if ($id === null) {
+            $selection .= '  email=' . $this->_bdd->echapper($email);
+        } else {
+            $selection .= '  id=' . $this->_bdd->echapper($id) . ' ';
+        }
+        $data = $this->_bdd->obtenirEnregistrement($selection);
+        $id = $data['id'];
+        $identifiant = $data['login'];
+        $email = $data['email'];
+        if (is_numeric($id) and $id > 0) {
+            $mot_de_passe = substr(md5(uniqid(rand(), true)), 0, 10);
+
+            $requete = 'UPDATE ';
+            $requete .= '  afup_personnes_physiques ';
+            $requete .= 'SET';
+            $requete .= '  mot_de_passe=' . $this->_bdd->echapper(md5($mot_de_passe));
+            $requete .= 'WHERE';
+            $requete .= '  id=' . $this->_bdd->echapper($id);
+
+            if ($this->_bdd->executer($requete)) {
+
+                $corps = "Cher membre,\n\n";
+                $corps .= "Tout d'abord bienvenue à l'AFUP ! Nous sommes ravis de vous accueillir au sein de l'Association Française des Utilisateurs de PHP, réunissant tous les utilisateurs de la plate-forme PHP.\n\n";
+                $corps .= "Être membre de l'AFUP vous ouvre la porte à une multitude d'avantages:\n";
+                $corps .= "- un accès au back-office, qui vous permettra de nous aider à nourrir les projets. Voici votre identifiant : $identifiant . Votre mot de passe est : $mot_de_passe. Le back-office est accessible à cette adresse: www.afup.org/wiki . Vous pouvez changer votre mot de passe en vous connectant sur la page « administration » de l'AFUP : www.afup.org/pages/administration.\n";
+                $corps .= "- des invitations aux Rendez-vous AFUP : conférences thématiques, à Paris ou en province, animées par des experts. Le coût de ces conférences étant pris en charge par l'AFUP, elles sont gratuites pour les participants!\n";
+                $corps .= "- des Apéros PHP: des développeurs se réunissent régulièrement autour d'un verre pour discuter PHP. Soyez tenu au courant de ces apéros, participez à ceux qui se déroulent dans votre ville, rencontrez des développeurs PHP près de chez vous. \n";
+                $corps .= "- un tarif préférentiel au Forum PHP et au PHP Tour: votre adhésion à l'AFUP vous donnera droit au tarif « membre AFUP » lors de ces prochains événements.\n";
+                $corps .= "- des réductions exclusives négociées auprès de nos partenaires sur leurs formations et leurs services : découvrez les http://afup.org/wiki/wakka.php?wiki=OffreDesPartenaires\n";
+                $corps .= "- l'inscription à la mailing-list des membres de l'AFUP: un problème de code ? Besoin d'un conseil ? Une offre d'emploi à diffuser ? Une actualité qui pourrait intéresser la communauté ? Ecrivez à la mailing-list membres@afup.org et échangez avec les centaines de membres de l'AFUP.\n\n";
+                $corps .= "L'AFUP, c'est aussi un site web à optimiser, des outils à (ré)inventer, un forum à organiser, des Rendez-vous AFUP à suggérer: l'AFUP a besoin de vous pour avancer !\n";
+                $corps .= "- Proposez-nous vos thématiques pour les Rendez-vous AFUP. Vous avez envie d'inviter un conférencier ? Vous avez besoin de louer une salle ? Vous souhaitez contacter les membres AFUP de votre ville ? Contactez-nous, nous vous aiderons à mettre en place votre soirée PHP grâce à un soutien logistique et financier.\n";
+                $corps .= "- Participez à la création d'outils pour l'AFUP. Le site de l'AFUP va être repensé, le site des Apéros PHP va entrer en chantier, de nouveaux outils de communication vont être développés. Aidez-nous à les mettre en œuvre !\n";
+                $corps .= "- Lancez des Apéros PHP dans votre ville: de nombreux membres de l'AFUP habitent certainement près de chez vous, l'AFUP peut vous aider à vous mettre en contact.\n\n";
+                $corps .= "Enfin, adhérer à l'AFUP, c'est surtout soutenir la plate-forme et montrer son envie de la voir grandir et progresser.\n\n";
+                $corps .= "A très bientôt,\n\n";
+                $corps .= "L'équipe AFUP\n";
+                
+                $check = AFUP_Mailing::envoyerMail(
+                            $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                            $email,
+                            "Adhésion AFUP",
                             $corps);
 
                 return($check);

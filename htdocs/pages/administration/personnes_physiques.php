@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'envoi_mdp'));
+$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'envoi_mdp', 'envoi_bienvenue'));
 $tris_valides = array('nom' => 'nom <sens>, prenom',
     'prenom' => 'prenom <sens>, nom',
     'etat' => 'etat <sens>, prenom, nom');
@@ -39,6 +39,13 @@ if ($action == 'lister') {
     } else {
         afficherMessage('Une erreur est survenue lors de l\'envoi d\'un nouveau mot de passe à la personne physique', 'index.php?page=personnes_physiques&action=lister', true);
     }
+} elseif ($action == 'envoi_bienvenue') {
+    if ($personnes_physiques->envoyerCourrierBienvenue(null, null, $_GET['id'])) {
+        AFUP_Logs::log('Envoi d\'un message de bienvenue à la personne physique ' . $_GET['id']);
+        afficherMessage('Un mail de bienvenue a été envoyé à la personne physique', 'index.php?page=personnes_physiques&action=lister');
+    } else {
+        afficherMessage('Une erreur est survenue lors de l\'envoi du mail de bienvenue à la personne physique', 'index.php?page=personnes_physiques&action=lister', true);
+    }
 } else {
     require_once 'Afup/AFUP_Personnes_Morales.php';
     $personnes_morales = new AFUP_Personnes_Morales($bdd);
@@ -65,6 +72,9 @@ if ($action == 'lister') {
     }
 
     $formulaire->addElement('header' , '' , 'Informations');
+    if(AFUP_DROITS_ETAT_ACTIF == $champs['etat']) {
+        $formulaire->addElement('static', 'note' , '    ' , '<a href="?page=personnes_physiques&action=envoi_bienvenue&id='.$_GET['id'].'">Envoyer un mail de bienvenue</a>');
+    }
     $formulaire->addElement('select' , 'id_personne_morale' , 'Personne morale', array(null => '') + $personnes_morales->obtenirListe('id, raison_sociale', 'raison_sociale', true));
     if ($action == 'modifier') {
         $formulaire->addElement('static', 'note' , '    ' , '<a href="#" onclick="voirPersonneMorale(); return false;" title="Voir la personne morale">Voir la personne morale</a>');
@@ -153,27 +163,9 @@ if ($action == 'lister') {
                 $formulaire->exportValue('telephone_fixe'),
                 $formulaire->exportValue('telephone_portable'),
                 $formulaire->exportValue('etat'),
-                $formulaire->exportValue('compte_svn'));
+                $formulaire->exportValue('compte_svn')
+            );
 
-            if ($ok) {
-                $motifs = array();
-                $valeurs = array();
-                foreach($formulaire->exportValues() as $cle => $valeur) {
-                    $motifs[] = '[' . $valeur . ']';
-                    $valeurs[] = $valeur;
-                }
-                $corps = str_replace($motifs, $valeurs, $conf->obtenir('mails|texte_adhesion'));
-
-                require_once 'phpmailer/class.phpmailer.php';
-                $mail = new PHPMailer;
-                $mail->AddAddress($formulaire->exportValue('email'), $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
-                $mail->From = $conf->obtenir('mails|email_expediteur');
-                $mail->FromName = $conf->obtenir('mails|nom_expediteur');
-                $mail->BCC = $conf->obtenir('mails|email_expediteur');
-                $mail->Subject = 'Adhésion AFUP';
-                $mail->Body = $corps;
-                // $mail->Send();
-            }
         } else {
             /**
             * Niveau modules : concaténation

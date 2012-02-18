@@ -199,7 +199,7 @@ class AFUP_Tags
         foreach ($tags as $tag) {
             $ok += (bool)$this->enregistrer($formulaire->exportValue('source'),
                                             $formulaire->exportValue('id_source'),
-                                            $tag,
+                                            $this->_bdd->echapper($tag),
                                             $id_personne_physique,
                                             $date,
                                             $formulaire->exportValue('id'));
