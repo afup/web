@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'commenter', 'supprimer', 'voter'));
 $tris_valides = array();
@@ -73,7 +73,12 @@ if ($action == 'lister') {
     $formulaire->addElement('static', 'titre'            , 'Titre' , '<strong>'.$champs['titre'].'</strong>');
     $formulaire->addElement('static', 'abstract'         , 'Résumé', $champs['abstract']);
     foreach ($conferenciers as $conferencier) {
-    	$formulaire->addElement('static', 'conferencier_id_'.$conferencier['conferencier_id'], 'Conférencier', $conferencier['nom'].' '.$conferencier['prenom'].' ('.$conferencier['societe'].')');
+        $url = 'index.php?page=forum_conferenciers&action=modifier&id=' . $conferencier['conferencier_id'] . '&id_forum=' . $id_forum;
+    	$formulaire->addElement('static', 
+            'conferencier_id_'.$conferencier['conferencier_id'], 
+            'Conférencier', 
+            '<a href="'.$url.'">'.$conferencier['nom'].' '.$conferencier['prenom'].'</a> ('.$conferencier['societe'].')'
+        );
     }
     $formulaire->addElement('static', 'date_soumission', 'Soumission'     , $champs['date_soumission']);
     $formulaire->addElement('static', 'journee'        , 'Public visé'    , $journees[$champs['journee']]);

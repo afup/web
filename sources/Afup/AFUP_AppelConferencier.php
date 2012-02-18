@@ -391,6 +391,24 @@ class AFUP_AppelConferencier
         return $sessionsAvecResumes;
     }
 
+    function obtenirListeSessionsPourConferencier($id_forum,$id_conferencier)
+    {
+        $requete  = ' SELECT ';
+        $requete .= '  se.session_id, ';
+        $requete .= '  se.* ';
+        $requete .= ' FROM ';
+        $requete .= '  afup_sessions se ';
+        $requete .= ' INNER JOIN afup_conferenciers_sessions cs ';
+        $requete .= '  ON cs.session_id = se.session_id ';
+        $requete .= ' WHERE se.id_forum = '.$this->_bdd->echapper($id_forum);
+        $requete .= ' AND cs.conferencier_id = '.$this->_bdd->echapper($id_conferencier);
+        $requete .= ' AND se.genre != 9 ';
+        $requete .= ' ORDER BY ';
+        $requete .= '  se.titre';
+
+        return $this->_bdd->obtenirTous($requete);
+    }
+
     function obtenirListeSessionsPlannifies($id_forum)
     {
         $requete  = ' SELECT ';
