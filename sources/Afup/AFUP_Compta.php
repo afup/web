@@ -429,7 +429,7 @@ echo "</pre>";*/
 		$requete .= $this->_bdd->echapper($date_regl) . ',';
 		$requete .= $this->_bdd->echapper($obs_regl) . ',';
 		$requete .= $this->_bdd->echapper($idevenement) . ',';
-		$requete .= $this->_bdd->echapper($numero_operation) . ' ';
+		$requete .= $this->_bdd->echapper($numero_operation) . ',';
 		$requete .= $this->_bdd->echapper($idcompte) . ' ';
 		$requete .= ');';
 
