@@ -10,16 +10,16 @@ $smarty->assign('action', $action);
 if (isset($_GET['compte']) && $_GET['compte'])
 	$compte=$_GET['compte'];
 else
-	$compte="courant";
-	
+	$compte=1;
+
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
 $compta = new AFUP_Compta($bdd);
 
-if (isset($_GET['id_periode']) && $_GET['id_periode']) 
+if (isset($_GET['id_periode']) && $_GET['id_periode'])
 	$id_periode=$_GET['id_periode'];
 else
 	$id_periode="";
-	 
+
 $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
 
@@ -29,9 +29,9 @@ $smarty->assign('listPeriode', $listPeriode );
 if ($action == 'lister') {
 	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
 	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
-	
+
 	$smarty->assign('compteurLigne',1);
-	
+
 	$journal = $compta->obtenirJournalBanque($compte,$periode_debut,$periode_fin);
 	$smarty->assign('journal', $journal);
 
@@ -40,14 +40,14 @@ if ($action == 'lister') {
 
 	$total = $compta->obtenirTotalJournalBanque($compte,$periode_debut,$periode_fin);
 	$smarty->assign('total', $total);
-	
+
 /*
 	$totalDepense = $compta->obtenirTotalJournalBanque(1,$compte,$periode_debut,$periode_fin);
 	$smarty->assign('totalDepense', $totalDepense);
-	
+
 	$totalRecette = $compta->obtenirTotalJournalBanque(2,$compte,$periode_debut,$periode_fin);
 	$smarty->assign('totalRecette', $totalRecette);
-	
+
 	$difMontant = $totalRecette - $totalDepense ;
 	$smarty->assign('difMontant', $difMontant);
 	*/

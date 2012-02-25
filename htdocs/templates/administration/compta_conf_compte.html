@@ -1,5 +1,5 @@
 {if $action == 'lister' }
-    <h2>Liste des evenements en mémoire </h2>
+    <h2>Liste des comptes </h2>
 
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_evenement" title="Liste des evenements">Liste des evenements</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_categorie" title="Liste des catégories">Liste des catégories</a><br />
@@ -7,20 +7,20 @@
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_reglement" title="Liste des modes de réglements">Liste des modes de réglements</a><br />
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_compte" title="Liste des comptes">Liste des comptes</a><br />
 <br>
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_evenement&amp;action=ajouter" title="ajouter un evenement">Ajouter un evenement</a><br />
+   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_compte&amp;action=ajouter" title="Ajouter un compte">Ajouter un compte</a><br />
 <br>
 
     <br/>
     <table class="afup_tab">
         <tr>
-           <th>Evenement</th>
+           <th>Compte</th>
             <th>&nbsp;</th>
        </tr>
     {foreach from=$data item=ecriture}
          <tr class="{cycle values="odd,even"}">
-            <td>{$ecriture.evenement}</td>
+            <td>{$ecriture.nom_compte}</td>
             <td style="text-align: right">
-                <a href="index.php?page=compta_conf_evenement&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="index.php?page=compta_conf_compte&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                </td>
         </tr>
     {foreachelse}
@@ -33,9 +33,9 @@
 
 {else}
     {if $action == 'ajouter'}
-        <h2>Ajouter une ligne configuration 'Evenement'</h2>
+        <h2>Ajouter un compte</h2>
     {else}
-        <h2>Modifier une ligne configuration 'Evenement'</h2>
+        <h2>Modifier un compte</h2>
     {/if}
     {include file="formulaire.html"}
 {/if}

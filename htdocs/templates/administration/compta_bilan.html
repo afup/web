@@ -9,10 +9,7 @@
     </select></h3>
 </form>
 
-<br/>
 <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_bilan&amp;action=bilanpdf&amp;details={$debits.id}" title="imprimer pdf">Imprimer PDF</a><br />
-
-<br />
 
 {if $action == 'lister'}
     <table class="afup_tab">
@@ -22,7 +19,7 @@
         </tr>
         <tr>
             <td>
-    <table class="afup_tab">
+    <table class="afup_tab_inside">
         <tr>
             <th>Evenement</th>
             <th></th>
@@ -41,7 +38,7 @@
 {if ($smarty.get.details==$debits.id) }
 	<tr class="{cycle values="odd,even"}">
 		<td colspan='2'>
-    <table class="afup_tab">
+    <table class="afup_tab_inside">
         <tr>
             <th>Date ecriture</th>
             <th>Descritpion</th>
@@ -80,7 +77,7 @@
     </table>
 	</td>
     <td>
-	  <table class="afup_tab">
+	  <table class="afup_tab_inside">
         <tr class="{cycle values="odd,even"}">
             <!-- th width="20px">&nbsp;</th -->
             <th>Evenement</th>
@@ -101,7 +98,7 @@
 {if ($smarty.get.details==$credits.id) }
 	<tr class="{cycle values="odd,even"}">
 		<td colspan='2'>
-    <table class="afup_tab">
+    <table class="afup_tab_inside">
         <tr>
             <th>Date ecriture</th>
             <th>Descritpion</th>
@@ -203,10 +200,12 @@
    	</table>
 
 	<tr>
-	<td align='center'>{$sousTotalDebit|number_format:2:',':' '}</td>
-	<td align='center'>{$sousTotalCredit|number_format:2:',':' '}</td>
+	<th align='center'>{$sousTotalDebit|number_format:2:',':' '}</th>
+	<th align='center'>{$sousTotalCredit|number_format:2:',':' '}</th>
 	</tr>
-	<tr><td colspan='2'  align='center'>{$difMontant|number_format:2:',':' '}</tr>
+	<tr>
+        <th colspan='2'  align='center'>{$difMontant|number_format:2:',':' '}</th>
+    </tr>
 	</td></tr></table>
 
 

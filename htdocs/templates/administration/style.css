@@ -235,7 +235,6 @@ p.html {
   Tableaux
 *********************/
 table {
-	min-width: 790px;
 	border: 0;
 }
 
@@ -245,13 +244,16 @@ th {
 	vertical-align: top;
 }
 
-table.afup_tab
+table.afup_tab, table.afup_tab_inside
 {
   border-spacing: 2px;
 	border-collapse: collapse;
-	min-width : 790px;
 	background-color: white;
 	border: 1px solid #5779c5;
+}
+table.afup_tab
+{
+	min-width : 790px;
 }
 table.afup_tab td
 {

@@ -45,6 +45,7 @@ elseif ($action == 'credit') {
    {
         $champsRecup = $compta->obtenir($_GET['id']);
 
+        $champs['idcompte']          = $champsRecup['idcompte'];
         $champs['date_saisie']          = $champsRecup['date_ecriture'];
         $champs['idoperation']          = $champsRecup['idoperation'];
         $champs['idcategorie']          = $champsRecup['idcategorie'];
@@ -57,14 +58,20 @@ elseif ($action == 'credit') {
         $champs['obs_regl']          = $champsRecup['obs_regl'];
         $champs['idevenement']          = $champsRecup['idevenement'];
 
-		$formulaire->setDefaults($champs);
+
 		//$formulaire->setDefaults($champsRecup);
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
+   } else {
+       $champs['idcompte'] = 1;
+       $champs['date_saisie'] = date('Y-m-d');
+       $champs['date_reglement'] = date('Y-m-d');
    }
+   $formulaire->setDefaults($champs);
 
 // facture associé à un évènement
    $formulaire->addElement('header'  , ''                         , 'Sélectionner un Journal');
    $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération', $compta->obtenirListOperations());
+   $formulaire->addElement('select'  , 'idcompte'   , 'Compte', $compta->obtenirListComptes());
    $formulaire->addElement('select'  , 'idevenement', 'Evenement', $compta->obtenirListEvenements());
 
 //detail facture
@@ -104,12 +111,12 @@ elseif ($action == 'credit') {
 			$passer = $res['id'];
 			$formulaire->addElement('submit', 'soumettrepasser'   , 'Soumettre & passer');
 			$formulaire->addElement('submit', 'passer'   , 'Passer');
-			echo "###".$passer;
 		}
-	}	
+	}
 
 	// ajoute des regles
 	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required');
+	$formulaire->addRule('idcompte'      , 'Compte manquant'    , 'required');
 	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'nonzero');
 	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required');
 	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'nonzero');
@@ -117,7 +124,7 @@ elseif ($action == 'credit') {
 	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'nonzero');
 	$formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
 
-	
+
 	// 2012-02-18 A. Gendre
 	if (isset($_POST['passer']) && isset($passer)) {
 		 afficherMessage('L\'écriture n\'a pas été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_journal&action=modifier&id=' . $passer);
@@ -133,6 +140,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
     	if ($action == 'ajouter') {
    			$ok = $compta->ajouter(
             						$valeur['idoperation'],
+            						$valeur['idcompte'],
             						$valeur['idcategorie'],
             						$date_ecriture,
             						$valeur['nom_frs'],
@@ -148,6 +156,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
    			$ok = $compta->modifier(
             						$valeur['id'],
             						$valeur['idoperation'],
+            						$valeur['idcompte'],
             						$valeur['idcategorie'],
             						$date_ecriture,
             						$valeur['nom_frs'],
@@ -172,7 +181,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 				$urlredirect = 'index.php?page=compta_journal&action=modifier&id=' . $passer;
 			} else {
 				$urlredirect = 'index.php?page=compta_journal&action=lister#L' . $valeur['id'];
-			} 
+			}
 			afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), $urlredirect);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');

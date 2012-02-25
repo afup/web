@@ -1,5 +1,4 @@
 <h2>Balance comptable</h2>
-<br/>
 
 <form method="GET" name="forum">
     <input type="hidden" name="page" value="compta_balance" />
@@ -10,7 +9,6 @@
     </select></h3>
 </form>
 
-<br/>
 {if $action == 'lister'}
     <table class="afup_tab">
         <tr>
@@ -34,7 +32,7 @@
 {if ($smarty.get.details==$ecriture.idevenement) }
 	<tr class="{cycle values="odd,even"}">
 		<td>
-    <table class="afup_tab">
+    <table class="afup_tab_inside">
         <tr>
             <th>Date ecriture</th>
             <th>categorie</th>
@@ -50,8 +48,8 @@
             <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$detail.categorie}</td>
             <td>{$detail.description}</td>
-			<td align='right'>{$detail.debit|number_format:2:',':' '}</td>
-			<td align='right'>{$detail.credit|number_format:2:',':' '}</td>
+			<td align='right'>{if $detail.debit}{$detail.debit|number_format:2:',':' '}{else}0,00{/if}</td>
+			<td align='right'>{if $detail.credit}{$detail.credit|number_format:2:',':' '}{else}0,00{/if}</td>
             <td style="text-align: right">
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
             </td>
@@ -60,8 +58,8 @@
 		{if $detail.id == $txt.idevenement && $compteurLigne == $txt.nligne }
     <tr>
 	<td colspan='3' align='right'><b><i> Sous Total</i></b></td>
-	<td align='center'><b><i></i>{$txt.debit|number_format:2:',':' '}</i></b></td>
-	<td align='center'><b><i></i>{$txt.credit|number_format:2:',':' '}</i></b></td>
+	<td align='center'><b><i></i>{if $txt.debit}{$txt.debit|number_format:2:',':' '}{else}0,00{/if}</i></b></td>
+	<td align='center'><b><i></i>{if $txt.credit}{$txt.credit|number_format:2:',':' '}{else}0,00{/if}</i></b></td>
 	<td></td>
 	</tr>
 	 	{assign var=compteurLigne value=0}
@@ -101,7 +99,7 @@
 
     <br/>
 
-    <table class="afup_tab">
+    <table class="afup_tab_inside">
         <tr>
             <th>Date ecriture</th>
             <th>categorie</th>

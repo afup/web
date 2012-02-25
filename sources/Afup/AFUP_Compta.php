@@ -24,7 +24,7 @@ class AFUP_Compta
      * Paypal
      *
      */
-   function obtenirJournalBanque($compte='courant',
+   function obtenirJournalBanque($compte=1,
                           $periode_debut= '',
                           $periode_fin=''
                           )
@@ -32,17 +32,6 @@ class AFUP_Compta
 
      $periode_debut=$this->periodeDebutFin ($debutFin='debut',$periode_debut);
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
-
-if ($compte=="courant") $typeJournal="  AND idevenement!='18'
-					AND idmode_regl!='1'
-					AND idmode_regl!='7'
-					AND idmode_regl!='8'
-				    ";
-if ($compte=="livreta") $typeJournal=" AND idevenement='18' ";
-if ($compte=="espece") $typeJournal=" AND idmode_regl='1' ";
-if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
-
-
 		$requete  = 'SELECT ';
 		$requete .= 'compta.date_regl, compta.description, compta.montant, compta.idoperation,  ';
 		$requete .= 'MONTH(compta.date_regl) as mois, compta.id as idtmp, ';
@@ -55,7 +44,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
 		$requete .= 'AND compta.date_regl <= \''.$periode_fin.'\'  ';
 		$requete .= 'AND compta.montant != \'0.00\' ';
 		$requete .= 'AND compta.idmode_regl = compta_reglement.id ';
-		$requete .= $typeJournal;
+		$requete .= 'AND idcompte = '.(int) $compte. ' ';
 		$requete .= 'ORDER BY ';
 		$requete .= 'compta.date_regl ';
 
@@ -63,7 +52,7 @@ if ($compte=="paypal") $typeJournal=" AND idmode_regl='8' ";
     }
 
 
-    function obtenirSousTotalJournalBanque($compte='courant',$periode_debut,$periode_fin)
+    function obtenirSousTotalJournalBanque($compte=1,$periode_debut,$periode_fin)
     {
 
     $data=$this->obtenirJournalBanque($compte,$periode_debut,$periode_fin);
@@ -97,7 +86,7 @@ for ($i=1;$i<=12;$i++)
 		return $tableau;
     }
 
-    function obtenirTotalJournalBanque($compte='courant',$periode_debut,$periode_fin)
+    function obtenirTotalJournalBanque($compte=1,$periode_debut,$periode_fin)
     {
 
     $data=$this->obtenirJournalBanque($compte,$periode_debut,$periode_fin);
@@ -161,7 +150,8 @@ echo "</pre>";*/
 		$requete .= 'compta.date_ecriture, compta.description, compta.montant, compta.idoperation,compta.id as idtmp, ';
 		$requete .= 'compta_reglement.reglement, ';
 		$requete .= 'compta_evenement.evenement, ';
-		$requete .= 'compta_categorie.categorie   ';
+		$requete .= 'compta_categorie.categorie, ';
+		$requete .= 'compta_compte.nom_compte    ';
 		$requete .= 'FROM ';
 		$requete .= 'compta ';
 		$requete .= 'LEFT JOIN ';
@@ -170,6 +160,8 @@ echo "</pre>";*/
 		$requete .= 'compta_reglement on compta_reglement.id=compta.idmode_regl ';
 		$requete .= 'LEFT JOIN ';
 		$requete .= 'compta_evenement on compta_evenement.id=compta.idevenement ';
+		$requete .= 'LEFT JOIN ';
+		$requete .= 'compta_compte on compta_compte.id=compta.idcompte ';
 		$requete .= 'WHERE ';
 		$requete .= ' compta.date_ecriture >= \''.$periode_debut.'\' ';
 		$requete .= 'AND compta.date_ecriture <= \''.$periode_fin.'\'  ';
@@ -308,6 +300,33 @@ echo "</pre>";*/
 		}
 	}
 
+	function obtenirListComptes($filtre='',$where='')
+	{
+		$requete  = 'SELECT ';
+		$requete .= 'id, nom_compte ';
+		$requete .= 'FROM  ';
+		$requete .= 'compta_compte  ';
+        if ($where)		$requete .= 'WHERE id=' . $where. ' ';
+
+        $requete .= 'ORDER BY ';
+		$requete .= 'nom_compte ';
+
+		if ($where) {
+		        return $this->_bdd->obtenirEnregistrement($requete);
+		}elseif ($filtre)	{
+			return $this->_bdd->obtenirTous($requete);
+		} else {
+			$data=$this->_bdd->obtenirTous($requete);
+			$result[]="";
+			foreach ($data as $row)
+			{
+				$result[$row['id']]=$row['nom_compte'];
+			}
+
+			return $result;
+		}
+	}
+
 	function obtenirListCategories($filtre='',$where='')
 	{
 		$requete  = 'SELECT ';
@@ -390,14 +409,14 @@ echo "</pre>";*/
 		}
 	}
 
-	function ajouter($idoperation,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
+	function ajouter($idoperation,$idcompte,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
 					$numero,$idmode_regl,$date_regl,$obs_regl,$idevenement, $numero_operation = null)
 	{
 
 		$requete = 'INSERT INTO ';
 		$requete .= 'compta (';
 		$requete .= 'idoperation,idcategorie,date_ecriture,nom_frs,montant,description,';
-		$requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation) ';
+		$requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation,idcompte) ';
 		$requete .= 'VALUES (';
 		$requete .= $this->_bdd->echapper($idoperation) . ',';
 		$requete .= $this->_bdd->echapper($idcategorie) . ',';
@@ -411,6 +430,7 @@ echo "</pre>";*/
 		$requete .= $this->_bdd->echapper($obs_regl) . ',';
 		$requete .= $this->_bdd->echapper($idevenement) . ',';
 		$requete .= $this->_bdd->echapper($numero_operation) . ' ';
+		$requete .= $this->_bdd->echapper($idcompte) . ' ';
 		$requete .= ');';
 
         $resultat = $this->_bdd->executer($requete);
@@ -420,7 +440,7 @@ echo "</pre>";*/
         return $resultat;
 	}
 
-	function modifier($id,$idoperation,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
+	function modifier($id,$idoperation,$idcompte,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
 					$numero,$idmode_regl,$date_regl,$obs_regl,$idevenement, $numero_operation = null)
 	{
 
@@ -437,6 +457,7 @@ echo "</pre>";*/
 		$requete .= 'idmode_regl='.$this->_bdd->echapper($idmode_regl) . ',';
 		$requete .= 'date_regl='.$this->_bdd->echapper($date_regl) . ',';
 		$requete .= 'obs_regl='.$this->_bdd->echapper($obs_regl) . ',';
+		$requete .= 'idcompte='.$this->_bdd->echapper($idcompte) . ',';
         if ($numero_operation) {
     		$requete .= 'numero_operation='.$this->_bdd->echapper($numero_operation) . ',';
         }

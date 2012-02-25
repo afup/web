@@ -24,6 +24,7 @@
         <tr>
             <!-- th width="20px">&nbsp;</th -->
            <th><a href="index.php?page=compta_journal&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+            <th>Compte</th>
            <th><a href="index.php?page=compta_journal&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Evenement</a></th>
            <th><a href="index.php?page=compta_journal&amp;tri=categorie&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Catégorie</a></th>
             <th>Description</th>
@@ -36,6 +37,7 @@
          <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td nowrap="nowrap"><a name="L{$ecriture.idtmp}"></a>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
+            <td>{$ecriture.nom_compte}</td>
             <td {if $ecriture.evenement=='A déterminer'}style="color:#999"{/if}>{$ecriture.evenement}</td>
              <td {if $ecriture.categorie=='A déterminer'}style="color:#999"{/if}>{$ecriture.categorie}</td>
              <td  width="250">{$ecriture.description}</td>
