@@ -1,7 +1,7 @@
 <h2>Ausculter le r&eacute;seau social AFUP</h2>
 
 <fieldset>
-	<legend>Mes oeuvres sur les 12 derniers mois</legend>        
+	<legend>Mes oeuvres sur les 12 derniers mois</legend>
 	<ul class="sparklines">
     {foreach from=$mes_sparklines key=categorie item=sparkline}
 		<li>
@@ -18,7 +18,7 @@
 
 {foreach from=$les_sparklines_actives_logs key=categorie item=les_sparklines}
 	<fieldset>
-		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>        
+		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>
 		<ul class="sparklines">
 	    {foreach from=$les_sparklines key=id_personne_physique item=sparkline}
 			<li>
@@ -37,7 +37,7 @@
 {/foreach}
 {foreach from=$les_sparklines_actives_svn key=categorie item=les_sparklines}
 	<fieldset>
-		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>        
+		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>
 		<ul class="sparklines">
 	    {foreach from=$les_sparklines key=id_personne_physique item=sparkline}
 			<li>
@@ -46,7 +46,7 @@
 				<span class="maximum">{$sparkline.maximum}</span>
 				<span class="dernier">{$sparkline.dernier}</span>
 				<a href="index.php?page=membre_oeuvres&amp;id_personne_physique={$id_personne_physique}">
-					{$les_personnes_physiques[$id_personne_physique].prenom} {$les_personnes_physiques[$id_personne_physique].nom}
+					{$id_personne_physique} {$les_personnes_physiques[$id_personne_physique].prenom} {$les_personnes_physiques[$id_personne_physique].nom}
 				</a>
 			</li>
 	    {/foreach}
@@ -56,7 +56,7 @@
 {/foreach}
 {foreach from=$les_sparklines_actives_planete key=categorie item=les_sparklines}
 	<fieldset>
-		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>        
+		<legend>Le top des oeuvres "{$categorie}" sur les 12 derniers mois</legend>
 		<ul class="sparklines">
 	    {foreach from=$les_sparklines key=id_personne_physique item=sparkline}
 			<li>
@@ -65,7 +65,7 @@
 				<span class="maximum">{$sparkline.maximum}</span>
 				<span class="dernier">{$sparkline.dernier}</span>
 				<a href="index.php?page=membre_oeuvres&amp;id_personne_physique={$id_personne_physique}">
-					{$les_personnes_physiques[$id_personne_physique].prenom} {$les_personnes_physiques[$id_personne_physique].nom}
+					{$id_personne_physique} {$les_personnes_physiques[$id_personne_physique].prenom} {$les_personnes_physiques[$id_personne_physique].nom}
 				</a>
 			</li>
 	    {/foreach}

@@ -7,6 +7,7 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Planete_Billet.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Oeuvres.php';
 $oeuvres = new AFUP_Oeuvres($bdd);
+$persone_physique = new AFUP_Personnes_Physiques($bdd);
 
 if ($action == 'calculer') {
     if ($oeuvres->calculer()) {
@@ -21,12 +22,11 @@ $mes_sparklines = $oeuvres->obtenirSparklinePersonnelleSur12Mois($id_personne_ph
 $smarty->assign('mes_sparklines', $mes_sparklines);
 
 $categories = $oeuvres->obtenirCategories();
-$id_personnes_physiques = array();
+$les_personnes_physiques = array();
 foreach($categories as $categorie) {
-	$id_personnes_physiques += $oeuvres->obtenirPersonnesPhysiquesLesPlusActives($categorie);
+	$id_personnes_physiques = $oeuvres->obtenirPersonnesPhysiquesLesPlusActives($categorie);
 	$les_sparklines = $oeuvres->obtenirSparklinesParCategorieDes12DerniersMois($id_personnes_physiques, $categorie);
 	$smarty->assign('les_sparklines_actives_'.$categorie, $les_sparklines);
+    $les_personnes_physiques += $persone_physique->obtenirListe('*', 'nom, prenom', false, false, true, $id_personnes_physiques);
 }
-$persone_physique = new AFUP_Personnes_Physiques($bdd);
-$les_personnes_physiques = $persone_physique->obtenirListe('*', 'nom, prenom', false, false, true, $id_personnes_physiques);
 $smarty->assign('les_personnes_physiques', $les_personnes_physiques);
