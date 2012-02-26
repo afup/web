@@ -282,7 +282,7 @@ class AFUP_Oeuvres {
 				}
 
         $requete = '
-        	SELECT *,
+        	SELECT id_personne_physique, categorie,
         	SUM(valeur) as compte
         	FROM afup_oeuvres
         	WHERE date >= '.mktime(0, 0, 0, date('m') - 11, 1, date('Y')).'
