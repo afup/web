@@ -165,6 +165,7 @@ elseif ($action == 'lister') {
         $conferencier['sessions'] = $forum_appel->obtenirListeSessionsPourConferencier($_GET['id_forum'], $conferencier['conferencier_id']);
     }
     $smarty->assign('conferenciers', $listeConferenciers);
+    $smarty->assign('nb_conferenciers', $forum_appel->obtenirNbConferenciersDistinct($_GET['id_forum']));
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerConferencier($_GET['id'])) {
         AFUP_Logs::log('Suppression du conférencier ' . $_GET['id']);

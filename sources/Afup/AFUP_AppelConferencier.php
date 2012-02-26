@@ -299,6 +299,23 @@ class AFUP_AppelConferencier
         }
     }
 
+    function obtenirNbConferenciersDistinct($id_forum   = null,
+                          $champs     = 'c.*',
+                          $ordre      = 'c.nom',
+                          $associatif = false,
+                          $filtre     = false)
+    {
+        $requete  = ' SELECT count(*) FROM (';
+        $requete .= ' SELECT nom, prenom';
+        $requete .= ' FROM ';
+        $requete .= '  afup_conferenciers ';
+        $requete .= ' WHERE id_forum = '.$this->_bdd->echapper($id_forum);
+        $requete .= ' GROUP BY nom, prenom';
+        $requete .= ' ) c';
+
+        return $this->_bdd->obtenirUn($requete);
+    }
+
     function supprimerSessionDuPlanning($id)
     {
         $requete  = ' DELETE FROM afup_forum_planning ';
@@ -372,11 +389,11 @@ class AFUP_AppelConferencier
         }
 
         $sessionsAvecResumes = array();
-        
+
         require_once dirname(__FILE__).'/AFUP_Forum.php';
         $forum = new AFUP_Forum($this->_bdd);
         $forum_details = $forum->obtenir($id_forum);
-        
+
         $repertoire = new DirectoryIterator(dirname(__FILE__)."/../../htdocs/templates/".$forum_details['path']."/resumes/");
         foreach($repertoire as $file) {
             if (preg_match("/^[1-9]/", $file->getFilename())) {
