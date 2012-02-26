@@ -213,6 +213,11 @@ class AFUP_Inscriptions_Forum
         	$inscrits[$nombre['id_forum']][$nombre['jour']] = $nombre['nombre'];
         }
 
+        if (!isset($inscrits[$id_forum])) {
+            // Pas encore d'inscrits
+            return false;
+        }
+
         $debut = $forum->obtenirDebut($id_forum);
         $debut_precedent = $forum->obtenirDebut($id_forum_precedent);
 
