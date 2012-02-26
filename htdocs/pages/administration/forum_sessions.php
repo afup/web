@@ -42,7 +42,11 @@ if ($action == 'lister') {
     $smarty->assign('list_type', $list_type);
 
     $smarty->assign('forums', $forum->obtenirListe());
-    $smarty->assign('sessions', $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type));
+    $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type);
+    foreach ($listeSessions as &$session) {
+        $session['conferencier'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
+    }
+    $smarty->assign('sessions', $listeSessions);
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerSession($_GET['id'])) {
         AFUP_Logs::log('Suppression de la session ' . $_GET['id']);
@@ -74,9 +78,9 @@ if ($action == 'lister') {
     $formulaire->addElement('static', 'abstract'         , 'Résumé', $champs['abstract']);
     foreach ($conferenciers as $conferencier) {
         $url = 'index.php?page=forum_conferenciers&action=modifier&id=' . $conferencier['conferencier_id'] . '&id_forum=' . $id_forum;
-    	$formulaire->addElement('static', 
-            'conferencier_id_'.$conferencier['conferencier_id'], 
-            'Conférencier', 
+    	$formulaire->addElement('static',
+            'conferencier_id_'.$conferencier['conferencier_id'],
+            'Conférencier',
             '<a href="'.$url.'">'.$conferencier['nom'].' '.$conferencier['prenom'].'</a> ('.$conferencier['societe'].')'
         );
     }
@@ -195,7 +199,7 @@ if ($action == 'lister') {
 	    $formulaire->addElement('header', 'boutons'  , '');
 		$formulaire->addElement('submit', 'soumettre', 'Soumettre');
     }
-	
+
     $formulaire->addElement('submit', 'passer'   , 'Passer');
 
 	if (isset($_POST['passer'])) {
@@ -282,7 +286,7 @@ if ($action == 'lister') {
     $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'nom', true);
 	$formulaire->addElement('select', 'conferencier_id_1'    , 'N°1', $conferenciers);
 	$formulaire->addElement('select', 'conferencier_id_2'    , 'N°2', $conferenciers);
-    
+
 	if ($action != 'ajouter') {
         $conferenciers = $forum_appel->obtenirConferenciersPourSession($id);
 		$formulaire->addElement('header'  , ''                   , 'Conférenciers associés');
