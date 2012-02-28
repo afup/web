@@ -26,7 +26,7 @@
         <tr class="{cycle values="odd,even"}">
             <td>{$personne.nom}</td>
             <td>{$personne.prenom}</td>
-            <td style="text-align: center">{if $personne.etat == 1}Actif{else}Inactif{/if}</td>
+            <td style="text-align: center">{if $personne.etat == 1}Actif{elseif $personne.etat == -1}Non finalisé{else}Inactif{/if}</td>
             <td style="text-align: right">
                 {if empty($personne.id_personne_morale)}
                     <a id="cotisations_{$personne.id}" href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_PHYSIQUES}&amp;id_personne={$personne.id}" title="Gérer les cotisations de {$personne.prenom} {$personne.nom}"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
