@@ -567,3 +567,11 @@ tr.apres td { color: #CCCCCC; }
 #accueil .rangee {margin: 0.3em 1em}
 #accueil .libelle {display:inline-block; width: 100px}
 #accueil .colmask img {float:right; margin: 1em}
+
+.inactif td {
+    color: #999;
+    font-style: italic;
+}
+.non_finalise td {
+    background-color: #FFBD69;
+}

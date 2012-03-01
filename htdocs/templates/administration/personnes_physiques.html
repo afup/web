@@ -23,7 +23,7 @@
             <th>&nbsp;</th>
         </tr>
     {foreach from=$personnes item=personne}
-        <tr class="{cycle values="odd,even"}">
+        <tr class="{cycle values="odd,even"} {if $personne.etat == 1}actif{elseif $personne.etat == -1}non_finalise{else}inactif{/if}">
             <td>{$personne.nom}</td>
             <td>{$personne.prenom}</td>
             <td style="text-align: center">{if $personne.etat == 1}Actif{elseif $personne.etat == -1}Non finalisé{else}Inactif{/if}</td>
