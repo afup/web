@@ -178,7 +178,7 @@ section article a:hover, section article a:hover * {
   color: #045e80;
 }
 
-section article h3 {
+section article h3, section article div.spacer {
   padding: 12px 20px 3px 20px;
 }
 
@@ -236,7 +236,7 @@ section article.first {
   border-bottom: 1px #b8b6a9 solid;
 }
 
-section article.first h3 {
+section article.first h3, section article.first div.spacer {
   background: transparent url(./img/background-first-news-title.png) top left no-repeat;
 }
 
