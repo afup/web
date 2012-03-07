@@ -228,6 +228,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
     $montant = (float) $_GET['montant'];
     $ligneCompta = $compta->obtenir($idCompta);
     $compta->ajouter($ligneCompta['idoperation'],
+                     1,
                      26, // A déterminer
                      $ligneCompta['date_ecriture'],
                      $ligneCompta['nom_frs'],
