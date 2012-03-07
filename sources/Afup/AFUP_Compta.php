@@ -916,7 +916,7 @@ $pdf->Ln(10);
                 }
 
                 if (!is_array($enregistrement)) {
-                    $this->ajouter($idoperation, $categorie, $date_ecriture, '', $montant, $description, '', $idmode_regl, $date_ecriture, '', $evenement, $numero_operation);
+                    $this->ajouter($idoperation, 1, $categorie, $date_ecriture, '', $montant, $description, '', $idmode_regl, $date_ecriture, '', $evenement, $numero_operation);
                 } else {
                     $modifier = false;
                     if ($enregistrement['idcategorie'] == 26 && $categorie != 26) {
@@ -930,6 +930,7 @@ $pdf->Ln(10);
                     if ($modifier) {
                         $this->modifier($enregistrement['id'],
                                         $enregistrement['idoperation'],
+                                        1,
                                         $enregistrement['idcategorie'],
                                         $enregistrement['date_ecriture'],
                                         $enregistrement['nom_frs'],

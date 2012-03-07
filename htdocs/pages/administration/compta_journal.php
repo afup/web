@@ -228,7 +228,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
     $montant = (float) $_GET['montant'];
     $ligneCompta = $compta->obtenir($idCompta);
     $compta->ajouter($ligneCompta['idoperation'],
-                     1,
+                     $ligneCompta['idcompte'],
                      26, // A déterminer
                      $ligneCompta['date_ecriture'],
                      $ligneCompta['nom_frs'],
@@ -242,7 +242,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                      $ligneCompta['numero_operation']);
     $compta->modifier($ligneCompta['id'],
                       $ligneCompta['idoperation'],
-                      1,
+                      $ligneCompta['idcompte'],
                       $ligneCompta['idcategorie'],
                       $ligneCompta['date_ecriture'],
                       $ligneCompta['nom_frs'],
