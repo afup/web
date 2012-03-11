@@ -283,7 +283,7 @@ if ($action == 'lister') {
     $formulaire->addGroup($groupe, 'groupe_plannifie', "Plannifi&eacute;", '<br />', false);
 
     $formulaire->addElement('header', null, 'Conférencier(s)');
-    $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'nom', true);
+    $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'c.nom, c.conferencier_id', true);
 	$formulaire->addElement('select', 'conferencier_id_1'    , 'N°1', $conferenciers);
 	$formulaire->addElement('select', 'conferencier_id_2'    , 'N°2', $conferenciers);
 
