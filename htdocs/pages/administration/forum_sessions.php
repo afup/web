@@ -1,7 +1,7 @@
-    <?php
+<?php
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'commenter', 'supprimer', 'voter'));
-$tris_valides = array();
+$tris_valides = array('s.titre', 's.date_soumission');
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
