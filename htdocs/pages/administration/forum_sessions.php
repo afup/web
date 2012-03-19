@@ -44,17 +44,28 @@ if ($action == 'lister') {
     $smarty->assign('forums', $forum->obtenirListe());
     $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type);
     $moi = $droits->obtenirIdentifiant();
+    $votant = in_array($_SESSION['afup_login'], $conf->obtenir('bureau'));
+    $maxVotant = count($conf->obtenir('bureau'));
     foreach ($listeSessions as &$session) {
         $session['conferencier'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
         $session['commentaires'] = $forum_appel->obtenirCommentairesPourSession($session['session_id']);
         $session['jai_commente'] = false;
+        $session['jai_vote'] = false;
         foreach ($session['commentaires'] as $c) {
             if ($c['id_personne_physique'] == $moi) {
                 $session['jai_commente'] = true;
+                if ($votant) {
+                    $session['jai_vote'] = $forum_appel->dejaVote($moi, $session['session_id']);
+                }
             }
+        }
+        if ($votant) {
+            $session['nb_vote'] = $forum_appel->nbVoteSession($session['session_id']);
         }
     }
     $smarty->assign('sessions', $listeSessions);
+    $smarty->assign('votant', $votant);
+    $smarty->assign('nb_votant', $maxVotant);
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerSession($_GET['id'])) {
         AFUP_Logs::log('Suppression de la session ' . $_GET['id']);

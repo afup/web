@@ -814,4 +814,12 @@ class AFUP_AppelConferencier
 
         return (bool)$this->_bdd->obtenirUn($requete);
     }
+
+    function nbVoteSession($id_session)
+    {
+        $requete = 'select count(*) from afup_sessions_vote
+        where id_session=' . $this->_bdd->echapper($id_session);
+
+        return (int)$this->_bdd->obtenirUn($requete);
+    }
 }
