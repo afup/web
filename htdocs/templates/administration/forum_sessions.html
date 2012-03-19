@@ -33,6 +33,7 @@
             <th align="left"><a href="index.php?page=forum_sessions&amp;tri=s.titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 's.titre'}desc{else}asc{/if}">Titre</a></th>
             <th><a href="index.php?page=forum_sessions&amp;tri=i.etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.etat'}desc{else}asc{/if}">Etat</a></th>
             <th>Conf&eacute;rencier(s)</th>
+            <th>Commenté par</th>
             <th>&nbsp;</th>
         </tr>
     {foreach from=$sessions item=session}
@@ -43,11 +44,11 @@
             	<br />
             	<a href="index.php?page=forum_sessions&amp;action=commenter&amp;id={$session.session_id}&amp;id_forum={$id_forum}" title="Commenter la session {$session.titre}">
             		{if $session.commentaires_nombre == 0}
-            			lancer la discussion
+            			Lancer la discussion
             		{elseif $session.commentaires_nombre == 1}
-            			1 commentaire, répondre...
+            			1 commentaire
             		{else}
-	            		{$session.commentaires_nombre} commentaire(s) et le tien ?
+	            		{$session.commentaires_nombre} commentaires
 	            	{/if}
             	</a>
             </td>
@@ -56,6 +57,13 @@
                 <ul style="color:#666">
                 {foreach from=$session.conferencier item=conferencier}
                     <li>{$conferencier.nom} {$conferencier.prenom}</li>
+                {/foreach}
+                </ul>
+            </td>
+            <td style="{if $session.jai_commente == true};background-color:#73f084{else};background-color:#FBD61A{/if}">
+                <ul style="color:#666">
+                {foreach from=$session.commentaires item=commentaire}
+                    <li>{$commentaire.nom} {$commentaire.prenom}</li>
                 {/foreach}
                 </ul>
             </td>

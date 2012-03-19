@@ -43,8 +43,16 @@ if ($action == 'lister') {
 
     $smarty->assign('forums', $forum->obtenirListe());
     $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type);
+    $moi = $droits->obtenirIdentifiant();
     foreach ($listeSessions as &$session) {
         $session['conferencier'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
+        $session['commentaires'] = $forum_appel->obtenirCommentairesPourSession($session['session_id']);
+        $session['jai_commente'] = false;
+        foreach ($session['commentaires'] as $c) {
+            if ($c['id_personne_physique'] == $moi) {
+                $session['jai_commente'] = true;
+            }
+        }
     }
     $smarty->assign('sessions', $listeSessions);
 } elseif ($action == 'supprimer') {
