@@ -32,12 +32,14 @@ $pages = array(
 		        'nom' => 'Oeuvres',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
-		    'membres_liste' => array(
-		        'nom' => 'Annuaire',
-		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
-		    ),
-
-
+            'membres_liste' => array(
+                'nom' => 'Annuaire',
+                'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+            ),
+            'membre_administrateur' => array(
+                'nom' => 'Administrateurs du site',
+                'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+            ),
 		),
     ),
     'membres' => array(

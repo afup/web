@@ -1,0 +1,30 @@
+<table class="afup_tab">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Etat</th>
+            <th>Administration site</th>
+            <th>Module apéro</th>
+            <th>Module annuaire</th>
+            <th>Module site</th>
+            <th>Module forum</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach from=$administrateurs item=administrateur}
+        <tr style="{if $administrateur.etat == 0}text-decoration:line-through;color:#999;font-style:italic{/if}">
+            <td>{$administrateur.nom}</td>
+            <td>{$administrateur.prenom}</td>
+            <td>{if $administrateur.etat}Actif{else}Inactif{/if}</td>
+            <td>{if $administrateur.niveau == 2}Administrateur{else}---{/if}</td>
+            <td>{if $administrateur.niveau_apero == 2}Gestionnaire{else}---{/if}</td>
+            <td>{if $administrateur.niveau_annuaire == 2}Gestionnaire{else}---{/if}</td>
+            <td>{if $administrateur.niveau_site == 2}Gestionnaire{else}---{/if}</td>
+            <td>{if $administrateur.niveau_forum == 2}Gestionnaire{else}---{/if}</td>
+            <td><a id="modifier_{$administrateur.id}" href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$administrateur.id}" title="Modifier la fiche de {$administrateur.prenom} {$administrateur.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a></td>
+        </tr>
+        {/foreach}
+    </tbody>
+</table>

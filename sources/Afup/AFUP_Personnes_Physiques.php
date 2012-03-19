@@ -334,7 +334,7 @@ class AFUP_Personnes_Physiques {
                 $corps .= "Votre mot de passe : $mot_de_passe \n\n";
                 $corps .= "http://www.afup.org/pages/administration/index.php?ctx_login=$identifiant";
 
-                
+
                 $check = AFUP_Mailing::envoyerMail(
                             $GLOBALS['conf']->obtenir('mails|email_expediteur'),
                             $email,
@@ -403,7 +403,7 @@ class AFUP_Personnes_Physiques {
                 $corps .= "Enfin, adhérer à l'AFUP, c'est surtout soutenir la plate-forme et montrer son envie de la voir grandir et progresser.\n\n";
                 $corps .= "A très bientôt,\n\n";
                 $corps .= "L'équipe AFUP\n";
-                
+
                 $check = AFUP_Mailing::envoyerMail(
                             $GLOBALS['conf']->obtenir('mails|email_expediteur'),
                             $email,
@@ -583,5 +583,36 @@ class AFUP_Personnes_Physiques {
         $requete .= ' WHERE compte_svn = '.$this->_bdd->echapper($compte_svn);
 
         return $this->_bdd->obtenirUn($requete);
+    }
+
+    public function getListeAvecDroitsAdministration()
+    {
+        $requete  = ' SELECT * ';
+        $requete .= ' FROM afup_personnes_physiques ';
+        $requete .= ' WHERE niveau_modules <> 0 ';
+        $requete .= ' OR niveau = 2 ';
+        $requete .= ' ORDER BY nom, prenom ';
+
+        $resultats = $this->_bdd->obtenirTous($requete);
+
+        foreach ($resultats as &$r) {
+            /*On redivise les droits sur les modules*/
+            if (isset($r['niveau_modules'][0])) {
+                $r['niveau_apero'] = $r['niveau_modules'][0];
+            }
+            if (isset($r['niveau_modules'][1])) {
+                $r['niveau_annuaire'] = $r['niveau_modules'][1];
+            }
+            if (isset($r['niveau_modules'][2])) {
+                $r['niveau_site'] = $r['niveau_modules'][2];
+            }
+            if (isset($r['niveau_modules'][3])) {
+                $r['niveau_forum'] = $r['niveau_modules'][3];
+            }
+            unset($r["niveau_modules"]);
+        }
+
+        return $resultats;
+
     }
 }
