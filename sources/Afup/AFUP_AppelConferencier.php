@@ -553,13 +553,9 @@ class AFUP_AppelConferencier
         $requete .= '  ' . $champs . ' ';
         $requete .= ' FROM ';
         $requete .= '  afup_sessions s ';
-        $requete .= ' INNER JOIN afup_conferenciers_sessions cs ';
-        $requete .= '  ON cs.session_id = s.session_id ';
-        $requete .= ' INNER JOIN afup_conferenciers c ';
-        $requete .= '  ON c.conferencier_id = cs.conferencier_id ';
         $requete .= ' LEFT JOIN afup_forum_sessions_commentaires co ';
-        $requete .= '  ON cs.session_id = co.id_session ';
-        $requete .= ' WHERE c.id_forum = '.$this->_bdd->echapper($id_forum);
+        $requete .= '  ON s.session_id = co.id_session ';
+        $requete .= ' WHERE s.id_forum = '.$this->_bdd->echapper($id_forum);
         if ($filtre) {
             $requete .= ' AND s.titre LIKE \'%' . $filtre . '%\' ';
         }
