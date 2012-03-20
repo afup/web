@@ -50,13 +50,12 @@ if ($action == 'lister') {
         $session['conferencier'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
         $session['commentaires'] = $forum_appel->obtenirCommentairesPourSession($session['session_id']);
         $session['jai_commente'] = false;
-        $session['jai_vote'] = false;
+        if ($votant) {
+            $session['jai_vote'] = $forum_appel->dejaVote($moi, $session['session_id']);
+        }
         foreach ($session['commentaires'] as $c) {
             if ($c['id_personne_physique'] == $moi) {
                 $session['jai_commente'] = true;
-                if ($votant) {
-                    $session['jai_vote'] = $forum_appel->dejaVote($moi, $session['session_id']);
-                }
             }
         }
         if ($votant) {
