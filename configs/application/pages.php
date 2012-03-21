@@ -186,37 +186,30 @@ $pages = array(
 		    'compta_devis' => array(
 		        'nom' => 'Devis - Facture',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-                'module' => 1,
             ),
     		'compta_journal' => array(
 		        'nom' => 'Journal',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-                'module' => 1,
             ),
 		    'compta_banque' => array(
 		        'nom' => 'Compte Banques',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-                'module' => 1,
             ),
 		    'compta_synthese' => array(
 		        'nom' => 'Synthese Evenement',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-                'module' => 1,
             ),
 		    'compta_balance' => array(
 		        'nom' => 'Balance comptable',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-                'module' => 1,
             ),
 		    'compta_bilan' => array(
 		        'nom' => 'Bilan',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-                'module' => 1,
             ),
 		    'compta_conf_evenement' => array(
 		        'nom' => 'Configuration',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-                'module' => 1,
             ),
         ),
     ),
