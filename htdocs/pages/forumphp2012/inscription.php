@@ -238,12 +238,12 @@ if ($formulaire->validate()) {
       $paybox->set_erreur('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php');
 
       $paybox->set_wait(50000);
-      $paybox->set_boutpi('Régler par carte');
+      $paybox->set_boutpi('R&eacute;gler par carte');
       $paybox->set_bkgd('#FAEBD7');
       $paybox->set_output('B');
 
       preg_match('#<CENTER>(.*)</CENTER>#is', $paybox->paiement(), $r);
-      $smarty->assign('paybox', '<div style="text-align:center">' . str_ireplace('input type="submit"', 'input type="submit" class="btn primary"', $r[1]) . '</div>');
+      $smarty->assign('paybox', '<div style="text-align:center">' . str_ireplace('input type=submit', 'input type="submit" class="btn primary"', $r[1]) . '</div>');
       $smarty->display('paybox_formulaire.html');
     } else {
       $smarty->display('inscription_paiement.html');
