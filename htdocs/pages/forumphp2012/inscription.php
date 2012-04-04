@@ -243,7 +243,7 @@ if ($formulaire->validate()) {
       $paybox->set_output('B');
 
       preg_match('#<CENTER>(.*)</CENTER>#is', $paybox->paiement(), $r);
-      $smarty->assign('paybox', $r[1]);
+      $smarty->assign('paybox', '<div style="text-align:center">' . str_ireplace('input type="submit"', 'input type="submit" class="btn primary"', $r[1]) . '</div>');
       $smarty->display('paybox_formulaire.html');
     } else {
       $smarty->display('inscription_paiement.html');
