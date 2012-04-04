@@ -46,39 +46,44 @@ $formulaire->setDefaults(array('civilite'            => 'M.',
 
 for ($i=1; $i <= $nombre_personnes; $i++) {
   $next = $i + 1;
-  $formulaire->addElement('header'  , ''                       , '<a name="inscription'.$i.'">Personne</a> '.$i);
-  $formulaire->addElement('select', 'civilite'.$i                 , 'Civilité'       , array('M.' => 'M.', 'Mme' => 'Mme', 'Mlle' => 'Mlle'));
-  $formulaire->addElement('text'  , 'nom'.$i                      , 'Nom'            , array('size' => 30, 'maxlength' => 40));
-  $formulaire->addElement('text'  , 'prenom'.$i                   , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
-  $formulaire->addElement('text'  , 'email'.$i                    , 'Email'          , array('size' => 30, 'maxlength' => 100));
-  $formulaire->addElement('text'  , 'telephone'.$i                , 'Tél.'           , array('size' => 20, 'maxlength' => 20));
+  $formulaire->addElement('header'  , ''          , '<a name="inscription'.$i.'">Personne ' . $i . '</a>');
+  $formulaire->addElement('select', 'civilite'.$i , 'Civilité'       , array('M.' => 'M.', 'Mme' => 'Mme', 'Mlle' => 'Mlle'));
+  $formulaire->addElement('text'  , 'nom'.$i      , 'Nom'            , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+  $formulaire->addElement('text'  , 'prenom'.$i   , 'Prénom'         , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+  $formulaire->addElement('text'  , 'email'.$i    , 'Email'          , array('size' => 30, 'maxlength' => 100, 'class' => 'span7'));
+  $formulaire->addElement('text'  , 'telephone'.$i, 'Tél.'           , array('size' => 20, 'maxlength' => 20, 'class' => 'span7'));
   $groupe = array();
   if ($is_prevente) {
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours en prévente : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_PREVENTE] . ' € </strong> au lieu de '.$AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES].' €' , AFUP_FORUM_2_JOURNEES_PREVENTE);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours en prévente (membre AFUP) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE] . ' € </strong> au lieu de '.$AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP].' €'                       , AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours en prévente (étudiant, demandeur d\'emploi) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE] .  ' € </strong> au lieu de '.$AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT].' €'                   , AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE);
-
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours en prévente + adhésion AFUP : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_PREVENTE] . ' € </strong>', AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours membre AFUP : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE] . ' € </strong>', AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours étudiant : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE] .  ' € </strong>', AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE);
   }
   else  {
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du mardi 05 juin 2012 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>', AFUP_FORUM_PREMIERE_JOURNEE);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du mercredi 06 juin 2012 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>' , AFUP_FORUM_DEUXIEME_JOURNEE);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES] . ' ' . EURO . '</strong>'                                         , AFUP_FORUM_2_JOURNEES);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours (membre AFUP) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP] . ' ' . EURO . '</strong>'                      , AFUP_FORUM_2_JOURNEES_AFUP);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours (étudiant, demandeur d\'emploi) * : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_ETUDIANT);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours (avec coupon de réduction) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_COUPON] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_COUPON);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours membre AFUP : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP] . ' ' . EURO . '</strong>'                      , AFUP_FORUM_2_JOURNEES_AFUP);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours étudiant * : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_ETUDIANT);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours avec coupon de réduction : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_COUPON] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_COUPON);
   }
 
   $formulaire->addGroup($groupe, 'groupe_type_inscription'.$i, 'Formule', '<br />', false);
+  $formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :');
+  $groupe = array();
+  $groupe[] = &HTML_QuickForm::createElement('radio', 'mobilite_reduite'.$i, null, 'oui', 1);
+  $groupe[] = &HTML_QuickForm::createElement('radio', 'mobilite_reduite'.$i, null, 'non', 0);
+  $formulaire->addGroup($groupe, 'groupe_mobilite_reduite'.$i, 'Mobilité réduite', '<br/>', false);
   $formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Merci de renseigner 3 tags ( mot clef) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le Forum PHP');
   for ($j=1; $j <= $nombre_tags; $j++) {
-    $formulaire->addElement('text'  , 'tag_'.$j.'_'.$i                      , 'Tag '.$j            , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text'  , 'tag_'.$j.'_'.$i                      , 'Tag '.$j            , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
 
   }
     $formulaire->addElement('static'  , 'raccourci' , '' , '<i>Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire.....</i>');
   if ($i == $nombre_personnes) {
-    $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<a href="#facturation" class="double">passer à la facturation</a>.');
+    $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<div style="text-align:center"><a href="#facturation" class="btn info">passer à la facturation</a></div>');
   } else {
-    $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<a href="#inscription'.$next.'">Ajouter une autre inscription</a><br />ou <a href="#facturation" class="double">passer à la facturation</a>.');
+    $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<div style="text-align:center"><a href="#inscription'.$next.'" class="btn info">Ajouter une autre inscription</a> ou <a href="#facturation" class="btn info">passer à la facturation</a></div>');
   }
 }
 
@@ -87,7 +92,7 @@ $groupe = array();
 $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
 $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
 $formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
-$formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
+$formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée');
 $formulaire->addElement('text'    , 'societe_facturation'    , 'Société'        , array('size' => 50, 'maxlength' => 100));
 $formulaire->addElement('text'    , 'nom_facturation'        , 'Nom'            , array('size' => 30, 'maxlength' => 40));
 $formulaire->addElement('text'    , 'prenom_facturation'     , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
@@ -116,7 +121,7 @@ $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'n
 $formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
 
 $formulaire->addElement('header', 'boutons'  , '');
-$formulaire->addElement('submit', 'soumettre', 'Soumettre');
+$formulaire->addElement('submit', 'soumettre', 'Soumettre', array('class' => 'btn primary', 'style' => 'float: right'));
 
 $formulaire->addGroupRule('groupe_type_inscription1', 'Formule non sélectionnée' , 'required', null, 1);
 $formulaire->addGroupRule('groupe_type_reglement'  , 'Règlement non sélectionné', 'required', null, 1);
@@ -185,7 +190,8 @@ if ($formulaire->validate()) {
         $valeurs['citer_societe'],
         $valeurs['newsletter_afup'],
         $valeurs['newsletter_nexen'],
-        '<tag>'.$tags.'</tags>');
+        '<tag>'.$tags.'</tags>',
+        $valeurs['mobilite_reduite']);
         $total += $AFUP_Tarifs_Forum[$valeurs['type_inscription'.$i]];
       }
       if (!$ok) {

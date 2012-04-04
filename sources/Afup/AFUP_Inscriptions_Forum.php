@@ -34,6 +34,7 @@ define('AFUP_FORUM_2_JOURNEES_SPONSOR'          , 15);
 define('AFUP_FORUM_PROF'                        , 16);
 define('AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE', 17);
 define('AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE', 18);
+define('AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION', 19);
 
 define('AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE', 0);
 define('AFUP_FORUM_REGLEMENT_CHEQUE'        , 1);
@@ -49,18 +50,19 @@ $AFUP_Tarifs_Forum = array(
                            AFUP_FORUM_CONFERENCIER => 0,
                            AFUP_FORUM_PROJET => 0,
                            AFUP_FORUM_PROF => 0,
-                           AFUP_FORUM_PREMIERE_JOURNEE => 120,
-                           AFUP_FORUM_DEUXIEME_JOURNEE => 120,
-                           AFUP_FORUM_2_JOURNEES       => 180,
-                           AFUP_FORUM_2_JOURNEES_AFUP  => 120,
-                           AFUP_FORUM_2_JOURNEES_ETUDIANT => 120,
-                           AFUP_FORUM_2_JOURNEES_PREVENTE       => 160,
-                           AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE  => 100,
-                           AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => 70,
-                           AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => 70,
-                           AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE => 100,
-                           AFUP_FORUM_2_JOURNEES_COUPON => 140,
-                           AFUP_FORUM_2_JOURNEES_SPONSOR => 180);
+                           AFUP_FORUM_PREMIERE_JOURNEE => 130,
+                           AFUP_FORUM_DEUXIEME_JOURNEE => 130,
+                           AFUP_FORUM_2_JOURNEES       => 200,
+                           AFUP_FORUM_2_JOURNEES_AFUP  => 130,
+                           AFUP_FORUM_2_JOURNEES_ETUDIANT => 130,
+                           AFUP_FORUM_2_JOURNEES_PREVENTE       => 150,
+                           AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE  => 130,
+                           AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION => 150,
+                           AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => 100,
+                           AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => 100,
+                           AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE => 130,
+                           AFUP_FORUM_2_JOURNEES_COUPON => 180,
+                           AFUP_FORUM_2_JOURNEES_SPONSOR => 200);
 
 $AFUP_Tarifs_Forum_Lib = array(
                            AFUP_FORUM_INVITATION => 'Invitation',
@@ -77,6 +79,7 @@ $AFUP_Tarifs_Forum_Lib = array(
                            AFUP_FORUM_2_JOURNEES_ETUDIANT =>  '2 Jours Etudiant',
                            AFUP_FORUM_2_JOURNEES_PREVENTE       =>  '2 Jours prévente',
                            AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE  =>  '2 Jours AFUP prévente',
+                           AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION => '2 Jours prévente + adhésion',
                            AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE =>  '2 Jours Etudiant prévente',
                            AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => 'Jour 1 Etudiant prévente',
                            AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => 'Jour 2 Etudiant prévente',
@@ -348,13 +351,13 @@ class AFUP_Inscriptions_Forum
 
 	function ajouterInscription($id_forum, $reference, $type_inscription, $civilite, $nom, $prenom,
 	                            $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
-                                $newsletter_nexen, $commentaires =null,
+                                $newsletter_nexen, $commentaires =null, $mobilite_reduite = 0,
                                 $etat = AFUP_FORUM_ETAT_CREE, $facturation = AFUP_FORUM_FACTURE_A_ENVOYER)
     {
         $requete  = 'INSERT INTO ';
         $requete .= '  afup_inscription_forum (id_forum, date, reference, type_inscription, montant,
                                civilite, nom, prenom, email, telephone, coupon, citer_societe,
-                               newsletter_afup, newsletter_nexen, commentaires, etat, facturation) ';
+                               newsletter_afup, newsletter_nexen, commentaires, etat, facturation, mobilite_reduite) ';
         $requete .= 'VALUES (';
         $requete .= $id_forum                                       . ',';
         $requete .= time()                                          . ',';
@@ -372,14 +375,15 @@ class AFUP_Inscriptions_Forum
         $requete .= $this->_bdd->echapper($newsletter_nexen)        . ',';
         $requete .= $this->_bdd->echapper($commentaires)            . ',';
         $requete .= $etat                                           . ',';
-        $requete .= $this->_bdd->echapper($facturation)             . ')';
+        $requete .= $this->_bdd->echapper($facturation)             . ',';
+        $requete .= $this->_bdd->echapper($mobilite_reduite)        . ')';
 
         return $this->_bdd->executer($requete);
     }
 
     function modifierInscription($id, $reference, $type_inscription, $civilite, $nom, $prenom,
                                  $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
-                                 $newsletter_nexen, $commentaires, $etat, $facturation)
+                                 $newsletter_nexen, $commentaires, $etat, $facturation, $mobilite_reduite = 0)
     {
         $requete  = 'UPDATE ';
         $requete .= '  afup_inscription_forum ';
@@ -398,7 +402,8 @@ class AFUP_Inscriptions_Forum
         $requete .= '  newsletter_nexen='        . $this->_bdd->echapper($newsletter_nexen)        . ',';
         $requete .= '  commentaires='            . $this->_bdd->echapper($commentaires)            . ',';
         $requete .= '  etat='                    . $this->_bdd->echapper($etat)                    . ',';
-        $requete .= '  facturation='             . $this->_bdd->echapper($facturation)                    . ' ';
+        $requete .= '  facturation='             . $this->_bdd->echapper($facturation)             . ',';
+        $requete .= '  mobilite_reduite='        . $this->_bdd->echapper($mobilite_reduite)        . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
 

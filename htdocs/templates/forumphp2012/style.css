@@ -324,13 +324,18 @@ section article .links a:hover, section article a.external:hover {
   margin-left: 120px;
 }
 
-#formulaire fieldset legend {
+#formulaire fieldset legend, #form_etre_tenu_au_courant fieldset legend {
   padding-top: 20px;
   padding-left: 120px;
 }
 
-#formulaire label {
+#formulaire label, #form_etre_tenu_au_courant label {
   width: 100px;
+}
+
+#formulaire label label {/*checkbox*/
+  width: 300px;
+  margin-left: 5px;
 }
 
 #logos {
@@ -361,3 +366,6 @@ section article .links a:hover, section article a.external:hover {
 	float:none;
 }
 
+a.btn {
+  text-decoration:none;
+}

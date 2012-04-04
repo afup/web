@@ -60,7 +60,7 @@ for ($i = 1;$i < 4; $i++) {
                                    'pres' . $i . '_genre' => 1));
 }
 
-$formulaire->addElement('submit', 'soumettre', 'Soumettre', array('class' => 'btn primary'));
+$formulaire->addElement('submit', 'soumettre', 'Soumettre', array('class' => 'btn primary', 'style' => 'float: right'));
 
 $formulaire->addGroupRule('groupe_pres1', 'Selectionnez le public visé' , 'required', null, 1);
 $formulaire->addRule('pres1_titre', 'Titre manquant', 'required');

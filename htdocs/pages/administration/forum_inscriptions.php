@@ -65,7 +65,7 @@ PS 2 : un lien pour la convocation,
 
 
 '));
-	
+
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
 	$formulaire->addElement('hidden', 'action', 'envoyer_convocation');
 	$formulaire->addElement('header', null, 'Convocation');
@@ -76,7 +76,7 @@ PS 2 : un lien pour la convocation,
 
 	$formulaire->addRule('sujet', 'Sujet manquant', 'required');
 	$formulaire->addRule('corps', 'Corps manquant', 'required');
-	
+
     if ($formulaire->validate()) {
 		$valeurs = $formulaire->exportValues();
 		$resultat = $forum_inscriptions->envoyerEmailConvocation($valeurs['id_forum'], $valeurs['sujet'], $valeurs['corps']);
@@ -91,7 +91,7 @@ PS 2 : un lien pour la convocation,
     $current = $forum->obtenir($_GET['id_forum'], 'titre');
     $smarty->assign('forum_name', $current['titre']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
-	
+
 } elseif ($action == 'lister') {
     $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription';
     $list_ordre = 'date desc';
@@ -179,6 +179,11 @@ PS 2 : un lien pour la convocation,
 	$formulaire->addElement('text'  , 'prenom'                   , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text'  , 'email'                    , 'Email'          , array('size' => 30, 'maxlength' => 100));
 	$formulaire->addElement('text'  , 'telephone'                , 'Tél.'           , array('size' => 20, 'maxlength' => 20));
+
+    $groupe = array();
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'mobilite_reduite', null, 'oui', 1);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'mobilite_reduite', null, 'non', 0);
+    $formulaire->addGroup($groupe, 'groupe_mobilite_reduite', 'Personne à mobilité réduite', '<br/>', false);
 
 	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
@@ -289,6 +294,7 @@ PS 2 : un lien pour la convocation,
         												  $valeurs['newsletter_afup'],
         		                                          $valeurs['newsletter_nexen'],
                                                           $valeurs['commentaires'],
+                                                          $valeurs['mobilite_reduite'],
                                                           $valeurs['etat'],
                                                           $valeurs['facturation']);
         } else {
@@ -306,7 +312,8 @@ PS 2 : un lien pour la convocation,
         												   $valeurs['newsletter_nexen'],
                                                            $valeurs['commentaires'],
         												   $valeurs['etat'],
-        												   $valeurs['facturation']);
+        												   $valeurs['facturation'],
+                                                           $valeurs['mobilite_reduite']);
         }
 
 		$ok &= $forum_facturation->gererFacturation($valeurs['reference'],
