@@ -191,7 +191,7 @@ if ($formulaire->validate()) {
         $valeurs['newsletter_afup'],
         $valeurs['newsletter_nexen'],
         '<tag>'.$tags.'</tags>',
-        $valeurs['mobilite_reduite']);
+        $valeurs['mobilite_reduite'.$i]);
         $total += $AFUP_Tarifs_Forum[$valeurs['type_inscription'.$i]];
       }
       if (!$ok) {
