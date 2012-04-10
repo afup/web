@@ -39,13 +39,13 @@ $nombre_tags = 3;
 
 // On créé le formulaire
 $formulaire = &instancierFormulaire();
-$formulaire->setDefaults(array('civilite'            => 'M.',
-                               'id_pays_facturation' => 'FR',
-                               'type_inscription'    => -1,
-                               'type_reglement'      => -1));
+$formulaire->setDefaults(array('id_pays_facturation' => 'FR'));
 
 for ($i=1; $i <= $nombre_personnes; $i++) {
   $next = $i + 1;
+  $formulaire->setDefaults(array('civilite'.$i            => 'M.',
+                                 'type_inscription'.$i    => -1,
+                                 'type_reglement'.$i      => -1));
   $formulaire->addElement('header'  , ''          , '<a name="inscription'.$i.'">Personne ' . $i . '</a>');
   $formulaire->addElement('select', 'civilite'.$i , 'Civilité'       , array('M.' => 'M.', 'Mme' => 'Mme', 'Mlle' => 'Mlle'));
   $formulaire->addElement('text'  , 'nom'.$i      , 'Nom'            , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
