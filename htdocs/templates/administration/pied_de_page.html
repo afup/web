@@ -29,5 +29,24 @@
         <div id="footer">
             &copy; AFUP | Icônes <a href="http://www.famfamfam.com/lab/icons/silk/">FamFamFam</a>
         </div>
+
+        {if $flash_message}
+        <div class="notify {if $flash_erreur}error{else}success{/if}">
+            <p><img src="{$chemin_template}images/{if $flash_erreur}error{else}success{/if}.png" />{$flash_message|escape|nl2br}</p>
+        </div>
+
+        {literal}
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $(".notify").delay(300).fadeIn(400).delay(5500).fadeOut(400);
+            $(".notify").hover(function(){
+                $(this).stop(true,true).fadeIn();
+            },function(){
+                $(this).stop(true,true).delay(500).fadeIn(400).delay(5500).fadeOut(400);
+            });
+        });
+        </script>
+        {/literal}
+        {/if}
     </body>
 </html>

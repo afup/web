@@ -9,36 +9,36 @@
  */
 function afficherMessage($message, $url, $erreur = false)
 {
-    $message = urlencode($message);
-    $url     = urlencode($url);
-    header('Location: index.php?page=message&message=' . $message . '&url=' . $url . '&erreur=' . $erreur);
-    exit;    
+    $_SESSION['flash']['message'] = $message;
+    $_SESSION['flash']['erreur'] = $erreur;
+    header('Location: ' . $url);
+    exit;
 }
 
 /**
  * Renvoit l'instance d'un formulaire
- * 
+ *
  * Un formulaire est instancié, configuré puis renvoyé
- * 
+ *
  * @param   string  $url        URL pour l'attribut "action" du formulaire
  * @param   string  $nom        Nom du formulaire
  * @return  object
  */
 function &instancierFormulaire($url = null, $nom = 'formulaire') {
     if (is_null($url)) {
-        $url = $_SERVER['REQUEST_URI'];    
-    }    
-    
+        $url = $_SERVER['REQUEST_URI'];
+    }
+
     require_once 'HTML/QuickForm.php';
     require_once 'HTML/QuickForm/altselect.php';
     $formulaire = new HTML_QuickForm($nom, 'post', $url);
     $formulaire->removeAttribute('name');
-    return $formulaire;     
+    return $formulaire;
 }
 
 /**
  * Renvoit un tableau contenant les éléments d'un formulaire
- * 
+ *
  * @param   object  $formulaire     Formulaire Ã  traiter
  * @return  array
  */
@@ -53,9 +53,9 @@ function genererFormulaire(&$formulaire) {
 
 /**
  * Vérifie qu'une action est disponible et si ce n'est pas le cas, renvoit l'action par défaut
- * 
+ *
  * L'action par défaut est la première des actions disponibles.
- * 
+ *
  * @param   object  $actions_disponibles    Actions disponibles
  * @return  string
  */
@@ -63,19 +63,19 @@ function verifierAction($actions_disponibles)
 {
     if (!is_array($actions_disponibles) || count($actions_disponibles) == 0) {
         trigger_error("Les actions disponibles doivent Ãªtre passées sous forme d'un tableau d'au moins un élément", E_USER_ERROR);
-        return false;    
+        return false;
     }
-        
+
     if (!empty($_GET['action']) && in_array($_GET['action'], $actions_disponibles)) {
-        return $_GET['action'];    
+        return $_GET['action'];
     } else {
-        return $actions_disponibles[0];    
+        return $actions_disponibles[0];
     }
 }
 
 /*
  * Remplace une caractère accentué par sa version non accentuée
- * 
+ *
  * @param   string  $texte  Texte Ã  traiter
  * @return  string          Texte traité
  */

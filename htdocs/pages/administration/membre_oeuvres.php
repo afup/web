@@ -14,7 +14,7 @@ if ($action == 'calculer') {
         AFUP_Logs::log('Calculer les oeuvres de l\'AFUP');
         afficherMessage('Les oeuvres ont été calculées', 'index.php?page=membre_oeuvres');
     } else {
-        afficherMessage('Une erreur est survenue lors du calcul des oeuvres', 'index.php?page=membre_oeuvres');
+        afficherMessage('Une erreur est survenue lors du calcul des oeuvres', 'index.php?page=membre_oeuvres', true);
     }
 }
 $id_personne_physique = isset($_GET['id_personne_physique']) ? (int)$_GET['id_personne_physique'] : $droits->obtenirIdentifiant();

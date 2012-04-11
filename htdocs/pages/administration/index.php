@@ -76,8 +76,15 @@ if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__).'/' . $_GET['page
 	$_GET['page'] = 'accueil';
 }
 
-
 require_once dirname(__FILE__).'/'.$_GET['page'] . '.php';
+
+// On gère des infos popups
+if (isset($_SESSION['flash'])) {
+    $smarty->assign('flash_message', $_SESSION['flash']['message']);
+    $smarty->assign('flash_erreur', $_SESSION['flash']['erreur']);
+    unset($_SESSION['flash']);
+}
+
 // Affichage de la page
 $smarty->display('entete.html');
 $smarty->display($_GET['page'] . '.html');
