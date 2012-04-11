@@ -48,7 +48,7 @@ elseif($action =='envoyer')
 
         if ($ok !== false) {
             AFUP_Logs::log('Envoi du mail aux membres pour le vote des sessions');
-            afficherMessage('Les mails ont été envoyé ('.$ok.')', 'index.php');
+            afficherMessage('Les mails ont été envoyés ('.$ok.')', 'index.php');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de la préparation des personnes physiques');
         }

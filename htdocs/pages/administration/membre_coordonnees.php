@@ -55,7 +55,7 @@ if ($formulaire->validate()) {
 
     if ($ok) {
         AFUP_Logs::log('Modification de la personne physique par l\'utilisateur (' . $_GET['id'] . ')');
-        afficherMessage('Vos coordonnées ont été mise à jour', 'index.php?page=membre_coordonnees');
+        afficherMessage('Vos coordonnées ont été mises à jour', 'index.php?page=membre_coordonnees');
     } else {
         $smarty->assign('erreur', 'Une erreur est survenue lors de la modification de vos coordonnées');
     }

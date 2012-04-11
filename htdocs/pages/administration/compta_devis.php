@@ -240,7 +240,7 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
             } else {
                 AFUP_Logs::log('Modification de l\'écriture ' . $valeur['numero_devis'] . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=compta_devis&action=lister');
+            afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_devis&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
         }

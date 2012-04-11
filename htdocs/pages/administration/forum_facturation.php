@@ -47,7 +47,7 @@ if ($action == 'lister') {
 	}
 } elseif ($action == 'envoyer_tout'){
 	if ($forum_facturation->envoyerATous($_GET['id_forum'])) {
-		afficherMessage('Les factures ont été envoyé', 'index.php?page=forum_facturation&action=lister');
+		afficherMessage('Les factures ont été envoyées', 'index.php?page=forum_facturation&action=lister');
 	} else {
 		afficherMessage('Au moins une facture n\'a pas pu être envoyé. Se conférer aux logs pour plus de détails', 'index.php?page=forum_facturation&action=lister', true);
 	}

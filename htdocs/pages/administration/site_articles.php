@@ -40,7 +40,7 @@ if ($action == 'lister') {
     $article = new AFUP_Site_Article($_GET['id']);
     if ($article->supprimer()) {
         AFUP_Logs::log('Suppression de l\'article ' . $_GET['id']);
-        afficherMessage('L\'article a �t� supprim�', 'index.php?page=site_articles&action=lister');
+        afficherMessage('L\'article a été supprimé', 'index.php?page=site_articles&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'article', 'index.php?page=site_articles&action=lister', true);
     }
@@ -67,7 +67,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'descriptif'               , 'Descriptif'      , array('cols' => 42, 'rows'      => 10, 'class' => 'tinymce'));
     $formulaire->addElement('textarea', 'chapeau'                  , 'Chapeau'         , array('cols' => 42, 'rows'      => 10, 'class' => 'tinymce'));
     $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , array('cols' => 42, 'rows'      => 20, 'class' => 'tinymce'));
-        
+
     $formulaire->addElement('header'  , ''                         , 'M&eacute;ta-donn&eacute;es');
     $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'      , array('size' => 60, 'maxlength' => 255));
     $formulaire->addElement('select'  , 'id_site_rubrique'         , 'Rubrique'       , array(null => '' ) + $rubriques->obtenirListe('id, nom', 'nom', true));
@@ -75,7 +75,7 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date'                     , 'Date'           , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
     $formulaire->addElement('select'  , 'position'                 , 'Position'       , $article->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'           , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
-    
+
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
 
@@ -109,7 +109,7 @@ if ($action == 'lister') {
             } else {
                 AFUP_Logs::log('Modification de l\'article ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('l\'article a �t� ' . (($action == 'ajouter') ? 'ajout�' : 'modifi�'), 'index.php?page=site_articles&action=lister');
+            afficherMessage('L\'article a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=site_articles&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'article');
         }

@@ -132,7 +132,7 @@ if ($action == 'inscrire_forum')
     }
 
   }
-        afficherMessage($nb_conferencier . ' conférenciers a été ajoutés dans les inscriptions', 'index.php?page=forum_conferenciers&action=lister');
+        afficherMessage($nb_conferencier . ' conférenciers ont été ajoutés dans les inscriptions', 'index.php?page=forum_conferenciers&action=lister');
 }
 
 elseif ($action == 'lister') {

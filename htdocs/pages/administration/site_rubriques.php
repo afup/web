@@ -40,7 +40,7 @@ if ($action == 'lister') {
     $rubrique = new AFUP_Site_Rubrique($_GET['id']);
     if ($rubrique->supprimer()) {
         AFUP_Logs::log('Suppression de la rubrique ' . $_GET['id']);
-        afficherMessage('La rubrique a été supprimé', 'index.php?page=site_rubriques&action=lister');
+        afficherMessage('La rubrique a été supprimée', 'index.php?page=site_rubriques&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de la rubrique', 'index.php?page=site_rubriques&action=lister', true);
     }
@@ -48,7 +48,7 @@ if ($action == 'lister') {
 } else {
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     $rubrique = new AFUP_Site_Rubrique($id);
-    
+
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(array('date' => time(),
@@ -68,7 +68,7 @@ if ($action == 'lister') {
     $formulaire->addElement('file'    , 'icone'                    , 'Icône');
     $formulaire->addElement('static'  , 'html'                     , '', '<img src="'.$conf->obtenir('web|path').'/templates/site/images/'.$rubrique->icone.'" /><br />');
     $formulaire->addElement('hidden'  , 'icone_default'            , $rubrique->icone);
-    
+
     $formulaire->addElement('header'  , ''                         , 'Méta-données');
     $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'        , array('size' => 60, 'maxlength' => 255));
     $formulaire->addElement('select'  , 'id_parent'                , 'Parent'           , array(null => '' ) + $rubriques->obtenirListe('id, nom', 'nom', true));
@@ -76,7 +76,7 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date'                     , 'Date'             , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
     $formulaire->addElement('select'  , 'position'                 , 'Position'         , $rubrique->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'             , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
-    
+
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
 

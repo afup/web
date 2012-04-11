@@ -3,13 +3,13 @@ $formulaire = &instancierFormulaire();
 $defaults = $conf->exporter();
 if ($defaults['paybox_prod|site'] == $defaults['paybox|site'] &&
     $defaults['paybox_prod|rang'] == $defaults['paybox|rang']) {
-	$type = 'prod';    
+	$type = 'prod';
 } else {
 	$type = 'test';
 }
 $defaults['paybox'] =  $type;
 unset($defaults['paybox|site']);
-unset($defaults['paybox|rang']); 
+unset($defaults['paybox|rang']);
 $formulaire->setDefaults($defaults);
 
 $formulaire->addElement('header', ''                , 'Base de donnes');
@@ -54,7 +54,7 @@ $formulaire->addElement('textarea', 'planete|pertinence'     , 'Critère de pert
 $formulaire->addElement('header'     , ''                       , 'Divers');
 $formulaire->addElement('select'     , 'divers|niveau_erreur'   , 'Niveau erreur'   , array(E_ALL     => 'Toutes',
                                                                                             E_NOTICE  => 'Informations',
-                                                                                            E_WARNING => 'Avertissements', 
+                                                                                            E_WARNING => 'Avertissements',
                                                                                             0         => 'Aucune'));
 $formulaire->addElement('advcheckbox', 'divers|afficher_erreurs', 'Afficher erreurs', null, null, array(0, 1));
 
@@ -69,17 +69,17 @@ if ($formulaire->validate()) {
 	$valeurs = $formulaire->exportValues();
 	$cle     = 'paybox_' . $valeurs['paybox'];
 	unset($valeurs['paybox']);
-	$valeurs['paybox|site'] = $valeurs[$cle . '|site'];  
+	$valeurs['paybox|site'] = $valeurs[$cle . '|site'];
 	$valeurs['paybox|rang'] = $valeurs[$cle . '|rang'];
 
     $conf->importer($valeurs);
     if ($conf->enregistrer()) {
         AFUP_Logs::log('Modification de la configuration');
-        afficherMessage('La configuration a t enregistre', 'index.php?page=configuration');    
+        afficherMessage('La configuration a été enregistrée', 'index.php?page=configuration');
     } else {
-        $smarty->assign('erreur', "Une erreur est survenue lors de l'enregistrement de la configuration");    
-    }   
-} 
+        $smarty->assign('erreur', "Une erreur est survenue lors de l'enregistrement de la configuration");
+    }
+}
 
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 
