@@ -5,7 +5,11 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Utils.php';
 $droits = AFUP_Utils::fabriqueDroits($bdd);
 
 if (!isset($_GET['page'])) {
-    $_GET['page'] = 'connexion';
+    if (!$droits->estConnecte()) {
+        $_GET['page'] = 'connexion';
+    } else {
+        $_GET['page'] = 'accueil';
+    }
 }
 if (!empty($_POST['connexion'])) {
     $droits->seConnecter($_POST['utilisateur'], $_POST['mot_de_passe']);
