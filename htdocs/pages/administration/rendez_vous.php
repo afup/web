@@ -159,7 +159,7 @@ if ($action == 'lister' || $action== 'listing' ) {
 			$champs['creation'] = time();
 		}
 	} else {
-        afficherMessage('Il manque l\'identifiant du rendez-vous pour effectuer l\'inscription.', 'index.php?page=rendez_vous&action=lister');
+        afficherMessage('Il manque l\'identifiant du rendez-vous pour effectuer l\'inscription.', 'index.php?page=rendez_vous&action=lister', true);
 	}
 
     $formulaire->addElement('hidden'  , 'id_rendezvous' , $id_rendezvous);

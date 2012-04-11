@@ -27,7 +27,7 @@ if ($action == 'lister') {
         && isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
         $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
     }
-    
+
     // Mise en place de la liste dans le scope de smarty
     $evenements = $aperos->obtenirListe($list_ordre, $list_associatif, $list_filtre);
     $smarty->assign('evenements', $evenements);
@@ -47,7 +47,7 @@ if ($action == 'lister') {
         $formulaire->setDefaults(array('etat' => 0, 'date' => time()));
     } else {
         $champs = $aperos->obtenir($_GET['id']);
-        $formulaire->setDefaults($champs);    
+        $formulaire->setDefaults($champs);
 		$formulaire->setDefaults(array('participants' => array_keys($aperos->obtenirListeParticipants($_GET['id']))));
     }
 
@@ -63,10 +63,10 @@ if ($action == 'lister') {
 		$element =& $formulaire->addElement('altselect', 'participants', 'Participants', $inscrits->obtenirSelect('pseudo ASC'));
 		$element->setMultiple(true);
     }
-    
+
     $formulaire->addElement('header', 'boutons', '');
     $formulaire->addElement('submit', 'soumettre', ucfirst($action));
-    
+
     if ($formulaire->validate()) {
 		$date = $formulaire->exportValue('date');
 		$date = mktime($date['H'], $date['i'], 0, $date['M'], $date['d'], $date['Y']);
@@ -86,18 +86,18 @@ if ($action == 'lister') {
                                     $formulaire->exportValue('etat'));
 			$aperos->modifierParticipants($_GET['id'], $formulaire->exportValue('participants'));
         }
-        
+
         if ($ok) {
             if ($action == 'ajouter') {
                 AFUP_Logs::log('Ajout de l\'apéro du ' . $formulaire->exportValue('date'));
             } else {
                 AFUP_Logs::log('Modification de l\'apéro du ' . $formulaire->exportValue('date') . ' (' . $_GET['id'] . ')');
-            }            
-            afficherMessage('L\'apéro a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=aperos&action=lister');    
+            }
+            afficherMessage('L\'apéro a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=aperos&action=lister');
         } else {
-            $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'apéro');    
-        }    
-    } 
-    
+            $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'apéro', true);
+        }
+    }
+
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }

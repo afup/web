@@ -60,7 +60,7 @@ $_GET['page'] != 'message' and $_GET['page'] != 'inscription') {
 require_once dirname(__FILE__) . '/../../../configs/application/pages.php';
 $droits->chargerToutesLesPages($pages);
 if (!$droits->verifierDroitSurLaPage($_GET['page'])) {
-    afficherMessage("Vous n'avez pas le droit d'accéder à cette page", 'index.php');
+    afficherMessage("Vous n'avez pas le droit d'accéder à cette page", 'index.php', true);
 }
 // Initialisation de AFUP_Log
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Logs.php';

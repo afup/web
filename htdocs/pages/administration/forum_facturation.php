@@ -49,7 +49,7 @@ if ($action == 'lister') {
 	if ($forum_facturation->envoyerATous($_GET['id_forum'])) {
 		afficherMessage('Les factures ont été envoyé', 'index.php?page=forum_facturation&action=lister');
 	} else {
-		afficherMessage('Au moins une facture n\'a pas pu être enovoyé. Se conférer aux logs pour plus de détails', 'index.php?page=forum_facturation&action=lister');
+		afficherMessage('Au moins une facture n\'a pas pu être envoyé. Se conférer aux logs pour plus de détails', 'index.php?page=forum_facturation&action=lister', true);
 	}
 } elseif ($action == 'facturer_facture'){
 	if($forum_facturation->estFacture($_GET['ref'])){
@@ -70,7 +70,7 @@ if ($action == 'lister') {
     if ($forum_facturation->changerDateReglement($_GET['ref'], $reglement)) {
 		afficherMessage('La date de réglement a été changée', 'index.php?page=forum_facturation&action=lister');
     } else {
-		afficherMessage('La date de réglement n\'a pas été changée', 'index.php?page=forum_facturation&action=lister');
+		afficherMessage('La date de réglement n\'a pas été changée', 'index.php?page=forum_facturation&action=lister', true);
     }
 }
 ?>

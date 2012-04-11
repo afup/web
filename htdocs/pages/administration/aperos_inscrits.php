@@ -24,7 +24,7 @@ if ($action == 'lister') {
         && isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
         $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
     }
-    
+
     // Mise en place de la liste dans le scope de smarty
     $inscrits = $inscrits->obtenirListe($list_ordre, $list_associatif, $list_filtre);
     $smarty->assign('inscrits', $inscrits);
@@ -45,7 +45,7 @@ if ($action == 'lister') {
         $champs = $inscrits->obtenir($_GET['id']);
         unset($champs['mot_de_passe']);
         $champs['date_inscription'] = $champs['date_inscription'] ? date("d/m/Y", $champs['date_inscription']) : "";
-        $formulaire->setDefaults($champs);    
+        $formulaire->setDefaults($champs);
     }
 
     $formulaire->addElement('header', '', 'Inscrit');
@@ -60,10 +60,10 @@ if ($action == 'lister') {
     $formulaire->addElement('select', 'id_ville', 'Ville', array(0 => '--') + $villes->obtenirListe('nom ASC', true));
     $formulaire->addElement('select', 'etat', 'Etat', $inscrits->obtenirListeEtat());
     $formulaire->addElement('static', 'date_inscription', 'Date d\'inscription');
-    
+
     $formulaire->addElement('header', 'boutons', '');
     $formulaire->addElement('submit', 'soumettre', ucfirst($action));
-    
+
     if ($formulaire->validate()) {
         if ($action == 'ajouter') {
             $ok = $inscrits->ajouter($formulaire->exportValue('pseudo'),
@@ -85,19 +85,19 @@ if ($action == 'lister') {
                                              $formulaire->exportValue('id_ville'),
                                              $formulaire->exportValue('etat'));
         }
-        
+
         if ($ok) {
             if ($action == 'ajouter') {
                 AFUP_Logs::log('Ajout de l\'inscrit ' . $formulaire->exportValue('pseudo') . ' aux apéros PHP ');
             } else {
                 AFUP_Logs::log('Modification de l\'inscrit ' . $formulaire->exportValue('pseudo') . ' (' . $_GET['id'] . ') aux apéros PHP ');
-            }            
-            afficherMessage('L\'inscrit aux apéros PHP a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=aperos_inscrits&action=lister');    
+            }
+            afficherMessage('L\'inscrit aux apéros PHP a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=aperos_inscrits&action=lister');
         } else {
-            $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'inscrit aux apéros PHP ');    
-        }    
-    } 
-    
+            $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'inscrit aux apéros PHP ', true);
+        }
+    }
+
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
 

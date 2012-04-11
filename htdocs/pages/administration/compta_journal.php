@@ -217,7 +217,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                 AFUP_Logs::log('Chargement fichier banque');
                 afficherMessage('Le fichier a été importé', 'index.php?page=compta_journal&action=lister');
             } else {
-                afficherMessage('Le fichier n\'a pas été importé', 'index.php?page=compta_journal&action=lister');
+                afficherMessage('Le fichier n\'a pas été importé', 'index.php?page=compta_journal&action=lister', true);
             }
             unlink($tmpDir . '/banque.csv');
         }

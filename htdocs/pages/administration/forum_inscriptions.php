@@ -85,7 +85,7 @@ PS 2 : un lien pour la convocation,
 			afficherMessage('La convocation a été envoyée', 'index.php?page=forum_inscriptions&action=lister');
 		} else {
 			AFUP_Logs::log('Echec de l\'envoi de la convocation pour le Forum PHP');
-			afficherMessage('L\'envoi de la convocation a échouée', 'index.php?page=forum_inscriptions&action=lister');
+			afficherMessage('L\'envoi de la convocation a échouée', 'index.php?page=forum_inscriptions&action=lister', true);
 		}
     }
     $current = $forum->obtenir($_GET['id_forum'], 'titre');
