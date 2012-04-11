@@ -48,7 +48,6 @@ if ($_GET['page'] == 'desinscription_mailing') {
 if (!empty($_GET['hash'])) {
 	$droits->seDeconnecter();
     $droits->seConnecterEnAutomatique($_GET['hash']);
-    $_GET['page'] = 'accueil';
 }
 
 if (!$droits->estConnecte() and $_GET['page'] != 'connexion' and $_GET['page'] != 'mot_de_passe_perdu' and
@@ -60,7 +59,7 @@ $_GET['page'] != 'message' and $_GET['page'] != 'inscription') {
 require_once dirname(__FILE__) . '/../../../configs/application/pages.php';
 $droits->chargerToutesLesPages($pages);
 if (!$droits->verifierDroitSurLaPage($_GET['page'])) {
-    afficherMessage("Vous n'avez pas le droit d'accéder à cette page", 'index.php', true);
+    afficherMessage("Vous n'avez pas le droit d'accéder à cette page", 'index.php?page=accueil', true);
 }
 // Initialisation de AFUP_Log
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Logs.php';
