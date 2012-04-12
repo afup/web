@@ -213,6 +213,10 @@ section article .conferencier img {
   width: 90px;
 }
 
+section article.conferenciers .conferencier {
+  min-height: 140px;
+}
+
 section article dl {
   background: transparent url(./img/background-metadata.png) top left no-repeat;
   height: 20px;

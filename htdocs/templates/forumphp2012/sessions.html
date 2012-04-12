@@ -28,7 +28,7 @@
 
       			<div class="details">
       				<div class="abstract">{$session.abstract}</div>
-      	   		<div class="conferenciers">
+      	   		<div>
       			    {foreach from=$session.conferenciers item=conferencier}
   	          		<div class="conferencier">
       			    		<a href="conferenciers.php#{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/></a><br />
