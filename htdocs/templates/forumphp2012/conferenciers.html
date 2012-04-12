@@ -3,7 +3,7 @@
 <h2>Les conf&eacute;renciers</h2>
 
 {foreach from=$conferenciers item=conferencier}
-  {if $conference.nom != 'À définir'}
+  {if $conferencier.nom != 'À définir'}
   <article class="first">
 		<h3>
 		  {$conferencier.prenom} {$conferencier.nom}
