@@ -188,9 +188,29 @@ section article .session {
   padding: 0 0 170px 15px;
 }
 
+section article .session .horaire {
+  padding: 0 0 10px 0;
+  text-align: right;
+}
+
+section article .session .horaire .salle {
+  float: left;
+}
+
 section article .session .conferencier {
   float: left;
   margin: 10px 10px 0 0;
+}
+
+section article .conferencier .photo {
+  float: left;
+  margin: 10px 20px 10px 0;
+  width: 105px;
+}
+
+section article .conferencier img {
+  border: 5px #000 solid;
+  width: 90px;
 }
 
 section article dl {

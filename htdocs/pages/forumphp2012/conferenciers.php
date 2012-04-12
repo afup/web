@@ -12,16 +12,27 @@ $sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
 $conferenciers = array();
 foreach ($sessions as $index => $session) {
 	$tmp_conferenciers = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
-    foreach ($tmp_conferenciers as $conferencier) {
-        if (!isset($conferenciers[$conferencier['conferencier_id']])) {
-            $conferenciers[$conferencier['conferencier_id']] = $conferencier;
-        }
-        $conferenciers[$conferencier['conferencier_id']]['sessions'][] = array(
-            'id' => $session['session_id'],
-            'titre' => $session['titre'],
-        );
+
+  foreach ($tmp_conferenciers as $conferencier) {
+    if (!isset($conferenciers[$conferencier['conferencier_id']])) {
+      $conferenciers[$conferencier['conferencier_id']] = $conferencier;
     }
+
+    $conferenciers[$conferencier['conferencier_id']]['sessions'][] = array(
+      'id' => $session['session_id'],
+      'titre' => $session['titre'],
+    );
+  }
 }
 
+function compareNames($a, $b) {
+  if ($a == $b) {
+    return 0;
+  }
+
+  return ($a < $b) ? -1 : 1;
+}
+
+uasort($conferenciers, 'compareNames');
 $smarty->assign('conferenciers', $conferenciers);
 $smarty->display('conferenciers.html');

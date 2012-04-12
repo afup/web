@@ -23,7 +23,7 @@
       			<a name="{$session.session_id}" ></a>
       			<h4>{$session.titre}</h4>
       			<div class="horaire">
-      				<span class="salle">{$session.nom_salle}</span> - {$session.debut|date_format:'%d/%m/%Y <strong>%H:%M'} - {$session.fin|date_format:'%H:%M'}</strong>
+      				<span class="salle">{$session.nom_salle}</span> {$session.debut|date_format:'%d/%m/%Y <strong>%H:%M'}-{$session.fin|date_format:'%H:%M'}</strong>
       			</div>
 
       			<div class="details">

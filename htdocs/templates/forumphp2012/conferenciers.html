@@ -1,33 +1,30 @@
 {include file="entete.html"}
 
-<div class="left-content">
-	<h1>Les conf&eacute;renciers</h1>
+<h2>Les conf&eacute;renciers</h2>
 
-	<div class="conferenciers">
-	{foreach from=$conferenciers item=conferencier}
-		<div class="conferencier">  
-			<div class="photo" >
-				<img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" border="0" align="left" />
-			</div> 
-			<div class="body">  
+{foreach from=$conferenciers item=conferencier}
+  <article class="first">
+		<h3>
+		  {$conferencier.prenom} {$conferencier.nom}
+  		{if $conferencier.societe}- <span class="societe">{$conferencier.societe}</span>{/if}
+		</h3>
+    <div class="article-body conferencier">
+			<div class="photo">
+				<img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" border="0" />
+			</div>
+      <p>
 				<a name="{$conferencier.conferencier_id}" ></a>
-				<h3>{$conferencier.prenom} {$conferencier.nom}</h3>
-				<div class="societe">{$conferencier.societe}</div>
-	    		<div class="spacer"></div>
-	    		<div class="biographie">{$conferencier.biographie}</div>
-				<ul class="conferencier_sessions">
-	      		{foreach from=$conferencier.sessions item=session}
+        {$conferencier.biographie}
+      </p>
+      <ul>
+        {foreach from=$conferencier.sessions item=session}
 					<li class="conferencier_session">
 						<a href="sessions.php#{$session.id}">{$session.titre}</a>
 					</li>
 				{/foreach}
-				</ul>    
-			</div>
-	    	<div class="spacer"></div>
-		</div>
-	{/foreach}
-	</div>
-</div>
+      </ul>
+    </div>
+  </article>
+{/foreach}
 
-{include file="sidebar.html"}
 {include file="pied_de_page.html"}
