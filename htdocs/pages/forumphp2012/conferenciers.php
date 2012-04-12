@@ -14,7 +14,7 @@ foreach ($sessions as $index => $session) {
 	$tmp_conferenciers = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
 
   foreach ($tmp_conferenciers as $conferencier) {
-    if ('À définir' == $conferencier['prenom']) {
+    if ('À définir' == $conferencier['nom']) {
       continue;
     }
 
