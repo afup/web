@@ -15,6 +15,8 @@ foreach ($sessions as $index => $session) {
 
   foreach ($tmp_conferenciers as $conferencier) {
     if (!isset($conferenciers[$conferencier['conferencier_id']])) {
+      $conferencier['prenom'] = ucfirst(strtolower($conferencier['prenom']));
+      $conferencier['nom'] = strtoupper($conferencier['nom']);
       $conferenciers[$conferencier['conferencier_id']] = $conferencier;
     }
 
@@ -26,11 +28,11 @@ foreach ($sessions as $index => $session) {
 }
 
 function compareNames($a, $b) {
-  if ($a == $b) {
+  if ($a['prenom'] == $b['prenom']) {
     return 0;
   }
 
-  return ($a < $b) ? -1 : 1;
+  return ($a['prenom'] < $b['prenom']) ? -1 : 1;
 }
 
 uasort($conferenciers, 'compareNames');
