@@ -1,6 +1,4 @@
 <?php
-define('EURO'                             , '€');
-
 define('AFUP_FORUM_ETAT_CREE'             , 0);
 define('AFUP_FORUM_ETAT_ANNULE'           , 1);
 define('AFUP_FORUM_ETAT_ERREUR'           , 2);

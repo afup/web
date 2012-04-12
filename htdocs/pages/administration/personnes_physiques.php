@@ -65,6 +65,10 @@ if ($action == 'lister') {
         		'etat' => AFUP_DROITS_ETAT_INACTIF,
                 'mot_de_passe' => '',
                 'confirmation_mot_de_passe' => ''));
+        if (isset($_SESSION['generer_personne_physique'])) {
+            $formulaire->setDefaults($_SESSION['generer_personne_physique']);
+            unset($_SESSION['generer_personne_physique']);
+        }
     } else {
         $champs = $personnes_physiques->obtenir($_GET['id']);
         unset($champs['mot_de_passe']);
@@ -72,7 +76,7 @@ if ($action == 'lister') {
     }
 
     $formulaire->addElement('header' , '' , 'Informations');
-    if(AFUP_DROITS_ETAT_ACTIF == $champs['etat']) {
+    if(isset($champs['etat']) && AFUP_DROITS_ETAT_ACTIF == $champs['etat']) {
         $formulaire->addElement('static', 'note' , '    ' , '<a href="?page=personnes_physiques&action=envoi_bienvenue&id='.$_GET['id'].'">Envoyer un mail de bienvenue</a>');
     }
     $formulaire->addElement('select' , 'id_personne_morale' , 'Personne morale', array(null => '') + $personnes_morales->obtenirListe('id, raison_sociale', 'raison_sociale', true));
@@ -113,7 +117,7 @@ if ($action == 'lister') {
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
     $formulaire->addElement('select' , 'niveau_site' , 'Site web', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
-            
+
     $formulaire->addElement('select' , 'etat' , 'Etat' , array(AFUP_DROITS_ETAT_NON_FINALISE => 'Non finalisé',
 	    AFUP_DROITS_ETAT_ACTIF => 'Actif',
             AFUP_DROITS_ETAT_INACTIF => 'Inactif'));

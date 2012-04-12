@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer','envoyer_convocation'));
+$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer','envoyer_convocation', 'generer_mail_inscription_afup', 'generer_inscription_afup'));
 $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
@@ -126,7 +126,35 @@ PS 2 : un lien pour la convocation,
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', 'index.php?page=forum_inscriptions&action=lister', true);
     }
-
+} elseif ($action == 'generer_mail_inscription_afup') {
+    $champs = $forum_inscriptions->obtenir($_GET['id']);
+    $champs2 = $forum_facturation->obtenir($champs['reference']);
+    $info_forum = $forum->obtenir($champs['id_forum']);
+    $texte  = ' - civilité :    ' . $champs['civilite'] . PHP_EOL;
+    $texte .= ' - nom :         ' . $champs['nom'] . PHP_EOL;
+    $texte .= ' - prénom :      ' . $champs['prenom'] . PHP_EOL;
+    $texte .= ' - email :       ' . $champs['email'] . PHP_EOL;
+    $texte .= ' - adresse :     ' . $champs2['adresse'] . PHP_EOL;
+    $texte .= ' - code postal : ' . $champs2['code_postal'] . PHP_EOL;
+    $texte .= ' - ville :       ' . $champs2['ville'] . PHP_EOL;
+    $texte .= ' - pays :        ' . $champs2['id_pays'] . PHP_EOL;
+    $smarty->assign('texte_mail', $texte);
+    $smarty->assign('info_forum', $info_forum);
+} elseif ($action == 'generer_inscription_afup') {
+    $champs = $forum_inscriptions->obtenir($_GET['id']);
+    $champs2 = $forum_facturation->obtenir($champs['reference']);
+    $_SESSION['generer_personne_physique']['civilite'] = $champs['civilite'];
+    $_SESSION['generer_personne_physique']['nom'] = $champs['nom'];
+    $_SESSION['generer_personne_physique']['prenom'] = $champs['prenom'];
+    $_SESSION['generer_personne_physique']['email'] = $champs['email'];
+    $_SESSION['generer_personne_physique']['adresse'] = $champs2['adresse'];
+    $_SESSION['generer_personne_physique']['code_postal'] = $champs2['code_postal'];
+    $_SESSION['generer_personne_physique']['ville'] = $champs2['ville'];
+    $_SESSION['generer_personne_physique']['id_pays'] = $champs2['id_pays'];
+    $_SESSION['generer_personne_physique']['telephone_fixe'] = $champs['telephone'];
+    $_SESSION['generer_personne_physique']['telephone_portable'] = $champs['telephone'];
+    $_SESSION['generer_personne_physique']['etat'] = 1;
+    afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login", 'index.php?page=personnes_physiques&action=ajouter');
 } else {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);

@@ -2,27 +2,28 @@
 /**
  * Fichier d'initialisation de l'application (bootstrap), partie commune
  * à tous les contextes (points d'entrée) d'usage de l'application
- * 
+ *
  * Ce fichier doit contenir l'ensemble des directives d'initialisation
  * nécessaire au chargement de toute l'application qu'il s'agisse
  * d'un contexte page web ou bien batch ligne de commande (ou autre).
- * 
+ *
  * @author    Perrick Penet   <perrick@noparking.fr>
  * @author    Olivier Hoareau <olivier@phppro.fr>
  * @copyright 2010 Association Française des Utilisateurs de PHP
- * 
+ *
  * @category AFUP
  * @package  AFUP
  * @group    Bootstraps
  */
 
 // racine de l'application (pas du document root !)
- 
+
 $root = realpath(dirname(__FILE__) . '/../../..');
 
 // définitions des constantes
 
 define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
+define('EURO', '€');
 
 date_default_timezone_set('Europe/Paris');
 
@@ -30,7 +31,7 @@ date_default_timezone_set('Europe/Paris');
  * Ajout des répertoires contenant les différentes classes et script à inclure
  * dans l'include path pour éviter de les inclure avec chemin absolu
  * et pouvoir bénéficier prochainement du mécanisme d'autoloading de classe
- * 
+ *
  * @author Olivier Hoareau <olivier@phppro.fr>
  */
 set_include_path(
