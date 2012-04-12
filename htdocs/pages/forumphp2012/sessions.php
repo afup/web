@@ -8,11 +8,20 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.ph
 
 $forum_appel = new AFUP_AppelConferencier($bdd);
 $sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
-
+$journees = array(
+  'Mardi 05 juin 2012' => array(),
+  'Mercredi 06 juin 2012' => array()
+);
 foreach ($sessions as $index => $session) {
-	$sessions[$index]['conferenciers'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
-    $sessions[$index]['journees'] = explode(" ", $session['journee']);
+	$session['conferenciers'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
+  $session['journees'] = explode(" ", $session['journee']);
+
+  if ('05' == date('d', $session['debut'])) {
+    $journees['Mardi 05 juin 2012'][] = $session;
+  } else {
+    $journees['Mercredi 06 juin 2012'][] = $session;
+  }
 }
 
-$smarty->assign('sessions', $sessions);
+$smarty->assign('journees', $journees);
 $smarty->display('sessions.html');

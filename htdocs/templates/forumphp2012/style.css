@@ -182,6 +182,17 @@ section article h3, section article div.spacer {
   padding: 12px 20px 3px 20px;
 }
 
+section article .session {
+  border-bottom: 1px #b6b5b1 solid;
+  clear: both;
+  padding: 0 0 170px 15px;
+}
+
+section article .session .conferencier {
+  float: left;
+  margin: 10px 10px 0 0;
+}
+
 section article dl {
   background: transparent url(./img/background-metadata.png) top left no-repeat;
   height: 20px;
