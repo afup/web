@@ -14,6 +14,10 @@ foreach ($sessions as $index => $session) {
 	$tmp_conferenciers = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
 
   foreach ($tmp_conferenciers as $conferencier) {
+    if ('À définir' == $conferencier['prenom']) {
+      continue;
+    }
+
     if (!isset($conferenciers[$conferencier['conferencier_id']])) {
       $conferencier['prenom'] = ucfirst(strtolower($conferencier['prenom']));
       $conferencier['nom'] = strtoupper($conferencier['nom']);

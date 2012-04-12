@@ -3,7 +3,6 @@
 <h2>Les conf&eacute;renciers</h2>
 
 {foreach from=$conferenciers item=conferencier}
-  {if $conferencier.nom != 'À définir'}
   <article class="first conferenciers">
 		<h3>
 		  {$conferencier.prenom} {$conferencier.nom}
@@ -26,7 +25,6 @@
       </ul>
     </div>
   </article>
-  {/if}
 {/foreach}
 
 {include file="pied_de_page.html"}
