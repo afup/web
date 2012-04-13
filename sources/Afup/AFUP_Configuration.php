@@ -1,4 +1,5 @@
 <?php
+define('EURO', '€');
 
 /**
  * Classe de gestion de la configuration

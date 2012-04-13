@@ -23,7 +23,6 @@ $root = realpath(dirname(__FILE__) . '/../../..');
 // définitions des constantes
 
 define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
-define('EURO', '€');
 
 date_default_timezone_set('Europe/Paris');
 
