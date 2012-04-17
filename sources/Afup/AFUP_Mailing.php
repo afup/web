@@ -98,11 +98,13 @@ class AFUP_Mailing
             $to = $configuration->obtenir('mails|force_destinataire');
         }
 
-        $mail->AddBCC($configuration->obtenir('mails|bcc'));
-        foreach ($options['bcc'] as $valeurBcc) {
+        $bcc = $configuration->obtenir('mails|bcc');
+        if ($bcc) {
+            $mail->AddBCC($bcc);
+        }
+        foreach ($options['bcc'] as $valeurBcc) {echo 'ici';
             $mail->AddBCC($valeurBcc);
         }
-
         foreach ($options['file'] as $filePath) {
             $mail->AddAttachment($filePath[0], $filePath[1]);
             // TODO : deboguer la méthode
