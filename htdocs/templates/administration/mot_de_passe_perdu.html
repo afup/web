@@ -8,28 +8,30 @@
         <div id="contenu">
             <h1>Mot de passe perdu ?</h1>
             <form action="index.php?page=connexion" method="post" onsubmit="return soumettreUneSeuleFois(this);">
-                {if $echec}<p class="erreur">Impossible d'envoyer votre mot de passe</p>{else}
-                <p>Votre mot de passe vous sera renvoyé à l'adresse indiquée dans vos coordonnées et resaisie ci-dessous.</p>
-                {/if}
-                
+
                 <fieldset>
-                
+                    {if $echec}
+                        <p class="erreur">Impossible d'envoyer votre mot de passe</p>
+                    {else}
+                        <p>Votre mot de passe vous sera renvoyé à l'adresse indiquée dans vos coordonnées et resaisie ci-dessous.</p>
+                    {/if}
+
                     <div class="rangee">
-                        <label for="email">Email</label>                
+                        <label for="email">Email</label>
                         <span class="element">
-                          <input type="text" name="email" size="30" maxlength="100" />
+                          <input type="text" name="email" size="30" maxlength="100" style="width:200px" />
                         </span>
                     </div>
 
                     <!-- Vilain hack pour Opera -->
                     <div>&nbsp;</div>
                 </fieldset>
-                
+
                 <fieldset>
                     <input type="submit" name="soumettre" value="Renvoyer mot de passe" />
                     <input type="hidden" name="motdepasse_perdu" value="1" />
-                </fieldset>               
+                </fieldset>
             </form>
         </div>
     </body>
-</html>    
+</html>
