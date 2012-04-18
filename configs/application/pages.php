@@ -36,10 +36,6 @@ $pages = array(
                 'nom' => 'Annuaire',
                 'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
             ),
-            'membre_administrateur' => array(
-                'nom' => 'Administrateurs du site',
-                'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-            ),
 		),
     ),
     'membres' => array(
@@ -248,6 +244,10 @@ $pages = array(
 		        'nom' => 'Configuration',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
+            'membre_administrateur' => array(
+                'nom' => 'Administrateurs du site',
+                'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+            ),
 		    'logs' => array(
 		        'nom' => 'Logs',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
