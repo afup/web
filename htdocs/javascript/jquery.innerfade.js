@@ -42,9 +42,9 @@
  $.innerfade = function(container, options) {
  var settings = {
  'animationtype': 'fade',
- 'speed': 'normal',
+ 'speed': 'slow',
  'type': 'sequence',
- 'timeout': 2000,
+ 'timeout': 1000,
  'containerheight': 'auto',
  'runningclass': 'innerfade',
  'children': null
@@ -129,13 +129,13 @@ function removeFilter(element) {
 
 $(document).ready( function(){
  $('.fade').innerfade({
-	 speed: 'normal',
+	 speed: 'slow',
 	 timeout: 2000,
 	 type: 'sequence',
-	 containerheight: '70px' });
+	 containerheight: '140px' }).css('opacity','1');
  $('.fadelarge').innerfade({
-	 speed: 'normal',
+	 speed: 'slow',
 	 timeout: 2000,
 	 type: 'sequence',
-	 containerheight: '100px' });
+	 containerheight: '140px' }).css('opacity','1');
 });
