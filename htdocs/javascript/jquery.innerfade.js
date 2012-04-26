@@ -132,10 +132,10 @@ $(document).ready( function(){
 	 speed: 'slow',
 	 timeout: 2000,
 	 type: 'sequence',
-	 containerheight: '140px' }).css('opacity','1');
+	 containerheight: '140px' }).css('opacity','1').css('padding-left','15px');
  $('.fadelarge').innerfade({
 	 speed: 'slow',
 	 timeout: 2000,
 	 type: 'sequence',
-	 containerheight: '140px' }).css('opacity','1');
+	 containerheight: '140px' }).css('opacity','1').css('padding-left','15px');
 });
