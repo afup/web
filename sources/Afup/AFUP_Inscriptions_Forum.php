@@ -349,13 +349,13 @@ class AFUP_Inscriptions_Forum
 
 	function ajouterInscription($id_forum, $reference, $type_inscription, $civilite, $nom, $prenom,
 	                            $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
-                                $newsletter_nexen, $commentaires =null, $mobilite_reduite = 0,
+                                $newsletter_nexen, $commentaires =null, $mobilite_reduite = 0, $mail_partenaire = 0,
                                 $etat = AFUP_FORUM_ETAT_CREE, $facturation = AFUP_FORUM_FACTURE_A_ENVOYER)
     {
         $requete  = 'INSERT INTO ';
         $requete .= '  afup_inscription_forum (id_forum, date, reference, type_inscription, montant,
                                civilite, nom, prenom, email, telephone, coupon, citer_societe,
-                               newsletter_afup, newsletter_nexen, commentaires, etat, facturation, mobilite_reduite) ';
+                               newsletter_afup, newsletter_nexen, commentaires, etat, facturation, mobilite_reduite, mail_partenaire) ';
         $requete .= 'VALUES (';
         $requete .= $id_forum                                       . ',';
         $requete .= time()                                          . ',';
@@ -374,14 +374,15 @@ class AFUP_Inscriptions_Forum
         $requete .= $this->_bdd->echapper($commentaires)            . ',';
         $requete .= $etat                                           . ',';
         $requete .= $this->_bdd->echapper($facturation)             . ',';
-        $requete .= $this->_bdd->echapper($mobilite_reduite)        . ')';
+        $requete .= $this->_bdd->echapper($mobilite_reduite)        . ',';
+        $requete .= $this->_bdd->echapper($mail_partenaire)        . ')';
 
         return $this->_bdd->executer($requete);
     }
 
     function modifierInscription($id, $reference, $type_inscription, $civilite, $nom, $prenom,
                                  $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
-                                 $newsletter_nexen, $commentaires, $etat, $facturation, $mobilite_reduite = 0)
+                                 $newsletter_nexen, $mail_partenaire, $commentaires, $etat, $facturation, $mobilite_reduite = 0)
     {
         $requete  = 'UPDATE ';
         $requete .= '  afup_inscription_forum ';
@@ -398,6 +399,7 @@ class AFUP_Inscriptions_Forum
         $requete .= '  citer_societe='           . $this->_bdd->echapper($citer_societe)           . ',';
         $requete .= '  newsletter_afup='         . $this->_bdd->echapper($newsletter_afup)         . ',';
         $requete .= '  newsletter_nexen='        . $this->_bdd->echapper($newsletter_nexen)        . ',';
+        $requete .= '  mail_partenaire='         . $this->_bdd->echapper($mail_partenaire)        . ',';
         $requete .= '  commentaires='            . $this->_bdd->echapper($commentaires)            . ',';
         $requete .= '  etat='                    . $this->_bdd->echapper($etat)                    . ',';
         $requete .= '  facturation='             . $this->_bdd->echapper($facturation)             . ',';

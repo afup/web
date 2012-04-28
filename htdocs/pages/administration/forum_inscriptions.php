@@ -273,10 +273,15 @@ PS 2 : un lien pour la convocation,
 	$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'non', 0);
 	$formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
 	$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
+    $groupe = array();
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
+    $formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
+    $formulaire->addElement('static', null, null, "Je souhaite recevoir des informations de la part de vos partenaires presse/media");
 	$groupe = array();
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
-	$formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
+	$groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'oui', 1);
+	$groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'non', 0);
+	$formulaire->addGroup($groupe, 'groupe_mail_partenaire', null, '&nbsp;', false);
 
 	$formulaire->addElement('header', 'boutons'  , '');
 	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
@@ -323,6 +328,7 @@ PS 2 : un lien pour la convocation,
         		                                          $valeurs['newsletter_nexen'],
                                                           $valeurs['commentaires'],
                                                           $valeurs['mobilite_reduite'],
+                                                          $valeurs['mail_partenaire'],
                                                           $valeurs['etat'],
                                                           $valeurs['facturation']);
         } else {
@@ -337,7 +343,8 @@ PS 2 : un lien pour la convocation,
         												   $valeurs['coupon'],
         												   $valeurs['citer_societe'],
         												   $valeurs['newsletter_afup'],
-        												   $valeurs['newsletter_nexen'],
+                                                           $valeurs['newsletter_nexen'],
+        												   $valeurs['mail_partenaire'],
                                                            $valeurs['commentaires'],
         												   $valeurs['etat'],
         												   $valeurs['facturation'],
