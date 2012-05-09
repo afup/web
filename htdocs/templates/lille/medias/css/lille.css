@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+body { background-color: #FFFFFF; color: #000000; margin: 2em; font-size: 14pt; font-style: normal; font-weight: normal; font-family: Helvetica, Arial, sans-serif; }
+
+div#content { width: 960px; margin: 0 auto; }
+div#header { width: 250px; padding: 1em; float : left; }
+div#header-logo { margin-bottom: 2em; text-align: center; }
+div#content { width: 650px; border-left: 1px solid black; padding: 1em; float: left; }
+div#footer { clear: both; text-align: center; font-size: 12pt; }
+
+ul.rubrique-articles { margin: 0; padding: 0; list-style-type: none; }
+ul.rubrique-articles li { margin: 0; padding: 0; }
+p.rubrique-article-date, div.article-date { margin-left: 2em; font-style: italic; font-size : 10pt; }

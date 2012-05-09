@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		{$header}
+	</head>
+	<body>
+		<div id="header">
+			<div id="header-logo">
+				<a href="http://afup.org/"><img src="{$chemin_template}medias/images/logo-afup.png" alt="Logo AFUP" /></a>
+			</div>
+			<div id="header-menu">
+				{$menu}
+			</div>
+		</div>
+		<div id="content">{$content}</div>
+		<div id="footer">
+			<div id="footer-copyright">&copy; AFUP 2003-<?php echo date("Y") ?></div>
+			<div id="footer-hebergement">H&eacute;bergement <a href="http://www.alterway.fr/hosting/">Alter Way Hosting</a></div>
+			<div id="footer-developpement">Développement <a href="http://noparking.net/">No Parking</a></div>
+		</div>
+		{literal}
+		<script type="text/javascript">
+		  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+			try {
+			var pageTracker = _gat._getTracker("UA-192127-3");
+			pageTracker._trackPageview();
+			} catch(err) {}
+		</script>
+		{/literal}
+	</body>
+</html>
