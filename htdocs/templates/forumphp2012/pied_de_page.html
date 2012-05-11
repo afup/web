@@ -22,32 +22,23 @@
 
                   {if count($partenaires.Argent) > 0}
                     <h4>Argent</h4>
-                    <div class="fade2012 innerfade">
+                    <div class="fade2012">
                     {foreach from=$partenaires.Argent item=partenaire}
-                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                     {/foreach}
                     </div>
                   {/if}
 
                   {if count($partenaires.Bronze) > 0}
                     <h4>Bronze</h4>
-                    <div class="fade2012 innerfade">
+                    <div class="fade2012">
                     {foreach from=$partenaires.Bronze item=partenaire}
-                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                     {/foreach}
                     </div>
                   {/if}
                 </div>
               </article>
-
-              <!--article>
-                <h3>Partenaires</h3>
-                <div class="content">
-                  {foreach from=$partenaires.Partenaires item=partenaire}
-                    <a  href="{$partenaire.site}" title="{$partenaire.nom} | {$partenaire.presentation}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
-                  {/foreach}
-                </div>
-              </article-->
             </aside>
 
             <aside class="span4">
@@ -55,7 +46,7 @@
                 <h3>Partenaires</h3>
 
                 <div class="content">
-                  <div class="fade2012 innerfade">
+                  <div class="fade2012">
                   {foreach from=$partenaires.Partenaires item=partenaire}
                     <a  href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                   {/foreach}
@@ -79,18 +70,13 @@
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
     </script>
     <script type="text/javascript">
+      {literal}$('.fade2012').innerfade({
+         speed: 'slow',
+         timeout: 2000,
+         type: 'random'}).css('opacity','1');{/literal}
       var pageTracker = _gat._getTracker("UA-192127-3");
       pageTracker._initData();
       pageTracker._trackPageview();
-      {literal}
-      $(document).ready( function(){
-       $('.fade2012').innerfade({
-         speed: 'slow',
-         timeout: 2000,
-         type: 'random',
-         containerheight: '100px' }).css('opacity','1').css('padding-left','15px');
-      });
-      {/literal}
     </script>
   </body>
 </html>
