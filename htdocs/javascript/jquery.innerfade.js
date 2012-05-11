@@ -88,6 +88,7 @@
             $(elements[current]).slideDown(settings.speed);
         } else if (settings.animationtype == 'fade') {
             $(elements[last]).fadeOut(settings.speed, function () {
+                $(elements[last]).hide();
                 $(elements[current]).fadeIn(settings.speed, function () {
                     removeFilter($(this)[0]);
                 });
