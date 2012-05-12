@@ -51,7 +51,7 @@
         if (settings.children === null) var elements = $(container).children();
         else var elements = $(container).children(settings.children);
         if (elements.length > 1) {
-            $(container).css('height', settings.containerheight).addClass(settings.runningclass);
+            $(container).css('height', settings.containerheight);
             for (var i = 0; i < elements.length; i++) {
                 $(elements[i]).css('z-index', String(elements.length - i)).hide();
             };
