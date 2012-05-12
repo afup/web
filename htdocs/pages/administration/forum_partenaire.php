@@ -44,7 +44,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'ranking'     , 'Rang'           , array('size' => 30, 'maxlength' => 40));
     $formulaire->addElement('text'    , 'nom'         , 'Nom'            , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('textarea', 'presentation', 'Présentation'   , array('cols' => 42, 'rows'      => 15, 'class' => 'tinymce'));
-    $formulaire->addElement('text'    , 'site'        , 'Site'           , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text'    , 'site'        , 'Site'           , array('size' => 30));
     $formulaire->addElement('static'  , 'note'                           , '', 'Faire attention à la taille');
     $formulaire->addElement('file'    , 'logo'        , 'Logo');
     if ($action == 'modifier') {
