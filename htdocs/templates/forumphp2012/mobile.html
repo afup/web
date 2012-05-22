@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Forum PHP 2012</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+    {literal}
+    <style type="text/css">
+    div.lieu {text-align:right;font-style:italic;font-size:90%;}
+    div.conferencier {float:right;text-align:center;}
+    div.clear {clear:both;}
+    </style>
+    {/literal}
+</head>
+
+<body>
+
+<!-- Accueil -->
+<div data-role="page" id="accueil">
+    <div data-role="header" data-theme="b">
+        <div style="text-align:center"><img src="{$chemin_template}img/logo.png" alt="Logo du Forum PHP" /></div>
+    </div><!-- /header -->
+
+    <div data-role="content" data-theme="b">
+        <p>Le Forum PHP, l'évènement majeur de la communauté PHP francophone depuis plus de 10 ans.</p>
+
+        <p>Le grand retour du Forum PHP Paris est le 5 et 6 juin 2012, au sein de la Cité Universitaire. Absent du calendrier des événements PHP depuis sa dixième édition en novembre 2010, le Forum PHP Paris est très attendu par les développeurs et chefs de projet. En effet, en 2011 l'AFUP a consacré son énergie au lancement du PHP Tour, son nouveau cycle de conférences itinérant. La première édition ayant été un vrai succès, l'AFUP se sent maintenant prête à gérer de front les deux événements !</p>
+
+        <p>L'édition 2012 du Forum PHP Paris marque aussi les nouvelles dates auxquelles le cycle de conférences parisien sera désormais programmé : le Forum PHP Paris sera planifié chaque année à la fin du deuxième trismestre.</p>
+
+        <p>Le Forum PHP Paris préserve cependant ce qui a fait son succès depuis maintenant plus de dix ans : une programmation riche, des conférenciers reconnus, des thématiques variées et pointues. Rendez-vous prochainement pour connaître la programmation complète du Forum PHP 2012 !</p>
+
+        <div style="text-align:center"><a href="#main" data-role="button" data-icon="star" data-theme="c" data-inline="true">Accéder au programme</a></div>
+    </div><!-- /content -->
+
+    <div data-role="footer" data-theme="c">
+        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div><!-- /footer -->
+</div><!-- /accueil -->
+
+<!-- Main -->
+<div data-role="page" id="main">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012</h1>
+    </div><!-- /header -->
+
+    <div data-role="content" data-theme="c">
+        <p><a href="#accueil" data-role="button">Accueil</a></p>
+        <p><a href="#avenir" data-role="button">Les prochaines sessions</a></p>
+        <p><a href="#jour5"data-role="button">La journée du 5 juin</a></p>
+        <p><a href="#jour6"data-role="button">La journée du 6 juin</a></p>
+        <p><a href="#conferencier"data-role="button">Les conférenciers</a></p>
+        <p><a href="#partenaires"data-role="button">Les partenaires</a></p>
+    </div><!-- /content -->
+
+    <div data-role="footer" data-theme="c">
+        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div><!-- /footer -->
+</div><!-- /main -->
+
+<!-- A venir -->
+<div data-role="page" id="avenir">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>Les prochaines sessions</h1>
+    </div><!-- /header -->
+
+    <div data-role="content" data-theme="c">
+        {if count($deuxprochaines)}
+            {foreach from=$deuxprochaines item=prochaine key=nb}
+            <h1>{$prochaine.titre}</h1>
+            <div class="lieu">le {$prochaine.debut|date_format:'%d %B %Y de <strong>%H:%M</strong>'} à <strong>{$prochaine.fin|date_format:'%H:%M'}</strong> dans {$prochaine.nom_salle}</div>
+            <div class="conferencier">
+                {foreach from=$prochaine.conferenciers item=conferencier}
+                <a href="#conf{$conferencier.conferencier_id}">
+                    <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
+                </a><br />
+                <a href="#conf{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a>
+                {/foreach}
+            </div>
+            <p>{$prochaine.abstract}</p>
+            <div class="clear"></div>
+            {if $nb == 0}<hr/>{/if}
+            {/foreach}
+        {else}
+        <h1>C'est fini pour le Forum 2012 !</h1>
+        <p>Rendez-vous au PHP Tour à Nantes le 29 et 30 novembre 2012.</p>
+        {/if}
+        <p><a href="#main"data-role="button">Retour au menu</a></p>
+    </div><!-- /content -->
+
+    <div data-role="footer" data-theme="c">
+        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div><!-- /footer -->
+</div><!-- /avenir -->
+
+<!-- Journée du 5 juin -->
+<div data-role="page" id="jour5">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>Le 5 juin 2012</h1>
+    </div><!-- /header -->
+
+    <div data-role="content" data-theme="c">
+        {foreach from=$journees.0 item=prochaine key=nb}
+        <h1 id="session{$prochaine.session_id}">{$prochaine.titre}</h1>
+        <div class="lieu">le {$prochaine.debut|date_format:'%d %B %Y de <strong>%H:%M</strong>'} à <strong>{$prochaine.fin|date_format:'%H:%M'}</strong> dans {$prochaine.nom_salle}</div>
+        <div class="conferencier">
+            {foreach from=$prochaine.conferenciers item=conferencier}
+            <a href="#conf{$conferencier.conferencier_id}">
+                <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
+            </a><br />
+            <a href="#conf{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a><br/>
+            {/foreach}
+        </div>
+        <p>{$prochaine.abstract}</p>
+        <div class="clear"></div>
+        {if $nb < (count($journees.0) - 1)}<hr/>{/if}
+        {/foreach}
+
+        <p><a href="#main"data-role="button">Retour au menu</a></p>
+    </div><!-- /content -->
+
+    <div data-role="footer" data-theme="c">
+        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div><!-- /footer -->
+</div><!-- /jour5 -->
+
+<!-- Journée du 6 juin -->
+<div data-role="page" id="jour6">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>Le 6 juin 2012</h1>
+    </div><!-- /header -->
+
+    <div data-role="content" data-theme="c">
+        {foreach from=$journees.1 item=prochaine key=nb}
+        <h1 id="session{$prochaine.session_id}">{$prochaine.titre}</h1>
+        <div class="lieu">le {$prochaine.debut|date_format:'%d %B %Y de <strong>%H:%M</strong>'} à <strong>{$prochaine.fin|date_format:'%H:%M'}</strong> dans {$prochaine.nom_salle}</div>
+        <div class="conferencier">
+            {foreach from=$prochaine.conferenciers item=conferencier}
+            <a href="#conf{$conferencier.conferencier_id}">
+                <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
+            </a><br />
+            <a href="#conf{$conferencier.conferencier_id}">{$conferencier.prenom}<br/>{$conferencier.nom}</a><br/>
+            {/foreach}
+        </div>
+        <p>{$prochaine.abstract}</p>
+        <div class="clear"></div>
+        {if $nb < (count($journees.1) - 1)}<hr/>{/if}
+        {/foreach}
+
+        <p><a href="#main"data-role="button">Retour au menu</a></p>
+    </div><!-- /content -->
+
+    <div data-role="footer" data-theme="c">
+        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div><!-- /footer -->
+</div><!-- /jour5 -->
+
+<!-- Conférenciers -->
+<div data-role="page" id="conferencier">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>Les conférenciers</h1>
+    </div><!-- /header -->
+
+    <div data-role="content" data-theme="c">
+        {foreach from=$conferenciers item=conferencier key=nb}
+        <h1 id="conf{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}{if $conferencier.societe} - {$conferencier.societe}{/if}</h1>
+        <div class="conferencier">
+            <a href="#conf{$conferencier.conferencier_id}">
+                <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
+            </a><br />
+            <a href="#conf{$conferencier.conferencier_id}">{$conferencier.prenom}<br/>{$conferencier.nom}</a><br/>
+        </div>
+        <p>{$conferencier.biographie}</p>
+        <div class="clear"></div>
+        <h3>Session(s)</h3>
+        <ul data-role="listview" data-inset="true">
+        {foreach from=$conferencier.sessions item=session}
+            <li><a href="#session{$session.id}">{$session.titre}</a></li>
+        {/foreach}
+        </ul>
+        {if $nb < (count($conferenciers) - 1)}<hr/>{/if}
+        {/foreach}
+
+        <p><a href="#main"data-role="button">Retour au menu</a></p>
+    </div><!-- /content -->
+
+    <div data-role="footer" data-theme="c">
+        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div><!-- /footer -->
+</div><!-- /conferencier -->
+
+    {literal}
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    {/literal}
+</body>
+</html>

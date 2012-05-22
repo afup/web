@@ -1,4 +1,3 @@
 <?php
-// Redirect pour line court pendant le Forum 
-header('Location: http://phptourlille2011.my28msec.com/html/index');
-?>
+// Redirect pour line court pendant le Forum
+header('Location: http://afup.home/pages/forumphp2012/mobile.php');
