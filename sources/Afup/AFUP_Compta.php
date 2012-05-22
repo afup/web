@@ -35,10 +35,17 @@ class AFUP_Compta
 		$requete  = 'SELECT ';
 		$requete .= 'compta.date_regl, compta.description, compta.montant, compta.idoperation,  ';
 		$requete .= 'MONTH(compta.date_regl) as mois, compta.id as idtmp, ';
-		$requete .= 'compta_reglement.reglement ';
+        $requete .= 'compta_reglement.reglement, ';
+        $requete .= 'compta_evenement.evenement, compta.idevenement, ';
+        $requete .= 'compta_categorie.categorie, compta.idcategorie ';
 		$requete .= 'FROM  ';
-		$requete .= 'compta,  ';
-		$requete .= 'compta_reglement  ';
+		$requete .= 'compta  ';
+        $requete .= 'LEFT JOIN ';
+        $requete .= 'compta_categorie on compta_categorie.id=compta.idcategorie ';
+        $requete .= 'LEFT JOIN ';
+        $requete .= 'compta_reglement on compta_reglement.id=compta.idmode_regl ';
+        $requete .= 'LEFT JOIN ';
+        $requete .= 'compta_evenement on compta_evenement.id=compta.idevenement ';
 		$requete .= 'WHERE  ';
 		$requete .= 'compta.date_regl >= \''.$periode_debut.'\' ';
 		$requete .= 'AND compta.date_regl <= \''.$periode_fin.'\'  ';
@@ -47,7 +54,6 @@ class AFUP_Compta
 		$requete .= 'AND idcompte = '.(int) $compte. ' ';
 		$requete .= 'ORDER BY ';
 		$requete .= 'compta.date_regl ';
-
 		return $this->_bdd->obtenirTous($requete);
     }
 
