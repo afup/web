@@ -13,6 +13,8 @@
     div.lieu {text-align:right;font-style:italic;font-size:90%;}
     div.conferencier {float:right;text-align:center;}
     div.clear {clear:both;}
+    img.thumb2 {left: 63px;}
+    .ui-li-has-thumb .ui-btn-inner a.ui-link-inherit.deuxconf{padding-left:160px;}
     </style>
     {/literal}
 </head>
@@ -23,7 +25,7 @@
 <div data-role="page" id="accueil">
     <div data-role="header" data-theme="b">
         <div style="text-align:center"><img src="{$chemin_template}img/logo.png" alt="Logo du Forum PHP" /></div>
-    </div><!-- /header -->
+    </div>
 
     <div data-role="content" data-theme="b">
         <p>Le Forum PHP, l'évènement majeur de la communauté PHP francophone depuis plus de 10 ans.</p>
@@ -35,18 +37,18 @@
         <p>Le Forum PHP Paris préserve cependant ce qui a fait son succès depuis maintenant plus de dix ans : une programmation riche, des conférenciers reconnus, des thématiques variées et pointues. Rendez-vous prochainement pour connaître la programmation complète du Forum PHP 2012 !</p>
 
         <div style="text-align:center"><a href="#main" data-role="button" data-icon="star" data-theme="c" data-inline="true">Accéder au programme</a></div>
-    </div><!-- /content -->
+    </div>
 
     <div data-role="footer" data-theme="c">
-        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
-    </div><!-- /footer -->
+        <h4>&copy; AFUP | <a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div>
 </div><!-- /accueil -->
 
 <!-- Main -->
 <div data-role="page" id="main">
     <div data-role="header" data-theme="b">
         <h1>Forum PHP 2012</h1>
-    </div><!-- /header -->
+    </div>
 
     <div data-role="content" data-theme="c">
         <p><a href="#accueil" data-role="button">Accueil</a></p>
@@ -55,125 +57,194 @@
         <p><a href="#jour6"data-role="button">La journée du 6 juin</a></p>
         <p><a href="#conferencier"data-role="button">Les conférenciers</a></p>
         <p><a href="#partenaires"data-role="button">Les partenaires</a></p>
-    </div><!-- /content -->
+    </div>
 
     <div data-role="footer" data-theme="c">
-        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
-    </div><!-- /footer -->
+        <h4>&copy; AFUP | <a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div>
 </div><!-- /main -->
 
 <!-- A venir -->
 <div data-role="page" id="avenir">
     <div data-role="header" data-theme="b">
         <h1>Forum PHP 2012<br/>Les prochaines sessions</h1>
-    </div><!-- /header -->
+    </div>
 
     <div data-role="content" data-theme="c">
         {if count($deuxprochaines)}
-            {foreach from=$deuxprochaines item=prochaine key=nb}
-            <h1>{$prochaine.titre}</h1>
-            <div class="lieu">le {$prochaine.debut|date_format:'%d %B %Y de <strong>%H:%M</strong>'} à <strong>{$prochaine.fin|date_format:'%H:%M'}</strong> dans {$prochaine.nom_salle}</div>
-            <div class="conferencier">
-                {foreach from=$prochaine.conferenciers item=conferencier}
-                <a href="#conf{$conferencier.conferencier_id}">
-                    <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
-                </a><br />
-                <a href="#conf{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a>
+            <ul data-role="listview">
+                {foreach from=$deuxprochaines item=prochaine key=nb}
+                <li>
+                    <a href="#session{$prochaine.session_id}" {if count($prochaine.conferenciers) > 1}class="deuxconf"{/if}>
+                        {foreach from=$prochaine.conferenciers item=conferencier key=nbc}<img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" class="ui-li-thumb{if $nbc == 1} thumb2{/if}"/>{/foreach}
+                        <h3>{$prochaine.debut|date_format:'%H:%M'} - {$prochaine.fin|date_format:'%H:%M'} : {$prochaine.titre}</h3>
+                        <p>{$prochaine.abstract}</p>
+                    </a>
+                </li>
                 {/foreach}
-            </div>
-            <p>{$prochaine.abstract}</p>
-            <div class="clear"></div>
-            {if $nb == 0}<hr/>{/if}
-            {/foreach}
+            </ul>
         {else}
-        <h1>C'est fini pour le Forum 2012 !</h1>
-        <p>Rendez-vous au PHP Tour à Nantes le 29 et 30 novembre 2012.</p>
+            <h1>C'est fini pour le Forum 2012 !</h1>
+            <p>Rendez-vous au PHP Tour à Nantes le 29 et 30 novembre 2012.</p>
         {/if}
         <p><a href="#main"data-role="button">Retour au menu</a></p>
-    </div><!-- /content -->
+    </div>
 
     <div data-role="footer" data-theme="c">
-        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
-    </div><!-- /footer -->
+        <h4>&copy; AFUP | <a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div>
 </div><!-- /avenir -->
 
 <!-- Journée du 5 juin -->
 <div data-role="page" id="jour5">
     <div data-role="header" data-theme="b">
         <h1>Forum PHP 2012<br/>Le 5 juin 2012</h1>
-    </div><!-- /header -->
+    </div>
 
     <div data-role="content" data-theme="c">
-        {foreach from=$journees.0 item=prochaine key=nb}
-        <h1 id="session{$prochaine.session_id}">{$prochaine.titre}</h1>
-        <div class="lieu">le {$prochaine.debut|date_format:'%d %B %Y de <strong>%H:%M</strong>'} à <strong>{$prochaine.fin|date_format:'%H:%M'}</strong> dans {$prochaine.nom_salle}</div>
-        <div class="conferencier">
-            {foreach from=$prochaine.conferenciers item=conferencier}
-            <a href="#conf{$conferencier.conferencier_id}">
-                <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
-            </a><br />
-            <a href="#conf{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a><br/>
+        <ul data-role="listview">
+            <li data-role="list-divider">Matin</li>
+            {assign var='apres' value=false}
+            {foreach from=$journees.0 item=prochaine key=nb}
+            {if !$apres && ($prochaine.fin|date_format:'%H') > 12}<li data-role="list-divider">Après-midi</li>{assign var='apres' value=true}{/if}
+            <li>
+                <a href="#session{$prochaine.session_id}" {if count($prochaine.conferenciers) > 1}class="deuxconf"{/if}>
+                    {foreach from=$prochaine.conferenciers item=conferencier key=nbc}
+                    <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" class="ui-li-thumb{if $nbc == 1} thumb2{/if}"/>
+                    {/foreach}
+                    <h3>{$prochaine.debut|date_format:'%H:%M'} - {$prochaine.fin|date_format:'%H:%M'} : {$prochaine.titre}</h3>
+                    <p>{$prochaine.abstract}</p>
+                </a>
+            </li>
             {/foreach}
-        </div>
-        <p>{$prochaine.abstract}</p>
-        <div class="clear"></div>
-        {if $nb < (count($journees.0) - 1)}<hr/>{/if}
-        {/foreach}
-
+        </ul>
         <p><a href="#main"data-role="button">Retour au menu</a></p>
-    </div><!-- /content -->
+    </div>
 
     <div data-role="footer" data-theme="c">
-        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
-    </div><!-- /footer -->
+        <h4>&copy; AFUP | <a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div>
 </div><!-- /jour5 -->
 
 <!-- Journée du 6 juin -->
 <div data-role="page" id="jour6">
     <div data-role="header" data-theme="b">
         <h1>Forum PHP 2012<br/>Le 6 juin 2012</h1>
-    </div><!-- /header -->
+    </div>
 
     <div data-role="content" data-theme="c">
-        {foreach from=$journees.1 item=prochaine key=nb}
-        <h1 id="session{$prochaine.session_id}">{$prochaine.titre}</h1>
-        <div class="lieu">le {$prochaine.debut|date_format:'%d %B %Y de <strong>%H:%M</strong>'} à <strong>{$prochaine.fin|date_format:'%H:%M'}</strong> dans {$prochaine.nom_salle}</div>
-        <div class="conferencier">
-            {foreach from=$prochaine.conferenciers item=conferencier}
-            <a href="#conf{$conferencier.conferencier_id}">
-                <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
-            </a><br />
-            <a href="#conf{$conferencier.conferencier_id}">{$conferencier.prenom}<br/>{$conferencier.nom}</a><br/>
+        <ul data-role="listview">
+            <li data-role="list-divider">Matin</li>
+            {assign var='apres' value=false}
+            {foreach from=$journees.0 item=prochaine key=nb}
+            {if !$apres && ($prochaine.fin|date_format:'%H') > 12}<li data-role="list-divider">Après-midi</li>{assign var='apres' value=true}{/if}
+            <li>
+                <a href="#session{$prochaine.session_id}" {if count($prochaine.conferenciers) > 1}class="deuxconf"{/if}>
+                    {foreach from=$prochaine.conferenciers item=conferencier key=nbc}
+                    <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" class="ui-li-thumb{if $nbc == 1} thumb2{/if}"/>
+                    {/foreach}
+                    <h3>{$prochaine.debut|date_format:'%H:%M'} - {$prochaine.fin|date_format:'%H:%M'} : {$prochaine.titre}</h3>
+                    <p>{$prochaine.abstract}</p>
+                </a>
+            </li>
             {/foreach}
-        </div>
-        <p>{$prochaine.abstract}</p>
-        <div class="clear"></div>
-        {if $nb < (count($journees.1) - 1)}<hr/>{/if}
-        {/foreach}
-
+        </ul>
         <p><a href="#main"data-role="button">Retour au menu</a></p>
-    </div><!-- /content -->
+    </div>
 
     <div data-role="footer" data-theme="c">
-        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
-    </div><!-- /footer -->
+        <h4>&copy; AFUP | <a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
+    </div>
 </div><!-- /jour5 -->
 
 <!-- Conférenciers -->
 <div data-role="page" id="conferencier">
     <div data-role="header" data-theme="b">
         <h1>Forum PHP 2012<br/>Les conférenciers</h1>
-    </div><!-- /header -->
+    </div>
 
     <div data-role="content" data-theme="c">
-        {foreach from=$conferenciers item=conferencier key=nb}
-        <h1 id="conf{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}{if $conferencier.societe} - {$conferencier.societe}{/if}</h1>
-        <div class="conferencier">
-            <a href="#conf{$conferencier.conferencier_id}">
-                <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
-            </a><br />
-            <a href="#conf{$conferencier.conferencier_id}">{$conferencier.prenom}<br/>{$conferencier.nom}</a><br/>
-        </div>
+        <ul data-role="listview">
+            {foreach from=$conferenciers item=conferencier key=nb}
+            <li>
+                <a href="#conf{$conferencier.conferencier_id}">
+                    {$conferencier.prenom} {$conferencier.nom}{if $conferencier.societe} - {$conferencier.societe}{/if}
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+        <p><a href="#main"data-role="button">Retour au menu</a></p>
+    </div>
+
+    <div data-role="footer" data-theme="c">
+        <h4>&copy; AFUP</h4>
+    </div>
+</div><!-- /conferencier -->
+
+<!-- Sessions du 5 -->
+{foreach from=$journees.0 item=prochaine key=nb}
+<div data-role="page" id="session{$prochaine.session_id}">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>{$prochaine.titre}</h1>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <h1>{$prochaine.titre}</h1>
+        <div class="lieu">le {$prochaine.debut|date_format:'%d %B %Y de <strong>%H:%M</strong>'} à <strong>{$prochaine.fin|date_format:'%H:%M'}</strong> dans {$prochaine.nom_salle}</div>
+        <p>{$prochaine.abstract}</p>
+        <div class="clear"></div>
+        <h3>Conférencier(s)</h3>
+        <ul data-role="listview" data-inset="true">
+        {foreach from=$prochaine.conferenciers item=conferencier}
+            <li><a href="#conf{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" /><h3>{$conferencier.prenom} {$conferencier.nom}</h3>{if $conferencier.societe}<p>{$conferencier.societe}</p>{/if}</a></li>
+        {/foreach}
+        </ul>
+        <p><a data-rel="back" data-role="button">Retour</a></p>
+    </div>
+
+    <div data-role="footer" data-theme="c">
+        <h4>&copy; AFUP</h4>
+    </div>
+</div><!-- /jour5 -->
+{/foreach}
+
+<!-- Sessions du 6 -->
+{foreach from=$journees.1 item=prochaine key=nb}
+<div data-role="page" id="session{$prochaine.session_id}">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>{$prochaine.titre}</h1>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <h1>{$prochaine.titre}</h1>
+        <div class="lieu">le {$prochaine.debut|date_format:'%d %B %Y de <strong>%H:%M</strong>'} à <strong>{$prochaine.fin|date_format:'%H:%M'}</strong> dans {$prochaine.nom_salle}</div>
+        <p>{$prochaine.abstract}</p>
+        <div class="clear"></div>
+        <h3>Conférencier(s)</h3>
+        <ul data-role="listview" data-inset="true">
+        {foreach from=$prochaine.conferenciers item=conferencier}
+            <li><a href="#conf{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" /><h3>{$conferencier.prenom} {$conferencier.nom}</h3>{if $conferencier.societe}<p>{$conferencier.societe}</p>{/if}</a></li>
+        {/foreach}
+        </ul>
+        <p><a data-rel="back" data-role="button">Retour</a></p>
+    </div>
+
+    <div data-role="footer" data-theme="c">
+        <h4>&copy; AFUP</h4>
+    </div>
+</div><!-- /jour5 -->
+{/foreach}
+
+<!-- Conférenciers -->
+{foreach from=$conferenciers item=conferencier key=nb}
+<div data-role="page" id="conf{$conferencier.conferencier_id}">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>{$conferencier.prenom} {$conferencier.nom}</h1>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <h1>{$conferencier.prenom} {$conferencier.nom}{if $conferencier.societe} - {$conferencier.societe}{/if}</h1>
+        <div class="conferencier"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/></div>
         <p>{$conferencier.biographie}</p>
         <div class="clear"></div>
         <h3>Session(s)</h3>
@@ -182,16 +253,12 @@
             <li><a href="#session{$session.id}">{$session.titre}</a></li>
         {/foreach}
         </ul>
-        {if $nb < (count($conferenciers) - 1)}<hr/>{/if}
-        {/foreach}
+        <p><a data-rel="back" data-role="button">Retour</a></p>
+    </div>
 
-        <p><a href="#main"data-role="button">Retour au menu</a></p>
-    </div><!-- /content -->
-
-    <div data-role="footer" data-theme="c">
-        <h4><a href="https://twitter.com/share?url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php&text=Forum PHP 2012 - Le programme sur mobile" class="twitter-share-button" data-lang="fr">Tweeter</a></h4>
-    </div><!-- /footer -->
+    <div data-role="footer" data-theme="c"><h4>&copy; AFUP</h4></div>
 </div><!-- /conferencier -->
+{/foreach}
 
     {literal}
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
