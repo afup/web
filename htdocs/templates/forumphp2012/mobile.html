@@ -181,6 +181,35 @@
     </div>
 </div><!-- /conferencier -->
 
+<!-- Partenaires -->
+<div data-role="page" id="partenaires">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>Les sponsors / partenaires</h1>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <ul data-role="listview">
+            {foreach from=$partenaires item=liste key=niveau}
+                <li data-role="list-divider">{$niveau}</li>
+                {foreach from=$liste item=partenaire}
+                <li>
+                    <a href="#part{$partenaire.partenaire_id}" title="{$partenaire.nom}">
+                        <img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" />
+                        <h3>{$partenaire.nom}</h3>
+                        <p>{$partenaire.site}</p>
+                    </a>
+                </li>
+                {/foreach}
+            {/foreach}
+        </ul>
+        <p><a href="#main"data-role="button">Retour au menu</a></p>
+    </div>
+
+    <div data-role="footer" data-theme="c">
+        <h4>&copy; AFUP</h4>
+    </div>
+</div><!-- /conferencier -->
+
 <!-- Sessions du 5 -->
 {foreach from=$journees.0 item=prochaine key=nb}
 <div data-role="page" id="session{$prochaine.session_id}">
@@ -198,6 +227,11 @@
         {foreach from=$prochaine.conferenciers item=conferencier}
             <li><a href="#conf{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" /><h3>{$conferencier.prenom} {$conferencier.nom}</h3>{if $conferencier.societe}<p>{$conferencier.societe}</p>{/if}</a></li>
         {/foreach}
+        </ul>
+        <h3>Liens utiles</h3>
+        <ul data-role="listview" data-inset="true">
+            <li><a href="https://twitter.com/intent/tweet?original_referer=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php%23session%7B{$prochaine.session_id}&text=Je+serais+%C3%A0+la+session+%22{$prochaine.titre}%22+du+Forum+PHP+2012+et+vous+%3F+%23forumphp&url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php%23session{$prochaine.session_id}">Tweetez ma présence à cette session</a></li>
+            <li><a href="https://joind.in/event/view/947">Commentez cette session sur joind.in</a></li>
         </ul>
         <p><a data-rel="back" data-role="button">Retour</a></p>
     </div>
@@ -225,6 +259,11 @@
         {foreach from=$prochaine.conferenciers item=conferencier}
             <li><a href="#conf{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" /><h3>{$conferencier.prenom} {$conferencier.nom}</h3>{if $conferencier.societe}<p>{$conferencier.societe}</p>{/if}</a></li>
         {/foreach}
+        </ul>
+        <h3>Liens utiles</h3>
+        <ul data-role="listview" data-inset="true">
+            <li><a href="https://twitter.com/intent/tweet?original_referer=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php%23session%7B{$prochaine.session_id}&text=Je+serais+%C3%A0+la+session+%22{$prochaine.titre}%22+du+Forum+PHP+2012+et+vous+%3F+%23forumphp&url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php%23session{$prochaine.session_id}">Tweetez ma présence à cette session</a></li>
+            <li><a href="https://joind.in/event/view/947">Commentez cette session sur joind.in</a></li>
         </ul>
         <p><a data-rel="back" data-role="button">Retour</a></p>
     </div>
@@ -259,6 +298,30 @@
     <div data-role="footer" data-theme="c"><h4>&copy; AFUP</h4></div>
 </div><!-- /conferencier -->
 {/foreach}
+
+
+<!-- Partenaire -->
+{foreach from=$partenaires item=liste}
+{foreach from=$liste item=partenaire}
+<div data-role="page" id="part{$partenaire.partenaire_id}">
+    <div data-role="header" data-theme="b">
+        <h1>Forum PHP 2012<br/>{$partenaire.nom}</h1>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <h1>{$partenaire.nom}</h1>
+        <div class="conferencier"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></div>
+        <p><a href="{$partenaire.site}">{$partenaire.site}</a></p>
+        {$partenaire.presentation}
+        <div class="clear"></div>
+        <p><a data-rel="back" data-role="button">Retour</a></p>
+    </div>
+
+    <div data-role="footer" data-theme="c"><h4>&copy; AFUP</h4></div>
+</div><!-- /partenaire -->
+{/foreach}
+{/foreach}
+
 
     {literal}
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

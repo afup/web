@@ -60,7 +60,7 @@ class AFUP_Forum_Partenaires
     function obtenirTousPartenairesForum($id_forum)
     {
         $requete  = 'SELECT';
-        $requete .= '  *  ';
+        $requete .= '  *, afup_forum_partenaires.id as partenaire_id  ';
         $requete .= 'FROM';
         $requete .= '  afup_forum_partenaires ';
         $requete .= 'INNER JOIN';

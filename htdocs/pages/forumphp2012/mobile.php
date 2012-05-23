@@ -22,7 +22,7 @@ foreach ($sessions as $index => $session) {
     $journees[1][] = $session;
   }
 
-  if ($session['debut'] > time() && count($deuxprochaines) < 2) {
+  if ($session['fin'] > time() && count($deuxprochaines) < 4) {
     $deuxprochaines[] = $session;
   }
 
@@ -44,12 +44,7 @@ foreach ($sessions as $index => $session) {
   }
 
 }
-/*
-echo '<pre>';
-var_dump($journees);
-echo '</pre>';
-die();
-*/
+
 function compareNames($a, $b) {
   if ($a['prenom'] == $b['prenom']) {
     return 0;
