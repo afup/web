@@ -136,7 +136,7 @@
         <ul data-role="listview">
             <li data-role="list-divider">Matin</li>
             {assign var='apres' value=false}
-            {foreach from=$journees.0 item=prochaine key=nb}
+            {foreach from=$journees.1 item=prochaine key=nb}
             {if !$apres && ($prochaine.fin|date_format:'%H') > 12}<li data-role="list-divider">Après-midi</li>{assign var='apres' value=true}{/if}
             <li>
                 <a href="#session{$prochaine.session_id}" {if count($prochaine.conferenciers) > 1}class="deuxconf"{/if}>
