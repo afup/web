@@ -59,7 +59,7 @@ $AFUP_Tarifs_Forum = array(
                            AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => 100,
                            AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => 100,
                            AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE => 130,
-                           AFUP_FORUM_2_JOURNEES_COUPON => 180,
+                           AFUP_FORUM_2_JOURNEES_COUPON => 150,
                            AFUP_FORUM_2_JOURNEES_SPONSOR => 200);
 
 $AFUP_Tarifs_Forum_Lib = array(
