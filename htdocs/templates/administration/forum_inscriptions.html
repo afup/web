@@ -125,6 +125,7 @@
             <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.coupon&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.coupon'}desc{else}asc{/if}">Coupon</a></th>
             <th align="left">Mobilité réduite</th>
             <th><a href="index.php?page=forum_inscriptions&amp;tri=i.etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.etat'}desc{else}asc{/if}">Etat</a></th>
+            <th align="left">Règ.</th>
             <th>&nbsp;</th>
         </tr>
     {foreach from=$inscriptions item=inscription}
@@ -136,6 +137,7 @@
 			<td>{$inscription.coupon}</td>
             <td>{if $inscription.mobilite_reduite}Oui{/if}</td>
             <td style="text-align: center{if $inscription.etat == 4 or $inscription.etat == 5};background-color:#73f084{/if}{if $inscription.etat == 0 or $inscription.etat == 6};background-color:#FBD61A{/if}{if $inscription.etat == 2 or $inscription.etat == 3};background-color:#EF3215{/if}">{if $inscription.etat == 0}Créé{elseif $inscription.etat == 1}Annulé{elseif $inscription.etat == 2}Erreur{elseif $inscription.etat == 3}Refusé{elseif $inscription.etat == 4}Reglé{elseif $inscription.etat == 5}Invité{elseif $inscription.etat == 6}Attente règlement{elseif $inscription.etat == 7}Facturé{else}--{/if}</td>
+            <td>{if $inscription.type_reglement == 0}CB{elseif $inscription.type_reglement == 1}CHQ{elseif $inscription.type_reglement == 2}VIR{/if}</td>
             <td style="text-align: right" nowrap="nowrap">
                 {if $inscription.type_inscription == AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION && $inscription.etat != 1}
                 <a href="index.php?page=forum_inscriptions&amp;action=generer_mail_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/email_edit.png" alt="Générer un mail pour demander la confirmation d'adhésion à l'AFUP" /></a>
