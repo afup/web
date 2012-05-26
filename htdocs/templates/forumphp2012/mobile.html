@@ -231,7 +231,11 @@
         <h3>Liens utiles</h3>
         <ul data-role="listview" data-inset="true">
             <li><a href="https://twitter.com/intent/tweet?original_referer=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php%23session%7B{$prochaine.session_id}&text=Je+serais+%C3%A0+la+session+%22{$prochaine.titre}%22+du+Forum+PHP+2012+et+vous+%3F+%23forumphp&url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php%23session{$prochaine.session_id}">Tweetez ma présence à cette session</a></li>
+            {if $prochaine.joindin}
+            <li><a href="https://joind.in/talk/view/{$prochaine.joindin}">Commentez cette session sur joind.in</a></li>
+            {else}
             <li><a href="https://joind.in/event/view/947">Commentez cette session sur joind.in</a></li>
+            {/if}
         </ul>
         <p><a data-rel="back" data-role="button">Page précédente</a></p>
         <p><a href="#main" data-role="button">Menu principal</a></p>
@@ -264,7 +268,11 @@
         <h3>Liens utiles</h3>
         <ul data-role="listview" data-inset="true">
             <li><a href="https://twitter.com/intent/tweet?original_referer=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php%23session%7B{$prochaine.session_id}&text=Je+serais+%C3%A0+la+session+%22{$prochaine.titre}%22+du+Forum+PHP+2012+et+vous+%3F+%23forumphp&url=http%3A%2F%2Fafup.org%2Fpages%2Fforumphp2012%2Fmobile.php%23session{$prochaine.session_id}">Tweetez ma présence à cette session</a></li>
+            {if $prochaine.joindin}
+            <li><a href="https://joind.in/talk/view/{$prochaine.joindin}">Commentez cette session sur joind.in</a></li>
+            {else}
             <li><a href="https://joind.in/event/view/947">Commentez cette session sur joind.in</a></li>
+            {/if}
         </ul>
         <p><a data-rel="back" data-role="button">Page précédente</a></p>
         <p><a href="#main" data-role="button">Menu principal</a></p>
@@ -294,6 +302,12 @@
             <li><a href="#session{$session.id}">{$session.titre}</a></li>
         {/foreach}
         </ul>
+        {if $conferencier.twitter}
+        <h3>Liens utiles</h3>
+        <ul data-role="listview" data-inset="true">
+            <li><a href="https://twitter.com/intent/user?screen_name={$conferencier.twitter}">Suivre sur Twitter</a></li>
+        </ul>
+        {/if}
         <p><a data-rel="back" data-role="button">Page précédente</a></p>
         <p><a href="#main" data-role="button">Menu principal</a></p>
     </div>

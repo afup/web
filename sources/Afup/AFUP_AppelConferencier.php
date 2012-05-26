@@ -439,7 +439,8 @@ class AFUP_AppelConferencier
         $requete .= '  pl.debut, ';
         $requete .= '  pl.fin, ';
         $requete .= '  pl.keynote, ';
-        $requete .= '  pl.id_salle ';
+        $requete .= '  pl.id_salle, ';
+        $requete .= '  se.joindin ';
         $requete .= ' FROM ';
         $requete .= '  afup_sessions se ';
         $requete .= ' LEFT JOIN ';
@@ -588,7 +589,8 @@ class AFUP_AppelConferencier
                                   $prenom,
                                   $email,
                                   $societe,
-                                  $biographie)
+                                  $biographie,
+                                  $twitter = null)
     {
         $requete  = 'UPDATE afup_conferenciers SET ';
         $requete .= ' id_forum = '.$this->_bdd->echapper($id_forum).', ';
@@ -597,6 +599,9 @@ class AFUP_AppelConferencier
         $requete .= ' prenom = '.$this->_bdd->echapper($prenom).', ';
         $requete .= ' email = '.$this->_bdd->echapper($email).', ';
         $requete .= ' societe = '.$this->_bdd->echapper($societe).', ';
+        if ($twitter !== null) {
+            $requete .= ' twitter = '.$this->_bdd->echapper($twitter).', ';
+        }
         $requete .= ' biographie = '.$this->_bdd->echapper($biographie).' ';
         $requete .= ' WHERE conferencier_id = '.(int)$id;
 
@@ -626,7 +631,7 @@ class AFUP_AppelConferencier
         return $this->_bdd->obtenirUn('select LAST_INSERT_ID()');
     }
 
-    public function modifierSession($id, $id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie)
+    public function modifierSession($id, $id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie, $joindin = null)
     {
         $requete  = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = '.$this->_bdd->echapper($id_forum).', ';
@@ -635,6 +640,9 @@ class AFUP_AppelConferencier
         $requete .= ' abstract = '.$this->_bdd->echapper($abstract).', ';
         $requete .= ' journee = '.$this->_bdd->echapper($journee).', ';
         $requete .= ' genre = '.$this->_bdd->echapper($genre).', ';
+        if ($joindin !== null) {
+            $requete .= ' joindin = '.$this->_bdd->echapper($joindin).', ';
+        }
         $requete .= ' plannifie = '.$this->_bdd->echapper($plannifie).' ';
         $requete .= ' WHERE session_id = '.(int)$id;
 

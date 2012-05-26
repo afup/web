@@ -205,6 +205,7 @@ elseif ($action == 'lister') {
     $formulaire->addElement('text'  , 'email'       , 'Email'          , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'societe'     , 'Société'        , array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('textarea', 'biographie', 'Biographie'     , array('cols' => 40, 'rows' => 15));
+    $formulaire->addElement('text'  , 'twitter'     , 'Nickname Twitter', array('size' => 50, 'maxlength' => 100));
     if($_GET['id']) {
         $formulaire->addElement('file', 'photo', 'Photo (90x120)'     );
     }
@@ -255,12 +256,13 @@ elseif ($action == 'lister') {
         } else {
             $ok = $forum_appel->modifierConferencier($_GET['id'],
                                                      $valeurs['id_forum'],
-        											 $valeurs['civilite'],
-        											 $valeurs['nom'],
+                              											 $valeurs['civilite'],
+                              											 $valeurs['nom'],
                                                      $valeurs['prenom'],
                                                      $valeurs['email'],
                                                      $valeurs['societe'],
-                                                     $valeurs['biographie']);
+                                                     $valeurs['biographie'],
+                                                     $valeurs['twitter']);
             $file = $formulaire->getElement('photo');
             $data = $file->getValue();
             if ($data['name']) {

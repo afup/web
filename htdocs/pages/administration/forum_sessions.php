@@ -300,6 +300,8 @@ if ($action == 'lister') {
     $groupe[] = &HTML_QuickForm::createElement('radio', 'plannifie', null, 'Non', 0);
     $formulaire->addGroup($groupe, 'groupe_plannifie', "Plannifi&eacute;", '<br />', false);
 
+    $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
+
     $formulaire->addElement('header', null, 'Conférencier(s)');
     $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'c.nom, c.conferencier_id', true);
 	$formulaire->addElement('select', 'conferencier_id_1'    , 'N°1', $conferenciers);
@@ -354,7 +356,8 @@ if ($action == 'lister') {
 			                                    $valeurs['abstract'],
 			                                    $valeurs['journee'],
 			                                    $valeurs['genre'],
-			                                    $valeurs['plannifie']);
+			                                    $valeurs['plannifie'],
+                                                $valeurs['joindin']);
             $forum_appel->delierSession($session_id);
         }
 
