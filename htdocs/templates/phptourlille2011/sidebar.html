@@ -8,25 +8,25 @@
 						<div class="title">
 							<p>Sponsors</p>
 						</div>
-						{if count($partenaires.Platinium) > 0}
+						{if count($partenaires.Platine) > 0}
 							<p>"Platine"</p>
-	                        {foreach from=$partenaires.Platinium item=partenaire}
+	                        {foreach from=$partenaires.Platine item=partenaire}
 	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
 	                           title="{$partenaire.nom} | {$partenaire.presentation}">
 	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
 	                        {/foreach}
 						{/if}
-						{if count($partenaires.Gold) > 0}
+						{if count($partenaires.Or) > 0}
 							<p>"Or"</p>
-	                        {foreach from=$partenaires.Gold item=partenaire}
+	                        {foreach from=$partenaires.Or item=partenaire}
 	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
 	                           title="{$partenaire.nom} | {$partenaire.presentation}">
 	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
 	                        {/foreach}
 						{/if}
-						{if count($partenaires.Silver) > 0}
+						{if count($partenaires.Argent) > 0}
 							<p>"Argent"</p>
-	                        {foreach from=$partenaires.Silver item=partenaire}
+	                        {foreach from=$partenaires.Argent item=partenaire}
 	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
 	                           title="{$partenaire.nom} | {$partenaire.presentation}">
 	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
