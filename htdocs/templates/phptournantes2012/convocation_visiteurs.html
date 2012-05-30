@@ -1,0 +1,113 @@
+{include file="entete.html"}
+
+<div class="left-content convocation">
+
+	<h1>Convocation PHP Tour 2012</h1><br/>
+
+	<div style="font-size:20px;text-align:center" >
+	{$inscrit.civilite} {$inscrit.prenom} {$inscrit.nom}<br/>
+	{if $inscrit.type_inscription <= 1 }
+	PASS 1 Jour
+	{else}
+	PASS 2 Jours
+	{/if}
+	</div>
+
+	<p>Bonjour <strong>{$inscrit.prenom} {$inscrit.nom}</strong>, </p>
+
+	<p>Vous trouverez ci-dessous votre convocation au PHP Tour qui se déroulera à Euratechnologies les 24 et 25 novembre prochains.</p>
+
+	<p>L'accueil du public débutera le <strong>jeudi 24 novembre à 8h30 heures</strong>, et à <strong>8h30 pour le lendemain</strong>.</p>
+	<p>Vous trouverez ci-dessous toutes les <strong>informations pratiques</strong> pour accéder à Euratechnologies.
+	<br>Votre badge vous sera remis sur place.</p>
+
+	<p><b>Rappel</b> : les repas du midi ne sont pas compris dans les prestations.</p>
+
+	<p>L'équipe organisatrice vous souhaite un très agréable PHP Tour.</p><br/>
+
+	<br /><br />
+
+    <h1>Acc&egrave;s</h1>
+
+    <h2>Plan d'accès</h2>
+
+    <p>Le PHP Tour Nantes 2012 se tiendra à Euratechnologies, site d'excellence dédié aux TIC.</p>
+    <p class="block-leftbar">Euratechnologies,<br/>165 Avenue de Bretagne,<br/>59000 Lille</p>
+
+    <p>Euratechnologies sur Google Maps :</p>
+    <div class="map">
+   		<iframe width="670" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.fr/maps?f=q&amp;source=s_q&amp;hl=fr&amp;geocode=&amp;q=165+Avenue+de+la+Bretagne,+59000+Lille,+France&amp;sll=46.75984,1.738281&amp;sspn=11.155585,33.815918&amp;ie=UTF8&amp;hq=&amp;hnear=165+Avenue+de+la+Bretagne,+59000+Lille,+Nord,+Nord-Pas-de-Calais&amp;vpsrc=0&amp;ll=50.633567,3.021412&amp;spn=0.016332,0.025749&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
+   		<br />
+   		<a href="http://maps.google.fr/maps?f=q&amp;source=embed&amp;hl=fr&amp;geocode=&amp;q=165+Avenue+de+la+Bretagne,+59000+Lille,+France&amp;sll=46.75984,1.738281&amp;sspn=11.155585,33.815918&amp;ie=UTF8&amp;hq=&amp;hnear=165+Avenue+de+la+Bretagne,+59000+Lille,+Nord,+Nord-Pas-de-Calais&amp;vpsrc=0&amp;ll=50.633567,3.021412&amp;spn=0.016332,0.025749&amp;z=14&amp;iwloc=A">Agrandir le plan</a>
+    </div>
+
+    <h2>Comment venir au PHP Tour Nantes 2012 ?</h2>
+
+    <h3>En voiture, depuis Paris :</h3>
+    <ul>
+        <li>Prendre l'A1,</li>
+        <li>A proximité de Lille, suivre la direction A25/E42, direction Armentières/Dunkerque/Lille-Sud/Faches-Thumesnil</li>
+        <li>Prendrez la sortie 5, vers Lille-Centre/Lambersart/Port Fluvial</li>
+        <li>Au rond-point, prendre la 3e sortie du boulevard de la Moselle en direction de Lomme/Lambersart</li>
+        <li>Au carrefour, prendre à gauche. Vous entrez sur l'avenue de Dunkerque.</li>
+        <li>Au 5ème feu, prendre à gauche, avenue de Bretagne. Euratechnologies est au bout de la rue.</li>
+    </ul>
+	<br/>
+
+    <h3>En voiture, depuis Bruxelles :</h3>
+    <ul>
+        <li>Prendre direction E42/Tournai/Mouscron/Bruges/Lille</li>
+        <li>Après l'entrée sur le territoire français, prendre direction  A1/Lille/Armentieres/Dunkerque</li>
+        <li>Suivre ensuite les directions données pour l'itinéraire depuis Paris</li>
+    </ul>
+	<br/>
+
+    <h3>Voyagez à plusieurs grâce au covoiturage !</h3>
+	<div class="covoiturage">
+		<img src="{$chemin_template}images/covoiturage.png" align="left"/>
+   		<p>Proposez des places dans votre véhicule, ou trouvez une voiture qui se rend également au PHP Tour Nantes 2012,
+    	discutez PHP le temps du trajet, et partagez les frais de route : une page dédiée au co-voiturage est
+   		d'ores et déjà en place à cet effet : <a href="http://agenda.covoiturage.fr//conference/4208-php-tour-lille-2011">http://agenda.covoiturage.fr//conference/4208-php-tour-lille-2011</a></p>
+		<div class="clear"></div>
+	</div>
+	<br/>
+
+    <h3 style="clear:both">En train :</h3>
+    <ul>
+        <li>Paris / Lille en 1 heure,</li>
+        <li>Bruxelles / Lille en 35 minutes,</li>
+        <li>Lyon / Lille en 3 heures,</li>
+        <li>Strasbourg / Lille en 3h20,</li>
+        <li>Nantes / Lille en 4 heures,</li>
+        <li>Bordeaux / Lille en 5 heures</li>
+    </ul>
+	<br/>
+
+    <h3>En avion :</h3>
+    <p>Aéroport de Lille-Lesquin, navette jusqu'à la gare Lille Europe.</p>
+	<br/>
+
+    <h3>A partir de Lille</h3>
+    <p>A la gare Lille Europe tout comme à la gare Lille Flandres, prendre le métro ligne 2, direction Lomme St Philibert Arrêt Canteleu - 15 min de trajet</p>
+	<br/>
+
+    <p>Du métro Canteleu à Euratechnologies - 7 min à pied</p>
+    <ul>
+        <li>En sortant du métro, prendre à droite sur l'avenue de Dunkerque.</li>
+        <li>Prendre la première à droite, Rue Turgot</li>
+        <li>Prendre la première à gauche, rue Copernic.</li>
+        <li>L'avenue de Bretagne est au bout de la rue Copernic, Euratechnologies est à votre droite.</li>
+    </ul>
+	<br/>
+
+    <p>Itinéraire Google Maps Piéton :</p>
+    <div class="map">
+        <iframe width="670" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.fr/maps?f=d&amp;source=s_d&amp;saddr=m%C3%A9tro+canteleu&amp;daddr=165+Avenue+de+la+Bretagne,+59000+Lille&amp;hl=fr&amp;geocode=FV2pBAMdhCYuACmL09dPXtXCRzHDQaG_-k76qg%3BFVObBAMdcRouACnzRgpsXNXCRzHXEzRGoV1m4w&amp;mra=ltm&amp;dirflg=w&amp;sll=50.635547,3.023912&amp;sspn=0.003681,0.010568&amp;ie=UTF8&amp;vpsrc=0&amp;ll=50.635731,3.022785&amp;spn=0.004083,0.006437&amp;z=16&amp;output=embed"></iframe>
+        <br />
+        <a href="http://maps.google.fr/maps?f=d&amp;source=embed&amp;saddr=m%C3%A9tro+canteleu&amp;daddr=165+Avenue+de+la+Bretagne,+59000+Lille&amp;hl=fr&amp;geocode=FV2pBAMdhCYuACmL09dPXtXCRzHDQaG_-k76qg%3BFVObBAMdcRouACnzRgpsXNXCRzHXEzRGoV1m4w&amp;mra=ltm&amp;dirflg=w&amp;sll=50.635547,3.023912&amp;sspn=0.003681,0.010568&amp;ie=UTF8&amp;vpsrc=0&amp;ll=50.635731,3.022785&amp;spn=0.004083,0.006437&amp;z=16">Agrandir le plan</a>
+    </div>
+
+</div>
+
+{include file="sidebar.html"}
+{include file="pied_de_page.html"}
