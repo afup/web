@@ -81,9 +81,9 @@ class AFUP_Forum
 
     function obtenirDernier()
     {
-        $requete  = 'SELECT MAX(id)';
-        $requete .= 'FROM';
-        $requete .= '  afup_forum ';
+        $requete  = 'SELECT id ';
+        $requete .= 'FROM afup_forum ';
+        $requete .= 'ORDER BY date_debut desc';
         return $this->_bdd->obtenirUn($requete);
     }
 
@@ -714,6 +714,6 @@ return  $sTable;
 
         $requete  = 'DELETE FROM afup_forum WHERE id = '.$id_forum;
 
-        return $this->_bdd->executer($requete);   
+        return $this->_bdd->executer($requete);
     }
 }
