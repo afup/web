@@ -64,21 +64,19 @@
 					</div>
 				</div>
 
+				{if count($partenaires.Partenaires) > 0}
 				<div class="bloc-sidebar">
 					<div class="title">
 						<p><a href="sponsors.php">Partenaires</a></p>
 					</div>
 					<div class="bloc-sidebar-content">
                         {foreach from=$partenaires.Partenaires item=partenaire}
-                            {if $partenaire.nom=='Pôle Ubiquitaire'}
-                                <br />
-                                Le PHP Tour Nantes 2012 est labellisé :
-                            {/if}
                         <a class="withTooltip" href="{$partenaire.site}" target="_blank"
                            title="{$partenaire.nom} | {$partenaire.presentation}">
                             <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                         {/foreach}
 					</div>
 				</div>
+				{/if}
 
 			</aside><!-- End Sidebar -->
