@@ -86,30 +86,49 @@
         if (settings.animationtype == 'slide') {
             $(elements[last]).slideUp(settings.speed);
             $(elements[current]).slideDown(settings.speed);
+            if (settings.type == "sequence") {
+                if ((current + 1) < elements.length) {
+                    current = current + 1;
+                    last = current - 1;
+                } else {
+                    current = 0;
+                    last = elements.length - 1;
+                }
+            } else if (settings.type == "random") {
+                last = current;
+                do {
+                    current = Math.floor(Math.random() * (elements.length));
+                } while (last == current);
+                $("#help").html($("#help").html() + '<br/>' + last + '=>' + current);
+            } else alert('Innerfade-Type must either be \'sequence\', \'random\' or \'random_start\'');
+            setTimeout((function () {
+                $.innerfade.next(elements, settings, current, last);
+            }), settings.timeout);
         } else if (settings.animationtype == 'fade') {
             $(elements[last]).fadeOut(settings.speed, function () {
                 $(elements[last]).hide();
                 $(elements[current]).fadeIn(settings.speed, function () {
                     removeFilter($(this)[0]);
                 });
+                if (settings.type == "sequence") {
+                    if ((current + 1) < elements.length) {
+                        current = current + 1;
+                        last = current - 1;
+                    } else {
+                        current = 0;
+                        last = elements.length - 1;
+                    }
+                } else if (settings.type == "random") {
+                    last = current;
+                    do {
+                        current = Math.floor(Math.random() * (elements.length));
+                    } while (last == current);
+                } else alert('Innerfade-Type must either be \'sequence\', \'random\' or \'random_start\'');
+                setTimeout((function () {
+                    $.innerfade.next(elements, settings, current, last);
+                }), settings.timeout);
             });
         } else alert('Innerfade-animationtype must either be \'slide\' or \'fade\'');
-        if (settings.type == "sequence") {
-            if ((current + 1) < elements.length) {
-                current = current + 1;
-                last = current - 1;
-            } else {
-                current = 0;
-                last = elements.length - 1;
-            }
-        } else if (settings.type == "random") {
-            last = current;
-            while (current == last)
-            current = Math.floor(Math.random() * elements.length);
-        } else alert('Innerfade-Type must either be \'sequence\', \'random\' or \'random_start\'');
-        setTimeout((function () {
-            $.innerfade.next(elements, settings, current, last);
-        }), settings.timeout);
     };
 
 })(jQuery);
