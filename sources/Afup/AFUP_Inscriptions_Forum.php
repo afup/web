@@ -159,37 +159,36 @@ class AFUP_Inscriptions_Forum
         $requete .= ' LIMIT 5000';
         $inscrits  = $this->_bdd->obtenirTous($requete);
 
-
         require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
         foreach ($inscrits as $nb => $inscrit) {
-			if ($nb % 100 == 0) {
-				sleep(5);
-			}
-			$mail = new PHPMailer();
-			$mail->AddAddress($inscrit['email'], $inscrit['prenom'] . " " . $inscrit['nom']);
+    			if ($nb % 100 == 0) {
+    				sleep(5);
+    			}
+    			$mail = new PHPMailer();
+    			$mail->AddAddress($inscrit['email'], $inscrit['prenom'] . " " . $inscrit['nom']);
 
-			$mail->From = $configuration->obtenir('mails|email_expediteur');
-			$mail->FromName = $configuration->obtenir('mails|nom_expediteur');
+    			$mail->From = $configuration->obtenir('mails|email_expediteur');
+    			$mail->FromName = $configuration->obtenir('mails|nom_expediteur');
 
-			if ($configuration->obtenir('mails|serveur_smtp')) {
-				$mail->Host = $configuration->obtenir('mails|serveur_smtp');
-				$mail->Mailer = "smtp";
-			} else {
-				$mail->Mailer = "mail";
-			}
+    			if ($configuration->obtenir('mails|serveur_smtp')) {
+    				$mail->Host = $configuration->obtenir('mails|serveur_smtp');
+    				$mail->Mailer = "smtp";
+    			} else {
+    				$mail->Mailer = "mail";
+    			}
 
-			$mail->Subject = $sujet;
+    			$mail->Subject = $sujet;
 
-			$qui = $inscrit['prenom'].' '.$inscrit['nom'];
-			$body = str_replace("%INSCRIT", $qui, $corps);
+    			$qui = $inscrit['prenom'].' '.$inscrit['nom'];
+    			$body = str_replace("%INSCRIT", $qui, $corps);
 
-			$lien = "http://www.afup.org/pages/forumphp2010/convocation_visiteurs.php?id=".$inscrit['md5key'];
-			$body = str_replace("%LIEN", $lien, $body);
-			$mail->Body = $body;
+    			$lien = "http://www.afup.org/pages/forumphp2012/convocation_visiteurs.php?id=".$inscrit['md5key'];
+    			$body = str_replace("%LIEN", $lien, $body);
+    			$mail->Body = $body;
 
-			$ok = $mail->Send();
-		}
-		return $ok;
+    			$ok = $mail->Send();
+    		}
+  		return $ok;
     }
 
     function obtenirSuivi($id_forum) {

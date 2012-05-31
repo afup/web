@@ -15,56 +15,41 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 
 if ($action == 'envoyer_convocation') {
 	$formulaire = &instancierFormulaire();
-	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2010',
-								'corps' => 'Bonjour %INSCRIT,
-
-Le Forum PHP 2010 approche à grands pas... Voici toutes les informations et les dernières (bonnes) nouvelles à savoir avant votre arrivée !
+	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2012',
+								'corps' => 'Le grand retour du Forum PHP 2012, c\'est dans quelques jours ! Voici toutes les informations utiles pour faciliter votre venue et les dernières nouvelles du Forum PHP 2012.
 
 
 - Le Forum, où, quand, comment ?
 
-Le Forum PHP 2010 se tiendra à la Cité des Sciences de la Villette mardi 9 et mercredi 10 novembre. Nous ouvrirons les portes à 8h30, soyez là à l\'heure les premières conférences débutent 30 minutes après l\'ouverture des portes.
+Le Forum PHP 2012 se tient à la Maison Internationale de la Cité Internationale Universitaire de Paris, mardi 5 et mercredi 6 juin. Les portes s\'ouvriront à 8H30. Les premières conférences débutent à 9H00 : nous vous encourageons donc à être à l\'heure !
 
-Pour vous rendre à la Cité des Sciences :
-Métro : ligne 7, station Porte de la Villette.
-Bus : 75, 139, 150, 152, 249, PC.
+Pour vous rendre à la Cité Internationale Universitaire de Paris :
+ * RER : ligne B, arrêt Cité Universitaire
+ * Tram : ligne 3, arrêt Cité Universitaire
+ * Bus : ligne 88, arrêt Montsouris-Issoire
 
-Arrivé dans la Cité des Sciences de la Villette, dirigez vous vers les escalators qui vous conduiront au niveau -1, à l\'entrée du Forum PHP 2010. Présentez-vous à l\'accueil muni d\'une pièce d\'identité afin de retirer votre badge auprès de notre équipe.
+L\'entrée de la Cité Universitaire se situe au 17 boulevard Jourdan.
+La Maison Internationale se trouve en face de vous. Présentez-vous à l\'accueil du Forum PHP 2012 muni d\'une pièce d\'identité afin de retirer votre badge auprès de notre équipe.
+Nous vous rappelons que votre billet d\'entrée vous permettra de profiter d\'un en-cas à la pause déjeuner.
 
-
-- A ne pas manquer au Forum PHP 2010 !
-
-Cette année, l\'AFUP met notamment l\'accent sur l\'optimisation des sites. En effet, deux conférences importantes ont été ajoutées au programme, proposant ainsi une thématique complète sur les performances du PHP. Zeev Suraski, co-fondateur de Zend technologies, nous a confirmé sa venue il y a quelques jours pour une conférence intitulée "Le paradoxe des performances PHP". Quant à Weka, notre sponsor Gold, il nous fera bénéficier de son retour d\'expérience lors de la conférence "Jeux sociaux & Cloud Computing : une histoire de scalabilité".
-
-Notons également la venue surprise de Roy Rubin, fondateur de Magento, qui co-animera la conférence "Magento, un framework de E-Commerce".
-
-Cette année, l\'AFUP fête ses 10 ans et les 15 ans du PHP. A cette occasion, l\'association en profite pour inviter une quinzaine de communautés PHP, qui présenteront leur projet Open Source lors d\'ateliers et de mini-conférences, planifiés au fil des disponibilités des salles. Retrouvez la liste complète sur notre site :
-http://www.afup.org/pages/forumphp2010/projets-php.php
+Pour imprimer la convocation : %LIEN
 
 
-- Un double-anniversaire, ca se fête !
+- Dernières retouches au programme
 
-Vous ne vous y êtes pas trompés : cette édition anniversaire s\'annonce exceptionnelle ! Nous affichons d\'ailleurs complet, le Forum accueillant plus de 500 personnes : jamais le Forum PHP n\'avait attiré autant de visiteurs !
-
-Nombre d\'auteurs d\'ouvrages traitant de PHP seront présents lors du Forum PHP 2010 : c\'est pourquoi nous organisons une séance de dédicaces le mardi 9 novembre à 12h30, en partenariat avec les éditions Eyrolles. Seront présents Cyril Pierre de Geyer, Julien Pauli, Christophe Villeneuve, Hugo Hamon et Eric Daspet. N\'hésitez pas à apporter vos livres si vous le souhaitez. Une librairie temporaire sera installée pour tout ceux qui souhaiteraient compléter leur bibliothèque. De plus, de nombreux ouvrages seront mis en jeu durant les deux jours du Forum PHP : bonne chance à tous les participants !
-
-Encore bien d\'autres surprises marqueront ces deux jours, mais nous préférons garder le secret... Rendez-vous donc mardi 9 et mercredi 10 novembre pour célébrer les 15 ans de PHP et les 10 ans de l\'AFUP comme il se doit !
-
-L\'équipe AFUP
+Le Forum PHP était absent des calendriers depuis novembre 2010. Alors pour son grand retour, l\'AFUP a soigné sa programmation, orientée vers la qualité, les performances et les nouveaux usages, et a fixé de nouveaux rendez-vous, comme la table ronde DSI ou les lightning-talks.
+A noter, la programmation a encore connu quelques changements de dernière minute. Ainsi, notre sponsor platine Zend a annoncé le sujet de sa conférence : Emile Heitor présentera "Scalabilité sans limite pour vos applications PHP grâce au Zend Cloud", le mercredi 6 juin à 14h45. Autre modification : Jonathan-David Schröder est contraint d\'annuler sa conférence "Bien comprendre et choisir Lucene, Solr ou ElasticSearch? pour mon projet PHP", prévue le mercredi 6 juin à 11h45. Il sera remplacé par Damien Seguy, pour une session intitulée "Automatisation de la qualité".
 
 
+- Retrouvez le Forum PHP 2012 sur les réseaux sociaux et sur son site mobile
 
-PS : si finalement, vous ne pouvez pas venir, merci d\'envoyer un email à tresorier@afup.org. Vous ferez une heureux parmi les personnes sur liste d\'attente.
+La programmation est en ligne sur notre site mobile, à l\'adresse www.afup.org/m/. Envie de tweeter pendant le Forum PHP 2012 ? Utilisez le hashtag #afup ! Et n\'oubliez pas de suivre l\'actualité de l\'AFUP sur nos réseaux sociaux :
+Facebook : www.facebook.com/fandelafup
+Digikaa : www.digikaa.com/groups/afup/
 
+Nous sommes impatients de vous accueillir et célébrer avec vous le grand retour de l\'événement-phare de l\'AFUP !
 
-
-PS 2 : un lien pour la convocation,
-%LIEN
-
-
-
-
-'));
+L\'équipe AFUP'));
 
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
 	$formulaire->addElement('hidden', 'action', 'envoyer_convocation');
