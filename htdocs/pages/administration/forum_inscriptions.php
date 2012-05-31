@@ -16,7 +16,9 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 if ($action == 'envoyer_convocation') {
 	$formulaire = &instancierFormulaire();
 	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2012',
-								'corps' => 'Le grand retour du Forum PHP 2012, c\'est dans quelques jours ! Voici toutes les informations utiles pour faciliter votre venue et les dernières nouvelles du Forum PHP 2012.
+								'corps' => 'Bonjour %INSCRIT,
+
+Le grand retour du Forum PHP 2012, c\'est dans quelques jours ! Voici toutes les informations utiles pour faciliter votre venue et les dernières nouvelles du Forum PHP 2012.
 
 
 - Le Forum, où, quand, comment ?
