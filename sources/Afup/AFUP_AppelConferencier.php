@@ -430,7 +430,11 @@ class AFUP_AppelConferencier
     {
         $requete  = ' SELECT ';
         $requete .= " ( SELECT CONCAT(c.prenom, ' ', c.nom,' - ', c.societe )  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id order by c.conferencier_id asc limit 1) as conf1 ,
-                      ( SELECT CONCAT(c.prenom, ' ', c.nom,' - ', c.societe)  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id order by c.conferencier_id asc limit 1,1) as conf2 , ";
+                      ( SELECT twitter  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id order by c.conferencier_id asc limit 1) as twitter1 ,
+                      ( SELECT cs.conferencier_id  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id order by c.conferencier_id asc limit 1) as conferencier_id1 ,
+                      ( SELECT CONCAT(c.prenom, ' ', c.nom,' - ', c.societe)  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id order by c.conferencier_id asc limit 1,1) as conf2 ,
+                      ( SELECT twitter  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id order by c.conferencier_id asc limit 1,1) as twitter2 ,
+                      ( SELECT cs.conferencier_id  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id order by c.conferencier_id asc limit 1,1) as conferencier_id2 , ";
 
         $requete .= '  se.*, ';
         $requete .= '  IF(se.journee = 1, "boss", IF(se.journee = 2, "geek", "boss geek")) as journee, ';
@@ -644,6 +648,15 @@ class AFUP_AppelConferencier
             $requete .= ' joindin = '.$this->_bdd->echapper($joindin).', ';
         }
         $requete .= ' plannifie = '.$this->_bdd->echapper($plannifie).' ';
+        $requete .= ' WHERE session_id = '.(int)$id;
+
+        return $this->_bdd->executer($requete);
+    }
+
+    public function modifierJoindinSession($id, $joindin)
+    {
+        $requete  = 'UPDATE afup_sessions SET ';
+        $requete .= ' joindin = '.$this->_bdd->echapper($joindin);
         $requete .= ' WHERE session_id = '.(int)$id;
 
         return $this->_bdd->executer($requete);

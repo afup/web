@@ -26,8 +26,13 @@
               <a name="{$session.session_id}" href="#ag_sess_{$session.session_id}" >
                 {$session.titre}
               </a>
-              <br />{$session.conf1} / {$session.conf2}
+              <br />
+              <a href="index.php?page=forum_conferenciers&amp;action=modifier&amp;id={$session.conferencier_id1}&amp;id_forum={$session.id_forum}" title="Modifier la fiche de {$session.conf1}">{$session.conf1}</a>{if $session.twitter1}(@{$session.twitter1}){/if}
+              {if $session.conf2}
+              / <a href="index.php?page=forum_conferenciers&amp;action=modifier&amp;id={$session.conferencier_id2}&amp;id_forum={$session.id_forum}" title="Modifier la fiche de {$session.conf2}">{$session.conf2}</a>{if $session.twitter2}(@{$session.twitter2}){/if}
+              {/if}
 			  <br />{$session.debut|date_format:"%d/%m/%Y %H:%M"} -  {$session.fin|date_format:"%H:%M"} / {$session.nom_salle}
+              {if $session.joindin}<br />(JOIND.IN={$session.joindin}){/if}
             </td>
             <td style="text-align: right" nowrap="nowrap">
                 <a href="index.php?page=forum_planning&amp;action=modifier&amp;id={$session.id}&amp;id_session={$session.session_id}" title="Modifier la session {$session.titre}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
