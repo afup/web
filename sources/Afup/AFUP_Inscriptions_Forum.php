@@ -144,7 +144,7 @@ class AFUP_Inscriptions_Forum
       return $this->_bdd->obtenirEnregistrement($requete) ;
     }
 
-    public function envoyerEmailConvocation($id_forum, $sujet, $corps) {
+    public function envoyerEmailConvocation($id_forum, $sujet, $corps, $date_envoi = null) {
         require_once dirname(__FILE__).'/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
@@ -155,9 +155,13 @@ class AFUP_Inscriptions_Forum
         $requete .= 'LEFT JOIN';
         $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
+        if ($date_envoi) {
+            $requete .= 'AND i.date > '. strtotime($date_envoi) . ' ';
+        }
         $requete .= 'ORDER BY i.date';
         $requete .= ' LIMIT 5000';
         $inscrits  = $this->_bdd->obtenirTous($requete);
+        var_dump($inscrits);die();
 
         require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
         foreach ($inscrits as $nb => $inscrit) {

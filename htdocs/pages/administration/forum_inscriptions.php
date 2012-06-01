@@ -16,6 +16,7 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 if ($action == 'envoyer_convocation') {
 	$formulaire = &instancierFormulaire();
 	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2012',
+                                'date_envoi' => date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))),
 								'corps' => 'Bonjour %INSCRIT,
 
 Le grand retour du Forum PHP 2012, c\'est dans quelques jours ! Voici toutes les informations utiles pour faciliter votre venue et les dernières nouvelles du Forum PHP 2012.
@@ -56,17 +57,19 @@ L\'équipe AFUP'));
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
 	$formulaire->addElement('hidden', 'action', 'envoyer_convocation');
 	$formulaire->addElement('header', null, 'Convocation');
-    $formulaire->addElement('textarea', 'sujet', 'Sujet', array('cols' => 42, 'rows' => 5));
-	$formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 42, 'rows' => 20));
+    $formulaire->addElement('text', 'sujet', 'Sujet', array('size' => 30));
+    $formulaire->addElement('text', 'date_envoi', 'Date envoi');
+	$formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 60, 'rows' => 20));
 	$formulaire->addElement('header', 'boutons' , '');
 	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
 
 	$formulaire->addRule('sujet', 'Sujet manquant', 'required');
-	$formulaire->addRule('corps', 'Corps manquant', 'required');
+    $formulaire->addRule('corps', 'Corps manquant', 'required');
+	$formulaire->addRule('date_envoi', 'Date manquante', 'required');
 
     if ($formulaire->validate()) {
 		$valeurs = $formulaire->exportValues();
-		$resultat = $forum_inscriptions->envoyerEmailConvocation($valeurs['id_forum'], $valeurs['sujet'], $valeurs['corps']);
+		$resultat = $forum_inscriptions->envoyerEmailConvocation($valeurs['id_forum'], $valeurs['sujet'], $valeurs['corps'], $valeurs['date_envoi']);
 		if ($resultat) {
 			AFUP_Logs::log('Envoi de la convocation pour le Forum PHP');
 			afficherMessage('La convocation a été envoyée', 'index.php?page=forum_inscriptions&action=lister');

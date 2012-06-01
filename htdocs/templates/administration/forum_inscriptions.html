@@ -130,7 +130,7 @@
         </tr>
     {foreach from=$inscriptions item=inscription}
         <tr class="{cycle values="odd,even"}"{if $inscription.etat == 1} style="color:#999;font-style:italic"{/if}>
-            <td nowrap="nowrap">{$inscription.date|date_format:"%d/%m/%Y"}</td>
+            <td nowrap="nowrap">{$inscription.date|date_format:"%d/%m/%Y %H:%M:%S"}</td>
             <td><strong>{$inscription.prenom} {$inscription.nom}</strong></td>
             <td>{$inscription.societe}</td>
 			<td>{$forum_tarifs_lib[$inscription.type_inscription]}</td>
