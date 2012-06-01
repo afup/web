@@ -161,7 +161,6 @@ class AFUP_Inscriptions_Forum
         $requete .= 'ORDER BY i.date';
         $requete .= ' LIMIT 5000';
         $inscrits  = $this->_bdd->obtenirTous($requete);
-        var_dump($inscrits);die();
 
         require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
         foreach ($inscrits as $nb => $inscrit) {
