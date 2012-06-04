@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister'));
+$action = verifierAction(array('lister', 'lister_conferencier_orga'));
 $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
@@ -31,5 +31,8 @@ $smarty->assign('id_forum', $_GET['id_forum']);
 $smarty->assign('forum_tarifs_lib', $AFUP_Tarifs_Forum_Lib);
 
 $smarty->assign('forums', $forum->obtenirListe());
-$smarty->assign('inscriptions', $forum_inscriptions->obtenirListePourEmargement($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
-
+if ($action == 'lister') {
+    $smarty->assign('inscriptions', $forum_inscriptions->obtenirListePourEmargement($_GET['id_forum']));
+} else {
+    $smarty->assign('inscriptions', $forum_inscriptions->obtenirListePourEmargementConferencierOrga($_GET['id_forum']));
+}
