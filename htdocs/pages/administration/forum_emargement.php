@@ -31,6 +31,8 @@ $smarty->assign('id_forum', $_GET['id_forum']);
 $smarty->assign('forum_tarifs_lib', $AFUP_Tarifs_Forum_Lib);
 
 $smarty->assign('forums', $forum->obtenirListe());
+$smarty->assign('i', 1);
+
 if ($action == 'lister') {
     $smarty->assign('inscriptions', $forum_inscriptions->obtenirListePourEmargement($_GET['id_forum']));
 } else {
