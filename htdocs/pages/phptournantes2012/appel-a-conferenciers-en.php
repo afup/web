@@ -51,7 +51,7 @@ for ($i = 1;$i < 4; $i++) {
 
     $groupe = array();
     $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Conference', 1);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Workshop'    , 2);
+    //$groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Workshop'    , 2);
     $formulaire->addGroup($groupe, 'groupe_type_pres' . $i, "Type of session", '<br />', false);
 }
 
