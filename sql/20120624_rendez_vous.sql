@@ -1,0 +1,1 @@
+ALTER TABLE `afup_rendezvous` ADD `id_antenne` INT( 11 ) NOT NULL ;
