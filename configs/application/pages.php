@@ -87,15 +87,19 @@ $pages = array(
             ),
         ),
     ),
-    'rendez_vous' => array(
-        'nom' => 'Rendez-vous',
-        'elements' => array(
-		    'rendez_vous' => array(
-		        'nom' => 'Rendez-vous',
-		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-		    ),
-        ),
-    ),
+	'antenne' => array(
+		'nom' => 'Antennes AFUP',
+		'elements' => array(
+			'rendez_vous' => array(
+				'nom' => 'Rendez-vous',
+				'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+			),
+			'antenne' => array(
+				'nom' => 'Liste des antennes',
+				'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+			),
+		),
+	),		
     'forum' => array(
         'nom' => 'Forum',
         'elements' => array(
@@ -165,15 +169,6 @@ $pages = array(
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
 	    ),
-    ),
-    'antenne' => array(
-        'nom' => 'Antenne',
-        'elements' => array(
-		    'antenne' => array(
-		        'nom' => 'Liste antenne AFUP',
-		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-		    ),
-        ),
     ),
     'annuaire' => array(
         'nom' => 'Annuaire pro',
