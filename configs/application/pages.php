@@ -166,6 +166,15 @@ $pages = array(
 		    ),
 	    ),
     ),
+    'antenne' => array(
+        'nom' => 'Antenne',
+        'elements' => array(
+		    'antenne' => array(
+		        'nom' => 'Liste antenne AFUP',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
+        ),
+    ),
     'annuaire' => array(
         'nom' => 'Annuaire pro',
         'elements' => array(
