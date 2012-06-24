@@ -1,0 +1,34 @@
+{if $action == 'lister' }
+    <h2>Liste des antennes </h2>
+
+  <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=antenne&amp;action=ajouter" title="ajouter une antenne">Ajouter une antenne</a><br />
+
+    <br/>
+    <table class="afup_tab">
+        <tr>
+           <th>Ville</a></th>
+            <th>&nbsp;</th>
+       </tr>
+    {foreach from=$data item=ecriture}
+         <tr class="{cycle values="odd,even"}">
+            <td>{$ecriture.ville}</td>
+            <td style="text-align: right">
+                <a href="index.php?page=antenne&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+               </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucune Antenne actuellement</em></td>
+        </tr>
+    {/foreach}
+     </table>
+
+
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter une antenne </h2>
+    {else}
+        <h2>Modifier une antenne </h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
