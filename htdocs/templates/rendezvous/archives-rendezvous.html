@@ -4,8 +4,12 @@
 
 <ul>
 {foreach from=$listerendezvous item=unrendezvous}
-	<li>
-		<a href="archive.php?id={$unrendezvous.id}">{$unrendezvous.titre}</a> (le {$unrendezvous.date})
+	{if $unrendezvous.est_futur }
+	<li class="a-venir">
+	{else}
+	<li class="archive">
+	{/if}
+		<a href="index.php?id={$unrendezvous.id}">{$unrendezvous.titre}</a> (le {$unrendezvous.date})
 	</li>
 {/foreach}
 </ul>

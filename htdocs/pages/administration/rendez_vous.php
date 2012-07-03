@@ -111,7 +111,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addElement('textarea', 'theme'    , 'Thème'    , array('cols' => 42, 'rows' => 10));
 
     $formulaire->addElement('header'  , ''         , 'Horaires');
-	$options = array('language' => 'fr', 'format' => 'd/m/Y', 'minYear' => $current_year, 'maxYear' => $current_year + 3);
+	$options = array('language' => 'fr', 'format' => 'd/m/Y', 'minYear' => "2005", 'maxYear' => $current_year + 3);
 	$formulaire->addElement('date'    , 'date'     , 'Date'     , $options);
 	$formulaire->addElement('text'    , 'debut'    , 'Heure début (00:00)'    , array('size' => 6, 'maxlength' => 5));
 	$formulaire->addElement('text'    , 'fin'      , 'Heure fin (00:00)'      , array('size' => 6, 'maxlength' => 5));

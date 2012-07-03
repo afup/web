@@ -1,43 +1,34 @@
 <?php
-/**
- * Fichier principal site 'RendezVous'
- * 
- * @author    Perrick Penet   <perrick@noparking.fr>
- * @author    Olivier Hoareau <olivier@phppro.fr>
- * @copyright 2010 Association Française des Utilisateurs de PHP
- * 
- * @category RendezVous
- * @package  RendezVous
- * @group    Pages
- */
-
-// 0. initialisation (bootstrap) de l'application
-
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-
-// 1. chargement des classes nécessaires
-
-require_once 'Afup/AFUP_Rendez_Vous.php';
-require_once 'Afup/AFUP_Logs.php';
-
-// 2. récupération et filtrage des données
+require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Rendez_Vous.php';
+require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Logs.php';
 
 AFUP_Logs::initialiser($bdd, 0);
 
 $rendezvous = new AFUP_Rendez_Vous($bdd);
 if (isset($_GET['id'])) {
-	$prochain_rendezvous = $rendezvous->obtenirRendezVousFutur((int)$_GET['id']);
+	$prochain_rendezvous = $rendezvous->obtenir((int)$_GET['id']);
 } else {
 	$prochain_rendezvous = $rendezvous->obtenirProchain();
 }
 
 if (isset($prochain_rendezvous) and is_array($prochain_rendezvous)) {
+	if ($prochain_rendezvous['debut'] <= time()) {
+		$prochain_rendezvous['est_futur'] = FALSE;
+	} else {
+		$prochain_rendezvous['est_futur'] = TRUE;
+	}
+	
 	$prochain_rendezvous['date'] = date("d/m/Y", $prochain_rendezvous['debut']);
 	$prochain_rendezvous['debut'] = date("H\hi", $prochain_rendezvous['debut']);
 	$prochain_rendezvous['fin'] = date("H\hi", $prochain_rendezvous['fin']);
-	$prochain_rendezvous['est_futur'] = TRUE;
+	
 	$smarty->assign('rendezvous', $prochain_rendezvous);
-
+	
+	if (!$prochain_rendezvous['est_futur']) {
+		$smarty->display('rendezvous-archive.html');
+		die();
+	}
 	if ($rendezvous->accepteSurListeAttenteUniquement($prochain_rendezvous['id'])) {
         $smarty->assign('resultat', 'erreur');
         $smarty->assign('message', 'Attention, les inscriptions sont closes. Votre inscription sera mise sur liste d\'attente. Si des places se libèrent, vous recevrez un email.');
