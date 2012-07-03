@@ -4,7 +4,7 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site_Lille.php';
 
 $page = new AFUP_Site_Page_Lille($bdd);
 
-$page->definirRoute(isset($_GET['route']) ? $_GET['route'] : 'lille/73');
+$page->definirRoute(isset($_GET['route']) ? $_GET['route'] : 'lille/74');
 
 $smarty->assign('header', $page->header());
 $smarty->assign('menu', $page->menu());
