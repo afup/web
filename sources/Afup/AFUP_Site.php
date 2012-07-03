@@ -211,7 +211,7 @@ class AFUP_Site_Articles {
         }
     }
 
-    function chargerArticlesDeRubrique($id_site_rubrique) {
+    function chargerArticlesDeRubrique($id_site_rubrique, $rowcount = null) {
         $requete  = ' SELECT';
         $requete .= '  * ';
         $requete .= ' FROM';
@@ -220,6 +220,9 @@ class AFUP_Site_Articles {
         $requete .= '  id_site_rubrique = '.(int)$id_site_rubrique;
         $requete .= '  AND etat = 1';
         $requete .= ' ORDER BY date DESC';
+        if (is_int($rowcount)) {
+        	$requete .= ' LIMIT 0, '.(int)$rowcount;
+        }
         $elements = $this->bdd->obtenirTous($requete);
 
         $articles = array();
@@ -350,7 +353,11 @@ class AFUP_Site_Footer {
 
         return $contenu;
     }
-}
+    
+	function render() {
+		return "";
+	}
+   }
 
 class AFUP_Site_Branche {
     public $navigation = 'nom';
@@ -374,7 +381,7 @@ class AFUP_Site_Branche {
         }
     }
 
-    function naviguer($id, $profondeur=1, $identification="") {
+    function naviguer($id, $profondeur=1, $identification="", $prefix="") {
         $requete = 'SELECT *
                     FROM afup_site_feuille
                     WHERE id = '.$this->bdd->echapper($id).'
@@ -385,13 +392,13 @@ class AFUP_Site_Branche {
             $identification = ' id="'.$identification.'"';
         }
         $navigation = '<ul'.$identification.' class="'.$racine['raccourci'].'">';
-        $navigation .= $this->extraireFeuilles($id, $profondeur);
+        $navigation .= $this->extraireFeuilles($id, $profondeur, $prefix);
         $navigation .= '</ul>';
 
         return $navigation;
     }
 
-    function extraireFeuilles($id, $profondeur) {
+    function extraireFeuilles($id, $profondeur, $prefix="") {
         $extraction = '';
 
         $requete = 'SELECT *
@@ -413,7 +420,10 @@ class AFUP_Site_Branche {
 	                    $route = $feuille['lien'];
 	                    break;
 	                default:
-			            $route = $this->conf->obtenir('web|path').'/'.$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$feuille['lien'];
+	                	if ($prefix == null) {
+	                		$prefix = $this->conf->obtenir('site|prefix');
+	                	}
+			            $route = $this->conf->obtenir('web|path').'/'.$prefix.$this->conf->obtenir('site|query_prefix').$feuille['lien'];
 	                    break;
 	            }
 	            $extraction .= '<li'.$class.'><a href="'.$route.'" alt="'.$feuille['alt'].'">';
@@ -633,15 +643,15 @@ class AFUP_Site_Article {
         return $this->rubrique->nom;
     }
 
-    function articles_dans_la_rubrique() {
+    function articles_dans_la_rubrique($prefix = null) {
         $autres_articles = $this->autres_articles();
         if (count($autres_articles) > 0) {
             $liste = '<ul class="Txt">';
             foreach ($autres_articles as $article) {
                 if ($article->id == $this->id) {
-                    $liste .= '<li><a href="'.$article->route().'"><strong>'.$article->titre.'</strong></a></li>';
+                    $liste .= '<li><a href="'.$article->route($prefix).'"><strong>'.$article->titre.'</strong></a></li>';
                 } else {
-                    $liste .= '<li><a href="'.$article->route().'">'.$article->titre.'</a></li>';
+                    $liste .= '<li><a href="'.$article->route($prefix).'">'.$article->titre.'</a></li>';
                 }
             }
             $liste .= '</ul>';
@@ -801,23 +811,26 @@ class AFUP_Site_Article {
         return $resultat;
     }
 
-    function route() {
+    function route($prefix = null) {
         $rubrique = new AFUP_Site_Rubrique($this->id_site_rubrique, $this->bdd, $this->conf);
         $rubrique->charger();
         if (empty($rubrique->raccourci)) {
             $rubrique->raccourci = 'rubrique';
         }
-		$current_domain = "http://" . $_SERVER["SERVER_NAME"] . (($_SERVER["SERVER_PORT"] != "80")? ":".$_SERVER["SERVER_PORT"] : "");
-		return $current_domain . '/' . $this->conf->obtenir('site|prefix') . $this->conf->obtenir('site|query_prefix') . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
+        if ($prefix == null) {
+        	$prefix = $this->conf->obtenir('site|prefix');
+        }
+        
+		return $this->conf->obtenir('web|path') . '/' . $prefix . $this->conf->obtenir('site|query_prefix') . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
     }
 
-    function fil_d_ariane() {
+    function fil_d_ariane($prefix = null) {
         $fil = '';
 
         if ($this->id_site_rubrique > 0) {
             $rubrique = new AFUP_Site_Rubrique($this->id_site_rubrique, $this->bdd, $this->conf);
             $rubrique->charger();
-            $fil = $rubrique->fil_d_ariane().$fil;
+            $fil = $rubrique->fil_d_ariane($prefix).$fil;
         }
 
         return $fil;
@@ -1043,23 +1056,26 @@ class AFUP_Site_Rubrique {
         return $resultat;
     }
 
-    function route() {
-        return $this->conf->obtenir('web|path').'/'.$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$this->raccourci.'/'.$this->id;
+    function route($prefix = null) {
+    	if ($prefix == null) {
+    		$prefix = $this->conf->obtenir('site|prefix');
+    	}
+        return $this->conf->obtenir('web|path').'/'.$prefix.$this->conf->obtenir('site|query_prefix').$this->raccourci.'/'.$this->id;
     }
 
     function nom() {
         return $this->nom;
     }
 
-    function fil_d_ariane() {
-        $fil = '/ <a href="'.$this->route().'">'.$this->nom.'</a>';
+    function fil_d_ariane($prefix = null) {
+        $fil = '/ <a href="'.$this->route($prefix).'">'.$this->nom.'</a>';
 
         if ($this->id_parent > 0) {
             $id_parent = $this->id_parent;
             while ($id_parent > 0) {
                 $parent = new AFUP_Site_Rubrique($id_parent, $this->bdd, $this->conf);
                 $parent->charger();
-                $fil = '/ <a href="'.$parent->route().'">'.$parent->nom.'</a> '.$fil;
+                $fil = '/ <a href="'.$parent->route($prefix).'">'.$parent->nom.'</a> '.$fil;
                 $id_parent = $parent->id_parent;
             }
         }
