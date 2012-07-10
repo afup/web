@@ -110,8 +110,9 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addElement('textarea', 'accroche' , 'Accroche' , array('cols' => 42, 'rows' => 10));
     $formulaire->addElement('textarea', 'theme'    , 'Thème'    , array('cols' => 42, 'rows' => 10));
 
-    $formulaire->addElement('header'  , ''         , 'Horaires');
-	$options = array('language' => 'fr', 'format' => 'd/m/Y', 'minYear' => "2005", 'maxYear' => $current_year + 3);
+    $formulaire->addElement('header'  , ''         , 'Organisateur & Horaire');
+    $formulaire->addElement('select'  , 'id_antenne', 'Antenne ', $rendez_vous->obtenirListAntennes());
+    $options = array('language' => 'fr', 'format' => 'd/m/Y', 'minYear' => "2005", 'maxYear' => $current_year + 3);
 	$formulaire->addElement('date'    , 'date'     , 'Date'     , $options);
 	$formulaire->addElement('text'    , 'debut'    , 'Heure début (00:00)'    , array('size' => 6, 'maxlength' => 5));
 	$formulaire->addElement('text'    , 'fin'      , 'Heure fin (00:00)'      , array('size' => 6, 'maxlength' => 5));
@@ -123,6 +124,20 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addElement('text'    , 'plan'     , 'Plan'     , array('size' => 42));
     $formulaire->addElement('text'    , 'capacite' , 'Capacité' , array('size' => 6, 'maxlength' => 5));
 
+    $formulaire->addElement('header'  , ''         , 'Mode d\'inscriptions');
+    $formulaire->addElement('static', null, null, "L\'inscription est gérée par le back-office de l\'AFUP");
+    $grp_inscription = array();
+    $grp_inscription[] = &HTML_QuickForm::createElement('radio', 'inscription', null, 'oui', 1);
+    $grp_inscription[] = &HTML_QuickForm::createElement('radio', 'inscription', null, 'non', 0);
+    $formulaire->addGroup($grp_inscription, 'inscription', null, '&nbsp;', false);
+    
+
+    $formulaire->addElement('header'  , ''         , 'Slides');
+   /* if($_GET['id']) {
+   '' 	$formulaire->addElement('file', 'photo', 'Photo (90x120)'     );
+   '' }
+    */
+    
     $formulaire->addElement('header'  , 'boutons'   , '');
     $formulaire->addElement('submit'  , 'soumettre' , ucfirst($action));
 
@@ -130,7 +145,8 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addRule('date'       , 'Date manquante'     , 'required');
     $formulaire->addRule('debut'      , 'Début manquant'     , 'required');
     $formulaire->addRule('fin'        , 'Fin manquante'      , 'required');
-
+    $formulaire->addRule('id_antenne' , 'Antenne manquante'  , 'required');
+    
     if ($formulaire->validate()) {
         $ok = $rendez_vous->enregistrer($formulaire);
 
