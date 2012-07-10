@@ -262,7 +262,8 @@ class AFUP_Rendez_Vous
 
     function enregistrer($formulaire)
     {
-		$debut = preg_split("/[:|h]/", (string)$formulaire->exportValue('debut'));
+    	//$formulaire->exportValue('grp_inscrition')."<br>";
+    	$debut = preg_split("/[:|h]/", (string)$formulaire->exportValue('debut'));
 		if (!isset($debut[0])) {
 			$debut[0] = 0;
 		}
@@ -279,7 +280,8 @@ class AFUP_Rendez_Vous
 		$date = $formulaire->exportValue('date');
 		$debut = mktime($debut[0], $debut[1], 0, $date['m'], $date['d'], $date['Y']);
 		$fin = mktime($fin[0], $fin[1], 0, $date['m'], $date['d'], $date['Y']);
-
+		$inscription=$formulaire->exportValue('inscription');
+	
 		$id = (int)$formulaire->exportValue('id');
 		if ($id > 0) {
 	        $requete  = ' UPDATE afup_rendezvous ';
@@ -296,10 +298,14 @@ class AFUP_Rendez_Vous
         $requete .= ' adresse = '.$this->_bdd->echapper($formulaire->exportValue('adresse')) . ',';
         $requete .= ' url = '.$this->_bdd->echapper($formulaire->exportValue('url')) . ',';
         $requete .= ' plan = '.$this->_bdd->echapper($formulaire->exportValue('plan')) . ',';
+        $requete .= ' id_antenne = '.$this->_bdd->echapper($formulaire->exportValue('id_antenne')) . ', ';
+        $requete .= ' inscription = '.$this->_bdd->echapper($inscription[inscription]) . ', ';
         $requete .= ' capacite = '.$this->_bdd->echapper($formulaire->exportValue('capacite'));
-		if ($id > 0) {
+        
+     	if ($id > 0) {
 	        $requete .= ' WHERE id = '.$id;
 		}
+
 
         return $this->_bdd->executer($requete);
     }
@@ -439,6 +445,34 @@ class AFUP_Rendez_Vous
 		}
 
         return $this->_bdd->executer($requete);
+    }
+
+
+    function obtenirListAntennes($filtre='',$where='')
+    {
+    	$requete  = 'SELECT ';
+    	$requete .= 'id, ville ';
+    	$requete .= 'FROM  ';
+    	$requete .= 'afup_antenne  ';
+    	if ($where)		$requete .= 'WHERE id=' . $where. ' ';
+    
+    	$requete .= 'ORDER BY ';
+    	$requete .= 'ville ';
+    
+    	if ($where) {
+    		return $this->_bdd->obtenirEnregistrement($requete);
+    	}elseif ($filtre)	{
+    		return $this->_bdd->obtenirTous($requete);
+    	} else {
+    		$data=$this->_bdd->obtenirTous($requete);
+    		$result[]="";
+    		foreach ($data as $row)
+    		{
+    			$result[$row['id']]=$row['ville'];
+    		}
+    
+    		return $result;
+    	}
     }
 }
 
