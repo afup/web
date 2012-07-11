@@ -90,7 +90,8 @@ class AFUP_Forum_Partenaires
         $requete .= $this->_bdd->echapper($nom)          . ',';
         $requete .= $this->_bdd->echapper($presentation) . ',';
         $requete .= $this->_bdd->echapper($site)         . ',';
-        $requete .= $this->_bdd->echapper($logo)         . ')';echo $requete;
+        $requete .= $this->_bdd->echapper($logo)         . ')';
+//echo $requete;
         return $this->_bdd->executer($requete);
     }
 
