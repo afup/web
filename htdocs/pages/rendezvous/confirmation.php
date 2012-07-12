@@ -1,15 +1,5 @@
 <?php
-/**
- * Fichier site 'RendezVous'
- * 
- * @author    Perrick Penet   <perrick@noparking.fr>
- * @author    Olivier Hoareau <olivier@phppro.fr>
- * @copyright 2010 Association Française des Utilisateurs de PHP
- * 
- * @category RendezVous
- * @package  RendezVous
- * @group    Pages
- */
+
 
 // 0. initialisation (bootstrap) de l'application
 

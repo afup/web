@@ -1,15 +1,4 @@
 <?php
-/**
- * Fichier site 'RendezVous'
- * 
- * @author    Perrick Penet   <perrick@noparking.fr>
- * @author    Olivier Hoareau <olivier@phppro.fr>
- * @copyright 2010 Association Française des Utilisateurs de PHP
- * 
- * @category RendezVous
- * @package  RendezVous
- * @group    Pages
- */
 
 // 0. initialisation (bootstrap) de l'application
 
@@ -64,20 +53,20 @@ if (isset($archive_rendezvous) and is_array($archive_rendezvous)) {
     $formulaire->addRule('nom'        , 'Nom manquant'       , 'required');
     $formulaire->addRule('email'      , 'Email manquant'     , 'required');
     $formulaire->addRule('email'      , 'Email invalide'     , 'email');
-    $formulaire->addRule('telephone'  , 'T�l�phone manquant' , 'required');
+    $formulaire->addRule('telephone'  , 'Téléphone manquant' , 'required');
     
     if ($formulaire->validate()) {
         $ok = $rendezvous->enregistrerInscrit($formulaire);
 
         if ($ok) {
-            AFUP_Logs::log('Pr�-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
+            AFUP_Logs::log('Pré-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
             $smarty->assign('resultat', 'succes');
-            $smarty->assign('message', 'Votre pr�-inscription a bien �t� prise en compte.');
+            $smarty->assign('message', 'Votre pré-inscription a bien été prise en compte.');
 			$smarty->display('message.html');
 			die();
         } else {
             $smarty->assign('resultat', 'erreur');
-            $smarty->assign('message', 'Il y a une erreur lors de votre pr�-inscription. Merci de bien vouloir recommencer.');
+            $smarty->assign('message', 'Il y a une erreur lors de votre pré-inscription. Merci de bien vouloir recommencer.');
         }
     }
     
