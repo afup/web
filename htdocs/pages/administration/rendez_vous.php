@@ -135,15 +135,17 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addElement('header'  , ''         , 'Slides');
 	$formulaire->addElement('file'    , 'slides' , 'slides');
    		
-		if ($action == 'preparer') {
-    			$chemin = realpath('../../templates/rendezvous/slides/'.$champs['slides']);
+	if ($action == 'preparer') {
+		if (isset($champs['slides'])) {		
+    		$chemin = realpath('../../templates/rendezvous/slides/'.$champs['slides']);
    			if ($champs['slides'] && file_exists($chemin)) {
  			     $formulaire->addElement('static', null, null,"<ul> ". $champs['slides']."</ul>");
-    			}
+    		}
    			$formulaire->addElement('hidden'  , 'slides_default'            , $champs['slides']);
-   		} else {
+		}   		
+	} else {
    			$formulaire->addElement('hidden'  , 'slides_default'            , null);
-   		}
+   	}
    		 
    		
     
