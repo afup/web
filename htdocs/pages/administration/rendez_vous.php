@@ -125,7 +125,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addElement('text'    , 'capacite' , 'Capacité' , array('size' => 6, 'maxlength' => 5));
 
     $formulaire->addElement('header'  , ''         , 'Mode d\'inscriptions');
-    $formulaire->addElement('static', null, null, "L\'inscription est gérée par le back-office de l\'AFUP");
+    $formulaire->addElement('static', null, null, "L'inscription est gérée par le back-office de l'AFUP");
     $grp_inscription = array();
     $grp_inscription[] = &HTML_QuickForm::createElement('radio', 'inscription', null, 'oui', 1);
     $grp_inscription[] = &HTML_QuickForm::createElement('radio', 'inscription', null, 'non', 0);
@@ -133,10 +133,19 @@ if ($action == 'lister' || $action== 'listing' ) {
     
 
     $formulaire->addElement('header'  , ''         , 'Slides');
-   /* if($_GET['id']) {
-   '' 	$formulaire->addElement('file', 'photo', 'Photo (90x120)'     );
-   '' }
-    */
+	$formulaire->addElement('file'    , 'slides' , 'slides');
+   		
+		if ($action == 'preparer') {
+    			$chemin = realpath('../../templates/rendezvous/slides/'.$champs['slides']);
+   			if ($champs['slides'] && file_exists($chemin)) {
+ 			     $formulaire->addElement('static', null, null,"<ul> ". $champs['slides']."</ul>");
+    			}
+   			$formulaire->addElement('hidden'  , 'slides_default'            , $champs['slides']);
+   		} else {
+   			$formulaire->addElement('hidden'  , 'slides_default'            , null);
+   		}
+   		 
+   		
     
     $formulaire->addElement('header'  , 'boutons'   , '');
     $formulaire->addElement('submit'  , 'soumettre' , ucfirst($action));
@@ -148,8 +157,25 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addRule('id_antenne' , 'Antenne manquante'  , 'required');
     
     if ($formulaire->validate()) {
-        $ok = $rendez_vous->enregistrer($formulaire);
-
+    	$valeurs = $formulaire->exportValues();
+    	
+    	$file = $formulaire->getElement('slides');
+    	$data = $file->getValue();
+    	if ($data['name']) {
+    		$file->moveUploadedFile(realpath('../../templates/rendezvous/slides/'));
+    		$data = $file->getValue();
+    		$valeurs['newslides'] = $data['name'];
+    	} else {
+    		$valeurs['newslides'] = $formulaire->exportValue('slides_default');
+    	}
+/*    	echo "<pre>";
+print_r($valeurs);
+    	echo "<pre>";
+    	 print_r($formulaire);
+//    	$formulaire
+  */  	
+   	$ok = $rendez_vous->enregistrer($formulaire,$valeurs);
+    	 
         if ($ok) {
         	$logdate = $formulaire->exportValue('date');
             AFUP_Logs::log('Enregistrement du rendez-vous du ' . $logdate["d"] . "/" . $logdate["m"] . "/" . $logdate["Y"] );
