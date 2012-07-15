@@ -137,17 +137,29 @@ class AFUP_Rendez_Vous
         return $succes;    	
     }
 
-    function obtenir($id, $champs = '*')
+    function obtenir($id)
     {
-        $requete = 'SELECT';
-        $requete .= '  ' . $champs . ' ';
-        $requete .= 'FROM';
-        $requete .= '  afup_rendezvous ';
-        $requete .= 'WHERE id=' . $id;
+    	$requete  = 'SELECT';
+    	$requete .= '  * ';
+    	$requete .= 'FROM';
+    	$requete .= '  afup_rendezvous ';
+    	$requete .= 'WHERE id=' . $id;
+    
+    	return $this->_bdd->obtenirEnregistrement($requete);
+    }    
 
-        return $this->_bdd->obtenirEnregistrement($requete);
+    function obtenirSlides($id)
+    {
+    	$requete = 'SELECT';
+    	$requete .= '  * ';
+    	$requete .= 'FROM ';
+    	$requete .= '  afup_rendezvous_slides  ';
+    	$requete .= 'WHERE id_rendezvous=' . $id.' ';
+    
+    	return $this->_bdd->obtenirTous($requete);
     }
-
+    
+    
 	function supprimerInscrit($id)
 	{
         $requete = 'DELETE FROM afup_rendezvous_inscrits WHERE id=' . $id;
@@ -260,8 +272,9 @@ class AFUP_Rendez_Vous
     	return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    function enregistrer($formulaire)
-    {
+    function enregistrer($formulaire,$valeurs)
+    {  	
+
     	//$formulaire->exportValue('grp_inscrition')."<br>";
     	$debut = preg_split("/[:|h]/", (string)$formulaire->exportValue('debut'));
 		if (!isset($debut[0])) {
@@ -280,7 +293,7 @@ class AFUP_Rendez_Vous
 		$date = $formulaire->exportValue('date');
 		$debut = mktime($debut[0], $debut[1], 0, $date['m'], $date['d'], $date['Y']);
 		$fin = mktime($fin[0], $fin[1], 0, $date['m'], $date['d'], $date['Y']);
-		$inscription=$formulaire->exportValue('inscription');
+//		$inscription=$formulaire->exportValue('inscription');
 	
 		$id = (int)$formulaire->exportValue('id');
 		if ($id > 0) {
@@ -299,17 +312,44 @@ class AFUP_Rendez_Vous
         $requete .= ' url = '.$this->_bdd->echapper($formulaire->exportValue('url')) . ',';
         $requete .= ' plan = '.$this->_bdd->echapper($formulaire->exportValue('plan')) . ',';
         $requete .= ' id_antenne = '.$this->_bdd->echapper($formulaire->exportValue('id_antenne')) . ', ';
-        $requete .= ' inscription = '.$this->_bdd->echapper($inscription[inscription]) . ', ';
+     //   $requete .= ' inscription = '.$this->_bdd->echapper($valeurs['inscription']) . ', ';
+  //      $requete .= ' slides = '.$this->_bdd->echapper($valeurs['newslides']) . ', ';
         $requete .= ' capacite = '.$this->_bdd->echapper($formulaire->exportValue('capacite'));
         
      	if ($id > 0) {
 	        $requete .= ' WHERE id = '.$id;
 		}
 
+		$this->_bdd->executer($requete);
 
-        return $this->_bdd->executer($requete);
+
+		if ($id > 0) {
+			$requete  = ' DELETE FROM afup_rendezvous_slides ';
+			$requete .= ' WHERE id_rendezvous = '.$id . ' ';			
+			$this->_bdd->executer($requete);
+				
+			for ($i=0;$i<=3;$i++)
+			{
+			$requete  = ' INSERT INTO afup_rendezvous_slides ';
+			$requete .= ' SET ';
+	        $requete .= ' id_rendezvous = '.$id . ',';
+			if (!$valeurs['newslides'.$i])
+				$requete .= ' fichier = '.$this->_bdd->echapper($valeurs['newslides'.$i]) . ', ';
+			else 
+	        	$requete .= ' fichier = \'\', ';
+	        $requete .= ' url = '.$this->_bdd->echapper($formulaire->exportValue('urlslides'.$i)) . ' ';
+
+			$this->_bdd->executer($requete);
+
+			}
+		}
+		
+        return;
     }
 
+    
+    
+    
 	function obtenirNombreInscritsQuiViennent($id)
 	{
 		return $this->obtenirNombreInscrits($id, AFUP_RENDEZ_VOUS_VIENT);	
