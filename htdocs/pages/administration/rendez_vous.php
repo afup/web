@@ -98,10 +98,19 @@ if ($action == 'lister' || $action== 'listing' ) {
         $champs['date'] = date("Y/m/d", $champs['debut']);
         $champs['debut'] = date("H\hi", $champs['debut']);
         $champs['fin'] = date("H\hi", $champs['fin']);
+   //     $formulaire->setDefaults($champs);
+        $champsSlides = $rendez_vous->obtenirSlides($id);
+//        echo $champsSlides[1]['fichier']."<br>";
+        for ($i=0;$i<sizeof($champsSlides);$i++) {
+        	$champs['slides'.$i]= $champsSlides[$i]['fichier'];
+         	$champs['urlslides'.$i]=$champsSlides[$i]['url'];
+        }
+
         $formulaire->setDefaults($champs);
 	} else {
 	    $formulaire->setDefaults(array('date' => date("Y/m/d", time())));
 	}
+
 
     $formulaire->addElement('hidden'  , 'id'       , $id);
 
@@ -133,21 +142,35 @@ if ($action == 'lister' || $action== 'listing' ) {
     
 
     $formulaire->addElement('header'  , ''         , 'Slides');
-	$formulaire->addElement('file'    , 'slides' , 'slides');
-   		
-	if ($action == 'preparer') {
-		if (isset($champs['slides'])) {		
-    		$chemin = realpath('../../templates/rendezvous/slides/'.$champs['slides']);
-   			if ($champs['slides'] && file_exists($chemin)) {
- 			     $formulaire->addElement('static', null, null,"<ul> ". $champs['slides']."</ul>");
-    		}
-   			$formulaire->addElement('hidden'  , 'slides_default'            , $champs['slides']);
-		}   		
+    $formulaire->addElement('static', null, null, " Fichier ou url (ex : slide share)");
+
+    $formulaire->addElement('text'    , 'urlslides0' , 'Url 1'      , array('size' => 42));
+   	$formulaire->addElement('text'    , 'urlslides1' , 'Url 2'      , array('size' => 42));
+   	$formulaire->addElement('text'    , 'urlslides2' , 'Url 3'      , array('size' => 42));
+   	$formulaire->addElement('text'    , 'urlslides3' , 'Url 4'      , array('size' => 42));
+   	
+
+	$formulaire->addElement('file'    , 'slides0' , 'slides 1');
+   	$formulaire->addElement('file'    , 'slides1' , 'slides 2 ');   	
+   	$formulaire->addElement('file'    , 'slides2' , 'slides 3'); 	 
+   	$formulaire->addElement('file'    , 'slides3' , 'slides 4');
+   	
+   	if ($action == 'preparer') {
+		
+		for ($i=0;$i<4;$i++) {
+			if (isset($champs['slides'.$i])) {		
+	    		$chemin = realpath('../../templates/rendezvous/slides/'.$champs['slides'.$i]);
+	   			if ($champs['slides'.$i] && file_exists($chemin)) {
+	 			     $formulaire->addElement('static', null, null,"<ul> ". $champs['slides'.$i]."</ul>");
+	    		}
+	   			$formulaire->addElement('hidden'  , 'slides'.$i.'_default'      , $champs['slides'.$i]);
+			} 
+		}		
 	} else {
    			$formulaire->addElement('hidden'  , 'slides_default'            , null);
    	}
    		 
-   		
+   	
     
     $formulaire->addElement('header'  , 'boutons'   , '');
     $formulaire->addElement('submit'  , 'soumettre' , ucfirst($action));
@@ -159,23 +182,25 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addRule('id_antenne' , 'Antenne manquante'  , 'required');
     
     if ($formulaire->validate()) {
-    	$valeurs = $formulaire->exportValues();
-    	
-    	$file = $formulaire->getElement('slides');
-    	$data = $file->getValue();
-    	if ($data['name']) {
-    		$file->moveUploadedFile(realpath('../../templates/rendezvous/slides/'));
+
+		$valeurs = $formulaire->exportValues();
+	  	for ($i=0;$i<=3;$i++) { 		
+    		$file = $formulaire->getElement('slides'.$i);
+
     		$data = $file->getValue();
-    		$valeurs['newslides'] = $data['name'];
-    	} else {
-    		$valeurs['newslides'] = $formulaire->exportValue('slides_default');
-    	}
-/*    	echo "<pre>";
-print_r($valeurs);
-    	echo "<pre>";
-    	 print_r($formulaire);
-//    	$formulaire
-  */  	
+    		if ($data['name']) {
+    			$file->moveUploadedFile(realpath('../../templates/rendezvous/slides/'));
+    			$data = $file->getValue();
+    			$valeurs['newslides'.$i] = $data['name'];
+    		}
+    		
+    		 else {
+    			$valeurs['newslides'.$i] = $formulaire->exportValue('slides'.$i.'_default');
+    		}
+		}
+
+
+  	
    	$ok = $rendez_vous->enregistrer($formulaire,$valeurs);
     	 
         if ($ok) {
