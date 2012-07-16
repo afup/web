@@ -23,8 +23,17 @@ if (isset($prochain_rendezvous) and is_array($prochain_rendezvous)) {
 	$prochain_rendezvous['debut'] = date("H\hi", $prochain_rendezvous['debut']);
 	$prochain_rendezvous['fin'] = date("H\hi", $prochain_rendezvous['fin']);
 	
-	$smarty->assign('rendezvous', $prochain_rendezvous);
+	$champsSlides = $rendezvous->obtenirSlides((int)$_GET['id']);
+	for ($i=0;$i<sizeof($champsSlides);$i++) {
+		$prochain_rendezvous['slides'.$i]= $champsSlides[$i]['fichier'];
+		$prochain_rendezvous['urlslides'.$i]=$champsSlides[$i]['url'];
+	}
 	
+//	$formulaire->setDefaults($champs);
+	$smarty->assign('rendezvous', $prochain_rendezvous);
+echo "<pre>";
+print_r($prochain_rendezvous);
+echo "</pre>";	
 	if (!$prochain_rendezvous['est_futur']) {
 		$smarty->display('rendezvous-archive.html');
 		die();
