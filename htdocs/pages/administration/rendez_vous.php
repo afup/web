@@ -98,9 +98,8 @@ if ($action == 'lister' || $action== 'listing' ) {
         $champs['date'] = date("Y/m/d", $champs['debut']);
         $champs['debut'] = date("H\hi", $champs['debut']);
         $champs['fin'] = date("H\hi", $champs['fin']);
-   //     $formulaire->setDefaults($champs);
+
         $champsSlides = $rendez_vous->obtenirSlides($id);
-//        echo $champsSlides[1]['fichier']."<br>";
         for ($i=0;$i<sizeof($champsSlides);$i++) {
         	$champs['slides'.$i]= $champsSlides[$i]['fichier'];
          	$champs['urlslides'.$i]=$champsSlides[$i]['url'];
@@ -192,9 +191,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     			$file->moveUploadedFile(realpath('../../templates/rendezvous/slides/'));
     			$data = $file->getValue();
     			$valeurs['newslides'.$i] = $data['name'];
-    		}
-    		
-    		 else {
+    		} else {
     			$valeurs['newslides'.$i] = $formulaire->exportValue('slides'.$i.'_default');
     		}
 		}
