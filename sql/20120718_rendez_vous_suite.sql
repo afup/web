@@ -9,4 +9,5 @@ CREATE TABLE IF NOT EXISTS `afup_rendezvous_slides` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-
+ALTER TABLE `afup_rendezvous_slides` CHANGE `fichier` `fichier` INT( 255 ) NULL ,
+CHANGE `url` `url` VARCHAR( 250 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
