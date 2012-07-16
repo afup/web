@@ -31,9 +31,10 @@ if (isset($prochain_rendezvous) and is_array($prochain_rendezvous)) {
 	
 //	$formulaire->setDefaults($champs);
 	$smarty->assign('rendezvous', $prochain_rendezvous);
-echo "<pre>";
+/* echo "<pre>";
 print_r($prochain_rendezvous);
 echo "</pre>";	
+*/
 	if (!$prochain_rendezvous['est_futur']) {
 		$smarty->display('rendezvous-archive.html');
 		die();
