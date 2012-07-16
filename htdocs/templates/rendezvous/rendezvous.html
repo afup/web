@@ -25,12 +25,37 @@
 		<div><a href="{$rendezvous.plan}">Plan d'acc&egrave;s</a></div>
 	{/if}
 
-    {if $rendezvous.slides != ''}
+
 		<div><br />
 		<ul>
-		<a href="{$rendezvous.slides}">Télécharger les slides</a>
+    {if $rendezvous.urlslides0 != ''}
+		<li><a href="{$rendezvous.urlslides0}">Télécharger {$rendezvous.urlslides0}</a></li>
+	{/if}
+    {if $rendezvous.urlslides1 != ''}
+		<li><a href="{$rendezvous.urlslides1}">Télécharger  {$rendezvous.urlslides1}</a></li>
+	{/if}
+    {if $rendezvous.urlslides2 != ''}
+		<li><a href="{$rendezvous.urlslides2}">Télécharger {$rendezvous.urlslides2}</a></li>
+	{/if}
+    {if $rendezvous.urlslides3 != ''}
+		<li><a href="{$rendezvous.urlslides3}">Télécharger  {$rendezvous.urlslides3}</a></li>
+	{/if}
+
+    {if $rendezvous.slides0 != ''}
+		<li><a href="{$rendezvous.slides0}">Télécharger {$rendezvous.slides0}</a></li>
+	{/if}
+    {if $rendezvous.slides1 != ''}
+		<li><a href="{$rendezvous.slides1}">Télécharger  {$rendezvous.slides1}</a></li>
+	{/if}
+    {if $rendezvous.slides2 != ''}
+		<li><a href="{$rendezvous.slides2}">Télécharger {$rendezvous.slides2}</a></li>
+	{/if}
+    {if $rendezvous.slides3 != ''}
+		<li><a href="{$rendezvous.slides3}">Télécharger  {$rendezvous.slides3}</a></li>
+	{/if}
 		</ul><br />
 		</div>
-	{/if}
+
+
 </div>
 
