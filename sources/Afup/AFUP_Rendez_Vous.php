@@ -321,8 +321,7 @@ class AFUP_Rendez_Vous
 		}
 
 		$this->_bdd->executer($requete);
-
-
+		
 		if ($id > 0) {
 			$requete  = ' DELETE FROM afup_rendezvous_slides ';
 			$requete .= ' WHERE id_rendezvous = '.$id . ' ';			
@@ -330,21 +329,22 @@ class AFUP_Rendez_Vous
 				
 			for ($i=0;$i<=3;$i++)
 			{
+			if ($valeurs['newslides'.$i] || $formulaire->exportValue('urlslides'.$i)) {
 			$requete  = ' INSERT INTO afup_rendezvous_slides ';
 			$requete .= ' SET ';
 	        $requete .= ' id_rendezvous = '.$id . ',';
-			if (!$valeurs['newslides'.$i])
+			if ($valeurs['newslides'.$i])
 				$requete .= ' fichier = '.$this->_bdd->echapper($valeurs['newslides'.$i]) . ', ';
 			else 
 	        	$requete .= ' fichier = \'\', ';
 	        $requete .= ' url = '.$this->_bdd->echapper($formulaire->exportValue('urlslides'.$i)) . ' ';
 
 			$this->_bdd->executer($requete);
-
+				}
 			}
 		}
 		
-        return;
+        return true;
     }
 
     
