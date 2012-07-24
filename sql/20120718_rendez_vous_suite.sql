@@ -11,3 +11,5 @@ CREATE TABLE IF NOT EXISTS `afup_rendezvous_slides` (
 
 ALTER TABLE `afup_rendezvous_slides` CHANGE `fichier` `fichier` INT( 255 ) NULL ,
 CHANGE `url` `url` VARCHAR( 250 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
+
+ALTER TABLE `afup_rendezvous` ADD `url_externe` VARCHAR( 255 ) NOT NULL ;
