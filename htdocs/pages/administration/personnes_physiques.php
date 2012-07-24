@@ -62,6 +62,7 @@ if ($action == 'lister') {
                 'niveau_annuaire' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_forum' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_site' => AFUP_DROITS_NIVEAU_MEMBRE,
+                'niveau_antenne' => AFUP_DROITS_NIVEAU_MEMBRE,
         		'etat' => AFUP_DROITS_ETAT_INACTIF,
                 'mot_de_passe' => '',
                 'confirmation_mot_de_passe' => ''));
@@ -117,7 +118,9 @@ if ($action == 'lister') {
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
     $formulaire->addElement('select' , 'niveau_site' , 'Site web', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
-
+    $formulaire->addElement('select' , 'niveau_antenne' , 'Antenne AFUP', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
+    		AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
+    
     $formulaire->addElement('select' , 'etat' , 'Etat' , array(AFUP_DROITS_ETAT_NON_FINALISE => 'Non finalisé',
 	    AFUP_DROITS_ETAT_ACTIF => 'Actif',
             AFUP_DROITS_ETAT_INACTIF => 'Inactif'));
@@ -149,8 +152,9 @@ if ($action == 'lister') {
             $niveau_modules = $formulaire->exportValue('niveau_apero').
                               $formulaire->exportValue('niveau_annuaire').
                               $formulaire->exportValue('niveau_site').
-                              $formulaire->exportValue('niveau_forum');
-
+                              $formulaire->exportValue('niveau_forum').
+            				  $formulaire->exportValue('niveau_antenne');
+            
             $ok = $personnes_physiques->ajouter($formulaire->exportValue('id_personne_morale'),
                 $formulaire->exportValue('login'),
                 md5(time()),
@@ -177,8 +181,9 @@ if ($action == 'lister') {
             $niveau_modules = $formulaire->exportValue('niveau_apero').
                               $formulaire->exportValue('niveau_annuaire').
                               $formulaire->exportValue('niveau_site').
-                              $formulaire->exportValue('niveau_forum');
-
+                              $formulaire->exportValue('niveau_forum').
+            				  $formulaire->exportValue('niveau_antenne');
+            
             $ok = $personnes_physiques->modifier($_GET['id'],
                 $formulaire->exportValue('id_personne_morale'),
                 $formulaire->exportValue('login'),

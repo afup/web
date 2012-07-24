@@ -9,6 +9,7 @@
             <th>Module annuaire</th>
             <th>Module site</th>
             <th>Module forum</th>
+            <th>Module Antenne</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -23,6 +24,7 @@
             <td>{if $administrateur.niveau_annuaire == 2}Gestionnaire{else}---{/if}</td>
             <td>{if $administrateur.niveau_site == 2}Gestionnaire{else}---{/if}</td>
             <td>{if $administrateur.niveau_forum == 2}Gestionnaire{else}---{/if}</td>
+            <td>{if $administrateur.niveau_antenne == 2}Gestionnaire{else}---{/if}</td>
             <td><a id="modifier_{$administrateur.id}" href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$administrateur.id}" title="Modifier la fiche de {$administrateur.prenom} {$administrateur.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a></td>
         </tr>
         {/foreach}
