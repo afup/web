@@ -139,6 +139,8 @@ if ($action == 'lister' || $action== 'listing' ) {
     $grp_inscription[] = &HTML_QuickForm::createElement('radio', 'inscription', null, 'non', 0);
     $formulaire->addGroup($grp_inscription, 'inscription', null, '&nbsp;', false);
     
+    $formulaire->addElement('static', null, null, "Si non, saisir l'URL d'enregistrement (possible ne rien remplir) ");
+    $formulaire->addElement('text'    , 'url_externe'      , 'Url Externe'      , array('size' => 42));       
 
     $formulaire->addElement('header'  , ''         , 'Slides');
     $formulaire->addElement('static', null, null, " Fichier ou url (ex : slide share)");

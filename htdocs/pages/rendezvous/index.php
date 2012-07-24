@@ -18,23 +18,21 @@ if (isset($prochain_rendezvous) and is_array($prochain_rendezvous)) {
 	} else {
 		$prochain_rendezvous['est_futur'] = TRUE;
 	}
-	
+
 	$prochain_rendezvous['date'] = date("d/m/Y", $prochain_rendezvous['debut']);
 	$prochain_rendezvous['debut'] = date("H\hi", $prochain_rendezvous['debut']);
 	$prochain_rendezvous['fin'] = date("H\hi", $prochain_rendezvous['fin']);
 	
-	$champsSlides = $rendezvous->obtenirSlides((int)$_GET['id']);
-	for ($i=0;$i<sizeof($champsSlides);$i++) {
-		$prochain_rendezvous['slides'.$i]= $champsSlides[$i]['fichier'];
-		$prochain_rendezvous['urlslides'.$i]=$champsSlides[$i]['url'];
-	}
-	
+	if (isset($_GET['id'])) {
+		$champsSlides = $rendezvous->obtenirSlides((int)$_GET['id']);
+		for ($i=0;$i<sizeof($champsSlides);$i++) {
+			$prochain_rendezvous['slides'.$i]= $champsSlides[$i]['fichier'];
+			$prochain_rendezvous['urlslides'.$i]=$champsSlides[$i]['url'];
+		}
+	}	
 //	$formulaire->setDefaults($champs);
 	$smarty->assign('rendezvous', $prochain_rendezvous);
-/* echo "<pre>";
-print_r($prochain_rendezvous);
-echo "</pre>";	
-*/
+
 	if (!$prochain_rendezvous['est_futur']) {
 		$smarty->display('rendezvous-archive.html');
 		die();
@@ -47,6 +45,12 @@ echo "</pre>";
 		$smarty->display('rendezvous-complet.html');
 		die();
 	}
+
+	if ($prochain_rendezvous['inscription']== '0' && empty($prochain_rendezvous['url_externe'])) {
+		$smarty->assign('message_inscription', 'Entrée libre');
+	} elseif ($prochain_rendezvous['inscription']=='0' && $prochain_rendezvous['url_externe']!='') {
+		$smarty->assign('message_inscription', 'Les pré-inscriptions s\'effectuent en cliquant sur le lien ci-dessous');
+	} else {	
 	
     $formulaire = &instancierFormulaire();
 
@@ -84,7 +88,8 @@ echo "</pre>";
         }
     }
     
-    $smarty->assign('formulaire', genererFormulaire($formulaire));
+    	$smarty->assign('formulaire', genererFormulaire($formulaire));
+	}
 	$smarty->display('prochain-rendezvous.html');
 
 } else {
