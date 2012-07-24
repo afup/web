@@ -312,9 +312,8 @@ class AFUP_Rendez_Vous
         $requete .= ' url = '.$this->_bdd->echapper($formulaire->exportValue('url')) . ',';
         $requete .= ' plan = '.$this->_bdd->echapper($formulaire->exportValue('plan')) . ',';
         $requete .= ' id_antenne = '.$this->_bdd->echapper($formulaire->exportValue('id_antenne')) . ', ';
-     //   $requete .= ' inscription = '.$this->_bdd->echapper($valeurs['inscription']) . ', ';
-  //      $requete .= ' slides = '.$this->_bdd->echapper($valeurs['newslides']) . ', ';
-        $requete .= ' capacite = '.$this->_bdd->echapper($formulaire->exportValue('capacite'));
+        $requete .= ' capacite = '.$this->_bdd->echapper($formulaire->exportValue('capacite')) . ',';
+        $requete .= ' url_externe = '.$this->_bdd->echapper($formulaire->exportValue('url_externe'));
         
      	if ($id > 0) {
 	        $requete .= ' WHERE id = '.$id;
@@ -329,17 +328,17 @@ class AFUP_Rendez_Vous
 				
 			for ($i=0;$i<=3;$i++)
 			{
-			if ($valeurs['newslides'.$i] || $formulaire->exportValue('urlslides'.$i)) {
-			$requete  = ' INSERT INTO afup_rendezvous_slides ';
-			$requete .= ' SET ';
-	        $requete .= ' id_rendezvous = '.$id . ',';
-			if ($valeurs['newslides'.$i])
-				$requete .= ' fichier = '.$this->_bdd->echapper($valeurs['newslides'.$i]) . ', ';
-			else 
-	        	$requete .= ' fichier = \'\', ';
-	        $requete .= ' url = '.$this->_bdd->echapper($formulaire->exportValue('urlslides'.$i)) . ' ';
-
-			$this->_bdd->executer($requete);
+				if ($valeurs['newslides'.$i] || $formulaire->exportValue('urlslides'.$i)) {
+					$requete  = ' INSERT INTO afup_rendezvous_slides ';
+					$requete .= ' SET ';
+			        $requete .= ' id_rendezvous = '.$id . ',';
+					if ($valeurs['newslides'.$i])
+						$requete .= ' fichier = '.$this->_bdd->echapper($valeurs['newslides'.$i]) . ', ';
+					else 
+			        	$requete .= ' fichier = \'\', ';
+			        $requete .= ' url = '.$this->_bdd->echapper($formulaire->exportValue('urlslides'.$i)) . ' ';
+		
+					$this->_bdd->executer($requete);
 				}
 			}
 		}
