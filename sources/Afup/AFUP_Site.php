@@ -616,7 +616,7 @@ class AFUP_Site_Article {
                '<div id="Header">'.$this->fil_d_ariane()."</div>".
                '<h1>'.$this->titre().'</h1>'.
                $this->corps().
-               '<div class="date">(' . $this->date() .')</div>' .
+               '<div class="date">(publié le ' . $this->date() .')</div>' .
                '</li>';
     }
 
