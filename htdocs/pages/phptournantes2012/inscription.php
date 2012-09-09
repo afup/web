@@ -17,9 +17,6 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 $nombre_places   = $forum->obtenirNombrePlaces($id_forum);
 $nombre_inscrits = $forum_inscriptions->obtenirNombreInscrits($id_forum);
 
-$smarty->display('inscriptions_fermes.html');
-die();
-	  
 if (!isset($_GET['passage_en_force'])) {
 	if (time() > $config_forum['date_fin_vente']) {
 	  $smarty->display('inscriptions_fermes.html');
@@ -58,17 +55,17 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
   $groupe = array();
   if ($is_prevente) {
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours en prévente : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_PREVENTE] . ' € </strong> au lieu de '.$AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES].' €' , AFUP_FORUM_2_JOURNEES_PREVENTE);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours en prévente (membre AFUP) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE] . ' € </strong> au lieu de '.$AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP].' €'                       , AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours en prévente (étudiant, demandeur d\'emploi) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE] .  ' € </strong> au lieu de '.$AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT].' €'                   , AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE);
-
-  }
-  else  {
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du jeudi 24 novembre 2011 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>', AFUP_FORUM_PREMIERE_JOURNEE);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du vendredi 25 novembre 2011 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>' , AFUP_FORUM_DEUXIEME_JOURNEE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours membre AFUP : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE] . ' € </strong>', AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours étudiant : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE] .  ' € </strong>', AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du jeudi 29 novembre 2012 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>', AFUP_FORUM_PREMIERE_JOURNEE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du vendredi 30 novembre 2012 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>' , AFUP_FORUM_DEUXIEME_JOURNEE);
+  } else {
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES] . ' ' . EURO . '</strong>'                                         , AFUP_FORUM_2_JOURNEES);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours (membre AFUP) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP] . ' ' . EURO . '</strong>'                      , AFUP_FORUM_2_JOURNEES_AFUP);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours (étudiant, demandeur d\'emploi) * : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_ETUDIANT);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours (avec coupon de réduction) : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_COUPON] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_COUPON);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours membre AFUP : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP] . ' ' . EURO . '</strong>'                      , AFUP_FORUM_2_JOURNEES_AFUP);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours étudiant * : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_ETUDIANT);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, '2 jours avec coupon de réduction : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_COUPON] . ' ' . EURO . '</strong>'                     , AFUP_FORUM_2_JOURNEES_COUPON);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du jeudi 29 novembre 2012 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>', AFUP_FORUM_PREMIERE_JOURNEE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée du vendredi 30 novembre 2012 : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>' , AFUP_FORUM_DEUXIEME_JOURNEE);
   }
 
   $formulaire->addGroup($groupe, 'groupe_type_inscription'.$i, 'Formule', '<br />', false);
