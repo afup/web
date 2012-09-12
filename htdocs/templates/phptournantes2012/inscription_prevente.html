@@ -53,11 +53,9 @@ $("#nbPersonnes").change(function() {
     $("#formulaire").attr("action", path + '?nbInscriptions=' + nb);
     for (i = 1 ; i < 6 ; i++) {
         $('fieldset.f'+i).hide();
-        console.log('Hide '+i);
     }
     for (i = 1 ; i < (nb+1) ; i++) {
         $('fieldset.f'+i).show();
-        console.log('Show '+i);
     }
 });
 </script>
