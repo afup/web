@@ -353,7 +353,7 @@ class AFUP_Site_Footer {
 
         return $contenu;
     }
-    
+
 	function render() {
 		return "";
 	}
@@ -386,12 +386,12 @@ class AFUP_Site_Branche {
                     FROM afup_site_feuille
                     WHERE id = '.$this->bdd->echapper($id).'
                     AND etat = 1';
-        $racine = $this->bdd->obtenirUn($requete);
+        $racine = $this->bdd->obtenirEnregistrement($requete);
 
         if ($identification !== "") {
             $identification = ' id="'.$identification.'"';
         }
-        $navigation = '<ul'.$identification.' class="'.$racine['raccourci'].'">';
+        $navigation = '<ul'.$identification.' class="'.AFUP_Site::raccourcir($racine['nom']).'">';
         $navigation .= $this->extraireFeuilles($id, $profondeur, $prefix);
         $navigation .= '</ul>';
 
@@ -820,7 +820,7 @@ class AFUP_Site_Article {
         if ($prefix == null) {
         	$prefix = $this->conf->obtenir('site|prefix');
         }
-        
+
 		return $this->conf->obtenir('web|path') . '/' . $prefix . $this->conf->obtenir('site|query_prefix') . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
     }
 
