@@ -37,6 +37,10 @@ if (time() > $config_forum['date_debut']) {
 $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;
 $nombre_tags = 3;
 
+//nombre inscription choisi via js
+$nombre_inscriptions = isset($_GET['nbInscriptions']) ? (int)$_GET['nbInscriptions'] : 1;
+$smarty->assign('nbInscriptions', $nombre_inscriptions);
+
 // On créé le formulaire
 $formulaire = &instancierFormulaire();
 $formulaire->setDefaults(array('civilite'            => 'M.',
