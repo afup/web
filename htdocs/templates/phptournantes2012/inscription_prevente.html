@@ -19,8 +19,47 @@
         merci de laisser votre email.
     </p>
 	{include file="rappel.html"}
+    <div id="divPersonne" style="display:none;">
+        <p>Je souhaite inscrire
+        <select id="nbPersonnes">
+            <option value="1" selected="selected">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        personne(s)</p>
+    </div>
     {include file="formulaire.html"}
 </div>
 
 {include file="sidebar.html"}
+<script type="text/javascript">
+nbInscriptions = {$nbInscriptions};
+{literal}
+$("#nbPersonnes option[value="+nbInscriptions+"]").attr('selected', 'selected');
+var parseUri = function (uri) {
+  var a = document.createElement('a');
+  a.href = uri;
+  return a.pathname;
+}
+$('#divPersonne').show();
+for (i = (nbInscriptions + 1) ; i < 6 ; i++) {
+    $('fieldset.f'+i).hide();
+}
+$("#nbPersonnes").change(function() {
+    nb = parseInt($("#nbPersonnes option:selected").val());
+    path = parseUri($("#formulaire").attr("action"));
+    $("#formulaire").attr("action", path + '?nbInscriptions=' + nb);
+    for (i = 1 ; i < 6 ; i++) {
+        $('fieldset.f'+i).hide();
+        console.log('Hide '+i);
+    }
+    for (i = 1 ; i < (nb+1) ; i++) {
+        $('fieldset.f'+i).show();
+        console.log('Show '+i);
+    }
+});
+</script>
+{/literal}
 {include file="pied_de_page.html"}
