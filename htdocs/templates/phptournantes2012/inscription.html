@@ -54,6 +54,9 @@ for (i = (nbInscriptions + 1) ; i < 6 ; i++) {
 $("#nbPersonnes").change(function() {
     nb = parseInt($("#nbPersonnes option:selected").val());
     path = parseUri($("#formulaire").attr("action"));
+    if (path.substr(0,1) != '/') {
+        path = '/' + path;
+    }
     $("#formulaire").attr("action", path + '?nbInscriptions=' + nb);
     for (i = 1 ; i < 6 ; i++) {
         $('fieldset.f'+i).hide();
