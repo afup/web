@@ -31,7 +31,7 @@ if ($action == 'lister') {
 	$sessions = $forum_appel->obtenirListeSessionsPlannifies($_GET['id_forum']);
 	$salles = $forum_appel->obtenirListeSalles($_GET['id_forum'], true);
 
-	$smarty->assign('agenda', $forum->genAgenda($annee_forum,true));
+	$smarty->assign('agenda', $forum->genAgenda($annee_forum, true, false, $_GET['id_forum']));
 	$smarty->assign('id_forum', $_GET['id_forum']);
 	$smarty->assign('forums', $forum->obtenirListe());
 	$smarty->assign('sessions', $sessions);

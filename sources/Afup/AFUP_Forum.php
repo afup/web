@@ -253,7 +253,7 @@ class AFUP_Forum
      *
      * @param Int $annee (Optionnel, retournera tout si aucunne année indiquée)
      */
-    function obtenirAgenda($annee = null)
+    function obtenirAgenda($annee = null, $forum_id = null)
     {
         $sWhere = array();
         if(isset($annee))
@@ -264,6 +264,12 @@ class AFUP_Forum
             $aWhere[] = "p.fin < ". $tfin;
             $aWhere[] = "s.plannifie = 1";
         }
+
+        if (null !== $forum_id)
+        {
+            $aWhere[] = "l.id_forum = ".$forum_id;
+        }
+
         $sWhere = "WHERE ". implode(" AND ", $aWhere);
         $requete  = "SELECT ".
                      " ( SELECT CONCAT(c.nom,' ', c.prenom , ' - ', c.societe )  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1) as conf1 ,
@@ -369,9 +375,9 @@ class AFUP_Forum
         return $lien;
     }
 
-    function genAgenda($annee, $for_bo =false, $only_data=false)
+    function genAgenda($annee, $for_bo =false, $only_data=false, $forum_id = null)
     {
-    $aAgenda = $this->obtenirAgenda($annee);
+    $aAgenda = $this->obtenirAgenda($annee, $forum_id);
     //var_dump($aAgenda);
 if(isset($aAgenda) && count($aAgenda) > 0)
 {
