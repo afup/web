@@ -358,7 +358,7 @@ class AFUP_Forum
         $aFin   = explode(":", $aHeures[1]);
         $iDebut = ($aDebut[0] * 60) + $aDebut[1];
         $iFin   = ($aFin[0] * 60) + $aFin[1];
-        $duree = ($iFin - $iDebut) / 30;
+        $duree = ($iFin - $iDebut) / 15;
         return $duree;
     }
     /**
@@ -455,14 +455,14 @@ CODE_HTML;
         /* On boucle maintenant sur chaque demi-heure de l'agenda (de 09h00 à 18h00 */
         for($h = 9; $h < 18; $h++)
         {
-          for($i = 0; $i < 2; $i++)
+          for($i = 0; $i < 4; $i++)
             {
             $bKeynote = false;
-                $m = ($i % 2 == 0) ? '00' : '30';
-                $m_next = ($i % 2 == 0) ? '30' : '00';
+                $m = sprintf('%02d', 15 * $i);
+                $m_next = sprintf('%02d', (15 * ($i + 1)) % 60);
                 $style = ($i % 2 == 0) ? 'lp' : 'li';
                 $sHeure = ($h < 10) ? '0'. $h : $h;
-                $h_next =($i % 2 == 0) ? $h : $h+1;
+                $h_next = ($i < 3) ? $h : $h+1;
                 $sHeure_next = ($h_next < 10) ? '0'. $h_next : $h_next;
                 /* Création de la ligne avec la cellule indiquant l'heure */
                 $sTable .= <<<CODE_HTML

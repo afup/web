@@ -541,7 +541,7 @@ div.bloc_jour table { border-collapse:collapse; width:100%; }
 div.bloc_jour table td { white-space:normal; }
 div.bloc_jour table caption { background-color:#E0E3EE; color:inherit; font-weight:bold; height:30px; line-height:30px; }
 div.bloc_jour table tbody td { border:1px solid #CCCCCC; }
-td.col_heure { width:8% !important; }
+td.col_heure { font-size: 10px; width:8% !important; }
 tr.li td.col_heure { background-color:#E0E3EE; color:inherit; }
 
 /* Suivi */
