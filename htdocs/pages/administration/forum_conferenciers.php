@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer','inscrire_forum'));
+$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer','inscrire_forum', 'associer_gravatar'));
 $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
@@ -173,6 +173,25 @@ elseif ($action == 'lister') {
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du conférencier', 'index.php?page=forum_conferenciers&action=lister', true);
     }
+} elseif ($action == 'associer_gravatar') {
+    $champs = $forum_appel->obtenirConferencier($_GET['id']);
+    $rs = $forum->obtenir( $_GET['id_forum']);
+    $imageDir = realpath('../../templates/'.$rs['path'].'/images/intervenants/');
+    // Transformation en 90x120 JPG pour simplifier
+    $img = @imagecreatefromjpeg(AFUP_Utils::get_gravatar($champs['email'], 90));
+    if (gettype($img) != 'resource') {
+      $img = imagecreatefrompng(AFUP_Utils::get_gravatar($champs['email'], 90));
+    }
+    $width = imagesx($img);
+    $height = imagesy($img);
+    /*if ($width != 90 || $height != 120) {
+        $oldImg = $img;
+        $img = imagecreatetruecolor(90, 120);
+        imagecopyresampled($img, $oldImg, 0, 0, 0, 0, 90, 120, $width, $height);
+    }*/
+    imagejpeg($img, $imageDir . '/' . $_GET['id'] . '.jpg', 90);
+    chmod($imageDir . '/' . $_GET['id'] . '.jpg', 0664);
+    afficherMessage('L\'image gravatar a été associée', 'index.php?page=forum_conferenciers&action=modifier&id='. $_GET['id'] . '&id_forum=' . $_GET['id_forum']);
 } else {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
     $pays = new AFUP_Pays($bdd);
@@ -298,6 +317,11 @@ elseif ($action == 'lister') {
     }
 
     $current = $forum->obtenir($_GET['id_forum'], 'titre');
+    if ($action == 'modifier') {
+      $smarty->assign('id_conferencier', $_GET['id']);
+      $smarty->assign('id_forum', $_GET['id_forum']);
+      $smarty->assign('gravatar', AFUP_Utils::get_gravatar($champs['email'], 90));
+    }
     $smarty->assign('forum_name', $current['titre']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }

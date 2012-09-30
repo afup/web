@@ -63,6 +63,14 @@
         <h2>Ajouter un conférencier pour le {$forum_name}</h2>
     {else}
         <h2>Modifier un conférencier pour le {$forum_name}</h2>
+        <fieldset style="float:right">
+            <legend>Gravatar (si besoin)</legend>
+            <div style="text-align:center">
+                <img src="{$gravatar}" /><br/>
+                <a href="index.php?page=forum_conferenciers&amp;action=associer_gravatar&amp;id={$id_conferencier}&amp;id_forum={$id_forum}">Associer à ce conférencier</a>
+            </div>
+        </fieldset>
     {/if}
     {include file="formulaire.html"}
+
 {/if}
