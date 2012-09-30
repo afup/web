@@ -431,6 +431,14 @@ class AFUP_Facturation_Forum
         $pdf->Ln(15);
 
         $pdf->MultiCell(180, 5, utf8_decode("Facture concernant votre participation au forum organisé par l'Association Française des Utilisateurs de PHP (AFUP)."));
+
+        if ($facture['informations_reglement'])
+        {
+            $pdf->Ln(10);
+            $pdf->Cell(32, 5, utf8_decode('Référence client : '));
+            $pdf->Cell(100, 5, utf8_decode($facture['informations_reglement']));
+        }
+
         // Cadre
         $pdf->Ln(10);
         $pdf->SetFillColor(200, 200, 200);
