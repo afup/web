@@ -65,7 +65,7 @@ function check_site($site) {
     if (7 != strlen($site)) {
         return "IBS_SITE: Longueur de la variable incorrecte: il faut 7 "
                . "chiffres.";
-    } 
+    }
     if (preg_match('/[^0-9]/', $site)) {
         return "IBS_SITE : Caractère(s) incorrect(s). Le site ne doit "
                . "contenir que des chiffres.";
@@ -729,7 +729,13 @@ function paiement() {
     $commande .= 'IBS_RETOUR="total:M;cmd:R;autorisation:A;transaction:T" ';
     // ajouter l'operateur @, car on ne veut aucun rapport d'erreur
     $exe = ('' == $this->identifiant) ? 'paybox' : 'payboxV2';
-    $x = shell_exec('/usr/php_exec_dir/' . $exe . ' ' . $commande);
+    if ($_SERVER['DOCUMENT_ROOT'] == '/var/www/afup.org/htdocs') {
+        // Ancien serveur
+        $x = shell_exec('/usr/php_exec_dir/' . $exe . ' ' . $commande);
+    } else {
+        // Nouveau serveur
+        $x = shell_exec('/usr/lib/cgi-bin/paybox.cgi ' . $commande);
+    }
     $return = trim(preg_replace('/^.*?<html>/is', '<html>', $x));
     $error_level = error_reporting($ancien);
     return $return;
