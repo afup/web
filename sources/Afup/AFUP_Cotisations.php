@@ -236,7 +236,7 @@ class AFUP_Cotisations
 			$cotisation = $this->obtenirDerniere($type_personne, $id_personne);
 	        $date_fin_precedente = $cotisation['date_fin'];
 
-            if ($date_fin_precedente > 0 and time() <= $date_fin_precedente) {
+            if ($date_fin_precedente > 0) {
 	            $date_debut = strtotime('+1day', $date_fin_precedente);
 	        }
 
@@ -599,7 +599,7 @@ class AFUP_Cotisations
         $requete .= '  type_personne=' . $type_personne;
         $requete .= '  AND id_personne=' . $id_personne;
         $this->_bdd->executer($requete);
-        
+
         return true;
     }
 }
