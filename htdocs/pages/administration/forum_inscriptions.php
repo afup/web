@@ -234,7 +234,7 @@ L\'équipe AFUP'));
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Virement'      , AFUP_FORUM_REGLEMENT_VIREMENT);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Aucun'         , AFUP_FORUM_REGLEMENT_AUCUN);
 	$formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
-    $formulaire->addElement('text'   , 'informations_reglement', 'Informations règlement', array('size' => 50, 'maxlength' => 255));
+    $formulaire->addElement('textarea'   , 'informations_reglement', 'Informations règlement', array('cols' => 42, 'rows' => 4));
     $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 'minYear' => date('Y'), 'maxYear' => date('Y')));
 
 

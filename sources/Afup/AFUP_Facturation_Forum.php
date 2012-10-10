@@ -436,7 +436,12 @@ class AFUP_Facturation_Forum
         {
             $pdf->Ln(10);
             $pdf->Cell(32, 5, utf8_decode('Référence client : '));
-            $pdf->Cell(100, 5, utf8_decode($facture['informations_reglement']));
+            $infos = explode("\n", $facture['informations_reglement']);
+            foreach ($infos as $info) {
+                $pdf->Cell(100, 5, utf8_decode($info));
+                $pdf->Ln();
+                $pdf->Cell(32, 5);
+            }
         }
 
         // Cadre
