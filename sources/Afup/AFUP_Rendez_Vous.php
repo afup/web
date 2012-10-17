@@ -314,7 +314,7 @@ class AFUP_Rendez_Vous
         $requete .= ' id_antenne = '.$this->_bdd->echapper($formulaire->exportValue('id_antenne')) . ', ';
         $requete .= ' capacite = '.$this->_bdd->echapper($formulaire->exportValue('capacite')) . ',';
         $requete .= ' url_externe = '.$this->_bdd->echapper($formulaire->exportValue('url_externe'));
-echo $requete; die();        
+//echo $requete; die();        
      	if ($id > 0) {
 	        $requete .= ' WHERE id = '.$id;
 		}
