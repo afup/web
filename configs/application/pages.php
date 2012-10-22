@@ -93,13 +93,15 @@ $pages = array(
 			'rendez_vous' => array(
 				'nom' => 'Rendez-vous',
 				'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 4,
 			),
 			'antenne' => array(
 				'nom' => 'Liste des antennes',
 				'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+                'module' => 4,
 			),
 		),
-	),		
+	),
     'forum' => array(
         'nom' => 'Forum',
         'elements' => array(
