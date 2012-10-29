@@ -4,18 +4,12 @@
  *
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Postinstallscript.php,v 1.15 2005/09/15 03:30:07 cellog Exp $
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    CVS: $Id: Postinstallscript.php 313023 2011-07-06 19:17:11Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -31,9 +25,9 @@ require_once 'PEAR/Task/Common.php';
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.0
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    Release: 1.9.4
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -62,7 +56,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
      * @param array the entire parsed <file> tag
      * @static
      */
-    function validateXml($pkg, $xml, &$config, $fileXml)
+    function validateXml($pkg, $xml, $config, $fileXml)
     {
         if ($fileXml['role'] != 'php') {
             return array(PEAR_TASK_ERROR_INVALID, 'Post-install script "' .
@@ -80,10 +74,14 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
                 $fileXml['name'] . '" could not be retrieved for processing!');
         } else {
             $analysis = $pkg->analyzeSourceCode($file, true);
-            if (PEAR::isError($analysis)) {
+            if (!$analysis) {
                 PEAR::popErrorHandling();
+                $warnings = '';
+                foreach ($pkg->getValidationWarnings() as $warn) {
+                    $warnings .= $warn['message'] . "\n";
+                }
                 return array(PEAR_TASK_ERROR_INVALID, 'Analysis of post-install script "' .
-                    $fileXml['name'] . '" failed');
+                    $fileXml['name'] . '" failed: ' . $warnings);
             }
             if (count($analysis['declared_classes']) != 1) {
                 PEAR::popErrorHandling();
@@ -147,7 +145,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
                         return array(PEAR_TASK_ERROR_INVALID, 'Post-install script "' .
                             $fileXml['name'] . '" ' . $tasksNamespace .
                             'paramgroup> id "' . $param[$tasksNamespace . 'id'] .
-                            '" must have a ' . $tasksNamespace . 
+                            '" must have a ' . $tasksNamespace .
                             'conditiontype> tag containing either "=", ' .
                             '"!=", or "preg_match"');
                     }
@@ -216,7 +214,7 @@ class PEAR_Task_Postinstallscript extends PEAR_Task_Common
                             $param[$tasksNamespace . 'id'] .
                             '" must have a ' . $tasksNamespace . 'type> tag');
                     }
-                    $definedparams[] = $param[$tasksNamespace . 'id'] . ':' .
+                    $definedparams[] = $param[$tasksNamespace . 'id'] . '::' .
                     $subparam[$tasksNamespace . 'name'];
                 }
             }

@@ -4,18 +4,12 @@
  *
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Common.php,v 1.7 2005/04/06 22:34:39 cellog Exp $
+ * @copyright  1997-2006 The PHP Group
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    CVS: $Id: Common.php 313023 2011-07-06 19:17:11Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -28,9 +22,9 @@
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.0
+ * @copyright  1997-2006 The PHP Group
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    Release: 1.9.4
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -43,40 +37,25 @@ class PEAR_Installer_Role_Common
     var $config;
 
     /**
-     * This must be the same as getInfo(), and is used by instances
-     * @var array
-     * @access private
+     * @param PEAR_Config
      */
-    var $_setup =
-        array(
-            'releasetypes' => array('php', 'extsrc', 'extbin', 'bundle'),
-            'installable' => true,
-            'locationconfig' => false,
-            'honorsbaseinstall' => true,
-            'unusualbaseinstall' => false,
-            'phpfile' => false,
-            'executable' => false,
-            'phpextension' => false,
-        );
-    /**
-     * This is used at startup to initialize the list of valid file roles, and what each role
-     * means in terms of installation.  All values present in the base class must exist in
-     * every custom role
-     * @return array
-     * @static
-     */
-    function getInfo()
+    function PEAR_Installer_Role_Common(&$config)
     {
-        return array(
-            'releasetypes' => array('php', 'extsrc', 'extbin', 'bundle'),
-            'installable' => true,
-            'locationconfig' => false,
-            'honorsbaseinstall' => true,
-            'unusualbaseinstall' => false,
-            'phpfile' => false,
-            'executable' => false,
-            'phpextension' => false,
-        );
+        $this->config = $config;
+    }
+
+    /**
+     * Retrieve configuration information about a file role from its XML info
+     *
+     * @param string $role Role Classname, as in "PEAR_Installer_Role_Data"
+     * @return array
+     */
+    function getInfo($role)
+    {
+        if (empty($GLOBALS['_PEAR_INSTALLER_ROLES'][$role])) {
+            return PEAR::raiseError('Unknown Role class: "' . $role . '"');
+        }
+        return $GLOBALS['_PEAR_INSTALLER_ROLES'][$role];
     }
 
     /**
@@ -93,24 +72,29 @@ class PEAR_Installer_Role_Common
      */
     function processInstallation($pkg, $atts, $file, $tmp_path, $layer = null)
     {
-        if (!$this->_setup['locationconfig']) {
+        $roleInfo = PEAR_Installer_Role_Common::getInfo('PEAR_Installer_Role_' . 
+            ucfirst(str_replace('pear_installer_role_', '', strtolower(get_class($this)))));
+        if (PEAR::isError($roleInfo)) {
+            return $roleInfo;
+        }
+        if (!$roleInfo['locationconfig']) {
             return false;
         }
-        if ($this->_setup['honorsbaseinstall']) {
-            $dest_dir = $save_destdir = $this->config->get($this->_setup['locationconfig'], $layer,
+        if ($roleInfo['honorsbaseinstall']) {
+            $dest_dir = $save_destdir = $this->config->get($roleInfo['locationconfig'], $layer,
                 $pkg->getChannel());
             if (!empty($atts['baseinstalldir'])) {
                 $dest_dir .= DIRECTORY_SEPARATOR . $atts['baseinstalldir'];
             }
-        } elseif ($this->_setup['unusualbaseinstall']) {
-            $dest_dir = $save_destdir = $this->config->get($this->_setup['locationconfig'],
-                    null, $pkg->getChannel()) . DIRECTORY_SEPARATOR . $pkg->getPackage();
+        } elseif ($roleInfo['unusualbaseinstall']) {
+            $dest_dir = $save_destdir = $this->config->get($roleInfo['locationconfig'],
+                    $layer, $pkg->getChannel()) . DIRECTORY_SEPARATOR . $pkg->getPackage();
             if (!empty($atts['baseinstalldir'])) {
                 $dest_dir .= DIRECTORY_SEPARATOR . $atts['baseinstalldir'];
             }
         } else {
-            $dest_dir = $save_destdir = $this->config->get($this->_setup['locationconfig'],
-                    null, $pkg->getChannel()) . DIRECTORY_SEPARATOR . $pkg->getPackage();
+            $dest_dir = $save_destdir = $this->config->get($roleInfo['locationconfig'],
+                    $layer, $pkg->getChannel()) . DIRECTORY_SEPARATOR . $pkg->getPackage();
         }
         if (dirname($file) != '.' && empty($atts['install-as'])) {
             $dest_dir .= DIRECTORY_SEPARATOR . dirname($file);
@@ -133,40 +117,23 @@ class PEAR_Installer_Role_Common
     }
 
     /**
-     * This method is called upon instantiating a PEAR_Config object.
-     *
-     * This method MUST an array of information for all new configuration
-     * variables required by the file role.  addConfigVar() expects an array of
-     * configuration information that is identical to what is used internally in PEAR_Config
-     * @access protected
-     * @param PEAR_Config
-     */
-    function getSupportingConfigVars()
-    {
-        return array();
-    }
-
-    /**
      * Get the name of the configuration variable that specifies the location of this file
      * @return string|false
      */
     function getLocationConfig()
     {
-        return $this->_setup['locationconfig'];
-    }
-
-    /**
-     * @param PEAR_Config
-     */
-    function PEAR_Installer_Role_Common(&$config)
-    {
-        $this->config = $config;
+        $roleInfo = PEAR_Installer_Role_Common::getInfo('PEAR_Installer_Role_' . 
+            ucfirst(str_replace('pear_installer_role_', '', strtolower(get_class($this)))));
+        if (PEAR::isError($roleInfo)) {
+            return $roleInfo;
+        }
+        return $roleInfo['locationconfig'];
     }
 
     /**
      * Do any unusual setup here
      * @param PEAR_Installer
-     * @param PEAR_PackageFile_v1|PEAR_PackageFile_v2
+     * @param PEAR_PackageFile_v2
      * @param array file attributes
      * @param string file name
      */
@@ -176,17 +143,32 @@ class PEAR_Installer_Role_Common
 
     function isExecutable()
     {
-        return $this->_setup['executable'];
+        $roleInfo = PEAR_Installer_Role_Common::getInfo('PEAR_Installer_Role_' . 
+            ucfirst(str_replace('pear_installer_role_', '', strtolower(get_class($this)))));
+        if (PEAR::isError($roleInfo)) {
+            return $roleInfo;
+        }
+        return $roleInfo['executable'];
     }
 
     function isInstallable()
     {
-        return $this->_setup['installable'];
+        $roleInfo = PEAR_Installer_Role_Common::getInfo('PEAR_Installer_Role_' . 
+            ucfirst(str_replace('pear_installer_role_', '', strtolower(get_class($this)))));
+        if (PEAR::isError($roleInfo)) {
+            return $roleInfo;
+        }
+        return $roleInfo['installable'];
     }
 
     function isExtension()
     {
-        return $this->_setup['phpextension'];
+        $roleInfo = PEAR_Installer_Role_Common::getInfo('PEAR_Installer_Role_' . 
+            ucfirst(str_replace('pear_installer_role_', '', strtolower(get_class($this)))));
+        if (PEAR::isError($roleInfo)) {
+            return $roleInfo;
+        }
+        return $roleInfo['phpextension'];
     }
 }
 ?>

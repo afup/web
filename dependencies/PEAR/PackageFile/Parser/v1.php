@@ -4,18 +4,12 @@
  *
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: v1.php,v 1.15 2005/05/15 02:46:59 cellog Exp $
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    CVS: $Id: v1.php 313023 2011-07-06 19:17:11Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -28,8 +22,8 @@ require_once 'PEAR/PackageFile/v1.php';
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
  * @version    Release: @PEAR-VER@
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
@@ -62,125 +56,19 @@ class PEAR_PackageFile_Parser_v1
         $this->_logger = &$l;
     }
 
-    function preProcessStupidSaxon($data)
-    {
-        $data = strtr($data,
-                            array (
-          '&nbsp;' => '&#160;',
-          '&iexcl;' => '&#161;',
-          '&cent;' => '&#162;',
-          '&pound;' => '&#163;',
-          '&curren;' => '&#164;',
-          '&yen;' => '&#165;',
-          '&brvbar;' => '&#166;',
-          '&sect;' => '&#167;',
-          '&uml;' => '&#168;',
-          '&copy;' => '&#169;',
-          '&ordf;' => '&#170;',
-          '&laquo;' => '&#171;',
-          '&not;' => '&#172;',
-          '&shy;' => '&#173;',
-          '&reg;' => '&#174;',
-          '&macr;' => '&#175;',
-          '&deg;' => '&#176;',
-          '&plusmn;' => '&#177;',
-          '&sup2;' => '&#178;',
-          '&sup3;' => '&#179;',
-          '&acute;' => '&#180;',
-          '&micro;' => '&#181;',
-          '&para;' => '&#182;',
-          '&middot;' => '&#183;',
-          '&cedil;' => '&#184;',
-          '&sup1;' => '&#185;',
-          '&ordm;' => '&#186;',
-          '&raquo;' => '&#187;',
-          '&frac14;' => '&#188;',
-          '&frac12;' => '&#189;',
-          '&frac34;' => '&#190;',
-          '&iquest;' => '&#191;',
-          '&Agrave;' => '&#192;',
-          '&Aacute;' => '&#193;',
-          '&Acirc;' => '&#194;',
-          '&Atilde;' => '&#195;',
-          '&Auml;' => '&#196;',
-          '&Aring;' => '&#197;',
-          '&AElig;' => '&#198;',
-          '&Ccedil;' => '&#199;',
-          '&Egrave;' => '&#200;',
-          '&Eacute;' => '&#201;',
-          '&Ecirc;' => '&#202;',
-          '&Euml;' => '&#203;',
-          '&Igrave;' => '&#204;',
-          '&Iacute;' => '&#205;',
-          '&Icirc;' => '&#206;',
-          '&Iuml;' => '&#207;',
-          '&ETH;' => '&#208;',
-          '&Ntilde;' => '&#209;',
-          '&Ograve;' => '&#210;',
-          '&Oacute;' => '&#211;',
-          '&Ocirc;' => '&#212;',
-          '&Otilde;' => '&#213;',
-          '&Ouml;' => '&#214;',
-          '&times;' => '&#215;',
-          '&Oslash;' => '&#216;',
-          '&Ugrave;' => '&#217;',
-          '&Uacute;' => '&#218;',
-          '&Ucirc;' => '&#219;',
-          '&Uuml;' => '&#220;',
-          '&Yacute;' => '&#221;',
-          '&THORN;' => '&#222;',
-          '&szlig;' => '&#223;',
-          '&agrave;' => '&#224;',
-          '&aacute;' => '&#225;',
-          '&acirc;' => '&#226;',
-          '&atilde;' => '&#227;',
-          '&auml;' => '&#228;',
-          '&aring;' => '&#229;',
-          '&aelig;' => '&#230;',
-          '&ccedil;' => '&#231;',
-          '&egrave;' => '&#232;',
-          '&eacute;' => '&#233;',
-          '&ecirc;' => '&#234;',
-          '&euml;' => '&#235;',
-          '&igrave;' => '&#236;',
-          '&iacute;' => '&#237;',
-          '&icirc;' => '&#238;',
-          '&iuml;' => '&#239;',
-          '&eth;' => '&#240;',
-          '&ntilde;' => '&#241;',
-          '&ograve;' => '&#242;',
-          '&oacute;' => '&#243;',
-          '&ocirc;' => '&#244;',
-          '&otilde;' => '&#245;',
-          '&ouml;' => '&#246;',
-          '&divide;' => '&#247;',
-          '&oslash;' => '&#248;',
-          '&ugrave;' => '&#249;',
-          '&uacute;' => '&#250;',
-          '&ucirc;' => '&#251;',
-          '&uuml;' => '&#252;',
-          '&yacute;' => '&#253;',
-          '&thorn;' => '&#254;',
-          '&yuml;' => '&#255;',
-        ));
-        // convert non-ISO-8859-1 chars to ? for safety (parser dies otherwise)
-        $data = preg_replace('/[\x9E-\xFF]/', '?', $data);
-        return $data;
-    }
-
     /**
      * @param string contents of package.xml file, version 1.0
      * @return bool success of parsing
      */
-    function parse($data, $file, $archive = false)
+    function &parse($data, $file, $archive = false)
     {
         if (!extension_loaded('xml')) {
             return PEAR::raiseError('Cannot create xml parser for parsing package.xml, no xml extension');
         }
-        $test = $this->preProcessStupidSaxon($data);
-        $xp = @xml_parser_create();
+        $xp = xml_parser_create();
         if (!$xp) {
-            return PEAR::raiseError('Cannot create xml parser for parsing package.xml');
+            $a = &PEAR::raiseError('Cannot create xml parser for parsing package.xml');
+            return $a;
         }
         xml_set_object($xp, $this);
         xml_set_element_handler($xp, '_element_start_1_0', '_element_end_1_0');
@@ -203,17 +91,15 @@ class PEAR_PackageFile_Parser_v1
             $code = xml_get_error_code($xp);
             $line = xml_get_current_line_number($xp);
             xml_parser_free($xp);
-            return PEAR::raiseError(sprintf("XML error: %s at line %d",
+            $a = &PEAR::raiseError(sprintf("XML error: %s at line %d",
                            $str = xml_error_string($code), $line), 2);
+            return $a;
         }
 
         xml_parser_free($xp);
 
         $pf = new PEAR_PackageFile_v1;
         $pf->setConfig($this->_config);
-        if ($test != $data) {
-            $pf->_stack->push(PEAR_PACKAGEFILE_ERROR_NON_ISO_CHARS, 'warning');
-        }
         if (isset($this->_logger)) {
             $pf->setLogger($this->_logger);
         }
@@ -224,7 +110,7 @@ class PEAR_PackageFile_Parser_v1
     // {{{ _unIndent()
 
     /**
-     * Unindent given string (?)
+     * Unindent given string
      *
      * @param string $str The string that has to be unindented.
      * @return string
@@ -242,6 +128,8 @@ class PEAR_PackageFile_Parser_v1
         foreach (explode("\n", $str) as $line) {
             if (substr($line, 0, $indent_len) == $indent) {
                 $data .= substr($line, $indent_len) . "\n";
+            } elseif (trim(substr($line, 0, $indent_len))) {
+                $data .= ltrim($line);
             }
         }
         return $data;
@@ -274,8 +162,17 @@ class PEAR_PackageFile_Parser_v1
                 if ($this->in_changelog) {
                     break;
                 }
-                if ($attribs['name'] != '/') {
-                    $this->dir_names[] = str_replace('\\', '/', $attribs['name']);
+                if (array_key_exists('name', $attribs) && $attribs['name'] != '/') {
+                    $attribs['name'] = preg_replace(array('!\\\\+!', '!/+!'), array('/', '/'),
+                        $attribs['name']);
+                    if (strrpos($attribs['name'], '/') === strlen($attribs['name']) - 1) {
+                        $attribs['name'] = substr($attribs['name'], 0,
+                            strlen($attribs['name']) - 1);
+                    }
+                    if (strpos($attribs['name'], '/') === 0) {
+                        $attribs['name'] = substr($attribs['name'], 1);
+                    }
+                    $this->dir_names[] = $attribs['name'];
                 }
                 if (isset($attribs['baseinstalldir'])) {
                     $this->dir_install = $attribs['baseinstalldir'];
@@ -295,7 +192,8 @@ class PEAR_PackageFile_Parser_v1
                             $path .= $dir . '/';
                         }
                     }
-                    $path .= str_replace('\\', '/', $attribs['name']);
+                    $path .= preg_replace(array('!\\\\+!', '!/+!'), array('/', '/'),
+                        $attribs['name']);
                     unset($attribs['name']);
                     $this->current_path = $path;
                     $this->filelist[$path] = $attribs;
@@ -433,7 +331,6 @@ class PEAR_PackageFile_Parser_v1
                 $this->current_maintainer['role'] = $data;
                 break;
             case 'version':
-                //$data = ereg_replace ('[^a-zA-Z0-9._\-]', '_', $data);
                 if ($this->in_changelog) {
                     $this->current_release['version'] = $data;
                 } else {
@@ -450,7 +347,8 @@ class PEAR_PackageFile_Parser_v1
             case 'notes':
                 // try to "de-indent" release notes in case someone
                 // has been over-indenting their xml ;-)
-                $data = $this->_unIndent($this->cdata);
+                // Trim only on the right side
+                $data = rtrim($this->_unIndent($this->cdata));
                 if ($this->in_changelog) {
                     $this->current_release['release_notes'] = $data;
                 } else {
@@ -497,7 +395,7 @@ class PEAR_PackageFile_Parser_v1
                     $path = '';
                     if (count($this->dir_names)) {
                         foreach ($this->dir_names as $dir) {
-                            $path .= $dir . DIRECTORY_SEPARATOR;
+                            $path .= $dir . '/';
                         }
                     }
                     $path .= $data;

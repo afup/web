@@ -4,18 +4,12 @@
  *
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: rw.php,v 1.6 2005/09/15 04:16:48 cellog Exp $
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    CVS: $Id: rw.php 313023 2011-07-06 19:17:11Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a10
  */
@@ -28,9 +22,9 @@ require_once 'PEAR/Task/Postinstallscript.php';
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.0
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    Release: 1.9.4
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a10
  */
@@ -69,9 +63,23 @@ class PEAR_Task_Postinstallscript_rw extends PEAR_Task_Postinstallscript
         return 'postinstallscript';
     }
 
-    function addParamGroup($id, $params, $instructions = false)
+    /**
+     * add a simple <paramgroup> to the post-install script
+     *
+     * Order is significant, so call this method in the same
+     * sequence the users should see the paramgroups.  The $params
+     * parameter should either be the result of a call to {@link getParam()}
+     * or an array of calls to getParam().
+     *
+     * Use {@link addConditionTypeGroup()} to add a <paramgroup> containing
+     * a <conditiontype> tag
+     * @param string $id <paramgroup> id as seen by the script
+     * @param array|false $params array of getParam() calls, or false for no params
+     * @param string|false $instructions
+     */
+    function addParamGroup($id, $params = false, $instructions = false)
     {
-        if (isset($params[0]) && !isset($params[1])) {
+        if ($params && isset($params[0]) && !isset($params[1])) {
             $params = $params[0];
         }
         $stuff =
@@ -81,23 +89,53 @@ class PEAR_Task_Postinstallscript_rw extends PEAR_Task_Postinstallscript
         if ($instructions) {
             $stuff[$this->_pkg->getTasksNs() . ':instructions'] = $instructions;
         }
-        $stuff[$this->_pkg->getTasksNs() . ':param'] = $params;
+        if ($params) {
+            $stuff[$this->_pkg->getTasksNs() . ':param'] = $params;
+        }
         $this->_params[$this->_pkg->getTasksNs() . ':paramgroup'][] = $stuff;
     }
 
-    function addConditionTypeGroup($id, $oldgroup, $param, $value, $conditiontype = '=')
+    /**
+     * add a complex <paramgroup> to the post-install script with conditions
+     *
+     * This inserts a <paramgroup> with
+     *
+     * Order is significant, so call this method in the same
+     * sequence the users should see the paramgroups.  The $params
+     * parameter should either be the result of a call to {@link getParam()}
+     * or an array of calls to getParam().
+     *
+     * Use {@link addParamGroup()} to add a simple <paramgroup>
+     *
+     * @param string $id <paramgroup> id as seen by the script
+     * @param string $oldgroup <paramgroup> id of the section referenced by
+     *                         <conditiontype>
+     * @param string $param name of the <param> from the older section referenced
+     *                      by <contitiontype>
+     * @param string $value value to match of the parameter
+     * @param string $conditiontype one of '=', '!=', 'preg_match'
+     * @param array|false $params array of getParam() calls, or false for no params
+     * @param string|false $instructions
+     */
+    function addConditionTypeGroup($id, $oldgroup, $param, $value, $conditiontype = '=',
+                                   $params = false, $instructions = false)
     {
-        if (isset($params[0]) && !isset($params[1])) {
+        if ($params && isset($params[0]) && !isset($params[1])) {
             $params = $params[0];
         }
-        $this->_params[] =
-            array(
-                $this->_pkg->getTasksNs() . ':id' => $id,
-                $this->_pkg->getTasksNs() . ':name' => $oldgroup . '::' . $param,
-                $this->_pkg->getTasksNs() . ':conditiontype' => $conditiontype,
-                $this->_pkg->getTasksNs() . ':value' => $value,
-                $this->_pkg->getTasksNs() . ':param' => $params,
-            );
+        $stuff = array(
+            $this->_pkg->getTasksNs() . ':id' => $id,
+        );
+        if ($instructions) {
+            $stuff[$this->_pkg->getTasksNs() . ':instructions'] = $instructions;
+        }
+        $stuff[$this->_pkg->getTasksNs() . ':name'] = $oldgroup . '::' . $param;
+        $stuff[$this->_pkg->getTasksNs() . ':conditiontype'] = $conditiontype;
+        $stuff[$this->_pkg->getTasksNs() . ':value'] = $value;
+        if ($params) {
+            $stuff[$this->_pkg->getTasksNs() . ':param'] = $params;
+        }
+        $this->_params[$this->_pkg->getTasksNs() . ':paramgroup'][] = $stuff;
     }
 
     function getXml()
@@ -112,7 +150,7 @@ class PEAR_Task_Postinstallscript_rw extends PEAR_Task_Postinstallscript
     function getParam($name, $prompt, $type = 'string', $default = null)
     {
         if ($default !== null) {
-            return 
+            return
             array(
                 $this->_pkg->getTasksNs() . ':name' => $name,
                 $this->_pkg->getTasksNs() . ':prompt' => $prompt,

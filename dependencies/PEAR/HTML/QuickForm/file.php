@@ -1,25 +1,32 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-// +----------------------------------------------------------------------+
-// | PHP version 4.0                                                      |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997, 1998, 1999, 2000, 2001 The PHP Group             |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.0 of the PHP license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Adam Daniel <adaniel1@eesus.jnj.com>                        |
-// |          Bertrand Mansion <bmansion@mamasam.com>                     |
-// +----------------------------------------------------------------------+
-//
-// $Id$
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-require_once("HTML/QuickForm/input.php");
+/**
+ * HTML class for a file upload field
+ * 
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.01 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_01.txt If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category    HTML
+ * @package     HTML_QuickForm
+ * @author      Adam Daniel <adaniel1@eesus.jnj.com>
+ * @author      Bertrand Mansion <bmansion@mamasam.com>
+ * @author      Alexey Borzov <avb@php.net>
+ * @copyright   2001-2011 The PHP Group
+ * @license     http://www.php.net/license/3_01.txt PHP License 3.01
+ * @version     CVS: $Id: file.php 317587 2011-10-01 07:55:53Z avb $
+ * @link        http://pear.php.net/package/HTML_QuickForm
+ */
+
+/**
+ * Base class for <input /> form elements
+ */
+require_once 'HTML/QuickForm/input.php';
 
 // register file-related rules
 if (class_exists('HTML_QuickForm')) {
@@ -30,13 +37,15 @@ if (class_exists('HTML_QuickForm')) {
 }
 
 /**
- * HTML class for a file type element
+ * HTML class for a file upload field
  * 
- * @author       Adam Daniel <adaniel1@eesus.jnj.com>
- * @author       Bertrand Mansion <bmansion@mamasam.com>
- * @version      1.0
- * @since        PHP4.04pl1
- * @access       public
+ * @category    HTML
+ * @package     HTML_QuickForm
+ * @author      Adam Daniel <adaniel1@eesus.jnj.com>
+ * @author      Bertrand Mansion <bmansion@mamasam.com>
+ * @author      Alexey Borzov <avb@php.net>
+ * @version     Release: 3.2.13
+ * @since       1.0
  */
 class HTML_QuickForm_file extends HTML_QuickForm_input
 {
@@ -192,6 +201,7 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
      * @param    string  Destination directory path
      * @param    string  New file name
      * @access   public
+     * @return   bool    Whether the file was moved successfully
      */
     function moveUploadedFile($dest, $fileName = '')
     {
@@ -199,11 +209,7 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
             $dest .= '/';
         }
         $fileName = ($fileName != '') ? $fileName : basename($this->_value['name']);
-        if (move_uploaded_file($this->_value['tmp_name'], $dest . $fileName)) {
-            return true;
-        } else {
-            return false;
-        }
+        return move_uploaded_file($this->_value['tmp_name'], $dest . $fileName); 
     } // end func moveUploadedFile
     
     // }}}
@@ -301,7 +307,7 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
         if (!HTML_QuickForm_file::_ruleIsUploadedFile($elementValue)) {
             return true;
         }
-        return preg_match($regex, $elementValue['name']);
+        return (bool)preg_match($regex, $elementValue['name']);
     } // end func _ruleCheckFileName
     
     // }}}
@@ -325,8 +331,14 @@ class HTML_QuickForm_file extends HTML_QuickForm_input
         if (isset($_FILES[$elementName])) {
             return $_FILES[$elementName];
         } elseif (false !== ($pos = strpos($elementName, '['))) {
-            $base  = substr($elementName, 0, $pos);
-            $idx   = "['" . str_replace(array(']', '['), array('', "']['"), substr($elementName, $pos + 1, -1)) . "']";
+            $base  = str_replace(
+                        array('\\', '\''), array('\\\\', '\\\''),
+                        substr($elementName, 0, $pos)
+                    ); 
+            $idx   = "['" . str_replace(
+                        array('\\', '\'', ']', '['), array('\\\\', '\\\'', '', "']['"),
+                        substr($elementName, $pos + 1, -1)
+                     ) . "']";
             $props = array('name', 'type', 'size', 'tmp_name', 'error');
             $code  = "if (!isset(\$_FILES['{$base}']['name']{$idx})) {\n" .
                      "    return null;\n" .

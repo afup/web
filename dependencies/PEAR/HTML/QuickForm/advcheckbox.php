@@ -1,25 +1,31 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-// +----------------------------------------------------------------------+
-// | PHP version 4.0                                                      |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997, 1998, 1999, 2000, 2001 The PHP Group             |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.0 of the PHP license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Adam Daniel <adaniel1@eesus.jnj.com>                        |
-// |          Bertrand Mansion <bmansion@mamasam.com>                     |
-// +----------------------------------------------------------------------+
-//
-// $Id$
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-require_once('HTML/QuickForm/checkbox.php');
+/**
+ * HTML class for an advanced checkbox type field
+ * 
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.01 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_01.txt If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category    HTML
+ * @package     HTML_QuickForm
+ * @author      Jason Rust <jrust@php.net>
+ * @author      Alexey Borzov <avb@php.net>
+ * @copyright   2001-2011 The PHP Group
+ * @license     http://www.php.net/license/3_01.txt PHP License 3.01
+ * @version     CVS: $Id: advcheckbox.php 317587 2011-10-01 07:55:53Z avb $
+ * @link        http://pear.php.net/package/HTML_QuickForm
+ */
+
+/**
+ * HTML class for a checkbox type field
+ */
+require_once 'HTML/QuickForm/checkbox.php';
 
 /**
  * HTML class for an advanced checkbox type field
@@ -31,13 +37,17 @@ require_once('HTML/QuickForm/checkbox.php');
  * furthermore the checkbox variable doesn't even exist if
  * the checkbox was submitted unchecked.
  *
- * It works by creating a hidden field with the passed-in name
- * and creating the checkbox with no name, but with a javascript
- * onclick which sets the value of the hidden field.
+ * It works by prepending a hidden field with the same name and
+ * another "unchecked" value to the checbox. If the checkbox is
+ * checked, PHP overwrites the value of the hidden field with
+ * its value. 
  * 
- * @author       Jason Rust <jrust@php.net>
- * @since        2.0
- * @access       public
+ * @category    HTML
+ * @package     HTML_QuickForm
+ * @author      Jason Rust <jrust@php.net>
+ * @author      Alexey Borzov <avb@php.net>
+ * @version     Release: 3.2.13
+ * @since       2.0
  */
 class HTML_QuickForm_advcheckbox extends HTML_QuickForm_checkbox
 {
@@ -86,12 +96,14 @@ class HTML_QuickForm_advcheckbox extends HTML_QuickForm_checkbox
     // {{{ getPrivateName()
 
     /**
-     * Gets the pribate name for the element
+     * Gets the private name for the element
      *
      * @param   string  $elementName The element name to make private
      *
      * @access public
      * @return string
+     *
+     * @deprecated          Deprecated since 3.2.6, both generated elements have the same name
      */
     function getPrivateName($elementName)
     {
@@ -109,6 +121,8 @@ class HTML_QuickForm_advcheckbox extends HTML_QuickForm_checkbox
      *
      * @access public
      * @return string
+     *
+     * @deprecated          Deprecated since 3.2.6, this element no longer uses any javascript
      */
     function getOnclickJs($elementName)
     {
@@ -140,6 +154,7 @@ class HTML_QuickForm_advcheckbox extends HTML_QuickForm_checkbox
         } else {
             $this->_values = $values;
         }
+        $this->updateAttributes(array('value' => $this->_values[1]));
         $this->setChecked($this->_currentValue == $this->_values[1]);
     }
 
@@ -191,24 +206,12 @@ class HTML_QuickForm_advcheckbox extends HTML_QuickForm_checkbox
         if ($this->_flagFrozen) {
             return parent::toHtml();
         } else {
-            $oldName = $this->getName();
-            $oldJs   = $this->getAttribute('onclick');
-            $this->updateAttributes(array(
-                'name'    => $this->getPrivateName($oldName),
-                'onclick' => $this->getOnclickJs($oldName) . ' ' . $oldJs
-            ));
-            $html = parent::toHtml() . '<input' .
-                    $this->_getAttrString(array(
+            return '<input' . $this->_getAttrString(array(
                         'type'  => 'hidden', 
-                        'name'  => $oldName, 
-                        'value' => $this->getValue()
-                    )) . ' />';
-            // revert the name and JS, in case this method will be called once more
-            $this->updateAttributes(array(
-                'name'    => $oldName, 
-                'onclick' => $oldJs
-            ));
-            return $html;
+                        'name'  => $this->getName(), 
+                        'value' => $this->_values[0]
+                   )) . ' />' . parent::toHtml();
+            
         }
     } //end func toHtml
     
@@ -233,7 +236,7 @@ class HTML_QuickForm_advcheckbox extends HTML_QuickForm_checkbox
      *
      * @param     string    $event  Name of event
      * @param     mixed     $arg    event arguments
-     * @param     object    $caller calling object
+     * @param     object    &$caller calling object
      * @since     1.0
      * @access    public
      * @return    void

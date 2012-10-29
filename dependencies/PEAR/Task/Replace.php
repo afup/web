@@ -4,18 +4,12 @@
  *
  * PHP versions 4 and 5
  *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Replace.php,v 1.10 2005/03/21 02:16:48 cellog Exp $
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    CVS: $Id: Replace.php 313023 2011-07-06 19:17:11Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -28,9 +22,9 @@ require_once 'PEAR/Task/Common.php';
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.0
+ * @copyright  1997-2009 The Authors
+ * @license    http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version    Release: 1.9.4
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -47,7 +41,7 @@ class PEAR_Task_Replace extends PEAR_Task_Common
      * @param PEAR_Config
      * @static
      */
-    function validateXml($pkg, $xml, &$config, $fileXml)
+    function validateXml($pkg, $xml, $config, $fileXml)
     {
         if (!isset($xml['attribs'])) {
             return array(PEAR_TASK_ERROR_NOATTRIBS);
@@ -66,6 +60,13 @@ class PEAR_Task_Replace extends PEAR_Task_Common
                 return array(PEAR_TASK_ERROR_WRONG_ATTRIB_VALUE, 'to', $xml['attribs']['to'],
                     $config->getKeys());
             }
+        } elseif ($xml['attribs']['type'] == 'php-const') {
+            if (defined($xml['attribs']['to'])) {
+                return true;
+            } else {
+                return array(PEAR_TASK_ERROR_WRONG_ATTRIB_VALUE, 'to', $xml['attribs']['to'],
+                    array('valid PHP constant'));
+            }
         } elseif ($xml['attribs']['type'] == 'package-info') {
             if (in_array($xml['attribs']['to'],
                 array('name', 'summary', 'channel', 'notes', 'extends', 'description',
@@ -82,8 +83,9 @@ class PEAR_Task_Replace extends PEAR_Task_Common
             }
         } else {
             return array(PEAR_TASK_ERROR_WRONG_ATTRIB_VALUE, 'type', $xml['attribs']['type'],
-                array('pear-config', 'package-info'));
+                array('pear-config', 'package-info', 'php-const'));
         }
+        return true;
     }
 
     /**
@@ -118,7 +120,7 @@ class PEAR_Task_Replace extends PEAR_Task_Common
                 }
                 if ($a['to'] == 'master_server') {
                     $chan = $this->registry->getChannel($pkg->getChannel());
-                    if ($chan) {
+                    if (!PEAR::isError($chan)) {
                         $to = $chan->getServer();
                     } else {
                         $this->logger->log(0, "$dest: invalid pear-config replacement: $a[to]");
@@ -138,6 +140,16 @@ class PEAR_Task_Replace extends PEAR_Task_Common
                 }
                 if (is_null($to)) {
                     $this->logger->log(0, "$dest: invalid pear-config replacement: $a[to]");
+                    return false;
+                }
+            } elseif ($a['type'] == 'php-const') {
+                if ($this->installphase == PEAR_TASK_PACKAGE) {
+                    return false;
+                }
+                if (defined($a['to'])) {
+                    $to = constant($a['to']);
+                } else {
+                    $this->logger->log(0, "$dest: invalid php-const replacement: $a[to]");
                     return false;
                 }
             } else {

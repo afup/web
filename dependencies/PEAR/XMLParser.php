@@ -1,37 +1,31 @@
 <?php
 /**
- * PEAR_FTP
+ * PEAR_XMLParser
  *
  * PHP versions 4 and 5
- *
- * LICENSE: This source file is subject to version 3.0 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
  *
  * @category   pear
  * @package    PEAR
  * @author     Greg Beaver <cellog@php.net>
  * @author     Stephan Schmidt (original XML_Unserializer code)
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: XMLParser.php,v 1.7 2005/05/15 02:46:40 cellog Exp $
+ * @copyright  1997-2009 The Authors
+ * @license   http://opensource.org/licenses/bsd-license New BSD License
+ * @version    CVS: $Id: XMLParser.php 313023 2011-07-06 19:17:11Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
 
 /**
  * Parser for any xml file
- * @category   pear
- * @package    PEAR
- * @author     Greg Beaver <cellog@php.net>
- * @author     Stephan Schmidt (original XML_Unserializer code)
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.0
- * @link       http://pear.php.net/package/PEAR
- * @since      Class available since Release 1.4.0a1
+ * @category  pear
+ * @package   PEAR
+ * @author    Greg Beaver <cellog@php.net>
+ * @author    Stephan Schmidt (original XML_Unserializer code)
+ * @copyright 1997-2009 The Authors
+ * @license   http://opensource.org/licenses/bsd-license New BSD License
+ * @version   Release: 1.9.4
+ * @link      http://pear.php.net/package/PEAR
+ * @since     Class available since Release 1.4.0a1
  */
 class PEAR_XMLParser
 {
@@ -51,19 +45,25 @@ class PEAR_XMLParser
      * stack for all data that is found
      * @var array    $_dataStack
      */
-    var $_dataStack  =   array();
+    var $_dataStack = array();
 
     /**
      * stack for all values that are generated
      * @var array    $_valStack
      */
-    var $_valStack  =   array();
+    var $_valStack = array();
 
     /**
      * current tag depth
      * @var int    $_depth
      */
     var $_depth = 0;
+
+    /**
+     * The XML encoding to use
+     * @var string $encoding
+     */
+    var $encoding = 'ISO-8859-1';
 
     /**
      * @return array
@@ -73,128 +73,34 @@ class PEAR_XMLParser
         return $this->_unserializedData;
     }
 
-    function preProcessStupidSaxon($data)
-    {
-        $data = strtr($data,
-                            array (
-          '&nbsp;' => '&#160;',
-          '&iexcl;' => '&#161;',
-          '&cent;' => '&#162;',
-          '&pound;' => '&#163;',
-          '&curren;' => '&#164;',
-          '&yen;' => '&#165;',
-          '&brvbar;' => '&#166;',
-          '&sect;' => '&#167;',
-          '&uml;' => '&#168;',
-          '&copy;' => '&#169;',
-          '&ordf;' => '&#170;',
-          '&laquo;' => '&#171;',
-          '&not;' => '&#172;',
-          '&shy;' => '&#173;',
-          '&reg;' => '&#174;',
-          '&macr;' => '&#175;',
-          '&deg;' => '&#176;',
-          '&plusmn;' => '&#177;',
-          '&sup2;' => '&#178;',
-          '&sup3;' => '&#179;',
-          '&acute;' => '&#180;',
-          '&micro;' => '&#181;',
-          '&para;' => '&#182;',
-          '&middot;' => '&#183;',
-          '&cedil;' => '&#184;',
-          '&sup1;' => '&#185;',
-          '&ordm;' => '&#186;',
-          '&raquo;' => '&#187;',
-          '&frac14;' => '&#188;',
-          '&frac12;' => '&#189;',
-          '&frac34;' => '&#190;',
-          '&iquest;' => '&#191;',
-          '&Agrave;' => '&#192;',
-          '&Aacute;' => '&#193;',
-          '&Acirc;' => '&#194;',
-          '&Atilde;' => '&#195;',
-          '&Auml;' => '&#196;',
-          '&Aring;' => '&#197;',
-          '&AElig;' => '&#198;',
-          '&Ccedil;' => '&#199;',
-          '&Egrave;' => '&#200;',
-          '&Eacute;' => '&#201;',
-          '&Ecirc;' => '&#202;',
-          '&Euml;' => '&#203;',
-          '&Igrave;' => '&#204;',
-          '&Iacute;' => '&#205;',
-          '&Icirc;' => '&#206;',
-          '&Iuml;' => '&#207;',
-          '&ETH;' => '&#208;',
-          '&Ntilde;' => '&#209;',
-          '&Ograve;' => '&#210;',
-          '&Oacute;' => '&#211;',
-          '&Ocirc;' => '&#212;',
-          '&Otilde;' => '&#213;',
-          '&Ouml;' => '&#214;',
-          '&times;' => '&#215;',
-          '&Oslash;' => '&#216;',
-          '&Ugrave;' => '&#217;',
-          '&Uacute;' => '&#218;',
-          '&Ucirc;' => '&#219;',
-          '&Uuml;' => '&#220;',
-          '&Yacute;' => '&#221;',
-          '&THORN;' => '&#222;',
-          '&szlig;' => '&#223;',
-          '&agrave;' => '&#224;',
-          '&aacute;' => '&#225;',
-          '&acirc;' => '&#226;',
-          '&atilde;' => '&#227;',
-          '&auml;' => '&#228;',
-          '&aring;' => '&#229;',
-          '&aelig;' => '&#230;',
-          '&ccedil;' => '&#231;',
-          '&egrave;' => '&#232;',
-          '&eacute;' => '&#233;',
-          '&ecirc;' => '&#234;',
-          '&euml;' => '&#235;',
-          '&igrave;' => '&#236;',
-          '&iacute;' => '&#237;',
-          '&icirc;' => '&#238;',
-          '&iuml;' => '&#239;',
-          '&eth;' => '&#240;',
-          '&ntilde;' => '&#241;',
-          '&ograve;' => '&#242;',
-          '&oacute;' => '&#243;',
-          '&ocirc;' => '&#244;',
-          '&otilde;' => '&#245;',
-          '&ouml;' => '&#246;',
-          '&divide;' => '&#247;',
-          '&oslash;' => '&#248;',
-          '&ugrave;' => '&#249;',
-          '&uacute;' => '&#250;',
-          '&ucirc;' => '&#251;',
-          '&uuml;' => '&#252;',
-          '&yacute;' => '&#253;',
-          '&thorn;' => '&#254;',
-          '&yuml;' => '&#255;',
-        ));
-        // convert non-ISO-8859-1 chars to ? for safety (parser dies otherwise)
-        $data = preg_replace('/[\x9E-\xFF]/', '?', $data);
-        return $data;
-    }
-
     /**
      * @param string xml content
      * @return true|PEAR_Error
      */
     function parse($data)
     {
-        $data = $this->preProcessStupidSaxon($data);
         if (!extension_loaded('xml')) {
             include_once 'PEAR.php';
             return PEAR::raiseError("XML Extension not found", 1);
         }
-        $this->_valStack = array();
-        $this->_dataStack = array();
+        $this->_dataStack =  $this->_valStack = array();
         $this->_depth = 0;
 
-        $xp = @xml_parser_create('ISO-8859-1');
+        if (
+            strpos($data, 'encoding="UTF-8"')
+            || strpos($data, 'encoding="utf-8"')
+            || strpos($data, "encoding='UTF-8'")
+            || strpos($data, "encoding='utf-8'")
+        ) {
+            $this->encoding = 'UTF-8';
+        }
+
+        if (version_compare(phpversion(), '5.0.0', 'lt') && $this->encoding == 'UTF-8') {
+            $data = utf8_decode($data);
+            $this->encoding = 'ISO-8859-1';
+        }
+
+        $xp = xml_parser_create($this->encoding);
         xml_parser_set_option($xp, XML_OPTION_CASE_FOLDING, 0);
         xml_set_object($xp, $this);
         xml_set_element_handler($xp, 'startHandler', 'endHandler');
@@ -221,28 +127,35 @@ class PEAR_XMLParser
      */
     function startHandler($parser, $element, $attribs)
     {
-        $type = 'string';
-
         $this->_depth++;
         $this->_dataStack[$this->_depth] = null;
 
         $val = array(
-                     'name'         => $element,
-                     'value'        => null,
-                     'type'         => $type,
-                     'childrenKeys' => array(),
-                     'aggregKeys'   => array()
-                    );
+            'name'         => $element,
+            'value'        => null,
+            'type'         => 'string',
+            'childrenKeys' => array(),
+            'aggregKeys'   => array()
+       );
 
         if (count($attribs) > 0) {
             $val['children'] = array();
             $val['type'] = 'array';
-
             $val['children']['attribs'] = $attribs;
-
         }
 
         array_push($this->_valStack, $val);
+    }
+
+    /**
+     * post-process data
+     *
+     * @param string $data
+     * @param string $element element name
+     */
+    function postProcess($data, $element)
+    {
+        return trim($data);
     }
 
     /**
@@ -256,23 +169,17 @@ class PEAR_XMLParser
     function endHandler($parser, $element)
     {
         $value = array_pop($this->_valStack);
-        $data  = trim($this->_dataStack[$this->_depth]);
+        $data  = $this->postProcess($this->_dataStack[$this->_depth], $element);
 
         // adjust type of the value
-        switch(strtolower($value['type'])) {
-
-            /*
-             * unserialize an array
-             */
+        switch (strtolower($value['type'])) {
+            // unserialize an array
             case 'array':
                 if ($data !== '') {
                     $value['children']['_content'] = $data;
                 }
-                if (isset($value['children'])) {
-                    $value['value'] = $value['children'];
-                } else {
-                    $value['value'] = array();
-                }
+
+                $value['value'] = isset($value['children']) ? $value['children'] : array();
                 break;
 
             /*
@@ -290,42 +197,43 @@ class PEAR_XMLParser
                 $value['value'] = $data;
                 break;
         }
+
         $parent = array_pop($this->_valStack);
         if ($parent === null) {
             $this->_unserializedData = &$value['value'];
             $this->_root = &$value['name'];
             return true;
-        } else {
-            // parent has to be an array
-            if (!isset($parent['children']) || !is_array($parent['children'])) {
-                $parent['children'] = array();
-                if ($parent['type'] != 'array') {
-                    $parent['type'] = 'array';
-                }
-            }
-
-            if (!empty($value['name'])) {
-                // there already has been a tag with this name
-                if (in_array($value['name'], $parent['childrenKeys'])) {
-                    // no aggregate has been created for this tag
-                    if (!in_array($value['name'], $parent['aggregKeys'])) {
-                        if (isset($parent['children'][$value['name']])) {
-                            $parent['children'][$value['name']] = array($parent['children'][$value['name']]);
-                        } else {
-                            $parent['children'][$value['name']] = array();
-                        }
-                        array_push($parent['aggregKeys'], $value['name']);
-                    }
-                    array_push($parent['children'][$value['name']], $value['value']);
-                } else {
-                    $parent['children'][$value['name']] = &$value['value'];
-                    array_push($parent['childrenKeys'], $value['name']);
-                }
-            } else {
-                array_push($parent['children'],$value['value']);
-            }
-            array_push($this->_valStack, $parent);
         }
+
+        // parent has to be an array
+        if (!isset($parent['children']) || !is_array($parent['children'])) {
+            $parent['children'] = array();
+            if ($parent['type'] != 'array') {
+                $parent['type'] = 'array';
+            }
+        }
+
+        if (!empty($value['name'])) {
+            // there already has been a tag with this name
+            if (in_array($value['name'], $parent['childrenKeys'])) {
+                // no aggregate has been created for this tag
+                if (!in_array($value['name'], $parent['aggregKeys'])) {
+                    if (isset($parent['children'][$value['name']])) {
+                        $parent['children'][$value['name']] = array($parent['children'][$value['name']]);
+                    } else {
+                        $parent['children'][$value['name']] = array();
+                    }
+                    array_push($parent['aggregKeys'], $value['name']);
+                }
+                array_push($parent['children'][$value['name']], $value['value']);
+            } else {
+                $parent['children'][$value['name']] = &$value['value'];
+                array_push($parent['childrenKeys'], $value['name']);
+            }
+        } else {
+            array_push($parent['children'],$value['value']);
+        }
+        array_push($this->_valStack, $parent);
 
         $this->_depth--;
     }
@@ -343,4 +251,3 @@ class PEAR_XMLParser
         $this->_dataStack[$this->_depth] .= $cdata;
     }
 }
-?>

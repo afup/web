@@ -1,39 +1,52 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-// +----------------------------------------------------------------------+
-// | PHP version 4.0                                                      |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2004 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.0 of the PHP license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Herim Vasquez <vasquezh@iro.umontreal.ca>                   |
-// |          Bertrand Mansion <bmansion@mamasam.com>                     |
-// |          Alexey Borzov <avb@php.net>
-// +----------------------------------------------------------------------+
-//
-// $Id$
-
-require_once('HTML/QuickForm/group.php');
-require_once('HTML/QuickForm/select.php');
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
+ * Hierarchical select element
+ * 
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.01 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_01.txt If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category    HTML
+ * @package     HTML_QuickForm
+ * @author      Herim Vasquez <vasquezh@iro.umontreal.ca>
+ * @author      Bertrand Mansion <bmansion@mamasam.com>
+ * @author      Alexey Borzov <avb@php.net>
+ * @copyright   2001-2011 The PHP Group
+ * @license     http://www.php.net/license/3_01.txt PHP License 3.01
+ * @version     CVS: $Id: hierselect.php 317587 2011-10-01 07:55:53Z avb $
+ * @link        http://pear.php.net/package/HTML_QuickForm
+ */
+
+/**
+ * Class for a group of form elements
+ */
+require_once 'HTML/QuickForm/group.php';
+/**
+ * Class for <select></select> elements
+ */
+require_once 'HTML/QuickForm/select.php';
+
+/**
+ * Hierarchical select element
+ * 
  * Class to dynamically create two or more HTML Select elements
  * The first select changes the content of the second select and so on.
  * This element is considered as a group. Selects will be named
  * groupName[0], groupName[1], groupName[2]...
  *
- * @author       Herim Vasquez <vasquezh@iro.umontreal.ca>
- * @author       Bertrand Mansion <bmansion@mamasam.com>
- * @version      1.0
- * @since        PHP4.04pl1
- * @access       public
+ * @category    HTML
+ * @package     HTML_QuickForm
+ * @author      Herim Vasquez <vasquezh@iro.umontreal.ca>
+ * @author      Bertrand Mansion <bmansion@mamasam.com>
+ * @author      Alexey Borzov <avb@php.net>
+ * @version     Release: 3.2.13
+ * @since       3.1
  */
 class HTML_QuickForm_hierselect extends HTML_QuickForm_group
 {   
@@ -42,42 +55,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
     /**
      * Options for all the select elements
      *
-     * Format is a bit more complex as we need to know which options
-     * are related to the ones in the previous select:
-     *
-     * Ex:
-     * // first select
-     * $select1[0] = 'Pop';
-     * $select1[1] = 'Classical';
-     * $select1[2] = 'Funeral doom';
-     *
-     * // second select
-     * $select2[0][0] = 'Red Hot Chil Peppers';
-     * $select2[0][1] = 'The Pixies';
-     * $select2[1][0] = 'Wagner';
-     * $select2[1][1] = 'Strauss';
-     * $select2[2][0] = 'Pantheist';
-     * $select2[2][1] = 'Skepticism';
-     *
-     * // If only need two selects 
-     * //     - and using the depracated functions
-     * $sel =& $form->addElement('hierselect', 'cds', 'Choose CD:');
-     * $sel->setMainOptions($select1);
-     * $sel->setSecOptions($select2);
-     *
-     * //     - and using the new setOptions function
-     * $sel =& $form->addElement('hierselect', 'cds', 'Choose CD:');
-     * $sel->setOptions(array($select1, $select2));
-     *
-     * // If you have a third select with prices for the cds
-     * $select3[0][0][0] = '15.00$';
-     * $select3[0][0][1] = '17.00$';
-     * etc
-     *
-     * // You can now use
-     * $sel =& $form->addElement('hierselect', 'cds', 'Choose CD:');
-     * $sel->setOptions(array($select1, $select2, $select3));
-     * 
+     * @see       setOptions()
      * @var       array
      * @access    private
      */
@@ -132,8 +110,45 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * Initialize the array structure containing the options for each select element.
      * Call the functions that actually do the magic.
      *
-     * @param     array    $options    Array of options defining each element
+     * Format is a bit more complex than for a simple select as we need to know 
+     * which options are related to the ones in the previous select:
      *
+     * Ex:
+     * <code>
+     * // first select
+     * $select1[0] = 'Pop';
+     * $select1[1] = 'Classical';
+     * $select1[2] = 'Funeral doom';
+     *
+     * // second select
+     * $select2[0][0] = 'Red Hot Chil Peppers';
+     * $select2[0][1] = 'The Pixies';
+     * $select2[1][0] = 'Wagner';
+     * $select2[1][1] = 'Strauss';
+     * $select2[2][0] = 'Pantheist';
+     * $select2[2][1] = 'Skepticism';
+     *
+     * // If only need two selects 
+     * //     - and using the deprecated functions
+     * $sel =& $form->addElement('hierselect', 'cds', 'Choose CD:');
+     * $sel->setMainOptions($select1);
+     * $sel->setSecOptions($select2);
+     *
+     * //     - and using the new setOptions function
+     * $sel =& $form->addElement('hierselect', 'cds', 'Choose CD:');
+     * $sel->setOptions(array($select1, $select2));
+     *
+     * // If you have a third select with prices for the cds
+     * $select3[0][0][0] = '15.00$';
+     * $select3[0][0][1] = '17.00$';
+     * // etc
+     *
+     * // You can now use
+     * $sel =& $form->addElement('hierselect', 'cds', 'Choose CD:');
+     * $sel->setOptions(array($select1, $select2, $select3));
+     * </code>
+     * 
+     * @param     array    $options    Array of options defining each element
      * @access    public
      * @return    void
      */
@@ -166,6 +181,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @param     array     $array    Options for the first select element
      *
      * @access    public
+     * @deprecated          Deprecated since release 3.2.2
      * @return    void
      */
     function setMainOptions($array)
@@ -188,6 +204,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      * @param     array     $array    Options for the second select element
      *
      * @access    public
+     * @deprecated          Deprecated since release 3.2.2
      * @return    void
      */
     function setSecOptions($array)
@@ -249,7 +266,10 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
      */
     function setValue($value)
     {
-        $this->_nbElements = count($value);
+        // fix for bug #6766. Hope this doesn't break anything more 
+        // after bug #7961. Forgot that _nbElements was used in
+        // _createElements() called in several places... 
+        $this->_nbElements = max($this->_nbElements, count($value));
         parent::setValue($value);
         $this->_setOptions();
     } // end func setValue
@@ -293,6 +313,9 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
                 $this->_js .= <<<JAVASCRIPT
 function _hs_findOptions(ary, keys)
 {
+    if (ary == undefined) {
+        return {};
+    }
     var key = keys.shift();
     if (!key in ary) {
         return {};
@@ -312,12 +335,22 @@ function _hs_findSelect(form, groupName, selectIndex)
     }
 }
 
-function _hs_replaceOptions(ctl, optionList)
+function _hs_unescapeEntities(str)
+{
+    var div = document.createElement('div');
+    div.innerHTML = str;
+    return div.childNodes[0] ? div.childNodes[0].nodeValue : '';
+}
+
+function _hs_replaceOptions(ctl, options)
 {
     var j = 0;
     ctl.options.length = 0;
-    for (i in optionList) {
-        ctl.options[j++] = new Option(optionList[i], i, false, false);
+    for (var i = 0; i < options.values.length; i++) {
+        ctl.options[i] = new Option(
+            (-1 == String(options.texts[i]).indexOf('&'))? options.texts[i]: _hs_unescapeEntities(options.texts[i]),
+            options.values[i], false, false
+        );
     }
 }
 
@@ -409,7 +442,7 @@ JAVASCRIPT;
             // option lists
             $jsParts = array();
             for ($i = 1; $i < $this->_nbElements; $i++) {
-                $jsParts[] = $this->_convertArrayToJavascript($this->_options[$i]);
+                $jsParts[] = $this->_convertArrayToJavascript($this->_prepareOptions($this->_options[$i], $i));
             }
             $this->_js .= "\n_hs_options['" . $this->_escapeString($this->getName()) . "'] = [\n" .
                           implode(",\n", $jsParts) .
@@ -428,7 +461,7 @@ JAVASCRIPT;
                 }
             }
             $this->_js .= "_hs_defaults['" . $this->_escapeString($this->getName()) . "'] = " .
-                          $this->_convertArrayToJavascript($values, false) . ";\n";
+                          $this->_convertArrayToJavascript($values) . ";\n";
         }
         include_once('HTML/QuickForm/Renderer/Default.php');
         $renderer =& new HTML_QuickForm_Renderer_Default();
@@ -482,6 +515,38 @@ JAVASCRIPT;
     } // end func onQuickFormEvent
 
     // }}}
+    // {{{ _prepareOptions()
+
+   /**
+    * Prepares options for JS encoding
+    *
+    * We need to preserve order of options when adding them via javascript, so
+    * cannot use object literal and for/in loop (see bug #16603). Therefore we
+    * convert an associative array of options to two arrays of their values
+    * and texts. Backport from HTML_QuickForm2.
+    *
+    * @param    array   Options array
+    * @param    int     Depth within options array
+    * @link     http://pear.php.net/bugs/bug.php?id=16603
+    * @return   array
+    * @access   private
+    */
+    function _prepareOptions($ary, $depth)
+    {
+        if (!is_array($ary)) {
+            $ret = $ary;
+        } elseif (0 == $depth) {
+            $ret = array('values' => array_keys($ary), 'texts' => array_values($ary));
+        } else {
+            $ret = array();
+            foreach ($ary as $k => $v) {
+                $ret[$k] = $this->_prepareOptions($v, $depth - 1);
+            }
+        }
+        return $ret;
+    }
+
+    // }}}
     // {{{ _convertArrayToJavascript()
 
    /**
@@ -489,29 +554,41 @@ JAVASCRIPT;
     *
     * @access private
     * @param  array     PHP array to convert
-    * @param  bool      Generate Javascript object literal (default, works like PHP's associative array) or array literal
     * @return string    Javascript representation of the value
     */
-    function _convertArrayToJavascript($array, $assoc = true)
+    function _convertArrayToJavascript($array)
     {
         if (!is_array($array)) {
             return $this->_convertScalarToJavascript($array);
+        } elseif (count($array) && array_keys($array) != range(0, count($array) - 1)) {
+            return '{' . implode(',', array_map(
+                array($this, '_encodeNameValue'),
+                array_keys($array), array_values($array)
+            )) . '}';
         } else {
-            $items = array();
-            foreach ($array as $key => $val) {
-                $item = $assoc? "'" . $this->_escapeString($key) . "': ": '';
-                if (is_array($val)) {
-                    $item .= $this->_convertArrayToJavascript($val, $assoc);
-                } else {
-                    $item .= $this->_convertScalarToJavascript($val);
-                }
-                $items[] = $item;
-            }
+            return '[' . implode(',', array_map(
+                array($this, '_convertArrayToJavascript'),
+                $array
+            )) . ']';
         }
-        $js = implode(', ', $items);
-        return $assoc? '{ ' . $js . ' }': '[' . $js . ']';
     }
     
+    // }}}
+    // {{{ _encodeNameValue()
+
+   /**
+    * Callback for array_map used to generate JS name-value pairs
+    *
+    * @param    mixed
+    * @param    mixed
+    * @return   string
+    */
+    function _encodeNameValue($name, $value)
+    {
+        return $this->_convertScalarToJavascript((string)$name) . ':'
+               . $this->_convertArrayToJavascript($value);
+    }
+
     // }}}
     // {{{ _convertScalarToJavascript()
 
