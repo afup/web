@@ -36,7 +36,6 @@ date_default_timezone_set('Europe/Paris');
 set_include_path(
                        $root . '/dependencies'
     . PATH_SEPARATOR . $root . '/sources'
-    . PATH_SEPARATOR . get_include_path()
 );
 
 // préparation de la requête / session
