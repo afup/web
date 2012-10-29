@@ -5,7 +5,7 @@ CREATE TABLE `afup_votes` (
   `cloture` int(11) DEFAULT '0',
   `date` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT
+) ENGINE=MyISAM;
 
 CREATE TABLE `afup_votes_poids` (
   `id_vote` int(11) NOT NULL DEFAULT '0',
@@ -14,4 +14,4 @@ CREATE TABLE `afup_votes_poids` (
   `poids` tinyint(4) DEFAULT NULL,
   `date` int(11) DEFAULT NULL,
   UNIQUE KEY `id_vote` (`id_vote`,`id_personne_physique`)
-) ENGINE=MyISAM DEFAULT
+) ENGINE=MyISAM;
