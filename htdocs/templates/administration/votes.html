@@ -1,0 +1,36 @@
+{if $action == 'lister'}
+    <h2>Liste des questions soumises au votes</h2>
+
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=votes&amp;action=ajouter" title="Ajouter une question pour le vote">Ajouter une question pour le vote</a><br />
+    <br/>
+
+    <table class="afup_tab">
+        <tr>
+            <th>Lancement</th>
+            <th>Clôture</th>
+            <th>Question</th>
+            <th>Résultat</th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$votes item=vote}
+        <tr class="{cycle values="odd,even"}">
+            <td>{$vote.lancement|date_format:"%d/%m/%Y"}</td>
+            <td>{$vote.cloture|date_format:"%d/%m/%Y"}</td>
+            <td><strong>{$vote.question}</strong></td>
+            <td>{$vote.resultat}</td>
+            <td style="text-align: right" nowrap="nowrap">
+                <a href="index.php?page=votes&amp;action=modifier&amp;id={$vote.id}" title="Voter sur la question {$vote.question}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Voter" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucun vote</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'voter'}
+        <h2>Voter sur la question {$vote_name}</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}

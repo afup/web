@@ -24,7 +24,11 @@ $pages = array(
 		        'nom' => 'Présence prochaine AG',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
-		    'membre_tags' => array(
+		    'membre_votes' => array(
+		        'nom' => 'Votes',
+		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+		    ),
+        	'membre_tags' => array(
 		        'nom' => 'Tags',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
@@ -47,7 +51,7 @@ $pages = array(
 		    ),
 		    'personnes_morales' => array(
 		        'nom' => 'Personnes morales',
-		    'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+				'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
 		    'relances' => array(
 		        'nom' => 'Relances',
@@ -63,6 +67,10 @@ $pages = array(
 		    ),
 		    'assemblee_generale' => array(
 		        'nom' => 'Assemblée générale',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+		    ),
+		    'votes' => array(
+		        'nom' => 'Votes',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
         ),

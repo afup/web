@@ -1,0 +1,33 @@
+{if $action == 'lister'}
+    <h2>Liste des questions soumises au votes</h2>
+
+    <table class="afup_tab">
+        <tr>
+            <th>Lancement</th>
+            <th>Clôture</th>
+            <th>Question</th>
+            <th>Résultat</th>
+            <th>&nbsp;</th>
+        </tr>
+    {foreach from=$votes item=vote}
+        <tr class="{cycle values="odd,even"}">
+            <td>{$vote.lancement|date_format:"%d/%m/%Y"}</td>
+            <td>{$vote.cloture|date_format:"%d/%m/%Y"}</td>
+            <td><strong>{$vote.question}</strong></td>
+            <td>{$vote.resultat}</td>
+            <td style="text-align: right" nowrap="nowrap">
+                <a href="index.php?page=membre_votes&amp;action=voter&amp;id={$vote.id}" title="Voter sur la question {$vote.question}"><img src="{$chemin_template}images/famfamfam/thumb_up.png" alt="Voter" /></a>
+            </td>
+        </tr>
+    {foreachelse}
+        <tr>
+            <td><em>Aucun vote</em></td>
+        </tr>
+    {/foreach}
+    </table>
+{else}
+    {if $action == 'voter'}
+        <h2>Voter sur la question {$vote_name}</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
