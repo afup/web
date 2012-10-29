@@ -7,8 +7,7 @@
  * @param   bool    $erreur     S'agit-il d'une erreur
  * @return  void
  */
-function afficherMessage($message, $url, $erreur = false)
-{
+function afficherMessage($message, $url, $erreur = false) {
     $_SESSION['flash']['message'] = $message;
     $_SESSION['flash']['erreur'] = $erreur;
     header('Location: ' . $url);
@@ -28,9 +27,8 @@ function &instancierFormulaire($url = null, $nom = 'formulaire') {
     if (is_null($url)) {
         $url = $_SERVER['REQUEST_URI'];
     }
-
-    require_once 'HTML/QuickForm.php';
-    require_once 'HTML/QuickForm/altselect.php';
+    require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm.php';
+    require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm/altselect.php';
     $formulaire = new HTML_QuickForm($nom, 'post', $url);
     $formulaire->removeAttribute('name');
     return $formulaire;
@@ -43,7 +41,7 @@ function &instancierFormulaire($url = null, $nom = 'formulaire') {
  * @return  array
  */
 function genererFormulaire(&$formulaire) {
-    require_once 'HTML/QuickForm/Renderer/Array.php';
+    require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm/Renderer/Array.php';
     $renderer = new HTML_QuickForm_Renderer_Array(true, true);
     $formulaire->accept($renderer);
     $resultat = $renderer->toArray();
@@ -59,8 +57,7 @@ function genererFormulaire(&$formulaire) {
  * @param   object  $actions_disponibles    Actions disponibles
  * @return  string
  */
-function verifierAction($actions_disponibles)
-{
+function verifierAction($actions_disponibles) {
     if (!is_array($actions_disponibles) || count($actions_disponibles) == 0) {
         trigger_error("Les actions disponibles doivent Ãªtre passées sous forme d'un tableau d'au moins un élément", E_USER_ERROR);
         return false;
@@ -79,14 +76,12 @@ function verifierAction($actions_disponibles)
  * @param   string  $texte  Texte Ã  traiter
  * @return  string          Texte traité
  */
-function supprimerAccents($texte)
-{
+function supprimerAccents($texte) {
     $texte = htmlentities($texte);
     return preg_replace('/&([a-z])[a-z]+;/i',"$1", $texte);
 }
 
-function convertirDateEnTimestamp($date)
-{
+function convertirDateEnTimestamp($date) {
 	if ($date<>'') {
 		$list_date = split('/', $date);
 		return mktime(0, 0, 0, $list_date[1], $list_date[0], $list_date[2]);
@@ -94,8 +89,7 @@ function convertirDateEnTimestamp($date)
 	return false;
 }
 
-function convertirTimestampEnDate($timestamp)
-{
+function convertirTimestampEnDate($timestamp) {
 	$date = "";
 	if ($timestamp > 0) {
 		$date = date("d/m/Y", $timestamp);
@@ -103,8 +97,7 @@ function convertirTimestampEnDate($timestamp)
 	return $date;
 }
 
-function obtenirTitre($pages, $page)
-{
+function obtenirTitre($pages, $page) {
     foreach ($pages as $_page => $_page_details) {
         if ($page == $_page) {
             return $_page_details['nom'];
@@ -118,4 +111,3 @@ function obtenirTitre($pages, $page)
 	    }
     }
 }
-?>
