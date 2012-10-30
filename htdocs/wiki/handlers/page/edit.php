@@ -61,7 +61,7 @@ if ($this->HasAccess("write") && $this->HasAccess("read"))
 			if (!$error)
 			{
 				$body = str_replace("\r", "", $_POST["body"]);
-				
+
 				// test si la nouvelle page est differente de la précédente
 				if(rtrim($body)==rtrim($this->page["body"])) {
 					$this->SetMessage("Cette page n\'a pas &eacute;t&eacute; enregistr&eacute;e car elle n\'a subi aucune modification.");
@@ -130,7 +130,7 @@ if ($this->HasAccess("write") && $this->HasAccess("read"))
 			$this->FormOpen("edit").
 			"<input type=\"hidden\" name=\"previous\" value=\"".$previous."\" />\n".
 			"<textarea onkeydown=\"fKeyDown()\" name=\"body\" cols=\"60\" rows=\"40\" wrap=\"soft\" class=\"edit\">\n".
-			htmlspecialchars($body).
+			htmlspecialchars($body, ENT_COMPAT | ENT_HTML401, 'ISO-8859-1').
 			"\n</textarea><br />\n".
 			($this->config["preview_before_save"] ? "" : "<input name=\"submit\" type=\"submit\" value=\"Sauver\" accesskey=\"s\" />\n").
 			"<input name=\"submit\" type=\"submit\" value=\"Aper&ccedil;u\" accesskey=\"p\" />\n".

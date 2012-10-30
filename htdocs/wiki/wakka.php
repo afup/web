@@ -157,7 +157,7 @@ class Wiki
 	function GetConfigValue($name) { return $this->config[$name]; }
 	function GetWakkaName() { return $this->GetConfigValue("wakka_name"); }
 	function GetWakkaVersion() { return $this->VERSION; }
-	function GetWikiNiVersion() { return WIKINI_VERSION; } 
+	function GetWikiNiVersion() { return WIKINI_VERSION; }
 
 
 
@@ -246,7 +246,7 @@ class Wiki
 	}
 	function PurgePages() {
 		if ($days = $this->GetConfigValue("pages_purge_time")) {
-			// Selection of pages which can be deleted 
+			// Selection of pages which can be deleted
 			$pages = $this->LoadAll("select distinct tag, time from ".$this->config["table_prefix"]."pages where time < date_sub(now(), interval '".mysql_escape_string($days)."' day) and latest = 'N' order by time asc");
 			foreach ($pages as $page) {
 				// Deletion if there are more than 2 versions avalaible (TODO : parameter ?)
@@ -299,8 +299,8 @@ class Wiki
 		return $href;
 	}
 	function Link($tag, $method = "", $text = "", $track = 1) {
-		$tag=htmlspecialchars($tag); //avoid xss
-		$text=htmlspecialchars($text); //paranoiac again
+		$tag=htmlspecialchars($tag, ENT_COMPAT | ENT_HTML401, 'ISO-8859-1'); //avoid xss
+		$text=htmlspecialchars($text, ENT_COMPAT | ENT_HTML401, 'ISO-8859-1'); //paranoiac again
 		if (!$text) $text = $tag;
 
 		// is this an interwiki link?
@@ -423,7 +423,7 @@ class Wiki
 		// fill values
 		if (!$tag = trim($tag)) $tag = $this->GetPageTag();
 		if (!$referrer = trim($referrer) AND isset($_SERVER["HTTP_REFERER"])) $referrer = $_SERVER["HTTP_REFERER"];
-		
+
 		// check if it's coming from another site
 		if ($referrer && !preg_match("/^".preg_quote($this->GetConfigValue("base_url"), "/")."/", $referrer))
 		{
@@ -481,7 +481,7 @@ class Wiki
 		return $this->IncludeBuffered($methodLocation, "<i>M&eacute;thode inconnue \"$methodLocation\"</i>", "", $this->config["handler_path"]);
 	}
 	function Format($text, $formatter = "wakka") {
-		return $this->IncludeBuffered("formatters/".$formatter.".php", "<i>Impossible de trouver le formateur \"$formatter\"</i>", compact("text")); 
+		return $this->IncludeBuffered("formatters/".$formatter.".php", "<i>Impossible de trouver le formateur \"$formatter\"</i>", compact("text"));
 	}
 
 
@@ -498,14 +498,14 @@ class Wiki
 	function GetParameter($parameter, $default = '') { return (isset($this->parameter[$parameter]) ? $this->parameter[$parameter] : $default); }
 
 
-	
+
 	// COMMENTS
 	function LoadComments($tag) { return $this->LoadAll("select * from ".$this->config["table_prefix"]."pages where comment_on = '".mysql_escape_string($tag)."' and latest = 'Y' order by time"); }
 	function LoadRecentComments() { return $this->LoadAll("select * from ".$this->config["table_prefix"]."pages where comment_on != '' and latest = 'Y' order by time desc"); }
 	function LoadRecentlyCommented($limit = 50) {
 		// NOTE: this is really stupid. Maybe my SQL-Fu is too weak, but apparently there is no easier way to simply select
 		//       all comment pages sorted by their first revision's (!) time. ugh!
-		
+
 		// load ids of the first revisions of latest comments. err, huh?
 		$pages=array();
 		$comments=array();
@@ -522,7 +522,7 @@ class Wiki
 					$num++;
 				}
 			}
-		
+
 			// now load pages
 			if ($comments)
 			{
@@ -537,7 +537,7 @@ class Wiki
 				}
 			}
 		}
-		// load tags of pages 
+		// load tags of pages
 		//return $this->LoadAll("select comment_on as tag, max(time) as time, tag as comment_tag, user from ".$this->config["table_prefix"]."pages where comment_on != '' group by comment_on order by time desc");
 		return $pages;
 	}
@@ -552,7 +552,7 @@ class Wiki
 
 		// set default tag
 		if (!$tag = trim($tag)) $tag = $this->GetPageTag();
-		
+
 		// check if user is owner
 		if ($this->GetPageOwner($tag) == $this->GetUserName()) return true;
 	}
@@ -560,7 +560,7 @@ class Wiki
 	function SetPageOwner($tag, $user) {
 		// check if user exists
 		if (!$this->LoadUser($user)) return;
-		
+
 		// updated latest revision with new owner
 		$this->Query("update ".$this->config["table_prefix"]."pages set owner = '".mysql_escape_string($user)."' where tag = '".mysql_escape_string($tag)."' and latest = 'Y' limit 1");
 	}
@@ -580,13 +580,13 @@ class Wiki
 		// set defaults
 		if (!$tag = trim($tag)) $tag = $this->GetPageTag();
 		if (!$user = $this->GetUserName());
-		
+
 		// load acl
 		$acl = $this->LoadAcl($tag, $privilege);
-		
+
 		// if current user is owner, return true. owner can do anything!
 		if ($this->UserIsOwner($tag)) return true;
-		
+
 		// fine fine... now go through acl
 		foreach (explode("\n", $acl["list"]) as $line)
 		{
@@ -616,7 +616,7 @@ class Wiki
 					return !$negate;
 				// aha! a user entry.
 				case "+":
-					if (!$this->LoadUser($user)) 
+					if (!$this->LoadUser($user))
 					{
 						return $negate;
 					}
@@ -632,7 +632,7 @@ class Wiki
 				}
 			}
 		}
-		
+
 		// tough luck.
 		return false;
 	}
@@ -651,7 +651,7 @@ class Wiki
 
 	// THE BIG EVIL NASTY ONE!
 	function Run($tag, $method = "") {
-		if(!($this->GetMicroTime()%3)) $this->Maintenance(); 
+		if(!($this->GetMicroTime()%3)) $this->Maintenance();
 
 		$this->ReadInterWikiConfig();
 
@@ -735,7 +735,7 @@ if (file_exists("locked")) {
 	// read password from lockfile
 	$lines = file("locked");
 	$lockpw = trim($lines[0]);
-	
+
 	// is authentification given?
 	if (isset($_SERVER["PHP_AUTH_USER"])) {
 		if (!(($_SERVER["PHP_AUTH_USER"] == "admin") && ($_SERVER["PHP_AUTH_PW"] == $lockpw))) {
@@ -744,7 +744,7 @@ if (file_exists("locked")) {
 	} else {
 		$ask = 1;
 	}
-	
+
 	if ($ask) {
 		header("WWW-Authenticate: Basic realm=\"".$wakkaConfig["wakka_name"]." Install/Upgrade Interface\"");
 		header("HTTP/1.0 401 Unauthorized");
@@ -781,7 +781,7 @@ session_start();
 
 // fetch wakka location
 if (!isset($_REQUEST["wiki"])) $_REQUEST["wiki"] = '';
- 
+
 $wiki = $_REQUEST["wiki"];
 
 // remove leading slash
@@ -800,21 +800,21 @@ if (!$wiki->dblink)
 	exit;
 }
 
-function compress_output($output) 
-{ 
-	return gzencode($output); 
-} 
+function compress_output($output)
+{
+	return gzencode($output);
+}
 
-// Check if the browser supports gzip encoding, HTTP_ACCEPT_ENCODING 
+// Check if the browser supports gzip encoding, HTTP_ACCEPT_ENCODING
 if (strstr ($HTTP_SERVER_VARS['HTTP_ACCEPT_ENCODING'], 'gzip') && function_exists('gzencode') )
-{ 
-	// Start output buffering, and register compress_output() (see 
-	// below) 
-	ob_start ("compress_output"); 
+{
+	// Start output buffering, and register compress_output() (see
+	// below)
+	ob_start ("compress_output");
 
-	// Tell the browser the content is compressed with gzip 
-	header ("Content-Encoding: gzip"); 
-} 
+	// Tell the browser the content is compressed with gzip
+	header ("Content-Encoding: gzip");
+}
 
 
 // go!
