@@ -10,8 +10,7 @@
        à partir du doc dans "/sources/forum/2009/Forum-PHP-2009-dossier-sponsor.odt"
 
  */
-
-// Param de configuration sur site du Forum PHP
+date_default_timezone_set("Europe/Paris");
 
 $config_forum['id'] = 4;
 $coupons = array('PHPFRANCE','POLENORD','DIGIPORT', 'WAMPSERVER',

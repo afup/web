@@ -13,8 +13,8 @@
 
 // Param de configuration sur site du Forum PHP
 
-define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../classes/afup/')); // prod
-// define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../../sources/Afup/')); // trunk
+define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../classes/afup/'));
+date_default_timezone_set("Europe/Paris");
 
 $config_forum['id'] = 5;
 /*
