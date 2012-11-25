@@ -15,42 +15,59 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 
 if ($action == 'envoyer_convocation') {
 	$formulaire = &instancierFormulaire();
-	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2012',
+	$formulaire->setDefaults(array('sujet' => 'Convocation pour le PHP Tour Nantes 2012',
                                 'date_envoi' => date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))),
 								'corps' => 'Bonjour %INSCRIT,
 
-Le grand retour du Forum PHP 2012, c\'est dans quelques jours ! Voici toutes les informations utiles pour faciliter votre venue et les dernières nouvelles du Forum PHP 2012.
+Voici quelques informations pour faciliter votre séjour des 29 et 30 novembre prochains à Nantes.
 
+- Comment se rendre au PHP Tour Nantes 2012 ?
 
-- Le Forum, où, quand, comment ?
+Le PHP Tour Nantes 2012 est organisé au Centre de Communication de l\'Ouest, au sein de la Tour de Bretagne, les jeudi 29 et vendredi 30 novembre 2012. Les portes s\'ouvriront à 8h30. Les premières conférences débutent à 9h00 : nous vous encourageons à être à l\'heure, afin d\'avoir le temps de récupérer votre badge, déposer vos affaires au vestiaire et profiter du buffet de petit-déjeuner !
 
-Le Forum PHP 2012 se tient à la Maison Internationale de la Cité Internationale Universitaire de Paris, mardi 5 et mercredi 6 juin. Les portes s\'ouvriront à 8H30. Les premières conférences débutent à 9H00 : nous vous encourageons donc à être à l\'heure !
+Pour vous rendre au Centre de Communication de l\'Ouest :
+Place de Bretagne, dans la tour de Bretagne,
+Tram ligne 3, arrêt "Bretagne"
+Le PHP Tour Nantes 2012 sera fléché sur la place de Bretagne.
 
-Pour vous rendre à la Cité Internationale Universitaire de Paris :
- * RER : ligne B, arrêt Cité Universitaire
- * Tram : ligne 3, arrêt Cité Universitaire
- * Bus : ligne 88, arrêt Montsouris-Issoire
-
-L\'entrée de la Cité Universitaire se situe au 17 boulevard Jourdan.
-La Maison Internationale se trouve en face de vous. Présentez-vous à l\'accueil du Forum PHP 2012 muni d\'une pièce d\'identité afin de retirer votre badge auprès de notre équipe.
+Présentez-vous à l\'accueil du PHP Tour Nantes 2012 muni d\'une pièce d\'identité afin de retirer votre badge auprès de notre équipe.
 Nous vous rappelons que votre billet d\'entrée vous permettra de profiter d\'un en-cas à la pause déjeuner.
 
 Pour imprimer la convocation : %LIEN
 
 
-- Dernières retouches au programme
+- Profitez de la réduction négociée pour vous à l\'hôtel IBIS - Tour de Bretagne
 
-Le Forum PHP était absent des calendriers depuis novembre 2010. Alors pour son grand retour, l\'AFUP a soigné sa programmation, orientée vers la qualité, les performances et les nouveaux usages, et a fixé de nouveaux rendez-vous, comme la table ronde DSI ou les lightning-talks.
-A noter, la programmation a encore connu quelques changements de dernière minute. Ainsi, notre sponsor platine Zend a annoncé le sujet de sa conférence : Emile Heitor présentera "Scalabilité sans limite pour vos applications PHP grâce au Zend Cloud", le mercredi 6 juin à 14h45. Autre modification : Jonathan-David Schröder est contraint d\'annuler sa conférence "Bien comprendre et choisir Lucene, Solr ou ElasticSearch? pour mon projet PHP", prévue le mercredi 6 juin à 11h45. Il sera remplacé par Damien Seguy, pour une session intitulée "Automatisation de la qualité".
+Vous n\'avez pas encore réservé votre hébergement ? L\'AFUP vous propose de bénéficier d\'un tarif négocié pour les nuits du 28 et 29 novembre prochains à l\'hôtel IBIS Nantes - Tour de Bretagne.
+En appelant de la part de l\'AFUP, profitez de 10% de réduction, soit :
+* prix par chambre : 85,50€ (après remise de 10%)
+* taxe de séjour : 0,85€
+* petit dej : 9€
+Pour réserver, contactez Nathalie Le Roi au 02 40 35 39 00.
+Pour découvrir l\'hôtel : http://www.accorhotels.com/fr/hotel-1394-ibis-nantes-centre-tour-bretagne/index.shtml
 
 
-- Retrouvez le Forum PHP 2012 sur les réseaux sociaux et sur son site mobile
+- Retrouvez les autres auditeurs le soir du jeudi 29 novembre
 
-La programmation est en ligne sur notre site mobile, à l\'adresse www.afup.org/m/. Envie de tweeter pendant le Forum PHP 2012 ? Utilisez le hashtag #afup ! Et n\'oubliez pas de suivre l\'actualité de l\'AFUP sur nos réseaux sociaux :
+Après la première journée de conférences, nous proposons aux visiteurs de se retrouver dans le bar "Le Flesselles". Situé à quelques centaines de mètres du Centre de Communication de l\'Ouest, le Flesselles proposera de la petite restauration.
+Bref, il s\'annonce comme le point de chute incontournable pour tous les visiteurs du PHP Tour Nantes 2012, qui pourront se détendre et échanger autour des sujets de conférences de la journée.
+
+Le Flesselles est situé au 3, allée Flesselles. Plus d\'informations sur le lieu : http://www.cityvox.fr/restaurants_nantes/le-flesselles_27437/Profil-Lieu
+
+Rendez-vous là bas le soir du jeudi 29 novembre !
+
+
+- Le PHP Tour Nantes 2012 est présent sur les réseaux sociaux et sur votre mobile
+
+Le programme des 2 jours est disponible en version mobile : http://m.afup.org
+
+Envie de tweeter pendant le PHP Tour Nantes 2012 ? Utilisez le hashtag #phptour ! Et n\'oubliez pas de suivre l\'actualité de l\'AFUP sur nos réseaux sociaux :
 Facebook : www.facebook.com/fandelafup
 Digikaa : www.digikaa.com/groups/afup/
+Google + : https://plus.google.com/u/0/b/103588986855606151405/103588986855606151405/posts
 
-Nous sommes impatients de vous accueillir et célébrer avec vous le grand retour de l\'événement-phare de l\'AFUP !
+
+Nous sommes impatients de vous accueillir lors de cette étape nantaise de notre tour de France de PHP !
 
 L\'équipe AFUP'));
 

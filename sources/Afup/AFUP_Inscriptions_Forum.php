@@ -155,6 +155,7 @@ class AFUP_Inscriptions_Forum
         $requete .= 'LEFT JOIN';
         $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
+        $requete .= 'AND i.type_inscription <> 12 '; // pas les conférenciers
         if ($date_envoi) {
             $requete .= 'AND i.date > '. strtotime($date_envoi) . ' ';
         }
@@ -185,7 +186,7 @@ class AFUP_Inscriptions_Forum
     			$qui = $inscrit['prenom'].' '.$inscrit['nom'];
     			$body = str_replace("%INSCRIT", $qui, $corps);
 
-    			$lien = "http://www.afup.org/pages/forumphp2012/convocation_visiteurs.php?id=".$inscrit['md5key'];
+    			$lien = "http://www.afup.org/pages/phptournantes2012/convocation_visiteurs.php?id=".$inscrit['md5key'];
     			$body = str_replace("%LIEN", $lien, $body);
     			$mail->Body = $body;
 
