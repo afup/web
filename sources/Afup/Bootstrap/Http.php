@@ -72,7 +72,7 @@ $smarty->check_compile = true;
 $smarty->php_handling  = SMARTY_PHP_ALLOW;
 
 $smarty->assign('url_base',          'http://' . $_SERVER['HTTP_HOST'] . '/');
-$smarty->assign('chemin_template',   $serveur.$conf->obtenir('web|path').'/templates/' . $sous_site . '/');
-$smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'/javascript/');
+$smarty->assign('chemin_template',   $serveur.$conf->obtenir('web|path').'templates/' . $sous_site . '/');
+$smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'javascript/');
 
 $bdd->executer("SET NAMES 'utf8'");
