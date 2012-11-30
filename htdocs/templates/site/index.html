@@ -1,55 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		{$header}
-	</head>
-	<body>
-		<div id="HiddenLogo">
-			<img src="/templates/site/images/AFUP.gif" height="99" alt="ASSOCIATION FRANCAISE DES UTILISATEURS DE PHP" />
-		</div>
-		<div id="HiddenBaseLine">
-			<h1>ASSOCIATION FRANCAISE DES UTILISATEURS DE PHP</h1>
-		</div>
-		<div id="MainContainerWrapper">
-			<div id="MainContainer">
-				<a href="http://www.afup.org">
-					<ul id="HeaderContainer">
-						<li id="logo"></li>
-						<li id="Baseline"></li>
-					</ul>
-				</a>
-				<ul id="ContentContainer">
-					{$menu}
-					{$content}
-				</ul>
-				{$logos}
-				<ul id="Footer">
-					<li id="Left">
-						<h6>&copy; AFUP 2003-<?php echo date("Y") ?></h6><br />
-						<h6>H&eacute;bergement <a href="http://www.alterway.fr/hosting/">Alter Way Hosting</a></h6><br />
-						<h6>Développement <a href="http://noparking.net/">No Parking</a></h6>
-					</li>
-					<li>
-						{$questions}
-					</li>
-					<li>
-						{$articles}
-					</li>
-				</ul>
-			</div>
-		</div>
-		{literal}
-		<script type="text/javascript">
-		  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-		</script>
-		<script type="text/javascript">
-			try {
-			var pageTracker = _gat._getTracker("UA-192127-3");
-			pageTracker._trackPageview();
-			} catch(err) {}
-		</script>
-		{/literal}
-	</body>
+<!doctype html>
+<!--[if lte IE 6]> <html class="no-js ie6 ie67 ie678" lang="fr"> <![endif]-->
+<!--[if lte IE 7]> <html class="no-js ie7 ie67 ie678" lang="fr"> <![endif]-->
+<!--[if IE 8]> <html class="no-js ie8 ie678" lang="fr"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="fr"> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <title>AFUP - Association Française des utilisateurs de PHP</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="viewport" content="initial-scale=1.0">
+    <!--[if lt IE 9]><script src="{$chemin_template}js/html5shiv.js"></script><![endif]-->
+    <link href='http://fonts.googleapis.com/css?family=Podkova:400,700|Glegoo' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{$chemin_template}css/styles.css" media="all">
+    <link rel="stylesheet" href="{$chemin_template}css/styles-without-compass.css" media="all">
+    <link rel="alternate" type="application/rss+xml" href="/pages/site/rss.php" title="Derni&egraves actus de l'AFUP"/>
+</head>
+<body>
+    <header>
+        <div class="mw960p center">
+            <div id="espace-membre" class="w33 m50 t100">
+                <p>Espace membre</p>
+                {$community}
+            </div>
+            <h1 id="logo"><a href="http://afup.org/">AFUP - Association française des utilisateurs de PHP</a></h1>
+        </div>
+    </header>
+    <div id="subheader">
+        <div class="mw960p center">
+            <div class="line">
+                <div id="joinus" class="mod item left content w66 m50 t100">
+                    <p>Rejoignez la communauté<br> et faites grandir le PHP avec nous.</p>
+                </div>
+                <nav class="mod item left w33 m50 t100">
+                	{$header}
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="mw960p center">
+        <div class="line">
+            {$content}
+        </div>
+    </div>
+    <footer>
+        <div id="footer-top">
+            <div class="mw960p center">
+            	{$footer}
+            </div>
+        </div>
+        <div id="footer-middle">
+            <div class="mw960p center">
+                {$social}
+            </div>
+        </div>
+    </footer>
+    <div id="copyright">© AFUP 2003-2012</div>
+    {literal}
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-192127-3");
+        pageTracker._trackPageview();
+        } catch(err) {}
+    </script>
+    {/literal}
+    </body>
 </html>

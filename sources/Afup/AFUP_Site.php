@@ -17,13 +17,15 @@ class AFUP_Site_Page {
     public $route = "";
     public $content;
     public $title;
-
+	public $conf;
+    
     function __construct($bdd=false) {
         if ($bdd) {
             $this->bdd = $bdd;
         } else {
             $this->bdd = new AFUP_Site_Base_De_Donnees();
         }
+        $this->conf = $GLOBALS['AFUP_CONF'];
     }
 
     function definirRoute($route) {
@@ -53,10 +55,14 @@ class AFUP_Site_Page {
         }
     }
 
+    function community() {
+    	$branche = new AFUP_Site_Branche($this->bdd);
+    	return $branche->naviguer(5, 2);
+    }
+    
     function header() {
-        $header = new AFUP_Site_Header();
-        $header->setTitle($this->title);
-        return $header->render();
+    	$branche = new AFUP_Site_Branche($this->bdd);
+        return $branche->naviguer(21, 2);
     }
 
     function menu() {
@@ -72,6 +78,26 @@ class AFUP_Site_Page {
     function content() {
         return $this->content;
     }
+    
+    function social() {
+    	return '<ul id="menufooter-share">
+                    <li>
+                        <a href="'.$this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
+                    </li>
+                    <li>
+                        <a href="http://www.facebook.com/fandelafup" class="spriteshare spriteshare-facebook">L\'AFUP sur Facebook</a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/afup" class="spriteshare spriteshare-twitter">L\'AFUP sur Twitter</a>
+                    </li>
+                </ul>
+                <a href="'.$this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').'faq/6" id="footer-faq">Encore des questions ? <strong>F.A.Q.</strong></a>';
+    }
+    
+    function footer() {
+    	$branche = new AFUP_Site_Branche($this->bdd);
+    	return $branche->naviguer(21, 2, "menufooter-top");
+	}
 }
 
 class AFUP_Site_Accueil {
@@ -96,28 +122,28 @@ class AFUP_Site_Accueil {
         $articles = new AFUP_Site_Articles($this->bdd);
         $derniers_articles = $articles->chargerDerniersAjouts(5);
 
-        $colonne = '<li id="ColLeftPageLevel1">
+        $colonne = '<div id="main" class="mod item left content w66 m50 t100">
                     <h1>Promouvoir le PHP auprès des professionnels</h1>';
 
-        $colonne .= '<div class="extendednews">
-		     <h2>L\'AFUP a avant tout une vocation d\'information, et fournira les éléments clefs
-		     qui permettront de choisir PHP selon les véritables besoins et contraintes d\'un projet.</h2>
-                     <p>L\'AFUP, <strong>Association Française des Utilisateurs de PHP est une association loi 1901</strong>,
-		     dont le principal but est de promouvoir le langage PHP auprès des professionnels et de participer à son développement.</p>
-                     <p>L\'AFUP a été créée pour répondre à un besoin croissant des entreprises,
+        $colonne .= '<blockquote>L\'AFUP a avant tout une vocation d\'information, et fournira les éléments clefs
+		     qui permettront de choisir PHP selon les véritables besoins et contraintes d\'un projet.</blockquote>
+                     <p>L\'AFUP, Association Française des Utilisateurs de PHP est une association loi 1901,
+		     dont le principal but est de promouvoir le langage PHP auprès des professionnels et de participer à son développement.
+             L\'AFUP a été créée pour répondre à un besoin croissant des entreprises,
 		     celui d\'avoir un interlocuteur unique pour répondre à leurs questions sur PHP.
-		     </p>
-		     <p>Par ailleurs, l\'AFUP offre un cadre de rencontre et de ressources techniques
-		     pour les développeurs qui souhaitent faire avancer le langage PHP lui même.</p>
-                     </div>';
+		     Par ailleurs, l\'AFUP offre un cadre de rencontre et de ressources techniques
+		     pour les développeurs qui souhaitent faire avancer le langage PHP lui même.</p>';
 
         foreach ($derniers_articles as $article) {
             $descriptif = ($article->descriptif) ? $article->descriptif : $article->chapeau;
-            $colonne .= '<h2>'.date('d/m/Y', $article->date).'</h2>
-                         <p><a href="'.$article->route().'"><strong>'.$article->titre.'</strong><br />'.$descriptif.'</a></p>';
+            $colonne .= '<a href="'.$article->route().'" class="article article-teaser">';
+            $colonne .= '<time datetime="'.date('Y-m-d', $article->date).'">'.date('d|m|y', $article->date).'</time>';
+            $colonne .= '<h2>'.$article->titre.'</h2>';
+            $colonne .= '<p>'.$descriptif.'</p>';
+            $colonne .= '</a>';
         }
 
-        $colonne .= '</li>';
+        $colonne .= '</div>';
 
         return $colonne;
     }
@@ -125,7 +151,7 @@ class AFUP_Site_Accueil {
     function colonne_de_droite() {
         $branche = new AFUP_Site_Branche($this->bdd);
         $branche->navigation_avec_image(true);
-        return $branche->naviguer(1, 2, "ColRightPageLevel1");
+        return '<aside id="sidebar-article" class="mod item left w33 m50 t100"><h2>L\'afup<br>organise...</h2>' . $branche->naviguer(1, 2, "externe", "") . '</aside>';
     }
 }
 
@@ -388,12 +414,12 @@ class AFUP_Site_Branche {
                     AND etat = 1';
         $racine = $this->bdd->obtenirEnregistrement($requete);
 
-        if ($identification !== "") {
-            $identification = ' id="'.$identification.'"';
+        $feuilles = $this->extraireFeuilles($id, $profondeur, $prefix);
+        if ($feuilles) {
+            $navigation = '<ul id="' . $identification . '" class="' . AFUP_Site::raccourcir($racine['nom']) . '">' . $feuilles . '</ul>';
+        } else {
+            $navigation = '';
         }
-        $navigation = '<ul'.$identification.' class="'.AFUP_Site::raccourcir($racine['nom']).'">';
-        $navigation .= $this->extraireFeuilles($id, $profondeur, $prefix);
-        $navigation .= '</ul>';
 
         return $navigation;
     }
@@ -423,7 +449,7 @@ class AFUP_Site_Branche {
 	                	if ($prefix == null) {
 	                		$prefix = $this->conf->obtenir('site|prefix');
 	                	}
-			            $route = $this->conf->obtenir('web|path').'/'.$prefix.$this->conf->obtenir('site|query_prefix').$feuille['lien'];
+			            $route = $this->conf->obtenir('web|path').$prefix.$this->conf->obtenir('site|query_prefix').$feuille['lien'];
 	                    break;
 	            }
 	            $extraction .= '<li'.$class.'><a href="'.$route.'" alt="'.$feuille['alt'].'">';
@@ -608,70 +634,30 @@ class AFUP_Site_Article {
     }
 
     function afficher() {
-        return '<li id="NavL2PageLevel3">'.
-               $this->rubrique().
-               $this->articles_dans_la_rubrique().
-               '</li>'.
-               '<li id="ContentPageLevel3">'.
-               '<div id="Header">'.$this->fil_d_ariane()."</div>".
-               '<h1>'.$this->titre().'</h1>'.
-               $this->corps().
-               '<div class="date">(publié le ' . $this->date() .')</div>' .
-               '</li>';
-    }
-
-    function rubrique() {
-        $this->rubrique = new AFUP_Site_Rubrique($this->id_site_rubrique, $this->bdd);
-        $this->rubrique->charger();
-
-        return '<ul id="Header">'.
-               '<li id="HeaderImg">'.
-               $this->image_sous_navigation().
-               '</li>'.
-               '<li id="HeaderTitle">'.
-               $this->titre_sous_navigation().
-               '</li>'.
-               '</ul>';
-    }
-
-    function image_sous_navigation() {
-        $conf = $GLOBALS['AFUP_CONF'];
-        return '<img src="'.$conf->obtenir('web|path').'/templates/site/images/'.$this->rubrique->icone.'" />';
-    }
-
-    function titre_sous_navigation() {
-        return $this->rubrique->nom;
-    }
-
-    function articles_dans_la_rubrique($prefix = null) {
-        $autres_articles = $this->autres_articles();
-        if (count($autres_articles) > 0) {
-            $liste = '<ul class="Txt">';
-            foreach ($autres_articles as $article) {
-                if ($article->id == $this->id) {
-                    $liste .= '<li><a href="'.$article->route($prefix).'"><strong>'.$article->titre.'</strong></a></li>';
-                } else {
-                    $liste .= '<li><a href="'.$article->route($prefix).'">'.$article->titre.'</a></li>';
-                }
-            }
-            $liste .= '</ul>';
-        }
-
-        return $liste;
-    }
-
-    function annexe() {
-        if ($this->etat <= 0) {
-            return false;
-        }
-
-        $annexe = '';
-
-        return $annexe;
+        return '<article>'.
+          	'<time datetime='.date("Y-m-d", $this->date).'>'.$this->date().'</time>'.
+          	'<h1>'.$this->titre().'</h1>'.
+          	$this->corps().
+			'<div class="breadcrumbs">'.$this->fil_d_ariane().'</div>'.
+          	'</article>';
     }
 
     function titre() {
         return $this->titre;
+    }
+    
+    function teaser() {
+    	switch (true) {
+    		case !empty($this->chapeau):
+    			$teaser = $this->chapeau;
+    			break;
+    		case !empty($this->descriptif):
+    			$teaser = $this->descriptif;
+    			break;
+    		default:
+    			$teaser = substr(strip_tags($this->contenu), 0, 200); 
+    	}
+    	return $teaser;
     }
 
     function corps() {
@@ -681,25 +667,25 @@ class AFUP_Site_Article {
 
         $corps = "";
         if (!empty($this->surtitre)) {
-            $corps .= '<div class="surtitre">'.$this->surtitre.'</div>';
+            $corps .= '<p class="surtitre">'.$this->surtitre.'</p>';
         }
         if (!empty($this->soustitre)) {
             $corps .= '<h2>'.$this->soustitre.'</h2>';
         }
         if (!empty($this->chapeau)) {
-            $corps .= '<div class="chapeau">'.$this->chapeau.'</div>';
+            $corps .= '<blockquote>'.$this->chapeau.'</blockquote>';
         } else {
-            $corps .= '<div class="chapeau">'.$this->descriptif.'</div>';
+            $corps .= '<blockquote>'.$this->descriptif.'</blockquote>';
         }
         if (!empty($this->contenu)) {
-            $corps .= '<div class="contenu">'.$this->contenu.'</div>';
+            $corps .= $this->contenu;
         }
 
         return $corps;
     }
 
     function date() {
-        return date("d/m/Y", $this->date);
+        return date("d/m/y", $this->date);
     }
 
     function positionable() {
@@ -875,22 +861,16 @@ class AFUP_Site_Rubrique {
     }
 
     function afficher() {
-        // chercher et afficher le dernier article
         $article = new AFUP_Site_Article(null, $this->bdd);
         $article->id_site_rubrique = $this->id;
         $article->charger_dernier_depuis_rubrique();
-        return '<li id="NavL2PageLevel3">'.
-               $this->rubrique().
-               $this->rubriques_dans_la_rubrique().
-               $this->articles_dans_la_rubrique().
-               '</li>'.
-               '<li id="ContentPageLevel3">'.
-               '<div id="Header">'.$this->fil_d_ariane()."</div>".
-               '<h1>'.$this->titre().'</h1>'.
-               $this->corps().
-               '<h1 class="DernierArticle">' . $article->titre() . '</h1>'.
-               '<p>' . $article->corps() .'</p>' .
-               '</li>';
+        return '<div id="main" class="mod item left content w66 m50 t100">'.
+          	'<h1>'.$this->titre().'</h1>'.
+         	$this->corps().
+			$this->rubriques_dans_la_rubrique().
+			$this->articles_dans_la_rubrique().
+			'<div class="breadcrumbs">'.$this->fil_d_ariane().'</div>'.
+			'</div>';
     }
 
     function rubrique() {
@@ -1104,16 +1084,19 @@ class AFUP_Site_Rubrique {
 
     function articles_dans_la_rubrique() {
         $autres_articles = $this->autres_articles();
-        $liste = "";
+        $articles = "";
+        
         if (count($autres_articles) > 0) {
-            $liste = '<ul class="Txt Articles">';
             foreach ($autres_articles as $article) {
-                $liste .= '<li><a href="'.$article->route().'">'.$article->titre.'</a></li>';
+                $articles .= '<a class="article article-teaser" href="'.$article->route().'">'.
+                	'<time datetime="'.date("Y-m-d", $article->date).'">'.$article->date().'</time>'.
+                	'<h2>'.$article->titre.'</h2>'.
+                	'<p>'.$article->teaser().'</p>'.
+                	'</a>';
             }
-            $liste .= '</ul>';
         }
 
-        return $liste;
+        return $articles;
     }
 
     function autres_articles() {
