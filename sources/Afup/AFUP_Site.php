@@ -96,7 +96,7 @@ class AFUP_Site_Page {
     
     function footer() {
     	$branche = new AFUP_Site_Branche($this->bdd);
-    	return $branche->naviguer(21, 2, "menufooter-top");
+    	return $branche->naviguer(38, 2, "menufooter-top");
 	}
 }
 
