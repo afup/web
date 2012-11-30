@@ -65,16 +65,6 @@ class AFUP_Site_Page {
         return $branche->naviguer(21, 2);
     }
 
-    function menu() {
-        $branche = new AFUP_Site_Branche($this->bdd);
-        return '<li id="NavL1">'.
-               '<div id="LogoB"></div>'.
-               $branche->naviguer(21, 2, "MainNav").
-               $branche->naviguer(5, 2, "NavAsso").
-               '<div id="MainNavButtomA"></div><div id="MainNavButtomB"></div>'.
-               '</li>';
-    }
-
     function content() {
         return $this->content;
     }
@@ -407,14 +397,14 @@ class AFUP_Site_Branche {
         }
     }
 
-    function naviguer($id, $profondeur=1, $identification="", $prefix="") {
+    function naviguer($id, $profondeur=1, $identification="") {
         $requete = 'SELECT *
                     FROM afup_site_feuille
                     WHERE id = '.$this->bdd->echapper($id).'
                     AND etat = 1';
         $racine = $this->bdd->obtenirEnregistrement($requete);
 
-        $feuilles = $this->extraireFeuilles($id, $profondeur, $prefix);
+        $feuilles = $this->extraireFeuilles($id, $profondeur);
         if ($feuilles) {
             $navigation = '<ul id="' . $identification . '" class="' . AFUP_Site::raccourcir($racine['nom']) . '">' . $feuilles . '</ul>';
         } else {
@@ -424,7 +414,7 @@ class AFUP_Site_Branche {
         return $navigation;
     }
 
-    function extraireFeuilles($id, $profondeur, $prefix="") {
+    function extraireFeuilles($id, $profondeur) {
         $extraction = '';
 
         $requete = 'SELECT *
@@ -446,10 +436,7 @@ class AFUP_Site_Branche {
 	                    $route = $feuille['lien'];
 	                    break;
 	                default:
-	                	if ($prefix == null) {
-	                		$prefix = $this->conf->obtenir('site|prefix');
-	                	}
-			            $route = $this->conf->obtenir('web|path').$prefix.$this->conf->obtenir('site|query_prefix').$feuille['lien'];
+			            $route = $this->conf->obtenir('web|path').$this->conf->obtenir('site|query_prefix').$feuille['lien'];
 	                    break;
 	            }
 	            $extraction .= '<li'.$class.'><a href="'.$route.'" alt="'.$feuille['alt'].'">';
@@ -797,26 +784,23 @@ class AFUP_Site_Article {
         return $resultat;
     }
 
-    function route($prefix = null) {
+    function route() {
         $rubrique = new AFUP_Site_Rubrique($this->id_site_rubrique, $this->bdd, $this->conf);
         $rubrique->charger();
         if (empty($rubrique->raccourci)) {
             $rubrique->raccourci = 'rubrique';
         }
-        if ($prefix == null) {
-        	$prefix = $this->conf->obtenir('site|prefix');
-        }
 
-		return $this->conf->obtenir('web|path') . '/' . $prefix . $this->conf->obtenir('site|query_prefix') . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
+		return $this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$rubrique->raccourci.'/'.$this->id.'/'.$this->raccourci;
     }
 
-    function fil_d_ariane($prefix = null) {
+    function fil_d_ariane() {
         $fil = '';
 
         if ($this->id_site_rubrique > 0) {
             $rubrique = new AFUP_Site_Rubrique($this->id_site_rubrique, $this->bdd, $this->conf);
             $rubrique->charger();
-            $fil = $rubrique->fil_d_ariane($prefix).$fil;
+            $fil = $rubrique->fil_d_ariane().$fil;
         }
 
         return $fil;
@@ -1036,26 +1020,23 @@ class AFUP_Site_Rubrique {
         return $resultat;
     }
 
-    function route($prefix = null) {
-    	if ($prefix == null) {
-    		$prefix = $this->conf->obtenir('site|prefix');
-    	}
-        return $this->conf->obtenir('web|path').'/'.$prefix.$this->conf->obtenir('site|query_prefix').$this->raccourci.'/'.$this->id;
+    function route() {
+        return $this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$this->raccourci.'/'.$this->id;
     }
 
     function nom() {
         return $this->nom;
     }
 
-    function fil_d_ariane($prefix = null) {
-        $fil = '/ <a href="'.$this->route($prefix).'">'.$this->nom.'</a>';
+    function fil_d_ariane() {
+        $fil = '/ <a href="'.$this->route().'">'.$this->nom.'</a>';
 
         if ($this->id_parent > 0) {
             $id_parent = $this->id_parent;
             while ($id_parent > 0) {
                 $parent = new AFUP_Site_Rubrique($id_parent, $this->bdd, $this->conf);
                 $parent->charger();
-                $fil = '/ <a href="'.$parent->route($prefix).'">'.$parent->nom.'</a> '.$fil;
+                $fil = '/ <a href="'.$parent->route().'">'.$parent->nom.'</a> '.$fil;
                 $id_parent = $parent->id_parent;
             }
         }
