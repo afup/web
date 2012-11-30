@@ -317,13 +317,15 @@ class AFUP_Site_Header {
 
     function addCSS($file) {
         $conf = $GLOBALS['AFUP_CONF'];
-        $file = $conf->obtenir('web|path').'/'.$file;
+var_dump($file);
+die();
+        $file = $conf->obtenir('web|path').$file;
         $this->css .= '<link rel="stylesheet" href="'.$file.'" type="text/css" media="all" />';
     }
 
     function addRSS() {
         $conf = $GLOBALS['AFUP_CONF'];
-        $rssFile = $conf->obtenir('web|path').'/'.$conf->obtenir('site|prefix').'rss.php';
+        $rssFile = $conf->obtenir('web|path').$conf->obtenir('site|prefix').'rss.php';
         $this->rss = '<link rel="alternate" type="application/rss+xml" href="' . $rssFile .'" title="Derni&egraves actus de l\'AFUP"/>';
     }
 
@@ -436,7 +438,7 @@ class AFUP_Site_Branche {
 	                    $route = $feuille['lien'];
 	                    break;
 	                default:
-			            $route = $this->conf->obtenir('web|path').$this->conf->obtenir('site|query_prefix').$feuille['lien'];
+			            $route = $this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$feuille['lien'];
 	                    break;
 	            }
 	            $extraction .= '<li'.$class.'><a href="'.$route.'" alt="'.$feuille['alt'].'">';
