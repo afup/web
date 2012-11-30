@@ -1,0 +1,34 @@
+{include file="entete.html"}
+
+<h2>Sponsors et partenaires du Forum PHP 2013</h2>
+
+{foreach from=$partenaires key=niveau item=typePartenaire}
+  <article class="first">
+    <h3 class="{$niveau|lower}">Les {if $niveau=='Partenaires'}partenaires{else} sponsors {$niveau}{/if}</h3>
+
+    <div class="article-body">
+      <div class="sponsors {$niveau|lower}">
+      {foreach from=$typePartenaire item=partenaire}
+        {if $partenaire.logo}
+          <div class="logo">
+            <a href="{$partenaire.site}"><img src="{$chemin_template}images/{$partenaire.logo}" border="0" align="left" /></a>
+          </div>
+        {/if}
+        <h4><a href="{$partenaire.site}" class="external">{$partenaire.nom}</a></h4>
+        <div class="information">{$partenaire.presentation}</div>
+      {/foreach}
+      </div>
+    </div>
+  </article>
+{/foreach}
+
+<article>
+  <h3>Devenir sponsor</h3>
+
+  <div class="article-body">
+    <p>Vous souhaitez devenir sponsor du Forum PHP ? C'est une bonne idée, vous pouvez <a href="contact.php">nous contacter pour avoir plus d'informations</a>.</p>
+  </div>
+</article>
+
+{include file="sidebar.html"}
+{include file="pied_de_page.html"}

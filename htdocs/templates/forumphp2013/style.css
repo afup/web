@@ -1,0 +1,405 @@
+@font-face {
+    font-family: 'League Gothic';
+    src: url('./fonts/league_gothic-webfont.eot');
+    src: url('./fonts/league_gothic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/league_gothic-webfont.woff') format('woff'),
+         url('./fonts/league_gothic-webfont.ttf') format('truetype'),
+         url('./fonts/league_gothic-webfont.svg#LeagueGothicRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Museo Slab 500';
+    src: url('./fonts/museo_slab_500-webfont.eot');
+    src: url('./fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./fonts/museo_slab_500-webfont.woff') format('woff'),
+         url('./fonts/museo_slab_500-webfont.ttf') format('truetype'),
+         url('./fonts/museo_slab_500-webfont.svg#MuseoSlab500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'Myriad Pro Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Myriad Pro'), url('./fonts/MyriadPro-Regular.otf') format('opentype');
+}
+
+* {
+  color: #37372b;
+  font-family: 'Lucida Grande';
+}
+
+aside article {
+  background: transparent url(./img/background-block-footer.png) bottom left no-repeat;
+  margin-bottom: 40px;
+  padding-bottom: 8px;
+}
+
+aside article h3 {
+  background: transparent url(./img/background-block-header.png) top left no-repeat;
+  color: #63604f;
+  font-family: 'League Gothic';
+  font-size: 22px;
+  font-weight: normal;
+  height: 20px;
+  padding: 0 0 35px 30px;
+  text-transform: uppercase;
+}
+
+aside article h4 {
+  border-bottom: 1px #f6f5f1 solid;
+  border-top: 1px #f6f5f1 solid;
+  color: #63604f;
+  font-family: 'League Gothic';
+  font-size: 22px;
+  font-weight: normal;
+  height: 20px;
+  padding: 0 0 10px 20px;
+  text-align: left;
+}
+
+aside article .content {
+  text-align: center;
+}
+
+aside article .content img {
+  margin: 20px auto 5px auto;
+}
+
+aside article .content {
+  background: transparent url(./img/background-block.png) top left repeat-y;
+  min-height: 20px;
+  padding: 5px;
+}
+
+body {
+  background: transparent url(./img/background.png) top left repeat;
+}
+
+footer {
+  background: transparent url(./img/background-footer.png) top left repeat;
+  font-size: 12px;
+  height: 20px;
+  padding: 14px 0;
+  text-align: center;
+}
+
+footer a, footer a:hover {
+  color: #f2eee6;
+  font-family: 'Lucida grande';
+  text-decoration: none;
+}
+
+header {
+  height: 137px;
+  padding-top: 25px;
+}
+
+header .event {
+  padding-top: 55px;
+}
+
+header .event .date {
+  color: #f7f6f1;
+  display: block;
+  font-family: 'League Gothic';
+  font-size: 48px;
+  line-height: 40px;
+  text-transform: uppercase;
+}
+
+header .event .summary {
+  color: #f7f6f1;
+  font-family: 'Myriad Pro Regular';
+  font-size: 28px;
+  line-height: 28px;
+}
+
+header #logos img {
+  margin-bottom: 12px;
+}
+
+nav {
+  width: 194px;
+}
+
+nav a, nav a:hover {
+  color: #045e80;
+  font-family: 'League Gothic';
+  font-size: 30px;
+  text-decoration: none;
+}
+
+nav li {
+  height: 72px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li a {
+  background: transparent url(./img/background-menu.png) bottom left repeat-x;
+  display: block;
+  height: 22px;
+  padding: 25px 0;
+}
+
+nav li a:hover {
+  color: #a62700
+}
+
+nav li.last a {
+  background: none;
+  height: 1px;
+  padding: 25px 0;
+}
+
+nav ul {
+  margin: 0;
+}
+
+section article {
+  border-left: 1px #b8b6a9 solid;
+  border-right: 1px #b8b6a9 solid;
+}
+
+section article a {
+  color: #37372b;
+  text-decoration: underline;
+}
+
+section article a:hover, section article a:hover * {
+  color: #045e80;
+}
+
+section article h3, section article div.spacer {
+  padding: 12px 20px 3px 20px;
+}
+
+section article .session {
+  border-bottom: 1px #b6b5b1 solid;
+  clear: both;
+  padding: 0 0 170px 15px;
+}
+
+section article .session .horaire {
+  padding: 0 0 10px 0;
+  text-align: right;
+}
+
+section article .session .horaire .salle {
+  float: left;
+}
+
+section article .session .conferencier {
+  float: left;
+  margin: 10px 10px 0 0;
+}
+
+section article .conferencier .photo {
+  float: left;
+  margin: 10px 20px 10px 0;
+  width: 105px;
+}
+
+section article .conferencier img {
+  border: 5px #000 solid;
+  width: 90px;
+}
+
+section article.conferenciers .conferencier {
+  min-height: 140px;
+}
+
+section article dl {
+  background: transparent url(./img/background-metadata.png) top left no-repeat;
+  height: 20px;
+  margin: 0 20px;
+  padding: 9px 0;
+}
+
+section article dl dd, article dl dt {
+  display: inline;
+  font-weight: bold;
+}
+
+section article dl dd.dtstart {
+  color: #045e80;
+  padding-left: 10px;
+}
+
+section article h3, section article h3 a, article h3 a:hover {
+  color: #a62700;
+  font-family: 'Museo Slab 500';
+  text-decoration: none;
+}
+
+section article li {
+  list-style-image: url(./img/puce.png);
+}
+
+section article p {
+  font-size: 14px;
+}
+
+section article .article-body {
+  padding: 5px 20px 10px 20px;
+}
+
+section article .article-body .chapo {
+  font-family: 'Museo Slab 500';
+  font-size: 16px;
+  line-height: 20px;
+}
+
+section article .article-body .chapo em {
+  color: #045e80;
+  font-weight: bold;
+  font-style: normal;
+}
+
+section article.first {
+  background: transparent url(./img/background-first-news.png) top left repeat-y;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px #b8b6a9 solid;
+}
+
+section article.first h3, section article.first div.spacer {
+  background: transparent url(./img/background-first-news-title.png) top left no-repeat;
+}
+
+section article .links a, section article a.external {
+  background: transparent url(./img/out-link-off.png) right 3px no-repeat;
+  padding-right: 16px;
+}
+
+section article .links a:hover, section article a.external:hover {
+  background: transparent url(./img/out-link-on.png) right 3px no-repeat;
+}
+
+.alert-message p {
+  color: #fff;
+  font-size: 13px;
+}
+
+.container {
+  width: 970px;
+}
+
+.map {
+  margin: 15px -19px;
+}
+
+.social-button {
+  background: transparent url(./img/social-networks.png) top left no-repeat;
+  display: block;
+  height: 54px;
+  margin-top: 10px;
+  width: 174px;
+  text-indent: -9999px;
+}
+
+.social-button.facebook {
+  background: transparent url(./img/social-networks.png) bottom left no-repeat;
+}
+
+#container {
+  background: transparent url(./img/background-section.png) 0 -15px repeat-x;
+}
+
+#container aside.span4 {
+  margin-left: 11px;
+  width: 195px;
+}
+
+#container .row {
+  margin: 0;
+}
+
+#container #baseline {
+  display: block;
+  font-size: 16px;
+  font-style: normal;
+  padding: 10px 0 30px 0;
+}
+
+#content {
+  background: transparent url(./img/background-header-news.png) top left no-repeat;
+  margin-left: 0;
+  width: 568px;
+}
+
+#content h2 {
+  color: #63604f;
+  font-family: 'League Gothic';
+  font-size: 30px;
+  font-weight: normal;
+  height: 31px;
+  padding: 9px 0 10px 84px;
+}
+
+#content .end {
+  background: transparent url(./img/background-article-bottom.png) bottom left no-repeat;
+  height: 120px;
+}
+
+#english-cfp-link {
+  margin: 30px 0;
+  text-align: right;
+}
+
+#formulaire .input {
+  margin-left: 120px;
+}
+
+#formulaire fieldset legend, #form_etre_tenu_au_courant fieldset legend {
+  padding-top: 20px;
+  padding-left: 120px;
+}
+
+#formulaire label, #form_etre_tenu_au_courant label {
+  width: 100px;
+}
+
+#formulaire label label {/*checkbox*/
+  width: 300px;
+  margin-left: 5px;
+}
+
+#logos {
+  background: transparent url(./img/background-logos.png) top left repeat;
+  height: 127px;
+  margin-top: -16px;
+  padding-top: 25px;
+  text-align: center;
+}
+
+#menu {
+  background: transparent url(./img/left-menu-shadow.png) top right repeat-y;
+  margin-left: 0;
+  padding-bottom: 50px;
+  width: 194px;
+}
+
+#root {
+  background: transparent url(./img/background-header.png) top left repeat-x;
+}
+
+.sponsors .logo {
+	float:right;
+	width:150px;
+}
+
+.sponsors .logo img {
+	float:none;
+}
+
+a.btn {
+  text-decoration:none;
+}
