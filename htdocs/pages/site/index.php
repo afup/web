@@ -8,7 +8,6 @@ $page->definirRoute(isset($_GET['route']) ? $_GET['route'] : '');
 
 $smarty->assign('community', $page->community());
 $smarty->assign('header', $page->header());
-$smarty->assign('menu', $page->menu());
 $smarty->assign('content', $page->content());
 $smarty->assign('social', $page->social());
 $smarty->assign('footer', $page->footer());
