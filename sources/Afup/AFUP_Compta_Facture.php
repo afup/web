@@ -297,7 +297,7 @@ class AFUP_Compta_Facture
         $pdf->Ln();
         $pdf->Ln();
         $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture'])) ? strtotime($facture['date_facture']) : time()));
+        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($coordonnees['date_devis']) && !empty($coordonnees['date_devis'])) ? strtotime($coordonnees['date_devis']) : time()));
 
         $pdf->Ln();
         $pdf->Ln();
@@ -437,7 +437,7 @@ class AFUP_Compta_Facture
         $pdf->Ln();
         $pdf->Ln();
         $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture'])) ? strtotime($facture['date_facture']) : time()));
+        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($coordonnees['date_facture']) && !empty($coordonnees['date_facture'])) ? strtotime($coordonnees['date_facture']) : time()));
 
         $pdf->Ln();
         $pdf->Ln();
