@@ -83,7 +83,7 @@ function supprimerAccents($texte) {
 
 function convertirDateEnTimestamp($date) {
 	if ($date<>'') {
-		$list_date = split('/', $date);
+		$list_date = explode('/', $date);
 		return mktime(0, 0, 0, $list_date[1], $list_date[0], $list_date[2]);
 	}
 	return false;

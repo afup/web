@@ -35,7 +35,7 @@ class AFUP_Logs
      * @access private
      * @return object   Instance de la classe AFUP_Logs
      */
-    function &_obtenirInstance() {
+    static function &_obtenirInstance() {
         // TODO : Utiliser une propriété statique en PHP5
         if(!isset($GLOBALS['_afup_log'])) {
             $GLOBALS['_afup_log'] = new AFUP_Logs;
@@ -51,7 +51,7 @@ class AFUP_Logs
      * @access public
      * @return void
      */
-    function initialiser(&$bdd, $id_utilisateur)
+    static function initialiser(&$bdd, $id_utilisateur)
     {
         $instance                  =& AFUP_Logs::_obtenirInstance();
         $instance->_bdd            =& $bdd;
@@ -65,7 +65,7 @@ class AFUP_Logs
      * @access public
      * @return void
      */
-    function log($texte)
+    static function log($texte)
     {
         $instance =& AFUP_Logs::_obtenirInstance();
         $requete  = 'INSERT INTO';
@@ -86,7 +86,7 @@ class AFUP_Logs
      * @access public
      * @return array    Les logs correspondant à la page indiquée
      */
-    function obtenirTous($numero_page)
+    static function obtenirTous($numero_page)
     {
         $instance =& AFUP_Logs::_obtenirInstance();
         $depart   = ($numero_page - 1) * $instance->_nombre_logs_par_page;
@@ -111,7 +111,7 @@ class AFUP_Logs
      * @access public
      * @return int  Nombre de pages
      */
-    function obtenirNombrePages()
+    static function obtenirNombrePages()
     {
         $instance =& AFUP_Logs::_obtenirInstance();
         $nombre = $instance->_bdd->obtenirUn('SELECT COUNT(*) FROM afup_logs');
