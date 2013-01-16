@@ -32,17 +32,23 @@ if ($action == 'lister' || $action== 'listing' ) {
     {
     	$list_ordre="nom";
     }
-    
+
     // Mise en place de la liste dans le scope de smarty
-	$convocations = $assemblee_generale->obtenirNombreConvocations($timestamp);
+	$convocations = $assemblee_generale->obtenirNombrePersonnesAJourDeCotisation($timestamp);
 	$presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
 	$quorum = $assemblee_generale->obtenirEcartQuorum($timestamp);
     $liste_personnes = $assemblee_generale->obtenirListe($list_date_assemblee_generale, $list_ordre, $list_associatif);
+    $liste_personnes_a_jour = $assemblee_generale->obtenirListePersonnesAJourDeCotisation($timestamp);
 	$personnes_physiques = array();
     foreach ($liste_personnes as $liste_id => $personne) {
         $personnes_physiques[$liste_id] = $personne;
         $hash = md5($personne['id'] . '_' . $personne['email'] . '_' . $personne['login']);
         $personnes_physiques[$liste_id]['hash'] = $hash;
+        if (in_array($personne['id'], $liste_personnes_a_jour)) {
+            $personnes_physiques[$liste_id]['ajour'] = true;
+        } else {
+            $personnes_physiques[$liste_id]['ajour'] = false;
+        }
     }
     $smarty->assign('convocations', $convocations);
     $smarty->assign('presences', $presences);

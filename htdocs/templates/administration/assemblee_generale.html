@@ -4,7 +4,7 @@
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=envoyer" title="Envoyer les convocations pour une assemblée générale">Envoyer les convocations pour une assemblée générale</a><br />
    	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=listing" title="Imprimer la feuille d'émargement">Imprimer la feuille d'émargement</a><br />
     <br/>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Convocations : {$convocations}<br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Membres à jour de cotisation : {$convocations}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Présences et pouvoirs : {$presences}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Quorum : <span class="{if $quorum > 0}OK{else}KO{/if}">{$quorum}</span><br />
     <br/>
@@ -31,7 +31,7 @@
             <th>&nbsp;</th>
         </tr>
     {foreach from=$personnes item=personne}
-        <tr>
+        <tr {if $personne.ajour == false }style="text-decoration: line-through;color:#999999"{/if}>
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td>{$personne.nom} {$personne.prenom}</td>
             <td>{$personne.date_consultation|convertirTimestampEnDate}</td>

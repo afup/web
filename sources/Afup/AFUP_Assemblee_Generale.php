@@ -8,12 +8,12 @@ define('AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON'        , 2);
 class AFUP_Assemblee_Generale
 {
     var $_bdd;
-    
+
     function AFUP_Assemblee_Generale(&$bdd)
     {
-        $this->_bdd = $bdd;   
-    }  
-    
+        $this->_bdd = $bdd;
+    }
+
     function obternirDerniereDate()
     {
         $requete  = 'SELECT';
@@ -24,12 +24,12 @@ class AFUP_Assemblee_Generale
         $requete .= '  0, 1 ';
         return $this->_bdd->obtenirUn($requete);
     }
-	
+
     function obtenirListe($date,
                           $ordre      = 'nom')
     {
         $timestamp = convertirDateEnTimestamp($date);
-        
+
         $requete  = 'SELECT';
         $requete .= '  afup_personnes_physiques.id, ';
         $requete .= '  afup_personnes_physiques.email, ';
@@ -72,7 +72,7 @@ class AFUP_Assemblee_Generale
 
         return $this->_bdd->obtenirAssociatif($requete);
     }
-    
+
     function obtenirNombreConvocations($timestamp)
     {
         $requete  = 'SELECT';
@@ -82,6 +82,74 @@ class AFUP_Assemblee_Generale
         $requete .= 'WHERE';
         $requete .= '  date = \'' . $timestamp . '\' ';
         return $this->_bdd->obtenirUn($requete);
+    }
+
+    function obtenirNombrePersonnesAJourDeCotisation($timestamp)
+    {
+        // On autorise un battement de 14 jours
+        $timestamp -= 14 * 86400;
+        // Personne physique seule
+        $requete  = 'SELECT';
+        $requete .= '  COUNT(*) ';
+        $requete .= 'FROM';
+        $requete .= '  afup_cotisations ac ';
+        $requete .= 'INNER JOIN';
+        $requete .= '  afup_personnes_physiques app ON app.id = ac.id_personne ';
+        $requete .= 'WHERE';
+        $requete .= '  date_fin >= ' . $timestamp . ' ';
+        $requete .= 'AND ';
+        $requete .= '  type_personne = 0 ';
+        $requete .= 'AND ';
+        $requete .= '  etat = 1 ';
+        $physiques = $this->_bdd->obtenirUn($requete);
+        // Personne morale
+        $requete  = 'SELECT';
+        $requete .= '  COUNT(*) ';
+        $requete .= 'FROM';
+        $requete .= '  afup_cotisations ac ';
+        $requete .= 'INNER JOIN';
+        $requete .= '  afup_personnes_physiques app ON app.id_personne_morale = ac.id_personne ';
+        $requete .= 'WHERE';
+        $requete .= '  date_fin >= ' . $timestamp . ' ';
+        $requete .= 'AND ';
+        $requete .= '  type_personne = 1 ';
+        $requete .= 'AND ';
+        $requete .= '  etat = 1 ';
+        $morales = $this->_bdd->obtenirUn($requete);
+        return $physiques + $morales;
+    }
+
+    function obtenirListePersonnesAJourDeCotisation($timestamp)
+    {
+        // On autorise un battement de 14 jours
+        $timestamp -= 14 * 86400;
+        // Personne physique seule
+        $requete  = 'SELECT';
+        $requete .= '  app.id,app.id ';
+        $requete .= 'FROM';
+        $requete .= '  afup_cotisations ac ';
+        $requete .= 'INNER JOIN';
+        $requete .= '  afup_personnes_physiques app ON app.id = ac.id_personne ';
+        $requete .= 'WHERE';
+        $requete .= '  date_fin >= ' . $timestamp . ' ';
+        $requete .= 'AND ';
+        $requete .= '  type_personne = 0 ';
+        $requete .= 'AND ';
+        $requete .= '  etat = 1 ';
+        $requete .= 'UNION ';
+        $requete .= 'SELECT';
+        $requete .= '  app.id,app.id ';
+        $requete .= 'FROM';
+        $requete .= '  afup_cotisations ac ';
+        $requete .= 'INNER JOIN';
+        $requete .= '  afup_personnes_physiques app ON app.id_personne_morale = ac.id_personne ';
+        $requete .= 'WHERE';
+        $requete .= '  date_fin >= ' . $timestamp . ' ';
+        $requete .= 'AND ';
+        $requete .= '  type_personne = 1 ';
+        $requete .= 'AND ';
+        $requete .= '  etat = 1 ';
+        return array_values($this->_bdd->obtenirAssociatif($requete));
     }
 
     function obtenirNombrePresencesEtPouvoirs($timestamp)
@@ -101,8 +169,8 @@ class AFUP_Assemblee_Generale
 
 	function obtenirEcartQuorum($timestamp)
 	{
-		$quorum = ceil($this->obtenirNombreConvocations($timestamp) / 3);
-		$ecart = $this->obtenirNombrePresencesEtPouvoirs($timestamp) - $quorum; 
+		$quorum = ceil($this->obtenirNombrePersonnesAJourDeCotisation($timestamp) / 3);
+		$ecart = $this->obtenirNombrePresencesEtPouvoirs($timestamp) - $quorum;
 		return $ecart;
 	}
     function preparer($date)
@@ -138,23 +206,23 @@ class AFUP_Assemblee_Generale
 	        }
         }
         return $succes;
-        
+
     }
 
     function marquerConsultation($login, $timestamp) {
-        $requete  = 'UPDATE ';    
+        $requete  = 'UPDATE ';
         $requete .= '  afup_presences_assemblee_generale, ';
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'SET';
-        $requete .= '  afup_presences_assemblee_generale.date_consultation = ' . time() . ' '; 
+        $requete .= '  afup_presences_assemblee_generale.date_consultation = ' . time() . ' ';
         $requete .= 'WHERE';
         $requete .= '  afup_presences_assemblee_generale.id_personne_physique = afup_personnes_physiques.id ';
-        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';  
-        $requete .= 'AND afup_presences_assemblee_generale.date_consultation = \'0\'';  
+        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';
+        $requete .= 'AND afup_presences_assemblee_generale.date_consultation = \'0\'';
 
-        return $this->_bdd->executer($requete);    
+        return $this->_bdd->executer($requete);
     }
-    
+
     function preparerCorpsDuMessage($timestamp) {
     	    $corps = "La prochaine assemblée générale de l'AFUP aura lieu le " . date('d/m/Y', $timestamp) . ".\n\n";
     	    $corps .= "Cette AG se tiendra de 20h à 23h dans la salle Madrid de la FIAP ";
@@ -164,16 +232,16 @@ class AFUP_Assemblee_Generale
     	    $corps .= "il nous sert d'accusé de réception de cette convocation, ";
     	    $corps .= "il vous permet d'indiquer votre présence ";
     	    $corps .= "et - le cas échéant - à qui vous souhaitez transmettre votre pouvoir.\n\n";
-    	    
+
     	    return $corps;
     }
-    
+
     function preparerSujetDuMessage($timestamp) {
     	    $sujet = "AFUP : convocation à l\'assemblée générale du " . date('d/m/Y', $timestamp);
-    	    
+
     	    return $sujet;
     }
-    
+
     function envoyerConvocations($timestamp, $sujet, $corps) {
         $requete  = 'SELECT';
         $requete .= '  afup_personnes_physiques.id, ';
@@ -189,7 +257,7 @@ class AFUP_Assemblee_Generale
         $requete .= 'AND afup_presences_assemblee_generale.date_consultation = \'0\' ';
         $requete .= 'GROUP BY';
         $requete .= '  afup_personnes_physiques.id ';
-        $personnes_physiques = $this->_bdd->obtenirTous($requete);  
+        $personnes_physiques = $this->_bdd->obtenirTous($requete);
 
         $succes = false;
         require_once 'phpmailer/class.phpmailer.php';
@@ -213,27 +281,27 @@ class AFUP_Assemblee_Generale
             $mail->Send();
             $succes += 1;
         }
-        
-        return $succes;    	
+
+        return $succes;
     }
-    
+
     function modifier($login, $timestamp, $presence, $id_personne_avec_pouvoir)
     {
-        $requete  = 'UPDATE ';    
+        $requete  = 'UPDATE ';
         $requete .= '  afup_presences_assemblee_generale, ';
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'SET';
-        $requete .= '  afup_presences_assemblee_generale.presence = ' . $this->_bdd->echapper((int)$presence) . ','; 
-        $requete .= '  afup_presences_assemblee_generale.id_personne_avec_pouvoir = ' . $this->_bdd->echapper((int)$id_personne_avec_pouvoir) . ','; 
-        $requete .= '  afup_presences_assemblee_generale.date_modification = ' . time() . ' '; 
+        $requete .= '  afup_presences_assemblee_generale.presence = ' . $this->_bdd->echapper((int)$presence) . ',';
+        $requete .= '  afup_presences_assemblee_generale.id_personne_avec_pouvoir = ' . $this->_bdd->echapper((int)$id_personne_avec_pouvoir) . ',';
+        $requete .= '  afup_presences_assemblee_generale.date_modification = ' . time() . ' ';
         $requete .= 'WHERE';
         $requete .= '  afup_presences_assemblee_generale.id_personne_physique = afup_personnes_physiques.id ';
-        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';  
-        $requete .= 'AND afup_presences_assemblee_generale.date = ' . $timestamp;  
+        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';
+        $requete .= 'AND afup_presences_assemblee_generale.date = ' . $timestamp;
 
-        return $this->_bdd->executer($requete);    
+        return $this->_bdd->executer($requete);
     }
-    
+
     function obtenirInfos($login, $timestamp) {
         $requete  = 'SELECT';
         $requete .= '  afup_presences_assemblee_generale.presence, ';
@@ -243,12 +311,12 @@ class AFUP_Assemblee_Generale
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'WHERE';
         $requete .= '  afup_presences_assemblee_generale.id_personne_physique = afup_personnes_physiques.id ';
-        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';  
+        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';
         $requete .= 'AND afup_presences_assemblee_generale.date = ' . $timestamp . ' ';
         $requete .= 'LIMIT 0, 1';
 
         $infos = $this->_bdd->obtenirEnregistrement($requete, MYSQL_NUM);
-        
+
         return $infos;
     }
 
