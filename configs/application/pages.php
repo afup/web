@@ -12,8 +12,12 @@ $pages = array(
 		        'nom' => 'Mes coordonnées',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
-		    'membre_wiki' => array(
-		        'nom' => 'Accès  wiki',
+            'membre_wiki' => array(
+                'nom' => 'Accès  wiki',
+                'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+            ),
+		    'membre_redmine' => array(
+		        'nom' => 'Accès  Redmine',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
 		    'membre_cotisation' => array(
