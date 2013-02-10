@@ -24,7 +24,7 @@ $date = new DateTime();
 $date->add(new DateInterval('P1D'));
 $expiry = $date->format('Y-m-d H:i:s');
 
-$login_string = json_encode(array('remote_uid' =>  4 /*$droits->obtenirIdentifiant()*/, 'expires' => $expiry . 'Z'));
+$login_string = json_encode(array('remote_uid' =>  $droits->obtenirIdentifiant(), 'expires' => $expiry . 'Z'));
 $encoded_login_string = generateMultipass($login_string,
                                           $configuration->obtenir('redmine|sitekey'),
                                           $configuration->obtenir('redmine|apikey'));
