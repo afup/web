@@ -39,7 +39,7 @@ if ($action == 'lister') {
 } else { // ajouter | modifier
 	$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 	$feuille = new AFUP_Site_Feuille($id);
-	
+
 	$formulaire = &instancierFormulaire();
 	if ($action == 'ajouter') {
 		$formulaire->setDefaults(array('date' => time(),
@@ -68,7 +68,7 @@ if ($action == 'lister') {
 	$formulaire->addRule('nom'        , 'Nom manquant'         , 'required');
 	$formulaire->addRule('contenu'    , 'Contenu manquant'     , 'required');
 	$formulaire->addRule('lien'       , 'Lien manquant'        , 'required');
-    $formulaire->addRule('image'      , 'Mimetype'             , array('jpg','jpeg','gif','png'));
+    $formulaire->addRule('image'      , 'Mimetype'             , 'mimetype', array('jpg','jpeg','gif','png'));
 
 	if ($file->isUploadedFile()) {
 	    $values = $file->getValue();
