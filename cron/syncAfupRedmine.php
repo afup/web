@@ -1,5 +1,5 @@
 <?php
-require_once '../sources/Afup/Bootstrap/Cli.php';
+require_once __DIR__ . '/../sources/Afup/Bootstrap/Cli.php';
 
 echo "Synchronisation Redmine " . date('Y-m-d H:i:s') . PHP_EOL;
 
