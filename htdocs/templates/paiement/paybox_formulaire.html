@@ -36,19 +36,19 @@
             <article class="first">
                 <h3>Facture au format PDF</h3>
                 <div class="article-body">
-                <p class="note" style="text-align:center">
-                    <a href="index.php?ref={$original_ref}&action=voir-pdf"><img src="{$chemin_template}pdf.png" /></a>
+                <p class="note">
+                    <a href="index.php?ref={$original_ref}&action=voir-pdf"><img src="{$chemin_template}pdf.png" style="margin-left:190px;" /></a>
                 </p>
                 </div>
             </article>
             <article class="first">
                 <h3>Paiement</h3>
                 <div class="article-body">
+                {$paybox}
                 <p class="note">
                 	Si vous avez la moindre question, n'h&eacute;sitez pas &agrave; contacter
                 	<a href="mailto:tresorier@afup.org">le trésorier</a>.
                 </p>
-                {$paybox}
                 </div>
             </article>
 

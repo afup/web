@@ -38,10 +38,13 @@ if ($facture) {
         $paybox->set_output('B');
 
         preg_match('#<CENTER>(.*)</CENTER>#is', $paybox->paiement(), $r);
-        $smarty->assign('paybox', '<div style="text-align:center">' . str_ireplace('input type=submit', 'input type="submit" class="btn primary"', $r[1]) . '</div>');
+        $r[1] = preg_replace('#<b>.*?</b>#', '', $r[1]);
+        $smarty->assign('paybox', str_ireplace('input type=submit', 'input type="submit" class="btn primary"', $r[1]));
         $smarty->assign('facture', $facture);
         $smarty->assign('details_facture', $details);
         $smarty->assign('original_ref', urlencode($_GET['ref']));
         $smarty->display('paybox_formulaire.html');
     }
+} else {
+    header('Location: /');
 }
