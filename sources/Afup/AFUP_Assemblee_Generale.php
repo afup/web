@@ -255,7 +255,8 @@ class AFUP_Assemblee_Generale
         $requete .= 'WHERE';
         $requete .= '  afup_presences_assemblee_generale.date = \'' . $timestamp . '\' ';
         $requete .= 'AND afup_personnes_physiques.id = afup_presences_assemblee_generale.id_personne_physique ';
-        $requete .= 'AND afup_presences_assemblee_generale.date_consultation = \'0\' ';
+        $requete .= 'AND afup_presences_assemblee_generale.presence = 0 ';
+        $requete .= 'AND afup_presences_assemblee_generale.id_personne_avec_pouvoir = 0 ';
         $requete .= 'GROUP BY';
         $requete .= '  afup_personnes_physiques.id ';
         $personnes_physiques = $this->_bdd->obtenirTous($requete);
