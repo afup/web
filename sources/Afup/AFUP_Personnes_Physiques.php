@@ -4,7 +4,7 @@ require_once 'Afup/AFUP_Droits.php';
 
 // Voir la classe AFUP_Personnes_Morales
 define('AFUP_PERSONNES_PHYSIQUES',          0);
-define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 20);
+define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 25);
 
 /**
  * Classe de gestion des personnes physiques

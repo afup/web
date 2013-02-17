@@ -2,7 +2,7 @@
 
 // Voir la classe AFUP_Personnes_Physiques
 define('AFUP_PERSONNES_MORALES'  , 1);
-define('AFUP_COTISATION_PERSONNE_MORALE', 50);
+define('AFUP_COTISATION_PERSONNE_MORALE', 100);
 
 /**
  * Classe de gestion des personnes morales
