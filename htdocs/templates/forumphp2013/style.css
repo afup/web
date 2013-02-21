@@ -1,25 +1,23 @@
 @font-face {
     font-family: 'League Gothic';
+    font-weight: normal;
+    font-style: normal;
     src: url('./fonts/league_gothic-webfont.eot');
     src: url('./fonts/league_gothic-webfont.eot?#iefix') format('embedded-opentype'),
          url('./fonts/league_gothic-webfont.woff') format('woff'),
          url('./fonts/league_gothic-webfont.ttf') format('truetype'),
          url('./fonts/league_gothic-webfont.svg#LeagueGothicRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
 }
 
 @font-face {
     font-family: 'Museo Slab 500';
+    font-weight: normal;
+    font-style: normal;
     src: url('./fonts/museo_slab_500-webfont.eot');
     src: url('./fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
          url('./fonts/museo_slab_500-webfont.woff') format('woff'),
          url('./fonts/museo_slab_500-webfont.ttf') format('truetype'),
          url('./fonts/museo_slab_500-webfont.svg#MuseoSlab500') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
 }
 
 @font-face {
@@ -100,9 +98,9 @@ header {
   padding-top: 25px;
 }
 
-/* header .event {
+header .event {
   padding-top: 55px;
-} */
+}
 
 header .event .date {
   color: #f7f6f1;
