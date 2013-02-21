@@ -100,9 +100,9 @@ header {
   padding-top: 25px;
 }
 
-header .event {
+/* header .event {
   padding-top: 55px;
-}
+} */
 
 header .event .date {
   color: #f7f6f1;
