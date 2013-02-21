@@ -136,16 +136,17 @@ nav a, nav a:hover {
 }
 
 nav li {
-  height: 72px;
+  height:auto;
   list-style-type: none;
   margin: 0;
   padding: 0;
+  line-height: 1;
 }
 
 nav li a {
   background: transparent url(./img/background-menu.png) bottom left repeat-x;
   display: block;
-  height: 22px;
+  height:40px;
   padding: 25px 0;
 }
 
