@@ -1,11 +1,15 @@
 {if $action == 'index'}
     <h2>Mailing</h2>
-    <a href="?page={$id_page}&action=mailing"> Mailing</a>
+    <ul>
+        <li><a href="?page={$id_page}&amp;action=mailing"> Mailing</a></li>
+        <li><a href="?page={$id_page}&amp;action=mailing&amp;liste=membre_a_jour_cotisation"> Mailing aux membres à jour de cotisation</a></li>
+        <li><a href="?page={$id_page}&amp;action=mailing&amp;liste=ancien_conferencier"> Mailing aux anciens conférenciers</a></li>
+    </ul>
 {else}
     {if $action == 'mailing'}
         <h2>Mailing </h2>
     {else}
         <h2>Modifier un apéro</h2>
-    {/if}    
+    {/if}
     {include file="formulaire.html"}
 {/if}

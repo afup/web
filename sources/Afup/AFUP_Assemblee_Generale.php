@@ -322,6 +322,26 @@ class AFUP_Assemblee_Generale
         return $infos;
     }
 
+    function obtenirListeEmailPersonnesAJourDeCotisation()
+    {
+        // On autorise un battement de 2 mois pour l'envoi d'email
+        $timestamp = time() - 60 * 86400;
+        // Personne physique seule
+        $requete = "SELECT group_concat(distinct email separator ';')
+                    FROM (
+                    SELECT app.email
+                    FROM afup_cotisations ac
+                    INNER JOIN afup_personnes_physiques app ON app.id = ac.id_personne
+                    WHERE date_fin >= " . $timestamp . "
+                    AND type_personne = 0
+                    AND etat = 1
+                    UNION
+                    SELECT app.email
+                    FROM afup_cotisations ac
+                    INNER JOIN afup_personnes_physiques app ON app.id_personne_morale = ac.id_personne
+                    WHERE date_fin >= " . $timestamp . "
+                    AND type_personne = 1
+                    AND etat = 1 ) tmp";
+        return $this->_bdd->obtenirUn($requete);
+    }
 }
-
-?>

@@ -843,4 +843,14 @@ class AFUP_AppelConferencier
 
         return (int)$this->_bdd->obtenirUn($requete);
     }
+
+    public function obtenirListeEmailAncienConferencier()
+    {
+        $requete = "SELECT group_concat(distinct c.email separator ';')
+                    FROM afup_conferenciers c
+                    INNER JOIN afup_conferenciers_sessions cs ON c.conferencier_id = cs.conferencier_id
+                    INNER JOIN afup_sessions s ON cs.session_id=s.session_id
+                    WHERE s.plannifie = 1";
+        return $this->_bdd->obtenirUn($requete);
+    }
 }

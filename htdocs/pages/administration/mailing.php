@@ -15,13 +15,29 @@ $mailing = new AFUP_Mailing($bdd);
 
 if ($action == 'mailing')
 {
+    switch ($_GET['liste']) {
+        case 'membre_a_jour_cotisation':
+            require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Assemblee_Generale.php';
+            $assemblee = new AFUP_Assemblee_Generale($bdd);
+            $liste = $assemblee->obtenirListeEmailPersonnesAJourDeCotisation();
+            break;
+        case 'ancien_conferencier':
+            require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
+            $forum_appel = new AFUP_AppelConferencier($bdd);
+            $liste = $forum_appel->obtenirListeEmailAncienConferencier();
+            break;
+        default:
+            $liste = '';
+            break;
+    }
     $formulaire = &instancierFormulaire();
     $id_forum = $forum->obtenirDernier();
     $rs_forum = $forum->obtenir($id_forum);
     $formulaire->setDefaults(array('from_email' => $GLOBALS['conf']->obtenir('mails|email_expediteur'),
                                    'from_name'  => $GLOBALS['conf']->obtenir('mails|nom_expediteur'),
                                    'subject'    => $rs_forum['titre'],
-                                   'body'       => ''));
+                                   'body'       => '',
+                                   'tos'        => $liste));
 
     $formulaire->addElement('header'  , null        , 'Mailling');
     $formulaire->addElement('text'    , 'from_name' , 'Expéditeur   ', array('size' => 30, 'maxlength' => 40));
@@ -69,8 +85,4 @@ if ($action == 'mailing')
         afficherMessage('Le mail a été envoyé', 'index.php?page=mailing');
     }
     $smarty->assign('formulaire', genererFormulaire($formulaire));
-} else {
-
 }
-
-?>
