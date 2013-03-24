@@ -98,6 +98,7 @@ if ($formulaire->validate()) {
         $file = $formulaire->getElement('logo'.$i);
         $data = $file->getValue();
         if ($data['name']) {
+            echo '../../templates/'.$forum['path'].'/images/intervenants/';
             $imageDir = realpath('../../templates/'.$forum['path'].'/images/intervenants/');
             // Transformation en 90x120 JPG pour simplifier
             $data = $file->getValue();

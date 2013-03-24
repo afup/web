@@ -56,6 +56,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('header', ''                     , 'Gestion de forum');
     $formulaire->addElement('text'  , 'titre'                , 'Titre du forum'                     , array('size' => 30, 'maxlength' => 100));
+    $formulaire->addElement('text'  , 'path'                 , 'Chemin du template'                 , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'nb_places'            , 'Nombre de places'                   , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('date'  , 'date_debut'           , 'Date de début'                      , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin'             , 'Date de fin'                        , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
@@ -82,7 +83,8 @@ if ($action == 'lister') {
                                    $formulaire->exportValue('date_fin_appel_projet'),
                                    $formulaire->exportValue('date_fin_appel_conferencier'),
                                    $formulaire->exportValue('date_fin_prevente'),
-                                   $formulaire->exportValue('date_fin_vente'));     
+                                   $formulaire->exportValue('date_fin_vente'),
+                                   $formulaire->exportValue('path'));
             $id_forum = $forums->obtenirDernier();
         } else {
             $id_forum = $_GET['id'];
@@ -94,7 +96,8 @@ if ($action == 'lister') {
                                     $formulaire->exportValue('date_fin_appel_projet'),
                                     $formulaire->exportValue('date_fin_appel_conferencier'),
                                     $formulaire->exportValue('date_fin_prevente'),
-                                    $formulaire->exportValue('date_fin_vente'));
+                                    $formulaire->exportValue('date_fin_vente'),
+                                    $formulaire->exportValue('path'));
         }
 
         $coupons->supprimerParForum($id_forum);
@@ -103,7 +106,7 @@ if ($action == 'lister') {
             $c = trim($c);
             $coupons->ajouter($_GET['id'], $c);
         }
-        
+
         if ($ok) {
             if ($action == 'ajouter') {
                 AFUP_Logs::log('Ajout du forum ' . $formulaire->exportValue('titre'));

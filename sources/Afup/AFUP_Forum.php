@@ -675,11 +675,11 @@ return  $sTable;
     }
 
     function ajouter($titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
-                      $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente)
+                      $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template)
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum (id, titre, nb_places, date_debut, date_fin, annee, date_fin_appel_projet,';
-        $requete .= '  date_fin_appel_conferencier, date_fin_prevente, date_fin_vente) ';
+        $requete .= '  date_fin_appel_conferencier, date_fin_prevente, date_fin_vente, path) ';
         $requete .= 'VALUES (null,';
         $requete .= $this->_bdd->echapper($titre)                                                 . ',';
         $requete .= (int) $nb_places                                                              . ',';
@@ -689,13 +689,14 @@ return  $sTable;
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true)       . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true)           . ',';
-        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true)              . ')';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true)              . ',';
+        $requete .= $this->_bdd->echapper($chemin_template, true)                                 . ')';
 
         return $this->_bdd->executer($requete);
     }
 
     function modifier($id, $titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
-                       $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente)
+                       $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template)
     {
         $requete  = 'UPDATE ';
         $requete .= '  afup_forum ';
@@ -708,7 +709,8 @@ return  $sTable;
         $requete .= '  date_fin_appel_projet=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true) . ',';
         $requete .= '  date_fin_appel_conferencier=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
         $requete .= '  date_fin_prevente='     . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true)     . ',';
-        $requete .= '  date_fin_vente='        . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true)        . ' ';
+        $requete .= '  date_fin_vente='        . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true)        . ',';
+        $requete .= '  path='                  . $this->_bdd->echapper($chemin_template, true)                           . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
 
