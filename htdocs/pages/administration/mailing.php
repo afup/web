@@ -26,6 +26,11 @@ if ($action == 'mailing')
             $forum_appel = new AFUP_AppelConferencier($bdd);
             $liste = $forum_appel->obtenirListeEmailAncienConferencier();
             break;
+        case 'ancien_visiteur':
+            require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
+            $inscriptions = new AFUP_Inscriptions_Forum($bdd);
+            $liste = $inscriptions->obtenirListeEmailAncienVisiteurs();
+            break;
         default:
             $liste = '';
             break;

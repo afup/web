@@ -646,5 +646,16 @@ class AFUP_Inscriptions_Forum
 
         return $statistiques;
     }
+
+    public function obtenirListeEmailAncienVisiteurs()
+    {
+        $requete = "SELECT group_concat(distinct email separator ';')
+                    FROM afup_inscription_forum
+                    WHERE `email` <> ''
+                    AND right(email, 9) <> '@afup.org'
+                    AND type_inscription <> 12
+                    AND locate('xxx', email) = 0";
+        return $this->_bdd->obtenirUn($requete);
+    }
 }
 ?>
