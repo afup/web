@@ -3,7 +3,7 @@ require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta_Facture.php';
 $comptaFact = new AFUP_Compta_Facture($bdd);
 
-$ref = trim(mcrypt_cbc (MCRYPT_TripleDES, 'PaiementFactureAFUP', base64_decode(urldecode($_GET['ref'])), MCRYPT_DECRYPT, '@PaiFact'));
+$ref = trim(mcrypt_cbc (MCRYPT_TripleDES, 'PaiementFactureAFUP', base64_decode(str_replace(' ', '+', urldecode($_GET['ref']))), MCRYPT_DECRYPT, '@PaiFact'));
 
 $facture = $comptaFact->obtenir($ref);
 if ($facture) {
@@ -48,3 +48,4 @@ if ($facture) {
 } else {
     header('Location: /');
 }
+// http://afup.org/pages/paiement/index.php?&ref=P2wCCWfF%2BAU%3D
