@@ -64,6 +64,7 @@ if ($action == 'lister') {
         $champs['prenom']          = $champsRecup['prenom'];
         $champs['tel']          = $champsRecup['tel'];
         $champs['numero_devis']          = $champsRecup['numero_devis'];
+        $champs['numero_facture']          = $champsRecup['numero_facture'];
         $champs['etat_paiement']          = $champsRecup['etat_paiement'];
         $champs['date_paiement']          = $champsRecup['date_paiement'];
 
