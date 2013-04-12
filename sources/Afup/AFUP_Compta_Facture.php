@@ -103,14 +103,14 @@ class AFUP_Compta_Facture
     }
 
     function ajouter($date_devis,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
-					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3)
+					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3, $etat_paiement, $date_paiement)
 	{
 
 		$requete = 'INSERT INTO ';
 		$requete .= 'afup_compta_facture (';
 		$requete .= 'date_devis,societe,service,adresse,code_postal,ville,id_pays,';
 		$requete .= 'nom,prenom,tel,';
-		$requete .= 'email,observation,ref_clt1,ref_clt2,ref_clt3,numero_devis) ';
+		$requete .= 'email,observation,ref_clt1,ref_clt2,ref_clt3,etat_paiement,date_paiement,numero_devis) ';
 		$requete .= 'VALUES (';
 		$requete .= $this->_bdd->echapper($date_devis) . ',';
 		$requete .= $this->_bdd->echapper($societe) . ',';
@@ -126,7 +126,9 @@ class AFUP_Compta_Facture
 		$requete .= $this->_bdd->echapper($observation) . ',';
 		$requete .= $this->_bdd->echapper($ref_clt1) . ',';
 		$requete .= $this->_bdd->echapper($ref_clt2) . ',';
-		$requete .= $this->_bdd->echapper($ref_clt3) . ', ';
+        $requete .= $this->_bdd->echapper($ref_clt3) . ', ';
+        $requete .= $this->_bdd->echapper($etat_paiement) . ', ';
+		$requete .= $this->_bdd->echapper($date_paiement) . ', ';
 		$requete .= $this->_bdd->echapper($this->genererNumeroDevis()). ' ';
 		$requete .= ');';
 
@@ -151,7 +153,7 @@ class AFUP_Compta_Facture
 
 	function modifier($id,$date_devis,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
 					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3,
-					$numero_devis,$numero_facture)
+					$numero_devis,$numero_facture, $etat_paiement, $date_paiement)
 	{
 
 		$requete = 'UPDATE ';
@@ -171,7 +173,9 @@ class AFUP_Compta_Facture
 		$requete .= 'observation='.$this->_bdd->echapper($observation) . ', ';
 		$requete .= 'ref_clt1='.$this->_bdd->echapper($ref_clt1) . ',';
 		$requete .= 'ref_clt2='.$this->_bdd->echapper($ref_clt2) . ',';
-		$requete .= 'ref_clt3='.$this->_bdd->echapper($ref_clt3) . ', ';
+        $requete .= 'ref_clt3='.$this->_bdd->echapper($ref_clt3) . ', ';
+        $requete .= 'etat_paiement='.$this->_bdd->echapper($etat_paiement) . ', ';
+		$requete .= 'date_paiement='.$this->_bdd->echapper($date_paiement) . ', ';
 		$requete .= 'numero_devis='.$this->_bdd->echapper($numero_devis) .' ';
 
 		if ($numero_facture)

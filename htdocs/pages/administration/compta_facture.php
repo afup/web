@@ -64,7 +64,8 @@ if ($action == 'lister') {
         $champs['prenom']          = $champsRecup['prenom'];
         $champs['tel']          = $champsRecup['tel'];
         $champs['numero_devis']          = $champsRecup['numero_devis'];
-        $champs['numero_facture']          = $champsRecup['numero_facture'];
+        $champs['etat_paiement']          = $champsRecup['etat_paiement'];
+        $champs['date_paiement']          = $champsRecup['date_paiement'];
 
 
       $champsRecup = $comptaFact->obtenir_details($_GET['id']);
@@ -144,6 +145,9 @@ if ($action == 'lister') {
 	$formulaire->addElement('static'  , 'note'     , ''  , 'Ces informations seront écrites à la fin du document<br /><br />');
    $formulaire->addElement('textarea', 'observation'  , 'Observation', array('cols' => 42, 'rows' => 5));
 
+   $formulaire->addElement('header'  , '', 'Paiement');
+   $formulaire->addElement('select', 'etat_paiement'  , 'Etat paiement', array('En attente de paiement', 'Payé', 'Annulé'), array('size' => 3));
+    $formulaire->addElement('date'    , 'date_paiement'     , 'Date paiement', array('language' => 'fr', 'format'   => 'd F Y', 'minYear' => date('Y') - 5, 'maxYear' => date('Y')));
 
 
 
@@ -184,7 +188,8 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
 		$valeur = $formulaire->exportValues();
 
-$date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".$valeur['date_saisie']['d'] ;
+$date_ecriture= $valeur['date_facture']['Y']."-".$valeur['date_facture']['F']."-".$valeur['date_facture']['d'] ;
+$date_paiement= $valeur['date_paiement']['Y']."-".$valeur['date_paiement']['F']."-".$valeur['date_paiement']['d'] ;
 
     	if ($action == 'ajouter') {
  // il faut passser obligatoirement par un devis
@@ -207,7 +212,9 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
 									$valeur['ref_clt2'],
 									$valeur['ref_clt3'],
 									$valeur['numero_devis'],
-									$valeur['numero_facture']
+                  $valeur['numero_facture'],
+                  $valeur['etat_paiement'],
+									$date_paiement
 									);
        		for ($i=1;$i<6;$i++)
    			{
@@ -229,7 +236,7 @@ $date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".
             } else {
                 AFUP_Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_devis&action=lister');
+            afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_facture&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
         }
