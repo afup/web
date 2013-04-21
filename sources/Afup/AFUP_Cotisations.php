@@ -562,7 +562,7 @@ class AFUP_Cotisations
 
         $sujet  = "Relance cotisation AFUP\n";
 
-        $montant = AFUP_PERSONNES_MORALES == $type_personne ? 50 : 20;
+        $montant = AFUP_PERSONNES_MORALES == $type_personne ? AFUP_COTISATION_PERSONNE_MORALE : AFUP_COTISATION_PERSONNE_PHYSIQUE;
 
         $corps  = "Bonjour, \n\n";
         $corps .= "Votre cotisation annuelle à l'AFUP est arrivée à son terme.\n\n";
