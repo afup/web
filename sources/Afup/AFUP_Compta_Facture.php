@@ -103,7 +103,7 @@ class AFUP_Compta_Facture
     }
 
     function ajouter($date_devis,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
-					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3, $etat_paiement, $date_paiement)
+					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3, $etat_paiement = 0, $date_paiement = null)
 	{
 
 		$requete = 'INSERT INTO ';
