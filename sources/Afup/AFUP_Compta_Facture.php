@@ -389,7 +389,7 @@ class AFUP_Compta_Facture
         $pdf->Cell(130, 5, utf8_decode($coordonnees['observation']), 0, 0, 'L', 0);
 
         if (is_null($chemin)) {
-            $pdf->Output('devis.pdf', 'D');
+            $pdf->Output('Devis - ' . $coordonnees['societe'] . ' - '  . $coordonnees['date_devis'] . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -530,7 +530,7 @@ class AFUP_Compta_Facture
         }
 
         if (is_null($chemin)) {
-            $pdf->Output('facture.pdf', 'D');
+            $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - '  . $coordonnees['date_facture'] . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
