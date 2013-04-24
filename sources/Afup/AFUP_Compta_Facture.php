@@ -386,7 +386,7 @@ class AFUP_Compta_Facture
         $pdf->Ln(10);
         $pdf->Cell(10, 5, 'Observations : ');
         $pdf->Ln(5);
-        $pdf->Cell(130, 5, $coordonnees['observation'], 0, 0, 'L', 0);
+        $pdf->Cell(130, 5, utf8_decode($coordonnees['observation']), 0, 0, 'L', 0);
 
         if (is_null($chemin)) {
             $pdf->Output('devis.pdf', 'D');
@@ -526,7 +526,7 @@ class AFUP_Compta_Facture
 	if ($coordonnees['observation']) {
 	        $pdf->Cell(10, 5, 'Observations : ');
 	        $pdf->Ln(5);
-	        $pdf->Cell(130, 5, $coordonnees['observation'], 0, 0, 'L', 0);
+	        $pdf->Cell(130, 5, utf8_decode($coordonnees['observation']), 0, 0, 'L', 0);
         }
 
         if (is_null($chemin)) {
