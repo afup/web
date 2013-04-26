@@ -1,11 +1,11 @@
 <?php
 /**
  * Script d'exploration des feeds pour le site PlanetePHP.
- * 
+ *
  * @author    Perrick Penet   <perrick@noparking.fr>
  * @author    Olivier Hoareau <olivier@phppro.fr>
  * @copyright 2010 Association Française des Utilisateurs de PHP
- * 
+ *
  * @category PlanetePHP
  * @package  PlanetePHP
  * @group    Batchs
@@ -23,8 +23,7 @@ $planete_flux   = new AFUP_Planete_Flux($bdd);
 $planete_billet = new AFUP_Planete_Billet($bdd);
 $flux           = $planete_flux->obtenirListeActifs();
 
-$billets = 0;
-
+$billets = $succes = 0;
 foreach ($flux as $flux_simple) {
 	echo $flux_simple['feed']." : début...<br />\n";
     $rss = fetch_rss($flux_simple['feed']);
@@ -42,14 +41,17 @@ foreach ($flux as $flux_simple) {
 		if ($item['atom_content'] == "A") {
 		    $item['atom_content'] = $item['description'];
 		}
-		if (empty($item['updated'])) {
+		if (empty($item['updated']) && isset($item['dc']['date'])) {
 			$item['updated'] = $item['dc']['date'];
 		}
-		if (empty($item['updated'])) {
+		if (empty($item['updated']) && isset($item['modified'])) {
 			$item['updated'] = $item['modified'];
 		}
-		if (empty($item['updated'])) {
+		if (empty($item['updated']) && isset($item['pubdate'])) {
 			$item['updated'] = $item['pubdate'];
+		}
+		if (empty($item['author'])) {
+			$item['author'] = $flux_simple['nom'];
 		}
 
 		$item['timestamp'] = strtotime($item['updated']);
