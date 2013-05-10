@@ -20,8 +20,12 @@ $pages = array(
 		        'nom' => 'Accès  Redmine',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
-		    'membre_cotisation' => array(
-		        'nom' => 'Ma cotisation',
+            'membre_cotisation' => array(
+                'nom' => 'Ma cotisation',
+                'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+            ),
+		    'membre_ml' => array(
+		        'nom' => 'Listes de diffusion',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
 		    'membre_assemblee_generale' => array(

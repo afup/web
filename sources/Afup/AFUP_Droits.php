@@ -47,7 +47,10 @@ class AFUP_Droits {
     * @access private
     */
     private $_identifiant;
-	private $_hash;
+    private $_hash;
+    private $_email;
+    private $_nom;
+	private $_prenom;
 
     /**
     * Niveau de droits de l'utilisateur
@@ -124,6 +127,9 @@ class AFUP_Droits {
 			$this->_hash = md5($resultat['hash']);
 			$this->_niveau = $resultat['niveau'];
             $this->_niveau_modules = $resultat['niveau_modules'];
+            $this->_email = $resultat['email'];
+            $this->_nom = $resultat['nom'];
+            $this->_prenom = $resultat['prenom'];
         }
         $this->_est_connecte = ($resultat !== false);
         $this->_echec_connexion = !$this->_est_connecte;
@@ -179,6 +185,9 @@ class AFUP_Droits {
         if ($personne_physique_id !== false) {
             $this->_identifiant = $personne_physique['id'];
             $this->_niveau = AFUP_DROITS_NIVEAU_MEMBRE;
+            $this->_email = $personne_physique['email'];
+            $this->_nom = $personne_physique['nom'];
+            $this->_prenom = $personne_physique['prenom'];
         }
         $this->_est_connecte = ($personne_physique_id !== false);
         $this->_echec_connexion = !$this->_est_connecte;
@@ -362,6 +371,14 @@ class AFUP_Droits {
 
         return false;
     }
-}
 
-?>
+    public function obtenirEmail()
+    {
+        return $this->_email;
+    }
+
+    public function obtenirNomComplet()
+    {
+        return ($this->_prenom . " " . $this->_nom);
+    }
+}

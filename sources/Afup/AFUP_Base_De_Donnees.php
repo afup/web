@@ -309,6 +309,32 @@ class AFUP_Base_De_Donnees
     }
 
     /**
+     * Exécute une requête SQL et retourne les enregistrements correspondant
+     *
+     * @param string    $requete    Requête à exécuter
+     * @param int       $type       Type de résultat souhaité. Les valeurs possibles sont MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH.
+     *                              Elles permettent respectivement de récupérer les valeurs sous forme d'un tableau associatif, indexé ou les deux.
+     *                              La valeur par défaut est MYSQL_ASSOC.
+     * @access public
+     * @return mixed    Les enregistrements correspondant dans un tableau ou false si la requête échoue
+     */
+    function obtenirColonne($requete)
+    {
+        $ressource = mysql_query($requete, $this->_lien);
+        if ($ressource === false) {
+            return false;
+        }
+
+        $resultat = array();
+        while ($enregistrement = mysql_fetch_array($ressource)) {
+            $resultat[] = $enregistrement[0];
+        }
+        mysql_free_result($ressource);
+
+        return $resultat;
+    }
+
+    /**
      * Exécute une requête SQL et retourne les enregistrements correspondant dans un tableau associatif dont le premier champ est la clé
      *
      * @param string    $requete    Requête à exécuter
