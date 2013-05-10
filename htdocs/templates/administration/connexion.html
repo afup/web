@@ -16,6 +16,9 @@
                 {if $echec}<p class="erreur">La connexion a échoué.</p>{/if}
 
                 <fieldset>
+                    {if $page_demandee}
+                    <input type="hidden" name="page_demandee" value="{$page_demandee}" />
+                    {/if}
                     <div class="rangee">
                         <label for="utilisateur">Utilisateur</label>
                         <span class="element">

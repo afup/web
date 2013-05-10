@@ -5,7 +5,9 @@ ob_clean();
 
 // On affiche la page de connexion
 $echec = !empty($_GET['echec']) ? (bool) $_GET['echec'] : false;
+$page_demandee = isset($_GET['page_demandee']) ? $_GET['page_demandee'] : null;
 $smarty->assign('echec', $echec);
+$smarty->assign('page_demandee', $page_demandee);
 $smarty->display('connexion.html');
 
 // On s'arrête là pour ne pas afficher le pied de page

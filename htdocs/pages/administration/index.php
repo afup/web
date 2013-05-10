@@ -12,7 +12,11 @@ if (!isset($_GET['page'])) {
     }
 }
 if (!empty($_POST['connexion'])) {
-    $droits->seConnecter($_POST['utilisateur'], $_POST['mot_de_passe']);
+    if ($droits->seConnecter($_POST['utilisateur'], $_POST['mot_de_passe'])) {
+        if ($_POST['page_demandee']) {
+            header('Location: ' . $_POST['page_demandee']);
+        }
+    };
 }
 if (!empty($_POST['motdepasse_perdu'])) {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
@@ -56,7 +60,7 @@ if (!empty($_GET['hash'])) {
 
 if (!$droits->estConnecte() and $_GET['page'] != 'connexion' and $_GET['page'] != 'mot_de_passe_perdu' and
 $_GET['page'] != 'message' and $_GET['page'] != 'inscription') {
-    header('Location: index.php?page=connexion&echec=' . $droits->verifierEchecConnexion());
+    header('Location: index.php?page=connexion&echec=' . $droits->verifierEchecConnexion() . '&page_demandee=' . urlencode($_SERVER['REQUEST_URI']));
     exit;
 }
 // On vérifie que l'utilisateur a le droit d'accéder à la page
