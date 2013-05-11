@@ -24,7 +24,7 @@ class AFUP_Compta_Facture
 		$requete .= 'WHERE  ';
 		$requete .= ' numero_devis != "" ';
 		$requete .= 'ORDER BY ';
-		$requete .= ' afup_compta_facture.date_devis ';
+		$requete .= ' afup_compta_facture.date_devis DESC';
 
 		return $this->_bdd->obtenirTous($requete);
     }
@@ -57,7 +57,7 @@ class AFUP_Compta_Facture
 		$requete .= 'WHERE  ';
 		$requete .= ' numero_facture != "" ';
 		$requete .= 'ORDER BY ';
-		$requete .= 'afup_compta_facture.date_facture ';
+		$requete .= 'afup_compta_facture.date_facture DESC';
 
 		return $this->_bdd->obtenirTous($requete);
     }
