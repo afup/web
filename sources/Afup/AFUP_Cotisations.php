@@ -473,12 +473,15 @@ class AFUP_Cotisations
         $requete .= 'FROM';
         $requete .= '  afup_cotisations ';
         $requete .= 'WHERE';
-        $requete .= '  type_personne=' . $type_personne;
-        $requete .= '  AND id_personne=' . $id_personne;
+        $requete .= '  type_personne=' . $type_personne . ' ';
+        $requete .= 'AND';
+        $requete .= ' id_personne=' . $id_personne . ' ';
+        $requete .= 'ORDER BY';
+        $requete .= ' date_fin DESC';
         $date_debut = $this->_bdd->obtenirUn($requete);
 
         if ($date_debut !== false) {
-            return strtotime('+1day', $date_debut);
+            return $date_debut;
         } else {
             return time();
         }
