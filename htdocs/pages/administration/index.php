@@ -13,7 +13,7 @@ if (!isset($_GET['page'])) {
 }
 if (!empty($_POST['connexion'])) {
     if ($droits->seConnecter($_POST['utilisateur'], $_POST['mot_de_passe'])) {
-        if ($_POST['page_demandee']) {
+        if (isset($_POST['page_demandee']) && $_POST['page_demandee']) {
             header('Location: ' . $_POST['page_demandee']);
         }
     };
