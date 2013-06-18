@@ -58,6 +58,7 @@ if ($action == 'lister') {
         $champs['tel']          = $champsRecup['tel'];
         $champs['numero_devis']          = $champsRecup['numero_devis'];
         $champs['numero_facture']          = $champsRecup['numero_facture'];
+        $champs['devise_facture']          = $champsRecup['devise_facture'];
 
 
        $champsRecup = $comptaFact->obtenir_details($_GET['id']);
@@ -140,6 +141,9 @@ if ($action == 'lister') {
 	$formulaire->addElement('static'  , 'note'     , ''  , 'Ces informations seront écrites à la fin du document<br /><br />');
    $formulaire->addElement('textarea', 'observation'  , 'Observation', array('cols' => 42, 'rows' => 5));
 
+   $formulaire->addElement('header'  , '', 'Devise');
+   $formulaire->addElement('select', 'devise_facture'  , 'Monnaie de la facture', array('EUR' => 'Euro',
+                                                                                        'DOL' => 'Dollar'), array('size' => 2));
 
 
    for ($i=1;$i<6;$i++)
@@ -189,7 +193,10 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
 									$valeur['observation'],
 									$valeur['ref_clt1'],
 									$valeur['ref_clt2'],
-									$valeur['ref_clt3']
+									$valeur['ref_clt3'],
+                  0,
+                  null,
+                  $valeur['devise_facture']
             						);
 
        		for ($i=1;$i<6;$i++)
@@ -220,7 +227,10 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
 									$valeur['ref_clt2'],
 									$valeur['ref_clt3'],
 									$valeur['numero_devis'],
-									$valeur['numero_facture']
+                  $valeur['numero_facture'],
+                  0,
+                  null,
+									$valeur['devise_facture']
 									);
        		for ($i=1;$i<6;$i++)
    			{

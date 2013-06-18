@@ -67,6 +67,7 @@ if ($action == 'lister') {
         $champs['numero_facture']          = $champsRecup['numero_facture'];
         $champs['etat_paiement']          = $champsRecup['etat_paiement'];
         $champs['date_paiement']          = $champsRecup['date_paiement'];
+        $champs['devise_facture']          = $champsRecup['devise_facture'];
 
 
       $champsRecup = $comptaFact->obtenir_details($_GET['id']);
@@ -147,6 +148,8 @@ if ($action == 'lister') {
    $formulaire->addElement('textarea', 'observation'  , 'Observation', array('cols' => 42, 'rows' => 5));
 
    $formulaire->addElement('header'  , '', 'Paiement');
+   $formulaire->addElement('select', 'devise_facture'  , 'Monnaie de la facture', array('EUR' => 'Euro',
+                                                                                        'DOL' => 'Dollar'), array('size' => 2));
    $formulaire->addElement('select', 'etat_paiement'  , 'Etat paiement', array('En attente de paiement', 'Payé', 'Annulé'), array('size' => 3));
     $formulaire->addElement('date'    , 'date_paiement'     , 'Date paiement', array('language' => 'fr', 'format'   => 'd F Y', 'minYear' => date('Y') - 5, 'maxYear' => date('Y')));
 
@@ -215,7 +218,8 @@ $date_paiement= $valeur['date_paiement']['Y']."-".$valeur['date_paiement']['F'].
 									$valeur['numero_devis'],
                   $valeur['numero_facture'],
                   $valeur['etat_paiement'],
-									$date_paiement
+                  $date_paiement,
+									$valeur['devise_facture']
 									);
        		for ($i=1;$i<6;$i++)
    			{

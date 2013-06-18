@@ -25,7 +25,11 @@
 			<td  align='right' width='100'>{$ecriture.ref_clt1}</td>
 			<td  align='right' width='100'>{$ecriture.numero_devis}</td>
             <td style="text-align: left">
-               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+{if $ecriture.numero_facture == ''}
+               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier le devis {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier le devis" /></a>
+{else}
+               <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la facture {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier la facture" /></a>
+{/if}
                 <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.numero_devis}" title="Télécharger le devis"><img src="{$chemin_template}images/famfamfam/report.png" alt="Téléchargement du devis" /></a>
 {if $ecriture.numero_facture == ''}
                <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}" title="Transférer la ligne {$ecriture.description} en facture"><img src="{$chemin_template}images/famfamfam/cart_go.png" alt="Transfert en facture" /></a>

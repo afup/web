@@ -103,7 +103,8 @@ class AFUP_Compta_Facture
     }
 
     function ajouter($date_devis,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
-					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3, $etat_paiement = 0, $date_paiement = null)
+					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3,
+                    $etat_paiement = 0, $date_paiement = null, $devise = 'EUR')
 	{
 
 		$requete = 'INSERT INTO ';
@@ -129,7 +130,8 @@ class AFUP_Compta_Facture
         $requete .= $this->_bdd->echapper($ref_clt3) . ', ';
         $requete .= $this->_bdd->echapper($etat_paiement) . ', ';
 		$requete .= $this->_bdd->echapper($date_paiement) . ', ';
-		$requete .= $this->_bdd->echapper($this->genererNumeroDevis()). ' ';
+        $requete .= $this->_bdd->echapper($this->genererNumeroDevis()). ', ';
+		$requete .= $this->_bdd->echapper($devise). ' ';
 		$requete .= ');';
 
 		return $this->_bdd->executer($requete);
@@ -153,7 +155,7 @@ class AFUP_Compta_Facture
 
 	function modifier($id,$date_devis,$societe,$service,$adresse,$code_postal,$ville,$id_pays,
 					$nom,$prenom,$tel,$email,$observation,$ref_clt1,$ref_clt2,$ref_clt3,
-					$numero_devis,$numero_facture, $etat_paiement, $date_paiement)
+					$numero_devis,$numero_facture, $etat_paiement, $date_paiement, $devise)
 	{
 
 		$requete = 'UPDATE ';
@@ -176,7 +178,8 @@ class AFUP_Compta_Facture
         $requete .= 'ref_clt3='.$this->_bdd->echapper($ref_clt3) . ', ';
         $requete .= 'etat_paiement='.$this->_bdd->echapper($etat_paiement) . ', ';
 		$requete .= 'date_paiement='.$this->_bdd->echapper($date_paiement) . ', ';
-		$requete .= 'numero_devis='.$this->_bdd->echapper($numero_devis) .' ';
+        $requete .= 'numero_devis='.$this->_bdd->echapper($numero_devis) .', ';
+		$requete .= 'devise_facture='.$this->_bdd->echapper($devise) .' ';
 
 		if ($numero_facture)
 		{
@@ -358,6 +361,15 @@ class AFUP_Compta_Facture
         $pdf->Cell(30, 5, 'Total', 1, 0, 'L', 1);
 
         $total = 0;
+        switch ($coordonnees['devise_facture']) {
+            case 'DOL':
+                $devise = ' $';
+                break;
+            case 'EUR':
+            default:
+                $devise = utf8_decode(' ');
+                break;
+        }
         foreach ($details as $detail) {
            	if ($detail['quantite'] != 0)
 			{
@@ -369,8 +381,8 @@ class AFUP_Compta_Facture
             	$pdf->Cell(30, 5, $detail['ref'], 1);
 	            $pdf->Cell(80, 5, utf8_decode($detail['designation']) , 1);
 	            $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1,0,"C");
-	            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . utf8_decode(' '), 1,0,"R");
-	            $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1,0,"R");
+	            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . $devise, 1,0,"R");
+	            $pdf->Cell(30, 5, utf8_decode($montant) . $devise, 1,0,"R");
 
             $total += $montant;
 
@@ -379,7 +391,7 @@ class AFUP_Compta_Facture
         $pdf->Ln();
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, $total . utf8_decode(' '), 1, 0, 'R', 1);
+        $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
 
         $pdf->Ln(15);
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
@@ -497,6 +509,15 @@ class AFUP_Compta_Facture
         $pdf->Cell(30, 5, 'Total', 1, 0, 'L', 1);
 
         $total = 0;
+        switch ($coordonnees['devise_facture']) {
+            case 'DOL':
+                $devise = ' $';
+                break;
+            case 'EUR':
+            default:
+                $devise = utf8_decode(' ');
+                break;
+        }
         foreach ($details as $detail) {
            	if ($detail['quantite'] != 0)
 			{
@@ -508,9 +529,9 @@ class AFUP_Compta_Facture
 	            $pdf->Cell(30, 5, $detail['ref'], 1);
 	            $pdf->Cell(80, 5, utf8_decode($detail['designation']) , 1);
 	            $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1,0,"C");
-	            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . utf8_decode(' '), 1,0,"R");
-	            $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1,0,"R");
 
+	            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . $devise, 1,0,"R");
+	            $pdf->Cell(30, 5, utf8_decode($montant) . $devise, 1,0,"R");
 	            $total += $montant;
 			}
         }
@@ -518,7 +539,7 @@ class AFUP_Compta_Facture
         $pdf->Ln();
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, $total . utf8_decode(' '), 1, 0, 'R', 1);
+        $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
 
         $pdf->Ln(15);
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
