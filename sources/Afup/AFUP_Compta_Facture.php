@@ -111,7 +111,7 @@ class AFUP_Compta_Facture
 		$requete .= 'afup_compta_facture (';
 		$requete .= 'date_devis,societe,service,adresse,code_postal,ville,id_pays,';
 		$requete .= 'nom,prenom,tel,';
-		$requete .= 'email,observation,ref_clt1,ref_clt2,ref_clt3,etat_paiement,date_paiement,numero_devis) ';
+		$requete .= 'email,observation,ref_clt1,ref_clt2,ref_clt3,etat_paiement,date_paiement,numero_devis,devise_facture) ';
 		$requete .= 'VALUES (';
 		$requete .= $this->_bdd->echapper($date_devis) . ',';
 		$requete .= $this->_bdd->echapper($societe) . ',';
