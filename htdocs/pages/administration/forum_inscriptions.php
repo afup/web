@@ -174,6 +174,10 @@ L\'équipe AFUP'));
 									   'type_reglement'      => -1));
     } else {
         $champs = $forum_inscriptions->obtenir($_GET['id']);
+        if ($champs == false) {
+            afficherMessage('L\'inscription n\'existe plus', 'index.php?page=forum_inscriptions&action=lister');
+            exit(0);
+        }
         $champs2 = $forum_facturation->obtenir($champs['reference']);
         $champs['type_reglement']          = $champs2['type_reglement'];
         $champs['informations_reglement']  = $champs2['informations_reglement'];

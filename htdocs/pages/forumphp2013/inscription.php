@@ -70,14 +70,14 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
   }
 
   $formulaire->addGroup($groupe, 'groupe_type_inscription'.$i, 'Formule', '<br />', false);
-  $formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :');
+  //$formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :');
   $groupe = array();
   $groupe[] = &HTML_QuickForm::createElement('radio', 'mobilite_reduite'.$i, null, 'oui', 1);
   $groupe[] = &HTML_QuickForm::createElement('radio', 'mobilite_reduite'.$i, null, 'non', 0);
-  $formulaire->addGroup($groupe, 'groupe_mobilite_reduite'.$i, 'Mobilité réduite', '<br/>', false);
-  $formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Merci de renseigner 3 tags ( mot clef) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le Forum PHP');
+  //$formulaire->addGroup($groupe, 'groupe_mobilite_reduite'.$i, 'Mobilité réduite', '<br/>', false);
+  $formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le Forum PHP');
   for ($j=1; $j <= $nombre_tags; $j++) {
-    $formulaire->addElement('text'  , 'tag_'.$j.'_'.$i                      , 'Tag '.$j            , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+    $formulaire->addElement('text'  , 'tag_'.$j.'_'.$i                      , 'Tag '.$j . ($j ==1 ?  ' ou Id Twitter' : '' )           , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
 
   }
     $formulaire->addElement('static'  , 'raccourci' , '' , '<i>Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire.....</i>');
@@ -117,12 +117,12 @@ $groupe = array();
 $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'oui', 1);
 $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'non', 0);
 $formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
-$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
+//$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
 $groupe = array();
 $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
 $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
 $formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
-$formulaire->addElement('static', null, null, "Je souhaite recevoir des informations de la part de vos partenaires presse/media");
+//$formulaire->addElement('static', null, null, "Je souhaite recevoir des informations de la part de vos partenaires presse/media");
 $groupe = array();
 $groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'oui', 1);
 $groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'non', 0);
