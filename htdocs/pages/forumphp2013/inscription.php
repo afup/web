@@ -121,12 +121,12 @@ $formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
 $groupe = array();
 $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
 $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
-$formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
+//$formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
 //$formulaire->addElement('static', null, null, "Je souhaite recevoir des informations de la part de vos partenaires presse/media");
 $groupe = array();
 $groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'oui', 1);
 $groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'non', 0);
-$formulaire->addGroup($groupe, 'groupe_mail_partenaire', null, '&nbsp;', false);
+//$formulaire->addGroup($groupe, 'groupe_mail_partenaire', null, '&nbsp;', false);
 
 $formulaire->addElement('header', 'boutons'  , '');
 $formulaire->addElement('submit', 'soumettre', 'Soumettre', array('class' => 'btn primary', 'style' => 'float: right'));
@@ -197,10 +197,10 @@ if ($formulaire->validate()) {
         $valeurs['coupon'],
         $valeurs['citer_societe'],
         $valeurs['newsletter_afup'],
-        $valeurs['newsletter_nexen'],
+        0, //$valeurs['newsletter_nexen'],
         '<tag>'.$tags.'</tags>',
-        $valeurs['mobilite_reduite'.$i],
-        $valeurs['mail_partenaire']);
+        0, //$valeurs['mobilite_reduite'.$i],
+        0); //$valeurs['mail_partenaire']);
         $total += $AFUP_Tarifs_Forum[$valeurs['type_inscription'.$i]];
       }
       if (!$ok) {
