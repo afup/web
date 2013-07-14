@@ -492,6 +492,14 @@ class AFUP_Facturation_Forum
             $total += $inscription['montant'];
         }
 
+        if ($facture['type_reglement'] == 1) { // Paiement par chèque
+            $pdf->Ln();
+            $pdf->Cell(50, 5, 'FRAIS', 1);
+            $pdf->Cell(100, 5, utf8_decode('Paiement par chèque'), 1);
+            $pdf->Cell(40, 5, '25' . utf8_decode(' '), 1);
+            $total += 25;
+        }
+
         $pdf->Ln();
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(150, 5, 'TOTAL', 1, 0, 'L', 1);

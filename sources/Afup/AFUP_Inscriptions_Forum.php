@@ -33,6 +33,10 @@ define('AFUP_FORUM_PROF'                        , 16);
 define('AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE', 17);
 define('AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE', 18);
 define('AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION', 19);
+define('AFUP_FORUM_PREMIERE_JOURNEE_AFUP'       , 20);
+define('AFUP_FORUM_DEUXIEME_JOURNEE_AFUP'       , 21);
+define('AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT'   , 22);
+define('AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT'   , 23);
 
 define('AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE', 0);
 define('AFUP_FORUM_REGLEMENT_CHEQUE'        , 1);
@@ -48,17 +52,21 @@ $AFUP_Tarifs_Forum = array(
                            AFUP_FORUM_CONFERENCIER => 0,
                            AFUP_FORUM_PROJET => 0,
                            AFUP_FORUM_PROF => 0,
-                           AFUP_FORUM_PREMIERE_JOURNEE => 130,
-                           AFUP_FORUM_DEUXIEME_JOURNEE => 130,
-                           AFUP_FORUM_2_JOURNEES       => 200,
-                           AFUP_FORUM_2_JOURNEES_AFUP  => 130,
-                           AFUP_FORUM_2_JOURNEES_ETUDIANT => 130,
+                           AFUP_FORUM_PREMIERE_JOURNEE => 150,
+                           AFUP_FORUM_DEUXIEME_JOURNEE => 150,
+                           AFUP_FORUM_2_JOURNEES       => 250,
+                           AFUP_FORUM_2_JOURNEES_AFUP  => 150,
+                           AFUP_FORUM_PREMIERE_JOURNEE_AFUP => 100,
+                           AFUP_FORUM_DEUXIEME_JOURNEE_AFUP => 100,
+                           AFUP_FORUM_2_JOURNEES_ETUDIANT => 150,
+                           AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT => 100,
+                           AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT => 100,
                            AFUP_FORUM_2_JOURNEES_PREVENTE       => 150,
-                           AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE  => 130,
+                           AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE  => 150,
                            AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION => 150,
                            AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => 100,
                            AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => 100,
-                           AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE => 130,
+                           AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE => 150,
                            AFUP_FORUM_2_JOURNEES_COUPON => 160,
                            AFUP_FORUM_2_JOURNEES_SPONSOR => 200);
 
@@ -74,13 +82,15 @@ $AFUP_Tarifs_Forum_Lib = array(
                            AFUP_FORUM_DEUXIEME_JOURNEE => 'Jour 2',
                            AFUP_FORUM_2_JOURNEES       => '2 Jours',
                            AFUP_FORUM_2_JOURNEES_AFUP  =>  '2 Jours AFUP',
+                           AFUP_FORUM_PREMIERE_JOURNEE_AFUP => 'Jour 1 AFUP',
+                           AFUP_FORUM_DEUXIEME_JOURNEE_AFUP => 'Jour 2 AFUP',
                            AFUP_FORUM_2_JOURNEES_ETUDIANT =>  '2 Jours Etudiant',
+                           AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT => 'Jour 1 Etudiant',
+                           AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT => 'Jour 2 Etudiant',
                            AFUP_FORUM_2_JOURNEES_PREVENTE       =>  '2 Jours prévente',
                            AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE  =>  '2 Jours AFUP prévente',
                            AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION => '2 Jours prévente + adhésion',
                            AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE =>  '2 Jours Etudiant prévente',
-                           AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => 'Jour 1 Etudiant prévente',
-                           AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => 'Jour 2 Etudiant prévente',
                            AFUP_FORUM_2_JOURNEES_COUPON =>  '2 Jours avec coupon de réduction',
                            AFUP_FORUM_2_JOURNEES_SPONSOR =>  '2 Jours par Sponsor');
 
