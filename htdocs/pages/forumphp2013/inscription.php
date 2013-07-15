@@ -37,6 +37,10 @@ if (time() > $config_forum['date_debut']) {
 $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;
 $nombre_tags = 3;
 
+//nombre inscription choisi via js
+$nombre_inscriptions = isset($_GET['nbInscriptions']) ? (int)$_GET['nbInscriptions'] : 1;
+$smarty->assign('nbInscriptions', $nombre_inscriptions);
+
 // On créé le formulaire
 $formulaire = &instancierFormulaire();
 $formulaire->setDefaults(array('id_pays_facturation' => 'FR'));
@@ -106,7 +110,7 @@ $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           
 $formulaire->addElement('text'    , 'email_facturation'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
 $formulaire->addElement('text'    , 'coupon'                 , 'Coupon'         , array('size' => 30, 'maxlength' => 200));
 
-$formulaire->addElement('header', null, 'Divers');
+$formulaire->addElement('header', null, '<a name="divers">Divers</a>');
 $formulaire->addElement('static', null, null, "J'accepte que ma compagnie soit citée comme participant à la conférence");
 $groupe = array();
 $groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'oui', 1);

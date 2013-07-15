@@ -10,8 +10,8 @@
     </div>
     {/if}
 
-    {foreach from=$formulaire.sections item=section}
-    <fieldset{if $section.name == 'boutons'} class="boutons"{/if}>
+    {foreach from=$formulaire.sections key=num item=section}
+    <fieldset class="f{$num+1}{if $section.name == 'boutons'} boutons{/if}">
         {if $section.header}<legend>{$section.header}</legend>{/if}
 
         {foreach from=$section.elements item=element}

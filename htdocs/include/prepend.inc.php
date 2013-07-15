@@ -42,8 +42,8 @@ $smarty->use_sub_dirs  = true;
 $smarty->check_compile = true;
 $smarty->php_handling  = SMARTY_PHP_ALLOW;
 $smarty->assign('url_base', 'http://' . $_SERVER['HTTP_HOST'] . '/');
-$smarty->assign('chemin_template', $serveur.$conf->obtenir('web|path').'/templates/' . $sous_site . '/');
-$smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'/javascript/');
+$smarty->assign('chemin_template', $serveur.$conf->obtenir('web|path').'templates/' . $sous_site . '/');
+$smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'javascript/');
 
 // Initialisation de la couche d'abstraction de la base de données
 require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Base_De_Donnees.php';
