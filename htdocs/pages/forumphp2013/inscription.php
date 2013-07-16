@@ -265,5 +265,11 @@ if ($formulaire->validate()) {
   }
 }
 
+$rappelInvalide = false;
+if (isset($_GET['rappel']) && $_GET['rappel'] == 'invalide') {
+  $rappelInvalide = true;
+}
+$smarty->assign('rappelInvalide', $rappelInvalide);
+
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 $smarty->display($is_prevente?'inscription_prevente.html':'inscription.html');

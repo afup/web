@@ -92,7 +92,9 @@ $AFUP_Tarifs_Forum_Lib = array(
                            AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION => '2 Jours prévente + adhésion',
                            AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE =>  '2 Jours Etudiant prévente',
                            AFUP_FORUM_2_JOURNEES_COUPON =>  '2 Jours avec coupon de réduction',
-                           AFUP_FORUM_2_JOURNEES_SPONSOR =>  '2 Jours par Sponsor');
+                           AFUP_FORUM_2_JOURNEES_SPONSOR =>  '2 Jours par Sponsor',
+                           AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => '',
+                           AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => '');
 
 
 
