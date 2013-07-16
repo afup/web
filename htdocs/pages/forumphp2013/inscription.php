@@ -81,7 +81,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
   //$formulaire->addGroup($groupe, 'groupe_mobilite_reduite'.$i, 'Mobilité réduite', '<br/>', false);
   $formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le Forum PHP');
   for ($j=1; $j <= $nombre_tags; $j++) {
-    $formulaire->addElement('text'  , 'tag_'.$j.'_'.$i                      , 'Tag '.$j . ($j ==1 ?  ' ou Id Twitter' : '' )           , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+    $formulaire->addElement('text'  , 'tag_'.$j.'_'.$i                      , 'Tag '.$j . ($j ==1 ?  ' ou Id Twitter (ex: @afup)' : '' )           , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
 
   }
     $formulaire->addElement('static'  , 'raccourci' , '' , '<i>Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire.....</i>');
