@@ -2,8 +2,6 @@
 
 require_once 'fpdf/fpdf.php';
 
-define('FPDF_FONTPATH','include/font/');
-
 class AFUP_Compta_PDF extends FPDF
 {
 
