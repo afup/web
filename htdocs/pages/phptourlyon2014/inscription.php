@@ -28,6 +28,7 @@ if (!isset($_GET['passage_en_force'])) {
 	  die();
 	}
 }
+
 if (time() > $config_forum['date_debut']) {
 	$smarty->display('inscriptions_fermes.html');
 	die();
