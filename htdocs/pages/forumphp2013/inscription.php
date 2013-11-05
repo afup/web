@@ -22,7 +22,6 @@ if (!isset($_GET['passage_en_force'])) {
 	  $smarty->display('inscriptions_fermes.html');
 	  die();
 	}
-	$is_prevente = time() < $config_forum['date_fin_prevente'];
 	if ($nombre_inscrits >= $nombre_places) {
 	  $smarty->display('inscriptions_fermes.html');
 	  die();
@@ -32,6 +31,8 @@ if (time() > $config_forum['date_debut']) {
 	$smarty->display('inscriptions_fermes.html');
 	die();
 }
+
+$is_prevente = time() < $config_forum['date_fin_prevente'];
 
 //nombre possible d'inscrptions sur une même commande
 $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;
