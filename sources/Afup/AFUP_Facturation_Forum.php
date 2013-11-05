@@ -178,8 +178,7 @@ class AFUP_Facturation_Forum
     function estFacture($reference)
     {
         $facture = $this->obtenir($reference, 'etat');
-
-        if ($facture['etat'] == AFUP_FORUM_FACTURE_A_ENVOYER) {
+        if ($facture['facturation'] == AFUP_FORUM_FACTURE_A_ENVOYER) {
             $requete   = 'UPDATE afup_inscription_forum ';
             $requete  .= 'SET facturation=' . AFUP_FORUM_FACTURE_ENVOYEE . ' ';
             $requete  .= 'WHERE reference=' . $this->_bdd->echapper($reference);
