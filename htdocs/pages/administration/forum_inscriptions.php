@@ -19,56 +19,44 @@ if ($action == 'envoyer_convocation') {
                                 'date_envoi' => date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))),
 								'corps' => 'Bonjour %INSCRIT,
 
-Voici quelques informations pour faciliter votre séjour des 29 et 30 novembre prochains à Nantes.
+Le Forum PHP 2013 est proche ! Voici les dernières informations utiles avant de nous rejoindre :
 
-- Comment se rendre au PHP Tour Nantes 2012 ?
+ - Quand et comment retirer votre badge
 
-Le PHP Tour Nantes 2012 est organisé au Centre de Communication de l\'Ouest, au sein de la Tour de Bretagne, les jeudi 29 et vendredi 30 novembre 2012. Les portes s\'ouvriront à 8h30. Les premières conférences débutent à 9h00 : nous vous encourageons à être à l\'heure, afin d\'avoir le temps de récupérer votre badge, déposer vos affaires au vestiaire et profiter du buffet de petit-déjeuner !
-
-Pour vous rendre au Centre de Communication de l\'Ouest :
-Place de Bretagne, dans la tour de Bretagne,
-Tram ligne 3, arrêt "Bretagne"
-Le PHP Tour Nantes 2012 sera fléché sur la place de Bretagne.
-
-Présentez-vous à l\'accueil du PHP Tour Nantes 2012 muni d\'une pièce d\'identité afin de retirer votre badge auprès de notre équipe.
-Nous vous rappelons que votre billet d\'entrée vous permettra de profiter d\'un en-cas à la pause déjeuner.
+Le Forum PHP 2013 se tiendra au Beffroi de Montrouge, les jeudi 21 et vendredi 22 novembre 2013. Présentez-vous à l\'accueil du Forum PHP 2013 muni d\'une pièce d\'identité afin de retirer votre badge auprès de notre équipe.
+Les portes ouvriront à 8h30. Les premières conférences débutent à 9h00 : nous vous encourageons à être à l\'heure, afin d\'avoir le temps de récupérer votre badge, déposer vos affaires au vestiaire et profiter du buffet de petit-déjeuner ! Ne vous préoccupez pas du déjeuner : votre billet d\'entrée vous permettra de profiter d\'un en-cas à la pause du midi.
 
 Pour imprimer la convocation : %LIEN
 
+ - Comment se rendre au Forum PHP 2013 ?
 
-- Profitez de la réduction négociée pour vous à l\'hôtel IBIS - Tour de Bretagne
+Le Beffroi de Montrouge est situé au 2 Place Emile Cresp, 92120 Montrouge.
+Le lieu est desservi par le métro, au terminus de la ligne 4 "Mairie de Montrouge". Il est également accessible via le tramway T3 (arrêt "Porte d\'Orléans", à 10 min à pieds), ou via les bus 68, 126, 128 (arrêt "Mairie de Montrouge").
+En voiture, via le périphérique : sortie porte d’Orléans, direction Montrouge Centre. Un parking est disponible place Emile Cresp. 
+Enfin pour les plus sportifs, un Point Vélib se situe devant la Mairie de Montrouge.
 
-Vous n\'avez pas encore réservé votre hébergement ? L\'AFUP vous propose de bénéficier d\'un tarif négocié pour les nuits du 28 et 29 novembre prochains à l\'hôtel IBIS Nantes - Tour de Bretagne.
-En appelant de la part de l\'AFUP, profitez de 10% de réduction, soit :
-* prix par chambre : 85,50€ (après remise de 10%)
-* taxe de séjour : 0,85€
-* petit dej : 9€
-Pour réserver, contactez Nathalie Le Roi au 02 40 35 39 00.
-Pour découvrir l\'hôtel : http://www.accorhotels.com/fr/hotel-1394-ibis-nantes-centre-tour-bretagne/index.shtml
+ - Profitez du Forum PHP 2013 pour consulter nos docteur ès PHP au sein des cliniques-conseil !
 
+Pour la première fois en cette édition 2013, des cliniques-conseil seront animées par nos sponsors, toute la journée au sein de l\'espace sponsors. N\'hésitez pas à les visiter !
+Theodo vous proposera une clinique intitulée "Devops : accélérez vos déploiements pour une réactivité maximale". Adopter la culture, les outils et les méthodes Devops permet d\'accélérer toute votre organisation technique pour une réactivité maximale face aux besoins métiers. Trouvez ensemble les premières solutions simples et rapides pour accélérer vos déploiements !
+Les docteurs de Splio proposeront une clinique ayant pour thème "PHP au coeur d\'une architecture Big Data". Vous rencontrez des problèmes dans ce domaine ? L\'équipe R&D de Splio sera présente pour répondre à vos interrogations et vous faire part de son expérience.
+Alterway et ses spécialistes se pencheront sur tous vos problèmes de pratiques PHP, au sein de leur clinique "Du choix d’outils à l’hébergement : toutes les bonnes pratiques PHP !"  Vous avez besoin d\'une piqûre de rappel sur le déploiement automatique ? D\'une ordonnance pour choisir un framework ? Vous cherchez des conseils pour améliorer la santé de vos projets ? La clique de savants d\'Alterway est impatiente d\'entendre vos symptômes !
+Enfin, VA Consulting prescrira quantité de remèdes autour du thème "Zend Framework 2 - une solution universelle pour tous vos nouveaux projets PHP". Zend Technologies et VA Consulting associent leurs expertises pour réfléchir avec vous sur les problématiques que vous rencontrez dans le cadre de vos développements, et vous aident à tirer le meilleur profit de Zend Framework 2.
 
-- Retrouvez les autres auditeurs le soir du jeudi 29 novembre
-
-Après la première journée de conférences, nous proposons aux visiteurs de se retrouver dans le bar "Le Flesselles". Situé à quelques centaines de mètres du Centre de Communication de l\'Ouest, le Flesselles proposera de la petite restauration.
-Bref, il s\'annonce comme le point de chute incontournable pour tous les visiteurs du PHP Tour Nantes 2012, qui pourront se détendre et échanger autour des sujets de conférences de la journée.
-
-Le Flesselles est situé au 3, allée Flesselles. Plus d\'informations sur le lieu : http://www.cityvox.fr/restaurants_nantes/le-flesselles_27437/Profil-Lieu
-
-Rendez-vous là bas le soir du jeudi 29 novembre !
-
-
-- Le PHP Tour Nantes 2012 est présent sur les réseaux sociaux et sur votre mobile
+ - Le Forum PHP 2013 sur les réseaux sociaux et sur votre mobile
 
 Le programme des 2 jours est disponible en version mobile : http://m.afup.org
 
-Envie de tweeter pendant le PHP Tour Nantes 2012 ? Utilisez le hashtag #phptour ! Et n\'oubliez pas de suivre l\'actualité de l\'AFUP sur nos réseaux sociaux :
+Le Forum PHP 2013 est complet. Envie de tweeter pendant le Forum PHP 2013 pour faire profiter vos followers ? Utilisez le hashtag #forumphp ! Et n\'oubliez pas de suivre l\'actualité de l\'AFUP sur nos réseaux sociaux :
+Twitter : @afup 
 Facebook : www.facebook.com/fandelafup
-Digikaa : www.digikaa.com/groups/afup/
 Google + : https://plus.google.com/u/0/b/103588986855606151405/103588986855606151405/posts
 
 
-Nous sommes impatients de vous accueillir lors de cette étape nantaise de notre tour de France de PHP !
+On vous garde encore quelques surprises pour le jour de l\'ouverture du Forum PHP 2013, avec notamment la découverte des résultats du premier baromètre des salaires en PHP, réalisé avec notre partenaire Agence E. 
+Nous avons hâte de vous accueillir !
 
+A bientôt,
 L\'équipe AFUP'));
 
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
