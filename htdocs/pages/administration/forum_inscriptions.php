@@ -15,7 +15,7 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 
 if ($action == 'envoyer_convocation') {
 	$formulaire = &instancierFormulaire();
-	$formulaire->setDefaults(array('sujet' => 'Convocation pour le PHP Tour Nantes 2012',
+	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2013',
                                 'date_envoi' => date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))),
 								'corps' => 'Bonjour %INSCRIT,
 
