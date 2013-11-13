@@ -74,7 +74,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
   }
 
   $formulaire->addGroup($groupe, 'groupe_type_inscription'.$i, 'Formule', '<br />', false);
-  $formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Merci de renseigner 3 tags ( mot clef) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le Forum PHP');
+  $formulaire->addElement('static'  , 'raccourci'                   , ''               , 'Merci de renseigner 3 tags ( mot clef) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le PHP Tour Lyon');
   for ($j=1; $j <= $nombre_tags; $j++) {
     $formulaire->addElement('text'  , 'tag_'.$j.'_'.$i                      , 'Tag '.$j            , array('size' => 30, 'maxlength' => 40));
 
