@@ -1,5 +1,5 @@
 <?php
-
+$action = verifierAction(array('lister', 'export'));
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 // Gestion des droits
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Utils.php';
@@ -14,9 +14,25 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.p
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
+
+function array2csv(array &$array)
+{
+    if (count($array) == 0) {
+        return null;
+    }
+    ob_start();
+    $df = fopen("php://output", 'w');
+    fputcsv($df, array_keys(reset($array)));
+    foreach ($array as $row) {
+        fputcsv($df, $row);
+    }
+    fclose($df);
+    return ob_get_clean();
+}
+
 $forum = new AFUP_Forum($bdd);
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
-$id_forum = 7;
+$id_forum = isset($_GET['id_forum']) ? (int)$_GET['id_forum'] : O;
 $id_personne = isset($_GET['id_personne']) ? (int)$_GET['id_personne'] : 0;
 $badges = $forum_inscriptions->obtenirListePourBadges($id_forum, $id_personne);
 $badge_prints =array();
@@ -65,6 +81,7 @@ foreach ($badges as $nb => $badge) {
   $badge['type_pass'] = $lib_pass;
 
   // var_dump($badge);die;
+  $badges_export[]= $badge;
   $badge_prints[$badge_page][$badge_row][$badge_col]= $badge;
 
 
@@ -125,6 +142,12 @@ $code_salle[12]= "SAB";
 $code_salle[13]= "SCD";
 $code_salle[14]= "S2";
 //var_dump( $programme);die;
+if ($action == 'export') {
+    header('Content-type: text/plain');
+    header('Content-disposition: attachment; filename=inscription_forum_php.csv');
+    echo array2csv($badges_export);
+    exit;
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
