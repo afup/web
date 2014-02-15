@@ -28,7 +28,7 @@ foreach ($membresAfup as $mA) {
         if (count($diff)) {
             $data = array();
             foreach ($diff as $k => $v) {
-                $data[] = "$k = '" . mysql_real_escape_string($v) . "'";
+                $data[] = "$k = '" . mysqli_real_escape_string($v) . "'";
             }
             // On modifie l'utilisateur
             echo " - modification: $id\n";
