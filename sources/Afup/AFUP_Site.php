@@ -18,7 +18,7 @@ class AFUP_Site_Page {
     public $content;
     public $title;
 	public $conf;
-    
+
     function __construct($bdd=false) {
         if ($bdd) {
             $this->bdd = $bdd;
@@ -59,7 +59,7 @@ class AFUP_Site_Page {
     	$branche = new AFUP_Site_Branche($this->bdd);
     	return $branche->naviguer(5, 2);
     }
-    
+
     function header() {
     	$branche = new AFUP_Site_Branche($this->bdd);
         return $branche->naviguer(21, 2);
@@ -68,7 +68,7 @@ class AFUP_Site_Page {
     function content() {
         return $this->content;
     }
-    
+
     function social() {
     	return '<ul id="menufooter-share">
                     <li>
@@ -83,7 +83,7 @@ class AFUP_Site_Page {
                 </ul>
                 <a href="'.$this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').'faq/6" id="footer-faq">Encore des questions ? <strong>F.A.Q.</strong></a>';
     }
-    
+
     function footer() {
     	$branche = new AFUP_Site_Branche($this->bdd);
     	return $branche->naviguer(38, 2, "menufooter-top");
@@ -244,7 +244,7 @@ class AFUP_Site_Articles {
         $articles = array();
         if (is_array($elements)) {
 	        foreach ($elements as $element) {
-	            $article = new AFUP_Site_Article();
+	            $article = new AFUP_Site_Article(null, $this->bdd);
 	            $article->remplir($element);
 		        $articles[] = $article;
 	        }
@@ -269,7 +269,7 @@ class AFUP_Site_Articles {
         $ajouts = array();
         $elements = $this->bdd->obtenirTous($requete);
         foreach ($elements as $element) {
-            $article = new AFUP_Site_Article();
+            $article = new AFUP_Site_Article(null, $this->bdd);
             $article->remplir($element);
             $ajouts[] = $article;
         }
@@ -289,7 +289,7 @@ class AFUP_Site_Articles {
         $questions = array();
         $elements = $this->bdd->obtenirTous($requete);
         foreach ($elements as $element) {
-            $article = new AFUP_Site_Article();
+            $article = new AFUP_Site_Article(null, $this->bdd);
             $article->remplir($element);
             $questions[] = $article;
         }
@@ -634,7 +634,7 @@ class AFUP_Site_Article {
     function titre() {
         return $this->titre;
     }
-    
+
     function teaser() {
     	switch (true) {
     		case !empty($this->chapeau):
@@ -644,7 +644,7 @@ class AFUP_Site_Article {
     			$teaser = $this->descriptif;
     			break;
     		default:
-    			$teaser = substr(strip_tags($this->contenu), 0, 200); 
+    			$teaser = substr(strip_tags($this->contenu), 0, 200);
     	}
     	return $teaser;
     }
@@ -809,7 +809,7 @@ class AFUP_Site_Article {
     }
 
     function autres_articles() {
-        $articles = new AFUP_Site_Articles();
+        $articles = new AFUP_Site_Articles($this->bdd);
 
         return $articles->chargerArticlesDeRubrique($this->id_site_rubrique);
     }
@@ -1068,7 +1068,7 @@ class AFUP_Site_Rubrique {
     function articles_dans_la_rubrique() {
         $autres_articles = $this->autres_articles();
         $articles = "";
-        
+
         if (count($autres_articles) > 0) {
             foreach ($autres_articles as $article) {
                 $articles .= '<a class="article article-teaser" href="'.$article->route().'">'.
@@ -1097,7 +1097,7 @@ class AFUP_Site_Rubrique {
 
         if (is_array($articles)) {
 	        foreach ($articles as $article) {
-	            $autre = new AFUP_Site_Article($article['id']);
+	            $autre = new AFUP_Site_Article($article['id'], $this->bdd);
 	            $autre->remplir($article);
 		        $autres[] = $autre;
 	        }
@@ -1183,7 +1183,7 @@ class AFUP_Site {
 		$nombre_articles = 0;
         foreach ($articles_spip as $article_spip) {
             if ($article_spip['statut'] == "publie") {
-                $article = new AFUP_Site_Article($article_spip['id_article']);
+                $article = new AFUP_Site_Article($article_spip['id_article'], $this->bdd);
 	            $article->id_site_rubrique = $article_spip['id_rubrique'];
 	            $article->surtitre = AFUP_Site::transformer_spip_en_html(($article_spip['surtitre']));
 	            $article->titre = ($article_spip['titre']);
