@@ -24,7 +24,7 @@ class AFUP_Base_De_Donnees
      */
 	function AFUP_Base_De_Donnees($hote, $base, $utilisateur, $mot_de_passe)
 	{
-		$this->_lien = mysql_connect($hote, $utilisateur, $mot_de_passe) or die('Connexion à la base de données impossible');
+		$this->_lien = mysqli_connect($hote, $utilisateur, $mot_de_passe) or die('Connexion à la base de données impossible');
         $this->selectionnerBase($base);
 	}
 
@@ -157,7 +157,7 @@ class AFUP_Base_De_Donnees
      */
 	function selectionnerBase($nom)
 	{
-		return	mysql_select_db($nom, $this->_lien);
+		return	mysqli_select_db($this->_lien, $nom);
 	}
 
     /**
@@ -170,7 +170,7 @@ class AFUP_Base_De_Donnees
     function echapper($valeur)
     {
         if (is_string($valeur)) {
-            $valeur = "'" . mysql_real_escape_string($valeur, $this->_lien) . "'";
+            $valeur = "'" . mysqli_real_escape_string($this->_lien, $valeur) . "'";
         } elseif (is_null($valeur)) {
             $valeur = 'NULL';
         }
@@ -207,7 +207,7 @@ class AFUP_Base_De_Donnees
      */
     function executer($requete)
     {
-        $result = mysql_query($requete, $this->_lien);
+        $result = mysqli_query($this->_lien, $requete);
         //if (!$result) {
         //    mysql_error();
         //}
@@ -268,12 +268,12 @@ class AFUP_Base_De_Donnees
      */
     function obtenirEnregistrement($requete, $type = MYSQL_ASSOC)
     {
-        $ressource = mysql_query($requete, $this->_lien);
+        $ressource = mysqli_query($this->_lien, $requete);
         if ($ressource === false) {
             return false;
         }
-        $enregistrement = mysql_fetch_array($ressource, $type);
-        mysql_free_result($ressource);
+        $enregistrement = mysqli_fetch_array($ressource, $type);
+        mysqli_free_result($ressource);
 
         if ($enregistrement === false) {
             return false;
@@ -294,16 +294,16 @@ class AFUP_Base_De_Donnees
      */
     function obtenirTous($requete, $type = MYSQL_ASSOC)
     {
-        $ressource = mysql_query($requete, $this->_lien);
+        $ressource = mysqli_query($this->_lien, $requete);
         if ($ressource === false) {
             return false;
         }
 
         $resultat = array();
-        while ($enregistrement = mysql_fetch_array($ressource, $type)) {
+        while ($enregistrement = mysqli_fetch_array($ressource, $type)) {
             $resultat[] = $enregistrement;
         }
-        mysql_free_result($ressource);
+        mysqli_free_result($ressource);
 
         return $resultat;
     }
@@ -320,16 +320,16 @@ class AFUP_Base_De_Donnees
      */
     function obtenirColonne($requete)
     {
-        $ressource = mysql_query($requete, $this->_lien);
+        $ressource = mysqli_query($this->_lien, $requete);
         if ($ressource === false) {
             return false;
         }
 
         $resultat = array();
-        while ($enregistrement = mysql_fetch_array($ressource)) {
+        while ($enregistrement = mysqli_fetch_array($ressource)) {
             $resultat[] = $enregistrement[0];
         }
-        mysql_free_result($ressource);
+        mysqli_free_result($ressource);
 
         return $resultat;
     }
@@ -343,40 +343,39 @@ class AFUP_Base_De_Donnees
      */
     function obtenirAssociatif($requete)
     {
-        $ressource     = mysql_query($requete, $this->_lien);
-        $nombre_champs = mysql_num_fields($ressource);
+        $ressource     = mysqli_query($this->_lien, $requete);
+        $nombre_champs = mysqli_num_fields($ressource);
         if ($ressource === false || $nombre_champs < 2) {
             return false;
         }
 
-        $i      = 0;
-        $champs = array();
-        while ($i < $nombre_champs) {
-            $champs[$i] = mysql_field_name($ressource, $i);
-            $i++;
-        }
+        // $i      = 0;
+        // $champs = array();
+        // while ($i < $nombre_champs) {
+        //     $champs[$i] = mysql_field_name($ressource, $i);
+        //     $i++;
+        // }
+        $champs = mysqli_fetch_fields($ressource);
 
         $resultat = array();
         if ($nombre_champs == 2) {
-            while ($enregistrement = mysql_fetch_array($ressource, MYSQL_NUM)) {
+            while ($enregistrement = mysqli_fetch_array($ressource, MYSQL_NUM)) {
                 $resultat[$enregistrement[0]] = $enregistrement[1];
             }
         } else {
-            while ($enregistrement = mysql_fetch_array($ressource, MYSQL_ASSOC)) {
+            while ($enregistrement = mysqli_fetch_array($ressource, MYSQL_ASSOC)) {
                 $resultat[$enregistrement[$champs[0]]] = array_slice($enregistrement, 1);
             }
         }
-        mysql_free_result($ressource);
+        mysqli_free_result($ressource);
 
         return $resultat;
     }
 
     function obtenirDernierId()
     {
-        return mysql_insert_id();
+        return mysqli_insert_id();
     }
 
 
  }
-
-?>
