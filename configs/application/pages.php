@@ -279,7 +279,7 @@ $pages = array(
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
 		    'updatesvn' => array(
-		        'nom' => 'Mise à jour via SVN',
+		        'nom' => 'Mise à jour via Git',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
 		    'info_serveur' => array(
