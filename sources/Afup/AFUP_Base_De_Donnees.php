@@ -364,7 +364,7 @@ class AFUP_Base_De_Donnees
             }
         } else {
             while ($enregistrement = mysqli_fetch_array($ressource, MYSQL_ASSOC)) {
-                $resultat[$enregistrement[$champs[0]]] = array_slice($enregistrement, 1);
+                $resultat[$enregistrement[$champs[0]->name]] = array_slice($enregistrement, 1);
             }
         }
         mysqli_free_result($ressource);
