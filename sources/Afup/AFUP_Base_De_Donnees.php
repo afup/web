@@ -28,6 +28,11 @@ class AFUP_Base_De_Donnees
         $this->selectionnerBase($base);
 	}
 
+    function getDbLink()
+    {
+        return $this->_lien;
+    }
+
 	/**
 	 * Scinde un ensemble de requètes SQL en un tableau regroupant ces requètes
      *
