@@ -31,6 +31,15 @@ class AFUP_Sympa
         return $lists;
     }
 
+    public function getAllUsers()
+    {
+        $requete = 'SELECT';
+        $requete .= '  * ';
+        $requete .= 'FROM';
+        $requete .= '  user_table ';
+        return $this->_bdd->obtenirAssociatif($requete);
+    }
+
     public function subscribe($email, $list, $nom = null)
     {
         $requete = "INSERT INTO subscriber_table (list_subscriber, user_subscriber, custom_attribute_subscriber,
@@ -66,5 +75,47 @@ class AFUP_Sympa
         $requete .= 'WHERE';
         $requete .= '  user_subscriber = ' . $this->_bdd->echapper($email) . ' ';
         return $this->_bdd->obtenirColonne($requete);
+    }
+
+    public function getInscritsMailingList($ml)
+    {
+        $requete = 'SELECT';
+        $requete .= '  user_subscriber ';
+        $requete .= 'FROM';
+        $requete .= '  subscriber_table ';
+        $requete .= 'WHERE';
+        $requete .= '  list_subscriber = ' . $this->_bdd->echapper($ml) . ' ';
+        return $this->_bdd->obtenirColonne($requete);
+    }
+
+    public function getUser($email)
+    {
+        $requete = 'SELECT';
+        $requete .= '  * ';
+        $requete .= 'FROM';
+        $requete .= '  user_table ';
+        $requete .= 'WHERE';
+        $requete .= '  email_user = ' . $this->_bdd->echapper($email) . ' ';
+        return $this->_bdd->obtenirEnregistrement($requete);
+    }
+
+    public function createUser($email, $nom)
+    {
+        $requete = 'INSERT INTO ';
+        $requete .= '  user_table (email_user, gecos_user, lang_user) ';
+        $requete .= 'VALUES (';
+        $requete .= $this->_bdd->echapper($email) . ',';
+        $requete .= $this->_bdd->echapper($nom)   . ',';
+        $requete .= '\'fr\''                      . ')';
+        return $this->_bdd->executer($requete);
+    }
+
+    public function deleteUser($email)
+    {
+        $requete = 'DELETE FROM ';
+        $requete .= '  user_table ';
+        $requete .= 'WHERE ';
+        $requete .= '  email_user = ' . $this->_bdd->echapper($email) . ' ';
+        return $this->_bdd->executer($requete);
     }
 }

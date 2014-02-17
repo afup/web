@@ -615,6 +615,13 @@ class AFUP_Personnes_Physiques {
         }
 
         return $resultats;
+    }
 
+    public function getUserByEmail($email)
+    {
+        $requete  = ' SELECT * ';
+        $requete .= ' FROM afup_personnes_physiques ';
+        $requete .= ' WHERE email = '.$this->_bdd->echapper($email);
+        return $this->_bdd->obtenirEnregistrement($requete);
     }
 }
