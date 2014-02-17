@@ -275,7 +275,7 @@ class AFUP_Base_De_Donnees
         $enregistrement = mysqli_fetch_array($ressource, $type);
         mysqli_free_result($ressource);
 
-        if ($enregistrement === false) {
+        if ($enregistrement === null) {
             return false;
         } else {
             return $enregistrement;
@@ -374,7 +374,7 @@ class AFUP_Base_De_Donnees
 
     function obtenirDernierId()
     {
-        return mysqli_insert_id();
+        return mysqli_insert_id($this->_lien);
     }
 
 
