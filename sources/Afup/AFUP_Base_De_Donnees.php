@@ -25,6 +25,7 @@ class AFUP_Base_De_Donnees
 	function AFUP_Base_De_Donnees($hote, $base, $utilisateur, $mot_de_passe)
 	{
 		$this->_lien = mysqli_connect($hote, $utilisateur, $mot_de_passe) or die('Connexion à la base de données impossible');
+        mysqli_set_charset($this->_lien, "utf8");
         $this->selectionnerBase($base);
 	}
 
