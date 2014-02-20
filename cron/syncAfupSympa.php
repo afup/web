@@ -64,7 +64,7 @@ echo " - effacement anciens membres...\n";
 foreach ($listes as $kl2 => $l2) {
     // Il reste des noms donc ils ne sont plus membres AFUP => on les efface de toutes les listes
     foreach ($l2 as $supp) {
-        if (in_array($kl2, array('antenne', 'bureau-interne', 'livre-blanc', 'organisation'))) {
+        if (in_array($kl2, array('antenne', 'bureau-interne', 'livre-blanc', 'organisation', 'cs'))) {
             echo " # ALERTE $kl2 : l'email $supp ne fait pas parti des membres AFUP\n";
         } else {
             echo " - effacement user $supp de $kl2\n";
