@@ -4,66 +4,60 @@ class AFUP_Oeuvres {
     public $details = array();
 
     protected $_bdd;
-    protected $logsvn;
+    protected $loggit;
 
     function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
-        $this->logsvn = dirname(__FILE__).'/../../htdocs/cache/robots/oeuvres/logsvn.xml';
-        if (!file_exists($this->logsvn)) {
-            file_put_contents($this->logsvn, "");
+        $this->loggit = realpath(dirname(__FILE__).'/../../htdocs/cache/robots/oeuvres') . '/loggit.csv';
+        if (!file_exists($this->loggit)) {
+            file_put_contents($this->loggit, "");
         }
-        $this->logsvn = realpath($this->logsvn);
+        $this->loggit = realpath($this->loggit);
     }
 
     function calculer()
     {
-        $this->rafraichirLogSVN();
-        $this->extraireOeuvresDepuisLogSVN($this->logsvn);
+        $this->rafraichirLogGit();
+        $this->extraireOeuvresDepuisLogGit($this->loggit);
         $this->extraireOeuvresDepuisLogs();
         $this->extraireOeuvresDepuisPlanete();
 
         return $this->inserer();
     }
 
-    function rafraichirLogSVN()
+    function extraireOeuvresDepuisLogGit($loggit = null)
     {
-        $date = mktime(0, 0, 0, date('m') - 11, 1, date('Y'));
-        if (is_writable($this->logsvn)) {
-            $commande = 'svn log svn://svn.afup.org --username robot --password afup --revision {'.date('Ymd', $date).'}:HEAD --xml --verbose > '.$this->logsvn;
-            return exec($commande);
-        } else {
+        if (!file_exists($loggit) && !$loggit == null ) {
             return false;
         }
-    }
+        if ($loggit == null) $loggit = $this->$loggit;
 
-    function extraireOeuvresDepuisLogSVN($logsvn = null)
-    {
-        if (!file_exists($logsvn) && !$logsvn == null ) {
-            return false;
-        }
-        if ($logsvn == null) $logsvn = $this->logsvn;
-
-        $xml = simplexml_load_file($logsvn);
-        foreach ($xml->logentry as $logentry) {
-            $date = strtotime($logentry->date);
+        $fp = fopen($this->loggit, 'r');
+        while (($data = fgetcsv($fp, 1000, ";")) !== false) {
+            $date = strtotime($data[3]);
             $date = mktime(0, 0, 0, date("m", $date), 1, date("Y", $date));
-            $auteur = (string)$logentry->author;
+            $auteur = $data[2];
             if (!isset($auteurs[$auteur])) {
                 $personnes_physiques = new AFUP_Personnes_Physiques($this->_bdd);
-                $auteurs[$auteur] = $personnes_physiques->obtenirIdDepuisCompteSVN($auteur);
+                $infosUser = $personnes_physiques->getUserByEmail($auteur);
+                if ($infosUser) {
+                    $auteurs[$auteur] = $infosUser['id'];
+                }
             }
-            $id_personne_physique = $auteurs[$auteur];
-            if (!isset($this->details['svn'][$id_personne_physique][$date])) {
-                $this->details['svn'][$id_personne_physique][$date] = 0;
+            if (isset($auteurs[$auteur])) { // on affiche que les membres AFUP
+                $id_personne_physique = $auteurs[$auteur];
+                if (!isset($this->details['git'][$id_personne_physique][$date])) {
+                    $this->details['git'][$id_personne_physique][$date] = 0;
+                }
+                $this->details['git'][$id_personne_physique][$date]++;
             }
-            $this->details['svn'][$id_personne_physique][$date]++;
         }
-
+        fclose($fp);
         return true;
     }
 
-	function extraireLogSVNBrut($refresh = false)
+    function extraireLogSVNBrut($refresh = false)
     {
         if ($refresh) $this->rafraichirLogSVN();
         $logsvn = $this->logsvn;
@@ -76,13 +70,41 @@ class AFUP_Oeuvres {
             $revision[$current_rev]["msg"] = $logentry->msg;
             $revision[$current_rev]["date"] = $logentry->date;
             if (isset($logentry->paths)) {
-	            foreach ($logentry->paths->children() as $path) {
-	            	$action = $path->attributes()->action;
-	            	$revision[$current_rev]["paths"][] = $action . " - " . $path;
-	            }
+                foreach ($logentry->paths->children() as $path) {
+                    $action = $path->attributes()->action;
+                    $revision[$current_rev]["paths"][] = $action . " - " . $path;
+                }
             }
         }
         arsort($revision);
+        return $revision;
+    }
+
+    function rafraichirLogGit()
+    {
+        $date = mktime(0, 0, 0, date('m') - 12, 1, date('Y'));
+        if (is_writable($this->loggit)) {
+            $commande = 'git log --since="' . date('Y-m-d', $date) . '" --pretty="%H;%an;%ae;%ai;%s" | grep -v "Merge pull request" > '.$this->loggit;
+            return exec($commande);
+        } else {
+            return false;
+        }
+    }
+
+    function extraireLogGitBrut($refresh = false)
+    {
+        if ($refresh) $this->rafraichirLogGit();
+        $fp = fopen($this->loggit, 'r');
+        $revision = array();
+        while (($data = fgetcsv($fp, 1000, ";")) !== false) {
+            $current_rev = $data[0];
+            $revision[$current_rev]["rev"] = $current_rev;
+            $revision[$current_rev]["user"] = $data[1];
+            $revision[$current_rev]["user_email"] = $data[2];
+            $revision[$current_rev]["msg"] = $data[4];
+            $revision[$current_rev]["date"] = $data[3];
+        }
+        fclose($fp);
         return $revision;
     }
 
@@ -321,6 +343,7 @@ class AFUP_Oeuvres {
         ;
 
         $liste_categories = $this->_bdd->obtenirTous($requete);
+        $categories = array();
         foreach ($liste_categories as $unique_categorie) {
             $categories[] = $unique_categorie["categorie"];
         }

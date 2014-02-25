@@ -274,10 +274,14 @@ $pages = array(
 		        'nom' => 'Logs',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
 		    ),
-		    'logsvn' => array(
-		        'nom' => 'Logs SVN',
-		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
-		    ),
+            'logsvn' => array(
+                'nom' => 'Logs SVN',
+                'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+            ),
+            'loggit' => array(
+                'nom' => 'Logs GIT',
+                'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+            ),
 		    'updatesvn' => array(
 		        'nom' => 'Mise à jour via Git',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
