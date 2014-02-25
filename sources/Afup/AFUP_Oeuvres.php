@@ -84,6 +84,7 @@ class AFUP_Oeuvres {
     {
         $date = mktime(0, 0, 0, date('m') - 12, 1, date('Y'));
         if (is_writable($this->loggit)) {
+            chdir($GLOBALS['conf']->obtenir('git|local_repo'));
             $commande = 'git log --since="' . date('Y-m-d', $date) . '" --pretty="%H;%an;%ae;%ai;%s" | grep -v "Merge pull request" > '.$this->loggit;
             return exec($commande);
         } else {
