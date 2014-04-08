@@ -121,7 +121,7 @@ class AFUP_Forum
     	foreach ($sessions as $session) {
     		if ($jour != mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']))) {
     			$jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
-    			$deroulement .= "<h2 class=\"jour\">".date("d/m/Y", $jour)."</h2>";
+    			$deroulement .= "<h2 class=\"jour\">".($jour ? date("d/m/Y", $jour) : 'Jour à définir')."</h2>";
     		}
     		if ($heure != $session['debut']) {
     			$heure = $session['debut'];
@@ -157,7 +157,7 @@ class AFUP_Forum
     	foreach ($sessions as $session) {
     		if ($jour != mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']))) {
     			$jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
-    			$deroulement .= "<h2 class=\"jour\">".date("d/m/Y", $jour)."</h2>";
+    			$deroulement .= "<h2 class=\"jour\">" . ($jour ? date("d/m/Y", $jour) : 'Jour à définir') ."</h2>";
     		}
     		if ($heure != $session['debut']) {
     			$heure = $session['debut'];
