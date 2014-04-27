@@ -16,7 +16,7 @@ foreach ($sessions as $index => $session) {
   $session['conferenciers'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
   $session['journees'] = explode(" ", $session['journee']);
 
-  if ('29' == date('d', $session['debut'])) {
+  if ('23' == date('d', $session['debut'])) {
     $journees[0][] = $session;
   } else {
     $journees[1][] = $session;
