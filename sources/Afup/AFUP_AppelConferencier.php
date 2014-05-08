@@ -716,18 +716,21 @@ class AFUP_AppelConferencier
         require_once dirname(__FILE__).'/AFUP_Configuration.php';
         $configuration = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/config.php');
 
-        $requete = '
-        select prenom, nom, email
-        from afup_conferenciers
-            inner join afup_conferenciers_sessions
-            on afup_conferenciers.conferencier_id=afup_conferenciers_sessions.conferencier_id
-        where
-            afup_conferenciers_sessions.session_id=' . $this->_bdd->echapper($session_id);
+        $requete = 'select prenom, nom, email, af.titre
+                    from afup_conferenciers ac
+                    inner join afup_conferenciers_sessions acs
+                        on ac.conferencier_id = acs.conferencier_id
+                    inner join afup_sessions a_s
+                        on a_s.session_id = acs.session_id
+                    inner join afup_forum af
+                        on af.id = a_s.id_forum
+                    where
+                        acs.session_id=' . $this->_bdd->echapper($session_id);
 
         $conferenciers = $this->_bdd->obtenirTous($requete);
 
         $corps  = "Bonjour, \n\n";
-        $corps .= "Nous avons bien enregistré votre soumission pour le forum PHP.\n";
+        $corps .= "Nous avons bien enregistré votre soumission pour le " . current($conferenciers)['titre'] . " .\n";
         $corps .= "Vous recevrez une réponse prochainement.\n\n";
         $corps .= "Le bureau\n\n";
         $corps .= $configuration->obtenir('afup|raison_sociale')."\n";
