@@ -392,10 +392,13 @@ section article .links a:hover, section article a.external:hover {
 .sponsors .logo {
 	float:right;
 	width:150px;
+    text-align: right;
 }
 
 .sponsors .logo img {
 	float:none;
+    max-width:100%;
+    max-height:100%;
 }
 
 a.btn {
