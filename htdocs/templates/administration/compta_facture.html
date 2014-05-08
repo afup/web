@@ -14,6 +14,7 @@
             <th>Ville</th>
             <th>Numero facture</th>
             <th>Etat paiement</th>
+            <th>Prix</th>
             <th>&nbsp;</th>
        </tr>
     {foreach from=$ecritures item=ecriture}
@@ -30,6 +31,7 @@
             {else}
             <td style="text-align: center;background-color:#FBD61A">En attente de paiement</td>
             {/if}
+            <td style="text-align: right">{$ecriture.prix}</td>
             <td style="text-align: right">
                <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a href="index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={$ecriture.numero_facture}" title="Télécharger la facture"><img src="{$chemin_template}images/famfamfam/page_white_acrobat.png" alt="Téléchargement de la facture" /></a>

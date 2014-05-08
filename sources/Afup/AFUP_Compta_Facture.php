@@ -18,13 +18,19 @@ class AFUP_Compta_Facture
     {
 
 		$requete  = 'SELECT ';
-		$requete .= ' afup_compta_facture.* ';
-		$requete .= 'FROM  ';
-		$requete .= ' afup_compta_facture  ';
-		$requete .= 'WHERE  ';
-		$requete .= ' numero_devis != "" ';
-		$requete .= 'ORDER BY ';
-		$requete .= ' afup_compta_facture.date_devis DESC';
+		$requete .= ' acf.*, sum(quantite * pu) prix ';
+        $requete .= 'FROM ';
+        $requete .= ' afup_compta_facture acf ';
+        $requete .= 'LEFT JOIN  ';
+        $requete .= ' afup_compta_facture_details acfd ';
+        $requete .= 'ON ';
+        $requete .= ' acfd.idafup_compta_facture = acf.id ';
+        $requete .= 'WHERE  ';
+        $requete .= ' numero_devis != "" ';
+        $requete .= 'GROUP BY ';
+        $requete .= ' acf.id, date_devis, numero_devis, date_facture, numero_facture, societe, service, adresse, code_postal, ville, id_pays, email, observation, ref_clt1, ref_clt2, ref_clt3, nom, prenom, tel, etat_paiement, date_paiement, devise_facture ';
+        $requete .= 'ORDER BY ';
+        $requete .= ' acf.date_devis DESC';
 
 		return $this->_bdd->obtenirTous($requete);
     }
@@ -50,14 +56,20 @@ class AFUP_Compta_Facture
 	function obtenirFacture()
     {
 
-		$requete  = 'SELECT ';
-		$requete .= ' afup_compta_facture.* ';
-		$requete .= 'FROM  ';
-		$requete .= 'afup_compta_facture  ';
-		$requete .= 'WHERE  ';
-		$requete .= ' numero_facture != "" ';
-		$requete .= 'ORDER BY ';
-		$requete .= 'afup_compta_facture.date_facture DESC';
+        $requete  = 'SELECT ';
+        $requete .= ' acf.*, sum(quantite * pu) prix ';
+        $requete .= 'FROM ';
+        $requete .= ' afup_compta_facture acf ';
+        $requete .= 'LEFT JOIN  ';
+        $requete .= ' afup_compta_facture_details acfd ';
+        $requete .= 'ON ';
+        $requete .= ' acfd.idafup_compta_facture = acf.id ';
+        $requete .= 'WHERE  ';
+        $requete .= ' numero_facture != "" ';
+        $requete .= 'GROUP BY ';
+        $requete .= ' acf.id, date_devis, numero_devis, date_facture, numero_facture, societe, service, adresse, code_postal, ville, id_pays, email, observation, ref_clt1, ref_clt2, ref_clt3, nom, prenom, tel, etat_paiement, date_paiement, devise_facture ';
+        $requete .= 'ORDER BY ';
+        $requete .= ' acf.date_facture DESC';
 
 		return $this->_bdd->obtenirTous($requete);
     }
