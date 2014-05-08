@@ -17,7 +17,7 @@ $pages = array(
                 'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
             ),
 		    'membre_redmine' => array(
-		        'nom' => 'Accès  Redmine',
+		        'nom' => 'Déclarer un problème (GitHub)',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 		    ),
             'membre_cotisation' => array(
