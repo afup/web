@@ -98,12 +98,12 @@ if ($action == 'lister') {
    {
    $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', array('language' => 'fr',
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y'),
+  																				'minYear' => date('Y')-3,
   																				'maxYear' => date('Y')));
    } else {
    $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', array('language' => 'fr',
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y')-3,
+  																				'minYear' => date('Y'),
   																				'maxYear' => date('Y')));
 
    }
