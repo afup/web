@@ -129,7 +129,7 @@ class AFUP_Site_Accueil {
             $colonne .= '<a href="'.$article->route().'" class="article article-teaser">';
             $colonne .= '<time datetime="'.date('Y-m-d', $article->date).'">'.date('d|m|y', $article->date).'</time>';
             $colonne .= '<h2>'.$article->titre.'</h2>';
-            $colonne .= '<p>'.$descriptif.'</p>';
+            $colonne .= '<p>'.strip_tags($descriptif, '<p><strong>').'</p>';
             $colonne .= '</a>';
         }
 
