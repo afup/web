@@ -1,0 +1,20 @@
+<form id="form_etre_tenu_au_courant" name="form_etre_tenu_au_courant" method="post" action="inscription_rappel.php">
+    <fieldset>
+        <legend>&nbsp;Etre tenu au courant du Forum PHP 2014&nbsp;</legend>
+        <div class="clearfix {if $rappelInvalide}error{/if}">
+            <label class="libelle" for="email">Adresse email</label>
+            <div class="input">
+                <input type="text" name="email" value="" />
+                <input type="submit" name="envoyer" value="envoyer" />
+                {if $rappelInvalide}
+                <br/><span class="help-inline">Adresse invalide</span>
+                {/if}
+            </div>
+        </div>
+        <div class="note">
+        	<em><strong>Note :</strong> seul l'AFUP vous enverra des emails avec cette adresse.
+        	Il y en aura au maximum trois&nbsp;: annonce du programme, ouverture des inscriptions
+        	et rappel juste avant que le Forum soit complet.</em>
+        </div>
+    </fieldset>
+</form>
