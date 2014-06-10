@@ -6,10 +6,6 @@ Un outils du back office permet d'envoyer une convocation.
 
 Cette convocation est un email au format texte (texte repris depuis le formulaire du backoffice).
 
-## configuration du lien
-
-dans le fichier ```sources/Afup/AFUP_Inscriptions_Forum.php``` (ligne 201), il faut paramétrer la variable ```$lien``` dont le contenu remplacera %LIEN dans le corps du message.
-
 ## création de la page de convocation pour l'évènement
 
 Le fichier a adapter est ```convocation_visiteurs.html``` : exemple ```htdocs/templates/phptourlyon2014/convocation_visiteurs.html```
