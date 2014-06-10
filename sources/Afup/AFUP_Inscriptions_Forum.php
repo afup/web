@@ -198,7 +198,7 @@ class AFUP_Inscriptions_Forum
     			$qui = $inscrit['prenom'].' '.$inscrit['nom'];
     			$body = str_replace("%INSCRIT", $qui, $corps);
 
-    			$lien = "http://www.afup.org/pages/forumphp2013/convocation_visiteurs.php?id=".$inscrit['md5key'];
+    			$lien = "http://www.afup.org/pages/phptourlyon2014/convocation_visiteurs.php?id=".$inscrit['md5key'];
     			$body = str_replace("%LIEN", $lien, $body);
     			$mail->Body = $body;
 
