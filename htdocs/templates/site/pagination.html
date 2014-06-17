@@ -1,0 +1,32 @@
+<nav class="pagination">
+    <ul>
+        {* Début et précédent *}
+        {if 1 != $pagination_page_courante}
+            <li><a href="{pagination_genere_route page=1}">&lt;&lt;</a></li>
+            <li><a href="{pagination_genere_route page=$pagination_page_courante-1}">&lt;</a></li>
+        {else}
+            <li>&lt;&lt;</li>
+            <li>&lt;</li>
+        {/if}
+
+        {* Liste des pages *}
+        {foreach from=$pagination_pages item=i}
+        <li>
+            {if $i != $pagination_page_courante}
+                <a href="{pagination_genere_route page=$i}">{$i}</a>
+            {else}
+                {$i}
+            {/if}
+        </li>
+        {/foreach}
+
+        {* Suivant et fin *}
+        {if $pagination_pages|@end != $pagination_page_courante}
+            <li><a href="{pagination_genere_route page=$pagination_page_courante+1}">&gt;</a></li>
+            <li><a href="{pagination_genere_route page=$pagination_pages|@end}">&gt;&gt;</a></li>
+        {else}
+            <li>&gt;</li>
+            <li>&gt;&gt;</li>
+        {/if}
+    </ul>
+</nav>
