@@ -13,3 +13,5 @@ deps.lock
 
 htdocs/cache
 configs/application/config.php
+tests/simpletest
+tests/unitaires/config.php

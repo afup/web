@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/AFUP_Configuration.php';
 require_once dirname(__FILE__).'/AFUP_Base_De_Donnees.php';
+require_once dirname(__FILE__).'/AFUP_Pagination.php';
 
 class AFUP_Site_Base_De_Donnees extends AFUP_Base_De_Donnees {
     function __construct() {
@@ -827,8 +828,10 @@ class AFUP_Site_Rubrique {
     public $icone;
     public $date;
     public $etat;
+    public $pagination;
     protected $bdd;
     protected $conf;
+    protected $page_courante;
 
     function __construct($id = 0, $bdd = false, $conf = false) {
         $this->id = $id;
@@ -844,17 +847,29 @@ class AFUP_Site_Rubrique {
         } else {
             $this->conf = $GLOBALS['AFUP_CONF'];
         }
+
+        if (isset($_GET['page_courante'])) {
+            $this->page_courante = (int)$_GET['page_courante'];
+        }
+        if ($this->page_courante <= 0) {
+            $this->page_courante = 1;
+        }
     }
 
     function afficher() {
         $article = new AFUP_Site_Article(null, $this->bdd);
         $article->id_site_rubrique = $this->id;
         $article->charger_dernier_depuis_rubrique();
+
+        $html_pagination = $this->pagination_html();
+
         return '<div id="main" class="mod item left content w66 m50 t100">'.
           	'<h1>'.$this->titre().'</h1>'.
          	$this->corps().
+            $html_pagination.
 			$this->rubriques_dans_la_rubrique().
 			$this->articles_dans_la_rubrique().
+            $html_pagination.
 			'<div class="breadcrumbs">'.$this->fil_d_ariane().'</div>'.
 			'</div>';
     }
@@ -914,6 +929,7 @@ class AFUP_Site_Rubrique {
         $this->icone = $rubrique['icone'];
         $this->date = $rubrique['date'];
         $this->etat = $rubrique['etat'];
+        $this->pagination = $rubrique['pagination'];
     }
 
     function charger() {
@@ -1093,6 +1109,13 @@ class AFUP_Site_Rubrique {
         $requete .= '  etat = 1 ';
         $requete .= ' AND id_site_rubrique = '.(int)$this->id;
         $requete .= ' ORDER BY date DESC';
+
+        if ($this->pagination > 0) {
+            $offset = ($this->page_courante-1)*$this->pagination;
+            $limit  = $this->pagination;
+            $requete .= ' LIMIT '.(int)$offset.', '.$limit;
+        }
+
         $articles = $this->bdd->obtenirTous($requete);
 
         if (is_array($articles)) {
@@ -1104,6 +1127,47 @@ class AFUP_Site_Rubrique {
         }
 
         return $autres;
+    }
+
+    function compte_autres_articles() {
+        $requete  = ' SELECT';
+        $requete .= '  COUNT(*) ';
+        $requete .= ' FROM';
+        $requete .= '  afup_site_article ';
+        $requete .= ' WHERE ';
+        $requete .= '  etat = 1 ';
+        $requete .= ' AND id_site_rubrique = '.(int)$this->id;
+        $requete .= ' ORDER BY date DESC';
+
+        return $this->bdd->obtenirUn($requete);
+    }
+
+    function pagination_html() {
+        if ($this->pagination) {
+            return new AFUP_Pagination(
+                $this->page_courante,
+                $this->pagination,
+                $this->compte_autres_articles(),
+                array($this, 'genere_route')
+            );
+        } else {
+            return '';
+        }
+    }
+
+    function genere_route($params) {
+        $page = isset($params['page']) ? $params['page'] : 1;
+        $url = $this->route();
+        if ($page != 1) {
+            if (strpos($url, '?') === false) {
+                $url.= '?';
+            } else {
+                $url.= '&';
+            }
+            $url.= 'page_courante='.$page;
+        }
+
+        return $url;
     }
 }
 
