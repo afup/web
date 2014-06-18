@@ -7,18 +7,18 @@
 {include file='_errors.html'}
 {elseif $addAction == true}
 <p class="texte">
-Votre entreprise est en instance de validation par nos soins. Elle a Ã©tÃ© enregistrÃ©e avec succÃ¨s et sera mise en ligne
-sous rÃ©serve d'acceptation par les membres administrateurs de l'AFUP.
+Votre entreprise est en instance de validation par nos soins. Elle a été enregistrée avec succès et sera mise en ligne
+sous réserve d'acceptation par les membres administrateurs de l'AFUP.
 </p>
 <p class="texte">
 <a href="/">retour</a>
 </p>
 {else}
 <p class="texte">
-L'inscription &agrave; l'annuaire des professionnels de l'AFUP est gratuite et 
-accessible &agrave; toutes les entreprises fran&ccedil;aise. Il est demand&eacute; 
-aux personnes soumettant une entreprise d'&ecirc;tre objectives et franches. <b>En cas de manquement &agrave; ce principe</b> 
-l'entreprise sera effac&eacute;e de l'annuaire et ce sans qu'aucune justification de la part de l'AFUP. Une validation manuelle 
+L'inscription &agrave; l'annuaire des professionnels de l'AFUP est gratuite et
+accessible &agrave; toutes les entreprises fran&ccedil;aise. Il est demand&eacute;
+aux personnes soumettant une entreprise d'&ecirc;tre objectives et franches. <b>En cas de manquement &agrave; ce principe</b>
+l'entreprise sera effac&eacute;e de l'annuaire et ce sans qu'aucune justification de la part de l'AFUP. Une validation manuelle
 sera effectu&eacute;e pour v&eacute;rifier que les informations sont correctes avant mise en ligne.
 </p>
 {if $formError}
@@ -41,7 +41,7 @@ while (opt = oSelect.options[i++]) {
   }
 }
 if (found < 1) {
-  alert('Vous devez prÃ©ciser la forme juridique de la sociÃ©tÃ©');
+  alert('Vous devez préciser la forme juridique de la société');
   oSelect.focus();
   return false;
 }
@@ -54,7 +54,7 @@ return false;
 
 // checks if SIREN has been filled
 if (tf['SIREN'].value == '') {
-  alert('Vous devez indiquer votre numÃ©ro de SIREN ou de SIRET');
+  alert('Vous devez indiquer votre numéro de SIREN ou de SIRET');
   tf.SIREN.focus();
 return false;
 }
@@ -75,7 +75,7 @@ return false;
 
 // checks if Telephone has been filled
 if (tf['Telephone'].value == '') {
-  alert('Vous devez indiquer votre numÃ©ro de tÃ©lÃ©phone');
+  alert('Vous devez indiquer votre numéro de téléphone');
   tf.Telephone.focus();
 return false;
 }
@@ -110,7 +110,7 @@ while (opt = oSelect.options[i++]) {
   }
 }
 if (found < 1) {
-  alert('Vous devez prÃ©ciser la zone gÃ©ographique dans laquelle se situe votre sociÃ©tÃ©');
+  alert('Vous devez préciser la zone géographique dans laquelle se situe votre société');
   oSelect.focus();
   return false;
 }
@@ -123,7 +123,7 @@ while (opt = oSelect.options[i++]) {
   }
 }
 if (found < 1) {
-  alert('Vous devez prÃ©ciser la taille de votre sociÃ©tÃ©');
+  alert('Vous devez préciser la taille de votre société');
   oSelect.focus();
   return false;
 }
@@ -136,13 +136,13 @@ while (opt = oSelect.options[i++]) {
   }
 }
 if (found < 1) {
-  alert('Vous devez prÃ©ciser l\'activitÃ© principale de votre sociÃ©tÃ©');
+  alert('Vous devez préciser l\'activité principale de votre société');
   oSelect.focus();
   return false;
 }
 // checks if Password has been filled
 if (tf['Password'].value == '') {
-  alert('Vous devez spÃ©cifier un mot de passe');
+  alert('Vous devez spécifier un mot de passe');
   tf.Password.focus();
 return false;
 }
@@ -240,9 +240,9 @@ return true;
 
         </td>
         <td style="vertical-align: top;">
-        
+
           {html_options name=Zone class=champ_form options=$zoneList selected=$values.Zone}
-          
+
         </td>
       </tr>
       <tr>
@@ -250,7 +250,7 @@ return true;
         </td>
 
         <td style="vertical-align: top;">
-        
+
           {html_options name=TailleSociete class=champ_form options=$companySizeList selected=$values.TailleSociete}
 
         </td>
@@ -259,7 +259,7 @@ return true;
         <td style="vertical-align: top;" class="titre" bgcolor="#c8cee2">Activit&eacute; principale<br>
         </td>
         <td style="vertical-align: top;">
-        
+
           {html_options name=ActivitePrincipale class=champ_form options=$activitiesList selected=$values.ActivitePrincipale}
 
         </td>

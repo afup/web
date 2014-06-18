@@ -1,9 +1,9 @@
 <?php
-// Foncitons pour l'administration des abonnements des utilisateurs
+// Fonctions pour l'administration des abonnements des utilisateurs
 // ezmlm-idx pour le logiciel de la gestion de la liste
 
     /**
-     * Verifier si un utilisateur est abonnÃ© Ã  une liste
+     * Verifier si un utilisateur est abonné à une liste
      * @var $email le courriel de la personne
      * @var $liste le courriel de la liste
      * @var $admin de quoi prouver que l'admin est vraiement admin
@@ -13,7 +13,7 @@
         trigger_error("en cours");
     }
     /**
-     * Abonner un utilisateur Ã  une liste
+     * Abonner un utilisateur à une liste
      * @var $email le courriel de la personne
      * @var $liste le courriel de la liste
      * @var $admin de quoi prouver que l'admin est vraiement admin
@@ -23,7 +23,7 @@
         trigger_error("en cours");
     }
     /**
-     * DÃ¨sabonner un utilisateur Ã  une liste
+     * Désabonner un utilisateur à une liste
      * @var $email le courriel de la personne
      * @var $liste le courriel de la liste
      * @var $admin de quoi prouver que l'admin est vraiement admin

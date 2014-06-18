@@ -10,14 +10,14 @@ $assemblee_generale = new AFUP_Assemblee_Generale($bdd);
 
 if ($action == 'lister' || $action== 'listing' ) {
 
-    // Valeurs par défaut des paramÃtres de tri
+    // Valeurs par défaut des paramètres de tri
     $timestamp = $assemblee_generale->obternirDerniereDate();
     $list_date_assemblee_generale = convertirTimestampEnDate($timestamp);
     $list_ordre = 'nom';
     $list_sens = 'asc';
     $list_associatif = false;
 
-    // Modification des paramÃtres de tri en fonction des demandes passées en GET
+    // Modification des paramètres de tri en fonction des demandes passées en GET
     if (isset($_GET['tri']) && in_array($_GET['tri'], $tris_valides)
         && isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
         $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
@@ -105,7 +105,7 @@ if ($action == 'lister' || $action== 'listing' ) {
         $ok = $assemblee_generale->preparer($formulaire->exportValue('date'));
 
         if ($ok !== false) {
-            AFUP_Logs::log('Ajout de la préparation des personnes physiques Ã  l\'assemblée générale');
+            AFUP_Logs::log('Ajout de la préparation des personnes physiques à l\'assemblée générale');
             afficherMessage('La préparation des personnes physiques a été ajoutée', 'index.php?page=assemblee_generale&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de la préparation des personnes physiques');
