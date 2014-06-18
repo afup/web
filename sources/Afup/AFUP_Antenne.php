@@ -1,6 +1,6 @@
 <?php
 //@TODO
-// Ajout pÃ©riode comptable automatiquement
+// Ajout période comptable automatiquement
 // revoir sous totaux balance
 // test champ obligatoire lors de la saisie
 // ajout filtre par mois pour les journaux banques
@@ -17,7 +17,7 @@ class AFUP_Antenne
     }
 
 
-  
+
 	function obtenirListAntennes($filtre='',$where='')
 	{
 		$requete  = 'SELECT ';
@@ -45,7 +45,7 @@ class AFUP_Antenne
 		}
 	}
 
-	
+
 
 	function ajouter($table,$champ,$valeur)
 	{
@@ -55,23 +55,23 @@ class AFUP_Antenne
 		$requete .= 'VALUES (';
 		$requete .= $this->_bdd->echapper($valeur) . ' ';
 		$requete .= ');';
-	
+
 		return $this->_bdd->executer($requete);
 	}
-	
+
 	function modifier($table,$id,$champ,$valeur)
 	{
-	
+
 		$requete = 'UPDATE ';
 		$requete .= ''.$table.' ';
 		$requete .= 'SET ';
 		$requete .= ''.$champ.' = '.$this->_bdd->echapper($valeur) . ' ';
 		$requete .= 'WHERE ';
 		$requete .= 'id = ' . $id. ' ';
-	
+
 		return $this->_bdd->executer($requete);
 	}
-	
+
 
 }
 

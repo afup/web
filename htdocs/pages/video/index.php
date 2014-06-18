@@ -1,11 +1,11 @@
 <?php
 /**
  * Fichier principal site 'Video'
- * 
+ *
  * @author    Perrick Penet   <perrick@noparking.fr>
  * @author    Olivier Hoareau <olivier@phppro.fr>
  * @copyright 2010 Association Française des Utilisateurs de PHP
- * 
+ *
  * @category Video
  * @package  Video
  * @group    Pages
@@ -33,7 +33,7 @@ $videos[3] = array('/pages/video/itw_little.flv',   330, 250, "Qui sont-ils, que
 //$videos[5] = array('/pages/video/itw_high.flv',     570, 430, "Qui sont-ils, que vous conseillent-ils ?");
 
 if (!isset($videos[$_SERVER['QUERY_STRING']])) {
-    $title = 'Pas de vidÃ©o';
+    $title = 'Pas de vidéo';
     $video = null;
 } else {
     $title = $videos[$_SERVER['QUERY_STRING']][3];

@@ -33,7 +33,7 @@ $sessions_fonctionnelles=array(
                                               'nom'  => 'Thomas STEINER'))),
     array('horaire'            => '11h40 - 12h40',
           'nom'                => 'PHP dans l\'entreprise ... la contribution de ZEND',
-          'resume'             => 'Zend est un acteur essentiel de la planète PHP : c\'est l\'entreprise qui a bÃ¢ti le « Zend Engine » , le coeur de PHP. Zend a développé de nombreux outils commerciaux évoluant dans le monde PHP et a noué de nombreux partenariats avec les plus grands (IBM, Oracle, Intel, SAP et tout récemment Microsoft).'.
+          'resume'             => 'Zend est un acteur essentiel de la planète PHP : c\'est l\'entreprise qui a bâti le « Zend Engine » , le coeur de PHP. Zend a développé de nombreux outils commerciaux évoluant dans le monde PHP et a noué de nombreux partenariats avec les plus grands (IBM, Oracle, Intel, SAP et tout récemment Microsoft).'.
                                   '<br />Laurent Bouffies, directeur marketing de Zend-France nous a présenté quelques exemples de réalisations : Caradisiac.com, Alapage.com, Orange-FT, Direction Générale de la Comptabilité Publique...'.
                                   '<br />Zeev Suraski a poursuivi en montrant le formidable bond de PHP en 2007 : situé en 3ème place derrière Java puis .Net, c\'est en fait PHP qui connaîtra la plus forte croissance de 2007 (+37%) alors que l\'on aura pour .Net (+27%) et  pour Java (+16%) (Chiffres données par EDC - Evans Data Corportation).'.
                                   '<br />Une autre surprise a été le ralliement de Zend au projet Eclipse. Bien qu\'ayant son propre IDE (Integrated Development Environmment) commercial, Zend pense qu\'il préférable d\'alimenter un écosystème fort autour de PHP. La version 0.7 de la version Eclipse de l\'IDE de Zend est sur le point de sortir et la version 1,0 est annoncée pour mi-2007. Zend n\'en continuera pas moins de commercialiser son IDE et fournira en outre des modules complémentaires pour la version Eclipse.'.
@@ -72,7 +72,7 @@ $sessions_fonctionnelles=array(
                                   '<li>sécurité</li>'.
                                   '<li>maintenance</li></ul>'.
                                   'Guillaume PON&Ccedil;ON, également de la société Anaska et auteur du livre « best practices PHP 5 » à enchaîné en présentant les outils permettant de mener à bien ce type d\'audit : XDebug + KCacheGrind et la "Zend platform".'.
-                                  'Ces outils permettent de repérer les opérations coÃ»teuses et les doublons qui conduiront à factoriser le code.'.
+                                  'Ces outils permettent de repérer les opérations coûteuses et les doublons qui conduiront à factoriser le code.'.
                                   'Enfin pour terminer les deux auteurs ont présenté quelques solutions d\'optimisations :'.
                                   '<ul><li>Architecture (répartition de charges)</li>' .
                                   '<li>MySQL (réplication)</li>'.
@@ -94,7 +94,7 @@ $sessions_fonctionnelles=array(
           'resume'             => 'Décidément tournée vers des solutions d\'envergure, cet après-midi s\'est poursuivie autour de la refonte du site de Richelieu Finance.'.
                                   '<br />Hervé Schmitt, coordinateur e-business de Richelieu Fiance, après un rapide état des lieux, souhaitait une solution plus professionnelle le rendant moins dépendant de son fournisseur. Ce sont Tristant Kivallan et Xavier Lacot de "Clever Age" qui l\'ont assisté dans cette démarche.'.
                                   '<br />Leur choix s\'est porté sur le framework Symfony qui permettait de reprendre les développements existants.'.
-                                  '<br />Richelieu Finance gère les actifs de 10 000 clients et se trouve soumis à de fortes contraintes réglementaires et concurrentielles. Les données à gérer se répartissent en articles à faible volumétrie et en données métier à forte volumétrie (historique sur plus de 10 ans de milliers d\'actions). Les premières sont servies par un CMS, tandis que les secondes sont présentées grÃ¢ce à des grapheurs ou des tables extraites de données interrogées via les extensions PEAR : DBO.'.
+                                  '<br />Richelieu Finance gère les actifs de 10 000 clients et se trouve soumis à de fortes contraintes réglementaires et concurrentielles. Les données à gérer se répartissent en articles à faible volumétrie et en données métier à forte volumétrie (historique sur plus de 10 ans de milliers d\'actions). Les premières sont servies par un CMS, tandis que les secondes sont présentées grâce à des grapheurs ou des tables extraites de données interrogées via les extensions PEAR : DBO.'.
                                   '<br />Le rôle de Symfony est d\'orchestrer la génération des pages PHP.'.
                                   '<br />L\'atelier de développement s\'appuyait sur le gestionnaire de version Subversion et ses compléments TRAC (suivis de bugs, wiki, feuilles de route, timeline, etc.) ainsi que svn:externals pour faciliter le reversement de code.'.
                                   '<br />L\'internationalisation prise en charge dans la version 1.0 de Symfony, qui, de plus, stabilise les API, apportera de facto cette fonctionnalité aux développements déjà réalisés.'.
@@ -170,7 +170,7 @@ $sessions_techniques=array(
                                   '<br />Les tests peuvent enfin être regroupés en "suites".'.
                                   '<br />Un outil particulièrement intéressant, "Fakemail" permet de tester le contenu des emails envoyés par l\'application puisqu\'ils seront, en fait, « détournés » vers le disque dur où ils seront analysés.'.
                                   '<br />Pour vérifier si l\'ensemble du code est couvert par les tests, on utilise le Code coverage avec Xdebug.'.
-                                  '<br />Le test de la partie client peut être mis en oeuvre grÃ¢ce à Selenium Remote Control. Cet outil complémentaire d\'Internet Explorer ou de Firefox permet de créer des scripts qui seront exécutés par PHPUnit.'.
+                                  '<br />Le test de la partie client peut être mis en oeuvre grâce à Selenium Remote Control. Cet outil complémentaire d\'Internet Explorer ou de Firefox permet de créer des scripts qui seront exécutés par PHPUnit.'.
                                   '<br />De grandes applications : eZ systems, Zend Framework, OpenTime utilisent des centaines, voire des milliers de tests.'.
                                   '<br />Voilà une méthode très pro à utiliser sans modération dans nos bonnes pratiques.',
           'talks'              => array(array('code' => 'ppt',

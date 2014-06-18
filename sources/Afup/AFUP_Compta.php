@@ -1,6 +1,6 @@
 <?php
 //@TODO
-// Ajout pÃ©riode comptable automatiquement
+// Ajout période comptable automatiquement
 // revoir sous totaux balance
 // test champ obligatoire lors de la saisie
 // ajout filtre par mois pour les journaux banques
@@ -134,7 +134,7 @@ echo "</pre>";*/
 
     }
 
-    /* Journal des opÃ©ration
+    /* Journal des opération
      *
      */
 

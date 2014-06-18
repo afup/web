@@ -2,7 +2,7 @@
 
 /**
  * Affiche un message puis redirige le visiteur vers une URL spécifiée
- * @param   string  $message    Message Ã  afficher
+ * @param   string  $message    Message à afficher
  * @param   string  $url        URL vers laquelle rediriger le visiteur
  * @param   bool    $erreur     S'agit-il d'une erreur
  * @return  void
@@ -37,7 +37,7 @@ function &instancierFormulaire($url = null, $nom = 'formulaire') {
 /**
  * Renvoit un tableau contenant les éléments d'un formulaire
  *
- * @param   object  $formulaire     Formulaire Ã  traiter
+ * @param   object  $formulaire     Formulaire à traiter
  * @return  array
  */
 function genererFormulaire(&$formulaire) {
@@ -59,7 +59,7 @@ function genererFormulaire(&$formulaire) {
  */
 function verifierAction($actions_disponibles) {
     if (!is_array($actions_disponibles) || count($actions_disponibles) == 0) {
-        trigger_error("Les actions disponibles doivent Ãªtre passées sous forme d'un tableau d'au moins un élément", E_USER_ERROR);
+        trigger_error("Les actions disponibles doivent être passées sous forme d'un tableau d'au moins un élément", E_USER_ERROR);
         return false;
     }
 
@@ -73,7 +73,7 @@ function verifierAction($actions_disponibles) {
 /*
  * Remplace une caractère accentué par sa version non accentuée
  *
- * @param   string  $texte  Texte Ã  traiter
+ * @param   string  $texte  Texte à traiter
  * @return  string          Texte traité
  */
 function supprimerAccents($texte) {
