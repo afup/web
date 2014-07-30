@@ -46,7 +46,7 @@ foreach ($membresAfup as $ma) {
         if ($idx !== false) {
             unset($listes[$kl][$idx]); // marqué comme traité
         } else {
-            if ($newUser && in_array($kl, array('emploi', 'entraide'))) {
+            if ($newUser && in_array($kl, array('emploi', 'entraide', 'php-internals'))) {
                 // On l'ajoute si nouveau mais on ne force pas car il a pu se déconnecter de ces listes
                 echo " > ajout email à " . $kl . " : " . $ma . PHP_EOL;
                 $sympa->subscribe($ma, $kl, $m['prenom'] . ' ' . $m['nom']);
