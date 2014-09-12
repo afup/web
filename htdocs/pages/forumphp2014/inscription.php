@@ -13,7 +13,6 @@ $forum = new AFUP_Forum($bdd);
 $id_forum = $config_forum['id'];
 $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
 $forum_facturation = new AFUP_Facturation_Forum($bdd);
-cou
 $nombre_places   = $forum->obtenirNombrePlaces($id_forum);
 $nombre_inscrits = $forum_inscriptions->obtenirNombreInscrits($id_forum);
 
