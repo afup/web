@@ -26,7 +26,7 @@ if ($action == 'inscrire_forum')
   	 $sessions[] = array('session_id'=> $id_projet_php,'is_projet'=> true);
   }
 
-  $valeurs['id_forum']= 4;
+  $valeurs['id_forum']= (int)$_GET['id_forum'];
 
   $nb_conferencier = 0;
   $valeurs['citer_societe'] = true;
