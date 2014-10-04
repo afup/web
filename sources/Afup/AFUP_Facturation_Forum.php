@@ -351,7 +351,7 @@ class AFUP_Facturation_Forum
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
         if (is_null($chemin)) {
-            $pdf->Output('devis.pdf', 'D');
+            $pdf->Output('Devis - ' . ($facture['societe'] ? $facture['societe'] : $facture['nom'] . '_' . $facture['prenom']) . ' - '  . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -526,7 +526,7 @@ class AFUP_Facturation_Forum
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
         if (is_null($chemin)) {
-            $pdf->Output('facture.pdf', 'D');
+            $pdf->Output('Facture - ' . ($facture['societe'] ? $facture['societe'] : $facture['nom'] . '_' . $facture['prenom']) . ' - '  . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
