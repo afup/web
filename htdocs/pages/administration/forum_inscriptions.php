@@ -15,45 +15,47 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 
 if ($action == 'envoyer_convocation') {
 	$formulaire = &instancierFormulaire();
-	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2013',
+	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2014',
                                 'date_envoi' => date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))),
 								'corps' => 'Bonjour %INSCRIT,
 
-Le Forum PHP 2013 est proche ! Voici les dernières informations utiles avant de nous rejoindre :
+Le Forum PHP 2014 est à nos portes ! Et l\'événement annonçant complet, atteignant un niveau d\'inscriptions quasiment historique pour l\'AFUP, il promet d\'être mémorable... 
+Voici les dernières informations utiles à connaître afin de nous rejoindre :
 
  - Quand et comment retirer votre badge
 
-Le Forum PHP 2013 se tiendra au Beffroi de Montrouge, les jeudi 21 et vendredi 22 novembre 2013. Présentez-vous à l\'accueil du Forum PHP 2013 muni d\'une pièce d\'identité afin de retirer votre badge auprès de notre équipe.
-Les portes ouvriront à 8h30. Les premières conférences débutent à 9h00 : nous vous encourageons à être à l\'heure, afin d\'avoir le temps de récupérer votre badge, déposer vos affaires au vestiaire et profiter du buffet de petit-déjeuner ! Ne vous préoccupez pas du déjeuner : votre billet d\'entrée vous permettra de profiter d\'un en-cas à la pause du midi.
+Le Forum PHP 2014 se tiendra au Beffroi de Montrouge, les jeudi 23 et vendredi 24 octobre 2014. Présentez-vous à l\'accueil du Forum PHP 2014 afin de retirer votre badge auprès de notre équipe. Préservons l\'environnement, l\'impression de cette convocation (%LIEN%) n\'est pas nécessaire !
+Les portes ouvriront à 8h30. Les premières conférences débutent le jeudi à 9h : nous vous encourageons à être à l\'heure, afin d\'avoir le temps de récupérer votre badge, déposer vos affaires au vestiaire et profiter du buffet de petit-déjeuner. Ne vous préoccupez pas du déjeuner : votre billet d\'entrée vous permettra de profiter d\'un en-cas à la pause du midi.
 
-Pour imprimer la convocation : %LIEN
 
- - Comment se rendre au Forum PHP 2013 ?
+ - Comment se rendre au Forum PHP 2014 ?
 
-Le Beffroi de Montrouge est situé au 2 Place Emile Cresp, 92120 Montrouge.
-Le lieu est desservi par le métro, au terminus de la ligne 4 "Mairie de Montrouge". Il est également accessible via le tramway T3 (arrêt "Porte d\'Orléans", à 10 min à pieds), ou via les bus 68, 126, 128 (arrêt "Mairie de Montrouge").
-En voiture, via le périphérique : sortie porte d’Orléans, direction Montrouge Centre. Un parking est disponible place Emile Cresp. 
-Enfin pour les plus sportifs, un Point Vélib se situe devant la Mairie de Montrouge.
+Le Beffroi de Montrouge se trouve à la sortie du métro "Mairie de Montrouge", ligne 4. Il est situé place Emile Cresp, à Montrouge. Le grand bâtiment, en briques rouges, est immanquable !
 
- - Profitez du Forum PHP 2013 pour consulter nos docteur ès PHP au sein des cliniques-conseil !
 
-Pour la première fois en cette édition 2013, des cliniques-conseil seront animées par nos sponsors, toute la journée au sein de l\'espace sponsors. N\'hésitez pas à les visiter !
-Theodo vous proposera une clinique intitulée "Devops : accélérez vos déploiements pour une réactivité maximale". Adopter la culture, les outils et les méthodes Devops permet d\'accélérer toute votre organisation technique pour une réactivité maximale face aux besoins métiers. Trouvez ensemble les premières solutions simples et rapides pour accélérer vos déploiements !
-Les docteurs de Splio proposeront une clinique ayant pour thème "PHP au coeur d\'une architecture Big Data". Vous rencontrez des problèmes dans ce domaine ? L\'équipe R&D de Splio sera présente pour répondre à vos interrogations et vous faire part de son expérience.
-Alterway et ses spécialistes se pencheront sur tous vos problèmes de pratiques PHP, au sein de leur clinique "Du choix d’outils à l’hébergement : toutes les bonnes pratiques PHP !"  Vous avez besoin d\'une piqûre de rappel sur le déploiement automatique ? D\'une ordonnance pour choisir un framework ? Vous cherchez des conseils pour améliorer la santé de vos projets ? La clique de savants d\'Alterway est impatiente d\'entendre vos symptômes !
-Enfin, VA Consulting prescrira quantité de remèdes autour du thème "Zend Framework 2 - une solution universelle pour tous vos nouveaux projets PHP". Zend Technologies et VA Consulting associent leurs expertises pour réfléchir avec vous sur les problématiques que vous rencontrez dans le cadre de vos développements, et vous aident à tirer le meilleur profit de Zend Framework 2.
+ - Les ateliers pratiques, grande nouveauté du Forum PHP 2014
 
- - Le Forum PHP 2013 sur les réseaux sociaux et sur votre mobile
+Cette année nous mettons en place 4 ateliers pratiques : en petit comité, profitez des conseils des meilleurs experts sur un sujet précis, le tout pendant une demi-journée en direct sur votre machine. Ces ateliers se déroulent uniquement sur inscription. Vous avez pris votre place ? Il vous suffira de vous présenter avec votre coupon EventBrite?, à l\'entrée de la salle réservée aux ateliers. Vous êtes intéressé par un atelier ? Il reste quelques places pour l\'atelier "Chasse aux bugs" mené par Sophie Beaupuis le vendredi après-midi (http://bit.ly/ZS2F3h)
+
+
+ - Profitez du Forum PHP 2014 pour consulter nos docteur ès PHP au sein des cliniques-conseils !
+
+Nos sponsors font venir leurs meilleurs experts pour soigner tous vos bobos PHP. Ainsi, Microsoft et Alterway, sponsors Platine de notre événement, vous proposeront deux cliniques-conseil, intitulées "Tirer le meilleur parti du Cloud avec Microsoft Azure et PHP, venez déployer votre projet !" dont se chargera Benjamin Moulès de Microsoft et Brainsonix, et "Adopter une démarche DevOps? pour les applications PHP déployées dans le Cloud Microsoft Azure", proposée par Stéphane Goudeau de Microsoft et Hervé Leclerc d’AlterWay?. Théodo, sponsor Or, proposera une clinique-conseil Théodo "Premiers secours", pour parer à tous vos petits soucis PHP et remplir votre trousse de secours de tous les indispensables : devops, travis, le débogage, le service en TDD ou encore l\'agilité / lean. Blablacar, sponsor Or, vous proposera de rencontrer Olivier Dolbeau sur la thématique qu\'il abordera durant sa conférence "Laisse pas trainer ton log !" programmée le jeudi 23 octobre de 12h15 à 13h. Enfin, Zend et Vesperia proposeront en commun une clinique-conseil intitulée "Continuous Deployment", pour vous emmener au-delà du DevOps? !
+
+
+ - Le plus grand apéro communautaire parisien de l\'année !
+
+Le jeudi 23 octobre, rendez-vous dès la fin des conférences au café Oz, place Denfert Rochereau. Un apéro dînatoire vous y attendra, et toute l\'équipe d\'organisation, les conférenciers et les sponsors seront présents pour ce qui s\'annonce comme la plus grande soirée communautaire de cette fin d\'année !
+
+
+ - Le Forum PHP 2014 sur les réseaux sociaux et sur votre mobile
 
 Le programme des 2 jours est disponible en version mobile : http://m.afup.org
-
-Le Forum PHP 2013 est complet. Envie de tweeter pendant le Forum PHP 2013 pour faire profiter vos followers ? Utilisez le hashtag #forumphp ! Et n\'oubliez pas de suivre l\'actualité de l\'AFUP sur nos réseaux sociaux :
+Envie de tweeter pendant le Forum PHP 2014 pour en faire profiter vos followers ? Utilisez le hashtag #forumphp ! Et n\'oubliez pas de suivre l\'actualité de l\'AFUP sur nos réseaux sociaux :
 Twitter : @afup 
 Facebook : www.facebook.com/fandelafup
 Google + : https://plus.google.com/u/0/b/103588986855606151405/103588986855606151405/posts
 
-
-On vous garde encore quelques surprises pour le jour de l\'ouverture du Forum PHP 2013, avec notamment la découverte des résultats du premier baromètre des salaires en PHP, réalisé avec notre partenaire Agence E. 
 Nous avons hâte de vous accueillir !
 
 A bientôt,
