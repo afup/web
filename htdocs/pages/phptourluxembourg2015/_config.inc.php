@@ -5,8 +5,7 @@
     Il faut aussi verifier le contenu des template (rechercher la date de l'année précedente )
     Modifer le pdf du formulaire papier dans "/site/templates/forumphpXXXX/inscription-forum.pdf"
        à partir du doc dans "/sources/doc/inscription au forum.odt"
-    Modifer le pdf du dossier sponsors dans "/site/templates/forumphp2009/pdf/Forum-PHP-2009-dossier-sponsor.pdf"
-       à partir du doc dans "/sources/forum/2009/Forum-PHP-2009-dossier-sponsor.odt"
+    "
  */
 // Param de configuration sur site du Forum PHP
 
