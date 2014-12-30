@@ -197,7 +197,7 @@ function check_porteur($porteur) {
         return "L'adresse du porteur est trop longue. Elle doit comporter au "
                . "plus 80 caractères.";
     }
-    if (preg_match('/[^a-z0-9\- :;_\.@]/is', $porteur)) {
+    if (preg_match('/[^a-z0-9\- :;_\.@+]/is', $porteur)) {
         return "IBS_PORTEUR: la commande peut contenir des lettres, chiffres, "
                . "soulignés, tirets, deux-points, points-virgules ou "
                . "arobases (@).";
