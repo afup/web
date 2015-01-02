@@ -7,9 +7,9 @@ class AFUP_Web {
     	if ($update === true) {
             $command = "cd ".$GLOBALS['conf']->obtenir('git|local_repo')."; git stash; git pull origin master; git stash pop;";
             $command .= "git checkout-index -f -a --prefix=/".$GLOBALS['conf']->obtenir('git|local_export');
-            apc_clear_cache();
+            opcache_reset();
     		$output = shell_exec($command);
-            apc_clear_cache();
+            opcache_reset();
     		return true;
     	} else {
     		return false;
