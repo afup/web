@@ -3,32 +3,17 @@
 class AFUP_Sympa
 {
     private $_bdd;
-    private $_directory;
+    private $_configUrl;
 
-    public function __construct($bdd, $directory)
+    public function __construct($bdd, $configUrl)
     {
         $this->_bdd = $bdd;
-        $this->_directory = rtrim($directory, '/') . '/';
+        $this->_configUrl = $configUrl;
     }
 
     public function getAllMailingList()
     {
-        exec('ls -al ' . $this->_directory . '*/config | awk \'{print $NF}\'', $tmpLists);
-        $lists = array();
-        foreach ($tmpLists as $l) {
-            $nom = str_replace(array($this->_directory,
-                                     '/config'),
-                               array('',
-                                     ''),
-                               $l);
-            $sujet = null;
-            exec('cat ' . $l . ' | grep ^subject | sed \'s#^subject ##\'', $sujet);
-            $lists[$nom]['sujet'] = $sujet[0];
-            $unsubscribe = null;
-            exec('cat ' . $l . ' | grep ^unsubscribe | sed \'s#^unsubscribe ##\'', $unsubscribe);
-            $lists[$nom]['unsubscribe'] = $unsubscribe[0];
-        }
-        return $lists;
+        return unserialize(file_get_contents($this->_configUrl));
     }
 
     public function getAllUsers()
