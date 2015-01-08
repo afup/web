@@ -3,10 +3,12 @@
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 
+require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Mailing.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Accreditation_Presse.php';
 $pays = new AFUP_Pays($bdd);
 $presse = new AFUP_Accreditation_Presse($bdd);
+$mailing = new AFUP_Mailing($bdd);
 
 // On créé le formulaire
 $formulaire = &instancierFormulaire();
@@ -58,22 +60,26 @@ if ($formulaire->validate()) {
                            6,  // 6 = PHPTour
                            1); // 1 = valide
     if ($ok) {
-        require_once 'phpmailer/class.phpmailer.php';
-        $mail = new PHPMailer;
-        $mail->AddAddress('communication@afup.org', 'Communication AFUP');
-        $mail->AddAddress('bureau@afup.org', 'Bureau AFUP');
-        $mail->From = $formulaire->exportValue('email');
-        $mail->FromName = $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom');
-        $mail->Subject = 'Demande d\'accréditation presse PHP Tour Luxembourg 2015';
-        $mail->Body = "Une demande d'accréditation a été déposé en ligne :\n"
-                    . " - titre : " . $formulaire->exportValue('titre_revue') . "\n"
-                    . " - correspondant : " . $formulaire->exportValue('civilite') . " " .  $formulaire->exportValue('prenom') . " " .  $formulaire->exportValue('nom') . "\n"
-                    . " - carte presse : " . $formulaire->exportValue('carte_presse') . "\n"
-                    . " - adresse : " . $formulaire->exportValue('adresse') . " | " . $formulaire->exportValue('code_postal') . " " . $formulaire->exportValue('ville') . " | " . $formulaire->exportValue('id_pays') . "\n"
-                    . " - téléphhone : " . $formulaire->exportValue('telephone') . "\n"
-                    . " - email : " . $formulaire->exportValue('email') . "\n"
-                    . " - commentaires : " . strip_tags($formulaire->exportValue('commentaires'));
-        $mail->Send();
+        $body = "Une demande d'accréditation a été déposé en ligne :\n"
+              . " - titre : " . $formulaire->exportValue('titre_revue') . "\n"
+              . " - correspondant : " . $formulaire->exportValue('civilite') . " " .  $formulaire->exportValue('prenom') . " " .  $formulaire->exportValue('nom') . "\n"
+              . " - carte presse : " . $formulaire->exportValue('carte_presse') . "\n"
+              . " - adresse : " . $formulaire->exportValue('adresse') . " | " . $formulaire->exportValue('code_postal') . " " . $formulaire->exportValue('ville') . " | " . $formulaire->exportValue('id_pays') . "\n"
+              . " - téléphhone : " . $formulaire->exportValue('telephone') . "\n"
+              . " - email : " . $formulaire->exportValue('email') . "\n"
+              . " - commentaires : " . strip_tags($formulaire->exportValue('commentaires'));
+        AFUP_Mailing::envoyerMail(
+            array($formulaire->exportValue('email'), $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom')),
+            array('bureau@afup.org', 'Bureau AFUP'),
+            'Demande d\'accréditation presse PHP Tour Luxembourg 2015',
+            $body
+        );
+        AFUP_Mailing::envoyerMail(
+            array($formulaire->exportValue('email'), $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom')),
+            array('communication@afup.org', 'Communication AFUP'),
+            'Demande d\'accréditation presse PHP Tour Luxembourg 2015',
+            $body
+        );
         $smarty->assign('texte', 'Merci. Votre demande d\'accréditation a été prise en compte et sera traitée prochainement.');
     } else {
         $smarty->assign('texte', 'Une erreur est survenue lors de votre inscription. Veuillez contacter le service presse dont les coordonnées apparaissent ci-dessous afin de régler le problème.');
