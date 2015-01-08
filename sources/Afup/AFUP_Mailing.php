@@ -72,6 +72,7 @@ class AFUP_Mailing
        $options = array_merge($optionsDefault,$options);
 
         require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
+        require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.smtp.php';
 
         $mail = new PHPMailer();
         $mail->IsHTML($options['html']);
