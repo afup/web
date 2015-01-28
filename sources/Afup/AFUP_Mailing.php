@@ -103,7 +103,7 @@ class AFUP_Mailing
         if ($bcc) {
             $mail->AddBCC($bcc);
         }
-        foreach ($options['bcc'] as $valeurBcc) {echo 'ici';
+        foreach ($options['bcc'] as $valeurBcc) {
             $mail->AddBCC($valeurBcc);
         }
         foreach ($options['file'] as $filePath) {
@@ -121,6 +121,5 @@ class AFUP_Mailing
         $mail->Subject = $subject;
         $mail->Body = str_replace('$EMAIL$',$to_email,$body);
         return  $mail->Send();
-
     }
 }
