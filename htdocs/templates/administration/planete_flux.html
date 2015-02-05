@@ -2,6 +2,8 @@
     <h2>Liste des flux</h2>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=planete_flux&amp;action=ajouter" title="Ajouter un flux">Ajouter un flux</a><br />
     <br/>
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="#" title="Tester la validité des flux" onclick="javascript:testerFlux('{$chemin_template}images/famfamfam/');return false;">Tester la validité des flux</a><br />
+    <br/>
 
       <form method="GET" name="filtre">
       <input type="hidden" name="page" value="planete_flux" />
@@ -17,13 +19,17 @@
             <th align="left"><a href="index.php?page=planete_flux&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
             <th align="left"><a href="index.php?page=planete_flux&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'url'}desc{else}asc{/if}">URL</a></th>
             <th><a href="index.php?page=planete_flux&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+            <th>Membre lié</th>
+            <th>Test du flux</th>
             <th>&nbsp;</th>
         </tr>
     {foreach from=$flux item=flux_simple}
-        <tr>
+        <tr class="{if $flux_simple.etat == 1}actif{else}inactif{/if}">
             <td>{$flux_simple.nom}</td>
-            <td>{$flux_simple.url}</td>
+            <td><a href="{$flux_simple.url}">{$flux_simple.url}</a> => <a href="{$flux_simple.feed}"><img src="{$chemin_template}images/famfamfam/feed.png" alt="Lien Feed"/></a></td>
             <td style="text-align: center">{if $flux_simple.etat == 1}Actif{else}Inactif{/if}</td>
+            <td style="text-align: center">{if $flux_simple.id_personne_physique != null}Oui{/if}</td>
+            <td style="text-align: center">{if $flux_simple.etat == 1}<img class="testFlux" data-flux="{$flux_simple.feed}" src="{$chemin_template}images/famfamfam/flag_blue.png" title="En attente" />{/if}</td>
             <td style="text-align: right">
                 <a href="index.php?page=planete_flux&amp;action=modifier&amp;id={$flux_simple.id}" title="Modifier la fiche de {$flux_simple.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a href="index.php?page=planete_flux&amp;action=supprimer&amp;id={$flux_simple.id}" title="Supprimer la fiche de {$flux_simple.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer le flux de {$flux_simple.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
@@ -43,3 +49,4 @@
     {/if}
     {include file="formulaire.html"}
 {/if}
+

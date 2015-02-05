@@ -196,3 +196,19 @@ function ucfirst(str) {
     
     return f + str.substr(1);
 }
+
+function testerFlux($flagsDir)
+{
+    $(".testFlux").each(function() {
+        url = $(this).attr('data-flux');
+        console.log('Test : ' + url);
+        $.ajax({
+            url: 'index.php?page=planete_flux&action=tester&flux=' + url,
+            dataType: 'json',
+            success : function(data) {
+                console.log(' => result : ' + data['result']);
+                $("img[data-flux=" + data['url'] + "]").attr('src', $flagsDir + 'flag_' + data['result'] + '.png');
+            }
+        });
+    });
+}

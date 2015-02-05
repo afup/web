@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
+$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'tester'));
 $tris_valides = array('nom', 'url', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -36,6 +36,18 @@ if ($action == 'lister') {
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du flux', 'index.php?page=planete_flux&action=lister', true);
     }
+} elseif ($action == 'tester') {
+    ini_set('display_errors', 0); //on n'affiche rien du tout
+    $feedToTest = $_GET['flux'];
+    $content = file_get_contents($_GET['flux']);
+    try {
+        $rss = new SimpleXmlElement($content);
+        $result = 'green';
+    } catch(Exception $e){
+        $result = 'red';
+    }
+    echo json_encode(array('url' => $feedToTest, 'result' => $result));
+    exit(); // Pas d'affichage supplémentaire
 } else {
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {

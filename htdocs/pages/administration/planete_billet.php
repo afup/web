@@ -10,7 +10,7 @@ $planete_billet = new AFUP_Planete_Billet($bdd);
 
 if ($action == 'lister') {
     $smarty->assign('pertinence', $conf->obtenir('planete|pertinence'));
-    $smarty->assign('billets', $planete_billet->obtenirListe('*', 'id DESC', false, false, 20));
+    $smarty->assign('billets', $planete_billet->obtenirListe('*', 'maj DESC', false, false, 20));
 }
 
 ?>
