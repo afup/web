@@ -166,7 +166,7 @@ class AFUP_Planete_Billet
     	$requete .= 'WHERE ';
     	$requete .= '  afup_planete_billet.etat = '.AFUP_PLANETE_BILLET_PERTINENT.' ';
     	$requete .= 'ORDER BY ';
-    	$requete .= '  afup_planete_billet.id DESC ';
+    	$requete .= '  afup_planete_billet.maj DESC ';
     	$requete .= 'LIMIT '.($page * 10).', '.(int)$nombre;
 
 		$billets = $this->_bdd->obtenirTous($requete);
