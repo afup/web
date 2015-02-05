@@ -75,6 +75,7 @@ class AFUP_Mailing
         require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.smtp.php';
 
         $mail = new PHPMailer();
+        $mail->CharSet = "utf-8";
         $mail->IsHTML($options['html']);
 
         if ($configuration->obtenir('mails|serveur_smtp')) {
