@@ -27,8 +27,28 @@ if ($action == 'lister') {
         $list_filtre = $_GET['filtre'];
     }
     
+    $flux = $planete_flux->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre);
+    if (isset($_GET['testerFlux']) && $_GET['testerFlux'] == 1) {
+        ini_set('display_errors', 0); //on n'affiche rien du tout
+        set_time_limit(240);
+    }
+    foreach ($flux as &$f) {
+        if (isset($_GET['testerFlux']) && $_GET['testerFlux'] == 1) {
+            if ($f['etat']) {
+                $content = file_get_contents($f['feed']);
+                try {
+                    $rss = new SimpleXmlElement($content);
+                    $f['result'] = 'green';
+                } catch(Exception $e){
+                    $f['result'] = 'red';
+                }
+            }
+        } else {
+            $f['result'] = 'blue';
+        }
+    }
     // Mise en place de la liste dans le scope de smarty
-    $smarty->assign('flux', $planete_flux->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre));
+    $smarty->assign('flux', $flux);
 } elseif ($action == 'supprimer') {
     if ($planete_flux->supprimer($_GET['id'])) {
         AFUP_Logs::log('Suppression du flux ' . $_GET['id']);
@@ -36,18 +56,6 @@ if ($action == 'lister') {
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du flux', 'index.php?page=planete_flux&action=lister', true);
     }
-} elseif ($action == 'tester') {
-    ini_set('display_errors', 0); //on n'affiche rien du tout
-    $feedToTest = $_GET['flux'];
-    $content = file_get_contents($_GET['flux']);
-    try {
-        $rss = new SimpleXmlElement($content);
-        $result = 'green';
-    } catch(Exception $e){
-        $result = 'red';
-    }
-    echo json_encode(array('url' => $feedToTest, 'result' => $result));
-    exit(); // Pas d'affichage supplémentaire
 } else {
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
