@@ -49,7 +49,6 @@ $parties   = explode('/', $url);
 $sous_site = array_pop($parties);
 if (empty($sous_site) and strpos($_SERVER['HTTP_HOST'], "planete") !== false) {
 	$sous_site = "planete";
-	$serveur = "http://afup.org";
 }
 
 require_once dirname(__FILE__).'/../AFUP_Mailing.php';
