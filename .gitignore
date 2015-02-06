@@ -10,6 +10,7 @@ deps.lock
 .buildpath
 .project
 .settings
+*/*.bak
 
 htdocs/cache
 configs/application/config.php

@@ -20,8 +20,8 @@ cp configs/application/config.php.dist configs/application/config.php
 ### Configurer les paramètres de BDD et de chemin
 ```php
 $configuration['bdd']['hote']='localhost';
-$configuration['bdd']['base']='afup_web';
-$configuration['bdd']['utilisateur']='root';
+$configuration['bdd']['base']='afup_dev';
+$configuration['bdd']['utilisateur']='afup_dev';
 $configuration['bdd']['mot_de_passe']='';
 $configuration['web']['path']='http://afup.home/';
 ```
@@ -30,11 +30,10 @@ $configuration['web']['path']='http://afup.home/';
 
 ```
 127.0.0.1       planete-php.home
-127.0.0.1       www.planete-php.home
 127.0.0.1       afup.home
 ```
 
-### Configuration Apache
+### Configuration Apache 2.4
 
 ```
 <VirtualHost *:80>
