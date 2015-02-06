@@ -17,13 +17,55 @@ Installation
 cp configs/application/config.php.dist configs/application/config.php
 ```
 
-### Configurer les paramaetres de BDD et de path ( 6 pre)
+### Configurer les paramètres de BDD et de chemin
 ```php
 $configuration['bdd']['hote']='localhost';
 $configuration['bdd']['base']='afup_web';
 $configuration['bdd']['utilisateur']='root';
 $configuration['bdd']['mot_de_passe']='';
-$configuration['web']['path']='/';
+$configuration['web']['path']='http://afup.home/';
+```
+
+### Configuration /etc/hosts
+
+```
+127.0.0.1       planete-php.home
+127.0.0.1       www.planete-php.home
+127.0.0.1       afup.home
+```
+
+### Configuration Apache
+
+```
+<VirtualHost *:80>
+    ServerName afup.home
+    DocumentRoot $PATH_TO/htdocs
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+		Require all granted
+	</Directory>
+    <Directory $PATH_TO/htdocs>
+		Options +Indexes +FollowSymLinks -MultiViews
+		AllowOverride All
+		Require all granted
+    </Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName planete-php.home
+    DocumentRoot $PATH_TO/git/htdocs/pages/planete
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+		Require all granted
+	</Directory>
+    <Directory $PATH_TO/htdocs/pages/planete>
+		Options +Indexes +FollowSymLinks -MultiViews
+		AllowOverride All
+		Require all granted
+    </Directory>
+</VirtualHost>
 ```
 
 ### Import de fichier SQL
@@ -31,6 +73,7 @@ $configuration['web']['path']='/';
 ```
 mysql afup_web < sql/*.sql
 ```
+
 ### Creation du répertoire de cache
 
 ```
@@ -41,8 +84,9 @@ mkdir -p  htdocs/cache/templates
 Applications
 -----------
 
-* Backoffice  ( admin/admin) : /pages/administration/
-* Site AFUP : /pages/site/
-* Forum PHP 2013 : /pages/forumphp2013/
-* PHP Tour 2014 : /pages/phptourlyon2014/
+* Backoffice  ( admin/admin) : afup.home/pages/administration/
+* Site AFUP : afup.home/pages/site/
+* Forum PHP 2015 : afup.home/pages/forumphp2015/
+* PHP Tour 2015 : afup.home/pages/phptourluxembourg2015/
+* Planete : planete-php.home
 
