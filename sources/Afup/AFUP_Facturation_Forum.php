@@ -524,8 +524,8 @@ class AFUP_Facturation_Forum
         $mail->Body = $corps;
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache'. DIRECTORY_SEPARATOR .'fact' . $reference . '.pdf';
-        $this->genererFacture($reference, $chemin_facture);
-        $mail->AddAttachment($chemin_facture, 'facture.pdf');
+        $numeroFacture = $this->genererFacture($reference, $chemin_facture);
+        $mail->AddAttachment($chemin_facture, 'facture-'.$numeroFacture.'.pdf');
         $ok = $mail->Send();
         @unlink($chemin_facture);
 

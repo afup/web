@@ -275,7 +275,7 @@ class AFUP_Cotisations
      * @param int       $id_cotisation  Identifiant de la cotisation
      * @param string    $chemin         Chemin du fichier PDF à générer. Si ce chemin est omi, le PDF est renvoyé au navigateur.
      * @access public
-     * @return bool
+     * @return int Le numero de la facture
      */
     function genererFacture($id_cotisation, $chemin = null)
     {
@@ -338,6 +338,8 @@ class AFUP_Cotisations
         } else {
             $pdf->Output($chemin, 'F');
         }
+
+        return $cotisation['numero_facture'];
     }
 
     /**
@@ -372,7 +374,7 @@ class AFUP_Cotisations
         $corps .= $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville')."\n";
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
-        $this->genererFacture($id_cotisation, $chemin_facture);
+        $numeroFacture = $this->genererFacture($id_cotisation, $chemin_facture);
 
         /*
         $ok = AFUP_Mailing::envoyerMail(
@@ -399,7 +401,7 @@ class AFUP_Cotisations
 
         $mail->Subject = $sujet;
         $mail->Body = $corps;
-        $mail->AddAttachment($chemin_facture, 'facture.pdf');
+        $mail->AddAttachment($chemin_facture, 'facture-'.$numeroFacture.'.pdf');
         $ok = $mail->Send();
         @unlink($chemin_facture);
 
