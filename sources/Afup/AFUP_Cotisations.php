@@ -356,7 +356,9 @@ class AFUP_Cotisations
 
         $pdf->Ln(15);
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
-
+        $pdf->Ln(15);
+        $pdf->Cell(10, 5, utf8_decode('Lors de votre règlement, merci de préciser la mention : "Facture n°' . $cotisation['numero_facture']).'"');
+        
 		if (is_null($chemin)) {
             $pdf->Output('facture.pdf', 'D');
         } else {
