@@ -531,25 +531,47 @@ class AFUP_Compta_Facture
                 $devise = utf8_decode(' ');
                 break;
         }
+        $yInitial = $pdf->getY();
+        $columns = [0, 30, 110, 130, 160, 190];
         foreach ($details as $detail) {
            	if ($detail['quantite'] != 0)
 			{
 	        	$montant=$detail['quantite']*$detail['pu'];
 
-	        	$pdf->Ln();
+                $pdf->Ln();
 	            $pdf->SetFillColor(255, 255, 255);
 
-	            $pdf->Cell(30, 5, $detail['ref'], 1);
-	            $pdf->Cell(80, 5, utf8_decode($detail['designation']) , 1);
-	            $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1,0,"C");
+                $y = $pdf->GetY();
+                $x = $pdf->GetX();
 
-	            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . $devise, 1,0,"R");
-	            $pdf->Cell(30, 5, utf8_decode($montant) . $devise, 1,0,"R");
+                $pdf->MultiCell(30, 5, $detail['ref'], 'T');
+                $x+=30;
+                $pdf->SetXY($x, $y);
+	            $pdf->MultiCell(80, 5, utf8_decode($detail['designation']) , 'T');
+
+                $x+=80;
+                $pdf->SetXY($x, $y);
+	            $pdf->MultiCell(20, 5, utf8_decode($detail['quantite']), 'T',0,"C");
+
+                $x+=20;
+                $pdf->SetXY($x, $y);
+
+	            $pdf->MultiCell(30, 5, utf8_decode($detail['pu']) . $devise, 'T',0,"R");
+
+                $x+=30;
+                $pdf->SetXY($x, $y);
+	            $pdf->MultiCell(30, 5, utf8_decode($montant) . $devise, 'T',0,"R");
+
 	            $total += $montant;
 			}
         }
 
         $pdf->Ln();
+
+        foreach ($columns as $column) {
+            $pdf->Line($pdf->GetX() + $column, $yInitial, $pdf->GetX() + $column, $pdf->GetY());
+        }
+
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
         $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
