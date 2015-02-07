@@ -11,6 +11,8 @@ deps.lock
 .project
 .settings
 */*.bak
+.vagrant
+default
 
 htdocs/cache
 configs/application/config.php
