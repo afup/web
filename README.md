@@ -11,81 +11,32 @@ MySQL
 Installation
 ------------
 
-### Copie du fichier de config
+
+### Installation via vagrant
+
+Dépendances:
+
+* Vagrant >= 1.6
+* VirtualBox (4.3) ou VMWare (nécessite le plugin vagrant)
+
+Fichier hosts:
+
 
 ```
-cp configs/application/config.php.dist configs/application/config.php
+192.168.56.110       www.local.afup.org
+192.168.56.110       www.local.planete-php.fr
 ```
 
-### Configurer les paramètres de BDD et de chemin
-```php
-$configuration['bdd']['hote']='localhost';
-$configuration['bdd']['base']='afup_dev';
-$configuration['bdd']['utilisateur']='afup_dev';
-$configuration['bdd']['mot_de_passe']='';
-$configuration['web']['path']='http://afup.home/';
-```
+Emails:
 
-### Configuration /etc/hosts
-
-```
-127.0.0.1       planete-php.home
-127.0.0.1       afup.home
-```
-
-### Configuration Apache 2.4
-
-```
-<VirtualHost *:80>
-    ServerName afup.home
-    DocumentRoot $PATH_TO/htdocs
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-		Require all granted
-	</Directory>
-    <Directory $PATH_TO/htdocs>
-		Options +Indexes +FollowSymLinks -MultiViews
-		AllowOverride All
-		Require all granted
-    </Directory>
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName planete-php.home
-    DocumentRoot $PATH_TO/git/htdocs/pages/planete
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-		Require all granted
-	</Directory>
-    <Directory $PATH_TO/htdocs/pages/planete>
-		Options +Indexes +FollowSymLinks -MultiViews
-		AllowOverride All
-		Require all granted
-    </Directory>
-</VirtualHost>
-```
-
-### Import de fichier SQL
-
-```
-mysql afup_web < sql/*.sql
-```
-
-### Creation du répertoire de cache
-
-```
-mkdir -p  htdocs/cache/templates
-```
-
+Pour consulter les emails envoyés depuis la VM, aller sur http://192.168.56.110:1080
 
 Applications
 -----------
 
-* Backoffice  ( admin/admin) : afup.home/pages/administration/
-* Site AFUP : afup.home/pages/site/
-* Forum PHP 2015 : afup.home/pages/forumphp2015/
-* PHP Tour 2015 : afup.home/pages/phptourluxembourg2015/
-* Planete : planete-php.home
+* Backoffice  ( admin/admin) : www.local.afup.org/pages/administration/
+* Site AFUP : www.local.afup.org/pages/site/
+* Forum PHP 2015 : www.local.afup.org/pages/forumphp2015/
+* PHP Tour 2015 : www.local.afup.org/pages/phptourluxembourg2015/
+* Planete : www.local.planete-php.fr
 
