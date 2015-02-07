@@ -62,6 +62,13 @@ if hash_key_equals($mysql_values, 'install', 1) {
 
     if count($mysql_values['databases']) > 0 {
       each( $mysql_values['databases'] ) |$key, $database| {
+
+        exec{"${key}-prepare-file":
+          command => 'cat /var/www/sql/*.sql > /tmp/all.sql',
+          before => Exec["${database['name']}-import"]
+        }
+
+
         $database_merged = delete(merge($database, {
           'dbname' => $database['name'],
         }), 'name')

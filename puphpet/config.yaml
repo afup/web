@@ -214,7 +214,7 @@ mysql:
             host: 127.0.0.1
             user: afup_dev
             password: p455w0rd
-            sql_file: '/var/www/sql/*.sql'
+            sql_file: '/tmp/all.sql'
 postgresql:
     install: '0'
     settings:
