@@ -294,30 +294,6 @@ class AFUP_Cotisations
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
-        // Haut de page [afup]
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->Cell(130, 5, 'AFUP');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, utf8_decode($configuration->obtenir('afup|raison_sociale')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, 'http://www.afup.org');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 35, 'SIRET : '. $configuration->obtenir('afup|siret'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
-
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
         $pdf->Cell(130, 5);
         $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', $cotisation['date_debut']));
 
@@ -358,7 +334,7 @@ class AFUP_Cotisations
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
 		if (is_null($chemin)) {
-            $pdf->Output('facture.pdf', 'D');
+            $pdf->Output('facture-'.$cotisation['numero_facture'].'.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
