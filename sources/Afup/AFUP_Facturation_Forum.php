@@ -457,32 +457,79 @@ class AFUP_Facturation_Forum
 
             switch ($inscription['type_inscription']) {
                 case AFUP_FORUM_PREMIERE_JOURNEE :
-                $code = 'FONC';
-                break;
+	                $code = 'FONC';
+	                break;
                 case AFUP_FORUM_DEUXIEME_JOURNEE :
-                $code = 'TECH';
-                break;
+	                $code = 'TECH';
+	                break;
                 case AFUP_FORUM_2_JOURNEES :
-                $code = '2JOU';
-                break;
+	                $code = '2JOU';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_AFUP :
-                $code = 'AFUP';
-                break;
+	                $code = 'AFUP';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_ETUDIANT :
-                $code = 'ETUD';
-                break;
+	                $code = 'ETUD';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_PREVENTE :
-                $code = 'PREV';
-                break;
+	                $code = 'PREV';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE :
-                $code = 'AFUP-PRE';
-                break;
+	                $code = 'AFUP-PRE';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE :
-                $code = 'ETUD-PRE';
-                break;
+	                $code = 'ETUD-PRE';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_COUPON :
-                $code = 'COUPON';
-                break;
+	                $code = 'COUPON';
+	                break;
+	            case AFUP_FORUM_ORGANISATION :
+	                $code = 'ORGANISATION';
+	                break;
+	            case AFUP_FORUM_SPONSOR :
+	                $code = 'SPONSOR';
+	                break;
+	            case AFUP_FORUM_PRESSE :
+	                $code = 'PRESSE';
+	                break;
+	            case AFUP_FORUM_CONFERENCIER :
+	                $code = 'CONFERENCIER';
+	                break;
+	            case AFUP_FORUM_INVITATION :
+	                $code = 'INVITATION';
+	                break;
+	            case AFUP_FORUM_PROJET :
+	                $code = 'PROJET';
+	                break;
+	            case AFUP_FORUM_2_JOURNEES_SPONSOR :
+	                $code = '2_JOURNEES_SPONSOR';
+	                break;
+	            case AFUP_FORUM_PROF :
+	                $code = 'PROF';
+	                break;
+	            case AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE :
+	                $code = 'PREMIERE_JOURNEE_ETUDIANT_PREVENTE';
+	                break;
+	            case AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE :
+	                $code = 'DEUXIEME_JOURNEE_ETUDIANT_PREVENTE';
+	                break;
+	            case AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION :
+	                $code = '2_JOURNEES_PREVENTE_ADHESION';
+	                break;
+	            case AFUP_FORUM_PREMIERE_JOURNEE_AFUP :
+	                $code = 'PREMIERE_JOURNEE_AFUP';
+	                break;
+	            case AFUP_FORUM_DEUXIEME_JOURNEE_AFUP :
+	                $code = 'DEUXIEME_JOURNEE_AFUP';
+	                break;
+	            case AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT :
+	                $code = 'PREMIERE_JOURNEE_ETUDIANT';
+	                break;
+	            case AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT :
+	                $code = 'DEUXIEME_JOURNEE_ETUDIANT';
+	                break;
+                default:
+                	$code = 'XXX';
             }
 
             $pdf->Cell(50, 5, $code, 1);
