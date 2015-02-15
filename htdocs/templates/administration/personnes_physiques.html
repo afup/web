@@ -3,14 +3,17 @@
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=personnes_physiques&amp;action=ajouter" title="Ajouter une personne physique">Ajouter une personne physique</a><br />
     <br/>
     <table>
-      <form method="GET" name="filtre">
+      <form method="GET" name="filtre" class="js-form-search">
       <input type="hidden" name="page" value="personnes_physiques" />
       <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
       <input type="hidden" name="sens" value="{$smarty.get.sens}" />
         <tr>
             <td width="50" nowrap>Filtre : </td>
-            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
+            <td width="120" nowrap><input type="text" name="filtre" class="js-filtre" value="{$smarty.get.filtre|stripslashes}"></td>
             <td><input type="submit" value="OK" name="submit_filtre"></td>
+            {if $smarty.get.filtre != ''}
+            <td><button type="button" onclick="$('.js-filtre').val(''); $('.js-form-search').submit();">Annuler la recherche</button></td>
+            {/if}
         </tr>
       </form>
     </table>
