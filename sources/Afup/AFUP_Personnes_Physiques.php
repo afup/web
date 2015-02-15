@@ -57,7 +57,8 @@ class AFUP_Personnes_Physiques {
             $requete .= 'OR login LIKE ' . $filtre . ' ';
             $requete .= 'OR prenom LIKE ' . $filtre . ' ';
             $requete .= 'OR code_postal LIKE ' . $filtre . ' ';
-            $requete .= 'OR ville LIKE ' . $filtre . ') ';
+            $requete .= 'OR ville LIKE ' . $filtre . ' ';
+            $requete .= 'OR email LIKE ' . $filtre . ') ';
         }
         if ($id_personne_morale) {
             $requete .= 'AND id_personne_morale = ' . $id_personne_morale . ' ';
