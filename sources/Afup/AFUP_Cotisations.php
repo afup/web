@@ -248,7 +248,7 @@ class AFUP_Cotisations
 									$cmd,
 									$date_debut,
 									$date_fin,
-									"autorisation : ".$autorisation." / transacation : ".$transaction);
+									"autorisation : ".$autorisation." / transaction : ".$transaction);
 		} else {
 			$result = false;
 		}
