@@ -586,7 +586,7 @@ class AFUP_Facturation_Forum
      * @access public
      * @return bool Succès de l'envoi
      */
-    function envoyerFacture($reference)
+    function envoyerFacture($reference, $copyTresorier = true)
     {
         require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
@@ -605,6 +605,11 @@ class AFUP_Facturation_Forum
             $mail->Mailer   = "smtp";
         } else {
             $mail->Mailer   = "mail";
+        }
+
+        if ($copyTresorier) {
+            // Copy to tresorier@afup.org
+            $mail->addBCC('tresorier@afup.org');
         }
 
         $sujet  = "Facture AFUP\n";
@@ -648,7 +653,7 @@ class AFUP_Facturation_Forum
         foreach($factures as $facture)
         {
             flush();
-            if ($this->envoyerFacture($facture['reference'])) {
+            if ($this->envoyerFacture($facture['reference'], false)) {
                 AFUP_Logs::log('Envoi par email de la facture n°' . $facture['reference'].' OK');
             } else {
                 $ok = false;
