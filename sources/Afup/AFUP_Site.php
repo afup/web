@@ -442,9 +442,9 @@ class AFUP_Site_Branche {
 			            $route = $this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$feuille['lien'];
 	                    break;
 	            }
-	            $extraction .= '<li'.$class.'><a href="'.$route.'" alt="'.$feuille['alt'].'">';
+	            $extraction .= '<li'.$class.'><a href="'.$route.'">';
 	            if ($this->navigation == 'image') {
-                    $extraction .= '<img src="'.$this->conf->obtenir('web|path').'/templates/site/images/'.$feuille['image'].'" />';
+                    $extraction .= '<img alt="'.$feuille['alt'].'" src="'.$this->conf->obtenir('web|path').'/templates/site/images/'.$feuille['image'].'" />';
 	            } else {
 	                $extraction .= $feuille['nom'];
 	            }
