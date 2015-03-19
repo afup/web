@@ -53,3 +53,7 @@ $configuration['sympa']['hote']='localhost';
 $configuration['sympa']['base']='sympa';
 $configuration['sympa']['utilisateur']='sympa';
 $configuration['sympa']['mot_de_passe']='sympa';
+
+$configuration['mandrill']['key'] = '';
+$configuration['mandrill']['bcc'] = 'tresorier@afup.org';
+
