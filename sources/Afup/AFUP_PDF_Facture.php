@@ -47,6 +47,40 @@ class AFUP_PDF_Facture extends FPDF
         $this->configuration = $configuration;
     }
 
+    public function header()
+    {
+        // Haut de page [afup]
+        $this->SetFont('Arial', 'B', 20);
+        $this->Cell(130, 5, 'AFUP');
+        $this->SetFont('Arial', '', 12);
+        $this->Cell(60, 5, $this->configuration->obtenir('afup|raison_sociale'));
+        $this->Ln();
+        $this->SetFont('Arial', '', 10);
+        $this->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
+        $yFinAdresse = $this->GetY();
+
+
+        $this->SetFont('Arial', '', 12);
+        $this->MultiCell(60, 5, utf8_decode($this->configuration->obtenir('afup|adresse')));
+        $this->Ln();
+        $this->SetFont('Arial', '', 10);
+        $this->Cell(130, 5, 'http://www.afup.org');
+        $this->Ln();
+        $this->Ln();
+        $this->Cell(130, 5, 'SIRET : '. $this->configuration->obtenir('afup|siret'));
+        $this->SetFont('Arial', '', 12);
+        $this->SetY($yFinAdresse);
+        $this->Ln();
+        $this->Cell(60, 5, $this->configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($this->configuration->obtenir('afup|ville')));
+        $this->Ln();
+        $this->Cell(130, 5);
+        $this->Cell(60, 5, 'Email : ' . $this->configuration->obtenir('afup|email'));
+
+        $this->Ln();
+        $this->Ln();
+        $this->Ln();
+    }
+
     /**
      * Returns the AFUP_Configuration object
      *

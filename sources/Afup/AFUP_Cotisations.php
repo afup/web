@@ -275,7 +275,7 @@ class AFUP_Cotisations
      * @param int       $id_cotisation  Identifiant de la cotisation
      * @param string    $chemin         Chemin du fichier PDF à générer. Si ce chemin est omi, le PDF est renvoyé au navigateur.
      * @access public
-     * @return bool
+     * @return int Le numero de la facture
      */
     function genererFacture($id_cotisation, $chemin = null)
     {
@@ -294,30 +294,6 @@ class AFUP_Cotisations
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
-        // Haut de page [afup]
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->Cell(130, 5, 'AFUP');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, utf8_decode($configuration->obtenir('afup|raison_sociale')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, 'http://www.afup.org');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 35, 'SIRET : '. $configuration->obtenir('afup|siret'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
-
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
         $pdf->Cell(130, 5);
         $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', $cotisation['date_debut']));
 
@@ -360,10 +336,12 @@ class AFUP_Cotisations
         $pdf->Cell(10, 5, utf8_decode('Lors de votre règlement, merci de préciser la mention : "Facture n°' . $cotisation['numero_facture']).'"');
         
 		if (is_null($chemin)) {
-            $pdf->Output('facture.pdf', 'D');
+            $pdf->Output('facture-'.$cotisation['numero_facture'].'.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
+
+        return $cotisation['numero_facture'];
     }
 
     /**
@@ -398,7 +376,7 @@ class AFUP_Cotisations
         $corps .= $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville')."\n";
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
-        $this->genererFacture($id_cotisation, $chemin_facture);
+        $numeroFacture = $this->genererFacture($id_cotisation, $chemin_facture);
 
         /*
         $ok = AFUP_Mailing::envoyerMail(
@@ -425,7 +403,7 @@ class AFUP_Cotisations
 
         $mail->Subject = $sujet;
         $mail->Body = $corps;
-        $mail->AddAttachment($chemin_facture, 'facture.pdf');
+        $mail->AddAttachment($chemin_facture, 'facture-'.$numeroFacture.'.pdf');
         $ok = $mail->Send();
         @unlink($chemin_facture);
 

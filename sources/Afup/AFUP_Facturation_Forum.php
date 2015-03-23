@@ -248,31 +248,6 @@ class AFUP_Facturation_Forum
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
-        // Haut de page [afup]
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->Cell(130, 5, 'AFUP');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|raison_sociale'));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, 'http://www.afup.org');
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Cell(130, 5, 'SIRET : '. $configuration->obtenir('afup|siret'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
-        $pdf->Ln();
-        $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
-
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
         $pdf->Cell(130, 5);
         $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture']) ? $facture['date_facture'] : time())));
 
@@ -384,31 +359,6 @@ class AFUP_Facturation_Forum
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
-        // Haut de page [afup]
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->Cell(130, 5, 'AFUP');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|raison_sociale'));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, 'http://www.afup.org');
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Cell(130, 5, 'SIRET : '. $configuration->obtenir('afup|siret'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
-        $pdf->Ln();
-        $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
-
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
         $pdf->Cell(130, 5);
         $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture']) ? $facture['date_facture'] : time())));
 
@@ -626,8 +576,8 @@ class AFUP_Facturation_Forum
         $mail->Body = $corps;
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache'. DIRECTORY_SEPARATOR .'fact' . $reference . '.pdf';
-        $this->genererFacture($reference, $chemin_facture);
-        $mail->AddAttachment($chemin_facture, 'facture.pdf');
+        $numeroFacture = $this->genererFacture($reference, $chemin_facture);
+        $mail->AddAttachment($chemin_facture, 'facture-'.$numeroFacture.'.pdf');
         $ok = $mail->Send();
         @unlink($chemin_facture);
 
