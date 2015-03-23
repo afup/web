@@ -248,31 +248,6 @@ class AFUP_Facturation_Forum
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
-        // Haut de page [afup]
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->Cell(130, 5, 'AFUP');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|raison_sociale'));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, 'http://www.afup.org');
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Cell(130, 5, 'SIRET : '. $configuration->obtenir('afup|siret'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
-        $pdf->Ln();
-        $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
-
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
         $pdf->Cell(130, 5);
         $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture']) ? $facture['date_facture'] : time())));
 
@@ -351,7 +326,7 @@ class AFUP_Facturation_Forum
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
         if (is_null($chemin)) {
-            $pdf->Output('devis.pdf', 'D');
+            $pdf->Output('Devis - ' . ($facture['societe'] ? $facture['societe'] : $facture['nom'] . '_' . $facture['prenom']) . ' - '  . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -384,31 +359,6 @@ class AFUP_Facturation_Forum
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
-        // Haut de page [afup]
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->Cell(130, 5, 'AFUP');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|raison_sociale'));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, 'http://www.afup.org');
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Cell(130, 5, 'SIRET : '. $configuration->obtenir('afup|siret'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
-        $pdf->Ln();
-        $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
-
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
         $pdf->Cell(130, 5);
         $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture']) ? $facture['date_facture'] : time())));
 
@@ -457,32 +407,79 @@ class AFUP_Facturation_Forum
 
             switch ($inscription['type_inscription']) {
                 case AFUP_FORUM_PREMIERE_JOURNEE :
-                $code = 'FONC';
-                break;
+	                $code = 'FONC';
+	                break;
                 case AFUP_FORUM_DEUXIEME_JOURNEE :
-                $code = 'TECH';
-                break;
+	                $code = 'TECH';
+	                break;
                 case AFUP_FORUM_2_JOURNEES :
-                $code = '2JOU';
-                break;
+	                $code = '2JOU';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_AFUP :
-                $code = 'AFUP';
-                break;
+	                $code = 'AFUP';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_ETUDIANT :
-                $code = 'ETUD';
-                break;
+	                $code = 'ETUD';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_PREVENTE :
-                $code = 'PREV';
-                break;
+	                $code = 'PREV';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE :
-                $code = 'AFUP-PRE';
-                break;
+	                $code = 'AFUP-PRE';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE :
-                $code = 'ETUD-PRE';
-                break;
+	                $code = 'ETUD-PRE';
+	                break;
                 case AFUP_FORUM_2_JOURNEES_COUPON :
-                $code = 'COUPON';
-                break;
+	                $code = 'COUPON';
+	                break;
+	            case AFUP_FORUM_ORGANISATION :
+	                $code = 'ORGANISATION';
+	                break;
+	            case AFUP_FORUM_SPONSOR :
+	                $code = 'SPONSOR';
+	                break;
+	            case AFUP_FORUM_PRESSE :
+	                $code = 'PRESSE';
+	                break;
+	            case AFUP_FORUM_CONFERENCIER :
+	                $code = 'CONFERENCIER';
+	                break;
+	            case AFUP_FORUM_INVITATION :
+	                $code = 'INVITATION';
+	                break;
+	            case AFUP_FORUM_PROJET :
+	                $code = 'PROJET';
+	                break;
+	            case AFUP_FORUM_2_JOURNEES_SPONSOR :
+	                $code = '2_JOURNEES_SPONSOR';
+	                break;
+	            case AFUP_FORUM_PROF :
+	                $code = 'PROF';
+	                break;
+	            case AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE :
+	                $code = 'PREMIERE_JOURNEE_ETUDIANT_PREVENTE';
+	                break;
+	            case AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE :
+	                $code = 'DEUXIEME_JOURNEE_ETUDIANT_PREVENTE';
+	                break;
+	            case AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION :
+	                $code = '2_JOURNEES_PREVENTE_ADHESION';
+	                break;
+	            case AFUP_FORUM_PREMIERE_JOURNEE_AFUP :
+	                $code = 'PREMIERE_JOURNEE_AFUP';
+	                break;
+	            case AFUP_FORUM_DEUXIEME_JOURNEE_AFUP :
+	                $code = 'DEUXIEME_JOURNEE_AFUP';
+	                break;
+	            case AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT :
+	                $code = 'PREMIERE_JOURNEE_ETUDIANT';
+	                break;
+	            case AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT :
+	                $code = 'DEUXIEME_JOURNEE_ETUDIANT';
+	                break;
+                default:
+                	$code = 'XXX';
             }
 
             $pdf->Cell(50, 5, $code, 1);
@@ -526,7 +523,7 @@ class AFUP_Facturation_Forum
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
         if (is_null($chemin)) {
-            $pdf->Output('facture.pdf', 'D');
+            $pdf->Output('Facture - ' . ($facture['societe'] ? $facture['societe'] : $facture['nom'] . '_' . $facture['prenom']) . ' - '  . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -539,7 +536,7 @@ class AFUP_Facturation_Forum
      * @access public
      * @return bool Succès de l'envoi
      */
-    function envoyerFacture($reference)
+    function envoyerFacture($reference, $copyTresorier = true)
     {
         require_once 'Afup/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
@@ -560,6 +557,11 @@ class AFUP_Facturation_Forum
             $mail->Mailer   = "mail";
         }
 
+        if ($copyTresorier) {
+            // Copy to tresorier@afup.org
+            $mail->addBCC('tresorier@afup.org');
+        }
+
         $sujet  = "Facture AFUP\n";
         $mail->Subject = $sujet;
 
@@ -574,8 +576,8 @@ class AFUP_Facturation_Forum
         $mail->Body = $corps;
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache'. DIRECTORY_SEPARATOR .'fact' . $reference . '.pdf';
-        $this->genererFacture($reference, $chemin_facture);
-        $mail->AddAttachment($chemin_facture, 'facture.pdf');
+        $numeroFacture = $this->genererFacture($reference, $chemin_facture);
+        $mail->AddAttachment($chemin_facture, 'facture-'.$numeroFacture.'.pdf');
         $ok = $mail->Send();
         @unlink($chemin_facture);
 
@@ -601,7 +603,7 @@ class AFUP_Facturation_Forum
         foreach($factures as $facture)
         {
             flush();
-            if ($this->envoyerFacture($facture['reference'])) {
+            if ($this->envoyerFacture($facture['reference'], false)) {
                 AFUP_Logs::log('Envoi par email de la facture n°' . $facture['reference'].' OK');
             } else {
                 $ok = false;

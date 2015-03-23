@@ -11,38 +11,32 @@ MySQL
 Installation
 ------------
 
-### Copie du fichier de config
+
+### Installation via vagrant
+
+Dépendances:
+
+* Vagrant >= 1.6
+* VirtualBox (4.3) ou VMWare (nécessite le plugin vagrant)
+
+Fichier hosts:
+
 
 ```
-cp configs/application/config.php.dist configs/application/config.php
+192.168.56.110       www.local.afup.org
+192.168.56.110       www.local.planete-php.fr
 ```
 
-### Configurer les paramaetres de BDD et de path ( 6 pre)
-```php
-$configuration['bdd']['hote']='localhost';
-$configuration['bdd']['base']='afup_web';
-$configuration['bdd']['utilisateur']='root';
-$configuration['bdd']['mot_de_passe']='';
-$configuration['web']['path']='/';
-```
+Emails:
 
-### Import de fichier SQL
-
-```
-mysql afup_web < sql/*.sql
-```
-### Creation du répertoire de cache
-
-```
-mkdir -p  htdocs/cache/templates
-```
-
+Pour consulter les emails envoyés depuis la VM, aller sur http://192.168.56.110:1080
 
 Applications
 -----------
 
-* Backoffice  ( admin/admin) : /pages/administration/
-* Site AFUP : /pages/site/
-* Forum PHP 2013 : /pages/forumphp2013/
-* PHP Tour 2014 : /pages/phptourlyon2014/
+* Backoffice  ( admin/admin) : www.local.afup.org/pages/administration/
+* Site AFUP : www.local.afup.org/pages/site/
+* Forum PHP 2015 : www.local.afup.org/pages/forumphp2015/
+* PHP Tour 2015 : www.local.afup.org/pages/phptourluxembourg2015/
+* Planete : www.local.planete-php.fr
 

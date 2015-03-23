@@ -8,7 +8,7 @@ $sympaBdd = new AFUP_Base_De_Donnees(
     $conf->obtenir('sympa|mot_de_passe')
 );
 
-$sympa = new AFUP_Sympa($sympaBdd, $conf->obtenir('sympa|directory'));
+$sympa = new AFUP_Sympa($sympaBdd, $conf->obtenir('sympa|config_url'));
 $listes = $sympa->getAllMailingList();
 
 if ($_POST) {

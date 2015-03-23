@@ -72,8 +72,10 @@ class AFUP_Mailing
        $options = array_merge($optionsDefault,$options);
 
         require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
+        require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.smtp.php';
 
         $mail = new PHPMailer();
+        $mail->CharSet = "utf-8";
         $mail->IsHTML($options['html']);
 
         if ($configuration->obtenir('mails|serveur_smtp')) {
@@ -102,7 +104,7 @@ class AFUP_Mailing
         if ($bcc) {
             $mail->AddBCC($bcc);
         }
-        foreach ($options['bcc'] as $valeurBcc) {echo 'ici';
+        foreach ($options['bcc'] as $valeurBcc) {
             $mail->AddBCC($valeurBcc);
         }
         foreach ($options['file'] as $filePath) {
@@ -120,6 +122,5 @@ class AFUP_Mailing
         $mail->Subject = $subject;
         $mail->Body = str_replace('$EMAIL$',$to_email,$body);
         return  $mail->Send();
-
     }
 }

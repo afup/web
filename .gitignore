@@ -10,6 +10,11 @@ deps.lock
 .buildpath
 .project
 .settings
+*/*.bak
+.vagrant
+default
 
 htdocs/cache
 configs/application/config.php
+tests/simpletest
+tests/unitaires/config.php

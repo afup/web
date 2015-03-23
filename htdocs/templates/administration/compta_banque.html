@@ -1,9 +1,33 @@
 {if $action == 'lister'}
     <h2>Journal de banque</h2>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=2&amp;action=lister" title="journal compte espece">Journal banque : compte espece</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=4&amp;action=lister" title="journal compte paypal">Journal banque : compte paypal</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=1&amp;action=lister" title="journal compte courant">Journal banque : compte courant</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=3&amp;action=lister" title="journal compte livret A">Journal banque : compte livret A</a><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
+    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=2&amp;action=lister" title="journal compte espece">
+        Journal banque : compte espece
+    </a>
+    (<a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=2&amp;action=exporter" title="journal compte courant">
+        export XLSX
+    </a>)<br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
+    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=4&amp;action=lister" title="journal compte paypal">
+        Journal banque : compte paypal
+    </a>
+    (<a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=4&amp;action=exporter" title="journal compte courant">
+        export XLSX
+    </a>)<br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
+    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=1&amp;action=lister" title="journal compte courant">
+        Journal banque : compte courant
+    </a>
+    (<a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=1&amp;action=exporter" title="journal compte courant">
+        export XLSX
+    </a>)<br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
+    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=3&amp;action=lister" title="journal compte livret A">
+        Journal banque : compte livret A
+    </a>
+    (<a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=3&amp;action=exporter" title="journal compte courant">
+        export XLSX
+    </a>)<br />
     <br/>
     <table>
     <form method="GET" name="forum">
@@ -80,7 +104,7 @@
 	</tr>
 	<tr>
         <th colspan='3' align='right'>Solde</th>
-        <th colspan='2'  align='center'>{$total.dif}</th>
+        <th colspan='2'  align='center'>{$total.dif|number_format:2:',':' '}</th>
         <th>&nbsp;</th>
     </tr>
     </table>

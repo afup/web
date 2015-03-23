@@ -1,3 +1,3 @@
 <?php
-header('Location: http://afup.org/pages/forumphp2013/', true, 302);
+header('Location: http://afup.org/pages/forumphp2014/', true, 302);
 exit;

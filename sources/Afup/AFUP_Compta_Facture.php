@@ -290,31 +290,6 @@ class AFUP_Compta_Facture
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
-        // Haut de page [afup]
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->Cell(130, 5, 'AFUP');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|raison_sociale'));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, 'http://www.afup.org');
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Cell(130, 5, 'SIRET : '. $configuration->obtenir('afup|siret'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
-        $pdf->Ln();
-        $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
-
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
         $pdf->Cell(130, 5);
         $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($coordonnees['date_devis']) && !empty($coordonnees['date_devis'])) ? strtotime($coordonnees['date_devis']) : time()));
 
@@ -440,31 +415,6 @@ class AFUP_Compta_Facture
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
-        // Haut de page [afup]
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->Cell(130, 5, 'AFUP');
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|raison_sociale'));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->MultiCell(60, 5, utf8_decode($configuration->obtenir('afup|adresse')));
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(130, 5, 'http://www.afup.org');
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Cell(130, 5, 'SIRET : '. $configuration->obtenir('afup|siret'));
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(60, 5, $configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($configuration->obtenir('afup|ville')));
-        $pdf->Ln();
-        $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Email : ' . $configuration->obtenir('afup|email'));
-
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
         $pdf->Cell(130, 5);
         $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($coordonnees['date_facture']) && !empty($coordonnees['date_facture'])) ? strtotime($coordonnees['date_facture']) : time()));
 
@@ -531,25 +481,47 @@ class AFUP_Compta_Facture
                 $devise = utf8_decode(' ');
                 break;
         }
+        $yInitial = $pdf->getY();
+        $columns = [0, 30, 110, 130, 160, 190];
         foreach ($details as $detail) {
            	if ($detail['quantite'] != 0)
 			{
 	        	$montant=$detail['quantite']*$detail['pu'];
 
-	        	$pdf->Ln();
+                $pdf->Ln();
 	            $pdf->SetFillColor(255, 255, 255);
 
-	            $pdf->Cell(30, 5, $detail['ref'], 1);
-	            $pdf->Cell(80, 5, utf8_decode($detail['designation']) , 1);
-	            $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1,0,"C");
+                $y = $pdf->GetY();
+                $x = $pdf->GetX();
 
-	            $pdf->Cell(30, 5, utf8_decode($detail['pu']) . $devise, 1,0,"R");
-	            $pdf->Cell(30, 5, utf8_decode($montant) . $devise, 1,0,"R");
+                $pdf->MultiCell(30, 5, $detail['ref'], 'T');
+                $x+=30;
+                $pdf->SetXY($x, $y);
+	            $pdf->MultiCell(80, 5, utf8_decode($detail['designation']) , 'T');
+
+                $x+=80;
+                $pdf->SetXY($x, $y);
+	            $pdf->MultiCell(20, 5, utf8_decode($detail['quantite']), 'T',0,"C");
+
+                $x+=20;
+                $pdf->SetXY($x, $y);
+
+	            $pdf->MultiCell(30, 5, utf8_decode($detail['pu']) . $devise, 'T',0,"R");
+
+                $x+=30;
+                $pdf->SetXY($x, $y);
+	            $pdf->MultiCell(30, 5, utf8_decode($montant) . $devise, 'T',0,"R");
+
 	            $total += $montant;
 			}
         }
 
         $pdf->Ln();
+
+        foreach ($columns as $column) {
+            $pdf->Line($pdf->GetX() + $column, $yInitial, $pdf->GetX() + $column, $pdf->GetY());
+        }
+
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
         $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
@@ -599,17 +571,15 @@ class AFUP_Compta_Facture
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache'. DIRECTORY_SEPARATOR .'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
 
-        AFUP_Mailing::envoyerMail(
+        $ok = AFUP_Mailing::envoyerMail(
                     $GLOBALS['conf']->obtenir('mails|email_expediteur'),
                     array($personne['email'], $personne['nom']),
                     $sujet,
                     $corps,
-                    array('file'=>array($chemin_facture,'facture.pdf'))
+                    array('file'=>array($chemin_facture,'facture-'.$reference.'.pdf'))
                 );
 
         @unlink($chemin_facture);
-
-        $this->estFacture($reference);
 
         return $ok;
     }

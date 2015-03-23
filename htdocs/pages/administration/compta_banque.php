@@ -52,8 +52,8 @@ if ($action == 'lister') {
     for ($i = 1 ; $i < 13 ; $i++) {
         $compteurLigne[$i] = 4;
         $sheet = $workbook->createSheet($i);
-        $sheet->setTitle('Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, 2012)));
-        $sheet->setCellValue('A1', 'Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, 2012)));
+        $sheet->setTitle('Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, date('Y', strtotime($periode_debut)))));
+        $sheet->setCellValue('A1', 'Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, date('Y', strtotime($periode_debut)))));
         $sheet->setCellValue('A3', 'Date');
         $sheet->setCellValue('B3', 'Opération');
         $sheet->setCellValue('C3', 'Description');

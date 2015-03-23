@@ -14,6 +14,7 @@
 require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/Cli.php';
 
 define('MAGPIE_CACHE_DIR', dirname(__FILE__).'/../../cache/robots/planete');
+define('MAGPIE_OUTPUT_ENCODING', 'UTF-8');
 
 require_once dirname(__FILE__) . '/../../../dependencies/magpierss/rss_fetch.inc';
 require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Planete_Flux.php';
@@ -56,6 +57,7 @@ foreach ($flux as $flux_simple) {
 
 		$item['timestamp'] = strtotime($item['updated']);
 		if ($item['timestamp'] > time() - 7 * 24 * 3600 ) {
+			echo ' - contenu récent : "' . $item['title'] . '"' . PHP_EOL;
 			$contenu = $item['title']." ".$item['atom_content'];
 			$item['etat'] = $planete_billet->avecContenuPertinent($contenu);
 			$succes += $planete_billet->sauvegarder($flux_simple['id'],

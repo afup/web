@@ -741,9 +741,8 @@ class AFUP_AppelConferencier
             $ok = AFUP_Mailing::envoyerMail(
                             $configuration->obtenir('mails|email_expediteur'),
                             array($personne['email'], $personne['nom']. ' ' . $personne['prenom']),
-                            "Soumission de proposition au Forum PHP\n",
+                            "Soumission de proposition au " . $personne['titre'] . "\n",
                             $corps);
-            // $mail->AddBCC('bureau@fup.org', 'Bureau');
         }
         return $ok;
     }

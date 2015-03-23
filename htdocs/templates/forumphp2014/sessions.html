@@ -9,6 +9,15 @@
       Le Forum PHP s'étale sur deux jours, le <a href="#Jeudi 23 octobre 2014">jeudi 23 octobre 2014</a> et
       le <a href="#Vendredi 24 octobre 2014">vendredi 24 octobre 2014</a>. Ne tardez pas à <a href="./inscription.php">vous inscrire</a> !
     </p>
+
+    <p>Cette année des <strong>ateliers pratiques gratuits</strong> sont également proposés :
+    <ul>
+      <li><a href="https://www.eventbrite.fr/e/billets-atelier-forum-php-2014-hands-on-elasticsearch-kibana-par-david-pilato-8609229437">Hands on Elasticsearch & Kibana par David Pilato</a></li>
+      <li><a href="https://www.eventbrite.fr/e/billets-atelier-forum-php-2014-creation-dextensions-php-avec-julien-pauli-12928913729">création d'extensions PHP avec Julien Pauli</a></li>
+      <li><a href="https://www.eventbrite.fr/e/billets-atelier-forum-php-2014-usage-avance-de-jenkins-comme-outil-dameliorationintegration-continue-par-12931294851">Usage avancé de Jenkins comme outil d'amélioration/intégration continue, par P.Borreli</a></li>
+      <li><a href="https://www.eventbrite.fr/e/billets-atelier-forum-php-2014-la-chasse-aux-bugs-est-ouverte-par-sophie-beaupuis-13602221611">La chasse aux bugs est ouverte ! Par Sophie Beaupuis.</a></li>
+    </ul>
+    </p>
   </div>
 </article>
 
@@ -31,7 +40,9 @@
       	   		<div>
       			    {foreach from=$session.conferenciers item=conferencier}
   	          		<div class="conferencier">
-      			    		<a href="conferenciers.php#{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/></a><br />
+                    <a href="conferenciers.php#{$conferencier.conferencier_id}">
+                      <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
+                    </a><br />
   	          			<a href="conferenciers.php#{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a>
   	          		</div>
                 {/foreach}

@@ -11,7 +11,7 @@
 <body>
 <div id="le-contenu">
 	<div id="les-billets">
-	<img src="{$chemin_template}/images/planetephp.png" alt="planetePHP.fr" />
+	<img src="{$chemin_template}images/planetephp.png" alt="planetePHP.fr" />
 	{foreach from=$billets item=billet} 
 		<div class="un-billet">
 			<span class="flux"><a href="{$billet.flux_url}">{$billet.flux_nom}</a></span>
@@ -35,14 +35,14 @@
 		<div id="les-flux">
 			{if $smarty.now < 1338847200}
 				<a href="http://afup.org/pages/forumphp2012/">
-					<img src="{$chemin_template}/images/forum_php_2012.jpg" alt="Forum PHP 2012" />
+					<img src="{$chemin_template}images/forum_php_2012.jpg" alt="Forum PHP 2012" />
 				</a>
 				<br />
 				<br />
 				<br />
 			{/if}
 			<a href="http://feeds.feedburner.com/planetephpfr">
-				<img src="{$chemin_template}/images/atom.gif" alt="" />
+				<img src="{$chemin_template}images/atom.gif" alt="" />
 				<br />Flux ATOM
 			</a>
 			<br />
@@ -72,7 +72,5 @@
 
 <br />
 <br />
-
-<img src="{$chemin_template}/images/cron.php" alt="pseudo-cron pour le robot" />
 
 </body> 

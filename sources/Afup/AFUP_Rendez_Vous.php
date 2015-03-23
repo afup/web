@@ -110,30 +110,21 @@ class AFUP_Rendez_Vous
         $succes = false;
         require_once 'phpmailer/class.phpmailer.php';
         foreach ($inscrits as $inscrit) {
-        	$hash=md5(
-					utf8_decode(
-						$inscrit['id'].$inscrit['id_rendezvous'].$inscrit['nom'].$inscrit['prenom'].$inscrit['email']
-					)
-				);
-            $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash='.$hash;
+            $hash = md5(
+                utf8_decode(
+                    $inscrit['id'] . $inscrit['id_rendezvous'] . $inscrit['nom'] . $inscrit['prenom'] . $inscrit['email']
+                )
+            );
+            $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash=' . $hash;
             $link = str_replace('administration/index.php', 'rendezvous/confirmation.php', $link);
-            $mail = new PHPMailer;
-            if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
-                $mail->IsSMTP();
-                $mail->Host = $GLOBALS['conf']->obtenir('mails|serveur_smtp');
-                $mail->SMTPAuth = false;
-            }
-            $mail->AddAddress($inscrit['email'], $inscrit['nom']);
-            $mail->From     = $GLOBALS['conf']->obtenir('mails|email_expediteur');
-            $mail->FromName = $GLOBALS['conf']->obtenir('mails|nom_expediteur');
-            $mail->BCC      = $GLOBALS['conf']->obtenir('mails|email_expediteur');
-            $mail->Subject  = $sujet;
-            $mail->Body     = $corps . $link;
-
-            $mail->Send();
+            AFUP_Mailing::envoyerMail(
+                array($GLOBALS['conf']->obtenir('mails|email_expediteur'), $GLOBALS['conf']->obtenir('mails|nom_expediteur')),
+                array($inscrit['email'], $inscrit['nom']),
+                $sujet,
+                $corps . $link
+            );
             $succes += 1;
         }
-  
         return $succes;    	
     }
 

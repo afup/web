@@ -1,0 +1,82 @@
+			<aside class="sidebar">
+
+				<div class="bloc-sidebar">
+					<div class="title">
+						<p><a href="sponsors.php">Sponsors</a></p>
+					</div>
+					<div class="bloc-sidebar-content">
+						<div class="title">
+							<p>Sponsors</p>
+						</div>
+						{if count($partenaires.Platine) > 0}
+							<p>"Platine"</p>
+	                        {foreach from=$partenaires.Platine item=partenaire}
+	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
+	                           title="{$partenaire.nom} | {$partenaire.presentation|strip_tags|substr:0:700}...">
+	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
+	                        {/foreach}
+						{/if}
+						{if count($partenaires.Or) > 0}
+							<p>"Or"</p>
+	                        {foreach from=$partenaires.Or item=partenaire}
+	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
+	                           title="{$partenaire.nom} | {$partenaire.presentation|strip_tags|substr:0:700}...">
+	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
+	                        {/foreach}
+						{/if}
+						{if count($partenaires.Argent) > 0}
+							<p>"Argent"</p>
+	                        {foreach from=$partenaires.Argent item=partenaire}
+	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
+	                           title="{$partenaire.nom} | {$partenaire.presentation|strip_tags|substr:0:700}...">
+	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
+	                        {/foreach}
+						{/if}
+						{if count($partenaires.Bronze) > 0}
+							<p>"Bronze"</p>
+	                        {foreach from=$partenaires.Bronze item=partenaire}
+	                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
+	                           title="{$partenaire.nom} | {$partenaire.presentation|strip_tags|substr:0:700}...">
+	                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
+	                        {/foreach}
+						{/if}
+					</div>
+				</div>
+
+				<div class="bloc-sidebar share">
+					<div class="title">
+						<p>Partagez le!</p>
+					</div>
+					<div class="bloc-sidebar-content">
+						<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="afup" data-lang="fr">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+						<br/><br/>
+						<iframe src="http://www.facebook.com/plugins/like.php?href=http://afup.org/pages/phptourluxembourg2015/&amp;layout=standard&amp;show_faces=true&amp;width=178&amp;action=like&amp;colorscheme=light" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:178px; height:100px;" allowTransparency="true"></iframe>
+					</div>
+				</div>
+
+				<div class="bloc-sidebar">
+					<div class="title">
+						<p>Organisateurs</p>
+					</div>
+					<div class="bloc-sidebar-content">
+						<a href="http://www.afup.org/" target="_blank"><img src="{$chemin_template}/medias/images/logo_afup.png" alt="Logo Afup" /></a>
+						<a href="http://www.php.net/" target="_blank"><img src="{$chemin_template}/medias/images/logo_php.png" alt="Logo Php" /></a>
+					</div>
+				</div>
+
+				{if count($partenaires.Partenaires) > 0}
+				<div class="bloc-sidebar">
+					<div class="title">
+						<p><a href="sponsors.php">Partenaires</a></p>
+					</div>
+					<div class="bloc-sidebar-content">
+                        {foreach from=$partenaires.Partenaires item=partenaire}
+                        <a class="withTooltip" href="{$partenaire.site}" target="_blank"
+                           title="{$partenaire.nom} | {$partenaire.presentation|strip_tags}">
+                            <img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
+                        {/foreach}
+					</div>
+				</div>
+				{/if}
+
+			</aside><!-- End Sidebar -->

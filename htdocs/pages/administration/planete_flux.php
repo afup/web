@@ -1,6 +1,6 @@
 <?php
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
+$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'tester'));
 $tris_valides = array('nom', 'url', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -27,8 +27,28 @@ if ($action == 'lister') {
         $list_filtre = $_GET['filtre'];
     }
     
+    $flux = $planete_flux->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre);
+    if (isset($_GET['testerFlux']) && $_GET['testerFlux'] == 1) {
+        ini_set('display_errors', 0); //on n'affiche rien du tout
+        set_time_limit(240);
+    }
+    foreach ($flux as &$f) {
+        if (isset($_GET['testerFlux']) && $_GET['testerFlux'] == 1) {
+            if ($f['etat']) {
+                $content = file_get_contents($f['feed']);
+                try {
+                    $rss = new SimpleXmlElement($content);
+                    $f['result'] = 'green';
+                } catch(Exception $e){
+                    $f['result'] = 'red';
+                }
+            }
+        } else {
+            $f['result'] = 'blue';
+        }
+    }
     // Mise en place de la liste dans le scope de smarty
-    $smarty->assign('flux', $planete_flux->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre));
+    $smarty->assign('flux', $flux);
 } elseif ($action == 'supprimer') {
     if ($planete_flux->supprimer($_GET['id'])) {
         AFUP_Logs::log('Suppression du flux ' . $_GET['id']);

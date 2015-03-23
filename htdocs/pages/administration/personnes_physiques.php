@@ -210,7 +210,8 @@ if ($action == 'lister') {
             } else {
                 AFUP_Logs::log('Modification de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('La personne physique a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=personnes_physiques&action=lister');
+            // Redirection sur la liste filtrée
+            afficherMessage('La personne physique a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), "index.php?page=personnes_physiques&action=lister&filtre=" . $formulaire->exportValue('email'));
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de la personne physique');
         }

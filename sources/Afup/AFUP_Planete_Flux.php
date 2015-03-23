@@ -101,7 +101,7 @@ class AFUP_Planete_Flux
     	$requete .= 'GROUP BY '; 
     	$requete .= '  afup_planete_flux.id ';
     	$requete .= 'ORDER BY ';
-    	$requete .= '  id DESC ';
+    	$requete .= '  maj DESC ';
 
     	return $this->_bdd->obtenirTous($requete);
     }

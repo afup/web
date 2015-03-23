@@ -161,11 +161,13 @@ class AFUP_Inscriptions_Forum
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $requete  = 'SELECT';
-        $requete .= '  i.*, f.societe, md5(CONCAT(i.id, i.reference)) as md5key ';
+        $requete .= '  i.*, f.societe, md5(CONCAT(i.id, i.reference)) as md5key, af.path ';
         $requete .= 'FROM';
         $requete .= '  afup_inscription_forum i ';
         $requete .= 'LEFT JOIN';
         $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
+        $requete .= 'INNER JOIN';
+        $requete .= '  afup_forum af ON i.id_forum = af.id ';
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
         $requete .= 'AND i.type_inscription <> 12 '; // pas les conférenciers
         if ($date_envoi) {
@@ -198,7 +200,7 @@ class AFUP_Inscriptions_Forum
     			$qui = $inscrit['prenom'].' '.$inscrit['nom'];
     			$body = str_replace("%INSCRIT", $qui, $corps);
 
-    			$lien = "http://www.afup.org/pages/forumphp2013/convocation_visiteurs.php?id=".$inscrit['md5key'];
+    			$lien = "http://www.afup.org/pages/" . $inscrit['path']. "/convocation_visiteurs.php?id=".$inscrit['md5key'];
     			$body = str_replace("%LIEN", $lien, $body);
     			$mail->Body = $body;
 
