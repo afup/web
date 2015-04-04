@@ -1,6 +1,7 @@
 <?php
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
+require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/_Common.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
 require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Mail.php';
