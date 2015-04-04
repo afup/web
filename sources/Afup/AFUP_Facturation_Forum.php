@@ -211,7 +211,7 @@ class AFUP_Facturation_Forum
         $requete  = 'UPDATE ';
         $requete .= '  afup_facturation_forum ';
         $requete .= 'SET ';
-        $requete .= '  montant= (SELECT IFNULL(SUM(montant), 0.0) FROM afup_inscription_forum WHERE reference = ' . $this->_bdd->echapper($reference) . '),';
+        $requete .= '  montant= (SELECT IFNULL(SUM(montant), 0.0) FROM afup_inscription_forum WHERE reference = ' . $this->_bdd->echapper($reference) . ') ';
         $requete .= 'WHERE';
         $requete .= '  reference=' . $this->_bdd->echapper($reference);
 
