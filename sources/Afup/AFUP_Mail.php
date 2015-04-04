@@ -95,7 +95,8 @@ class AFUP_Mail
             return false;
         }
 
-        return ($resp[0]['status'] === 'sent');
+        $status = $resp[0]['status'];
+        return ($status === 'sent' || $status === 'queued');
     }
 
     /**
