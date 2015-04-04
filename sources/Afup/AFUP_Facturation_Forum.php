@@ -348,14 +348,14 @@ class AFUP_Facturation_Forum
         $requete    = 'SELECT * FROM afup_inscription_forum WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-        require_once 'Afup/AFUP_Configuration.php';
+        require_once 'AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'Afup/AFUP_Pays.php';
+        require_once 'AFUP_Pays.php';
         $pays = new AFUP_Pays($this->_bdd);
 
         // Construction du PDF
-        require_once 'Afup/AFUP_PDF_Facture.php';
+        require_once 'AFUP_PDF_Facture.php';
         $pdf = new AFUP_PDF_Facture($configuration);
         $pdf->AddPage();
 
@@ -527,6 +527,8 @@ class AFUP_Facturation_Forum
         } else {
             $pdf->Output($chemin, 'F');
         }
+
+        return $reference;
     }
 
     /**
@@ -536,53 +538,52 @@ class AFUP_Facturation_Forum
      * @access public
      * @return bool Succès de l'envoi
      */
-    function envoyerFacture($reference, $copyTresorier = true)
+    function envoyerFacture($reference, $copyTresorier = true, $facturer = true)
     {
-        require_once 'Afup/AFUP_Configuration.php';
+        require_once 'AFUP_Mail.php';
+        require_once 'AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'phpmailer/class.phpmailer.php';
         $personne = $this->obtenir($reference, 'email, nom, prenom');
 
-        $mail = new PHPMailer;
-        $mail->AddAddress($personne['email'], $personne['nom']." ".$personne['prenom']);
+        $mail = new AFUP_Mail();
+        $receiver = array(
+            'email' => $personne['email'],
+            'name'  => sprintf('%s %s', $personne['prenom'], $personne['nom'])
+        );
+        $parameters = array();
 
-        $mail->From     = $configuration->obtenir('mails|email_expediteur');
-        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
-
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->Host     = $configuration->obtenir('mails|serveur_smtp');
-            $mail->Mailer   = "smtp";
-        } else {
-            $mail->Mailer   = "mail";
+        if (!$copyTresorier) {
+            // Bypass copy tresorier@afup.org
+            $parameters['bcc_address'] = null; 
         }
 
-        if ($copyTresorier) {
-            // Copy to tresorier@afup.org
-            $mail->addBCC('tresorier@afup.org');
-        }
+        $parameters['subject'] = "Facture événement AFUP";
 
-        $sujet  = "Facture AFUP\n";
-        $mail->Subject = $sujet;
-
-        $corps  = "Bonjour, \n\n";
-        $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";
-        $corps .= "Nous restons à votre disposition pour toute demande complémentaire.\n\n";
-        $corps .= "Le bureau\n\n";
-        $corps .= $configuration->obtenir('afup|raison_sociale')."\n";
-        $corps .= $configuration->obtenir('afup|adresse')."\n";
-        $corps .= $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville')."\n";
-
-        $mail->Body = $corps;
+        $data = array(
+            'raison_sociale' => $configuration->obtenir('afup|raison_sociale'),
+            'adresse'        => $configuration->obtenir('afup|adresse'),
+            'ville'          => $configuration->obtenir('afup|code_postal')." ".$configuration->obtenir('afup|ville'),
+        );
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache'. DIRECTORY_SEPARATOR .'fact' . $reference . '.pdf';
         $numeroFacture = $this->genererFacture($reference, $chemin_facture);
-        $mail->AddAttachment($chemin_facture, 'facture-'.$numeroFacture.'.pdf');
-        $ok = $mail->Send();
+
+        $parameters += array(
+            "attachments" => array(
+                array(
+                    "type" => "application/pdf",
+                    "name" => 'facture-'.$numeroFacture.'.pdf',
+                    "content" => base64_encode(file_get_contents($chemin_facture)),
+                )
+            )
+        );
+
         @unlink($chemin_facture);
 
-        $ok = true;
-        if ($ok) {
+        $ok = $mail->send('facture-forum', $receiver, $data, $parameters);
+
+        if ($ok && $facturer) {
             $this->estFacture($reference);
         }
 

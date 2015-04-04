@@ -17,8 +17,6 @@ class AFUP_Mail
      */
     public function __construct()
     {
-        parent::__construct();
-
         // Get the API key
         $this->_apiKey = $this->_getConfig()->obtenir('mandrill|key');
     }
@@ -93,10 +91,37 @@ class AFUP_Mail
                 $sendAt
             );
         } catch(Mandrill_Error $e) {
+            //throw $e;
             return false;
         }
 
         return ($resp[0]['status'] === 'sent');
+    }
+
+    /**
+     * Send simple message
+     * @param string $subject
+     * @param string $message
+     * @param array|null $receiver Receiver (['email', 'name']) or NULL to use default
+     * @return bool
+     */
+    public function sendSimpleMessage($subject, $message, $receiver = null)
+    {
+        if (!is_array($receiver)) {
+            $receiver = array(
+                'email' => 'tresorier@afup.org',
+                'name'  => 'Trésorier',
+            );
+        }
+        $data = array(
+            'message' => $message,
+        );
+        $parameters = array(
+            'subject' => $subject,
+            'bcc_address' => null,
+        );
+        
+        return $this->send('message', $receiver, $data, $parameters);
     }
 
 }
