@@ -220,12 +220,15 @@ class AFUP_Facturation_Forum
 
     function enregistrerInformationsTransaction($reference, $autorisation, $transaction)
     {
-        $requete   = 'UPDATE afup_facturation_forum ';
-        $requete  .= 'SET ';
-        $requete .= '  autorisation='   . $this->_bdd->echapper($autorisation) . ',';
-        $requete .= '  transaction='    . $this->_bdd->echapper($transaction)  . ',';
-        $requete .= '  date_reglement=' . time()                               . ',';
-        $requete  .= 'WHERE reference=' . $this->_bdd->echapper($reference);
+        $time = time();
+        $requete   = <<<SQL
+UPDATE afup_facturation_forum
+SET
+    autorisation = {$this->_bdd->echapper($autorisation)},
+    transaction = {$this->_bdd->echapper($transaction)},
+    date_reglement = {$time}
+WHERE reference = {$this->_bdd->echapper($reference)}
+SQL;
         return $this->_bdd->executer($requete);
     }
 
