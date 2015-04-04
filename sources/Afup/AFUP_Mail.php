@@ -103,17 +103,11 @@ class AFUP_Mail
      * Send simple message
      * @param string $subject
      * @param string $message
-     * @param array|null $receiver Receiver (['email', 'name']) or NULL to use default
+     * @param array|null $receivers Array of receivers (['email', 'name']) or NULL to use default
      * @return bool
      */
-    public function sendSimpleMessage($subject, $message, $receiver = null)
+    public function sendSimpleMessage($subject, $message, $receivers = null)
     {
-        if (!is_array($receiver)) {
-            $receiver = array(
-                'email' => 'tresorier@afup.org',
-                'name'  => 'Trésorier',
-            );
-        }
         $data = array(
             'message' => $message,
         );
@@ -121,8 +115,16 @@ class AFUP_Mail
             'subject' => $subject,
             'bcc_address' => null,
         );
+        if (is_array($receivers)) {
+            $parameters['to'] = $receivers;
+        } else {
+            $parameters['to'] = array(array(
+                'email' => 'tresorier@afup.org',
+                'name'  => 'Trésorier',
+            ));
+        }
         
-        return $this->send('message', $receiver, $data, $parameters);
+        return $this->send('message', array(), $data, $parameters);
     }
 
 }

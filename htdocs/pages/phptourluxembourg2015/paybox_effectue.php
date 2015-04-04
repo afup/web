@@ -26,7 +26,25 @@ if ($forum_facturation->estFacture($_GET['cmd'])) {
     $data = $facture;
 
     if (!$mail->send('confirmation-inscription', $receiver, $data)) {
-        exit('oops');
+        $message = <<<HTML
+Impossible d'envoyer la confirmation d'inscription après paiement pour le forum en cours.<br>
+Facture : {$facture['reference']}<br/>
+Contact : {$facture['prenom']} {$facture['nom']} &lt;{$facture['email']}&gt;
+HTML;
+        $mail->sendSimpleMessage(
+            "Impossible d'envoyer la confirmation",
+            $message,
+            array(
+                array(
+                    'name' => 'Trésorier AFUP',
+                    'email' => 'tresocier@afup.org',
+                ),
+                array(
+                    'name' => 'Communication AFUP',
+                    'email' => 'communication@afup.org',
+                ),
+            )
+        );
     }
 
 } else {
