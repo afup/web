@@ -109,7 +109,7 @@
                     <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" class="ui-li-thumb{if $nbc == 1} thumb2{/if}"/>
                     {/foreach}
                     <h3>{$prochaine.debut|date_format:'%H:%M'} - {$prochaine.fin|date_format:'%H:%M'} : {$prochaine.titre}</h3>
-                    <p>{$prochaine.abstract}</p>
+                    <p>{$prochaine.abstract|strip_tags}</p>
                 </a>
             </li>
             {/foreach}
@@ -140,7 +140,7 @@
                     <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" class="ui-li-thumb{if $nbc == 1} thumb2{/if}"/>
                     {/foreach}
                     <h3>{$prochaine.debut|date_format:'%H:%M'} - {$prochaine.fin|date_format:'%H:%M'} : {$prochaine.titre}</h3>
-                    <p>{$prochaine.abstract}</p>
+                    <p>{$prochaine.abstract|strip_tags}</p>
                 </a>
             </li>
             {/foreach}
