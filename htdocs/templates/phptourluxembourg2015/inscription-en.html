@@ -1,0 +1,67 @@
+{include file="entete.html"}
+
+<div class="left-content">
+    <h1>Prices and reservations</h1>
+    <p>
+       PHP Tour is an all-community event, we try to keep the most affordable rates possible:
+    </p>
+    <ul>
+        <li>Full price : 1 day, 150 euros</li>
+        <li>Full price : 2 days, 250 euros</li>
+        <li>AFUP Member price : 2 days, 150 euros</li>
+        <li>Student price, job seeker <a href="#renvoi"><sup>[1]</sup></a> : 2 days, 150 euros</li>
+    </ul>
+    <p>
+        Under Article 261-7-1 ° of the CGI, AFUP association is not liable to VAT.
+    </p>
+    <p>
+        <a name="renvoi">[1]</a> Proof will be required the day of the forum.
+    </p>
+
+    <p>25 € booking fee are to be expected for a payment by check, thank you encourage settlement by credit card.</p>
+
+    <div id="divPersonne" style="display:none;">
+        <p>I want to register
+            <select id="nbPersonnes">
+                <option value="1" selected="selected">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            people</p>
+    </div>
+    {include file="formulaire.html"}
+</div>
+
+{include file="sidebar.html"}
+<script type="text/javascript">
+    nbInscriptions = {$nbInscriptions};
+    {literal}
+    $("#nbPersonnes option[value="+nbInscriptions+"]").attr('selected', 'selected');
+    var parseUri = function (uri) {
+        var a = document.createElement('a');
+        a.href = uri;
+        return a.pathname;
+    }
+    $('#divPersonne').show();
+    for (i = (nbInscriptions + 1) ; i < 6 ; i++) {
+        $('fieldset.f'+i).hide();
+    }
+    $("#nbPersonnes").change(function() {
+        nb = parseInt($("#nbPersonnes option:selected").val());
+        path = parseUri($("#formulaire").attr("action"));
+        if (path.substr(0,1) != '/') {
+            path = '/' + path;
+        }
+        $("#formulaire").attr("action", path + '?nbInscriptions=' + nb);
+        for (i = 1 ; i < 6 ; i++) {
+            $('fieldset.f'+i).hide();
+        }
+        for (i = 1 ; i < (nb+1) ; i++) {
+            $('fieldset.f'+i).show();
+        }
+    });
+</script>
+{/literal}
+{include file="pied_de_page.html"}
