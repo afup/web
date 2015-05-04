@@ -1,0 +1,30 @@
+{include file="entete.html"}
+
+<h2>Les conf&eacute;renciers</h2>
+
+{foreach from=$conferenciers item=conferencier}
+  <article class="first conferenciers">
+		<h3>
+		  {$conferencier.prenom} {$conferencier.nom}
+  		{if $conferencier.societe}- <span class="societe">{$conferencier.societe}</span>{/if}
+		</h3>
+    <div class="article-body conferencier">
+    <div class="photo">
+        <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" border="0" />
+    </div>
+      <p>
+				<a name="{$conferencier.conferencier_id}" ></a>
+        {$conferencier.biographie}
+      </p>
+      <ul>
+        {foreach from=$conferencier.sessions item=session}
+					<li class="conferencier_session">
+						<a href="sessions.php#{$session.id}">{$session.titre}</a>
+					</li>
+				{/foreach}
+      </ul>
+    </div>
+  </article>
+{/foreach}
+
+{include file="pied_de_page.html"}
