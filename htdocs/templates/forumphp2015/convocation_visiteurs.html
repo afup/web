@@ -1,0 +1,63 @@
+{include file="entete.html"}
+
+<h2>Convocation Forum PHP 2015</h2>
+
+<article class="first">
+
+	<h3 style="text-align:center">
+	{$inscrit.civilite} {$inscrit.prenom} {$inscrit.nom}<br/>{if $inscrit.type_inscription <= 1 }PASS 1 Jour{else}PASS 2 Jours{/if}
+	</h3>
+
+    <div class="article-body">
+	<p>Bonjour <strong>{$inscrit.prenom} {$inscrit.nom}</strong>, </p>
+
+	<p>Vous trouverez ci-dessous votre convocation au Forum PHP qui se déroulera au Beffroi de Montrouge, les jeudi 23 et vendredi 24 octobre prochains.</p>
+
+    <!-- @TODO mettre à jour la date -->
+	<p>L'accueil du public débutera le <strong>jeudi 23 octobre à 8h30 heures</strong>, et à <strong>8h30 pour le lendemain</strong>.</p>
+	<p>Vous trouverez ci-dessous toutes les <strong>informations pratiques</strong> pour accéder au Beffroi de Montrouge.
+	<br>Votre badge vous sera remis sur place.</p>
+
+	<p><b>Rappel</b> : ne vous préoccupez pas du déjeuner, votre billet d'entrée vous permettra de profiter d'un en-cas à la pause du midi.</p>
+
+	<p>L'équipe organisatrice vous souhaite un très agréable Forum PHP.</p>
+    </div>
+</article>
+
+<article>
+  <h3>Plan d'accès</h3>
+
+  <div class="article-body">
+    <p>Le Forum PHP 2015 se tiendra au Beffroi de Montrouge.</p>
+    <p>
+      Beffroi de Montrouge,<br/> 12 Place Emile Cresp,<br/> 92120 Montrouge
+    </p>
+
+    <p>Le Beffroi de Montrouge sur Google Maps :</p>
+    <div class="map">
+       <iframe width="566" height="500" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.fr/maps?ie=UTF8&amp;q=beffroi+montrouge&amp;fb=1&amp;gl=fr&amp;hq=beffroi&amp;hnear=0x47e670ff835b57ff:0x40b82c3688b3d70,Montrouge&amp;cid=0,0,16738854224866923059&amp;t=m&amp;iwloc=A&amp;ll=48.81915,2.319569&amp;spn=0.006295,0.006295&amp;output=embed"></iframe>
+      <br />
+      <a href="https://maps.google.fr/maps?ie=UTF8&amp;q=beffroi+montrouge&amp;fb=1&amp;gl=fr&amp;hq=beffroi&amp;hnear=0x47e670ff835b57ff:0x40b82c3688b3d70,Montrouge&amp;cid=0,0,16738854224866923059&amp;t=m&amp;iwloc=A&amp;ll=48.81915,2.319569&amp;spn=0.006295,0.006295&amp;source=embed" style="color:#0000FF;text-align:left">Agrandir le plan</a>
+    </div>
+  </div>
+</article>
+
+<article>
+  <h3>Comment venir au Forum PHP 2015 ?</h3>
+
+  <div class="article-body">
+    <p>
+      Le Beffroi de Montrouge est assez facilement accessible en transports en commun&nbsp;:
+    </p>
+    <ul>
+      <li>Métro : Mairie de Montrouge</li>
+      <li>Tramway T3 Porte d'Orléans (10 min à pieds)</li>
+      <li>Bus 68, 126, 128</li>
+      <li>Périphérique : sortie porte d’Orléans</li>
+      <li>Point Vélib devant la Mairie de Montrouge</li>
+    </ul>
+  </div>
+</article>
+
+{include file="sidebar.html"}
+{include file="pied_de_page.html"}
