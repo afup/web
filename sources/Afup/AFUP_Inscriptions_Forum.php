@@ -195,7 +195,7 @@ SQL;
                 ),
                 $inscrit,
                 array(
-                    'bcc_address' => null // avoid blind copy… spam inside! ;)
+                    'bcc_address' => false // avoid blind copy… spam inside! ;)
                 ),
                 true
             );
