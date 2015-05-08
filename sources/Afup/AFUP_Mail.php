@@ -54,6 +54,7 @@ class AFUP_Mail
      * @param string $template Template identifier
      * @param array $receiver Receiver's data like ['email' => 'foo@bar.baz', 'name' => 'John Doe']
      * @param array $data Data to put in the email
+     * @param array $parameters Some parameters (like bcc, etc.)
      * @param boolean $async See Mandrill::sendTemplate()
      * @param string $ipPool See Mandrill::sendTemplate()
      * @param string $sendAt See Mandrill::sendTemplate()
