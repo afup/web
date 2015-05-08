@@ -14,78 +14,31 @@ $forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
 $forum_facturation = new AFUP_Facturation_Forum($bdd);
 
 if ($action == 'envoyer_convocation') {
+    $current = $forum->obtenir($_GET['id_forum'], 'titre');
+
 	$formulaire = &instancierFormulaire();
-	$formulaire->setDefaults(array('sujet' => 'Convocation pour le Forum PHP 2014',
-                                'date_envoi' => date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))),
-								'corps' => 'Bonjour %INSCRIT,
-
-Le Forum PHP 2014 est à nos portes ! Et l\'événement annonçant complet, atteignant un niveau d\'inscriptions quasiment historique pour l\'AFUP, il promet d\'être mémorable... 
-Voici les dernières informations utiles à connaître afin de nous rejoindre :
-
- - Quand et comment retirer votre badge
-
-Le Forum PHP 2014 se tiendra au Beffroi de Montrouge, les jeudi 23 et vendredi 24 octobre 2014. Présentez-vous à l\'accueil du Forum PHP 2014 afin de retirer votre badge auprès de notre équipe. Préservons l\'environnement, l\'impression de cette convocation (%LIEN%) n\'est pas nécessaire !
-Les portes ouvriront à 8h30. Les premières conférences débutent le jeudi à 9h : nous vous encourageons à être à l\'heure, afin d\'avoir le temps de récupérer votre badge, déposer vos affaires au vestiaire et profiter du buffet de petit-déjeuner. Ne vous préoccupez pas du déjeuner : votre billet d\'entrée vous permettra de profiter d\'un en-cas à la pause du midi.
-
-
- - Comment se rendre au Forum PHP 2014 ?
-
-Le Beffroi de Montrouge se trouve à la sortie du métro "Mairie de Montrouge", ligne 4. Il est situé place Emile Cresp, à Montrouge. Le grand bâtiment, en briques rouges, est immanquable !
-
-
- - Les ateliers pratiques, grande nouveauté du Forum PHP 2014
-
-Cette année nous mettons en place 4 ateliers pratiques : en petit comité, profitez des conseils des meilleurs experts sur un sujet précis, le tout pendant une demi-journée en direct sur votre machine. Ces ateliers se déroulent uniquement sur inscription. Vous avez pris votre place ? Il vous suffira de vous présenter avec votre coupon EventBrite?, à l\'entrée de la salle réservée aux ateliers. Vous êtes intéressé par un atelier ? Il reste quelques places pour l\'atelier "Chasse aux bugs" mené par Sophie Beaupuis le vendredi après-midi (http://bit.ly/ZS2F3h)
-
-
- - Profitez du Forum PHP 2014 pour consulter nos docteur ès PHP au sein des cliniques-conseils !
-
-Nos sponsors font venir leurs meilleurs experts pour soigner tous vos bobos PHP. Ainsi, Microsoft et Alterway, sponsors Platine de notre événement, vous proposeront deux cliniques-conseil, intitulées "Tirer le meilleur parti du Cloud avec Microsoft Azure et PHP, venez déployer votre projet !" dont se chargera Benjamin Moulès de Microsoft et Brainsonix, et "Adopter une démarche DevOps? pour les applications PHP déployées dans le Cloud Microsoft Azure", proposée par Stéphane Goudeau de Microsoft et Hervé Leclerc d’AlterWay?. Théodo, sponsor Or, proposera une clinique-conseil Théodo "Premiers secours", pour parer à tous vos petits soucis PHP et remplir votre trousse de secours de tous les indispensables : devops, travis, le débogage, le service en TDD ou encore l\'agilité / lean. Blablacar, sponsor Or, vous proposera de rencontrer Olivier Dolbeau sur la thématique qu\'il abordera durant sa conférence "Laisse pas trainer ton log !" programmée le jeudi 23 octobre de 12h15 à 13h. Enfin, Zend et Vesperia proposeront en commun une clinique-conseil intitulée "Continuous Deployment", pour vous emmener au-delà du DevOps? !
-
-
- - Le plus grand apéro communautaire parisien de l\'année !
-
-Le jeudi 23 octobre, rendez-vous dès la fin des conférences au café Oz, place Denfert Rochereau. Un apéro dînatoire vous y attendra, et toute l\'équipe d\'organisation, les conférenciers et les sponsors seront présents pour ce qui s\'annonce comme la plus grande soirée communautaire de cette fin d\'année !
-
-
- - Le Forum PHP 2014 sur les réseaux sociaux et sur votre mobile
-
-Le programme des 2 jours est disponible en version mobile : http://m.afup.org
-Envie de tweeter pendant le Forum PHP 2014 pour en faire profiter vos followers ? Utilisez le hashtag #forumphp ! Et n\'oubliez pas de suivre l\'actualité de l\'AFUP sur nos réseaux sociaux :
-Twitter : @afup 
-Facebook : www.facebook.com/fandelafup
-Google + : https://plus.google.com/u/0/b/103588986855606151405/103588986855606151405/posts
-
-Nous avons hâte de vous accueillir !
-
-A bientôt,
-L\'équipe AFUP'));
+    $formulaire->setDefaults(array('template' => 'convocation-???'));
 
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
 	$formulaire->addElement('hidden', 'action', 'envoyer_convocation');
-	$formulaire->addElement('header', null, 'Convocation');
-    $formulaire->addElement('text', 'sujet', 'Sujet', array('size' => 30));
-    $formulaire->addElement('text', 'date_envoi', 'Date envoi');
-	$formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 60, 'rows' => 20));
+	$formulaire->addElement('header', null, 'Convocation (seulement à ceux qui doivent la recevoir, aucun conférencier)');
+    $formulaire->addElement('text', 'template', 'Template Mandrill', array('size' => 255));
 	$formulaire->addElement('header', 'boutons' , '');
-	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
+	$formulaire->addElement('submit', 'soumettre', 'Envoyer la convoc Saperlipopette !');
 
-	$formulaire->addRule('sujet', 'Sujet manquant', 'required');
-    $formulaire->addRule('corps', 'Corps manquant', 'required');
-	$formulaire->addRule('date_envoi', 'Date manquante', 'required');
+	$formulaire->addRule('template', 'Template manquant', 'required');
 
     if ($formulaire->validate()) {
 		$valeurs = $formulaire->exportValues();
-		$resultat = $forum_inscriptions->envoyerEmailConvocation($valeurs['id_forum'], $valeurs['sujet'], $valeurs['corps'], $valeurs['date_envoi']);
+		$resultat = $forum_inscriptions->envoyerEmailConvocation($valeurs['id_forum'], $valeurs['template']);
 		if ($resultat) {
-			AFUP_Logs::log('Envoi de la convocation pour le Forum PHP');
+			AFUP_Logs::log("Envoi de la convocation pour le {$current['titre']}");
 			afficherMessage('La convocation a été envoyée', 'index.php?page=forum_inscriptions&action=lister');
 		} else {
-			AFUP_Logs::log('Echec de l\'envoi de la convocation pour le Forum PHP');
+			AFUP_Logs::log("Echec de l'envoi de la convocation pour le {$current['titre']}");
 			afficherMessage('L\'envoi de la convocation a échouée', 'index.php?page=forum_inscriptions&action=lister', true);
 		}
     }
-    $current = $forum->obtenir($_GET['id_forum'], 'titre');
     $smarty->assign('forum_name', $current['titre']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
