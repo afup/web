@@ -169,7 +169,7 @@ class AFUP_Inscriptions_Forum
         $sql = <<<SQL
 SELECT *
 FROM afup_inscription_forum
-WHERE reference = "$ref";
+WHERE reference = $ref;
 SQL;
         $registrations = $this->_bdd->obtenirTous($sql);
         return $registrations;
