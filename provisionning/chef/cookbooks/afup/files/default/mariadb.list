@@ -1,0 +1,4 @@
+# MariaDB 10.0 repository list - created 2015-05-09 13:20 UTC
+# http://mariadb.org/mariadb/repositories/
+deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian wheezy main
+deb-src http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian wheezy main
