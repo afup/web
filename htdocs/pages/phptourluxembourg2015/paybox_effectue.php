@@ -19,7 +19,7 @@ if ($forum_facturation->estFacture($_GET['cmd'])) {
 
     // Send register confirmation
     $mail = new AFUP_Mail();
-    $registrations = $forum_inscription->getRegistrationsByReference($facture['reference']);
+    $registrations = $forum_inscriptions->getRegistrationsByReference($facture['reference']);
 
     foreach ($registrations as $registration) {
         $receiver = array(
