@@ -157,6 +157,25 @@ class AFUP_Inscriptions_Forum
     }
 
     /**
+     * Retrieve the registrations associated to the same reference
+     * <p>Used by example to send a confirmation email to every people associated
+     * to the same payment.</p>
+     * @param string $reference The reference shared
+     * @return array The people we want ;)
+     */
+    public function getRegistrationsByReference($reference)
+    {
+        $ref = $this->_bdd->echapper($reference);
+        $sql = <<<SQL
+SELECT *
+FROM afup_inscription_forum
+WHERE reference = "$ref";
+SQL;
+        $registrations = $this->_bdd->obtenirTous($sql);
+        return $registrations;
+    }
+
+    /**
      * Send the "convocation" email to every people attending to the specified event.
      * @param int $id_forum Forum's ID
      * @param string $template Mandrill template's identifier

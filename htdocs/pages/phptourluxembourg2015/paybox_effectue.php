@@ -15,36 +15,40 @@ if ($forum_facturation->estFacture($_GET['cmd'])) {
     $facture = $forum_facturation->obtenir($_GET['cmd']);
 
     // Send the invoice
-    $forum_facturation->envoyerFacture($_GET['cmd']);
+    $forum_facturation->envoyerFacture($facture);
 
     // Send register confirmation
     $mail = new AFUP_Mail();
-    $receiver = array(
-        'email' => $facture['email'],
-        'name'  => sprintf('%s %s', $facture['prenom'], $facture['nom']),
-    );
-    $data = $facture;
+    $registrations = $forum_inscription->getRegistrationsByReference($facture['reference']);
 
-    if (!$mail->send('confirmation-inscription', $receiver, $data)) {
-        $message = <<<HTML
-Impossible d'envoyer la confirmation d'inscription après paiement pour le forum en cours.<br>
-Facture : {$facture['reference']}<br/>
-Contact : {$facture['prenom']} {$facture['nom']} &lt;{$facture['email']}&gt;
-HTML;
-        $mail->sendSimpleMessage(
-            "Impossible d'envoyer la confirmation",
-            $message,
-            array(
-                array(
-                    'name' => 'Trésorier AFUP',
-                    'email' => 'tresocier@afup.org',
-                ),
-                array(
-                    'name' => 'Communication AFUP',
-                    'email' => 'communication@afup.org',
-                ),
-            )
+    foreach ($registrations as $registration) {
+        $receiver = array(
+            'email' => $registration['email'],
+            'name'  => sprintf('%s %s', $registration['prenom'], $registration['nom']),
         );
+        $data = $registration;
+
+        if (!$mail->send('confirmation-inscription-phptour2015', $receiver, $data)) {
+            $message = <<<HTML
+Impossible d'envoyer la confirmation d'inscription après paiement pour le forum en cours.<br>
+Facture : {$registration['reference']}<br/>
+Contact : {$registration['prenom']} {$registration['nom']} &lt;{$registration['email']}&gt;
+HTML;
+            $mail->sendSimpleMessage(
+                "Impossible d'envoyer la confirmation",
+                $message,
+                array(
+                    array(
+                        'name' => 'Trésorier AFUP',
+                        'email' => 'tresocier@afup.org',
+                    ),
+                    array(
+                        'name' => 'Communication AFUP',
+                        'email' => 'communication@afup.org',
+                    ),
+                )
+            );
+        }
     }
 
 } else {
