@@ -537,7 +537,7 @@ SQL;
     /**
      * Envoi par mail d'une facture au format PDF
      *
-     * @param   string     $reference      Reference de la facturation
+     * @param string|array $reference Invoicing reference as string, or the invoice itself
      * @access public
      * @return bool Succès de l'envoi
      */
@@ -547,7 +547,12 @@ SQL;
         require_once 'AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        $personne = $this->obtenir($reference, 'email, nom, prenom');
+        if (is_array($reference)) {
+            $personne = $reference;
+            $reference = $personne['reference'];
+        } else {
+            $personne = $this->obtenir($reference, 'email, nom, prenom');
+        }
 
         $mail = new AFUP_Mail();
         $receiver = array(
