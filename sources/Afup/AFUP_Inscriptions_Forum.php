@@ -156,6 +156,12 @@ class AFUP_Inscriptions_Forum
       return $this->_bdd->obtenirEnregistrement($requete) ;
     }
 
+    /**
+     * Send the "convocation" email to every people attending to the specified event.
+     * @param int $id_forum Forum's ID
+     * @param string $template Mandrill template's identifier
+     * @return bool Always TRUE (due to legacy code)
+     */
     public function envoyerEmailConvocation($id_forum, $template) {
         require_once dirname(__FILE__).'/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
