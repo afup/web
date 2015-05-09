@@ -114,7 +114,7 @@ class AFUP_Mail
         );
         $parameters = array(
             'subject' => $subject,
-            'bcc_address' => null,
+            'bcc_address' => false,
         );
         if (is_array($receivers)) {
             $parameters['to'] = $receivers;
