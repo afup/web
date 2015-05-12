@@ -29,10 +29,10 @@ if (!isset($_GET['passage_en_force'])) {
 	}
 }
 
-if (time() > $config_forum['date_debut']) {
-	$smarty->display('inscriptions_fermes.html');
-	die();
-}
+// if (time() > $config_forum['date_debut']) {
+// 	$smarty->display('inscriptions_fermes.html');
+// 	die();
+// }
 
 //nombre possible d'inscrptions sur une même commande
 $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;
