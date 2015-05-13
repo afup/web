@@ -156,57 +156,88 @@ class AFUP_Inscriptions_Forum
       return $this->_bdd->obtenirEnregistrement($requete) ;
     }
 
-    public function envoyerEmailConvocation($id_forum, $sujet, $corps, $date_envoi = null) {
+    /**
+     * Retrieve the registrations associated to the same reference
+     * <p>Used by example to send a confirmation email to every people associated
+     * to the same payment.</p>
+     * @param string $reference The reference shared
+     * @return array The people we want ;)
+     */
+    public function getRegistrationsByReference($reference)
+    {
+        $ref = $this->_bdd->echapper($reference);
+        $sql = <<<SQL
+SELECT *
+FROM afup_inscription_forum
+WHERE reference = $ref;
+SQL;
+        $registrations = $this->_bdd->obtenirTous($sql);
+        return $registrations;
+    }
+
+    /**
+     * Send the "convocation" email to every people attending to the specified event.
+     * @param int $id_forum Forum's ID
+     * @param string $template Mandrill template's identifier
+     * @return bool Always TRUE (due to legacy code)
+     */
+    public function envoyerEmailConvocation($id_forum, $template) {
         require_once dirname(__FILE__).'/AFUP_Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        $requete  = 'SELECT';
-        $requete .= '  i.*, f.societe, md5(CONCAT(i.id, i.reference)) as md5key, af.path ';
-        $requete .= 'FROM';
-        $requete .= '  afup_inscription_forum i ';
-        $requete .= 'LEFT JOIN';
-        $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
-        $requete .= 'INNER JOIN';
-        $requete .= '  afup_forum af ON i.id_forum = af.id ';
-        $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
-        $requete .= 'AND i.type_inscription <> 12 '; // pas les conférenciers
-        if ($date_envoi) {
-            $requete .= 'AND i.date > '. strtotime($date_envoi) . ' ';
-        }
-        $requete .= 'ORDER BY i.date';
-        $requete .= ' LIMIT 5000';
+        // Get all visitors with "good" state (good to receive the email)
+        // No speakers.
+        $requete  = <<<SQL
+SELECT
+  i.*, f.societe, md5(CONCAT(i.id, i.reference)) as md5key, af.path
+FROM
+  afup_inscription_forum i
+LEFT JOIN
+  afup_facturation_forum f ON i.reference = f.reference
+INNER JOIN
+  afup_forum af ON i.id_forum = af.id
+WHERE  i.id_forum = $id_forum
+AND i.type_inscription <> 12
+AND i.etat IN (0, 4, 5, 6, 7, 8)
+ORDER BY i.date
+;
+SQL;
         $inscrits  = $this->_bdd->obtenirTous($requete);
 
-        require_once dirname(__FILE__).'/../../dependencies/phpmailer/class.phpmailer.php';
+        require_once dirname(__FILE__).'/AFUP_Mail.php';
+        $mailer = new AFUP_Mail();
+
+        $listSent = array();
+
+        // Send to each visitor
+        $total = count($inscrits);
         foreach ($inscrits as $nb => $inscrit) {
-    			if ($nb % 100 == 0) {
-    				sleep(5);
-    			}
-    			$mail = new PHPMailer();
-    			$mail->AddAddress($inscrit['email'], $inscrit['prenom'] . " " . $inscrit['nom']);
+            $sent = $mailer->send(
+                $template,
+                array(
+                    'name' => $inscrit['prenom'] . " " . $inscrit['nom'],
+                    'email' => $inscrit['email'],
+                ),
+                $inscrit,
+                array(
+                    'bcc_address' => false // avoid blind copy… spam inside! ;)
+                ),
+                true
+            );
+            if ($sent) {
+                $listSent[] = "{$inscrit['prenom']} {$inscrit['nom']} : {$inscrit['email']}";
+            }
+        }
 
-    			$mail->From = $configuration->obtenir('mails|email_expediteur');
-    			$mail->FromName = $configuration->obtenir('mails|nom_expediteur');
+        // Send confirmation
+        $count = count($listSent);
+        $msg = "<p>Voici la liste des convocations envoyées ($count/$total, template $template) :</p>";
+        $msg .= "<ol>";
+        $msg .= "<li>" . implode("</li>\n<li>", $listSent) . "</li>";
+        $msg .= "</ol>";
+        $mailer->sendSimpleMessage("Liste des convocations envoyées", $msg);
 
-    			if ($configuration->obtenir('mails|serveur_smtp')) {
-    				$mail->Host = $configuration->obtenir('mails|serveur_smtp');
-    				$mail->Mailer = "smtp";
-    			} else {
-    				$mail->Mailer = "mail";
-    			}
-
-    			$mail->Subject = $sujet;
-
-    			$qui = $inscrit['prenom'].' '.$inscrit['nom'];
-    			$body = str_replace("%INSCRIT", $qui, $corps);
-
-    			$lien = "http://www.afup.org/pages/" . $inscrit['path']. "/convocation_visiteurs.php?id=".$inscrit['md5key'];
-    			$body = str_replace("%LIEN", $lien, $body);
-    			$mail->Body = $body;
-
-    			$ok = $mail->Send();
-    		}
-  		return $ok;
+  		return true;
     }
 
     function obtenirSuivi($id_forum) {

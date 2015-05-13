@@ -29,10 +29,10 @@ if (!isset($_GET['passage_en_force'])) {
 	}
 }
 
-if (time() > $config_forum['date_debut']) {
-	$smarty->display('inscriptions_fermes.html');
-	die();
-}
+// if (time() > $config_forum['date_debut']) {
+// 	$smarty->display('inscriptions_fermes.html');
+// 	die();
+// }
 
 //nombre possible d'inscrptions sur une même commande
 $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;
@@ -101,7 +101,7 @@ $formulaire->addElement('text'    , 'code_postal_facturation', 'Code postal'    
 $formulaire->addElement('text'    , 'ville_facturation'      , 'Ville'          , array('size' => 30, 'maxlength' => 50));
 $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           , $pays->obtenirPays());
 $formulaire->addElement('text'    , 'email_facturation'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
-$formulaire->addElement('text'    , 'coupon'                 , 'Coupon'         , array('size' => 30, 'maxlength' => 200));
+$formulaire->addElement('text'    , 'coupon'                 , 'Coupon (en cas de soucis avec votre coupon, vous pouvez contacter le trésorier sur tresorier[at]afup.org)'         , array('size' => 30, 'maxlength' => 200));
 
 $formulaire->addElement('header', null, 'Divers');
 $formulaire->addElement('static', null, null, "J'accepte que ma compagnie soit citée comme participant à la conférence");
