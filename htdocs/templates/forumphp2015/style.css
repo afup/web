@@ -81,6 +81,7 @@ body {
 
 footer {
   background: transparent url(./img/background-footer.png) top left repeat;
+  color: #fff;
   font-size: 12px;
   height: 20px;
   padding: 14px 0;
@@ -88,7 +89,7 @@ footer {
 }
 
 footer a, footer a:hover {
-  color: #f2eee6;
+  color: #fff;
   font-family: 'Lucida grande';
   text-decoration: none;
 }
