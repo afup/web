@@ -92,16 +92,17 @@ a:hover{text-decoration:none}.readmore{color:#1ebdff;font-family:"Podkova",serif
 header #logo{
 	position:absolute;
 	bottom:55px;
-	left:20px;
+	left:5px;
 	color:#fff;
 	z-index: 1000;
 	margin:0;
+	width:65%;
 }
-header #logo {
-	width: 600px;
+header #logo a{
+	max-width: 600px;
 }
-header #logo img {
-	width: 600px;
+header #logo a img {
+	width: 100%;
 }
 
 header #espace-membre{position:absolute;top:0;right:0;height:82px;background:url(../img/bg/espace_membre.png) no-repeat;font-family:"Podkova",serif;font-weight:bold;color:#fff;padding:20px 30px 0 0}header #espace-membre p{font-size:1.07em;line-height:1.25;text-align:right;font-weight:bold;margin-bottom:0}header #espace-membre ul{margin:0;list-style:none;*zoom:1}header #espace-membre ul:after{content:"";display:table;clear:both}header #espace-membre ul li{float:right;padding:0 2px;font-weight:400}header #espace-membre ul li a{font-size:1.07em;line-height:1.25;text-align:right;color:#fff;text-decoration:none}header #espace-membre ul li a:hover{text-decoration:underline}header #espace-membre ul li:before{content:"| "}header #espace-membre ul li:last-child:before{content:""}#joinus{font-family:"Glegoo",serif;text-transform:uppercase;color:#4c6eaf;background:url(../img/bg/main-top.png) no-repeat right top;margin-top:-40px;position:relative;z-index:2;height:160px;padding:33px 40px 0 195px}#joinus p{font-size:1.61em;line-height:1.14}#subheader{background:url(../img/bg/subheader.png) repeat-x top left}#subheader nav{background:url(../img/bg/asidemenu-bottom.png) no-repeat bottom right;padding:0 0 20px 0;margin-top:-20px;position:relative;z-index:4}#subheader nav ul{padding:40px 30px 0 10px;background:#4c6eaf;list-style:none;margin:0;text-align:right}#subheader nav ul a{font-family:"Podkova",serif;font-weight:bold;font-size:1.23em;line-height:1.25;color:#fff;text-decoration:none}#subheader nav ul a:hover{text-decoration:underline}#main{padding:0 30px}a.article-teaser{text-decoration:none;display:block;margin:20px 0 38px;color:#3e3d40;background:url(../img/bg/suite.png) no-repeat bottom left;padding-bottom:2px}time{font-family:"Podkova",serif;background:url(../img/bg/date.png) no-repeat;width:90px;height:40px;color:#fff;padding:10px 0 0 20px;display:block;margin-left:-20px}time+h2{margin-top:10px}#sidebar-article h2{background:url(../img/bg/organise.png) no-repeat;width:151px;height:69px;font-size:1.61em;line-height:0.92;font-weight:700;color:#fff;padding:30px 0 0 8px;font-family:"Podkova",serif;text-transform:uppercase;margin:0 20px 0 0;float:right}#sidebar-article #externe{list-style:none;margin:0;padding:0}#sidebar-article #externe li{margin-bottom:20px}#footer-top{margin-top:40px}#footer-top .mw960p{background:url(../img/bg/main-footer.png) bottom right no-repeat;padding:0 0 20px 0;position:relative;min-height:40px}#footer-top #menufooter-top{list-style:none;*zoom:1;position:absolute;right:0;margin:0;top:0}#footer-top #menufooter-top:after{content:"";display:table;clear:both}#footer-top #menufooter-top li{float:left}#footer-top #menufooter-top li:first-child a,#footer-top #menufooter-top li:first-child span{border:0}#footer-top #menufooter-top a,#footer-top #menufooter-top span{color:#4c6eaf;padding:0 17px 0 16px;border-left:1px solid #4c6eaf;text-decoration:none}#footer-top #menufooter-top a:hover{text-decoration:underline}#footer-middle{background:#fff url(../img/bg/footer.png) repeat-x top left}#footer-middle .mw960p{background:url(../img/bg/bottomlink-footer.png) no-repeat 0 72px;position:relative;min-height:175px}#footer-middle #menufooter-share{margin:0;position:absolute;top:-20px;left:0;list-style:none}#footer-middle #menufooter-share li{float:left;letter-spacing:normal;text-indent:-999em}#footer-middle #menufooter-share li .spriteshare{text-indent:-119988px;overflow:hidden;text-align:left;display:block;width:39px;height:39px;margin-left:11px}#footer-middle #menufooter-share li .spriteshare.spriteshare-mail{background:url(../img/bg/link-mail.png) no-repeat}#footer-middle #menufooter-share li .spriteshare.spriteshare-facebook{background:url(../img/bg/link-facebook.png) no-repeat}#footer-middle #menufooter-share li .spriteshare.spriteshare-twitter{background:url(../img/bg/link-twitter.png) no-repeat;width:38px}#footer-middle #footer-faq{color:#fff;position:absolute;right:10px;top:40px;font-size:1.38em;font-weight:400;font-family:"Podkova",serif;text-decoration:none}
