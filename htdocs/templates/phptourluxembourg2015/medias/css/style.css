@@ -83,12 +83,11 @@ body {
 .header .logo a {
 	float:left;
 	background:url(../images/logo.png) no-repeat left top;
-	width:244px;
-	height:94px;
+	width:213px;
+	height:100px;
 	display:block;
 	text-indent:-9999px;
-	margin: 16px 0 0 20px;
-
+	margin: 26px 35px 0px 37px;
 }
 
 .header .description {
