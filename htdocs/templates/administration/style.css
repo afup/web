@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Belgrano|Roboto:400,700,300);
+
 /*********************
   Structure
 *********************/
@@ -10,40 +12,34 @@ body {
   min-width: 600px;
   font-size: 90%;
 }
-body:before {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    content: "";
-    height: 10px;
-    left: 0;
-    position: fixed;
-    top: -10px;
-    width: 100%;
-    z-index: 100;
-}
+
 #header {
   clear: both;
   float: left;
   width: 100%;
-  background: url("images/ui-bg_highlight-hard_40_5779c5_1x100.png") 50% 50% #5779c5;
+  background: #50a0dd;
   color: #fff;
-  height:75px;
-}
-
-#header {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #18213e;
 }
 
 #header p,
 #header h1,
 #header h2 {
-  padding: .8em 15px 0 15px;
+  padding: 0;
   margin: 0;
   color: #fff;
 }
 
 #header h1{
     font-size:28px;
-    margin: 0 0 5px 150px;
+    line-height: 80px;
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+}
+
+#header h1 img {
+    vertical-align: middle;
+    margin: 0 1em;
 }
 
 #header ul {
@@ -115,6 +111,10 @@ body:before {
   position: relative;
   padding: 0 0 1em 0;
 }
+
+.col1 {
+    padding-top: 2em;
+}
 .col2{overflow: hidden;}
 
 .leftmenu {
@@ -157,23 +157,19 @@ form {
 }
 
 fieldset {
-    padding-bottom: 0.5em;
-    border: 1px solid #5779c5;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    margin: 0.5em 0;
+    padding: 0;
+    margin: 2em 0;
+    border: none;
 }
 
 legend {
-	font-weight: bold;
-    padding: 4px 35px;
-    border: 1px solid #5779c5;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    background: url("images/ui-bg_glass_20_5779c5_1x400.png") 50% 50% #5779c5;
-    color: #fff;
+    width: 100%;
+    font-size: 150%;
+    text-transform: uppercase;
+    border-bottom: #50a0dd solid thin;
+    color: #50a0dd;
+    font-family: Roboto, sans-serif;
+
 }
 
 fieldset.boutons {
@@ -246,10 +242,10 @@ th {
 
 table.afup_tab, table.afup_tab_inside
 {
-  border-spacing: 2px;
+    border-spacing: 2px;
 	border-collapse: collapse;
 	background-color: white;
-	border: 1px solid #5779c5;
+	border: 1px solid #50a0dd;
 }
 table.afup_tab
 {
@@ -274,7 +270,7 @@ table.afup_tab tr.even
 
 table.afup_tab th
 {
-  background: url("images/ui-bg_glass_20_5779c5_1x400.png") 50% 50% #5779c5;
+  background: #50a0dd;
   color: white;
   padding:5px;
   border-left: 1px solid white
@@ -308,7 +304,7 @@ ul {
 	list-style: square;
 	margin: 0;
 	padding: 0 0 0 20px;
-	color: #5779c5;
+	color: #50a0dd;
 }
 
 
@@ -349,8 +345,9 @@ h1,
 h2,
 h3,
 h4 {
-	font-family: Arial, Helvetica, sans-serif;
-	color: #5779c5;
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+    color: #18213e;
 }
 
 h2 {
@@ -399,6 +396,12 @@ a:active {
 .KO {
 	border : 1px solid #AA0000;
 	background-color : #FFAAAA;
+}
+
+.col1 h2 {
+    font-size: 200%;
+    text-transform: uppercase;
+    margin-top: 1em;
 }
 
 /*********************
@@ -526,7 +529,13 @@ table.planete_billet tr.inactif { color: #CCCCCC; }
 ul.tags { display: inline; border-left: 0; padding-left: 0; }
 ul.tags li { list-style: none; display : inline; border-left: 0; padding-left: 0; padding-right : 0.8em; }
 ul.liste_membres { border-left: 0; padding-left: 0; }
-ul.liste_membres li { list-style: none; border-left: 0; padding-left: 0; padding-right : 0.8em; }
+ul.liste_membres li {
+    list-style: none;
+    color: #18213e;
+    border-left: 0;
+    padding-left: 0;
+    padding-right : 0.8em;
+}
 ul.liste_membres li td { white-space: normal; }
 
 ul.sparklines li span.minimum { color: #f00; }
