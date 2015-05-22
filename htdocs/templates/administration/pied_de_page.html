@@ -8,7 +8,7 @@
                             <ul>
                             {foreach from=$page.elements key=clef2 item=element}
                                 <li>
-                                    <a href="index.php?page={$clef2}">{$element.nom}</a>
+                                    <a href="index.php?page={$clef2}" {if $element.nouvelle_fenetre}target="_blank"{/if}>{$element.nom}{if $element.nouvelle_fenetre} <i class="glyphicon glyphicon-new-window"></i>{/if}</a>
                                 </li>
                             {/foreach}
                             </ul>
