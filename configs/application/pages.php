@@ -15,10 +15,12 @@ $pages = array(
             'membre_wiki' => array(
                 'nom' => 'Accès  wiki',
                 'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+                'nouvelle_fenetre' => true,
             ),
 		    'membre_redmine' => array(
 		        'nom' => 'Déclarer un problème (GitHub)',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+                'nouvelle_fenetre' => true,
 		    ),
             'membre_cotisation' => array(
                 'nom' => 'Ma cotisation',
