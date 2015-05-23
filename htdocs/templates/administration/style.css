@@ -1,6 +1,18 @@
 @import url(http://fonts.googleapis.com/css?family=Belgrano|Roboto:400,700,300);
 
 /*********************
+  Reset
+*********************/
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+/*********************
   Structure
 *********************/
 body {
@@ -9,7 +21,6 @@ body {
   border: 0;
   width: 100%;
   background: #fff;
-  min-width: 600px;
   font-size: 90%;
 }
 
@@ -244,7 +255,7 @@ table.afup_tab, table.afup_tab_inside
 {
     border-spacing: 2px;
 	border-collapse: collapse;
-	background-color: white;
+	background-color: #ffffff;
 	border: 1px solid #50a0dd;
 }
 table.afup_tab
@@ -270,11 +281,11 @@ table.afup_tab tr.even
 
 table.afup_tab th
 {
-  background: #50a0dd;
-  color: white;
-  padding:5px;
-  border-left: 1px solid white
-  }
+    background: #50a0dd;
+    color: #ffffff;
+    padding:5px;
+    border-left: 1px solid #ffffff;
+}
 
 table.afup_tab th:FIRST-CHILD
 {
@@ -283,7 +294,7 @@ table.afup_tab th:FIRST-CHILD
 
   table.afup_tab th a
 {
-  color: white;
+  color: #ffffff;
   text-decoration: underline;
 }
 
@@ -409,45 +420,6 @@ a:active {
 *********************/
 
 /* Connexion */
-body#connexion {
-	background: #CCCCCC;
-}
-
-body#connexion #contenu, body#motdepasse_perdu #contenu {
-	width: 412px;
-	height: 212px;
-	text-align: center;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -106px 0 0 -206px;
-	background: url(images/fond_connexion.png) no-repeat;
-}
-
-body#connexion h1 {
-	margin: 6px 6px 0 120px;
-	height: 50px;
-	line-height: 60px;
-	text-align: center;
-}
-
-body#connexion form {
-	margin: 10px 0 0 0;
-	width: 100%;
-}
-
-body#connexion fieldset {
-	border: 0;
-}
-
-body#connexion form div.rangee label {
-  	width: 115px;
-}
-
-body#connexion form div.rangee span.element {
-	width: 235px;
-}
-
 form p.erreur {
 	background: none;
 	border: 0;
@@ -458,7 +430,7 @@ form p.erreur {
 
 /* Message */
 body#message {
-	background: #CCCCCC;
+	background: #dddddd;
 }
 
 body#message #contenu {
@@ -470,7 +442,7 @@ body#message #contenu {
 	left: 50%;
 	margin: -46px 0 0 -206px;
 	background: url(images/fond_message.png) top left no-repeat;
-	border: 1px #CCCCCC solid;
+	border: 1px #dddddd solid;
 }
 
 body#message p {
@@ -485,47 +457,16 @@ body#logs ul.liste {
 }
 
 body#logs ul.liste h4 {
-	border-bottom: 1px #CCCCCC solid;
+	border-bottom: 1px #dddddd solid;
 	margin-bottom: 0;
 }
 
 
 /* Motdepasse_perdu */
-body#motdepasse_perdu {
-	background: #CCCCCC;
-}
 
-body#motdepasse_perdu h1 {
-	margin: 6px 6px 0 120px;
-	height: 50px;
-	line-height: 60px;
-	text-align: center;
-}
-
-body#motdepasse_perdu p {
-	width: 95%;
-}
-
-
-body#motdepasse_perdu form {
-	margin: 10px 0 0 0;
-	width: 100%;
-}
-
-body#motdepasse_perdu fieldset {
-	border: 0;
-}
-
-body#motdepasse_perdu form div.rangee label {
-  	width: 115px;
-}
-
-body#motdepasse_perdu form div.rangee span.element {
-	width: 235px;
-}
 
 table.planete_billet td { white-space: normal; vertical-align: top; }
-table.planete_billet tr.inactif { color: #CCCCCC; }
+table.planete_billet tr.inactif { color: #dddddd; }
 ul.tags { display: inline; border-left: 0; padding-left: 0; }
 ul.tags li { list-style: none; display : inline; border-left: 0; padding-left: 0; padding-right : 0.8em; }
 ul.liste_membres { border-left: 0; padding-left: 0; }
@@ -549,7 +490,7 @@ div.bloc_jour .conferencier { font-size:0.8em; font-style:italic; display: block
 div.bloc_jour table { border-collapse:collapse; width:100%; }
 div.bloc_jour table td { white-space:normal; }
 div.bloc_jour table caption { background-color:#E0E3EE; color:inherit; font-weight:bold; height:30px; line-height:30px; }
-div.bloc_jour table tbody td { border:1px solid #CCCCCC; }
+div.bloc_jour table tbody td { border:1px solid #dddddd; }
 td.col_heure { font-size: 10px; width:8% !important; }
 tr.li td.col_heure { background-color:#E0E3EE; color:inherit; }
 
@@ -557,7 +498,7 @@ tr.li td.col_heure { background-color:#E0E3EE; color:inherit; }
 
 tr.avant { display: none; }
 tr.aujourdhui td { font-weight: bolder; }
-tr.apres td { color: #CCCCCC; }
+tr.apres td { color: #dddddd; }
 
 /*********************
  Accueil
@@ -613,4 +554,123 @@ tr.apres td { color: #CCCCCC; }
 }
 .notify img {
 	margin-right:10px
+}
+
+/*
+    panel for login, lost password…
+ */
+
+.panel-page {
+    background-color: #dddddd;
+}
+
+.panel {
+    background-color: #ffffff;
+}
+
+.panel h1 {
+    text-align: center;
+    background: #50a0dd;
+    margin: 0;
+}
+
+.panel h2 {
+    margin: 1em 0;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.panel form {
+    margin: 10px 0 0 0;
+    width: 100%;
+    font-size: 150%;
+    padding: 0 1em;
+}
+
+.panel fieldset {
+    border: none;
+}
+
+.panel .rangee {
+    padding: 0;
+    margin: 0.5em;
+}
+
+.panel .rangee label {
+    display: block;
+    text-align: left;
+    width:100%;
+    font-family: Belgrano, serif;
+}
+
+.panel .rangee input {
+    display: block;
+    text-align: left;
+    width:100%;
+    margin: 0.5em 0;
+    padding: 0.3em;
+    line-height: 2em;
+    font-size: 100%;
+    border-radius: 3px;
+    border: solid #50a0dd thin;
+}
+
+.panel .rangee input[type="submit"] {
+    background: #50a0dd;
+    color: #ffffff;
+    width: auto;
+    padding: 0.3em 1em;
+    border: none;
+    cursor: pointer;
+    font-family: Belgrano, serif;
+    transition: background-color 0.5s;
+}
+
+.panel .rangee input[type="submit"]:hover {
+    background-color: #18213e;
+}
+
+@media screen and (min-width: 321px) {
+    .panel-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .panel {
+        border: solid #50a0dd thin;
+        width: 600px;
+    }
+
+    .panel h1 {
+        margin: 0;
+        height: 80px;
+        line-height: 80px;
+    }
+
+    .panel h1 img {
+        vertical-align: -22px;
+        margin: 0 1em;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .panel-page {
+        display: block;
+    }
+    .panel {
+        width: 100%;
+        border: none;
+    }
+
+    .panel h1 {
+        width: 100%;
+        height: 3em;
+        padding: 0.3em;
+    }
+
+    .panel h1 img {
+        width: 100%;
+        margin: 0;
+        vertical-align: baseline;
+    }
 }
