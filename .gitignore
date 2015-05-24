@@ -12,9 +12,9 @@ deps.lock
 .settings
 */*.bak
 .vagrant
-default
+/default
 
-htdocs/cache
-configs/application/config.php
-tests/simpletest
-tests/unitaires/config.php
+/htdocs/cache
+/configs/application/config.php
+/tests/simpletest
+/tests/unitaires/config.php
