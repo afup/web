@@ -2,48 +2,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
     <head>
         {include file="head.html"}
-        <style>{literal}
-            #connexion p {padding:0 1em}
-            #connexion fieldset {padding:0 0 0.5em;margin:0}
-        {/literal}</style>
     </head>
 
-    <body id="connexion" onload="donnerFocus('utilisateur');">
-        <div id="contenu">
-            <h1>Administration</h1>
-
+    <body id="connexion" class="panel-page">
+        <div id="contenu" class="panel">
+            <h1>
+                <img src="{$chemin_template}images/logo_afup.png" alt="Association Française des Utilisateurs de PHP">
+            </h1>
+            <h2>Administration</h2>
             <form action="index.php?page=accueil" method="post" onsubmit="return soumettreUneSeuleFois(this);">
                 {if $echec}<p class="erreur">La connexion a échoué.</p>{/if}
 
                 <fieldset>
-                    {if $page_demandee}
-                    <input type="hidden" name="page_demandee" value="{$page_demandee}" />
-                    {/if}
                     <div class="rangee">
                         <label for="utilisateur">Utilisateur</label>
-                        <span class="element">
-                          <input type="text" id="utilisateur" name="utilisateur" value="{$ctx_login}" style="width:200px"/>
-                        </span>
+                        <div>
+                          <input type="text" id="utilisateur" name="utilisateur" autofocus value="{$ctx_login}"/>
+                        </div>
                     </div>
 
                     <div class="rangee">
                         <label for="utilisateur">Mot de passe</label>
-                        <span class="element">
-                          <input type="password" name="mot_de_passe" style="width:200px"/>
-                        </span>
+                        <div>
+                          <input type="password" name="mot_de_passe" />
+                        </div>
                     </div>
 
-                    <!-- Vilain hack pour Opera -->
-                    <div>&nbsp;</div>
-                </fieldset>
+                    <div class="rangee">
+                        <div>
+                          <input type="submit" name="soumettre" value="Se connecter"/>
+                        </div>
+                    </div>
 
-                <fieldset>
-                    <input type="submit" name="soumettre" value="Se connecter" />
+                    {if $page_demandee}
+                    <input type="hidden" name="page_demandee" value="{$page_demandee}" />
+                    {/if}
                     <input type="hidden" name="connexion" value="1" />
                 </fieldset>
+
+                <p class="rangee"><a href="index.php?page=mot_de_passe_perdu">Mot de passe perdu ?</a></p>
+                <p class="rangee"><a href="index.php?page=inscription">Vous souhaitez vous inscrire à l'AFUP?</a></p>
             </form>
-            <p><a href="index.php?page=mot_de_passe_perdu">Mot de passe perdu ?</a></p>
-            <p><a href="index.php?page=inscription">Vous souhaitez vous inscrire à l'AFUP?</a></p>
         </div>
     </body>
 </html>

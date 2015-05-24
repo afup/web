@@ -4,33 +4,43 @@
         {include file="head.html"}
     </head>
 
-    <body id="motdepasse_perdu" onload="donnerFocus('email');">
-        <div id="contenu">
-            <h1>Mot de passe perdu ?</h1>
+    <body id="motdepasse_perdu" class="panel-page">
+        <div id="contenu" class="panel">
+            <h1>
+                <img src="{$chemin_template}images/logo_afup.png" alt="Association Française des Utilisateurs de PHP">
+            </h1>
+            <h2>Mot de passe perdu ?</h2>
             <form action="index.php?page=connexion" method="post" onsubmit="return soumettreUneSeuleFois(this);">
 
+                {if $echec}
+                    <p class="erreur rangee">Impossible d'envoyer votre mot de passe</p>
+                {else}
+                    <p class="rangee">Votre mot de passe vous sera renvoyé à l'adresse indiquée dans vos coordonnées et resaisie ci-dessous.</p>
+                {/if}
                 <fieldset>
-                    {if $echec}
-                        <p class="erreur">Impossible d'envoyer votre mot de passe</p>
-                    {else}
-                        <p>Votre mot de passe vous sera renvoyé à l'adresse indiquée dans vos coordonnées et resaisie ci-dessous.</p>
-                    {/if}
+
+                    <div class="rangee">
+                        <label for="utilisateur">Utilisateur</label>
+                        <div>
+                          <input type="text" id="utilisateur" name="utilisateur" autofocus value="{$ctx_login}"/>
+                        </div>
+                    </div>
 
                     <div class="rangee">
                         <label for="email">Email</label>
-                        <span class="element">
-                          <input type="text" name="email" size="30" maxlength="100" style="width:200px" />
-                        </span>
+                        <div>
+                            <input type="text" name="email" maxlength="100" autofocus />
+                        </div>
                     </div>
 
-                    <!-- Vilain hack pour Opera -->
-                    <div>&nbsp;</div>
-                </fieldset>
-
-                <fieldset>
-                    <input type="submit" name="soumettre" value="Renvoyer mot de passe" />
+                    <div class="rangee">
+                        <input type="submit" name="soumettre" value="Renvoyer mot de passe" />
+                    </div>
                     <input type="hidden" name="motdepasse_perdu" value="1" />
                 </fieldset>
+                <p class="rangee">
+                    <a href="index.php?page=connexion">Retour au formulaire de connexion</a>
+                </p>
             </form>
         </div>
     </body>
