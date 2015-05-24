@@ -103,22 +103,22 @@ $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           
 $formulaire->addElement('text'    , 'email_facturation'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
 $formulaire->addElement('text'    , 'coupon'                 , 'Coupon'         , array('size' => 30, 'maxlength' => 200));
 
-$formulaire->addElement('header', null, 'Divers');
-$formulaire->addElement('static', null, null, "J'accepte que ma compagnie soit citée comme participant à la conférence");
-$groupe = array();
-$groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'oui', 1);
-$groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'non', 0);
-$formulaire->addGroup($groupe, 'groupe_citer_societe', null, '&nbsp;', false);
-$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant des rencontres de l'AFUP sur des sujets afférents à PHP");
-$groupe = array();
-$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'oui', 1);
-$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'non', 0);
-$formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
-$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
-$groupe = array();
-$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
-$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
-$formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
+//$formulaire->addElement('header', null, 'Divers');
+//$formulaire->addElement('static', null, null, "J'accepte que ma compagnie soit citée comme participant à la conférence");
+//$groupe = array();
+//$groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'oui', 1);
+//$groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'non', 0);
+//$formulaire->addGroup($groupe, 'groupe_citer_societe', null, '&nbsp;', false);
+//$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant des rencontres de l'AFUP sur des sujets afférents à PHP");
+//$groupe = array();
+//$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'oui', 1);
+//$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'non', 0);
+//$formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
+//$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
+//$groupe = array();
+//$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
+//$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
+//$formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
 
 $formulaire->addElement('header', 'boutons'  , '');
 $formulaire->addElement('submit', 'soumettre', 'Soumettre');
