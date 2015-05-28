@@ -12,7 +12,7 @@ $smarty->assign('date_fin_appel_en', strftime('%A %B %d, %Y at %H:%M:%S', $fin_d
 
 setlocale(LC_TIME, 'fr_FR');
 if ((time() - $fin_de_lappel) > 0) {
-    $smarty->display('fin_appel.html');
+    $smarty->display('fin_appel_en.html');
     exit();
 }
 
@@ -142,7 +142,8 @@ if ($formulaire->validate()) {
             $conf->envoyerEmail($$var);
         }
     }
-    $smarty->display('soumission_engistree.html');
+
+    $smarty->display('soumission_enregistree_en.html');
     exit(0);
 }
 $smarty->assign('formulaire', genererFormulaire($formulaire));
