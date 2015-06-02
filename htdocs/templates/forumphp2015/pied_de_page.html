@@ -2,33 +2,36 @@
             </section>
 
             <aside class="span2" id="afup">
+              un événement
               <a href="http://www.afup.org/">
                 <img src="{$chemin_template}img/logo-afup.png" alt="Logo de l'AFUP" />
               </a>
-            </aside>
 
-            <aside class="span2">
-              <article>
+              <div class="supporters">
                 <h3>Sponsors</h3>
 
                 <div class="content">
                   {if count($partenaires.Platine) > 0}
                     <h4>Platine</h4>
+                    <div class="logo-container">
                     {foreach from=$partenaires.Platine item=partenaire}
-                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                     {/foreach}
+                    </div>
                   {/if}
 
                   {if count($partenaires.Or) > 0}
                     <h4>Or</h4>
+                    <div class="logo-container">
                     {foreach from=$partenaires.Or item=partenaire}
-                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a><br />
+                      <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                     {/foreach}
+                    </div>
                   {/if}
 
                   {if count($partenaires.Argent) > 0}
                     <h4>Argent</h4>
-                    <div class="fade2012">
+                    <div class="fade2012 logo-container">
                     {foreach from=$partenaires.Argent item=partenaire}
                       <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                     {/foreach}
@@ -37,28 +40,26 @@
 
                   {if count($partenaires.Bronze) > 0}
                     <h4>Bronze</h4>
-                    <div class="fade2012">
+                    <div class="fade2012 logo-container">
                     {foreach from=$partenaires.Bronze item=partenaire}
                       <a href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                     {/foreach}
                     </div>
                   {/if}
                 </div>
-              </article>
-            </aside>
+              </div>
 
-            <aside class="span2">
-              <article>
+              <div class="supporters">
                 <h3>Partenaires</h3>
 
                 <div class="content">
-                  <div class="fade2012">
+                  <div class="fade2012 logo-container">
                   {foreach from=$partenaires.Partenaires item=partenaire}
                     <a  href="{$partenaire.site}" title="{$partenaire.nom}"><img src="{$chemin_template}/images/{$partenaire.logo}" alt="Logo {$partenaire.nom}" /></a>
                   {/foreach}
                   </div>
                 </div>
-              </article>
+              </div>
             </aside>
           </div>
         </div>
