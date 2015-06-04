@@ -44,7 +44,7 @@ Et la base de données est `afup_dev`.
 * Récupérer un dump de la base (demander au pôle outils @ afup.org) et le placer décompressé à la racine du projet
 * Se connecter à sa machine guest : `vagrant ssh`
 * Se placer dans le dossier synchronisé : `cd /vagrant`
-* Executer la commande `mysql -u root -p afup_dev < {nom_du_dump}.sql`
+* Exécuter la commande `mysql -u root -p afup_dev < {nom_du_dump}.sql`
 
 ## Applications
 
