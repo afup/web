@@ -12,63 +12,52 @@
   </head>
   <body>
     <div id="root">
-      <header class="container">
-        <div class="row">
-          <h1 class="span8"><a href="index.php"><img src="{$chemin_template}img/logo.png" alt="Logo du Forum PHP" /></a></h1>
-          <div class="event span5">
-            <span class="date">23 &amp; 24 nov 2015</span>
-            <span class="summary">Beffroi de Montrouge</span>
-          </div>
-          <div id="logos" class="span3">
-            <a href="http://www.afup.org/"><img src="{$chemin_template}img/logo-afup.png" alt="Logo de l'AFUP" /></a> <br />
-            <a href="http://www.php.net/"><img src="{$chemin_template}img/logo-php.png" alt="Logo de PHP" /></a>
-          </div>
-        </div>
+      <header>
+          <h1 class="container">
+            <a href="index.php">
+              <div>
+                <img src="{$chemin_template}img/logo.png" alt="Logo du Forum PHP" />
+              </div>
+              <div>
+                <div class="date">23 &amp; 24 nov 2015</div>
+                <div class="venue">Beffroi de Montrouge</div>
+              </div>
+            </a>
+          </h1>
       </header>
 
+      <section id="baseline">
+        <h2 class="container">
+        L'évènement majeur de la communauté PHP francophone depuis plus de 10 ans !
+        </h2>
+      </section>
       <div id="container">
         <div class="container">
-          <em id="baseline">Le Forum PHP, l'évènement majeur de la communauté PHP francophone depuis plus de 10 ans</em>
-          <div class="row">
-            <div id="menu" class="span4">
-              <nav>
-                <ul>
-                  <li>
-                    <a href="appel-a-conferenciers.php">Appel à conférenciers</a>
-                  </li>
-                  <li>
-                    <a href="sessions.php">Programme</a>
-                  </li>
-                  <li>
-                    <a href="inscription.php">Tarifs / Inscriptions</a>
-                  </li>
-                  <li>
-                    <a href="acces.php">Accès</a>
-                  </li>
-                  <li>
-                    <a href="contact.php">Contacts</a>
-                  </li>
-                  <li class="last">
-                    <a href="sponsors.php">Sponsors</a>
-                  </li>
-<?php
-/*
-<a class="menu" href="projets-php-inscription.php">Proposer un Projet PHP</a>
-<a class="menu-english" href="english.php"><img src="{$chemin_template}images/anglais.gif" alt="english version" border="0" /></a>
-<a class="menu" href="inscription.php">Tarifs / Inscriptions</a>
-<a class="menu" href="buzz.php">Buzz</a>
-<a class="menu" href="deroulement.php">Programme</a>
-<a class="menu" href="conferenciers.php">Conférenciers</a>
-<a class="menu" href="sessions.php">Sessions</a>
-<a class="menu" href="resumes.php">Résumés</a>
-<a class="menu" href="projets-php.php">Projets PHP</a>
-*/
-?>
-                </ul>
-              </nav>
+          <div class="container-row row">
+            <nav id="menu" class="span2">
+              <ul>
+                <li>
+                  <a href="appel-a-conferenciers.php">Appel à conférencier</a>
+                </li>
+                <li>
+                  <a href="sessions.php">Programme</a>
+                </li>
+                <li>
+                  <a href="inscription.php">Tarifs / Inscriptions</a>
+                </li>
+                <li>
+                  <a href="acces.php">Accès</a>
+                </li>
+                <li>
+                  <a href="contact.php">Contacts</a>
+                </li>
+                <li class="last">
+                  <a href="sponsors.php">Sponsors</a>
+                </li>
+              </ul>
 
               <a class="social-button twitter" href="http://twitter.com/afup">Suivez-nous sur twitter</a>
               <a class="social-button facebook" href="http://www.facebook.com/pages/AFUP/148661101838283">Devenez Fan sur Facebook</a>
-            </div>
+            </nav>
 
             <section id="content" class="span8">
