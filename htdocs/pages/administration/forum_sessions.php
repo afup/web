@@ -80,7 +80,8 @@ if ($action == 'lister') {
     $journees[3] = 'Les deux';
 
     $genres = array();
-    $genres[1] = 'Conférence plénière';
+    $genres[1] = 'Conférence plénière (40 min)';
+    $genres[3] = 'Conférence plénière (20 min)';
     $genres[2] = 'Atelier';
     $genres[9] = 'Projet PHP';
 
@@ -170,7 +171,8 @@ if ($action == 'lister') {
     $journees[3] = 'Les deux';
 
     $genres = array();
-    $genres[1] = 'Conférence plénière';
+    $genres[1] = 'Conférence plénière (40 min)';
+    $genres[3] = 'Conférence plénière (20 min)';
     $genres[2] = 'Atelier';
     $genres[9] = 'Projet PHP';
 
@@ -290,7 +292,8 @@ if ($action == 'lister') {
     $formulaire->addGroup($groupe, 'groupe_pres', "Public visé", '<br />', false);
 
     $groupe = array();
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière', 1);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (40 min)', 1);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (20 min)', 3);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Atelier'            , 2);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Projet'            , 9);
     $formulaire->addGroup($groupe, 'groupe_type_pres', "Type de session", '<br />', false);
