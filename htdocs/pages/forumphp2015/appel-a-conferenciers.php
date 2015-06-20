@@ -52,7 +52,8 @@ for ($i = 1;$i < 4; $i++) {
     $formulaire->addGroup($groupe, 'groupe_pres' . $i, "Public visé", '<br />', false);
 
     $groupe = array();
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Conférence plénière', 1);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Conférence plénière (40 min)', 1);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Conférence plénière (20 min)', 3);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'pres' . $i . '_genre', null, 'Atelier'    , 2);
     $formulaire->addGroup($groupe, 'groupe_type_pres' . $i, "Type de session", '<br />', false);
 
