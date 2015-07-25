@@ -158,8 +158,8 @@ for ($i=2; $i <= $nombre_personnes; $i++) {
   }
 }
 
-$formulaire->addRule('nom_facturation'                    , 'Nom manquant'             , 'required');
-$formulaire->addRule('prenom_facturation'                    , 'Prénom manquant'             , 'required');
+$formulaire->addRule('nom_facturation'        , 'Nom manquant'                             , 'required');
+$formulaire->addRule('prenom_facturation'     , 'Prénom manquant'                          , 'required');
 $formulaire->addRule('adresse_facturation'    , 'Adresse manquante'                        , 'required');
 $formulaire->addRule('code_postal_facturation', 'Code postal manquant'                     , 'required');
 $formulaire->addRule('ville_facturation'      , 'Ville manquante'                          , 'required');
