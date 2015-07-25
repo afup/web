@@ -9,6 +9,8 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.ph
 $forum_appel = new AFUP_AppelConferencier($bdd);
 $sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
 
+$conferenciers = array();
+
 $journees[0] = array();
 $journees[1] = array();
 $deuxprochaines = array();
