@@ -29,11 +29,6 @@ if (!isset($_GET['passage_en_force'])) {
 	}
 }
 
-// if (time() > $config_forum['date_debut']) {
-// 	$smarty->display('inscriptions_fermes.html');
-// 	die();
-// }
-
 //nombre possible d'inscrptions sur une même commande
 $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;
 $nombre_tags = 3;
@@ -125,18 +120,6 @@ $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'ou
 $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'non', 0);
 $formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
 
-//$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
-//$groupe = array();
-//$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
-//$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
-//$formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
-
-//$formulaire->addElement('static', null, null, "Je souhaite recevoir des informations de la part de vos partenaires presse/media");
-//$groupe = array();
-//$groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'oui', 1);
-//$groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'non', 0);
-//$formulaire->addGroup($groupe, 'groupe_mail_partenaire', null, '&nbsp;', false);
-
 $formulaire->addElement('header', 'boutons'  , '');
 $formulaire->addElement('submit', 'soumettre', 'Soumettre', array('class' => 'btn primary', 'style' => 'float: right'));
 
@@ -194,8 +177,6 @@ if ($formulaire->validate()) {
         $tags = '';
         for ($j=1; $j <= $nombre_tags; $j++) {
           $tags .=';'. $valeurs['tag_'.$j.'_'.$i];
-          //$formulaire->addElement('text'  , 'tag_'.$j.'_'.$i                      , 'Tag '.$j            , array('size' => 30, 'maxlength' => 40));
-
         }
         $ok = $forum_inscriptions->ajouterInscription(
             $valeurs['id_forum'],
