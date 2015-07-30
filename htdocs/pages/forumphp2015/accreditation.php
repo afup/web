@@ -1,11 +1,12 @@
 <?php
 
-require_once '../../include/prepend.inc.php';
-require_once dirname(__FILE__) . '/_config.inc.php';
+require_once __DIR__ . '/../../include/prepend.inc.php';
+require_once __DIR__ . '/_config.inc.php';
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Mailing.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Accreditation_Presse.php';
+require_once __DIR__ . '/../../../sources/Afup/AFUP_Mailing.php';
+require_once __DIR__ . '/../../../sources/Afup/AFUP_Pays.php';
+require_once __DIR__ . '/../../../sources/Afup/AFUP_Accreditation_Presse.php';
+
 $pays = new AFUP_Pays($bdd);
 $presse = new AFUP_Accreditation_Presse($bdd);
 $mailing = new AFUP_Mailing($bdd);
