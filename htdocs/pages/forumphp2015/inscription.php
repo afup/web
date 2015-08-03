@@ -46,6 +46,13 @@ $formulaire->setDefaults(array('civilite'            => 'M.',
 
 for ($i=1; $i <= $nombre_personnes; $i++) {
   $next = $i + 1;
+
+  // Default values
+  $formulaire->setDefaults(array(
+      'civilite' . $i            => 'M.',
+      'type_inscription' . $i    => -1,
+  ));
+
   $formulaire->addElement('header'  , ''                       , '<a name="inscription'.$i.'">Personne</a> '.$i);
   $formulaire->addElement('select', 'civilite'.$i                 , 'Civilité'       , array('M.' => 'M.', 'Mme' => 'Mme', 'Mlle' => 'Mlle'));
   $formulaire->addElement('text'  , 'nom'.$i                      , 'Nom'            , array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
