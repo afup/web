@@ -87,6 +87,11 @@ cookbook_file "mailcatcher.initd" do
 end
 execute "update-rc.d mailcatcher defaults"
 
+
+# Smarty Cache
+# -----------
+execute "mkdir -p /var/www/afup/htdocs/cache/templates && chmod 0777 /var/www/afup/htdocs/cache/templates"
+
 # Restart services
 # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 service "mysql" do
