@@ -1,13 +1,15 @@
 <?php
-require_once '../../include/prepend.inc.php';
-require_once dirname(__FILE__) . '/_config.inc.php';
+require_once __DIR__ . '/../../include/prepend.inc.php';
+require_once __DIR__ . '/_config.inc.php';
 
 setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
+require_once __DIR__ . '/../../../sources/Afup/AFUP_AppelConferencier.php';
 
 $forum_appel = new AFUP_AppelConferencier($bdd);
 $sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
+
+$conferenciers = array();
 
 $journees[0] = array();
 $journees[1] = array();

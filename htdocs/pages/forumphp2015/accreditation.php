@@ -1,11 +1,12 @@
 <?php
 
-require_once '../../include/prepend.inc.php';
-require_once dirname(__FILE__) . '/_config.inc.php';
+require_once __DIR__ . '/../../include/prepend.inc.php';
+require_once __DIR__ . '/_config.inc.php';
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Mailing.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Accreditation_Presse.php';
+require_once __DIR__ . '/../../../sources/Afup/AFUP_Mailing.php';
+require_once __DIR__ . '/../../../sources/Afup/AFUP_Pays.php';
+require_once __DIR__ . '/../../../sources/Afup/AFUP_Accreditation_Presse.php';
+
 $pays = new AFUP_Pays($bdd);
 $presse = new AFUP_Accreditation_Presse($bdd);
 $mailing = new AFUP_Mailing($bdd);
@@ -71,13 +72,13 @@ if ($formulaire->validate()) {
         AFUP_Mailing::envoyerMail(
             array($formulaire->exportValue('email'), $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom')),
             array('bureau@afup.org', 'Bureau AFUP'),
-            'Demande d\'accréditation presse Forum PHP 2014',
+            'Demande d\'accréditation presse Forum PHP 2015',
             $body
         );
         AFUP_Mailing::envoyerMail(
             array($formulaire->exportValue('email'), $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom')),
             array('communication@afup.org', 'Communication AFUP'),
-            'Demande d\'accréditation presse Forum PHP 2014',
+            'Demande d\'accréditation presse Forum PHP 2015',
             $body
         );
         $smarty->assign('texte', 'Merci. Votre demande d\'accréditation a été prise en compte et sera traitée prochainement.');
