@@ -16,7 +16,7 @@ $forum_facturation = new AFUP_Facturation_Forum($bdd);
 $nombre_places   = $forum->obtenirNombrePlaces($id_forum);
 $nombre_inscrits = $forum_inscriptions->obtenirNombreInscrits($id_forum);
 
-if (!isset($_GET['passage_en_force'])) {
+/*if (!isset($_GET['passage_en_force'])) {
 	if (time() > $config_forum['date_fin_vente']) {
 	  $smarty->display('inscriptions_fermes.html');
 	  die();
@@ -29,7 +29,7 @@ if (!isset($_GET['passage_en_force'])) {
 if (time() > $config_forum['date_debut']) {
 	$smarty->display('inscriptions_fermes.html');
 	die();
-}
+}*/
 
 $is_prevente = time() < $config_forum['date_fin_prevente'];
 
@@ -42,7 +42,7 @@ $nombre_inscriptions = isset($_GET['nbInscriptions']) ? (int)$_GET['nbInscriptio
 $smarty->assign('nbInscriptions', $nombre_inscriptions);
 
 // On créé le formulaire
-$formulaire = &instancierFormulaire();
+$formulaire = &instancierFormulaire('//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
 $formulaire->setDefaults(array('id_pays_facturation' => 'FR'));
 
 for ($i=1; $i <= $nombre_personnes; $i++) {
@@ -269,7 +269,14 @@ $rappelInvalide = false;
 if (isset($_GET['rappel']) && $_GET['rappel'] == 'invalide') {
   $rappelInvalide = true;
 }
+
+$noLayout = false;
+if (isset($_GET['nolayout'])) {
+  $noLayout = true;
+}
+
 $smarty->assign('rappelInvalide', $rappelInvalide);
+$smarty->assign('noLayout', $noLayout);
 
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 $smarty->display($is_prevente?'inscription_prevente.html':'inscription.html');

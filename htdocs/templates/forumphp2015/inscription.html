@@ -1,4 +1,6 @@
+{if $noLayout==false}
 {include file="entete.html"}
+{/if}
 
 <h2>Tarifs et inscriptions</h2>
 
@@ -83,4 +85,7 @@ $("#nbPersonnes").change(function() {
 });
 </script>
 {/literal}
-{include file="pied_de_page.html"}
+
+{if $noLayout==false}
+    {include file="pied_de_page.html"}
+{/if}
