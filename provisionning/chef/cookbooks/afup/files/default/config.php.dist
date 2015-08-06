@@ -3,7 +3,7 @@ $configuration['bdd']['hote']='127.0.0.1';
 $configuration['bdd']['base']='afup_dev';
 $configuration['bdd']['utilisateur']='afup_dev';
 $configuration['bdd']['mot_de_passe']='p455w0rd';
-$configuration['web']['path']='http:/afup.dev/';
+$configuration['web']['path']='http://afup.dev/';
 
 $configuration['divers']['niveau_erreur']='6143';
 $configuration['divers']['afficher_erreurs']='1';
@@ -38,12 +38,12 @@ $configuration['bureau']['4']='msupiot';
 $configuration['bureau']['5']='jeanfrancois';
 //$configuration['bureau']['6']='SarahHaimLubczanski';
 
-$configuration['paybox_prod']['site']='8316677';
-$configuration['paybox_prod']['rang']='01';
-$configuration['paybox_test']['site']='1999888';
-$configuration['paybox_test']['rang']='99';
-$configuration['paybox']['site']='8316677';
-$configuration['paybox']['rang']='01';
+$configuration['paybox_prod']['site']='';
+$configuration['paybox_prod']['rang']='';
+$configuration['paybox_test']['site']='';
+$configuration['paybox_test']['rang']='';
+$configuration['paybox']['site']='';
+$configuration['paybox']['rang']='';
 $configuration['planete']['pertinence']='php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
 $configuration['site']['prefix']='pages/site/';
 $configuration['site']['query_prefix']='?route=';
