@@ -28,10 +28,6 @@ if (!isset($_GET['passage_en_force'])) {
 	  die();
 	}
 }
-if (time() > $config_forum['date_debut']) {
-	$smarty->display('inscriptions_fermes.html');
-	die();
-}
 
 //nombre possible d'inscrptions sur une même commande
 $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;
@@ -42,16 +38,11 @@ $nombre_inscriptions = isset($_GET['nbInscriptions']) ? (int)$_GET['nbInscriptio
 $smarty->assign('nbInscriptions', $nombre_inscriptions);
 
 // On créé le formulaire
-<<<<<<< HEAD
 $formulaire = &instancierFormulaire('//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
-$formulaire->setDefaults(array('id_pays_facturation' => 'FR'));
-=======
-$formulaire = &instancierFormulaire();
 $formulaire->setDefaults(array('civilite'            => 'M.',
                                'id_pays_facturation' => 'FR',
                                'type_inscription'    => -1,
                                'type_reglement'      => -1));
->>>>>>> origin/master
 
 for ($i=1; $i <= $nombre_personnes; $i++) {
   $next = $i + 1;
