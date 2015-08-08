@@ -38,7 +38,13 @@ $nombre_inscriptions = isset($_GET['nbInscriptions']) ? (int)$_GET['nbInscriptio
 $smarty->assign('nbInscriptions', $nombre_inscriptions);
 
 // On créé le formulaire
-$formulaire = &instancierFormulaire('//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
+
+$action = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+if (isset($_GET['action'])) {
+    $action = $_GET['action'];
+}
+
+$formulaire = &instancierFormulaire($action);
 $formulaire->setDefaults(array('civilite'            => 'M.',
                                'id_pays_facturation' => 'FR',
                                'type_inscription'    => -1,
