@@ -38,7 +38,13 @@ $nombre_inscriptions = isset($_GET['nbInscriptions']) ? (int)$_GET['nbInscriptio
 $smarty->assign('nbInscriptions', $nombre_inscriptions);
 
 // On créé le formulaire
-$formulaire = &instancierFormulaire();
+
+$action = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+if (isset($_GET['action'])) {
+    $action = $_GET['action'];
+}
+
+$formulaire = &instancierFormulaire($action);
 $formulaire->setDefaults(array('civilite'            => 'M.',
                                'id_pays_facturation' => 'FR',
                                'type_inscription'    => -1,
@@ -266,7 +272,14 @@ $rappelInvalide = false;
 if (isset($_GET['rappel']) && $_GET['rappel'] == 'invalide') {
   $rappelInvalide = true;
 }
+
+$noLayout = false;
+if (isset($_GET['nolayout'])) {
+  $noLayout = true;
+}
+
 $smarty->assign('rappelInvalide', $rappelInvalide);
+$smarty->assign('noLayout', $noLayout);
 
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 $smarty->display($is_prevente?'inscription_prevente.html':'inscription.html');
