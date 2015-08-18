@@ -134,21 +134,19 @@ class AFUP_Personnes_Physiques {
      * @param  string   $telephone_fixe         Téléphone fixe de la personne physique
      * @param  string   $telephone_portable     Téléphone portable de la personne physique
      * @param  int      $etat                   Etat de la personne physique
-     * @access public
      * @return bool Succès de l'ajout
      */
-    function ajouter($id_personne_morale, $login, $mot_de_passe, $niveau, $niveau_modules, $civilite, $nom, $prenom,
-        $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn)
+    public function ajouter($id_personne_morale, $login, $mot_de_passe, $niveau, $niveau_modules, $civilite, $nom, $prenom,
+        $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn, $throwsException = false)
     {
         if (empty($id_personne_morale)) {
             $id_personne_morale = null;
         }
 
-        $erreur = false;
-
-        $erreur = $erreur || !$this->_controleAbsenceLogin(0, $login);
-    	$erreur = $erreur || !$this->_controleExistancePersonneMorale($id_personne_morale);
-        $erreur = $erreur || !$this->_controleExistancePays($id_pays);
+        $erreur = $this->_loginExists(0, $login, $throwsException);
+        $erreur = $erreur || $this->_emailExists(0, $email, $throwsException);
+        $erreur = $erreur || !$this->_companyExists($id_personne_morale, $throwsException);
+        $erreur = $erreur || !$this->_countryExists($id_pays, $throwsException);
 
         if (!$erreur) {
             $requete = 'INSERT INTO ';
@@ -173,7 +171,13 @@ class AFUP_Personnes_Physiques {
             $requete .= (int)$etat                                 . ',';
             $requete .= $this->_bdd->echapper($compte_svn)          . ')';
 
-            return $this->_bdd->executer($requete);
+            $inserted = $this->_bdd->executer($requete);
+
+            if (!$inserted && $throwsException) {
+                throw new \Exception("Impossible d'enregistrer l'utilisateur à cause d'une erreur SQL. Veuillez contacter le bureau !");
+            }
+
+            return $inserted;
         }
 
         return false;
@@ -205,11 +209,9 @@ class AFUP_Personnes_Physiques {
     function modifier($id, $id_personne_morale, $login, $mot_de_passe, $niveau, $niveau_modules, $civilite, $nom, $prenom,
         $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn)
     {
-        $erreur = false;
-
-        $erreur = $erreur || !$this->_controleAbsenceLogin($id, $login);
-        $erreur = $erreur || !$this->_controleExistancePersonneMorale($id_personne_morale);
-        $erreur = $erreur || !$this->_controleExistancePays($id_pays);
+        $erreur = $this->_loginExists($id, $login);
+        $erreur = $erreur || !$this->_companyExists($id_personne_morale);
+        $erreur = $erreur || !$this->_countryExists($id_pays);
 
         if (!$erreur) {
             $requete = 'UPDATE ';
@@ -264,10 +266,8 @@ class AFUP_Personnes_Physiques {
     function modifierCoordonnees($id, $login, $mot_de_passe,
         $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable)
     {
-        $erreur = false;
-
-        $erreur = $erreur || !$this->_controleAbsenceLogin($id, $login);
-        $erreur = $erreur || !$this->_controleExistancePays($id_pays);
+        $erreur = $this->_loginExists($id, $login);
+        $erreur = $erreur || !$this->_countryExists($id_pays);
 
         if (!$erreur) {
             $requete = 'UPDATE ';
@@ -520,54 +520,89 @@ class AFUP_Personnes_Physiques {
     }
 
     /**
-     * Contrôle si le login n'est pas déja utilisé
-     * morale.
+     * Returns if the email is already in use or not.
      *
-     * @param int $id Identifiant de la personne physique
-     * @param int $id_personne_morale Identifiant de la personne morale à laquelle est liée la personne physique
-     * @param string $login Login de la personne physique
-     * @access public
-     * @return bool login non utilisé
+     * @param int $id Identifier to ignore
+     * @param string $email Person's email
+     * @param bool $throwsExceptionIfExists Throws exception if the email is already in use
+     * @return bool TRUE if the email exists, FALSE otherwise
      */
-    function _controleAbsenceLogin($id, $login)
+    protected function _emailExists($id, $email, $throwsExceptionIfExists = false)
+    {
+        $requete = 'SELECT 1 ';
+        $requete .= 'FROM afup_personnes_physiques ';
+        $requete .= 'WHERE email=' . $this->_bdd->echapper($email) . ' AND id <> ' . intval($id);
+
+        $exists = ($this->_bdd->obtenirUn($requete) !== false);
+
+        if ($exists && $throwsExceptionIfExists) {
+            throw new \Exception("Il existe un compte avec cette adresse email.");
+        }
+
+        return $exists;
+    }
+
+    /**
+     * Returns if the login is already in use or not.
+     *
+     * @param int $id Identifier to ignore
+     * @param string $login Person's login
+     * @param bool $throwsExceptionIfExists Throws exception if the login is already in use
+     * @return bool Login in use (TRUE) or not (FALSE)
+     */
+    protected function _loginExists($id, $login, $throwsExceptionIfExists = false)
     {
         $requete = 'SELECT 1 ';
         $requete .= 'FROM afup_personnes_physiques ';
         $requete .= 'WHERE login=' . $this->_bdd->echapper($login) . ' AND id <> ' . intval($id);
 
-        return ($this->_bdd->obtenirUn($requete) === false);
+        $exists = ($this->_bdd->obtenirUn($requete) !== false);
+
+        if ($exists && $throwsExceptionIfExists) {
+            throw new \Exception("Il existe déjà un compte pour ce login.");
+        }
+
+        return $exists;
     }
 
     /**
-     * Contrôle si l'id_personne_morale existe
-     * morale.
+     * Returns if the company exists.
      *
-     * @param int $id_personne_morale Identifiant de la personne morale à laquelle est liée la personne physique
-     * @access public
-     * @return bool login non utilisé
+     * @param int $id_personne_morale Company's identifier
+     * @param bool $throwsExceptionIfDoesNotExist Throws exception if the company doesn't exist
+     * @return bool TRUE if the company exists, FALSE otherwise
      */
-    function _controleExistancePersonneMorale($id_personne_morale)
+    protected function _companyExists($id_personne_morale = false, $throwsExceptionIfDoesNotExist = false)
     {
-        if (!isset($id_personne_morale) || empty($id_personne_morale)) return true;
+        // Useless to check if no identifier provided
+        if (empty($id_personne_morale)) {
+            return true;
+        }
 
         $requete = 'SELECT 1 ';
         $requete .= 'FROM afup_personnes_morales ';
         $requete .= 'WHERE id = ' . intval($id_personne_morale);
 
-        return ($this->_bdd->obtenirUn($requete) !== false);
+        $exists = ($this->_bdd->obtenirUn($requete) !== false);
+
+        if (!$exists && $throwsExceptionIfDoesNotExist) {
+            throw new \Exception("La personne morale n'existe pas.");
+        }
+
+        return $exists;
     }
 
     /**
-     * Contrôle si l'id_pays existe
-     * morale.
+     * Returns if the country exists.
      *
-     * @param int $id_pays Identifiant du pays
-     * @access public
-     * @return bool login non utilisé
+     * @param int $id_pays Country's identifier
+     * @param bool $throwsExceptionIfDoesNotExist Throws exception if the country doesn't exist
+     * @return bool TRUE if the country exists, FALSE otherwise
      */
-    function _controleExistancePays($id_pays)
+    protected function _countryExists($id_pays, $throwsExceptionIfDoesNotExist = false)
     {
-        if ($id_pays == 0) {
+        // If no country provided, it exists… stupid rule but that's ok \o/
+        if (empty($id_pays)) {
             return true;
         }
 
@@ -575,7 +610,13 @@ class AFUP_Personnes_Physiques {
         $requete .= 'FROM afup_pays ';
         $requete .= 'WHERE id = ' . intval($id_pays);
 
-        return ($this->_bdd->obtenirUn($requete) !== false);
+        $exists = ($this->_bdd->obtenirUn($requete) !== false);
+
+        if (!$exists && $throwsExceptionIfDoesNotExist) {
+            throw new \Exception("Le pays n'existe pas.");
+        }
+
+        return $exists;
     }
 
     function obtenirIdDepuisCompteSVN($compte_svn)
