@@ -73,53 +73,51 @@ if ($action == 'ajouter') {
     	$login = $formulaire->exportValue('login');
         $mot_de_passe = md5($formulaire->exportValue('mot_de_passe'));
 
-        $ok = $personnes_physiques->ajouter($formulaire->exportValue('id_personne_morale'),
-            $login,
-            $mot_de_passe,
-            $formulaire->exportValue('niveau'),
-            $niveau_modules,
-            $formulaire->exportValue('civilite'),
-            $formulaire->exportValue('nom'),
-            $formulaire->exportValue('prenom'),
-            $formulaire->exportValue('email'),
-            $formulaire->exportValue('adresse'),
-            $formulaire->exportValue('code_postal'),
-            $formulaire->exportValue('ville'),
-            $formulaire->exportValue('id_pays'),
-            $formulaire->exportValue('telephone_fixe'),
-            $formulaire->exportValue('telephone_portable'),
-            $formulaire->exportValue('etat'),
-            $formulaire->exportValue('compte_svn'));
+        try {
+            $ok = $personnes_physiques->ajouter(
+                $formulaire->exportValue('id_personne_morale'),
+                $login,
+                $mot_de_passe,
+                $formulaire->exportValue('niveau'),
+                $niveau_modules,
+                $formulaire->exportValue('civilite'),
+                $formulaire->exportValue('nom'),
+                $formulaire->exportValue('prenom'),
+                $formulaire->exportValue('email'),
+                $formulaire->exportValue('adresse'),
+                $formulaire->exportValue('code_postal'),
+                $formulaire->exportValue('ville'),
+                $formulaire->exportValue('id_pays'),
+                $formulaire->exportValue('telephone_fixe'),
+                $formulaire->exportValue('telephone_portable'),
+                $formulaire->exportValue('etat'),
+                $formulaire->exportValue('compte_svn'),
+                true // Throws exception!
+            );
 
-        if ($ok) {
-            $motifs = array();
-            $valeurs = array();
-            foreach($formulaire->exportValues() as $cle => $valeur) {
-                $motifs[] = '[' . $valeur . ']';
-                $valeurs[] = $valeur;
+            if ($ok) {
+                $motifs = array();
+                $valeurs = array();
+                foreach($formulaire->exportValues() as $cle => $valeur) {
+                    $motifs[] = '[' . $valeur . ']';
+                    $valeurs[] = $valeur;
+                }
+                $corps = str_replace($motifs, $valeurs, $conf->obtenir('mails|texte_adhesion'));
+
+                // @TODO send mail for new member! (use AFUP_Mail for that)
+
+                AFUP_Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
+
+                $droits->seConnecter($login, $mot_de_passe, false);
+
+                afficherMessage('Votre inscription a été enregistrée. Veuillez maintenant payer votre cotisation. Merci. ' ,
+                    'index.php?page=membre_cotisation&hash=' . $droits->obtenirHash());
+            } else {
+                $smarty->assign('erreur', 'Une erreur est survenue lors de la création de votre compte. Veuillez recommencer. Merci.');
             }
-            $corps = str_replace($motifs, $valeurs, $conf->obtenir('mails|texte_adhesion'));
-
-            require_once 'phpmailer/class.phpmailer.php';
-            $mail = new PHPMailer;
-            $mail->AddAddress($formulaire->exportValue('email'), $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
-            $mail->From = $conf->obtenir('mails|email_expediteur');
-            $mail->FromName = $conf->obtenir('mails|nom_expediteur');
-            $mail->BCC = $conf->obtenir('mails|email_expediteur');
-            $mail->Subject = 'Adhésion AFUP';
-            $mail->Body = $corps;
-            // $mail->Send();
-        }
-
-        if ($ok) {
-            AFUP_Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
-
-            $droits->seConnecter($login, $mot_de_passe, false);
-
-            afficherMessage('Votre inscription a été enregistrée. Veuillez maintenant payer votre cotisation. Merci. ' ,
-                'index.php?page=membre_cotisation&hash=' . $droits->obtenirHash());
-        } else {
-            $smarty->assign('erreur', 'Une erreur est survenue lors de la création de votre compte. Veuillez recommencer. Merci.');
+        } catch (Exception $e) {
+            $message = sprintf('Une erreur est survenue lors de la création de votre compte (%s). N\'hésitez pas à contacter le bureau via bureau@afup.org si vous ne comprenez pas l\'erreur en nous précisant le message qui vous est donné. Merci !', $e->getMessage());
+            $smarty->assign('erreur', $message);
         }
     }
 
