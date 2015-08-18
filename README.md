@@ -46,7 +46,7 @@ Et la base de données est `afup_dev`.
 * Se placer dans le dossier synchronisé : `cd /vagrant`
 * Exécuter la commande `mysql -u root -p afup_dev < {nom_du_dump}.sql`
 
-> Mot de passe pour la commande en local: `p455w0rd`
+> Mot de passe pour la commande en local: `mysql`
 
 ## Applications
 
