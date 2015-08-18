@@ -205,6 +205,15 @@ class AFUP_Base_De_Donnees
     }
 
     /**
+     * Retrieve the last error message
+     * @return string
+     */
+    public function getLastErrorMessage()
+    {
+        return mysqli_error($this->_lien);
+    }
+
+    /**
      * Exécute une requête SQL
      *
      * @param string    $requete    Requête à exécuter
@@ -214,9 +223,6 @@ class AFUP_Base_De_Donnees
     function executer($requete)
     {
         $result = mysqli_query($this->_lien, $requete);
-        //if (!$result) {
-        //    mysql_error();
-        //}
         return $result;
     }
 
