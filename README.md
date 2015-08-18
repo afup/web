@@ -39,7 +39,14 @@ Il vous faut importer la base de données. Par défaut les utilisateurs sont les
 
 Et la base de données est `afup_dev`.
 
-`TODO`: expliquer comment importer :')
+##### Import de la base de données
+
+* Récupérer un dump de la base (demander au pôle outils @ afup.org) et le placer décompressé à la racine du projet
+* Se connecter à sa machine guest : `vagrant ssh`
+* Se placer dans le dossier synchronisé : `cd /vagrant`
+* Exécuter la commande `mysql -u root -p afup_dev < {nom_du_dump}.sql`
+
+> Mot de passe pour la commande en local: `mysql`
 
 ## Applications
 
