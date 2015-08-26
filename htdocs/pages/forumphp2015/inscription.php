@@ -267,6 +267,7 @@ if ($formulaire->validate()) {
       $smarty->assign('paybox', $r[1]);
       $smarty->display('paybox_formulaire.html');
     } else {
+      $smarty->assign('rib', $conf->obtenir('rib'));
       $smarty->display('inscription_paiement.html');
     }
     die();
