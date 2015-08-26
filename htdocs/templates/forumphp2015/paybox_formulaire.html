@@ -1,6 +1,7 @@
-{include file="entete.html"}
-
-<h2>Inscriptions</h2>
+{if $noLayout==false}
+    {include file="entete.html"}
+    <h2>Inscriptions</h2>
+{/if}
 
 <article class="first">
     <h3>Paiement</h3>
@@ -13,5 +14,7 @@
     </div>
 </article>
 
-{include file="sidebar.html"}
-{include file="pied_de_page.html"}
+{if $noLayout==false}
+    {include file="sidebar.html"}
+    {include file="pied_de_page.html"}
+{/if}
