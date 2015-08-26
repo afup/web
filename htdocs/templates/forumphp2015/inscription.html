@@ -69,6 +69,15 @@ $('#divPersonne').show();
 for (i = (nbInscriptions + 1) ; i < 6 ; i++) {
     $('fieldset.f'+i).hide();
 }
+
+$('a.add_inscription').click(function(event){
+    var nbPersonnes = parseInt($('#nbPersonnes').val());
+    if (nbPersonnes < 5) {
+        $('#nbPersonnes').val(nbPersonnes + 1);
+        $('#nbPersonnes').change();
+    }
+});
+
 $("#nbPersonnes").change(function() {
     nb = parseInt($("#nbPersonnes option:selected").val());
     path = parseUri($("#formulaire").attr("action"));
@@ -81,6 +90,12 @@ $("#nbPersonnes").change(function() {
     }
     for (i = 1 ; i < (nb+1) ; i++) {
         $('fieldset.f'+i).show();
+    }
+
+    if (nb === 5) {
+        $('a.add_inscription').attr('disabled', 'true');
+    } else {
+        $('a.add_inscription').removeAttribute('disabled');
     }
 });
 </script>

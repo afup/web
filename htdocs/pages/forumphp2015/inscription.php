@@ -97,7 +97,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
   if ($i == $nombre_personnes) {
     $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<div style="text-align:center"><a href="#facturation" class="btn info">passer à la facturation</a></div>');
   } else {
-    $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<div style="text-align:center"><a href="#inscription'.$next.'" class="btn info">Ajouter une autre inscription</a> ou <a href="#facturation" class="btn info">passer à la facturation</a></div>');
+    $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<div style="text-align:center"><a href="#inscription'.$next.'" class="btn info add_inscription">Ajouter une autre inscription</a> ou <a href="#facturation" class="btn info">passer à la facturation</a></div>');
   }
 }
 
