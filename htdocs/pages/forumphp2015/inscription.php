@@ -360,7 +360,7 @@ if ($formulaire->validate()) {
     }
 
     if ($probleme == 1) {
-        $smarty->assign('erreur', $translator->trans('Une erreur est survenue lors de votre inscription.<br />Veuillez contacter le responsable des inscriptions afin de régler le problème.'));
+        $smarty->assign('erreur', $translator->trans('Une erreur est survenue lors de votre inscription.').'<br />'.$translator->trans('Veuillez contacter le responsable des inscriptions afin de régler le problème.'));
     } else {
         if ($valeurs['type_reglement'] == AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE) {
             require_once dirname(__FILE__).'/../../../dependencies/paybox/payboxv2.inc';

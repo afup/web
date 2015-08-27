@@ -18,6 +18,190 @@
                 <source>personne(s)</source>
                 <target>person/people</target>
             </trans-unit>
+            <trans-unit id="5">
+                <source>Civilité</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Nom</source>
+                <target>Last Name</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Prénom</source>
+                <target>First Name</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Email</source>
+                <target>Email Address</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Tél.</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>M</source>
+                <target>Mr</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Mme</source>
+                <target>Mrs</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>Mlle</source>
+                <target>Ms</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>2 jours en prévente :</source>
+                <target>2 days pre-sale ticket</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>2 jours membre AFUP :</source>
+                <target>2 days members ticket</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>2 jours étudiant :</source>
+                <target>2 days student ticket</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>Journée du lundi 23 novembre 2015 :</source>
+                <target>Monday, 23rd of November 2015</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>Journée du mardi 24 novembre 2015 :</source>
+                <target>Tuesday, 24th of November 2015</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>2 jours :</source>
+                <target>2 days:</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :</source>
+                <target>To make you enjoy our event in the best conditions, we would like to know if you are a person with reduced mobility:</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le Forum PHP</source>
+                <target>Please fill up to 3 tags (and/or your Twitter id) about you. Tags will be printed on your event badge to ease networking during the Forum P</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>Formule</source>
+                <target>Type of registration</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Mobilité réduite</source>
+                <target>reduced mobility</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>Ex : framework, hosting, gestion de projet, Symfony, Zend Framework, Test unitaire…</source>
+                <target>e.g. framework, hosting, project management, Symfony, Zend Framework, unit testing…</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>Ajouter une autre inscription</source>
+                <target>Add a new registration</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>passer à la facturation</source>
+                <target>go to invoice</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>ou</source>
+                <target>or</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>Ces informations concernent la personne ou la société qui sera facturée.</source>
+                <target>Information of company or people paying the invoice.</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>Règlement</source>
+                <target>Payment</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>Virement</source>
+                <target>Bank transfer</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>Carte bancaire</source>
+                <target>Bank Card </target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>Facturation</source>
+                <target>Invoicing</target>
+            </trans-unit>
+            <trans-unit id="32">
+                <source>ou Id Twitter (ex: @afup)</source>
+                <target>or Twitter ID (ex. @afup)</target>
+            </trans-unit>
+            <trans-unit id="33">
+                <source>Société</source>
+                <target>Company</target>
+            </trans-unit>
+            <trans-unit id="34">
+                <source>Adresse</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="35">
+                <source>Code postal</source>
+                <target>ZipCode</target>
+            </trans-unit>
+            <trans-unit id="36">
+                <source>Ville</source>
+                <target>City</target>
+            </trans-unit>
+            <trans-unit id="37">
+                <source>Pays</source>
+                <target>Country</target>
+            </trans-unit>
+            <trans-unit id="38">
+                <source>Email (facture)</source>
+                <target>Email address (invoice)</target>
+            </trans-unit>
+            <trans-unit id="39">
+                <source>Coupon (en cas de soucis avec votre coupon, vous pouvez contacter le trésorier sur tresorier[at]afup.org)</source>
+                <target>Voucher (if any issue with your voucher, just contact treasurer tresorier[at]afup.org</target>
+            </trans-unit>
+            <trans-unit id="40">
+                <source>Divers</source>
+                <target>Misc.</target>
+            </trans-unit>
+            <trans-unit id="41">
+                <source>J'accepte que ma compagnie soit citée comme participant à la conférence</source>
+                <target>I accept mentions of my company being a visitor to this conference</target>
+            </trans-unit>
+            <trans-unit id="42">
+                <source>Soumettre</source>
+                <target>Submit</target>
+            </trans-unit>
+            <trans-unit id="43">
+                <source>Formule non sélectionnée</source>
+                <target>Type of registration not selected</target>
+            </trans-unit>
+            <trans-unit id="44">
+                <source>Civilité non sélectionnée</source>
+                <target>Title not selected</target>
+            </trans-unit>
+            <trans-unit id="45">
+                <source>Nom manquant</source>
+                <target>Lastname missing</target>
+            </trans-unit>
+            <trans-unit id="46">
+                <source>Prénom manquant</source>
+                <target>Firstname missing</target>
+            </trans-unit>
+            <trans-unit id="47">
+                <source>Email manquant</source>
+                <target>Email address missing</target>
+            </trans-unit>
+            <trans-unit id="48">
+                <source>Email invalide</source>
+                <target>Invalid email address</target>
+            </trans-unit>
+            <trans-unit id="49">
+                <source>Une erreur est survenue lors de votre inscription.</source>
+                <target>An error occurred during your registration</target>
+            </trans-unit>
+            <trans-unit id="50">
+                <source>Veuillez contacter le responsable des inscriptions afin de régler le problème.</source>
+                <target>Please contact the registration manager to fix the issue.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
