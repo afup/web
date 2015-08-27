@@ -1,0 +1,17 @@
+{
+    "name": "afup/web",
+    "description": "Main repository for afup website",
+    "type": "project",
+    "require": {
+        "symfony/translation": "^2.7",
+        "symfony/config": "^2.7"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Afup",
+            "email": "outils@afup.org"
+        }
+    ],
+    "minimum-stability": "stable"
+}

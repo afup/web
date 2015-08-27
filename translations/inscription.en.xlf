@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="fr" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Nombre de personnes</source>
+                <target>Number of person to register</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Je souhaite inscrire</source>
+                <target>I want to register</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>indique un champ obligatoire</source>
+                <target>mandatory</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>personne(s)</source>
+                <target>person/people</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
