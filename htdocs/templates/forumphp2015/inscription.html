@@ -71,7 +71,7 @@ for (i = (nbInscriptions + 1) ; i < 6 ; i++) {
 }
 
 $('a.add_inscription').click(function(event){
-    var nbPersonnes = parseInt($('#nbPersonnes').val());
+    var nbPersonnes = parseInt($('#nbPersonnes').val(), 10);
     if (nbPersonnes < 5) {
         $('#nbPersonnes').val(nbPersonnes + 1);
         $('#nbPersonnes').change();
@@ -79,7 +79,7 @@ $('a.add_inscription').click(function(event){
 });
 
 $("#nbPersonnes").change(function() {
-    nb = parseInt($("#nbPersonnes option:selected").val());
+    nb = parseInt($("#nbPersonnes option:selected").val(), 10);
     path = parseUri($("#formulaire").attr("action"));
     if (path.substr(0,1) != '/') {
         path = '/' + path;
