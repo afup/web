@@ -87,6 +87,19 @@ cookbook_file "mailcatcher.initd" do
 end
 execute "update-rc.d mailcatcher defaults"
 
+
+# Smarty Cache
+# -----------
+execute "mkdir -p /var/www/afup/htdocs/cache/templates && chmod 0777 /var/www/afup/htdocs/cache/templates"
+
+# Creating default config file
+# -----------
+cookbook_file "config.php.dist" do
+    path "/var/www/afup/configs/application/config.php"
+    action :create_if_missing
+    mode "0755"
+end
+
 # Restart services
 # ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 service "mysql" do

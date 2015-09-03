@@ -3,7 +3,7 @@ $configuration['bdd']['hote']='127.0.0.1';
 $configuration['bdd']['base']='afup_dev';
 $configuration['bdd']['utilisateur']='afup_dev';
 $configuration['bdd']['mot_de_passe']='p455w0rd';
-$configuration['web']['path']='http://.dev/';
+$configuration['web']['path']='http://afup.dev/';
 
 $configuration['divers']['niveau_erreur']='6143';
 $configuration['divers']['afficher_erreurs']='1';
