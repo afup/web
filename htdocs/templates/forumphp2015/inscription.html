@@ -69,18 +69,39 @@ $('#divPersonne').show();
 for (i = (nbInscriptions + 1) ; i < 6 ; i++) {
     $('fieldset.f'+i).hide();
 }
+
+$('a.add_inscription').click(function(event){
+    var nbPersonnes = parseInt($('#nbPersonnes').val(), 10);
+    if (nbPersonnes < 5) {
+        $('#nbPersonnes').val(nbPersonnes + 1);
+        $('#nbPersonnes').change();
+    }
+});
+
 $("#nbPersonnes").change(function() {
-    nb = parseInt($("#nbPersonnes option:selected").val());
-    path = parseUri($("#formulaire").attr("action"));
+    var nb = parseInt($("#nbPersonnes").val(), 10);
+    var path = parseUri($("#formulaire").attr("action"));
     if (path.substr(0,1) != '/') {
         path = '/' + path;
     }
-    $("#formulaire").attr("action", path + '?nbInscriptions=' + nb);
+
+    var junction = '?';
+    if (path.indexOf('?') > -1) {
+        junction = '&';
+    }
+
+    $("#formulaire").attr("action", path + junction + 'nbInscriptions=' + nb);
     for (i = 1 ; i < 6 ; i++) {
         $('fieldset.f'+i).hide();
     }
     for (i = 1 ; i < (nb+1) ; i++) {
         $('fieldset.f'+i).show();
+    }
+
+    if (nb === 5) {
+        $('a.add_inscription').attr('disabled', 'true');
+    } else {
+        $('a.add_inscription').removeAttribute('disabled');
     }
 });
 </script>

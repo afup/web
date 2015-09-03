@@ -97,14 +97,13 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
   if ($i == $nombre_personnes) {
     $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<div style="text-align:center"><a href="#facturation" class="btn info">passer à la facturation</a></div>');
   } else {
-    $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<div style="text-align:center"><a href="#inscription'.$next.'" class="btn info">Ajouter une autre inscription</a> ou <a href="#facturation" class="btn info">passer à la facturation</a></div>');
+    $formulaire->addElement('static'  , 'raccourci'                   , ''               , '<div style="text-align:center"><a href="#inscription'.$next.'" class="btn info add_inscription">Ajouter une autre inscription</a> ou <a href="#facturation" class="btn info">passer à la facturation</a></div>');
   }
 }
 
 $formulaire->addElement('header'  , ''                       , '<a name="facturation">Facturation</a>');
 $groupe = array();
 $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
-$groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Chèque (des frais de traitement de 25€ seront ajoutés à la facture)'        , AFUP_FORUM_REGLEMENT_CHEQUE);
 $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Virement'      , AFUP_FORUM_REGLEMENT_VIREMENT);
 
 $formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
@@ -162,6 +161,12 @@ $formulaire->addRule('ville_facturation'      , 'Ville manquante'               
 $formulaire->addRule('id_pays_facturation'    , 'Pays non sélectionné'                     , 'required');
 $formulaire->addRule('email_facturation'      , 'Email de réception de la facture manquant', 'required');
 $formulaire->addRule('coupon'                 , 'Coupon non valable'                       , 'regex'   , '/^(|'.implode($config_forum['coupons'],'|').')$/');
+
+$noLayout = false;
+if (isset($_GET['nolayout'])) {
+  $noLayout = true;
+}
+$smarty->assign('noLayout', $noLayout);
 
 if ($formulaire->validate()) {
   $valeurs = $formulaire->exportValues();
@@ -262,6 +267,7 @@ if ($formulaire->validate()) {
       $smarty->assign('paybox', $r[1]);
       $smarty->display('paybox_formulaire.html');
     } else {
+      $smarty->assign('rib', $conf->obtenir('rib'));
       $smarty->display('inscription_paiement.html');
     }
     die();
@@ -273,13 +279,8 @@ if (isset($_GET['rappel']) && $_GET['rappel'] == 'invalide') {
   $rappelInvalide = true;
 }
 
-$noLayout = false;
-if (isset($_GET['nolayout'])) {
-  $noLayout = true;
-}
 
 $smarty->assign('rappelInvalide', $rappelInvalide);
-$smarty->assign('noLayout', $noLayout);
 
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 $smarty->display($is_prevente?'inscription_prevente.html':'inscription.html');
