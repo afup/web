@@ -6,7 +6,7 @@ class AFUP_Web {
     function mettreAJour($update = false) {
     	if ($update === true) {
             $command = "cd ".$GLOBALS['conf']->obtenir('git|local_repo')."; git stash; git pull origin master; git stash pop;";
-            $command .= "git checkout-index -f -a --prefix=/".$GLOBALS['conf']->obtenir('git|local_export') . ";";
+            $command .= "git checkout-index -f -a --prefix=/".$GLOBALS['conf']->obtenir('git|local_export') . " ; ";
             $command .= "composer install --no-dev";
             opcache_reset();
     		$output = shell_exec($command);
