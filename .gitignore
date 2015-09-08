@@ -18,3 +18,5 @@ deps.lock
 /configs/application/config.php
 /tests/simpletest
 /tests/unitaires/config.php
+
+/vendor/
