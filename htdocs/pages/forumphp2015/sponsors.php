@@ -1,5 +1,3 @@
 <?php
-require_once '../../include/prepend.inc.php';
-require_once dirname(__FILE__) . '/_config.inc.php';
-
-$smarty->display('sponsors.html');
+header('HTTP/1.0 301 Moved Permanently');
+header('Location:http://event.afup.org/forum-php-2015/sponsors/');
