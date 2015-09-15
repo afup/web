@@ -1,5 +1,10 @@
 <?php
 
+if (isset($_GET['noLayout']) === false) {
+    header('HTTP/1.0 301 Moved Permanently');
+    header('Location:http://event.afup.org/forum-php-2015/tickets-inscriptions/');
+}
+
 require_once __DIR__ . '/../../include/prepend.inc.php';
 require_once __DIR__ . '/_config.inc.php';
 
