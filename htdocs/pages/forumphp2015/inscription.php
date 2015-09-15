@@ -64,7 +64,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
       'type_inscription' . $i    => -1,
   ));
 
-    $formulaire->addElement('header', '', '<a name="inscription'.$i.'">Personne</a> '.$i);
+    $formulaire->addElement('header', '', '<a name="inscription'.$i.'">'.$translator->trans('Personne').'</a> '.$i);
     $formulaire->addElement(
         'select',
         'civilite' . $i,
@@ -218,7 +218,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
     for ($j=1; $j <= $nombre_tags; $j++) {
         $formulaire->addElement('text', 'tag_'.$j.'_'.$i, 'Tag '.$j . ($j ==1 ?  $translator->trans(' ou Id Twitter (ex: @afup)') : ''), array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
     }
-    $formulaire->addElement('static', 'raccourci', '', '<i>'.$translator->trans('Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire…').'</i>');
+    $formulaire->addElement('static', 'raccourci', '', '<i>'.$translator->trans('Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire...').'</i>');
     if ($i == $nombre_personnes) {
         $formulaire->addElement('static', 'raccourci', '', '<div style="text-align:center"><a href="#facturation" class="btn info">'.$translator->trans('passer à la facturation').'</a></div>');
     } else {

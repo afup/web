@@ -91,8 +91,8 @@
                 <target>reduced mobility</target>
             </trans-unit>
             <trans-unit id="23">
-                <source>Ex : framework, hosting, gestion de projet, Symfony, Zend Framework, Test unitaire…</source>
-                <target>e.g. framework, hosting, project management, Symfony, Zend Framework, unit testing…</target>
+                <source>Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire...</source>
+                <target>e.g. framework, hosting, project management, Symfony, Zend Framework, unit testing...</target>
             </trans-unit>
             <trans-unit id="24">
                 <source>Ajouter une autre inscription</source>
@@ -201,6 +201,42 @@
             <trans-unit id="50">
                 <source>Veuillez contacter le responsable des inscriptions afin de régler le problème.</source>
                 <target>Please contact the registration manager to fix the issue.</target>
+            </trans-unit>
+            <trans-unit id="51">
+                <source>Personne</source>
+                <target>Registrant</target>
+            </trans-unit>
+            <trans-unit id="52">
+                <source>Je souhaite être tenu au courant des rencontres de l'AFUP sur des sujets afférents à PHP</source>
+                <target>I wish to be kept informed of the AFUP meetings on topics related to PHP</target>
+            </trans-unit>
+            <trans-unit id="53">
+                <source>Règlement non sélectionné</source>
+                <target>Payment not selected</target>
+            </trans-unit>
+            <trans-unit id="54">
+                <source>Adresse manquante</source>
+                <target>Address missing</target>
+            </trans-unit>
+            <trans-unit id="55">
+                <source>Code postal manquant</source>
+                <target>Zipcode missing</target>
+            </trans-unit>
+            <trans-unit id="56">
+                <source>Ville manquante</source>
+                <target>City missing</target>
+            </trans-unit>
+            <trans-unit id="57">
+                <source>Email de réception de la facture manquant</source>
+                <target>Email address (invoice) missing</target>
+            </trans-unit>
+            <trans-unit id="58">
+                <source>oui</source>
+                <target>yes</target>
+            </trans-unit>
+            <trans-unit id="59">
+                <source>non</source>
+                <target>no</target>
             </trans-unit>
         </body>
     </file>
