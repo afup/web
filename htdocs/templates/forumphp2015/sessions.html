@@ -17,10 +17,10 @@
       	   		<div>
       			    {foreach from=$session.conferenciers item=conferencier}
   	          		<div class="conferencier">
-                    <a href="conferenciers.php#{$conferencier.conferencier_id}">
+                    <a href="/forum-php-2015/speakers/#{$conferencier.conferencier_id}">
                       <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
                     </a><br />
-  	          			<a href="conferenciers.php#{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a>
+  	          			<a href="/forum-php-2015/speakers/#{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a>
   	          		</div>
                 {/foreach}
               </div>
