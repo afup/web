@@ -10,6 +10,7 @@ var $cmd;
 var $porteur;
 
 var $effectue;
+var $repondreA;
 var $refuse;
 var $annule;
 var $erreur;
@@ -256,6 +257,38 @@ function check_effectue($effectue) {
 
 function get_effectue() {
     return($this->effectue);
+}
+
+////////////////////////////////////////////////////////////////
+// Gestion de la variable IBS_EFFECTUE
+////////////////////////////////////////////////////////////////
+function set_repondreA($repondreA) {
+    $erreur = Paybox::check_repondreA($repondreA);
+    if (is_string($erreur)) {
+        $this->paybox_erreur('IBS_REPONDRE_A', $erreur);
+        return;
+    }
+    $this->repondreA = $repondreA;
+}
+
+function check_repondreA($repondreA) {
+    if (12 > strlen($repondreA)) {
+        return "L'adresse de la page de retour serveur à serveur est trop courte. "
+        . "Elle doit comporter au moins 12 caractères.";
+    }
+    if (150 < strlen($repondreA)) {
+        return "L'adresse de la page de retour serveur à serveur est trop longue. "
+        . "Elle doit comporter au plus 150 caractères.";
+    }
+    if (preg_match('/[\"\'$]/is', $repondreA)) {
+        return "IBS_EFFECTUE: L'adresse ne doit pas contenir de guillemets "
+        . "ou de signe dollar.";
+    }
+    return true;
+}
+
+function get_repondreA() {
+    return($this->repondreA);
 }
 
 ////////////////////////////////////////////////////////////////
@@ -643,6 +676,14 @@ function paiement() {
         }
         $commande .= "PBX_EFFECTUE=" . escapeshellarg($effectue) . " ";
     }
+    $repondreA = $this->get_repondreA();
+    if ('' != $repondreA) {
+        $erreur = Paybox::check_repondreA($repondreA);
+        if (is_string($erreur)) {
+            return $erreur;
+        }
+        $commande .= "PBX_REPONDRE_A=" . escapeshellarg($repondreA) . " ";
+    }
     $refuse = $this->get_refuse();
     if ('' != $refuse) {
         $erreur = Paybox::check_refuse($refuse);
@@ -726,7 +767,7 @@ function paiement() {
     }
 
 // ca finalise la commande...
-    $commande .= 'IBS_RETOUR="total:M;cmd:R;autorisation:A;transaction:T" ';
+    $commande .= 'IBS_RETOUR="total:M;cmd:R;autorisation:A;transaction:T;status:E" ';
     // ajouter l'operateur @, car on ne veut aucun rapport d'erreur
     $exe = ('' == $this->identifiant) ? 'paybox' : 'payboxV2';
     if ($_SERVER['DOCUMENT_ROOT'] == '/var/www/afup.org/htdocs') {
