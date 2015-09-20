@@ -336,7 +336,7 @@ if ($formulaire->validate()) {
             $valeurs['newsletter_afup'],
             0, //$valeurs['newsletter_nexen'],
             '<tag>'.$tags.'</tags>',
-            $valeurs['mobilite_reduite'.$i],
+            isset($valeurs['mobilite_reduite'.$i]) ? $valeurs['mobilite_reduite'.$i] : 0,
             0 //$valeurs['mail_partenaire']
         );
                 $total += $AFUP_Tarifs_Forum[$valeurs['type_inscription'.$i]];
