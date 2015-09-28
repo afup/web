@@ -4,6 +4,9 @@
 		  {$conferencier.prenom} {$conferencier.nom}
   		{if $conferencier.societe}- <span class="societe">{$conferencier.societe}</span>{/if}
 		</h3>
+    {if $conferencier.twitter}
+      <a class="twitter" href="https://twitter.com/{$conferencier.twitter}"><img src="//g.twimg.com/about/feature-corporate/image/followbutton.png" width="89" height="33" alt="Suivre @{$conferencier.twitter}"/></a>
+    {/if}
     <div class="article-body conferencier">
     <div class="photo">
         <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" border="0" />
