@@ -361,21 +361,36 @@ class AFUP_Forum
         $duree = ($iFin - $iDebut) / 15;
         return $duree;
     }
+
     /**
      * Construction des liens vers les fiches détaillées des conférences.
      *
-     * @param  String $infoSeance
+     * @param  String  $infoSeance
+     * @param  Boolean $for_bo
+     * @param  string  $linkFormat if $for_bo = false, this format will be used (if not null) to construct the link.
+     *                  i.e : "/sessions.php#%1" . %1 is the session id
      * @return String
      */
-    function lienSeance($infoSeance,$for_bo)
+    function lienSeance($infoSeance,$for_bo, $linkFormat)
     {
         $masque = "#^([0-9]+) ?: ?(.*)#";
         //$masque = "#^([0-9]+) ?| ?(.*) ?| ?(.*)#";
-        $lien = preg_replace($masque, '<p><a href="'.($for_bo?'':'./sessions.php').'#$1"  name="ag_sess_$1">$2</a></p>', $infoSeance);
+
+
+        $lien = '#$1';
+        if ($for_bo === false) {
+            if ($linkFormat !== null) {
+                $lien = sprintf($linkFormat, '$1');
+            } else {
+                $lien = './sessions.php#$1';
+            }
+        }
+
+        $lien = preg_replace($masque, '<p><a href="'.$lien.'"  name="ag_sess_$1">$2</a></p>', $infoSeance);
         return $lien;
     }
 
-    function genAgenda($annee, $for_bo =false, $only_data=false, $forum_id = null)
+    function genAgenda($annee, $for_bo =false, $only_data=false, $forum_id = null, $linkFormat = null)
     {
     $aAgenda = $this->obtenirAgenda($annee, $forum_id);
     //var_dump($aAgenda);
@@ -429,7 +444,7 @@ if(isset($aAgenda) && count($aAgenda) > 0)
     {
       $journee_aff = date('d/m/Y',strtotime($journee)) ;
       $sTable .= <<<CODE_HTML
-            <table summary="Agenda du forum">
+            <table summary="Agenda du forum" class="planning_agenda">
               <caption>Jour {$j} : {$journee_aff}</caption>
               <thead>
                 <tr>
@@ -437,6 +452,7 @@ if(isset($aAgenda) && count($aAgenda) > 0)
 
 CODE_HTML;
         $s = 1;
+        $confNumber = 0;
         foreach($nomSalles as $idSalle => $nomSalle)
         {
             $sTable .= <<<CODE_HTML
@@ -467,7 +483,7 @@ CODE_HTML;
                 /* Création de la ligne avec la cellule indiquant l'heure */
                 $sTable .= <<<CODE_HTML
                 <tr class="{$style}">
-                  <td class="col_heure" nowrap="nowrap">{$sHeure}h{$m} - {$sHeure_next}h{$m_next} </td>
+                  <td class="col_heure" nowrap="nowrap"><span class="heure_debut">{$sHeure}h{$m}</span><span class="heure_fin"> - {$sHeure_next}h{$m_next}</span> </td>
 
 CODE_HTML;
 
@@ -494,21 +510,25 @@ CODE_HTML;
                                 $heures = $aAgenda[$c]['debut'] ."-". $aAgenda[$c]['fin'];
                                 $nl = $this->dureeSeance($heures);
                                 $aRowSpan[$idSalle] = $nl;
+
+                                $class = 'conf conf_' . ($confNumber%2 === 0 ? 'odd' : 'even');
+
                                 $rs = ($nl > 1) ? ' rowspan="'. $nl .'"' : null;
                                 $nbSeances = (isset($aInfos[$heures][$nomSalle])) ? count($aInfos[$heures][$nomSalle]) : 0;
                                 if($nbSeances > 0):
                                     $conflit = $nbSeances > 1 ? ' style="color: inherit; background-color: #f99"' : null;
                                     $sTable .= <<<CODE_HTML
-                  <td{$rs}{$conflit} width="{$tdWith}%" {$colspan} >
+                  <td{$rs}{$conflit} width="{$tdWith}%" {$colspan} class="{$class}" >
 
 CODE_HTML;
                                     for($sc = 0; $sc < $nbSeances; $sc++):
 
-                                        $lien = $this->lienSeance($aInfos[$heures][$nomSalle][$sc], $for_bo);
+                                        $lien = $this->lienSeance($aInfos[$heures][$nomSalle][$sc], $for_bo, $linkFormat);
                                         //$lien = '<p><a href="'.($for_bo?'':'./sessions.php').'#$1"  name="ag_sess_$1">$2</a></p>';
                                         $sTable .=  $lien;
                                     endfor;
-                                $sTable .= "</td>";
+                                    $sTable .= "</td>";
+                                    $confNumber++;
                                 endif;
                                 break;
                             endif;
