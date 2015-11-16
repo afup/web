@@ -547,20 +547,31 @@ class AFUP_Cotisations
 
         $montant = AFUP_PERSONNES_MORALES == $type_personne ? AFUP_COTISATION_PERSONNE_MORALE : AFUP_COTISATION_PERSONNE_PHYSIQUE;
 
-        $corps  = "Bonjour, \n\n";
-        $corps .= "Votre cotisation annuelle à l'AFUP est arrivée à son terme.\n\n";
-        $corps .= "Afin de la renouveller, il vous suffit d'envoyer un chèque de " . $montant;
-        $corps .= " euros libellé à l'ordre de l'AFUP ainsi que votre identité à l'adresse suivante :\n\n";
-        $corps .= "AFUP\n";
-        $corps .= "32 boulevard de Strasbourg\n";
-        $corps .= "CS 30108\n";
-        $corps .= "75468 Paris Cedex 10\n\n";
-        $corps .= "Vous pouvez aussi la renouveller directement :\n\n";
-        $corps .= "* En ligne via l'espace d'administration:\n";
-        $corps .= "  http://www.afup.org/pages/administration/\n\n";
-        $corps .= "* Par virement bancaire en contactant le trésorier tresorier@afup.org:\n";
-        $corps .= "Cordialement\n\n";
-        $corps .= "Le trésorier";
+        $corps = <<<TXT
+Bonjour,
+
+Votre cotisation annuelle à l'AFUP est arrivée à son terme.
+
+Vous pouvez la renouveler :
+
+* En ligne via l'espace d'administration (c'est de loin la meilleure option !) :
+
+	http://www.afup.org/pages/administration/
+
+* Par virement bancaire en contactant le trésorier sur tresorier@afup.org.
+
+* Ou encore par chèque d'un montant de {$montant} euros libellé à l'ordre de l'AFUP ainsi que votre identité à l'adresse suivante :
+
+	AFUP
+	32 boulevard de Strasbourg
+	CS 30108
+	75468 Paris Cedex 10
+
+Merci !
+
+Cordialement,
+Le trésorier
+TXT;
 
 
         $ok = AFUP_Mailing::envoyerMail(
