@@ -71,9 +71,4 @@ HTML;
         }
     }
 
-} else {
-    // Send error to default
-    // @TODO check if this happens or not
-    $mail = new AFUP_Mail();
-    $mail->sendSimpleMessage("Impossible d'envoyer la facture", 'Impossible de facturer la commande ' . htmlspecialchars($_GET['cmd']) . ' après paiement inscription forum.');
 }
