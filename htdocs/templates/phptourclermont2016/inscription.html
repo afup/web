@@ -1,0 +1,78 @@
+<article>
+    <h3>{'S\'inscrire'|trans}</h3>
+
+    <div class="article-body">
+        <div id="divPersonne" style="display:none;">
+            <fieldset>
+                <legend>
+                    <a name="inscription1">{'Nombre de personnes'|trans}</a>
+                </legend>
+                <p>{'Je souhaite inscrire'|trans}
+                <select id="nbPersonnes">
+                    <option value="1" selected="selected">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                {'personne(s)'|trans}</p>
+            </fieldset>
+        </div>
+        {include file="formulaire.html"}
+    </div>
+</article>
+{include file="sidebar.html"}
+<script type="text/javascript">
+nbInscriptions = {$nbInscriptions};
+{literal}
+$("#nbPersonnes option[value="+nbInscriptions+"]").attr('selected', 'selected');
+var parseUri = function (uri) {
+  var a = document.createElement('a');
+  a.href = uri;
+  return a.pathname;
+}
+$('#divPersonne').show();
+for (i = (nbInscriptions + 1) ; i < 6 ; i++) {
+    $('fieldset.f'+i).hide();
+}
+
+$('a.add_inscription').click(function(event){
+    var nbPersonnes = parseInt($('#nbPersonnes').val(), 10);
+    if (nbPersonnes < 5) {
+        $('#nbPersonnes').val(nbPersonnes + 1);
+        $('#nbPersonnes').change();
+    }
+});
+
+$("#nbPersonnes").change(function() {
+    var nb = parseInt($("#nbPersonnes").val(), 10);
+    var path = parseUri($("#formulaire").attr("action"));
+    if (path.substr(0,1) != '/') {
+        path = '/' + path;
+    }
+
+    var junction = '?';
+    if (path.indexOf('?') > -1) {
+        junction = '&';
+    }
+
+    $("#formulaire").attr("action", path + junction + 'nbInscriptions=' + nb);
+    for (i = 1 ; i < 6 ; i++) {
+        $('fieldset.f'+i).hide();
+    }
+    for (i = 1 ; i < (nb+1) ; i++) {
+        $('fieldset.f'+i).show();
+    }
+
+    if (nb === 5) {
+        $('a.add_inscription').attr('disabled', 'true');
+    } else {
+        $('a.add_inscription').removeAttribute('disabled');
+    }
+});
+</script>
+{/literal}
+
+{if $noLayout==false}
+    {include file="pied_de_page.html"}
+{/if}

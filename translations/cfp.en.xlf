@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="fr" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Votre soumission à bien été enregistrée, vous recevrez une réponse bientôt.</source>
+                <target>Your submission was sent, you will receive an answer soon.</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Merci !</source>
+                <target>Thank you!</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Biographie</source>
+                <target>Biography</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Photo</source>
+                <target>Picture</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Image JPEG ou PNG de 90x120 pixels (sera redimensionnée si taille différente)</source>
+                <target>Image JPEG or PNG of 90x120 pixels (will be resized if different)</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Conférencier</source>
+                <target>Speaker</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>optionnel</source>
+                <target>optionnal</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Présentation</source>
+                <target>Talk</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Titre</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>Public visé</source>
+                <target>Audience</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Fonctionnel</source>
+                <target>Functional</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>Technique</source>
+                <target>Technical</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>Les deux</source>
+                <target>Both</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>Type de session</source>
+                <target>Type of the talk</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Conférence plénière (40 min)</source>
+                <target>Conference (40 min)</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>Conférence plénière (20 min)</source>
+                <target>Conference (20 min)</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>Atelier</source>
+                <target>Workshop</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>Résumé</source>
+                <target>Abstract</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Date limite de dépôt des candidatures</source>
+                <target>Deadline</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>heure de Paris</source>
+                <target>Paris time (CEST)</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>Dépôt des candidatures</source>
+                <target>Application form</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Trousse du conférencier</source>
+                <target>Speaker's pack</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>Les conférenciers retenus recevront :</source>
+                <target>Speakers will get:</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>la couverture des dépenses de voyage</source>
+                <target>travel expenses covered</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>deux nuits d'hôtels</source>
+                <target>two nights of hotel</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>accès complet aux deux jours de conférences</source>
+                <target>free access to the two days of conferences and workshop</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>un dîner avec les membres de l'AFUP et les sponsors le soir du premier jour.</source>
+                <target>dinner on the first day with AFUP members and partners</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>Veuillez utiliser le formulaire ci-dessous pour proposer une conférence ou un atelier.</source>
+                <target>Please, use the form below to suggest a conference or a workshop.</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>Aucune soumission par email ne sera prise en compte.</source>
+                <target>No email proposal will be accepted.</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>Biographie manquante</source>
+                <target>Biography missing</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>Photo manquante</source>
+                <target>Picture missing</target>
+            </trans-unit>
+            <trans-unit id="32">
+                <source>Titre manquant</source>
+                <target>Title missing</target>
+            </trans-unit>
+            <trans-unit id="33">
+                <source>Résumé manquant</source>
+                <target>Abstract missing</target>
+            </trans-unit>
+            <trans-unit id="34">
+                <source>Fin de l'appel à conférenciers</source>
+                <target>End of the call for speakers</target>
+            </trans-unit>
+            <trans-unit id="35">
+                <source>Merci de nous avoir soumis vos propositions de session.</source>
+                <target>Thank you for submitting your session proposal.</target>
+            </trans-unit>
+            <trans-unit id="36">
+                <source>Pour tous ceux ayant soumis une proposition vous recevrez une réponse très bientôt.</source>
+                <target>For all those who submitted the proposals you will receive a response soon.</target>
+            </trans-unit>
+            <!--
+            <trans-unit id="">
+                <source></source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="">
+                <source></source>
+                <target></target>
+            </trans-unit>
+            -->
+        </body>
+    </file>
+</xliff>
