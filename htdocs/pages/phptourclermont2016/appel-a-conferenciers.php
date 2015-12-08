@@ -11,10 +11,10 @@ setlocale(LC_TIME, 'en_US.utf8');
 $smarty->assign('date_fin_appel_en', strftime('%A %B %d, %Y at %H:%M:%S', $fin_de_lappel));
 
 setlocale(LC_TIME, 'fr_FR.utf8');
-/*if ((time() - $fin_de_lappel) > 0) {
+if ((time() - $fin_de_lappel) > 0) {
     $smarty->display('fin_appel.html');
     exit();
-}*/
+}
 
 $formulaire = &instancierFormulaire();
 $formulaire->setDefaults(array('civilite' => $translator->trans('M.'),));
