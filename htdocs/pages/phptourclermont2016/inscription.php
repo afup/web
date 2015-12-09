@@ -142,14 +142,14 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
             'radio',
             'type_inscription'.$i,
             null,
-            $translator->trans('Journée du lundi 23 novembre 2015 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
+            $translator->trans('Journée du lundi 23 mai 2016 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
             AFUP_FORUM_PREMIERE_JOURNEE
         );
         $groupe[] = &HTML_QuickForm::createElement(
             'radio',
             'type_inscription'.$i,
             null,
-            $translator->trans('Journée du mardi 24 novembre 2015 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
+            $translator->trans('Journée du mardi 24 mai 2016 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
             AFUP_FORUM_DEUXIEME_JOURNEE
         );
     } else {
@@ -187,14 +187,14 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
             'radio',
             'type_inscription'.$i,
             null,
-            $translator->trans('Journée du lundi 23 novembre 2015 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
+            $translator->trans('Journée du lundi 23 mai 2016 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
             AFUP_FORUM_PREMIERE_JOURNEE
         );
         $groupe[] = &HTML_QuickForm::createElement(
             'radio',
             'type_inscription'.$i,
             null,
-            $translator->trans('Journée du mardi 24 novembre 2015 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
+            $translator->trans('Journée du mardi 24 mai 2016 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
             AFUP_FORUM_DEUXIEME_JOURNEE
         );
     }

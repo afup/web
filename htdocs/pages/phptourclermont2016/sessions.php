@@ -14,17 +14,17 @@ require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.ph
 $forum_appel = new AFUP_AppelConferencier($bdd);
 $sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
 $journees = array(
-  'Lundi 23 novembre 2015' => array(),
-  'Mardi 24 novembre 2015' => array()
+  $translator->trans('Lundi 23 mai 2016') => array(),
+  $translator->trans('Mardi 24 mai 2016') => array()
 );
 foreach ($sessions as $index => $session) {
 	$session['conferenciers'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
   $session['journees'] = explode(" ", $session['journee']);
 
   if ('23' == date('d', $session['debut'])) {
-    $journees['Lundi 23 novembre 2015'][] = $session;
+    $journees[$translator->trans('Lundi 23 mai 2016')][] = $session;
   } else {
-    $journees['Mardi 24 novembre 2015'][] = $session;
+    $journees[$translator->trans('Mardi 24 mai 2016')][] = $session;
   }
 }
 

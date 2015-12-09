@@ -238,6 +238,22 @@
                 <source>non</source>
                 <target>no</target>
             </trans-unit>
+            <trans-unit id="60">
+                <source>Journée du lundi 23 mai 2016 :</source>
+                <target>Monday, 23rd of May 2016</target>
+            </trans-unit>
+            <trans-unit id="61">
+                <source>Journée du mardi 24 mai 2016 :</source>
+                <target>Tuesday, 24th of May 2016</target>
+            </trans-unit>
+            <trans-unit id="62">
+                <source>Lundi 23 mai 2016</source>
+                <target>Monday, 23rd of May 2016</target>
+            </trans-unit>
+            <trans-unit id="63">
+                <source>Mardi 24 mai 2016</source>
+                <target>Tuesday, 24th of May 2016</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
