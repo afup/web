@@ -72,13 +72,13 @@ if ($formulaire->validate()) {
         AFUP_Mailing::envoyerMail(
             array($formulaire->exportValue('email'), $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom')),
             array('bureau@afup.org', 'Bureau AFUP'),
-            'Demande d\'accréditation presse Forum PHP 2015',
+            'Demande d\'accréditation presse PHP Tour 2016',
             $body
         );
         AFUP_Mailing::envoyerMail(
             array($formulaire->exportValue('email'), $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom')),
             array('communication@afup.org', 'Communication AFUP'),
-            'Demande d\'accréditation presse Forum PHP 2015',
+            'Demande d\'accréditation presse PHP Tour 2016',
             $body
         );
         $smarty->assign('texte', 'Merci. Votre demande d\'accréditation a été prise en compte et sera traitée prochainement.');

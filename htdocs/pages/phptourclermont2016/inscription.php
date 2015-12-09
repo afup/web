@@ -216,7 +216,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
         '<br/>',
         false
     );
-    $formulaire->addElement('static', 'raccourci', '', $translator->trans('Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le Forum PHP'));
+    $formulaire->addElement('static', 'raccourci', '', $translator->trans('Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le PHP Tour'));
     for ($j=1; $j <= $nombre_tags; $j++) {
         $formulaire->addElement('text', 'tag_'.$j.'_'.$i, 'Tag '.$j . ($j ==1 ?  $translator->trans(' ou Id Twitter (ex: @afup)') : ''), array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
     }
