@@ -14,7 +14,7 @@ $annee_forum = $rs_forum['forum_annee'];
 
 $sessions = $forum_appel->obtenirListeSessionsPlannifies($id_forum);
 $salles = $forum_appel->obtenirListeSalles($id_forum, true);
-$smarty->assign('agenda', $forum->genAgenda($annee_forum, false, false, $id_forum, '/forum-php-2015/programme/#$1'));
+$smarty->assign('agenda', $forum->genAgenda($annee_forum, false, false, $id_forum, '/php-tour-2016/programme/#$1'));
 $smarty->assign('id_forum', $id_forum);
 $smarty->assign('forums', $forum->obtenirListe());
 $smarty->assign('sessions', $sessions);
