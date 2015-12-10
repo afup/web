@@ -1,0 +1,42 @@
+{foreach from=$journees item=sessions key=jour}
+  <article class="first">
+    <a name="{$jour}"></a>
+    <h3>{$jour}</h3>
+    <div class="article-body">
+    	<div class="sessions">
+        {foreach from=$sessions item=session}
+      		<div class="session {$session.journee}">
+      			<a name="{$session.session_id}" ></a>
+      			<h4>{$session.titre}</h4>
+      			<div class="horaire">
+      				<span class="salle">{$session.nom_salle}</span> {$session.debut|date_format:'%d/%m/%Y <strong>%H:%M'}-{$session.fin|date_format:'%H:%M'}</strong>
+      			</div>
+
+      			<div class="details">
+      				<div class="abstract">{$session.abstract}</div>
+      	   		<div>
+      			    {foreach from=$session.conferenciers item=conferencier}
+  	          		<div class="conferencier">
+                    <a href="/php-tour-2016/speakers/#{$conferencier.conferencier_id}">
+                      <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0"  height="120"/>
+                    </a><br />
+  	          			<a href="/php-tour-2016/speakers/#{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a>
+  	          		</div>
+                {/foreach}
+              </div>
+            </div>
+     		  </div>
+        {/foreach}
+    	</div>
+  	</div>
+  </article>
+{/foreach}
+
+<article class="first">
+  <h3>informations complémentaires</h3>
+  <div class="article-body">
+    <p>
+      <em>Le programme ci-dessus est donn&eacute; &agrave; titre indicatif : il peut encore &eacute;voluer.</em>
+    </p>
+  </div>
+</article>

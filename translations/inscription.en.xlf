@@ -80,7 +80,7 @@
             </trans-unit>
             <trans-unit id="20">
                 <source>Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le Forum PHP</source>
-                <target>Please fill up to 3 tags (and/or your Twitter id) about you. Tags will be printed on your event badge to ease networking during the Forum P</target>
+                <target>Please fill up to 3 tags (and/or your Twitter id) about you. Tags will be printed on your event badge to ease networking during the Forum PHP</target>
             </trans-unit>
             <trans-unit id="21">
                 <source>Formule</source>
@@ -237,6 +237,26 @@
             <trans-unit id="59">
                 <source>non</source>
                 <target>no</target>
+            </trans-unit>
+            <trans-unit id="60">
+                <source>Journée du lundi 23 mai 2016 :</source>
+                <target>Monday, 23rd of May 2016</target>
+            </trans-unit>
+            <trans-unit id="61">
+                <source>Journée du mardi 24 mai 2016 :</source>
+                <target>Tuesday, 24th of May 2016</target>
+            </trans-unit>
+            <trans-unit id="62">
+                <source>Lundi 23 mai 2016</source>
+                <target>Monday, 23rd of May 2016</target>
+            </trans-unit>
+            <trans-unit id="63">
+                <source>Mardi 24 mai 2016</source>
+                <target>Tuesday, 24th of May 2016</target>
+            </trans-unit>
+            <trans-unit id="64">
+                <source>Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le PHP Tour</source>
+                <target>Please fill up to 3 tags (and/or your Twitter id) about you. Tags will be printed on your event badge to ease networking during the PHP Tour</target>
             </trans-unit>
         </body>
     </file>

@@ -68,5 +68,6 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], $langs)) {
 $translator = new \Symfony\Component\Translation\Translator($lang);
 $translator->addLoader('xliff', new \Symfony\Component\Translation\Loader\XliffFileLoader());
 $translator->addResource('xliff', dirname(__FILE__) . '/../../translations/inscription.en.xlf', 'en');
+$translator->addResource('xliff', dirname(__FILE__) . '/../../translations/cfp.en.xlf', 'en');
 $translator->setFallbackLocales(array('fr'));
 $smarty->register_modifier('trans', [$translator, 'trans']);
