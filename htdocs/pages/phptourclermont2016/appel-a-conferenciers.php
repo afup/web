@@ -16,7 +16,12 @@ if ((time() - $fin_de_lappel) > 0) {
     exit();
 }
 
-$formulaire = &instancierFormulaire();
+$action = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+if (isset($_GET['action'])) {
+    $action = $_GET['action'];
+}
+
+$formulaire = &instancierFormulaire($action);
 $formulaire->setDefaults(array('civilite' => $translator->trans('M.'),));
 
 $formulaire->addElement('hidden', 'id_forum', $config_forum['id']);
