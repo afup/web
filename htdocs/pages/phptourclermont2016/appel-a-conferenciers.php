@@ -176,6 +176,7 @@ if ($formulaire->validate()) {
     $smarty->display('soumission_engistree.html');
     exit(0);
 }
+$formulaire->updateAttributes(array('enctype' => 'multipart/form-data-alternate')); // little hack to allow distant forward by php
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 $smarty->display('appel-a-conferenciers.html');
 ?>
