@@ -48,7 +48,7 @@ $pages = array(
 		    ),
             'membres_liste' => array(
                 'nom' => 'Annuaire',
-                'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+                'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
             ),
 		),
     ),
