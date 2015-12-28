@@ -11,6 +11,13 @@ if (!isset($_GET['page'])) {
         $_GET['page'] = 'accueil';
     }
 }
+
+/*
+ * Define LOADED_USING_INDEX to true
+ * See compta_journal.php first line as example for security check.
+ */
+define('PAGE_LOADED_USING_INDEX', true);
+
 if (!empty($_POST['connexion'])) {
     if ($droits->seConnecter($_POST['utilisateur'], $_POST['mot_de_passe'])) {
         if (isset($_POST['page_demandee']) && $_POST['page_demandee']) {
