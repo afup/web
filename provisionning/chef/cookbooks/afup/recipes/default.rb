@@ -33,6 +33,7 @@ package "php5-cli"
 package "php5-common"
 package "php5-mysqlnd"
 package "php5-gd"
+package "php5-mcrypt"
 
 # Install and activate the apache2 module
 package "libapache2-mod-php5"
