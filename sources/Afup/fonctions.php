@@ -54,7 +54,7 @@ function genererFormulaire(&$formulaire) {
  *
  * L'action par défaut est la première des actions disponibles.
  *
- * @param   object  $actions_disponibles    Actions disponibles
+ * @param   array  $actions_disponibles    Actions disponibles
  * @return  string
  */
 function verifierAction($actions_disponibles) {

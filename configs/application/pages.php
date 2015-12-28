@@ -231,6 +231,10 @@ $pages = array(
 		        'nom' => 'Configuration',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
             ),
+		    'compta_recherche' => array(
+		        'nom' => 'Recherche comptable',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+            ),
         ),
     ),
     'apero' => array(

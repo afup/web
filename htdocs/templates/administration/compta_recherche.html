@@ -1,0 +1,198 @@
+<h2>Recherche comptable</h2>
+
+<form action="" method="get">
+
+    <input type="hidden" name="page" value="{$page}"/>
+    <input type="hidden" name="action" value="results"/>
+
+    <p>
+        <label for="search">Votre recherche : </label>
+        <input type="text" name="q" id="search" value="{$q}" /><br/>
+        <em>Vous pouvez utiliser <code>?</code> ou <code>%</code> afin d'avoir plus de précision.</em>
+    </p>
+    <p>
+        <input type="submit" value="Rechercher" />
+    </p>
+</form>
+
+{if $action == 'results'}
+    <h3>Résultats</h3>
+    {if $no_results}
+        <p>Aucun résultat</p>
+    {else}
+
+        {if $results.cotisations_personnes_morales}
+        <h4>Cotisations de personnes morales</h4>
+<table class="afup_tab">
+    <tbody>
+    <tr>
+        <th>Dates</th>
+        <th>Montant</th>
+        <th>Nom Prénom &lt;email&gt;</th>
+        <th>Informations</th>
+        <th>Actions</th>
+    </tr>
+    {foreach from=$results.cotisations_personnes_morales item=item}
+    <tr>
+        <td>{$item.date_debut|date_format} &gt; {$item.date_fin|date_format}</td>
+        <td>{$item.montant}</td>
+        <td>
+            {$item.nom}
+            {$item.prenom}
+            {if $item.email}&lt;{$item.email}&gt;{/if}
+        </td>
+        <td>
+            {$item.informations_reglement}
+            {if $item.commentaires && $item.informations_reglement}<br/>{/if}
+            {$item.commentaires}
+        </td>
+        <td>
+            <a href="index.php?page=cotisations&amp;action=modifier&amp;type_personne={$item.type_personne}&amp;id_personne={$item.id_personne}&amp;id={$item.id}">Voir</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+        {/if}
+
+        {if $results.cotisations_personnes_physiques}
+        <h4>Cotisations de personnes physiques</h4>
+<table class="afup_tab">
+    <tbody>
+    <tr>
+        <th>Dates</th>
+        <th>Montant</th>
+        <th>Nom Prénom &lt;email&gt; @login</th>
+        <th>Informations</th>
+        <th>Actions</th>
+    </tr>
+    {foreach from=$results.cotisations_personnes_physiques item=item}
+    <tr>
+        <td>{$item.date_debut|date_format} &gt; {$item.date_fin|date_format}</td>
+        <td>{$item.montant}</td>
+        <td>
+            {$item.nom}
+            {$item.prenom}
+            {if $item.email}&lt;{$item.email}&gt;{/if}
+            @{$item.login}
+        </td>
+        <td>
+            {$item.informations_reglement}
+            {if $item.commentaires && $item.informations_reglement}<br/>{/if}
+            {$item.commentaires}
+        </td>
+        <td>
+            <a href="index.php?page=cotisations&amp;action=modifier&amp;type_personne={$item.type_personne}&amp;id_personne={$item.id_personne}&amp;id={$item.id}">Voir</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+        {/if}
+
+        {if $results.forum_inscriptions}
+        <h4>Inscriptions Forum</h4>
+<table class="afup_tab">
+    <tbody>
+    <tr>
+        <th>Date</th>
+        <th>Référence</th>
+        <th>Montant</th>
+        <th>Nom Prénom &lt;email&gt;</th>
+        <th>Forum</th>
+        <th>Actions</th>
+    </tr>
+    {foreach from=$results.forum_inscriptions item=inscription}
+    <tr>
+        <td>{$inscription.date|date_format}</td>
+        <td>{$inscription.reference}</td>
+        <td>{$inscription.montant}</td>
+        <td>
+            {$inscription.nom}
+            {$inscription.prenom}
+            {if $inscription.email}&lt;{$inscription.email}&gt;{/if}
+        </td>
+        <td>{$inscription.forum_titre}</td>
+        <td>
+            <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}">Voir</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+        {/if}
+
+        {if $results.forum_factures}
+        <h4>Factures Forum</h4>
+<table class="afup_tab">
+    <tbody>
+    <tr>
+        <th>Référence</th>
+        <th>Montant</th>
+        <th>Date règlement</th>
+        <th>Société Nom Prénom &lt;email&gt;</th>
+        <th>Autor.</th>
+        <th>Trans.</th>
+        <th>Forum</th>
+        <th>Actions</th>
+    </tr>
+    {foreach from=$results.forum_factures item=facture}
+    <tr>
+        <td>{$facture.reference}</td>
+        <td>{$facture.montant}</td>
+        <td>{$facture.date_reglement|date_format}</td>
+        <td>
+            {if $facture.societe}{$facture.societe} /{/if}
+            {$facture.nom}
+            {$facture.prenom}
+            {if $facture.email}&lt;{$facture.email}&gt;{/if}
+        </td>
+        <td>{$facture.autorisation}</td>
+        <td>{$facture.transaction}</td>
+        <td>{$facture.forum_titre}</td>
+        <td>
+            <a href="index.php?page=forum_facturation&amp;action=telecharger_facture&amp;ref={$facture.reference}">Fact. PDF</a>
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+        {/if}
+
+        {if $results.factures}
+        <h4>Devis / Factures</h4>
+<table class="afup_tab">
+    <tbody>
+        <tr>
+            <th>Date devis</th>
+            <th>Numéro devis</th>
+            <th>Date facture</th>
+            <th>Numéro facture</th>
+            <th>Société</th>
+            <th>Nom Prénom &lt;email&gt;</th>
+            <th>Action</th>
+        </tr>
+    {foreach from=$results.factures item=facture}
+        <tr>
+            <td>{$facture.date_devis}</td>
+            <td>{$facture.numero_devis}</td>
+            <td>{$facture.date_facture}</td>
+            <td>{$facture.numero_facture}</td>
+            <td>{$facture.societe}</td>
+            <td>
+                {$facture.nom}
+                {$facture.prenom}
+                {if $facture.email}&lt;{$facture.email}&gt;{/if}
+            </td>
+            <td>
+                <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$facture.id}">Voir</a>
+                / <a href="index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={$facture.numero_facture}">PDF</a>
+            </td>
+        </tr>
+    {/foreach}
+    </tbody>
+</table>
+        {/if}
+
+    {/if}
+{/if}
