@@ -1,6 +1,17 @@
 <?php
 
-$action = verifierAction(array('lister', 'debit','credit','ajouter', 'modifier','supprimer', 'importer', 'ventiler'));
+$action = verifierAction([
+    'lister',
+    'debit',
+    'credit',
+    'ajouter',
+    'modifier',
+    'supprimer',
+    'importer',
+    'ventiler',
+    'modifier_colonne',
+]);
+
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
 //$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -26,8 +37,25 @@ $smarty->assign('listPeriode', $listPeriode );
 	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 
 if ($action == 'lister') {
-	$journal = $compta->obtenirJournal('',$periode_debut,$periode_fin);
-	$smarty->assign('journal', $journal);
+
+    // Accounting lines for the selected period
+    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin);
+    $smarty->assign('journal', $journal);
+
+    // Categories
+    $categories    = $compta->obtenirListCategories();
+    $categories[0] = "-- À déterminer --";
+    $smarty->assign('categories', $categories);
+
+    // Events
+    $events    = $compta->obtenirListEvenements();
+    $events[0] = "-- À déterminer --";
+    $smarty->assign('events', $events);
+
+    // Payment methods
+    $paymentMethods    = $compta->obtenirListReglements();
+    $paymentMethods[0] = "-- À déterminer --";
+    $smarty->assign('payment_methods', $paymentMethods);
 }
 elseif ($action == 'debit') {
 	$journal = $compta->obtenirJournal(1,$periode_debut,$periode_fin);
@@ -190,6 +218,86 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 
 
     $smarty->assign('formulaire', genererFormulaire($formulaire));
+}
+
+/*
+ * This action is used in AJAX in order to update "compta" data.
+ * Only three column are available for update:
+ *  - categorie
+ *  - reglement
+ *  - evenement
+ * The new value is passed with the `val` variable (POST).
+ * The column and the "compta" identifier are passed with GET vars.
+ *
+ * There is no content return on failure, only headers.
+ * If the update succeed we display a simple JSON element with a 200 status code.
+ *
+ * This action is added to perform Ajax updates directly on the "journal" list
+ * in order to improve utilization.
+ */
+elseif ($action === 'modifier_colonne') {
+
+    try {
+        // Bad request?
+        if (!isset($_POST['val']) || !isset($_GET['column']) || !isset($_GET['id']) || !($line = $compta->obtenir($_GET['id']))) {
+            throw new Exception("Please verify parameters", 400);
+        }
+
+        // Test line existence
+        if (!$line['id']) {
+            throw new Exception("Not found", 404);
+        }
+
+        switch ($_GET['column']) {
+            case 'categorie':
+                $column = 'idcategorie';
+                $value  = (int) $_POST['val'];
+                break;
+            case 'reglement':
+                $column = 'idmode_regl';
+                $value  = (int) $_POST['val'];
+                break;
+            case 'evenement':
+                $column = 'idevenement';
+                $value  = (int) $_POST['val'];
+                break;
+            default:
+                throw new Exception("Bad column name", 400);
+        }
+
+        // No value?
+        if (!$value) {
+            throw new Exception("Bad value", 400);
+        }
+
+        if ($compta->modifierColonne($line['id'], $column, $value)) {
+            $response = [
+                'success' => true,
+            ];
+
+            // Done!
+            header('Content-Type: application/json; charset=utf-8');
+            header('HTTP/1.1 200 OK');
+            die(json_encode($response));
+        } else {
+            throw new Exception("An error occurred", 409);
+        }
+    } catch (Exception $e) {
+        switch ($e->getCode()) {
+            case 404:
+                $httpStatus = "Not Found";
+                break;
+            case 400:
+                $httpStatus = "Bad Request";
+                break;
+            case 409:
+                $httpStatus = "Conflict";
+                break;
+        }
+        header('HTTP/1.1 ' . $e->getCode() . ' ' . $status);
+        header('X-Info: ' . $e->getMessage());
+        exit;
+    }
 
 } elseif ($action == 'supprimer') {
     if ($compta->supprimerEcriture($_GET['id']) ) {
