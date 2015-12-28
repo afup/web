@@ -8,7 +8,11 @@ require_once dirname(__FILE__) . '/AFUP_Forum.php';
 
 class AFUP_Compta
 {
-    var $_bdd;
+    /**
+     * @var AFUP_Base_De_Donnees
+     */
+    protected $_bdd;
+
     public $lastId = null;
 
     function AFUP_Compta(&$bdd)
@@ -983,6 +987,125 @@ $pdf->Ln(10);
         }
         return true;
     }
+
+    /**
+     * Search in whole database
+     * <p>We do multiple queries.</p>
+     * @param $query string String to search
+     * @return array Results sorted by type
+     */
+    public function rechercher($query)
+    {
+        $like    = $this->_bdd->echapper("%$query%");
+        $results = [];
+
+        // "cotisations" for companies
+        $select = <<<SQL
+SELECT pers.nom, pers.prenom, pers.email, pers.raison_sociale, cotis.*
+  FROM afup_cotisations AS cotis
+  LEFT JOIN afup_personnes_morales AS pers
+    ON pers.id = cotis.id_personne
+  WHERE
+    cotis.type_personne = 1
+    AND (
+      cotis.informations_reglement LIKE $like
+      OR cotis.numero_facture LIKE $like
+      OR cotis.commentaires LIKE $like
+      OR pers.email LIKE $like
+      OR pers.nom LIKE $like
+      OR pers.prenom LIKE $like
+    )
+  ;
+SQL;
+
+        if ($cotisations = $this->_bdd->obtenirTous($select, MYSQLI_ASSOC)) {
+            $results['cotisations_personnes_morales'] = $cotisations;
+        }
+
+        // "cotisations" for people
+        $select = <<<SQL
+SELECT pers.nom, pers.prenom, pers.email, pers.login, cotis.*
+  FROM afup_cotisations AS cotis
+  LEFT JOIN afup_personnes_physiques AS pers
+    ON pers.id = cotis.id_personne
+  WHERE
+    cotis.type_personne = 0
+    AND (
+      cotis.informations_reglement LIKE $like
+      OR cotis.numero_facture LIKE $like
+      OR cotis.commentaires LIKE $like
+      OR pers.login LIKE $like
+      OR pers.email LIKE $like
+      OR pers.nom LIKE $like
+      OR pers.prenom LIKE $like
+    )
+  ;
+SQL;
+
+        if ($cotisations = $this->_bdd->obtenirTous($select, MYSQLI_ASSOC)) {
+            $results['cotisations_personnes_physiques'] = $cotisations;
+        }
+
+        // Forum registrations
+        $select = <<<SQL
+SELECT insc.*, forum.titre AS forum_titre
+  FROM afup_inscription_forum AS insc
+  LEFT JOIN afup_forum AS forum ON insc.id_forum = forum.id
+  WHERE
+    insc.reference LIKE $like
+    OR insc.informations_reglement LIKE $like
+    OR insc.commentaires LIKE $like
+    OR insc.nom LIKE $like
+    OR insc.prenom LIKE $like
+    OR insc.email LIKE $like
+  ;
+SQL;
+        if ($registrations = $this->_bdd->obtenirTous($select, MYSQLI_ASSOC)) {
+            $results['forum_inscriptions'] = $registrations;
+        }
+
+        // Forum invoicing
+        $select = <<<SQL
+SELECT inv.*, forum.titre AS forum_titre
+  FROM afup_facturation_forum AS inv
+  LEFT JOIN afup_forum AS forum ON inv.id_forum = forum.id
+  WHERE
+    inv.reference LIKE $like
+    OR inv.informations_reglement LIKE $like
+    OR inv.email LIKE $like
+    OR inv.societe LIKE $like
+    OR inv.nom LIKE $like
+    OR inv.prenom LIKE $like
+    OR inv.autorisation LIKE $like
+    OR inv.transaction LIKE $like
+  ;
+SQL;
+        if ($invoices = $this->_bdd->obtenirTous($select, MYSQLI_ASSOC)) {
+            $results['forum_factures'] = $invoices;
+        }
+
+        // Global invoicing
+        $select = <<<SQL
+SELECT inv.*
+  FROM afup_compta_facture AS inv
+  WHERE
+    inv.numero_devis LIKE $like
+    OR inv.numero_facture LIKE $like
+    OR inv.societe LIKE $like
+    OR inv.service LIKE $like
+    OR inv.email LIKE $like
+    OR inv.ref_clt1 LIKE $like
+    OR inv.ref_clt2 LIKE $like
+    OR inv.ref_clt3 LIKE $like
+    OR inv.observation LIKE $like
+  ;
+SQL;
+        if ($invoices = $this->_bdd->obtenirTous($select, MYSQLI_ASSOC)) {
+            $results['factures'] = $invoices;
+        }
+
+        return $results;
+    }
+
 }
 
-?>
