@@ -474,6 +474,35 @@ echo "</pre>";*/
 		return $this->_bdd->executer($requete);
 	}
 
+	/**
+	 * Update one column value of a "compta" line.
+	 * @param $id int "compta" identifier
+	 * @param $columnName Column name (whitelist: idcategorie, idmode_regl, idevenement)
+	 * @param $columnValue New value
+	 * @return mysqli_result|bool FALSE on failure
+	 * @throws Exception If bad column name
+	 */
+	public function modifierColonne($id, $columnName, $columnValue) {
+
+		// Check column using whitelist
+		if (!in_array($columnName, [
+			'idcategorie',
+			'idmode_regl',
+			'idevenement',
+		])) {
+			throw new Exception("Please provide a whitelisted column name.");
+		}
+
+		$id = intval($id);
+		$requete = <<<SQL
+UPDATE compta
+	SET $columnName = {$this->_bdd->echapper($columnValue)}
+	WHERE id = {$id};
+SQL;
+
+		return $this->_bdd->executer($requete);
+	}
+
 	function ajouterConfig($table,$champ,$valeur)
 	{
 		$requete = 'INSERT INTO ';

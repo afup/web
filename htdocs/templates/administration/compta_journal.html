@@ -38,8 +38,28 @@
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td nowrap="nowrap"><a name="L{$ecriture.idtmp}"></a>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$ecriture.nom_compte}</td>
-            <td {if $ecriture.evenement=='A déterminer'}style="color:#999"{/if}>{$ecriture.evenement}</td>
-             <td {if $ecriture.categorie=='A déterminer'}style="color:#999"{/if}>{$ecriture.categorie}</td>
+            <td>
+            {if $ecriture.evenement=='A déterminer'}
+                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}">
+                    {foreach from=$events item=event_name key=event_id}
+                    <option value="{$event_id}">{$event_name}</option>
+                    {/foreach}
+                </select>
+            {else}
+                {$ecriture.evenement}
+            {/if}
+            </td>
+             <td>
+                {if $ecriture.categorie=='A déterminer'}
+                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}">
+                    {foreach from=$categories item=cat_name key=cat_id}
+                    <option value="{$cat_id}">{$cat_name}</option>
+                    {/foreach}
+                </select>
+                {else}
+                    {$ecriture.categorie}
+                {/if}
+             </td>
              <td  width="250">{$ecriture.description}</td>
 		{if $ecriture.idoperation == 1}
 			<td  align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
@@ -49,7 +69,17 @@
 			<td align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
 		{/if}
 
-              <td {if $ecriture.reglement=='A déterminer'}style="color:#999"{/if}>{$ecriture.reglement}</td>
+            <td>
+            {if $ecriture.reglement=='A déterminer'}
+                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=reglement&amp;id={$ecriture.idtmp}">
+                    {foreach from=$payment_methods item=method_name key=method_id}
+                    <option value="{$method_id}">{$method_name}</option>
+                    {/foreach}
+                </select>
+            {else}
+                {$ecriture.reglement}
+            {/if}
+            </td>
             <td style="text-align: right">
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a href="#" title="Ventiler la fiche de {$ecriture.description} " onclick="javascript:ventiler({$ecriture.idtmp}, {$ecriture.montant});return false;"><img src="{$chemin_template}images/famfamfam/arrow_divide.png" alt="Ventiler" /></a>
@@ -65,6 +95,7 @@
 
     {literal}
     <script>
+        // Ventiler une ligne
         function ventiler(idLigne, montant) {
             ventilation = prompt('Combien souhaitez-vous ventiler ?', montant);
             if (ventilation) {
@@ -75,6 +106,46 @@
                 }
             }
         }
+
+        // Update line column value using select
+        (function ($) {
+            $(document).ready(function () {
+                // When we change the value of a select
+                $('.js-select-change').change(function (e) {
+                    var elmt = $(e.target);
+
+                    // Process request to change the column
+                    $.ajax({
+                        url: elmt.data('post-url'),
+                        type: 'post',
+                        data: {
+                            val: elmt.val()
+                        },
+                        dataType: 'json',
+                        success: function (data, textStatus, jqXHR) {
+                            // remove all span in td
+                            elmt.parent().find('span').remove();
+
+                            // update td content
+                            var span = $('<span></span>');
+                            span.html(elmt.find('option:selected').html() + " &#x2705;"); // success emoji: &#x2705;
+                            elmt.parent().append(span);
+                            elmt.remove();
+                        },
+                        error: function (data, textStatus, jqXHR) {
+                            // remove all span in td
+                            elmt.parent().find('span').remove();
+
+                            // update td content
+                            var span = $('<span></span>');
+                            span.html(" &#x1F6AB;"); // error emoji: &#x1F6AB;
+                            elmt.parent().append(span);
+                            elmt.val("");
+                        }
+                    });
+                });
+            });
+        })(jQuery);
     </script>
     {/literal}
 
