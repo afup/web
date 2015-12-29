@@ -56,6 +56,20 @@ if ($action == 'lister') {
     $paymentMethods    = $compta->obtenirListReglements();
     $paymentMethods[0] = "-- À déterminer --";
     $smarty->assign('payment_methods', $paymentMethods);
+
+    // Function added to Smarty in order to add the paybox link if possible
+    function paybox_link($description)
+    {
+        $matches = array();
+        if (preg_match('`CB\s+AFUP\s+([0-9]{2})([0-9]{2})([0-9]{2})-CB\s+AFUP`', $description, $matches)) {
+            $date = $matches[1] . "/" . $matches[2] . "/" . (2000 + (int) $matches[3]);
+            $url  = sprintf('https://admin.paybox.com/cgi/CBDCum.cgi?lg=FR&amp;SelDate=%1$s&amp;SelDateAu=%1$s', $date);
+            return sprintf('<a href="%2$s" class="js-paybox-link">%1$s</a>', $description, $url);
+        }
+        return $description;
+    }
+    $smarty->register_outputfilter('paybox_link');
+
 }
 elseif ($action == 'debit') {
 	$journal = $compta->obtenirJournal(1,$periode_debut,$periode_fin);

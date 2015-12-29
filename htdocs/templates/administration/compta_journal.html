@@ -1,4 +1,8 @@
 {if $action == 'lister' || $action == 'debit' || $action == 'credit' }
+
+<!-- Required for paybox popups -->
+<meta name="referrer" content="no-referrer" />
+
     <h2>Liste journal {$action} </h2>
 
    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a><br />
@@ -60,7 +64,9 @@
                     {$ecriture.categorie}
                 {/if}
              </td>
-             <td  width="250">{$ecriture.description}</td>
+             <td  width="250">
+                 {$ecriture.description|paybox_link}
+             </td>
 		{if $ecriture.idoperation == 1}
 			<td  align='right' width='100'>{$ecriture.montant|number_format:2:',':' '}</td>
 			<td> </td>
@@ -106,6 +112,17 @@
                 }
             }
         }
+
+        // Paybox link in popup
+        (function ($) {
+            $(document).ready(function () {
+                $('.js-paybox-link').click(function () {
+                    var url = $(this).attr('href');
+                    window.open(url, "paybox", "width=1100, height=650");
+                    return false;
+                });
+            });
+        })(jQuery);
 
         // Update line column value using select
         (function ($) {
