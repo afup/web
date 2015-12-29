@@ -47,7 +47,7 @@ function paybox_link($description)
     }
     return $description;
 }
-$smarty->register_outputfilter('paybox_link');
+$smarty->register_modifier('paybox_link', 'paybox_link');
 
 if ($action == 'lister') {
 
