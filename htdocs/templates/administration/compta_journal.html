@@ -44,7 +44,7 @@
             <td>{$ecriture.nom_compte}</td>
             <td>
             {if $ecriture.evenement=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}">
+                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}" style="width: 130px">
                     {foreach from=$events item=event_name key=event_id}
                     <option value="{$event_id}">{$event_name}</option>
                     {/foreach}
@@ -55,7 +55,7 @@
             </td>
              <td>
                 {if $ecriture.categorie=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}">
+                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}" style="width: 130px">
                     {foreach from=$categories item=cat_name key=cat_id}
                     <option value="{$cat_id}">{$cat_name}</option>
                     {/foreach}
