@@ -308,7 +308,7 @@ elseif ($action === 'modifier_colonne') {
                 $httpStatus = "Conflict";
                 break;
         }
-        header('HTTP/1.1 ' . $e->getCode() . ' ' . $status);
+        header('HTTP/1.1 ' . $e->getCode() . ' ' . $httpStatus);
         header('X-Info: ' . $e->getMessage());
         exit;
     }

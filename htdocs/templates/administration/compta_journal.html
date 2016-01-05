@@ -68,11 +68,11 @@
                  {$ecriture.description|paybox_link}
              </td>
 		{if $ecriture.idoperation == 1}
-			<td  align='right' width='150'>-{$ecriture.montant|number_format:2:',':' '}</td>
-			<td width='150'></td>
+			<td  align='right' width='100'>-{$ecriture.montant|number_format:2:',':' '}</td>
+			<td width='100'></td>
 		{else}
-			<td width='150'></td>
-			<td align='right' width='150'>+{$ecriture.montant|number_format:2:',':' '}</td>
+			<td width='100'></td>
+			<td align='right' width='100'>+{$ecriture.montant|number_format:2:',':' '}</td>
 		{/if}
 
             <td>
