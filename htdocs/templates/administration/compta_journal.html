@@ -87,6 +87,14 @@
             {/if}
             </td>
             <td style="text-align: right">
+
+                <a class="js-edit-comment" style="cursor:pointer;"
+                   data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=comment&amp;id={$ecriture.idtmp}"
+                   data-comment="{$ecriture.comment}"><img src="{$chemin_template}images/famfamfam/comment_{if $ecriture.comment}edit{else}add{/if}.png"
+                         data-img-src-edit="{$chemin_template}images/famfamfam/comment_edit.png"
+                         data-img-src-add="{$chemin_template}images/famfamfam/comment_add.png"
+                         alt="Editer le commentaire" /></a>
+
                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a href="#" title="Ventiler la fiche de {$ecriture.description} " onclick="javascript:ventiler({$ecriture.idtmp}, {$ecriture.montant});return false;"><img src="{$chemin_template}images/famfamfam/arrow_divide.png" alt="Ventiler" /></a>
                 <a href="index.php?page=compta_journal&amp;action=supprimer&amp;id={$ecriture.idtmp}" title="Supprimer la fiche de {$ecriture.description} " onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$ecriture.description} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
@@ -125,6 +133,7 @@
         })(jQuery);
 
         // Update line column value using select
+        // Or update comment using simple link and dialog box
         (function ($) {
             $(document).ready(function () {
                 // When we change the value of a select
@@ -160,6 +169,50 @@
                             elmt.val("");
                         }
                     });
+                });
+
+                // When we click on the comment link
+                $('a.js-edit-comment').click(function (e) {
+                    e.stopPropagation(); // Stop here
+
+                    if (e.target.nodeName === "IMG") {
+                        var elmt = $(e.target).parent();
+                    } else {
+                        var elmt = $(e.target);
+                    }
+
+                    // Get comment
+                    var comment = prompt("Commentaire :", elmt.data('comment'));
+
+                    // We have a comment, so update it!
+                    if (comment !== null) {
+                        $.ajax({
+                            url: elmt.data('post-url'),
+                            type: 'post',
+                            data: {
+                                val: comment
+                            },
+                            dataType: 'json',
+                            success: function (/* data, textStatus, jqXHR */) {
+                                // Update image
+                                var img = elmt.find('img');
+                                if (comment.length) {
+                                    var src = img.data('img-src-edit');
+                                } else {
+                                    var src = img.data('img-src-add');
+                                }
+                                img.attr('src', src);
+
+                                // Update comment in element's data
+                                elmt.data('comment', comment);
+                            },
+                            error: function (/* data, textStatus, jqXHR */) {
+                                alert('oops… something went wrong');
+                            }
+                        });
+                    }
+
+                    return false;
                 });
             });
         })(jQuery);
