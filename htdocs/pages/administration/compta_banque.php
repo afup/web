@@ -61,7 +61,8 @@ if ($action == 'lister') {
         $sheet->setCellValue('E3', 'Catégorie');
         $sheet->setCellValue('F3', 'Dépense');
         $sheet->setCellValue('G3', 'Recette');
-        $sheet->setCellValue('H3', 'Justificatif');
+        $sheet->setCellValue('H3', 'Commentaire');
+        $sheet->setCellValue('I3', 'Justificatif');
     }
     foreach ($journal as $ecriture) {
         $sheet = $workbook->getSheet($ecriture['mois']);
@@ -75,13 +76,12 @@ if ($action == 'lister') {
         } else {
             $sheet->setCellValue('G' . $compteurLigne[$ecriture['mois']], $ecriture['montant']);
         }
+        $sheet->setCellValue('H' . $compteurLigne[$ecriture['mois']], $ecriture['comment']);
         switch (true) {
             case $ecriture['idevenement'] == 27 && $ecriture['idcategorie'] == 4: //'Association AFUP' 'Cotisation'
             case $ecriture['idevenement'] == 26 && $ecriture['idcategorie'] == 28: //'Gestion' 'Frais de compte'
-            case $ecriture['idevenement'] == 25 && $ecriture['idcategorie'] == 3: //'PHPTour Lille' 'Inscription'
-            case $ecriture['idevenement'] == 28 && $ecriture['idcategorie'] == 3: //'Forum 2012' 'Inscription'
-            case $ecriture['idevenement'] == 29 && $ecriture['idcategorie'] == 3: //'PHPTour Nantes' 'Inscription'
-                $sheet->setCellValue('H' . $compteurLigne[$ecriture['mois']], 'Non');
+            case $ecriture['idcategorie'] == 3: //'??' 'Inscription'
+                $sheet->setCellValue('I' . $compteurLigne[$ecriture['mois']], 'Non');
                 break;
         }
         $compteurLigne[$ecriture['mois']]++;
@@ -98,14 +98,14 @@ if ($action == 'lister') {
                                           'alignment'=>array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                                           'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,
                                                                                    'color' => array('rgb' => 'FF666666')))),
-                                    'A3:H3');
+                                    'A3:I3');
         $sheet->duplicateStyleArray(array('font' => array('size' => 10,
                                                           'name' => 'Ubuntu'),
                                           'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,
                                                                                    'color' => array('rgb' => 'FF666666')))),
-                                    'A4:H' . ($compteurLigne[$i] + 1));
+                                    'A4:I' . ($compteurLigne[$i] + 1));
         $sheet->duplicateStyleArray(array('alignment'=>array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER)),
-                                    'H3:H200');
+                                    'I3:I200');
         $sheet->setCellValue('E' . $compteurLigne[$i], 'TOTAL');
         $sheet->setCellValue('F' . $compteurLigne[$i], $sousTotal[$i]['debit']);
         $sheet->setCellValue('G' . $compteurLigne[$i], $sousTotal[$i]['credit']);
@@ -115,7 +115,7 @@ if ($action == 'lister') {
         $sheet->duplicateStyleArray(array('font' => array('size' => 10,
                                                           'bold' => true,
                                                           'name' => 'Ubuntu')),
-                                    'A' . $compteurLigne[$i] . ':H' . ($compteurLigne[$i] + 1));
+                                    'A' . $compteurLigne[$i] . ':I' . ($compteurLigne[$i] + 1));
         $sheet->getStyle('F' . ($compteurLigne[$i] + 1))->getAlignment()->applyFromArray(array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
         $sheet->duplicateStyleArray(array('numberformat' => array('code' => PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00)),
                                     'F4:G200');

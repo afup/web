@@ -38,7 +38,7 @@ class AFUP_Compta
      $periode_fin=$this->periodeDebutFin ($debutFin='fin',$periode_fin);
 		$requete  = 'SELECT ';
 		$requete .= 'compta.date_regl, compta.description, compta.montant, compta.idoperation,  ';
-		$requete .= 'MONTH(compta.date_regl) as mois, compta.id as idtmp, ';
+		$requete .= 'MONTH(compta.date_regl) as mois, compta.id as idtmp, compta.comment,';
         $requete .= 'compta_reglement.reglement, ';
         $requete .= 'compta_evenement.evenement, compta.idevenement, ';
         $requete .= 'compta_categorie.categorie, compta.idcategorie ';
