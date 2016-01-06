@@ -10,6 +10,7 @@ $action = verifierAction([
     'importer',
     'ventiler',
     'modifier_colonne',
+    'export',
 ]);
 
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
@@ -232,6 +233,74 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 
 
     $smarty->assign('formulaire', genererFormulaire($formulaire));
+}
+
+/*
+ * This action allows the admin to export the full period in a CSV file.
+ * This is really useful when you need to filter by columns using Excel.
+ */
+elseif ($action === 'export') {
+    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin);
+
+    // Pointer to output
+    $fp = fopen('php://output', 'w');
+
+    // CSV
+    $csvDelimiter = ';';
+    $csvEnclosure = '"';
+    $csvFilename  = sprintf(
+        'AFUP_%s_journal_from-%s_to-%s.csv',
+        date('Y-M-d'),
+        $periode_debut,
+        $periode_fin
+    );
+
+    // headers
+    header('Content-Type: text/csv');
+    header("Content-Transfer-Encoding: Binary");
+    header("Content-disposition: attachment; filename=\"$csvFilename\"");
+
+    // First line
+    $columns = [
+        'Date',
+        'Compte',
+        'Evénement',
+        'Catégorie',
+        'Description',
+        'Débit',
+        'Crédit',
+        'Règlement',
+        'Commentaire',
+    ];
+    fputcsv($fp, $columns, $csvDelimiter, $csvEnclosure);
+
+    // Set the current local and get variables to use in number_format
+    $l = setlocale(LC_ALL, 'fr_FR.utf8');
+    $locale = localeconv();
+
+    foreach ($journal as $line) {
+        $total = number_format($line['montant'], 2, $locale['decimal_point'], $locale['thousands_sep']);
+        fputcsv(
+            $fp,
+            [
+                $line['date_ecriture'],
+                $line['nom_compte'],
+                $line['evenement'],
+                $line['categorie'],
+                $line['description'],
+                $line['idoperation'] == 1 ? "-$total" : '',
+                $line['idoperation'] != 1 ? $total : '',
+                $line['reglement'],
+                $line['comment'],
+            ],
+            $csvDelimiter,
+            $csvEnclosure
+        );
+    }
+
+    fclose($fp);
+
+    exit;
 }
 
 /*

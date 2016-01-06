@@ -5,13 +5,31 @@
 
     <h2>Liste journal {$action} </h2>
 
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a><br />
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=importer" title="importer un fichier csv">Importer un fichier CSV</a><br />
-<br>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}" title="ajouter une écriture">Journal Dépenses/Recettes</a><br />
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}" title="ajouter une écriture">Journal des dépenses</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}" title="ajouter une écriture">journal des recettes</a><br />
-      <br/>
+<ul>
+    <li>
+        <a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a>
+    </li>
+    <li>
+        <a href="index.php?page=compta_journal&amp;action=importer" title="importer un fichier csv">Importer un fichier
+            CSV</a>
+    </li>
+    <li>
+        <a href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}"
+           title="ajouter une écriture">Journal Dépenses/Recettes</a>
+    </li>
+    <li>
+        <a href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}"
+           title="ajouter une écriture">Journal des dépenses</a>
+    </li>
+    <li>
+        <a href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}"
+           title="ajouter une écriture">Journal des recettes</a>
+    </li>
+    <li>
+        <a href="index.php?page=compta_journal&amp;action=export&id_periode={$smarty.get.id_periode}"
+           title="exporter en CSV">Exporter la période en CSV</a>
+    </li>
+</ul>
 
   <table>
     <form method="GET" name="forum">
