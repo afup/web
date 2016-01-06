@@ -1088,8 +1088,12 @@ SQL;
 
         // Global invoicing
         $select = <<<SQL
-SELECT inv.*
+SELECT inv.*, SUM(det.pu * det.quantite) AS total,
+    GROUP_CONCAT(det.ref SEPARATOR ', ') AS refs,
+    GROUP_CONCAT(det.designation SEPARATOR ', ') AS details
   FROM afup_compta_facture AS inv
+  LEFT JOIN afup_compta_facture_details AS det
+    ON det.idafup_compta_facture = inv.id AND det.quantite > 0
   WHERE
     inv.numero_devis LIKE $like
     OR inv.numero_facture LIKE $like
@@ -1100,6 +1104,7 @@ SELECT inv.*
     OR inv.ref_clt2 LIKE $like
     OR inv.ref_clt3 LIKE $like
     OR inv.observation LIKE $like
+  GROUP BY inv.id
   ;
 SQL;
         if ($invoices = $this->_bdd->obtenirTous($select, MYSQLI_ASSOC)) {
