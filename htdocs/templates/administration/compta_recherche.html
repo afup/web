@@ -169,6 +169,8 @@
             <th>Numéro devis</th>
             <th>Date facture</th>
             <th>Numéro facture</th>
+            <th>Total</th>
+            <th>Refs + Details</th>
             <th>Société</th>
             <th>Nom Prénom &lt;email&gt;</th>
             <th>Action</th>
@@ -179,6 +181,14 @@
             <td>{$facture.numero_devis}</td>
             <td>{$facture.date_facture}</td>
             <td>{$facture.numero_facture}</td>
+            <td>{$facture.total}</td>
+            <td>
+                {$facture.refs}
+                <a href="#" onclick="$(this).parent().find('.js-details').toggle();return false;">[±]</a>
+                <span class="js-details" style="display:none;"><br/>
+                    {$facture.details}
+                </span>
+            </td>
             <td>{$facture.societe}</td>
             <td>
                 {$facture.nom}
