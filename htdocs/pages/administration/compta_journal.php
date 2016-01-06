@@ -236,10 +236,11 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 
 /*
  * This action is used in AJAX in order to update "compta" data.
- * Only three column are available for update:
+ * Only 4 columns are available for update:
  *  - categorie
  *  - reglement
  *  - evenement
+ *  - comment
  * The new value is passed with the `val` variable (POST).
  * The column and the "compta" identifier are passed with GET vars.
  *
@@ -262,6 +263,8 @@ elseif ($action === 'modifier_colonne') {
             throw new Exception("Not found", 404);
         }
 
+        $allowEmpty = false;
+
         switch ($_GET['column']) {
             case 'categorie':
                 $column = 'idcategorie';
@@ -275,12 +278,17 @@ elseif ($action === 'modifier_colonne') {
                 $column = 'idevenement';
                 $value  = (int) $_POST['val'];
                 break;
+            case 'comment':
+                $column = 'comment';
+                $value  = (string) $_POST['val'];
+                $allowEmpty = true;
+                break;
             default:
                 throw new Exception("Bad column name", 400);
         }
 
         // No value?
-        if (!$value) {
+        if (!$allowEmpty && !$value) {
             throw new Exception("Bad value", 400);
         }
 
@@ -308,7 +316,7 @@ elseif ($action === 'modifier_colonne') {
                 $httpStatus = "Conflict";
                 break;
         }
-        header('HTTP/1.1 ' . $e->getCode() . ' ' . $status);
+        header('HTTP/1.1 ' . $e->getCode() . ' ' . $httpStatus);
         header('X-Info: ' . $e->getMessage());
         exit;
     }
