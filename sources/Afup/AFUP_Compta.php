@@ -158,7 +158,7 @@ echo "</pre>";*/
 
 		$requete  = 'SELECT ';
 		$requete .= 'compta.date_ecriture, compta.description, compta.montant, compta.idoperation,compta.id as idtmp, ';
-		$requete .= 'compta.comment, compta.attachment_required, ';
+		$requete .= 'compta.comment, compta.attachment_required, compta.attachment_filename, ';
 		$requete .= 'compta_reglement.reglement, ';
 		$requete .= 'compta_evenement.evenement, ';
 		$requete .= 'compta_categorie.categorie, ';

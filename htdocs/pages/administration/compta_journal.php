@@ -17,6 +17,8 @@ $action = verifierAction([
     'ventiler',
     'modifier_colonne',
     'export',
+    'download_attachment',
+    'upload_attachment',
 ]);
 
 $smarty->assign('action', $action);
@@ -400,8 +402,36 @@ elseif ($action === 'modifier_colonne') {
         header('X-Info: ' . $e->getMessage());
         exit;
     }
+}
 
-} elseif ($action == 'supprimer') {
+/**
+ * Upload an attachment and save it on the specific line.
+ * We save the uploads in a directory at the same month of the line
+ * and we don't forget to rename the file with the date of the line
+ * and a unique identifier to keep it safe.
+ * If the line already has an attachment, we remove it before saving
+ * the new one in the line.
+ *
+ * TODO implement
+ */
+elseif ($action === 'upload_attachment') {
+    header('HTTP/1.1 400 Bad Request');
+    header('X-Message: TODO implement upload');
+    exit;
+}
+
+/**
+ * Download a line attachment
+ *
+ * TODO implement
+ */
+elseif ($action === 'download_attachment') {
+    header('HTTP/1.1 400 Bad Request');
+    echo "TODO implement";
+    exit;
+}
+
+elseif ($action == 'supprimer') {
     if ($compta->supprimerEcriture($_GET['id']) ) {
         AFUP_Logs::log('Suppression de l\'écriture ' . $_GET['id']);
         afficherMessage('L\'écriture a été supprimée', 'index.php?page=compta_journal&action=lister');
