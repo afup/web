@@ -158,7 +158,7 @@ echo "</pre>";*/
 
 		$requete  = 'SELECT ';
 		$requete .= 'compta.date_ecriture, compta.description, compta.montant, compta.idoperation,compta.id as idtmp, ';
-		$requete .= 'compta.comment, ';
+		$requete .= 'compta.comment, compta.attachment_required, ';
 		$requete .= 'compta_reglement.reglement, ';
 		$requete .= 'compta_evenement.evenement, ';
 		$requete .= 'compta_categorie.categorie, ';
@@ -495,6 +495,7 @@ echo "</pre>";*/
 			'idmode_regl',
 			'idevenement',
 			'comment',
+			'attachment_required',
 		])) {
 			throw new Exception("Please provide a whitelisted column name.");
 		}

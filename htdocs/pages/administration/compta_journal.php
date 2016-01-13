@@ -314,6 +314,7 @@ elseif ($action === 'export') {
  *  - reglement
  *  - evenement
  *  - comment
+ *  - attachment_required
  * The new value is passed with the `val` variable (POST).
  * The column and the "compta" identifier are passed with GET vars.
  *
@@ -356,6 +357,11 @@ elseif ($action === 'modifier_colonne') {
                 $value  = (string) $_POST['val'];
                 $allowEmpty = true;
                 break;
+            case 'attachment_required':
+                $column = 'attachment_required';
+                $value  = (int) $_POST['val'];
+                $allowEmpty = true;
+                break;
             default:
                 throw new Exception("Bad column name", 400);
         }
@@ -382,11 +388,12 @@ elseif ($action === 'modifier_colonne') {
             case 404:
                 $httpStatus = "Not Found";
                 break;
-            case 400:
-                $httpStatus = "Bad Request";
-                break;
             case 409:
                 $httpStatus = "Conflict";
+                break;
+            case 400:
+            default:
+                $httpStatus = "Bad Request";
                 break;
         }
         header('HTTP/1.1 ' . $e->getCode() . ' ' . $httpStatus);
