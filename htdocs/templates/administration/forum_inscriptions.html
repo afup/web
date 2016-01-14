@@ -129,6 +129,8 @@
             <th><a href="index.php?page=forum_inscriptions&amp;tri=i.etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.etat'}desc{else}asc{/if}">Etat</a></th>
             <th align="left">Règ.</th>
             <th>&nbsp;</th>
+            <th>J1</th>
+            <th>J2</th>
         </tr>
     {foreach from=$inscriptions item=inscription}
         <tr class="{cycle values="odd,even"}"{if $inscription.etat == 1} style="color:#999;font-style:italic"{/if}>
@@ -148,6 +150,8 @@
                 <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}" title="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a href="index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={$inscription.id}" title="Supprimer la fiche de {$inscription.nom} {$inscription.prenom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$inscription.nom} {$inscription.prenom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
             </td>
+            <td align="center">{if $inscription.presence_day1}&#x1F636;{/if}</td>
+            <td align="center">{if $inscription.presence_day2}&#x1F636;{/if}</td>
         </tr>
     {foreachelse}
         <tr>

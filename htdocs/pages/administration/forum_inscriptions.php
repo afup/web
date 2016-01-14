@@ -49,7 +49,7 @@ if ($action == 'envoyer_convocation') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } elseif ($action == 'lister') {
-    $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, i.mobilite_reduite, f.type_reglement';
+    $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, i.mobilite_reduite, f.type_reglement, i.presence_day1, i.presence_day2';
     $list_ordre = 'date desc';
     $list_sens = 'desc';
     $list_associatif = false;
