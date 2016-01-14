@@ -7,4 +7,3 @@ $paybox .= "<p><strong></srong><a href=\"index.php\">retour à votre compte</a><
 
 $smarty->assign('paybox', $paybox);
 $smarty->display('paybox.html');
-?>

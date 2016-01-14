@@ -1,5 +1,11 @@
 <?php
 
+// Impossible to access the file itself
+if (!defined('PAGE_LOADED_USING_INDEX')) {
+    trigger_error("Direct access forbidden.", E_USER_ERROR);
+    exit;
+}
+
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'tester'));
 $tris_valides = array('nom', 'url', 'etat');
 $sens_valides = array('asc', 'desc');

@@ -18,4 +18,3 @@ $message .= "<p><strong></srong><a href=\"index.php\">retour à votre compte</a>
 
 $smarty->assign('paybox', $message);
 $smarty->display('paybox.html');
-?>
