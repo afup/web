@@ -19,8 +19,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define hostname do |web|
 
         # Which box?
-        web.vm.box = "puphpet/debian75-x64"
-        web.vm.box_url = "puphpet/debian75-x64"
+        web.vm.box = "boxcutter/debian82"
+        web.vm.box_url = "boxcutter/debian82"
 
         # VMWare Fusion customization
         web.vm.provider :vmware_fusion do |vmware, override|

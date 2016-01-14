@@ -5,8 +5,7 @@ ServerName <%= node[:global][:domain] %>
 	<Directory "/var/www/afup/htdocs/">
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride All
-		Order allow,deny
-		Allow from all
+		Require all granted
 	</Directory>
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log
