@@ -674,3 +674,32 @@ tr.apres td { color: #dddddd; }
         vertical-align: baseline;
     }
 }
+
+/* Dropzone */
+form.dropzone, form.dz-journal-form {
+    width: auto;
+    border: 1px dotted #aaa;
+    border-radius: 5px;
+}
+.dz-clickable:hover {
+    cursor: pointer;
+}
+.upload-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0.6;
+    z-index: 999;
+}
+.upload-loader .loader {
+    position: fixed;
+    top: 300px;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+    opacity: 1.6;
+}
