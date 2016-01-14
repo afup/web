@@ -1,2 +1,2 @@
-deb http://packages.dotdeb.org wheezy-php56 all
-deb-src http://packages.dotdeb.org wheezy-php56 all
+deb http://packages.dotdeb.org jessie all
+deb-src http://packages.dotdeb.org jessie all

@@ -8,7 +8,7 @@ execute "apt-get -y upgrade"
 package "apache2"
 
 # Set the configuration
-template "/etc/apache2/sites-available/00-afup.dev" do
+template "/etc/apache2/sites-available/00-afup.dev.conf" do
     source "virtualhost.erb"
 end
 
@@ -45,6 +45,7 @@ cookbook_file "mariadb.list" do
   path "/etc/apt/sources.list.d/mariadb.list"
   action :create_if_missing
 end
+package "software-properties-common"
 execute "apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db"
 execute "apt-get update"
 package "mariadb-server"
@@ -70,23 +71,23 @@ execute "setup user" do
     only_if "test ! `mysql -u#{node[:mysql][:user]} -p#{node[:mysql][:password]} -e 'use #{node[:mysql][:db_name]}' && echo $?`"
 end
 
-# Mailcatcher
-# ¯¯¯¯¯¯¯¯¯¯¯
-package "libsqlite3-dev"
-package "ruby1.9.1-dev"
-execute "gem install mailcatcher" do
-    command "gem install mailcatcher"
-    action :run
-    only_if "test ! `gem list mailcatcher -i > /dev/null && echo $?`"
-end
-
-# Use as a Service and start on boot
-cookbook_file "mailcatcher.initd" do
-    path "/etc/init.d/mailcatcher"
-    action :create_if_missing
-    mode "0755"
-end
-execute "update-rc.d mailcatcher defaults"
+# # Mailcatcher
+# # ¯¯¯¯¯¯¯¯¯¯¯
+# package "libsqlite3-dev"
+# package "ruby2.1-dev"
+# execute "gem install mailcatcher" do
+#     command "gem install mailcatcher"
+#     action :run
+#     only_if "test ! `gem list mailcatcher -i > /dev/null && echo $?`"
+# end
+#
+# # Use as a Service and start on boot
+# cookbook_file "mailcatcher.initd" do
+#     path "/etc/init.d/mailcatcher"
+#     action :create_if_missing
+#     mode "0755"
+# end
+# execute "update-rc.d mailcatcher defaults"
 
 
 # Smarty Cache
@@ -109,7 +110,7 @@ end
 service "apache2" do
     action :restart
 end
-service "mailcatcher" do
-    action :restart
-end
+# service "mailcatcher" do
+#     action :restart
+# end
 
