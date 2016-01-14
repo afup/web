@@ -42,7 +42,7 @@
 	<legend>Tous les tags utilis&eacute;s</legend>
 	<ul class="tags">
     {foreach from=$tags_utilises item=tag}
-		<li><a href="index.php?page=membre_tags&tag={$tag.tag}">{$tag.tag}</a></li>
+		<li><a href="index.php?page=membre_tags&tag={$tag.tag|escape}">{$tag.tag|escape}</a></li>
     {/foreach}
 	</ul>
 </fieldset>
