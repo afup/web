@@ -1,4 +1,11 @@
 <?php
+
+// Impossible to access the file itself
+if (!defined('PAGE_LOADED_USING_INDEX')) {
+    trigger_error("Direct access forbidden.", E_USER_ERROR);
+    exit;
+}
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 $paybox  = "<p>Votre paiement a été refusé. Désolé.</p>";

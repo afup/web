@@ -1,4 +1,11 @@
 <?php
+
+// Impossible to access the file itself
+if (!defined('PAGE_LOADED_USING_INDEX')) {
+    trigger_error("Direct access forbidden.", E_USER_ERROR);
+    exit;
+}
+
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
 $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
 $smarty->assign('membres_actifs'  , $personnes_physiques->obtenirNombreMembres(AFUP_DROITS_ETAT_ACTIF));

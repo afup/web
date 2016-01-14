@@ -1,5 +1,11 @@
 <?php
 
+// Impossible to access the file itself
+if (!defined('PAGE_LOADED_USING_INDEX')) {
+    trigger_error("Direct access forbidden.", E_USER_ERROR);
+    exit;
+}
+
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';

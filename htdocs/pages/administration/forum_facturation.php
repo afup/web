@@ -1,4 +1,11 @@
 <?php
+
+// Impossible to access the file itself
+if (!defined('PAGE_LOADED_USING_INDEX')) {
+    trigger_error("Direct access forbidden.", E_USER_ERROR);
+    exit;
+}
+
 $action = verifierAction(array('lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'envoyer_tout', 'facturer_facture', 'supprimer_facture', 'changer_date_reglement'));
 $tris_valides = array('date_facture', 'email', 'societe', 'etat');
 $sens_valides = array('asc' , 'desc');

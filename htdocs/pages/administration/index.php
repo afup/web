@@ -14,7 +14,7 @@ if (!isset($_GET['page'])) {
 
 /*
  * Define LOADED_USING_INDEX to true
- * See compta_journal.php first line as example for security check.
+ * See compta_journal.php first lines as example for security check.
  */
 define('PAGE_LOADED_USING_INDEX', true);
 
