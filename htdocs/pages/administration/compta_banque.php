@@ -6,7 +6,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'exporter'));
+$action = verifierAction(array('lister', 'exporter', 'download_attachments'));
 
 $smarty->assign('action', $action);
 
@@ -154,4 +154,47 @@ if ($action == 'lister') {
     $writer = new PHPExcel_Writer_Excel2007($workbook);
     $writer->save('php://output');
     exit();
+}
+
+/**
+ * Export all attachments in a zipball
+ */
+elseif ($action === 'download_attachments') {
+
+    try {
+        // Get the year
+        $year = date('Y', strtotime($listPeriode[$id_periode - 1]['date_debut']));
+
+        // Create the zip
+        $zipFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'afup_justificatifs-' . $year . '.zip';
+        $zip         = new ZipArchive();
+        $ret         = $zip->open($zipFilename, ZipArchive::CREATE);
+        if ($ret !== true) {
+            throw new RuntimeException("Impossible to open the Zip archive.");
+        } else {
+            for ($month = 1; $month <= 12; $month++) {
+                $searchDir = sprintf('%d%02d', $year, $month);
+                $zipDir    = sprintf('%d-%02d', $year, $month);
+                $options   = [
+                    'add_path'        => 'afup_justificatifs-' . $year . '/' . $zipDir . '/',
+                    'remove_all_path' => true,
+                ];
+                $zip->addGlob(AFUP_CHEMIN_RACINE . '/uploads/' . $searchDir . '/*.*', 0, $options);
+            }
+            $zip->close();
+
+            // Download it
+            header('Content-Type: application/zip');
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-disposition: attachment; filename=\"" . basename($zipFilename) . "\"");
+            readfile($zipFilename);
+            unlink($zipFilename);
+            exit;
+        }
+
+    } catch (Exception $e) {
+        header('HTTP/1.1 400 Bad Request');
+        header('X-Info: ' . $e->getMessage());
+        exit;
+    }
 }
