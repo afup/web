@@ -411,8 +411,6 @@ elseif ($action === 'modifier_colonne') {
  * and a unique identifier to keep it safe.
  * If the line already has an attachment, we remove it before saving
  * the new one in the line.
- *
- * TODO implement
  */
 elseif ($action === 'upload_attachment') {
 
@@ -488,6 +486,14 @@ elseif ($action === 'upload_attachment') {
             throw new RuntimeException('Failed to move uploaded file.');
         }
 
+        // Remove old file if exists
+        if ($line['attachment_filename']) {
+            $oldFilename = AFUP_CHEMIN_RACINE . 'uploads' . DIRECTORY_SEPARATOR . $line['attachment_filename'];
+            if (is_file($oldFilename)) {
+                unlink($oldFilename);
+            }
+        }
+
         // Update line
         $compta->modifierColonne($line['id'], 'attachment_filename', $directory . $filename);
 
@@ -502,8 +508,6 @@ elseif ($action === 'upload_attachment') {
 
 /**
  * Download a line attachment
- *
- * TODO implement
  */
 elseif ($action === 'download_attachment') {
     try {
