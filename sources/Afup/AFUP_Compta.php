@@ -496,6 +496,7 @@ echo "</pre>";*/
 			'idevenement',
 			'comment',
 			'attachment_required',
+			'attachment_filename',
 		])) {
 			throw new Exception("Please provide a whitelisted column name.");
 		}

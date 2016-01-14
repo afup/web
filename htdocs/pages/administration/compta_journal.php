@@ -415,8 +415,88 @@ elseif ($action === 'modifier_colonne') {
  * TODO implement
  */
 elseif ($action === 'upload_attachment') {
-    header('HTTP/1.1 400 Bad Request');
-    header('X-Message: TODO implement upload');
+
+    try {
+        // Bad request?
+        if (!isset($_GET['id']) || !($line = $compta->obtenir($_GET['id']))) {
+            throw new Exception("Please verify parameters", 400);
+        }
+
+        // Test line existence
+        if (!$line['id']) {
+            throw new Exception("Not found", 404);
+        }
+
+        // Avoid multiple upload
+        if (
+            !isset($_FILES['file']['error']) ||
+            is_array($_FILES['file']['error'])
+        ) {
+            throw new RuntimeException('Invalid parameters. You can\'t upload multiple files.');
+        }
+
+        // The directory
+        $directory = date('Ym', strtotime($line['date_ecriture'])) . DIRECTORY_SEPARATOR;
+        $uploadDirectory = AFUP_CHEMIN_RACINE . 'uploads' . DIRECTORY_SEPARATOR . $directory;
+        if (!is_dir($uploadDirectory)) {
+            mkdir($uploadDirectory, 0750, true);
+        }
+
+        // Get the file, rename it, and move it.
+        // Check $_FILES['file']['error'] value.
+        switch ($_FILES['file']['error']) {
+            case UPLOAD_ERR_OK:
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                throw new RuntimeException('No file sent.');
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                throw new RuntimeException('Exceeded filesize limit.');
+            default:
+                throw new RuntimeException('Unknown errors.');
+        }
+
+        // You should also check filesize here.
+        if ($_FILES['upfile']['size'] > 1000000) {
+            throw new RuntimeException('Exceeded filesize limit.');
+        }
+
+        // Check MIME Type
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        if (false === $ext = array_search(
+                $finfo->file($_FILES['file']['tmp_name']),
+                array(
+                    'jpg' => 'image/jpeg',
+                    'png' => 'image/png',
+                    'pdf' => 'application/pdf',
+                ),
+                true
+        )) {
+            throw new RuntimeException('Invalid file format. Only jpg/png/pdf allowed.');
+        }
+
+        // Move/Rename
+        $filename = sprintf('%s.%s',
+            date('Y-m-d', strtotime($line['date_ecriture'])) . '_' . $line['id'] . '_' . substr(sha1_file($_FILES['file']['tmp_name']), 0, 6),
+            $ext
+        );
+        $moved = move_uploaded_file(
+            $_FILES['file']['tmp_name'],
+            $uploadDirectory . $filename
+        );
+        if (!$moved) {
+            throw new RuntimeException('Failed to move uploaded file.');
+        }
+
+        // Update line
+        $compta->modifierColonne($line['id'], 'attachment_filename', $directory . $filename);
+
+        header('HTTP/1.1 200 OK');
+        header('X-Info: File uploaded \o/');
+    } catch (Exception $e) {
+        header('HTTP/1.1 400 Bad Request');
+        echo $e->getMessage();
+    }
     exit;
 }
 
@@ -426,8 +506,37 @@ elseif ($action === 'upload_attachment') {
  * TODO implement
  */
 elseif ($action === 'download_attachment') {
-    header('HTTP/1.1 400 Bad Request');
-    echo "TODO implement";
+    try {
+        // Bad request?
+        if (!isset($_GET['id']) || !($line = $compta->obtenir($_GET['id']))) {
+            throw new Exception("Please verify parameters", 400);
+        }
+
+        // Test line existence
+        if (!$line['id']) {
+            throw new Exception("Not found", 404);
+        }
+
+        // Test file existence
+        $filename = AFUP_CHEMIN_RACINE . 'uploads' . DIRECTORY_SEPARATOR . $line['attachment_filename'];
+        if (!$line['attachment_filename'] || !is_file($filename)) {
+            throw new RuntimeException('File not found.');
+        }
+
+        // Download it
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime  = $finfo->file($filename);
+
+        header('Content-Type: ' . $mime);
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"" . basename($filename) . "\"");
+        readfile($filename);
+        exit;
+
+    } catch (Exception $e) {
+        header('HTTP/1.1 400 Bad Request');
+        header('X-Info: ' . $e->getMessage());
+    }
     exit;
 }
 

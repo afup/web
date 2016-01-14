@@ -20,3 +20,8 @@ deps.lock
 /tests/unitaires/config.php
 
 /vendor/
+
+# uploads
+/htdocs/uploads/*
+!/htdocs/uploads/.htaccess
+
