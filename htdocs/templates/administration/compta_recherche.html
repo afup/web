@@ -173,6 +173,7 @@
             <th>Refs + Details</th>
             <th>Société</th>
             <th>Nom Prénom &lt;email&gt;</th>
+            <th>État</th>
             <th>Action</th>
         </tr>
     {foreach from=$results.factures item=facture}
@@ -195,6 +196,13 @@
                 {$facture.prenom}
                 {if $facture.email}&lt;{$facture.email}&gt;{/if}
             </td>
+            {if $facture.etat_paiement == 2}
+            <td style="text-align: center;color:#999999">Annulée</td>
+            {elseif $facture.etat_paiement == 1}
+            <td style="text-align: center;background-color:#73f084">Payée</td>
+            {else}
+            <td style="text-align: center;background-color:#FBD61A">En attente de paiement</td>
+            {/if}
             <td>
                 <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$facture.id}">Voir</a>
                 / <a href="index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={$facture.numero_facture}">PDF</a>
