@@ -41,7 +41,8 @@ class AFUP_Compta
 		$requete .= 'MONTH(compta.date_regl) as mois, compta.id as idtmp, compta.comment,';
         $requete .= 'compta_reglement.reglement, ';
         $requete .= 'compta_evenement.evenement, compta.idevenement, ';
-        $requete .= 'compta_categorie.categorie, compta.idcategorie ';
+        $requete .= 'compta_categorie.categorie, compta.idcategorie, ';
+        $requete .= 'compta.attachment_required, compta.attachment_filename ';
 		$requete .= 'FROM  ';
 		$requete .= 'compta  ';
         $requete .= 'LEFT JOIN ';
