@@ -106,6 +106,7 @@ elseif ($action == 'credit') {
         $champs['date_reglement']          = $champsRecup['date_regl'];
         $champs['obs_regl']          = $champsRecup['obs_regl'];
         $champs['idevenement']          = $champsRecup['idevenement'];
+        $champs['comment'] = $champsRecup['comment'];
 
 
 		//$formulaire->setDefaults($champsRecup);
@@ -137,6 +138,7 @@ elseif ($action == 'credit') {
    	$formulaire->addElement('text', 'numero', 'Numero facture' , array('size' => 30, 'maxlength' => 40));
    	$formulaire->addElement('textarea', 'description', 'Description', array('cols' => 42, 'rows' => 5));
 	$formulaire->addElement('text', 'montant', 'Montant' , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text', 'comment', 'Commentaire' , array('size' => 30, 'maxlength' => 255));
 
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
@@ -199,7 +201,8 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 									$valeur['idmode_regl'],
 									$date_regl,
 									$valeur['obs_regl'],
-									$valeur['idevenement']
+									$valeur['idevenement'],
+                                    $valeur['comment']
             						);
         } else {
    			$ok = $compta->modifier(
@@ -215,7 +218,8 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 									$valeur['idmode_regl'],
 									$date_regl,
 									$valeur['obs_regl'],
-									$valeur['idevenement']
+									$valeur['idevenement'],
+                                    $valeur['comment']
             						);
         }
 
