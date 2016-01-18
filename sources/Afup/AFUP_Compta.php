@@ -453,7 +453,7 @@ echo "</pre>";*/
 	}
 
 	function modifier($id,$idoperation,$idcompte,$idcategorie,$date_ecriture,$nom_frs,$montant,$description,
-					$numero,$idmode_regl,$date_regl,$obs_regl,$idevenement, $numero_operation = null)
+					$numero,$idmode_regl,$date_regl,$obs_regl,$idevenement, $comment, $numero_operation = null)
 	{
 
 		$requete = 'UPDATE ';
@@ -470,6 +470,7 @@ echo "</pre>";*/
 		$requete .= 'date_regl='.$this->_bdd->echapper($date_regl) . ',';
 		$requete .= 'obs_regl='.$this->_bdd->echapper($obs_regl) . ',';
 		$requete .= 'idcompte='.$this->_bdd->echapper($idcompte) . ',';
+		$requete .= 'comment='.(!$comment ? 'NULL' : $this->_bdd->echapper($comment)) . ',';
         if ($numero_operation) {
     		$requete .= 'numero_operation='.$this->_bdd->echapper($numero_operation) . ',';
         }
