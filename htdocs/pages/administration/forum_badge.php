@@ -59,10 +59,10 @@ foreach ($badges as $nb => $badge) {
   switch ($badge['type_inscription'])
   {
     case AFUP_FORUM_PREMIERE_JOURNEE:
-      $lib_pass = 'PASS JOUR 1 (Mardi)';
+      $lib_pass = 'PASS JOUR 1';
       break;
     case AFUP_FORUM_DEUXIEME_JOURNEE:
-      $lib_pass = 'PASS JOUR 2 (Mercredi)';
+      $lib_pass = 'PASS JOUR 2';
       break;
     case AFUP_FORUM_2_JOURNEES:
     case AFUP_FORUM_2_JOURNEES_AFUP:
@@ -83,6 +83,17 @@ foreach ($badges as $nb => $badge) {
 
     default:
       ;
+      break;
+  }
+  switch ($badge['type_reglement']) {
+    case '0':
+      $badge['type_reglement'] = 'CB';
+      break;
+    case '1':
+      $badge['type_reglement'] = 'CHQ';
+      break;
+    case '2':
+      $badge['type_reglement'] = 'VIR';
       break;
   }
   $badge['type_pass'] = $lib_pass;

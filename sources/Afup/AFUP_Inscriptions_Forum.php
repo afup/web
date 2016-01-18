@@ -375,7 +375,7 @@ SQL;
 
     function obtenirListePourBadges($id_forum = null, $id = null) {
         $requete  = 'SELECT';
-        $requete .= '  i.*, f.societe ';
+        $requete .= '  i.*, f.societe, f.type_reglement ';
         $requete .= 'FROM';
         $requete .= '  afup_inscription_forum i ';
         $requete .= 'LEFT JOIN';
