@@ -294,30 +294,7 @@ $formulaire->addRule('code_postal_facturation', $translator->trans('Code postal 
 $formulaire->addRule('ville_facturation', $translator->trans('Ville manquante'), 'required');
 $formulaire->addRule('id_pays_facturation', $translator->trans('Pays non sélectionné'), 'required');
 $formulaire->addRule('email_facturation', $translator->trans('Email de réception de la facture manquant'), 'required');
-
-
-if ($config_forum['coupons'] != []) {
-    $validateCoupon = false;
-    if ($formulaire->isSubmitted()) {
-        for ($i=1; $i <= $nombre_personnes; $i++) {
-            var_dump($formulaire->getElementValue('type_inscription' . $i));
-            if ($formulaire->getElementValue('type_inscription' . $i)) {
-
-            }
-        }
-    }
-    /*$formulaire->addRule(
-        ['type_inscription1', 'coupon'],
-        $translator->trans('Coupon non valable'),
-        'callback',
-        function ($value) { var_dump($value);die;},
-        null,
-        'server',
-        false,
-        true
-        //'/^(|' . implode($config_forum['coupons'], '|') . ')$/'
-    );*/
-}
+$formulaire->addElement('text', 'coupon', $translator->trans('Coupon (en cas de soucis avec votre coupon, vous pouvez contacter le trésorier sur tresorier[at]afup.org)'), array('size' => 30, 'maxlength' => 200, 'class' => 'span7'));
 
 $noLayout = false;
 if (isset($_GET['nolayout'])) {
