@@ -217,6 +217,9 @@ elseif ($action == 'lister') {
     	}
     }
       $rs = $forum->obtenir( $_GET['id_forum']);
+    $imageDir = realpath('../../templates/'.$rs['path'].'/images/intervenants/');
+    $imagePath = $imageDir . '/' . $_GET['id'] . '.jpg';
+
       $annee_forum = $rs['forum_annee'];
     //var_dump($rs,$annee_forum);
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
@@ -235,7 +238,10 @@ elseif ($action == 'lister') {
         $formulaire->addElement('file', 'photo', 'Photo (90x120)'     );
     }
     if ($action == 'modifier') {
-        $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg" /><br />');
+        if (is_file($imagePath)) {
+            $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg" /><br />');
+        }
+
         $chemin = realpath('../../templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg');
         if (file_exists($chemin)) {
             if ((function_exists('getimagesize'))) {
@@ -291,7 +297,6 @@ elseif ($action == 'lister') {
             $file = $formulaire->getElement('photo');
             $data = $file->getValue();
             if ($data['name']) {
-                $imageDir = realpath('../../templates/'.$rs['path'].'/images/intervenants/');
                 // Transformation en 90x120 JPG pour simplifier
                 $data = $file->getValue();
                 if ($data['type'] == 'image/png') {
