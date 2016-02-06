@@ -275,6 +275,11 @@ class AFUP_Site_Articles {
 
         $ajouts = array();
         $elements = $this->bdd->obtenirTous($requete);
+
+        if (false === $elements) {
+            return $ajouts;
+        }
+
         foreach ($elements as $element) {
             $article = new AFUP_Site_Article(null, $this->bdd);
             $article->remplir($element);
