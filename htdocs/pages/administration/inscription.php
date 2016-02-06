@@ -23,14 +23,16 @@ if ($action == 'ajouter') {
 
     $formulaire = &instancierFormulaire();
 
-    $formulaire->setDefaults(array(
-            'civilite' => 'M.',
-            'id_pays' => 'FR',
-            'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
-            'niveau_apero' => AFUP_DROITS_NIVEAU_MEMBRE,
-            'niveau_annuaire' => AFUP_DROITS_NIVEAU_MEMBRE,
-            'etat' => AFUP_DROITS_ETAT_ACTIF,
-            ));
+    $formulaire->setDefaults(
+        array(
+        'civilite' => 'M.',
+        'id_pays' => 'FR',
+        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+        'niveau_apero' => AFUP_DROITS_NIVEAU_MEMBRE,
+        'niveau_annuaire' => AFUP_DROITS_NIVEAU_MEMBRE,
+        'etat' => AFUP_DROITS_ETAT_ACTIF,
+        )
+    );
 
     $formulaire->addElement('hidden' , 'inscription', 1);
     $formulaire->addElement('hidden' , 'niveau');
@@ -38,15 +40,13 @@ if ($action == 'ajouter') {
     $formulaire->addElement('hidden' , 'niveau_annuaire');
     $formulaire->addElement('hidden' , 'etat');
     $formulaire->addElement('hidden' , 'compte_svn');
-	$formulaire->addElement('hidden' , 'login');
 
     $formulaire->addElement('header' , '' , 'Informations');
     $formulaire->addElement('select' , 'id_personne_morale' , 'Personne morale', array(null => '') + $personnes_morales->obtenirListe('id, raison_sociale', 'raison_sociale', true));
     $formulaire->addElement('select' , 'civilite' , 'Civilité' , array('M.', 'Mme', 'Mlle'));
-    $formulaire->addElement('text' , 'nom' , 'Nom' , array('size' => 30, 'maxlength' => 40,
-            'onblur' => 'login.value=login2.value=login.value=creerLogin(nom.value, prenom.value)'));
-    $formulaire->addElement('text', 'prenom' , 'Prénom' , array('size' => 30, 'maxlength' => 40,
-            'onblur' => 'login.value=login2.value=creerLogin(nom.value, prenom.value)'));
+    $formulaire->addElement('text' , 'nom' , 'Nom' , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text', 'prenom' , 'Prénom' , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text' , 'login' , 'Login' , array('size' => 30, 'maxlength' => 30));
     $formulaire->addElement('text' , 'email' , 'Email' , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('textarea', 'adresse' , 'Adresse' , array('cols' => 42, 'rows' => 10));
     $formulaire->addElement('text' , 'code_postal' , 'Code postal' , array('size' => 6, 'maxlength' => 10));
@@ -55,8 +55,6 @@ if ($action == 'ajouter') {
     $formulaire->addElement('text' , 'telephone_fixe' , 'Tél. fixe' , array('size' => 20, 'maxlength' => 20));
     $formulaire->addElement('text' , 'telephone_portable' , 'Tél. portable' , array('size' => 20, 'maxlength' => 20));
 
-    $formulaire->addElement('text' , 'login2' , 'Login' , array('size' => 30, 'maxlength' => 30,
-            'disabled' => 'disabled'));
     $formulaire->addElement('password', 'mot_de_passe' , 'Mot de passe' , array('size' => 30, 'maxlength' => 30));
     $formulaire->addElement('password', 'confirmation_mot_de_passe', '' , array('size' => 30, 'maxlength' => 30));
     $formulaire->addElement('header' , 'boutons' , '');
@@ -64,6 +62,11 @@ if ($action == 'ajouter') {
 
     $formulaire->addRule('nom' , 'Nom manquant' , 'required');
     $formulaire->addRule('prenom' , 'Prénom manquant' , 'required');
+    $formulaire->addRule('login' , 'Login manquant' , 'required');
+    $formulaire->addRule('login', 'Login déjà existant', 'callback', function ($value) use ($bdd) {
+        $personnePhysique = new AFUP_Personnes_Physiques($bdd);
+        return !$personnePhysique->loginExists(0, $value);
+    });
     $formulaire->addRule('email' , 'Email manquant' , 'required');
     $formulaire->addRule('email' , 'Email invalide' , 'email');
     $formulaire->addRule('adresse' , 'Adresse manquante' , 'required');

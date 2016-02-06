@@ -28,7 +28,7 @@ if (!empty($_POST['connexion'])) {
 if (!empty($_POST['motdepasse_perdu'])) {
     require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
     $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
-    $result = $personnes_physiques->envoyerMotDePasse($_POST['utilisateur'], $_POST['email']);
+    $result = $personnes_physiques->envoyerMotDePasse($_POST['email']);
 
     if (!$result) {
         $_GET['echec'] = 1;

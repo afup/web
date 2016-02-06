@@ -111,15 +111,20 @@ class AFUP_Droits {
             $mot_de_passe = md5($mot_de_passe);
         }
 
-        $requete = ' SELECT ';
-        $requete .= '  id, niveau, niveau_modules, nom, prenom, email, ';
-		$requete .= '  CONCAT(id, \'_\', email, \'_\', login) as hash ';
-		$requete .= ' FROM ';
-        $requete .= '  afup_personnes_physiques ';
-        $requete .= ' WHERE ';
-        $requete .= '  login=' . $this->_bdd->echapper($login);
-        $requete .= '  AND mot_de_passe=' . $this->_bdd->echapper($mot_de_passe);
-        $requete .= '  AND etat=' . AFUP_DROITS_ETAT_ACTIF;
+        $requete = '
+            SELECT
+                id, niveau, niveau_modules, nom, prenom, email,
+                CONCAT(id, \'_\', email, \'_\', login) as hash
+            FROM
+                afup_personnes_physiques
+            WHERE
+                (
+                  login=' . $this->_bdd->echapper($login) . '
+                  OR email=' . $this->_bdd->echapper($login) . '
+                )
+                AND mot_de_passe=' . $this->_bdd->echapper($mot_de_passe) .'
+                AND etat=' . AFUP_DROITS_ETAT_ACTIF
+        ;
 
         $resultat = $this->_bdd->obtenirEnregistrement($requete);
         if ($resultat !== false) {
