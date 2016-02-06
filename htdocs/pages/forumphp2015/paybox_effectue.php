@@ -39,7 +39,7 @@ HTML;
                 array(
                     array(
                         'name' => 'Trésorier AFUP',
-                        'email' => 'tresocier@afup.org',
+                        'email' => 'tresorier@afup.org',
                     ),
                     array(
                         'name' => 'Communication AFUP',
