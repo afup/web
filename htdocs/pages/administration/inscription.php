@@ -111,11 +111,11 @@ if ($action == 'ajouter') {
                 }
                 $corps = str_replace($motifs, $valeurs, $conf->obtenir('mails|texte_adhesion'));
 
-                // @TODO send mail for new member! (use AFUP_Mail for that)
-
                 AFUP_Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
 
                 $droits->seConnecter($login, $mot_de_passe, false);
+
+                $personnes_physiques->envoyerCourrierBienvenue(null, null, $droits->obtenirIdentifiant());
 
                 afficherMessage('Votre inscription a été enregistrée. Veuillez maintenant payer votre cotisation. Merci. ' ,
                     'index.php?page=membre_cotisation&hash=' . $droits->obtenirHash());
