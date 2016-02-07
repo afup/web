@@ -22,15 +22,24 @@ $identifiant = $droits->obtenirIdentifiant();
 $champs = $personnes_physiques->obtenir($identifiant);
 $cotisation = $personnes_physiques->obtenirDerniereCotisation($identifiant);
 unset($champs['mot_de_passe']);
+$cotisations = new AFUP_Cotisations($bdd);
+
 
 if (!$cotisation) {
     $message = empty($_GET['hash'])? 'Est-ce vraiment votre première cotisation ?' : '';
 } else {
-    $message = 'Votre dernière cotisation -- ' . $cotisation['montant'] . ' ' . EURO . ' -- est valable jusqu\'au ' . date("d/m/Y", $cotisation['date_fin']) . '.';
+    $endSubscription = $cotisations->finProchaineCotisation($cotisation);
+    $message = sprintf(
+        'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
+        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s',
+        $cotisation['montant'],
+        EURO,
+        date("d/m/Y", $cotisation['date_fin']),
+        $endSubscription->format('d/m/Y')
+    );
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'envoyer_facture') {
-    $cotisations = new AFUP_Cotisations($bdd);
     if ($cotisations->envoyerFacture($_GET['id'])) {
         AFUP_Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
         afficherMessage('La facture a été envoyée par mail', 'index.php?page=membre_cotisation');
@@ -38,7 +47,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'envoyer_facture') {
         afficherMessage("La facture n'a pas pu être envoyée par mail", 'index.php?page=membre_cotisation', true);
     }
 } elseif (isset($_GET['action']) && $_GET['action'] == 'telecharger_facture') {
-    $cotisations = new AFUP_Cotisations($bdd);
     $cotisations->genererFacture($_GET['id']);
     die();
 }
@@ -101,10 +109,7 @@ if (preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
 $smarty->assign('message', $message);
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 
-$cotisations = new AFUP_Cotisations($bdd);
 $cotisation_physique = $cotisations->obtenirListe(0 , $donnees['id']);
-
-$cotisations = new AFUP_Cotisations($bdd);
 $cotisation_morale = $cotisations->obtenirListe(1 , $donnees['id_personne_morale']);
 
 if (is_array($cotisation_morale) && is_array($cotisation_physique)) {
