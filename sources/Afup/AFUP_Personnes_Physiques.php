@@ -406,14 +406,8 @@ class AFUP_Personnes_Physiques {
                 $corps .= "A très bientôt,\n\n";
                 $corps .= "L'équipe AFUP\n";
 
-                $check = AFUP_Mailing::envoyerMail(
-                            $GLOBALS['conf']->obtenir('mails|email_expediteur'),
-                            $email,
-                            "Adhésion AFUP",
-                            $corps);
-
-                return($check);
-
+                $mail = new AFUP_Mail();
+                return ($mail->send('adhesion', $email, [])); // TODO : Voir ce qu'on laisse dans le mail
             }
         }
 
