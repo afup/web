@@ -18,6 +18,7 @@ $personne_physique = $personnes_physiques->obtenir($identifiant);
 if ($personne_physique['id_personne_morale'] == 0) {
     // Cette page est reservee aux membres appartenants à une personne morale
     header('HTTP/1.1 403 FORBIDDEN');
+    exit;
 }
 $id_personne_morale = $personne_physique['id_personne_morale'];
 
