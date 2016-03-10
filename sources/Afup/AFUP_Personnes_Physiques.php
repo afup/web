@@ -143,7 +143,7 @@ class AFUP_Personnes_Physiques {
             $id_personne_morale = null;
         }
 
-        $erreur = $this->_loginExists(0, $login, $throwsException);
+        $erreur = $this->loginExists(0, $login, $throwsException);
         $erreur = $erreur || $this->_emailExists(0, $email, $throwsException);
         $erreur = $erreur || !$this->_companyExists($id_personne_morale, $throwsException);
         $erreur = $erreur || !$this->_countryExists($id_pays, $throwsException);
@@ -209,7 +209,7 @@ class AFUP_Personnes_Physiques {
     function modifier($id, $id_personne_morale, $login, $mot_de_passe, $niveau, $niveau_modules, $civilite, $nom, $prenom,
         $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn)
     {
-        $erreur = $this->_loginExists($id, $login);
+        $erreur = $this->loginExists($id, $login);
         $erreur = $erreur || !$this->_companyExists($id_personne_morale);
         $erreur = $erreur || !$this->_countryExists($id_pays);
 
@@ -266,7 +266,7 @@ class AFUP_Personnes_Physiques {
     function modifierCoordonnees($id, $login, $mot_de_passe,
         $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable)
     {
-        $erreur = $this->_loginExists($id, $login);
+        $erreur = $this->loginExists($id, $login);
         $erreur = $erreur || !$this->_countryExists($id_pays);
 
         if (!$erreur) {
@@ -296,12 +296,11 @@ class AFUP_Personnes_Physiques {
     /**
      * Envoi un nouveau mot de passe lorsque l'utilisateur le demande
      *
-     * @param string $login Login de la personne physique
      * @param string $email Email de la personne physique
      * @access public
      * @return bool Succès de l'envoi
      */
-    function envoyerMotDePasse($login, $email, $id = null)
+    function envoyerMotDePasse($email, $id = null)
     {
         $succes = false;
 
@@ -550,7 +549,7 @@ class AFUP_Personnes_Physiques {
      * @param bool $throwsExceptionIfExists Throws exception if the login is already in use
      * @return bool Login in use (TRUE) or not (FALSE)
      */
-    protected function _loginExists($id, $login, $throwsExceptionIfExists = false)
+    public function loginExists($id, $login, $throwsExceptionIfExists = false)
     {
         $requete = 'SELECT 1 ';
         $requete .= 'FROM afup_personnes_physiques ';

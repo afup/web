@@ -39,7 +39,7 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression de la personne physique', 'index.php?page=personnes_physiques&action=lister', true);
     }
 } elseif ($action == 'envoi_mdp') {
-    if ($personnes_physiques->envoyerMotDePasse(null, null, $_GET['id'])) {
+    if ($personnes_physiques->envoyerMotDePasse(null, $_GET['id'])) {
         AFUP_Logs::log('Envoi d\'un nouveau mot de passe à la personne physique ' . $_GET['id']);
         afficherMessage('Un nouveau mot de passe a été envoyé à la personne physique', 'index.php?page=personnes_physiques&action=lister');
     } else {
