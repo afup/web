@@ -240,7 +240,7 @@ class AFUP_Cotisations
 	            $date_debut = strtotime('+1day', $date_fin_precedente);
 	        }
 
-			$date_fin = strtotime('+1year', $date_debut);
+            $date_fin = $this->finProchaineCotisation($cotisation)->format('U');
 			$result = $this->ajouter($type_personne,
 									$id_personne,
 									$total,
@@ -595,5 +595,25 @@ TXT;
         $this->_bdd->executer($requete);
 
         return true;
+    }
+
+    /**
+     * @param array $cotisation from Afup_Personnes_Physiques::obtenirDerniereCotisation
+     * @return DateTime: Date of end of next subscription
+     */
+    public function finProchaineCotisation($cotisation)
+    {
+        $endSubscription = DateTime::createFromFormat('U', $cotisation['date_fin']);
+        $now = new DateTime();
+
+        $year = new DateInterval('P1Y');
+        if ($endSubscription->add($year) > $now) {
+            // Cotisation is not ended yet or since less than a year : the renewal will start from $cotisation['date_fin']
+            return $endSubscription;
+        } else {
+            // The subscription ended since more than a year: we start a new subscription
+            $now->add($year);
+            return $now;
+        }
     }
 }
