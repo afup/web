@@ -87,6 +87,7 @@ $paybox->set_total($montant * 100); // Total de la commande, en centimes d'euros
 $paybox->set_cmd($reference); // Référence de la commande
 $paybox->set_porteur($donnees['email']); // Email du client final (Le porteur de la carte)
 
+$paybox->set_repondreA('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_retour.php');
 // URL en cas de reussite
 $paybox->set_effectue('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
 // URL en cas de refus du paiement
