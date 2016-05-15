@@ -3,7 +3,6 @@
 // Initialisation
 ob_start();
 
-if (!session)
 session_start();
 
 require_once dirname(__FILE__).'/../../sources/Afup/fonctions.php';
