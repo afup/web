@@ -1,0 +1,91 @@
+{% autoescape false %}
+<!doctype html>
+<!--[if lte IE 6]> <html class="no-js ie6 ie67 ie678" lang="fr"> <![endif]-->
+<!--[if lte IE 7]> <html class="no-js ie7 ie67 ie678" lang="fr"> <![endif]-->
+<!--[if IE 8]> <html class="no-js ie8 ie678" lang="fr"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="fr"> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <title>AFUP - Association Française des utilisateurs de PHP</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="viewport" content="initial-scale=1.0">
+    <!--[if lt IE 9]><script src="{{ chemin_template }}js/html5shiv.js"></script><![endif]-->
+    <link href='http://fonts.googleapis.com/css?family=Podkova:400,700|Glegoo' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ chemin_template }}css/styles.css" media="all">
+    <link rel="stylesheet" href="{{ chemin_template }}css/styles-without-compass.css" media="all">
+    <link rel="alternate" type="application/rss+xml" href="/pages/site/rss.php" title="Derni&egraves actus de l'AFUP"/>
+</head>
+<body>
+    <header>
+        <div class="mw1400p center">
+
+            <div id="espace-membre" class="w33 m50 t100">
+                <p>Espace membre</p>
+                {{ community }}
+            </div>
+
+            <h1 id="logo">
+                <a href="/">
+                    <img src="{{ chemin_template }}img/logo-afup.svg" width="600" alt="AFUP − Association française des utilisateurs de PHP" />
+                </a>
+            </h1>
+
+            <div id="joinus" class="item left content w66 m50 t100">
+                <p>Rejoignez la communauté<br> et faites grandir le PHP avec nous.</p>
+            </div>
+
+            <div id="subheader">
+                <nav class="mod item left">
+                    {{ header }}
+                </nav>
+            </div>
+            <div class="clear" style="height:0;">&nbsp;</div>
+        </div>
+    </header>
+    <div class="mw1400p center" id="container">
+        <div class="line">
+            {{ content }}
+
+            <aside id="sidebar-article" class="mod item w33 m50 t100">
+                <h2>L'afup<br>organise...</h2>
+                {{ sidebar.naviguer(1, 2, "externe", "") }}
+                <h2>Sur Twitter...</h2>
+                <a class="twitter-timeline" href="https://twitter.com/afup" data-widget-id="582135958075752448">Tweets by @afup</a>
+                <script>
+                    !function (d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? "http" : "https";
+                        if (!d.getElementById(id)) {
+                            js = d.createElement(s);
+                            js.id = id;
+                            js.src = p + "://platform.twitter.com/widgets.js";
+                            fjs.parentNode.insertBefore(js, fjs);
+                        }
+                    }(document, "script", "twitter-wjs");
+                </script>
+                <h2>Sur facebook</h2>
+                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffandelafup%2F&tabs=timeline&width=433&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true" width="433" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+            </aside>
+
+        </div>
+    </div>
+    <footer>
+        <div class="mw1400p center">
+            {{ footer }}
+        </div>
+        <div id="copyright">© AFUP 2003-{{ date()|date('Y') }}</div>
+    </footer>
+
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        try {
+            var pageTracker = _gat._getTracker("UA-192127-3");
+            pageTracker._trackPageview();
+        } catch(err) { }
+    </script>
+    <!-- twig template -->
+    </body>
+</html>
+{% endautoescape %}
