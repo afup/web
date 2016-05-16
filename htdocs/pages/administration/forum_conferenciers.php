@@ -27,10 +27,6 @@ if ($action == 'inscrire_forum')
         $_GET['id_forum'] = $forum->obtenirDernier();
     }
   $sessions = $forum_appel->obtenirListeSessionsPlannifies($_GET['id_forum'] );
-  foreach (array(353,354,355,356,357,358,359,361,362,363,364,366) as $id_projet_php)
-  {
-  	 $sessions[] = array('session_id'=> $id_projet_php,'is_projet'=> true);
-  }
 
   $valeurs['id_forum']= (int)$_GET['id_forum'];
 
