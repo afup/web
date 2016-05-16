@@ -46,6 +46,7 @@ $configuration['paybox']['rang']='';
 $configuration['planete']['pertinence']='php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
 $configuration['site']['prefix']='pages/site/';
 $configuration['site']['query_prefix']='?route=';
+$configuration['git']['deployed_branch']='master';
 $configuration['git']['local_repo']='/home/afup/git.afup.org';
 $configuration['git']['local_export']='/home/afup/afup.org/';
 $configuration['sympa']['hote']='localhost';
