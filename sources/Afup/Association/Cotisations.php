@@ -1,4 +1,3 @@
-<<<<<<< HEAD:sources/Afup/Association/Cotisations.php
 <?php
 
 namespace Afup\Site\Association;
@@ -11,8 +10,6 @@ use DateInterval;
 use DateTime;
 use PHPMailer;
 
-
-require_once 'Afup/Personnes_Physiques.php';
 
 define('AFUP_COTISATIONS_REGLEMENT_ESPECES', 0);
 define('AFUP_COTISATIONS_REGLEMENT_CHEQUE', 1);
