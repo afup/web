@@ -1,3 +1,4 @@
+<<<<<<< HEAD:sources/Afup/Association/Cotisations.php
 <?php
 
 namespace Afup\Site\Association;
@@ -619,7 +620,11 @@ TXT;
      */
     public function finProchaineCotisation($cotisation)
     {
-        $endSubscription = DateTime::createFromFormat('U', $cotisation['date_fin']);
+        if ($cotisation === false) {
+            $endSubscription = new DateTime();
+        } else {
+            $endSubscription = DateTime::createFromFormat('U', $cotisation['date_fin']);
+        }
         $now = new DateTime();
 
         $year = new DateInterval('P1Y');
