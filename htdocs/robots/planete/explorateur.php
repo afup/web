@@ -11,17 +11,21 @@
  * @group    Batchs
  */
 
+use Afup\Site\Planete\Flux;
+use Afup\Site\Planete\Planete_Billet;
+use Afup\Site\Utils\Logs;
+
 require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/Cli.php';
 
 define('MAGPIE_CACHE_DIR', dirname(__FILE__).'/../../cache/robots/planete');
 define('MAGPIE_OUTPUT_ENCODING', 'UTF-8');
 
 require_once dirname(__FILE__) . '/../../../dependencies/magpierss/rss_fetch.inc';
-require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Planete_Flux.php';
-require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Planete_Billet.php';
+require_once dirname(__FILE__) . '/../../../sources/Afup/Flux.php';
+require_once dirname(__FILE__) . '/../../../sources/Afup/Planete_Billet.php';
 
-$planete_flux   = new AFUP_Planete_Flux($bdd);
-$planete_billet = new AFUP_Planete_Billet($bdd);
+$planete_flux   = new Flux($bdd);
+$planete_billet = new Planete_Billet($bdd);
 $flux           = $planete_flux->obtenirListeActifs();
 
 $billets = $succes = 0;
@@ -78,4 +82,4 @@ foreach ($flux as $flux_simple) {
 $erreurs = $billets - $succes;
 
 $duree = round(microtime(TRUE) - $startMicrotime, 2);
-AFUP_Logs::log('Exploration de ' . count($flux). ' flux -- ' . ($erreurs) . ' erreur(s) -- en ' . $duree . 's');
+Logs::log('Exploration de ' . count($flux). ' flux -- ' . ($erreurs) . ' erreur(s) -- en ' . $duree . 's');

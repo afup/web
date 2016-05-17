@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Aperos\Aperos;
+use Afup\Site\Aperos\Inscrits;
+use Afup\Site\Aperos\Villes;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,14 +16,11 @@ $tris_valides = array('date', 'organisateur', 'ville');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos.php';
-$aperos = new AFUP_Aperos($bdd);
+$aperos = new Aperos($bdd);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos_Inscrits.php';
-$inscrits = new AFUP_Aperos_Inscrits($bdd);
+$inscrits = new Inscrits($bdd);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Aperos_Villes.php';
-$villes = new AFUP_Aperos_Villes($bdd);
+$villes = new Villes($bdd);
 
 if ($action == 'lister') {
 
@@ -40,7 +42,7 @@ if ($action == 'lister') {
 
 } elseif ($action == 'supprimer') {
     if ($aperos->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression de l\'apéro ' . $_GET['id']);
+        Logs::log('Suppression de l\'apéro ' . $_GET['id']);
         afficherMessage('L\'apéro a été supprimé', 'index.php?page=aperos&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'apéro', 'index.php?page=aperos&action=lister', true);
@@ -95,9 +97,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de l\'apéro du ' . $formulaire->exportValue('date'));
+                Logs::log('Ajout de l\'apéro du ' . $formulaire->exportValue('date'));
             } else {
-                AFUP_Logs::log('Modification de l\'apéro du ' . $formulaire->exportValue('date') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification de l\'apéro du ' . $formulaire->exportValue('date') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'apéro a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=aperos&action=lister');
         } else {

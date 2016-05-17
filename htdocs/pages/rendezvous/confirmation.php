@@ -3,18 +3,21 @@
 
 // 0. initialisation (bootstrap) de l'application
 
+use Afup\Site\Rendez_Vous;
+use Afup\Site\Utils\Logs;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 // 1. chargement des classes nécessaires
 
-require_once 'Afup/AFUP_Rendez_Vous.php';
-require_once 'Afup/AFUP_Logs.php';
+
+
 
 // 2. récupération et filtrage des données
 
-AFUP_Logs::initialiser($bdd, 0);
+Logs::initialiser($bdd, 0);
 
-$rendezvous = new AFUP_Rendez_Vous($bdd);
+$rendezvous = new Rendez_Vous($bdd);
 
 $rendezvous->obtenirInscritAConfirmer($_GET['hash']);
 
@@ -65,7 +68,7 @@ if (is_array($prochain_rendezvous)) {
 	        $ok = $rendezvous->enregistrerConfirmationInscrit($formulaire);
 	
 	        if ($ok) {
-	            AFUP_Logs::log('Confirmation pour le prochain rendez-vous de '.$formulaire->exportValue('nom'));
+	            Logs::log('Confirmation pour le prochain rendez-vous de '.$formulaire->exportValue('nom'));
 	            $smarty->assign('resultat', 'succes');
 	            $smarty->assign('message', 'Votre confirmation a bien été prise en compte.');
 				$smarty->display('message.html');

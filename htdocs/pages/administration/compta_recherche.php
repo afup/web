@@ -1,6 +1,8 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\Comptabilite;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -18,8 +20,7 @@ $smarty->assign('action', $action);
 $smarty->assign('page', $_GET['page']);
 
 // Compta
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
-$compta = new AFUP_Compta($bdd);
+$compta = new Comptabilite($bdd);
 
 // Switch on action name
 switch ($action) {

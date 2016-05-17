@@ -6,6 +6,11 @@
         "symfony/translation": "^2.7",
         "symfony/config": "^2.7"
     },
+    "autoload": {
+        "psr-4": {
+            "Afup\\Site\\": "sources/Afup/"
+        }
+    },
     "license": "MIT",
     "authors": [
         {

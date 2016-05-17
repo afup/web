@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Corporate\Feuilles;
+use Afup\Site\Corporate\Feuille;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
 	trigger_error("Direct access forbidden.", E_USER_ERROR);
 	exit;
@@ -11,9 +15,9 @@ $tris_valides = array('titre', 'date');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
 
-$feuilles = new AFUP_Site_Feuilles($bdd);
+
+$feuilles = new Feuilles($bdd);
 
 if ($action == 'lister') {
 	$f = array();
@@ -36,16 +40,16 @@ if ($action == 'lister') {
 	// Mise en place de la liste dans le scope de smarty
 	$smarty->assign('feuilles', $feuilles->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre));
 } elseif ($action == 'supprimer') {
-	$feuille = new AFUP_Site_Feuille($_GET['id']);
+	$feuille = new Feuille($_GET['id']);
 	if ($feuille->supprimer()) {
-		AFUP_Logs::log('Suppression de la feuille ' . $_GET['id']);
+		Logs::log('Suppression de la feuille ' . $_GET['id']);
 		afficherMessage('La feuille a été supprimée', 'index.php?page=site_feuilles&action=lister');
 	} else {
 		afficherMessage('Une erreur est survenue lors de la suppression de la feuille', 'index.php?page=site_feuilles&action=lister', true);
 	}
 } else { // ajouter | modifier
 	$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-	$feuille = new AFUP_Site_Feuille($id);
+	$feuille = new Feuille($id);
 
 	$formulaire = &instancierFormulaire();
 	if ($action == 'ajouter') {
@@ -98,14 +102,14 @@ if ($action == 'lister') {
 
 		if ($action == 'ajouter') {
 		    if ($feuille->inserer()) {
-	            AFUP_Logs::log('Ajout de la feuille ' . $formulaire->exportValue('nom'));
+	            Logs::log('Ajout de la feuille ' . $formulaire->exportValue('nom'));
 				afficherMessage('La feuille a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=site_feuilles&action=lister');
 		    } else {
                 $smarty->assign('erreur', 'Une erreur est survenue lors de l\'ajout de la feuille');
 		    }
 		} else {
 		    if ($feuille->modifier()) {
-	            AFUP_Logs::log('Ajout de la feuille ' . $formulaire->exportValue('nom'));
+	            Logs::log('Ajout de la feuille ' . $formulaire->exportValue('nom'));
 				afficherMessage('La feuille a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=site_feuilles&action=lister');
 		    } else {
                 $smarty->assign('erreur', 'Une erreur est survenue lors de la modification de la feuille');

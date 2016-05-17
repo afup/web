@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Association\Personnes_Morales;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,8 +16,7 @@ $tris_valides = array('raison_sociale', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.php';
-$personnes_morales = new AFUP_Personnes_Morales($bdd);
+$personnes_morales = new Personnes_Morales($bdd);
 
 if ($action == 'lister') {
     $list_champs = '*';
@@ -32,18 +36,16 @@ if ($action == 'lister') {
     $smarty->assign('personnes', $personnes_morales->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre));
 } elseif ($action == 'supprimer') {
     if ($personnes_morales->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression de la personne morale ' . $_GET['id']);
+        Logs::log('Suppression de la personne morale ' . $_GET['id']);
         afficherMessage('La personne morale a été supprimée', 'index.php?page=personnes_morales&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de la personne morale', 'index.php?page=personnes_morales&action=lister', true);
     }
 } else {
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-    $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+    $personnes_physiques = new Personnes_Physiques($bdd);
     $personnes_physiques_liste = empty($_GET['id'])? array() : $personnes_physiques->obtenirListe('*', 'nom, prenom', false, $_GET['id']);
 
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-    $pays = new AFUP_Pays($bdd);
+    $pays = new Pays($bdd);
 
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
@@ -131,9 +133,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de la personne morale ' . $formulaire->exportValue('raison_sociale'));
+                Logs::log('Ajout de la personne morale ' . $formulaire->exportValue('raison_sociale'));
             } else {
-                AFUP_Logs::log('Modification de la personne morale ' . $formulaire->exportValue('raison_sociale') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification de la personne morale ' . $formulaire->exportValue('raison_sociale') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('La personne morale a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=personnes_morales&action=lister');
         } else {

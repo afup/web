@@ -1,6 +1,12 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\AppelConferencier;
+use Afup\Site\Droits;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,13 +17,13 @@ $tris_valides = array('s.titre', 's.date_soumission');
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Droits.php';
 
-$forum = new AFUP_Forum($bdd);
-$forum_appel = new AFUP_AppelConferencier($bdd);
-$droits = new AFUP_Droits($bdd);
+
+
+
+$forum = new Forum($bdd);
+$forum_appel = new AppelConferencier($bdd);
+$droits = new Droits($bdd);
 
 if ($action == 'lister') {
     // Valeurs par défaut des paramètres de tri
@@ -73,7 +79,7 @@ if ($action == 'lister') {
     $smarty->assign('nb_votant', $maxVotant);
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerSession($_GET['id'])) {
-        AFUP_Logs::log('Suppression de la session ' . $_GET['id']);
+        Logs::log('Suppression de la session ' . $_GET['id']);
         afficherMessage('La session a été supprimée', 'index.php?page=forum_sessions&action=lister&type='.$list_type);
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_sessions&action=lister&type='.$list_type, true);
@@ -124,7 +130,7 @@ if ($action == 'lister') {
 	    }
     }
 
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Configuration.php';
+
     $conf = $GLOBALS['AFUP_CONF'];
 
     $formulaire->addElement('header', null, 'Nouveau commentaire');
@@ -153,7 +159,7 @@ if ($action == 'lister') {
 				                                   0);
 
 	        if ($ok) {
-	            AFUP_Logs::log('Ajout d\'un commentaire sur la session n°' . $formulaire->exportValue('id'));
+	            Logs::log('Ajout d\'un commentaire sur la session n°' . $formulaire->exportValue('id'));
 	            $url = 'index.php?page=forum_sessions&action=lister';
 	            if ($id_next = $forum_appel->obtenirSessionSuivanteSansCommentaire($id_forum, $droits->obtenirIdentifiant())) {
 	                $url = 'index.php?page=forum_sessions&action=commenter&id=' . $id_next . '&id_forum=' . $id_forum;
@@ -210,7 +216,7 @@ if ($action == 'lister') {
 	    }
     }
 
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Configuration.php';
+
     $conf = $GLOBALS['AFUP_CONF'];
 
     $formulaire->addElement('header', null, 'Noter');
@@ -247,7 +253,7 @@ if ($action == 'lister') {
             $res = $forum_appel->noterLaSession($valeurs['id'], $valeurs['vote'], $salt, $today);
             $forum_appel->aVote($identifiant, $id);
             if ($res) {
-                AFUP_Logs::log($_SESSION['afup_login'] . ' a voté sur la session n°' . $formulaire->exportValue('id'));
+                Logs::log($_SESSION['afup_login'] . ' a voté sur la session n°' . $formulaire->exportValue('id'));
                 $forum_appel->envoyerResumeVote($salt, $identifiant);
 	            $url = 'index.php?page=forum_sessions&action=lister';
 	            if ($id_next = $forum_appel->obtenirSessionSuivanteSansVote($id_forum, $droits->obtenirIdentifiant())) {
@@ -267,8 +273,8 @@ if ($action == 'lister') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } else {
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-    $pays = new AFUP_Pays($bdd);
+
+    $pays = new Pays($bdd);
 
     $formulaire = &instancierFormulaire();
     if ($action != 'ajouter') {
@@ -377,9 +383,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de la session de ' . $formulaire->exportValue('titre'));
+                Logs::log('Ajout de la session de ' . $formulaire->exportValue('titre'));
             } else {
-                AFUP_Logs::log('Modification de la session de ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification de la session de ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('La session a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_sessions&action=lister');
         } else {

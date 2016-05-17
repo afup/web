@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\AFUP_Compta_Facture;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
 	trigger_error("Direct access forbidden.", E_USER_ERROR);
 	exit;
@@ -18,7 +22,6 @@ $action = verifierAction(array(
 $smarty->assign('action', $action);
 
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta_Facture.php';
 $comptaFact = new AFUP_Compta_Facture($bdd);
 
 if ($action == 'lister') {
@@ -31,14 +34,13 @@ if ($action == 'lister') {
 	$comptaFact->genererDevis($_GET['ref']);
 } elseif ($action == 'envoyer_devis'){
 	if($comptaFact->envoyerDevis($_GET['ref'])){
-		AFUP_Logs::log('Envoi par email de la devis n°' . $_GET['ref']);
+		Logs::log('Envoi par email de la devis n°' . $_GET['ref']);
 		afficherMessage('Le devis a été envoyé', 'index.php?page=compta_devis&action=lister');
 	} else {
 		afficherMessage("Le devis n'a pas pu être envoyé", 'index.php?page=compta_devis&action=lister', true);
 	}
 } elseif ($action == 'ajouter' || $action == 'modifier') {
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-    $pays = new AFUP_Pays($bdd);
+    $pays = new Pays($bdd);
 
   	$formulaire = &instancierFormulaire();
 
@@ -255,9 +257,9 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de l\'écriture pour ' . $valeur['societe']);
+                Logs::log('Ajout de l\'écriture pour ' . $valeur['societe']);
             } else {
-                AFUP_Logs::log('Modification de l\'écriture ' . $valeur['numero_devis'] . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification de l\'écriture ' . $valeur['numero_devis'] . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_devis&action=lister');
         } else {

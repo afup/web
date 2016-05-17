@@ -1,11 +1,13 @@
 <?php
+use Afup\Site\Forum\AppelConferencier;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 setlocale(LC_TIME, 'fr_FR');
 
-require_once 'Afup/AFUP_AppelConferencier.php';
 
-$forum_appel = new AFUP_AppelConferencier($bdd);
+
+$forum_appel = new AppelConferencier($bdd);
 $sessions = $forum_appel->obtenirListeSessionsPlannifies(2);
 
 $conferenciers = array();

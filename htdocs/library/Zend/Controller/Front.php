@@ -621,6 +621,8 @@ class Zend_Controller_Front
      * @param Zend_Controller_Request_Abstract|null $request
      * @param Zend_Controller_Response_Abstract|null $response
      * @return void|Zend_Controller_Response_Abstract Returns response object if returnResponse() is true
+     * @throws Exception
+     * @throws Zend_Controller_Exception
      */
     public function dispatch(Zend_Controller_Request_Abstract $request = null, Zend_Controller_Response_Abstract $response = null)
     {

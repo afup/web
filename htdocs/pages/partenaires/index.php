@@ -1,12 +1,15 @@
 <?php
+use Afup\Site\Association\Partenariat;
+use Afup\Site\Utils\Logs;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
-require_once 'Afup/AFUP_Partenariat.php';
-require_once 'Afup/AFUP_Logs.php';
 
-AFUP_Logs::initialiser($bdd, 0);
 
-$partenariat = new AFUP_Partenariat($bdd);
+
+Logs::initialiser($bdd, 0);
+
+$partenariat = new Partenariat($bdd);
 
 $formulaire = &instancierFormulaire();
 
@@ -19,7 +22,7 @@ $formulaire->addRule('nom' , 'Nom manquant' , 'required');
 $formulaire->addRule('prenom' , 'Prénom manquant' , 'required');
 
 if ($formulaire->validate()) {
-	AFUP_Logs::log('Vérification par un partenaire de : '.$formulaire->exportValue('nom').' - '.$formulaire->exportValue('prenom'));
+	Logs::log('Vérification par un partenaire de : '.$formulaire->exportValue('nom').' - '.$formulaire->exportValue('prenom'));
 	$smarty->assign(
 		'resultat',
 		$partenariat->verifierMembre(

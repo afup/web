@@ -93,6 +93,7 @@ abstract class Zend_Db_Table {
      * Constructor.
      *
      * @param array $config Array of user-specified config options.
+     * @throws Zend_Db_Table_Exception
      */
     public function __construct($config = null)
     {
@@ -127,6 +128,7 @@ abstract class Zend_Db_Table {
      * Sets the default Zend_Db_Adapter for all Zend_Db_Table objects.
      *
      * @param Zend_Db_Adapter $db A Zend_Db_Adapter object.
+     * @throws Zend_Db_Table_Exception
      */
     static public final function setDefaultAdapter($db)
     {
@@ -154,11 +156,11 @@ abstract class Zend_Db_Table {
     {
         return $this->_db;
     }
-    
+
     /**
      * Populate static properties for this table module.
      *
-     * @return void
+     * @throws Zend_Db_Table_Exception
      */
     protected function _setup()
     {

@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,12 +14,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('payer', 'telecharger_facture', 'envoyer_facture'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-$pays = new AFUP_Pays($bdd);
+$pays = new Pays($bdd);
 
 $formulaire = &instancierFormulaire();
 
@@ -22,7 +24,7 @@ $identifiant = $droits->obtenirIdentifiant();
 $champs = $personnes_physiques->obtenir($identifiant);
 $cotisation = $personnes_physiques->obtenirDerniereCotisation($identifiant);
 unset($champs['mot_de_passe']);
-$cotisations = new AFUP_Cotisations($bdd);
+$cotisations = new Cotisations($bdd);
 
 
 if (!$cotisation) {
@@ -41,7 +43,7 @@ if (!$cotisation) {
 
 if (isset($_GET['action']) && $_GET['action'] == 'envoyer_facture') {
     if ($cotisations->envoyerFacture($_GET['id'])) {
-        AFUP_Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
+        Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
         afficherMessage('La facture a été envoyée par mail', 'index.php?page=membre_cotisation');
     } else {
         afficherMessage("La facture n'a pas pu être envoyée par mail", 'index.php?page=membre_cotisation', true);

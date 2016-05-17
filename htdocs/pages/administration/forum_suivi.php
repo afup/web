@@ -1,17 +1,20 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Forum\Forum;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
-$forum = new AFUP_Forum($bdd);
-$forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
+
+
+
+$forum = new Forum($bdd);
+$forum_inscriptions = new Inscriptions($bdd);
 
 if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
 	$_GET['id_forum'] = $forum->obtenirDernier();

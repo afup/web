@@ -4,9 +4,7 @@ require_once dirname(__FILE__) . '/_config.inc.php';
 
 setlocale(LC_TIME, 'fr_FR');
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
-
-$forum_appel = new AFUP_AppelConferencier($bdd);
+$forum_appel = new \Afup\Site\Forum\AppelConferencier($bdd);
 $sessions = $forum_appel->obtenirListeSessionsAvecResumes($config_forum['id']);
 
 foreach ($sessions as $index => $session) {

@@ -553,6 +553,7 @@ class Zend_Uri_Http extends Zend_Uri
      *
      * @param string|array $query
      * @return string
+     * @throws Zend_Uri_Exception
      */
     protected function _parseQuery($query)
     {

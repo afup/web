@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Niveau_Partenariat;
+use Afup\Site\Forum\Partenaires;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,12 +14,12 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum_Partenaires.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Niveau_Partenariat.php';
-$partenaires = new AFUP_Forum_Partenaires($bdd);
-$forums = new AFUP_Forum($bdd);
-$niveauPartenariat = new AFUP_Niveau_Partenariat($bdd);
+
+
+
+$partenaires = new Partenaires($bdd);
+$forums = new Forum($bdd);
+$niveauPartenariat = new Niveau_Partenariat($bdd);
 
 if ($action == 'lister') {
     // Mise en place de la liste dans le scope de smarty
@@ -22,7 +27,7 @@ if ($action == 'lister') {
     $smarty->assign('sponsors', $sponsors);
 } elseif ($action == 'supprimer') {
     if ($partenaires->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression du partenaire ' . $_GET['id']);
+        Logs::log('Suppression du partenaire ' . $_GET['id']);
         afficherMessage('Le partenaire a été supprimé', 'index.php?page=forum_partenaire&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du partenaire', 'index.php?page=forum_partenaire&action=lister', true);
@@ -110,9 +115,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout du partenaire de ' . $formulaire->exportValue('nom'));
+                Logs::log('Ajout du partenaire de ' . $formulaire->exportValue('nom'));
             } else {
-                AFUP_Logs::log('Modification du partenaire de ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification du partenaire de ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('Le partenaire a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=forum_partenaire&action=lister');
         } else {

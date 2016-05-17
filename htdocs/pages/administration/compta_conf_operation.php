@@ -1,6 +1,9 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\Comptabilite;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,8 +14,7 @@ $action = verifierAction(array('lister', 'ajouter', 'modifier'));
 //$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
-$compta = new AFUP_Compta($bdd);
+$compta = new Comptabilite($bdd);
 
 
 if ($action == 'lister') {
@@ -66,9 +68,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
+                Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
             } else {
-                AFUP_Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_conf_operation&action=lister');
         } else {

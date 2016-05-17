@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Assemblee_Generale;
+use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -8,13 +13,13 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 $action = 'modifier';
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Assemblee_Generale.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Cotisations.php';
 
-$assemblee_generale = new AFUP_Assemblee_Generale($bdd);
-$cotisations = new AFUP_Cotisations($bdd);
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+
+
+
+$assemblee_generale = new Assemblee_Generale($bdd);
+$cotisations = new Cotisations($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
 
 $timestamp = $assemblee_generale->obternirDerniereDate();
 
@@ -58,7 +63,7 @@ if ($timestamp > strtotime("-1 day", time())) {
 
             if ($ok) {
                 if ($action == 'modifier') {
-                    AFUP_Logs::log('Modification de la présence et du pouvoir de la personne physique');
+                    Logs::log('Modification de la présence et du pouvoir de la personne physique');
                 }
                 afficherMessage('La présence et le pouvoir ont été modifiés', 'index.php?page=membre_assemblee_generale');
             } else {

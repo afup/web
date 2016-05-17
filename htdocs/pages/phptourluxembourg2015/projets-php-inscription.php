@@ -1,8 +1,10 @@
 <?php
+use Afup\Site\Forum\AppelConferencier;
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
+
 
 $formulaire = &instancierFormulaire();
 $formulaire->setDefaults(array('civilite' => 'M.'));
@@ -54,7 +56,7 @@ $formulaire->addRule('email1'    , 'Email invalide'           , 'email');
 if ($formulaire->validate()) {
 	$valeurs = $formulaire->exportValues();
 
-	$conf = new AFUP_AppelConferencier($bdd);
+	$conf = new AppelConferencier($bdd);
 
 	for ($i = 1; $i < 3; $i++) {
 		$check = trim($valeurs['nom' . $i]);

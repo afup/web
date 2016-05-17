@@ -1,7 +1,9 @@
 <?php
+use Afup\Site\Forum\AppelConferencier;
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
+
 
 $fin_de_lappel = $config_forum['date_fin_appel_conferencier'];
 
@@ -75,7 +77,7 @@ $formulaire->addRule('email1'    , 'Email invalide'           , 'email');
 if ($formulaire->validate()) {
     $valeurs = $formulaire->exportValues();
 
-    $conf = new AFUP_AppelConferencier($bdd);
+    $conf = new AppelConferencier($bdd);
 
     // traiter les conferenciers
     for ($i = 1; $i < 3; $i++) {

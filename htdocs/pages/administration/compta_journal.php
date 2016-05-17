@@ -1,6 +1,9 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\Comptabilite;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -23,8 +26,7 @@ $action = verifierAction([
 
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
-$compta = new AFUP_Compta($bdd);
+$compta = new Comptabilite($bdd);
 
 
 if (isset($_GET['id_periode']) && $_GET['id_periode']) {
@@ -225,9 +227,9 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
+                Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
             } else {
-                AFUP_Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
 			// 2012-02-18 A. Gendre
 			if (isset($_POST['soumettrepasser']) && isset($passer)) {
@@ -550,7 +552,7 @@ elseif ($action === 'download_attachment') {
 
 elseif ($action == 'supprimer') {
     if ($compta->supprimerEcriture($_GET['id']) ) {
-        AFUP_Logs::log('Suppression de l\'écriture ' . $_GET['id']);
+        Logs::log('Suppression de l\'écriture ' . $_GET['id']);
         afficherMessage('L\'écriture a été supprimée', 'index.php?page=compta_journal&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'écriture', 'index.php?page=compta_journal&action=lister', true);
@@ -571,7 +573,7 @@ elseif ($action == 'supprimer') {
             $file->moveUploadedFile($tmpDir, 'banque.csv');
             $lignes = file($tmpDir . '/banque.csv');
             if ($compta->extraireComptaDepuisCSVBanque($lignes)) {
-                AFUP_Logs::log('Chargement fichier banque');
+                Logs::log('Chargement fichier banque');
                 afficherMessage('Le fichier a été importé', 'index.php?page=compta_journal&action=lister');
             } else {
                 afficherMessage('Le fichier n\'a pas été importé', 'index.php?page=compta_journal&action=lister', true);

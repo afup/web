@@ -1,12 +1,12 @@
 <?php
 
+use Afup\Site\Utils\Pays;
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Accreditation_Presse.php';
-$pays = new AFUP_Pays($bdd);
-$presse = new AFUP_Accreditation_Presse($bdd);
+$pays = new Pays($bdd);
+$presse = new \Afup\Site\Forum\Accreditation_Presse($bdd);
 
 // On créé le formulaire
 $formulaire = &instancierFormulaire();

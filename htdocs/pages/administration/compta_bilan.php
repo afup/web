@@ -1,6 +1,9 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\Comptabilite;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
 	trigger_error("Direct access forbidden.", E_USER_ERROR);
 	exit;
@@ -15,8 +18,7 @@ if (isset($_GET['details']) && $_GET['details'])
 else
 	$details ="";
 	
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
-$compta = new AFUP_Compta($bdd);
+$compta = new Comptabilite($bdd);
 
 if (isset($_GET['id_periode']) && $_GET['id_periode']) 
 	$id_periode=$_GET['id_periode'];
@@ -83,7 +85,7 @@ if ($action == 'lister') {
 	$compta->genererBilanPDF($periode_debut,$periode_fin);
 } elseif ($action == 'supprimer') {
     if ($compta->supprimerEcriture($_GET['id']) ) {
-        AFUP_Logs::log('Suppression de l\'écriture ' . $_GET['id']);
+        Logs::log('Suppression de l\'écriture ' . $_GET['id']);
         afficherMessage('L\'écriture a été supprimée', 'index.php?page=compta_journal&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'écriture', 'index.php?page=compta_journal&action=lister', true);

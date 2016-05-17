@@ -1,21 +1,24 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Utils\Sympa;
+use Afup\Site\Utils\Base_De_Donnees;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
 
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Sympa.php';
 
-$sympaBdd = new AFUP_Base_De_Donnees(
+
+$sympaBdd = new Base_De_Donnees(
     $conf->obtenir('sympa|hote'),
     $conf->obtenir('sympa|base'),
     $conf->obtenir('sympa|utilisateur'),
     $conf->obtenir('sympa|mot_de_passe')
 );
 
-$sympa = new AFUP_Sympa($sympaBdd, $conf->obtenir('sympa|config_url'));
+$sympa = new Sympa($sympaBdd, $conf->obtenir('sympa|config_url'));
 $listes = $sympa->getAllMailingList();
 
 if ($_POST) {

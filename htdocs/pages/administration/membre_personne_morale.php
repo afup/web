@@ -1,17 +1,20 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Association\Personnes_Morales;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.php';
-$personnes_morales = new AFUP_Personnes_Morales($bdd);
+$personnes_morales = new Personnes_Morales($bdd);
 
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
 
 $identifiant = $droits->obtenirIdentifiant();
 $personne_physique = $personnes_physiques->obtenir($identifiant);
@@ -26,8 +29,8 @@ $action='modifier';
 $smarty->assign('action', $action);
 $personnes_physiques_liste = $personnes_physiques->obtenirListe('*', 'nom, prenom', false, $id_personne_morale);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-$pays = new AFUP_Pays($bdd);
+
+$pays = new Pays($bdd);
 
 $formulaire = &instancierFormulaire();
 $champs = $personnes_morales->obtenir($id_personne_morale);
@@ -92,7 +95,7 @@ if ($formulaire->validate()) {
     );
 
     if ($ok) {
-        AFUP_Logs::log('Modification de la personne morale ' . $formulaire->exportValue('raison_sociale') . ' (' . $_GET['id'] . ')');
+        Logs::log('Modification de la personne morale ' . $formulaire->exportValue('raison_sociale') . ' (' . $_GET['id'] . ')');
         afficherMessage('La personne morale a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=membre_personne_morale');
     } else {
         $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de la personne morale');

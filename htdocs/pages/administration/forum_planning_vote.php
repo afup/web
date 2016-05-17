@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\AppelConferencier;
+use Afup\Site\Droits;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,13 +16,13 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Droits.php';
 
-$forum = new AFUP_Forum($bdd);
-$forum_appel = new AFUP_AppelConferencier($bdd);
-$droits = new AFUP_Droits($bdd);
+
+
+
+$forum = new Forum($bdd);
+$forum_appel = new AppelConferencier($bdd);
+$droits = new Droits($bdd);
 $identifiant = $droits->obtenirIdentifiant();
 $forum_vote_id= $forum->obtenirDernier();
 if ($action == 'lister') {
@@ -30,7 +35,7 @@ if ($action == 'lister') {
             $salt = $forum_appel->obtenirGrainDeSel($identifiant);
             $res = $forum_appel->noterLaSession($session_id, $vote, $salt, $today);
             $forum_appel->aVote($identifiant,$session_id);
-            AFUP_Logs::log($_SESSION['afup_login'] . ' a voté sur la session n°' . $session_id);
+            Logs::log($_SESSION['afup_login'] . ' a voté sur la session n°' . $session_id);
     }
     $sessions_all = $forum_appel->obtenirListeSessionsPlannifies($forum_vote_id);
     $sessions_non_votes = array();
@@ -53,7 +58,7 @@ elseif($action =='envoyer')
         $ok = $forum->envoyeMailVotePlanning();;
 
         if ($ok !== false) {
-            AFUP_Logs::log('Envoi du mail aux membres pour le vote des sessions');
+            Logs::log('Envoi du mail aux membres pour le vote des sessions');
             afficherMessage('Les mails ont été envoyés ('.$ok.')', 'index.php');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de la préparation des personnes physiques');

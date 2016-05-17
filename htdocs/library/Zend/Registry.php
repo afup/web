@@ -27,8 +27,8 @@ class Zend_Registry extends ArrayObject
      * then the entire registry is returned (iterable).
      *
      * @param $index - OPTIONAL get the value associated with $index
-     *
      * @return mixed
+     * @throws Zend_Exception
      */
     public function get($index=null)
     {

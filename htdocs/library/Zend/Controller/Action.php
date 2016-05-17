@@ -208,9 +208,10 @@ abstract class Zend_Controller_Action
 
     /**
      * Validate HTTP status redirect code
-     * 
-     * @param int $code 
+     *
+     * @param int $code
      * @return true
+     * @throws Zend_Controller_Exception
      */
     protected function _checkRedirectCode($code)
     {
@@ -314,11 +315,12 @@ abstract class Zend_Controller_Action
     /**
      * Proxy for undefined methods.  Default behavior is to throw an
      * exception on undefined methods, however this function can be
-     * overridden to implement magic (dynamic) actions, or provide run-time 
+     * overridden to implement magic (dynamic) actions, or provide run-time
      * dispatching.
      *
      * @param string $methodName
      * @param array $args
+     * @throws Zend_Controller_Exception
      */
     public function __call($methodName, $args)
     {

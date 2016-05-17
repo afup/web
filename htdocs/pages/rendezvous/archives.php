@@ -1,11 +1,14 @@
 <?php
+use Afup\Site\Rendez_Vous;
+use Afup\Site\Utils\Logs;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Rendez_Vous.php';
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Logs.php';
 
-AFUP_Logs::initialiser($bdd, 0);
 
-$rendezvous = new AFUP_Rendez_Vous($bdd);
+
+Logs::initialiser($bdd, 0);
+
+$rendezvous = new Rendez_Vous($bdd);
 $lister_rendezvous = $rendezvous->obtenirListe();
 
 if (isset($lister_rendezvous) and is_array($lister_rendezvous)) {
