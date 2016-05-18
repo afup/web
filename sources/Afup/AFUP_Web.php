@@ -6,7 +6,7 @@ class AFUP_Web {
     function mettreAJour($update = false) {
     	if ($update === true) {
             $command = "cd ".$GLOBALS['conf']->obtenir('git|local_repo')."; git stash;";
-            $command .= "git checkout master; git pull origin;";
+            $command .= "git checkout master; git pull origin --all;";
             $command .= "git checkout ".$GLOBALS['conf']->obtenir('git|deployed_branch')."; git stash pop;";
             $command .= "git checkout-index -f -a --prefix=/".$GLOBALS['conf']->obtenir('git|local_export') . " ; ";
             $command .= "cd /".$GLOBALS['conf']->obtenir('git|local_export')."; rm -rf htdocs/tmp/twig;" ;
