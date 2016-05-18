@@ -593,15 +593,23 @@ input, button, select, label {
         width: auto
     }
 
+    html header {
+        padding:5px;
+        height: 150px;
+    }
+
     html header #logo {
         font-size: 1.7em;
         bottom: 40px;
-        left: 10px
+        left: 10px;
+        overflow:hidden;
+        width:55%;
     }
 
     html header #espace-membre {
         padding: 10px 30px 0 0;
-        background: none
+        float:right;
+        background: none;
     }
 
     html header #espace-membre ul li {
@@ -615,11 +623,97 @@ input, button, select, label {
     }
 
     html #subheader #joinus {
-        padding: 40px 0 0 10px
+        padding: 40px 0 0 10px;
+        font-size:1.4em;
+    }
+
+    #subheader {
+        position: absolute;
+        top: 150px;
+        left: 0;
+        right: 0;
+    }
+
+    /* navigation styles */
+    #subheader nav {
+        -webkit-columns: 3;
+        -moz-columns: 3;
+        -ms-columns: 3;
+        columns: 3;
+        -webkit-column-gap: 1px;
+        -moz-column-gap: 1px;
+        -ms-column-gap: 1px;
+        column-gap: 1px;
+        padding: 1px 0 0 !important;
+        background-color:white;
+    }
+    #subheader nav li {
+        width:100%;
+        display:block;
+        float:none !important;
+        text-align: center;
+        padding:5px !important;
+        background-color:#50a0dd;
+        margin-bottom: 1px;
+        height: 4rem;
+    }
+    #subheader nav li a{
+        display: inline-block;
+        width: 100%;
+        line-height: 4rem;
+        /*padding-left: 1rem;*/
+        font-size:1.2em !important;
+        text-transform: none !important;
+        /*color:#50a0dd !important;*/
+    }
+
+    #container {
+        transform: translateX(0) translateZ(0);
+        transition: transform .2s;
+        will-change: transform;
+    }
+
+    /* button deco */
+    [class^="nav-button"] {
+        display: block;
+        z-index: 1;
+        height: 3.5rem;
+        width: 3.5rem;
+        background-color: transparent;
+        background-image: linear-gradient(to right, #333, #333),
+        linear-gradient(to right, #333, #333),
+        linear-gradient(to right, #333, #333);
+        background-position: center top, center, center bottom;
+        background-repeat: no-repeat;
+        background-size: 3.5rem .9rem;
+        padding: 0;
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        position:absolute;
+        top:100px;
+        right:40px;
+    }
+
+    /* here's goes the push top effect */
+    body:target #container {
+        transform: translateY(8rem); /* based on navigation's height */
+    }
+    .nav-button-close,
+    body:target .nav-button-open {
+        display: none;
+    }
+    .nav-button-open,
+    body:target .nav-button-close {
+        display: block;
     }
 
     html #subheader #joinus p {
         font-size: 1.4em
+    }
+    #main {
+        padding:0 !important;
     }
 }
 
@@ -645,10 +739,32 @@ input, button, select, label {
         width: 100% !important
     }
 
-    html header #logo {
-        font-size: 1.2em;
-        bottom: 40px;
-        left: 10px
+    html header {
+        padding:5px;
+        height: 170px;
+    }
+
+    #subheader {
+        top: 170px;
+    }
+
+    #subheader nav{
+        -webkit-columns: 2;
+        -moz-columns: 2;
+        -ms-columns: 2;
+        columns: 2;
+    }
+
+    [class^="nav-button"] {
+        background-size: 3rem .7rem;
+        height: 3rem;
+        width: 3rem;
+        top:120px;
+        right:10px;
+    }
+
+    body:target #container {
+        transform: translateY(12rem); /* based on navigation's height */
     }
 
     html header #espace-membre {
@@ -656,6 +772,13 @@ input, button, select, label {
         padding: 10px 10px 0 0
     }
 
+    html header #logo svg{
+        width:220%;
+    }
+
+    html header #logo g#text150518{
+        display:none;
+    }
     html header #espace-membre ul li {
         float: none;
         text-align: right
@@ -663,18 +786,6 @@ input, button, select, label {
 
     html header #espace-membre ul li:before {
         content: ""
-    }
-
-    html #subheader nav {
-        background: none
-    }
-
-    html #subheader nav ul {
-        padding: 20px 10px 20px 10px
-    }
-
-    html #subheader #joinus {
-        padding: 40px 0 0 10px
     }
 
     html #footer-top #menufooter-top {
@@ -1145,6 +1256,8 @@ header #espace-membre ul li:last-child:before {
 }
 
 #container{
+    position: relative;
+    min-height: 100vh;
     background-color:white;
     padding:20px;
 }
