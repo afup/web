@@ -622,9 +622,9 @@ input, button, select, label {
         content: ""
     }
 
-    html #subheader #joinus {
-        padding: 40px 0 0 10px;
-        font-size:1.4em;
+    html #joinus {
+        width: calc(100% - 3.5rem);
+        padding-right:0.2em;
     }
 
     #subheader {
@@ -715,6 +715,40 @@ input, button, select, label {
     #main {
         padding:0 !important;
     }
+
+    nav.pagination{
+        margin: 30px 0;
+    }
+
+    nav.pagination li {
+        display:none;
+    }
+    nav.pagination li.self{
+        display: inline-block;
+    }
+
+    nav.pagination li a{
+        text-decoration:none;
+    }
+
+    nav.pagination li.pagination--arrow{
+        display:inline-block;
+        font-size:1.4rem;
+        height: 4rem;
+        line-height: 3.2rem;
+        padding:5px;
+        position:absolute;
+        width:30%;
+        background-color:#ebebeb;
+    }
+
+    nav.pagination li.next{
+        right:1rem;
+    }
+    nav.pagination li.previous{
+        left:1rem;
+    }
+
 }
 
 @media (max-width: 460px) {
