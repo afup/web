@@ -11,8 +11,10 @@ $web = new AFUP_Web($bdd);
 $update = false;
 if (isset($_GET['update']) and $_GET['update'] == 'true') {
 	$update = true;
-    if ($web->mettreAJour($update)) {
+	$result = $web->mettreAJour($update);
+    if ($result['result'] === true ) {
 		AFUP_Logs::log('Mise à jour du site Web');
 		afficherMessage('Le site Web a été mis à jour', 'index.php?page=updatesvn');
     }
+	$smarty->assign('output', $result['output']);
 }
