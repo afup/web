@@ -20,7 +20,7 @@ if (isset($_GET['update']) and $_GET['update'] == 'true') {
 	$result = $web->mettreAJour($update);
     if ($result['result'] === true ) {
 		AFUP_Logs::log('Mise à jour du site Web');
-		afficherMessage('Le site Web a été mis à jour', 'index.php?page=updatesvn');
 		$_SESSION['update_output'] = $result['output'];
+		afficherMessage('Le site Web a été mis à jour', 'index.php?page=updatesvn');
     }
 }
