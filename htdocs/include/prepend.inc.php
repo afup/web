@@ -2,6 +2,7 @@
 
 // Initialisation
 ob_start();
+
 session_start();
 
 require_once dirname(__FILE__).'/../../sources/Afup/fonctions.php';
@@ -55,19 +56,4 @@ $bdd->executer("SET NAMES 'utf8'");
 
 // Inclusion de la classe permettant l envoi de mail
 require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Mailing.php';
-
-// Inclusion de l'autoload de composer
-require_once dirname(__FILE__) . '/../../vendor/autoload.php';
-
-// Configuration du composant de traduction
-$lang = 'fr';
-$langs = ['fr', 'en'];
-if (isset($_GET['lang']) && in_array($_GET['lang'], $langs)) {
-    $lang = $_GET['lang'];
-}
-$translator = new \Symfony\Component\Translation\Translator($lang);
-$translator->addLoader('xliff', new \Symfony\Component\Translation\Loader\XliffFileLoader());
-$translator->addResource('xliff', dirname(__FILE__) . '/../../translations/inscription.en.xlf', 'en');
-$translator->addResource('xliff', dirname(__FILE__) . '/../../translations/cfp.en.xlf', 'en');
-$translator->setFallbackLocales(array('fr'));
-$smarty->register_modifier('trans', [$translator, 'trans']);
+require_once(dirname(__FILE__) . '/../../sources/Afup/Bootstrap/commonStart.php');

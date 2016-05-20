@@ -9,10 +9,18 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Web.php';
 $web = new AFUP_Web($bdd);
 $update = false;
+
+if(isset($_SESSION['update_output']) === true) {
+	$smarty->assign('output', $_SESSION['update_output']);
+	unset($_SESSION['update_output']);
+}
+
 if (isset($_GET['update']) and $_GET['update'] == 'true') {
 	$update = true;
-    if ($web->mettreAJour($update)) {
+	$result = $web->mettreAJour($update);
+    if ($result['result'] === true ) {
 		AFUP_Logs::log('Mise à jour du site Web');
+		$_SESSION['update_output'] = $result['output'];
 		afficherMessage('Le site Web a été mis à jour', 'index.php?page=updatesvn');
     }
 }

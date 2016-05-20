@@ -71,24 +71,39 @@ class AFUP_Site_Page {
     }
 
     function social() {
-    	return '<ul id="menufooter-share">
-                    <li>
-                        <a href="'.$this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
-                    </li>
-                    <li>
-                        <a href="http://www.facebook.com/fandelafup" class="spriteshare spriteshare-facebook">L\'AFUP sur Facebook</a>
-                    </li>
-                    <li>
-                        <a href="https://twitter.com/afup" class="spriteshare spriteshare-twitter">L\'AFUP sur Twitter</a>
-                    </li>
-                </ul>
-                <a href="'.$this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').'faq/6" id="footer-faq">Encore des questions ? <strong>F.A.Q.</strong></a>';
+    	return
+            '<ul id="menufooter-share">
+                <li>
+                    <a href="'.$this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
+                </li>
+                <li>
+                    <a href="http://www.facebook.com/fandelafup" class="spriteshare spriteshare-facebook">L\'AFUP sur Facebook</a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/afup" class="spriteshare spriteshare-twitter">L\'AFUP sur Twitter</a>
+                </li>
+            </ul>
+                ';
     }
 
     function footer() {
     	$branche = new AFUP_Site_Branche($this->bdd);
     	return $branche->naviguer(38, 2, "menufooter-top");
 	}
+
+    function getRightColumn() {
+        $branche = new AFUP_Site_Branche($this->bdd);
+        $branche->navigation_avec_image(true);
+        return $branche;
+
+        $content = '<aside id="sidebar-article" class="mod item left w33 m50 t100">';
+        $content .= '<h2>L\'afup<br>organise...</h2>' . $branche->naviguer(1, 2, "externe", "");
+        //twitter widget
+        $content .= '<h2>Sur Twitter...</h2><a class="twitter-timeline" href="https://twitter.com/afup" data-widget-id="582135958075752448">Tweets by @afup</a>';
+        $content .= '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+        $content .= '</aside>';
+        return $content;
+    }
 }
 
 class AFUP_Site_Accueil {
@@ -105,8 +120,7 @@ class AFUP_Site_Accueil {
     }
 
     function afficher() {
-        return $this->colonne_de_gauche().
-               $this->colonne_de_droite();
+        return $this->colonne_de_gauche();
     }
 
     function colonne_de_gauche() {
@@ -137,18 +151,6 @@ class AFUP_Site_Accueil {
         $colonne .= '</div>';
 
         return $colonne;
-    }
-
-    function colonne_de_droite() {
-        $branche = new AFUP_Site_Branche($this->bdd);
-        $branche->navigation_avec_image(true);
-        $content = '<aside id="sidebar-article" class="mod item left w33 m50 t100">';
-        $content .= '<h2>L\'afup<br>organise...</h2>' . $branche->naviguer(1, 2, "externe", "");
-        //twitter widget
-        $content .= '<h2>Sur Twitter...</h2><a class="twitter-timeline" href="https://twitter.com/afup" data-widget-id="582135958075752448">Tweets by @afup</a>';
-        $content .= '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
-        $content .= '</aside>';
-        return $content;
     }
 }
 
@@ -453,13 +455,15 @@ class AFUP_Site_Branche {
 			            $route = $this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$feuille['lien'];
 	                    break;
 	            }
-	            $extraction .= '<li'.$class.'><a href="'.$route.'">';
-	            if ($this->navigation == 'image') {
-                    $extraction .= '<img alt="'.$feuille['alt'].'" src="'.$this->conf->obtenir('web|path').'/templates/site/images/'.$feuille['image'].'" />';
+	            $extraction .= '<li'.$class.'>';
+	            if ($this->navigation == 'image' && $feuille['image'] !== null) {
+                    $extraction .= '<a href="'.$route.'"><img alt="'.$feuille['alt'].'" src="'.$this->conf->obtenir('web|path').'/templates/site/images/'.$feuille['image'].'" /><br>';
+                    $extraction .= $feuille['nom'] . '</a><br>';
+                    $extraction .= $feuille['alt'];
 	            } else {
-	                $extraction .= $feuille['nom'];
+	                $extraction .= '<a href="'.$route.'">' . $feuille['nom'] . '</a>';
 	            }
-	            $extraction .= '</a></li>';
+	            $extraction .= '</li>';
 	            if ($profondeur > 0) {
 	                $extraction .= $this->naviguer($feuille['id'], $profondeur - 1);
 	            }
@@ -635,12 +639,13 @@ class AFUP_Site_Article {
     }
 
     function afficher() {
-        return '<article>'.
+        return '<div id="main" class="mod item left content w66 m50 t100">
+            <article>'.
           	'<time datetime='.date("Y-m-d", $this->date).'>'.$this->date().'</time>'.
           	'<h1>'.$this->titre().'</h1>'.
           	$this->corps().
 			'<div class="breadcrumbs">'.$this->fil_d_ariane().'</div>'.
-          	'</article>';
+          	'</article></div>';
     }
 
     function titre() {

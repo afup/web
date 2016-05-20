@@ -2,8 +2,8 @@
     <ul>
         {* Début et précédent *}
         {if 1 != $pagination_page_courante}
-            <li><a href="{pagination_genere_route page=1}">&lt;&lt;</a></li>
-            <li><a href="{pagination_genere_route page=$pagination_page_courante-1}">&lt;</a></li>
+            <li class="first"><a href="{pagination_genere_route page=1}">&lt;&lt;</a></li>
+            <li class="pagination--arrow previous"><a href="{pagination_genere_route page=$pagination_page_courante-1}">Page précédente</a></li>
         {else}
             <li>&lt;&lt;</li>
             <li>&lt;</li>
@@ -11,19 +11,17 @@
 
         {* Liste des pages *}
         {foreach from=$pagination_pages item=i}
-        <li>
             {if $i != $pagination_page_courante}
-                <a href="{pagination_genere_route page=$i}">{$i}</a>
+                <li><a href="{pagination_genere_route page=$i}">{$i}</a></li>
             {else}
-                {$i}
+                <li class="self">{$i}</li>
             {/if}
-        </li>
         {/foreach}
 
         {* Suivant et fin *}
         {if $pagination_pages|@end != $pagination_page_courante}
-            <li><a href="{pagination_genere_route page=$pagination_page_courante+1}">&gt;</a></li>
-            <li><a href="{pagination_genere_route page=$pagination_pages|@end}">&gt;&gt;</a></li>
+            <li class="pagination--arrow next"><a href="{pagination_genere_route page=$pagination_page_courante+1}">Page suivante</a></li>
+            <li class="last"><a href="{pagination_genere_route page=$pagination_pages|@end}">&gt;&gt;</a></li>
         {else}
             <li>&gt;</li>
             <li>&gt;&gt;</li>
