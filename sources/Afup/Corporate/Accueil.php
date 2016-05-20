@@ -18,14 +18,11 @@ class Accueil
 
     }
 
-    function afficher()
-    {
-        return $this->colonne_de_gauche() .
-        $this->colonne_de_droite();
+    function afficher() {
+        return $this->colonne_de_gauche();
     }
 
-    function colonne_de_gauche()
-    {
+    function colonne_de_gauche() {
         $articles = new Articles($this->bdd);
         $derniers_articles = $articles->chargerDerniersAjouts(5);
 
@@ -43,28 +40,15 @@ class Accueil
 
         foreach ($derniers_articles as $article) {
             $descriptif = ($article->descriptif) ? $article->descriptif : $article->chapeau;
-            $colonne .= '<a href="' . $article->route() . '" class="article article-teaser">';
-            $colonne .= '<time datetime="' . date('Y-m-d', $article->date) . '">' . date('d|m|y', $article->date) . '</time>';
-            $colonne .= '<h2>' . $article->titre . '</h2>';
-            $colonne .= '<p>' . strip_tags($descriptif, '<p><strong>') . '</p>';
+            $colonne .= '<a href="'.$article->route().'" class="article article-teaser">';
+            $colonne .= '<time datetime="'.date('Y-m-d', $article->date).'">'.date('d|m|y', $article->date).'</time>';
+            $colonne .= '<h2>'.$article->titre.'</h2>';
+            $colonne .= '<p>'.strip_tags($descriptif, '<p><strong>').'</p>';
             $colonne .= '</a>';
         }
 
         $colonne .= '</div>';
 
         return $colonne;
-    }
-
-    function colonne_de_droite()
-    {
-        $branche = new Branche($this->bdd);
-        $branche->navigation_avec_image(true);
-        $content = '<aside id="sidebar-article" class="mod item left w33 m50 t100">';
-        $content .= '<h2>L\'afup<br>organise...</h2>' . $branche->naviguer(1, 2, "externe", "");
-        //twitter widget
-        $content .= '<h2>Sur Twitter...</h2><a class="twitter-timeline" href="https://twitter.com/afup" data-widget-id="582135958075752448">Tweets by @afup</a>';
-        $content .= '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
-        $content .= '</aside>';
-        return $content;
     }
 }

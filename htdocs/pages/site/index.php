@@ -11,10 +11,11 @@ if (isset($_GET['page']) && $_GET['page'] == 'inscription') {
 
 $page->definirRoute(isset($_GET['route']) ? $_GET['route'] : '');
 
-$smarty->assign('community', $page->community());
-$smarty->assign('header', $page->header());
-$smarty->assign('content', $page->content());
-$smarty->assign('social', $page->social());
-$smarty->assign('footer', $page->footer());
-
-$smarty->display('index.html');
+echo $twig->render('site/index.html.twig', [
+    'community' => $page->community(),
+    'header' => $page->header(),
+    'content' => $page->content(),
+    'sidebar' => $page->getRightColumn(),
+    'social' => $page->social(),
+    'footer' => $page->footer()
+]);

@@ -48,14 +48,14 @@ class Article
         }
     }
 
-    function afficher()
-    {
-        return '<article>' .
+    function afficher() {
+        return '<div id="main" class="mod item left content w66 m50 t100">
+            <article>' .
         '<time datetime=' . date("Y-m-d", $this->date) . '>' . $this->date() . '</time>' .
         '<h1>' . $this->titre() . '</h1>' .
         $this->corps() .
         '<div class="breadcrumbs">' . $this->fil_d_ariane() . '</div>' .
-        '</article>';
+        '</article></div>';
     }
 
     function titre()

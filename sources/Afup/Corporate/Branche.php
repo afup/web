@@ -49,13 +49,12 @@ class Branche
         return $navigation;
     }
 
-    function extraireFeuilles($id, $profondeur)
-    {
+    function extraireFeuilles($id, $profondeur) {
         $extraction = '';
 
         $requete = 'SELECT *
                     FROM afup_site_feuille
-                    WHERE id_parent = ' . $this->bdd->echapper($id) . '
+                    WHERE id_parent = '.$this->bdd->echapper($id).'
                     AND etat = 1
                     ORDER BY position';
         $feuilles = $this->bdd->obtenirTous($requete);
@@ -72,16 +71,18 @@ class Branche
                         $route = $feuille['lien'];
                         break;
                     default:
-                        $route = $this->conf->obtenir('web|path') . $this->conf->obtenir('site|prefix') . $this->conf->obtenir('site|query_prefix') . $feuille['lien'];
+                        $route = $this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$feuille['lien'];
                         break;
                 }
-                $extraction .= '<li' . $class . '><a href="' . $route . '">';
-                if ($this->navigation == 'image') {
-                    $extraction .= '<img alt="' . $feuille['alt'] . '" src="' . $this->conf->obtenir('web|path') . '/templates/site/images/' . $feuille['image'] . '" />';
+                $extraction .= '<li'.$class.'>';
+                if ($this->navigation == 'image' && $feuille['image'] !== null) {
+                    $extraction .= '<a href="'.$route.'"><img alt="'.$feuille['alt'].'" src="'.$this->conf->obtenir('web|path').'/templates/site/images/'.$feuille['image'].'" /><br>';
+                    $extraction .= $feuille['nom'] . '</a><br>';
+                    $extraction .= $feuille['alt'];
                 } else {
-                    $extraction .= $feuille['nom'];
+                    $extraction .= '<a href="'.$route.'">' . $feuille['nom'] . '</a>';
                 }
-                $extraction .= '</a></li>';
+                $extraction .= '</li>';
                 if ($profondeur > 0) {
                     $extraction .= $this->naviguer($feuille['id'], $profondeur - 1);
                 }

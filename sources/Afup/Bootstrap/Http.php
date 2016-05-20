@@ -71,3 +71,4 @@ $smarty->assign('chemin_template',   $serveur.$conf->obtenir('web|path').'templa
 $smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'javascript/');
 
 $bdd->executer("SET NAMES 'utf8'");
+require_once(dirname(__FILE__) . '/commonStart.php');
