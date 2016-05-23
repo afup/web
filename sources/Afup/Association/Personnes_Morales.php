@@ -184,7 +184,6 @@ class Personnes_Morales
         $cotisation = new Cotisations($this->_bdd);
         $cotisation_personne_morale = $cotisation->obtenirListe(AFUP_PERSONNES_MORALES, $id, 'id');
 
-        require_once 'Afup/Personnes_Physiques.php';
         $personne_physique = new Personnes_Physiques($this->_bdd);
         $personne_physique_de_personne_morale = $personne_physique->obtenirListe('id', 'nom', '', $id);
 
