@@ -5,10 +5,13 @@ ob_start();
 
 session_start();
 
+// Inclusion de l'autoload de composer
+require_once dirname(__FILE__) . '/../../vendor/autoload.php';
+
 require_once dirname(__FILE__).'/../../sources/Afup/fonctions.php';
 
 // Configuration
-$conf = new Configuration(dirname(__FILE__).'/../../configs/application/config.php');
+$conf = new \Afup\Site\Utils\Configuration(dirname(__FILE__).'/../../configs/application/config.php');
 $GLOBALS['AFUP_CONF'] = $conf;
 error_reporting($conf->obtenir('divers|niveau_erreur'));
 ini_set('display_errors', $conf->obtenir('divers|afficher_erreurs'));
@@ -46,15 +49,10 @@ $smarty->assign('chemin_template', $serveur.$conf->obtenir('web|path').'template
 $smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'javascript/');
 
 // Initialisation de la couche d'abstraction de la base de données
-$bdd = new Base_De_Donnees($conf->obtenir('bdd|hote'),
+$bdd = new \Afup\Site\Utils\Base_De_Donnees($conf->obtenir('bdd|hote'),
                                 $conf->obtenir('bdd|base'),
                                 $conf->obtenir('bdd|utilisateur'),
                                 $conf->obtenir('bdd|mot_de_passe'));
 $bdd->executer("SET NAMES 'utf8'");
 
-// Inclusion de la classe permettant l envoi de mail
-require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Mailing.php';
-
-// Inclusion de l'autoload de composer
-require_once dirname(__FILE__) . '/../../vendor/autoload.php';
 require_once(dirname(__FILE__) . '/../../sources/Afup/Bootstrap/commonStart.php');

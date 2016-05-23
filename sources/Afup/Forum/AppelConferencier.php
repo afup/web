@@ -4,6 +4,7 @@ namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mailing;
+use Symfony\Component\Translation\Translator;
 
 class AppelConferencier
 {
@@ -672,6 +673,19 @@ class AppelConferencier
 
     public function ajouterSession($id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie = 0)
     {
+        try {
+            $token = random_bytes(16);
+        } catch (\TypeError $e) {
+            // Well, it's an integer, so this IS unexpected.
+            die("An unexpected error has occurred");
+        } catch (\Error $e) {
+            // This is also unexpected because 32 is a reasonable integer.
+            die("An unexpected error has occurred");
+        } catch (\Exception $e) {
+            // If you get this message, the CSPRNG failed hard.
+            die("Could not generate a random string. Is our OS secure?");
+        }
+
         $donnees = array(
             $this->_bdd->echapper($id_forum),
             $this->_bdd->echapper($date_soumission),
@@ -680,10 +694,11 @@ class AppelConferencier
             $this->_bdd->echapper($journee),
             $this->_bdd->echapper($genre),
             $this->_bdd->echapper($plannifie),
+            $this->_bdd->echapper(bin2hex($token))
         );
 
         $requete = ' INSERT INTO afup_sessions';
-        $requete .= '  (id_forum, date_soumission, titre, abstract, journee, genre, plannifie)';
+        $requete .= '  (id_forum, date_soumission, titre, abstract, journee, genre, plannifie, token)';
         $requete .= ' VALUES ';
         $requete .= '  (' . implode(',', $donnees) . ')';
 
@@ -719,12 +734,16 @@ class AppelConferencier
 
     /**
      * Envoi un email de confirmation au conférencier et mets en copie le bureau
+     * @param int $session_id
+     * @param string $baseUrlEdition Url pour la page d'édition d'une conférence lorsque déconnecté
+     * @param Translator $translator
+     * @return bool
      */
-    public function envoyerEmail($session_id)
+    public function envoyerEmail($session_id, $baseUrlEdition, Translator $translator = null)
     {
-        $configuration = new Configuration(dirname(__FILE__) . '/../../configs/application/config.php');
+        $configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
 
-        $requete = 'SELECT prenom, nom, email, af.titre
+        $requete = 'SELECT prenom, nom, email, af.titre, a_s.titre AS conf_title, a_s.abstract, a_s.token
                     FROM afup_conferenciers ac
                     INNER JOIN afup_conferenciers_sessions acs
                         ON ac.conferencier_id = acs.conferencier_id
@@ -736,20 +755,29 @@ class AppelConferencier
                         acs.session_id=' . $this->_bdd->echapper($session_id);
 
         $conferenciers = $this->_bdd->obtenirTous($requete);
+        $conf = current($conferenciers);
 
-        $corps = "Bonjour, \n\n";
-        $corps .= "Nous avons bien enregistré votre soumission pour le " . current($conferenciers)['titre'] . " .\n";
-        $corps .= "Vous recevrez une réponse prochainement.\n\n";
-        $corps .= "Le bureau\n\n";
-        $corps .= $configuration->obtenir('afup|raison_sociale') . "\n";
-        $corps .= $configuration->obtenir('afup|adresse') . "\n";
-        $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "\n";
+        $url = sprintf($baseUrlEdition, $session_id, $conf['token']);
 
+        $corps = $translator->trans('Bonjour,') .'
+
+        ' . $translator->trans('Nous avons bien enregistré votre soumission pour notre évènement') . ' (' . $conf['titre'] . ')
+        ' . $translator->trans('Vous recevrez une réponse prochainement.') . '
+
+        ' . $translator->trans('Vous avez soumis le sujet suivant :') . ' ' . $conf['conf_title'] . '
+
+        ' . $conf['abstract'] . '
+
+        ' . $translator->trans('Vous pouvez éditer votre proposition jusqu\'à la fin de l\'appel à conférenciers. Si vous souhaitez le faire, if suffit de suivre ce lien:') . ' ' . $url . '
+
+        ' . $translator->trans('Le bureau');
+
+        $ok = false;
         foreach ($conferenciers as $personne) {
             $ok = Mailing::envoyerMail(
                 $configuration->obtenir('mails|email_expediteur'),
                 array($personne['email'], $personne['nom'] . ' ' . $personne['prenom']),
-                "Soumission de proposition au " . $personne['titre'] . "\n",
+                $translator->trans('Votre proposition pour:') . $personne['titre'] . "\n",
                 $corps);
         }
         return $ok;
