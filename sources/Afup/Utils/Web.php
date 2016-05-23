@@ -18,8 +18,10 @@ class Web {
             $command .= "git pull origin;";
             // On réapplique les modifs locales
             $command .= "git stash pop;";
-            // On extrait la branche vers le dossier d'export en ajoutant et en écrasant les fichiers
-            $command .= "git checkout-index -f -a --prefix=/".$GLOBALS['conf']->obtenir('git|local_export') . " ; ";
+
+            // On detecte tous les liens symboliques dans le repertoire de destination
+            // Et on rsync en ignorant ces fichiers grace a l'entree standard
+            $command .= 'find /home/afup/recette.afup.org/web/ -type l  -printf "/%P*\n" | rsync -rvcC --safe-links --delete ./ /home/afup/recette.afup.org/web/ --exclude-from=- ; ';
             // Direction le dossier exporté
             $command .= "cd /".$GLOBALS['conf']->obtenir('git|local_export').";";
             // Nettoyage cache TWIG
