@@ -177,10 +177,12 @@ class Zend_Controller_Router_Route implements Zend_Controller_Router_Route_Inter
     }
 
     /**
-     * Assembles user submitted parameters forming a URL path defined by this route 
+     * Assembles user submitted parameters forming a URL path defined by this route
      *
-     * @param array An array of variable and value pairs used as parameters 
+     * @param array $data An array of variable and value pairs used as parameters
+     * @param bool $reset
      * @return string Route path with user submitted parameters
+     * @throws Zend_Controller_Router_Exception
      */
     public function assemble($data = array(), $reset = false)
     {

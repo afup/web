@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Facturation;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,13 +15,13 @@ $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
-$forum = new AFUP_Forum($bdd);
-$forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
-$forum_facturation = new AFUP_Facturation_Forum($bdd);
+
+
+
+$forum = new Forum($bdd);
+$forum_inscriptions = new Inscriptions($bdd);
+$forum_facturation = new Facturation($bdd);
 
 $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription';
 $list_ordre = 'I.nom asc';

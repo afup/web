@@ -1,8 +1,9 @@
 <?php
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
+use Afup\Site\Corporate\Page;
 
-$page = new AFUP_Site_Page($bdd);
+require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
+
+$page = new Page($bdd);
 
 if (isset($_GET['page']) && $_GET['page'] == 'inscription') {
     header('Location: /pages/administration/index.php?page=inscription');

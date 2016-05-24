@@ -1,6 +1,9 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Rendez_Vous;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,8 +14,7 @@ $tris_valides = array('nom', 'entreprise', 'email', 'telephone', 'presence', 'co
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Rendez_Vous.php';
-$rendez_vous = new AFUP_Rendez_Vous($bdd);
+$rendez_vous = new Rendez_Vous($bdd);
 
 if ($action == 'lister' || $action== 'listing' ) {
     if (isset($_GET['id'])) {
@@ -55,7 +57,7 @@ if ($action == 'lister' || $action== 'listing' ) {
 	$ok = $rendez_vous->remplirAvecListeAttente($_GET['id']);
 
     if ($ok) {
-        AFUP_Logs::log('Remplissage du rendez-vous avec la liste d\'attente');
+        Logs::log('Remplissage du rendez-vous avec la liste d\'attente');
         afficherMessage('Le remplissage avec la liste d\'attente a été effectué', 'index.php?page=rendez_vous&action=lister');
     } else {
         $smarty->assign('erreur', 'Une erreur est survenue lors du remplissage avec la liste d\'attente pour le prochain rendez-vous');
@@ -84,7 +86,7 @@ if ($action == 'lister' || $action== 'listing' ) {
                                                        $formulaire->exportValue('corps'));
 
         if ($ok) {
-            AFUP_Logs::log('Envoi des emails de demande de confirmation aux inscrits');
+            Logs::log('Envoi des emails de demande de confirmation aux inscrits');
             afficherMessage('L\'envoi des emails de demande de confirmation aux inscrits pour le prochain rendez-vous a été effectué', 'index.php?page=rendez_vous&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de l\'envoi des emails de demande de confirmation aux inscrits pour le prochain rendez-vous');
@@ -210,7 +212,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     	 
         if ($ok) {
         	$logdate = $formulaire->exportValue('date');
-            AFUP_Logs::log('Enregistrement du rendez-vous du ' . $logdate["d"] . "/" . $logdate["m"] . "/" . $logdate["Y"] );
+            Logs::log('Enregistrement du rendez-vous du ' . $logdate["d"] . "/" . $logdate["m"] . "/" . $logdate["Y"] );
             afficherMessage('Le rendez-vous a été enregistré.', 'index.php?page=rendez_vous&action=lister&id='.$id);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de l\'enregistrement du rendez-vous');
@@ -270,7 +272,7 @@ if ($action == 'lister' || $action== 'listing' ) {
         $ok = $rendez_vous->enregistrerInscrit($formulaire);
 
         if ($ok) {
-            AFUP_Logs::log('Enregistrement de l\'inscription au prochain rendez-vous');
+            Logs::log('Enregistrement de l\'inscription au prochain rendez-vous');
             afficherMessage('L\'inscription a été enregistrée.', 'index.php?page=rendez_vous&action=lister&id='.$id_rendezvous);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de l\'enregistrement de l\'inscription');
@@ -280,7 +282,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 } elseif ($action == 'supprimer') {
     if ($rendez_vous->supprimerInscrit($_GET['id'])) {
-        AFUP_Logs::log('Suppression de l\'inscrit ' . $_GET['id'] . ' au rendez-vous');
+        Logs::log('Suppression de l\'inscrit ' . $_GET['id'] . ' au rendez-vous');
         afficherMessage('L\'inscrit au rendez-vous a été supprimé', 'index.php?page=rendez_vous&action=lister&id='.$id_rendezvous);
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'inscrit au rendez-vous', 'index.php?page=rendez_vous&action=lister&id='.$id_rendezvous, true);

@@ -3,12 +3,14 @@
 // Cette page attend deux paramètres : 
 // - session_id : identifiant de la conférence
 // - conferencier_id : identifiant du conférencier
- 
+
+use Afup\Site\Forum\AppelConferencier;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
-require_once 'Afup/AFUP_AppelConferencier.php';
 
-$conferences_manager = new AFUP_AppelConferencier($bdd) ; 
+
+$conferences_manager = new AppelConferencier($bdd) ;
 $session = $conferences_manager->obtenirSession($_GET['session_id'], '*') ;
 $conferencier = $conferences_manager->obtenirConferencier($_GET['conferencier_id'], '*') ;  
 $planning = $conferences_manager->obtenirPlanningDeSession($_GET['session_id']) ; 

@@ -220,11 +220,12 @@ class Zend_Controller_Dispatcher implements Zend_Controller_Dispatcher_Interface
     /**
      * Set path delimiter
      *
-     * Set the path delimiter to use in controllers/modules/actions. May be a 
+     * Set the path delimiter to use in controllers/modules/actions. May be a
      * single string or an array of strings.
-     * 
-     * @param string|array $spec 
+     *
+     * @param string|array $spec
      * @return Zend_Controller_Dispatcher
+     * @throws Zend_Controller_Dispatcher_Exception
      */
     public function setPathDelimiter($spec)
     {
@@ -269,9 +270,10 @@ class Zend_Controller_Dispatcher implements Zend_Controller_Dispatcher_Interface
 
     /**
      * Add a single path to the controller directory stack
-     * 
-     * @param string $path 
+     *
+     * @param string $path
      * @return Zend_Controller_Dispatcher
+     * @throws Zend_Controller_Dispatcher_Exception
      */
     public function addControllerDirectory($path)
     {
@@ -289,6 +291,7 @@ class Zend_Controller_Dispatcher implements Zend_Controller_Dispatcher_Interface
      *
      * @param string|array $path
      * @return Zend_Controller_Dispatcher
+     * @throws Zend_Controller_Dispatcher_Exception
      */
     public function setControllerDirectory($path)
     {
@@ -480,7 +483,10 @@ class Zend_Controller_Dispatcher implements Zend_Controller_Dispatcher_Interface
      *
      * @param Zend_Controller_Request_Abstract $request
      * @param Zend_Controller_Response_Abstract $response
-     * @return boolean
+     * @return bool
+     * @throws Zend_Controller_Dispatcher_Exception
+     * @throws Zend_Controller_Exception
+     * @throws Zend_Exception
      */
     public function dispatch(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response)
     {

@@ -1,21 +1,21 @@
 <?php
 
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Oeuvres;
+use Afup\Site\Planete\Flux;
+use Afup\Site\Planete\Planete_Billet;
+use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Base_De_Donnees;
+
 require_once dirname(__FILE__) . '/config.dist.php';
 
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
-
-require_once 'Afup/AFUP_Base_De_Donnees.php';
-require_once 'Afup/AFUP_Personnes_Physiques.php';
-require_once 'Afup/AFUP_Oeuvres.php';
-require_once 'Afup/AFUP_Logs.php';
-require_once 'Afup/AFUP_Planete_Flux.php';
-require_once 'Afup/AFUP_Planete_Billet.php';
 
 class tests_Oeuvres extends UnitTestCase {
     public $bdd;
     
     function __construct() {
-        $this->bdd = new AFUP_Base_De_Donnees(TEST_HOST, TEST_DB, TEST_USER, TEST_PWD);
+        $this->bdd = new Base_De_Donnees(TEST_HOST, TEST_DB, TEST_USER, TEST_PWD);
         
         $this->bdd->executer("DROP TABLE IF EXISTS `afup_oeuvres`");
         $this->bdd->executer("CREATE TABLE `afup_oeuvres` (
@@ -53,7 +53,7 @@ class tests_Oeuvres extends UnitTestCase {
 		  KEY `personne_morale` (`id_personne_morale`)
 		) ENGINE=MyISAM DEFAULT CHARSET=latin1");
         
-        $personnes_physiques = new AFUP_Personnes_Physiques($this->bdd);
+        $personnes_physiques = new Personnes_Physiques($this->bdd);
         $personnes_physiques->ajouter(0, "ArnaudLimbourg", uniqid(), AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
             "", 0, "Limbourg", "Arnaud", "test@test.test", "adresse", "code_postal", "ville", 0,
             "telephone_fixe", "telephone_portable", 1, "arnaud");
@@ -102,12 +102,12 @@ class tests_Oeuvres extends UnitTestCase {
     }
     
     function test_obtenirIdDepuisCompteSVN() {
-        $personnes_physiques = new AFUP_Personnes_Physiques($this->bdd);
+        $personnes_physiques = new Personnes_Physiques($this->bdd);
         $this->assertEqual($personnes_physiques->obtenirIdDepuisCompteSVN("arnaud"), 1);    
     }
     
     function test_extraireOeuvresDepuisLogSVN() {
-        $oeuvres = new AFUP_Oeuvres($this->bdd);
+        $oeuvres = new Oeuvres($this->bdd);
         $logsvn = uniqid();
         $this->assertFalse($oeuvres->extraireOeuvresDepuisLogSVN($logsvn));
         
@@ -121,13 +121,13 @@ class tests_Oeuvres extends UnitTestCase {
     }
     
     function test_enregistrer() {
-        $oeuvres = new AFUP_Oeuvres($this->bdd);
+        $oeuvres = new Oeuvres($this->bdd);
         $oeuvres->details['svn'][3][strtotime("2008-2-1")] = 3;
         $this->assertTrue($oeuvres->inserer());
     }
     
     function test_obtenirOeuvresDes12DerniersMois() {
-        $oeuvres = new AFUP_Oeuvres($this->bdd);
+        $oeuvres = new Oeuvres($this->bdd);
         $oeuvres->details = array(
             'svn' => array(
                 3 => array(
@@ -168,7 +168,7 @@ class tests_Oeuvres extends UnitTestCase {
     }
     
     function test_obtenirPersonnesPhysiquesLesPlusActives() {
-        $oeuvres = new AFUP_Oeuvres($this->bdd);
+        $oeuvres = new Oeuvres($this->bdd);
         $this->assertEqual(
             $oeuvres->obtenirPersonnesPhysiquesLesPlusActives(),
             array(3)
@@ -195,10 +195,10 @@ class tests_Oeuvres extends UnitTestCase {
     }
     
     function test_extraireOeuvresDepuisLogs() {
-        $oeuvres = new AFUP_Oeuvres($this->bdd);
+        $oeuvres = new Oeuvres($this->bdd);
         $this->assertTrue($oeuvres->extraireOeuvresDepuisLogs());
         
-        $log = new AFUP_Logs($this->bdd);
+        $log = new Logs($this->bdd);
         $log->initialiser($this->bdd, 1);
         $log->log("Test ".uniqid());
         
@@ -215,23 +215,23 @@ class tests_Oeuvres extends UnitTestCase {
     }
     
     function test_extraireOeuvresDepuisPlanete() {
-        $oeuvres = new AFUP_Oeuvres($this->bdd);
+        $oeuvres = new Oeuvres($this->bdd);
         $this->assertTrue($oeuvres->extraireOeuvresDepuisPlanete());
         
-        $flux = new AFUP_Planete_Flux($this->bdd);
+        $flux = new Flux($this->bdd);
         $flux->ajouter("Nom", "http://example.com", "http://example.com/atom", 1, 1);
         
         $premier_du_mois = mktime(0, 0, 0, date("m"), 1, date("Y"));
         $this->assertTrue($oeuvres->extraireOeuvresDepuisPlanete());
         $this->assertFalse(isset($oeuvres->details['planete'][1][$premier_du_mois]));
         
-        $billet = new AFUP_Planete_Billet($this->bdd);
+        $billet = new Planete_Billet($this->bdd);
         $billet->ajouter(1, "key", "Titre", "http://example.com/billet", time(), "Auteur", "R�sum�", "Contenu", AFUP_PLANETE_BILLET_CREUX);
 
         $this->assertTrue($oeuvres->extraireOeuvresDepuisPlanete());
         $this->assertFalse(isset($oeuvres->details['planete'][1][$premier_du_mois]));
         
-        $billet = new AFUP_Planete_Billet($this->bdd);
+        $billet = new Planete_Billet($this->bdd);
         $billet->ajouter(1, "key", "Titre bis", "http://example.com/billet", time(), "Auteur", "R�sum�", "Contenu", AFUP_PLANETE_BILLET_PERTINENT);
 
         $this->assertTrue($oeuvres->extraireOeuvresDepuisPlanete());

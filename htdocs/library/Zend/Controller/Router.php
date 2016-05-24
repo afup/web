@@ -144,17 +144,17 @@ class Zend_Controller_Router implements Zend_Controller_Router_Interface
     /**
      * Route a request
      *
-     * Routes requests of the format /controller/action by default (action may 
+     * Routes requests of the format /controller/action by default (action may
      * be omitted). Additional parameters may be specified as key/value pairs
-     * separated by the directory separator: 
-     * /controller/action/key/value/key/value. 
+     * separated by the directory separator:
+     * /controller/action/key/value/key/value.
      *
-     * To specify a module to use (basically, subdirectory) when routing the 
-     * request, set the 'useModules' parameter via the front controller or 
+     * To specify a module to use (basically, subdirectory) when routing the
+     * request, set the 'useModules' parameter via the front controller or
      * {@link setParam()}: $router->setParam('useModules', true)
-     * 
-     * @param Zend_Controller_Request_Abstract $request 
-     * @return void
+     *
+     * @param Zend_Controller_Request_Abstract $request
+     * @throws Zend_Controller_Router_Exception
      */
     public function route(Zend_Controller_Request_Abstract $request)
     {

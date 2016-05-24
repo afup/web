@@ -1,18 +1,23 @@
 <?php
 
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Facturation;
+use Afup\Site\Utils\Pays;
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
 
-$pays = new AFUP_Pays($bdd);
-$forum = new AFUP_Forum($bdd);
+
+
+
+
+$pays = new Pays($bdd);
+$forum = new Forum($bdd);
 $id_forum = $config_forum['id'];
-$forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
-$forum_facturation = new AFUP_Facturation_Forum($bdd);
+$forum_inscriptions = new Inscriptions($bdd);
+$forum_facturation = new Facturation($bdd);
 
 $nombre_places   = $forum->obtenirNombrePlaces($id_forum);
 $nombre_inscrits = $forum_inscriptions->obtenirNombreInscrits($id_forum);

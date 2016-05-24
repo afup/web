@@ -1,6 +1,8 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -81,7 +83,7 @@ if ($formulaire->validate()) {
 
     $conf->importer($valeurs);
     if ($conf->enregistrer()) {
-        AFUP_Logs::log('Modification de la configuration');
+        Logs::log('Modification de la configuration');
         afficherMessage('La configuration a été enregistrée', 'index.php?page=configuration');
     } else {
         $smarty->assign('erreur', "Une erreur est survenue lors de l'enregistrement de la configuration");

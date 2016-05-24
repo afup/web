@@ -1,13 +1,17 @@
 <?php
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Forum\Facturation;
+use Afup\Site\Utils\Mail;
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/_Common.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
-require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Mail.php';
 
-$forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
-$forum_facturation = new AFUP_Facturation_Forum($bdd);
+
+
+
+$forum_inscriptions = new Inscriptions($bdd);
+$forum_facturation = new Facturation($bdd);
 
 $forum_inscriptions->modifierEtatInscription($_GET['cmd'], AFUP_FORUM_ETAT_REGLE);
 $forum_facturation->enregistrerInformationsTransaction($_GET['cmd'], $_GET['autorisation'], $_GET['transaction']);
@@ -18,7 +22,7 @@ if ($forum_facturation->estFacture($_GET['cmd'])) {
     $forum_facturation->envoyerFacture($facture);
 
     // Send register confirmation
-    $mail = new AFUP_Mail();
+    $mail = new Mail();
     $registrations = $forum_inscriptions->getRegistrationsByReference($facture['reference']);
 
     foreach ($registrations as $registration) {
@@ -54,7 +58,7 @@ HTML;
 } else {
     // Send error to default
     // @TODO check if this happens or not
-    $mail = new AFUP_Mail();
+    $mail = new Mail();
     $mail->sendSimpleMessage("Impossible d'envoyer la facture", 'Impossible de facturer la commande ' . htmlspecialchars($_GET['cmd']) . ' après paiement inscription forum.');
 }
 

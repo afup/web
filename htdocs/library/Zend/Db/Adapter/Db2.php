@@ -82,26 +82,27 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
      * @access protected
      */
     protected $_lastInsertTable = null;
-    
-     /**
-     * Constructor.
-     *
-     * $config is an array of key/value pairs containing configuration
-     * options.  These options are common to most adapters:
-     *
-     * dbname   	=> (string) The name of the database to user
-     * username 	=> (string) Connect to the database as this username.
-     * password 	=> (string) Password associated with the username.
-     * host     	=> (string) What host to connect to, defaults to localhost
-     * port     	=> (string) The port of the database, defaults to 50000
-     * persistent 	=> (boolean) Whether to use a persistent connection or not, 
-     * 				   defaults to false 
-     * protocol 	=> (string) The network protocol, defaults to TCPIP
-     * options  	=> (array)  Other database options such as, 
-     * 				   autocommit, case, and cursor options
-     *
-     * @param array $config An array of configuration keys.
-     */
+
+	/**
+	 * Constructor.
+	 *
+	 * $config is an array of key/value pairs containing configuration
+	 * options.  These options are common to most adapters:
+	 *
+	 * dbname    => (string) The name of the database to user
+	 * username    => (string) Connect to the database as this username.
+	 * password    => (string) Password associated with the username.
+	 * host        => (string) What host to connect to, defaults to localhost
+	 * port        => (string) The port of the database, defaults to 50000
+	 * persistent    => (boolean) Whether to use a persistent connection or not,
+	 *                   defaults to false
+	 * protocol    => (string) The network protocol, defaults to TCPIP
+	 * options    => (array)  Other database options such as,
+	 *                   autocommit, case, and cursor options
+	 *
+	 * @param array $config An array of configuration keys.
+	 * @throws Zend_Db_Adapter_Exception
+	 */
 	public function __construct($config)
     {
         // make sure the config array exists
@@ -129,11 +130,11 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
         $this->_profiler = new Zend_Db_Profiler($enabled);
     }
 
-    /**
-    * Creates a connection resource.
- 	*
-    * @return void
-    */
+	/**
+	 * Creates a connection resource.
+	 *
+	 * @throws Zend_Db_Adapter_Db2_Exception
+	 */
     protected function _connect()
     {
    		if (is_resource($this->_connection)) {
@@ -375,11 +376,12 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
     	$this->_setExecuteMode(DB2_AUTOCOMMIT_ON);
     }
 
-     /**
-     * Set the fetch mode.
-     *
-     * @param integer $mode
-     */
+	/**
+	 * Set the fetch mode.
+	 *
+	 * @param integer $mode
+	 * @throws Zend_Db_Adapter_Db2_Exception
+	 */
     public function setFetchMode($mode)
     {
    		switch ($mode) {

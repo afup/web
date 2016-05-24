@@ -1,5 +1,7 @@
 <?php
 
+use Afup\Site\Association\Personnes_Physiques;
+
 $pages = array(
 	'accueil' => array(
 		'nom' => 'Accueil',
@@ -333,8 +335,7 @@ $pages = array(
 	),
 );
 
-require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Personnes_Physiques.php';
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
 
 $identifiant = $droits->obtenirIdentifiant();
 $personne_physique = $personnes_physiques->obtenir($identifiant);

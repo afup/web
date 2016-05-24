@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Tags;
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,11 +13,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('modifier', 'supprimer', 'contempler'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Tags.php';
-$tags = new AFUP_Tags($bdd);
+$tags = new Tags($bdd);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
 
 $smarty->assign('tags_utilises', $tags->obtenirListeUnique());
 
@@ -68,14 +70,14 @@ if ($formulaire->validate()) {
 
     // Suppression des tags existants
     if ($tags->supprimerParPersonnesPhysiques($droits->obtenirIdentifiant())) {
-        AFUP_Logs::log('Suppression des tags de l\'utilisateur ' . $droits->obtenirIdentifiant());
+        Logs::log('Suppression des tags de l\'utilisateur ' . $droits->obtenirIdentifiant());
     }
 
     // Enregsitrement des nouveaux tags
     $ok = $tags->enregistrerTags($formulaire, $droits->obtenirIdentifiant(), time());
 
     if ($ok) {
-        AFUP_Logs::log('Enregistrement d\'un tag (' . $formulaire->exportValue('tag') . ')');
+        Logs::log('Enregistrement d\'un tag (' . $formulaire->exportValue('tag') . ')');
         afficherMessage('Le tag a été enregistré', 'index.php?page=membre_tags');
     } else {
         $smarty->assign('erreur', 'Une erreur est survenue lors de l\'enregistrement du tag');

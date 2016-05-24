@@ -1,15 +1,15 @@
 <?php
 
+use Afup\Site\Tags;
+
 require_once dirname(__FILE__) . '/config.dist.php';
 
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
 
-require_once 'Afup/AFUP_Tags.php';
-
 class tests_Tags extends UnitTestCase {
     function __construct() {
         $this->elements = array();
-        $this->tags = new AFUP_Tags($bdd);
+        $this->tags = new Tags($bdd);
     }
     
     function test_extraireTousLesTagsDUneChaine() {

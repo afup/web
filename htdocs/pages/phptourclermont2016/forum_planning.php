@@ -1,13 +1,16 @@
 <?php
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\AppelConferencier;
+
 require_once __DIR__ . '/../../include/prepend.inc.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
+
+
 require_once __DIR__ . '/_config.inc.php';
 
 $id_forum = $config_forum['id'];
 
-$forum = new AFUP_Forum($bdd);
-$forum_appel = new AFUP_AppelConferencier($bdd);
+$forum = new Forum($bdd);
+$forum_appel = new AppelConferencier($bdd);
 
 $rs_forum = $forum->obtenir($id_forum);
 $annee_forum = $rs_forum['forum_annee'];

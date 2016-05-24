@@ -1,6 +1,8 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Cotisations;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,8 +11,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('lister', 'relancer'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Cotisations.php';
-$cotisations = new AFUP_Cotisations($bdd);
+
+$cotisations = new Cotisations($bdd);
 
 if ($action == 'lister') {
     $relances_personne_morales = $cotisations->obtenirListeRelancesPersonnesMorales();

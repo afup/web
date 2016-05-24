@@ -1,0 +1,1 @@
+ALTER TABLE `afup_inscription_forum` ADD `coupon` VARCHAR( 255 ) NOT NULL AFTER `reference` ;

@@ -69,7 +69,8 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
     /**
      * Creates a PDO object and connects to the database.
      *
-     * @return void
+     * @throws Zend_DB_Adapter_Exception
+     * @throws Zend_Db_Profiler_Exception
      */
     protected function _connect()
     {
@@ -184,7 +185,7 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
      * Set the PDO fetch mode.
      *
      * @param int $mode A PDO fetch mode.
-     * @return void
+     * @throws Zend_Db_Adapter_Exception
      * @todo Support FETCH_CLASS and FETCH_INTO.
      */
     public function setFetchMode($mode)

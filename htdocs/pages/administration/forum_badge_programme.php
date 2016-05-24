@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Utils\Utils;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
   trigger_error("Direct access forbidden.", E_USER_ERROR);
   exit;
@@ -8,8 +12,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 // Gestion des droits
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Utils.php';
-$droits = AFUP_Utils::fabriqueDroits($bdd);
+
+$droits = Utils::fabriqueDroits($bdd);
 
 if (!$droits->estConnecte() ) {
    header('Location: index.php?page=connexion&echec=' . $droits->verifierEchecConnexion());
@@ -18,12 +22,12 @@ if (!$droits->estConnecte() ) {
 
 
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
-$forum = new AFUP_Forum($bdd);
-$forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
+
+
+
+$forum = new Forum($bdd);
+$forum_inscriptions = new Inscriptions($bdd);
 $id_forum = 7;
 //$badges =  $forum_inscriptions->obtenirListePourBadges($id_forum);
 $badges = array();

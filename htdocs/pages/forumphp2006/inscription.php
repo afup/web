@@ -1,12 +1,15 @@
 <?php
 
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Utils\Pays;
+
 ini_set('display_errors',TRUE);
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
-require_once 'Afup/AFUP_Pays.php';
-$pays = new AFUP_Pays($bdd);
-require_once 'Afup/AFUP_Inscriptions_Forum.php';
-$inscriptions = new AFUP_Inscriptions_Forum($bdd);
+
+$pays = new Pays($bdd);
+
+$inscriptions = new Inscriptions($bdd);
 
 // S'il ne reste plus de place, on ne permet pas l'inscription
 $nombre_places   = 200; // TODO : Mettre cela dans le fichier de configuration

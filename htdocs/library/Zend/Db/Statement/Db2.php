@@ -64,8 +64,8 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
 
 
     /**
-     * 
-     * @return integer number of rows updated
+     * @return int number of rows updated
+     * @throws Zend_Db_Statement_Db2_Exception
      */
     public function rowCount()
     {
@@ -143,8 +143,9 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
 
     /**
      * executes a prepared statement
-     * 
-     * @return void
+     *
+     * @param null $params
+     * @throws Zend_Db_Statement_Db2_Exception
      */
     public function execute($params = null)
     {

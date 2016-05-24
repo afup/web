@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Association\Personnes_Morales;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -13,13 +18,10 @@ $action = verifierAction(array('ajouter'));
 $smarty->assign('action', $action);
 
 if ($action == 'ajouter') {
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-    $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+    $personnes_physiques = new Personnes_Physiques($bdd);
 
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.php';
-    $personnes_morales = new AFUP_Personnes_Morales($bdd);
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-    $pays = new AFUP_Pays($bdd);
+    $personnes_morales = new Personnes_Morales($bdd);
+    $pays = new Pays($bdd);
 
     $formulaire = &instancierFormulaire();
 
@@ -64,7 +66,7 @@ if ($action == 'ajouter') {
     $formulaire->addRule('prenom' , 'Prénom manquant' , 'required');
     $formulaire->addRule('login' , 'Login manquant' , 'required');
     $formulaire->addRule('login', 'Login déjà existant', 'callback', function ($value) use ($bdd) {
-        $personnePhysique = new AFUP_Personnes_Physiques($bdd);
+        $personnePhysique = new Personnes_Physiques($bdd);
         return !$personnePhysique->loginExists(0, $value);
     });
     $formulaire->addRule('email' , 'Email manquant' , 'required');
@@ -114,9 +116,9 @@ if ($action == 'ajouter') {
                 }
                 $corps = str_replace($motifs, $valeurs, $conf->obtenir('mails|texte_adhesion'));
 
-                // @TODO send mail for new member! (use AFUP_Mail for that)
+                // @TODO send mail for new member! (use Afup\Site\Utils\Mail for that)
 
-                AFUP_Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
+                Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
 
                 $droits->seConnecter($login, $mot_de_passe, false);
 

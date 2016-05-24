@@ -1,6 +1,12 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Facturation;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,13 +17,13 @@ $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
-$forum = new AFUP_Forum($bdd);
-$forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
-$forum_facturation = new AFUP_Facturation_Forum($bdd);
+
+
+
+$forum = new Forum($bdd);
+$forum_inscriptions = new Inscriptions($bdd);
+$forum_facturation = new Facturation($bdd);
 
 if ($action == 'envoyer_convocation') {
     $current = $forum->obtenir($_GET['id_forum'], 'titre');
@@ -38,10 +44,10 @@ if ($action == 'envoyer_convocation') {
 		$valeurs = $formulaire->exportValues();
 		$resultat = $forum_inscriptions->envoyerEmailConvocation($valeurs['id_forum'], $valeurs['template']);
 		if ($resultat) {
-			AFUP_Logs::log("Envoi de la convocation pour le {$current['titre']}");
+			Logs::log("Envoi de la convocation pour le {$current['titre']}");
 			afficherMessage('La convocation a été envoyée', 'index.php?page=forum_inscriptions&action=lister');
 		} else {
-			AFUP_Logs::log("Echec de l'envoi de la convocation pour le {$current['titre']}");
+			Logs::log("Echec de l'envoi de la convocation pour le {$current['titre']}");
 			afficherMessage('L\'envoi de la convocation a échouée', 'index.php?page=forum_inscriptions&action=lister', true);
 		}
     }
@@ -77,7 +83,7 @@ if ($action == 'envoyer_convocation') {
 
 } elseif ($action == 'supprimer') {
     if ($forum_inscriptions->supprimerInscription($_GET['id']) && $forum_facturation->supprimerFacturation($_GET['id'])) {
-        AFUP_Logs::log('Suppression de l\'inscription ' . $_GET['id']);
+        Logs::log('Suppression de l\'inscription ' . $_GET['id']);
         afficherMessage('L\'inscription a été supprimée', 'index.php?page=forum_inscriptions&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', 'index.php?page=forum_inscriptions&action=lister', true);
@@ -112,8 +118,8 @@ if ($action == 'envoyer_convocation') {
     $_SESSION['generer_personne_physique']['etat'] = 1;
     afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login", 'index.php?page=personnes_physiques&action=ajouter');
 } else {
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-    $pays = new AFUP_Pays($bdd);
+
+    $pays = new Pays($bdd);
 
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
@@ -331,9 +337,9 @@ if ($action == 'envoyer_convocation') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de l\'inscription de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
+                Logs::log('Ajout de l\'inscription de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
             } else {
-                AFUP_Logs::log('Modification de l\'inscription de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification de l\'inscription de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'inscription a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_inscriptions&action=lister');
         } else {

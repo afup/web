@@ -1,6 +1,8 @@
 <?php
+use Afup\Site\Comptabilite\AFUP_Compta_Facture;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta_Facture.php';
+
 $comptaFact = new AFUP_Compta_Facture($bdd);
 
 $ref = trim(mcrypt_cbc (MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', base64_decode(str_replace(' ', '+', urldecode($_GET['ref']))), MCRYPT_DECRYPT, '@PaiFact'));

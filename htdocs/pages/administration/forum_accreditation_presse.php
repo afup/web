@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Forum;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,12 +15,9 @@ $tris_valides = array('date', 'titre_revue', 'nom_forum', 'nom', 'prenom');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Accreditation_Presse.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-$pays = new AFUP_Pays($bdd);
-$accreditations = new AFUP_Accreditation_Presse($bdd);
-$forums = new AFUP_Forum($bdd);
+$pays = new Pays($bdd);
+$accreditations = new \Afup\Site\Forum\Accreditation_Presse($bdd);
+$forums = new Forum($bdd);
 
 if ($action == 'lister') {
     // Valeurs par dfaut des paramtres de tri
@@ -35,7 +36,7 @@ if ($action == 'lister') {
     $smarty->assign('journalistes', $journalistes);
 } elseif ($action == 'supprimer') {
     if ($accreditations->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression de l\'accréditation ' . $_GET['id']);
+        Logs::log('Suppression de l\'accréditation ' . $_GET['id']);
         afficherMessage('L\'accréditation a été supprimée', 'index.php?page=forum_accreditation_presse&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'accréditation', 'index.php?page=forum_accreditation_presse&action=lister', true);
@@ -125,9 +126,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de l\'accréditation de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
+                Logs::log('Ajout de l\'accréditation de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
             } else {
-                AFUP_Logs::log('Modification de l\'accréditation de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification de l\'accréditation de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'accréditation a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_accreditation_presse&action=lister');
         } else {

@@ -1,13 +1,14 @@
 <?php
 
+use Afup\Site\Utils\Base_De_Donnees;
+
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
-require_once dirname(__FILE__) . '/../../sources/Afup/AFUP_Aperos_Inscrit.php';
 
 class tests_AFUP_Aperos_Inscrit extends UnitTestCase {
     public $bdd;
     
     function __construct() {
-        $this->bdd = new AFUP_Base_De_Donnees('localhost', 'afup_test', 'root', '');
+        $this->bdd = new Base_De_Donnees('localhost', 'afup_test', 'root', '');
         $this->bdd->executer('DROP TABLE IF EXISTS `afup_aperos_inscrits`');
         $this->bdd->executer('CREATE TABLE `afup_aperos_inscrits` (
 		  `id` int(11) NOT NULL auto_increment,
@@ -26,7 +27,7 @@ class tests_AFUP_Aperos_Inscrit extends UnitTestCase {
     }
 
     function test_authentifier() {
-		$inscrit = new AFUP_Aperos_Inscrit($this->bdd);
+		$inscrit = new \Afup\Site\Aperos\Inscrits($this->bdd);
 		$inscrit->values = array(
 			'pseudo' => "perrick",
 			'mot_de_passe' => "mot_de_passe",

@@ -549,7 +549,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      * Finds a view script from the available directories.
      *
      * @param $name string The base name of the script.
-     * @return void
+     * @throws Zend_View_Exception
      */
     protected function _script($name)
     {
@@ -672,7 +672,9 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      *
      * @param string $type The class type ('helper' or 'filter').
      * @param string $name The base name.
-     * @param string The full class name.
+     * @return string
+     * @throws Zend_View_Exception
+     * @internal param The $string full class name.
      */
     private function _loadClass($type, $name)
     {

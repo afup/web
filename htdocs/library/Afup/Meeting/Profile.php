@@ -35,10 +35,11 @@ class Afup_Meeting_Profile {
     private $validated = '0';
 
     /**
-     * Accès filtré aux propriétés (écriture). 
+     * Accès filtré aux propriétés (écriture).
      *
      * @param string $key
      * @param string $value
+     * @throws Exception
      */
     public function __set($key, $value)
     {
@@ -50,9 +51,10 @@ class Afup_Meeting_Profile {
     }
 
     /**
-     * Accès filtré aux propriétés (lecture). 
+     * Accès filtré aux propriétés (lecture).
      *
      * @param string $key
+     * @return bool|string
      */
     public function __get($key)
     {

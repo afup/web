@@ -1,9 +1,11 @@
 <?php
+use Afup\Site\Utils\Mailing;
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Mailing.php';
 
-$mailing = new AFUP_Mailing($bdd);
+
+$mailing = new Mailing($bdd);
 $message = '';
 $email = isset($_GET['unsuscribe'])?$_GET['unsuscribe']:false;
 $nb = isset($_GET['nb'])?$_GET['nb']:'';

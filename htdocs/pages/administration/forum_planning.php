@@ -1,6 +1,12 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\AppelConferencier;
+use Afup\Site\Droits;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
 	trigger_error("Direct access forbidden.", E_USER_ERROR);
 	exit;
@@ -11,13 +17,13 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Droits.php';
 
-$forum = new AFUP_Forum($bdd);
-$forum_appel = new AFUP_AppelConferencier($bdd);
-$droits = new AFUP_Droits($bdd);
+
+
+
+$forum = new Forum($bdd);
+$forum_appel = new AppelConferencier($bdd);
+$droits = new Droits($bdd);
 
 if ($action == 'lister') {
 	$list_champs = 's.*';
@@ -44,15 +50,15 @@ if ($action == 'lister') {
 
 } elseif ($action == 'supprimer') {
 	if ($forum_appel->supprimerSessionDuPlanning($_GET['id'])) {
-		AFUP_Logs::log('Suppression de la programmation de la session ' . $_GET['id']);
+		Logs::log('Suppression de la programmation de la session ' . $_GET['id']);
 		afficherMessage('La programmation de la session a été supprimée', 'index.php?page=forum_planning&action=lister');
 	} else {
 		afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_planning&action=lister', true);
 	}
 
 } else {
-	require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-	$pays = new AFUP_Pays($bdd);
+
+	$pays = new Pays($bdd);
 	$formulaire = &instancierFormulaire();
 
 	$champs = $forum_appel->obtenirPlanningDeSession($_GET['id_session']);
@@ -117,9 +123,9 @@ if ($action == 'lister') {
 
 		if ($ok) {
 			if ($action == 'ajouter') {
-				AFUP_Logs::log('Ajout du planning de la session de ' . $formulaire->exportValue('titre'));
+				Logs::log('Ajout du planning de la session de ' . $formulaire->exportValue('titre'));
 			} else {
-				AFUP_Logs::log('Modification du planning de la session de ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+				Logs::log('Modification du planning de la session de ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
 			}
 			afficherMessage('Le planning de la session a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_planning&action=lister');
 		} else {

@@ -1,6 +1,9 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Antenne;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,8 +12,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('lister', 'ajouter', 'modifier'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Antenne.php';
-$antenne = new AFUP_Antenne($bdd);
+$antenne = new Antenne($bdd);
 
 
 if ($action == 'lister') {
@@ -64,9 +66,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout une antenne ' . $formulaire->exportValue('ville'));
+                Logs::log('Ajout une antenne ' . $formulaire->exportValue('ville'));
             } else {
-                AFUP_Logs::log('Modification une antenne ' . $formulaire->exportValue('ville') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification une antenne ' . $formulaire->exportValue('ville') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'antenne a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=antenne_conf_operation&action=lister');
         } else {

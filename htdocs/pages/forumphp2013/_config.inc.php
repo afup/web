@@ -10,16 +10,20 @@
  */
 // Param de configuration sur site du Forum PHP
 
+use Afup\Site\Forum\Partenaires;
+use Afup\Site\Forum\Coupon;
+use Afup\Site\Forum\Forum;
+
 define('AFUP_CHEMIN_SOURCE', realpath(dirname(__FILE__) . '/../../classes/afup/'));
 date_default_timezone_set("Europe/Paris");
 ini_set('display_errors',  $conf->obtenir('divers|afficher_erreurs'));
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum_Coupon.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum_Partenaires.php';
-$forums = new AFUP_Forum($bdd);
-$coupons = new AFUP_Forum_Coupon($bdd);
-$partenairesForum = new AFUP_Forum_Partenaires($bdd);
+
+
+
+$forums = new Forum($bdd);
+$coupons = new Coupon($bdd);
+$partenairesForum = new Partenaires($bdd);
 
 $idForum = 9; // 9 = Forum PHP 2013
 $config_forum = $forums->obtenir($idForum);

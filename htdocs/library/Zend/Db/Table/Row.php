@@ -81,13 +81,14 @@ class Zend_Db_Table_Row
             $this->_data  = (array) $config['data'];
         }
     }
-    
+
     /**
      * Getter for camelCaps properties mapped to underscore_word columns.
-     * 
+     *
      * @param string $camel The camelCaps property name; e.g., 'columnName'
      * maps to 'column_name'.
      * @return string The mapped column value.
+     * @throws Zend_Db_Table_Row_Exception
      */
     public function __get($camel)
     {
@@ -98,14 +99,14 @@ class Zend_Db_Table_Row
             throw new Zend_Db_Table_Row_Exception("column '$camel' not in row");
         }
     }
-    
+
     /**
      * Setter for camelCaps properties mapped to underscore_word columns.
-     * 
+     *
      * @param string $camel The camelCaps property name; e.g., 'columnName'
      * maps to 'column_name'.
      * @param mixed $value The value for the property.
-     * @return void
+     * @throws Zend_Db_Table_Row_Exception
      */
     public function __set($camel, $value)
     {

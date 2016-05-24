@@ -1,15 +1,16 @@
 <?php
+use Afup\Site\Comptabilite\Comptabilite;
+use Afup\Site\Utils\Base_De_Donnees;
+
 require_once dirname(__FILE__) . '/config.dist.php';
 
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
-require_once dirname(__FILE__) . '/../../sources/Afup/AFUP_Base_De_Donnees.php';
-require_once dirname(__FILE__) . '/../../sources/Afup/AFUP_Compta.php';
 
 class tests_Compta extends UnitTestCase {
     public $bdd;
     
     function __construct() {
-        $this->bdd = new AFUP_Base_De_Donnees(TEST_HOST, TEST_DB, TEST_USER, TEST_PWD);
+        $this->bdd = new Base_De_Donnees(TEST_HOST, TEST_DB, TEST_USER, TEST_PWD);
         
         $this->bdd->executer("DROP TABLE IF EXISTS `compta`");
         $this->bdd->executer("CREATE TABLE `compta` (
@@ -32,7 +33,7 @@ class tests_Compta extends UnitTestCase {
     }
     
     function test_importerFichierBanque() {
-        $compta = new AFUP_Compta($this->bdd);
+        $compta = new Comptabilite($this->bdd);
         $this->assertFalse($compta->extraireComptaDepuisCSVBanque(null));
         $this->assertFalse($compta->extraireComptaDepuisCSVBanque(array()));
         $fichierBanque = file(dirname(__FILE__)."/data/banque.csv");

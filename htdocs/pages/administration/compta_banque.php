@@ -1,6 +1,8 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\Comptabilite;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -16,8 +18,7 @@ if (isset($_GET['compte']) && $_GET['compte']) {
     $compte=1;
 }
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta.php';
-$compta = new AFUP_Compta($bdd);
+$compta = new Comptabilite($bdd);
 
 if (isset($_GET['id_periode']) && $_GET['id_periode']) {
     $id_periode=$_GET['id_periode'];

@@ -1,9 +1,11 @@
 <?php
+use Afup\Site\Utils\Base_De_Donnees;
+
 require_once __DIR__ . '/../sources/Afup/Bootstrap/Cli.php';
 
 echo "Synchronisation Redmine " . date('Y-m-d H:i:s') . PHP_EOL;
 
-$redmine = new AFUP_Base_De_Donnees(
+$redmine = new Base_De_Donnees(
     $conf->obtenir('redmine|hote'),
     $conf->obtenir('redmine|base'),
     $conf->obtenir('redmine|utilisateur'),

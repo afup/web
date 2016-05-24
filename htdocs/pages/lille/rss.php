@@ -1,8 +1,10 @@
 <?php
-require_once dirname(__FILE__).'/../../../sources/Afup/Bootstrap/Http.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
+use Afup\Site\Corporate\Articles;
 
-$articles         = new AFUP_Site_Articles($bdd);
+require_once dirname(__FILE__).'/../../../sources/Afup/Bootstrap/Http.php';
+
+
+$articles         = new Articles($bdd);
 $derniersArticles = array();
 
 foreach($articles->chargerArticlesDeRubrique(73, 20) as $article) {

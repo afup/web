@@ -18,8 +18,12 @@
 
 // racine de l'application (pas du document root !)
 
+use Afup\Site\Utils\Configuration;
+use Afup\Site\Utils\Base_De_Donnees;
+
 $root = realpath(dirname(__FILE__) . '/../../..');
 
+require_once $root . '/vendor/autoload.php';
 // définitions des constantes
 
 define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
@@ -43,10 +47,7 @@ set_include_path(
 require_once 'Afup/fonctions.php';
 
 // chargement de la configuration
-
-require_once 'Afup/AFUP_Configuration.php';
-
-$conf = new AFUP_Configuration($root . '/configs/application/config.php');
+$conf = new Configuration($root . '/configs/application/config.php');
 
 // mets la configuration dans une 'clé de registre' accessible à tout moment
 
@@ -54,9 +55,7 @@ $GLOBALS['AFUP_CONF'] = $conf;
 
 // initialisation de la couche d'abstraction de la base de données
 
-require_once 'Afup/AFUP_Base_De_Donnees.php';
-
-$bdd = new AFUP_Base_De_Donnees(
+$bdd = new Base_De_Donnees(
     $conf->obtenir('bdd|hote'),
     $conf->obtenir('bdd|base'),
     $conf->obtenir('bdd|utilisateur'),

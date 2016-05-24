@@ -1,6 +1,8 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Forum;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,13 +13,13 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Droits.php';
+
+
 
 if ($action == 'afficher') {
     // Ne rien faire. L'écran affiche simplement un lien.
 } elseif ($action == 'telecharger_joindin') {
-    $forum    = new AFUP_Forum($bdd);
+    $forum    = new Forum($bdd);
     $forum_id = $forum->obtenirDernier();
 
     $csv = $forum->obtenirCsvJoindIn($forum_id);
@@ -27,7 +29,7 @@ if ($action == 'afficher') {
     echo $csv;
     exit;
 } elseif ($action == 'telecharger_xmliphone') {
-    $forum    = new AFUP_Forum($bdd);
+    $forum    = new Forum($bdd);
     $forum_id = $forum->obtenirDernier();
 
     $xml = $forum->obtenirXmlPourAppliIphone($forum_id);

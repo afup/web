@@ -2,18 +2,21 @@
 
 // 0. initialisation (bootstrap) de l'application
 
+use Afup\Site\Rendez_Vous;
+use Afup\Site\Utils\Logs;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 // 1. chargement des classes nécessaires
 
-require_once 'Afup/AFUP_Rendez_Vous.php';
-require_once 'Afup/AFUP_Logs.php';
+
+
 
 // 2. récupération et filtrage des données
 
-AFUP_Logs::initialiser($bdd, 0);
+Logs::initialiser($bdd, 0);
 
-$rendezvous = new AFUP_Rendez_Vous($bdd);
+$rendezvous = new Rendez_Vous($bdd);
 if (isset($_GET['id'])) {
 	$archive_rendezvous = $rendezvous->obtenirRendezVousPasse((int)$_GET['id']);
 } else {
@@ -59,7 +62,7 @@ if (isset($archive_rendezvous) and is_array($archive_rendezvous)) {
         $ok = $rendezvous->enregistrerInscrit($formulaire);
 
         if ($ok) {
-            AFUP_Logs::log('Pré-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
+            Logs::log('Pré-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
             $smarty->assign('resultat', 'succes');
             $smarty->assign('message', 'Votre pré-inscription a bien été prise en compte.');
 			$smarty->display('message.html');

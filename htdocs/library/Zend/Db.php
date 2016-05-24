@@ -148,12 +148,13 @@ class Zend_Db {
      *
      * Additional keys are processed as key-value pairs for the adapter config array.
      *
-     * @param string $adapterName   Name of the adapter to return:
+     * @param string $adapterName Name of the adapter to return:
      *                              'pdo_mysql' -> Zend_Db_Adapter_Pdo_Mysql
      *
-     * @param array  $config        An array of adapter configuration keys.
-     *
+     * @param array $config An array of adapter configuration keys.
      * @return Zend_Db_Adapter_Abstract
+     * @throws Zend_Db_Exception
+     * @throws Zend_Exception
      */
     static public function factory($adapterName, $config = array())
     {

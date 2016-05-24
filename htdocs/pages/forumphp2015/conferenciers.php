@@ -1,4 +1,6 @@
 <?php
+use Afup\Site\Forum\AppelConferencier;
+
 if (isset($_GET['nolayout']) === false) {
     header('HTTP/1.0 301 Moved Permanently');
     header('Location:http://event.afup.org/forum-php-2015/speakers/');
@@ -9,9 +11,9 @@ require_once dirname(__FILE__) . '/_config.inc.php';
 
 setlocale(LC_TIME, 'fr_FR');
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
 
-$forum_appel = new AFUP_AppelConferencier($bdd);
+
+$forum_appel = new AppelConferencier($bdd);
 
 $sessions = $forum_appel->obtenirListeSessionsPlannifies($config_forum['id']);
 $conferenciers = array();

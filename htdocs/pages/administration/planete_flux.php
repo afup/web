@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Planete\Flux;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,9 +15,9 @@ $tris_valides = array('nom', 'url', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Planete_Flux.php';
-$planete_flux = new AFUP_Planete_Flux($bdd);
+
+
+$planete_flux = new Flux($bdd);
 
 if ($action == 'lister') {
 
@@ -57,7 +61,7 @@ if ($action == 'lister') {
     $smarty->assign('flux', $flux);
 } elseif ($action == 'supprimer') {
     if ($planete_flux->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression du flux ' . $_GET['id']);
+        Logs::log('Suppression du flux ' . $_GET['id']);
         afficherMessage('Le flux a été supprimé', 'index.php?page=planete_flux&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du flux', 'index.php?page=planete_flux&action=lister', true);
@@ -72,7 +76,7 @@ if ($action == 'lister') {
         $champs = $planete_flux->obtenir($_GET['id']);
         $formulaire->setDefaults($champs);    
     }
-    $personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+    $personnes_physiques = new Personnes_Physiques($bdd);
 
     $formulaire->addElement('header'  , ''                     , 'Informations');
     $formulaire->addElement('text'    , 'nom'                  , 'Nom'            , array('size' => 30, 'maxlength' => 40));
@@ -109,9 +113,9 @@ if ($action == 'lister') {
         
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout du flux ' . $formulaire->exportValue('nom'));
+                Logs::log('Ajout du flux ' . $formulaire->exportValue('nom'));
             } else {
-                AFUP_Logs::log('Modification du flux ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification du flux ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }            
             afficherMessage('Le flux a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=planete_flux&action=lister');    
         } else {

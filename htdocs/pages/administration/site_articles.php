@@ -1,6 +1,12 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Corporate\Article;
+use Afup\Site\Corporate\Articles;
+use Afup\Site\Corporate\Rubriques;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,11 +17,11 @@ $tris_valides = array('titre', 'date');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
 
-$articles = new AFUP_Site_Articles($bdd);
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+
+
+$articles = new Articles($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
 
 if ($action == 'lister') {
     $list_champs     = '*';
@@ -43,9 +49,9 @@ if ($action == 'lister') {
     $smarty->assign('articles', $articles->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre));
 
 } elseif ($action == 'supprimer') {
-    $article = new AFUP_Site_Article($_GET['id']);
+    $article = new Article($_GET['id']);
     if ($article->supprimer()) {
-        AFUP_Logs::log('Suppression de l\'article ' . $_GET['id']);
+        Logs::log('Suppression de l\'article ' . $_GET['id']);
         afficherMessage('L\'article a été supprimé', 'index.php?page=site_articles&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'article', 'index.php?page=site_articles&action=lister', true);
@@ -53,8 +59,8 @@ if ($action == 'lister') {
 
 } else {
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    $article = new AFUP_Site_Article($id);
-    $rubriques = new AFUP_Site_Rubriques();
+    $article = new Article($id);
+    $rubriques = new Rubriques();
 
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
@@ -111,9 +117,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de l\'article ' . $formulaire->exportValue('titre'));
+                Logs::log('Ajout de l\'article ' . $formulaire->exportValue('titre'));
             } else {
-                AFUP_Logs::log('Modification de l\'article ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification de l\'article ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'article a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=site_articles&action=lister');
         } else {

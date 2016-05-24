@@ -1,6 +1,8 @@
 <?php
+use Afup\Site\Corporate\Articles;
+
 require_once '../../include/prepend.inc.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
+
 require_once dirname(__FILE__) . '/_config.inc.php';
 
 setlocale (LC_TIME, 'fr_FR.utf8','fra');
@@ -20,7 +22,7 @@ if ($jours_avant_forum < 0) {
 }
 $smarty->assign('alerte_avant_forum', $alerte_avant_forum);
 
-$articles = new AFUP_Site_Articles($bdd);
+$articles = new Articles($bdd);
 $actualites = $articles->chargerArticlesDeRubrique(73); // 73 = rubrique PHP Tour Nantes 2012
 $smarty->assign('actualites', $actualites);
 

@@ -11,8 +11,10 @@
  * @group    Pages
  */
 
+use Afup\Site\Planete\Planete_Billet;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Planete_Billet.php';
+
 
 $feed = array(
 	'title'  => 'planete php fr',
@@ -23,7 +25,7 @@ $feed = array(
 	'date'   => date(DATE_RSS),
 );
 
-$billet = new AFUP_Planete_Billet($bdd);
+$billet = new Planete_Billet($bdd);
 $derniersBilletsComplets = $billet->obtenirDerniersBilletsComplets(0, DATE_RSS, 20);
 
 $smarty->assign('feed',    $feed);

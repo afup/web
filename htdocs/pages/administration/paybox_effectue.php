@@ -1,16 +1,16 @@
 <?php
+use Afup\Site\Association\Cotisations;
+use Afup\Site\Utils\Logs;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Base_De_Donnees.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Cotisations.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Logs.php';
-AFUP_Logs::initialiser($bdd, 0);
+Logs::initialiser($bdd, 0);
 
-$cotisations = new AFUP_Cotisations($bdd);
+$cotisations = new Cotisations($bdd);
 $cotisations->validerReglementEnLigne($_GET['cmd'], round($_GET['total'] / 100, 2), $_GET['autorisation'], $_GET['transaction']);
 $cotisations->notifierRegelementEnLigneAuTresorier($_GET['cmd'], round($_GET['total'] / 100, 2), $_GET['autorisation'], $_GET['transaction']);
 
-AFUP_Logs::log("Ajout de la cotisation " . $_GET['cmd'] . " via Paybox.");
+Logs::log("Ajout de la cotisation " . $_GET['cmd'] . " via Paybox.");
 
 $message  = "<p>Votre paiement a été enregistré. Merci et à bientôt.</p>";
 $message .= "<p>Une questions ? N'hésitez pas à contacter <a href=\"mailto:tresorier@afup.org\">le trésorier</a>.</p>";

@@ -1,18 +1,20 @@
 <?php
 
+use Afup\Site\Corporate\Site;
+use Afup\Site\Corporate\Rubrique;
+use Afup\Site\Corporate\Article;
+use Afup\Site\Utils\Base_De_Donnees;
+
 require_once dirname(__FILE__) . '/config.dist.php';
 
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
-
-require_once 'Afup/AFUP_Base_De_Donnees.php';
-require_once 'Afup/AFUP_Site.php';
 
 class tests_Site_Article extends UnitTestCase {
     public $article = null;
     public $bdd;
     
     function __construct() {
-        $this->bdd = new AFUP_Base_De_Donnees(TEST_HOST, TEST_DB, TEST_USER, TEST_PWD);
+        $this->bdd = new Base_De_Donnees(TEST_HOST, TEST_DB, TEST_USER, TEST_PWD);
         $this->bdd->executer('DROP TABLE IF EXISTS `afup_site_article`');
         $this->bdd->executer('CREATE TABLE `afup_site_article` (
 		  `id` int(11) NOT NULL auto_increment,
@@ -47,7 +49,7 @@ class tests_Site_Article extends UnitTestCase {
     }
     
     function setUp() {
-        $this->article = new AFUP_Site_Article(0, $this->bdd);
+        $this->article = new Article(0, $this->bdd);
         $this->article->id = 0;
         $this->article->surtitre = "En début de page...";
         $this->article->titre = "Le titre complet";
@@ -70,7 +72,7 @@ class tests_Site_Article extends UnitTestCase {
 <li>element 2</li>
 </ul>";
         
-        $this->assertEqual(AFUP_Site::transformer_liste_spip($texte), $rendu);
+        $this->assertEqual(Site::transformer_liste_spip($texte), $rendu);
     }
 
     function testConversionDesTiretsEnListeHTMLTroisElements() {
@@ -86,7 +88,7 @@ class tests_Site_Article extends UnitTestCase {
 <li>element 3</li>
 </ul>";
 
-        $this->assertEqual(AFUP_Site::transformer_liste_spip($texte), $rendu);
+        $this->assertEqual(Site::transformer_liste_spip($texte), $rendu);
     }
 
     function testConversionDesTiretsEnListeHTMLDeuxListes() {
@@ -116,7 +118,7 @@ Entre deux
 
 La fin";
 
-        $this->assertEqual(AFUP_Site::transformer_liste_spip($texte), $rendu);
+        $this->assertEqual(Site::transformer_liste_spip($texte), $rendu);
     }
 
     function testConversionDesTiretsPasDansUneLigne() {
@@ -124,7 +126,7 @@ La fin";
 
 	        $rendu = "Titre - Article";
 
-	        $this->assertEqual(AFUP_Site::transformer_liste_spip($texte), $rendu);
+	        $this->assertEqual(Site::transformer_liste_spip($texte), $rendu);
 	    }
 
 
@@ -155,7 +157,7 @@ La fin";
     }
     
     function testLeFilDArianeSeComposeAvecLeTitreEtLesRubriques() {
-        $rubrique = new AFUP_Site_Rubrique(0, $this->bdd);
+        $rubrique = new Rubrique(0, $this->bdd);
         $rubrique->id_parent = 0;
         $rubrique->raccourci = "rubrique-conteneur";
         $rubrique->nom = "Rubrique Conteneur";
@@ -175,7 +177,7 @@ class tests_Site_Rubrique extends UnitTestCase {
     public $bdd;
     
     function __construct() {
-        $this->bdd = new AFUP_Base_De_Donnees('localhost', 'afup_test', 'root', '');
+        $this->bdd = new Base_De_Donnees('localhost', 'afup_test', 'root', '');
         $this->bdd->executer('DROP TABLE IF EXISTS `afup_site_rubrique`');
         $this->bdd->executer('CREATE TABLE `afup_site_rubrique` (
 		  `id` int(11) NOT NULL auto_increment,
@@ -194,7 +196,7 @@ class tests_Site_Rubrique extends UnitTestCase {
     }
     
     function setUp() {
-        $this->rubrique = new AFUP_Site_Rubrique(0, $this->bdd);
+        $this->rubrique = new Rubrique(0, $this->bdd);
         $this->rubrique->id = 0;
         $this->rubrique->id_parent = 0;
         $this->rubrique->nom = "Le titre complet";
@@ -235,7 +237,7 @@ class tests_Site_Rubrique extends UnitTestCase {
         $this->assertPattern("/href/", $this->rubrique->fil_d_ariane());
         $this->assertPattern("/<a href=\".*\">.*<\/a>/", $this->rubrique->fil_d_ariane());
         
-        $rubrique = new AFUP_Site_Rubrique(0, $this->bdd);
+        $rubrique = new Rubrique(0, $this->bdd);
         $rubrique->id_parent = $this->rubrique->id;
         $rubrique->raccourci = "rubrique-fille";
         $rubrique->nom = "Rubrique Fille";
