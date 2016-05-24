@@ -673,18 +673,6 @@ class AppelConferencier
 
     public function ajouterSession($id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie = 0)
     {
-        try {
-            $token = random_bytes(16);
-        } catch (\TypeError $e) {
-            // Well, it's an integer, so this IS unexpected.
-            die("An unexpected error has occurred");
-        } catch (\Error $e) {
-            // This is also unexpected because 32 is a reasonable integer.
-            die("An unexpected error has occurred");
-        } catch (\Exception $e) {
-            // If you get this message, the CSPRNG failed hard.
-            die("Could not generate a random string. Is our OS secure?");
-        }
 
         $donnees = array(
             $this->_bdd->echapper($id_forum),
@@ -693,12 +681,11 @@ class AppelConferencier
             $this->_bdd->echapper($abstract),
             $this->_bdd->echapper($journee),
             $this->_bdd->echapper($genre),
-            $this->_bdd->echapper($plannifie),
-            $this->_bdd->echapper(bin2hex($token))
+            $this->_bdd->echapper($plannifie)
         );
 
         $requete = ' INSERT INTO afup_sessions';
-        $requete .= '  (id_forum, date_soumission, titre, abstract, journee, genre, plannifie, token)';
+        $requete .= '  (id_forum, date_soumission, titre, abstract, journee, genre, plannifie)';
         $requete .= ' VALUES ';
         $requete .= '  (' . implode(',', $donnees) . ')';
 
