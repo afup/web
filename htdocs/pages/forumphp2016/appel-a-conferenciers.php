@@ -102,8 +102,13 @@ if ($formulaire->validate()) {
         }
         $var = 'conferencier' . $i;
         $$var = $conf->ajouterConferencier(
-            $valeurs['id_forum'], $valeurs['civilite' . $i], $valeurs['nom' . $i], $valeurs['prenom' . $i],
-            $valeurs['email' . $i], $valeurs['societe' . $i], $valeurs['biographie' . $i]
+            $valeurs['id_forum'],
+            $valeurs['civilite' . $i],
+            stripslashes($valeurs['nom' . $i]),
+            stripslashes($valeurs['prenom' . $i]),
+            stripslashes($valeurs['email' . $i]),
+            stripslashes($valeurs['societe' . $i]),
+            stripslashes($valeurs['biographie' . $i])
         );
         $file = $formulaire->getElement('logo'.$i);
         $data = $file->getValue();
@@ -160,8 +165,8 @@ if ($formulaire->validate()) {
         }
 
         $sessionId = $conf->ajouterSession($config_forum['id'],date('Y-m-d'),
-            $valeurs['pres' . $i . '_titre'],
-            $valeurs['pres' . $i . '_abstract'],
+            stripslashes($valeurs['pres' . $i . '_titre']),
+            stripslashes($valeurs['pres' . $i . '_abstract']),
             $valeurs['pres' . $i . '_journee'],
             $valeurs['pres' . $i . '_genre']
         );
