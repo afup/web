@@ -27,26 +27,7 @@ $formulaire = &instancierFormulaire($action);
 
 $numConf = 3;
 
-if(isset($_GET['id']) && isset($_GET['token'])) {
-    $conf = new AppelConferencier($bdd);
-    $champs = $conf->obtenirSession($_GET['id']);
-
-    if ($_GET['token'] === $champs['token']) {
-        foreach ($champs as $key => $value) {
-            $champs['pres1_'.$key] = $value;
-            $champs[$key . '1'] = $value;
-            unset($champs[$key]);
-        }
-        $formulaire->setDefaults($champs);
-        $numConf = 1;
-    }
-
-    if (isset($champs) && isset($champs['id_forum'])) {
-        $_GET['id_forum'] = $champs['id_forum'];
-    }
-} else {
-    $formulaire->setDefaults(array('civilite' => $translator->trans('M.'),));
-}
+$formulaire->setDefaults(array('civilite' => $translator->trans('M.'),));
 
 $formulaire->addElement('hidden', 'id_forum', $config_forum['id']);
 
@@ -192,8 +173,7 @@ if ($formulaire->validate()) {
             if (isset($conferencier2)) {
                 $conf->lierConferencierSession($conferencier2, $sessionId);
             }
-            $baseUrlEdition = $action . '&id=%i&token=%s';
-            $conf->envoyerEmail($sessionId, $baseUrlEdition, $translator);
+            $conf->envoyerEmail($sessionId, $translator);
         }
     }
     $smarty->display('soumission_engistree.html');

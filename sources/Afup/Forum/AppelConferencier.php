@@ -735,11 +735,10 @@ class AppelConferencier
     /**
      * Envoi un email de confirmation au conférencier et mets en copie le bureau
      * @param int $session_id
-     * @param string $baseUrlEdition Url pour la page d'édition d'une conférence lorsque déconnecté
      * @param Translator $translator
      * @return bool
      */
-    public function envoyerEmail($session_id, $baseUrlEdition, Translator $translator = null)
+    public function envoyerEmail($session_id, Translator $translator = null)
     {
         $configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
 
@@ -757,8 +756,6 @@ class AppelConferencier
         $conferenciers = $this->_bdd->obtenirTous($requete);
         $conf = current($conferenciers);
 
-        $url = sprintf($baseUrlEdition, $session_id, $conf['token']);
-
         $corps = $translator->trans('Bonjour,') .'
 
         ' . $translator->trans('Nous avons bien enregistré votre soumission pour notre évènement') . ' (' . $conf['titre'] . ')
@@ -767,8 +764,6 @@ class AppelConferencier
         ' . $translator->trans('Vous avez soumis le sujet suivant :') . ' ' . $conf['conf_title'] . '
 
         ' . $conf['abstract'] . '
-
-        ' . $translator->trans('Vous pouvez éditer votre proposition jusqu\'à la fin de l\'appel à conférenciers. Si vous souhaitez le faire, if suffit de suivre ce lien:') . ' ' . $url . '
 
         ' . $translator->trans('Le bureau');
 
