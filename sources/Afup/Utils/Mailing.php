@@ -67,8 +67,7 @@ class Mailing
 
     static function envoyerMail($from, $to, $subject, $body, Array $options = array())
     {
-        require_once dirname(__FILE__) . '/Configuration.php';
-        $configuration = new Configuration(dirname(__FILE__) . '/../../configs/application/config.php');
+        $configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
 
         $optionsDefault = array(
             'html' => FALSE,

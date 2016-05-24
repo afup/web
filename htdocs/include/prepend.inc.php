@@ -5,9 +5,11 @@ ob_start();
 
 session_start();
 
+// Inclusion de l'autoload de composer
+require_once dirname(__FILE__) . '/../../vendor/autoload.php';
+
 require_once dirname(__FILE__).'/../../sources/Afup/fonctions.php';
 
-require_once dirname(__FILE__) . '/../../vendor/autoload.php';
 // Configuration
 $conf = new \Afup\Site\Utils\Configuration(dirname(__FILE__).'/../../configs/application/config.php');
 $GLOBALS['AFUP_CONF'] = $conf;
@@ -53,5 +55,4 @@ $bdd = new \Afup\Site\Utils\Base_De_Donnees($conf->obtenir('bdd|hote'),
                                 $conf->obtenir('bdd|mot_de_passe'));
 $bdd->executer("SET NAMES 'utf8'");
 
-// Inclusion de l'autoload de composer
 require_once(dirname(__FILE__) . '/../../sources/Afup/Bootstrap/commonStart.php');

@@ -1,0 +1,27 @@
+{foreach from=$conferenciers item=conferencier}
+  <article class="first conferenciers">
+		<h3>
+		  {$conferencier.prenom} {$conferencier.nom}
+  		{if $conferencier.societe}- <span class="societe">{$conferencier.societe}</span>{/if}
+		</h3>
+    {if $conferencier.twitter}
+      <a class="twitter" href="https://twitter.com/{$conferencier.twitter}"><img src="//g.twimg.com/about/feature-corporate/image/followbutton.png" width="89" height="33" alt="Suivre @{$conferencier.twitter}"/></a>
+    {/if}
+    <div class="article-body conferencier">
+    <div class="photo">
+        <img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" border="0" />
+    </div>
+      <p>
+				<a name="{$conferencier.conferencier_id}" ></a>
+        {$conferencier.biographie}
+      </p>
+      <ul>
+        {foreach from=$conferencier.sessions item=session}
+            <li class="conferencier_session">
+                <a href="/php-tour-2016/programme/#{$session.id}">{$session.titre}</a>
+            </li>
+        {/foreach}
+      </ul>
+    </div>
+  </article>
+{/foreach}
