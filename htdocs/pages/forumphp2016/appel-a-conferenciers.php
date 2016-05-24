@@ -43,6 +43,7 @@ for ($i = 1; $i < 3; $i++) {
     $formulaire->addElement('text'  , 'email' . $i      , $translator->trans('Email')          , array('size' => 30, 'maxlength' => 100, 'class' => 'span7'));
     $formulaire->addElement('text'  , 'telephone' . $i  , $translator->trans('Tél.')           , array('size' => 20, 'maxlength' => 20, 'class' => 'span7'));
     $formulaire->addElement('text'  , 'societe' . $i    , $translator->trans('Société')        , array('size' => 50, 'maxlength' => 100, 'class' => 'span7'));
+    $formulaire->addElement('text'  , 'twitter' . $i    , $translator->trans('Twitter')        , array('size' => 50, 'maxlength' => 100, 'class' => 'span7'));
     $formulaire->addElement('textarea', 'biographie' . $i, $translator->trans('Biographie'), array('cols' => 60, 'rows' => 5, 'class' => 'span7'));
     $formulaire->addElement('file'  , 'logo' . $i       , $translator->trans('Photo'));
     $formulaire->addElement('static', 'note'            , '', $translator->trans('Image JPEG ou PNG de 90x120 pixels (sera redimensionnée si taille différente)'));
@@ -108,7 +109,8 @@ if ($formulaire->validate()) {
             stripslashes($valeurs['prenom' . $i]),
             stripslashes($valeurs['email' . $i]),
             stripslashes($valeurs['societe' . $i]),
-            stripslashes($valeurs['biographie' . $i])
+            stripslashes($valeurs['biographie' . $i]),
+            stripslashes($valeurs['twitter' . $i])
         );
         $file = $formulaire->getElement('logo'.$i);
         $data = $file->getValue();

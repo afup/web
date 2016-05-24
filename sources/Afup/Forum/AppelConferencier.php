@@ -621,7 +621,7 @@ class AppelConferencier
         return $this->_bdd->executer($requete);
     }
 
-    function ajouterConferencier($id_forum, $civilite, $nom, $prenom, $email, $societe, $biographie)
+    function ajouterConferencier($id_forum, $civilite, $nom, $prenom, $email, $societe, $biographie, $twitter)
     {
         $donnees = array(
             $this->_bdd->echapper($id_forum),
@@ -631,10 +631,11 @@ class AppelConferencier
             $this->_bdd->echapper($email),
             $this->_bdd->echapper($societe),
             $this->_bdd->echapper($biographie),
+            $this->_bdd->echapper($twitter),
         );
 
         $requete = ' INSERT INTO afup_conferenciers';
-        $requete .= '  (id_forum, civilite, nom, prenom, email, societe, biographie)';
+        $requete .= '  (id_forum, civilite, nom, prenom, email, societe, biographie, twitter)';
         $requete .= ' VALUES ';
         $requete .= '  (' . implode(',', $donnees) . ')';
 
