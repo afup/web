@@ -21,7 +21,7 @@ class Web {
 
             // On detecte tous les liens symboliques dans le repertoire de destination
             // Et on rsync en ignorant ces fichiers grace a l'entree standard
-            $command .= 'find /home/afup/recette.afup.org/web/ -type l  -printf "/%P*\n" | rsync -rvcC --safe-links --delete ./ /home/afup/recette.afup.org/web/ --exclude-from=- ; ';
+            $command .= 'find /' . $GLOBALS['conf']->obtenir('git|local_export') . ' -type l  -printf "/%P*\n" | rsync -rvcC --safe-links --delete ./ /' . $GLOBALS['conf']->obtenir('git|local_export') . ' --exclude-from=- ; ';
             // Direction le dossier exporté
             $command .= "cd /".$GLOBALS['conf']->obtenir('git|local_export').";";
             // Nettoyage cache TWIG
