@@ -729,7 +729,7 @@ class AppelConferencier
     {
         $configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
 
-        $requete = 'SELECT prenom, nom, email, af.titre, a_s.titre AS conf_title, a_s.abstract, a_s.token
+        $requete = 'SELECT prenom, nom, email, af.titre, a_s.titre AS conf_title, a_s.abstract
                     FROM afup_conferenciers ac
                     INNER JOIN afup_conferenciers_sessions acs
                         ON ac.conferencier_id = acs.conferencier_id
