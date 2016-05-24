@@ -1,0 +1,1 @@
+ALTER TABLE `afup_inscription_forum` ADD `mobilite_reduite` TINYINT( 1 ) NOT NULL DEFAULT '0';

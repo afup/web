@@ -10,6 +10,7 @@ require_once dirname(__FILE__) . '/../../vendor/autoload.php';
 
 require_once dirname(__FILE__).'/../../sources/Afup/fonctions.php';
 
+require_once dirname(__FILE__) . '/../../vendor/autoload.php';
 // Configuration
 $conf = new \Afup\Site\Utils\Configuration(dirname(__FILE__).'/../../configs/application/config.php');
 $GLOBALS['AFUP_CONF'] = $conf;

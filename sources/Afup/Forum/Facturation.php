@@ -5,8 +5,6 @@ use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
 
-require_once 'Afup/Inscriptions.php';
-
 class Facturation
 {
     /**
@@ -247,7 +245,6 @@ SQL;
 
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'Afup/Pays.php';
         $pays = new Pays($this->_bdd);
 
         // Construction du PDF
@@ -355,10 +352,8 @@ SQL;
         $requete = 'SELECT * FROM afup_inscription_forum WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-        require_once 'Afup/Utils/Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'Afup/Pays.php';
         $pays = new Pays($this->_bdd);
 
         // Construction du PDF
@@ -546,8 +541,6 @@ SQL;
      */
     function envoyerFacture($reference, $copyTresorier = true, $facturer = true)
     {
-        require_once 'Afup/Mail.php';
-        require_once 'Afup/Utils/Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
         if (is_array($reference)) {

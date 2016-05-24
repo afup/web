@@ -410,7 +410,6 @@ class AFUP_Compta_Facture
 
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'Afup/Pays.php';
         $pays = new Pays($this->_bdd);
 
         // Construction du PDF

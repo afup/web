@@ -547,7 +547,6 @@ class Cotisations
      */
     function relancer($type_personne, $id_personne)
     {
-        require_once 'Afup/Utils/Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
         if (AFUP_PERSONNES_MORALES == $type_personne) {

@@ -187,7 +187,7 @@ SQL;
      */
     public function envoyerEmailConvocation($id_forum, $template)
     {
-        require_once dirname(__FILE__) . '/Configuration.php';
+        require_once dirname(__FILE__) . '/../Utils/Configuration.php';
         $configuration = $GLOBALS['AFUP_CONF'];
 
         // Get all visitors with "good" state (good to receive the email)
