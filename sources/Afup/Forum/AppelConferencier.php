@@ -745,14 +745,13 @@ class AppelConferencier
 
         $corps = $translator->trans('Bonjour,') .'
 
-        ' . $translator->trans('Nous avons bien enregistré votre soumission pour notre évènement') . ' (' . $conf['titre'] . ')
-        ' . $translator->trans('Vous recevrez une réponse prochainement.') . '
+' . $translator->trans('Nous avons bien enregistré votre soumission pour notre évènement') . ' (' . $conf['titre'] . ')
+' . $translator->trans('Vous recevrez une réponse prochainement.') . '
 
-        ' . $translator->trans('Vous avez soumis le sujet suivant :') . ' ' . $conf['conf_title'] . '
+' . $translator->trans('Vous avez soumis le sujet suivant :') . ' ' . $conf['conf_title'] . '
+' . $conf['abstract'] . '
 
-        ' . $conf['abstract'] . '
-
-        ' . $translator->trans('Le bureau');
+' . $translator->trans('Le bureau');
 
         $ok = false;
         foreach ($conferenciers as $personne) {
