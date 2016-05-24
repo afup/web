@@ -5,8 +5,7 @@
     "require": {
         "symfony/translation": "^2.7",
         "symfony/config": "^2.7",
-        "twig/twig": "^1.24",
-        "paragonie/random_compat": "^2.0"
+        "twig/twig": "^1.24"
     },
     "autoload": {
         "psr-4": {
