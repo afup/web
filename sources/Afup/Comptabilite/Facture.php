@@ -7,7 +7,7 @@ use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
 
-class AFUP_Compta_Facture
+class Facture
 {
     /**
      * @var \Afup\Site\Utils\Base_De_Donnees

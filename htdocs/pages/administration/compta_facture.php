@@ -1,7 +1,7 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Comptabilite\AFUP_Compta_Facture;
+use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Logs;
 
@@ -24,7 +24,7 @@ $action = verifierAction(array(
 $smarty->assign('action', $action);
 
 
-$comptaFact = new AFUP_Compta_Facture($bdd);
+$comptaFact = new Facture($bdd);
 
 if ($action == 'lister') {
 	$ecritures = $comptaFact->obtenirFacture();
