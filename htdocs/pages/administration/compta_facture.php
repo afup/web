@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\Facture;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
 	trigger_error("Direct access forbidden.", E_USER_ERROR);
 	exit;
@@ -20,8 +24,7 @@ $action = verifierAction(array(
 $smarty->assign('action', $action);
 
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Compta_Facture.php';
-$comptaFact = new AFUP_Compta_Facture($bdd);
+$comptaFact = new Facture($bdd);
 
 if ($action == 'lister') {
 	$ecritures = $comptaFact->obtenirFacture();
@@ -33,21 +36,20 @@ if ($action == 'lister') {
 	$comptaFact->genererFacture($_GET['ref']);
 } elseif ($action == 'envoyer_facture'){
 	if($comptaFact->envoyerfacture($_GET['ref'])){
-		AFUP_Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
+		Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
 		afficherMessage('La facture a été envoyée', 'index.php?page=compta_facture&action=lister');
 	} else {
 		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=compta_facture&action=lister', true);
 	}
 } elseif ($action == 'envoyer_facture'){
 	if($comptaFact->envoyerFacture($_GET['ref'])){
-		AFUP_Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
+		Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
 		afficherMessage('La facture a été envoyée', 'index.php?page=compta_facture&action=lister');
 	} else {
 		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=compta_facture&action=lister', true);
 	}
 } elseif ($action == 'ajouter' || $action == 'modifier') {
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-    $pays = new AFUP_Pays($bdd);
+    $pays = new Pays($bdd);
 
   	$formulaire = &instancierFormulaire();
 
@@ -244,9 +246,9 @@ $date_paiement= $valeur['date_paiement']['Y']."-".$valeur['date_paiement']['F'].
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
+                Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
             } else {
-                AFUP_Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_facture&action=lister');
         } else {

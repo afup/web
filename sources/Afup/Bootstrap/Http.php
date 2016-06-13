@@ -51,13 +51,9 @@ if (empty($sous_site) and strpos($_SERVER['HTTP_HOST'], "planete") !== false) {
 	$sous_site = "planete";
 }
 
-require_once dirname(__FILE__).'/../AFUP_Mailing.php';
-
 // initialisation de Smarty, le moteur de template (html)
 
 require_once 'smarty/Smarty.class.php';
-
-
 
 $smarty = new Smarty;
 $smarty->template_dir  = array(
@@ -67,7 +63,7 @@ $smarty->template_dir  = array(
 $smarty->compile_dir   = AFUP_CHEMIN_RACINE . 'cache/templates';
 $smarty->compile_id    = $sous_site;
 $smarty->use_sub_dirs  = true;
-$smarty->check_compile = true;
+$smarty->compile_check = true;
 $smarty->php_handling  = SMARTY_PHP_ALLOW;
 
 $smarty->assign('url_base',          'http://' . $_SERVER['HTTP_HOST'] . '/');
@@ -75,3 +71,4 @@ $smarty->assign('chemin_template',   $serveur.$conf->obtenir('web|path').'templa
 $smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'javascript/');
 
 $bdd->executer("SET NAMES 'utf8'");
+require_once(dirname(__FILE__) . '/commonStart.php');

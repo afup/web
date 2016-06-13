@@ -321,8 +321,8 @@ final class Zend
      *
      * @param mixed $registry - Either a name of the registry class (Zend_Registry, or a subclass)
      *                          or an instance of Zend_Registry (or subclass)
-     *
      * @return Zend_Registry
+     * @throws Zend_Exception
      */
     static public function initRegistry($registry = 'Zend_Registry')
     {

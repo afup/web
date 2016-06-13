@@ -1,6 +1,9 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Votes;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
 	trigger_error("Direct access forbidden.", E_USER_ERROR);
 	exit;
@@ -9,8 +12,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('lister', 'voter', 'consulter'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Votes.php';
-$votes = new AFUP_Votes($bdd);
+
+$votes = new Votes($bdd);
 
 if ($action == 'lister') {
     $list_champs = '*';
@@ -20,8 +23,8 @@ if ($action == 'lister') {
     $smarty->assign('votes', $votes->obtenirListeVotesOuverts(time(), $list_champs, $list_ordre, $list_filtre));
 
 } else {
-    require_once 'Afup/AFUP_Votes.php';
-    $votes = new AFUP_Votes($bdd);
+
+    $votes = new Votes($bdd);
 
     $formulaire = &instancierFormulaire();
 
@@ -56,7 +59,7 @@ if ($action == 'lister') {
 	    if ($formulaire->validate()) {
 	    	if ($action == 'voter') {
 	    		if ($votes->voter((int)$_GET['id'], $droits->obtenirIdentifiant(), $formulaire->exportValue('commentaire'), $formulaire->exportValue('poids'), time())) {
-	    			AFUP_Logs::log('Ajout du poids sur le vote ' . (int)$_GET['id'].' - "'.$vote['question'].'"');
+	    			Logs::log('Ajout du poids sur le vote ' . (int)$_GET['id'].' - "'.$vote['question'].'"');
 	    			afficherMessage('Le poids sur le vote a été ajoutée', 'index.php?page=membre_votes&action=lister');
 	    		} else {
 	    			$smarty->assign('erreur', 'Une erreur est survenue lors de l\'ajout du poids sur le vote');

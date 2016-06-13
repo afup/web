@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Coupon;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,10 +13,10 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'ajouter_coupon', 'supprimer_coupon'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum_Coupon.php';
-$forums = new AFUP_Forum($bdd);
-$coupons = new AFUP_Forum_Coupon($bdd);
+
+
+$forums = new Forum($bdd);
+$coupons = new Coupon($bdd);
 
 if ($action == 'lister') {
     $evenements = $forums->obtenirListe(null, '*', 'date_debut desc');
@@ -23,21 +27,21 @@ if ($action == 'lister') {
     $smarty->assign('evenements', $evenements);
 } elseif ($action == 'ajouter_coupon') {
     if ($coupons->ajouter($_GET['id_forum'], $_GET['coupon'])) {
-        AFUP_Logs::log('Ajout du coupon de forum');
+        Logs::log('Ajout du coupon de forum');
         afficherMessage('Le coupon a été ajouté', 'index.php?page=forum_gestion&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de l\'ajout du coupon', 'index.php?page=forum_gestion&action=lister', true);
     }
 } elseif ($action == 'supprimer_coupon') {
     if ($coupons->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression du coupon de forum ' . $_GET['id']);
+        Logs::log('Suppression du coupon de forum ' . $_GET['id']);
         afficherMessage('Le coupon a été supprimé', 'index.php?page=forum_gestion&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du coupon', 'index.php?page=forum_gestion&action=lister', true);
     }
 } elseif ($action == 'supprimer') {
     if ($forums->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression du forum ' . $_GET['id']);
+        Logs::log('Suppression du forum ' . $_GET['id']);
         afficherMessage('Le forum a été supprimé', 'index.php?page=forum_gestion&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du forum', 'index.php?page=forum_gestion&action=lister', true);
@@ -115,9 +119,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout du forum ' . $formulaire->exportValue('titre'));
+                Logs::log('Ajout du forum ' . $formulaire->exportValue('titre'));
             } else {
-                AFUP_Logs::log('Modification du forum ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification du forum ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('Le forum a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=forum_gestion&action=lister');
         } else {

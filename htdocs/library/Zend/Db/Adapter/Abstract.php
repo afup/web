@@ -83,6 +83,7 @@ abstract class Zend_Db_Adapter_Abstract
      * host     => (string) What host to connect to (default 127.0.0.1).
      *
      * @param array $config An array of configuration keys.
+     * @throws Zend_Db_Adapter_Exception
      */
     public function __construct($config)
     {

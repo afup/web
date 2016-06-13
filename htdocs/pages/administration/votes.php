@@ -1,6 +1,9 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Votes;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,8 +12,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('lister', 'ajouter', 'modifier'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Votes.php';
-$votes = new AFUP_Votes($bdd);
+
+$votes = new Votes($bdd);
 
 if ($action == 'lister') {
 	$list_champs = '*';
@@ -20,8 +23,8 @@ if ($action == 'lister') {
     $smarty->assign('votes', $votes->obtenirListe($list_champs, $list_ordre, $list_filtre));
 
 } else {
-    require_once 'Afup/AFUP_Votes.php';
-    $votes = new AFUP_Votes($bdd);
+
+    $votes = new Votes($bdd);
 
     $formulaire = &instancierFormulaire();
 
@@ -49,7 +52,7 @@ if ($action == 'lister') {
         	$cloture = mktime(23, 59, 59, $cloture['M'], $cloture['d'], $cloture['Y']);
         	
             if ($votes->ajouter($formulaire->exportValue('question'), $lancement, $cloture, time())) {
-	            AFUP_Logs::log('Ajout du vote ' . $formulaire->exportValue('question'));
+	            Logs::log('Ajout du vote ' . $formulaire->exportValue('question'));
 	            afficherMessage('Le vote a été ajoutée', 'index.php?page=votes&action=lister');
             } else {
             	$smarty->assign('erreur', 'Une erreur est survenue lors de l\'ajout du vote');
@@ -63,7 +66,7 @@ if ($action == 'lister') {
         	$cloture = mktime(23, 59, 59, $cloture['M'], $cloture['d'], $cloture['Y']);
             
             if ($votes->modifier($_GET['id'], $formulaire->exportValue('question'), $lancement, $cloture, time())) {
-            	AFUP_Logs::log('Modification du vote ' . $formulaire->exportValue('question') . ' (' . $_GET['id'] . ')');
+            	Logs::log('Modification du vote ' . $formulaire->exportValue('question') . ' (' . $_GET['id'] . ')');
             	afficherMessage('Le vote a été modifiée', 'index.php?page=votes&action=lister');
             } else {
             	$smarty->assign('erreur', 'Une erreur est survenue lors de l\'ajout du vote');

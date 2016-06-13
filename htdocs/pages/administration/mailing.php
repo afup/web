@@ -1,6 +1,14 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\AppelConferencier;
+use Afup\Site\Association\Assemblee_Generale;
+use Afup\Site\BlackList;
+use Afup\Site\Utils\Mailing;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -10,31 +18,25 @@ $action = verifierAction(array('index','mailing', 'ajouter', 'modifier', 'suppri
 $smarty->assign('action', $action);
 set_time_limit(0);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Mailing.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_BlackList.php';
 require_once 'phpmailer/class.phpmailer.php';
 
-$forum = new AFUP_Forum($bdd);
-$blackList = new AFUP_BlackList($bdd);
-$mailing = new AFUP_Mailing($bdd);
+$forum = new Forum($bdd);
+$blackList = new BlackList($bdd);
+$mailing = new Mailing($bdd);
 
 if ($action == 'mailing')
 {
     switch ($_GET['liste']) {
         case 'membre_a_jour_cotisation':
-            require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Assemblee_Generale.php';
-            $assemblee = new AFUP_Assemblee_Generale($bdd);
+            $assemblee = new Assemblee_Generale($bdd);
             $liste = $assemblee->obtenirListeEmailPersonnesAJourDeCotisation();
             break;
         case 'ancien_conferencier':
-            require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
-            $forum_appel = new AFUP_AppelConferencier($bdd);
+            $forum_appel = new AppelConferencier($bdd);
             $liste = $forum_appel->obtenirListeEmailAncienConferencier();
             break;
         case 'ancien_visiteur':
-            require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
-            $inscriptions = new AFUP_Inscriptions_Forum($bdd);
+            $inscriptions = new Inscriptions($bdd);
             $liste = $inscriptions->obtenirListeEmailAncienVisiteurs();
             break;
         default:
@@ -76,14 +78,14 @@ if ($action == 'mailing')
             $email_to = trim($email_to);
             if ((filter_var($email_to, FILTER_VALIDATE_EMAIL))) {
                 if (!(in_array($email_to, $liste))) {
-                    AFUP_Mailing::envoyerMail($valeurs['from_email'], $email_to, $valeurs['subject'], $body);
+                    Mailing::envoyerMail($valeurs['from_email'], $email_to, $valeurs['subject'], $body);
                     if (((++$nb) % 200) == 0) {
                         sleep(5);
                     }
                 }
             }
         }
-        AFUP_Logs::log('Envoi mailing ' .$valeurs['subject']);
+        Logs::log('Envoi mailing ' .$valeurs['subject']);
         afficherMessage('Le mail a été envoyé', 'index.php?page=mailing');
     }
     $smarty->assign('formulaire', genererFormulaire($formulaire));

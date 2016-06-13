@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Corporate\Rubrique;
+use Afup\Site\Corporate\Rubriques;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,11 +16,11 @@ $tris_valides = array('titre', 'date');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Site.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
 
-$rubriques = new AFUP_Site_Rubriques($bdd);
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+
+
+$rubriques = new Rubriques($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
 
 if ($action == 'lister') {
     $list_champs     = '*';
@@ -43,9 +48,9 @@ if ($action == 'lister') {
     $smarty->assign('rubriques', $rubriques->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre));
 
 } elseif ($action == 'supprimer') {
-    $rubrique = new AFUP_Site_Rubrique($_GET['id']);
+    $rubrique = new Rubrique($_GET['id']);
     if ($rubrique->supprimer()) {
-        AFUP_Logs::log('Suppression de la rubrique ' . $_GET['id']);
+        Logs::log('Suppression de la rubrique ' . $_GET['id']);
         afficherMessage('La rubrique a été supprimée', 'index.php?page=site_rubriques&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de la rubrique', 'index.php?page=site_rubriques&action=lister', true);
@@ -53,7 +58,7 @@ if ($action == 'lister') {
 
 } else {
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    $rubrique = new AFUP_Site_Rubrique($id);
+    $rubrique = new Rubrique($id);
 
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
@@ -120,9 +125,9 @@ if ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout de la rubrique ' . $formulaire->exportValue('nom'));
+                Logs::log('Ajout de la rubrique ' . $formulaire->exportValue('nom'));
             } else {
-                AFUP_Logs::log('Modification de la rubrique ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification de la rubrique ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('La rubrique a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=site_rubriques&action=lister');
         } else {

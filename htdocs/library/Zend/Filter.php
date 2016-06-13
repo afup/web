@@ -232,6 +232,7 @@ class Zend_Filter
      *
      * @param mixed $value
      * @return mixed
+     * @throws Zend_Filter_Exception
      */
     public static function isEmail($value)
     {
@@ -412,7 +413,9 @@ class Zend_Filter
      * This method requires that the value consist of only digits.
      *
      * @param mixed $value
+     * @param string $country
      * @return mixed
+     * @throws Zend_Filter_Exception
      */
     public static function isPhone($value, $country = 'US')
     {

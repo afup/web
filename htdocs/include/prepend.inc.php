@@ -2,13 +2,16 @@
 
 // Initialisation
 ob_start();
+
 session_start();
+
+// Inclusion de l'autoload de composer
+require_once dirname(__FILE__) . '/../../vendor/autoload.php';
 
 require_once dirname(__FILE__).'/../../sources/Afup/fonctions.php';
 
 // Configuration
-require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Configuration.php';
-$conf = new AFUP_Configuration(dirname(__FILE__).'/../../configs/application/config.php');
+$conf = new \Afup\Site\Utils\Configuration(dirname(__FILE__).'/../../configs/application/config.php');
 $GLOBALS['AFUP_CONF'] = $conf;
 error_reporting($conf->obtenir('divers|niveau_erreur'));
 ini_set('display_errors', $conf->obtenir('divers|afficher_erreurs'));
@@ -39,35 +42,17 @@ $smarty->template_dir  = array(dirname(__FILE__).'/../../htdocs/templates/' . $s
 $smarty->compile_dir   = dirname(__FILE__).'/../../htdocs/cache/templates';
 $smarty->compile_id    = $sous_site;
 $smarty->use_sub_dirs  = true;
-$smarty->check_compile = true;
+$smarty->compile_check = true;
 $smarty->php_handling  = SMARTY_PHP_ALLOW;
 $smarty->assign('url_base', 'http://' . $_SERVER['HTTP_HOST'] . '/');
 $smarty->assign('chemin_template', $serveur.$conf->obtenir('web|path').'templates/' . $sous_site . '/');
 $smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'javascript/');
 
 // Initialisation de la couche d'abstraction de la base de données
-require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Base_De_Donnees.php';
-$bdd = new AFUP_Base_De_Donnees($conf->obtenir('bdd|hote'),
+$bdd = new \Afup\Site\Utils\Base_De_Donnees($conf->obtenir('bdd|hote'),
                                 $conf->obtenir('bdd|base'),
                                 $conf->obtenir('bdd|utilisateur'),
                                 $conf->obtenir('bdd|mot_de_passe'));
 $bdd->executer("SET NAMES 'utf8'");
 
-// Inclusion de la classe permettant l envoi de mail
-require_once dirname(__FILE__).'/../../sources/Afup/AFUP_Mailing.php';
-
-// Inclusion de l'autoload de composer
-require_once dirname(__FILE__) . '/../../vendor/autoload.php';
-
-// Configuration du composant de traduction
-$lang = 'fr';
-$langs = ['fr', 'en'];
-if (isset($_GET['lang']) && in_array($_GET['lang'], $langs)) {
-    $lang = $_GET['lang'];
-}
-$translator = new \Symfony\Component\Translation\Translator($lang);
-$translator->addLoader('xliff', new \Symfony\Component\Translation\Loader\XliffFileLoader());
-$translator->addResource('xliff', dirname(__FILE__) . '/../../translations/inscription.en.xlf', 'en');
-$translator->addResource('xliff', dirname(__FILE__) . '/../../translations/cfp.en.xlf', 'en');
-$translator->setFallbackLocales(array('fr'));
-$smarty->register_modifier('trans', [$translator, 'trans']);
+require_once(dirname(__FILE__) . '/../../sources/Afup/Bootstrap/commonStart.php');

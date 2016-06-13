@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,12 +14,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('payer', 'telecharger_facture', 'envoyer_facture'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-$pays = new AFUP_Pays($bdd);
+$pays = new Pays($bdd);
 
 $formulaire = &instancierFormulaire();
 
@@ -22,23 +24,31 @@ $identifiant = $droits->obtenirIdentifiant();
 $champs = $personnes_physiques->obtenir($identifiant);
 $cotisation = $personnes_physiques->obtenirDerniereCotisation($identifiant);
 unset($champs['mot_de_passe']);
+$cotisations = new Cotisations($bdd);
+
 
 if (!$cotisation) {
     $message = empty($_GET['hash'])? 'Est-ce vraiment votre première cotisation ?' : '';
 } else {
-    $message = 'Votre dernière cotisation -- ' . $cotisation['montant'] . ' ' . EURO . ' -- est valable jusqu\'au ' . date("d/m/Y", $cotisation['date_fin']) . '.';
+    $endSubscription = $cotisations->finProchaineCotisation($cotisation);
+    $message = sprintf(
+        'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
+        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s',
+        $cotisation['montant'],
+        EURO,
+        date("d/m/Y", $cotisation['date_fin']),
+        $endSubscription->format('d/m/Y')
+    );
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'envoyer_facture') {
-    $cotisations = new AFUP_Cotisations($bdd);
     if ($cotisations->envoyerFacture($_GET['id'])) {
-        AFUP_Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
+        Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
         afficherMessage('La facture a été envoyée par mail', 'index.php?page=membre_cotisation');
     } else {
         afficherMessage("La facture n'a pas pu être envoyée par mail", 'index.php?page=membre_cotisation', true);
     }
 } elseif (isset($_GET['action']) && $_GET['action'] == 'telecharger_facture') {
-    $cotisations = new AFUP_Cotisations($bdd);
     $cotisations->genererFacture($_GET['id']);
     die();
 }
@@ -79,6 +89,7 @@ $paybox->set_total($montant * 100); // Total de la commande, en centimes d'euros
 $paybox->set_cmd($reference); // Référence de la commande
 $paybox->set_porteur($donnees['email']); // Email du client final (Le porteur de la carte)
 
+$paybox->set_repondreA('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_retour.php');
 // URL en cas de reussite
 $paybox->set_effectue('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
 // URL en cas de refus du paiement
@@ -101,10 +112,7 @@ if (preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
 $smarty->assign('message', $message);
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 
-$cotisations = new AFUP_Cotisations($bdd);
 $cotisation_physique = $cotisations->obtenirListe(0 , $donnees['id']);
-
-$cotisations = new AFUP_Cotisations($bdd);
 $cotisation_morale = $cotisations->obtenirListe(1 , $donnees['id_personne_morale']);
 
 if (is_array($cotisation_morale) && is_array($cotisation_physique)) {

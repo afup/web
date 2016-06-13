@@ -168,6 +168,7 @@ class Zend_Db_Profiler
      * save all queries regardless of type, set $queryType to null.
      *
      * @param null|integer $queryTypes
+     * @return bool
      */
     public function setFilterQueryType($queryTypes=null)
     {

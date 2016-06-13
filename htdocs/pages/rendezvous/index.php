@@ -1,11 +1,14 @@
 <?php
+use Afup\Site\Rendez_Vous;
+use Afup\Site\Utils\Logs;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Rendez_Vous.php';
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Logs.php';
 
-AFUP_Logs::initialiser($bdd, 0);
 
-$rendezvous = new AFUP_Rendez_Vous($bdd);
+
+Logs::initialiser($bdd, 0);
+
+$rendezvous = new Rendez_Vous($bdd);
 if (isset($_GET['id'])) {
 	$prochain_rendezvous = $rendezvous->obtenir((int)$_GET['id']);
 } else {
@@ -77,7 +80,7 @@ if (isset($prochain_rendezvous) and is_array($prochain_rendezvous)) {
         $ok = $rendezvous->enregistrerInscrit($formulaire);
 
         if ($ok) {
-            AFUP_Logs::log('Pré-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
+            Logs::log('Pré-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
             $smarty->assign('resultat', 'succes');
             $smarty->assign('message', 'Votre pré-inscription a bien été prise en compte.');
 			$smarty->display('message.html');

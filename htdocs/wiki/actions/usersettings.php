@@ -28,21 +28,24 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+use Afup\Site\Utils\Utils;
+use Afup\Site\Utils\Base_De_Donnees;
+
 if (!isset($_REQUEST["action"])) $_REQUEST["action"] = '';
 
 require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/OtherToolPlugin.php';
 
 require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Base_De_Donnees.php';
-require_once dirname(__FILE__) . '/../../../sources/Afup/AFUP_Utils.php';
+require_once dirname(__FILE__) . '/../../../sources/Afup/Utils.php';
 
 if ($_REQUEST["action"] == "logout")
 {
-	$bdd = new AFUP_Base_De_Donnees($GLOBALS['wakkaConfig']['mysql_host'],
+	$bdd = new Base_De_Donnees($GLOBALS['wakkaConfig']['mysql_host'],
                                $GLOBALS['wakkaConfig']['mysql_database'],
                                $GLOBALS['wakkaConfig']['mysql_user'],
                                $GLOBALS['wakkaConfig']['mysql_password']);
 			
-	$droits = AFUP_Utils::fabriqueDroits($bdd);
+	$droits = Utils::fabriqueDroits($bdd);
 	$droits->seDeconnecter();
 
 	$this->SetMessage("Vous &ecirc;tes maintenant d&eacute;connect&eacute; !");
@@ -53,12 +56,12 @@ if ($_REQUEST["action"] == "logout")
 	// is user trying to log in or register?
 	if ($_REQUEST["action"] == "login")
 	{
-		$bdd = new AFUP_Base_De_Donnees($GLOBALS['wakkaConfig']['mysql_host'],
+		$bdd = new Base_De_Donnees($GLOBALS['wakkaConfig']['mysql_host'],
                                 $GLOBALS['wakkaConfig']['mysql_database'],
                                 $GLOBALS['wakkaConfig']['mysql_user'],
                                 $GLOBALS['wakkaConfig']['mysql_password']);
 			
-		$droits = AFUP_Utils::fabriqueDroits($bdd);
+		$droits = Utils::fabriqueDroits($bdd);
 		$droits->seConnecter($_POST["name"], $_POST["password"]);
 
 		if ($droits->estConnecte()) {

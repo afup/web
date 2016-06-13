@@ -1,14 +1,15 @@
 <?php
 
+use Afup\Site\Forum\Accreditation_Presse;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Mailing;
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Mailing.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Accreditation_Presse.php';
-$pays = new AFUP_Pays($bdd);
-$presse = new AFUP_Accreditation_Presse($bdd);
-$mailing = new AFUP_Mailing($bdd);
+$pays = new Pays($bdd);
+$presse = new Accreditation_Presse($bdd);
+$mailing = new Mailing($bdd);
 
 // On créé le formulaire
 $formulaire = &instancierFormulaire();
@@ -68,13 +69,13 @@ if ($formulaire->validate()) {
             . " - téléphhone : " . $formulaire->exportValue('telephone') . "\n"
             . " - email : " . $formulaire->exportValue('email') . "\n"
             . " - commentaires : " . strip_tags($formulaire->exportValue('commentaires'));
-        AFUP_Mailing::envoyerMail(
+        Mailing::envoyerMail(
             array($formulaire->exportValue('email'), $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom')),
             array('bureau@afup.org', 'Bureau AFUP'),
             'Demande d\'accréditation presse Forum PHP 2014',
             $body
         );
-        AFUP_Mailing::envoyerMail(
+        Mailing::envoyerMail(
             array($formulaire->exportValue('email'), $formulaire->exportValue('nom') . ' ' . $formulaire->exportValue('prenom')),
             array('communication@afup.org', 'Communication AFUP'),
             'Demande d\'accréditation presse Forum PHP 2014',

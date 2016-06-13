@@ -188,9 +188,10 @@ abstract class Zend_Controller_Response_Abstract
 
     /**
      * Set HTTP response code to use with headers
-     * 
-     * @param int $code 
+     *
+     * @param int $code
      * @return Zend_Controller_Response_Abstract
+     * @throws Zend_Controller_Response_Exception
      */
     public function setHttpResponseCode($code)
     {

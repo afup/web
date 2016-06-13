@@ -1,5 +1,7 @@
 <?php
 
+use Afup\Site\Association\Personnes_Physiques;
+
 $pages = array(
 	'accueil' => array(
 		'nom' => 'Accueil',
@@ -24,6 +26,10 @@ $pages = array(
 		    ),
             'membre_cotisation' => array(
                 'nom' => 'Ma cotisation',
+                'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+            ),
+            'membre_personne_morale' => array(
+                'nom' => 'Ma personne morale',
                 'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
             ),
 		    'membre_ml' => array(
@@ -328,3 +334,14 @@ $pages = array(
 		'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
 	),
 );
+
+$personnes_physiques = new Personnes_Physiques($bdd);
+
+$identifiant = $droits->obtenirIdentifiant();
+$personne_physique = $personnes_physiques->obtenir($identifiant);
+if ($personne_physique['id_personne_morale'] == 0) {
+    // Suppression des pages accessibles aux membres d'une personne morale
+    unset($pages['membre']['elements']['membre_personne_morale']);
+}
+
+

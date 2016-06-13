@@ -1,8 +1,9 @@
 <?php
 
+use Afup\Site\Pagination;
+
 require_once dirname(__FILE__) . '/config.dist.php';
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
-require_once 'Afup/AFUP_Pagination.php';
 require_once 'smarty/Smarty.class.php';
 
 $smarty = new Smarty();
@@ -31,7 +32,7 @@ class tests_Pagination extends UnitTestCase {
     }
 
     function doTest($nombre_elements, $elements_par_page, $nombre_pages) {
-        $pagination = new AFUP_Pagination(1, $elements_par_page, $nombre_elements, array($this, 'genere_route'));
+        $pagination = new Pagination(1, $elements_par_page, $nombre_elements, array($this, 'genere_route'));
         $html = $pagination->__toString();
 
         $doc = new DOMDocument();

@@ -146,6 +146,38 @@
                 <source>Pour tous ceux ayant soumis une proposition vous recevrez une réponse très bientôt.</source>
                 <target>For all those who submitted the proposals you will receive a response soon.</target>
             </trans-unit>
+            <trans-unit id="37">
+                <source>Bonjour,</source>
+                <target>Hello,</target>
+            </trans-unit>
+            <trans-unit id="38">
+                <source>Nous avons bien enregistré votre soumission pour notre évènement</source>
+                <target>We confirm your proposal for our event</target>
+            </trans-unit>
+            <trans-unit id="43">
+                <source>Nous avons bien enregistré votre soumission pour notre évènement</source>
+                <target>We received your proposal for our event</target>
+            </trans-unit>
+            <trans-unit id="39">
+                <source>Vous recevrez une réponse prochainement.</source>
+                <target>We will get back to you you any time soon.</target>
+            </trans-unit>
+            <trans-unit id="40">
+                <source>Vous avez soumis le sujet suivant :</source>
+                <target>You submitted the following subject:</target>
+            </trans-unit>
+            <trans-unit id="41">
+                <source>Le bureau</source>
+                <target>Afup's office</target>
+            </trans-unit>
+            <trans-unit id="42">
+                <source>Votre proposition pour:</source>
+                <target>Your proposal for:</target>
+            </trans-unit>
+            <trans-unit id="44">
+                <source>Vous pouvez éditer votre proposition jusqu'à la fin de l'appel à conférenciers. Si vous souhaitez le faire, if suffit de suivre ce lien:</source>
+                <target>You can edit this proposal until the end of the CFP. If you want to do so, please use the following link:</target>
+            </trans-unit>
             <!--
             <trans-unit id="">
                 <source></source>

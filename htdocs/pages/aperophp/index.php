@@ -1,16 +1,18 @@
 <?php
 
+use Afup\Site\Aperos\Aperos;
+
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Aperos.php';
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Aperos_Html.php';
-require_once dirname(__FILE__) .'/../../../sources/Afup/AFUP_Aperos_Inscrit.php';
+
+
+
 
 $erreurs = "";
 
 if (isset($_POST['action'])) {
 	switch ($_POST['action']) {
 		case "login":
-			$inscrit = new AFUP_Aperos_Inscrit($bdd);
+			$inscrit = new \Afup\Site\Aperos\Inscrits($bdd);
 			if ($inscrit->authentifier($_POST['pseudo'], $_POST['mot_de_passe'])) {
 				$inscrit->mettreEnSession($_POST['pseudo']);
 			} else {
@@ -21,7 +23,7 @@ if (isset($_POST['action'])) {
 }
 
 $affichage = new AFUP_Aperos_Html();
-$aperos = new AFUP_Aperos($bdd);
+$aperos = new Aperos($bdd);
 $inscrit = new AFUP_Aperos_Inscrit($bdd);
 $contenu = "";
 

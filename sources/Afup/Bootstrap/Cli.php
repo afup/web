@@ -18,10 +18,11 @@
  * @group    Bootstraps
  */
 
+use Afup\Site\Utils\Logs;
+
 $startMicrotime = microtime(true);
 
 require_once dirname(__FILE__) . '/_Common.php';
+require_once dirname (__FILE__) . '/../../../vendor/autoload.php';
 
-require dirname(__FILE__) . '/../AFUP_Logs.php';
-
-AFUP_Logs::initialiser($bdd, 0);
+Logs::initialiser($bdd, 0);

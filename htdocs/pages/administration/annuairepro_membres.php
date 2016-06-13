@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\AFUP_AnnuairePro_Membres;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
 	trigger_error("Direct access forbidden.", E_USER_ERROR);
 	exit;
@@ -11,7 +15,6 @@ $tris_valides = array('RaisonSociale', 'SIREN', 'SiteWeb');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AnnuairePro_Membres.php';
 $annuairepro_membres = new AFUP_AnnuairePro_Membres($bdd);
 
 if ($action == 'lister') {
@@ -36,7 +39,7 @@ if ($action == 'lister') {
 
 } elseif ($action == 'supprimer') {
 		if ($annuairepro_membres->supprimer($_GET['id'])) {
-				AFUP_Logs::log('Suppression du membre de l\'annuaire pro ' . $_GET['id']);
+				Logs::log('Suppression du membre de l\'annuaire pro ' . $_GET['id']);
 				afficherMessage('Le membre de l\'annuaire pro a été supprimé', 'index.php?page=annuairepro_membres&action=lister');
 		} else {
 				afficherMessage('Une erreur est survenue lors de la suppression du membre de l\'annuaire pro', 'index.php?page=annuairepro_membres&action=lister', true);
@@ -44,15 +47,14 @@ if ($action == 'lister') {
 
 } elseif ($action == 'nettoyer') {
 		if ($annuairepro_membres->nettoyer()) {
-				AFUP_Logs::log('Suppression des membres spammeurs de l\'annuaire pro');
+				Logs::log('Suppression des membres spammeurs de l\'annuaire pro');
 				afficherMessage('Les membres spammeurs de l\'annuaire pro ont été supprimé', 'index.php?page=annuairepro_membres&action=lister');
 		} else {
 				afficherMessage('Une erreur est survenue lors de la suppression des membres spammeurs de l\'annuaire pro', 'index.php?page=annuairepro_membres&action=lister', true);
 		}
 
 } else {
-		require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-		$pays = new AFUP_Pays($bdd);
+		$pays = new Pays($bdd);
 
 		$formulaire = &instancierFormulaire();
 		if ($action == 'ajouter') {
@@ -151,9 +153,9 @@ if ($action == 'lister') {
 
 				if ($ok) {
 						if ($action == 'ajouter') {
-								AFUP_Logs::log('Ajout du membre de l\'annuaire pro ' . $formulaire->exportValue('RaisonSociale'));
+								Logs::log('Ajout du membre de l\'annuaire pro ' . $formulaire->exportValue('RaisonSociale'));
 						} else {
-								AFUP_Logs::log('Modification du membre de l\'annuaire pro ' . $formulaire->exportValue('RaisonSociale') . ' (' . $_GET['id'] . ')');
+								Logs::log('Modification du membre de l\'annuaire pro ' . $formulaire->exportValue('RaisonSociale') . ' (' . $_GET['id'] . ')');
 						}
 						afficherMessage('Le membre de l\'annuaire pro a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=annuairepro_membres&action=lister');
 				} else {

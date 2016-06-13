@@ -66,6 +66,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         # Provision with Chef-Solo
         web.vm.provision :chef_solo do |chef|
+            chef.version = "12.10.40"
             chef.cookbooks_path = "provisionning/chef/cookbooks"
             chef.add_recipe("afup")
 

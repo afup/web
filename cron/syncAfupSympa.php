@@ -1,9 +1,14 @@
 <?php
+use Afup\Site\Association\Assemblee_Generale;
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Utils\Sympa;
+use Afup\Site\Utils\Base_De_Donnees;
+
 require_once __DIR__ . '/../sources/Afup/Bootstrap/Cli.php';
 
 echo "Synchronisation Sympa " . date('Y-m-d H:i:s') . PHP_EOL;
 
-$sympaBdd = new AFUP_Base_De_Donnees(
+$sympaBdd = new Base_De_Donnees(
     $conf->obtenir('sympa|hote'),
     $conf->obtenir('sympa|base'),
     $conf->obtenir('sympa|utilisateur'),
@@ -11,16 +16,16 @@ $sympaBdd = new AFUP_Base_De_Donnees(
 );
 
 echo " - recuperation membres à jour de cotisation...\n";
-require_once dirname(__FILE__).'/../sources/Afup/AFUP_Assemblee_Generale.php';
-$assemblee = new AFUP_Assemblee_Generale($bdd);
+
+$assemblee = new Assemblee_Generale($bdd);
 $membresAfup = explode(';', strtolower($assemblee->obtenirListeEmailPersonnesAJourDeCotisation()));
-require_once dirname(__FILE__).'/../sources/Afup/AFUP_Personnes_Physiques.php';
-$personnes = new AFUP_Personnes_Physiques($bdd);
+
+$personnes = new Personnes_Physiques($bdd);
 $infoMembres = $personnes->obtenirListe('lower(email) as email,nom,prenom', 'email', false, false, true, null);
 
 echo " - recuperation de toutes les listes Sympa et de leurs lecteurs...\n";
-require_once dirname(__FILE__).'/../sources/Afup/AFUP_Sympa.php';
-$sympa = new AFUP_Sympa($sympaBdd, $conf->obtenir('sympa|directory'));
+
+$sympa = new Sympa($sympaBdd, $conf->obtenir('sympa|directory'));
 $tmpListes = $sympa->getAllMailingList();
 $usersSympa = $sympa->getAllUsers();
 

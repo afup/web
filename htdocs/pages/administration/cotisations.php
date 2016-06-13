@@ -1,6 +1,11 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Association\Personnes_Morales;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -10,12 +15,12 @@ $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'te
 $smarty->assign('action', $action);
 
 // Personne
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.php';
+
+
 if ($_GET['type_personne'] == AFUP_PERSONNES_PHYSIQUES) {
-    $personnes = new AFUP_Personnes_Physiques($bdd);
+    $personnes = new Personnes_Physiques($bdd);
 } else {
-    $personnes = new AFUP_Personnes_Morales($bdd);
+    $personnes = new Personnes_Morales($bdd);
 }
 $smarty->assign('type_personne', $_GET['type_personne']);
 $smarty->assign('id_personne'  , $_GET['id_personne']);
@@ -23,8 +28,8 @@ $personne = $personnes->obtenir($_GET['id_personne']);
 $smarty->assign('personne', $personne);
 
 // Cotisations
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Cotisations.php';
-$cotisations = new AFUP_Cotisations($bdd);
+
+$cotisations = new Cotisations($bdd);
 
 if ($action == 'lister') {
     $smarty->assign('cotisations', $cotisations->obtenirListe($_GET['type_personne'], $_GET['id_personne']));
@@ -32,14 +37,14 @@ if ($action == 'lister') {
 	$cotisations->genererFacture($_GET['id']);
 } elseif ($action == 'envoyer_facture'){
 	if($cotisations->envoyerFacture($_GET['id'])){
-	   AFUP_Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
+	   Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
        afficherMessage('La facture a été envoyée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne']);
 	} else {
        afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne'], true);
     }
 } elseif ($action == 'supprimer') {
     if ($cotisations->supprimer($_GET['id'])) {
-        AFUP_Logs::log('Suppression de la cotisation ' . $_GET['id']);
+        Logs::log('Suppression de la cotisation ' . $_GET['id']);
         afficherMessage('La cotisation a été supprimée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne']);
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de la personne morale', 'index.php?page=personnes_morales&action=lister', true);
@@ -100,7 +105,7 @@ if ($action == 'lister') {
                                       $date_debut,
                                       $date_fin,
                                       $formulaire->exportValue('commentaires'))) {
-                AFUP_Logs::log("Ajout de la cotisation jusqu'au " . date('d F Y', $date_fin) . ' pour ' . $nom);
+                Logs::log("Ajout de la cotisation jusqu'au " . date('d F Y', $date_fin) . ' pour ' . $nom);
                 afficherMessage("La cotisation jusqu'au " . date('d F Y', $date_fin) . ' pour ' . $nom . ' a bien été ajoutée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne']);
             } else {
                 $smarty->assign('erreur', "Une erreur est survenue lors de l'ajout de la cotisation jusqu'au " . date('d F Y', $date_fin) . ' pour ' . $nom);
@@ -115,7 +120,7 @@ if ($action == 'lister') {
                                        $date_debut,
                                        $date_fin,
                                        $formulaire->exportValue('commentaires'))) {
-                AFUP_Logs::log('Modification de la cotisation (' . $_GET['id'] . ') pour ' . $nom);
+                Logs::log('Modification de la cotisation (' . $_GET['id'] . ') pour ' . $nom);
                 afficherMessage('La cotisation pour ' . $nom . ' a bien été modifiée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne']);
             } else {
                 $smarty->assign('erreur', 'Une erreur est survenue lors de la modification de la cotisation (' . $_GET['id'] . ') pour ' . $nom);

@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Facturation;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,10 +15,10 @@ $tris_valides = array('date_facture', 'email', 'societe', 'etat');
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
-$forum = new AFUP_Forum($bdd);
-$forum_facturation = new AFUP_Facturation_Forum($bdd);
+
+
+$forum = new Forum($bdd);
+$forum_facturation = new Facturation($bdd);
 
 if ($action == 'lister') {
     // Valeurs par défaut des paramètres de tri
@@ -47,7 +51,7 @@ if ($action == 'lister') {
 	$forum_facturation->genererFacture($_GET['ref']);
 } elseif ($action == 'envoyer_facture'){
 	if($forum_facturation->envoyerFacture($_GET['ref'])){
-		AFUP_Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
+		Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
 		afficherMessage('La facture a été envoyée', 'index.php?page=forum_facturation&action=lister');
 	} else {
 		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=forum_facturation&action=lister', true);
@@ -60,14 +64,14 @@ if ($action == 'lister') {
 	}
 } elseif ($action == 'facturer_facture'){
 	if($forum_facturation->estFacture($_GET['ref'])){
-		AFUP_Logs::log('Facturation => facture n°' . $_GET['ref']);
+		Logs::log('Facturation => facture n°' . $_GET['ref']);
 		afficherMessage('La facture est prise en compte', 'index.php?page=forum_facturation&action=lister');
 	} else {
 		afficherMessage("La facture n'a pas pu être prise en compte", 'index.php?page=forum_facturation&action=lister', true);
 	}
 } elseif ($action == 'supprimer_facture'){
 	if($forum_facturation->supprimerFacturation($_GET['ref'])){
-		AFUP_Logs::log('Supprimer => facture n°' . $_GET['ref']);
+		Logs::log('Supprimer => facture n°' . $_GET['ref']);
 		afficherMessage('La facture est supprimée', 'index.php?page=forum_facturation&action=lister');
 	} else {
 		afficherMessage("La facture n'a pas pu être supprimée", 'index.php?page=forum_facturation&action=lister', true);

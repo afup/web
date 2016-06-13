@@ -1,6 +1,9 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Assemblee_Generale;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,8 +14,7 @@ $tris_valides = array('nom', 'date_consultation', 'presence', 'personnes_avec_po
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Assemblee_Generale.php';
-$assemblee_generale = new AFUP_Assemblee_Generale($bdd);
+$assemblee_generale = new Assemblee_Generale($bdd);
 
 if ($action == 'lister' || $action== 'listing' ) {
 
@@ -85,7 +87,7 @@ if ($action == 'lister' || $action== 'listing' ) {
                                                        $formulaire->exportValue('corps'));
 
         if ($ok) {
-            AFUP_Logs::log('Envoi des emails de convocations aux personnes physiques pour l\'assemblée générale');
+            Logs::log('Envoi des emails de convocations aux personnes physiques pour l\'assemblée générale');
             afficherMessage('L\'envoi des emails de convocations aux personnes physiques pour l\'assemblée générale a été effectué', 'index.php?page=assemblee_generale&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de l\'envoi des emails aux personnes physiques pour l\'assemblée générale');
@@ -111,7 +113,7 @@ if ($action == 'lister' || $action== 'listing' ) {
         $ok = $assemblee_generale->preparer($formulaire->exportValue('date'));
 
         if ($ok !== false) {
-            AFUP_Logs::log('Ajout de la préparation des personnes physiques à l\'assemblée générale');
+            Logs::log('Ajout de la préparation des personnes physiques à l\'assemblée générale');
             afficherMessage('La préparation des personnes physiques a été ajoutée', 'index.php?page=assemblee_generale&action=lister');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de la préparation des personnes physiques');

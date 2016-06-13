@@ -13,12 +13,14 @@
 
 // chargement du fichier d'initialisation du contexte ligne de commande
 
+use Afup\Site\Tags;
+
 require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/Cli.php';
 
 // logique interne du script
 
-require_once 'Afup/AFUP_Tags.php';
-$tags = new AFUP_Tags($bdd);
+
+$tags = new Tags($bdd);
 
 if (isset($_GET['membres'])) {
     $dot_file = dirname(__FILE__) . '/membre_graphviz.membres.dot';

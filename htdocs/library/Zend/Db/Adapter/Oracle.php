@@ -72,6 +72,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
      *             name of the entry in tnsnames.ora to which you want to connect.
      *
      * @param array $config An array of configuration keys.
+     * @throws Zend_Db_Adapter_Exception
      */
     public function __construct($config)
     {
@@ -104,11 +105,11 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
 
         $this->_profiler = new Zend_Db_Profiler($enabled);
     }
-	
+
     /**
      * Creates a connection resource.
      *
-     * @return void
+     * @throws Zend_Db_Adapter_Oracle_Exception
      */
     protected function _connect()
     {
@@ -149,9 +150,11 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
     /**
      * Gets the last inserted ID.
      *
-     * @param  string $tableName   name of table associated with sequence
-     * @param  string $primaryKey  not used in this adapter
-     * @return integer
+     * @param  string $tableName name of table associated with sequence
+     * @param  string $primaryKey not used in this adapter
+     * @return int
+     * @throws Zend_Db_Adapter_Exception
+     * @throws Zend_Db_Adapter_Oracle_Exception
      */
     public function lastInsertId($tableName = null, $primaryKey = null)
     {
@@ -223,7 +226,8 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
     /**
      * Roll back a transaction and return to autocommit mode.
      *
-     * @return void
+     * @throws Zend_Db_Adapter_Exception
+     * @throws Zend_Db_Adapter_Oracle_Exception
      */
     protected function _rollBack()
     {
@@ -238,7 +242,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
      * Set the fetch mode.
      *
      * @param int $mode A fetch mode.
-     * @return void
+     * @throws Zend_Db_Adapter_Exception
      * @todo Support FETCH_CLASS and FETCH_INTO.
      */
     public function setFetchMode($mode)

@@ -1,6 +1,13 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Forum\Inscriptions;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Facturation;
+use Afup\Site\Forum\AppelConferencier;
+use Afup\Site\Utils\Utils;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,15 +18,15 @@ $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_AppelConferencier.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Facturation_Forum.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Forum.php';
 
-$forum = new AFUP_Forum($bdd);
-$forum_appel = new AFUP_AppelConferencier($bdd);
-$forum_inscriptions = new AFUP_Inscriptions_Forum($bdd);
-$forum_facturation = new AFUP_Facturation_Forum($bdd);
+
+
+
+
+$forum = new Forum($bdd);
+$forum_appel = new AppelConferencier($bdd);
+$forum_inscriptions = new Inscriptions($bdd);
+$forum_facturation = new Facturation($bdd);
 if ($action == 'inscrire_forum')
 {
 
@@ -27,10 +34,6 @@ if ($action == 'inscrire_forum')
         $_GET['id_forum'] = $forum->obtenirDernier();
     }
   $sessions = $forum_appel->obtenirListeSessionsPlannifies($_GET['id_forum'] );
-  foreach (array(353,354,355,356,357,358,359,361,362,363,364,366) as $id_projet_php)
-  {
-  	 $sessions[] = array('session_id'=> $id_projet_php,'is_projet'=> true);
-  }
 
   $valeurs['id_forum']= (int)$_GET['id_forum'];
 
@@ -117,7 +120,7 @@ if ($action == 'inscrire_forum')
 
         if ($ok_fact)
         {
-             AFUP_Logs::log('Ajout inscription conférencier ' . $conferencier['conferencier_id']);
+             Logs::log('Ajout inscription conférencier ' . $conferencier['conferencier_id']);
              $nb_conferencier++;
 
         }
@@ -174,7 +177,7 @@ elseif ($action == 'lister') {
     $smarty->assign('nb_conferenciers', $forum_appel->obtenirNbConferenciersDistinct($_GET['id_forum']));
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerConferencier($_GET['id'])) {
-        AFUP_Logs::log('Suppression du conférencier ' . $_GET['id']);
+        Logs::log('Suppression du conférencier ' . $_GET['id']);
         afficherMessage('Le conférencier a été supprimé', 'index.php?page=forum_conferenciers&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression du conférencier', 'index.php?page=forum_conferenciers&action=lister', true);
@@ -184,9 +187,9 @@ elseif ($action == 'lister') {
     $rs = $forum->obtenir( $_GET['id_forum']);
     $imageDir = realpath('../../templates/'.$rs['path'].'/images/intervenants/');
     // Transformation en 90x120 JPG pour simplifier
-    $img = @imagecreatefromjpeg(AFUP_Utils::get_gravatar($champs['email'], 90));
+    $img = @imagecreatefromjpeg(Utils::get_gravatar($champs['email'], 90));
     if (gettype($img) != 'resource') {
-      $img = imagecreatefrompng(AFUP_Utils::get_gravatar($champs['email'], 90));
+      $img = imagecreatefrompng(Utils::get_gravatar($champs['email'], 90));
     }
     $width = imagesx($img);
     $height = imagesy($img);
@@ -199,8 +202,7 @@ elseif ($action == 'lister') {
     chmod($imageDir . '/' . $_GET['id'] . '.jpg', 0664);
     afficherMessage('L\'image gravatar a été associée', 'index.php?page=forum_conferenciers&action=modifier&id='. $_GET['id'] . '&id_forum=' . $_GET['id_forum']);
 } else {
-    require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-    $pays = new AFUP_Pays($bdd);
+    $pays = new \Afup\Site\Utils\Pays($bdd);
 
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
@@ -217,6 +219,9 @@ elseif ($action == 'lister') {
     	}
     }
       $rs = $forum->obtenir( $_GET['id_forum']);
+    $imageDir = realpath('../../templates/'.$rs['path'].'/images/intervenants/');
+    $imagePath = $imageDir . '/' . $_GET['id'] . '.jpg';
+
       $annee_forum = $rs['forum_annee'];
     //var_dump($rs,$annee_forum);
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
@@ -235,7 +240,10 @@ elseif ($action == 'lister') {
         $formulaire->addElement('file', 'photo', 'Photo (90x120)'     );
     }
     if ($action == 'modifier') {
-        $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg" /><br />');
+        if (is_file($imagePath)) {
+            $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg" /><br />');
+        }
+
         $chemin = realpath('../../templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg');
         if (file_exists($chemin)) {
             if ((function_exists('getimagesize'))) {
@@ -291,7 +299,6 @@ elseif ($action == 'lister') {
             $file = $formulaire->getElement('photo');
             $data = $file->getValue();
             if ($data['name']) {
-                $imageDir = realpath('../../templates/'.$rs['path'].'/images/intervenants/');
                 // Transformation en 90x120 JPG pour simplifier
                 $data = $file->getValue();
                 if ($data['type'] == 'image/png') {
@@ -312,9 +319,9 @@ elseif ($action == 'lister') {
 
         if ($ok) {
             if ($action == 'ajouter') {
-                AFUP_Logs::log('Ajout du conférencier de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
+                Logs::log('Ajout du conférencier de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
             } else {
-                AFUP_Logs::log('Modification du conférencier de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
+                Logs::log('Modification du conférencier de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage('Le conférencier a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=forum_conferenciers&action=lister');
         } else {
@@ -326,7 +333,7 @@ elseif ($action == 'lister') {
     if ($action == 'modifier') {
       $smarty->assign('id_conferencier', $_GET['id']);
       $smarty->assign('id_forum', $_GET['id_forum']);
-      $smarty->assign('gravatar', AFUP_Utils::get_gravatar($champs['email'], 90));
+      $smarty->assign('gravatar', Utils::get_gravatar($champs['email'], 90));
     }
     $smarty->assign('forum_name', $current['titre']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));

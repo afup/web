@@ -55,6 +55,7 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
      *
      * @param Zend_Controller_Plugin_Abstract $plugin
      * @return Zend_Controller_Plugin_Broker
+     * @throws Zend_Controller_Exception
      */
     public function registerPlugin(Zend_Controller_Plugin_Abstract $plugin)
     {
@@ -121,12 +122,12 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
     }
 
 
-
     /**
      * Unregister a plugin.
      *
      * @param Zend_Controller_Plugin_Abstract $plugin
      * @return Zend_Controller_Plugin_Broker
+     * @throws Zend_Controller_Exception
      */
     public function unregisterPlugin(Zend_Controller_Plugin_Abstract $plugin)
     {

@@ -1,9 +1,11 @@
 <?php
+use Afup\Site\Forum\Inscriptions;
+
 require_once '../../include/prepend.inc.php';
 require_once dirname(__FILE__) . '/_config.inc.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Inscriptions_Forum.php';
 
-$inscription_manager = new AFUP_Inscriptions_Forum($bdd) ;
+
+$inscription_manager = new Inscriptions($bdd) ;
 $md5_code = $_GET['id'] ;
 $inscrit = $inscription_manager->obtenirInscription($md5_code) ;
 

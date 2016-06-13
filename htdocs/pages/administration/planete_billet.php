@@ -1,6 +1,8 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Planete\Planete_Billet;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -11,8 +13,8 @@ $tris_valides = array('id', 'titre', 'contenu', 'etat');
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Planete_Billet.php';
-$planete_billet = new AFUP_Planete_Billet($bdd);
+
+$planete_billet = new Planete_Billet($bdd);
 
 if ($action == 'lister') {
     $smarty->assign('pertinence', $conf->obtenir('planete|pertinence'));

@@ -1,6 +1,10 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Oeuvres;
+use Afup\Site\Utils\Logs;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,15 +13,12 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('ausculter', 'calculer'));
 $smarty->assign('action', $action);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Planete_Billet.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Oeuvres.php';
-$oeuvres = new AFUP_Oeuvres($bdd);
-$persone_physique = new AFUP_Personnes_Physiques($bdd);
+$oeuvres = new Oeuvres($bdd);
+$persone_physique = new Personnes_Physiques($bdd);
 
 if ($action == 'calculer') {
     if ($oeuvres->calculer()) {
-        AFUP_Logs::log('Calculer les oeuvres de l\'AFUP');
+        Logs::log('Calculer les oeuvres de l\'AFUP');
         afficherMessage('Les oeuvres ont été calculées', 'index.php?page=membre_oeuvres');
     } else {
         afficherMessage('Une erreur est survenue lors du calcul des oeuvres', 'index.php?page=membre_oeuvres', true);

@@ -1,6 +1,12 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Tags;
+use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Association\Personnes_Morales;
+use Afup\Site\Utils\Utils;
+use Afup\Site\Utils\Pays;
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -9,19 +15,13 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 $action = verifierAction(array('lister', 'detail', 'rechercher'));
 $smarty->assign('action', $action);
 
-//require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Liste_Membres.php';
+//
 //$tags = new AFUP_Liste_Membres($bdd);
 
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Physiques.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Personnes_Morales.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Pays.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Tags.php';
-require_once dirname(__FILE__).'/../../../sources/Afup/AFUP_Utils.php';
-
-$personnes_physiques = new AFUP_Personnes_Physiques($bdd);
-$pays = new AFUP_Pays($bdd);
-$personnes_morales = new AFUP_Personnes_Morales($bdd);
-$tags = new AFUP_Tags($bdd);
+$personnes_physiques = new Personnes_Physiques($bdd);
+$pays = new Pays($bdd);
+$personnes_morales = new Personnes_Morales($bdd);
+$tags = new Tags($bdd);
 
     $list_champs = '*';
     $list_ordre = 'nom, prenom';
@@ -32,7 +32,7 @@ $tags = new AFUP_Tags($bdd);
     // Obtention du gravatar
     $personnes_physiques_liste = $personnes_physiques->obtenirListe($list_champs, $list_ordre, $list_filtre, false, false, false, $is_active);
     foreach($personnes_physiques_liste as &$personne_physique) {
-    	$personne_physique["gravatar"] = AFUP_Utils::get_gravatar($personne_physique["email"]);
+    	$personne_physique["gravatar"] = Utils::get_gravatar($personne_physique["email"]);
     	$personne_physique["tags"] = $tags->obtenirTagsSurPersonnePhysique($personne_physique["id"]);
     }
    // var_dump($personnes_physiques_liste);die;
