@@ -360,50 +360,50 @@ class Personnes_Physiques
     /**
      * Envoi un message de bienvenue lorsque l'utilisateur le demande
      *
-     * @param string $login Login de la personne physique
-     * @param string $email Email de la personne physique
+     * @param int $id Id du compte
      * @access public
      * @return bool Succès de l'envoi
      */
-    function envoyerCourrierBienvenue($login, $email, $id = null)
+    function generatePassword($id = null)
     {
-        $succes = false;
-
         $selection = 'SELECT ';
         $selection .= ' id, login, email, prenom, nom ';
         $selection .= 'FROM ';
         $selection .= '  afup_personnes_physiques ';
         $selection .= 'WHERE ';
-        if ($id === null) {
-            $selection .= '  email=' . $this->_bdd->echapper($email);
-        } else {
-            $selection .= '  id=' . $this->_bdd->echapper($id) . ' ';
-        }
+        $selection .= '  id=' . $this->_bdd->echapper($id) . ' ';
         $data = $this->_bdd->obtenirEnregistrement($selection);
+
         $id = $data['id'];
         $identifiant = $data['login'];
         $email = $data['email'];
+
         if (is_numeric($id) and $id > 0) {
             $mot_de_passe = substr(md5(uniqid(rand(), true)), 0, 10);
 
-            $requete = 'UPDATE ';
-            $requete .= '  afup_personnes_physiques ';
-            $requete .= 'SET';
-            $requete .= '  mot_de_passe=' . $this->_bdd->echapper(md5($mot_de_passe));
-            $requete .= 'WHERE';
-            $requete .= '  id=' . $this->_bdd->echapper($id);
+            $query = 'UPDATE ';
+            $query .= '  afup_personnes_physiques ';
+            $query .= 'SET';
+            $query .= '  mot_de_passe=' . $this->_bdd->echapper(md5($mot_de_passe));
+            $query .= 'WHERE';
+            $query .= '  id=' . $this->_bdd->echapper($id);
 
-            if ($this->_bdd->executer($requete)) {
-                $mail = new Mail();
-                return $mail->send(
-                    'confirmation-cr-ation-de-compte',
-                    ['email' => $email, 'name' => sprintf('%s %s', $data['prenom'], $data['nom'])],
-                    ['login' => $identifiant, 'password' => $mot_de_passe]
-                );
+            if ($this->_bdd->executer($query)) {
+                return $mot_de_passe;
             }
         }
 
-        return $succes;
+        return false;
+    }
+
+    public function sendWelcomeMailWithData($firstName, $lastName, $login, $password, $email)
+    {
+        $mail = new Mail();
+        return $mail->send(
+            'confirmation-cr-ation-de-compte',
+            ['email' => $email, 'name' => sprintf('%s %s', $firstName, $lastName)],
+            ['login' => $login, 'password' => $password]
+        );
     }
 
     /**

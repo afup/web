@@ -51,7 +51,9 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de l\'envoi d\'un nouveau mot de passe à la personne physique', 'index.php?page=personnes_physiques&action=lister', true);
     }
 } elseif ($action == 'envoi_bienvenue') {
-    if ($personnes_physiques->envoyerCourrierBienvenue(null, null, $_GET['id'])) {
+    $password = $personnes_physiques->generatePassword($_GET['id']);
+    $data = $personnes_physiques->obtenir($_GET['id'], 'prenom, nom, email, login');
+    if ($personnes_physiques->sendWelcomeMailWithData($data['prenom'], $data['nom'], $data['login'], $password, $data['email'])) {
         Logs::log('Envoi d\'un message de bienvenue à la personne physique ' . $_GET['id']);
         afficherMessage('Un mail de bienvenue a été envoyé à la personne physique', 'index.php?page=personnes_physiques&action=lister');
     } else {
