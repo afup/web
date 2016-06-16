@@ -27,7 +27,9 @@ class Web {
             // Nettoyage cache TWIG
             $command .= "rm -rf htdocs/tmp/twig;" ;
             // MAJ composer
-            $command .= "composer install --no-dev";
+            $command .= "composer install --no-dev;";
+            // Post to slack
+            $command .= "curl -X POST --data-urlencode 'payload={\"channel\": \"#outils\", \"text\": \"We just updated the website!\n<http://www.afup.org|Go check it out !>\"}' https://hooks.slack.com/services/".$GLOBALS['conf']->obtenir('slack|token');
             opcache_reset();
             $output = shell_exec($command);
             opcache_reset();
