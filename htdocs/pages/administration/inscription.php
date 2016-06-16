@@ -108,19 +108,17 @@ if ($action == 'ajouter') {
             );
 
             if ($ok) {
-                $motifs = array();
-                $valeurs = array();
-                foreach($formulaire->exportValues() as $cle => $valeur) {
-                    $motifs[] = '[' . $valeur . ']';
-                    $valeurs[] = $valeur;
-                }
-                $corps = str_replace($motifs, $valeurs, $conf->obtenir('mails|texte_adhesion'));
-
-                // @TODO send mail for new member! (use Afup\Site\Utils\Mail for that)
-
                 Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
 
                 $droits->seConnecter($login, $mot_de_passe, false);
+
+                $personnes_physiques->sendWelcomeMailWithData(
+                    $formulaire->exportValue('prenom'),
+                    $formulaire->exportValue('nom'),
+                    $formulaire->exportValue('login'),
+                    $formulaire->exportValue('mot_de_passe'),
+                    $formulaire->exportValue('email')
+                );
 
                 afficherMessage('Votre inscription a été enregistrée. Veuillez maintenant payer votre cotisation. Merci. ' ,
                     'index.php?page=membre_cotisation&hash=' . $droits->obtenirHash());

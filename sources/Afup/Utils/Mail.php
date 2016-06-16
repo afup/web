@@ -8,7 +8,7 @@ use Mandrill;
 use Mandrill_Error;
 
 require_once dirname(__FILE__) . '/Configuration.php';
-require_once dirname(__FILE__) . '/../../dependencies/mandrill/Mandrill.php';
+require_once 'mandrill/Mandrill.php';
 
 /**
  * Send emails via Mandrill
