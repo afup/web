@@ -558,27 +558,20 @@ class Cotisations
 
         $sujet = "Relance cotisation AFUP\n";
 
-        $montant = AFUP_PERSONNES_MORALES == $type_personne ? AFUP_COTISATION_PERSONNE_MORALE : AFUP_COTISATION_PERSONNE_PHYSIQUE;
+        $montant = AFUP_PERSONNES_MORALES == $type_personne ? $personnes->getMembershipFee($id_personne) : AFUP_COTISATION_PERSONNE_PHYSIQUE;
 
         $corps = <<<TXT
 Bonjour,
 
 Votre cotisation annuelle à l'AFUP est arrivée à son terme.
 
-Vous pouvez la renouveler :
+Vous pouvez la renouveler en réglant {$montant} euros :
 
 * En ligne via l'espace d'administration (c'est de loin la meilleure option !) :
 
 	http://www.afup.org/pages/administration/
 
 * Par virement bancaire en contactant le trésorier sur tresorier@afup.org.
-
-* Ou encore par chèque d'un montant de {$montant} euros libellé à l'ordre de l'AFUP ainsi que votre identité à l'adresse suivante :
-
-	AFUP
-	32 boulevard de Strasbourg
-	CS 30108
-	75468 Paris Cedex 10
 
 Merci !
 
@@ -591,7 +584,7 @@ TXT;
             $GLOBALS['conf']->obtenir('mails|email_expediteur'),
             array($infos['email'], $infos['nom'] . " " . $infos['prenom']),
             $sujet,
-            $corps . $link);
+            $corps);
 
         if (false === $ok) {
             return false;
