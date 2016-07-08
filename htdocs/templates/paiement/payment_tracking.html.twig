@@ -1,0 +1,39 @@
+{% autoescape 'js' %}
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-67701567-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+<script>
+    _gaq = _gaq || [];
+    _gaq.push(['_addTrans',
+        '{{ invoice.reference }}',// transaction ID - required
+        '{{ forum.titre }}',     // affiliation or store name
+        '{{ invoice.montant }}', // total - required; Shown as "Revenue" in the
+                                 // Transactions report. Does not include Tax and Shipping.
+        '0',                     // tax
+        '0',                     // shipping
+        '{{ invoice.ville }}',   // city
+        '',                      // state or province
+        '{{ invoice.id_pays }}'  // country
+    ]);
+
+    {% for inscription in inscriptions %}
+        _gaq.push(['_addItem',
+        '{{ invoice.reference }}',            // transaction ID - necessary to associate item with transaction
+        '{{ inscription.type_inscription }}', // SKU/code - required
+        '{{ inscriptionType.getTypeNameById(inscription.type_inscription) }}',        // product name
+        '',                                   // category or variation
+        '{{ inscription.montant }}',          // unit price - required
+        '1'                                   // quantity - required
+        ]);
+    {% endfor %}
+
+    _gaq.push(['_trackTrans']);
+</script>
+{% endautoescape %}

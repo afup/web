@@ -1,13 +1,14 @@
 <?php
 namespace Afup\Site\Forum;
 
+use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Mail;
 
 class Inscriptions
 {
     /**
      * Instance de la couche d'abstraction ï¿½ la base de donnï¿½es
-     * @var     object
+     * @var     Base_De_Donnees
      * @access  private
      */
     var $_bdd;
@@ -41,7 +42,7 @@ class Inscriptions
         $requete .= 'LEFT JOIN';
         $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
 
-        $requete .= 'WHERE i.id=' . $id;
+        $requete .= 'WHERE i.id=' . intval($id);
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
