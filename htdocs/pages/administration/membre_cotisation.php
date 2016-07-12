@@ -57,10 +57,13 @@ $formulaire->addElement('header' , '' , 'Paiement');
 $groupe = array();
 if ($champs['id_personne_morale'] > 0) {
     $id_personne = $champs['id_personne_morale'];
+
+    $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
+
     $type_personne = AFUP_PERSONNES_MORALES;
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_cotisation', null, 'Personne morale : <strong>' . AFUP_COTISATION_PERSONNE_MORALE . ',00 ' . EURO . '</strong>', AFUP_COTISATION_PERSONNE_MORALE);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_cotisation', null, 'Personne morale : <strong>' . $personne_morale->getMembershipFee($id_personne) . ',00 ' . EURO . '</strong>', AFUP_COTISATION_PERSONNE_MORALE);
     $formulaire->setDefaults(array('type_cotisation' => AFUP_COTISATION_PERSONNE_MORALE));
-    $montant = AFUP_COTISATION_PERSONNE_MORALE;
+    $montant = $personne_morale->getMembershipFee($id_personne);
 } else {
     $id_personne = $identifiant;
     $type_personne = AFUP_PERSONNES_PHYSIQUES;

@@ -5,9 +5,6 @@ namespace Afup\Site\Association;
 
 use Afup\Site\Utils\Base_De_Donnees;
 
-define('AFUP_PERSONNES_MORALES', 1);
-define('AFUP_COTISATION_PERSONNE_MORALE', 100);
-
 /**
  * Classe de gestion des personnes morales
  */
@@ -215,6 +212,13 @@ class Personnes_Morales
         }
 
         return $this->_bdd->obtenirUn($requete);
+    }
+
+    public function getMembershipFee($id)
+    {
+        $membersCount = $this->obtenirActifs($id);
+
+        return ceil($membersCount / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE;
     }
 }
 
