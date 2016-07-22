@@ -21,7 +21,7 @@
         {include file="formulaire.html"}
     </div>
 </article>
-{include file="sidebar.html"}
+
 <script type="text/javascript">
 nbInscriptions = {$nbInscriptions};
 {literal}
@@ -72,7 +72,3 @@ $("#nbPersonnes").change(function() {
 });
 </script>
 {/literal}
-
-{if $noLayout==false}
-    {include file="pied_de_page.html"}
-{/if}
