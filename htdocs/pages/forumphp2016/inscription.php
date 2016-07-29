@@ -84,7 +84,8 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
         array(
             'size'      => 30,
             'maxlength' => 40,
-            'class'     => 'span7'
+            'class'     => 'span7',
+            'data-required'  => 'true'
         )
     );
     $formulaire->addElement(
@@ -94,7 +95,8 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
         array(
             'size'      => 30,
             'maxlength' => 40,
-            'class'     => 'span7'
+            'class'     => 'span7',
+            'data-required' => 'true'
         )
     );
     $formulaire->addElement(
@@ -104,9 +106,10 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
         array(
             'size'      => 30,
             'maxlength' => 100,
-            'class'     => 'span7'
+            'class'     => 'span7',
+            'data-required'  => 'true'
         )
-    );
+    )->setType('email');
     $formulaire->addElement(
         'text',
         'telephone' . $i,
@@ -116,7 +119,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
             'maxlength' => 20,
             'class'     => 'span7'
         )
-    );
+    )->setType('tel');
     $groupe = array();
     if ($is_prevente) {
         $groupe[] = &HTML_QuickForm::createElement(
@@ -160,21 +163,24 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
             'type_inscription'.$i,
             null,
             $translator->trans('2 jours :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES] . ' ' . EURO . '</strong>',
-            AFUP_FORUM_2_JOURNEES
+            AFUP_FORUM_2_JOURNEES,
+            ['data-price' => $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES]]
         );
         $groupe[] = &HTML_QuickForm::createElement(
             'radio',
             'type_inscription'.$i,
             null,
             $translator->trans('2 jours membre AFUP :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP] . ' ' . EURO . '</strong>',
-            AFUP_FORUM_2_JOURNEES_AFUP
+            AFUP_FORUM_2_JOURNEES_AFUP,
+            ['data-price' => $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_AFUP]]
         );
         $groupe[] = &HTML_QuickForm::createElement(
             'radio',
             'type_inscription'.$i,
             null,
             $translator->trans('2 jours étudiant :') . ' * : <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT] . ' ' . EURO . '</strong>',
-            AFUP_FORUM_2_JOURNEES_ETUDIANT
+            AFUP_FORUM_2_JOURNEES_ETUDIANT,
+            ['data-price' => $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_ETUDIANT]]
         );
         if ($config_forum['coupons'] != []) {
             $groupe[] = &HTML_QuickForm::createElement(
@@ -182,7 +188,8 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
                 'type_inscription'.$i,
                 null,
                 $translator->trans('2 jours avec coupon de réduction :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_COUPON] . ' ' . EURO . '</strong>',
-                AFUP_FORUM_2_JOURNEES_COUPON
+                AFUP_FORUM_2_JOURNEES_COUPON,
+                ['data-price' => $AFUP_Tarifs_Forum[AFUP_FORUM_2_JOURNEES_COUPON]]
             );
         }
         $groupe[] = &HTML_QuickForm::createElement(
@@ -190,14 +197,16 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
             'type_inscription'.$i,
             null,
             $translator->trans('Journée du jeudi 27 octobre 2016 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
-            AFUP_FORUM_PREMIERE_JOURNEE
+            AFUP_FORUM_PREMIERE_JOURNEE,
+            ['data-price' => $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE]]
         );
         $groupe[] = &HTML_QuickForm::createElement(
             'radio',
             'type_inscription'.$i,
             null,
             $translator->trans('Journée du vendredi 28 octobre 2016 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
-            AFUP_FORUM_DEUXIEME_JOURNEE
+            AFUP_FORUM_DEUXIEME_JOURNEE,
+            ['data-price' => $AFUP_Tarifs_Forum[AFUP_FORUM_DEUXIEME_JOURNEE]]
         );
     }
 
@@ -218,16 +227,16 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
         '<br/>',
         false
     );
-    $formulaire->addElement('static', 'raccourci', '', $translator->trans('Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant le PHP Tour'));
+    $formulaire->addElement('static', 'raccourci', '', $translator->trans('Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'));
     for ($j=1; $j <= $nombre_tags; $j++) {
         $formulaire->addElement('text', 'tag_'.$j.'_'.$i, 'Tag '.$j . ($j ==1 ?  $translator->trans(' ou Id Twitter (ex: @afup)') : ''), array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
     }
     $formulaire->addElement('static', 'raccourci', '', '<i>'.$translator->trans('Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire...').'</i>');
     if ($i == $nombre_personnes) {
-        $formulaire->addElement('static', 'raccourci', '', '<div style="text-align:center"><a href="#facturation" class="btn info">'.$translator->trans('passer à la facturation').'</a></div>');
+        $formulaire->addElement('static', 'raccourci', '', '<div style="text-align:center"><a href="#facturation" class="btn info fieldset--link-facturation">'.$translator->trans('passer à la facturation').'</a></div>');
     } else {
         $formulaire->addElement('static', 'raccourci', '', '<div style="text-align:center"><a href="#inscription'.$next.'" class="btn info add_inscription">'.$translator->trans('Ajouter une autre inscription').
-            '</a> '.$translator->trans('ou').' <a href="#facturation" class="btn info">'.$translator->trans('passer à la facturation').'</a></div>');
+            '</a> '.$translator->trans('ou').' <a href="#facturation" class="btn info fieldset--link-facturation">'.$translator->trans('passer à la facturation').'</a></div>');
     }
 }
 
@@ -237,15 +246,15 @@ $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, $tra
 $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, $translator->trans('Virement'), AFUP_FORUM_REGLEMENT_VIREMENT);
 
 $formulaire->addGroup($groupe, 'groupe_type_reglement', $translator->trans('Règlement'), '&nbsp;', false);
-$formulaire->addElement('static', 'note', '', $translator->trans('Ces informations concernent la personne ou la société qui sera facturée.').'<br/><br/>');
+//$formulaire->addElement('static', 'note', '', $translator->trans('Ces informations concernent la personne ou la société qui sera facturée.').'<br/><br/>');
 $formulaire->addElement('text', 'societe_facturation', $translator->trans('Société'), array('size' => 50, 'maxlength' => 100, 'class' => 'span7'));
-$formulaire->addElement('text', 'nom_facturation', $translator->trans('Nom'), array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
-$formulaire->addElement('text', 'prenom_facturation', $translator->trans('Prénom'), array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
-$formulaire->addElement('textarea', 'adresse_facturation', $translator->trans('Adresse'), array('cols' => 42, 'rows'      => 10, 'class' => 'span7'));
-$formulaire->addElement('text', 'code_postal_facturation', $translator->trans('Code postal'), array('size' =>  6, 'maxlength' => 10, 'class' => 'span7'));
-$formulaire->addElement('text', 'ville_facturation', $translator->trans('Ville'), array('size' => 30, 'maxlength' => 50, 'class' => 'span7'));
+$formulaire->addElement('text', 'nom_facturation', $translator->trans('Nom'), array('size' => 30, 'maxlength' => 40, 'class' => 'span7', 'required' => 'true'));
+$formulaire->addElement('text', 'prenom_facturation', $translator->trans('Prénom'), array('size' => 30, 'maxlength' => 40, 'class' => 'span7', 'required' => 'true'));
+$formulaire->addElement('textarea', 'adresse_facturation', $translator->trans('Adresse'), array('cols' => 42, 'rows'      => 10, 'class' => 'span7', 'required' => 'true'));
+$formulaire->addElement('text', 'code_postal_facturation', $translator->trans('Code postal'), array('size' =>  6, 'maxlength' => 10, 'class' => 'span7', 'required' => 'true'));
+$formulaire->addElement('text', 'ville_facturation', $translator->trans('Ville'), array('size' => 30, 'maxlength' => 50, 'class' => 'span7', 'required' => 'true'));
 $formulaire->addElement('select', 'id_pays_facturation', $translator->trans('Pays'), $pays->obtenirPays());
-$formulaire->addElement('text', 'email_facturation', $translator->trans('Email (facture)'), array('size' => 30, 'maxlength' => 100, 'class' => 'span7'));
+$formulaire->addElement('text', 'email_facturation', $translator->trans('Email (facture)'), array('size' => 30, 'maxlength' => 100, 'class' => 'span7', 'required' => 'true'))->setType('email');
 
 
 if ($config_forum['coupons'] != []) {

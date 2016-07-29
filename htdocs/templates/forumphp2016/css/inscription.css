@@ -1,0 +1,35 @@
+input.span7 {
+    height:25px;
+}
+
+fieldset legend{
+    display:block;
+    background-color:#50a0dd;
+    padding: 20px 10px;
+    color:white;
+    width:100%;
+    cursor: pointer;
+}
+fieldset legend a {
+    color: white;
+}
+
+input:invalid{
+    border-color: #900;
+    background-color: #FDD;
+}
+
+input:focus:invalid {
+    outline: none;
+}
+
+label{
+    width:200px;
+}
+form .input{
+    margin-left: 230px !important;
+}
+
+span.fieldset--legend--price{
+    float:right
+}
