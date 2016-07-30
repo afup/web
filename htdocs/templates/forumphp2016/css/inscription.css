@@ -2,6 +2,16 @@ input.span7 {
     height:25px;
 }
 
+form *, #divPersonne *{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+fieldset{
+    padding-top:0;
+}
+
 fieldset legend{
     display:block;
     background-color:#50a0dd;
@@ -12,6 +22,16 @@ fieldset legend{
 }
 fieldset legend a {
     color: white;
+}
+
+fieldset div.fieldset--inner {
+    background-color: #eee;
+    padding: 15px 10px;
+    width: 100%;
+}
+
+fieldset p {
+    padding-top:15px;
 }
 
 input:invalid{
@@ -32,4 +52,23 @@ form .input{
 
 span.fieldset--legend--price{
     float:right
+}
+
+fieldset.f7 .input{
+    margin-left:50px !important;
+}
+fieldset.f7 .input .inputs-list li{
+    float:left;
+    width: 30%;
+}
+
+input[name^="tag"] {
+    width:200px;
+}
+div[id^="div_tags"] {
+    margin-left: 0 !important;
+}
+div[id^="div_tags"] ul li:not(:first-child){
+    float:left;
+    width:32%;
 }

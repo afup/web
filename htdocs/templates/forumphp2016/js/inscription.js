@@ -136,4 +136,9 @@ $(document).ready(function(){
     $('fieldset.f1 input[name=nom1]').on('blur', function(){copyValBetweenFields('nom1', 'nom_facturation')});
     $('fieldset.f1 input[name=prenom1]').on('blur', function(){copyValBetweenFields('prenom1', 'prenom_facturation')});
     $('fieldset.f1 input[name=email1]').on('blur', function(){copyValBetweenFields('email1', 'email_facturation')});
+
+    // Select radio button
+    $('input[name=type_reglement]:first').attr('checked', 'checked');
+    $('input[name=citer_societe]:eq(0)').attr('checked', 'checked');
+    $('input[name=newsletter_afup]:eq(1)').attr('checked', 'checked');
 })

@@ -227,10 +227,20 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
         '<br/>',
         false
     );
-    $formulaire->addElement('static', 'raccourci', '', $translator->trans('Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'));
+
+    $groupe = [];
+    $groupe[] = &HTML_QuickForm::createElement('static', 'raccourci', '', $translator->trans('Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'));
     for ($j=1; $j <= $nombre_tags; $j++) {
-        $formulaire->addElement('text', 'tag_'.$j.'_'.$i, 'Tag '.$j . ($j ==1 ?  $translator->trans(' ou Id Twitter (ex: @afup)') : ''), array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
+        $groupe[] = &HTML_QuickForm::createElement('text', 'tag_'.$j.'_'.$i, 'Tag '.$j . ($j ==1 ?  $translator->trans(' ou Id Twitter (ex: @afup)') : ''), array('size' => 30, 'maxlength' => 40, 'class' => 'span7'));
     }
+    $formulaire->addGroup(
+        $groupe,
+        'tags_'.$i,
+        '',
+        '',
+        false
+    );
+
     $formulaire->addElement('static', 'raccourci', '', '<i>'.$translator->trans('Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire...').'</i>');
     if ($i == $nombre_personnes) {
         $formulaire->addElement('static', 'raccourci', '', '<div style="text-align:center"><a href="#facturation" class="btn info fieldset--link-facturation">'.$translator->trans('passer à la facturation').'</a></div>');

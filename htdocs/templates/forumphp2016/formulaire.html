@@ -16,7 +16,7 @@
         <div id="fieldset--{$num}" class="fieldset--inner">
             {foreach from=$section.elements item=element}
             {if $element.required}{assign var='auMoinsUnChampsRequis' value=true}{/if}
-            <div class="clearfix{if $element.error} error {/if}">
+            <div class="clearfix{if $element.error} error {/if}" >
                 {if $element.type == 'submit'}
                     {$element.html}
                 {elseif $element.type == 'static' && ($element.name == 'html')}
@@ -32,7 +32,7 @@
                         {$element.label}
                     </label>
                     {/if}
-                    <div class="input">
+                    <div class="input" id="div_{ $element.name }">
                       <ul class="inputs-list">
                         {foreach from=$element.elements item=element_groupe name=groupe}
                         <li>
