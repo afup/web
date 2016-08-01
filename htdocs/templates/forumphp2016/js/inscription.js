@@ -184,7 +184,11 @@ $(document).ready(function(){
     });
 
     $("legend").click(function(event){
-        $('div.fieldset--inner').not($(this).parents('fieldset').find('div.fieldset--inner')).hide('slow');
+        $('div.fieldset--inner')
+            .not($(this).parents('fieldset').find('div.fieldset--inner'))
+            .not('#fieldset--7')
+            .hide('slow')
+        ;
         $(this).parents('fieldset').find('div.fieldset--inner').toggle('slow');
     });
 
@@ -219,9 +223,13 @@ $(document).ready(function(){
 
         $(fieldset).find('legend span.fieldset--legend--title').html(' - ' + firstname + ' ' + lastname);
 
-        var price = fieldset.find('input[name^="type_inscription"]:checked').data('price');
-
-        $(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
+        if (fieldset.hasClass('f6') === true) {
+            var paymentId = fieldset.find('input[name="type_reglement"]:checked').attr('id');
+            $(fieldset).find('legend span.fieldset--legend--price').html($('label[for=' + paymentId + ']').html());
+        } else {
+            var price = fieldset.find('input[name^="type_inscription"]:checked').data('price');
+            $(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
+        }
     });
 
     var copyValBetweenFields = function (fromField, toField) {
