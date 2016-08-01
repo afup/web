@@ -57,7 +57,7 @@ span.fieldset--legend--price{
 fieldset.f7 .input{
     margin-left:50px !important;
 }
-fieldset.f7 .input .inputs-list li{
+fieldset.f7 .input .inputs-list li, fieldset.f6 .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
     float:left;
     width: 30%;
 }
@@ -71,4 +71,21 @@ div[id^="div_tags"] {
 div[id^="div_tags"] ul li:not(:first-child){
     float:left;
     width:32%;
+}
+#formulaire .btn{
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+}
+
+#formulaire .boutons .input{
+    margin: 0 auto !important;
+    width:50%;
+}
+#formulaire .boutons .input tr.registration td, #formulaire .boutons .input tr.registration th{
+    border-bottom: 1px solid #7d7d7d;
+    border-top:none !important;
+}
+#formulaire .boutons .input td{
+    border-left: 1px solid #7d7d7d;
 }

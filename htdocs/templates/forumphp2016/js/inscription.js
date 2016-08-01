@@ -9,6 +9,7 @@ $(document).ready(function(){
         for (var i = 1; i < 6; i++) {
             $('fieldset.f' + i).hide();
         }
+
         for (var i = 1; i < (nbInscriptions + 1); i++) {
             $('fieldset.f' + i).show();
             $('fieldset.f' + i).find('input[data-required=true]').attr('required', true);
@@ -30,23 +31,14 @@ $(document).ready(function(){
         });
 
         if (validity == true) {
-            var lastname = fieldset.find('input[name^="nom"]').val();
-            var firstname = fieldset.find('input[name^="prenom"]').val();
-
-            $(fieldset).find('legend span.fieldset--legend--title').html(' - ' + firstname + ' ' + lastname);
-
-            var price = fieldset.find('input[name^="type_inscription"]:checked').data('price');
-
-            $(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
-
             // Hide current fieldset
             $(this).parents('div.fieldset--inner').hide('slow');
 
             if (typeof onSuccess === 'function') {
-                onSuccess();
+                onSuccess.call(this);
             }
         } else if (typeof onFailure === 'function') {
-            onFailure();
+            onFailure.call(this);
         }
     }
 
@@ -59,19 +51,104 @@ $(document).ready(function(){
     }
     $('#divPersonne').show();
 
+    var updateSummary = function () {
+        var inscriptions = {};
+        for (var i = 1; i <= nbInscriptions; i++) {
+            var fieldset = $('fieldset.f' + i);
+            var radio = fieldset.find('input[name^="type_inscription"]:checked');
+            var price = radio.data('price');
+            var label = radio.data('label');
+
+            if (typeof inscriptions[label] === 'undefined') {
+                inscriptions[label] = {price: price, quantity: 1};
+            } else {
+                inscriptions[label].quantity = inscriptions[label].quantity + 1;
+            }
+            inscriptions[label].subtotal = inscriptions[label].quantity * inscriptions[label].price;
+        }
+
+        var table = document.createElement('table');
+        var numberOfTickets = 0;
+        var total = 0;
+
+        var tr = document.createElement('tr');
+        var th = document.createElement('th');
+        var td = document.createElement('td');
+
+        var df = document.createDocumentFragment();
+
+        for (var i in inscriptions) {
+            var trClone = tr.cloneNode();
+            trClone.classList.add('registration')
+            var thClone = th.cloneNode();
+            thClone.appendChild(document.createTextNode(i));
+            trClone.appendChild(thClone);
+
+            var tdClone = td.cloneNode();
+            tdClone.appendChild(document.createTextNode(inscriptions[i].price + '€'));
+            trClone.appendChild(tdClone);
+
+            var tdClone = td.cloneNode();
+            tdClone.appendChild(document.createTextNode('x' + inscriptions[i].quantity));
+            trClone.appendChild(tdClone);
+
+            var tdClone = td.cloneNode();
+            tdClone.appendChild(document.createTextNode(inscriptions[i].subtotal + '€'));
+            trClone.appendChild(tdClone);
+
+            df.appendChild(trClone);
+            numberOfTickets += inscriptions[i].quantity;
+            total += inscriptions[label].subtotal;
+        }
+
+        var trClone = tr.cloneNode();
+        var thClone = th.cloneNode();
+        thClone.appendChild(document.createTextNode('Total :'));
+        trClone.appendChild(thClone);
+
+        var tdClone = td.cloneNode();
+        tdClone.appendChild(document.createTextNode(''));
+        trClone.appendChild(tdClone);
+
+        var tdClone = td.cloneNode();
+        tdClone.appendChild(document.createTextNode('x' + numberOfTickets));
+        trClone.appendChild(tdClone);
+
+        var tdClone = td.cloneNode();
+        tdClone.appendChild(document.createTextNode(total + '€'));
+        trClone.appendChild(tdClone);
+
+        df.appendChild(trClone);
+
+        table.appendChild(df);
+
+        // Empty the current summary
+        var myNode = document.getElementById("summary");
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+
+        $('#summary').append(table);
+    }
+
+    updateSummary();
+
     $('a.add_inscription').click(function (event) {
         event.preventDefault();
 
         // Add data to fieldset legend
         var fieldset = $(this).parents('fieldset').first();
+
         checkFieldSet.call(this, fieldset, function(){
-            // Add another inscription
+            // Go to the next inscription
+            var nextRegistration = parseInt($(this).data('registration')) + 1;
+
             var nbPersonnes = parseInt($('#nbPersonnes').val(), 10);
-            if (nbPersonnes < 5) {
-                $('#nbPersonnes').val(nbPersonnes + 1);
-                $('#nbPersonnes').change();
+            if (nbPersonnes < 5 && nextRegistration > nbPersonnes) {
+                $('#nbPersonnes').val(nextRegistration);
             }
-            manageFieldSet(nbPersonnes + 1);
+            $('#nbPersonnes').change();
+            manageFieldSet(nextRegistration);
         });
     });
 
@@ -85,6 +162,7 @@ $(document).ready(function(){
             function(){link.attr('href', '#facturation');},
             function(){link.attr('href', '#' + fieldset.find('legend a:first').attr('name'));}
         );
+        $('fieldset.f6 div.fieldset--inner').show('slow');
     });
 
     $("#nbPersonnes").change(function () {
@@ -100,11 +178,13 @@ $(document).ready(function(){
         }
 
         $("#formulaire").attr("action", path + junction + 'nbInscriptions=' + nb);
+        nbInscriptions = nb;
 
         manageFieldSet(nb);
     });
 
     $("legend").click(function(event){
+        $('div.fieldset--inner').not($(this).parents('fieldset').find('div.fieldset--inner')).hide('slow');
         $(this).parents('fieldset').find('div.fieldset--inner').toggle('slow');
     });
 
@@ -122,20 +202,36 @@ $(document).ready(function(){
             if (validity == false) {
                 $(this).find('div.fieldset--inner').show();
                 event.preventDefault();
-            } else {
+            } else if(this.classList.contains('f8') === false) {
                 $(this).find('div.fieldset--inner').hide();
             }
         });
     });
 
-    var copyValBetweenFields = function(fromField, toField) {
+    $('#formulaire input').on('change', function (event) {
+        updateSummary();
+    });
+
+    $('input[name^="nom"],input[name^="prenom"],input[name^="type_inscription"]').on('change', function(){
+        var fieldset = $(this).parents('fieldset').first();
+        var lastname = fieldset.find('input[name^="nom"]').val();
+        var firstname = fieldset.find('input[name^="prenom"]').val();
+
+        $(fieldset).find('legend span.fieldset--legend--title').html(' - ' + firstname + ' ' + lastname);
+
+        var price = fieldset.find('input[name^="type_inscription"]:checked').data('price');
+
+        $(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
+    });
+
+    var copyValBetweenFields = function (fromField, toField) {
         $('input[name="' + toField + '"]').val ($('input[name="' + fromField + '"]').val());
     }
 
     // Auto-fill Billing from first ticket information
-    $('fieldset.f1 input[name=nom1]').on('blur', function(){copyValBetweenFields('nom1', 'nom_facturation')});
-    $('fieldset.f1 input[name=prenom1]').on('blur', function(){copyValBetweenFields('prenom1', 'prenom_facturation')});
-    $('fieldset.f1 input[name=email1]').on('blur', function(){copyValBetweenFields('email1', 'email_facturation')});
+    $('fieldset.f1 input[name=nom1]').on('change', function(){copyValBetweenFields('nom1', 'nom_facturation')});
+    $('fieldset.f1 input[name=prenom1]').on('change', function(){copyValBetweenFields('prenom1', 'prenom_facturation')});
+    $('fieldset.f1 input[name=email1]').on('change', function(){copyValBetweenFields('email1', 'email_facturation')});
 
     // Select radio button
     $('input[name=type_reglement]:first').attr('checked', 'checked');

@@ -158,6 +158,10 @@
                 <source>Coupon (en cas de soucis avec votre coupon, vous pouvez contacter le trésorier sur tresorier[at]afup.org)</source>
                 <target>Voucher (if any issue with your voucher, just contact treasurer tresorier[at]afup.org</target>
             </trans-unit>
+            <trans-unit id="70">
+                <source>Bon de réduction</source>
+                <target>Voucher</target>
+            </trans-unit>
             <trans-unit id="40">
                 <source>Divers</source>
                 <target>Misc.</target>
@@ -278,7 +282,18 @@
                 <source>Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l'évènement</source>
                 <target>Please fill up to 3 tags (and/or your Twitter id) about you. Tags will be printed on your event badge to ease networking during the event</target>
             </trans-unit>
-
+            <trans-unit id="71">
+                <source>Récapitulatif</source>
+                <target>Summary</target>
+            </trans-unit>
+            <trans-unit id="72">
+                <source>Inscription suivante</source>
+                <target>Next registration</target>
+            </trans-unit>
+            <trans-unit id="73">
+                <source><![CDATA[Confirmer & Payer]]></source>
+                <target><![CDATA[Proceed to order]]></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
