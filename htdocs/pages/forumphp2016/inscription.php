@@ -287,9 +287,14 @@ $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, $tr
 $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, $translator->trans('non'), 0);
 $formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
 
+
+$formulaire->addElement('static', null, null, '<i>' . $translator->trans("L'afup tient à protéger vos données personnelles et ne les communique pas à ses partenaires.").'</i>');
+
 $formulaire->addElement('header', 'boutons', $translator->trans('Récapitulatif'));
 $formulaire->addElement('static', null, null, '<div id="summary"></div>');
 $formulaire->addElement('submit', 'soumettre', $translator->trans('Confirmer & Payer'), array('class' => 'btn primary', 'style' => 'float: right'));
+$formulaire->addElement('static', null, null, $translator->trans('Si vous rencontrez le moindre problème, n\'hésitez pas à nous contacter à l\'adresse bonjour [@] afup.org.'), ['class' => 'test']);
+$formulaire->addElement('static', null, null, $translator->trans('En venant aux évènements de l\'AFUP vous vous engagez à respecter le <a href="/code-de-conduite/">Code de conduite</a>.'), ['class' => 'test']);
 
 $formulaire->addGroupRule('groupe_type_inscription1', $translator->trans('Formule non sélectionnée'), 'required', null, 1);
 $formulaire->addGroupRule('groupe_type_reglement', $translator->trans('Règlement non sélectionné'), 'required', null, 1);

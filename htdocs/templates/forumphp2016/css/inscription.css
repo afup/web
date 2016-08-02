@@ -78,7 +78,12 @@ div[id^="div_tags"] ul li:not(:first-child){
     border-radius:0;
 }
 
-#formulaire .boutons .input{
+#formulaire .boutons div.fieldset--inner div.clearfix .input{
+    margin: 0 20px !important;
+    text-align: right;
+}
+
+#formulaire .boutons div.fieldset--inner div.clearfix:first-child .input{
     margin: 0 auto !important;
     width:50%;
 }
