@@ -14,6 +14,7 @@ $(document).ready(function(){
             $('fieldset.f' + i).show();
             $('fieldset.f' + i).find('input[data-required=true]').attr('required', true);
             $('fieldset.f' + i).find('input[name^="type_inscription"]:first').attr('checked', true);
+            $('fieldset.f' + i).find('input[name^="mobilite_reduite"]:eq(1)').attr('checked', true);
         }
 
         if (nbInscriptions === 5) {
