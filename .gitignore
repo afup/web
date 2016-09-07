@@ -22,6 +22,5 @@ deps.lock
 /vendor/
 
 # uploads
-/htdocs/uploads/*
-!/htdocs/uploads/.htaccess
+/htdocs/uploads
 
