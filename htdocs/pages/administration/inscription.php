@@ -126,7 +126,7 @@ if ($action == 'ajouter') {
                 $smarty->assign('erreur', 'Une erreur est survenue lors de la création de votre compte. Veuillez recommencer. Merci.');
             }
         } catch (Exception $e) {
-            $message = sprintf('Une erreur est survenue lors de la création de votre compte (%s). N\'hésitez pas à contacter le bureau via bureau@afup.org si vous ne comprenez pas l\'erreur en nous précisant le message qui vous est donné. Merci !', $e->getMessage());
+            $message = sprintf('Une erreur est survenue lors de la création de votre compte (%s). N\'hésitez pas à contacter le bureau via bonjour@afup.org si vous ne comprenez pas l\'erreur en nous précisant le message qui vous est donné. Merci !', $e->getMessage());
             $smarty->assign('erreur', $message);
         }
     }
