@@ -23,7 +23,7 @@ foreach ($sessions as $index => $session) {
 	$session['conferenciers'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
   $session['journees'] = explode(" ", $session['journee']);
 
-  if ('23' == date('d', $session['debut'])) {
+  if ('27' == date('d', $session['debut'])) {
     $journees[$translator->trans('jeudi 27 octobre 2016')][] = $session;
   } else {
     $journees[$translator->trans('vendredi 28 octobre 2016')][] = $session;
