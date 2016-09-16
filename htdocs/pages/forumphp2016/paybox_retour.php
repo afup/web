@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/_Common.php';
 $forum_inscriptions = new Inscriptions($bdd);
 $forum_facturation = new Facturation($bdd);
 
-if (in_array($_SERVER['REMOTE_ADDR'], ['195.101.99.73', '195.101.99.76', '194.2.160.66', '194.2.122.158','195.25.7.146', '195.25.7.166']) === false) {
+if (in_array($_SERVER['REMOTE_ADDR'], ['195.101.99.73', '195.101.99.76', '194.2.160.66', '194.2.122.158','195.25.7.146', '195.25.7.166', '194.2.122.190']) === false) {
     /// Ici sont rencensees les IP indiquées par paybox dans leur doc
     die('...');
 }
