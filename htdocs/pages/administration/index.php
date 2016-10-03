@@ -55,7 +55,7 @@ if ($_GET['page'] == 'se_deconnecter') {
 
 if ($_GET['page'] == 'desinscription_mailing') {
     $blackList = new BlackList($bdd);
-    $mail = trim(mcrypt_cbc (MCRYPT_TripleDES, 'MailingAFUP', base64_decode(urldecode($_GET['hash'])), MCRYPT_DECRYPT, '@Mailing'));
+    $mail = trim(mcrypt_cbc (MCRYPT_TRIPLEDES, 'MailingAFUP', base64_decode(urldecode($_GET['hash'])), MCRYPT_DECRYPT, '@Mailing'));
     $blackList->blackList($mail);
     afficherMessage("Votre email a été effacé.\nYour email has been deleted.", '/');
 	exit;
