@@ -99,7 +99,7 @@ $(document).ready(function(){
 
             df.appendChild(trClone);
             numberOfTickets += inscriptions[i].quantity;
-            total += inscriptions[label].subtotal;
+            total += inscriptions[i].subtotal;
         }
 
         var trClone = tr.cloneNode();
