@@ -1,0 +1,59 @@
+{% extends 'event/base_iframe.html.twig' %}
+
+{% block body %}
+    <svg style="display: none;">
+        <symbol id="star" viewBox="0 0 98 92">
+            <title>star</title>
+            <path stroke='#ddd' stroke-width='2' d='M49 73.5L22.55 87.406l5.05-29.453-21.398-20.86 29.573-4.296L49 6l13.225 26.797 29.573 4.297-21.4 20.86 5.052 29.452z' fill-rule='evenodd'/>
+    </svg>
+    {% for talk in talks %}
+        {% include 'event/vote/talk.html.twig' %}
+    {% endfor %}
+    <script>
+        var forms = document.querySelectorAll('div.event--vote-form form');
+        var starContainers = document.querySelectorAll('.stars');
+
+        [].forEach.call(forms, function (form) {
+            var starContainer = form.querySelector('.stars');
+
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                var httpRequest = new XMLHttpRequest()
+                httpRequest.onreadystatechange = function (data) {
+                    var DONE = 4; // readyState 4 means the request is done.
+                    var OK = 200; // status 200 is a successful return.
+                    if (xhr.readyState === DONE) {
+                        if (xhr.status === OK)
+                            console.log(xhr.responseText); // 'This is the returned text.'
+                    } else {
+                        console.log('Error: ' + xhr.status); // An error occurred during the request.
+                    }
+                };
+                httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+                httpRequest.open('POST', url)
+                httpRequest.send('username=' + encodeURIComponent(username))
+
+            });
+
+            starContainer.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var stars = Array.prototype.slice.call(this.children);
+                var totalStars = stars.length;
+
+                var index = stars.indexOf(e.target);
+                var vote = totalStars - index;
+
+                stars.forEach(function(el) {
+                    el.classList.remove('is-selected')
+                })
+                e.target.classList.add('is-selected')
+                var id = form.querySelector('input[name*="sessionId"]').getAttribute('value');
+                form.querySelector('input[name="vote' + id + '[vote]"]').setAttribute('value', vote);
+            });
+        });
+
+
+    </script>
+{% endblock %}

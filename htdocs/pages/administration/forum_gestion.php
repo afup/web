@@ -114,7 +114,7 @@ if ($action == 'lister') {
         $couponsPost = explode(',',$formulaire->exportValue('coupons'));
         foreach ($couponsPost as $c) {
             $c = trim($c);
-            $coupons->ajouter($_GET['id'], $c);
+            $coupons->ajouter($id_forum, $c);
         }
 
         if ($ok) {

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event - Afup</title>
+    <link rel="stylesheet" href="/templates/site/css/styles.css">
+    <style type="text/css">
+        div.event--vote-details{
+            float:left;
+            width:60%;
+        }
+        div.event--vote-form{
+            width:40%;
+            float:right;
+        }
+        div.event--vote{
+            clear:both;
+        }
+
+        svg {
+            width: 2em;
+            height: 2em;
+            fill: white;
+            pointer-events: none;
+        }
+
+        .stars {
+            display: flex;
+            flex-flow: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .star.is-selected svg,
+        .star.is-selected ~ .star svg {
+            fill: darken(orange, 20%);
+        }
+
+        .star:hover svg,
+        .star:hover ~ .star svg {
+            fill: orange;
+        }
+        .star.is-selected svg,
+        .star.is-selected ~ .star svg {
+            fill: #996300;
+        }
+
+    </style>
+    <script>
+
+    </script>
+</head>
+<body>
+    {% block body '' %}
+</body>
+</html>

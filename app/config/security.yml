@@ -1,0 +1,28 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        in_memory:
+            memory: ~
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        #secured_area:
+        #    pattern: ^/event/vote/
+
+        #    guard:
+        #        authenticators:
+        #            - my_github_authenticator
+        #        entry_point: my_github_authenticator
+
+        main:
+            anonymous: ~
+
+    #access_control:
+        #- { path: ^/event/vote/, roles: ROLE_GITHUB }

@@ -1,0 +1,24 @@
+<div class="event--vote">
+    <div class="event--vote-details">
+        <h3>{{ talk.talk.getTitle }}</h3>
+        <div>{{ talk.talk.getAbstract|raw }}</div>
+    </div>
+    <div class="event--vote-form">
+        {{ form_start(talk.form) }}
+            {{ form_row(talk.form.comment) }}
+            <div class="event--vote-stars">
+                <div style="display: inline-block">
+                    <div class="stars">
+                        <a class="star" href="#"><svg><use xlink:href="#star"></use></svg></a>
+                        <a class="star" href="#"><svg><use xlink:href="#star"></use></svg></a>
+                        <a class="star" href="#"><svg><use xlink:href="#star"></use></svg></a>
+                        <a class="star" href="#"><svg><use xlink:href="#star"></use></svg></a>
+                        <a class="star" href="#"><svg><use xlink:href="#star"></use></svg></a>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_rest(talk.form) }}
+        {{ form_end(talk.form) }}
+    </div>
+</div>

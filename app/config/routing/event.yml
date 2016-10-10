@@ -1,0 +1,12 @@
+vote_index:
+  path: /vote/{eventId}
+  defaults: {_controller: AppBundle:Vote:index}
+  requirements:
+    eventId: '\d+'
+
+vote_new:
+  path: /vote/new/{talkId}
+  defaults: {_controller: AppBundle:Vote:new}
+  #methods:  [POST]
+  requirements:
+    eventId: '\d+'
