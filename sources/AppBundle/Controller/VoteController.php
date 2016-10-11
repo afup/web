@@ -113,7 +113,7 @@ class VoteController extends Controller
          * @var $vote Vote
          */
         $vote = $form->getData();
-        $vote->setUser('toto'); // @TODO
+        $vote->setUser($this->getUser()->getId());
         $vote->setSubmittedOn(new \DateTime());
 
         try {
