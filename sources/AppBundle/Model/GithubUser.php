@@ -6,9 +6,10 @@ namespace AppBundle\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class GithubUser implements NotifyPropertyInterface, UserInterface
+class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializable, EquatableInterface
 {
     use NotifyProperty;
 
@@ -41,6 +42,11 @@ class GithubUser implements NotifyPropertyInterface, UserInterface
      * @var string
      */
     private $profileUrl;
+
+    /**
+     * @var string
+     */
+    private $avatarUrl;
 
     /**
      * @return int
@@ -157,6 +163,25 @@ class GithubUser implements NotifyPropertyInterface, UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getAvatarUrl()
+    {
+        return $this->avatarUrl;
+    }
+
+    /**
+     * @param string $avatarUrl
+     * @return GithubUser
+     */
+    public function setAvatarUrl($avatarUrl)
+    {
+        $this->propertyChanged('avatarUrl', $this->avatarUrl, $avatarUrl);
+        $this->avatarUrl = $avatarUrl;
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getRoles()
@@ -195,4 +220,42 @@ class GithubUser implements NotifyPropertyInterface, UserInterface
     {
 
     }
+    /***************
+     * Serializable
+     **************/
+
+
+    /**
+     * @inheritDoc
+     */
+    public function serialize()
+    {
+        return serialize(['id' => $this->id]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function unserialize($serialized)
+    {
+        $user = unserialize($serialized);
+        $this->id = $user['id'];
+    }
+
+    /***************
+     * EquatableInterface
+     ***************/
+
+    /**
+     * @inheritDoc
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        /**
+         * @var self $user
+         */
+        return ($user->getId() === $this->id);
+    }
+
+
 }

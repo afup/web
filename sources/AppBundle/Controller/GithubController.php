@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,6 +30,6 @@ class GithubController extends Controller
      */
     public function connectCheckAction(Request $request)
     {
-        return new Response('zut !');
+        return new RedirectResponse($this->generateUrl('connection_github'));
     }
 }

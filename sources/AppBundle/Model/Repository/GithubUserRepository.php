@@ -61,6 +61,11 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
                 'fieldName' => 'profileUrl',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'avatar_url',
+                'fieldName' => 'avatarUrl',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;
@@ -86,7 +91,10 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
         if ( ($user instanceof GithubUser) === false) {
             throw new UnsupportedUserException();
         }
-        $newUser = $this->loadUserByUsername($user->getUsername());
+        /**
+         * @var GithubUser $user
+         */
+        $newUser = $this->getOneBy(['id' => $user->getId()]);
         return $newUser;
     }
 

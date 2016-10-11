@@ -34,7 +34,7 @@ class MyGithubAuthenticator extends SocialAuthenticator
 
     public function getCredentials(Request $request)
     {
-        if ($request->getPathInfo() !== '/connect/github/check') {
+        if ($request->attributes->get('_route') !== 'connection_github_check') {
             // don't auth
             return;
         }
@@ -47,22 +47,24 @@ class MyGithubAuthenticator extends SocialAuthenticator
         /** @var GithubResourceOwner $githubUser */
         $githubUser = $this->getGithubClient()
             ->fetchUserFromToken($credentials);
-        dump($githubUser);die;
+
         // 1) have they logged in with Github before? Easy!
-        $existingUser = $this->githubUserRepository->getOneBy(['githubId' => $githubUser->getGithubId()]);
-        if ($existingUser !== null) {
-            return $existingUser;
+        $user = $this->githubUserRepository->getOneBy(['githubId' => $githubUser->getId()]);
+
+        if ($user === null) {
+            $user = new GithubUser();
         }
 
-        $user = new GithubUser();
-
+        $githubUserDetails = $githubUser->toArray();
         $user
-            ->setGithubId($githubUser->getId())
-            ->setName($githubUser->getName())
-            ->setLogin($githubUser->getNickname())
+            ->setGithubId($githubUserDetails['id'])
+            ->setName($githubUserDetails['name'])
+            ->setLogin($githubUserDetails['login'])
+            ->setCompany($githubUserDetails['company'])
+            ->setProfileUrl($githubUserDetails['html_url'])
+            ->setAvatarUrl($githubUserDetails['avatar_url'])
         ;
-        $this->em->persist($user);
-        $this->em->flush();
+        $this->githubUserRepository->save($user);
 
         return $user;
     }
@@ -97,7 +99,7 @@ class MyGithubAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return null;
+        return new RedirectResponse($request->getSession()->get('_security.secured_area.target_path'));
     }
 
     /**

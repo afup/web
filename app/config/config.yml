@@ -28,6 +28,7 @@ framework:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
         save_path:   "/var/lib/php5/sessions"
+        name: "SFSESSID" # Be sure you don't mess with session from our legacy app.
     fragments:       ~
     http_method_override: true
     assets: ~
@@ -61,8 +62,8 @@ knpu_oauth2_client:
     clients:
         # will create a service: knpu.oauth2.client.facebook_main
         github_main:
-            type: github #TODO move to parameters
-            client_id: 64ab671148990fa30c53
-            client_secret: 65a4f4173c71741b49fd9c52606b8ddc30f39a6c
+            type: github
+            client_id: %github_client_id%
+            client_secret: %github_client_secret%
             # see below
             redirect_route: connection_github_check
