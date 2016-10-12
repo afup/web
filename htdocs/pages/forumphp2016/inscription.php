@@ -158,7 +158,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
             AFUP_FORUM_DEUXIEME_JOURNEE
         );
     } else {
-        $groupe[] = &HTML_QuickForm::createElement(
+        /*$groupe[] = &HTML_QuickForm::createElement(
             'radio',
             'type_inscription'.$i,
             null,
@@ -199,7 +199,7 @@ for ($i=1; $i <= $nombre_personnes; $i++) {
             $translator->trans('Journée du jeudi 27 octobre 2016 :') . ' <strong>' . $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE] . ' ' . EURO . '</strong>',
             AFUP_FORUM_PREMIERE_JOURNEE,
             ['data-price' => $AFUP_Tarifs_Forum[AFUP_FORUM_PREMIERE_JOURNEE], 'data-label' => $translator->trans('Journée du jeudi 27 octobre 2016 :')]
-        );
+        );*/
         $groupe[] = &HTML_QuickForm::createElement(
             'radio',
             'type_inscription'.$i,
