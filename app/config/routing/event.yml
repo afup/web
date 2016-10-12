@@ -7,6 +7,6 @@ vote_index:
 vote_new:
   path: /vote/new/{talkId}
   defaults: {_controller: AppBundle:Vote:new}
-  #methods:  [POST]
+  methods:  [POST]
   requirements:
     eventId: '\d+'

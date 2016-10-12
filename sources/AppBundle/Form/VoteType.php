@@ -15,10 +15,10 @@ class VoteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('comment', TextareaType::class, ['required' => false])
+            ->add('comment', TextareaType::class, ['required' => false, 'attr' => ['placeholder' => 'Facultatif mais très utile !']])
             ->add('vote', HiddenType::class)
             ->add('sessionId', HiddenType::class)
-            ->add('save', SubmitType::class)
+            ->add('save', SubmitType::class, ['label' => 'Voter'])
         ;
     }
 }

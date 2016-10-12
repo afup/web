@@ -4,78 +4,19 @@
     <svg style="display: none;">
         <symbol id="star" viewBox="0 0 98 92">
             <title>star</title>
-            <path stroke='#ddd' stroke-width='2' d='M49 73.5L22.55 87.406l5.05-29.453-21.398-20.86 29.573-4.296L49 6l13.225 26.797 29.573 4.297-21.4 20.86 5.052 29.452z' fill-rule='evenodd'/>
+            <path stroke='#ddd' stroke-width='2' d='M49 73.5L22.55 87.406l5.05-29.453-21.398-20.86 29.573-4.296L49 6l13.225 26.797 29.573 4.297-21.4 20.86 5.052 29.452z' fill-rule='evenodd' /></symbol>
     </svg>
     {% for talk in talks %}
         {% include 'event/vote/talk.html.twig' %}
     {% endfor %}
     <script>
-        var forms = document.querySelectorAll('div.event--vote-form form');
-        var starContainers = document.querySelectorAll('.stars');
+        /** @todo move to a dedicated file **/
 
-        [].forEach.call(forms, function (form) {
-            var starContainer = form.querySelector('.stars');
-
-            form.addEventListener('submit', function(e){
-                e.preventDefault();
-                e.stopPropagation();
-
-                // First disable the form
-                this.disabled = true;
-
-                var httpRequest = new XMLHttpRequest()
-                httpRequest.onreadystatechange = function (data) {
-                    var DONE = 4; // readyState 4 means the request is done.
-                    var OK = 200; // status 200 is a successful return.
-                    var ACCESS_DENIED = 403;
-                    var BAD_REQUEST = 400;
-                    var SERVER_ERROR = 500;
-                    console.log(httpRequest);
-                    if (httpRequest.readyState === DONE) {
-                        if (httpRequest.getResponseHeader('content-type') === 'application/json') {
-                            errors = JSON.parse(httpRequest.responseText);
-                            if (httpRequest.status === OK) {
-                                console.log(httpRequest.responseText); // 'This is the returned text.'
-                            } else if (httpRequest.status === ACCESS_DENIED) {
-                                console.log('oops - check login');
-                            } else if (httpRequest.status === BAD_REQUEST) {
-                                console.log('some error in my form');
-                            } else if (httpRequest.status === SERVER_ERROR) {
-                                console.log('probably a server exception')
-                            } else {
-                                console.log('Unexpected status code', httpRequest.status);
-                            }
-                        } else {
-                            // I need application/json
-                        }
-                    }
-                };
-                httpRequest.open('POST', this.getAttribute('action'));
-                httpRequest.setRequestHeader('Accept', 'application/json');
-
-                var data = new FormData(form);
-                httpRequest.send(data);
-
-            });
-
-            starContainer.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var stars = Array.prototype.slice.call(this.children);
-                var totalStars = stars.length;
-
-                var index = stars.indexOf(e.target);
-                var vote = totalStars - index;
-
-                stars.forEach(function(el) {
-                    el.classList.remove('is-selected')
-                })
-                e.target.classList.add('is-selected')
-                var id = form.querySelector('input[name*="sessionId"]').getAttribute('value');
-                form.querySelector('input[name="vote' + id + '[vote]"]').setAttribute('value', vote);
-            });
-        });
 
 
     </script>
+
+    <div style="clear:both; padding-top:200px;">
+        <p><i>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></i></p>
+    </div>
 {% endblock %}
