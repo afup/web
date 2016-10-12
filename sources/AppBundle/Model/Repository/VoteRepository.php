@@ -65,7 +65,7 @@ class VoteRepository extends Repository implements MetadataInitializer
     public function upsert(Vote $vote)
     {
         /**
-         * @var $previousVote Vote
+         * @var $previousVote Vote|null
          */
         $previousVote = $this->getOneBy(['user' => $vote->getUser(), 'sessionId' => $vote->getSessionId()]);
         if ($previousVote !== null) {

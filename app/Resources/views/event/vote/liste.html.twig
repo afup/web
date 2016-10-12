@@ -19,20 +19,42 @@
             form.addEventListener('submit', function(e){
                 e.preventDefault();
                 e.stopPropagation();
+
+                // First disable the form
+                this.disabled = true;
+
                 var httpRequest = new XMLHttpRequest()
                 httpRequest.onreadystatechange = function (data) {
                     var DONE = 4; // readyState 4 means the request is done.
                     var OK = 200; // status 200 is a successful return.
-                    if (xhr.readyState === DONE) {
-                        if (xhr.status === OK)
-                            console.log(xhr.responseText); // 'This is the returned text.'
-                    } else {
-                        console.log('Error: ' + xhr.status); // An error occurred during the request.
+                    var ACCESS_DENIED = 403;
+                    var BAD_REQUEST = 400;
+                    var SERVER_ERROR = 500;
+                    console.log(httpRequest);
+                    if (httpRequest.readyState === DONE) {
+                        if (httpRequest.getResponseHeader('content-type') === 'application/json') {
+                            errors = JSON.parse(httpRequest.responseText);
+                            if (httpRequest.status === OK) {
+                                console.log(httpRequest.responseText); // 'This is the returned text.'
+                            } else if (httpRequest.status === ACCESS_DENIED) {
+                                console.log('oops - check login');
+                            } else if (httpRequest.status === BAD_REQUEST) {
+                                console.log('some error in my form');
+                            } else if (httpRequest.status === SERVER_ERROR) {
+                                console.log('probably a server exception')
+                            } else {
+                                console.log('Unexpected status code', httpRequest.status);
+                            }
+                        } else {
+                            // I need application/json
+                        }
                     }
                 };
-                httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-                httpRequest.open('POST', url)
-                httpRequest.send('username=' + encodeURIComponent(username))
+                httpRequest.open('POST', this.getAttribute('action'));
+                httpRequest.setRequestHeader('Accept', 'application/json');
+
+                var data = new FormData(form);
+                httpRequest.send(data);
 
             });
 

@@ -75,6 +75,9 @@ class VoteController extends Controller
      */
     private function createVoteForm($talkId, Vote $vote)
     {
+        /***
+         * @TODO add placeholder on comment
+         */
         if ($this->formBuilder === null) {
             $this->formBuilder = $this->createFormBuilder();
         }
