@@ -1,0 +1,39 @@
+# Use the front controller as index file. It serves as a fallback solution when
+# every other rewrite/redirect fails (e.g. in an aliased environment without
+# mod_rewrite). Additionally, this reduces the matching process for the
+# start page (path "/") because otherwise Apache will apply the rewriting rules
+# to each configured DirectoryIndex file (e.g. index.php, index.html, index.pl).
+#DirectoryIndex index.php
+
+# By default, Apache does not evaluate symbolic links if you did not enable this
+# feature in your server configuration. Uncomment the following line if you
+# install assets as symlinks or if you experience problems related to symlinks
+# when compiling LESS/Sass/CoffeScript assets.
+# Options FollowSymlinks
+
+# Disabling MultiViews prevents unwanted negotiation, e.g. "/app" should not resolve
+# to the front controller "/app.php" but be rewritten to "/app.php/app".
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+    RewriteEngine On
+
+    # Determine the RewriteBase automatically and set it as environment variable.
+    # If you are using Apache aliases to do mass virtual hosting or installed the
+    # project in a subdirectory, the base path will be prepended to allow proper
+    # resolution of the app.php file and to redirect to the correct URI. It will
+    # work in environments without path prefix as well, providing a safe, one-size
+    # fits all solution. But as you do not need it in this case, you can comment
+    # the following 2 lines to eliminate the overhead.
+    #RewriteCond %{REQUEST_URI}::$1 ^/event/(/.+)/(.*)::\2$
+    #RewriteRule ^/event/(.*) - [E=BASE:%1]
+
+
+    # If the requested filename exists, simply serve it.
+    # We only want to let Apache serve files and not directories.
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [END]
+
+    ## This url are handled by symfony
+    RewriteRule (event/|connect|_) /app_dev.php [END]

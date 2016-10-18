@@ -15,8 +15,8 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        secured_area:
-            pattern: ^(/event/vote/|/connect/github/check)
+        github_secured_area:
+            pattern: ^(/event/.*/(vote|cfp)|/connect/github/check)
 
             guard:
                 authenticators:

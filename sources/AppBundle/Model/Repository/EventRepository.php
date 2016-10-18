@@ -5,6 +5,8 @@ namespace AppBundle\Model\Repository;
 
 
 use AppBundle\Model\Event;
+use CCMBenchmark\Ting\Repository\Collection;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -12,6 +14,23 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class EventRepository extends Repository implements MetadataInitializer
 {
+
+    /**
+     * @return Event|null
+     */
+    public function getNextEvent()
+    {
+        $query = $this
+            ->getQuery('SELECT id, path FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut LIMIT 1')
+        ;
+        $events = $query->query($this->getCollection(new HydratorSingleObject()));
+        if ($events->count() === 0) {
+            return null;
+        }
+        return $events->first();
+    }
+
+
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
     {
         $metadata = new Metadata($serializerFactory);

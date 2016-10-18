@@ -6,6 +6,7 @@ namespace AppBundle\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Vote implements NotifyPropertyInterface
 {
@@ -17,11 +18,15 @@ class Vote implements NotifyPropertyInterface
 
     /**
      * @var int
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(0)
      */
     private $sessionId;
 
     /**
      * @var int
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(0)
      */
     private $user;
 
@@ -32,6 +37,11 @@ class Vote implements NotifyPropertyInterface
 
     /**
      * @var int
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(
+     *     value = 0,
+     *     message = "Please set a note !"
+     * )
      */
     private $vote = 0;
 
@@ -39,6 +49,16 @@ class Vote implements NotifyPropertyInterface
      * @var \DateTime
      */
     private $submittedOn;
+
+    /**
+     * @var GithubUser
+     */
+    private $githubUser;
+
+    /**
+     * @var Talk
+     */
+    private $talk;
 
     /**
      * @return int
@@ -151,6 +171,42 @@ class Vote implements NotifyPropertyInterface
     {
         $this->propertyChanged('submittedOn', $this->submittedOn, $submittedOn);
         $this->submittedOn = $submittedOn;
+        return $this;
+    }
+
+    /**
+     * @return GithubUser
+     */
+    public function getGithubUser()
+    {
+        return $this->githubUser;
+    }
+
+    /**
+     * @param GithubUser $githubUser
+     * @return Vote
+     */
+    public function setGithubUser(GithubUser $githubUser)
+    {
+        $this->githubUser = $githubUser;
+        return $this;
+    }
+
+    /**
+     * @return Talk
+     */
+    public function getTalk()
+    {
+        return $this->talk;
+    }
+
+    /**
+     * @param Talk $talk
+     * @return Vote
+     */
+    public function setTalk(Talk $talk)
+    {
+        $this->talk = $talk;
         return $this;
     }
 }

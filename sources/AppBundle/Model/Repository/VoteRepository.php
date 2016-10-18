@@ -5,6 +5,7 @@ namespace AppBundle\Model\Repository;
 
 
 use AppBundle\Model\Vote;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -12,6 +13,33 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class VoteRepository extends Repository implements MetadataInitializer
 {
+
+    /**
+     * @param int $eventId
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getVotesByEvent($eventId)
+    {
+        $query = $this
+            ->getPreparedQuery('
+            SELECT asvg.id, asvg.session_id, submitted_on, asvg.comment, asvg.user, vote,
+            sessions.titre, sessions.abstract, aug.login, aug.avatar_url
+            FROM afup_sessions_vote_github asvg
+            LEFT JOIN afup_sessions sessions ON sessions.session_id = asvg.session_id
+            LEFT JOIN afup_user_github aug ON aug.id = asvg.user
+            WHERE sessions.id_forum = :eventId
+            ORDER BY asvg.session_id, asvg.submitted_on
+            ');
+        $query->setParams(['eventId' => (int)$eventId]);
+
+        $hydrator = new HydratorSingleObject();
+        $hydrator
+            ->mapObjectTo('sessions', 'asvg', 'setTalk')
+            ->mapObjectTo('aug', 'asvg', 'setGithubUser')
+        ;
+        return $query->query($this->getCollection($hydrator));
+    }
+
     /**
      * @inheritDoc
      */

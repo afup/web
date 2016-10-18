@@ -1,22 +1,22 @@
-{% extends 'event/base_iframe.html.twig' %}
+{% extends ':event:base.html.twig' %}
 
-{% block body %}
-    <svg style="display: none;">
-        <symbol id="star" viewBox="0 0 98 92">
-            <title>star</title>
-            <path stroke='#ddd' stroke-width='2' d='M49 73.5L22.55 87.406l5.05-29.453-21.398-20.86 29.573-4.296L49 6l13.225 26.797 29.573 4.297-21.4 20.86 5.052 29.452z' fill-rule='evenodd' /></symbol>
-    </svg>
-    {% for talk in talks %}
-        {% include 'event/vote/talk.html.twig' %}
-    {% endfor %}
-    <script>
-        /** @todo move to a dedicated file **/
+{% block content %}
 
+    {% if numberOfTalks == 0 %}
+        <p>{{ 'Il n\'y a plus aucune conférence à noter !'|trans }}</p>
+    {% else %}
+        <svg style="display: none;">
+            <symbol id="star" viewBox="0 0 98 92">
+                <title>star</title>
+                <path stroke='#3e3d40' stroke-width='2' d='M49 73.5L22.55 87.406l5.05-29.453-21.398-20.86 29.573-4.296L49 6l13.225 26.797 29.573 4.297-21.4 20.86 5.052 29.452z' fill-rule='evenodd' /></symbol>
+        </svg>
 
+        {% for talk in talks %}
+            {% include 'event/vote/talk.html.twig' %}
+        {% endfor %}
 
-    </script>
-
-    <div style="clear:both; padding-top:200px;">
-        <p><i>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></i></p>
-    </div>
+        <div style="clear:both; padding-top:200px;">
+            <p><i>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></i></p>
+        </div>
+    {% endif %}
 {% endblock %}

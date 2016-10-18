@@ -26,9 +26,8 @@ framework:
     trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
-        save_path:   "/var/lib/php5/sessions"
-        name: "SFSESSID" # Be sure you don't mess with session from our legacy app.
+        storage_id: session.storage.php_bridge
+        handler_id: ~
     fragments:       ~
     http_method_override: true
     assets: ~

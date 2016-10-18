@@ -99,7 +99,7 @@ class MyGithubAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return new RedirectResponse($request->getSession()->get('_security.secured_area.target_path'));
+        return new RedirectResponse($request->getSession()->get('_security.github_secured_area.target_path'));
     }
 
     /**

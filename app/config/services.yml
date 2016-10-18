@@ -16,3 +16,13 @@ services:
         class: AppBundle\Model\Repository\GithubUserRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Model\Repository\GithubUserRepository]
+
+    app_twig:
+        class: AppBundle\Twig\TwigExtension
+        tags:
+            -  { name: twig.extension }
+
+    app_admin_listener:
+        class: AppBundle\Listener\AdminRequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

@@ -1,0 +1,18 @@
+{% extends ':event:base.html.twig' %}
+
+{% block content %}
+    <h2>CFP: {{ event.title }}</h2>
+    <p>{{ 'Le CFP est ouvert jusqu\'au: '|trans }} {{ event.dateEndCallForPapers|date('d M Y') }}</p>
+    <div>
+        <a href="{{ url('vote_index', {eventSlug: event.path}) }}">
+            <div class="button">{{ 'Voter pour les conférences'|trans }}</div>
+            <em>{{ 'Nécessite un compte github'|trans }}</em>
+        </a>
+        <a href="//event.afup.org/phptour-nantes-2017/cfp">
+            <div class="button">{{ 'Soumettre une conférence'|trans }}</div>
+        </a>
+    </div>
+    <p>
+        Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.
+    </p>
+{% endblock %}

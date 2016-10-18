@@ -2,11 +2,11 @@ var forms = document.querySelectorAll('div.event--vote-form form');
 var starContainers = document.querySelectorAll('.stars');
 
 var lockForm = function (form) {
-    form.querySelector('button[type=submit]').disabled = true; //setAttribute('disabled', 'disabled');
+    form.querySelector('button[type=submit]').disabled = true;
 }
 
 var unlockForm = function (form) {
-    form.querySelector('button[type=submit]').disabled = false; //removeAttribute('disabled');
+    form.querySelector('button[type=submit]').disabled = false;
 }
 
 var resetFormError = function (form) {
@@ -52,8 +52,13 @@ var setFormSuccess = function(form) {
 
         lockForm(this);
         resetFormError(this);
-
         var form = this;
+
+        if (form.querySelector('input[name*="[vote]"]').value === "0") {
+            unlockForm(form);
+            setFormErrors(form, ['Merci de donner une note !']);
+            return;
+        }
 
         var httpRequest = new XMLHttpRequest()
         httpRequest.onreadystatechange = function (data) {
@@ -87,6 +92,7 @@ var setFormSuccess = function(form) {
         httpRequest.setRequestHeader('Accept', 'application/json');
 
         var data = new FormData(form);
+        data.append(form.querySelector('button').getAttribute('name'), form.querySelector('button').textContent);
         httpRequest.send(data);
     });
 
@@ -103,7 +109,15 @@ var setFormSuccess = function(form) {
             el.classList.remove('is-selected')
         })
         e.target.classList.add('is-selected')
-        var id = form.querySelector('input[name*="sessionId"]').getAttribute('value');
-        form.querySelector('input[name="vote' + id + '[vote]"]').setAttribute('value', vote);
+        form.querySelector('input[name*="[vote]"]').setAttribute('value', vote);
     });
+
+    // We can have a value in the field vote, we need to update the matching stars
+    if (form.querySelector('input[name*="[vote]"]').value !== "0") {
+        var stars = Array.prototype.slice.call(form.querySelector('div.stars').children);
+        var totalStars = stars.length;
+
+        var star = stars[totalStars - form.querySelector('input[name*="[vote]"]').value];
+        star.classList.add('is-selected');
+    }
 });

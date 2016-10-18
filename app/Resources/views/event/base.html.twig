@@ -1,0 +1,36 @@
+{% extends '::base.html.twig' %}
+{% block header %}
+    <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand hidden-xs {% if app.request.get('_route') == 'event' %}active{% endif %}" href="{{ url('event', {eventSlug: 'phptournantes2017'}) }}">Appel à conférenciers: PHP Tour Nantes 2017</a>
+            </div>
+
+            <div class="navbar-collapse bs-navbar-collapse collapse" id="navbar-collapse">
+                <div class="hidden-xs">
+                    <ul class="nav navbar-nav">
+                        <li class="first {% if app.request.get('_route') == 'cfp' %}active{% endif %}"><a href="{{ url('cfp', {eventSlug: 'phptournantes2017'}) }}"> {{ 'Proposer une conférence'|trans }}
+                            </a>
+                        </li>
+                        <li class="{% if app.request.get('_route') == 'vote_index' %}active{% endif %}"><a href="{{ url('vote_index', {eventSlug: 'phptournantes2017'}) }}"> {{ 'Voter pour les conférences'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="navbar-right hidden-xs">
+                    <a href="http://www.afup.org" target="_blank">
+                        <img src="/templates/site/img/logo-afup.svg" alt="AFUP" class="logo afup">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </header>
+{% endblock %}

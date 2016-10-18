@@ -155,6 +155,11 @@ $pages = array(
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
     			'module' => 3,
 		    ),
+		    'forum_vote_github' => array(
+		        'nom' => 'Sessions - votes visiteurs',
+		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
+    			'module' => 3,
+		    ),
 		    'forum_sessions_notees' => array(
 		        'nom' => 'Vote des sessions',
 		        'niveau' => AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
