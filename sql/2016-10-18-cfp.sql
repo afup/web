@@ -22,3 +22,5 @@ CREATE TABLE `afup_sessions_vote_github` (
 ALTER TABLE `afup_conferenciers` ADD `user_github` int unsigned NOT NULL;
 ALTER TABLE `afup_sessions_vote_github`
   CHANGE `comment` `comment` text COLLATE 'latin1_swedish_ci' NULL AFTER `user`;
+ALTER TABLE `afup_conferenciers`
+  CHANGE `twitter` `twitter` varchar(255) COLLATE 'latin1_swedish_ci' NULL AFTER `biographie`;

@@ -1,8 +1,4 @@
 <div class="event--vote">
-    <div class="event--vote-details">
-        <h3>{{ talk.talk.getTitle }}</h3>
-        <div>{{ talk.talk.getAbstract|raw }}</div>
-    </div>
     <div class="event--vote-form">
         {{ form_start(talk.form) }}
             {{ form_row(talk.form.comment) }}
@@ -20,5 +16,9 @@
 
             {{ form_rest(talk.form) }}
         {{ form_end(talk.form) }}
+    </div>
+    <div class="event--vote-details">
+        <h3>{{ talk.talk.getTitle }}</h3>
+        <div>{{ talk.talk.getAbstract|raw }}</div>
     </div>
 </div>

@@ -761,21 +761,70 @@ div.container {
     padding: 10px;
 }
 
+@media (min-width: 992px) {
+    .col-md-8 {
+        width: 66.66667%;
+    }
+    .col-md-4 {
+        width: 33.33333%;
+    }
+    .col-md-4, .col-md-8{
+        float: left;
+    }
+}
+
+.col-md-4,.col-md-8{
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+a {
+    color: #4c6eaf;
+    text-decoration: none;
+}
+
+.list-group-item:first-child {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
 
 /*******
 * Vote
 ********/
 
-div.event--vote-details{
-    float:left;
-    width:60%;
-}
 div.event--vote-form{
-    width:40%;
     float:right;
+}
+div.event--vote-form form{
+    width: auto;
+}
+div.event--vote-form label{
+    min-width: 150px;
+    display:block
 }
 div.event--vote{
     clear:both;
+}
+
+@media (max-width: 767px) {
+    div.event--vote-form label{
+    }
+}
+
+form[name="speaker"] label, form[name="speaker"] button{
+    margin: 0.5em 0.5em 0.5em;
 }
 
 svg {

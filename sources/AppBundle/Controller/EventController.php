@@ -4,13 +4,11 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Form\SpeakerType;
 use AppBundle\Model\Repository\EventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class EventController extends Controller
+class EventController extends EventBaseController
 {
     public function indexAction()
     {
@@ -29,41 +27,10 @@ class EventController extends Controller
 
     public function eventAction($eventSlug)
     {
-        /**
-         * @var $eventRepository EventRepository
-         */
-        $eventRepository = $this->get('ting')->get(EventRepository::class);
-        $event = $eventRepository->getOneBy(['path' => $eventSlug]);
-
-        if ($event === null) {
-            throw $this->createNotFoundException('Event not found');
-        }
+        $event = $this->checkEventSlug($eventSlug);
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
-        return $this->render(':event/cfp:home.html.twig', ['event' => $event]);
-    }
-
-    public function cfpAction($eventSlug)
-    {
-
-        /**
-         * @var $eventRepository EventRepository
-         */
-        $eventRepository = $this->get('ting')->get(EventRepository::class);
-        $event = $eventRepository->getOneBy(['path' => $eventSlug]);
-
-        if ($event === null) {
-            throw $this->createNotFoundException('Event not found');
-        }
-        if ($event->getDateEndCallForPapers() < new \DateTime()) {
-            return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
-        }
-
-        $speaker = new \AppBundle\Model\Speaker(); // @todo get it from session
-
-        $form = $this->createForm(SpeakerType::class, $speaker);
-
-        return $this->render(':event/cfp:cfp.html.twig', ['event' => $event, 'form' => $form->createView()]);
+        return $this->render(':event:home.html.twig', ['event' => $event]);
     }
 }

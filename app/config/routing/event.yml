@@ -8,17 +8,31 @@ event:
 
 vote_index:
   path: /{eventSlug}/vote
-  defaults: {_controller: AppBundle:Vote:index}
-  requirements:
-    eventId: '\d+'
+  defaults: {_controller: AppBundle:Vote:index, all: false}
+
+vote_all:
+  path: /{eventSlug}/vote-all
+  defaults: {_controller: AppBundle:Vote:index, all: true}
 
 vote_new:
   path: /{eventSlug}/vote/new/{talkId}
   defaults: {_controller: AppBundle:Vote:new}
   methods:  [POST]
   requirements:
-    eventId: '\d+'
+    talkId: '\d+'
 
 cfp:
   path: /{eventSlug}/cfp
-  defaults: {_controller: AppBundle:Event:cfp}
+  defaults: {_controller: AppBundle:CFP:index}
+
+cfp_speaker:
+  path: /{eventSlug}/cfp/speaker
+  defaults: {_controller: AppBundle:CFP:speaker}
+
+cfp_propose:
+  path: /{eventSlug}/cfp/propose
+  defaults: {_controller: AppBundle:CFP:propose}
+
+cfp_edit:
+  path: /{eventSlug}/cfp/{talkId}
+  defaults: {_controller: AppBundle:CFP:edit}

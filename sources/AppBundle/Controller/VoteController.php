@@ -5,37 +5,28 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Form\VoteType;
-use AppBundle\Model\Event;
-use AppBundle\Model\Repository\EventRepository;
 use AppBundle\Model\Repository\TalkRepository;
 use AppBundle\Model\Repository\VoteRepository;
 use AppBundle\Model\Talk;
 use AppBundle\Model\Vote;
 use CCMBenchmark\Ting;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class VoteController extends Controller
+class VoteController extends EventBaseController
 {
     private $formBuilder;
 
-    public function indexAction($eventSlug)
+    /**
+     * @param $eventSlug
+     * @param bool $all if true => show all talks to rate even if already rated by the current user
+     * @return Response
+     */
+    public function indexAction($eventSlug, $all = false)
     {
-        /**
-         * @var $eventRepository \AppBundle\Model\Repository\EventRepository
-         */
-        $eventRepository = $this->get('ting')->get(EventRepository::class);
-        /**
-         * @var $event Event|null
-         */
-        $event = $eventRepository->getOneBy(['path' => $eventSlug]);
-
-        if ($event === null) {
-            throw $this->createNotFoundException(sprintf('Could not found event with slug %s', $eventSlug));
-        }
+        $event = $this->checkEventSlug($eventSlug);
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event:cfp/closed.html.twig', ['event' => $event]);
         }
@@ -45,8 +36,12 @@ class VoteController extends Controller
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
 
-        // Get a random list of 10 talks
-        $talks = $talkRepository->getTalksToRateByEvent($event, $this->getUser());
+        // Get a random list of unrated talks
+        if ($all === false) {
+            $talks = $talkRepository->getNewTalksToRate($event, $this->getUser());
+        } else {
+            $talks = $talkRepository->getTalks($event, $this->getUser());
+        }
 
         $vote = new Vote();
         $forms = function () use ($talks, $vote, $eventSlug)
@@ -55,14 +50,17 @@ class VoteController extends Controller
              * @var $talk Talk
              */
             foreach ($talks as $talk) {
-                $myVote = clone $vote;
-
+                if (isset($talk['asvg'])) {
+                    $myVote = $talk['asvg'];
+                } else {
+                    $myVote = clone $vote;
+                }
                 /*
                  * By using a yield here, there will be only one iteration over the talks for the entire page
                  */
                 yield [
-                    'form' => $this->createVoteForm($eventSlug, $talk->getId(), $myVote)->createView(),
-                    'talk' => $talk
+                    'form' => $this->createVoteForm($eventSlug, $talk['sessions']->getId(), $myVote)->createView(),
+                    'talk' => $talk['sessions']
                 ];
             }
         };
@@ -71,7 +69,9 @@ class VoteController extends Controller
             'event/vote/liste.html.twig',
             [
                 'numberOfTalks' => $talks->count(),
-                'talks' => $forms()
+                'talks' => $forms(),
+                'event' => $event,
+                'all' => $all
             ]
         );
     }
@@ -103,18 +103,7 @@ class VoteController extends Controller
 
     public function newAction(Request $request, $eventSlug, $talkId)
     {
-        /**
-         * @var $eventRepository \AppBundle\Model\Repository\EventRepository
-         */
-        $eventRepository = $this->get('ting')->get(EventRepository::class);
-        /**
-         * @var $event Event|null
-         */
-        $event = $eventRepository->getOneBy(['path' => $eventSlug]);
-
-        if ($event === null) {
-            throw $this->createNotFoundException(sprintf('Could not found event with slug %s', $eventSlug));
-        }
+        $event = $this->checkEventSlug($eventSlug);
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return new JsonResponse(['errors' => ['Cfp is closed !']], Response::HTTP_BAD_REQUEST);
         }
@@ -167,14 +156,7 @@ class VoteController extends Controller
 
     public function adminAction(Request $request, $eventSlug)
     {
-        /**
-         * @var $eventRepository \AppBundle\Model\Repository\EventRepository
-         */
-        $eventRepository = $this->get('ting')->get(EventRepository::class);
-        /**
-         * @var $event Event|null
-         */
-        $event = $eventRepository->getOneBy(['path' => $eventSlug]);
+        $event = $this->checkEventSlug($eventSlug);
 
         if ($event === null) {
             throw $this->createNotFoundException(sprintf('Could not found event with slug %s', $eventSlug));

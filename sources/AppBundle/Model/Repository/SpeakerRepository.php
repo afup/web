@@ -4,8 +4,7 @@
 namespace AppBundle\Model\Repository;
 
 
-use AppBundle\Model\Vote;
-use CCMBenchmark\Ting\Repository\HydratorSingleObject;
+use AppBundle\Model\Speaker;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -20,7 +19,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     {
         $metadata = new Metadata($serializerFactory);
 
-        $metadata->setEntity(Vote::class);
+        $metadata->setEntity(Speaker::class);
         $metadata->setConnectionName('main');
         $metadata->setDatabase($options['database']);
         $metadata->setTable('afup_conferenciers');

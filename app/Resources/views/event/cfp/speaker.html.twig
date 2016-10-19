@@ -4,6 +4,7 @@
     <div class="col-md-8">
         <h2>CFP: {{ event.title }}</h2>
         <h3>{{ 'Mon espace conférencier'|trans }}</h3>
+        {{ form(form) }}
     </div>
     {% include ':event/cfp:sidebar.html.twig' %}
 {% endblock %}
