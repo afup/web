@@ -5,7 +5,9 @@
         <h2>CFP: {{ event.title }}</h2>
         <h3>{{ 'Mon espace conférencier'|trans }}</h3>
         {% if photo != null %}
-            <img src="{{ asset(photo) }}" />
+            <div class="photo-container">
+                <img src="{{ asset(photo) }}" />
+            </div>
         {% endif %}
         {{ form(form) }}
     </div>

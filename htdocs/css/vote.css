@@ -801,7 +801,7 @@ a {
 
 
 /*******
-* Vote
+* CFP
 ********/
 
 div.event--vote-form{
@@ -882,4 +882,12 @@ div.errors p{
 }
 div.errors ul li{
     list-style: circle inside;
+}
+
+div.photo-container{
+    padding:5px;
+    margin: 0 2em;
+    background: #eee;
+    border: 1px solid #ccc;
+    display: inline-block;
 }
