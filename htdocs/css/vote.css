@@ -823,7 +823,7 @@ div.event--vote{
     }
 }
 
-form[name="speaker"] label, form[name="speaker"] button{
+form[name="speaker"] label, form[name="speaker"] button, form[name="talk"] label, form[name="talk"] button{
     margin: 0.5em 0.5em 0.5em;
 }
 

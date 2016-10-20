@@ -6,10 +6,20 @@ namespace AppBundle\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Talk implements NotifyPropertyInterface
 {
     use NotifyProperty;
+
+    const TYPE_FULL_LONG = 1;
+    const TYPE_FULL_SHORT = 3;
+    const TYPE_WORKSHOP = 2;
+
+    const SKILL_JUNIOR = 1;
+    const SKILL_MEDIOR = 2;
+    const SKILL_SENIOR = 3;
+    const SKILL_NA = 0;
 
     /**
      * @var int
@@ -18,6 +28,8 @@ class Talk implements NotifyPropertyInterface
 
     /**
      * @var int
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(0)
      */
     private $forumId;
 
@@ -28,11 +40,13 @@ class Talk implements NotifyPropertyInterface
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $abstract;
 
@@ -40,6 +54,20 @@ class Talk implements NotifyPropertyInterface
      * @var bool
      */
     private $scheduled = false;
+
+    /**
+     * @var int
+     * @Assert\NotBlank()
+     * @Assert\Choice(choices = {1, 2, 3}, message = "Choose a valid type")
+     */
+    private $type = self::TYPE_FULL_LONG;
+
+    /**
+     * @var int
+     * @Assert\NotBlank()
+     * @Assert\Choice(choices = {0, 1, 2, 3}, message = "Choose a valid skill requirement")
+     */
+    private $skill = self::SKILL_NA;
 
     /**
      * @return int
@@ -141,7 +169,7 @@ class Talk implements NotifyPropertyInterface
     /**
      * @return boolean
      */
-    public function isScheduled()
+    public function getScheduled()
     {
         return $this->scheduled;
     }
@@ -156,6 +184,44 @@ class Talk implements NotifyPropertyInterface
 
         $this->propertyChanged('scheduled', $this->scheduled, $scheduled);
         $this->scheduled = $scheduled;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     * @return Talk
+     */
+    public function setType($type)
+    {
+        $this->propertyChanged('type', $this->type, $type);
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSkill()
+    {
+        return $this->skill;
+    }
+
+    /**
+     * @param int $skill
+     * @return Talk
+     */
+    public function setSkill($skill)
+    {
+        $this->propertyChanged('skill', $this->skill, $skill);
+        $this->skill = $skill;
         return $this;
     }
 }

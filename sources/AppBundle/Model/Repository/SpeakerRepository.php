@@ -5,6 +5,8 @@ namespace AppBundle\Model\Repository;
 
 
 use AppBundle\Model\Speaker;
+use AppBundle\Model\Talk;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -12,6 +14,23 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class SpeakerRepository extends Repository implements MetadataInitializer
 {
+    /**
+     * @param Talk $talk
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getSpeakersByTalk(Talk $talk)
+    {
+        $query = $this->getPreparedQuery('SELECT c.conferencier_id, c.id_forum, c.civilite, c.nom, c.prenom, c.email,c.societe,
+        c.biographie, c.twitter, c.user_github, c.photo
+        FROM afup_conferenciers c
+        LEFT JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = c.conferencier_id
+        WHERE cs.session_id = :talkId
+        ')->setParams(['talkId' => $talk->getId()]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+
     /**
      * @inheritDoc
      */
@@ -76,6 +95,11 @@ class SpeakerRepository extends Repository implements MetadataInitializer
                 'columnName' => 'user_github',
                 'fieldName' => 'user',
                 'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'photo',
+                'fieldName' => 'photo',
+                'type' => 'string'
             ])
         ;
 

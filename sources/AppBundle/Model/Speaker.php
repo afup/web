@@ -78,6 +78,15 @@ class Speaker implements NotifyPropertyInterface
     private $githubUser;
 
     /**
+     * Wrapper for SpeakerType to allow picture upload
+     *
+     * @Assert\NotBlank(message="Please, upload a photo.")
+     * @Assert\File(mimeTypes={"image/jpeg","image/png"})
+     * @var string
+     */
+    private $photo;
+
+    /**
      * @return int
      */
     public function getId()
@@ -282,6 +291,25 @@ class Speaker implements NotifyPropertyInterface
     public function setGithubUser(GithubUser $githubUser)
     {
         $this->githubUser = $githubUser;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * @param string $photo
+     * @return Speaker
+     */
+    public function setPhoto($photo)
+    {
+        $this->propertyChanged('photo', $this->photo, $photo);
+        $this->photo = $photo;
         return $this;
     }
 }

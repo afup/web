@@ -4,6 +4,12 @@
     <div class="col-md-8">
         <h2>CFP: {{ event.title }}</h2>
         <h3>{{ 'Mon espace conférencier'|trans }}</h3>
+
+        <h4>{{ 'Mes propositions'|trans }}</h4>
+        <ul>
+            <li>coucou</li>
+        </ul>
+
     </div>
-    {% include ':event/cfp:sidebar.html.twig' %}
+    {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
 {% endblock %}

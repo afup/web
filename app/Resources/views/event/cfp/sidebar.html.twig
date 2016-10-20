@@ -2,14 +2,21 @@
 <div class="col-md-4">
     <h2>{{ 'Proposer une conférence'|trans }}</h2>
     <ul class="list-group">
-        <li class="list-group-item first"><a href="{{ url('cfp', {eventSlug: event.path }) }}">{{ 'Accueil CFP'|trans }}
+        <li class="list-group-item first"><a href="{{ url('cfp', {eventSlug: event.path }) }}">{{ 'Mon espace conférencier'|trans }}
             </a>
         </li>
         <li class="list-group-item"><a href="{{ url('cfp_speaker', {eventSlug: event.path }) }}">{{ 'Mon profil conférencier'|trans }}
             </a>
         </li>
-        <li class="list-group-item"><a href="{{ url('cfp_propose', {eventSlug: event.path}) }}">{{ 'Nouvelle conférence'|trans }}
+        <li class="list-group-item"><a href="{{ url('cfp_propose', {eventSlug: event.path}) }}">{{ 'Nouvelle proposition'|trans }}
             </a>
+        </li>
+        <li class="list-group-item">{{ 'Mes propositions'|trans }}
+            <ul>
+                {% for talk in talks %}
+                    <li><a href="{{ url('cfp_edit', {eventSlug: event.path, talkId: talk.id}) }}">{{ talk.title }}</a></li>
+                {% endfor %}
+            </ul>
         </li>
     </ul>
 </div>

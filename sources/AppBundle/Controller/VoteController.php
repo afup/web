@@ -40,7 +40,7 @@ class VoteController extends EventBaseController
         if ($all === false) {
             $talks = $talkRepository->getNewTalksToRate($event, $this->getUser());
         } else {
-            $talks = $talkRepository->getTalks($event, $this->getUser());
+            $talks = $talkRepository->getTalksNotRatedByUser($event, $this->getUser());
         }
 
         $vote = new Vote();

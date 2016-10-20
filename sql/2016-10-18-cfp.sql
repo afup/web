@@ -24,3 +24,8 @@ ALTER TABLE `afup_sessions_vote_github`
   CHANGE `comment` `comment` text COLLATE 'latin1_swedish_ci' NULL AFTER `user`;
 ALTER TABLE `afup_conferenciers`
   CHANGE `twitter` `twitter` varchar(255) COLLATE 'latin1_swedish_ci' NULL AFTER `biographie`;
+ALTER TABLE `afup_sessions`
+  ADD `skill` tinyint(1) NOT NULL AFTER `genre`;
+
+ALTER TABLE `afup_conferenciers`
+  ADD `photo` varchar(255) NULL;

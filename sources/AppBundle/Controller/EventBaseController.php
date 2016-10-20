@@ -13,7 +13,7 @@ abstract class EventBaseController extends Controller
 {
     /**
      * @param $eventSlug
-     * @return Event|null
+     * @return Event
      *
      * @throws NotFoundHttpException
      */

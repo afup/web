@@ -4,12 +4,18 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\CFP\PhotoStorage;
 use AppBundle\Form\SpeakerType;
+use AppBundle\Form\TalkType;
+use AppBundle\Model\Event;
 use AppBundle\Model\GithubUser;
 use AppBundle\Model\Repository\EventRepository;
 use AppBundle\Model\Repository\SpeakerRepository;
+use AppBundle\Model\Repository\TalkRepository;
 use AppBundle\Model\Speaker;
+use AppBundle\Model\Talk;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,42 +43,103 @@ class CFPController extends EventBaseController
          * @var $speakerRepository SpeakerRepository
          */
         $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
-        // Try to get a speaker for the current logged in user
-        $speaker = $speakerRepository->getOneBy(['user' => $this->getUser()->getId()]);
-
-        if ($speaker === null) {
-            $speaker = new Speaker();
-        }
-
-        $speaker
-            ->setEventId($event->getId())
-            ->setUser($this->getUser()->getId())
-        ;
+        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
 
         $form = $this->createForm(SpeakerType::class, $speaker);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            /**
-             * @var $speaker Speaker
-             */
-            $speaker = $form->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $speaker->getPhoto();
+            $fileName = $this->get('app.photo_storage')->store($file, $speaker);
+            $speaker->setPhoto($fileName);
 
-            if ($form->isValid()) {
-                $speakerRepository->save($speaker);
-            }
+            $speakerRepository->save($speaker);
         }
 
-        return $this->render(':event/cfp:speaker.html.twig', ['event' => $event, 'form' => $form->createView()]);
+        $photo = null;
+        if (!empty($speaker->getPhoto())) {
+            $photo = $this->get('app.photo_storage')->getUrl($speaker, PhotoStorage::DIR_THUMBS);
+        }
+
+        return $this->render(':event/cfp:speaker.html.twig', ['event' => $event, 'form' => $form->createView(), 'photo' => $photo]);
     }
 
-    public function editAction($eventSlug, $talkId)
+    public function editAction($eventSlug, $talkId, Request $request)
     {
+        $event = $this->checkEventSlug($eventSlug);
+        if ($event->getDateEndCallForPapers() < new \DateTime()) {
+            return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
+        }
+        $talk = $this->get('ting')->get(TalkRepository::class)->getOneBy(['id' => $talkId, 'forumId' => $event->getId()]);
 
+        if ($talk === null) {
+            throw $this->createNotFoundException(sprintf('Talk %i not found', $talkId));
+        }
+        $this->denyAccessUnlessGranted('edit', $talk);
+
+        $form = $this->createForm(TalkType::class, $talk);
+        $formResponse = $this->handleTalkForm($request, $event, $form);
+        if ($formResponse instanceof Response) {
+            return $formResponse;
+        }
+
+        return $this->render(':event/cfp:propose.html.twig', ['event' => $event, 'form' => $form->createView(), 'talk' => $talk]);
     }
 
-    public function proposeAction($eventSlug)
+    public function proposeAction($eventSlug, Request $request)
     {
+        $event = $this->checkEventSlug($eventSlug);
+        if ($event->getDateEndCallForPapers() < new \DateTime()) {
+            return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
+        }
 
+        $talk = new Talk();
+        $talk->setForumId($event->getId());
+
+        $form = $this->createForm(TalkType::class, $talk);
+        $formResponse = $this->handleTalkForm($request, $event, $form);
+        if ($formResponse instanceof Response) {
+            return $formResponse;
+        }
+
+        return $this->render(':event/cfp:propose.html.twig', ['event' => $event, 'form' => $form->createView(), 'talk' => $talk]);
+    }
+
+    public function sidebarAction($eventSlug)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+        if ($event->getDateEndCallForPapers() < new \DateTime()) {
+            return new Response('');
+        }
+
+        $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get('app.speaker_factory')->getSpeaker($event));
+        return $this->render(':event/cfp:sidebar.html.twig', ['talks' => $talks, 'event' => $event]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Event $event
+     * @param Form $form
+     * @return RedirectResponse|null
+     */
+    private function handleTalkForm(Request $request, Event $event, Form $form)
+    {
+        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            /**
+             * @var $talk Talk
+             */
+            $talk = $form->getData();
+
+            if ($form->isValid()) {
+                $talk->setSubmittedOn(new \DateTime());
+                $talkRepository->saveWithSpeaker($talk, $this->get('app.speaker_factory')->getSpeaker($event));
+
+                return $this->redirectToRoute('cfp_edit', ['eventSlug' => $event->getPath(), 'talkId' => $talk->getId()]);
+            }
+        }
+        return null;
     }
 }
