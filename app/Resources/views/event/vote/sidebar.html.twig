@@ -1,0 +1,12 @@
+<div class="col-md-4">
+    <h2>{{ 'Voter pour les conférences'|trans }}</h2>
+    <ul class="list-group">
+        <li class="list-group-item first"><a href="{{ url('vote_index', {eventSlug: event.path }) }}">{{ 'Les nouvelles conférences'|trans }}
+            </a>
+        </li>
+
+        <li class="list-group-item"><a href="{{ url('vote_all', {eventSlug: event.path}) }}">{{ 'Toutes les conférences'|trans }}
+            </a>
+        </li>
+    </ul>
+</div>

@@ -134,3 +134,31 @@ $AFUP_Tarifs_Forum_Lib = array(
     AFUP_FORUM_2_JOURNEES_SPONSOR => '2 Jours par Sponsor',
     AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => '',
     AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => '');
+
+
+
+// Initialisation de ting
+$services = new \CCMBenchmark\Ting\Services();
+$services->get('ConnectionPool')->setConfig([
+    'main' => [
+        'namespace' => '\CCMBenchmark\Ting\Driver\Mysqli',
+        'master' => [
+            'host'      => $conf->obtenir('bdd|hote'),
+            'user'      => $conf->obtenir('bdd|utilisateur'),
+            'password'  => $conf->obtenir('bdd|mot_de_passe'),
+            'port'      => 3306,
+        ]
+    ]
+]);
+
+$services
+    ->get('MetadataRepository')
+    ->batchLoadMetadata(
+        'AppBundle\Model\Repository',
+        __DIR__ . '/../Model/Repository/*.php',
+        ['default' => ['database' => $conf->obtenir('bdd|base')]]
+    )
+;
+$services->set('security.csrf.token_manager', function(){
+    return new Symfony\Component\Security\Csrf\CsrfTokenManager();
+});

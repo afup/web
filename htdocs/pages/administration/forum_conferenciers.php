@@ -285,7 +285,8 @@ elseif ($action == 'lister') {
         											$valeurs['prenom'],
         											$valeurs['email'],
         											$valeurs['societe'],
-        											$valeurs['biographie']);
+        											$valeurs['biographie'],
+                                                    $valeurs['twitter']);
         } else {
             $ok = $forum_appel->modifierConferencier($_GET['id'],
                                                      $valeurs['id_forum'],

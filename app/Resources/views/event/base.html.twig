@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+{% block header %}
+    <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#body" class="nav-button-open" aria-label="open navigation"></a>
+                <a href="#" class="nav-button-close" aria-label="close navigation"></a>
+                <a class="navbar-brand hidden-xs {% if app.request.get('_route') == 'event' %}active{% endif %}"
+                   href="{{ url('event', {eventSlug: 'phptournantes2017'}) }}">Appel à conférenciers</a>
+            </div>
+
+            <nav>
+                <ul class="nav navbar-nav">
+                    <li class="first {% if app.request.get('_route') == 'cfp' %}active{% endif %}">
+                        <a href="{{ url('cfp', {eventSlug: 'phptournantes2017'}) }}">
+                            {{ 'Proposer une conférence'|trans }}
+                        </a>
+                    </li>
+                    <li class="{% if app.request.get('_route') == 'vote_index' %}active{% endif %}">
+                        <a href="{{ url('vote_index', {eventSlug: 'phptournantes2017'}) }}">
+                        {{ 'Voter pour les conférences'|trans }}
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="navbar-right hidden-xs">
+                <a href="http://www.afup.org" target="_blank" id="logo"> </a>
+            </div>
+
+        </div>
+    </header>
+{% endblock %}

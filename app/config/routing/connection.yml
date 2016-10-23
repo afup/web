@@ -1,0 +1,7 @@
+connection_github_check:
+  path: /github/check
+  defaults: {_controller: AppBundle:Github:connectCheck}
+
+connection_github:
+  path: /github
+  defaults: {_controller: AppBundle:Github:connect}

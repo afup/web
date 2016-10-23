@@ -1,0 +1,16 @@
+<table class="afup_tab">
+    <tr>
+        <th>Votant</th>
+        <th>Conférence</th>
+        <th>Note</th>
+        <th>Commentaire</th>
+    </tr>
+    {% for vote in votes %}
+        <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
+            <td>{{ vote.githubUser.login }}</td>
+            <td>{{ vote.talk.title }}</td>
+            <td>{{ vote.vote }}</td>
+            <td>{{ vote.comment }}</td>
+        </tr>
+    {% endfor %}
+</table>

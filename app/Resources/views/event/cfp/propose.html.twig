@@ -1,0 +1,14 @@
+{% extends ':event:base.html.twig' %}
+{% block content %}
+    <div class="col-md-8">
+        <h2>CFP: {{ event.title }}</h2>
+        {% if talk.id %}
+            <h3>{{ 'Modifier ma proposition'|trans }}</h3>
+        {% else %}
+            <h3>{{ 'Nouvelle proposition'|trans }}</h3>
+        {% endif %}
+        {{ form(form) }}
+        <p>{{ 'Vous pouvez éditer votre proposition jusqu\'à la fin du CFP.'|trans }}</p>
+    </div>
+    {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
+{% endblock %}

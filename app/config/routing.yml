@@ -1,0 +1,11 @@
+event:
+    resource: "routing/event.yml"
+    prefix:   /event
+
+connection:
+    resource: "routing/connection.yml"
+    prefix: /connect
+
+admin:
+    resource: "routing/admin.yml"
+    prefix: /admin

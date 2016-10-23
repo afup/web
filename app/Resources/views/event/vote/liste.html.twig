@@ -1,0 +1,29 @@
+{% extends ':event:base.html.twig' %}
+
+{% block content %}
+
+    <div class="col-md-8">
+        <h2>CFP: {{ event.title }}</h2>
+        <h3>{% if all %}{{ 'Toutes les conférences à noter'|trans }}{% else %}{{ 'Les nouvelles conférences à noter'|trans }}{% endif %}</h3>
+
+        {% if numberOfTalks == 0 %}
+            <p>{{ 'Il n\'y a plus aucune conférence à noter !'|trans }}</p>
+        {% else %}
+            <svg id="svg-star" style="display: none;">
+                <symbol id="star" viewBox="0 0 98 92">
+                    <title>star</title>
+                    <path stroke='#3e3d40' stroke-width='2' d='M49 73.5L22.55 87.406l5.05-29.453-21.398-20.86 29.573-4.296L49 6l13.225 26.797 29.573 4.297-21.4 20.86 5.052 29.452z' fill-rule='evenodd' /></symbol>
+            </svg>
+
+            {% for talk in talks %}
+                {% include 'event/vote/talk.html.twig' %}
+            {% endfor %}
+
+            <div style="clear:both; padding-top:200px;">
+                <p>{{ 'Les conférences vous sont présentées dans un ordre aléatoire à chaque affichage'|trans }}</p>
+                <p><i>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></i></p>
+            </div>
+        {% endif %}
+    </div>
+    {% include ':event/vote:sidebar.html.twig' %}
+{% endblock %}

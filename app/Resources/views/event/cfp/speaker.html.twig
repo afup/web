@@ -1,0 +1,17 @@
+{% extends ':event:base.html.twig' %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h2>CFP: {{ event.title }}</h2>
+        <h3>{{ 'Mon profil conférencier'|trans }}</h3>
+        {{ form(form) }}
+
+        {% if photo != null %}
+            <h3>{{ 'Ma photo de profil'|trans }}</h3>
+            <div class="photo-container">
+                <img src="{{ asset(photo) }}" />
+            </div>
+        {% endif %}
+    </div>
+    {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
+{% endblock %}

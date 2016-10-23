@@ -1,0 +1,48 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    my_github_authenticator:
+        class: AppBundle\Security\MyGithubAuthenticator
+        autowire: true
+
+    github_user_repository:
+        class: AppBundle\Model\Repository\GithubUserRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Model\Repository\GithubUserRepository]
+
+    app_twig:
+        class: AppBundle\Twig\TwigExtension
+        tags:
+            -  { name: twig.extension }
+
+    app_admin_listener:
+        class: AppBundle\Listener\AdminRequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    app.speaker_repository:
+        class: AppBundle\Model\Repository\SpeakerRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Model\Repository\SpeakerRepository]
+
+    app.speaker_factory:
+        class: AppBundle\CFP\SpeakerFactory
+        arguments: ["@security.token_storage", "@app.speaker_repository"]
+
+    app.talk_voter:
+        class: AppBundle\Security\TalkVoter
+        arguments: ["@app.speaker_repository"]
+        tags:
+          - { name: security.voter }
+        public: false
+
+    app.photo_storage:
+        class: AppBundle\CFP\PhotoStorage
+        arguments: ["%kernel.root_dir%/../htdocs/uploads/speakers", "/uploads/speakers"]

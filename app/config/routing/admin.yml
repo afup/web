@@ -1,0 +1,3 @@
+admin_vote:
+  path: /vote/{eventSlug}
+  defaults: {_controller: AppBundle:Vote:admin}
