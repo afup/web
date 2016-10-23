@@ -37,7 +37,6 @@ class SpeakerFactory
                 ->setUser($this->tokenStorage->getToken()->getUser()->getId())
                 ->setEventId($event->getId())
             ;
-            $this->speakerRepository->save($speaker);
         }
 
         return $speaker;

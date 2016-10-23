@@ -8,13 +8,9 @@ use AppBundle\CFP\PhotoStorage;
 use AppBundle\Form\SpeakerType;
 use AppBundle\Form\TalkType;
 use AppBundle\Model\Event;
-use AppBundle\Model\GithubUser;
-use AppBundle\Model\Repository\EventRepository;
 use AppBundle\Model\Repository\SpeakerRepository;
 use AppBundle\Model\Repository\TalkRepository;
-use AppBundle\Model\Speaker;
 use AppBundle\Model\Talk;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +25,17 @@ class CFPController extends EventBaseController
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
 
-        return $this->render(':event/cfp:home.html.twig', ['event' => $event]);
+        $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get('app.speaker_factory')->getSpeaker($event));
+
+        return $this->render(
+            ':event/cfp:home.html.twig',
+            [
+                'event' => $event,
+                'talks' => $talks,
+                'speaker' => $this->get('app.speaker_factory')->getSpeaker($event),
+                'photoStorage' => $this->get('app.photo_storage')
+            ]
+        );
     }
 
     public function speakerAction($eventSlug, Request $request)
@@ -58,7 +64,7 @@ class CFPController extends EventBaseController
 
         $photo = null;
         if (!empty($speaker->getPhoto())) {
-            $photo = $this->get('app.photo_storage')->getUrl($speaker, PhotoStorage::DIR_THUMBS);
+            $photo = $this->get('app.photo_storage')->getUrl($speaker, PhotoStorage::DIR_ORIGINAL);
         }
 
         return $this->render(':event/cfp:speaker.html.twig', ['event' => $event, 'form' => $form->createView(), 'photo' => $photo]);
@@ -135,6 +141,7 @@ class CFPController extends EventBaseController
 
             if ($form->isValid()) {
                 $talk->setSubmittedOn(new \DateTime());
+                $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
                 $talkRepository->saveWithSpeaker($talk, $this->get('app.speaker_factory')->getSpeaker($event));
 
                 return $this->redirectToRoute('cfp_edit', ['eventSlug' => $event->getPath(), 'talkId' => $talk->getId()]);

@@ -4,11 +4,26 @@
     <div class="col-md-8">
         <h2>CFP: {{ event.title }}</h2>
         <h3>{{ 'Mon espace conférencier'|trans }}</h3>
+        {% if speaker.id == 0 %}
+            <p>{{ 'Vous n\'avez pas encore rempli votre profil conférencier.'|trans }}</p>
+        {% else %}
+            <div class="photo-container">
+                <img src="{{ asset(photoStorage.url(speaker)) }}" />
+            </div>
+            <p><strong>{{ speaker.firstname~' '~speaker.lastname }}</strong></p>
+            <p>{{ speaker.biography|nl2br }}</p>
+        {% endif %}
+        <h3>{{ 'Mes propositions'|trans }}</h3>
 
-        <h4>{{ 'Mes propositions'|trans }}</h4>
-        <ul>
-            <li>coucou</li>
-        </ul>
+        {% if talks.count > 0 %}
+            <ul>
+                {% for talk in talks %}
+                    <li><a href="{{ url('cfp_edit', {eventSlug: event.path, talkId: talk.id}) }}">{{ talk.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>{{ 'Aucune proposition enregistrée pour le moment.'|trans }}</p>
+        {% endif %}
 
     </div>
     {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}

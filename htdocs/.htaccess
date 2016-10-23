@@ -17,23 +17,26 @@
     Options -MultiViews
 </IfModule>
 
-    RewriteEngine On
+RewriteEngine On
 
-    # Determine the RewriteBase automatically and set it as environment variable.
-    # If you are using Apache aliases to do mass virtual hosting or installed the
-    # project in a subdirectory, the base path will be prepended to allow proper
-    # resolution of the app.php file and to redirect to the correct URI. It will
-    # work in environments without path prefix as well, providing a safe, one-size
-    # fits all solution. But as you do not need it in this case, you can comment
-    # the following 2 lines to eliminate the overhead.
-    #RewriteCond %{REQUEST_URI}::$1 ^/event/(/.+)/(.*)::\2$
-    #RewriteRule ^/event/(.*) - [E=BASE:%1]
+# Determine the RewriteBase automatically and set it as environment variable.
+# If you are using Apache aliases to do mass virtual hosting or installed the
+# project in a subdirectory, the base path will be prepended to allow proper
+# resolution of the app.php file and to redirect to the correct URI. It will
+# work in environments without path prefix as well, providing a safe, one-size
+# fits all solution. But as you do not need it in this case, you can comment
+# the following 2 lines to eliminate the overhead.
+#RewriteCond %{REQUEST_URI}::$1 ^/event/(/.+)/(.*)::\2$
+#RewriteRule ^/event/(.*) - [E=BASE:%1]
 
 
-    # If the requested filename exists, simply serve it.
-    # We only want to let Apache serve files and not directories.
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^ - [END]
+# If the requested filename exists, simply serve it.
+# We only want to let Apache serve files and not directories.
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [END]
 
-    ## This url are handled by symfony
-    RewriteRule (event/|connect|_) /app_dev.php [END]
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+## This url are handled by symfony
+RewriteRule (event/|connect|_) /app.php [END]

@@ -430,7 +430,7 @@ body{
     }
 
     .navbar-right {
-        float: right!important
+        float: right!important;
     }
 }
 
@@ -795,7 +795,42 @@ a {
     border: 1px solid #ddd;
 }
 
+.list-group-item ul{
+    list-style-position: inside;
+}
 
+@media (max-width: 768px) {
+    header {
+        height: 80px !important;
+        overflow:hidden;
+    }
+    [class^="nav-button"] {
+        top:30px;
+        right:30px
+    }
+    .navbar-nav{
+        margin: 0 0.8em;
+    }
+    .navbar-nav>li{
+        border-top: 1px solid white;
+    }
+    .navbar-nav>li>a {
+        line-height:1.5rem;
+    }
+    body:target header {
+        height: 160px !important;
+    }
+    body:target {
+        padding-top:160px;
+    }
+    .event--vote-form{
+        float:none !important;
+    }
+    .event--vote{
+        border-bottom: 1px grey solid;
+        margin-bottom: 3em;
+    }
+}
 /*******
 * CFP
 ********/
@@ -822,8 +857,18 @@ div.event--vote{
 form[name="speaker"] label, form[name="speaker"] button, form[name="talk"] label, form[name="talk"] button{
     margin: 0.5em 0.5em 0.5em;
 }
+form[name="speaker"] textarea, form[name="talk"] textarea{
+    font-size:1.2em;
+    /** 100% - size of label - margin of label **/
+    width: calc(100% - 220px - 1em);
+    min-height:200px;
+}
 
-svg {
+form[name="talk"] {
+    width: 80%;
+}
+
+#svg-star, a.star svg {
     width: 2em;
     height: 2em;
     fill: white;
@@ -877,8 +922,54 @@ div.errors ul li{
 
 div.photo-container{
     padding:5px;
-    margin: 0 2em;
     background: #eee;
     border: 1px solid #ccc;
     display: inline-block;
+}
+
+.navbar-right #logo{
+    background: transparent url('/templates/site/img/logo-afup.svg') no-repeat left;
+    display:block;
+    width: 440px;
+    height:70px;
+}
+@media(max-width: 1024px) {
+    .navbar-right #logo {
+        width:200px;
+    }
+}
+@media(max-width: 767px) {
+    .navbar-right #logo {
+        display:none;
+    }
+}
+
+/*********
+* HOME
+**********/
+#end, #endTitle{
+    font-size: 5rem;
+    font-family: Glegoo, Helvetica, Arial, sans-serif;
+    text-align: center;
+}
+
+.button {
+    background-color: #415e96;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    margin: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button svg{
+    fill:white;
+    margin-bottom: -12px;
+}
+#homeButtons {
+    text-align:center;
+    margin: 2em 0;
 }

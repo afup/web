@@ -54,8 +54,11 @@ class PhotoStorage
         return $fileName;
     }
 
-    public function getUrl(Speaker $speaker, $format)
+    public function getUrl(Speaker $speaker, $format = null)
     {
+        if ($format === null) {
+            $format = self::DIR_THUMBS;
+        }
         if (!in_array($format, [self::DIR_ORIGINAL, self::DIR_THUMBS])) {
             throw new \UnexpectedValueException(sprintf('Bad format: %s', $format));
         }
