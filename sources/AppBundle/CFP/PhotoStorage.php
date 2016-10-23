@@ -91,7 +91,7 @@ class PhotoStorage
     private function generateFormat(Speaker $speaker, $format)
     {
         $originalPath = $this->getPath($speaker, self::DIR_ORIGINAL);
-        $resizedPath = $this->getPath($speaker, $format);
+        $formatPath = $this->getPath($speaker, $format);
 
         $size = self::FORMAT[$format];
 
@@ -110,14 +110,14 @@ class PhotoStorage
             $ratio = $width / $height;
 
             /**
-             *  RATIO = LARGEUR / HAUTEUR
+             *  RATIO = WIDTH / HEIGHT
              *
-             *  RATIO / LARGEUR = 1 / HAUTEUR ==> LARGEUR / RATIO = HAUTEUR
-             *  RATIO x HAUTEUR = LARGEUR
+             *  RATIO / WIDTH = 1 / HEIGHT ==> WIDTH / RATIO = HEIGHT
+             *  RATIO x HEIGHT = WIDTH
              *
              * **************************
-             * HAUTEUR = LARGEUR / RATIO
-             * LARGEUR = RATIO x HAUTEUR
+             * HEIGHT = WIDTH / RATIO
+             * WIDTH = RATIO x HEIGHT
              * **************************
              */
 
@@ -135,6 +135,6 @@ class PhotoStorage
             $img = imagecreatetruecolor($width, $height);
             imagecopyresampled($img, $oldImg, 0, 0, 0, 0, $width, $height, $originalWidth, $originalHeight);
         }
-        imagejpeg($img, $resizedPath, 98);
+        imagejpeg($img, $formatPath, 98);
     }
 }

@@ -25,10 +25,9 @@ class GithubController extends Controller
     /**
      * Github redirects to back here afterwards
      *
-     * @param Request $request
      * @return Response
      */
-    public function connectCheckAction(Request $request)
+    public function connectCheckAction()
     {
         return new RedirectResponse($this->generateUrl('connection_github'));
     }

@@ -5,7 +5,6 @@ namespace AppBundle\Model\Repository;
 
 
 use AppBundle\Model\Event;
-use CCMBenchmark\Ting\Repository\Collection;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;

@@ -7,7 +7,6 @@ namespace AppBundle\Controller;
 use AppBundle\Form\VoteType;
 use AppBundle\Model\Repository\TalkRepository;
 use AppBundle\Model\Repository\VoteRepository;
-use AppBundle\Model\Talk;
 use AppBundle\Model\Vote;
 use CCMBenchmark\Ting;
 use Symfony\Component\Form\Form;
@@ -46,9 +45,6 @@ class VoteController extends EventBaseController
         $vote = new Vote();
         $forms = function () use ($talks, $vote, $eventSlug)
         {
-            /**
-             * @var $talk Talk
-             */
             foreach ($talks as $talk) {
                 if (isset($talk['asvg'])) {
                     $myVote = $talk['asvg'];
@@ -154,7 +150,7 @@ class VoteController extends EventBaseController
         return new JsonResponse(['errors' => []]);
     }
 
-    public function adminAction(Request $request, $eventSlug)
+    public function adminAction($eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
 

@@ -4,7 +4,7 @@ namespace AppBundle\Listener;
 
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class AdminRequestListener
 {
@@ -14,7 +14,7 @@ class AdminRequestListener
             return;
         }
         if ($event->getRequest()->server->has('AFUP_CONTEXT') === false || $event->getRequest()->server->get('AFUP_CONTEXT') !== true) {
-            #throw new AccessDeniedException();
+            throw new AccessDeniedHttpException();
         }
     }
 }
