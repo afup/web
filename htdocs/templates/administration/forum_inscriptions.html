@@ -50,20 +50,22 @@
     </tr>
     </table>
     <br/>
-    <strong>Journée fonctionnelle</strong>
-    <ul>
-        <li>inscrits : {$statistiques.premier_jour.inscrits}</li>
-        <li>confirmés : {$statistiques.premier_jour.confirmes}</li>
-        <li>en attente de règlement : {if $statistiques.premier_jour.en_attente_de_reglement == ''}0{else}{$statistiques.premier_jour.en_attente_de_reglement}{/if}</li>
-    </ul>
-    <br/>
+    <table class="afup_tab">
+        <tr><th>-</th><th>Inscrits</th><th>Confirmés</th><th>En attente de règlement</th></tr>
+        <tr>
+            <th>Jour 1</th>
+            <td>{$statistiques.premier_jour.inscrits}</td>
+            <td>{$statistiques.premier_jour.confirmes}</td>
+            <td>{if $statistiques.premier_jour.en_attente_de_reglement == ''}0{else}{$statistiques.premier_jour.en_attente_de_reglement}{/if}</td>
+        </tr>
+        <tr>
+            <th>Jour 2</th>
+            <td>{$statistiques.second_jour.inscrits}</td>
+            <td>{$statistiques.second_jour.confirmes}</td>
+            <td>{if $statistiques.second_jour.en_attente_de_reglement == ''}0{else}{$statistiques.second_jour.en_attente_de_reglement}{/if}</td>
+        </tr>
+    </table>
 
-    <strong>Journée technique</strong>
-    <ul>
-        <li>inscrits : {$statistiques.second_jour.inscrits}</li>
-        <li>confirmés : {$statistiques.second_jour.confirmes}</li>
-        <li>en attente de règlement : {if $statistiques.second_jour.en_attente_de_reglement == ''}0{else}{$statistiques.second_jour.en_attente_de_reglement}{/if}</li>
-    </ul>
     <br/>
 
     <strong>Nombre de personnes validées par type d'inscription</strong>
