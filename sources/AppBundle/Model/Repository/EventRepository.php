@@ -76,22 +76,34 @@ class EventRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'date_fin_appel_projet',
                 'fieldName' => 'dateEndCallForProjects',
-                'type' => 'datetime'
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
             ])
             ->addField([
                 'columnName' => 'date_fin_appel_conferencier',
                 'fieldName' => 'dateEndCallForPapers',
-                'type' => 'datetime'
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
             ])
             ->addField([
                 'columnName' => 'date_fin_prevente',
                 'fieldName' => 'dateEndPreSales',
-                'type' => 'datetime'
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
             ])
             ->addField([
                 'columnName' => 'date_fin_vente',
                 'fieldName' => 'dateEndSales',
-                'type' => 'datetime'
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
             ])
             ->addField([
                 'columnName' => 'path',
