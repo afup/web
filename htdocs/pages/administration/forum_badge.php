@@ -17,7 +17,7 @@ require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 $droits = Utils::fabriqueDroits($bdd);
 
 if (!$droits->estConnecte() ) {
-   header('Location: index.php?page=connexion&echec=' . $droits->verifierEchecConnexion());
+   header('Location: index.php?page=connexion&statut=' . $droits->obtenirStatutConnexion());
    exit;
 }
 

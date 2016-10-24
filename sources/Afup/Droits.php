@@ -15,6 +15,12 @@ define('AFUP_ANNUAIRE_ETAT_INACTIF', 0);
 define('AFUP_ANNUAIRE_ETAT_ACTIF', 1);
 define('AFUP_ANNUAIRE_ETAT_AMODERER', 9);
 
+define('AFUP_CONNEXION_DECONNECTE', 0);
+define('AFUP_CONNEXION_CONNECTE', 1);
+define('AFUP_CONNEXION_ERROR', 2);
+define('AFUP_CONNEXION_ERROR_LOGIN', 3);
+define('AFUP_CONNEXION_ERROR_COTISATION', 4);
+
 /**
  * Classe de gestion des droits
  */
@@ -29,20 +35,12 @@ class Droits
     private $_bdd;
 
     /**
-     * Indique si l'utilisateur est connecté ou non
+     * Quel est le statut de la dernière connexion ?
      *
      * @var bool
      * @access private
      */
-    private $_est_connecte = false;
-
-    /**
-     * Une connexion a-t-elle échouée ?
-     *
-     * @var bool
-     * @access private
-     */
-    private $_echec_connexion = false;
+    private $_statut_connexion = AFUP_CONNEXION_DECONNECTE;
 
     /**
      * Identifiant de l'utilisateur
@@ -117,7 +115,7 @@ class Droits
 
         $requete = '
             SELECT
-                id, niveau, niveau_modules, nom, prenom, email,
+                id, niveau, niveau_modules, nom, prenom, email, etat, 
                 CONCAT(id, \'_\', email, \'_\', login) AS hash
             FROM
                 afup_personnes_physiques
@@ -126,12 +124,14 @@ class Droits
                   login=' . $this->_bdd->echapper($login) . '
                   OR email=' . $this->_bdd->echapper($login) . '
                 )
-                AND mot_de_passe=' . $this->_bdd->echapper($mot_de_passe) .'
-                AND etat=' . AFUP_DROITS_ETAT_ACTIF
+                AND mot_de_passe=' . $this->_bdd->echapper($mot_de_passe)
         ;
-
         $resultat = $this->_bdd->obtenirEnregistrement($requete);
-        if ($resultat !== false) {
+        if ($resultat === false) {
+            $this->_statut_connexion = AFUP_CONNEXION_ERROR_LOGIN;
+        } elseif ($resultat['etat'] == AFUP_DROITS_ETAT_INACTIF) {
+            $this->_statut_connexion = AFUP_CONNEXION_ERROR_COTISATION;
+        } elseif ($resultat['etat'] == AFUP_DROITS_ETAT_ACTIF) {
             $this->_identifiant = $resultat['id'];
             $this->_hash = md5($resultat['hash']);
             $this->_niveau = $resultat['niveau'];
@@ -139,11 +139,7 @@ class Droits
             $this->_email = $resultat['email'];
             $this->_nom = $resultat['nom'];
             $this->_prenom = $resultat['prenom'];
-        }
-        $this->_est_connecte = ($resultat !== false);
-        $this->_echec_connexion = !$this->_est_connecte;
 
-        if ($this->_est_connecte) {
             $_SESSION['afup_login'] = $login;
             $_SESSION['afup_mot_de_passe'] = $mot_de_passe;
             // Envoi la demande de connection aux listeners
@@ -151,9 +147,13 @@ class Droits
             foreach ($this->_listeners as $el) {
                 $el->seConnecter($event);
             }
+
+            $this->_statut_connexion = AFUP_CONNEXION_CONNECTE;
+        } else {
+            $this->_statut_connexion = AFUP_CONNEXION_ERROR;
         }
 
-        return $this->_est_connecte;
+        return $this->_statut_connexion === AFUP_CONNEXION_CONNECTE;
     }
 
     public function obtenirHash()
@@ -197,11 +197,7 @@ class Droits
             $this->_email = $personne_physique['email'];
             $this->_nom = $personne_physique['nom'];
             $this->_prenom = $personne_physique['prenom'];
-        }
-        $this->_est_connecte = ($personne_physique_id !== false);
-        $this->_echec_connexion = !$this->_est_connecte;
 
-        if ($this->_est_connecte) {
             $_SESSION['afup_login'] = $personne_physique['login'];
             $_SESSION['afup_mot_de_passe'] = $personne_physique['mot_de_passe'];
             $_SESSION['afup_niveau'] = AFUP_DROITS_NIVEAU_MEMBRE;
@@ -211,9 +207,13 @@ class Droits
             foreach ($this->_listeners as $listener) {
                 $listener->seConnecter($event);
             }
+
+            $this->_statut_connexion = AFUP_CONNEXION_CONNECTE;
+        } else {
+            $this->_statut_connexion = AFUP_CONNEXION_ERROR;
         }
 
-        return $this->_est_connecte;
+        return $this->_statut_connexion === AFUP_CONNEXION_CONNECTE;
     }
 
     /**
@@ -227,8 +227,7 @@ class Droits
         unset($_SESSION['afup_login']);
         unset($_SESSION['afup_mot_de_passe']);
         unset($_SESSION['afup_niveau']);
-        $this->_est_connecte = false;
-        $this->_echec_connexion = false;
+        $this->_statut_connexion = AFUP_CONNEXION_DECONNECTE;
         $this->_niveau = AFUP_DROITS_NIVEAU_MEMBRE;
 
         if (isset($event)) {
@@ -247,7 +246,7 @@ class Droits
      */
     public function estConnecte()
     {
-        return $this->_est_connecte;
+        return $this->_statut_connexion === AFUP_CONNEXION_CONNECTE;
     }
 
     private function surchargerNiveau()
@@ -299,9 +298,9 @@ class Droits
      * @access public
      * @return bool
      */
-    public function verifierEchecConnexion()
+    public function obtenirStatutConnexion()
     {
-        return $this->_echec_connexion;
+        return $this->_statut_connexion;
     }
 
     /**

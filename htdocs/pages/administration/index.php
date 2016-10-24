@@ -34,7 +34,7 @@ if (!empty($_POST['motdepasse_perdu'])) {
     $result = $personnes_physiques->envoyerMotDePasse($_POST['email']);
 
     if (!$result) {
-        $_GET['echec'] = 1;
+        $_GET['statut'] = AFUP_CONNEXION_ERROR_LOGIN;
         $_GET['page'] = 'mot_de_passe_perdu';
     } else {
         afficherMessage('Votre mot de passe vous a été envoyé par mail', 'index.php');
@@ -68,7 +68,7 @@ if (!empty($_GET['hash'])) {
 
 if (!$droits->estConnecte() and $_GET['page'] != 'connexion' and $_GET['page'] != 'mot_de_passe_perdu' and
 $_GET['page'] != 'message' and $_GET['page'] != 'inscription') {
-    header('Location: index.php?page=connexion&echec=' . $droits->verifierEchecConnexion() . '&page_demandee=' . urlencode($_SERVER['REQUEST_URI']));
+    header('Location: index.php?page=connexion&statut=' . $droits->obtenirStatutConnexion() . '&page_demandee=' . urlencode($_SERVER['REQUEST_URI']));
     exit;
 }
 // On vérifie que l'utilisateur a le droit d'accéder à la page
