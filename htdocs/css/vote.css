@@ -818,10 +818,10 @@ a {
         line-height:1.5rem;
     }
     body:target header {
-        height: 160px !important;
+        height: 200px !important;
     }
     body:target {
-        padding-top:160px;
+        padding-top:200px;
     }
     .event--vote-form{
         float:none !important;

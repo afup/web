@@ -21,6 +21,16 @@
                         {{ 'Voter pour les conférences'|trans }}
                         </a>
                     </li>
+                    <li>
+                        {% set locale = 'fr' %}
+                        {% if app.request.locale == 'fr' %}
+                            {% set locale = 'en' %}
+                        {% endif %}
+                        {% set parameters = app.request.attributes.get('_route_params')|merge({'_locale':locale}) %}
+                        <a href="{{ url(app.request.get('_route'), parameters) }}">
+                        [{{ locale }}]
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <div class="navbar-right hidden-xs">
