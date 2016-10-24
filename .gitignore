@@ -15,6 +15,7 @@ deps.lock
 /default
 
 /htdocs/cache
+/htdocs/tmp/twig
 /configs/application/config.php
 /tests/simpletest
 /tests/unitaires/config.php
