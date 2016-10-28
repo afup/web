@@ -6,19 +6,29 @@
                 <a href="#body" class="nav-button-open" aria-label="open navigation"></a>
                 <a href="#" class="nav-button-close" aria-label="close navigation"></a>
                 <a class="navbar-brand hidden-xs {% if app.request.get('_route') == 'event' %}active{% endif %}"
-                   href="{{ url('event', {eventSlug: 'phptournantes2017'}) }}">Appel à conférenciers</a>
+                   href="{{ url('event', {eventSlug: event.path}) }}">{{ 'Appel à conférenciers'|trans }}</a>
             </div>
 
             <nav>
                 <ul class="nav navbar-nav">
                     <li class="first {% if app.request.get('_route') == 'cfp' %}active{% endif %}">
-                        <a href="{{ url('cfp', {eventSlug: 'phptournantes2017'}) }}">
+                        <a href="{{ url('cfp', {eventSlug: event.path}) }}">
                             {{ 'Proposer une conférence'|trans }}
                         </a>
                     </li>
                     <li class="{% if app.request.get('_route') == 'vote_index' %}active{% endif %}">
-                        <a href="{{ url('vote_index', {eventSlug: 'phptournantes2017'}) }}">
+                        <a href="{{ url('vote_index', {eventSlug: event.path}) }}">
                         {{ 'Voter pour les conférences'|trans }}
+                        </a>
+                    </li>
+                    <li>
+                        {% set locale = 'fr' %}
+                        {% if app.request.locale == 'fr' %}
+                            {% set locale = 'en' %}
+                        {% endif %}
+                        {% set parameters = app.request.attributes.get('_route_params')|merge({'_locale':locale}) %}
+                        <a href="{{ url(app.request.get('_route'), parameters) }}">
+                        [{{ locale }}]
                         </a>
                     </li>
                 </ul>

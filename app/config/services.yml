@@ -22,10 +22,16 @@ services:
         tags:
             -  { name: twig.extension }
 
-    app_admin_listener:
+    app.admin_listener:
         class: AppBundle\Listener\AdminRequestListener
         tags:
             - { name: kernel.event_listener, event: kernel.request }
+
+    app.locale_listener:
+        class: AppBundle\Listener\LocaleListener
+        arguments: [ "%kernel.default_locale%" ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 100 }
 
     app.speaker_repository:
         class: AppBundle\Model\Repository\SpeakerRepository

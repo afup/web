@@ -9,12 +9,14 @@
     <h2>CFP: {{ event.title }}</h2>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            countdown.setLabels(
-                    ' milliseconde| seconde| minute| heure| jour| semaine| mois| année| décennie| siècle| millénaire',
-                    ' millisecondes| secondes| minutes| heures| jours| semaines| mois| années| décennies| siècles| millénaires',
-                    ' et ',
-                    ', ',
-                    'maintenant');
+            {% if app.request.locale == 'fr' %}
+                countdown.setLabels(
+                        ' milliseconde| seconde| minute| heure| jour| semaine| mois| année| décennie| siècle| millénaire',
+                        ' millisecondes| secondes| minutes| heures| jours| semaines| mois| années| décennies| siècles| millénaires',
+                        ' et ',
+                        ', ',
+                        'maintenant');
+            {% endif %}
             var end = new Date({{ event.dateEndCallForPapers|date("Y, m-1, d, H, i, s") }});
             var counter = document.querySelector('#end');
             function update() {
@@ -25,7 +27,7 @@
             update();
         })
     </script>
-    <p id="endTitle">{{ 'Fermeture du CFP: '|trans }}</p>
+    <p id="endTitle">{{ 'Fermeture du CFP:'|trans }}</p>
     <div id="end"></div>
         <div id="homeButtons">
         <a href="{{ url('vote_index', {eventSlug: event.path}) }}">
@@ -39,6 +41,6 @@
         </a>
     </div>
     <p>
-        Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.
+        {{ 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.'| trans }}
     </p>
 {% endblock %}
