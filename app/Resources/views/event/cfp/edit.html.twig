@@ -1,0 +1,33 @@
+{% extends ':event:base.html.twig' %}
+{% block content %}
+    <div class="col-md-8">
+        <h2>CFP: {{ event.title }}</h2>
+        {% if talk.id %}
+            <h3>{{ 'Modifier ma proposition'|trans }}</h3>
+        {% else %}
+            <h3>{{ 'Nouvelle proposition'|trans }}</h3>
+        {% endif %}
+        {{ form(form) }}
+        <p>{{ 'Vous pouvez éditer votre proposition jusqu\'à la fin du CFP.'|trans }}</p>
+        <h3>{{ 'Conférenciers'|trans }}</h3>
+        <ul>
+            {% for speaker in speakers %}
+                <li>{{ speaker.firstname~' '~speaker.lastname }}</li>
+            {% endfor %}
+        </ul>
+        <h3>{{ 'Invitations en attente'|trans }}</h3>
+        {% if invitations.count == 0 %}
+            <p>{{ 'Vous n\'avez pas d\'invitation en attente.'|trans }}</p>
+        {% else %}
+            <ul>
+                {% for invitation in invitations %}
+                    <li>{{ invitation['asi'].email }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <h3>{{ 'Inviter un autre conférencier'|trans }}</h3>
+        <p>{{ 'Si vous présentez ce sujet à plusieurs, vous pouvez inviter ici d\'autres conférenciers.'|trans }}</p>
+        {{ form(invitationForm) }}
+    </div>
+    {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
+{% endblock %}
