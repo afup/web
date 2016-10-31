@@ -106,6 +106,14 @@ class EventRepository extends Repository implements MetadataInitializer
                 ]
             ])
             ->addField([
+                'columnName' => 'text',
+                'fieldName' => 'cfp',
+                'type' => 'json',
+                'serializer_options' => [
+                    'unserialize' => ['assoc' => true]
+                ]
+            ])
+            ->addField([
                 'columnName' => 'path',
                 'fieldName' => 'path',
                 'type' => 'string'

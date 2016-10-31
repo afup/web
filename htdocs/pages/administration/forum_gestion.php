@@ -54,6 +54,11 @@ if ($action == 'lister') {
     } else {
         $champs = $forums->obtenir($_GET['id']);
         $champs['coupons'] = implode(', ',$coupons->obtenirCouponsForum($_GET['id']));
+        if ($champs['text'] !== null) {
+            $text = json_decode($champs['text'], true);
+            $champs['cfp_fr'] = $text['fr'];
+            $champs['cfp_en'] = $text['en'];
+        }
 
         $formulaire->setDefaults($champs);
 
@@ -74,6 +79,8 @@ if ($action == 'lister') {
 	$formulaire->addElement('date'  , 'date_fin_appel_conferencier', 'Date de fin de l\'appel aux conférenciers', array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_prevente'    , 'Date de fin de pré-vente'           , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_vente'       , 'Date de fin de vente'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
+	$formulaire->addElement('textarea', 'cfp_fr'             , 'CFP (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+	$formulaire->addElement('textarea', 'cfp_en'             , 'CFP (en)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
 
     $formulaire->addElement('header', ''                     , 'Coupons');
     $legend = "Ici c'est une liste de coupons séparées par des virgules";
@@ -86,28 +93,34 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $valeurs = $formulaire->exportValues();
         if ($action == 'ajouter') {
-            $ok = $forums->ajouter($formulaire->exportValue('titre'),
-                                   $formulaire->exportValue('nb_places'),
-                                   $formulaire->exportValue('date_debut'),
-                                   $formulaire->exportValue('date_fin'),
-                                   $formulaire->exportValue('date_fin_appel_projet'),
-                                   $formulaire->exportValue('date_fin_appel_conferencier'),
-                                   $formulaire->exportValue('date_fin_prevente'),
-                                   $formulaire->exportValue('date_fin_vente'),
-                                   $formulaire->exportValue('path'));
+            $ok = $forums->ajouter(
+                $formulaire->exportValue('titre'),
+                $formulaire->exportValue('nb_places'),
+                $formulaire->exportValue('date_debut'),
+                $formulaire->exportValue('date_fin'),
+                $formulaire->exportValue('date_fin_appel_projet'),
+                $formulaire->exportValue('date_fin_appel_conferencier'),
+                $formulaire->exportValue('date_fin_prevente'),
+                $formulaire->exportValue('date_fin_vente'),
+                $formulaire->exportValue('path'),
+                ['fr' => $formulaire->exportValue('cfp_fr'), 'en' => $formulaire->exportValue('cfp_en')]
+            );
             $id_forum = $forums->obtenirDernier();
         } else {
             $id_forum = $_GET['id'];
-            $ok = $forums->modifier($formulaire->exportValue('id'),
-                                    $formulaire->exportValue('titre'),
-                                    $formulaire->exportValue('nb_places'),
-                                    $formulaire->exportValue('date_debut'),
-                                    $formulaire->exportValue('date_fin'),
-                                    $formulaire->exportValue('date_fin_appel_projet'),
-                                    $formulaire->exportValue('date_fin_appel_conferencier'),
-                                    $formulaire->exportValue('date_fin_prevente'),
-                                    $formulaire->exportValue('date_fin_vente'),
-                                    $formulaire->exportValue('path'));
+            $ok = $forums->modifier(
+                $formulaire->exportValue('id'),
+                $formulaire->exportValue('titre'),
+                $formulaire->exportValue('nb_places'),
+                $formulaire->exportValue('date_debut'),
+                $formulaire->exportValue('date_fin'),
+                $formulaire->exportValue('date_fin_appel_projet'),
+                $formulaire->exportValue('date_fin_appel_conferencier'),
+                $formulaire->exportValue('date_fin_prevente'),
+                $formulaire->exportValue('date_fin_vente'),
+                $formulaire->exportValue('path'),
+                ['fr' => $formulaire->exportValue('cfp_fr'), 'en' => $formulaire->exportValue('cfp_en')]
+            );
         }
 
         $coupons->supprimerParForum($id_forum);

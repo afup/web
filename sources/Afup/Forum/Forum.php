@@ -690,11 +690,11 @@ CODE_HTML;
     }
 
     function ajouter($titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
-                     $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template)
+                     $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template, array $text)
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum (id, titre, nb_places, date_debut, date_fin, annee, date_fin_appel_projet,';
-        $requete .= '  date_fin_appel_conferencier, date_fin_prevente, date_fin_vente, path) ';
+        $requete .= '  date_fin_appel_conferencier, date_fin_prevente, date_fin_vente, path, `text`) ';
         $requete .= 'VALUES (null,';
         $requete .= $this->_bdd->echapper($titre) . ',';
         $requete .= (int)$nb_places . ',';
@@ -705,13 +705,14 @@ CODE_HTML;
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true) . ',';
-        $requete .= $this->_bdd->echapper($chemin_template, true) . ')';
+        $requete .= $this->_bdd->echapper($chemin_template, true) . ',';
+        $requete .= $this->_bdd->echapper(json_encode($text)) . ')';
 
         return $this->_bdd->executer($requete);
     }
 
     function modifier($id, $titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
-                      $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template)
+                      $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template, array $text)
     {
         $requete = 'UPDATE ';
         $requete .= '  afup_forum ';
@@ -725,7 +726,8 @@ CODE_HTML;
         $requete .= '  date_fin_appel_conferencier=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
         $requete .= '  date_fin_prevente=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true) . ',';
         $requete .= '  date_fin_vente=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true) . ',';
-        $requete .= '  path=' . $this->_bdd->echapper($chemin_template, true) . ' ';
+        $requete .= '  path=' . $this->_bdd->echapper($chemin_template, true) . ', ';
+        $requete .= ' `text` = ' . $this->_bdd->echapper(json_encode($text)) . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
 
