@@ -40,6 +40,8 @@
             <div class="button">{{ 'Soumettre une conférence'|trans }} <svg width="32" height="32"><use xlink:href="#octocat"></use></svg> </div>
         </a>
     </div>
+    <h3>{{ 'Thème:'|trans }}</h3>
+    {{ event.cfp[app.request.locale]|raw }}
     <p>
         {{ 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.'| trans }}
     </p>
