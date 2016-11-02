@@ -19,10 +19,10 @@ switch ($statut) {
         $message = 'Identifiants invalides';
         break;
     case AFUP_CONNEXION_ERROR_COTISATION:
-        $message = 'Votre cotisation n\'est pas à jour';
+        $message = 'Votre cotisation ayant expiré, votre compte a été désactivé. Pour le réactiver, merci de contacter bonjour@afup.org';
         break;
     case AFUP_CONNEXION_ERROR:
-        $message = 'Un problème est survenu sur votre compte, merci de prendre contact avec contact@afup.org';
+        $message = 'Un problème est survenu sur votre compte, merci de contacter bonjour@afup.org';
         break;
     default:
         $message = '';
