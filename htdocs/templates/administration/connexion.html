@@ -11,7 +11,7 @@
             </h1>
             <h2>Administration</h2>
             <form action="index.php?page=accueil" method="post" onsubmit="return soumettreUneSeuleFois(this);">
-                {if $echec}<p class="erreur">La connexion a échoué.</p>{/if}
+                {if $message}<p class="erreur">{$message}</p>{/if}
 
                 <fieldset>
                     <div class="rangee">
