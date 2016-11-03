@@ -76,6 +76,12 @@ class CFPController extends EventBaseController
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
+        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        if ($speaker->getId() === null) {
+            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir...'));
+            return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
+        }
+
         $talk = $this->get('ting')->get(TalkRepository::class)->getOneBy(['id' => $talkId, 'forumId' => $event->getId()]);
 
         if ($talk === null) {
