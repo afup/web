@@ -76,6 +76,12 @@ class CFPController extends EventBaseController
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
+        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        if ($speaker->getId() === null) {
+            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
+            return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
+        }
+
         $talk = $this->get('ting')->get(TalkRepository::class)->getOneBy(['id' => $talkId, 'forumId' => $event->getId()]);
 
         if ($talk === null) {
@@ -97,6 +103,11 @@ class CFPController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
+        }
+        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        if ($speaker->getId() === null) {
+            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
+            return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
         }
 
         $talk = new Talk();
@@ -143,6 +154,8 @@ class CFPController extends EventBaseController
                 $talk->setSubmittedOn(new \DateTime());
                 $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
                 $talkRepository->saveWithSpeaker($talk, $this->get('app.speaker_factory')->getSpeaker($event));
+
+                $this->addFlash('success', $this->get('translator')->trans('Proposition enregistrée !'));
 
                 return $this->redirectToRoute('cfp_edit', ['eventSlug' => $event->getPath(), 'talkId' => $talk->getId()]);
             }
