@@ -82,7 +82,11 @@ class CFPController extends EventBaseController
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
-
+        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        if ($speaker->getId() === null) {
+            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
+            return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
+        }
         /**
          * @var $talkRepository TalkRepository
          */
@@ -171,6 +175,11 @@ MAIL;
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
+        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        if ($speaker->getId() === null) {
+            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
+            return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
+        }
 
         $talk = new Talk();
         $talk->setForumId($event->getId());
@@ -223,6 +232,8 @@ MAIL;
                 $talk->setSubmittedOn(new \DateTime());
                 $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
                 $talkRepository->saveWithSpeaker($talk, $this->get('app.speaker_factory')->getSpeaker($event));
+
+                $this->addFlash('success', $this->get('translator')->trans('Proposition enregistrée !'));
 
                 return $this->redirectToRoute('cfp_edit', ['eventSlug' => $event->getPath(), 'talkId' => $talk->getId()]);
             }
