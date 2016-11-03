@@ -144,6 +144,8 @@ class CFPController extends EventBaseController
                 $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
                 $talkRepository->saveWithSpeaker($talk, $this->get('app.speaker_factory')->getSpeaker($event));
 
+                $this->addFlash('success', $this->get('translator')->trans('Proposition enregistrée !'));
+
                 return $this->redirectToRoute('cfp_edit', ['eventSlug' => $event->getPath(), 'talkId' => $talk->getId()]);
             }
         }
