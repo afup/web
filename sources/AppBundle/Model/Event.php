@@ -27,6 +27,11 @@ class Event implements NotifyPropertyInterface
     private $seats;
 
     /**
+     * @var string[] language indexed array of strings
+     */
+    private $CFP;
+
+    /**
      * @var \DateTime
      */
     private $dateStart;
@@ -251,6 +256,24 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('path', $this->path, $path);
         $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getCFP()
+    {
+        return $this->CFP;
+    }
+
+    /**
+     * @param \string[] $CFP language indexed array of strings
+     * @return Event
+     */
+    public function setCFP($CFP)
+    {
+        $this->CFP = $CFP;
         return $this;
     }
 }
