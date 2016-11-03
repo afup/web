@@ -18,7 +18,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TalkRepository extends Repository implements MetadataInitializer
 {
-    public function saveWithSpeaker(Talk $talk, Speaker $speaker)
+    public function saveWithSpeakers(Talk $talk, array $speaker)
     {
         try {
             $this->startTransaction();
@@ -33,6 +33,11 @@ class TalkRepository extends Repository implements MetadataInitializer
             $this->rollback();
             throw $exception;
         }
+    }
+
+    public function addSpeaker(Speaker $speaker, Talk $talk)
+    {
+
     }
 
     /**
