@@ -78,7 +78,7 @@ class CFPController extends EventBaseController
         }
         $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
         if ($speaker->getId() === null) {
-            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir...'));
+            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
             return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
         }
 
@@ -106,7 +106,7 @@ class CFPController extends EventBaseController
         }
         $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
         if ($speaker->getId() === null) {
-            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir...'));
+            $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
             return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
         }
 
