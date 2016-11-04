@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Model\Repository;
-
 
 use AppBundle\Model\Vote;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;

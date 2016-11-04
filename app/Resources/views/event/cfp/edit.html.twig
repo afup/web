@@ -15,10 +15,8 @@
                 <li>{{ speaker.firstname~' '~speaker.lastname }}</li>
             {% endfor %}
         </ul>
-        <h3>{{ 'Invitations en attente'|trans }}</h3>
-        {% if invitations.count == 0 %}
-            <p>{{ 'Vous n\'avez pas d\'invitation en attente.'|trans }}</p>
-        {% else %}
+        {% if invitations.count > 0 %}
+            <h3>{{ 'Invitations en attente'|trans }}</h3>
             <ul>
                 {% for invitation in invitations %}
                     <li>{{ invitation['asi'].email }}</li>

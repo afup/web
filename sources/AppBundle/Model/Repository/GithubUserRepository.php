@@ -3,7 +3,6 @@
 
 namespace AppBundle\Model\Repository;
 
-
 use AppBundle\Model\GithubUser;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;

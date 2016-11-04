@@ -226,11 +226,11 @@ class CFPController extends EventBaseController
          */
         $talkInvitationRepository = $this->get('ting')->get(TalkInvitationRepository::class);
 
-
         /**
          * @var $invitation TalkInvitation
          */
         $invitation = $talkInvitationRepository->get(['talk_id' => $talkId, 'token' => $token]);
+
         /**
          * @var $talk Talk
          */

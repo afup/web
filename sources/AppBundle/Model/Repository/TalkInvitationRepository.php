@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Model\Repository;
-
 
 use AppBundle\Model\TalkInvitation;
 use CCMBenchmark\Ting\Repository\Metadata;

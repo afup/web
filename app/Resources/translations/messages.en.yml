@@ -50,9 +50,9 @@
 'Invitation envoyée !': 'Invitation sent!'
 'Vous etes désormais co-conférencier !': 'You are now a co-speaker!'
 'mail.invitation.text': |
-  Bonjour !<br />
-  %login% vous invite à rejoindre sa conférence "%title%" en tant que co-conférencier.
-  Pour accepter, suivez ce lien: %link%<br />
-  Sinon, ignorez tout simplement cet email.<br />
+  Hi !<br />
+  %login% invites you to share his talk "%title%" as a co-speaker.
+  To accept this invitation, follow this link: %link%<br />
+  Otherwise, ignore this email.<br />
   <br />
-  L'équipe afup.
+  Afup team.
