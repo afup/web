@@ -809,9 +809,6 @@ a {
 * CFP
 ********/
 
-div.event--vote-form{
-    float:right;
-}
 div.event--vote-form form{
     width: auto;
 }
@@ -820,7 +817,16 @@ div.event--vote-form label{
     display:block
 }
 div.event--vote{
-    clear:both;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    display: flex;
+}
+
+div.event--vote-details {
+    width: 75%;
+    font-family:  serif;
+    font-size: 137.5%;
+    -webkit-font-smoothing: antialiased;
 }
 
 @media (max-width: 767px) {
@@ -967,6 +973,7 @@ div.photo-container{
 .cfp--votes ul li{
     margin: 2em 0;
 }
+
 .cfp--votes .cfp--vote-afup{
     background-color:#4c6eaf;
     color:white;
