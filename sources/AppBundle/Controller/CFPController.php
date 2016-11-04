@@ -22,6 +22,8 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CFPController extends EventBaseController
 {
@@ -148,18 +150,20 @@ class CFPController extends EventBaseController
                 }
                 $user = $this->getUser();
                 // Send mail to the other guy, begging for him to join the talk
-                $text = <<<MAIL
-Bonjour !
-{$user->getLogin()} vous invite à rejoindre sa conférence "{$talk->getTitle()}" en tant que co-conférencier.
-Pour accepter, suivez ce lien: {$this->generateUrl('cfp_invite', ['eventSlug' => $eventSlug, 'talkId' => $talkId, 'token' => $invitation->getToken()])}
-Sinon, ignorez tout simplement cet email.
+                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function() use ($talk, $user, $talkId, $eventSlug, $invitation){
+                    $text = $this->get('translator')->trans('mail.invitation.text',
+                        [
+                            '%login%' => $user->getLogin(),
+                            '%title%' => $talk->getTitle(),
+                            '%link%' => $this->generateUrl('cfp_invite', ['eventSlug' => $eventSlug, 'talkId' => $talkId, 'token' => $invitation->getToken()], UrlGeneratorInterface::ABSOLUTE_URL)
+                        ]
+                    );
 
-L'équipe afup.
-MAIL;
-                $mail = new Mail();
-                $mail->sendSimpleMessage('CFP Afup', $text, [$invitation->getEmail()]);
-                dump($text);
-                die;
+                    $mail = new Mail();
+                    $mail->sendSimpleMessage('CFP Afup', $text, [['email' => $invitation->getEmail()]]);
+                });
+
+                $this->addFlash('success', $this->get('translator')->trans('Invitation envoyée !'));
             }
         }
 
@@ -221,16 +225,18 @@ MAIL;
          * @var $talkInvitationRepository TalkInvitationRepository
          */
         $talkInvitationRepository = $this->get('ting')->get(TalkInvitationRepository::class);
-        /**
-         * @todo check event and talk matches here
-         */
+
+
         /**
          * @var $invitation TalkInvitation
          */
         $invitation = $talkInvitationRepository->get(['talk_id' => $talkId, 'token' => $token]);
+        /**
+         * @var $talk Talk
+         */
         $talk = $this->get('ting')->get(TalkRepository::class)->get($talkId);
 
-        if ($invitation === null || $talk === null) {
+        if ($invitation === null || $talk === null || $talk->getForumId() !== $event->getId()) {
             throw $this->createNotFoundException('Invitation or talk not found');
         }
 
@@ -250,11 +256,8 @@ MAIL;
             $talkInvitationRepository->save($invitation);
             $this->get('ting')->get(TalkToSpeakersRepository::class)->addSpeakerToTalk($talk, $speaker);
 
-
-            return $this->redirectToRoute('cfp_edit', ['eventSlug' => $eventSlug, 'talkId' => $talkId]);
         }
-
-        return $this->render(':event/cfp:invite.html.twig', ['event' => $event, 'invitation' => $invitation]);
+        return $this->redirectToRoute('cfp_edit', ['eventSlug' => $eventSlug, 'talkId' => $talkId]);
     }
 
     /**
@@ -278,13 +281,8 @@ MAIL;
                 $talk->setSubmittedOn(new \DateTime());
                 $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
 
-                /* I should
-                1 - save talk
-                2 - Add current user as a speaker if it's a new talk
-                3 - Not touch to speakers anymore
-                */
-
-                $talkRepository->saveWithSpeaker($talk, $this->get('app.speaker_factory')->getSpeaker($event));
+                $talkRepository->save($talk);
+                $this->get('ting')->get(TalkToSpeakersRepository::class)->addSpeakerToTalk($talk, $this->get('app.speaker_factory')->getSpeaker($event));
 
                 $this->addFlash('success', $this->get('translator')->trans('Proposition enregistrée !'));
 

@@ -9,7 +9,6 @@ use AppBundle\Model\GithubUser;
 use AppBundle\Model\Speaker;
 use AppBundle\Model\Talk;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
-use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -18,28 +17,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TalkRepository extends Repository implements MetadataInitializer
 {
-    public function saveWithSpeakers(Talk $talk, array $speaker)
-    {
-        try {
-            $this->startTransaction();
-            $this->unitOfWork->pushSave($talk);
-            $this->unitOfWork->process();
-            $query = $this->getPreparedQuery(
-                'INSERT INTO afup_conferenciers_sessions (session_id, conferencier_id) VALUES (LAST_INSERT_ID(), :speaker);'
-            )->setParams(['speaker' => $speaker->getId()]);
-            $query->execute();
-            $this->commit();
-        } catch (QueryException $exception) {
-            $this->rollback();
-            throw $exception;
-        }
-    }
-
-    public function addSpeaker(Speaker $speaker, Talk $talk)
-    {
-
-    }
-
     /**
      * @param Event $event
      * @param Speaker $speaker

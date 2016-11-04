@@ -46,3 +46,13 @@
 'Thème:': 'Theme:'
 'Proposition enregistrée !': 'Talk saved!'
 'Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.': 'Please fill out your speaker profile to submit a talk.'
+'Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.': 'Please fill out your speaker profile to accept an invitation.'
+'Invitation envoyée !': 'Invitation sent!'
+'Vous etes désormais co-conférencier !': 'You are now a co-speaker!'
+'mail.invitation.text': |
+  Bonjour !<br />
+  %login% vous invite à rejoindre sa conférence "%title%" en tant que co-conférencier.
+  Pour accepter, suivez ce lien: %link%<br />
+  Sinon, ignorez tout simplement cet email.<br />
+  <br />
+  L'équipe afup.

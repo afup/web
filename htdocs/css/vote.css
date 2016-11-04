@@ -991,3 +991,11 @@ div.photo-container{
     text-align:center;
     margin: 2em 0;
 }
+
+/************
+* Invitation
+************/
+
+#talk_invitation button {
+    margin: 1.5em 0;
+}
