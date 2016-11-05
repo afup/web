@@ -8,7 +8,7 @@
             <h3>{{ 'Nouvelle proposition'|trans }}</h3>
         {% endif %}
         {{ form(form) }}
-        <p>{{ 'Vous pouvez éditer votre proposition jusqu\'à la fin du CFP.'|trans }}</p>
+        <p>{{ "Vous pouvez éditer votre proposition jusqu'à la fin du CFP."|trans }}</p>
         <h3>{{ 'Conférenciers'|trans }}</h3>
         <ul>
             {% for speaker in speakers %}
@@ -23,8 +23,8 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <h3>{{ 'Inviter un autre conférencier'|trans }}</h3>
-        <p>{{ 'Si vous présentez ce sujet à plusieurs, vous pouvez inviter ici d\'autres conférenciers.'|trans }}</p>
+        <h3>{{ 'Faire cette conférence à plusieurs'|trans }}</h3>
+        <p>{{ "Si vous présentez ce sujet à plusieurs, vous pouvez inviter d'autres conférenciers via le formulaire ci-dessous."|trans }}</p>
         {{ form(invitationForm) }}
     </div>
     {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}

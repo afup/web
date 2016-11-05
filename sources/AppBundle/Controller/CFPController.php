@@ -70,10 +70,11 @@ class CFPController extends EventBaseController
             $speaker->setPhoto($fileName);
             $speakerRepository->save($speaker);
 
-            $this->addFlash('success', 'Profil sauvegardé.');
-            if ($this->get('session')->has('pendingInvitation') === true) {
-                $url = $this->generateUrl('cfp_invite', $this->get('session')->get('pendingInvitation'));
-                $this->get('session')->remove('pendingInvitation');
+            $this->addFlash('success', $this->get('translator')->trans('Profil sauvegardé.'));
+            $session = $this->get('session');
+            if ($session->has('pendingInvitation') === true) {
+                $url = $this->generateUrl('cfp_invite', $session->get('pendingInvitation'));
+                $session->remove('pendingInvitation');
             } else {
                 $url = $this->generateUrl('cfp_speaker', ['eventSlug' => $eventSlug]);
             }
