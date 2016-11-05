@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Model\Repository\EventRepository;
+use AppBundle\Model\Repository\TalkRepository;
+use AppBundle\Model\Repository\VoteRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,6 +33,10 @@ class EventController extends EventBaseController
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
-        return $this->render(':event:home.html.twig', ['event' => $event]);
+
+        $talks = $this->get('ting')->get(TalkRepository::class)->getNumberOfTalksByEvent($event);
+        $votes = $this->get('ting')->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
+
+        return $this->render(':event:home.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
     }
 }
