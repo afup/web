@@ -76,7 +76,7 @@
                 {$session.nb_vote}&nbsp;/&nbsp;{$nb_votant}
             </td>
             {/if}
-            <td>{$session.note|string_format:"%d"} / 5</td>
+            <td>{$session.note|string_format:"%.1f"} / 5 ({$session.nb_vote_visiteur} vote{if $session.nb_vote_visiteur > 1}s{/if})</td>
             <td style="text-align: right" nowrap="nowrap">
                 <a href="index.php?page=forum_sessions&amp;action=voter&amp;id={$session.session_id}&amp;id_forum={$id_forum}" title="Commenter la session {$session.titre}"><img src="{$chemin_template}images/famfamfam/thumb_up.png" alt="Voter" /></a>
                 <a href="index.php?page=forum_sessions&amp;action=commenter&amp;id={$session.session_id}&amp;id_forum={$id_forum}" title="Commenter la session {$session.titre}"><img src="{$chemin_template}images/famfamfam/comments.png" alt="Commenter" /></a>
