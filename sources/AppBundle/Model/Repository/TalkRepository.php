@@ -7,6 +7,7 @@ use AppBundle\Model\GithubUser;
 use AppBundle\Model\Speaker;
 use AppBundle\Model\Talk;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -15,6 +16,13 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TalkRepository extends Repository implements MetadataInitializer
 {
+    public function getNumberOfTalksByEvent(Event $event)
+    {
+        $query = $this->getQuery('SELECT COUNT(session_id) AS talks FROM afup_sessions WHERE id_forum = :event');
+        $query->setParams(['event' => $event->getId()]);
+        return $query->query($this->getCollection(new HydratorArray()))->first();
+    }
+
     /**
      * @param Event $event
      * @param Speaker $speaker

@@ -30,7 +30,7 @@
     <p id="endTitle">{{ 'Fermeture du CFP:'|trans }}</p>
     <div id="end"></div>
     <p id="date">({{ event.dateEndCallForPapers|localizeddate('long', 'medium', app.request.locale) }})</p>
-        <div id="homeButtons">
+    <div id="homeButtons">
         <a href="{{ url('vote_index', {eventSlug: event.path}) }}">
             <div class="button">
                 {{ 'Voter pour les conférences'|trans }}
@@ -41,6 +41,12 @@
             <div class="button">{{ 'Soumettre une conférence'|trans }} <svg width="32" height="32"><use xlink:href="#octocat"></use></svg> </div>
         </a>
     </div>
+
+    <div class="event--stats">
+        <p>{% if votes > 30 %}<span class="event--stats-stat">{{ votes }}</span> {{ 'votes'|trans }}{% endif %}&nbsp;</p>
+        <p>{% if talks > 30 %}<span class="event--stats-stat">{{ talks }}</span> {{ 'sujets soumis'|trans }}{% endif %}&nbsp;</p>
+    </div>
+    <div class="clear"> </div>
     <h3>{{ 'Thème:'|trans }}</h3>
     {{ event.cfp[app.request.locale]|raw }}
     <p>

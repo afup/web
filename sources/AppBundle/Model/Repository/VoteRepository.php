@@ -2,7 +2,9 @@
 
 namespace AppBundle\Model\Repository;
 
+use AppBundle\Model\Event;
 use AppBundle\Model\Vote;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -11,6 +13,15 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class VoteRepository extends Repository implements MetadataInitializer
 {
+    public function getNumberOfVotesByEvent(Event $event)
+    {
+        $query = $this->getQuery('SELECT COUNT(id) AS votes
+FROM afup_sessions_vote_github asvg
+LEFT JOIN afup_sessions s ON s.session_id = asvg.session_id
+WHERE s.id_forum = :event');
+        $query->setParams(['event' => $event->getId()]);
+        return $query->query($this->getCollection(new HydratorArray()))->first();
+    }
 
     /**
      * @param int $eventId

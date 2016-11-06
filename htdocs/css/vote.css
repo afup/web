@@ -997,6 +997,23 @@ div.photo-container{
     margin: 2em 0;
 }
 
+.event--stats{
+    text-align: center;
+    font-family: Glegoo, Helvetica, Arial, sans-serif;
+    width: 650px;
+    margin: 0 auto;
+}
+.event--stats p{
+    width:300px;
+    float:left;
+    margin: 0 auto;
+}
+.event--stats p:first-child{
+    margin-right: 50px;
+}
+.event--stats-stat {
+    display: block;
+}
 /************
 * Invitation
 ************/
