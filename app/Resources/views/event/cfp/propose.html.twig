@@ -8,7 +8,6 @@
             <h3>{{ 'Nouvelle proposition'|trans }}</h3>
         {% endif %}
         {{ form(form) }}
-        <p>{{ 'Vous pouvez éditer votre proposition jusqu\'à la fin du CFP.'|trans }}</p>
     </div>
     {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
 {% endblock %}
