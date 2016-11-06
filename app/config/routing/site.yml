@@ -1,0 +1,3 @@
+become_member:
+  path: /devenir-membre
+  defaults: {_controller: AppBundle:MemberShip:becomeMember}

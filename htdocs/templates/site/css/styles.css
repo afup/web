@@ -1401,3 +1401,22 @@ footer #menufooter-top a:hover {
     float: left;
     padding: 3px;
 }
+
+@media (min-width: 1000px) {
+    #become_member {
+        column-count: 2;
+        -moz-column-count: 2;
+    }
+}
+
+#become_member div.button{
+    background-color: #50a0dd;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    margin: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}

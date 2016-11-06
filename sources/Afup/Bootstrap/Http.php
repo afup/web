@@ -23,14 +23,17 @@
 require_once dirname(__FILE__) . '/_Common.php';
 
 // initialisation de la session / requête
-
-ob_start();
-session_start();
+if (ob_get_level() === 0) {
+    ob_start();
+}
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // mise à jour des paramètrage PHP en fonction de la configuration
 
-ini_set('error_reporting', $conf->obtenir('divers|niveau_erreur'));
-ini_set('display_errors',  $conf->obtenir('divers|afficher_erreurs'));
+ini_set('error_reporting', $GLOBALS['AFUP_CONF']->obtenir('divers|niveau_erreur'));
+ini_set('display_errors',  $GLOBALS['AFUP_CONF']->obtenir('divers|afficher_erreurs'));
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__).'/../../../dependencies/PEAR/');
 
 header('Content-type: text/html; charset=UTF-8');
@@ -67,8 +70,8 @@ $smarty->compile_check = true;
 $smarty->php_handling  = SMARTY_PHP_ALLOW;
 
 $smarty->assign('url_base',          'http://' . $_SERVER['HTTP_HOST'] . '/');
-$smarty->assign('chemin_template',   $serveur.$conf->obtenir('web|path').'templates/' . $sous_site . '/');
-$smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'javascript/');
+$smarty->assign('chemin_template',   $serveur.$GLOBALS['AFUP_CONF']->obtenir('web|path').'templates/' . $sous_site . '/');
+$smarty->assign('chemin_javascript', $serveur.$GLOBALS['AFUP_CONF']->obtenir('web|path').'javascript/');
 
-$bdd->executer("SET NAMES 'utf8'");
+$GLOBALS['AFUP_DB']->executer("SET NAMES 'utf8'");
 require_once(dirname(__FILE__) . '/commonStart.php');

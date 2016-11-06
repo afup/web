@@ -1,4 +1,12 @@
 {% extends '::base.html.twig' %}
+
+{% block title %}Call For Papers - Afup{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/vote.css">
+{% endblock %}
+
 {% block header %}
     <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container-fluid">
@@ -36,7 +44,11 @@
             <div class="navbar-right hidden-xs">
                 <a href="http://www.afup.org" target="_blank" id="logo"> </a>
             </div>
-
         </div>
     </header>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/js/vote.js"></script>
 {% endblock %}

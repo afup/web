@@ -33,6 +33,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 100 }
 
+    app.legacy_listener:
+        class: AppBundle\Listener\LegacySiteListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, priority: 100 }
+
     app.speaker_repository:
         class: AppBundle\Model\Repository\SpeakerRepository
         factory: ["@ting", get]

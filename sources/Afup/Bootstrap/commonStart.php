@@ -143,9 +143,9 @@ $services->get('ConnectionPool')->setConfig([
     'main' => [
         'namespace' => '\CCMBenchmark\Ting\Driver\Mysqli',
         'master' => [
-            'host'      => $conf->obtenir('bdd|hote'),
-            'user'      => $conf->obtenir('bdd|utilisateur'),
-            'password'  => $conf->obtenir('bdd|mot_de_passe'),
+            'host'      => $GLOBALS['AFUP_CONF']->obtenir('bdd|hote'),
+            'user'      => $GLOBALS['AFUP_CONF']->obtenir('bdd|utilisateur'),
+            'password'  => $GLOBALS['AFUP_CONF']->obtenir('bdd|mot_de_passe'),
             'port'      => 3306,
         ]
     ]
@@ -156,7 +156,7 @@ $services
     ->batchLoadMetadata(
         'AppBundle\Model\Repository',
         __DIR__ . '/../Model/Repository/*.php',
-        ['default' => ['database' => $conf->obtenir('bdd|base')]]
+        ['default' => ['database' => $GLOBALS['AFUP_CONF']->obtenir('bdd|base')]]
     )
 ;
 $services->set('security.csrf.token_manager', function(){
