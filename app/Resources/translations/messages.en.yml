@@ -47,6 +47,7 @@
 'Proposition enregistrée !': 'Talk saved!'
 'Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.': 'Please fill out your speaker profile to submit a talk.'
 'votes': 'votes'
+'Votes': 'Votes'
 'sujets soumis': 'submitted subjects'
 'Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.': 'Please fill out your speaker profile to accept an invitation.'
 'Invitation envoyée !': 'Invitation sent!'
@@ -64,3 +65,4 @@
 "Faire cette conférence à plusieurs": "Present this conference with other speakers"
 "Si vous présentez ce sujet à plusieurs, vous pouvez inviter d'autres conférenciers via le formulaire ci-dessous.": "If you want to present this talk with some other speakers, you can invite them using the following form."
 "Profil sauvegardé.": "Profile saved."
+"Retrouvez ici les votes déposés sur cette proposition. Ils peuvent vous aider à l'améliorer si nécessaire.": "Here are the votes about this submission. They can help you improve your proposal if necessary."
