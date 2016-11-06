@@ -1,0 +1,1 @@
+ALTER TABLE `afup_conferenciers_sessions` CHANGE `session_id` `session_id` INT(11) NOT NULL;
