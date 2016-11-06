@@ -1,15 +1,12 @@
 <?php
 
-
 namespace AppBundle\Model\Repository;
-
 
 use AppBundle\Model\Event;
 use AppBundle\Model\GithubUser;
 use AppBundle\Model\Speaker;
 use AppBundle\Model\Talk;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
-use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -24,23 +21,6 @@ class TalkRepository extends Repository implements MetadataInitializer
         $query = $this->getQuery('SELECT COUNT(session_id) AS talks FROM afup_sessions WHERE id_forum = :event');
         $query->setParams(['event' => $event->getId()]);
         return $query->query($this->getCollection(new HydratorArray()))->first();
-    }
-
-    public function saveWithSpeaker(Talk $talk, Speaker $speaker)
-    {
-        try {
-            $this->startTransaction();
-            $this->unitOfWork->pushSave($talk);
-            $this->unitOfWork->process();
-            $query = $this->getPreparedQuery(
-                'INSERT INTO afup_conferenciers_sessions (session_id, conferencier_id) VALUES (LAST_INSERT_ID(), :speaker);'
-            )->setParams(['speaker' => $speaker->getId()]);
-            $query->execute();
-            $this->commit();
-        } catch (QueryException $exception) {
-            $this->rollback();
-            throw $exception;
-        }
     }
 
     /**

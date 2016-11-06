@@ -29,6 +29,7 @@
     </script>
     <p id="endTitle">{{ 'Fermeture du CFP:'|trans }}</p>
     <div id="end"></div>
+    <p id="date">({{ event.dateEndCallForPapers|localizeddate('long', 'medium', app.request.locale) }})</p>
     <div id="homeButtons">
         <a href="{{ url('vote_index', {eventSlug: event.path}) }}">
             <div class="button">

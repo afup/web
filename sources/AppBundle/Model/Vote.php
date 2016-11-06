@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Model;
-
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;

@@ -36,3 +36,12 @@ cfp_propose:
 cfp_edit:
   path: /{eventSlug}/cfp/{talkId}
   defaults: {_controller: AppBundle:CFP:edit}
+  requirements:
+    talkId: '\d+'
+
+cfp_invite:
+  path: /{eventSlug}/cfp/invite/{talkId}-{token}
+  defaults: {_controller: AppBundle:CFP:invite}
+  requirements:
+    talkId: '\d+'
+    token: '.+'

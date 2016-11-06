@@ -52,3 +52,8 @@ services:
     app.photo_storage:
         class: AppBundle\CFP\PhotoStorage
         arguments: ["%kernel.root_dir%/../htdocs/uploads/speakers", "/uploads/speakers"]
+
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }

@@ -970,6 +970,11 @@ div.photo-container{
     font-family: Glegoo, Helvetica, Arial, sans-serif;
     text-align: center;
 }
+#date {
+    text-align: center;
+    font-size: 4rem;
+    font-family: Glegoo, Helvetica, Arial, sans-serif;
+}
 
 .button {
     background-color: #415e96;
@@ -1006,6 +1011,13 @@ div.photo-container{
 .event--stats p:first-child{
     margin-right: 50px;
 }
-.event--stats-stat{
-    display:block;
+.event--stats-stat {
+    display: block;
+}
+/************
+* Invitation
+************/
+
+#talk_invitation button {
+    margin: 1.5em 0;
 }
