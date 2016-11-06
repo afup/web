@@ -566,6 +566,7 @@ class AppelConferencier
         $requete = ' SELECT ';
         $requete .= '  COUNT(co.id) as commentaires_nombre, ';
         $requete .= ' (SELECT AVG(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = s.session_id) AS note, ';
+        $requete .= ' (SELECT COUNT(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = s.session_id) AS nb_vote_visiteur, ';
         $requete .= '  ' . $champs . ' ';
         $requete .= ' FROM ';
         $requete .= '  afup_sessions s ';
