@@ -9,11 +9,7 @@
         {% if numberOfTalks == 0 %}
             <p>{{ 'Il n\'y a plus aucune conférence à noter !'|trans }}</p>
         {% else %}
-            <svg id="svg-star" style="display: none;">
-                <symbol id="star" viewBox="0 0 98 92">
-                    <title>star</title>
-                    <path stroke='#3e3d40' stroke-width='2' d='M49 73.5L22.55 87.406l5.05-29.453-21.398-20.86 29.573-4.296L49 6l13.225 26.797 29.573 4.297-21.4 20.86 5.052 29.452z' fill-rule='evenodd' /></symbol>
-            </svg>
+            {% include ':event:star.html.twig' %}
 
             {% for talk in talks %}
                 {% include 'event/vote/talk.html.twig' %}
