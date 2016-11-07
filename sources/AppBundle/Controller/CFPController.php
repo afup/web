@@ -14,6 +14,7 @@ use AppBundle\Model\Repository\SpeakerRepository;
 use AppBundle\Model\Repository\TalkInvitationRepository;
 use AppBundle\Model\Repository\TalkRepository;
 use AppBundle\Model\Repository\TalkToSpeakersRepository;
+use AppBundle\Model\Repository\VoteRepository;
 use AppBundle\Model\Talk;
 use AppBundle\Model\TalkInvitation;
 use CCMBenchmark\Ting\Driver\QueryException;
@@ -179,7 +180,8 @@ class CFPController extends EventBaseController
                 'talk' => $talk,
                 'invitations' => $invitations,
                 'speakers' => $speakers,
-                'invitationForm' => $invitationForm->createView()
+                'invitationForm' => $invitationForm->createView(),
+                'votes' => $this->get('ting')->get(VoteRepository::class)->getBy(['sessionId' => $talkId])
             ]
         );
     }

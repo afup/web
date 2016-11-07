@@ -26,6 +26,31 @@
         <h3>{{ 'Faire cette conférence à plusieurs'|trans }}</h3>
         <p>{{ "Si vous présentez ce sujet à plusieurs, vous pouvez inviter d'autres conférenciers via le formulaire ci-dessous."|trans }}</p>
         {{ form(invitationForm) }}
+
+        {% if votes.count > 0 %}
+            <h3>{{ 'Votes'|trans }}</h3>
+            <p>{{ "Retrouvez ici les votes déposés sur cette proposition. Ils peuvent vous aider à l'améliorer si nécessaire."|trans }}</p>
+            {% include ':event:star.html.twig' %}
+            <div class="cfp--votes">
+                <ul>
+                    {% for vote in votes %}
+                        <li>
+                            <div class="event--vote-stars">
+                                <div style="display: inline-block">
+                                    <div class="stars">
+                                        {% for i in 5..1 %}
+                                            <a class="star {% if vote.vote >= i %}is-selected{% endif %}" href="#"><svg><use xlink:href="#star"></use></svg></a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <p>{{ vote.comment }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
     </div>
     {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
 {% endblock %}

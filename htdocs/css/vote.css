@@ -899,8 +899,8 @@ form[name="talk"] {
     justify-content: flex-end;
 }
 
-.star:hover svg,
-.star:hover ~ .star svg {
+.stars-editable .star:hover svg,
+.stars-editable .star:hover ~ .star svg {
     fill: orange;
 }
 .star.is-selected svg,
@@ -1020,4 +1020,16 @@ div.photo-container{
 
 #talk_invitation button {
     margin: 1.5em 0;
+}
+
+/*****************************************
+* Affichage votes sur edition proposition
+******************************************/
+.cfp--votes ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.cfp--votes ul li{
+    margin: 2em 0;
 }
