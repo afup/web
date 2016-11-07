@@ -9,3 +9,7 @@ connection:
 admin:
     resource: "routing/admin.yml"
     prefix: /admin
+
+association:
+    resource: "routing/site.yml"
+    prefix: /association

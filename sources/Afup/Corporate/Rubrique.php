@@ -133,7 +133,7 @@ class Rubrique
         $this->icone = $rubrique['icone'];
         $this->date = $rubrique['date'];
         $this->etat = $rubrique['etat'];
-        $this->pagination = $rubrique['pagination'];
+        $this->pagination = isset($rubrique['pagination']) ? $rubrique['pagination'] : null;
     }
 
     function charger()
