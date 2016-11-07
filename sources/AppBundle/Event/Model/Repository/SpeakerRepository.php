@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Model\Repository;
+namespace AppBundle\Event\Model\Repository;
 
-use AppBundle\Model\Speaker;
-use AppBundle\Model\Talk;
+use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;

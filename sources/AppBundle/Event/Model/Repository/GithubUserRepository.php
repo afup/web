@@ -1,9 +1,9 @@
 <?php
 
 
-namespace AppBundle\Model\Repository;
+namespace AppBundle\Event\Model\Repository;
 
-use AppBundle\Model\GithubUser;
+use AppBundle\Event\Model\GithubUser;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;

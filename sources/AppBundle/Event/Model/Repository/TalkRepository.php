@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Model\Repository;
+namespace AppBundle\Event\Model\Repository;
 
-use AppBundle\Model\Event;
-use AppBundle\Model\GithubUser;
-use AppBundle\Model\Speaker;
-use AppBundle\Model\Talk;
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;

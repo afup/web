@@ -1,0 +1,29 @@
+{% extends ':site:base.html.twig' %}
+{% block inner_content %}
+    <article>
+        <h1>Adhésion professionnelle à l'afup</h1>
+        {{ form_start(form) }}
+        <fieldset>
+            <legend>Société</legend>
+            {{ form_row(form.companyName) }}
+            {{ form_row(form.siret) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.zipcode) }}
+            {{ form_row(form.city) }}
+        </fieldset>
+        <fieldset>
+            <legend>Contact administratif</legend>
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.phone) }}
+        </fieldset>
+        <fieldset>
+            <legend>Membres rattachés</legend>
+            <p></p>
+        </fieldset>
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'afup par email: bonjour (at) afup.org.</p>
+    </article>
+{% endblock %}

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Model\Repository;
+namespace AppBundle\Event\Model\Repository;
 
-use AppBundle\Model\Event;
-use AppBundle\Model\Vote;
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Vote;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;

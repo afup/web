@@ -1,3 +1,7 @@
 become_member:
   path: /devenir-membre
   defaults: {_controller: AppBundle:MemberShip:becomeMember}
+
+company_membership:
+  path: /adherer/entreprise
+  defaults: {_controller: AppBundle:MemberShip:company}

@@ -4,10 +4,10 @@
 namespace AppBundle\Security;
 
 
-use AppBundle\Model\GithubUser;
-use AppBundle\Model\Repository\SpeakerRepository;
-use AppBundle\Model\Speaker;
-use AppBundle\Model\Talk;
+use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Model\Talk;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Form;
+namespace AppBundle\Event\Form;
 
 
 use Symfony\Component\Form\AbstractType;

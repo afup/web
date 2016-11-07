@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Model\Repository;
+namespace AppBundle\Event\Model\Repository;
 
-use AppBundle\Model\TalkInvitation;
+use AppBundle\Event\Model\TalkInvitation;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;

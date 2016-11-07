@@ -13,9 +13,9 @@ services:
         autowire: true
 
     github_user_repository:
-        class: AppBundle\Model\Repository\GithubUserRepository
+        class: AppBundle\Event\Model\Repository\GithubUserRepository
         factory: ["@ting", get]
-        arguments: [AppBundle\Model\Repository\GithubUserRepository]
+        arguments: [AppBundle\Event\Model\Repository\GithubUserRepository]
 
     app_twig:
         class: AppBundle\Twig\TwigExtension
@@ -39,9 +39,9 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, priority: 100 }
 
     app.speaker_repository:
-        class: AppBundle\Model\Repository\SpeakerRepository
+        class: AppBundle\Event\Model\Repository\SpeakerRepository
         factory: ["@ting", get]
-        arguments: [AppBundle\Model\Repository\SpeakerRepository]
+        arguments: [AppBundle\Event\Model\Repository\SpeakerRepository]
 
     app.speaker_factory:
         class: AppBundle\CFP\SpeakerFactory

@@ -4,9 +4,9 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Model\Repository\EventRepository;
-use AppBundle\Model\Repository\TalkRepository;
-use AppBundle\Model\Repository\VoteRepository;
+use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Repository\VoteRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 

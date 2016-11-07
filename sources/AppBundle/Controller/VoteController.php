@@ -4,10 +4,10 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Form\VoteType;
-use AppBundle\Model\Repository\TalkRepository;
-use AppBundle\Model\Repository\VoteRepository;
-use AppBundle\Model\Vote;
+use AppBundle\Event\Form\VoteType;
+use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Repository\VoteRepository;
+use AppBundle\Event\Model\Vote;
 use CCMBenchmark\Ting;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +31,7 @@ class VoteController extends EventBaseController
         }
 
         /**
-         * @var $talkRepository \AppBundle\Model\Repository\TalkRepository
+         * @var $talkRepository \AppBundle\Event\Model\Repository\TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
 
@@ -124,7 +124,7 @@ class VoteController extends EventBaseController
 
 
         /**
-         * @var $talkRepository \AppBundle\Model\Repository\TalkRepository
+         * @var $talkRepository \AppBundle\Event\Model\Repository\TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         if ($talkRepository->getOneBy(['id' => $talkId]) === null) {

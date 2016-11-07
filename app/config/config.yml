@@ -48,9 +48,16 @@ ting:
                 user:     "%database_user%"
                 password: "%database_password%"
     repositories:
-        appbundle:
-            namespace : AppBundle\Model\Repository
-            directory : "@AppBundle/Model/Repository"
+        event:
+            namespace : AppBundle\Event\Model\Repository
+            directory : "@AppBundle/Event/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        association:
+            namespace : AppBundle\Association\Model\Repository
+            directory : "@AppBundle/Association/Model/Repository"
             options:
                 default:
                     connection: main

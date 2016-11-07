@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Model\Repository;
+namespace AppBundle\Event\Model\Repository;
 
-use AppBundle\Model\Speaker;
-use AppBundle\Model\Talk;
-use AppBundle\Model\TalkToSpeaker;
+use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Model\TalkToSpeaker;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;

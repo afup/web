@@ -4,8 +4,8 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Model\Event;
-use AppBundle\Model\Repository\EventRepository;
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

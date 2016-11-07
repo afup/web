@@ -4,7 +4,7 @@
 namespace AppBundle\CFP;
 
 
-use AppBundle\Model\Speaker;
+use AppBundle\Event\Model\Speaker;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

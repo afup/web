@@ -4,9 +4,9 @@
 namespace AppBundle\CFP;
 
 
-use AppBundle\Model\Event;
-use AppBundle\Model\Repository\SpeakerRepository;
-use AppBundle\Model\Speaker;
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Model\Speaker;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class SpeakerFactory

@@ -12,3 +12,9 @@
   Sinon, ignorez tout simplement cet email.<br />
   <br />
   L'équipe afup.
+'Address': 'Adresse'
+'Zip code': 'Code postal'
+'City': 'Ville'
+'Phone': 'Téléphone'
+'Password': 'Mot de passe'
+'Repeat Password': 'Répétez le mot de passe'
