@@ -1,0 +1,21 @@
+{% extends ':site:base.html.twig' %}
+{% block inner_content %}
+    <article>
+        <h1>Adhésion professionnelle à l'afup</h1>
+        <p>
+            Vous allez rejoindre l'afup en tant que membre de la société {{ company.companyName }}
+        </p>
+        {{ form_start(form) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.zipcode) }}
+            {{ form_row(form.city) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.phone) }}
+            {{ form_widget(form) }}
+        {{ form_end(form) }}
+
+        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'afup par email: bonjour (at) afup.org.</p>
+    </article>
+{% endblock %}

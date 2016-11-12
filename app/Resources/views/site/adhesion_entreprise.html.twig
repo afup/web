@@ -2,6 +2,10 @@
 {% block inner_content %}
     <article>
         <h1>Adhésion professionnelle à l'afup</h1>
+        <p>
+            Ce formulaire est réservé aux membres professionels. Vous êtes un particulier ?
+            Retrouvez le <a href="/pages/administration/index.php?page=inscription">formulaire d'adhésion pour particuliers</a>.
+        </p>
         {{ form_start(form) }}
         <fieldset>
             <legend>Société</legend>
@@ -20,10 +24,111 @@
         </fieldset>
         <fieldset>
             <legend>Membres rattachés</legend>
-            <p></p>
+            <p>Chaque membre va recevoir une invitation lui permettant de créer son compte.</p>
+            <div>
+                <label for="company_invitations_length">Nombre de membres à rattacher</label>
+                <select id="company_invitations_length">
+                    {% for i in 1..10 %}
+                        <option value="{{ i*3 }}">{{ i*3 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {{ form_row(form.invitations) }}
+
         </fieldset>
         {{ form_widget(form) }}
         {{ form_end(form) }}
+
+
+        <script type="text/javascript">
+            // keep track of how many email fields have been rendered
+            var emailCount = {{ form.invitations|length }};
+
+            document.querySelector('#company_invitations_length').onchange = function(e)
+            {
+                var numberOfMembers = parseInt(this.value); // Number of wanted invitations
+                var invitations = document.querySelector('#company_member_invitations');
+
+                var numberOfInvitations = invitations.children.length; // Number of displayed invitations
+
+                if (numberOfMembers == numberOfInvitations) {
+                    return;
+                }
+                if (numberOfMembers > numberOfInvitations) {
+                    for (var i = numberOfInvitations; i < numberOfMembers; i++) {
+                        addInvitation();
+                    }
+                }
+                if (numberOfMembers < numberOfInvitations) {
+                    for (var i = numberOfInvitations; i > numberOfMembers; i--) {
+                        removeInvitation();
+                    }
+                }
+            };
+
+            var addInvitation = function() {
+                var emailList = document.querySelector('#company_member_invitations');
+
+                // grab the prototype template
+                var newWidget = emailList.getAttribute('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                // with a number that's unique to your emails
+                // end name attribute looks like name="contact[emails][2]"
+                newWidget = newWidget.replace(/__name__label__/g, 'Membre #' + (emailCount+1));
+                newWidget = newWidget.replace(/__name__/g, emailCount);
+                emailCount++;
+
+                // create a new list element and add it to the list
+                var newDiv = document.createElement('div');
+                newDiv.innerHTML = newWidget;
+                emailList.appendChild(newDiv.childNodes[0]);
+            };
+
+            var removeInvitation = function()
+            {
+                var emailList = document.querySelector('#company_member_invitations');
+                emailList.removeChild(emailList.lastChild);
+            }
+            document.querySelector('#company_invitations_length').onchange();
+
+        </script>
+
         <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'afup par email: bonjour (at) afup.org.</p>
+        <h2>Questions fréquentes</h2>
+        <ul>
+            <li>
+                <h3>Pourquoi adhérer à l'afup ?</h3>
+                <p>
+                    Adhérer à l'afup pour une entreprise du monde PHP, c'est soutenir la communauté du langage sur lequel
+                    reposent ses outils, assurant une dynamique positive à l'écosystème. C'est également la possibilité
+                    pour vos développeurs de bénéficier des mailing lists réservées aux membres et faire partie d'un
+                    réseau de professionnels.
+                </p>
+            </li>
+            <li>
+                <h3>Comment régler l'adhésion ?</h3>
+                <p>
+                    L'adhésion peut être réglée par carte bancaire, virement ou chèque.
+                    Seule l'adhésion par carte bancaire permet une adhésion immédiate. Dans le cas des autres modes de paiement,
+                    l'adhésion est activée lors de la réception du paiement.
+                </p>
+            </li>
+            <li>
+                <h3>Comment gérer les membres rattachés à mon compte ?</h3>
+                <p>
+                    Vous devez toujours avoir au moins un membre ayant les droits de gestion sur votre compte.
+                    Ce dernier pourra gérer les membres rattachés, effectuer le règlement des adhésions et collecter les factures.
+                </p>
+            </li>
+            <li>
+                <h3>Comment est faite la reconduction ?</h3>
+                <p>
+                    L'adhésion à l'afup est réalisée pour un an. Environ un mois avant l'échéance, nous vous avertirons que votre
+                    adhésion arrive à expiration. Vous pourrez alors choisir de régler à nouveau votre adhésion ou la laisser expirer.
+                    Environ 15 jours après expiration de votre adhésion, si celle-ci n'a pas été renouvelée, les comptes
+                    de vos membres seront désactivés, ils perdront alors tous les avantages de votre adhésion.
+                </p>
+            </li>
+        </ul>
     </article>
 {% endblock %}

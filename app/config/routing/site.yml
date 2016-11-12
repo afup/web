@@ -5,3 +5,10 @@ become_member:
 company_membership:
   path: /adherer/entreprise
   defaults: {_controller: AppBundle:MemberShip:company}
+
+company_invitation:
+  path: /adherer/invitation/{invitationId}-{token}
+  defaults: {_controller: AppBundle:MemberShip:memberInvitation}
+  requirements:
+    invitationId: '\d+'
+    token: '.+'

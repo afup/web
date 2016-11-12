@@ -12,6 +12,10 @@ class CompanyMember implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
+    const STATUS_PENDING = -1;
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+
     /**
      * @var int
      */
@@ -79,7 +83,12 @@ class CompanyMember implements NotifyPropertyInterface
     /**
      * @var int
      */
-    private $status;
+    private $status = self::STATUS_PENDING;
+
+    /**
+     * @var CompanyMemberInvitation[]
+     */
+    private $invitations;
 
     /**
      * @return int
@@ -294,6 +303,24 @@ class CompanyMember implements NotifyPropertyInterface
     public function setStatus($status)
     {
         $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return CompanyMemberInvitation[]
+     */
+    public function getInvitations()
+    {
+        return $this->invitations;
+    }
+
+    /**
+     * @param CompanyMemberInvitation[] $invitations
+     * @return CompanyMember
+     */
+    public function setInvitations($invitations)
+    {
+        $this->invitations = $invitations;
         return $this;
     }
 }

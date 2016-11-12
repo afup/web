@@ -83,7 +83,7 @@ if ($action == 'ajouter') {
                           $formulaire->exportValue('niveau_annuaire').
                           $formulaire->exportValue('niveau_site');
     	$login = $formulaire->exportValue('login');
-        $mot_de_passe = md5($formulaire->exportValue('mot_de_passe'));
+        $mot_de_passe = md5($formulaire->exportValue('mot_de_passe')); /** @TODO WE SHOULD REALLY CHANGE THAT !!! */
 
         try {
             $ok = $personnes_physiques->ajouter(

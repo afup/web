@@ -22,11 +22,6 @@ services:
         tags:
             -  { name: twig.extension }
 
-    app.admin_listener:
-        class: AppBundle\Listener\AdminRequestListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.request }
-
     app.locale_listener:
         class: AppBundle\Listener\LocaleListener
         arguments: [ "%kernel.default_locale%" ]
@@ -62,3 +57,13 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
+
+    app.user_repository:
+        class: AppBundle\Association\Model\Repository\UserRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\UserRepository]
+
+
+    app.legacy_authenticator:
+        class: AppBundle\Security\LegacyAuthenticator
+        autowire: true
