@@ -1,13 +1,17 @@
 <?php
 
-
 namespace AppBundle\Association\Model;
 
-
+use AppBundle\Validator\Constraints as AppAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @AppAssert\UniqueEntity(fields={"username"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
+ * @AppAssert\UniqueEntity(fields={"email"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
+ */
 class User implements NotifyPropertyInterface, UserInterface, \Serializable
 {
     use NotifyProperty;

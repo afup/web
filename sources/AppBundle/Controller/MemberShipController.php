@@ -101,10 +101,16 @@ class MemberShipController extends SiteBaseController
          * @var $invitation CompanyMemberInvitation
          */
         $invitation = $invitationRepository->getOneBy(['id' => $invitationId, 'token' => $token, 'status' => CompanyMemberInvitation::STATUS_PENDING]);
-        $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($invitation->getCompanyId());
+        $company = null;
+        if ($invitation) {
+            /**
+             * @var $company CompanyMember
+             */
+            $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($invitation->getCompanyId());
+        }
 
         if ($invitation === null || $company === null) {
-            return $this->createNotFoundException(sprintf('Could not find invitation with token "%s"', $token));
+            throw $this->createNotFoundException(sprintf('Could not find invitation with token "%s"', $token));
         }
 
         $userForm = $this->createForm(UserType::class);
@@ -115,19 +121,25 @@ class MemberShipController extends SiteBaseController
              * @var $user User
              */
             $user = $userForm->getData();
-            $user->setStatus()
+            $user
+                ->setStatus(User::STATUS_ACTIVE)
+                ->setCompanyId($company->getId())
+                ->setPassword(md5($user->getPassword())) /** @TODO We should change that */
+            ;
 
             if ($invitation->getManager()) {
                 $user->setRoles(['ROLE_COMPANY_MANAGER', 'ROLE_USER']);
             }
+
+            $invitation->setStatus(CompanyMemberInvitation::STATUS_ACCEPTED);
+
             $this->get('ting')->get(UserRepository::class)->save($user);
+            $invitationRepository->save($invitation);
+            $this->addFlash('success', 'Votre compte a été créé !');
+
+            return $this->redirect('/pages/administration/');
         }
 
         return $this->render('site/member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
-
-
-        // On check le statut de l'invitation. Si déjà validée => Erreur
-        // On affiche un message indiquant ce que ça va faire et un formulaire pour créer son compte
-        // A la création du compte (seulement à ce moment là) on accepte l'invitation.
     }
 }

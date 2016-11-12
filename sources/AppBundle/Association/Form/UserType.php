@@ -7,6 +7,7 @@ namespace AppBundle\Association\Form;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -26,6 +27,7 @@ class UserType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
+                'type' => PasswordType::class
             ])
             ->add('address', TextareaType::class)
             ->add('zipcode', TextType::class, ['label' => 'Zip code'])

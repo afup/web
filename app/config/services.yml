@@ -67,3 +67,9 @@ services:
     app.legacy_authenticator:
         class: AppBundle\Security\LegacyAuthenticator
         autowire: true
+
+    app.unique_validator:
+        class: AppBundle\Validator\Constraints\UniqueEntityValidator
+        autowire: true
+        tags:
+            - { name: validator.constraint_validator }

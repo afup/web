@@ -28,8 +28,11 @@ switch ($statut) {
         $message = '';
 }
 
+$kernel = new \Afup\Site\Utils\SymfonyKernel();
+$messages = $kernel->getKernel()->getContainer()->get('session')->getFlashBag()->all();
 $smarty->assign('message', $message);
 $smarty->assign('page_demandee', $page_demandee);
+$smarty->assign('messages', $messages);
 $smarty->display('connexion.html');
 
 // On s'arrête là pour ne pas afficher le pied de page

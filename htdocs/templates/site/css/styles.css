@@ -1420,3 +1420,22 @@ footer #menufooter-top a:hover {
     display: inline-block;
     font-size: 16px;
 }
+
+
+.flash {
+    border: 1px solid;
+    margin: 10px 0;
+    padding:15px 10px;
+}
+.flash-notice {
+    color: #00529B;
+    background-color: #BDE5F8;
+}
+.flash-success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+.flash-error {
+    color: #D8000C;
+    background-color: #FFBABA;
+}

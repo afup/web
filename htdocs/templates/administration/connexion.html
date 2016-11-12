@@ -10,6 +10,14 @@
                 <img src="{$chemin_template}images/logo_afup.png" alt="Association Française des Utilisateurs de PHP">
             </h1>
             <h2>Administration</h2>
+            {foreach from=$messages item=messageFromType key=type}
+                <div class="flash flash-{$type}">
+                    {foreach from=$messageFromType item=value}
+                        {$value}
+                    {/foreach}
+                </div>
+            {/foreach}
+
             <form action="index.php?page=accueil" method="post" onsubmit="return soumettreUneSeuleFois(this);">
                 {if $message}<p class="erreur">{$message}</p>{/if}
 
