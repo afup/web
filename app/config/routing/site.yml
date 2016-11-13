@@ -6,6 +6,20 @@ company_membership:
   path: /adherer/entreprise
   defaults: {_controller: AppBundle:MemberShip:company}
 
+company_membership_payment:
+  path: /adhere/entreprise/paiement-{invoiceNumber}-{token}
+  defaults: {_controller: AppBundle:MemberShip:payment}
+  requirements:
+    invoiceNumber: '[0-9]{4}-[0-9]+'
+    token: '.+'
+
+company_membership_invoice:
+  path: /adhere/entreprise/invoice-{invoiceNumber}-{token}
+  defaults: {_controller: AppBundle:MemberShip:invoice}
+  requirements:
+    invoiceNumber: '[0-9]{4}-[0-9]+'
+    token: '.+'
+
 company_invitation:
   path: /adherer/invitation/{invitationId}-{token}
   defaults: {_controller: AppBundle:MemberShip:memberInvitation}

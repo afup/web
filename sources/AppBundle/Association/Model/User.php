@@ -447,7 +447,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable
             $defaultRoles[] = 'ROLE_SUPER_ADMIN';
         }
 
-        return array_merge($this->roles, $defaultRoles);
+        return array_unique(array_merge($this->roles, $defaultRoles));
     }
 
     /**

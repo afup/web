@@ -29,7 +29,7 @@ var $bkgd;
 var $date;
 
 // constructeur et initialiseur
-function paybox() {
+function __construct() {
     $this->site = 'Aucun site';
     $this->rang = 'Aucun rang';
     $this->total = 'Aucun total';
@@ -53,7 +53,7 @@ function paybox() {
 ////////////////////////////////////////////////////////////////
 function set_site($site) {
     // Variable exactement égale à 7 chiffres
-    $erreur = Paybox::check_site($site);
+    $erreur = paybox::check_site($site);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_SITE', $erreur);
         return;
@@ -88,7 +88,7 @@ function get_site() {
 ////////////////////////////////////////////////////////////////
 function set_rang($rang) {
     // Variable exactement égale à 2 ou 3 chiffres
-    $erreur = Paybox::check_rang($rang);
+    $erreur = paybox::check_rang($rang);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_RANG', $erreur);
         return;
@@ -116,7 +116,7 @@ function get_rang() {
 // Gestion de la variable IBS_TOTAL
 ////////////////////////////////////////////////////////////////
 function set_total($total) {
-    $erreur = Paybox::check_total($total);
+    $erreur = paybox::check_total($total);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_TOTAL', $erreur);
         return;
@@ -149,7 +149,7 @@ function get_total() {
 // Gestion de la variable IBS_CMD
 ////////////////////////////////////////////////////////////////
 function set_cmd($cmd) {
-    $erreur = Paybox::check_cmd($cmd);
+    $erreur = paybox::check_cmd($cmd);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_CMD', $erreur);
         return;
@@ -181,7 +181,7 @@ function get_cmd() {
 // Gestion de la variable IBS_PORTEUR
 ////////////////////////////////////////////////////////////////
 function set_porteur($porteur) {
-    $erreur = Paybox::check_porteur($porteur);
+    $erreur = paybox::check_porteur($porteur);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_PORTEUR', $erreur);
         return;
@@ -231,7 +231,7 @@ function get_retour() {
 // Gestion de la variable IBS_EFFECTUE
 ////////////////////////////////////////////////////////////////
 function set_effectue($effectue) {
-    $erreur = Paybox::check_effectue($effectue);
+    $erreur = paybox::check_effectue($effectue);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_EFFECTUE', $erreur);
         return;
@@ -263,7 +263,7 @@ function get_effectue() {
 // Gestion de la variable IBS_EFFECTUE
 ////////////////////////////////////////////////////////////////
 function set_repondreA($repondreA) {
-    $erreur = Paybox::check_repondreA($repondreA);
+    $erreur = paybox::check_repondreA($repondreA);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_REPONDRE_A', $erreur);
         return;
@@ -295,7 +295,7 @@ function get_repondreA() {
 // Gestion de la variable IBS_REFUSE
 ////////////////////////////////////////////////////////////////
 function set_refuse($refuse) {
-    $erreur = Paybox::check_refuse($refuse);
+    $erreur = paybox::check_refuse($refuse);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_REFUSE', $erreur);
         return;
@@ -327,7 +327,7 @@ function get_refuse() {
 // Gestion de la variable IBS_ANNULE
 ////////////////////////////////////////////////////////////////
 function set_annule($annule) {
-    $erreur = Paybox::check_annule($annule);
+    $erreur = paybox::check_annule($annule);
     if (is_string($erreur)) {
         $this->paybox_erreur('IBS_ANNULE', $erreur);
         return;
@@ -359,7 +359,7 @@ function get_annule() {
 // Gestion de la variable IBS_ERREUR
 ////////////////////////////////////////////////////////////////
 function set_erreur($erreur) {
-    $lerreur = Paybox::check_erreur($erreur);
+    $lerreur = paybox::check_erreur($erreur);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_ANNULE', $lerreur);
         return;
@@ -391,7 +391,7 @@ function get_erreur() {
 // Gestion de la variable IBS_OUTPUT
 ////////////////////////////////////////////////////////////////
 function set_output($output) {
-    $lerreur = Paybox::check_output($output);
+    $lerreur = paybox::check_output($output);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_OUTPUT', $lerreur);
         return;
@@ -415,7 +415,7 @@ function get_output() {
 // Gestion de la variable IBS_LANGUE
 ////////////////////////////////////////////////////////////////
 function set_langue($langue) {
-    $lerreur = Paybox::check_langue($langue);
+    $lerreur = paybox::check_langue($langue);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_LANGUE', $lerreur);
         return;
@@ -440,7 +440,7 @@ function get_langue() {
 // Gestion de la variable IBS_DEVISE
 ////////////////////////////////////////////////////////////////
 function set_devise($devise) {
-    $lerreur = Paybox::check_devise($devise);
+    $lerreur = paybox::check_devise($devise);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_DEVISE', $lerreur);
         return;
@@ -465,7 +465,7 @@ function get_devise() {
 // Gestion de la variable IBS_IDENTIFIANT
 ////////////////////////////////////////////////////////////////
 function set_identifiant($identifiant) {
-    $lerreur = Paybox::check_identifiant($identifiant);
+    $lerreur = paybox::check_identifiant($identifiant);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_IDENTIFIANT', $lerreur);
         return;
@@ -490,7 +490,7 @@ function get_identifiant() {
 // Gestion de la variable IBS_TXT
 ////////////////////////////////////////////////////////////////
 function set_txt($txt) {
-    $lerreur = Paybox::check_txt($txt);
+    $lerreur = paybox::check_txt($txt);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_TXT', $lerreur);
         return;
@@ -510,7 +510,7 @@ function get_txt() {
 // Gestion de la variable IBS_WAIT
 ////////////////////////////////////////////////////////////////
 function set_wait($wait) {
-    $lerreur = Paybox::check_wait($wait);
+    $lerreur = paybox::check_wait($wait);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_WAIT', $lerreur);
         return;
@@ -537,7 +537,7 @@ function get_wait() {
 // Gestion de la variable IBS_BOUTPI
 ////////////////////////////////////////////////////////////////
 function set_boutpi($boutpi) {
-    $lerreur = Paybox::check_boutpi($boutpi);
+    $lerreur = paybox::check_boutpi($boutpi);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_BOUTPI', $lerreur);
         return;
@@ -561,7 +561,7 @@ function get_boutpi() {
 // Gestion de la variable IBS_BKGD
 ////////////////////////////////////////////////////////////////
 function set_bkgd($bkgd) {
-    $lerreur = Paybox::check_bkgd($bkgd);
+    $lerreur = paybox::check_bkgd($bkgd);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_BKGD', $lerreur);
         return;
@@ -585,7 +585,7 @@ function get_bkgd() {
 // Gestion de la variable IBS_DATE
 ////////////////////////////////////////////////////////////////
 function set_date($date) {
-    $lerreur = Paybox::check_date($date);
+    $lerreur = paybox::check_date($date);
     if (is_string($lerreur)) {
         $this->paybox_erreur('IBS_DATE', $lerreur);
         return;
@@ -623,31 +623,31 @@ function paiement() {
     // on impose le mode ?
     $commande = "PBX_MODE=4 ";
     $site = $this->get_site();
-    $erreur = Paybox::check_site($site);
+    $erreur = paybox::check_site($site);
     if (is_string($erreur)) {
         return $erreur;
     }
     $commande .= "PBX_SITE=" . escapeshellarg($site) . " ";
     $rang = $this->get_rang();
-    $erreur = Paybox::check_rang($rang);
+    $erreur = paybox::check_rang($rang);
     if (is_string($erreur)) {
         return $erreur;
     }
     $commande .= "PBX_RANG=" . escapeshellarg($rang) . " ";
     $total = $this->get_total();
-    $erreur = Paybox::check_total($total);
+    $erreur = paybox::check_total($total);
     if (is_string($erreur)) {
         return $erreur;
     }
     $commande .= "PBX_TOTAL=" . escapeshellarg($total) . " ";
     $cmd = $this->get_cmd();
-    $erreur = Paybox::check_cmd($cmd);
+    $erreur = paybox::check_cmd($cmd);
     if (is_string($erreur)) {
         return $erreur;
     }
     $devise = $this->get_devise();
     if ('' != $devise) {
-        $erreur = Paybox::check_devise($devise);
+        $erreur = paybox::check_devise($devise);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -655,7 +655,7 @@ function paiement() {
     }
     $identifiant = $this->get_identifiant();
     if ('' != $identifiant) {
-        $erreur = Paybox::check_identifiant($identifiant);
+        $erreur = paybox::check_identifiant($identifiant);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -663,14 +663,14 @@ function paiement() {
     }
     $commande .= "PBX_CMD=" . escapeshellarg($cmd) . " ";
     $porteur = $this->get_porteur();
-    $erreur = Paybox::check_porteur($porteur);
+    $erreur = paybox::check_porteur($porteur);
     if (is_string($erreur)) {
         return $erreur;
     }
     $commande .= "PBX_PORTEUR=\"$porteur\" ";
     $effectue = $this->get_effectue();
     if ('' != $effectue) {
-        $erreur = Paybox::check_effectue($effectue);
+        $erreur = paybox::check_effectue($effectue);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -678,7 +678,7 @@ function paiement() {
     }
     $repondreA = $this->get_repondreA();
     if ('' != $repondreA) {
-        $erreur = Paybox::check_repondreA($repondreA);
+        $erreur = paybox::check_repondreA($repondreA);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -686,7 +686,7 @@ function paiement() {
     }
     $refuse = $this->get_refuse();
     if ('' != $refuse) {
-        $erreur = Paybox::check_refuse($refuse);
+        $erreur = paybox::check_refuse($refuse);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -694,7 +694,7 @@ function paiement() {
     }
     $annule = $this->get_annule();
     if ('' != $annule) {
-        $erreur = Paybox::check_annule($annule);
+        $erreur = paybox::check_annule($annule);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -702,7 +702,7 @@ function paiement() {
     }
     $opt = $this->get_output();
     if ('' != $opt) {
-        $erreur = Paybox::check_output($opt);
+        $erreur = paybox::check_output($opt);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -711,7 +711,7 @@ function paiement() {
 
     $txt = $this->get_txt();
     if ('' != $txt) {
-        $erreur = Paybox::check_txt($txt);
+        $erreur = paybox::check_txt($txt);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -719,7 +719,7 @@ function paiement() {
     }
     $wait = $this->get_wait();
     if ('' != $wait) {
-        $erreur = Paybox::check_wait($wait);
+        $erreur = paybox::check_wait($wait);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -727,7 +727,7 @@ function paiement() {
     }
     $boutpi = $this->get_boutpi();
     if ('' != $boutpi) {
-        $erreur = Paybox::check_boutpi($boutpi);
+        $erreur = paybox::check_boutpi($boutpi);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -735,7 +735,7 @@ function paiement() {
     }
     $bkgd = $this->get_bkgd();
     if ('' != $bkgd) {
-        $erreur = Paybox::check_bkgd($bkgd);
+        $erreur = paybox::check_bkgd($bkgd);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -743,7 +743,7 @@ function paiement() {
     }
     $erreur = $this->get_erreur();
     if ('' != $erreur) {
-        $lerreur = Paybox::check_erreur($erreur);
+        $lerreur = paybox::check_erreur($erreur);
         if (is_string($lerreur)) {
             return $lerreur;
         }
@@ -751,7 +751,7 @@ function paiement() {
     }
     $langue = $this->get_langue();
     if ('' != $langue) {
-        $erreur = Paybox::check_langue($langue);
+        $erreur = paybox::check_langue($langue);
         if (is_string($erreur)) {
             return $erreur;
         }
@@ -759,7 +759,7 @@ function paiement() {
     }
     $date = $this->get_date();
     if ('' != $date) {
-        $erreur = Paybox::check_date($date);
+        $erreur = paybox::check_date($date);
         if (is_string($erreur)) {
             return $erreur;
         }

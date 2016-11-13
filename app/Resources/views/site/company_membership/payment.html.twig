@@ -1,0 +1,44 @@
+{% extends ':site:base.html.twig' %}
+{% block inner_content %}
+    <article>
+        <h1>Adhésion professionnelle à l'afup</h1>
+        <h2>Cotisation enregistrée !</h2>
+        <p>
+            Votre inscription a bien été enregistrée ! Il ne vous reste plus qu'à régler votre cotisation.
+        </p>
+        <p>
+            Montant de la cotisation: {{ invoice.montant }} Euros
+        </p>
+        <h2>Facture disponible</h2>
+        <p>
+            <a href="{{ url('company_membership_invoice', {invoiceNumber: invoice.numero_facture, token: invoice.token}) }}">Télécharger la facture</a>
+        </p>
+        <h2>Régler votre cotisation par Carte Bleue</h2>
+        <p>
+            Régler par carte bleue
+            {{ paybox|raw }}
+        </p>
+        <h2>Régler votre cotisation par chèque</h2>
+        <p>
+            Régler par chèque. Ordre du chèque: {{ afup.raison_sociale }}<br />
+            {{ afup.raison_sociale }}<br />
+            {{ afup.adresse }}<br />
+            {{ afup.code_postal }} {{ afup.ville }}
+        </p>
+        <h2>Régler votre cotisation par Virement Bancaire</h2>
+        <p>
+            Régler par Virement Bancaire
+            <table>
+                <tr>
+                    <th>IBAN</th><th>BIC/SWIFT</th>
+                </tr>
+                <tr>
+                    <td>{{ rib.iban }}</td><td>{{ rib.bic }}</td>
+                </tr>
+            </table>
+        </p>
+
+
+        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'afup par email: bonjour (at) afup.org.</p>
+    </article>
+{% endblock %}

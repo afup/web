@@ -73,3 +73,13 @@ services:
         autowire: true
         tags:
             - { name: validator.constraint_validator }
+
+    app.legacy_model_factory:
+        class: AppBundle\LegacyModelFactory
+
+    app.company_subscription:
+        class: AppBundle\Association\CompanyMembership\SubscriptionManagement
+        autowire: true
+
+    app.paybox_factory:
+        class: AppBundle\Payment\PayboxFactory

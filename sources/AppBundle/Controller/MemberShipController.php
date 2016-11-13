@@ -4,6 +4,7 @@
 namespace AppBundle\Controller;
 
 
+use Afup\Site\Association\Cotisations;
 use Afup\Site\Utils\Mail;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\UserType;
@@ -14,6 +15,7 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -77,17 +79,76 @@ class MemberShipController extends SiteBaseController
                     );
                     //$mail->sendSimpleMessage('TODO OBJET MANQUANT', $text, [['email' => $invitation->getEmail()]]);
                 });
-
-                // It's the time to pay !
-                // But I don't know how I'm supposed to do that... So I'll leave things here.
-                // Perhaps if I have a @todo tag, sometimes it will magically work.
-
-                // I should create an invoice? So I can create a payment link for this invoice ?
-
             }
+
+            $subscriptionManager = $this->get('app.company_subscription');
+            $invoice = $subscriptionManager->createInvoiceForInscription($member, count($member->getInvitations()));
+
+            return $this->redirectToRoute('company_membership_payment', ['invoiceNumber' => $invoice['invoice'], 'token' => $invoice['token']]);
         }
 
-        return $this->render(':site:adhesion_entreprise.html.twig', ['form' => $subscribeForm->createView()]);
+        return $this->render(':site/company_membership:adhesion_entreprise.html.twig', ['form' => $subscribeForm->createView()]);
+    }
+
+    public function paymentAction(Request $request, $invoiceNumber, $token)
+    {
+        /**
+         * @var $subscription Cotisations
+         */
+        $subscription = $this->get('app.legacy_model_factory')->createObject(Cotisations::class);
+        $invoice = $subscription->getByInvoice($invoiceNumber, $token);
+
+        if (!$invoice) {
+            throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
+        }
+
+        dump($invoice);
+        dump((float)$invoice['montant']);
+
+        $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
+            $invoiceNumber,
+            (float)$invoice['montant'],
+            'xavier.leune@gmail.com'
+        );
+
+        return $this->render(':site/company_membership:payment.html.twig', [
+            'paybox' => $paybox,
+            'invoice' => $invoice,
+            'rib' => $GLOBALS['AFUP_CONF']->obtenir('rib'),
+            'afup' => $GLOBALS['AFUP_CONF']->obtenir('afup'),
+            /*'address' => $GLOBALS['AFUP_CONF']->obtenir('adresse'),
+            'zip' => $GLOBALS['AFUP_CONF']->obtenir('code_postal'),
+            'ville' => $GLOBALS['AFUP_CONF']->obtenir('ville')*/
+        ]);
+        /**
+         * $configuration['afup']['raison_sociale']='AFUP';
+        $configuration['afup']['adresse']='32, Boulevard de Strasbourg
+        CS 30108';
+        $configuration['afup']['code_postal']='75468';
+        $configuration['afup']['ville']='Paris Cedex 10';
+         */
+    }
+
+    public function invoiceAction($invoiceNumber, $token)
+    {
+        /**
+         * @var $subscription Cotisations
+         */
+        $subscription = $this->get('app.legacy_model_factory')->createObject(Cotisations::class);
+        $invoice = $subscription->getByInvoice($invoiceNumber, $token);
+
+        if (!$invoice) {
+            throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
+        }
+
+        ob_start();
+        $subscription->genererFacture($invoice['id']);
+        $pdf = ob_get_clean();
+
+        $response = new Response($pdf);
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
     }
 
     public function memberInvitationAction(Request $request, $invitationId, $token)
@@ -140,6 +201,6 @@ class MemberShipController extends SiteBaseController
             return $this->redirect('/pages/administration/');
         }
 
-        return $this->render('site/member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
+        return $this->render(':site/company_membership:member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
     }
 }

@@ -229,6 +229,9 @@ class Facture
 
     function obtenirDernier()
     {
+        /**
+         * @TODO ne supporte pas les enregistrements concurrents !
+         */
         $requete = 'SELECT MAX(id)';
         $requete .= 'FROM';
         $requete .= '  afup_compta_facture ';
@@ -244,7 +247,7 @@ class Facture
         $requete = 'UPDATE ';
         $requete .= 'afup_compta_facture ';
         $requete .= 'SET ';
-        $requete .= 'date_facture=' . $this->_bdd->echapper(DATE('Y-m-d')) . ',';
+        $requete .= 'date_facture=' . $this->_bdd->echapper(date('Y-m-d')) . ',';
         $requete .= 'numero_facture=' . $this->_bdd->echapper($numero_facture) . ' ';
         $requete .= 'WHERE ';
         $requete .= 'numero_devis=' . $this->_bdd->echapper($numero_devis) . ' ';
