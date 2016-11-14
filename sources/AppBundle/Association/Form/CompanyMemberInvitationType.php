@@ -17,7 +17,7 @@ class CompanyMemberInvitationType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('manager', CheckboxType::class, ['required' => false, 'label' => 'Peut gérer votre compte'])
+            ->add('manager', CheckboxType::class, ['required' => false, 'label' => 'Lui partager les droits d’administration'])
         ;
     }
 

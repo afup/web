@@ -1,10 +1,10 @@
 {% extends ':site:base.html.twig' %}
 {% block inner_content %}
     <article>
-        <h1>Adhésion professionnelle à l'afup</h1>
+        <h1>Adhésion entreprise à l'AFUP</h1>
         <p>
-            Ce formulaire est réservé aux membres professionels. Vous êtes un particulier ?
-            Retrouvez le <a href="/pages/administration/index.php?page=inscription">formulaire d'adhésion pour particuliers</a>.
+            Ce formulaire est réservé aux entreprises. Vous êtes un particulier ou un indépendant ?
+            Retrouvez le <a href="/pages/administration/index.php?page=inscription">formulaire d'adhésion dédié</a>.
         </p>
         {{ form_start(form) }}
         <fieldset>
@@ -24,7 +24,7 @@
         </fieldset>
         <fieldset>
             <legend>Membres rattachés</legend>
-            <p>Chaque membre va recevoir une invitation lui permettant de créer son compte.</p>
+            <p>Chaque membre va recevoir une invitation lui permettant de créer son compte, rattaché à votre compte entreprise.</p>
             {{ form_row(form.maxMembers) }}
             <div id="company_member_invitations" data-prototype="{{ form_widget(form.invitations.vars.prototype)|e('html_attr') }}">
                 {% for invitation in form.invitations %}
@@ -102,9 +102,9 @@
         <h2>Questions fréquentes</h2>
         <ul>
             <li>
-                <h3>Pourquoi adhérer à l'afup ?</h3>
+                <h3>Pourquoi adhérer à l'AFUP ?</h3>
                 <p>
-                    Adhérer à l'afup pour une entreprise du monde PHP, c'est soutenir la communauté du langage sur lequel
+                    Adhérer à l'AFUP pour une entreprise du monde PHP, c'est soutenir la communauté du langage sur lequel
                     reposent ses outils, assurant une dynamique positive à l'écosystème. C'est également la possibilité
                     pour vos développeurs de bénéficier des mailing lists réservées aux membres et faire partie d'un
                     réseau de professionnels.
@@ -128,7 +128,7 @@
             <li>
                 <h3>Comment est faite la reconduction ?</h3>
                 <p>
-                    L'adhésion à l'afup est réalisée pour un an. Environ un mois avant l'échéance, nous vous avertirons que votre
+                    L'adhésion à l'AFUP est réalisée pour un an. Environ un mois avant l'échéance, nous vous avertirons que votre
                     adhésion arrive à expiration. Vous pourrez alors choisir de régler à nouveau votre adhésion ou la laisser expirer.
                     Environ 15 jours après expiration de votre adhésion, si celle-ci n'a pas été renouvelée, les comptes
                     de vos membres seront désactivés, ils perdront alors tous les avantages de votre adhésion.
