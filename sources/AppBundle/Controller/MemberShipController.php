@@ -74,10 +74,10 @@ class MemberShipController extends SiteBaseController
                         ['email' => $invitation->getEmail()],
                         [
                             'content' => $text,
-                            'title' => 'test'
-                        ]
+                            'title' => sprintf("%s vous à profiter de son compte \"Membre AFUP\"", $member->getCompanyName())
+                        ],
+                        ['subject' => sprintf("%s vous à profiter de son compte \"Membre AFUP\"", $member->getCompanyName())]
                     );
-                    //$mail->sendSimpleMessage('TODO OBJET MANQUANT', $text, [['email' => $invitation->getEmail()]]);
                 });
             }
 
