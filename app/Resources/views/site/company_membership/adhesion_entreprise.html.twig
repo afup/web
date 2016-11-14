@@ -25,13 +25,14 @@
         <fieldset>
             <legend>Membres rattachés</legend>
             <p>Chaque membre va recevoir une invitation lui permettant de créer son compte.</p>
-            <div>
-                <label for="company_invitations_length">Nombre de membres à rattacher</label>
-                <select id="company_invitations_length">
-                    {% for i in 1..10 %}
-                        <option value="{{ i*3 }}">{{ i*3 }}</option>
-                    {% endfor %}
-                </select>
+            {{ form_row(form.maxMembers) }}
+            <div id="company_member_invitations" data-prototype="{{ form_widget(form.invitations.vars.prototype)|e('html_attr') }}">
+                {% for invitation in form.invitations %}
+                    <div>
+                        {{ form_row(invitation.email) }}
+                        {{ form_row(invitation.manager) }}
+                    </div>
+                {% endfor %}
             </div>
             {{ form_row(form.invitations) }}
 
@@ -44,7 +45,7 @@
             // keep track of how many email fields have been rendered
             var emailCount = {{ form.invitations|length }};
 
-            document.querySelector('#company_invitations_length').onchange = function(e)
+            document.querySelector('#company_member_maxMembers').onchange = function(e)
             {
                 var numberOfMembers = parseInt(this.value); // Number of wanted invitations
                 var invitations = document.querySelector('#company_member_invitations');
@@ -89,7 +90,11 @@
                 var emailList = document.querySelector('#company_member_invitations');
                 emailList.removeChild(emailList.lastChild);
             }
-            document.querySelector('#company_invitations_length').onchange();
+            document.querySelector('#company_member_maxMembers').onchange();
+
+            // First member MUST be a manager
+            document.querySelector('#company_member_invitations_0_manager').setAttribute('checked', 'checked');
+            document.querySelector('#company_member_invitations_0_manager').setAttribute('disabled', 'disabled');
 
         </script>
 

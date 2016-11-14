@@ -86,6 +86,11 @@ class CompanyMember implements NotifyPropertyInterface
     private $status = self::STATUS_PENDING;
 
     /**
+     * @var int
+     */
+    private $maxMembers = 0;
+
+    /**
      * @var CompanyMemberInvitation[]
      */
     private $invitations;
@@ -321,6 +326,24 @@ class CompanyMember implements NotifyPropertyInterface
     public function setInvitations($invitations)
     {
         $this->invitations = $invitations;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxMembers()
+    {
+        return $this->maxMembers;
+    }
+
+    /**
+     * @param int $maxMembers
+     * @return CompanyMember
+     */
+    public function setMaxMembers($maxMembers)
+    {
+        $this->maxMembers = $maxMembers;
         return $this;
     }
 }

@@ -29,7 +29,7 @@ class MemberShipController extends SiteBaseController
     public function companyAction(Request $request)
     {
         $member = new CompanyMember();
-        $member->setInvitations([new CompanyMemberInvitation(), new CompanyMemberInvitation()]);
+        $member->setInvitations([new CompanyMemberInvitation()]);
         $subscribeForm = $this->createForm(CompanyMemberType::class, $member);
 
         $subscribeForm->handleRequest($request);
@@ -102,9 +102,6 @@ class MemberShipController extends SiteBaseController
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
-        dump($invoice);
-        dump((float)$invoice['montant']);
-
         $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
             $invoiceNumber,
             (float)$invoice['montant'],
@@ -115,18 +112,8 @@ class MemberShipController extends SiteBaseController
             'paybox' => $paybox,
             'invoice' => $invoice,
             'rib' => $GLOBALS['AFUP_CONF']->obtenir('rib'),
-            'afup' => $GLOBALS['AFUP_CONF']->obtenir('afup'),
-            /*'address' => $GLOBALS['AFUP_CONF']->obtenir('adresse'),
-            'zip' => $GLOBALS['AFUP_CONF']->obtenir('code_postal'),
-            'ville' => $GLOBALS['AFUP_CONF']->obtenir('ville')*/
+            'afup' => $GLOBALS['AFUP_CONF']->obtenir('afup')
         ]);
-        /**
-         * $configuration['afup']['raison_sociale']='AFUP';
-        $configuration['afup']['adresse']='32, Boulevard de Strasbourg
-        CS 30108';
-        $configuration['afup']['code_postal']='75468';
-        $configuration['afup']['ville']='Paris Cedex 10';
-         */
     }
 
     public function invoiceAction($invoiceNumber, $token)

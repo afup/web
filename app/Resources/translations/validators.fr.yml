@@ -1,0 +1,1 @@
+'Another entity exists for this data: {{ data }}': 'Un autre compte existe avec cette information: {{ data }}'

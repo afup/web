@@ -20,3 +20,10 @@ ALTER TABLE `afup_cotisations`
 ALTER TABLE `afup_cotisations`
   ADD `token` varchar(255) COLLATE 'latin1_swedish_ci' NULL AFTER `commentaires`;
 
+ALTER TABLE `afup_personnes_morales`
+  ADD `max_members` tinyint(1) unsigned NULL COMMENT 'Nombre maximum de membre autorisé par la cotisation' AFTER `telephone_portable`,
+  COMMENT='Personnes morales';
+
+-- Update afup_personnes_morales pour calculer le nombre maximum de membre en fonction des membres actifs
+UPDATE afup_personnes_morales apm SET apm.max_members = (SELECT CEIL(COUNT(app.id)/3)*3 FROM afup_personnes_physiques app WHERE app.id_personne_morale = apm.id AND app.etat = 1);
+

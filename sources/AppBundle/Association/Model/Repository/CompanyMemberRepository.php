@@ -87,6 +87,11 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'status',
                 'type' => 'int'
             ])
+            ->addField([
+                'columnName' => 'max_members',
+                'fieldName' => 'maxMembers',
+                'type' => 'int'
+            ])
         ;
 
         return $metadata;
