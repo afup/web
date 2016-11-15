@@ -8,16 +8,22 @@ class Sympa
      */
     private $_bdd;
     private $_configUrl;
+    private $configHost;
 
-    public function __construct($bdd, $configUrl)
+    public function __construct($bdd, $configUrl, $configHost)
     {
         $this->_bdd = $bdd;
         $this->_configUrl = $configUrl;
+        $this->configHost = $configHost;
     }
 
     public function getAllMailingList()
     {
-        return unserialize(file_get_contents($this->_configUrl));
+        $curl = curl_init($this->_configUrl);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Host: ' . $this->configHost));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        return unserialize($curl);
     }
 
     public function getAllUsers()

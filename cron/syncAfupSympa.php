@@ -1,8 +1,8 @@
 <?php
 use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Association\Personnes_Physiques;
-use Afup\Site\Utils\Sympa;
 use Afup\Site\Utils\Base_De_Donnees;
+use Afup\Site\Utils\Sympa;
 
 require_once __DIR__ . '/../sources/Afup/Bootstrap/Cli.php';
 
@@ -25,7 +25,7 @@ $infoMembres = $personnes->obtenirListe('lower(email) as email,nom,prenom', 'ema
 
 echo " - recuperation de toutes les listes Sympa et de leurs lecteurs...\n";
 
-$sympa = new Sympa($sympaBdd, $conf->obtenir('sympa|directory'));
+$sympa = new Sympa($sympaBdd, $conf->obtenir('sympa|config_url'), $conf->obtenir('sympa|host'));
 $tmpListes = $sympa->getAllMailingList();
 $usersSympa = $sympa->getAllUsers();
 
