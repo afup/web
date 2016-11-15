@@ -48,7 +48,7 @@ class CompanyMemberType extends AbstractType
                 'entry_type'   => CompanyMemberInvitationType::class,
                 'allow_add' => true,
             ])
-            ->add('save', SubmitType::class, ['label' => 'Enregistrer mon compte'])
+            ->add('save', SubmitType::class, ['label' => 'Enregistrer mon adhésion'])
         ;
     }
 

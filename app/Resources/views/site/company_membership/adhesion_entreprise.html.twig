@@ -1,6 +1,6 @@
 {% extends ':site:base.html.twig' %}
 {% block inner_content %}
-    <article>
+    <article id="company-membership">
         <h1>Adhésion entreprise à l'AFUP</h1>
         <p>
             Ce formulaire est réservé aux entreprises. Vous êtes un particulier ou un indépendant ?
@@ -9,32 +9,39 @@
         {{ form_start(form) }}
         <fieldset>
             <legend>Société</legend>
-            {{ form_row(form.companyName) }}
-            {{ form_row(form.siret) }}
-            {{ form_row(form.address) }}
-            {{ form_row(form.zipcode) }}
-            {{ form_row(form.city) }}
+            <div>
+                {{ form_row(form.companyName) }}
+                {{ form_row(form.siret) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.zipcode) }}
+                {{ form_row(form.city) }}
+            </div>
         </fieldset>
         <fieldset>
             <legend>Contact administratif</legend>
-            {{ form_row(form.firstName) }}
-            {{ form_row(form.lastName) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.phone) }}
+            <div>
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.phone) }}
+            </div>
         </fieldset>
         <fieldset>
             <legend>Membres rattachés</legend>
-            <p>Chaque membre va recevoir une invitation lui permettant de créer son compte, rattaché à votre compte entreprise.</p>
-            {{ form_row(form.maxMembers) }}
-            <div id="company_member_invitations" data-prototype="{{ form_widget(form.invitations.vars.prototype)|e('html_attr') }}">
-                {% for invitation in form.invitations %}
-                    <div>
-                        {{ form_row(invitation.email) }}
-                        {{ form_row(invitation.manager) }}
-                    </div>
-                {% endfor %}
+            <div>
+                <p>Chaque membre va recevoir une invitation lui permettant de créer son compte, rattaché à votre compte entreprise.</p>
+                {{ form_row(form.maxMembers) }}
+                <div id="company_member_invitations" data-prototype="{{ form_widget(form.invitations.vars.prototype)|e('html_attr') }}">
+                    {% for invitation in form.invitations %}
+                        <div>
+                            {{ form_row(invitation.email) }}
+                            {{ form_row(invitation.manager) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {{ form_row(form.invitations) }}
             </div>
-            {{ form_row(form.invitations) }}
+
 
         </fieldset>
         {{ form_widget(form) }}
