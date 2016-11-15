@@ -99,8 +99,8 @@ class Mail
                 $sendAt
             );
         } catch (Mandrill_Error $e) {
-            throw $e;
-            //return false;
+            //throw $e;
+            return false;
         }
 
         $status = $resp[0]['status'];

@@ -245,8 +245,6 @@ class Cotisations
             $invoiceNumber = substr($cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);
 
-            dump($cotisation);die;
-
             $this
                 ->updatePayment(
                     $cotisation['id'],
