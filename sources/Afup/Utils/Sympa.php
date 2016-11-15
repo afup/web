@@ -23,7 +23,7 @@ class Sympa
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Host: ' . $this->configHost));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-        return unserialize($curl);
+        return unserialize(curl_exec($curl));
     }
 
     public function getAllUsers()
