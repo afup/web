@@ -1440,7 +1440,7 @@ footer #menufooter-top a:hover {
     background-color: #FFBABA;
 }
 
-#company-membership form{
+#company-membership form, #company-membership-payment form, #company-membership-invitation form{
     width: auto;
     background:transparent;
     margin: 0;
@@ -1448,22 +1448,22 @@ footer #menufooter-top a:hover {
     padding: 0;
 }
 
-#company-membership form * {
+#company-membership form *, #company-membership-invitation form * {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
 
-#company-membership fieldset{
+#company-membership fieldset, #company-membership-invitation fieldset{
     margin: 2em 0;
     padding: 0;
 }
-#company-membership fieldset > div{
+#company-membership fieldset > div, #company-membership-invitation fieldset > div{
     padding: 1em;
     background: #eee;
     border: 1px solid #ccc;
 }
-#company-membership legend{
+#company-membership legend, #company-membership-invitation legend{
     display:block;
     background-color:#50a0dd;
     padding: 20px 10px;
@@ -1473,22 +1473,23 @@ footer #menufooter-top a:hover {
     font-size:1.5em;
     border: 1px solid #50a0dd;
 }
-#company-membership form label{
+#company-membership form label, #company-membership-invitation form label{
     min-width: 45%;
     line-height: 2em;
     font-weight: normal;
 }
-#company-membership form input, #company-membership form textarea, #company-membership form select{
+#company-membership form input, #company-membership form textarea, #company-membership form select, #company-membership-invitation form input, #company-membership-invitation form textarea{
     min-width: 45%;
 }
 #company-membership form input[type=checkbox] {
     width: auto;
     min-width:0;
 }
-#company-membership #company_member{
+#company-membership #company_member, #company-membership-invitation #user{
     text-align:right;
 }
-#company-membership #company_member button{
+#company-membership #company_member button, #company-membership-invitation button, #company-membership-payment input[type=submit], #company-membership-payment a.button{
+    text-decoration: none;
     background-color:#50a0dd;
     font-size:1.5em;
     color:white;
