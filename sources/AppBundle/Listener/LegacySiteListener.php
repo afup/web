@@ -40,5 +40,7 @@ class LegacySiteListener
             'social' => $page->social(),
             'footer' => $page->footer()
         ]);
+
+        $controller->setConfiguration($GLOBALS['AFUP_CONF']);
     }
 }

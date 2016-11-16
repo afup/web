@@ -115,8 +115,8 @@ class MemberShipController extends SiteBaseController
         return $this->render(':site/company_membership:payment.html.twig', [
             'paybox' => $paybox,
             'invoice' => $invoice,
-            'rib' => $GLOBALS['AFUP_CONF']->obtenir('rib'),
-            'afup' => $GLOBALS['AFUP_CONF']->obtenir('afup')
+            'rib' => $this->legacyConfiguration->obtenir('rib'),
+            'afup' => $this->legacyConfiguration->obtenir('afup')
         ]);
     }
 
