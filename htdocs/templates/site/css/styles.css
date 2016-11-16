@@ -1494,4 +1494,8 @@ footer #menufooter-top a:hover {
     font-size:1.5em;
     color:white;
     padding: 20px 10px;
+    border: 1px solid #2b3e74;
+}
+#company-membership-payment a.button{
+    display:inline-block;
 }
