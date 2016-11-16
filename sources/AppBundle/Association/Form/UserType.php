@@ -33,7 +33,7 @@ class UserType extends AbstractType
             ->add('zipcode', TextType::class, ['label' => 'Zip code'])
             ->add('city', TextType::class)
             ->add('phone', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Créer mon compte'])
+            ->add('save', SubmitType::class, ['label' => 'Create my account'])
         ;
     }
 

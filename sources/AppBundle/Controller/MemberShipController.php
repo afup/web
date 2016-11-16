@@ -90,22 +90,26 @@ class MemberShipController extends SiteBaseController
         return $this->render(':site/company_membership:adhesion_entreprise.html.twig', ['form' => $subscribeForm->createView()]);
     }
 
-    public function paymentAction(Request $request, $invoiceNumber, $token)
+    public function paymentAction($invoiceNumber, $token)
     {
         /**
          * @var $subscription Cotisations
          */
         $subscription = $this->get('app.legacy_model_factory')->createObject(Cotisations::class);
         $invoice = $subscription->getByInvoice($invoiceNumber, $token);
+        /**
+         * @var $company CompanyMember
+         */
+        $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($invoice['id_personne']);
 
-        if (!$invoice) {
+        if (!$invoice || $company === null) {
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
         $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
             $invoiceNumber,
             (float)$invoice['montant'],
-            'xavier.leune@gmail.com'
+            $company->getEmail()
         );
 
         return $this->render(':site/company_membership:payment.html.twig', [

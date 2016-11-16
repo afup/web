@@ -39,7 +39,6 @@ class CompanyMemberType extends AbstractType
                 'maxMembers',
                 ChoiceType::class,
                 [
-                    'label' => 'Nombre de membres à rattacher',
                     'choices' => $choices
                 ]
             )
@@ -48,7 +47,7 @@ class CompanyMemberType extends AbstractType
                 'entry_type'   => CompanyMemberInvitationType::class,
                 'allow_add' => true,
             ])
-            ->add('save', SubmitType::class, ['label' => 'Enregistrer mon adhésion'])
+            ->add('save', SubmitType::class, ['label' => 'saveMembership'])
         ;
     }
 

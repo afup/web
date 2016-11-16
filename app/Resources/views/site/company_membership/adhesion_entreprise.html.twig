@@ -54,7 +54,7 @@
 
             document.querySelector('#company_member_maxMembers').onchange = function(e)
             {
-                var numberOfMembers = parseInt(this.value); // Number of wanted invitations
+                var numberOfMembers = parseInt(this.value, 10); // Number of wanted invitations
                 var invitations = document.querySelector('#company_member_invitations');
 
                 var numberOfInvitations = invitations.children.length; // Number of displayed invitations
@@ -105,7 +105,7 @@
 
         </script>
 
-        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'afup par email: bonjour (at) afup.org.</p>
+        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'AFUP par email: bonjour (at) afup.org.</p>
         <h2>Questions fréquentes</h2>
         <ul>
             <li>
@@ -135,9 +135,10 @@
             <li>
                 <h3>Comment est faite la reconduction ?</h3>
                 <p>
-                    L'adhésion à l'AFUP est réalisée pour un an. Environ un mois avant l'échéance, nous vous avertirons que votre
-                    adhésion arrive à expiration. Vous pourrez alors choisir de régler à nouveau votre adhésion ou la laisser expirer.
-                    Environ 15 jours après expiration de votre adhésion, si celle-ci n'a pas été renouvelée, les comptes
+                    L'adhésion à l'AFUP est réalisée pour un an à partir de l'enregistrement de votre cotisation.
+                    Un mois avant l'échéance, nous vous avertirons que votre adhésion arrive à expiration.
+                    Vous pourrez alors choisir de régler à nouveau votre adhésion ou la laisser expirer.
+                    15 jours après expiration de votre adhésion, si celle-ci n'a pas été renouvelée, les comptes
                     de vos membres seront désactivés, ils perdront alors tous les avantages de votre adhésion.
                 </p>
             </li>
