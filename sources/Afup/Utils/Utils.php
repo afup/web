@@ -4,6 +4,7 @@ namespace Afup\Site\Utils;
 use Afup\Site\AuthentificationInterfaceWiki;
 use Afup\Site\AuthentificationWiki;
 use Afup\Site\Droits;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
  * Diverses méthodes permettant de se simplifier la vie
@@ -17,7 +18,7 @@ class Utils
      * @access public
      * @return object    Afup\Site\Droits
      */
-    public static function fabriqueDroits($bdd)
+    public static function fabriqueDroits($bdd, TokenStorage $tokenStorage)
     {
 
 
@@ -25,7 +26,7 @@ class Utils
         // Gestion de l'authentification spécifique au Wiki
         $authentificationWiki = new AuthentificationWiki();
 
-        $droits = new Droits($bdd);
+        $droits = new Droits($bdd, $tokenStorage);
         $droits->enregistreAuthentification($authentificationWiki);
 
         return $droits;

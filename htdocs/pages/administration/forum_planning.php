@@ -1,7 +1,6 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Droits;
 use Afup\Site\Forum\AppelConferencier;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
@@ -23,7 +22,6 @@ $smarty->assign('action', $action);
 
 $forum = new Forum($bdd);
 $forum_appel = new AppelConferencier($bdd);
-$droits = new Droits($bdd);
 
 if ($action == 'lister') {
 	$list_champs = 's.*';

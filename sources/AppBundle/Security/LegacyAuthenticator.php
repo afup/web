@@ -5,10 +5,8 @@ namespace AppBundle\Security;
 use AppBundle\Association\Model\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
@@ -27,21 +25,19 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        if (substr($request->getPathInfo(), 0, 7) !== '/admin/') {
+        if (
+            $request->getPathInfo() !== '/admin/login'
+            || $request->getMethod() !== Request::METHOD_POST
+            || $request->request->has('utilisateur') === false
+            || $request->request->has('mot_de_passe') === false
+        ) {
             return null;
         }
 
-        if ($request->hasSession() === false) {
-            throw new \RuntimeException('Session must be started');
-        }
-
-        try {
-            $user = $this->userRepository->loadUserByUsername($_SESSION['afup_login']);
-        } catch (UsernameNotFoundException $e) {
-            return null;
-        }
-
-        return ['id' => $user->getId(), 'password' => $user->getPassword()];
+        return [
+            'login' => $request->request->get('utilisateur'),
+            'password' => md5($request->request->get('mot_de_passe'))
+        ];
     }
 
     /**
@@ -49,9 +45,10 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $user = $this->userRepository->getOneBy(['id' => $credentials['id'], 'password' => $credentials['password']]);
+        $user = $this->userRepository->loadUserByUsername($credentials['login']);
+
         if ($user === null) {
-            throw new AuthenticationException(sprintf('Unknown user %s', $credentials['id']));
+            throw new AuthenticationException(sprintf('Unknown user %s', $credentials['login']));
         }
 
         return $user;
@@ -62,7 +59,11 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return ($credentials['id'] === $user->getId() && $credentials['password'] === $user->getPassword());
+        dump($credentials, $user);
+        return (
+            ($credentials['login'] === $user->getUsername() || $credentials['login'] === $user->getEmail())
+            && $credentials['password'] === $user->getPassword()
+        );
     }
 
     /**
@@ -70,7 +71,7 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new Response('Access denied', 403);
+        $request->getSession()->getFlashBag()->add('error', 'Bad credentials');
     }
 
     /**
@@ -78,7 +79,7 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return null;
+        return new RedirectResponse('/pages/administration/index.php');
     }
 
     /**
@@ -94,6 +95,6 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new RedirectResponse('/pages/administration/index.php');
+        return new RedirectResponse('/admin/login');
     }
 }

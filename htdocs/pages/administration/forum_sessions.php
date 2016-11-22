@@ -1,11 +1,10 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\AppelConferencier;
-use Afup\Site\Droits;
-use Afup\Site\Utils\Pays;
+use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Pays;
 use AppBundle\Event\Model\Talk;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -24,7 +23,6 @@ $smarty->assign('action', $action);
 
 $forum = new Forum($bdd);
 $forum_appel = new AppelConferencier($bdd);
-$droits = new Droits($bdd);
 
 if ($action == 'lister') {
     // Valeurs par défaut des paramètres de tri

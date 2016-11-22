@@ -1,11 +1,8 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\AppelConferencier;
-use Afup\Site\Droits;
-use Afup\Site\Utils\Pays;
-use Afup\Site\Utils\Logs;
+use Afup\Site\Forum\Forum;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -14,7 +11,6 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 $forum = new Forum($bdd);
 $forum_appel = new AppelConferencier($bdd);
-$droits = new Droits($bdd);
 
 if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
     $_GET['id_forum'] = $forum->obtenirDernier();

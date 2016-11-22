@@ -2,6 +2,7 @@
 
 namespace Afup\Site;
 use Afup\Site\Utils\Base_De_Donnees;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 define('AFUP_DROITS_NIVEAU_MEMBRE', 0);
 define('AFUP_DROITS_NIVEAU_REDACTEUR', 1);
@@ -83,12 +84,14 @@ class Droits
      * Constructeur. Vérifie si l'utilisateur est connecté
      *
      * @param object $bdd Instance de la couche d'abstraction à la base de données
+     * @param TokenStorage $tokenStorage
      * @access public
      * @return void
      */
-    public function __construct(&$bdd)
+    public function __construct(&$bdd, TokenStorage $tokenStorage)
     {
         $this->_bdd = $bdd;
+        $this->tokenStorage = $tokenStorage;
 
         if (isset($_SESSION['afup_login']) && isset($_SESSION['afup_mot_de_passe'])) {
             $this->seConnecter($_SESSION['afup_login'], $_SESSION['afup_mot_de_passe'], false);
@@ -267,7 +270,7 @@ class Droits
      */
     public function obtenirIdentifiant()
     {
-        return $this->_identifiant;
+        return $this->tokenStorage->getToken()->getUser()->getId();
     }
 
     /**
@@ -278,7 +281,7 @@ class Droits
      */
     public function obtenirNiveau()
     {
-        return $this->_niveau;
+        return $this->tokenStorage->getToken()->getUser()->getLevels();
     }
 
     /**
@@ -383,11 +386,13 @@ class Droits
 
     public function obtenirEmail()
     {
-        return $this->_email;
+        return $this->tokenStorage->getToken()->getUser()->getEmail();
     }
 
     public function obtenirNomComplet()
     {
+
+        return $this->tokenStorage->getToken()->getUser()->getLabel();
         return ($this->_prenom . " " . $this->_nom);
     }
 }

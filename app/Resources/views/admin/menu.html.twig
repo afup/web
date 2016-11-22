@@ -1,0 +1,27 @@
+<ul id="menu">
+    {% for clef, page in pages %}
+        {% if page.elements is defined %}
+            {% if page.niveau is not defined or is_granted(page.niveau) %}
+                <li>
+                    {{ page.nom }}
+                    <ul>
+                        {% for clef2, element in page.elements %}
+                            {% if element.niveau is not defined or is_granted(element.niveau) %}
+                                <li>
+                                    <a href="{% if page.url is defined %}{{ page.url }}{% else %}index.php?page={{ clef2 }}{% endif %}"
+                                       {% if element.nouvelle_fenetre is defined and element.nouvelle_fenetre == true %}target="_blank"{% endif %}>{{ element.nom }}{% if element.nouvelle_fenetre is defined and element.nouvelle_fenetre == true %}
+                                            <i class="glyphicon glyphicon-new-window"></i>{% endif %}</a>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        {% elseif page.masquee is not defined or page.masquee != true %}
+            <li>
+                <a href="{% if page.url is defined %}{{ page.url }}{% else %}index.php?page={{ clef }}{% endif %}">{{ page.nom }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

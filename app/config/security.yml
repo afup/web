@@ -18,7 +18,11 @@ security:
             security: false
 
         legacy_secured_area:
+            anonymous: ~
             pattern: ^(/admin/)
+            logout:
+                path:   /admin/logout
+                target: /
             guard:
                 authenticators:
                     - app.legacy_authenticator
@@ -37,11 +41,13 @@ security:
 
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
-        - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/blog, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [217.70.189.71, 127.0.0.1, 192.168.42.1] }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }
 
     role_hierarchy:
+        ROLE_USER: [ROLE_MEMBER_EXPIRED]
         ROLE_COMPANY_MANAGER: [ROLE_USER]
-        ROLE_ADMIN:       [ROLE_USER, ROLE_DEPLOY]
+        ROLE_ADMIN:       [ROLE_USER, ROLE_DEPLOY, ROLE_APERO, ROLE_ANNUAIRE, ROLE_FORUM, ROLE_SITE]
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]

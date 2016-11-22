@@ -2,6 +2,23 @@ admin_vote:
   path: /vote/{eventSlug}
   defaults: {_controller: AppBundle:Vote:admin}
 
+
 admin_relances:
   path: /association/relances/{page}
   defaults: {_controller: AppBundle:MemberShip:reminderLog}
+
+admin_company:
+  path: /association/membres/entreprises
+  defaults: {_controller: AppBundle:MemberShip:admin}
+
+admin_void:
+  path: /void
+  defaults: {_controller: AppBundle:Static:voidBackOffice}
+
+admin_login:
+  path: /login
+  defaults: {_controller: AppBundle:Admin:login}
+
+admin_logout:
+  path: /logout
+
