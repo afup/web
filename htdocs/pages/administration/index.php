@@ -1,8 +1,8 @@
 <?php
 use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\BlackList;
-use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Utils;
 
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 // Gestion des droits
@@ -24,6 +24,18 @@ define('PAGE_LOADED_USING_INDEX', true);
 
 if (!empty($_POST['connexion'])) {
     if ($droits->seConnecter($_POST['utilisateur'], $_POST['mot_de_passe'])) {
+        /*
+         * Here we are doing something tricky
+         * As we can need in some context to have a full sf2 session
+         * We'll run a fake request against our sf app
+         *
+         * So sf will hydrate the $_SESSION global with his precious data about roles, etc.
+         * and we'll be able to use this data to check roles
+         */
+
+        $kernel = new \Afup\Site\Utils\SymfonyKernel();
+        $request = $kernel->getRequest('/admin/void');
+
         if (isset($_POST['page_demandee']) && $_POST['page_demandee']) {
             header('Location: ' . $_POST['page_demandee']);
         }

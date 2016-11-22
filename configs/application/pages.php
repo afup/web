@@ -2,6 +2,25 @@
 
 use Afup\Site\Association\Personnes_Physiques;
 
+
+if (isset($_GET['page']) && $_GET['page'] === 'connexion') {
+    $pages = [
+        'connexion' => array(
+            'nom' => 'Connexion',
+            'masquee' => true,
+            'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+        ),
+    ];
+    return;
+}
+
+$kernel = new \Afup\Site\Utils\SymfonyKernel();
+/**
+ * @var $token \Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken
+ */
+$token = unserialize($kernel->getKernel()->getContainer()->get('session')->get('_security_legacy_secured_area'));
+//var_dump($token->getRoles());
+
 $pages = array(
 	'accueil' => array(
 		'nom' => 'Accueil',
@@ -30,7 +49,8 @@ $pages = array(
             ),
             'membre_personne_morale' => array(
                 'nom' => 'Ma personne morale',
-                'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+                //'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+                'role' => 'ROLE_COMPANY_MANAGER'
             ),
 		    'membre_ml' => array(
 		        'nom' => 'Listes de diffusion',
@@ -344,9 +364,35 @@ $personnes_physiques = new Personnes_Physiques($bdd);
 
 $identifiant = $droits->obtenirIdentifiant();
 $personne_physique = $personnes_physiques->obtenir($identifiant);
-if ($personne_physique['id_personne_morale'] == 0) {
+/*if ($personne_physique['id_personne_morale'] == 0) {
     // Suppression des pages accessibles aux membres d'une personne morale
     unset($pages['membre']['elements']['membre_personne_morale']);
-}
+}*/
 
+/**
+ * @var $roles \Symfony\Component\Security\Core\Role\Role[]
+ */
+$roles = $token->getRoles();
+$checkPages = function (&$pages) use ($roles, &$checkPages) {
+    foreach ($pages as $id => $page) {
+        if (isset($page['elements'])) {
+            $checkPages($page['elements']);
+        } elseif(isset($page['role'])) {
+            $include = false;
+            dump($page, $roles);
+            foreach ($roles as $role) {
+                dump($role->getRole());
+                if ($role->getRole() === $role) {
+                    dump($role->getRole(), $role);
+                    $include = true;
+                    continue;
+                }
+            }
+            if ($include === false) {
+                unset($pages[$id]);
+            }
+        }
+    }
+};
 
+$checkPages($pages);

@@ -211,4 +211,10 @@ class MemberShipController extends SiteBaseController
 
         return $this->render(':admin/relances:liste.html.twig', ['logs' => $results, 'limit' => $limit, 'page' => $page]);
     }
+
+    public function adminAction()
+    {
+        dump($this->getUser());
+        die;
+    }
 }
