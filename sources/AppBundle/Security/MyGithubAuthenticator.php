@@ -4,8 +4,8 @@
 namespace AppBundle\Security;
 
 
-use AppBundle\Model\GithubUser;
-use AppBundle\Model\Repository\GithubUserRepository;
+use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Model\Repository\GithubUserRepository;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\Provider\GithubClient;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;

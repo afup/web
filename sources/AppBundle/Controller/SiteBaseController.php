@@ -4,12 +4,18 @@
 namespace AppBundle\Controller;
 
 
+use Afup\Site\Utils\Configuration;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class SiteBaseController extends Controller implements SiteControllerInterface
 {
-    private $defaultBlocks = [];
+    protected $defaultBlocks = [];
+
+    /**
+     * @var Configuration
+     */
+    protected $legacyConfiguration;
 
     /**
      * @inheritDoc
@@ -17,6 +23,14 @@ abstract class SiteBaseController extends Controller implements SiteControllerIn
     public function setDefaultBlocks(array $blocks)
     {
         $this->defaultBlocks = $blocks;
+    }
+
+    /**
+     * @param Configuration $conf
+     */
+    public function setConfiguration(Configuration $conf)
+    {
+        $this->legacyConfiguration = $conf;
     }
 
     /**

@@ -6,6 +6,8 @@ security:
     providers:
         github_user:
             id: "github_user_repository"
+        legacy_user:
+            id: "app.user_repository"
         in_memory:
             memory: ~
 
@@ -14,6 +16,13 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        legacy_secured_area:
+            pattern: ^(/admin/)
+            guard:
+                authenticators:
+                    - app.legacy_authenticator
+                entry_point: app.legacy_authenticator
 
         github_secured_area:
             pattern: ^(/event/.*/(vote|cfp)|/connect/github/check)
@@ -28,3 +37,9 @@ security:
 
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
+        - { path: ^/admin/, roles: ROLE_ADMIN }
+
+    role_hierarchy:
+        ROLE_COMPANY_MANAGER: [ROLE_USER]
+        ROLE_ADMIN:       [ROLE_USER, ROLE_DEPLOY]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]

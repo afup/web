@@ -154,8 +154,8 @@ $services->get('ConnectionPool')->setConfig([
 $services
     ->get('MetadataRepository')
     ->batchLoadMetadata(
-        'AppBundle\Model\Repository',
-        __DIR__ . '/../Model/Repository/*.php',
+        'AppBundle\Event\Model\Repository',
+        __DIR__ . '/../Event/Model/Repository/*.php',
         ['default' => ['database' => $GLOBALS['AFUP_CONF']->obtenir('bdd|base')]]
     )
 ;

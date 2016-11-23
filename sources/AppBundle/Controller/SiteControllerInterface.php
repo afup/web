@@ -4,6 +4,8 @@
 namespace AppBundle\Controller;
 
 
+use Afup\Site\Utils\Configuration;
+
 interface SiteControllerInterface
 {
     /**
@@ -17,4 +19,9 @@ interface SiteControllerInterface
      * @return void
      */
     public function setDefaultBlocks(array $blocks);
+
+    /**
+     * @param Configuration $conf
+     */
+    public function setConfiguration(Configuration $conf);
 }

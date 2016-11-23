@@ -1,11 +1,10 @@
 <?php
 
 namespace Afup\Site\Association;
+use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
-
-
 use DateInterval;
 use DateTime;
 use PHPMailer;
@@ -29,9 +28,7 @@ class Cotisations
 {
     /**
      * Instance de la couche d'abstraction à la base de données
-     *
-     * @var object
-     * @access private
+     * @var Base_De_Donnees
      */
     var $_bdd;
 
@@ -132,16 +129,17 @@ class Cotisations
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_cotisations (type_personne, id_personne, montant, type_reglement , informations_reglement,';
-        $requete .= '                    date_debut, date_fin, numero_facture, commentaires) ';
+        $requete .= '                    date_debut, date_fin, numero_facture, token, commentaires) ';
         $requete .= 'VALUES (';
         $requete .= $type_personne . ',';
         $requete .= $id_personne . ',';
         $requete .= $montant . ',';
-        $requete .= $type_reglement . ',';
+        $requete .= ($type_reglement === null ? 'NULL' : $type_reglement) . ',';
         $requete .= $this->_bdd->echapper($informations_reglement) . ',';
         $requete .= $date_debut . ',';
         $requete .= $date_fin . ',';
         $requete .= $this->_bdd->echapper($this->_genererNumeroFacture()) . ',';
+        $requete .= $this->_bdd->echapper(base64_encode(random_bytes(30))) . ',';
         $requete .= $this->_bdd->echapper($commentaires) . ')';
 
         if ($this->_bdd->executer($requete) === false) {
@@ -242,7 +240,18 @@ class Cotisations
         $reference = substr($cmd, 0, strlen($cmd) - 4);
         $verif = substr($cmd, strlen($cmd) - 3, strlen($cmd));
 
-        if (substr(md5($reference), -3) == strtolower($verif) and !$this->estDejaReglee($cmd)) {
+        if (substr($cmd, 0, 1) === 'F') {
+            // This is an invoice ==> we dont have to create a new cotisation, just update the existing one
+            $invoiceNumber = substr($cmd, 1);
+            $cotisation = $this->getByInvoice($invoiceNumber);
+
+            $this
+                ->updatePayment(
+                    $cotisation['id'],
+                    AFUP_COTISATIONS_REGLEMENT_ENLIGNE, "autorisation : " . $autorisation . " / transaction : " . $transaction
+                );
+
+        } elseif (substr(md5($reference), -3) == strtolower($verif) and !$this->estDejaReglee($cmd)) {
             list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
             $date_debut = mktime(0, 0, 0, substr($date, 2, 2), substr($date, 0, 2), substr($date, 4, 4));
 
@@ -626,4 +635,50 @@ TXT;
             return $now;
         }
     }
+
+    /**
+     * Renvoit la cotisation demandée
+     *
+     * @param string $invoiceId Identifiant de la facture
+     * @param string|null $token Token de la facture. Si null, pas de vérification
+     * @return array
+     */
+    public function getByInvoice($invoiceId, $token = null)
+    {
+        $requete = 'SELECT';
+        $requete .= '  * ';
+        $requete .= 'FROM';
+        $requete .= '  afup_cotisations ';
+        $requete .= 'WHERE';
+        $requete .= '  numero_facture = ' . $this->_bdd->echapper($invoiceId);
+        if ($token !== null) {
+            $requete .= ' AND token = ' . $this->_bdd->echapper($token);
+        }
+
+        return $this->_bdd->obtenirEnregistrement($requete);
+    }
+
+    /**
+     * Modifie une cotisation
+     *
+     * @param int $id Identifiant de la cotisation à modifier
+     * @param int $type_reglement Type de règlement (espèces, chèque, virement)
+     * @param string $informations_reglement Informations concernant le règlement (numéro de chèque, de virement etc.)
+     * @return bool Succès de la modification
+     */
+    function updatePayment($id, $type_reglement, $informations_reglement)
+    {
+        $requete = 'UPDATE';
+        $requete .= '  afup_cotisations ';
+        $requete .= 'SET';
+        $requete .= '  type_reglement=' . $type_reglement . ',';
+        $requete .= '  informations_reglement=' . $this->_bdd->echapper($informations_reglement);
+        $requete .= ' WHERE';
+        $requete .= '  id=' . $id;
+        if ($this->_bdd->executer($requete) === false) {
+            return false;
+        }
+        return true;
+    }
+
 }

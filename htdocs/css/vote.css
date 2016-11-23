@@ -757,24 +757,6 @@ div.container {
     padding: 10px;
 }
 
-.flash {
-    border: 1px solid;
-    margin: 10px 0px;
-    padding:15px 10px;
-}
-.flash-notice {
-    color: #00529B;
-    background-color: #BDE5F8;
-}
-.flash-success {
-    color: #4F8A10;
-    background-color: #DFF2BF;
-}
-.flash-error {
-    color: #D8000C;
-    background-color: #FFBABA;
-}
-
 @media (min-width: 992px) {
     .col-md-8 {
         width: 66.66667%;

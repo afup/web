@@ -13,19 +13,14 @@ services:
         autowire: true
 
     github_user_repository:
-        class: AppBundle\Model\Repository\GithubUserRepository
+        class: AppBundle\Event\Model\Repository\GithubUserRepository
         factory: ["@ting", get]
-        arguments: [AppBundle\Model\Repository\GithubUserRepository]
+        arguments: [AppBundle\Event\Model\Repository\GithubUserRepository]
 
     app_twig:
         class: AppBundle\Twig\TwigExtension
         tags:
             -  { name: twig.extension }
-
-    app.admin_listener:
-        class: AppBundle\Listener\AdminRequestListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.request }
 
     app.locale_listener:
         class: AppBundle\Listener\LocaleListener
@@ -39,9 +34,9 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, priority: 100 }
 
     app.speaker_repository:
-        class: AppBundle\Model\Repository\SpeakerRepository
+        class: AppBundle\Event\Model\Repository\SpeakerRepository
         factory: ["@ting", get]
-        arguments: [AppBundle\Model\Repository\SpeakerRepository]
+        arguments: [AppBundle\Event\Model\Repository\SpeakerRepository]
 
     app.speaker_factory:
         class: AppBundle\CFP\SpeakerFactory
@@ -62,3 +57,29 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
+
+    app.user_repository:
+        class: AppBundle\Association\Model\Repository\UserRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\UserRepository]
+
+
+    app.legacy_authenticator:
+        class: AppBundle\Security\LegacyAuthenticator
+        autowire: true
+
+    app.unique_validator:
+        class: AppBundle\Validator\Constraints\UniqueEntityValidator
+        autowire: true
+        tags:
+            - { name: validator.constraint_validator }
+
+    app.legacy_model_factory:
+        class: AppBundle\LegacyModelFactory
+
+    app.company_subscription:
+        class: AppBundle\Association\CompanyMembership\SubscriptionManagement
+        autowire: true
+
+    app.paybox_factory:
+        class: AppBundle\Payment\PayboxFactory

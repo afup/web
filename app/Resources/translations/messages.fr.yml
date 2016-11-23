@@ -12,3 +12,30 @@
   Sinon, ignorez tout simplement cet email.<br />
   <br />
   L'équipe afup.
+'Address': 'Adresse'
+'Zip code': 'Code postal'
+'City': 'Ville'
+'Phone': 'Téléphone'
+'Password': 'Mot de passe'
+'Repeat Password': 'Répétez le mot de passe'
+'mail.invitationMembership.text': |
+  Bonjour,<br />
+  <p>Votre entreprise vient d’adhérer à l’AFUP, Association Française des Utilisateurs de PHP. La personne en charge du compte, %firstname% %lastname%, vous invite à bénéficier des avantages associés à cette inscription.<br />
+  Cette adhésion est valable un an : durant cette année, vous aurez accès aux différentes mailing-lists de l’association, ainsi qu’à un tarif préférentiel très avantageux aux deux cycles de conférences annuels de l’AFUP : le Forum PHP à Paris à l’automne et le PHP Tour dans une ville de province au printemps.</p>
+
+  <p>Pour <a href="%link%">valider votre adhésion</a>, prise en charge par votre entreprise, veuillez cliquer sur le lien ci-dessous, et compléter le formulaire avec les quelques informations nécessaires pour finaliser la procédure.</p>
+
+  <p><a href="%link%">%link%</a></p>
+
+  <p>Suivez l’AFUP sur <a href="https://twitter.com/afup">Twitter</a> (@afup) et Facebook.</p>
+
+  <p>Bienvenue dans la communauté des PHP lovers !</p>
+
+  <p>À bientôt,<br />
+  L’équipe AFUP</p>
+
+  <p><a href="http://afup.org">afup.org</a>
+'Username': 'Nom d''utilisateur'
+'Create my account': 'Créer mon compte'
+'Max members': 'Nombre de membres à rattacher'
+'saveMembership': 'Enregistrer mon adhésion'
