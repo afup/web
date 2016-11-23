@@ -222,4 +222,14 @@ class Talk implements NotifyPropertyInterface
         $this->skill = $skill;
         return $this;
     }
+
+    public function getSkillTranslationKey()
+    {
+        return 'skill.' . $this->skill;
+    }
+
+    public function getTypeTranslationKey()
+    {
+        return 'type.' . $this->type;
+    }
 }
