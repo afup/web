@@ -24,13 +24,13 @@ class Accueil
 
     function colonne_de_gauche() {
         $articles = new Articles($this->bdd);
-        $derniers_articles = $articles->chargerDerniersAjouts(5);
+        $derniers_articles = $articles->chargerDerniersAjouts(10);
 
         $colonne = '<div id="main" class="mod item left content w66 m50 t100">
                     <h1>Promouvoir le PHP auprès des professionnels</h1>';
 
-        $colonne .= '<blockquote>L\'AFUP a avant tout une vocation d\'information, et fournira les éléments clefs
-		     qui permettront de choisir PHP selon les véritables besoins et contraintes d\'un projet.</blockquote>
+        $colonne .= '<blockquote>Apéros, rendez-vous et cycle de conférences, l\'AFUP est au coeur de la communauté PHP depuis 2000.
+                    L\'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté</blockquote>
                      <p>L\'AFUP, Association Française des Utilisateurs de PHP est une association loi 1901,
 		     dont le principal but est de promouvoir le langage PHP auprès des professionnels et de participer à son développement.
              L\'AFUP a été créée pour répondre à un besoin croissant des entreprises,
