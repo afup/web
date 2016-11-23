@@ -28,10 +28,7 @@ class MemberShipController extends SiteBaseController
 
     public function companyAction(Request $request)
     {
-        $member = new CompanyMember();
-        $member->setInvitations([new CompanyMemberInvitation()]);
-        $subscribeForm = $this->createForm(CompanyMemberType::class, $member);
-
+        $subscribeForm = $this->createForm(CompanyMemberType::class);
         $subscribeForm->handleRequest($request);
 
         if ($subscribeForm->isSubmitted() && $subscribeForm->isValid()) {
