@@ -104,7 +104,7 @@ class MemberShipController extends SiteBaseController
         }
 
         $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
-            $invoiceNumber,
+            'F' . $invoiceNumber,
             (float)$invoice['montant'],
             $company->getEmail()
         );
