@@ -41,13 +41,18 @@ class MemberShipController extends SiteBaseController
              * @var $invitationRepository CompanyMemberInvitationRepository
              */
             $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
-            foreach($member->getInvitations() as $invitation) {
+
+            foreach($member->getInvitations() as $index => $invitation) {
                 $invitation
                     ->setSubmittedOn(new \DateTime())
                     ->setCompanyId($member->getId())
                     ->setToken(base64_encode(random_bytes(30)))
                     ->setStatus(CompanyMemberInvitation::STATUS_PENDING)
                 ;
+                if ($index === 0) {
+                    // By security, force first employee to be defined as a manager
+                    $invitation->setManager(true);
+                }
 
                 $invitationRepository->save($invitation);
 
