@@ -28,10 +28,7 @@ class MemberShipController extends SiteBaseController
 
     public function companyAction(Request $request)
     {
-        $member = new CompanyMember();
-        $member->setInvitations([new CompanyMemberInvitation()]);
-        $subscribeForm = $this->createForm(CompanyMemberType::class, $member);
-
+        $subscribeForm = $this->createForm(CompanyMemberType::class);
         $subscribeForm->handleRequest($request);
 
         if ($subscribeForm->isSubmitted() && $subscribeForm->isValid()) {
@@ -44,13 +41,18 @@ class MemberShipController extends SiteBaseController
              * @var $invitationRepository CompanyMemberInvitationRepository
              */
             $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
-            foreach($member->getInvitations() as $invitation) {
+
+            foreach($member->getInvitations() as $index => $invitation) {
                 $invitation
                     ->setSubmittedOn(new \DateTime())
                     ->setCompanyId($member->getId())
                     ->setToken(base64_encode(random_bytes(30)))
                     ->setStatus(CompanyMemberInvitation::STATUS_PENDING)
                 ;
+                if ($index === 0) {
+                    // By security, force first employee to be defined as a manager
+                    $invitation->setManager(true);
+                }
 
                 $invitationRepository->save($invitation);
 
@@ -107,7 +109,7 @@ class MemberShipController extends SiteBaseController
         }
 
         $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
-            $invoiceNumber,
+            'F' . $invoiceNumber,
             (float)$invoice['montant'],
             $company->getEmail()
         );

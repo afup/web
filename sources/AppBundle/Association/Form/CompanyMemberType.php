@@ -46,6 +46,7 @@ class CompanyMemberType extends AbstractType
                 // each entry in the array will be an "email" field
                 'entry_type'   => CompanyMemberInvitationType::class,
                 'allow_add' => true,
+                'required' => false
             ])
             ->add('save', SubmitType::class, ['label' => 'saveMembership'])
         ;
