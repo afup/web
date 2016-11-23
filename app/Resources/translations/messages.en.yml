@@ -3,7 +3,7 @@
 'Toutes les conférences à noter': 'All talks to rate'
 'Les nouvelles conférences à noter': 'New talks to rate'
 'Il n''y a plus aucune conférence à noter !': 'There is no more talks to rate !'
-'Les conférences vous sont présentées dans un ordre aléatoire à chaque affichage': 'Talks are displayed in a random order at every display'
+'Les conférences vous sont présentées dans un ordre pseudo-aléatoire consistant pour l''ensemble de votre session.': 'Talks are displayed in a pseudo-random order, consistant for your session.'
 'Les nouvelles conférences': 'New talks'
 'Toutes les conférences': 'All talks'
 'Fermeture du CFP:': 'CFP closure:'

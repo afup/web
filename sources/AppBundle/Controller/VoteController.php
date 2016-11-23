@@ -20,10 +20,11 @@ class VoteController extends EventBaseController
 
     /**
      * @param $eventSlug
+     * @param int $page
      * @param bool $all if true => show all talks to rate even if already rated by the current user
      * @return Response
      */
-    public function indexAction($eventSlug, $all = false)
+    public function indexAction($eventSlug, $page = 1, $all = false)
     {
         $event = $this->checkEventSlug($eventSlug);
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
@@ -37,9 +38,9 @@ class VoteController extends EventBaseController
 
         // Get a random list of unrated talks
         if ($all === false) {
-            $talks = $talkRepository->getNewTalksToRate($event, $this->getUser());
+            $talks = $talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->get('session')->getId()), $page);
         } else {
-            $talks = $talkRepository->getTalksNotRatedByUser($event, $this->getUser());
+            $talks = $talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->get('session')->getId()), $page);
         }
 
         $vote = new Vote();
@@ -65,6 +66,8 @@ class VoteController extends EventBaseController
             'event/vote/liste.html.twig',
             [
                 'numberOfTalks' => $talks->count(),
+                'route' => ($all === true ? 'vote_all_paginated':'vote_index_paginated'),
+                'page' => $page,
                 'talks' => $forms(),
                 'event' => $event,
                 'all' => $all

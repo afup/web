@@ -1015,3 +1015,31 @@ div.photo-container{
 .cfp--votes ul li{
     margin: 2em 0;
 }
+
+/**************************************
+* Pagination des votes
+***************************************/
+.event-pagination{
+    clear:both;
+    margin: 2em 0;
+}
+
+.event-pagination div{
+    display:inline-block;
+}
+
+.event-pagination div a{
+    background-color:#4c6eaf;
+    border: 1px #3d588b solid;
+    color: white;
+    text-decoration:none;
+    padding: 1.5em;
+}
+
+.event-pagination--prev{
+    float:left;
+}
+
+.event-pagination--next{
+    float:right;
+}
