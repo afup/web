@@ -18,10 +18,10 @@
             <div class="clear">&nbsp;</div>
             <div class="event-pagination">
                 {% if page > 1 %}
-                    <div class="event-pagination--prev"><a href="{{ url(route, {page: page-1, eventSlug: event.path}) }}"><< {{ 'Page précédente'|trans }}</a></div>
+                    <div class="event-pagination--prev"><a href="{{ url(route, {page: page-1, eventSlug: event.path}) }}">« {{ 'Page précédente'|trans }}</a></div>
                 {% endif %}
                 {% if numberOfTalks > 10 %}
-                    <div class="event-pagination--next"><a href="{{ url(route, {page: page+1, eventSlug: event.path}) }}">{{ 'Page suivante'|trans }} >></a></div>
+                    <div class="event-pagination--next"><a href="{{ url(route, {page: page+1, eventSlug: event.path}) }}">{{ 'Page suivante'|trans }} »</a></div>
                 {% endif %}
             </div>
 
