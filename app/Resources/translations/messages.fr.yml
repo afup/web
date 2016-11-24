@@ -39,3 +39,9 @@
 'Create my account': 'Créer mon compte'
 'Max members': 'Nombre de membres à rattacher'
 'saveMembership': 'Enregistrer mon adhésion'
+skill.1: "Junior"
+skill.2: "Medior"
+skill.3: "Senior"
+type.1: "40 mn"
+type.2: "20 mn"
+type.3: "Workshop"

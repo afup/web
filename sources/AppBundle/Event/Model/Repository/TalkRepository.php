@@ -58,7 +58,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getAllTalksAndRatingsForUser(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, id_forum, asvg.id, asvg.comment, asvg.vote
+            'SELECT sessions.session_id, titre, abstract, skill, genre, id_forum, asvg.id, asvg.comment, asvg.vote
             FROM afup_sessions sessions
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
@@ -84,7 +84,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getNewTalksToRate(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, id_forum
+            'SELECT sessions.session_id, titre, skill, genre, abstract, id_forum
             FROM afup_sessions sessions
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
