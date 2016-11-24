@@ -44,29 +44,44 @@ class TalkRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * Retrieve the list of talks to rate
+     * Retrieve the list of talks to rate.
+     * It retrieve $limit + 1 row. So if `count($results) <= $limit` there is no more result.
+     * Otherwise you should add a "next" item on your paginator
      *
      * @param Event $event
      * @param GithubUser $user
+     * @param int $randomSeed used to create a consistent random
+     * @param int $page starting from 1
      * @param int $limit
      * @return \CCMBenchmark\Ting\Repository\CollectionInterface
      */
-    public function getTalksNotRatedByUser(Event $event, GithubUser $user, $limit = 10)
+    public function getAllTalksAndRatingsForUser(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
         $query = $this->getPreparedQuery(
             'SELECT sessions.session_id, titre, abstract, id_forum, asvg.id, asvg.comment, asvg.vote
             FROM afup_sessions sessions
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
-            ORDER BY RAND()
-            LIMIT 0, 10
-            '
-        )->setParams(['event' => $event->getId(), 'user' => $user->getId()]);
+            ORDER BY RAND(:randomSeed)
+            LIMIT '. ((int)$page - 1)*$limit . ', '. ((int)$limit + 1)
+        )->setParams(['event' => $event->getId(), 'user' => $user->getId(), 'randomSeed' => $randomSeed]);
 
         return $query->query();
     }
 
-    public function getNewTalksToRate(Event $event, GithubUser $user, $limit = 10)
+    /**
+     * Retrieve all talks with ratings from current user if applicable
+     * It retrieve $limit + 1 row. So if `count($results) <= $limit` there is no more result.
+     * Otherwise you should add a "next" item on your paginator
+     *
+     * @param Event $event
+     * @param GithubUser $user
+     * @param int $randomSeed used to create a consistent random
+     * @param int $page starting from 1
+     * @param int $limit
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getNewTalksToRate(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
         $query = $this->getPreparedQuery(
             'SELECT sessions.session_id, titre, abstract, id_forum
@@ -74,10 +89,9 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
             AND asvg.id IS NULL
-            ORDER BY RAND()
-            LIMIT 0, 10
-            '
-        )->setParams(['event' => $event->getId(), 'user' => $user->getId()]);
+            ORDER BY RAND(:randomSeed)
+            LIMIT '. ((int)$page - 1)*$limit . ', '. ((int)$limit + 1)
+        )->setParams(['event' => $event->getId(), 'user' => $user->getId(), 'randomSeed' => $randomSeed]);
 
         return $query->query();
     }
