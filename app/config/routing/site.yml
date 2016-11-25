@@ -26,3 +26,7 @@ company_invitation:
   requirements:
     invitationId: '\d+'
     token: '.+'
+
+offices:
+  path: /antennes
+  defaults: {_controller: AppBundle:Static:offices}
