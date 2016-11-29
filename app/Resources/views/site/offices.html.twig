@@ -29,7 +29,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.0/raphael-min.js"></script>
     <script src="{{ asset('/js/jQuery-Mapael-2.0.0/js/jquery.mapael.min.js') }}"></script>
-    <script src="{{ asset('/js/jQuery-Mapael-2.0.0/js/maps/france_departments.min.js') }}"></script>
+    <script src="{{ asset('/js/jQuery-Mapael-2.0.0/js/maps/france_and_luxembourg.min.js') }}"></script>
     <script>
         $(".map-container").mapael({
             map : {
@@ -178,6 +178,14 @@
                     },
                     tooltip: {content: "Antenne Bordeaux"},
                     href: "http://bordeaux.afup.org/"
+                },
+                "country-lux": {
+                    attrs: {
+                        fill: "#2b3e74",
+                        stroke: "#1ebdff"
+                    },
+                    tooltip: {content: "Antenne Luxembourg"},
+                    href: "https://twitter.com/AFUP_Luxembourg"
                 }
             }
         });
