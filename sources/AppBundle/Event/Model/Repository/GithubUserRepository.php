@@ -4,6 +4,7 @@
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\GithubUser;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -64,6 +65,12 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
                 'columnName' => 'avatar_url',
                 'fieldName' => 'avatarUrl',
                 'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'afup_crew',
+                'fieldName' => 'afupCrew',
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
         ;
 

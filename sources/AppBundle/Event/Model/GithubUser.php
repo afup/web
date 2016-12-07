@@ -47,6 +47,11 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
     private $avatarUrl;
 
     /**
+     * @var bool
+     */
+    private $afupCrew = false;
+
+    /**
      * @return int
      */
     public function getId()
@@ -180,11 +185,33 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
     }
 
     /**
+     * @return boolean
+     */
+    public function getAfupCrew()
+    {
+        return $this->afupCrew;
+    }
+
+    /**
+     * @param boolean $afupCrew
+     * @return GithubUser
+     */
+    public function setAfupCrew($afupCrew)
+    {
+        $this->afupCrew = $afupCrew;
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getRoles()
     {
-        return ['ROLE_GITHUB'];
+        $roles = ['ROLE_GITHUB'];
+        if ($this->afupCrew === true) {
+            $roles[] = 'ROLE_AFUP_CREW';
+        }
+        return $roles;
     }
 
     /**
