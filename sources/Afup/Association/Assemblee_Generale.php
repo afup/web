@@ -59,7 +59,7 @@ class Assemblee_Generale
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirPresents($timestamp)
+    function obtenirPresents($timestamp, $options = array())
     {
         $requete = 'SELECT';
         $requete .= '  afup_personnes_physiques.id, ';
@@ -71,6 +71,11 @@ class Assemblee_Generale
         $requete .= '  afup_presences_assemblee_generale.date = \'' . $timestamp . '\' ';
         $requete .= 'AND afup_presences_assemblee_generale.presence = \'1\' ';
         $requete .= 'AND afup_personnes_physiques.id = afup_presences_assemblee_generale.id_personne_physique ';
+
+        if (isset($options['exclure_login'])) {
+            $requete .= "AND afup_personnes_physiques.login <> " . $this->_bdd->echapper($options['exclure_login']) . ' ';
+        }
+
         $requete .= 'GROUP BY';
         $requete .= '  afup_personnes_physiques.id ';
 
