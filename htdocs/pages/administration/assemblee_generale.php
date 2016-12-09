@@ -73,7 +73,7 @@ if ($action == 'lister' || $action== 'listing' ) {
 
     $formulaire->addElement('header'  , ''     , 'Message pour la convocation du ' . date('d/m/Y', $timestamp));
     $formulaire->addElement('text'    , 'sujet', 'Sujet');
-    $formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 42, 'rows' => 10));
+    $formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 42, 'rows' => 10, 'class' => 'tinymce'));
 
     $formulaire->addElement('header'  , 'boutons'            , '');
     $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));

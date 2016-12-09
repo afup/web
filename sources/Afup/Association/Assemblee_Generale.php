@@ -2,6 +2,8 @@
 
 // Voir la classe Afup\Site\Association\Assemblee_Generale
 namespace Afup\Site\Association;
+use Afup\Site\Utils\Mail;
+
 define('AFUP_ASSEMBLEE_GENERALE_PRESENCE_INDETERMINE', 0);
 define('AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI', 1);
 define('AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON', 2);
@@ -246,7 +248,7 @@ class Assemblee_Generale
 
     function preparerSujetDuMessage($timestamp)
     {
-        $sujet = "AFUP : convocation à l\'assemblée générale du " . date('d/m/Y', $timestamp);
+        $sujet = "AFUP : convocation à l'assemblée générale du " . date('d/m/Y', $timestamp);
 
         return $sujet;
     }
@@ -271,27 +273,23 @@ class Assemblee_Generale
         $personnes_physiques = $this->_bdd->obtenirTous($requete);
 
         $succes = false;
-        require_once 'phpmailer/class.phpmailer.php';
-        require_once 'phpmailer/class.smtp.php';
         foreach ($personnes_physiques as $personne_physique) {
             $hash = md5($personne_physique['id'] . '_' . $personne_physique['email'] . '_' . $personne_physique['login']);
             $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash=' . $hash;
 
-            $mail = new \PHPMailer;
-            if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
-                $mail->IsSMTP();
-                $mail->Host = $GLOBALS['conf']->obtenir('mails|serveur_smtp');
-                $mail->SMTPAuth = false;
-            }
-            $mail->AddAddress($personne_physique['email'], $personne_physique['nom']);
-            $mail->From = $GLOBALS['conf']->obtenir('mails|email_expediteur');
-            $mail->FromName = $GLOBALS['conf']->obtenir('mails|nom_expediteur');
-            $mail->BCC = $GLOBALS['conf']->obtenir('mails|email_expediteur');
-            $mail->Subject = $sujet;
-            $mail->Body = $corps . $link;
+            $mail = new Mail();
 
-            $mail->Send();
-            $succes += 1;
+            if ($mail->send(
+                'message-transactionnel-afup-org',
+                ['email' => $personne_physique['email'], 'name' => $personne_physique['nom']],
+                [
+                    'content' => $corps . '<p><a href="' . $link. '">' . $link . '</a></p>',
+                    'title' => 'Assemblée Générale'
+                ],
+                ['subject' => $sujet]
+            )) {
+                $succes += 1;
+            }
         }
 
         return $succes;
