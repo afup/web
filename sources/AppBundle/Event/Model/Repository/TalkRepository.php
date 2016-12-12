@@ -156,6 +156,12 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'bool',
                 'serializer' => Boolean::class
             ])
+            ->addField([
+                'columnName' => 'needs_mentoring',
+                'fieldName' => 'needsMentoring',
+                'type' => 'bool',
+                'serializer' => Boolean::class
+            ])
         ;
 
         return $metadata;

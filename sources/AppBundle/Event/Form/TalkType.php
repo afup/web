@@ -6,6 +6,7 @@ namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\Talk;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -40,6 +41,14 @@ class TalkType extends AbstractType
                         'Avancé' => Talk::SKILL_SENIOR,
                         'N/A' => Talk::SKILL_NA
                     ]
+                ]
+            )
+            ->add(
+                'needsMentoring',
+                CheckboxType::class,
+                [
+                    'label' => "Je souhaite profiter du programme d'accompagnement des jeunes speakers",
+                    'required' => false
                 ]
             )
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
