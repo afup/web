@@ -68,6 +68,11 @@ class Talk implements NotifyPropertyInterface
     private $skill = self::SKILL_NA;
 
     /**
+     * @var bool
+     */
+    private $needsMentoring = false;
+
+    /**
      * @return int
      */
     public function getId()
@@ -231,5 +236,26 @@ class Talk implements NotifyPropertyInterface
     public function getTypeTranslationKey()
     {
         return 'type.' . $this->type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getNeedsMentoring()
+    {
+        return $this->needsMentoring;
+    }
+
+    /**
+     * @param bool $needsMentoring
+     *
+     * @return $this
+     */
+    public function setNeedsMentoring($needsMentoring)
+    {
+        $this->propertyChanged('needsMentoring', $this->needsMentoring, $needsMentoring);
+        $this->needsMentoring = $needsMentoring;
+
+        return $this;
     }
 }

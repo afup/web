@@ -47,7 +47,8 @@ if ($timestamp > strtotime("-1 day", time())) {
         $formulaire->addElement('radio'   , 'presence' , 'Je ne sais pas encore' , '', AFUP_ASSEMBLEE_GENERALE_PRESENCE_INDETERMINE);
 
         $formulaire->addElement('header'  , ''                         , 'Je donne mon pouvoir à');
-        $formulaire->addElement('select'  , 'id_personne_avec_pouvoir' , 'Nom' , array(null => '' ) + $assemblee_generale->obtenirPresents($timestamp));
+
+        $formulaire->addElement('select'  , 'id_personne_avec_pouvoir' , 'Nom' , array(null => '' ) + $assemblee_generale->obtenirPresents($timestamp, ['exclure_login' => $_SESSION['afup_login']]));
 
         $formulaire->addElement('header'  , 'boutons'   , '');
         $formulaire->addElement('hidden'  , 'date'      , $timestamp);

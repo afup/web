@@ -49,6 +49,25 @@ WHERE s.id_forum = :event');
         return $query->query($this->getCollection($hydrator));
     }
 
+    public function getVotesByTalkWithUser($talkId)
+    {
+        $query = $this->getPreparedQuery('
+            SELECT asvg.id, asvg.session_id, asvg.submitted_on, asvg.comment, asvg.user, asvg.vote, aug.afup_crew
+            FROM afup_sessions_vote_github asvg
+            LEFT JOIN afup_user_github aug ON aug.id = asvg.user
+            WHERE asvg.session_id = :talkId
+            ORDER BY asvg.submitted_on DESC
+        ');
+
+        $query->setParams(['talkId' => (int)$talkId]);
+
+        $hydrator = new HydratorSingleObject();
+        $hydrator
+            ->mapObjectTo('aug', 'asvg', 'setGithubUser')
+        ;
+        return $query->query($this->getCollection($hydrator));
+    }
+
     /**
      * @inheritDoc
      */

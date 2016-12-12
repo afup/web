@@ -1015,6 +1015,13 @@ div.photo-container{
 .cfp--votes ul li{
     margin: 2em 0;
 }
+.cfp--votes .cfp--vote-afup{
+    background-color:#4c6eaf;
+    color:white;
+    border-radius:2px;
+    display:inline-block;
+    padding:0.5em;
+}
 
 /**************************************
 * Pagination des votes
