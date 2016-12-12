@@ -181,7 +181,7 @@ class CFPController extends EventBaseController
                 'invitations' => $invitations,
                 'speakers' => $speakers,
                 'invitationForm' => $invitationForm->createView(),
-                'votes' => $this->get('ting')->get(VoteRepository::class)->getBy(['sessionId' => $talkId])
+                'votes' => $this->get('ting')->get(VoteRepository::class)->getVotesByTalkWithUser($talkId)
             ]
         );
     }
