@@ -39,7 +39,7 @@ class PhotoStorage
         }
 
         // delete all formats
-        if ($speaker->getId() === null) {
+        if ($speaker->getId() !== null) {
             foreach (self::FORMAT as $format => $sizes) {
                 $files = glob($this->basePath . '/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getId() . '.*');
                 foreach ($files as $file) {
