@@ -101,6 +101,8 @@ class PhotoStorage
         // This part is just our old script. We should do better
         if ($ext === '.png') {
             $img = imagecreatefrompng($originalPath);
+            imagealphablending($img, true);
+            imagesavealpha($img, true);
         } else {
             $img = imagecreatefromjpeg($originalPath);
         }
@@ -137,6 +139,10 @@ class PhotoStorage
             $img = imagecreatetruecolor($width, $height);
             imagecopyresampled($img, $oldImg, 0, 0, 0, 0, $width, $height, $originalWidth, $originalHeight);
         }
-        imagejpeg($img, $formatPath, 98);
+        if ($ext === '.png') {
+            imagepng($img, $formatPath, 9);
+        } else {
+            imagejpeg($img, $formatPath, 98);
+        }
     }
 }

@@ -26,6 +26,11 @@ $kernel = new \Afup\Site\Utils\SymfonyKernel();
 $container = $kernel->getKernel()->getContainer();
 $storage = $container->get('app.photo_storage');
 
+/**
+ * @var $speakerRepository \AppBundle\Event\Model\Repository\SpeakerRepository
+ */
+$speakerRepository = $container->get('ting')->get(\AppBundle\Event\Model\Repository\SpeakerRepository::class);
+$speaker = $speakerRepository->get($_GET['id']);
 
 
 $forum = new Forum($bdd);
@@ -245,19 +250,24 @@ elseif ($action == 'lister') {
         $formulaire->addElement('file', 'photo', 'Photo (90x120)'     );
     }
     if ($action == 'modifier') {
-        if (is_file($imagePath)) {
-            $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg" /><br />');
-        }
 
-        $chemin = realpath('../../templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg');
-        if (file_exists($chemin)) {
-            if ((function_exists('getimagesize'))) {
-                $info = getimagesize($chemin);
-                $formulaire->addElement('static'  , 'html'                     , '', 'Taille actuelle : ' . $info[3]);
-                $formulaire->addElement('static'  , 'html'                     , '', 'Type MIME : ' . $info['mime']);
-            } else {
-                $formulaire->addElement('static'  , 'html'                     , '', 'L\'extension GD n\'est pas présente sur ce serveur');
+        if (intval($valeurs['id_forum']) < ID_FORUM_PHOTO_STORAGE) {
+            if (is_file($imagePath)) {
+                $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg" /><br />');
             }
+            $chemin = realpath('../../templates/'.$rs['path'].'/images/intervenants/' . $_GET['id'] . '.jpg');
+            if (file_exists($chemin)) {
+                if ((function_exists('getimagesize'))) {
+                    $info = getimagesize($chemin);
+                    $formulaire->addElement('static'  , 'html'                     , '', 'Taille actuelle : ' . $info[3]);
+                    $formulaire->addElement('static'  , 'html'                     , '', 'Type MIME : ' . $info['mime']);
+                } else {
+                    $formulaire->addElement('static'  , 'html'                     , '', 'L\'extension GD n\'est pas présente sur ce serveur');
+                }
+            }
+        } else {
+            $url = $storage->getUrl($speaker, \AppBundle\CFP\PhotoStorage::DIR_THUMBS);
+            $formulaire->addElement('static', 'html' , '', '<img src="'.$url.'" /><br />');
         }
     }
 
@@ -305,7 +315,7 @@ elseif ($action == 'lister') {
             $file = $formulaire->getElement('photo');
             $data = $file->getValue();
             if ($data['name']) {
-                if (false && intval($valeurs['id_forum']) < ID_FORUM_PHOTO_STORAGE) {
+                if (intval($valeurs['id_forum']) < ID_FORUM_PHOTO_STORAGE) {
                     // Legacy photo storage
 
                     // Transformation en 90x120 JPG pour simplifier
@@ -328,11 +338,6 @@ elseif ($action == 'lister') {
                     // Mock an UploadedFile
                     $file = new \Symfony\Component\HttpFoundation\File\UploadedFile($data['tmp_name'], $data['name'], $data['type'], $data['size'], $data['error']);
 
-                    /**
-                     * @var $speakerRepository \AppBundle\Event\Model\Repository\SpeakerRepository
-                     */
-                    $speakerRepository = $container->get('ting')->get(\AppBundle\Event\Model\Repository\SpeakerRepository::class);
-                    $speaker = $speakerRepository->get($_GET['id']);
                     $fileName = $storage->store($file, $speaker);
                     $speaker->setPhoto($fileName);
                     $speakerRepository->save($speaker);
