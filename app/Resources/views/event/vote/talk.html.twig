@@ -1,6 +1,9 @@
 <div class="event--vote">
     <div class="event--vote-details">
-        <h3>{{ talk.talk.getTitle }} ({{ talk.talk.skillTranslationKey|trans }} - {{ talk.talk.typeTranslationKey|trans }})</h3>
+        <h3>{{ talk.talk.getTitle }}</h3>
+        <div class="event--vote-meta">
+            {{ talk.talk.skillTranslationKey|trans }} - {{ talk.talk.typeTranslationKey|trans }}
+        </div>
         <div>{{ talk.talk.getAbstract|raw }}</div>
     </div>
     <div class="event--vote-form">
