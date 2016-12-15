@@ -9,7 +9,8 @@
     "sensio/distribution-bundle": "^5.0",
     "ccmbenchmark/ting_bundle": "^3.0",
     "knpuniversity/oauth2-client-bundle": "^1.4",
-    "twig/extensions": "^1.4"
+    "twig/extensions": "^1.4",
+    "jms/serializer-bundle": "^1.1"
   },
   "scripts": {
     "post-install-cmd": [

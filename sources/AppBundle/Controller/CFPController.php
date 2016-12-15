@@ -284,6 +284,12 @@ class CFPController extends EventBaseController
                 $talk->setSubmittedOn(new \DateTime());
                 $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
 
+                if ($talk->getId() === null) {
+                    $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function() use ($talk) {
+                        $this->get('app.slack_notifier')->notifyTalk($talk);
+                    });
+                }
+
                 $talkRepository->save($talk);
                 $this->get('ting')->get(TalkToSpeakersRepository::class)->addSpeakerToTalk($talk, $this->get('app.speaker_factory')->getSpeaker($event));
 

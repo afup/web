@@ -13,6 +13,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class VoteController extends EventBaseController
 {
@@ -130,7 +131,8 @@ class VoteController extends EventBaseController
          * @var $talkRepository \AppBundle\Event\Model\Repository\TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        if ($talkRepository->getOneBy(['id' => $talkId]) === null) {
+        $talk = $talkRepository->getOneBy(['id' => $talkId]);
+        if ($talk === null) {
             return new JsonResponse(['errors' => ['Talk does not exists']], Response::HTTP_BAD_REQUEST);
         }
 
@@ -145,6 +147,10 @@ class VoteController extends EventBaseController
         $vote->setSubmittedOn(new \DateTime());
 
         try {
+            $vote->setTalk($talk);
+            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function() use ($vote) {
+                $this->get('app.slack_notifier')->notifyVote($vote);
+            });
             $voteRepository->upsert($vote);
         } catch (Ting\Exception $e) {
             return new JsonResponse(['errors' => [$e->getMessage()]], Response::HTTP_INTERNAL_SERVER_ERROR);
