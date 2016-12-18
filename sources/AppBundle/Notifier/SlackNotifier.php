@@ -12,13 +12,27 @@ use JMS\Serializer\Serializer;
 
 class SlackNotifier
 {
+    /**
+     * @var string
+     */
     private $postUrl;
 
+    /**
+     * @var MessageFactory
+     */
     private $messageFactory;
 
+    /**
+     * @var Serializer
+     */
     private $serializer;
 
-
+    /**
+     * SlackNotifier constructor.
+     * @param $postUrl
+     * @param MessageFactory $messageFactory
+     * @param Serializer $serializer
+     */
     public function __construct($postUrl, MessageFactory $messageFactory, Serializer $serializer)
     {
         $this->postUrl = $postUrl;
@@ -26,18 +40,34 @@ class SlackNotifier
         $this->serializer = $serializer;
     }
 
+    /**
+     * Send a message to slack for a new vote
+     *
+     * @param Vote $vote
+     * @return bool
+     */
     public function notifyVote(Vote $vote)
     {
         $message = $this->messageFactory->createMessageForVote($vote);
         return $this->sendMessage($message);
     }
 
+    /**
+     * Send a message to slack for a new talk
+     *
+     * @param Talk $talk
+     * @return bool
+     */
     public function notifyTalk(Talk $talk)
     {
         $message = $this->messageFactory->createMessageForTalk($talk);
         return $this->sendMessage($message);
     }
 
+    /**
+     * @param Message $message
+     * @return bool
+     */
     private function sendMessage(Message $message)
     {
         $ch = curl_init($this->postUrl);
