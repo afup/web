@@ -19,11 +19,6 @@ class Transformer
      */
     public function transform(Planning $planning, Talk $talk, Event $event, \Traversable $speakers)
     {
-        $spakersLabels = [];
-        foreach ($speakers as $speaker) {
-            $spakersLabels[] = $speaker->getLabel();
-        }
-
         $item = [
             'planning_id' => $planning->getId(),
             'talk_id' => $talk->getId(),
@@ -32,12 +27,24 @@ class Transformer
                 'id' => $event->getId(),
                 'title' => $event->getTitle(),
             ],
-            'speakers_label' => implode(' et ', $spakersLabels),
             'has_video' => $talk->hasYoutubeId(),
             'has_slides' => $talk->hasSlidesUrl(),
             'has_joindin' => $talk->hasJoindinId(),
             'has_blog_post' => $talk->hasBlogPostUrl(),
         ];
+
+        $spakersLabels = [];
+        foreach ($speakers as $speaker) {
+            $spakersLabels[] = $speaker->getLabel();
+            $item['speakers'][] = [
+                'id' => $speaker->getId(),
+                'first_name' => $speaker->getFirstname(),
+                'last_name' => $speaker->getLastname(),
+                'label' => $speaker->getLabel(),
+            ];
+        }
+
+        $item['speakers_label'] = implode(' et ', $spakersLabels);
 
         if (null !== ($youtubeUrl = $talk->getYoutubeUrl())) {
             $item['video_url'] = $youtubeUrl;
@@ -53,15 +60,6 @@ class Transformer
 
         if (null !== ($blogPostUrl = $talk->getBlogPostUrl())) {
             $item['blog_post_url'] = $blogPostUrl;
-        }
-
-        foreach ($speakers as $speaker) {
-            $item['speakers'][] = [
-                'id' => $speaker->getId(),
-                'first_name' => $speaker->getFirstname(),
-                'last_name' => $speaker->getLastname(),
-                'label' => $speaker->getLabel(),
-            ];
         }
 
         return $item;
