@@ -33,9 +33,9 @@ class Transformer
             'has_blog_post' => $talk->hasBlogPostUrl(),
         ];
 
-        $spakersLabels = [];
+        $speakersLabels = [];
         foreach ($speakers as $speaker) {
-            $spakersLabels[] = $speaker->getLabel();
+            $speakersLabels[] = $speaker->getLabel();
             $item['speakers'][] = [
                 'id' => $speaker->getId(),
                 'first_name' => $speaker->getFirstname(),
@@ -44,7 +44,7 @@ class Transformer
             ];
         }
 
-        $item['speakers_label'] = implode(' et ', $spakersLabels);
+        $item['speakers_label'] = implode(' et ', $speakersLabels);
 
         if (null !== ($youtubeUrl = $talk->getYoutubeUrl())) {
             $item['video_url'] = $youtubeUrl;
