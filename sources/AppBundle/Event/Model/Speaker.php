@@ -201,6 +201,14 @@ class Speaker implements NotifyPropertyInterface
     /**
      * @return string
      */
+    public function getLabel()
+    {
+        return $this->getFirstname() . " " . $this->getLastname();
+    }
+
+    /**
+     * @return string
+     */
     public function getEmail()
     {
         return $this->email;

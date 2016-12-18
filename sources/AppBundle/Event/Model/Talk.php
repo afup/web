@@ -88,6 +88,11 @@ class Talk implements NotifyPropertyInterface
     private $blogPostUrl;
 
     /**
+     * @var string|null
+     */
+    private $joindinId;
+
+    /**
      * @return int
      */
     public function getId()
@@ -296,6 +301,26 @@ class Talk implements NotifyPropertyInterface
     }
 
     /**
+     * @return null|string
+     */
+    public function hasYoutubeId()
+    {
+        return null !== $this->youTubeId;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getYoutubeUrl()
+    {
+        if (!$this->hasYoutubeId()) {
+            return null;
+        }
+
+        return 'https://www.youtube.com/watch?v=' . $this->getYoutubeId();
+    }
+
+    /**
      * @return int
      */
     public function getSlidesUrl()
@@ -317,10 +342,63 @@ class Talk implements NotifyPropertyInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasSlidesUrl()
+    {
+        return null !== $this->slidesUrl;
+    }
+
+    /**
+     * @return int
+     */
+    public function getJoindinId()
+    {
+        return $this->joindinId;
+    }
+
+    /**
+     * @param int $joindInId
+     *
+     * @return Talk
+     */
+    public function setJoindinId($joindInId)
+    {
+        $this->propertyChanged('joindinId', $this->joindinId, $joindInId);
+        $this->joindinId = $joindInId;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasJoindinId()
+    {
+        return null !== $this->joindinId;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getJoindinUrl()
+    {
+        if (!$this->hasJoindinId()) {
+            return null;
+        }
+
+        return 'https://legacy.joind.in/talk/view/' . $this->getJoindinId();
+    }
+
+    /**
      * @return int
      */
     public function getBlogPostUrl()
     {
+        if (0 === strlen($this->blogPostUrl)) {
+            return null;
+        }
+
         return $this->blogPostUrl;
     }
 
@@ -335,5 +413,13 @@ class Talk implements NotifyPropertyInterface
         $this->blogPostUrl = $blogPostUrl;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasBlogPostUrl()
+    {
+        return null !== $this->getBlogPostUrl();
     }
 }

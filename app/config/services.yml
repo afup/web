@@ -83,3 +83,7 @@ services:
 
     app.paybox_factory:
         class: AppBundle\Payment\PayboxFactory
+
+    app.algolia_client:
+        class: AlgoliaSearch\Client
+        arguments: [%algolia_app_id%, %algolia_backend_api_key%]

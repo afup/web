@@ -1,0 +1,56 @@
+<?php
+
+namespace AppBundle\Event\Model\Repository;
+
+use AppBundle\Event\Model\Planning;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\Metadata;
+use CCMBenchmark\Ting\Repository\MetadataInitializer;
+use CCMBenchmark\Ting\Repository\Repository;
+use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
+
+class PlanningRepository extends Repository implements MetadataInitializer
+{
+    /**
+     * @param SerializerFactoryInterface $serializerFactory
+     * @param array $options
+     * @return Metadata
+     */
+    public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
+    {
+        $metadata = new Metadata($serializerFactory);
+        $metadata->setEntity(Planning::class);
+        $metadata->setConnectionName('main');
+        $metadata->setDatabase($options['database']);
+        $metadata->setTable('afup_forum_planning');
+
+        $metadata
+            ->addField([
+                'columnName' => 'id',
+                'fieldName' => 'id',
+                'primary'       => true,
+                'autoincrement' => true,
+                'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'id_session',
+                'fieldName' => 'talkId',
+                'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'id_forum',
+                'fieldName' => 'eventId',
+                'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'keynote',
+                'fieldName' => 'isKeynote',
+                'type' => 'bool',
+                'serializer' => Boolean::class
+            ])
+        ;
+
+        return $metadata;
+    }
+
+}

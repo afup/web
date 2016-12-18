@@ -1,0 +1,69 @@
+<?php
+
+namespace AppBundle\Indexation\Talks;
+
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Planning;
+use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Model\Talk;
+
+class Transformer
+{
+    /**
+     * @param Planning $planning
+     * @param Talk $talk
+     * @param Event $event
+     * @param Speaker[]|\Traversable $speakers
+     *
+     * @return array
+     */
+    public function transform(Planning $planning, Talk $talk, Event $event, \Traversable $speakers)
+    {
+        $spakersLabels = [];
+        foreach ($speakers as $speaker) {
+            $spakersLabels[] = $speaker->getLabel();
+        }
+
+        $item = [
+            'planning_id' => $planning->getId(),
+            'talk_id' => $talk->getId(),
+            'title' => $talk->getTitle(),
+            'event' => [
+                'id' => $event->getId(),
+                'title' => $event->getTitle(),
+            ],
+            'speakers_label' => implode(' et ', $spakersLabels),
+            'has_video' => $talk->hasYoutubeId(),
+            'has_slides' => $talk->hasSlidesUrl(),
+            'has_joindin' => $talk->hasJoindinId(),
+            'has_blog_post' => $talk->hasBlogPostUrl(),
+        ];
+
+        if (null !== ($youtubeUrl = $talk->getYoutubeUrl())) {
+            $item['video_url'] = $youtubeUrl;
+        }
+
+        if (null !== ($slidesUrl = $talk->getSlidesUrl())) {
+            $item['slides_url'] = $slidesUrl;
+        }
+
+        if (null !== ($joindinUrl = $talk->getJoindinUrl())) {
+            $item['joindin_url'] = $joindinUrl;
+        }
+
+        if (null !== ($blogPostUrl = $talk->getBlogPostUrl())) {
+            $item['blog_post_url'] = $blogPostUrl;
+        }
+
+        foreach ($speakers as $speaker) {
+            $item['speakers'][] = [
+                'id' => $speaker->getId(),
+                'first_name' => $speaker->getFirstname(),
+                'last_name' => $speaker->getLastname(),
+                'label' => $speaker->getLabel(),
+            ];
+        }
+
+        return $item;
+    }
+}
