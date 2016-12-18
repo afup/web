@@ -1,0 +1,230 @@
+{% extends ':site:base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .talk-list-button {
+            background-color: #50a0dd;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .talk-list-refinement-count-badge {
+            background-color: #999;
+            font-size: 0.7em;
+            padding: 1px 3px;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .talk-list-event-label-badge {
+            background-color: #999;
+            font-size: 0.5em;
+            padding: 1px 3px;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .conf-title {
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        #refinements-container {
+            width:30%;
+            float:left;
+        }
+
+        #refinement-event, #refinement-speaker {
+            margin: 15px 0;
+        }
+
+        #hits-container {
+            width:70%;
+            float: left;
+        }
+
+        #pagination-container {
+            margin: 55px auto;
+            width:100%;
+            text-align: center;
+        }
+
+        .ais-hits--item {
+            border-bottom: 1px solid #50a0dd;
+            padding: 15px;
+        }
+
+        .ais-refinement-list--item, .ais-toggle--item {
+            cursor: pointer;
+            padding: 0 0 0 15px;
+        }
+
+        .ais-refinement-list--header {
+            padding: 10px 0 0 0;
+            margin: 5px;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+    <script>
+        var search = instantsearch({
+            appId: '{{ algolia_app_id }}',
+            apiKey: '{{ algolia_api_key }}',
+            indexName: 'afup_talks',
+            urlSync: {}
+        });
+
+        search.addWidget(
+            instantsearch.widgets.searchBox({
+                container: '#search-box',
+                placeholder: 'Rechercher une conférence...',
+                poweredBy: true
+
+            })
+        );
+
+        search.addWidget(
+            instantsearch.widgets.hits({
+                hitsPerPage: 7,
+                container: '#hits-container',
+                templates: {
+                    empty: "Pas de résultat",
+                    item: function(data) {
+                        var content = '<div class="conf-title">' + data.title + ' ' + '<span class="talk-list-event-label-badge">' + data.event.title + '</span></div>'
+                            + ' <i>' + data.speakers_label + '</i>'
+                            + '<div style="text-align:right">'
+                        ;
+
+                        if (typeof data.video_url !== 'undefined') {
+                            content += '<a href="' + data.video_url + '" class="talk-list-button" target="video"><i class="fa fa-youtube-play"></i> Vidéo</a>';
+                        }
+
+                        if (typeof data.slides_url !== 'undefined') {
+                            content += '<a href="' + data.slides_url + '" class="talk-list-button" target="slides"><i class="fa fa-slideshare"></i> Slides</a>';
+                        }
+
+                        if (typeof data.blog_post_url !== 'undefined') {
+                            content += '<a href="' + data.blog_post_url + '" class="talk-list-button" target="blog-post"><i class="fa fa-rss"></i> Article</a>';
+                        }
+
+                        if (typeof data.joindin_url !== 'undefined') {
+                            content += '<a href="' + data.joindin_url + '" class="talk-list-button" target="joindin"><i class="fa fa-comments"></i> Fiche joinin</a>';
+                        }
+
+                        content += '</div>';
+                        return content;
+                    }
+                }
+            })
+        );
+
+
+        var refienmentItemTemplate = function(data) {
+            var content = "";
+            content += '<input type="checkbox" ';
+            if (data.isRefined) {
+                content += ' checked="checked" ';
+            }
+            content += " />";
+
+            content += data.name;
+
+            if (data.count) {
+                content += ' <span class="talk-list-refinement-count-badge">' + data.count + "</span>";
+            }
+
+            return content;
+        };
+
+        search.addWidget(
+            instantsearch.widgets.toggle({
+                container: '#refinement-has-video',
+                attributeName: 'has_video',
+                label: 'Avec vidéo',
+                values: {
+                    on: true
+                },
+                autoHideContainer: false,
+                templates: {
+                    item: refienmentItemTemplate
+                }
+            })
+        );
+
+        search.addWidget(
+            instantsearch.widgets.toggle({
+                container: '#refinement-has-slides',
+                attributeName: 'has_slides',
+                label: 'Avec slides',
+                values: {
+                    on: true
+                },
+                autoHideContainer: false,
+                templates: {
+                    item: refienmentItemTemplate
+                }
+            })
+        );
+
+        search.addWidget(
+            instantsearch.widgets.refinementList({
+                container: '#refinement-event',
+                attributeName: 'event.title',
+                templates: {
+                    header: "Événement",
+                    item: refienmentItemTemplate
+                }
+            })
+        );
+
+        search.addWidget(
+            instantsearch.widgets.refinementList({
+                container: '#refinement-speaker',
+                attributeName: 'speakers.label',
+                templates: {
+                    header: "Conférencier",
+                    item: refienmentItemTemplate
+                }
+            })
+        );
+
+        search.addWidget(
+            instantsearch.widgets.pagination({
+                container: '#pagination'
+            })
+        );
+        search.start();
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="mw1400p center" id="container">
+        <div class="line" id="main">
+            <input type="text" id="search-box" />
+            <div>
+                <div id="refinements-container">
+                    <div id="refinement-has-video"></div>
+                    <div id="refinement-has-slides"></div>
+                    <div id="refinement-event"></div>
+                    <div id="refinement-speaker"></div>
+                </div>
+                <div id="hits-container"></div>
+            </div>
+
+            <div id="pagination-container">
+                <div id="pagination"></div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

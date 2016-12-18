@@ -13,3 +13,7 @@ admin:
 association:
     resource: "routing/site.yml"
     prefix: /association
+
+talks:
+    resource: "routing/talks.yml"
+    prefix: /talks
