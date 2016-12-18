@@ -73,6 +73,21 @@ class Talk implements NotifyPropertyInterface
     private $needsMentoring = false;
 
     /**
+     * @var string|null
+     */
+    private $youTubeId;
+
+    /**
+     * @var string|null
+     */
+    private $slidesUrl;
+
+    /**
+     * @var string|null
+     */
+    private $blogPostUrl;
+
+    /**
      * @return int
      */
     public function getId()
@@ -255,6 +270,69 @@ class Talk implements NotifyPropertyInterface
     {
         $this->propertyChanged('needsMentoring', $this->needsMentoring, $needsMentoring);
         $this->needsMentoring = $needsMentoring;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYoutubeId()
+    {
+        return $this->youTubeId;
+    }
+
+    /**
+     * @param int $youtubeId
+     *
+     * @return Talk
+     */
+    public function setYoutubeId($youtubeId)
+    {
+        $this->propertyChanged('youtubeId', $this->youTubeId, $youtubeId);
+        $this->youTubeId = $youtubeId;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSlidesUrl()
+    {
+        return $this->slidesUrl;
+    }
+
+    /**
+     * @param int $slidesUrl
+     *
+     * @return Talk
+     */
+    public function setSlidesUrl($slidesUrl)
+    {
+        $this->propertyChanged('slidesUrl', $this->slidesUrl, $slidesUrl);
+        $this->slidesUrl = $slidesUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlogPostUrl()
+    {
+        return $this->blogPostUrl;
+    }
+
+    /**
+     * @param int $blogPostUrl
+     *
+     * @return Talk
+     */
+    public function setBlogPostUrl($blogPostUrl)
+    {
+        $this->propertyChanged('slidesUrl', $this->blogPostUrl, $blogPostUrl);
+        $this->blogPostUrl = $blogPostUrl;
 
         return $this;
     }
