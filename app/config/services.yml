@@ -83,3 +83,11 @@ services:
 
     app.paybox_factory:
         class: AppBundle\Payment\PayboxFactory
+
+    app.slack_message_factory:
+        class: AppBundle\Slack\MessageFactory
+        autowire: true
+
+    app.slack_notifier:
+        class: AppBundle\Notifier\SlackNotifier
+        arguments: ["%slack_url%", "@app.slack_message_factory", "@jms_serializer.serializer"]
