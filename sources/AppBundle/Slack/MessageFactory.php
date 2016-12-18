@@ -15,6 +15,10 @@ class MessageFactory
      */
     private $translator;
 
+    /**
+     * MessageFactory constructor.
+     * @param Translator $translator
+     */
     public function __construct(Translator $translator)
     {
         $this->translator = $translator;
@@ -97,6 +101,9 @@ class MessageFactory
             )
             ->addField(
                 (new Field())->setShort(false)->setTitle('Résumé')->setValue(substr($talk->getAbstract(), 0, 300))
+            )
+            ->addField(
+                (new Field())->setShort(false)->setTitle('Accompagnement')->setValue($talk->getNeedsMentoring() ? "Oui": "Non")
             )
             ->addField(
                 (new Field())->setShort(true)->setTitle('Type')->setValue($this->translator->trans($talk->getTypeTranslationKey()))
