@@ -84,6 +84,11 @@ services:
     app.paybox_factory:
         class: AppBundle\Payment\PayboxFactory
 
+    app.slack_message_factory:
+        class: AppBundle\Slack\MessageFactory
+        autowire: true
+
     app.algolia_client:
         class: AlgoliaSearch\Client
         arguments: [%algolia_app_id%, %algolia_backend_api_key%]
+

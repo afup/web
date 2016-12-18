@@ -1,7 +1,7 @@
 <?php
 
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
@@ -16,6 +16,7 @@ class AppKernel extends Kernel
             new \CCMBenchmark\TingBundle\TingBundle(),
             new \KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle(),
             new AppBundle\AppBundle(),
+            new \JMS\SerializerBundle\JMSSerializerBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
