@@ -409,7 +409,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function setBlogPostUrl($blogPostUrl)
     {
-        $this->propertyChanged('slidesUrl', $this->blogPostUrl, $blogPostUrl);
+        $this->propertyChanged('blogPostUrl', $this->blogPostUrl, $blogPostUrl);
         $this->blogPostUrl = $blogPostUrl;
 
         return $this;
