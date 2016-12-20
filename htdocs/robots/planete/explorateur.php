@@ -17,12 +17,10 @@ use Afup\Site\Utils\Logs;
 
 require_once dirname(__FILE__) . '/../../../sources/Afup/Bootstrap/Cli.php';
 
-define('MAGPIE_CACHE_DIR', dirname(__FILE__).'/../../cache/robots/planete');
+define('MAGPIE_CACHE_DIR', dirname(__FILE__).'/../../../var/cache/prod/planete');
 define('MAGPIE_OUTPUT_ENCODING', 'UTF-8');
 
 require_once dirname(__FILE__) . '/../../../dependencies/magpierss/rss_fetch.inc';
-require_once dirname(__FILE__) . '/../../../sources/Afup/Flux.php';
-require_once dirname(__FILE__) . '/../../../sources/Afup/Planete_Billet.php';
 
 $planete_flux   = new Flux($bdd);
 $planete_billet = new Planete_Billet($bdd);
