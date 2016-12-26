@@ -315,8 +315,14 @@ if ($action == 'lister') {
     $groupe[] = &HTML_QuickForm::createElement('radio', 'plannifie', null, 'Non', 0);
     $formulaire->addGroup($groupe, 'groupe_plannifie', "Plannifi&eacute;", '<br />', false);
 
-    $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
     $formulaire->addElement('checkbox'    , 'needs_mentoring'          , "Demande a bénéficier du programme d'accompagnement des jeunes speakers");
+
+    if ($action != 'ajouter') {
+        $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
+        $formulaire->addElement('text'    , 'youtube_id'          , 'Id de la conférence sur youtube' , array('size' => 40, 'maxlength' => 30));
+        $formulaire->addElement('text'    , 'slides_url'          , 'URL où trouver les slides' , array('size' => 80, 'maxlength' => 255));
+        $formulaire->addElement('text'    , 'blog_post_url'          , 'URL de la version  article de blog de la conférence' , array('size' => 80, 'maxlength' => 255));
+    }
 
     $formulaire->addElement('header', null, 'Conférencier(s)');
     $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'c.nom, c.conferencier_id', true);
@@ -373,7 +379,11 @@ if ($action == 'lister') {
 			                                    $valeurs['journee'],
 			                                    $valeurs['genre'],
 			                                    $valeurs['plannifie'],
-                                                $valeurs['joindin']);
+                                                $valeurs['joindin'],
+                                                $valeurs['youtube_id'],
+                                                $valeurs['slides_url'],
+                                                $valeurs['blog_post_url']
+            );
             $forum_appel->delierSession($session_id);
         }
 

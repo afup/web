@@ -647,7 +647,7 @@ class AppelConferencier
         return $this->_bdd->obtenirUn('select LAST_INSERT_ID()');
     }
 
-    public function modifierSession($id, $id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie, $joindin = null)
+    public function modifierSession($id, $id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie, $joindin = null, $youtubeId = null, $slidesUrl = null, $blogPostUrl = null)
     {
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
@@ -658,6 +658,15 @@ class AppelConferencier
         $requete .= ' genre = ' . $this->_bdd->echapper($genre) . ', ';
         if ($joindin !== null) {
             $requete .= ' joindin = ' . $this->_bdd->echapper($joindin) . ', ';
+        }
+        if ($youtubeId !== null) {
+            $requete .= ' youtube_id = ' . $this->_bdd->echapper($youtubeId) . ', ';
+        }
+        if ($slidesUrl !== null) {
+            $requete .= ' slides_url = ' . $this->_bdd->echapper($slidesUrl) . ', ';
+        }
+        if ($blogPostUrl !== null) {
+            $requete .= ' blog_post_url = ' . $this->_bdd->echapper($blogPostUrl) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;

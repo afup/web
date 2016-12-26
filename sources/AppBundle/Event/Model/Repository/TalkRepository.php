@@ -162,6 +162,21 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'bool',
                 'serializer' => Boolean::class
             ])
+            ->addField([
+                'columnName' => 'youtube_id',
+                'fieldName' => 'youtubeId',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'slides_url',
+                'fieldName' => 'slidesUrl',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'blog_post_url',
+                'fieldName' => 'blogPostUrl',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;
