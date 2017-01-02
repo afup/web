@@ -22,6 +22,7 @@ class Transformer
         $item = [
             'planning_id' => $planning->getId(),
             'talk_id' => $talk->getId(),
+            'slug' => $talk->getSlug(),
             'title' => $talk->getTitle(),
             'event' => [
                 'id' => $event->getId(),
