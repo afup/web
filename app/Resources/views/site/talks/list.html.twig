@@ -1,0 +1,42 @@
+{% extends ':site:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/talk/list.css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+    <script src="/js/talk/list.js"></script>
+{% endblock %}
+
+{% block metas %}
+    {{ parent() }}
+    <meta name="algolia_appid" content="{{ algolia_app_id }}" />
+    <meta name="algolia_apikey" content="{{ algolia_api_key }}" />
+{% endblock %}
+
+{% block content %}
+    <div class="mw1400p center" id="container">
+        <div class="line" id="main">
+            <input type="text" id="search-box" />
+            <div>
+                <div id="refinements-container">
+                    <div id="refinement-has-video"></div>
+                    <div id="refinement-has-slides"></div>
+                    <div id="refinement-event"></div>
+                    <div id="refinement-speaker"></div>
+                </div>
+                <div id="hits-container"></div>
+            </div>
+
+            <div id="pagination-container">
+                <div id="pagination"></div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

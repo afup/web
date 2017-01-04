@@ -177,6 +177,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'blogPostUrl',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'joindin',
+                'fieldName' => 'joindinId',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;

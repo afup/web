@@ -1,0 +1,64 @@
+.talk-list-button {
+    background-color: #50a0dd;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.talk-list-refinement-count-badge {
+    background-color: #999;
+    font-size: 0.7em;
+    padding: 1px 3px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.talk-list-event-label-badge {
+    background-color: #999;
+    font-size: 0.5em;
+    padding: 1px 3px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.conf-title {
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+#refinements-container {
+    width:30%;
+    float:left;
+}
+
+#refinement-event, #refinement-speaker {
+    margin: 15px 0;
+}
+
+#hits-container {
+    width:70%;
+    float: left;
+}
+
+#pagination-container {
+    margin: 55px auto;
+    width:100%;
+    text-align: center;
+}
+
+.ais-hits--item {
+    border-bottom: 1px solid #50a0dd;
+    padding: 15px;
+}
+
+.ais-refinement-list--item, .ais-toggle--item {
+    cursor: pointer;
+    padding: 0 0 0 15px;
+}
+
+.ais-refinement-list--header {
+    padding: 10px 0 0 0;
+    margin: 5px;
+}
