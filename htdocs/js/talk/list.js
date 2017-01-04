@@ -21,7 +21,7 @@ search.addWidget(
         templates: {
             empty: "Pas de résultat",
             item: function(data) {
-                var content = '<div class="conf-title">' + data.title + ' ' + '<span class="talk-list-event-label-badge">' + data.event.title + '</span></div>'
+                var content = '<div class="conf-title"><a href="/talks/' + data.url_key + '">' + data.title + '</a> ' + '<span class="talk-list-event-label-badge">' + data.event.title + '</span></div>'
                         + ' <i>' + data.speakers_label + '</i>'
                         + '<div style="text-align:right">'
                     ;
@@ -50,7 +50,7 @@ search.addWidget(
 );
 
 
-var refienmentItemTemplate = function(data) {
+var refinementItemTemplate = function(data) {
     var content = "";
     content += '<input type="checkbox" ';
     if (data.isRefined) {
@@ -77,7 +77,7 @@ search.addWidget(
         },
         autoHideContainer: false,
         templates: {
-            item: refienmentItemTemplate
+            item: refinementItemTemplate
         }
     })
 );
@@ -92,7 +92,7 @@ search.addWidget(
         },
         autoHideContainer: false,
         templates: {
-            item: refienmentItemTemplate
+            item: refinementItemTemplate
         }
     })
 );
@@ -103,7 +103,7 @@ search.addWidget(
         attributeName: 'event.title',
         templates: {
             header: "Événement",
-            item: refienmentItemTemplate
+            item: refinementItemTemplate
         }
     })
 );
@@ -114,7 +114,7 @@ search.addWidget(
         attributeName: 'speakers.label',
         templates: {
             header: "Conférencier",
-            item: refienmentItemTemplate
+            item: refinementItemTemplate
         }
     })
 );

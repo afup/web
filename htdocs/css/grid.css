@@ -1,0 +1,55 @@
+div.container {
+    padding: 10px;
+}
+
+div.container, div.container * {
+    box-sizing: border-box;
+}
+
+div.container:before,
+div.container:after {
+    content: " ";
+    display: table;
+}
+
+div.container:after {
+    clear: both;
+}
+
+@media (min-width: 992px) {
+    .col-md-12 {
+        width: 100%;
+    }
+    .col-md-10 {
+        width: 83.333333333%;
+    }
+    .col-md-8 {
+        width: 66.66667%;
+    }
+    .col-md-4 {
+        width: 33.33333%;
+    }
+    .col-md-2 {
+        width: 16.666666667%;
+    }
+
+    .col-md-2,
+    .col-md-4,
+    .col-md-8,
+    .col-md-10,
+    .col-md-12 {
+        float: left;
+    }
+}
+
+.col-md-2,
+.col-md-4,
+.col-md-8,
+.col-md-10,
+.col-md-12
+{
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+}

@@ -1,0 +1,108 @@
+{% extends ':site:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/grid.css">
+    <link rel="stylesheet" href="/css/talk/list.css">
+    <link rel="stylesheet" href="/css/talk/show.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block metas %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="mw1400p center" id="container">
+        <div class="container">
+            <div class="col-md-12 talk-title">
+                <h1>{{ talk.title }}<h1>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="col-md-{% if talk.hasYoutubeId %}8{% else %}12"{% endif %}">
+                <div class="container">
+                    <div class="col-md-12">
+                        <h2>Description</h2>
+                        {{ talk.abstract|raw }}
+                    </div>
+                </div>
+                <div class="container talk-date-container">
+                    <div class="col-md-12">
+                        Conférence donnée lors du {{ event.title }}, ayant eut lieu les {{ event.dateStart|date('d/m/Y') }} et {{ event.dateEnd|date('d/m/Y') }}.
+                    </div>
+                </div>
+
+                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId %}
+                <div class="container">
+                    <div class="col-md-12">
+                        <h2>Informations complémentaires</h2>
+                        {% if talk.hasSlidesUrl %}
+                            <a class="talk-list-button" href="{{ talk.getSlidesurl }}"><i class="fa fa-slideshare"></i> Slides</a>
+                        {% endif %}
+
+                        {% if talk.hasBlogPostUrl %}
+                            <a class="talk-list-button" href="{{ talk.getBlogPostUrl }}"><i class="fa fa-rss"></i> Article</a>
+                        {% endif %}
+
+                        {% if talk.hasJoindinId %}
+                            <a class="talk-list-button" href="{{ talk.getJoindinUrl }}"><i class="fa fa-comments"></i> Fiche joindIn</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% if talk.hasYoutubeId %}
+            <div class="col-md-4">
+                <h2>Vidéo</h2>
+                <div class="responsive-video-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ talk.youtubeId }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="container">
+            <div class="col-md-12">
+                <div class="container speaker-title-container">
+                    <div class="col-md-12">
+                        <h2>{% if speakers|length > 1 %}Les speakers{% else %}Le speaker{% endif %}</h2>
+                    </div>
+                </div>
+
+                {% for speaker in speakers %}
+                    <div class="container speaker-name-container">
+                        <div class="col-md-12">
+                            <h3 class="speaker-name">
+                            {{ speaker.label }}
+                            </h3>
+                            {% if speaker.twitter %}
+                                <a href="http://twitter.com/{{ speaker.twitter }}">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="col-md-2">
+                            <img src="{{ photo_storage.getUrl(speaker) }}" class="speaker-photo" />
+                        </div>
+                        <div class="col-md-10">
+                            {{ speaker.biography }}
+                            <div class="speaker-talks-link">
+                                <a href="{{ url('talks_list', {"dFR": { "speakers.label" : [ speaker.label ]}}) }}">Voir tous les talks de ce speaker.</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

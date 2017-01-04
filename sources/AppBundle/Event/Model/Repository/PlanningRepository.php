@@ -3,7 +3,9 @@
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Planning;
+use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -11,6 +13,27 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class PlanningRepository extends Repository implements MetadataInitializer
 {
+    /**
+     * @param Talk $talk
+     *
+     * @return mixed|null
+     */
+    public function getByTalk(Talk $talk)
+    {
+        $query = $this
+            ->getQuery('SELECT * FROM afup_forum_planning WHERE id_session= :id_session LIMIT 1')
+        ;
+
+        $query->setParams(['id_session' => $talk->getId()]);
+
+        $plannings = $query->query($this->getCollection(new HydratorSingleObject()));
+        if ($plannings->count() === 0) {
+            return null;
+        }
+
+        return $plannings->first();
+    }
+
     /**
      * @param SerializerFactoryInterface $serializerFactory
      * @param array $options

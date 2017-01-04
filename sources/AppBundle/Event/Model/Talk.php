@@ -4,6 +4,7 @@ namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Talk implements NotifyPropertyInterface
@@ -421,5 +422,14 @@ class Talk implements NotifyPropertyInterface
     public function hasBlogPostUrl()
     {
         return null !== $this->getBlogPostUrl();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getTitle());
     }
 }
