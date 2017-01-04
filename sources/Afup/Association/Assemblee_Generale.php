@@ -80,6 +80,7 @@ class Assemblee_Generale
 
         $requete .= 'GROUP BY';
         $requete .= '  afup_personnes_physiques.id ';
+        $requete .= 'ORDER BY afup_personnes_physiques.nom, afup_personnes_physiques.prenom ';
 
         return $this->_bdd->obtenirAssociatif($requete);
     }
