@@ -19,4 +19,18 @@ class Talk extends \atoum
         ;
     }
 
+    public function testSlug()
+    {
+        $this
+            ->given($talk = new TestedClass())
+            ->and(
+                $talk->setId(1007),
+                $talk->setTitle('Utiliser PostgreSQL en 2014')
+            )
+            ->then
+                ->variable($talk->getSlug())
+                ->isEqualTo('1007-utiliser-postgresql-en-2014')
+        ;
+    }
+
 }
