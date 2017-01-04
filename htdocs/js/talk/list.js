@@ -50,7 +50,7 @@ search.addWidget(
 );
 
 
-var refienmentItemTemplate = function(data) {
+var refinementItemTemplate = function(data) {
     var content = "";
     content += '<input type="checkbox" ';
     if (data.isRefined) {
@@ -77,7 +77,7 @@ search.addWidget(
         },
         autoHideContainer: false,
         templates: {
-            item: refienmentItemTemplate
+            item: refinementItemTemplate
         }
     })
 );
@@ -92,7 +92,7 @@ search.addWidget(
         },
         autoHideContainer: false,
         templates: {
-            item: refienmentItemTemplate
+            item: refinementItemTemplate
         }
     })
 );
@@ -103,7 +103,7 @@ search.addWidget(
         attributeName: 'event.title',
         templates: {
             header: "Événement",
-            item: refienmentItemTemplate
+            item: refinementItemTemplate
         }
     })
 );
@@ -114,7 +114,7 @@ search.addWidget(
         attributeName: 'speakers.label',
         templates: {
             header: "Conférencier",
-            item: refienmentItemTemplate
+            item: refinementItemTemplate
         }
     })
 );
