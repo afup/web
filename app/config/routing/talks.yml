@@ -3,5 +3,5 @@ talks_list:
   defaults: {_controller: AppBundle:Talks:list}
 
 talks_show:
-  path: /{slug}
+  path: /{id}-{slug}
   defaults: {_controller: AppBundle:Talks:show}

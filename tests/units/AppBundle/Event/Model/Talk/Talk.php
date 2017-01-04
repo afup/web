@@ -29,7 +29,7 @@ class Talk extends \atoum
             )
             ->then
                 ->variable($talk->getSlug())
-                ->isEqualTo('1007-utiliser-postgresql-en-2014')
+                ->isEqualTo('utiliser-postgresql-en-2014')
         ;
     }
 

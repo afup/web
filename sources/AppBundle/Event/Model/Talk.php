@@ -430,6 +430,6 @@ class Talk implements NotifyPropertyInterface
     public function getSlug()
     {
         $slugify = new Slugify();
-        return $slugify->slugify($this->getId() . '-' . $this->getTitle());
+        return $slugify->slugify($this->getTitle());
     }
 }

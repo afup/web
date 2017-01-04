@@ -73,7 +73,7 @@ class Transformer extends \atoum
                     ->isEqualTo([
                         'planning_id' => "266",
                         'talk_id' => 1007,
-                        'slug' => '1007-utiliser-postgresql-en-2014',
+                        'url_key' => '1007-utiliser-postgresql-en-2014',
                         'title' => "Utiliser PostgreSQL en 2014",
                         'event' => [
                             'id' => 10,

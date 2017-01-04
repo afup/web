@@ -21,14 +21,13 @@ class TalksController extends SiteBaseController
     }
 
     /**
+     * @param integer $id
      * @param string $slug
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction($slug)
+    public function showAction($id, $slug)
     {
-        list($id) = explode('-', $slug, 2);
-
         $talk = $this->get('ting')->get(TalkRepository::class)->get($id);
 
         if (null === $talk || $talk->getSlug() != $slug) {

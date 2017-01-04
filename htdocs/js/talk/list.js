@@ -21,7 +21,7 @@ search.addWidget(
         templates: {
             empty: "Pas de résultat",
             item: function(data) {
-                var content = '<div class="conf-title"><a href="/talks/' + data.slug + '">' + data.title + '</a> ' + '<span class="talk-list-event-label-badge">' + data.event.title + '</span></div>'
+                var content = '<div class="conf-title"><a href="/talks/' + data.url_key + '">' + data.title + '</a> ' + '<span class="talk-list-event-label-badge">' + data.event.title + '</span></div>'
                         + ' <i>' + data.speakers_label + '</i>'
                         + '<div style="text-align:right">'
                     ;
