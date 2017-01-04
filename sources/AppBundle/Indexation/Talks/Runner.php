@@ -3,13 +3,11 @@
 namespace AppBundle\Indexation\Talks;
 
 use AlgoliaSearch\Client;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Talk;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 
 class Runner
@@ -97,13 +95,13 @@ class Runner
     {
         $talk = $this->ting->get(TalkRepository::class)->get($planning->getTalkId());
 
-        if (!($talk instanceof Talk)) {
-            return null;
+        if (null === $talk) {
+            return  null;
         }
 
         $event = $this->ting->get(EventRepository::class)->get($planning->getEventId());
 
-        if (!($event instanceof Event)) {
+        if (null === $event) {
             return null;
         }
 
