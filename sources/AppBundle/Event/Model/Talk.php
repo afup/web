@@ -326,6 +326,10 @@ class Talk implements NotifyPropertyInterface
      */
     public function getSlidesUrl()
     {
+        if (0 === strlen($this->slidesUrl)) {
+            return null;
+        }
+
         return $this->slidesUrl;
     }
 
