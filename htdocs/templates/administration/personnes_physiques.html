@@ -2,6 +2,9 @@
     <h2>Liste des personnes physiques</h2>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=personnes_physiques&amp;action=ajouter" title="Ajouter une personne physique">Ajouter une personne physique</a><br />
     <br/>
+    <a href="index.php?page=personnes_physiques&amp;action=export" title="Export en CSV">Export de toutes les personnes physiques en CSV</a><br />
+    <a href="index.php?page=personnes_physiques&amp;action=export&amp;is_active=1" title="Export en CSV">Export des personnes physiques actives en CSV</a><br />
+    <br />
     <table>
       <form method="GET" name="filtre" class="js-form-search">
       <input type="hidden" name="page" value="personnes_physiques" />

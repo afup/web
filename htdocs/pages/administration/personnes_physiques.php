@@ -11,7 +11,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'envoi_mdp', 'envoi_bienvenue'));
+$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'envoi_mdp', 'envoi_bienvenue', 'export'));
 $tris_valides = array('nom' => 'nom <sens>, prenom',
     'prenom' => 'prenom <sens>, nom',
     'etat' => 'etat <sens>, prenom, nom');
@@ -50,6 +50,21 @@ if ($action == 'lister') {
     } else {
         afficherMessage('Une erreur est survenue lors de l\'envoi d\'un nouveau mot de passe à la personne physique', 'index.php?page=personnes_physiques&action=lister', true);
     }
+} elseif ($action == 'export') {
+    $filename = tempnam(sys_get_temp_dir(), 'export_personnes_physiques_');
+    $file = new \SplFileObject($filename, 'w');
+    $isActive = isset($_GET['is_active']) ? '1' : null;
+    foreach ($personnes_physiques->obtenirListe('*', 'nom, prenom', false, false, false, false, $isActive) as $row) {
+        $file->fputcsv([
+            $row['email'],
+            $row['nom'],
+            $row['prenom'],
+        ]);
+    }
+    header("Content-disposition: attachment;filename=export_personnes_physiques.csv");
+    readfile($filename);
+    unlink($filename);
+    exit(0);
 } elseif ($action == 'envoi_bienvenue') {
     $password = $personnes_physiques->generatePassword($_GET['id']);
     $data = $personnes_physiques->obtenir($_GET['id'], 'prenom, nom, email, login');
