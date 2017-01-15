@@ -125,6 +125,22 @@ search.addWidget(
     })
 );
 
+
+search.addWidget(
+    instantsearch.widgets.toggle({
+        container: '#refinement-has-blog-post',
+        attributeName: 'has_blog_post',
+        label: 'Avec article de blog',
+        values: {
+            on: true
+        },
+        autoHideContainer: false,
+        templates: {
+            item: refinementItemTemplate
+        }
+    })
+);
+
 search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-event',
