@@ -50,6 +50,7 @@ class Transformer
 
         if (null !== ($youtubeUrl = $talk->getYoutubeUrl())) {
             $item['video_url'] = $youtubeUrl;
+            $item['video_id'] = $talk->getYoutubeId();
         }
 
         if (null !== ($slidesUrl = $talk->getSlidesUrl())) {

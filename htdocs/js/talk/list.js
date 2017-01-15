@@ -23,8 +23,8 @@ search.addWidget(
             item: function(data) {
                 var thumbnailUrl = '/images/no_video.jpg';
 
-                if (typeof data.video_url !== 'undefined') {
-                    thumbnailUrl = 'https://img.youtube.com/vi/' + data.video_url.substring(32) + '/hqdefault.jpg';
+                if (typeof data.video_id !== 'undefined') {
+                    thumbnailUrl = 'https://img.youtube.com/vi/' + data.video_id + '/hqdefault.jpg';
                 }
 
                 var content = ''
