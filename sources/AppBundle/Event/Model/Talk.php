@@ -363,6 +363,10 @@ class Talk implements NotifyPropertyInterface
      */
     public function getJoindinId()
     {
+        if (0 === $this->joindinId) {
+            return null;
+        }
+
         return $this->joindinId;
     }
 
@@ -384,7 +388,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function hasJoindinId()
     {
-        return null !== $this->joindinId;
+        return null !== $this->getJoindinId();
     }
 
     /**
