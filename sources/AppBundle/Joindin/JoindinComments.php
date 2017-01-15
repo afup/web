@@ -31,7 +31,11 @@ class JoindinComments
             return [];
         }
 
-        return $this->getCommmentsFromId($talk->getJoindinId());
+        try {
+            return $this->getCommmentsFromId($talk->getJoindinId());
+        } catch (\RuntimeException $e) {
+            return [];
+        }
     }
 
     /**
