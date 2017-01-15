@@ -77,7 +77,8 @@ class Transformer extends \atoum
                         'title' => "Utiliser PostgreSQL en 2014",
                         'event' => [
                             'id' => 10,
-                            'title' => 'PHP Tour Lyon 2014'
+                            'title' => 'PHP Tour Lyon 2014',
+                            'start_date' => '2014-06-24',
                         ],
                         'speakers_label' => 'Dimitri Fontaine',
                         'speakers' => [
