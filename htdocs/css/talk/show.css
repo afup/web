@@ -56,4 +56,5 @@ div.speaker-name-container {
 
 .talk-complementary-information {
     margin: 0 0 0 10px;
+    list-style: none;
 }
