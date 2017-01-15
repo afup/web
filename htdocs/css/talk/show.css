@@ -64,3 +64,9 @@ div.speaker-name-container {
     padding: 0 10px ;
     border-left: 4px solid #36a7df;
 }
+
+.talk-comment-stars {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 4px;
+}

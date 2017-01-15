@@ -842,28 +842,6 @@ form[name="talk"] {
     width: 80%;
 }
 
-#svg-star, a.star svg {
-    width: 2em;
-    height: 2em;
-    fill: white;
-    pointer-events: none;
-}
-
-.stars {
-    display: flex;
-    flex-flow: row-reverse;
-    justify-content: flex-end;
-}
-
-.stars-editable .star:hover svg,
-.stars-editable .star:hover ~ .star svg {
-    fill: orange;
-}
-.star.is-selected svg,
-.star.is-selected ~ .star svg {
-    fill: #996300;
-}
-
 button[type=submit] {
     height: 3em;
     background-color: #3e3d40 !important;

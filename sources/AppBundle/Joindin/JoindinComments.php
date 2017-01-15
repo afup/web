@@ -85,6 +85,7 @@ class JoindinComments
                 'comment' => $comment['comment'],
                 'user_display_name' => $comment['user_display_name'],
                 'created_date' => $comment['created_date'],
+                'rating' => $comment['rating'],
             ];
         }
 
