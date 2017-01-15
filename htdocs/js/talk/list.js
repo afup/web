@@ -21,28 +21,56 @@ search.addWidget(
         templates: {
             empty: "Pas de résultat",
             item: function(data) {
-                var content = '<div class="conf-title"><a href="/talks/' + data.url_key + '">' + data.title + '</a> ' + '<span class="talk-list-event-label-badge">' + data.event.title + '</span></div>'
-                        + ' <i>' + data.speakers_label + '</i>'
-                        + '<div style="text-align:right">'
-                    ;
+                var thumbnailUrl = '/images/no_video.jpg';
 
                 if (typeof data.video_url !== 'undefined') {
-                    content += '<a href="' + data.video_url + '" class="talk-list-button" target="video"><i class="fa fa-youtube-play"></i> Vidéo</a>';
+                    thumbnailUrl = 'https://img.youtube.com/vi/' + data.video_url.substring(32) + '/hqdefault.jpg';
+                }
+
+                var content = ''
+                + '<div class="container">'
+                ;
+
+                content += ''
+                    + '<div class="col-md-2">'
+                       + '<a href="/talks/' + data.url_key + '"><img src="' + thumbnailUrl + '" /></a>'
+                    + '</div>'
+                ;
+
+                content += ''
+                    + '<div class="col-md-10">'
+                        + '<div class="talk-list-title-container">'
+                            + '<a href="/talks/' + data.url_key + '"><h2>' + data.title + '</h2></a>'
+                        + '</div>'
+                        + '<div class="talk-list-speakers-container ">'
+                            + '' + data.speakers_label + ''
+                            + ' - <i>' + data.event.title + '</i>'
+                        + '</div>'
+                        + '<div class="links-container">'
+                ;
+
+
+                if (typeof data.blog_post_url !== 'undefined') {
+                    content += '<a class="talk-info-link" href="' + data.blog_post_url + '" class="talk-list-" target="blog-post"><i class="fa fa-rss"></i> Article</a>';
                 }
 
                 if (typeof data.slides_url !== 'undefined') {
-                    content += '<a href="' + data.slides_url + '" class="talk-list-button" target="slides"><i class="fa fa-slideshare"></i> Slides</a>';
-                }
-
-                if (typeof data.blog_post_url !== 'undefined') {
-                    content += '<a href="' + data.blog_post_url + '" class="talk-list-button" target="blog-post"><i class="fa fa-rss"></i> Article</a>';
+                    content += '<a class="talk-info-link"  href="' + data.slides_url + '" class="" target="slides"><i class="fa fa-slideshare"></i> Slides</a>';
                 }
 
                 if (typeof data.joindin_url !== 'undefined') {
-                    content += '<a href="' + data.joindin_url + '" class="talk-list-button" target="joindin"><i class="fa fa-comments"></i> Fiche joinin</a>';
+                    content += '<a class="talk-info-link" href="' + data.joindin_url + '" class="talk-" target="joindin"><i class="fa fa-comments"></i> Fiche joinin</a>';
                 }
 
-                content += '</div>';
+                content += ''
+                        + '</div>'
+                ;
+
+                content += ''
+                    + '</div>'
+                + '</div>'
+                ;
+
                 return content;
             }
         }
@@ -58,7 +86,7 @@ var refinementItemTemplate = function(data) {
     }
     content += " />";
 
-    content += data.name;
+    content += '<label>' + data.name +'</label>';
 
     if (data.count) {
         content += ' <span class="talk-list-refinement-count-badge">' + data.count + "</span>";
@@ -102,7 +130,7 @@ search.addWidget(
         container: '#refinement-event',
         attributeName: 'event.title',
         templates: {
-            header: "Événement",
+            header: "<h4>Événement</h4>",
             item: refinementItemTemplate
         }
     })
@@ -113,7 +141,7 @@ search.addWidget(
         container: '#refinement-speaker',
         attributeName: 'speakers.label',
         templates: {
-            header: "Conférencier",
+            header: "<h4>Conférencier</h4>",
             item: refinementItemTemplate
         }
     })

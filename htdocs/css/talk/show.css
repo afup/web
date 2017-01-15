@@ -53,3 +53,7 @@ div.speaker-name-container {
 .speaker-photo {
     max-width: 100%;
 }
+
+.talk-complementary-information {
+    margin: 0 0 0 10px;
+}

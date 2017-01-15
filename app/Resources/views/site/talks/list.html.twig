@@ -4,6 +4,7 @@
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/grid.css">
     <link rel="stylesheet" href="/css/talk/list.css">
 {% endblock %}
 
@@ -22,15 +23,20 @@
 {% block content %}
     <div class="mw1400p center" id="container">
         <div class="line" id="main">
-            <input type="text" id="search-box" />
-            <div>
-                <div id="refinements-container">
+            <h1>Historique des conférences</h1>
+
+            <div class="container">
+                <div class="col-md-12">
+                    <input type="text" id="search-box" />
+                </div>
+                <div class="col-md-8" id="hits-container"></div>
+                <div class="col-md-4" id="refinements-container">
                     <div id="refinement-has-video"></div>
                     <div id="refinement-has-slides"></div>
                     <div id="refinement-event"></div>
                     <div id="refinement-speaker"></div>
                 </div>
-                <div id="hits-container"></div>
+
             </div>
 
             <div id="pagination-container">
