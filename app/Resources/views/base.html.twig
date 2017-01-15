@@ -25,7 +25,7 @@
     </head>
     <body id="body">
         {% block header '' %}
-        <div class="container">
+        <div class="container" style="padding: 0px">
             {% for bag in ['notice', 'success', 'error'] %}
                 {% for flash_message in app.session.flashBag.get(bag) %}
                     <div class="flash flash-{{ bag }}">
