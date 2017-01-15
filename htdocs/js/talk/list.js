@@ -145,6 +145,20 @@ search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-event',
         attributeName: 'event.title',
+        sortBy: function(a, b) {
+            var aYear = parseInt(a.name.substring(a.name.length - 4), 10);
+            var bYear = parseInt(b.name.substring(b.name.length - 4), 10);
+
+            if (aYear < bYear) {
+                return 1;
+            }
+
+            if (aYear > bYear) {
+                return -1;
+            }
+
+            return 0;
+        },
         operator: "and",
         templates: {
             header: "<h4>Événement</h4>",
