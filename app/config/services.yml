@@ -96,3 +96,7 @@ services:
         class: AlgoliaSearch\Client
         arguments: [%algolia_app_id%, %algolia_backend_api_key%]
 
+    app.joindin.comments:
+        class: AppBundle\Joindin\JoindinComments
+        arguments: ["@cache.system"]
+

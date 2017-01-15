@@ -104,5 +104,29 @@
             </div>
         </div>
 
+        {% if comments|length > 0 %}
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="container comments-title-container">
+                        <div class="col-md-12">
+                            <h2>Commentaires</h2>
+                        </div>
+                    </div>
+
+                    {% for comment in comments %}
+                        {% if comment.comment|length %}
+                        <div class="container">
+                            <div class="col-md-12 talk-comment-container">
+                                <div class="talk-comment">{{ comment.comment }}</div>
+                                <b>{{ comment.user_display_name }}</b>, <i> le {{ comment.created_date|date('d/m/Y') }}</i>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+        {% endif %}
+
     </div>
 {% endblock %}
