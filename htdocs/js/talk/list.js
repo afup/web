@@ -140,6 +140,7 @@ search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-speaker',
         attributeName: 'speakers.label',
+        operator: "and",
         templates: {
             header: "<h4>Conférencier</h4>",
             item: refinementItemTemplate
