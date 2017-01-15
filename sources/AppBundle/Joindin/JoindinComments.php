@@ -72,7 +72,7 @@ class JoindinComments
     {
         $decodedResponse = json_decode($response, true);
         if (!is_array($decodedResponse) || !isset($decodedResponse['comments'])) {
-            throw new \Exception('Error reading joindin response');
+            throw new \RuntimeException('Error reading joindin response');
         }
 
         $comments = [];
