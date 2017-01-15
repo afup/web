@@ -51,7 +51,7 @@ class JoindinComments
      */
     private function callJoindInApi($joindinId)
     {
-        $joindInurl = 'http://api.joind.in/v2.1/talks/' . $joindinId . '/comments';
+        $joindInurl = 'http://api.joind.in/v2.1/talks/' . $joindinId . '/comments?resultsperpage=0';
         $cacheItem = $this->cache->getItem(urlencode($joindInurl));
         if (!$cacheItem->isHit()) {
             $cacheItem->set(file_get_contents($joindInurl));
