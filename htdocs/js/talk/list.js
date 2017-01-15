@@ -145,6 +145,7 @@ search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-event',
         attributeName: 'event.title',
+        operator: "and",
         templates: {
             header: "<h4>Événement</h4>",
             item: refinementItemTemplate
