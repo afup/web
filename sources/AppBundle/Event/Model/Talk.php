@@ -285,6 +285,10 @@ class Talk implements NotifyPropertyInterface
      */
     public function getYoutubeId()
     {
+        if (0 === strlen($this->youTubeId)) {
+            return null;
+        }
+
         return $this->youTubeId;
     }
 
@@ -306,7 +310,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function hasYoutubeId()
     {
-        return null !== $this->youTubeId;
+        return null !== $this->getYoutubeId();
     }
 
     /**
@@ -351,7 +355,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function hasSlidesUrl()
     {
-        return null !== $this->slidesUrl;
+        return null !== $this->getSlidesUrl();
     }
 
     /**
@@ -359,6 +363,10 @@ class Talk implements NotifyPropertyInterface
      */
     public function getJoindinId()
     {
+        if (0 === $this->joindinId) {
+            return null;
+        }
+
         return $this->joindinId;
     }
 
@@ -380,7 +388,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function hasJoindinId()
     {
-        return null !== $this->joindinId;
+        return null !== $this->getJoindinId();
     }
 
     /**

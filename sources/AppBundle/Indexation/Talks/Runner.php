@@ -73,6 +73,17 @@ class Runner
                 'has_video',
                 'has_slides',
             ],
+            'customRanking' => [
+                "desc(event.start_date)",
+                "desc(has_video)",
+                "desc(has_blog_post)",
+                "desc(has_slides)",
+            ],
+            'searchableAttributes' => [
+                'title',
+                'speakers.label',
+                'event.title',
+            ],
         ]);
 
         return $index;

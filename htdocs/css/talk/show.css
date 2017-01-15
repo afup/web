@@ -55,6 +55,11 @@ div.speaker-name-container {
     max-width: 100%;
 }
 
+.talk-complementary-information {
+    margin: 0 0 0 10px;
+    list-style: none;
+}
+
 .talk-comment-container {
     margin: 0 0 15px 0;
 }
