@@ -77,7 +77,8 @@ class Transformer extends \atoum
                         'title' => "Utiliser PostgreSQL en 2014",
                         'event' => [
                             'id' => 10,
-                            'title' => 'PHP Tour Lyon 2014'
+                            'title' => 'PHP Tour Lyon 2014',
+                            'start_date' => '2014-06-24',
                         ],
                         'speakers_label' => 'Dimitri Fontaine',
                         'speakers' => [
@@ -90,6 +91,7 @@ class Transformer extends \atoum
                         ],
                         'has_video' => true,
                         'video_url' => 'https://www.youtube.com/watch?v=hzn0ODTMNDk',
+                        'video_id' => 'hzn0ODTMNDk',
                         'has_slides' => true,
                         'slides_url' => 'http://tapoueh.org/images/confs/PHPTour_2014_PostgreSQL.pdf',
                         'has_joindin' => true,

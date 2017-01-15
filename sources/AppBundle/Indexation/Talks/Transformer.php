@@ -27,6 +27,7 @@ class Transformer
             'event' => [
                 'id' => $event->getId(),
                 'title' => $event->getTitle(),
+                'start_date' => $event->getDateStart() ? $event->getDateStart()->format('Y-m-d') : null,
             ],
             'has_video' => $talk->hasYoutubeId(),
             'has_slides' => $talk->hasSlidesUrl(),
@@ -49,6 +50,7 @@ class Transformer
 
         if (null !== ($youtubeUrl = $talk->getYoutubeUrl())) {
             $item['video_url'] = $youtubeUrl;
+            $item['video_id'] = $talk->getYoutubeId();
         }
 
         if (null !== ($slidesUrl = $talk->getSlidesUrl())) {

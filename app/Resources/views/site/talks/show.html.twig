@@ -42,17 +42,26 @@
                 <div class="container">
                     <div class="col-md-12">
                         <h2>Informations complémentaires</h2>
+                        <ul class="talk-complementary-information">
+
                         {% if talk.hasSlidesUrl %}
-                            <a class="talk-list-button" href="{{ talk.getSlidesurl }}"><i class="fa fa-slideshare"></i> Slides</a>
+                            <li>
+                                <a class="talk-info-link" href="{{ talk.getSlidesurl }}"><i class="fa fa-slideshare"></i> Slides</a>
+                            </li>
                         {% endif %}
 
                         {% if talk.hasBlogPostUrl %}
-                            <a class="talk-list-button" href="{{ talk.getBlogPostUrl }}"><i class="fa fa-rss"></i> Article</a>
+                            <li>
+                                <a class="talk-info-link" href="{{ talk.getBlogPostUrl }}"><i class="fa fa-rss"></i> Article</a>
+                            </li>
                         {% endif %}
 
                         {% if talk.hasJoindinId %}
-                            <a class="talk-list-button" href="{{ talk.getJoindinUrl }}"><i class="fa fa-comments"></i> Fiche joindIn</a>
+                            <li>
+                                <a class="talk-info-link" href="{{ talk.getJoindinUrl }}"><i class="fa fa-comments"></i> Fiche joind.in</a>
+                            </li>
                         {% endif %}
+                        </ul>
                     </div>
                 </div>
                 {% endif %}
