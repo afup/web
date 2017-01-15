@@ -59,7 +59,7 @@ search.addWidget(
                 }
 
                 if (typeof data.joindin_url !== 'undefined') {
-                    content += '<a class="talk-info-link" href="' + data.joindin_url + '" class="talk-" target="joindin"><i class="fa fa-comments"></i> Fiche joinin</a>';
+                    content += '<a class="talk-info-link" href="' + data.joindin_url + '" class="talk-" target="joindin"><i class="fa fa-comments"></i> Fiche joind.in</a>';
                 }
 
                 content += ''
