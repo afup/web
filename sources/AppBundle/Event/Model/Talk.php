@@ -464,4 +464,21 @@ class Talk implements NotifyPropertyInterface
             self::TYPE_PHP_PROJECT => 'Projet PHP',
         ];
     }
+
+    /**
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function getTypeLabel()
+    {
+        $type = $this->getType();
+        $mapping = self::getTypeLabelsByKey();
+
+        if (!isset($mapping[$type])) {
+            throw new \Exception(sprintf('Type inconnue: %s', $type));
+        }
+
+        return $mapping[$type];
+    }
 }
