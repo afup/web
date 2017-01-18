@@ -34,8 +34,9 @@
                 </div>
                 <div class="container talk-date-container">
                     <div class="col-md-12">
-                        Conférence donnée lors du {{ event.title }}, ayant eut lieu les {{ event.dateStart|date('d/m/Y') }} et {{ event.dateEnd|date('d/m/Y') }}.
+                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>, ayant eut lieu les {{ event.dateStart|date('d/m/Y') }} et {{ event.dateEnd|date('d/m/Y') }}.
                     </div>
+
                 </div>
 
                 {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId %}
@@ -104,7 +105,7 @@
                         <div class="col-md-10">
                             {{ speaker.biography }}
                             <div class="speaker-talks-link">
-                                <a href="{{ url('talks_list', {"dFR": { "speakers.label" : [ speaker.label ]}}) }}">Voir tous les talks de ce speaker.</a>
+                                <a href="{{ url('talks_list', {"fR": { "speakers.label" : [ speaker.label ]}}) }}">Voir tous les talks de ce speaker.</a>
                             </div>
                         </div>
                     </div>

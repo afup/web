@@ -72,6 +72,7 @@ class Runner
                 'speakers.label',
                 'has_video',
                 'has_slides',
+                'has_blog_post',
             ],
             'customRanking' => [
                 "desc(event.start_date)",
