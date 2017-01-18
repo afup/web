@@ -43,10 +43,7 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
          */
         $repository = $this->getContainer()->get('ting')->get(UserRepository::class);
 
-        $dryRun = false;
-        if ($input->getOption('dry-run')) {
-            $dryRun = true;
-        }
+        $dryRun = $input->getOption('dry-run');
 
         $today = new \DateTimeImmutable();
 

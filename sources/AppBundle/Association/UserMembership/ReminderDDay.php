@@ -18,7 +18,7 @@ conviviale et soudée ! </p>
 
 <p>Renouvelez dès maintenant votre adhésion, en réglant votre cotisation en ligne. Elle prendra effet immédiatement. </p>
 
-<p>La cotisation à l’association  est au tarif de 25 euros. Pour prolonger votre adhésion, rendez-vous
+<p>La cotisation à l’association  est au tarif de ' . $this->membershipFee .' euros. Pour prolonger votre adhésion, rendez-vous
 dans le <a href="http://www.afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
 et cliquez sur “Ma Cotisation”. Un souci, une question ? Contactez-nous ! bonjour@afup.org</p>
 

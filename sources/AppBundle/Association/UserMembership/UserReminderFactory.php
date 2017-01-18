@@ -25,7 +25,7 @@ class UserReminderFactory
      */
     public function getReminder($class)
     {
-        $instance = new $class($this->mail);
+        $instance = new $class($this->mail, AFUP_COTISATION_PERSONNE_PHYSIQUE);
         if (!$instance instanceof AbstractUserReminder) {
             throw new \RuntimeException(sprintf('The class %s is not an instance of AbstractUserReminder', $class));
         }

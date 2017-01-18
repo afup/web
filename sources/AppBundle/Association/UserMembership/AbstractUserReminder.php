@@ -10,11 +10,23 @@ use AppBundle\Association\NotifiableInterface;
 
 abstract class AbstractUserReminder implements MembershipReminderInterface
 {
+    /**
+     * @var Mail
+     */
     private $mail;
 
-    public function __construct(Mail $mail)
+    protected $membershipFee;
+
+    /**
+     * AbstractUserReminder constructor.
+     *
+     * @param Mail $mail
+     * @param int $membershipFee
+     */
+    public function __construct(Mail $mail, $membershipFee)
     {
         $this->mail = $mail;
+        $this->membershipFee = $membershipFee;
     }
 
     abstract protected function getText();

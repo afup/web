@@ -5,10 +5,6 @@ namespace Afup\Site\Association;
 use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Mailing;
 
-// Voir la classe Afup\Site\Association\Personnes_Morales
-define('AFUP_PERSONNES_PHYSIQUES', 0);
-define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 25);
-
 /**
  * Classe de gestion des personnes physiques
  */
