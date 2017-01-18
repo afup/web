@@ -30,7 +30,7 @@
         {% if votes.count > 0 %}
             <h3>{{ 'Votes'|trans }}</h3>
             <p>{{ "Retrouvez ici les votes déposés sur cette proposition. Ils peuvent vous aider à l'améliorer si nécessaire."|trans }}</p>
-            {% include ':event:star.html.twig' %}
+            {% include ':common:star.html.twig' %}
             <div class="cfp--votes">
                 <ul>
                     {% for vote in votes %}

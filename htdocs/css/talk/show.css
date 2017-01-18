@@ -27,7 +27,8 @@ div.speaker-name-container {
     display: inline-block;
 }
 
-.speaker-title-container {
+.speaker-title-container,
+.comments-title-container {
     padding: 10px 10px 0 10px;
     margin: 0
 }
@@ -57,4 +58,20 @@ div.speaker-name-container {
 .talk-complementary-information {
     margin: 0 0 0 10px;
     list-style: none;
+}
+
+.talk-comment-container {
+    margin: 0 0 15px 0;
+}
+
+.talk-comment {
+    font-size: 1.1em;
+    padding: 0 10px ;
+    border-left: 4px solid #36a7df;
+}
+
+.talk-comment-stars {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 4px;
 }

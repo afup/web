@@ -9,7 +9,7 @@
         {% if numberOfTalks == 0 %}
             <p>{{ 'Il n\'y a plus aucune conférence à noter !'|trans }}</p>
         {% else %}
-            {% include ':event:star.html.twig' %}
+            {% include ':common:star.html.twig' %}
 
             {% for talk in talks|slice(0, 10) %}
                 {% include 'event/vote/talk.html.twig' %}

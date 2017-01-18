@@ -1,0 +1,21 @@
+#svg-star, a.star svg, span.star svg {
+    width: 1em;
+    height: 1em;
+    fill: white;
+    pointer-events: none;
+}
+
+.stars {
+    display: flex;
+    flex-flow: row-reverse;
+    justify-content: flex-end;
+}
+
+.stars-editable .star:hover svg,
+.stars-editable .star:hover ~ .star svg {
+    fill: orange;
+}
+.star.is-selected svg,
+.star.is-selected ~ .star svg {
+    fill: #996300;
+}

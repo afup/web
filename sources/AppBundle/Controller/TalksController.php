@@ -37,6 +37,7 @@ class TalksController extends SiteBaseController
         $speakers = $this->get('ting')->get(SpeakerRepository::class)->getSpeakersByTalk($talk);
         $planning = $this->get('ting')->get(PlanningRepository::class)->getByTalk($talk);
         $event = $this->get('ting')->get(EventRepository::class)->get($planning->getEventId());
+        $comments = $this->get('app.joindin.comments')->getCommentsFromTalk($talk);
 
         return $this->render(
             ':site:talks/show.html.twig',
@@ -44,6 +45,7 @@ class TalksController extends SiteBaseController
                 'talk' => $talk,
                 'event' => $event,
                 'speakers' => $speakers,
+                'comments' => $comments,
             ]
         );
     }
