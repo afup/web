@@ -481,4 +481,12 @@ class Talk implements NotifyPropertyInterface
 
         return $mapping[$type];
     }
+
+    /**
+     * @return bool
+     */
+    public function isDisplayedOnHistory()
+    {
+        return $this->getType() != self::TYPE_CLINIC;
+    }
 }

@@ -109,7 +109,7 @@ class Runner
     {
         $talk = $this->ting->get(TalkRepository::class)->get($planning->getTalkId());
 
-        if (null === $talk) {
+        if (null === $talk || !$talk->isDisplayedOnHistory()) {
             return  null;
         }
 
