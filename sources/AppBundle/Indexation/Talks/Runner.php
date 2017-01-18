@@ -74,6 +74,7 @@ class Runner
                 'has_video',
                 'has_slides',
                 'has_blog_post',
+                'type.label',
             ],
             'customRanking' => [
                 "desc(event.start_date)",
