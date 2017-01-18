@@ -56,6 +56,7 @@ class Runner
             $objects[] = $object;
         }
 
+        $index->clearIndex();
         $index->addObjects($objects, 'planning_id');
     }
 
