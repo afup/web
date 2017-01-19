@@ -169,6 +169,18 @@ search.addWidget(
 
 search.addWidget(
     instantsearch.widgets.refinementList({
+        container: '#refinement-language',
+        operator: "and",
+        attributeName: 'language.label',
+        templates: {
+            header: "<h4>Langue</h4>",
+            item: refinementItemTemplate
+        }
+    })
+);
+
+search.addWidget(
+    instantsearch.widgets.refinementList({
         container: '#refinement-speaker',
         attributeName: 'speakers.label',
         operator: "and",
