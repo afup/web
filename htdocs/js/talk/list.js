@@ -163,6 +163,12 @@ search.addWidget(
         templates: {
             header: "<h4>Événement</h4>",
             item: refinementItemTemplate
+        },
+        showMore: {
+            templates: {
+                active: '<a class="ais-show-more ais-show-more__inactive">Voir moins</a>',
+                inactive: '<a class="ais-show-more ais-show-more__inactive">Voir plus</a>'
+            }
         }
     })
 );
