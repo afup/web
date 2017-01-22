@@ -181,7 +181,13 @@ search.addWidget(
 
 search.addWidget(
     instantsearch.widgets.pagination({
-        container: '#pagination'
+        container: '#pagination',
+        labels : {
+            first: '<i class="fa fa-angle-double-left"></i>',
+            previous: '<i class="fa fa-angle-left"></i>',
+            next: '<i class="fa fa-angle-right"></i>',
+            last: '<i class="fa fa-angle-double-right"></i>'
+        }
     })
 );
 search.start();
