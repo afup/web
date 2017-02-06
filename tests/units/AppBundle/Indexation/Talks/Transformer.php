@@ -80,6 +80,10 @@ class Transformer extends \atoum
                             'title' => 'PHP Tour Lyon 2014',
                             'start_date' => '2014-06-24',
                         ],
+                        'type' => [
+                            'id' => 1,
+                            'label' => 'Conférence (40 minutes)',
+                        ],
                         'speakers_label' => 'Dimitri Fontaine',
                         'speakers' => [
                             [

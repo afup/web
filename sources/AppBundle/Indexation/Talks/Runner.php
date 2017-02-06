@@ -56,6 +56,7 @@ class Runner
             $objects[] = $object;
         }
 
+        $index->clearIndex();
         $index->addObjects($objects, 'planning_id');
     }
 
@@ -73,6 +74,7 @@ class Runner
                 'has_video',
                 'has_slides',
                 'has_blog_post',
+                'type.label',
             ],
             'customRanking' => [
                 "desc(event.start_date)",
@@ -107,7 +109,7 @@ class Runner
     {
         $talk = $this->ting->get(TalkRepository::class)->get($planning->getTalkId());
 
-        if (null === $talk) {
+        if (null === $talk || !$talk->isDisplayedOnHistory()) {
             return  null;
         }
 

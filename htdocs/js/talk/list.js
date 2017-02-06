@@ -175,6 +175,17 @@ search.addWidget(
 
 search.addWidget(
     instantsearch.widgets.refinementList({
+        container: '#refinement-type',
+        attributeName: 'type.label',
+        templates: {
+            header: "<h4>Format</h4>",
+            item: refinementItemTemplate
+        }
+    })
+);
+
+search.addWidget(
+    instantsearch.widgets.refinementList({
         container: '#refinement-speaker',
         attributeName: 'speakers.label',
         operator: "and",

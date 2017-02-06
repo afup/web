@@ -91,11 +91,7 @@ if ($action == 'lister') {
     $journees[2] = 'Technique';
     $journees[3] = 'Les deux';
 
-    $genres = array();
-    $genres[1] = 'Conférence plénière (40 min)';
-    $genres[3] = 'Conférence plénière (20 min)';
-    $genres[2] = 'Atelier';
-    $genres[9] = 'Projet PHP';
+    $genres = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
 
     $formulaire = &instancierFormulaire();
     $id = isset($_GET['id']) ? $_GET['id'] : 0;
@@ -182,11 +178,7 @@ if ($action == 'lister') {
     $journees[2] = 'Technique';
     $journees[3] = 'Les deux';
 
-    $genres = array();
-    $genres[1] = 'Conférence plénière (40 min)';
-    $genres[3] = 'Conférence plénière (20 min)';
-    $genres[2] = 'Atelier';
-    $genres[9] = 'Projet PHP';
+    $genres = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
 
     $formulaire = &instancierFormulaire();
     $id = isset($_GET['id']) ? $_GET['id'] : 0;
@@ -306,6 +298,9 @@ if ($action == 'lister') {
     $groupe = array();
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (40 min)', 1);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (20 min)', 3);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Keynote'            , 4);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Lightning Talk'            , 5);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Clinique'            , 6);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Atelier'            , 2);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Projet'            , 9);
     $formulaire->addGroup($groupe, 'groupe_type_pres', "Type de session", '<br />', false);

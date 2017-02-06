@@ -29,6 +29,10 @@ class Transformer
                 'title' => $event->getTitle(),
                 'start_date' => $event->getDateStart() ? $event->getDateStart()->format('Y-m-d') : null,
             ],
+            'type' => [
+                'id' => $talk->getType(),
+                'label' => $talk->getTypeLabel(),
+            ],
             'has_video' => $talk->hasYoutubeId(),
             'has_slides' => $talk->hasSlidesUrl(),
             'has_joindin' => $talk->hasJoindinId(),
