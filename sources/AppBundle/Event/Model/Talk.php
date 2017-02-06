@@ -24,6 +24,9 @@ class Talk implements NotifyPropertyInterface
     const SKILL_SENIOR = 3;
     const SKILL_NA = 0;
 
+    const LANGUAGE_CODE_FR = 'fr';
+    const LANGUAGE_CODE_EN = 'en';
+
     /**
      * @var int
      */
@@ -96,6 +99,11 @@ class Talk implements NotifyPropertyInterface
      * @var string|null
      */
     private $joindinId;
+
+    /**
+     * @var string|null
+     */
+    private $languageCode;
 
     /**
      * @return int
@@ -496,5 +504,54 @@ class Talk implements NotifyPropertyInterface
     public function isDisplayedOnHistory()
     {
         return $this->getType() != self::TYPE_CLINIC;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getLanguageLabelsByKey()
+    {
+        return [
+            self::LANGUAGE_CODE_FR => 'Français',
+            self::LANGUAGE_CODE_EN => 'Anglais',
+        ];
+    }
+
+    /**
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function getLanguageLabel()
+    {
+        $languageCde = $this->getLanguageCode();
+        $mapping = self::getLanguageLabelsByKey();
+
+        if (!isset($mapping[$languageCde])) {
+            throw new \Exception(sprintf('Code de langue inconnu : %s', $languageCde));
+        }
+
+        return $mapping[$languageCde];
+    }
+
+    /**
+     * @return int
+     */
+    public function getLanguageCode()
+    {
+        return $this->languageCode;
+    }
+
+    /**
+     * @param int $languageCode
+     *
+     * @return Talk
+     */
+    public function setLanguageCode($languageCode)
+    {
+        $this->propertyChanged('languageCode', $this->languageCode, $languageCode);
+        $this->languageCode = $languageCode;
+
+        return $this;
     }
 }

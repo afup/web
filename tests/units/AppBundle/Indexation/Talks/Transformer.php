@@ -29,6 +29,7 @@ class Transformer extends \atoum
                     ->setSlidesUrl('http://tapoueh.org/images/confs/PHPTour_2014_PostgreSQL.pdf')
                     ->setJoindinId(11214)
                     ->setBlogPostUrl('http://tapoueh.org/confs/2014/06/23-PHPTour-Lyon-2014')
+                    ->setLanguageCode('fr')
             )
             ->and(
                 $planning = new Planning(),
@@ -102,6 +103,10 @@ class Transformer extends \atoum
                         'joindin_url' => 'https://legacy.joind.in/talk/view/11214',
                         'has_blog_post' => true,
                         'blog_post_url' => 'http://tapoueh.org/confs/2014/06/23-PHPTour-Lyon-2014',
+                        'language' => [
+                            'code' => 'fr',
+                            'label' => 'Français',
+                        ]
                     ])
         ;
     }
@@ -110,6 +115,7 @@ class Transformer extends \atoum
     {
         $this
             ->given($talk = new Talk())
+                ->and($talk->setLanguageCode('fr'))
                 ->and($planning = new Planning())
                 ->and($event = new Event())
                 ->and($speakers = new \ArrayObject([new Speaker()]))

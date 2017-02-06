@@ -182,6 +182,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'joindinId',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'language_code',
+                'fieldName' => 'languageCode',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;

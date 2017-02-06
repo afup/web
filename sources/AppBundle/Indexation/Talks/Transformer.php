@@ -37,6 +37,10 @@ class Transformer
             'has_slides' => $talk->hasSlidesUrl(),
             'has_joindin' => $talk->hasJoindinId(),
             'has_blog_post' => $talk->hasBlogPostUrl(),
+            'language' => [
+                'code' => $talk->getLanguageCode(),
+                'label' => $talk->getLanguageLabel(),
+            ],
         ];
 
         $speakersLabels = [];
