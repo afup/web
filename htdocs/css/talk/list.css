@@ -48,6 +48,18 @@
     text-align: center;
 }
 
+.ais-pagination--link {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+.ais-pagination--item__active .ais-pagination--link {
+    background-color: #147fab;
+    color: white;
+}
+
 .ais-hits--item {
     margin-bottom: 5px;
 }
