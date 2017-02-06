@@ -74,6 +74,13 @@
     margin: 5px;
 }
 
+.ais-show-more {
+    color: #6a6a6a;
+    font-style: italic;
+    padding: 0 0 0 15px;
+    cursor: pointer;
+}
+
 /* Alignement des checkbox avec les labels */
 .ais-refinement-list--item label,
 .ais-refinement-list--item input[type=checkbox],
