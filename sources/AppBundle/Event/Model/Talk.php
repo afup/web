@@ -14,6 +14,10 @@ class Talk implements NotifyPropertyInterface
     const TYPE_FULL_LONG = 1;
     const TYPE_FULL_SHORT = 3;
     const TYPE_WORKSHOP = 2;
+    const TYPE_KEYNOTE = 4;
+    const TYPE_LIGHTNING_TALK = 5;
+    const TYPE_CLINIC = 6;
+    const TYPE_PHP_PROJECT = 9;
 
     const SKILL_JUNIOR = 1;
     const SKILL_MEDIOR = 2;
@@ -196,6 +200,14 @@ class Talk implements NotifyPropertyInterface
         $this->propertyChanged('abstract', $this->abstract, $abstract);
         $this->abstract = $abstract;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return preg_replace("/NIVEAU : .*\n/", "", $this->getAbstract());
     }
 
     /**
@@ -451,6 +463,47 @@ class Talk implements NotifyPropertyInterface
     {
         $slugify = new Slugify();
         return $slugify->slugify($this->getTitle());
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypeLabelsByKey()
+    {
+        return [
+            self::TYPE_FULL_LONG => 'Conférence (40 minutes)',
+            self::TYPE_WORKSHOP => 'Atelier',
+            self::TYPE_FULL_SHORT => 'Conférence (20 minutes)',
+            self::TYPE_KEYNOTE => 'Keynote',
+            self::TYPE_LIGHTNING_TALK => 'Lightning Talk',
+            self::TYPE_CLINIC => 'Clinique',
+            self::TYPE_PHP_PROJECT => 'Projet PHP',
+        ];
+    }
+
+    /**
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function getTypeLabel()
+    {
+        $type = $this->getType();
+        $mapping = self::getTypeLabelsByKey();
+
+        if (!isset($mapping[$type])) {
+            throw new \Exception(sprintf('Type inconnue: %s', $type));
+        }
+
+        return $mapping[$type];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisplayedOnHistory()
+    {
+        return $this->getType() != self::TYPE_CLINIC;
     }
 
     /**

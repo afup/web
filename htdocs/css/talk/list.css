@@ -48,6 +48,18 @@
     text-align: center;
 }
 
+.ais-pagination--link {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+.ais-pagination--item__active .ais-pagination--link {
+    background-color: #147fab;
+    color: white;
+}
+
 .ais-hits--item {
     margin-bottom: 5px;
 }
@@ -60,6 +72,13 @@
 .ais-refinement-list--header {
     padding: 10px 0 0 0;
     margin: 5px;
+}
+
+.ais-show-more {
+    color: #6a6a6a;
+    font-style: italic;
+    padding: 0 0 0 15px;
+    cursor: pointer;
 }
 
 /* Alignement des checkbox avec les labels */

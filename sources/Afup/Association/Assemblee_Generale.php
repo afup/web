@@ -312,7 +312,7 @@ class Assemblee_Generale
         $requete .= '  afup_presences_assemblee_generale.date_modification = ' . time() . ' ';
         $requete .= 'WHERE';
         $requete .= '  afup_presences_assemblee_generale.id_personne_physique = afup_personnes_physiques.id ';
-        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';
+        $requete .= 'AND (afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' OR afup_personnes_physiques.email = ' . $this->_bdd->echapper($login) . ' )';
         $requete .= 'AND afup_presences_assemblee_generale.date = ' . $timestamp;
 
         return $this->_bdd->executer($requete);

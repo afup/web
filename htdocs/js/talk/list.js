@@ -163,6 +163,23 @@ search.addWidget(
         templates: {
             header: "<h4>Événement</h4>",
             item: refinementItemTemplate
+        },
+        showMore: {
+            templates: {
+                active: '<a class="ais-show-more ais-show-more__inactive">Voir moins</a>',
+                inactive: '<a class="ais-show-more ais-show-more__inactive">Voir plus</a>'
+            }
+        }
+    })
+);
+
+search.addWidget(
+    instantsearch.widgets.refinementList({
+        container: '#refinement-type',
+        attributeName: 'type.label',
+        templates: {
+            header: "<h4>Format</h4>",
+            item: refinementItemTemplate
         }
     })
 );
@@ -193,7 +210,13 @@ search.addWidget(
 
 search.addWidget(
     instantsearch.widgets.pagination({
-        container: '#pagination'
+        container: '#pagination',
+        labels : {
+            first: '<i class="fa fa-angle-double-left"></i>',
+            previous: '<i class="fa fa-angle-left"></i>',
+            next: '<i class="fa fa-angle-right"></i>',
+            last: '<i class="fa fa-angle-double-right"></i>'
+        }
     })
 );
 search.start();

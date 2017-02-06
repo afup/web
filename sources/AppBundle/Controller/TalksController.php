@@ -30,7 +30,7 @@ class TalksController extends SiteBaseController
     {
         $talk = $this->get('ting')->get(TalkRepository::class)->get($id);
 
-        if (null === $talk || $talk->getSlug() != $slug) {
+        if (null === $talk || $talk->getSlug() != $slug || !$talk->isDisplayedOnHistory()) {
             throw $this->createNotFoundException();
         }
 
