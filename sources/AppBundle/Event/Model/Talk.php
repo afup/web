@@ -191,6 +191,14 @@ class Talk implements NotifyPropertyInterface
     }
 
     /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return preg_replace("/NIVEAU : .*\n/", "", $this->getAbstract());
+    }
+
+    /**
      * @return boolean
      */
     public function getScheduled()

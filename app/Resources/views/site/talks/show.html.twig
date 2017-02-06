@@ -13,15 +13,24 @@
     {{ parent() }}
 {% endblock %}
 
+{% block title %}{{ talk.title }} - {{ event.title }} - {{ parent() }}{% endblock %}
+
 {% block metas %}
     {{ parent() }}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="afup.org {{ talk.title }}">
+    <meta name="twitter:description" content="{{ talk.description|striptags|raw }}">
+    {% if talk.hasYoutubeId %}
+        <meta name="twitter:image:src" content="https://img.youtube.com/vi/{{ talk.getYoutubeId }}/hqdefault.jpg">
+    {% endif %}
+    <meta name="twitter:domain" content="afup.org">
 {% endblock %}
 
 {% block content %}
     <div class="mw1400p center" id="container">
         <div class="container">
             <div class="col-md-12 talk-title">
-                <h1>{{ talk.title }}<h1>
+                <h1>{{ talk.title }}</h1>
             </div>
         </div>
 
