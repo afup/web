@@ -41,3 +41,6 @@ deps.lock
 !var/SymfonyRequirements.php
 /htdocs/bundles/
 /bin/atoum
+/docker-compose.override.yml
+/composer.phar
+/data
