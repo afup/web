@@ -192,6 +192,13 @@ search.addWidget(
         templates: {
             header: "<h4>Conférencier</h4>",
             item: refinementItemTemplate
+        },
+        showMore: {
+            limit: 20,
+            templates: {
+                active: '<a class="ais-show-more ais-show-more__inactive">Voir moins</a>',
+                inactive: '<a class="ais-show-more ais-show-more__inactive">Voir plus</a>'
+            }
         }
     })
 );
