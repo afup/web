@@ -197,6 +197,16 @@ search.addWidget(
 );
 
 search.addWidget(
+    instantsearch.widgets.clearAll({
+        container: '#refinement-clear',
+        templates: {
+            link: 'Supprimer les filtres'
+        },
+        autoHideContainer: true
+    })
+);
+
+search.addWidget(
     instantsearch.widgets.pagination({
         container: '#pagination',
         labels : {
