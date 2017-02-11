@@ -4,9 +4,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="/css/grid.css">
-    <link rel="stylesheet" href="/css/stars.css">
-    <link rel="stylesheet" href="/css/vote.css">
+    <link rel="stylesheet" href="{{ asset('/css/grid.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/stars.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/vote.css') }}">
 {% endblock %}
 
 {% block header %}
@@ -52,5 +52,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="/js/vote.js"></script>
+    <script src="{{ asset('/js/vote.js') }}"></script>
 {% endblock %}

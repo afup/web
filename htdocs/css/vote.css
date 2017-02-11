@@ -773,45 +773,10 @@ a {
     list-style-position: inside;
 }
 
-@media (max-width: 768px) {
-    header {
-        height: 80px !important;
-        overflow:hidden;
-    }
-    [class^="nav-button"] {
-        top:30px;
-        right:30px
-    }
-    .navbar-nav{
-        margin: 0 0.8em;
-    }
-    .navbar-nav>li{
-        border-top: 1px solid white;
-    }
-    .navbar-nav>li>a {
-        line-height:1.5rem;
-    }
-    body:target header {
-        height: 200px !important;
-    }
-    body:target {
-        padding-top:200px;
-    }
-    .event--vote-form{
-        float:none !important;
-    }
-    .event--vote{
-        border-bottom: 1px grey solid;
-        margin-bottom: 3em;
-    }
-}
 /*******
 * CFP
 ********/
 
-div.event--vote-form{
-    float:right;
-}
 div.event--vote-form form{
     width: auto;
 }
@@ -820,7 +785,20 @@ div.event--vote-form label{
     display:block
 }
 div.event--vote{
-    clear:both;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    display: flex;
+}
+
+div.event--vote-details {
+    width: 75%;
+    font-family:  serif;
+    font-size: 137.5%;
+    -webkit-font-smoothing: antialiased;
+}
+
+div.event--vote-meta {
+    font-weight: bold;
 }
 
 @media (max-width: 767px) {
@@ -967,6 +945,7 @@ div.photo-container{
 .cfp--votes ul li{
     margin: 2em 0;
 }
+
 .cfp--votes .cfp--vote-afup{
     background-color:#4c6eaf;
     color:white;
@@ -1001,4 +980,51 @@ div.photo-container{
 
 .event-pagination--next{
     float:right;
+}
+
+/** Responsive */
+
+@media (max-width: 768px) {
+    header {
+        height: 80px !important;
+        overflow:hidden;
+    }
+    [class^="nav-button"] {
+        top:30px;
+        right:30px
+    }
+    .navbar-nav{
+        margin: 0 0.8em;
+    }
+    .navbar-nav>li{
+        border-top: 1px solid white;
+    }
+    .navbar-nav>li>a {
+        line-height:1.5rem;
+    }
+    body:target header {
+        height: 200px !important;
+    }
+    body:target {
+        padding-top:200px;
+    }
+    .event--vote-form{
+        float:none !important;
+    }
+    div.event--vote{
+        margin-bottom: 3em;
+        display: block;
+    }
+
+    div.event--vote-form form {
+        margin-left: 0;
+    }
+
+    div.event--vote-details {
+        width: 100%;
+    }
+
+    .event--vote-form textarea {
+        width: 100%;
+    }
 }
