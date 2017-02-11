@@ -26,6 +26,9 @@ div.container:after {
     .col-md-8 {
         width: 66.66667%;
     }
+    .col-md-6 {
+        width: 50%;
+    }
     .col-md-4 {
         width: 33.33333%;
     }
@@ -35,6 +38,7 @@ div.container:after {
 
     .col-md-2,
     .col-md-4,
+    .col-md-6,
     .col-md-8,
     .col-md-10,
     .col-md-12 {
@@ -44,6 +48,7 @@ div.container:after {
 
 .col-md-2,
 .col-md-4,
+.col-md-6,
 .col-md-8,
 .col-md-10,
 .col-md-12
