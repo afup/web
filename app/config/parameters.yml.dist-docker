@@ -1,0 +1,25 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host:     db
+    database_port:     3306
+    database_name:     web
+    database_user:     afup
+    database_password: afup
+    # You should uncomment this if you want use pdo_sqlite
+    # database_path: "%kernel.root_dir%/data.db3"
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # Github connection details
+    github_client_id: id
+    github_client_secret: secret
+
+    algolia_app_id: DVB92YWTPE
+    algolia_backend_api_key: 78e71e5r5c2Rb353f5a03376gb9878779
+    algolia_frontend_api_key: 74e71e5r5c2Rb353f5a03376gb9878777
+
+    # Slack url for notifications
+    slack_url: 'http://yolo'

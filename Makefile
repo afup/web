@@ -1,12 +1,14 @@
+CURRENT_UID=$(shell id -u)
+
 .PHONY: install docker-up test hooks
 
 install: vendor
 
 docker-up: var/logs/.docker-build docker/data
-	docker-compose up
+	CURRENT_UID=$(CURRENT_UID) docker-compose up
 
 var/logs/.docker-build: docker-compose.yml docker-compose.override.yml $(shell find docker -type f)
-	docker-compose build
+	CURRENT_UID=$(CURRENT_UID) docker-compose build
 	touch var/logs/.docker-build
 
 vendor: composer.phar composer.lock
@@ -18,6 +20,15 @@ composer.phar:
 	@if [ "$(EXPECTED_SIGNATURE)" != "$(ACTUAL_SIGNATURE)" ]; then echo "Invalid signature"; exit 1; fi
 	php composer-setup.php
 	rm composer-setup.php
+
+configs/application/config.php:
+	cp configs/application/config.php.dist-docker configs/application/config.php
+
+app/config/parameters.yml:
+	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
+
+config: configs/application/config.php app/config/parameters.yml
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make vendor
 
 test:
 	./bin/atoum
