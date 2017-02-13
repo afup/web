@@ -53,8 +53,8 @@ Et la base de données est `afup_dev`.
 
 * cloner le dépot
 * copier le fichier `docker-compose.override.yml-dist` dans `docker-compose.override.yml` et modifier les ports utilisés à votre convenance.
-* effectuer un `make docker-up`
-* ensuite lancer un `./docker/bin/bash` puis un `make` (pour installer les vendors)
+* effectuer un `make docker-up` pour la création de l'infrastructure sous docker
+* effectuer un `make config` pour la copie des fichiers de config par défaut et l'installation des dépendances
 
 ## Applications
 
