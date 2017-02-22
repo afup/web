@@ -30,6 +30,9 @@ RewriteEngine On
 #RewriteRule ^/event/(.*) - [E=BASE:%1]
 
 
+RewriteCond %{QUERY_STRING} route=actualites/961/lafup-lance-un-super-apero
+RewriteRule ^pages/site/ /association/super-apero-9-mars? [L,R=302]
+
 # If the requested filename exists, simply serve it.
 # We only want to let Apache serve files and not directories.
 RewriteCond %{REQUEST_FILENAME} -f
