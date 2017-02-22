@@ -30,3 +30,7 @@ company_invitation:
 offices:
   path: /antennes
   defaults: {_controller: AppBundle:Static:offices}
+
+superapero:
+  path: /super-apero-9-mars
+  defaults: {_controller: AppBundle:Static:superApero}

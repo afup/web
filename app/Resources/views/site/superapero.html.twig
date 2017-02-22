@@ -1,0 +1,526 @@
+{% extends ':site:base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/grid.css') }}" media="all" />
+    <style type="text/css">
+
+        .mapael .map {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .mapael .mapTooltip {
+            position: absolute;
+            background-color: #474c4b;
+            -moz-opacity: 0.70;
+            opacity: 0.70;
+            filter: alpha(opacity=70);
+            border-radius: 10px;
+            padding: 10px;
+            z-index: 1000;
+            max-width: 200px;
+            display: none;
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h1 img {
+            max-height: 80px;
+        }
+
+        @media (max-width: 992px) {
+            h1 img {
+                display: block;
+                margin: 10px auto;
+            }
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.0/raphael-min.js"></script>
+    <script src="{{ asset('/js/jQuery-Mapael-2.0.0/js/jquery.mapael.min.js') }}"></script>
+    <script src="{{ asset('/js/jQuery-Mapael-2.0.0/js/maps/france_and_luxembourg.min.js') }}"></script>
+    <script>
+        var legends = {};
+        var plots = {};
+
+        $('.super-apero-city').each(function() {
+            var city = $(this);
+            legends[city.data('mapKey')] = {
+                first_point_x: city.data("map-legend-first-point-x"),
+                first_point_y: city.data("map-legend-first-point-y"),
+                second_point_x: city.data("map-legend-second-point-x"),
+                second_point_y: city.data("map-legend-second-point-y"),
+                third_point_x: city.data("map-legend-third-point-x"),
+                third_point_y: city.data("map-legend-third-point-y"),
+                attachment: city.data("map-legend-attachment"),
+                title: $('h3', city).text(),
+                subtitle: city.data("map-legend-subtitle"),
+                link: $('a.super-apero-city--more-info', city).attr('href')
+            };
+            plots[city.data('mapKey')] = {
+                latitude: city.data("map-point-latitude"),
+                longitude: city.data("map-point-longitude"),
+                size: 20,
+                attrs: {
+                    fill: "#2b3e74"
+                }
+            };
+        });
+
+        $(".map-container").mapael({
+            map : {
+                name : "france_departments",
+                defaultArea: {
+                    animDuration: 0,
+                    attrs: {
+                        fill: "#50a0dd",
+                        stroke: "#ced8d0"
+                    },
+                    attrsHover: {
+                        fill: "#50a0dd"
+                    },
+                    text: {
+                        attrs: {
+                            fill: "#505444"
+                        },
+                        attrsHover: {
+                            fill: "#000"
+                        }
+                    }
+                },
+                afterInit : function($self, paper, areas, plots, options) {
+                    var topMargin = 30;
+                    var bottomMargin = 170;
+                    var leftMargin = 170;
+                    var rightMargin = 100;
+
+                    var addedWidth = leftMargin + rightMargin;
+                    var addedHeight = topMargin + bottomMargin;
+
+                    paper.setViewBox(0, 0, 600 + addedWidth, 500 + addedHeight, true);
+
+                    // Décalages de la carte
+                    for (var key in areas) {
+                        areas[key].mapElem.translate(addedWidth / 2, topMargin);
+                    }
+
+                    for (var key in plots) {
+                        plots[key].mapElem.translate(addedWidth / 2, topMargin);
+                    }
+
+                    for (var key in legends) {
+                        paper.path([
+                            "M",
+                            legends[key]['first_point_x'],
+                            legends[key]['first_point_y'],
+                            "L",
+                            legends[key]['second_point_x'],
+                            legends[key]['second_point_y']
+                        ]).attr({stroke: "#2b3e74"});
+                        paper.path([
+                            "M",
+                            legends[key]['second_point_x'],
+                            legends[key]['second_point_y'],
+                            "L",
+                            legends[key]['third_point_x'],
+                            legends[key]['third_point_y']
+                        ]).attr({stroke: "#2b3e74"});
+
+                        var boxWith = 150;
+                        var boxHeight = 50;
+                        var boxX;
+                        var boxY;
+
+                        if (legends[key]['attachment'] == 'left') {
+                            boxX = legends[key]['third_point_x'];
+                            boxY = legends[key]['third_point_y'] - (boxHeight / 2);
+                        } else if (legends[key]['attachment'] == 'top') {
+                            boxX = legends[key]['third_point_x'] - (boxWith / 2);
+                            boxY = legends[key]['third_point_y'];
+                        } else if (legends[key]['attachment'] == 'bottom') {
+                            boxX = legends[key]['third_point_x'] - (boxWith / 2);
+                            boxY = legends[key]['third_point_y'] - boxHeight;
+                        } else if (legends[key]['attachment'] == 'right') {
+                            boxX = legends[key]['third_point_x'] - (boxWith);
+                            boxY = legends[key]['third_point_y'] - (boxHeight / 2);
+                        }
+
+                        paper.rect(boxX, boxY, boxWith, boxHeight);
+
+                        var text = paper.text(boxX + 10, boxY + 15, legends[key]['title']).attr( {'text-anchor':'start', 'font-size': "14px", "font-weight": "bold"} );
+                        text.attr({'href': legends[key]['link']});
+
+                        paper.text(boxX + 10, boxY + 35, legends[key]['subtitle']).attr( {'text-anchor':'start', 'font-size': "12px"} );
+                    }
+                }
+            },
+            plots: plots
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="mw1400p center" id="container">
+        <div class="line" id="main">
+            <h1>
+                <img src="http://aperophp.net/img/logo_apero_php.png" />
+                Super-apéro PHP
+                <img src="http://aperophp.net/img/logo_apero_php.png" />
+            </h1>
+
+            <h2 style="text-align: center">Des apéros PHP le même jour dans toutes les antennes !</h2>
+
+            <blockquote>
+                <p>Le soir du jeudi 9 mars, dans près d'une quinzaine de villes de France, les développeurs, PHP lovers et membres de notre joyeuse communauté sont conviés à un grand apéro PHP, porté par leur antenne locale : bienvenue au premier Super Apéro PHP de l'AFUP !</p>
+            </blockquote>
+
+            <p>En ce jeudi 9 mars, l'AFUP synchronise les montres des antennes AFUP sur l'ensemble du territoire, et invite les développeurs PHP à se retrouver autour d'un verre, échanger sur leurs derniers projets PHP, et de profiter le temps d'une soirée de toutes les bonnes ondes de la communauté !</p>
+
+            <p>Dès 19h, les antennes vous attendent donc près de chez vous : certaines organisent une conférence animée par un spécialiste PHP, d'autres prévoient de se connecter à d'autres antennes via Skype, un live-tweet est prévu pour suivre l'activité de la soirée aux 4 coins de la France... Retrouvez ci-dessous l'ensemble des villes concernées et le programme de votre soirée :</p>
+
+            <div class="map-container">
+                <div class="map">Villes apéros PHP</div>
+            </div>
+
+            <style>
+                .super-apero-city {
+                    border-bottom: 1px solid #36a7df;
+                }
+                .super-apero-city > div {
+                    min-height: 50px;
+                }
+
+            </style>
+
+            <div class="super-apero-cities">
+
+
+                <div class="container super-apero-city"
+                     data-map-key="bordeaux"
+                     data-map-legend-first-point-x="330"
+                     data-map-legend-first-point-y="440"
+                     data-map-legend-second-point-x="270"
+                     data-map-legend-second-point-y="470"
+                     data-map-legend-third-point-x="230"
+                     data-map-legend-third-point-y="470"
+                     data-map-legend-attachment="right"
+                     data-map-legend-subtitle="Frog and Rosbif"
+                     data-map-point-latitude="44.837912"
+                     data-map-point-longitude="-0.579541"
+                >
+                    <div class="col-md-4">
+                        <h3>Bordeaux</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h au Frog and Rosbif, 23 rue Ausone à Bordeaux
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/423/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="clermont"
+                     data-map-legend-first-point-x="490"
+                     data-map-legend-first-point-y="380"
+                     data-map-legend-second-point-x="700"
+                     data-map-legend-second-point-y="220"
+                     data-map-legend-third-point-x="715"
+                     data-map-legend-third-point-y="220"
+                     data-map-legend-attachment="left"
+                     data-map-legend-subtitle="Délirium Café"
+                     data-map-point-latitude="45.783088"
+                     data-map-point-longitude="3.082352"
+                >
+                    <div class="col-md-4">
+                        <h3>Clermont-Ferrand</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h, le Délirium Café, 20 rue de la Tour d'Auvergne, Clermont-Ferrand
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/421/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="lille"
+                     data-map-legend-first-point-x="490"
+                     data-map-legend-first-point-y="55"
+                     data-map-legend-second-point-x="530"
+                     data-map-legend-second-point-y="30"
+                     data-map-legend-third-point-x="605"
+                     data-map-legend-third-point-y="30"
+                     data-map-legend-attachment="left"
+                     data-map-legend-subtitle="Le Liberch'ti"
+                     data-map-point-latitude="50.637222"
+                     data-map-point-longitude="3.063333"
+                >
+                    <div class="col-md-4">
+                        <h3>Lille</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h, Le Liberch'ti, 169 Bvd de la Liberté, Lille.<br />
+                        Conférence proposée par Grégoire Pineau et Vincent Chalamon<br .>
+                        Soirée sponsorisée par <a href="https://les-tilleuls.coop/">Les-Tilleuls.coop</a>.
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/413/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="limoges"
+                     data-map-legend-first-point-x="410"
+                     data-map-legend-first-point-y="380"
+                     data-map-legend-second-point-x="310"
+                     data-map-legend-second-point-y="380"
+                     data-map-legend-third-point-x="230"
+                     data-map-legend-third-point-y="410"
+                     data-map-legend-attachment="right"
+                     data-map-legend-subtitle="O'Brien"
+                     data-map-point-latitude="45.85"
+                     data-map-point-longitude="1.25"
+                >
+                    <div class="col-md-4">
+                        <h3>Limoges</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h au O'Brien, 6 cours Jourdan à Limoges.
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/422/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="luxembourg"
+                     data-map-legend-first-point-x="630"
+                     data-map-legend-first-point-y="130"
+                     data-map-legend-second-point-x="650"
+                     data-map-legend-second-point-y="100"
+                     data-map-legend-third-point-x="670"
+                     data-map-legend-third-point-y="90"
+                     data-map-legend-attachment="left"
+                     data-map-legend-subtitle="Technoport"
+                     data-map-point-latitude="49.61"
+                     data-map-point-longitude="6.13333"
+                >
+                    <div class="col-md-4">
+                        <h3>Luxembourg</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h au Technoport, 9 av. des Hauts Fourneaux, 4362 Esch-sur-Alzette, Luxembourg
+                    </div>
+                    <div class="col-md-4">
+                        <a href="https://www.meetup.com/afup-luxembourg-php/events/237877430/?a=socialmedia&_locale=fr-FR" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="lyon"
+                     data-map-legend-first-point-x="570"
+                     data-map-legend-first-point-y="380"
+                     data-map-legend-second-point-x="680"
+                     data-map-legend-second-point-y="320"
+                     data-map-legend-third-point-x="710"
+                     data-map-legend-third-point-y="320"
+                     data-map-legend-attachment="left"
+                     data-map-legend-subtitle="Le bomp"
+                     data-map-point-latitude="45.759723"
+                     data-map-point-longitude="4.842223"
+                >
+                    <div class="col-md-4">
+                        <h3>Lyon</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h au Bomp, 1 place Croix-Paquet à Lyon
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/424/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="marseille"
+                     data-map-legend-first-point-x="600"
+                     data-map-legend-first-point-y="540"
+                     data-map-legend-second-point-x="600"
+                     data-map-legend-second-point-y="600"
+                     data-map-legend-third-point-x="600"
+                     data-map-legend-third-point-y="600"
+                     data-map-legend-attachment="top"
+                     data-map-legend-subtitle="La Boate"
+                     data-map-point-latitude="43.296346"
+                     data-map-point-longitude="5.36988923"
+                >
+                    <div class="col-md-4">
+                        <h3>Marseille</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h à La Boate, 35 rue de la Paix à Marseille
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/417/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="montpelier"
+                     data-map-legend-first-point-x="530"
+                     data-map-legend-first-point-y="520"
+                     data-map-legend-second-point-x="470"
+                     data-map-legend-second-point-y="590"
+                     data-map-legend-third-point-x="470"
+                     data-map-legend-third-point-y="670"
+                     data-map-legend-attachment="top"
+                     data-map-legend-subtitle="Kaliop"
+                     data-map-point-latitude="43.611944"
+                     data-map-point-longitude="3.877222"
+                >
+                    <div class="col-md-4">
+                        <h3>Montpellier</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h chez <a href="http://www.kaliop.fr/">Kaliop</a>, sponsor de la soirée,<br />
+                        situé au 1401 avenue du Mondial 98 à Montpellier
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/419/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="nantes"
+                     data-map-legend-first-point-x="285"
+                     data-map-legend-first-point-y="290"
+                     data-map-legend-second-point-x="180"
+                     data-map-legend-second-point-y="290"
+                     data-map-legend-third-point-x="180"
+                     data-map-legend-third-point-y="290"
+                     data-map-legend-attachment="right"
+                     data-map-legend-subtitle="Flesselles"
+                     data-map-point-latitude="47.21806"
+                     data-map-point-longitude="-1.55278"
+                >
+                    <div class="col-md-4">
+                        <h3>Nantes</h3>
+                    </div>
+                    <div class="col-md-4">
+                        Rdv à 19h au Flesselles, 3 allée Flesselles à Nantes
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/418/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="paris"
+                     data-map-legend-first-point-x="460"
+                     data-map-legend-first-point-y="180"
+                     data-map-legend-second-point-x="400"
+                     data-map-legend-second-point-y="60"
+                     data-map-legend-third-point-x="360"
+                     data-map-legend-third-point-y="60"
+                     data-map-legend-attachment="right"
+                     data-map-legend-subtitle="Quigley's Point"
+                     data-map-point-latitude="48.856578"
+                     data-map-point-longitude="2.351828"
+                >
+                    <div class="col-md-4">
+                        <h3>Paris</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h au Quigley's Point bar, 5 rue du jour, Paris Ier arrondissement
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/414/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="rennes"
+                     data-map-legend-first-point-x="270"
+                     data-map-legend-first-point-y="225"
+                     data-map-legend-second-point-x="200"
+                     data-map-legend-second-point-y="170"
+                     data-map-legend-third-point-x="170"
+                     data-map-legend-third-point-y="160"
+                     data-map-legend-attachment="bottom"
+                     data-map-legend-subtitle="Le Mabilay"
+                     data-map-point-latitude="48.114722"
+                     data-map-point-longitude="-1.679444"
+                >
+                    <div class="col-md-4">
+                        <h3>Rennes</h3>
+                    </div>
+                    <div class="col-md-4">
+                        Rdv à 19h au Mabilay, 2 rue de la Mabilais, à Rennes.<br />
+                        Mini-conférence intitulée "Faut-il encore faire du PHP en 2017 ?"<br />
+                        présentée en collaboration avec la French Tech Rennes-St Malo
+                    </div>
+                    <div class="col-md-4">
+                        <a href="https://www.meetup.com/fr-FR/AFUP-Rennes/events/237681965/" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <div class="container super-apero-city"
+                     data-map-key="toulouse"
+                     data-map-legend-first-point-x="420"
+                     data-map-legend-first-point-y="520"
+                     data-map-legend-second-point-x="290"
+                     data-map-legend-second-point-y="590"
+                     data-map-legend-third-point-x="290"
+                     data-map-legend-third-point-y="600"
+                     data-map-legend-attachment="top"
+                     data-map-legend-subtitle="HarriCow"
+                     data-map-point-latitude="43.604482"
+                     data-map-point-longitude="1.443962"
+                >
+                    <div class="col-md-4">
+                        <h3>Toulouse</h3>
+                    </div>
+                    <div class="col-md-4">
+                        RDV à 19h au HarriCow, 13 rue St Ursule à Toulouse.<br />
+                        Sponsors : Makina Corpus et Emagma.
+                    </div>
+                    <div class="col-md-4">
+                        <a href="http://www.aperophp.net/416/view.html" class="super-apero-city--more-info">Informations supplémentaires et inscriptions</a>
+                    </div>
+                </div>
+
+
+                <p>
+                <p>Votre ville n'est pas listée ? Vous-aussi vous pouvez organiser un apéro PHP ! Contactez <a href="mailto:communication@afup.org">communication@afup.org</a> si vous souhaitez de l'aide dans l'organisation et vous coordonner avec le reste des villes.</p>
+                </p>
+
+                <div style="text-align: center;margin:40px 0">
+                    <img src="/images/super_apero_php.png" style="max-width: 350px"/>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+{% endblock %}
+
