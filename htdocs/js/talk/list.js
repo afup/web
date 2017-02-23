@@ -177,6 +177,7 @@ search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-type',
         attributeName: 'type.label',
+        operator: "and",
         templates: {
             header: "<h4>Format</h4>",
             item: refinementItemTemplate
