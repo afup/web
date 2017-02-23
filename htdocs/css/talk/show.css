@@ -46,9 +46,12 @@ div.speaker-name-container {
     font-style: italic;
 }
 
+.speaker-photo-container {
+    text-align: center;
+}
+
 .speaker-talks-link {
-    text-align: right;
-    margin: 15px 0 0 0
+    margin: 15px 0 0 0;
 }
 
 .speaker-photo {

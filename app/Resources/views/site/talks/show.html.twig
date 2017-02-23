@@ -109,14 +109,14 @@
                         </div>
                     </div>
                     <div class="container">
-                        <div class="col-md-2">
+                        <div class="col-md-2 speaker-photo-container">
                             <img src="{{ photo_storage.getUrl(speaker) }}" class="speaker-photo" />
+                            <div class="speaker-talks-link">
+                                <a href="{{ url('talks_list', {"fR": { "speakers.label" : [ speaker.label ]}}) }}">Voir tous ses talks</a>
+                            </div>
                         </div>
                         <div class="col-md-10">
                             {{ speaker.biography }}
-                            <div class="speaker-talks-link">
-                                <a href="{{ url('talks_list', {"fR": { "speakers.label" : [ speaker.label ]}}) }}">Voir tous les talks de ce speaker.</a>
-                            </div>
                         </div>
                     </div>
                 {% endfor %}
