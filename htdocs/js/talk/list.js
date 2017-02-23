@@ -51,7 +51,7 @@ search.addWidget(
 
 
                 if (typeof data.blog_post_url !== 'undefined') {
-                    content += '<a class="talk-info-link" href="' + data.blog_post_url + '" class="talk-list-" target="blog-post"><i class="fa fa-rss"></i> Article</a>';
+                    content += '<a class="talk-info-link" href="' + data.blog_post_url + '" class="talk-list-" target="blog-post"><i class="fa fa-rss"></i> Transcript</a>';
                 }
 
                 if (typeof data.slides_url !== 'undefined') {
@@ -130,7 +130,7 @@ search.addWidget(
     instantsearch.widgets.toggle({
         container: '#refinement-has-blog-post',
         attributeName: 'has_blog_post',
-        label: 'Avec article de blog',
+        label: 'Avec transcript',
         values: {
             on: true
         },
