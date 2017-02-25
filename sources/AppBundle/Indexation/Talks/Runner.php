@@ -48,7 +48,6 @@ class Runner
         $objects = [];
 
         foreach ($this->getAllPlannings() as $planning) {
-
             if (null === ($object = $this->prepareObject($planning))) {
                 continue;
             }

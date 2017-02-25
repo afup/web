@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use Afup\Site\Utils\Configuration;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +35,7 @@ abstract class SiteBaseController extends Controller implements SiteControllerIn
     /**
      * @inheritDoc
      */
-    protected function render($view, array $parameters = array(), Response $response = null)
+    protected function render($view, array $parameters = [], Response $response = null)
     {
         return parent::render($view, $parameters + $this->defaultBlocks, $response);
     }

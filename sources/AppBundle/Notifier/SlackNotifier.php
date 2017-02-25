@@ -3,7 +3,6 @@
 
 namespace AppBundle\Notifier;
 
-
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\Slack\Message;

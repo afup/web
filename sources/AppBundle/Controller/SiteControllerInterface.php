@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use Afup\Site\Utils\Configuration;
 
 interface SiteControllerInterface

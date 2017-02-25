@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\Model;
 
-
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Validator\Constraints as Assert;

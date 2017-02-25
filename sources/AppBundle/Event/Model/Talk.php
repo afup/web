@@ -119,7 +119,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function setId($id)
     {
-        $id = (int)$id;
+        $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
         return $this;
@@ -139,7 +139,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function setForumId($forumId)
     {
-        $forumId = (int)$forumId;
+        $forumId = (int) $forumId;
         $this->propertyChanged('forumId', $this->forumId, $forumId);
         $this->forumId = $forumId;
         return $this;

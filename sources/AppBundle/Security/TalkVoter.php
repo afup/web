@@ -3,7 +3,6 @@
 
 namespace AppBundle\Security;
 
-
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
@@ -58,5 +57,4 @@ class TalkVoter extends Voter
         }
         return false;
     }
-
 }

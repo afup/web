@@ -48,7 +48,7 @@ class Planning implements NotifyPropertyInterface
      */
     public function setId($id)
     {
-        $id = (int)$id;
+        $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
         return $this;
@@ -69,7 +69,7 @@ class Planning implements NotifyPropertyInterface
      */
     public function setTalkId($talkId)
     {
-        $talkId = (int)$talkId;
+        $talkId = (int) $talkId;
         $this->propertyChanged('talkId', $this->talkId, $talkId);
         $this->talkId = $talkId;
 
@@ -91,7 +91,7 @@ class Planning implements NotifyPropertyInterface
      */
     public function setEventId($eventId)
     {
-        $eventId = (int)$eventId;
+        $eventId = (int) $eventId;
         $this->propertyChanged('eventId', $this->eventId, $eventId);
         $this->eventId = $eventId;
 

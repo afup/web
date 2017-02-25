@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 class StaticController extends SiteBaseController
 {
     public function officesAction()
