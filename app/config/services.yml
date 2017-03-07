@@ -19,6 +19,7 @@ services:
 
     app_twig:
         class: AppBundle\Twig\TwigExtension
+        arguments: ["@app.legacy_router"]
         tags:
             -  { name: twig.extension }
 
@@ -91,3 +92,6 @@ services:
     app.slack_notifier:
         class: AppBundle\Notifier\SlackNotifier
         arguments: ["%slack_url%", "@app.slack_message_factory", "@jms_serializer.serializer"]
+
+    app.legacy_router:
+        class: AppBundle\Routing\LegacyRouter

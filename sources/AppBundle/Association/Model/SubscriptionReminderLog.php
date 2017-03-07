@@ -175,7 +175,7 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
      */
     public function setMailSent($mailSent)
     {
-        $this->propertyChanged('mailSend', $this->mailSent, (bool)$mailSent);
+        $this->propertyChanged('mailSent', $this->mailSent, (bool)$mailSent);
         $this->mailSent = (bool) $mailSent;
         return $this;
     }
