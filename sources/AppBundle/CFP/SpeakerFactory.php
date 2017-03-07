@@ -3,7 +3,6 @@
 
 namespace AppBundle\CFP;
 
-
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;

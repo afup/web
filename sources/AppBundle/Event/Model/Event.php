@@ -78,7 +78,7 @@ class Event implements NotifyPropertyInterface
      */
     public function setId($id)
     {
-        $id = (int)$id;
+        $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
         return $this;

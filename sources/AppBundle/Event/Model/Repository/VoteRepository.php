@@ -39,7 +39,7 @@ WHERE s.id_forum = :event');
             WHERE sessions.id_forum = :eventId
             ORDER BY asvg.session_id, asvg.submitted_on
             ');
-        $query->setParams(['eventId' => (int)$eventId]);
+        $query->setParams(['eventId' => (int) $eventId]);
 
         $hydrator = new HydratorSingleObject();
         $hydrator
@@ -59,7 +59,7 @@ WHERE s.id_forum = :event');
             ORDER BY asvg.submitted_on DESC
         ');
 
-        $query->setParams(['talkId' => (int)$talkId]);
+        $query->setParams(['talkId' => (int) $talkId]);
 
         $hydrator = new HydratorSingleObject();
         $hydrator
@@ -134,5 +134,4 @@ WHERE s.id_forum = :event');
         }
         $this->save($vote);
     }
-
 }

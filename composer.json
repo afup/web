@@ -62,6 +62,7 @@
   "minimum-stability": "stable",
   "require-dev": {
     "atoum/atoum": "^2.8",
-    "atoum/stubs": "^2.5"
+    "atoum/stubs": "^2.5",
+    "friendsofphp/php-cs-fixer": "~1.12"
   }
 }

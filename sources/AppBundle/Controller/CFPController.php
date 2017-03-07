@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use Afup\Site\Utils\Mail;
 use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Form\SpeakerType;
@@ -152,7 +151,7 @@ class CFPController extends EventBaseController
                 }
                 $user = $this->getUser();
                 // Send mail to the other guy, begging for him to join the talk
-                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function() use ($talk, $user, $talkId, $eventSlug, $invitation){
+                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($talk, $user, $talkId, $eventSlug, $invitation) {
                     $text = $this->get('translator')->trans('mail.invitation.text',
                         [
                             '%login%' => $user->getLogin(),
@@ -258,7 +257,6 @@ class CFPController extends EventBaseController
             // Save cospeaker
             $talkInvitationRepository->save($invitation);
             $this->get('ting')->get(TalkToSpeakersRepository::class)->addSpeakerToTalk($talk, $speaker);
-
         }
         return $this->redirectToRoute('cfp_edit', ['eventSlug' => $eventSlug, 'talkId' => $talkId]);
     }
@@ -285,7 +283,7 @@ class CFPController extends EventBaseController
                 $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
 
                 if ($this->get('ting.unitofwork')->isManaged($talk) === false) {
-                    $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function() use ($talk) {
+                    $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($talk) {
                         $this->get('app.slack_notifier')->notifyTalk($talk);
                     });
                 }

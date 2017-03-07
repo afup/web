@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
@@ -45,8 +44,7 @@ class VoteController extends EventBaseController
         }
 
         $vote = new Vote();
-        $forms = function () use ($talks, $vote, $eventSlug)
-        {
+        $forms = function () use ($talks, $vote, $eventSlug) {
             foreach ($talks as $talk) {
                 if (isset($talk['asvg'])) {
                     $myVote = $talk['asvg'];
@@ -148,7 +146,7 @@ class VoteController extends EventBaseController
 
         try {
             $vote->setTalk($talk);
-            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function() use ($vote) {
+            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($vote) {
                 $this->get('app.slack_notifier')->notifyVote($vote);
             });
             $voteRepository->upsert($vote);
@@ -171,5 +169,4 @@ class VoteController extends EventBaseController
 
         return $this->render('admin/vote/liste.html.twig', ['votes' => $votes]);
     }
-
 }

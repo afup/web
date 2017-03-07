@@ -243,7 +243,6 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
      */
     public function eraseCredentials()
     {
-
     }
     /***************
      * Serializable
@@ -281,6 +280,4 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
          */
         return ($user->getId() === $this->id);
     }
-
-
 }
