@@ -12,6 +12,7 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -195,5 +196,17 @@ class MemberShipController extends SiteBaseController
         }
 
         return $this->render(':site/company_membership:member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
+    }
+
+    public function reminderLogAction($page = 1)
+    {
+        /**
+         * @var $repository SubscriptionReminderLogRepository
+         */
+        $limit = 50;
+        $repository = $this->get('ting')->get(SubscriptionReminderLogRepository::class);
+        $results = $repository->getPaginatedLogs($page, $limit);
+
+        return $this->render(':admin/relances:liste.html.twig', ['logs' => $results, 'limit' => $limit, 'page' => $page]);
     }
 }

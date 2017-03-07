@@ -3,9 +3,17 @@
 
 namespace AppBundle\Twig;
 
+use AppBundle\Routing\LegacyRouter;
 
-class TwigExtension extends \Twig_Extension
+class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
+    private $legacyRouter;
+
+    public function __construct(LegacyRouter $legacyRouter)
+    {
+        $this->legacyRouter = $legacyRouter;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,6 +31,11 @@ class TwigExtension extends \Twig_Extension
                 return '';
             }, ['is_safe' => ['html']])
         );
+    }
+
+    public function getGlobals()
+    {
+        return ['legacy_router' => $this->legacyRouter];
     }
 
     /**
