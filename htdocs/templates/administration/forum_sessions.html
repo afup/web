@@ -13,17 +13,25 @@
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=forum_sessions&amp;action=ajouter&amp;id_forum={$id_forum}" title="Ajouter une session">Ajouter une session</a><br />
     <br/>
     <form method="GET" name="filtre">
-      <table>
       <input type="hidden" name="page" value="forum_sessions" />
       <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
       <input type="hidden" name="sens" value="{$smarty.get.sens}" />
       <input type="hidden" name="forum_id" value="{$id_forum}" />
-        <tr>
-            <td width="50" nowrap>Filtre : </td>
-            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
-            <td><input type="submit" value="OK" name="submit_filtre"></td>
-        </tr>
-      </table>
+        <div>
+            <div>
+                Filtre:
+            </div>
+            <div>
+                Titre : <input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}">
+            </div>
+            <div>
+                <input type="checkbox" name="filtre_needs_mentoring" id="filtre_needs_mentoring" value="1" {if $smarty.get.filtre_needs_mentoring} checked="checked" {/if}>
+                <label for="filtre_needs_mentoring">Afficher seulement les sessions dont le speaker a demandé un accompagnement</label>
+            </div>
+            <div>
+                <input type="submit" value="Filtrer" name="submit_filtre">
+            </div>
+        </div>
     </form>
     <br/>
     <p style="color:#f00">Il y a {$sessions|@count} session(s) pour ce forum</p>
