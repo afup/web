@@ -14,4 +14,9 @@ class StaticController extends SiteBaseController
     {
         return $this->render(':site:superapero.html.twig');
     }
+
+    public function superAperoLiveAction()
+    {
+        return $this->render(':site:superapero_live.html.twig');
+    }
 }

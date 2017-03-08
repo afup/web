@@ -34,3 +34,7 @@ offices:
 superapero:
   path: /super-apero-9-mars
   defaults: {_controller: AppBundle:Static:superApero}
+
+superapero_live:
+  path: /super-apero-9-mars/live
+  defaults: {_controller: AppBundle:Static:superAperoLive}
