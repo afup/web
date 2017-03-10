@@ -7,17 +7,17 @@ company_membership:
   defaults: {_controller: AppBundle:MemberShip:company}
 
 company_membership_payment:
-  path: /adherer/entreprise/paiement-COTIS-{invoiceNumber}-{token}
+  path: /adherer/entreprise/paiement-{invoiceNumber}-{token}
   defaults: {_controller: AppBundle:MemberShip:payment}
   requirements:
-    invoiceNumber: '[0-9]{4}-[0-9]+'
+    invoiceNumber: 'COTIS-[0-9]{4}-[0-9]+'
     token: '.+'
 
 company_membership_invoice:
-  path: /adherer/entreprise/invoice-COTIS-{invoiceNumber}-{token}
+  path: /adherer/entreprise/invoice-{invoiceNumber}-{token}
   defaults: {_controller: AppBundle:MemberShip:invoice}
   requirements:
-    invoiceNumber: '[0-9]{4}-[0-9]+'
+    invoiceNumber: 'COTIS-[0-9]{4}-[0-9]+'
     token: '.+'
 
 company_invitation:
