@@ -32,9 +32,19 @@
     <script>
         var legends = {};
         var plots = {};
+        var baseArea = {
+            attrs: {
+                fill: "#2b3e74"
+            },
+            attrsHover: {
+                fill: "#2b3e74"
+            }
+        };
+        var areas = {};
 
         $('.afup-office').each(function() {
             var city = $(this);
+            var href = $('a', city).first().attr('href');
 
             legends[city.data('mapKey')] = {
                 first_point_x: city.data("map-legend-first-point-x"),
@@ -46,7 +56,7 @@
                 attachment: city.data("map-legend-attachment"),
                 title: $('h3', city).text(),
                 subtitle: city.data("map-legend-subtitle"),
-                link: $('a', city).first().attr('href'),
+                link: href,
                 logo_url: $('img', city).attr('src')
             };
             plots[city.data('mapKey')] = {
@@ -57,6 +67,21 @@
                     fill: "#2b3e74"
                 }
             };
+            if (typeof city.data('departements') != 'undefined') {
+                $.each(city.data('departements').toString().split(','), function(index, departementCode) {
+                    var area = jQuery.extend({}, baseArea);
+                    area["href"] = href;
+                    areas["department-" + departementCode] = area;
+                });
+            }
+            if (typeof city.data('pays') != 'undefined') {
+                $.each(city.data('pays').toString().split(','), function(index, paysCode) {
+                    var area = jQuery.extend({}, baseArea);
+                    area["href"] = href;
+                    areas["country-" + paysCode] = area;
+                });
+            }
+
         });
 
         $(".map-container").mapael({
@@ -149,7 +174,8 @@
                     }
                 }
             },
-            plots: plots
+            plots: plots,
+            areas: areas
         });
     </script>
 
@@ -225,6 +251,7 @@
              data-map-legend-attachment="right"
              data-map-point-latitude="44.837912"
              data-map-point-longitude="-0.579541"
+             data-departements="33"
         >
             <div class="col-md-1">
                 <img src="/images/offices/afup-icon-color.svg" />
@@ -257,6 +284,7 @@
              data-map-legend-attachment="left"
              data-map-point-latitude="50.637222"
              data-map-point-longitude="3.063333"
+             data-departements="59"
         >
             <div class="col-md-1">
                 <img src="/images/offices/afup-icon-color.svg" />
@@ -287,6 +315,7 @@
              data-map-legend-attachment="left"
              data-map-point-latitude="49.61"
              data-map-point-longitude="6.13333"
+             data-pays="lux"
         >
             <div class="col-md-1">
                 <img src="/images/offices/luxembourg.jpg" />
@@ -320,6 +349,7 @@
              data-map-legend-attachment="left"
              data-map-point-latitude="45.759723"
              data-map-point-longitude="4.842223"
+             data-departements="69"
         >
             <div class="col-md-1">
                 <img src="/images/offices/lyon.png" />
@@ -353,6 +383,7 @@
              data-map-legend-attachment="top"
              data-map-point-latitude="43.296346"
              data-map-point-longitude="5.36988923"
+             data-departements="13"
         >
             <div class="col-md-1">
                 <img src="/images/offices/afup-icon-color.svg" />
@@ -386,6 +417,7 @@
              data-map-legend-attachment="top"
              data-map-point-latitude="43.611944"
              data-map-point-longitude="3.877222"
+             data-departements="34"
         >
             <div class="col-md-1">
                 <img src="/images/offices/montpellier.jpeg" />
@@ -417,6 +449,7 @@
              data-map-legend-attachment="right"
              data-map-point-latitude="47.21806"
              data-map-point-longitude="-1.55278"
+             data-departements="44"
         >
             <div class="col-md-1">
                 <img src="/images/offices/afup-icon-color.svg" />
@@ -448,6 +481,7 @@
              data-map-legend-attachment="right"
              data-map-point-latitude="48.856578"
              data-map-point-longitude="2.351828"
+             data-departements="75,77,78,91,92,93,94,95"
         >
             <div class="col-md-1">
                 <img src="/images/offices/paris.png" />
@@ -481,6 +515,7 @@
              data-map-legend-attachment="top"
              data-map-point-latitude="43.604482"
              data-map-point-longitude="1.443962"
+             data-departements="31"
         >
             <div class="col-md-1">
                 <img src="/images/offices/afup-icon-color.svg" />
@@ -514,6 +549,7 @@
              data-map-legend-attachment="left"
              data-map-point-latitude="44.933333"
              data-map-point-longitude="4.891667"
+             data-departements="26,07"
         >
             <div class="col-md-1">
                 <img src="/images/offices/afup-icon-color.svg" />
