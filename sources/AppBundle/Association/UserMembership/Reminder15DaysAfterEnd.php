@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\UserMembership;
 
-
 class Reminder15DaysAfterEnd extends AbstractUserReminder
 {
     protected function getText()
@@ -14,7 +13,7 @@ class Reminder15DaysAfterEnd extends AbstractUserReminder
 <p>Votre compte est toujours accessible si vous souhaitez nous rejoindre pour une nouvelle année.
 Pour cela, il vous suffit de vous rendre dans le
 <a href="http://www.afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
-et de cliquer sur “Ma Cotisation”. Une fois le règlement de ' . $this->membershipFee .' euros effectué, elle prendra effet immédiatement.
+et de cliquer sur “Ma Cotisation”. Une fois le règlement de ' . $this->membershipFee . ' euros effectué, elle prendra effet immédiatement.
 Un souci, une question ? Contactez-nous ! bonjour@afup.org </p>
 
 <p>Si non, c’est promis, nous tournons la page sur votre adhésion mais n\'oublions pas votre engagement passé.
