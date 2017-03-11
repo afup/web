@@ -1,10 +1,12 @@
 <!doctype html>
 <html>
     <head>
+        {% block metas %}
         <meta charset="UTF-8">
         <meta name="viewport"
               content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        {% endblock %}
         <title>{% block title %}Afup{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('/templates/site/css/styles.css') }}">
@@ -23,7 +25,7 @@
     </head>
     <body id="body">
         {% block header '' %}
-        <div class="container">
+        <div class="container" style="padding: 0px">
             {% for bag in ['notice', 'success', 'error'] %}
                 {% for flash_message in app.session.flashBag.get(bag) %}
                     <div class="flash flash-{{ bag }}">

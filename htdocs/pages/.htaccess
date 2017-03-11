@@ -2,3 +2,6 @@ RewriteEngine On
 
 # Removed pages to homepage
 RewriteRule ^annuaire.*$ /pages/site? [R=301]
+
+RewriteCond %{QUERY_STRING} route=actualites/961/lafup-lance-un-super-apero
+RewriteRule ^site.*$ /association/super-apero-9-mars? [L,R=302]

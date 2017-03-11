@@ -3,7 +3,6 @@
 
 namespace AppBundle\CFP;
 
-
 use AppBundle\Event\Model\Speaker;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -34,7 +33,7 @@ class PhotoStorage
         $directory = $this->basePath . '/' . $speaker->getEventId() . '/' . self::DIR_ORIGINAL;
         if (file_exists($directory) === false) {
             mkdir($directory, 0755, true);
-        } elseif(is_dir($directory) === false || is_writable($directory) === false) {
+        } elseif (is_dir($directory) === false || is_writable($directory) === false) {
             throw new FileException(sprintf('Could not create directory for storage'));
         }
 
@@ -83,7 +82,7 @@ class PhotoStorage
         $directory = $this->basePath . '/' . $speaker->getEventId() . '/' . $format;
         if (file_exists($directory) === false) {
             mkdir($directory, 0755, true);
-        } elseif(is_dir($directory) === false || is_writable($directory) === false) {
+        } elseif (is_dir($directory) === false || is_writable($directory) === false) {
             throw new FileException(sprintf('Could not create directory for storage'));
         }
 

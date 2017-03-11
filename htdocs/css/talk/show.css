@@ -1,0 +1,80 @@
+/* cf http://alistapart.com/article/creating-intrinsic-ratios-for-video
+         et http://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php */
+.responsive-video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+}
+.responsive-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+div.speaker-name-container {
+    padding: 0 10px 10px 10px;
+}
+
+.speaker-name-container .fa-twitter {
+    padding: 10px;
+    font-size: 1.5em;
+}
+
+.speaker-name {
+    display: inline-block;
+}
+
+.speaker-title-container,
+.comments-title-container {
+    padding: 10px 10px 0 10px;
+    margin: 0
+}
+
+.speaker-title-container h2 {
+    margin: 0;
+}
+
+.talk-title h1 {
+    font-size: 2.5em;
+}
+
+.talk-date-container {
+    margin: 0 0 10px 0;
+    font-style: italic;
+}
+
+.speaker-photo-container {
+    text-align: center;
+}
+
+.speaker-talks-link {
+    margin: 15px 0 0 0;
+}
+
+.speaker-photo {
+    max-width: 100%;
+}
+
+.talk-complementary-information {
+    margin: 0 0 0 10px;
+    list-style: none;
+}
+
+.talk-comment-container {
+    margin: 0 0 15px 0;
+}
+
+.talk-comment {
+    font-size: 1.1em;
+    padding: 0 10px ;
+    border-left: 4px solid #36a7df;
+}
+
+.talk-comment-stars {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 4px;
+}

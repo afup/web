@@ -10,7 +10,9 @@
     "ccmbenchmark/ting_bundle": "^3.0",
     "knpuniversity/oauth2-client-bundle": "^1.4",
     "twig/extensions": "^1.4",
-    "jms/serializer-bundle": "^1.1"
+    "jms/serializer-bundle": "^1.1",
+    "algolia/algoliasearch-client-php": "^1.12",
+    "cocur/slugify": "^2.3"
   },
   "scripts": {
     "post-install-cmd": [
@@ -57,5 +59,10 @@
       "email": "outils@afup.org"
     }
   ],
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "require-dev": {
+    "atoum/atoum": "^2.8",
+    "atoum/stubs": "^2.5",
+    "friendsofphp/php-cs-fixer": "~1.12"
+  }
 }

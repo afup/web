@@ -1,0 +1,11 @@
+version: "2"
+services:
+  db:
+    ports:
+      - "3606:3306"
+  apachephp:
+    ports:
+      - "9205:80"
+  mailcatcher:
+    ports:
+      - "1181:1080"

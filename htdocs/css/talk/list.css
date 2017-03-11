@@ -1,0 +1,97 @@
+.talk-list-refinement-count-badge {
+    background-color: #999;
+    font-size: 0.7em;
+    padding: 1px 3px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.talk-list-event-label-badge {
+    background-color: #999;
+    font-size: 0.7em;
+    padding: 1px 3px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.talk-list-title-container h2 {
+    font-size: 1.4em;
+    display: inline-block;
+    margin:0
+}
+
+#refinement-event, #refinement-speaker {
+    margin: 15px 0;
+}
+
+.talk-list-speakers-container {
+    padding: 0 0 5px 0;
+}
+
+.talk-list-speakers-container i {
+    font-size: 0.8em
+}
+
+.talk-info-link {
+    padding: 0 15px 0 0;
+    text-decoration: none;
+}
+
+#search-box {
+    min-height: 40px;
+    width: 100%;
+}
+
+#pagination-container {
+    margin: 55px auto;
+    width:100%;
+    text-align: center;
+}
+
+.ais-pagination--link {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+.ais-pagination--item__active .ais-pagination--link {
+    background-color: #147fab;
+    color: white;
+}
+
+.ais-hits--item {
+    margin-bottom: 5px;
+}
+
+.ais-refinement-list--item, .ais-toggle--item {
+    cursor: pointer;
+    padding: 0 0 0 15px;
+}
+
+.ais-refinement-list--header {
+    padding: 10px 0 0 0;
+    margin: 5px;
+}
+
+.ais-show-more {
+    color: #6a6a6a;
+    font-style: italic;
+    padding: 0 0 0 15px;
+    cursor: pointer;
+}
+
+/* Alignement des checkbox avec les labels */
+.ais-refinement-list--item label,
+.ais-refinement-list--item input[type=checkbox],
+.ais-toggle--item label,
+.ais-toggle--item input[type=checkbox] {
+    position: relative;
+    vertical-align: middle;
+    bottom: 1px;
+}
+
+.ais-refinement-list--item input[type=checkbox],
+.ais-toggle--item input[type=checkbox] {
+    margin: 0 5px 0 0;
+}

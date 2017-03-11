@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\Form;
 
-
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -23,8 +22,8 @@ class CompanyMemberInvitationType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => CompanyMemberInvitation::class,
-        ));
+        ]);
     }
 }

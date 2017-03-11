@@ -44,7 +44,9 @@ class Personnes_Physiques
                           $id_personne_morale = false,
                           $associatif = false,
                           $id_personne_physique = false,
-                          $is_active = NULL)
+                          $is_active = NULL,
+                          $a_jour_de_cotisation = null
+    )
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -72,6 +74,15 @@ class Personnes_Physiques
         if ($is_active !== NULL) {
             $requete .= 'AND etat = ' . $is_active . ' ';
         }
+
+        if ($a_jour_de_cotisation) {
+            $requete .= " AND id IN (
+                SELECT id_personne
+                FROM afup_cotisations
+                WHERE date_debut <= NOW() AND date_fin <= NOW()
+            ) ";
+        }
+
         $requete .= 'ORDER BY ' . $ordre;
         if ($associatif) {
             return $this->_bdd->obtenirAssociatif($requete);

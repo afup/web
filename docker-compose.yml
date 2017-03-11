@@ -1,0 +1,43 @@
+version: "2"
+services:
+  db:
+    build: ./docker/dockerfiles/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: afup
+      MYSQL_PASSWORD: afup
+      MYSQL_DATABASE: web
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  apachephp:
+    build:
+      context: ./docker/dockerfiles/apachephp
+      args:
+        uid: "1001"
+        gid: "1001"
+    environment:
+      SYMFONY_ENV: "dev"
+    volumes:
+      - ./:/var/www/html
+    links:
+      - db
+      - mailcatcher
+
+  cliphp:
+    build:
+      context: ./docker/dockerfiles/apachephp
+      args:
+        uid: "1001"
+        gid: "1001"
+    user: localUser
+    volumes:
+        - ./data/composer:/home/localUser/.composer
+        - ./:/var/www/html
+    links:
+      - db
+      - mailcatcher
+    command: "false"
+
+  mailcatcher:
+    image: schickling/mailcatcher

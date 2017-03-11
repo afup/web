@@ -39,4 +39,4 @@ RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 
 ## This url are handled by symfony
-RewriteRule (event|connect|_|association)/? /app.php [END]
+RewriteRule (event|connect|_|association|talks)/? /app.php [END]

@@ -19,7 +19,7 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction('render_curl', function ($url) {
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -30,7 +30,7 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
                 }
                 return '';
             }, ['is_safe' => ['html']])
-        );
+        ];
     }
 
     public function getGlobals()
@@ -47,5 +47,4 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
     {
         return 'app';
     }
-
 }

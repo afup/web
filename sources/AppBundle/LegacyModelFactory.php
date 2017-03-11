@@ -3,7 +3,6 @@
 
 namespace AppBundle;
 
-
 use Afup\Site\Utils\Base_De_Donnees;
 
 class LegacyModelFactory

@@ -6,6 +6,7 @@ use Afup\Site\Forum\AppelConferencier;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Logs;
+use AppBundle\Event\Model\Talk;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -43,6 +44,7 @@ if ($action == 'lister') {
     if (isset($_GET['filtre'])) {
         $list_filtre = $_GET['filtre'];
     }
+    $needsMentoring = isset($_GET['filtre_needs_mentoring']) && $_GET['filtre_needs_mentoring'] == '1' ? true : null;
     if (isset($_GET['type'])) {
         $list_type = $_GET['type'];
     }
@@ -50,11 +52,13 @@ if ($action == 'lister') {
     if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
         $_GET['id_forum'] = $forum->obtenirDernier();
     }
+
     $smarty->assign('id_forum', $_GET['id_forum']);
     $smarty->assign('list_type', $list_type);
 
     $smarty->assign('forums', $forum->obtenirListe());
-    $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type);
+
+    $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type, $needsMentoring);
     $moi = $droits->obtenirIdentifiant();
     $votant = in_array($_SESSION['afup_login'], $conf->obtenir('bureau'));
     $maxVotant = count($conf->obtenir('bureau'));
@@ -91,11 +95,7 @@ if ($action == 'lister') {
     $journees[2] = 'Technique';
     $journees[3] = 'Les deux';
 
-    $genres = array();
-    $genres[1] = 'Conférence plénière (40 min)';
-    $genres[3] = 'Conférence plénière (20 min)';
-    $genres[2] = 'Atelier';
-    $genres[9] = 'Projet PHP';
+    $genres = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
 
     $formulaire = &instancierFormulaire();
     $id = isset($_GET['id']) ? $_GET['id'] : 0;
@@ -182,11 +182,7 @@ if ($action == 'lister') {
     $journees[2] = 'Technique';
     $journees[3] = 'Les deux';
 
-    $genres = array();
-    $genres[1] = 'Conférence plénière (40 min)';
-    $genres[3] = 'Conférence plénière (20 min)';
-    $genres[2] = 'Atelier';
-    $genres[9] = 'Projet PHP';
+    $genres = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
 
     $formulaire = &instancierFormulaire();
     $id = isset($_GET['id']) ? $_GET['id'] : 0;
@@ -306,6 +302,9 @@ if ($action == 'lister') {
     $groupe = array();
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (40 min)', 1);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (20 min)', 3);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Keynote'            , 4);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Lightning Talk'            , 5);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Clinique'            , 6);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Atelier'            , 2);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Projet'            , 9);
     $formulaire->addGroup($groupe, 'groupe_type_pres', "Type de session", '<br />', false);
@@ -322,6 +321,7 @@ if ($action == 'lister') {
         $formulaire->addElement('text'    , 'youtube_id'          , 'Id de la conférence sur youtube' , array('size' => 40, 'maxlength' => 30));
         $formulaire->addElement('text'    , 'slides_url'          , 'URL où trouver les slides' , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('text'    , 'blog_post_url'          , 'URL de la version  article de blog de la conférence' , array('size' => 80, 'maxlength' => 255));
+        $formulaire->addElement('select', 'language_code', 'Langue', Talk::getLanguageLabelsByKey());
     }
 
     $formulaire->addElement('header', null, 'Conférencier(s)');
@@ -382,7 +382,8 @@ if ($action == 'lister') {
                                                 $valeurs['joindin'],
                                                 $valeurs['youtube_id'],
                                                 $valeurs['slides_url'],
-                                                $valeurs['blog_post_url']
+                                                $valeurs['blog_post_url'],
+                                                $valeurs['language_code']
             );
             $forum_appel->delierSession($session_id);
         }

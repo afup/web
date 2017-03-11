@@ -63,7 +63,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
             ORDER BY RAND(:randomSeed)
-            LIMIT '. ((int)$page - 1)*$limit . ', '. ((int)$limit + 1)
+            LIMIT ' . ((int) $page - 1)*$limit . ', ' . ((int) $limit + 1)
         )->setParams(['event' => $event->getId(), 'user' => $user->getId(), 'randomSeed' => $randomSeed]);
 
         return $query->query();
@@ -90,7 +90,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             WHERE plannifie = 0 AND id_forum = :event
             AND asvg.id IS NULL
             ORDER BY RAND(:randomSeed)
-            LIMIT '. ((int)$page - 1)*$limit . ', '. ((int)$limit + 1)
+            LIMIT ' . ((int) $page - 1)*$limit . ', ' . ((int) $limit + 1)
         )->setParams(['event' => $event->getId(), 'user' => $user->getId(), 'randomSeed' => $randomSeed]);
 
         return $query->query();
@@ -177,9 +177,18 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'blogPostUrl',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'joindin',
+                'fieldName' => 'joindinId',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'language_code',
+                'fieldName' => 'languageCode',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;
     }
-
 }

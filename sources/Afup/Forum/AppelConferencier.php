@@ -561,7 +561,9 @@ class AppelConferencier
                                   $ordre = 's.date_soumission',
                                   $associatif = false,
                                   $filtre = false,
-                                  $type = 'session')
+                                  $type = 'session',
+                                  $needsMentoring = null
+    )
     {
         $requete = ' SELECT ';
         $requete .= '  COUNT(co.id) as commentaires_nombre, ';
@@ -588,6 +590,11 @@ class AppelConferencier
                 ;
                 break;
         }
+
+        if (null !== $needsMentoring) {
+            $requete .= ' AND s.needs_mentoring = ' . ((int)$needsMentoring);
+        }
+
         $requete .= ' GROUP BY s.session_id ';
         $requete .= ' ORDER BY ' . $ordre;
         if ($associatif) {
@@ -647,7 +654,7 @@ class AppelConferencier
         return $this->_bdd->obtenirUn('select LAST_INSERT_ID()');
     }
 
-    public function modifierSession($id, $id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie, $joindin = null, $youtubeId = null, $slidesUrl = null, $blogPostUrl = null)
+    public function modifierSession($id, $id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie, $joindin = null, $youtubeId = null, $slidesUrl = null, $blogPostUrl = null, $languageCode = null)
     {
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
@@ -667,6 +674,9 @@ class AppelConferencier
         }
         if ($blogPostUrl !== null) {
             $requete .= ' blog_post_url = ' . $this->_bdd->echapper($blogPostUrl) . ', ';
+        }
+        if ($languageCode !== null) {
+            $requete .= ' language_code = ' . $this->_bdd->echapper($languageCode) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;

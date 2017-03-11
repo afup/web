@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\Form;
 
-
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -39,8 +38,8 @@ class UserType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => User::class,
-        ));
+        ]);
     }
 }

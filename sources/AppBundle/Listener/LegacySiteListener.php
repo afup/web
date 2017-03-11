@@ -3,7 +3,6 @@
 
 namespace AppBundle\Listener;
 
-
 use Afup\Site\Corporate\Page;
 use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Controller\SiteControllerInterface;
@@ -26,7 +25,7 @@ class LegacySiteListener
             return ;
         }
 
-        require_once dirname(__FILE__) .'/../../Afup/Bootstrap/Http.php';
+        require_once dirname(__FILE__) . '/../../Afup/Bootstrap/Http.php';
 
         /**
          * @var $bdd Base_De_Donnees

@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\Model\Repository;
 
-
 use AppBundle\Association\Model\CompanyMember;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;

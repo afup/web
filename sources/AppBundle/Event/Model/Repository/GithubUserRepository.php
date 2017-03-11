@@ -94,7 +94,7 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
      */
     public function refreshUser(UserInterface $user)
     {
-        if ( ($user instanceof GithubUser) === false) {
+        if (($user instanceof GithubUser) === false) {
             throw new UnsupportedUserException();
         }
         /**
@@ -111,5 +111,4 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
     {
         return ($class === GithubUser::class);
     }
-
 }
