@@ -3,7 +3,6 @@
 
 namespace AppBundle\Command;
 
-
 use Afup\Site\Utils\Mail;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;

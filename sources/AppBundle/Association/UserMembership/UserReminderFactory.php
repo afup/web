@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\UserMembership;
 
-
 use Afup\Site\Utils\Mail;
 use AppBundle\Association\MembershipReminderInterface;
 

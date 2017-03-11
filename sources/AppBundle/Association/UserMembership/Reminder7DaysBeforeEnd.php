@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\UserMembership;
 
-
 class Reminder7DaysBeforeEnd extends AbstractUserReminder
 {
     protected function getText()
@@ -21,7 +20,7 @@ conférences majeurs d’exister, et vous avez soutenu les valeurs et la philoso
 dans les mois prochains. Renouvelez dès maintenant votre adhésion, en réglant votre cotisation en ligne. Elle prendra
 effet dans 7 jours, au terme de l’adhésion actuelle. </p>
 
-<p>La cotisation annuelle à l’association est au tarif de ' . $this->membershipFee .' euros.
+<p>La cotisation annuelle à l’association est au tarif de ' . $this->membershipFee . ' euros.
 Pour prolonger votre adhésion, rendez-vous dans le <a href="http://www.afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
 et cliquez sur “Ma Cotisation”.
 Un souci, une question ? Contactez-nous ! bonjour@afup.org </p>
