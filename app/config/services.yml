@@ -1,7 +1,11 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-#    parameter_name: value
+    twitter_api_settings:
+        oauth_access_token: "%twitter_oauth_access_token%"
+        oauth_access_token_secret: "%twitter_oauth_access_token_secret%"
+        consumer_key: "%twitter_consumer_key%"
+        consumer_secret: "%twitter_consumer_secret%"
 
 services:
 #    service_name:
@@ -100,3 +104,6 @@ services:
         class: AppBundle\Joindin\JoindinComments
         arguments: ["@cache.system"]
 
+    app.twitter_api:
+        class: TwitterAPIExchange
+        arguments: ["%twitter_api_settings%"]
