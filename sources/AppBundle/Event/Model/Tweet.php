@@ -84,6 +84,4 @@ class Tweet implements NotifyPropertyInterface
 
         return $this;
     }
-
-
 }

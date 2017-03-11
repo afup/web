@@ -21,7 +21,7 @@ class TweetRepository extends Repository implements MetadataInitializer
     {
         $query = $this->getQuery('SELECT COUNT(id) AS tweets FROM tweet WHERE id_session = :talk_id');
         $query->setParams(['talk_id' => $talk->getId()]);
-        return (int)$query->query($this->getCollection(new HydratorArray()))->first()['tweets'];
+        return (int) $query->query($this->getCollection(new HydratorArray()))->first()['tweets'];
     }
 
     /**
