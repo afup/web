@@ -1,0 +1,7 @@
+talks_list:
+  path: /
+  defaults: {_controller: AppBundle:Talks:list}
+
+talks_show:
+  path: /{id}-{slug}
+  defaults: {_controller: AppBundle:Talks:show}

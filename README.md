@@ -48,6 +48,14 @@ Et la base de données est `afup_dev`.
 
 > Mot de passe pour la commande en local: `mysql`
 
+
+# Mise en place via docker
+
+* cloner le dépot
+* copier le fichier `docker-compose.override.yml-dist` dans `docker-compose.override.yml` et modifier les ports utilisés à votre convenance.
+* effectuer un `make docker-up`
+* ensuite lancer un `./docker/bin/bash` puis un `make` (pour installer les vendors)
+
 ## Applications
 
 * Backoffice (admin/admin) : <http://afup.dev/pages/administration/>

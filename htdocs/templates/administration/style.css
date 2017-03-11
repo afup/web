@@ -722,3 +722,10 @@ form.dropzone, form.dz-journal-form {
     background-color: #FFBABA;
 }
 
+.list-icon-invisible {
+    visibility: hidden;
+}
+
+.list-icon {
+    padding: 0 4px
+}

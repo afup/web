@@ -3,7 +3,6 @@
 
 namespace AppBundle\Security;
 
-
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\GithubUserRepository;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
@@ -83,12 +82,12 @@ class MyGithubAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $data = array(
+        $data = [
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
 
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
-        );
+        ];
 
         return new JsonResponse($data, 403);
     }
@@ -108,5 +107,4 @@ class MyGithubAuthenticator extends SocialAuthenticator
     {
         return new RedirectResponse($this->router->generate('connection_github'));
     }
-
 }

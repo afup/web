@@ -3,7 +3,6 @@
 
 namespace AppBundle\Payment;
 
-
 use Afup\Site\Utils\Configuration;
 
 class PayboxFactory

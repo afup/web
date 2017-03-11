@@ -40,3 +40,7 @@ deps.lock
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 /htdocs/bundles/
+/bin/atoum
+/docker-compose.override.yml
+/composer.phar
+/data

@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\Form;
 
-
 use AppBundle\Association\Model\CompanyMember;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -54,8 +53,8 @@ class CompanyMemberType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => CompanyMember::class,
-        ));
+        ]);
     }
 }

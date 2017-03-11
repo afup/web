@@ -11,7 +11,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class EventRepository extends Repository implements MetadataInitializer
 {
-
     /**
      * @return Event|null
      */

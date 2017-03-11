@@ -3,7 +3,6 @@
 
 namespace AppBundle\Twig;
 
-
 class TwigExtension extends \Twig_Extension
 {
     /**
@@ -11,7 +10,7 @@ class TwigExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction('render_curl', function ($url) {
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -22,7 +21,7 @@ class TwigExtension extends \Twig_Extension
                 }
                 return '';
             }, ['is_safe' => ['html']])
-        );
+        ];
     }
 
     /**
@@ -34,5 +33,4 @@ class TwigExtension extends \Twig_Extension
     {
         return 'app';
     }
-
 }

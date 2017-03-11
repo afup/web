@@ -3,7 +3,6 @@
 
 namespace AppBundle\Listener;
 
-
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class LocaleListener

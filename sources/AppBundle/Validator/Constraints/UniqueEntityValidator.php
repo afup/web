@@ -26,7 +26,7 @@ class UniqueEntityValidator extends ConstraintValidator
         }
         $repository = $this->repositoryFactory->get($constraint->repository);
 
-        $fields = (array)$constraint->fields;
+        $fields = (array) $constraint->fields;
         $criteria = [];
         foreach ($fields as $field) {
             $propertyName    = 'get' . $field;

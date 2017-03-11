@@ -80,6 +80,7 @@ class Assemblee_Generale
 
         $requete .= 'GROUP BY';
         $requete .= '  afup_personnes_physiques.id ';
+        $requete .= 'ORDER BY afup_personnes_physiques.nom, afup_personnes_physiques.prenom ';
 
         return $this->_bdd->obtenirAssociatif($requete);
     }
@@ -175,6 +176,19 @@ class Assemblee_Generale
         $requete .= '   (afup_presences_assemblee_generale.presence = \'1\' ';
         $requete .= ' OR ';
         $requete .= '   afup_presences_assemblee_generale.id_personne_avec_pouvoir > 0) ';
+        return $this->_bdd->obtenirUn($requete);
+    }
+
+    function obtenirNombrePresences($timestamp)
+    {
+        $requete = 'SELECT';
+        $requete .= '  COUNT(*) ';
+        $requete .= 'FROM';
+        $requete .= '  afup_presences_assemblee_generale ';
+        $requete .= 'WHERE';
+        $requete .= '  afup_presences_assemblee_generale.date = \'' . $timestamp . '\' ';
+        $requete .= 'AND';
+        $requete .= '   afup_presences_assemblee_generale.presence = \'1\' ';
         return $this->_bdd->obtenirUn($requete);
     }
 
@@ -311,7 +325,7 @@ class Assemblee_Generale
         $requete .= '  afup_presences_assemblee_generale.date_modification = ' . time() . ' ';
         $requete .= 'WHERE';
         $requete .= '  afup_presences_assemblee_generale.id_personne_physique = afup_personnes_physiques.id ';
-        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';
+        $requete .= 'AND (afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' OR afup_personnes_physiques.email = ' . $this->_bdd->echapper($login) . ' )';
         $requete .= 'AND afup_presences_assemblee_generale.date = ' . $timestamp;
 
         return $this->_bdd->executer($requete);

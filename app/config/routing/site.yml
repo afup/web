@@ -10,14 +10,14 @@ company_membership_payment:
   path: /adherer/entreprise/paiement-{invoiceNumber}-{token}
   defaults: {_controller: AppBundle:MemberShip:payment}
   requirements:
-    invoiceNumber: '[0-9]{4}-[0-9]+'
+    invoiceNumber: 'COTIS-[0-9]{4}-[0-9]+'
     token: '.+'
 
 company_membership_invoice:
   path: /adherer/entreprise/invoice-{invoiceNumber}-{token}
   defaults: {_controller: AppBundle:MemberShip:invoice}
   requirements:
-    invoiceNumber: '[0-9]{4}-[0-9]+'
+    invoiceNumber: 'COTIS-[0-9]{4}-[0-9]+'
     token: '.+'
 
 company_invitation:
@@ -30,3 +30,11 @@ company_invitation:
 offices:
   path: /antennes
   defaults: {_controller: AppBundle:Static:offices}
+
+superapero:
+  path: /super-apero-9-mars
+  defaults: {_controller: AppBundle:Static:superApero}
+
+superapero_live:
+  path: /super-apero-9-mars/live
+  defaults: {_controller: AppBundle:Static:superAperoLive}

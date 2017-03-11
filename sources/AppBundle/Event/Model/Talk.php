@@ -4,6 +4,7 @@ namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Talk implements NotifyPropertyInterface
@@ -13,11 +14,18 @@ class Talk implements NotifyPropertyInterface
     const TYPE_FULL_LONG = 1;
     const TYPE_FULL_SHORT = 3;
     const TYPE_WORKSHOP = 2;
+    const TYPE_KEYNOTE = 4;
+    const TYPE_LIGHTNING_TALK = 5;
+    const TYPE_CLINIC = 6;
+    const TYPE_PHP_PROJECT = 9;
 
     const SKILL_JUNIOR = 1;
     const SKILL_MEDIOR = 2;
     const SKILL_SENIOR = 3;
     const SKILL_NA = 0;
+
+    const LANGUAGE_CODE_FR = 'fr';
+    const LANGUAGE_CODE_EN = 'en';
 
     /**
      * @var int
@@ -88,6 +96,16 @@ class Talk implements NotifyPropertyInterface
     private $blogPostUrl;
 
     /**
+     * @var string|null
+     */
+    private $joindinId;
+
+    /**
+     * @var string|null
+     */
+    private $languageCode;
+
+    /**
      * @return int
      */
     public function getId()
@@ -101,7 +119,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function setId($id)
     {
-        $id = (int)$id;
+        $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
         return $this;
@@ -121,7 +139,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function setForumId($forumId)
     {
-        $forumId = (int)$forumId;
+        $forumId = (int) $forumId;
         $this->propertyChanged('forumId', $this->forumId, $forumId);
         $this->forumId = $forumId;
         return $this;
@@ -182,6 +200,14 @@ class Talk implements NotifyPropertyInterface
         $this->propertyChanged('abstract', $this->abstract, $abstract);
         $this->abstract = $abstract;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return preg_replace("/NIVEAU : .*\n/", "", $this->getAbstract());
     }
 
     /**
@@ -279,6 +305,10 @@ class Talk implements NotifyPropertyInterface
      */
     public function getYoutubeId()
     {
+        if (0 === strlen($this->youTubeId)) {
+            return null;
+        }
+
         return $this->youTubeId;
     }
 
@@ -296,10 +326,34 @@ class Talk implements NotifyPropertyInterface
     }
 
     /**
+     * @return null|string
+     */
+    public function hasYoutubeId()
+    {
+        return null !== $this->getYoutubeId();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getYoutubeUrl()
+    {
+        if (!$this->hasYoutubeId()) {
+            return null;
+        }
+
+        return 'https://www.youtube.com/watch?v=' . $this->getYoutubeId();
+    }
+
+    /**
      * @return int
      */
     public function getSlidesUrl()
     {
+        if (0 === strlen($this->slidesUrl)) {
+            return null;
+        }
+
         return $this->slidesUrl;
     }
 
@@ -317,10 +371,67 @@ class Talk implements NotifyPropertyInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasSlidesUrl()
+    {
+        return null !== $this->getSlidesUrl();
+    }
+
+    /**
+     * @return int
+     */
+    public function getJoindinId()
+    {
+        if (0 === $this->joindinId) {
+            return null;
+        }
+
+        return $this->joindinId;
+    }
+
+    /**
+     * @param int $joindInId
+     *
+     * @return Talk
+     */
+    public function setJoindinId($joindInId)
+    {
+        $this->propertyChanged('joindinId', $this->joindinId, $joindInId);
+        $this->joindinId = $joindInId;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasJoindinId()
+    {
+        return null !== $this->getJoindinId();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getJoindinUrl()
+    {
+        if (!$this->hasJoindinId()) {
+            return null;
+        }
+
+        return 'https://legacy.joind.in/talk/view/' . $this->getJoindinId();
+    }
+
+    /**
      * @return int
      */
     public function getBlogPostUrl()
     {
+        if (0 === strlen($this->blogPostUrl)) {
+            return null;
+        }
+
         return $this->blogPostUrl;
     }
 
@@ -333,6 +444,113 @@ class Talk implements NotifyPropertyInterface
     {
         $this->propertyChanged('blogPostUrl', $this->blogPostUrl, $blogPostUrl);
         $this->blogPostUrl = $blogPostUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasBlogPostUrl()
+    {
+        return null !== $this->getBlogPostUrl();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getTitle());
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypeLabelsByKey()
+    {
+        return [
+            self::TYPE_FULL_LONG => 'Conférence (40 minutes)',
+            self::TYPE_WORKSHOP => 'Atelier',
+            self::TYPE_FULL_SHORT => 'Conférence (20 minutes)',
+            self::TYPE_KEYNOTE => 'Keynote',
+            self::TYPE_LIGHTNING_TALK => 'Lightning Talk',
+            self::TYPE_CLINIC => 'Clinique',
+            self::TYPE_PHP_PROJECT => 'Projet PHP',
+        ];
+    }
+
+    /**
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function getTypeLabel()
+    {
+        $type = $this->getType();
+        $mapping = self::getTypeLabelsByKey();
+
+        if (!isset($mapping[$type])) {
+            throw new \Exception(sprintf('Type inconnue: %s', $type));
+        }
+
+        return $mapping[$type];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisplayedOnHistory()
+    {
+        return $this->getType() != self::TYPE_CLINIC;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getLanguageLabelsByKey()
+    {
+        return [
+            self::LANGUAGE_CODE_FR => 'Français',
+            self::LANGUAGE_CODE_EN => 'Anglais',
+        ];
+    }
+
+    /**
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function getLanguageLabel()
+    {
+        $languageCde = $this->getLanguageCode();
+        $mapping = self::getLanguageLabelsByKey();
+
+        if (!isset($mapping[$languageCde])) {
+            throw new \Exception(sprintf('Code de langue inconnu : %s', $languageCde));
+        }
+
+        return $mapping[$languageCde];
+    }
+
+    /**
+     * @return int
+     */
+    public function getLanguageCode()
+    {
+        return $this->languageCode;
+    }
+
+    /**
+     * @param int $languageCode
+     *
+     * @return Talk
+     */
+    public function setLanguageCode($languageCode)
+    {
+        $this->propertyChanged('languageCode', $this->languageCode, $languageCode);
+        $this->languageCode = $languageCode;
 
         return $this;
     }
