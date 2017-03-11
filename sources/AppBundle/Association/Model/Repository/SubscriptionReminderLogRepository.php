@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\Model\Repository;
 
-
 use AppBundle\Association\Model\SubscriptionReminderLog;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -21,7 +20,7 @@ class SubscriptionReminderLogRepository extends Repository implements MetadataIn
             LEFT JOIN afup_personnes_physiques app ON asrl.user_type = 0 AND app.id = asrl.user_id
             LEFT JOIN afup_personnes_morales apm ON asrl.user_type = 1 AND apm.id = asrl.user_id
             ORDER BY asrl.reminder_date DESC
-            LIMIT ' .(((int)$page-1) * $limit) . ', ' . (int)($limit + 1)
+            LIMIT ' . (((int) $page-1) * $limit) . ', ' . (int) ($limit + 1)
         )->query();
     }
 
@@ -79,5 +78,4 @@ class SubscriptionReminderLogRepository extends Repository implements MetadataIn
 
         return $metadata;
     }
-
 }

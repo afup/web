@@ -1,7 +1,9 @@
 <?php
+
 namespace AppBundle\Routing;
 
-class LegacyRouter{
+class LegacyRouter
+{
     public function getAdminUrl($page, $options = [])
     {
         $options['page'] = $page;

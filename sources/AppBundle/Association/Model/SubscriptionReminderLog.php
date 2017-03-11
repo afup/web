@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\Model;
 
-
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
@@ -79,7 +78,7 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
      */
     public function setUserId($userId)
     {
-        $userId = (int)$userId;
+        $userId = (int) $userId;
         $this->propertyChanged('userId', $this->userId, $userId);
         $this->userId = $userId;
         return $this;
@@ -175,7 +174,7 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
      */
     public function setMailSent($mailSent)
     {
-        $this->propertyChanged('mailSent', $this->mailSent, (bool)$mailSent);
+        $this->propertyChanged('mailSent', $this->mailSent, (bool) $mailSent);
         $this->mailSent = (bool) $mailSent;
         return $this;
     }
