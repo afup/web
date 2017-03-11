@@ -123,16 +123,16 @@
         },
         {
             "name": "ccmbenchmark/ting",
-            "version": "3.1.1",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/ccmbenchmark/ting.git",
-                "reference": "a78bd34284264d6f5c11d058ab302077ca7216c1"
+                "reference": "651e4671ce3b7476561077efead206527c6874ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/ccmbenchmark/ting/get/a78bd34284264d6f5c11d058ab302077ca7216c1.zip",
-                "reference": "a78bd34284264d6f5c11d058ab302077ca7216c1",
+                "url": "https://bitbucket.org/ccmbenchmark/ting/get/651e4671ce3b7476561077efead206527c6874ea.zip",
+                "reference": "651e4671ce3b7476561077efead206527c6874ea",
                 "shasum": ""
             },
             "require": {
@@ -168,7 +168,7 @@
                 "repository",
                 "unitofwork"
             ],
-            "time": "2016-05-10T10:39:09+00:00"
+            "time": "2017-01-31T15:09:57+00:00"
         },
         {
             "name": "ccmbenchmark/ting_bundle",
