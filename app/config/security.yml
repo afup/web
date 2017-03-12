@@ -38,6 +38,8 @@ security:
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
         - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/blog, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [217.70.189.71, 127.0.0.1, 192.168.42.1] }
+        - { path: ^/blog, roles: ROLE_NO_ACCESS }
 
     role_hierarchy:
         ROLE_COMPANY_MANAGER: [ROLE_USER]

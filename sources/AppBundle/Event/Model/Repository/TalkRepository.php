@@ -100,15 +100,15 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getByEventWithSpeakers(Event $event)
     {
         $hydrator = new JoinHydrator();
-        $hydrator->aggregateOn('sessions', 'speaker', 'getId');
+        $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, skill, genre, abstract, speaker.conferencier_id, speaker.nom, speaker.prenom
-            FROM afup_sessions AS sessions
-            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = sessions.session_id
+            'SELECT talk.session_id, titre, skill, genre, abstract, speaker.conferencier_id, speaker.nom, speaker.prenom
+            FROM afup_sessions AS talk
+            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
-            WHERE sessions.id_forum = :event
-            ORDER BY sessions.session_id ASC '
+            WHERE talk.id_forum = :event
+            ORDER BY talk.session_id ASC '
         )->setParams(['event' => $event->getId()]);
 
         return $query->query($this->getCollection($hydrator));
