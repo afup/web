@@ -13,7 +13,7 @@
                     {% for speaker in talk[".aggregation"].speaker %}
                         <div class="conferencier">
                             <a href="/{{ event.path }}/speakers/#{{ speaker.id }}">
-                                <img src="{{ photo_storage.getUrl(speaker) }}" alt="{{ speaker.label }}">
+                                <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(speaker) }}" alt="{{ speaker.label }}">
                             </a><br>
                             <a href="/{{ event.path }}/speakers/#{{ speaker.id }}">{{ speaker.label }}</a>
                         </div>
