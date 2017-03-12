@@ -107,7 +107,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
-            WHERE talk.id_forum = :event
+            WHERE talk.id_forum = :event AND plannifie = 1
             ORDER BY talk.session_id ASC '
         )->setParams(['event' => $event->getId()]);
 
