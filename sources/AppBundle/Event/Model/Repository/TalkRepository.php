@@ -103,7 +103,7 @@ class TalkRepository extends Repository implements MetadataInitializer
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
         $query = $this->getPreparedQuery(
-            'SELECT talk.session_id, titre, skill, genre, abstract, speaker.conferencier_id, speaker.nom, speaker.prenom
+            'SELECT talk.session_id, titre, skill, genre, abstract, speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
