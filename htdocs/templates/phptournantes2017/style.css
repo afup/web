@@ -1,0 +1,428 @@
+/* Fonts */
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,700,900|Roboto+Condensed:400,700,300|Belgrano);
+
+/* General & Reset*/
+* {
+  color: #37372b;
+  font-family: 'Roboto';
+}
+
+.span2 {
+  width: 16%;
+}
+
+.span3 {
+  width: 25%;
+}
+
+.span4 {
+  width: 33%;
+}
+
+.span5 {
+  width: 41%;
+}
+
+.span6 {
+  width: 50%;
+}
+
+.span8 {
+  width: 66%;
+}
+
+.supporters {
+  margin-bottom: 40px;
+  padding-bottom: 8px;
+}
+
+.supporters h3 {
+  color: #51ace4;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  border-top: solid thin #51ace4;
+  border-bottom: solid thin #51ace4;
+  margin: 1em 0;
+}
+
+.supporters h4 {
+  background-color: #ffffff;
+  color: #18213e;
+  font-size: 150%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  text-align: left;
+  padding: 0 0 0 0.3em;
+  border-bottom: solid thin #18213e;
+  border-radius: 3px 3px 0 0;
+}
+
+.supporters .content {
+  text-align: center;
+}
+
+.supporters .logo-container {
+  background-color: #ffffff;
+  margin-bottom: 1em;
+}
+
+.supporters .logo-container a {
+  margin: 1em 0;
+  display: inline-block;
+  width: 90%;
+}
+
+.supporters .logo-container img {
+  width: 100%;
+}
+
+body {
+  background-color: #eeeeee;
+}
+
+footer {
+  background: #18213e;
+  color: #fff;
+  font-size: 12px;
+  height: 20px;
+  padding: 14px 0;
+  text-align: center;
+}
+
+footer a, footer a:hover {
+  color: #fff;
+  font-family: 'Lucida grande';
+  text-decoration: none;
+}
+
+footer * {
+  color: #fff;
+}
+
+header {
+  padding: 2em 0;
+  background-color: #ffffff;
+  width: 100%;
+
+}
+
+header h1 a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 a > div {
+  width: 49%;
+}
+
+header h1 a img {
+  vertical-align: middle;
+}
+
+header div.date, header div.venue {
+  text-align: right;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+section#baseline {
+  background-color: #51ace4;
+  color: #ffffff;
+  text-align: center;
+}
+
+section#baseline h2 {
+  color: #ffffff;
+  font-weight: 300;
+  line-height: 2em;
+}
+
+nav {
+  width: 100%;
+}
+
+nav a, nav a:hover {
+  color: #045e80;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 1.5em;
+  text-decoration: none;
+  font-weight: 300;
+}
+
+nav li {
+  height:auto;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+nav li a {
+  background: transparent url(./img/background-menu.png) bottom left repeat-x;
+  display: block;
+  padding: 25px 0;
+}
+
+nav li a:hover {
+  color: #a62700
+}
+
+nav li.last a {
+  background: none;
+  padding: 25px 0;
+}
+
+nav ul {
+  margin: 0;
+}
+
+#content article {
+  padding: 1em;
+}
+#content article a {
+  color: #37372b;
+  text-decoration: underline;
+}
+
+#content article a:hover, #content article a:hover * {
+  color: #045e80;
+}
+
+#content article div.spacer {
+  padding: 12px 20px 3px 20px;
+}
+
+#content article .session {
+  border-bottom: 1px #b6b5b1 solid;
+  clear: both;
+  padding: 0 0 170px 15px;
+}
+
+#content article .session .horaire {
+  padding: 0 0 10px 0;
+  text-align: right;
+}
+
+#content article .session .horaire .salle {
+  float: left;
+}
+
+#content article .session .conferencier {
+  float: left;
+  margin: 10px 10px 0 0;
+}
+
+#content article .conferencier .photo {
+  float: left;
+  margin: 10px 20px 10px 0;
+  width: 105px;
+}
+
+#content article .conferencier img {
+  border: 5px #000 solid;
+  width: 90px;
+}
+
+#content article.conferenciers .conferencier {
+  min-height: 140px;
+}
+
+#content article dl {
+  text-align: right;
+}
+
+#content article dl dd, #content dl dt {
+  display: inline;
+}
+
+#content article dl dd.dtstart {
+  color: #045e80;
+  padding-left: 10px;
+}
+
+#content article h3, #content article h3 a, #content h3 a:hover {
+  color: #a62700;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+#content article h3 {
+  border-bottom: solid thin #a62700;
+}
+
+#content article li {
+  list-style-image: url(./img/puce.png);
+}
+
+#content article p {
+  font-size: 14px;
+}
+
+#content article .article-body {
+  padding: 5px 0 10px;
+}
+
+#content article .article-body .chapo {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+#content article .article-body .chapo em {
+  color: #045e80;
+  font-weight: bold;
+  font-style: normal;
+}
+
+#content article .links a, #content article a.external {
+  background: transparent url(./img/out-link-off.png) right 3px no-repeat;
+  padding-right: 16px;
+}
+
+#content article .links a:hover, #content article a.external:hover {
+  background: transparent url(./img/out-link-on.png) right 3px no-repeat;
+}
+
+.alert-message p {
+  color: #fff;
+  font-size: 13px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.map {
+  width: 100%;
+}
+
+.map iframe {
+  width: 100%;
+  min-height: 500px;
+}
+
+.social-button {
+  background: transparent url(./img/social-networks.png) top left no-repeat;
+  display: block;
+  height: 54px;
+  margin-top: 10px;
+  width: 174px;
+  text-indent: -9999px;
+}
+
+.social-button.facebook {
+  background: transparent url(./img/social-networks.png) bottom left no-repeat;
+}
+
+#container {
+  padding-top: 2em;
+}
+
+#container aside {
+  margin-left: 0;
+}
+
+#container .row {
+  margin: 0;
+}
+
+#container #baseline {
+  display: block;
+  font-size: 16px;
+  font-style: normal;
+  padding: 10px 0 30px 0;
+}
+
+.container-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+#content {
+  margin: 0;
+}
+
+#content h2 {
+  color: #51ace4;
+  font-family: 'Roboto';
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 31px;
+  padding: 9px 0 10px 0.7em;
+}
+
+#content .end {
+  height: 120px;
+}
+
+#english-cfp-link {
+  margin: 30px 0;
+  text-align: right;
+}
+
+#formulaire .input {
+  margin-left: 120px;
+}
+
+#formulaire fieldset legend, #form_etre_tenu_au_courant fieldset legend {
+  padding-top: 20px;
+  padding-left: 120px;
+}
+
+#formulaire label, #form_etre_tenu_au_courant label {
+  width: 100px;
+}
+
+#formulaire label label {/*checkbox*/
+  width: 300px;
+  margin-left: 5px;
+}
+
+#logos {
+  background: transparent url(./img/background-logos.png) top left repeat;
+  height: 127px;
+  margin-top: -16px;
+  padding-top: 25px;
+  text-align: center;
+}
+
+#menu {
+  margin-left: 0;
+  padding-bottom: 50px;
+}
+
+#root {
+  background: transparent top left repeat-x;
+}
+
+.sponsors .logo {
+	float:right;
+	width:150px;
+    text-align: right;
+}
+
+.sponsors .logo img {
+	float:none;
+    max-width:100%;
+    max-height:100%;
+}
+
+a.btn {
+  text-decoration:none;
+}
+
+#afup {
+  text-align: center;
+}
+
+#afup img {
+  width: 100%;
+}
