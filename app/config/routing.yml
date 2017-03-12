@@ -17,3 +17,7 @@ association:
 talks:
     resource: "routing/talks.yml"
     prefix: /talks
+
+blog:
+    resource: "routing/blog.yml"
+    prefix: /blog
