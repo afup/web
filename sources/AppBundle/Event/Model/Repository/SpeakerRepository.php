@@ -43,8 +43,8 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         $query = $this->getPreparedQuery('SELECT speaker.conferencier_id, speaker.id_forum, speaker.civilite, speaker.nom, speaker.prenom, speaker.email, speaker.societe,
         speaker.biographie, speaker.twitter, speaker.user_github, speaker.photo, talk.titre, talk.session_id
         FROM afup_conferenciers speaker
-        LEFT JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
-        LEFT JOIN afup_sessions talk ON talk.session_id = cs.session_id
+        INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
+        INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
         WHERE speaker.id_forum = :event AND talk.plannifie=1
         ORDER BY speaker.prenom ASC, speaker.nom ASC
         ')->setParams(['event' => $event->getId()]);
