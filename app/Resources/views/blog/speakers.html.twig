@@ -1,0 +1,27 @@
+{% for row in speakers %}
+<article class="first conferenciers">
+    <h3>
+        {{ row.speaker.label }}
+        {% if row.speaker.company %}- <span class="societe">{{ row.speaker.company }}</span>{% endif %}
+    </h3>
+    {% if row.speaker.twitter %}
+        <a class="twitter" href="https://twitter.com/{{ row.speaker.twitter }}"><img src="//g.twimg.com/about/feature-corporate/image/followbutton.png" width="89" height="33" alt="Suivre @{{ row.speaker.twitter }}"/></a>
+    {% endif %}
+    <div class="article-body conferencier">
+        <div class="photo">
+            <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(row.speaker) }}" alt="{{ row.speaker.label }}">
+        </div>
+        <p>
+            <a name="{{ row.speaker.id }}" ></a>
+            {{ row.speaker.biography }}
+        </p>
+        <ul>
+            {% for talk in row[".aggregation"].talk %}
+            <li class="conferencier_session">
+                <a href="/{{ event.path }}/programme/#{{ talk.id }}">{{ talk.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</article>
+{% endfor %}
