@@ -72,7 +72,7 @@ if ($etat === AFUP_FORUM_ETAT_REGLE && $forum_facturation->estFacture($_GET['cmd
         );
         $data = $registration;
 
-        if (!$mail->send('confirmation-inscription-forum-php-2016', $receiver, $data)) {
+        if (!$mail->send('confirmation-inscription-phptournantes2017', $receiver, $data)) {
             $message = <<<HTML
 Impossible d'envoyer la confirmation d'inscription après paiement pour le forum en cours.<br>
 Facture : {$registration['reference']}<br/>
