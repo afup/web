@@ -14,10 +14,10 @@ $(document).ready(function(){
             $('fieldset.f' + i).show();
             $('fieldset.f' + i).find('input[data-required=true]').attr('required', true);
 			if (typeof $('input[name="type_inscription' + i +'"]:checked').val() === "undefined") {
-				$('fieldset.f' + i).find('input[name^="type_inscription"]:first').attr('checked', true);
+			    $('fieldset.f' + i).find('input[name^="type_inscription"]:first').attr('checked', true);
 			}
 			if (typeof $('input[name="mobilite_reduite' + i +'"]:checked').val() === "undefined") {
-				$('fieldset.f' + i).find('input[name^="mobilite_reduite"]:eq(1)').attr('checked', true);
+			    $('fieldset.f' + i).find('input[name^="mobilite_reduite"]:eq(1)').attr('checked', true);
 			}
         }
 
