@@ -4,6 +4,7 @@
 namespace AppBundle\Command;
 
 use Afup\Site\Utils\Mail;
+use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\Reminder15DaysAfterEnd;
@@ -35,7 +36,7 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $factory = new UserReminderFactory((new Mail()));
+        $factory = new UserReminderFactory((new Mail()), $this->getContainer()->get('ting')->get(SubscriptionReminderLogRepository::class));
 
         /**
          * @var $repository UserRepository

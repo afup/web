@@ -28,4 +28,9 @@ L’équipe AFUP</p>
     {
         return 'Votre adhésion à l’AFUP : vous nous manquez !';
     }
+
+    protected function getKey()
+    {
+        return '15DaysAfter';
+    }
 }

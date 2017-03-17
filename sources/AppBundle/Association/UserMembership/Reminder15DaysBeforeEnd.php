@@ -29,4 +29,9 @@ L’équipe AFUP</p>
     {
         return 'Votre adhésion à l’AFUP arrive à son terme : J-15';
     }
+
+    protected function getKey()
+    {
+        return '15DaysBefore';
+    }
 }

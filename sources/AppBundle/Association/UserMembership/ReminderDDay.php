@@ -30,4 +30,9 @@ L’équipe AFUP</p>
     {
         return 'Fin de validité de votre adhésion à l’AFUP';
     }
+
+    protected function getKey()
+    {
+        return 'DDay';
+    }
 }

@@ -35,39 +35,7 @@
     </tr>
     {/foreach}
 </table>
-<br/>
-<table class="afup_tab">
-    <tr>
-        <th colspan="5">Personnes physiques (<a href="#" class="js-checkall">Tout cocher</a>)</th>
-    </tr>
-    <tr>
-        <th align="left">Nom</th>
-        <th align="left">Date fin</th>
-        <th align="left">Nbr rel.</th>
-        <th align="left">Dern. rel.</th>
-        <th>&nbsp;</th>
-    </tr>
-    {foreach from=$relances_personnes_physiques item=relance}
-    <tr style="background: {cycle values="#EEEEEE,#FFFFFF}">
-        <td><a href="mailto:{$relance.email}" title="Gérer les cotisations de {$relance.nom}">{$relance.nom|truncate:25}</a></td>
-        <td>{$relance.date_fin|date_format:"%d/%m/%y"}</td>
-        <td>{$relance.nombre_relances}</td>
-        <td>{$relance.date_derniere_relance|date_format:"%d/%m/%y"}</td>
-        <td style="text-align: right">
-            <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_PHYSIQUES}&amp;id_personne={$relance.id_personne}" title="Gérer les cotisations de {$relance.nom}"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
-            <a href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$relance.id_personne}" title="Modifier la fiche de {$relance.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-		    {if $relance.email == ""}
-	            <input type="checkbox" name="{$relance.type_personne}_{$relance.id_personne}" value="1" disabled="disabled" />
-		    {else}
-	            <input type="checkbox" name="{$relance.type_personne}_{$relance.id_personne}" value="1" />
-		    {/if}
-        </td>
-    </tr>
-    {foreachelse}
-    <tr>
-        <td><em>Aucune personne à relancer</em></td>
-    </tr>
-    {/foreach}
-</table>
+<br />
+    {$sfContent}
 
 <script type="text/javascript" src="{$chemin_template}medias/js/relances.js"></script>
