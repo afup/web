@@ -21,11 +21,19 @@ if ($action == 'lister') {
     }
     $smarty->assign('relances_personnes_morales', $relances_personne_morales);
 
-    $relances_personne_physiques = $cotisations->obtenirListeRelancesPersonnesPhysiques();
-    if (empty($relances_personne_physiques)) {
-        $relances_personne_physiques = null;
+    $kernel = new \Afup\Site\Utils\SymfonyKernel();
+
+    $page = isset($_GET['pagenum']) ? (int)$_GET['pagenum'] : 1;
+    if ($page === 0) {
+        $page = 1;
     }
-    $smarty->assign('relances_personnes_physiques', $relances_personne_physiques);
+
+    $request = $kernel->getRequest('/admin/association/relances/' . $page);
+    $response = $kernel->getResponse();
+
+    $smarty->assign('sfContent', $response->getContent());
+    $kernel->getKernel()->terminate($request, $response);
+
 } elseif ($action == 'relancer') {
     $donnees = array_keys($_POST);
     $ok = true;

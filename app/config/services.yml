@@ -23,6 +23,7 @@ services:
 
     app_twig:
         class: AppBundle\Twig\TwigExtension
+        arguments: ["@app.legacy_router"]
         tags:
             -  { name: twig.extension }
 
@@ -96,6 +97,8 @@ services:
         class: AppBundle\Notifier\SlackNotifier
         arguments: ["%slack_url%", "@app.slack_message_factory", "@jms_serializer.serializer"]
 
+    app.legacy_router:
+        class: AppBundle\Routing\LegacyRouter
     app.algolia_client:
         class: AlgoliaSearch\Client
         arguments: [%algolia_app_id%, %algolia_backend_api_key%]

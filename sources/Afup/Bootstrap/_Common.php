@@ -18,8 +18,8 @@
 
 // racine de l'application (pas du document root !)
 
-use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Base_De_Donnees;
+use Afup\Site\Utils\Configuration;
 
 $root = realpath(dirname(__FILE__) . '/../../..');
 
@@ -27,6 +27,11 @@ require_once $root . '/vendor/autoload.php';
 // définitions des constantes
 
 define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
+
+
+// Voir la classe Afup\Site\Association\Personnes_Morales
+define('AFUP_PERSONNES_PHYSIQUES', 0);
+define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 25);
 
 date_default_timezone_set('Europe/Paris');
 

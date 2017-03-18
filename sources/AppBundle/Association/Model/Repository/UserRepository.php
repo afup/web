@@ -4,10 +4,10 @@
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\User;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
-use CCMBenchmark\Ting\Serializer\Json;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -23,6 +23,35 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             throw new UsernameNotFoundException(sprintf('Could not find the user "%s"', $username));
         }
         return $user;
+    }
+
+    /**
+     * Retrieve all "physical" users by the date of end of membership.
+     *
+     * @param \DateTimeImmutable $endOfSubscription
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getUsersByEndOfMembership(\DateTimeImmutable $endOfSubscription)
+    {
+        $startOfDay = $endOfSubscription->setTime(0, 0, 0);
+        $endOfDay = $endOfSubscription->setTime(23, 59, 59);
+
+        return $this
+            ->getQuery(<<<SQL
+                SELECT app.`id`, app.`login`, app.`prenom`, app.`nom`, app.`email`
+                FROM `afup_personnes_physiques` app
+                LEFT JOIN `afup_cotisations` ac ON ac.type_personne = :type AND ac.id_personne = app.id
+                WHERE id_personne_morale = 0
+                GROUP BY app.`id`
+                HAVING MAX(ac.`date_fin`) BETWEEN :start AND :end
+SQL
+            )
+            ->setParams([
+                'start' => $startOfDay->format('U'),
+                'end' => $endOfDay->format('U'),
+                'type' => 0
+            ])
+            ->query($this->getCollection(new HydratorSingleObject()));
     }
 
     public function refreshUser(UserInterface $user)
@@ -71,11 +100,6 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->addField([
                 'columnName' => 'mot_de_passe',
                 'fieldName' => 'password',
-                'type' => 'string'
-            ])
-            ->addField([
-                'columnName' => 'prenom',
-                'fieldName' => 'firstName',
                 'type' => 'string'
             ])
             ->addField([
