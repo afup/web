@@ -4,7 +4,7 @@ CURRENT_UID=$(shell id -u)
 
 install: vendor
 
-docker-up: var/logs/.docker-build docker/data docker-compose.override.yml
+docker-up: var/logs/.docker-build data docker-compose.override.yml
 	CURRENT_UID=$(CURRENT_UID) docker-compose up
 
 var/logs/.docker-build: docker-compose.yml docker-compose.override.yml $(shell find docker -type f)
@@ -36,9 +36,9 @@ config: configs/application/config.php app/config/parameters.yml
 test:
 	./bin/atoum
 
-docker/data:
-	mkdir docker/data
-	mkdir docker/data/composer
+data:
+	mkdir data
+	mkdir data/composer
 
 hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 
