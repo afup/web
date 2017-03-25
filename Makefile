@@ -35,6 +35,7 @@ config: configs/application/config.php app/config/parameters.yml
 
 test:
 	./bin/atoum
+	./bin/php-cs-fixer fix --dry-run -vv
 
 data:
 	mkdir data
