@@ -3,15 +3,23 @@
 
 namespace AppBundle\Twig;
 
+use AppBundle\Routing\LegacyRouter;
 
-class TwigExtension extends \Twig_Extension
+class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
+    private $legacyRouter;
+
+    public function __construct(LegacyRouter $legacyRouter)
+    {
+        $this->legacyRouter = $legacyRouter;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction('render_curl', function ($url) {
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -22,7 +30,12 @@ class TwigExtension extends \Twig_Extension
                 }
                 return '';
             }, ['is_safe' => ['html']])
-        );
+        ];
+    }
+
+    public function getGlobals()
+    {
+        return ['legacy_router' => $this->legacyRouter];
     }
 
     /**
@@ -34,5 +47,4 @@ class TwigExtension extends \Twig_Extension
     {
         return 'app';
     }
-
 }

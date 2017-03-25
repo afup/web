@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\CompanyMembership;
 
-
 use Afup\Site\Association\Cotisations;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\LegacyModelFactory;

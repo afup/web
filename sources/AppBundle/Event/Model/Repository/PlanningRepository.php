@@ -75,5 +75,4 @@ class PlanningRepository extends Repository implements MetadataInitializer
 
         return $metadata;
     }
-
 }

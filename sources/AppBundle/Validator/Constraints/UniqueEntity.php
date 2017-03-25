@@ -3,7 +3,6 @@
 
 namespace AppBundle\Validator\Constraints;
 
-
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -16,7 +15,7 @@ class UniqueEntity extends Constraint
 {
     public $message = 'Another entity exists for this data: {{ data }}';
     public $repository;
-    public $fields = array();
+    public $fields = [];
 
     public function getTargets()
     {

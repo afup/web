@@ -1,0 +1,25 @@
+<div class="sessions">
+    {% for talk in talks %}
+        <div class="session boss geek">
+            <a name="{{ talk.talk.id }}"></a>
+            <h4>{{ talk.talk.title|raw }}</h4>
+            {# TODO <div class="horaire">
+                <span class="salle">Auditorium Lucienne et André Blin</span> 27/10/2016 <strong>09:00-09:30</strong>
+            </div>#}
+
+            <div class="details">
+                <div class="abstract"><p>{{ talk.talk.abstract|raw }}</p></div>
+                <div>
+                    {% for speaker in talk[".aggregation"].speaker %}
+                        <div class="conferencier">
+                            <a href="/{{ event.path }}/speakers/#{{ speaker.id }}">
+                                <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(speaker) }}" alt="{{ speaker.label }}">
+                            </a><br>
+                            <a href="/{{ event.path }}/speakers/#{{ speaker.id }}">{{ speaker.label }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

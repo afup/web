@@ -306,6 +306,14 @@
                 <source><![CDATA[En venant aux évènements de l'AFUP vous vous engagez à respecter le <a href="/code-de-conduite/">Code de conduite</a>.]]></source>
                 <target><![CDATA[By coming at AFUP events, you agree to respect our <a href="/code-de-conduite/">Code of conduct</a>.]]></target>
             </trans-unit>
+            <trans-unit id="77">
+                <source>Jeudi 18 mai 2017</source>
+                <target>Thursday, 18rd of May 2017</target>
+            </trans-unit>
+            <trans-unit id="78">
+                <source>Vendredi 19 mai 2017</source>
+                <target>Friday, 19th of May 2017</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

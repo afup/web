@@ -179,6 +179,19 @@ class Assemblee_Generale
         return $this->_bdd->obtenirUn($requete);
     }
 
+    function obtenirNombrePresences($timestamp)
+    {
+        $requete = 'SELECT';
+        $requete .= '  COUNT(*) ';
+        $requete .= 'FROM';
+        $requete .= '  afup_presences_assemblee_generale ';
+        $requete .= 'WHERE';
+        $requete .= '  afup_presences_assemblee_generale.date = \'' . $timestamp . '\' ';
+        $requete .= 'AND';
+        $requete .= '   afup_presences_assemblee_generale.presence = \'1\' ';
+        return $this->_bdd->obtenirUn($requete);
+    }
+
     function obtenirEcartQuorum($timestamp)
     {
         $quorum = ceil($this->obtenirNombrePersonnesAJourDeCotisation($timestamp) / 3);

@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

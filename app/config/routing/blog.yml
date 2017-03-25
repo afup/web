@@ -1,0 +1,11 @@
+#######################################################################
+# In this file, requests will be made from the wordpress event.afup.org
+#######################################################################
+
+program:
+  path: /{eventSlug}/program
+  defaults: {_controller: AppBundle:Blog:program}
+
+speakers:
+  path: /{eventSlug}/speakers
+  defaults: {_controller: AppBundle:Blog:speakers}

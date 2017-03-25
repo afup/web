@@ -81,5 +81,4 @@ class TalkInvitationRepository extends Repository implements MetadataInitializer
 
         return $metadata;
     }
-
 }

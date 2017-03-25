@@ -2,6 +2,8 @@
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
@@ -28,6 +30,27 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    /**
+     * Retrieve speakers with a scheduled talk for a given event
+     * @param Event $event
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getScheduledSpeakersByEvent(Event $event)
+    {
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('speaker', 'talk', 'getId');
+
+        $query = $this->getPreparedQuery('SELECT speaker.conferencier_id, speaker.id_forum, speaker.civilite, speaker.nom, speaker.prenom, speaker.email, speaker.societe,
+        speaker.biographie, speaker.twitter, speaker.user_github, speaker.photo, talk.titre, talk.session_id
+        FROM afup_conferenciers speaker
+        INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
+        INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
+        WHERE speaker.id_forum = :event AND talk.plannifie=1
+        ORDER BY speaker.prenom ASC, speaker.nom ASC
+        ')->setParams(['event' => $event->getId()]);
+
+        return $query->query($this->getCollection($hydrator));
+    }
 
     /**
      * @inheritDoc

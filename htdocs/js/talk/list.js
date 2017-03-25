@@ -51,7 +51,7 @@ search.addWidget(
 
 
                 if (typeof data.blog_post_url !== 'undefined') {
-                    content += '<a class="talk-info-link" href="' + data.blog_post_url + '" class="talk-list-" target="blog-post"><i class="fa fa-rss"></i> Article</a>';
+                    content += '<a class="talk-info-link" href="' + data.blog_post_url + '" class="talk-list-" target="blog-post"><i class="fa fa-rss"></i> Transcript</a>';
                 }
 
                 if (typeof data.slides_url !== 'undefined') {
@@ -130,7 +130,7 @@ search.addWidget(
     instantsearch.widgets.toggle({
         container: '#refinement-has-blog-post',
         attributeName: 'has_blog_post',
-        label: 'Avec article de blog',
+        label: 'Avec transcript',
         values: {
             on: true
         },
@@ -177,6 +177,7 @@ search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-type',
         attributeName: 'type.label',
+        operator: "and",
         templates: {
             header: "<h4>Format</h4>",
             item: refinementItemTemplate
@@ -204,7 +205,24 @@ search.addWidget(
         templates: {
             header: "<h4>Conférencier</h4>",
             item: refinementItemTemplate
+        },
+        showMore: {
+            limit: 20,
+            templates: {
+                active: '<a class="ais-show-more ais-show-more__inactive">Voir moins</a>',
+                inactive: '<a class="ais-show-more ais-show-more__inactive">Voir plus</a>'
+            }
         }
+    })
+);
+
+search.addWidget(
+    instantsearch.widgets.clearAll({
+        container: '#refinement-clear',
+        templates: {
+            link: 'Supprimer les filtres'
+        },
+        autoHideContainer: true
     })
 );
 

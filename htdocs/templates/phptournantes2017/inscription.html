@@ -1,0 +1,27 @@
+<article>
+    <h3>{'S\'inscrire'|trans}</h3>
+
+    <div class="article-body">
+        <div id="divPersonne" style="display:none;">
+            <fieldset>
+                <legend>
+                    <a name="inscription1">{'Nombre de personnes'|trans}</a>
+                </legend>
+                <p>{'Je souhaite inscrire'|trans}
+                <select id="nbPersonnes">
+                    <option value="1" selected="selected">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                {'personne(s)'|trans}</p>
+            </fieldset>
+        </div>
+        {include file="formulaire.html"}
+    </div>
+</article>
+
+<script type="text/javascript">
+    var nbInscriptions = {$nbInscriptions};
+</script>

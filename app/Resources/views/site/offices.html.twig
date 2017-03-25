@@ -1,25 +1,22 @@
 {% extends ':site:base.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/grid.css') }}" media="all" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style type="text/css">
 
         .mapael .map {
             margin-bottom: 10px;
             position: relative;
         }
+        
+        .map-container a {
+            text-decoration: none;
+        }
 
-        .mapael .mapTooltip {
-            position: absolute;
-            background-color: #474c4b;
-            -moz-opacity: 0.70;
-            opacity: 0.70;
-            filter: alpha(opacity=70);
-            border-radius: 10px;
-            padding: 10px;
-            z-index: 1000;
-            max-width: 200px;
-            display: none;
-            color: #fff;
+        .city-link {
+            line-height: 1.909em;
+            font-size: 1.46em;
         }
     </style>
 {% endblock %}
@@ -30,166 +27,158 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.0/raphael-min.js"></script>
     <script src="{{ asset('/js/jQuery-Mapael-2.0.0/js/jquery.mapael.min.js') }}"></script>
     <script src="{{ asset('/js/jQuery-Mapael-2.0.0/js/maps/france_and_luxembourg.min.js') }}"></script>
+
+
     <script>
+        var legends = {};
+        var plots = {};
+        var baseArea = {
+            attrs: {
+                fill: "#2b3e74"
+            },
+            attrsHover: {
+                fill: "#2b3e74"
+            }
+        };
+        var areas = {};
+
+        $('.afup-office').each(function() {
+            var city = $(this);
+            var href = $('a', city).first().attr('href');
+
+            legends[city.data('mapKey')] = {
+                first_point_x: city.data("map-legend-first-point-x"),
+                first_point_y: city.data("map-legend-first-point-y"),
+                second_point_x: city.data("map-legend-second-point-x"),
+                second_point_y: city.data("map-legend-second-point-y"),
+                third_point_x: city.data("map-legend-third-point-x"),
+                third_point_y: city.data("map-legend-third-point-y"),
+                attachment: city.data("map-legend-attachment"),
+                title: $('h3', city).text(),
+                subtitle: city.data("map-legend-subtitle"),
+                link: href,
+                logo_url: $('img', city).attr('src')
+            };
+            plots[city.data('mapKey')] = {
+                latitude: city.data("map-point-latitude"),
+                longitude: city.data("map-point-longitude"),
+                size: 20,
+                attrs: {
+                    fill: "#2b3e74"
+                }
+            };
+            if (typeof city.data('departements') != 'undefined') {
+                $.each(city.data('departements').toString().split(','), function(index, departementCode) {
+                    var area = jQuery.extend({}, baseArea);
+                    area["href"] = href;
+                    areas["department-" + departementCode] = area;
+                });
+            }
+            if (typeof city.data('pays') != 'undefined') {
+                $.each(city.data('pays').toString().split(','), function(index, paysCode) {
+                    var area = jQuery.extend({}, baseArea);
+                    area["href"] = href;
+                    areas["country-" + paysCode] = area;
+                });
+            }
+
+        });
+
         $(".map-container").mapael({
             map : {
                 name : "france_departments",
                 defaultArea: {
+                    animDuration: 0,
                     attrs: {
+                        fill: "#50a0dd",
+                        stroke: "#ced8d0"
+                    },
+                    attrsHover: {
                         fill: "#50a0dd"
-                        , stroke: "#ced8d0"
-                    }
-                    , attrsHover: {
-                        fill: "white"
-                    }
-                    , text: {
+                    },
+                    text: {
                         attrs: {
                             fill: "#505444"
-                        }
-                        , attrsHover: {
+                        },
+                        attrsHover: {
                             fill: "#000"
                         }
                     }
+                },
+                afterInit : function($self, paper, areas, plots, options) {
+                    var topMargin = 30;
+                    var bottomMargin = 170;
+                    var leftMargin = 170;
+                    var rightMargin = 100;
+
+                    var addedWidth = leftMargin + rightMargin;
+                    var addedHeight = topMargin + bottomMargin;
+
+                    paper.setViewBox(0, 0, 600 + addedWidth, 500 + addedHeight, true);
+
+                    // Décalages de la carte
+                    for (var key in areas) {
+                        areas[key].mapElem.translate(addedWidth / 2, topMargin);
+                    }
+
+                    for (var key in plots) {
+                        plots[key].mapElem.translate(addedWidth / 2, topMargin);
+                    }
+
+                    for (var key in legends) {
+                        paper.path([
+                            "M",
+                            legends[key]['first_point_x'],
+                            legends[key]['first_point_y'],
+                            "L",
+                            legends[key]['second_point_x'],
+                            legends[key]['second_point_y']
+                        ]).attr({stroke: "#2b3e74"});
+                        paper.path([
+                            "M",
+                            legends[key]['second_point_x'],
+                            legends[key]['second_point_y'],
+                            "L",
+                            legends[key]['third_point_x'],
+                            legends[key]['third_point_y']
+                        ]).attr({stroke: "#2b3e74"});
+
+                        var boxWith = 150;
+                        var boxHeight = 50;
+                        var boxX;
+                        var boxY;
+
+                        if (legends[key]['attachment'] == 'left') {
+                            boxX = legends[key]['third_point_x'];
+                            boxY = legends[key]['third_point_y'] - (boxHeight / 2);
+                        } else if (legends[key]['attachment'] == 'top') {
+                            boxX = legends[key]['third_point_x'] - (boxWith / 2);
+                            boxY = legends[key]['third_point_y'];
+                        } else if (legends[key]['attachment'] == 'bottom') {
+                            boxX = legends[key]['third_point_x'] - (boxWith / 2);
+                            boxY = legends[key]['third_point_y'] - boxHeight;
+                        } else if (legends[key]['attachment'] == 'right') {
+                            boxX = legends[key]['third_point_x'] - (boxWith);
+                            boxY = legends[key]['third_point_y'] - (boxHeight / 2);
+                        }
+
+                        paper.rect(boxX, boxY, boxWith, boxHeight);
+
+                        var text = paper.text(boxX + 10, boxY + 25, legends[key]['title']).attr( {'text-anchor':'start', 'font-size': "14px", "font-weight": "bold"} );
+                        text.attr({'href': legends[key]['link']});
+
+                        var imageHeight = 50;
+                        var imageWidth = 50;
+                        var imageMargin = 2;
+                        paper.image(legends[key]['logo_url'], boxX + boxWith - imageWidth - imageMargin, boxY + imageMargin, imageWidth - (imageMargin * 2), imageHeight - (imageMargin * 2));
+                    }
                 }
             },
-            areas: {
-                "department-75": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Paris"},
-                    href: "http://paris.afup.org/"
-                },
-                "department-77": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Paris"},
-                    href: "http://paris.afup.org/"
-                },
-                "department-78": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Paris"},
-                    href: "http://paris.afup.org/"
-                },
-                "department-91": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Paris"},
-                    href: "http://paris.afup.org/"
-                },
-                "department-92": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Paris"},
-                    href: "http://paris.afup.org/"
-                },
-                "department-93": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Paris"},
-                    href: "http://paris.afup.org/"
-                },
-                "department-94": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Paris"},
-                    href: "http://paris.afup.org/"
-                },
-                "department-95": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Paris"},
-                    href: "http://paris.afup.org/"
-                },
-                "department-34": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Montpellier"},
-                    href: "https://twitter.com/afup_mtp"
-                },
-                "department-44": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Nantes"},
-                    href: "https://twitter.com/AFUP_Nantes"
-                },
-                "department-69": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Lyon"},
-                    href: "http://lyon.afup.org"
-                },
-                "department-26": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Drome-Ardeche"},
-                    href: "http://valence.afup.org"
-                },
-                "department-07": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Drome-Ardeche"},
-                    href: "http://valence.afup.org"
-                },
-                "department-13": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Marseille"},
-                    href: "http://marseille.afup.org"
-                },
-                "department-31": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Toulouse"},
-                    href: "http://toulouse.afup.org"
-                },
-                "department-59": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Lille"},
-                    href: "http://lille.afup.org/"
-                },
-                "department-45": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Centre"},
-                    href: "https://twitter.com/afupCentre"
-                },
-                "department-33": {
-                    attrs: {
-                        fill: "#2b3e74"
-                    },
-                    tooltip: {content: "Antenne Bordeaux"},
-                    href: "http://bordeaux.afup.org/"
-                },
-                "country-lux": {
-                    attrs: {
-                        fill: "#2b3e74",
-                        stroke: "#1ebdff"
-                    },
-                    tooltip: {content: "Antenne Luxembourg"},
-                    href: "https://twitter.com/AFUP_Luxembourg"
-                }
-            }
+            plots: plots,
+            areas: areas
         });
     </script>
+
 {% endblock %}
 
 
@@ -199,6 +188,7 @@
     <p>Une dizaine d'antennes locales, représentantes de l'AFUP en région, organise rencontres, meetups et apéros PHP
         tout au long de l'année, tisse un lien entre les développeurs et fait la promotion du PHP dans les entreprises
         partout en France.</p>
+
     <div class="map-container">
         <div class="map">Antennes AFUP françaises</div>
     </div>
@@ -244,6 +234,460 @@
         deviennent les représentantes en région de l'action menée à l'échelle nationale par l'association. Rapidement,
         les antennes AFUP Lyon, Paris, Orléans et Nantes naissent. Suivront Lille, Luxembourg, Toulouse, Valence,
         Montpellier… <strong>Rencontrez les membres AFUP qui vivent près de chez vous !</strong></p>
+
+
+    <h2>Liste des antennes</h2>
+    <div class="super-apero-officies">
+
+
+        <div class="container afup-office"
+             data-map-key="bordeaux"
+             data-map-legend-first-point-x="330"
+             data-map-legend-first-point-y="440"
+             data-map-legend-second-point-x="270"
+             data-map-legend-second-point-y="500"
+             data-map-legend-third-point-x="230"
+             data-map-legend-third-point-y="500"
+             data-map-legend-attachment="right"
+             data-map-point-latitude="44.837912"
+             data-map-point-longitude="-0.579541"
+             data-departements="33"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/afup-icon-color.svg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Bordeaux</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://bordeaux.afup.org/">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/AFUP_Bordeaux">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+                <i class="fa fa-meetup" aria-hidden="true"></i>
+                <a href="https://www.meetup.com/fr-FR/Bordeaux-PHP-Meetup/">Meetup</a>
+            </div>
+        </div>
+
+        <div class="container afup-office"
+             data-map-key="limoges"
+             data-map-legend-first-point-x="410"
+             data-map-legend-first-point-y="380"
+             data-map-legend-second-point-x="320"
+             data-map-legend-second-point-y="380"
+             data-map-legend-third-point-x="230"
+             data-map-legend-third-point-y="430"
+             data-map-legend-attachment="right"
+             data-map-point-latitude="45.85"
+             data-map-point-longitude="1.25"
+             data-departements="87"
+        >
+
+            <div class="col-md-1">
+                <img src="/images/offices/limoges.jpg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Limoges</h3>
+            </div>
+            <div class="col-md-2 city-link">
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/AFUP_Limoges">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+            </div>
+        </div>
+
+        <div class="container afup-office"
+             data-map-key="lille"
+             data-map-legend-first-point-x="490"
+             data-map-legend-first-point-y="55"
+             data-map-legend-second-point-x="530"
+             data-map-legend-second-point-y="30"
+             data-map-legend-third-point-x="605"
+             data-map-legend-third-point-y="20"
+             data-map-legend-attachment="left"
+             data-map-point-latitude="50.637222"
+             data-map-point-longitude="3.063333"
+             data-departements="59"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/afup-icon-color.svg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Lille</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://lille.afup.org/">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="http://twitter.com/afup_lille">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+            </div>
+        </div>
+
+        <div class="container afup-office"
+             data-map-key="luxembourg"
+             data-map-legend-first-point-x="630"
+             data-map-legend-first-point-y="130"
+             data-map-legend-second-point-x="660"
+             data-map-legend-second-point-y="140"
+             data-map-legend-third-point-x="717"
+             data-map-legend-third-point-y="140"
+             data-map-legend-attachment="left"
+             data-map-point-latitude="49.61"
+             data-map-point-longitude="6.13333"
+             data-pays="lux"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/luxembourg.jpg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Luxembourg</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://luxembourg.afup.org/">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/afup_luxembourg">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+                <i class="fa fa-meetup" aria-hidden="true"></i>
+                <a href="https://www.meetup.com/fr-FR/afup-luxembourg-php/">Meetup</a>
+            </div>
+        </div>
+
+
+        <div class="container afup-office"
+             data-map-key="lyon"
+             data-map-legend-first-point-x="570"
+             data-map-legend-first-point-y="380"
+             data-map-legend-second-point-x="680"
+             data-map-legend-second-point-y="320"
+             data-map-legend-third-point-x="710"
+             data-map-legend-third-point-y="320"
+             data-map-legend-attachment="left"
+             data-map-point-latitude="45.759723"
+             data-map-point-longitude="4.842223"
+             data-departements="69"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/lyon.png" />
+            </div>
+            <div class="col-md-3">
+                <h3>Lyon</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://lyon.afup.org">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="http://twitter.com/AFUP_Lyon">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+                <i class="fa fa-meetup" aria-hidden="true"></i>
+                <a href="https://www.meetup.com/fr-FR/afup-lyon-php/">Meetup</a>
+            </div>
+        </div>
+
+
+        <div class="container afup-office"
+             data-map-key="marseille"
+             data-map-legend-first-point-x="600"
+             data-map-legend-first-point-y="540"
+             data-map-legend-second-point-x="600"
+             data-map-legend-second-point-y="600"
+             data-map-legend-third-point-x="600"
+             data-map-legend-third-point-y="600"
+             data-map-legend-attachment="top"
+             data-map-point-latitude="43.296346"
+             data-map-point-longitude="5.36988923"
+             data-departements="13"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/afup-icon-color.svg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Marseille</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://marseille.afup.org">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="http://twitter.com/AFUP_Marseille">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+                <i class="fa fa-meetup" aria-hidden="true"></i>
+                <a href="https://www.meetup.com/fr-FR/Marseille-PHP-User-Group/">Meetup</a>
+            </div>
+        </div>
+
+
+        <div class="container afup-office"
+             data-map-key="montpelier"
+             data-map-legend-first-point-x="530"
+             data-map-legend-first-point-y="520"
+             data-map-legend-second-point-x="470"
+             data-map-legend-second-point-y="590"
+             data-map-legend-third-point-x="470"
+             data-map-legend-third-point-y="670"
+             data-map-legend-attachment="top"
+             data-map-point-latitude="43.611944"
+             data-map-point-longitude="3.877222"
+             data-departements="34"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/montpellier.jpeg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Montpellier</h3>
+            </div>
+            <div class="col-md-2 city-link">
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/afup_mtp">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+                <i class="fa fa-meetup" aria-hidden="true"></i>
+                <a href="https://www.meetup.com/fr-FR/Montpellier-PHP-Meetup/">Meetup</a>
+            </div>
+        </div>
+
+
+        <div class="container afup-office"
+             data-map-key="nantes"
+             data-map-legend-first-point-x="285"
+             data-map-legend-first-point-y="290"
+             data-map-legend-second-point-x="180"
+             data-map-legend-second-point-y="290"
+             data-map-legend-third-point-x="180"
+             data-map-legend-third-point-y="290"
+             data-map-legend-attachment="right"
+             data-map-point-latitude="47.21806"
+             data-map-point-longitude="-1.55278"
+             data-departements="44"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/afup-icon-color.svg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Nantes</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://nantes.afup.org/">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/afup_nantes">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+            </div>
+        </div>
+
+
+        <div class="container afup-office"
+             data-map-key="paris"
+             data-map-legend-first-point-x="460"
+             data-map-legend-first-point-y="180"
+             data-map-legend-second-point-x="400"
+             data-map-legend-second-point-y="60"
+             data-map-legend-third-point-x="360"
+             data-map-legend-third-point-y="60"
+             data-map-legend-attachment="right"
+             data-map-point-latitude="48.856578"
+             data-map-point-longitude="2.351828"
+             data-departements="75,77,78,91,92,93,94,95"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/paris.png" />
+            </div>
+            <div class="col-md-3">
+                <h3>Paris</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://paris.afup.org/">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/afup_paris">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+                <i class="fa fa-meetup" aria-hidden="true"></i>
+                <a href="https://www.meetup.com/fr-FR/afup-paris-php/">Meetup</a>
+            </div>
+        </div>
+
+        <div class="container afup-office"
+             data-map-key="poitiers"
+             data-map-legend-first-point-x="365"
+             data-map-legend-first-point-y="330"
+             data-map-legend-second-point-x="285"
+             data-map-legend-second-point-y="360"
+             data-map-legend-third-point-x="180"
+             data-map-legend-third-point-y="360"
+             data-map-legend-attachment="right"
+             data-map-point-latitude="46.581945"
+             data-map-point-longitude="0.336112"
+             data-departements="86"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/afup-icon-color.svg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Poitiers</h3>
+            </div>
+            <div class="col-md-2 city-link">
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/afup_poitiers">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+            </div>
+        </div>
+
+        <div class="container afup-office"
+             data-map-key="reims"
+             data-map-legend-first-point-x="540"
+             data-map-legend-first-point-y="150"
+             data-map-legend-second-point-x="680"
+             data-map-legend-second-point-y="220"
+             data-map-legend-third-point-x="720"
+             data-map-legend-third-point-y="220"
+             data-map-legend-attachment="left"
+             data-map-point-latitude="49.26278"
+             data-map-point-longitude="4.03472"
+             data-departements="51"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/afup-icon-color.svg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Reims</h3>
+            </div>
+            <div class="col-md-2 city-link">
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/afup_reims">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+            </div>
+        </div>
+
+        <div class="container afup-office"
+             data-map-key="rennes"
+             data-map-legend-first-point-x="285"
+             data-map-legend-first-point-y="220"
+             data-map-legend-second-point-x="150"
+             data-map-legend-second-point-y="220"
+             data-map-legend-third-point-x="120"
+             data-map-legend-third-point-y="170"
+             data-map-legend-attachment="bottom"
+             data-map-point-latitude="48.114722"
+             data-map-point-longitude="-1.679444"
+             data-departements="35"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/rennes.jpg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Rennes</h3>
+            </div>
+            <div class="col-md-2 city-link">
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/AFUP_Rennes">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+            </div>
+        </div>
+
+        <div class="container afup-office"
+             data-map-key="toulouse"
+             data-map-legend-first-point-x="420"
+             data-map-legend-first-point-y="520"
+             data-map-legend-second-point-x="290"
+             data-map-legend-second-point-y="590"
+             data-map-legend-third-point-x="290"
+             data-map-legend-third-point-y="600"
+             data-map-legend-attachment="top"
+             data-map-point-latitude="43.604482"
+             data-map-point-longitude="1.443962"
+             data-departements="31"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/afup-icon-color.svg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Toulouse</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://toulouse.afup.org/">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/afup_toulouse">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+                <i class="fa fa-meetup" aria-hidden="true"></i>
+                <a href="https://www.meetup.com/AperoPHP-Toulouse/events/237869543/?_locale=fr-FR">Meetup</a>
+            </div>
+        </div>
+
+
+        <div class="container afup-office"
+             data-map-key="valence"
+             data-map-legend-first-point-x="570"
+             data-map-legend-first-point-y="440"
+             data-map-legend-second-point-x="680"
+             data-map-legend-second-point-y="390"
+             data-map-legend-third-point-x="710"
+             data-map-legend-third-point-y="390"
+             data-map-legend-attachment="left"
+             data-map-point-latitude="44.933333"
+             data-map-point-longitude="4.891667"
+             data-departements="26,07"
+        >
+            <div class="col-md-1">
+                <img src="/images/offices/afup-icon-color.svg" />
+            </div>
+            <div class="col-md-3">
+                <h3>Drome
+Ardèche</h3>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-rss" aria-hidden="true"></i>
+                <a href="http://valence.afup.org/">Blog</a>
+            </div>
+            <div class="col-md-2 city-link">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <a href="https://twitter.com/afup_dromardech">Twitter</a>
+            </div>
+            <div class="col-md-4 city-link">
+            </div>
+        </div>
+
+    </div>
+
     <a class="twitter-timeline" data-lang="fr" data-height="500" data-dnt="true" data-theme="light" href="https://twitter.com/afup/lists/antennes-afup">A Twitter List by afup</a>
     <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 

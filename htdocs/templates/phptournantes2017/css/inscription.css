@@ -1,0 +1,96 @@
+input.span7 {
+    height:25px;
+}
+
+form *, #divPersonne *{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+fieldset{
+    padding-top:0;
+}
+
+fieldset legend{
+    display:block;
+    background-color:#50a0dd;
+    padding: 20px 10px;
+    color:white;
+    width:100%;
+    cursor: pointer;
+}
+fieldset legend a {
+    color: white;
+}
+
+fieldset div.fieldset--inner {
+    background-color: #f2f2f2;
+    padding: 15px 10px;
+    width: 100%;
+}
+
+fieldset p {
+    padding-top:15px;
+}
+
+input:invalid{
+    border-color: #900;
+    background-color: #FDD;
+}
+
+input:focus:invalid {
+    outline: none;
+}
+
+label{
+    width:200px;
+}
+form .input{
+    margin-left: 230px !important;
+}
+
+span.fieldset--legend--price{
+    float:right
+}
+
+fieldset.f7 .input{
+    margin-left:50px !important;
+}
+fieldset.f7 .input .inputs-list li, fieldset.f6 .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
+    float:left;
+    width: 30%;
+}
+
+input[name^="tag"] {
+    width:200px;
+}
+div[id^="div_tags"] {
+    margin-left: 0 !important;
+}
+div[id^="div_tags"] ul li:not(:first-child){
+    float:left;
+    width:32%;
+}
+#formulaire .btn{
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+}
+
+#formulaire .boutons div.fieldset--inner div.clearfix .input{
+    margin: 0 20px !important;
+    text-align: right;
+}
+
+#formulaire .boutons div.fieldset--inner div.clearfix:first-child .input{
+    margin: 0 auto !important;
+    width:50%;
+}
+#formulaire .boutons .input tr.registration td, #formulaire .boutons .input tr.registration th{
+    border-bottom: 1px solid #7d7d7d;
+    border-top:none !important;
+}
+#formulaire .boutons .input td{
+    border-left: 1px solid #7d7d7d;
+}

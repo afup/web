@@ -44,6 +44,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     // Mise en place de la liste dans le scope de smarty
 	$convocations = $assemblee_generale->obtenirNombrePersonnesAJourDeCotisation($timestamp);
 	$presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
+	$presencesSeulement = $assemblee_generale->obtenirNombrePresences($timestamp);
 	$quorum = $assemblee_generale->obtenirEcartQuorum($timestamp);
     $liste_personnes = $assemblee_generale->obtenirListe($list_date_assemblee_generale, $list_ordre, $list_associatif);
     $liste_personnes_a_jour = $assemblee_generale->obtenirListePersonnesAJourDeCotisation($timestamp);
@@ -60,6 +61,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     }
     $smarty->assign('convocations', $convocations);
     $smarty->assign('presences', $presences);
+    $smarty->assign('presencesSeulement', $presencesSeulement);
     $smarty->assign('quorum', $quorum);
     $smarty->assign('personnes', $personnes_physiques);
 

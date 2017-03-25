@@ -3,7 +3,6 @@
 
 namespace AppBundle\Slack;
 
-
 class Message
 {
     /**

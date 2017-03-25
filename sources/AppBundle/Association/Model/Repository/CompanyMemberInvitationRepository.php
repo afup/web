@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\Model\Repository;
 
-
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\Metadata;

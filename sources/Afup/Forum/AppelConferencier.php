@@ -561,7 +561,9 @@ class AppelConferencier
                                   $ordre = 's.date_soumission',
                                   $associatif = false,
                                   $filtre = false,
-                                  $type = 'session')
+                                  $type = 'session',
+                                  $needsMentoring = null
+    )
     {
         $requete = ' SELECT ';
         $requete .= '  COUNT(co.id) as commentaires_nombre, ';
@@ -588,6 +590,11 @@ class AppelConferencier
                 ;
                 break;
         }
+
+        if (null !== $needsMentoring) {
+            $requete .= ' AND s.needs_mentoring = ' . ((int)$needsMentoring);
+        }
+
         $requete .= ' GROUP BY s.session_id ';
         $requete .= ' ORDER BY ' . $ordre;
         if ($associatif) {

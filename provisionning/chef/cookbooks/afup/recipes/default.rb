@@ -34,6 +34,7 @@ package "php5-common"
 package "php5-mysqlnd"
 package "php5-gd"
 package "php5-mcrypt"
+package "php5-curl"
 
 # Install and activate the apache2 module
 package "libapache2-mod-php5"
@@ -116,8 +117,10 @@ end
 
 # Composer
 # --------
+execute "EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)"
 execute "php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\""
-execute "php -r \"if (hash_file('SHA384', 'composer-setup.php') === 'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;\""
+execute "ACTUAL_SIGNATURE=$(php -r \"echo hash_file('SHA384', 'composer-setup.php');\")"
+execute "if [ \"$EXPECTED_SIGNATURE\" != \"$ACTUAL_SIGNATURE\" ]; then echo 'Installer corrupt'; rm composer-setup.php; fi"
 execute "php composer-setup.php"
 execute "php -r \"unlink('composer-setup.php');\""
 execute "mv composer.phar /usr/local/bin/composer"

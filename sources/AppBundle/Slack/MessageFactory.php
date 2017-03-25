@@ -3,7 +3,6 @@
 
 namespace AppBundle\Slack;
 
-
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use Symfony\Component\Translation\Translator;

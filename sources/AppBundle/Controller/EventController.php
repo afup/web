@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
@@ -24,7 +23,6 @@ class EventController extends EventBaseController
             return $this->render(':event:none.html.twig');
         }
         return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
-
     }
 
     public function eventAction($eventSlug)

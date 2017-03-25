@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Utils\Mail;
 use AppBundle\Association\Form\CompanyMemberType;
@@ -12,6 +11,7 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +42,7 @@ class MemberShipController extends SiteBaseController
              */
             $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
 
-            foreach($member->getInvitations() as $index => $invitation) {
+            foreach ($member->getInvitations() as $index => $invitation) {
                 $invitation
                     ->setSubmittedOn(new \DateTime())
                     ->setCompanyId($member->getId())
@@ -57,7 +57,7 @@ class MemberShipController extends SiteBaseController
                 $invitationRepository->save($invitation);
 
                 // Send mail to the other guy, begging for him to join the talk
-                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function() use ($member, $invitation){
+                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($member, $invitation) {
                     $text = $this->get('translator')->trans('mail.invitationMembership.text',
                         [
                             '%firstname%' => $member->getFirstName(),
@@ -110,7 +110,7 @@ class MemberShipController extends SiteBaseController
 
         $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
             'F' . $invoiceNumber,
-            (float)$invoice['montant'],
+            (float) $invoice['montant'],
             $company->getEmail()
         );
 
@@ -195,5 +195,17 @@ class MemberShipController extends SiteBaseController
         }
 
         return $this->render(':site/company_membership:member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
+    }
+
+    public function reminderLogAction($page = 1)
+    {
+        /**
+         * @var $repository SubscriptionReminderLogRepository
+         */
+        $limit = 50;
+        $repository = $this->get('ting')->get(SubscriptionReminderLogRepository::class);
+        $results = $repository->getPaginatedLogs($page, $limit);
+
+        return $this->render(':admin/relances:liste.html.twig', ['logs' => $results, 'limit' => $limit, 'page' => $page]);
     }
 }

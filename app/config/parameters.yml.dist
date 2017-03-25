@@ -20,3 +20,8 @@ parameters:
     algolia_app_id: DVB92YWTPE
     algolia_backend_api_key: 78e71e5r5c2Rb353f5a03376gb9878779
     algolia_frontend_api_key: 74e71e5r5c2Rb353f5a03376gb9878777
+
+    twitter_oauth_access_token: ""
+    twitter_oauth_access_token_secret: ""
+    twitter_consumer_key: ""
+    twitter_consumer_secret: ""
