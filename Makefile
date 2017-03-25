@@ -4,12 +4,15 @@ CURRENT_UID=$(shell id -u)
 
 install: vendor
 
-docker-up: var/logs/.docker-build docker/data
+docker-up: var/logs/.docker-build docker/data docker-compose.override.yml
 	CURRENT_UID=$(CURRENT_UID) docker-compose up
 
 var/logs/.docker-build: docker-compose.yml docker-compose.override.yml $(shell find docker -type f)
 	CURRENT_UID=$(CURRENT_UID) docker-compose build
 	touch var/logs/.docker-build
+
+docker-compose.override.yml:
+	cp docker-compose.override.yml-dist docker-compose.override.yml
 
 vendor: composer.phar composer.lock
 	php composer.phar install

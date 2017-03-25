@@ -52,9 +52,10 @@ Et la base de données est `afup_dev`.
 # Mise en place via docker
 
 * cloner le dépot
-* copier le fichier `docker-compose.override.yml-dist` dans `docker-compose.override.yml` et modifier les ports utilisés à votre convenance.
 * effectuer un `make docker-up` pour la création de l'infrastructure sous docker
 * effectuer un `make config` pour la copie des fichiers de config par défaut et l'installation des dépendances
+
+_Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.override.yml`._
 
 ## Applications
 
