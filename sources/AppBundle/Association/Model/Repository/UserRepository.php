@@ -4,6 +4,7 @@
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\User;
+use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -16,6 +17,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserRepository extends Repository implements MetadataInitializer, UserProviderInterface
 {
+    const USER_TYPE_PHYSICAL = 0;
+    const USER_TYPE_COMPANY = 1;
+    const USER_TYPE_ALL = 2;
+
     public function loadUserByUsername($username)
     {
         $user = $this->getOneBy(['username' => $username]);
@@ -26,30 +31,89 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     }
 
     /**
-     * Retrieve all "physical" users by the date of end of membership.
+     * @return SelectInterface
+     */
+    private function getQueryBuilderWithSubscriptions()
+    {
+        /**
+         * @var $queryBuilder SelectInterface
+         */
+        $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $queryBuilder
+            ->cols(['app.`id`', 'app.`login`', 'app.`prenom`', 'app.`nom`', 'app.`email`'])
+            ->from('afup_personnes_physiques app')
+            ->join('LEFT', 'afup_personnes_morales apm', 'apm.id = app.id_personne_morale')
+            ->join('LEFT', 'afup_cotisations ac', 'ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)')
+            ->groupBy(['app.`id`'])
+        ;
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Retrieve all users by the date of end of membership.
      *
-     * @param \DateTimeImmutable $endOfSubscription
+     * @param int $userType one of self::USER_TYPE_*
      * @return \CCMBenchmark\Ting\Repository\CollectionInterface
      */
-    public function getUsersByEndOfMembership(\DateTimeImmutable $endOfSubscription)
+    public function getActiveMembers($userType = self::USER_TYPE_PHYSICAL)
+    {
+        $today = new \DateTimeImmutable();
+        $queryBuilder = $this->getQueryBuilderWithSubscriptions();
+        $queryBuilder
+            ->where('app.`etat` = :status')
+            ->having('MAX(ac.`date_fin`) > :start ')
+        ;
+
+        if ($userType === self::USER_TYPE_PHYSICAL) {
+            $queryBuilder->where('id_personne_morale = 0');
+        } elseif ($userType === self::USER_TYPE_COMPANY) {
+            $queryBuilder->where('id_personne_morale <> 0');
+        } elseif ($userType !== self::USER_TYPE_ALL) {
+            throw new \UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
+        }
+
+        return $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams([
+                'start' => $today->format('U'),
+                'status' => User::STATUS_ACTIVE
+            ])
+            ->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * Retrieve all users by the date of end of membership.
+     *
+     * @param \DateTimeImmutable $endOfSubscription
+     * @param int $userType one of self::USER_TYPE_*
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getUsersByEndOfMembership(\DateTimeImmutable $endOfSubscription, $userType = self::USER_TYPE_PHYSICAL)
     {
         $startOfDay = $endOfSubscription->setTime(0, 0, 0);
         $endOfDay = $endOfSubscription->setTime(23, 59, 59);
 
+        $queryBuilder = $this->getQueryBuilderWithSubscriptions();
+        $queryBuilder
+            ->where('app.`etat` = :status')
+            ->having('MAX(ac.`date_fin`) BETWEEN :start AND :end')
+        ;
+
+        if ($userType === self::USER_TYPE_PHYSICAL) {
+            $queryBuilder->where('id_personne_morale = 0');
+        } elseif ($userType === self::USER_TYPE_COMPANY) {
+            $queryBuilder->where('id_personne_morale <> 0');
+        } elseif ($userType !== self::USER_TYPE_ALL) {
+            throw new \UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
+        }
+
         return $this
-            ->getQuery(<<<SQL
-                SELECT app.`id`, app.`login`, app.`prenom`, app.`nom`, app.`email`
-                FROM `afup_personnes_physiques` app
-                LEFT JOIN `afup_cotisations` ac ON ac.type_personne = :type AND ac.id_personne = app.id
-                WHERE id_personne_morale = 0
-                GROUP BY app.`id`
-                HAVING MAX(ac.`date_fin`) BETWEEN :start AND :end
-SQL
-            )
+            ->getPreparedQuery($queryBuilder->getStatement())
             ->setParams([
                 'start' => $startOfDay->format('U'),
                 'end' => $endOfDay->format('U'),
-                'type' => 0
+                'status' => User::STATUS_ACTIVE
             ])
             ->query($this->getCollection(new HydratorSingleObject()));
     }

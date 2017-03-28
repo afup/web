@@ -70,7 +70,7 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
         foreach ($reminders as $name => $details) {
             $reminder = $factory->getReminder($details['class']);
 
-            $users = $repository->getUsersByEndOfMembership($details['date']);
+            $users = $repository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_PHYSICAL);
             $output->writeln(sprintf('%s (%s)', $name, $details['date']->format('d/m/Y')));
             $output->writeln(sprintf('<info>%s membres</info>', $users->count()));
             foreach ($users as $user) {
