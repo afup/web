@@ -23,14 +23,14 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev') {
 }
 
 // Configuration de twig
-$loader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/../../../htdocs/templates/');
+/*$loader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/../../../htdocs/templates/');
 $twig = new Twig_Environment($loader, array(
     'cache' => dirname(__FILE__) . '/../../../htdocs/tmp/twig/',
     'debug' => $debug
 ));
 $twig->addGlobal('url_base', $smarty->get_template_vars('url_base'));
 $twig->addGlobal('chemin_template', $smarty->get_template_vars('chemin_template'));
-$twig->addGlobal('chemin_javascript', $smarty->get_template_vars('chemin_javascript'));
+$twig->addGlobal('chemin_javascript', $smarty->get_template_vars('chemin_javascript'));*/
 
 
 define('AFUP_FORUM_ETAT_CREE', 0);

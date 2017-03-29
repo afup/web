@@ -32,6 +32,10 @@ $pages = array(
                 'nom' => 'Ma personne morale',
                 'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
             ),
+            'sf&action=collegues' => array(
+                'nom' => 'Mes collègues',
+                'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
+            ),
 		    'membre_ml' => array(
 		        'nom' => 'Listes de diffusion',
 		        'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
@@ -346,7 +350,7 @@ $identifiant = $droits->obtenirIdentifiant();
 $personne_physique = $personnes_physiques->obtenir($identifiant);
 if ($personne_physique['id_personne_morale'] == 0) {
     // Suppression des pages accessibles aux membres d'une personne morale
-    unset($pages['membre']['elements']['membre_personne_morale']);
+    unset($pages['membre']['elements']['membre_personne_morale'], $pages['membre']['elements']['membre_collegues']);
 }
 
 

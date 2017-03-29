@@ -16,7 +16,7 @@ class SymfonyKernel
     protected $response;
     protected $twig = null;
 
-    public function __construct()
+    public function __construct(Request $request = null)
     {
         $env = 'prod';
         $debug = false;
@@ -31,6 +31,10 @@ class SymfonyKernel
 
         $this->kernel = new \AppKernel($env, $debug);
         $this->kernel->boot();
+        if ($request === null) {
+            $request = Request::createFromGlobals();
+        }
+        $this->request = $request;
     }
 
     private function getLegacyConfig()
@@ -47,14 +51,15 @@ class SymfonyKernel
      */
     private function handleRequest($uri = null)
     {
-        $server = $_SERVER;
-        if ($uri !== null) {
-            $_SERVER['REQUEST_URI'] = $uri;
-            $_SERVER['AFUP_CONTEXT'] = true;
+        if ($this->response === null) {
+            $server = $_SERVER;
+            if ($uri !== null) {
+                $_SERVER['REQUEST_URI'] = $uri;
+                $_SERVER['AFUP_CONTEXT'] = true;
+            }
+            $this->response = $this->kernel->handle($this->request);
+            $_SERVER = $server;
         }
-        $this->request = Request::createFromGlobals();
-        $this->response = $this->kernel->handle($this->request);
-        $_SERVER = $server;
     }
 
     /**
@@ -70,6 +75,7 @@ class SymfonyKernel
      */
     public function getResponse()
     {
+        $this->handleRequest();
         return $this->response;
     }
 

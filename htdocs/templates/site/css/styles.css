@@ -1321,18 +1321,14 @@ time + h2 {
 }
 
 #sidebar-article h2 {
-    background: url(../img/bg/organise.png) no-repeat;
-    width: 151px;
     height: 69px;
     font-size: 1.61em;
     line-height: 0.92;
     font-weight: 700;
-    color: #fff;
-    padding: 30px 0 0 8px;
+    padding: 30px 0 0 0;
     font-family: "Podkova", serif;
     text-transform: uppercase;
     margin: 0 20px 0 0;
-    float: right
 }
 
 #sidebar-article #externe {
@@ -1354,6 +1350,27 @@ time + h2 {
 
 }
 
+#sidebar-article form{
+    background-color: unset;
+    margin: 0;
+    width: auto;
+    padding: 0;
+    border: none;
+}
+
+#sidebar-article form #subscriber_email{
+    float:left;
+    padding: 4px;
+}
+
+#sidebar-article form #subscriber_save{
+    min-width: 0;
+    text-decoration: none;
+    background-color: #50a0dd;
+    color: white;
+    padding: 4px;
+    border: 1px solid #2b3e74;
+}
 
 footer #menufooter-top {
     list-style: none;
