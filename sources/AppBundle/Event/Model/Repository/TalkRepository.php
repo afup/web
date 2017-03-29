@@ -111,7 +111,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             WHERE talk.id_forum = :event AND plannifie = 1
-            ORDER BY talk.session_id ASC '
+            ORDER BY planning.debut ASC, talk.session_id ASC '
         )->setParams(['event' => $event->getId()]);
 
         return $query->query($this->getCollection($hydrator));
