@@ -66,6 +66,22 @@ class PlanningRepository extends Repository implements MetadataInitializer
                 'type' => 'int'
             ])
             ->addField([
+                'columnName' => 'debut',
+                'fieldName' => 'start',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
+            ])
+            ->addField([
+                'columnName' => 'fin',
+                'fieldName' => 'end',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
+            ])
+            ->addField([
                 'columnName' => 'keynote',
                 'fieldName' => 'isKeynote',
                 'type' => 'bool',
