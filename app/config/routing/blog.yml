@@ -9,3 +9,7 @@ program:
 speakers:
   path: /{eventSlug}/speakers
   defaults: {_controller: AppBundle:Blog:speakers}
+
+planning:
+  path: /{eventSlug}/planning
+  defaults: {_controller: AppBundle:Blog:planning}

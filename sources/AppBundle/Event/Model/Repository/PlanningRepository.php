@@ -16,7 +16,7 @@ class PlanningRepository extends Repository implements MetadataInitializer
     /**
      * @param Talk $talk
      *
-     * @return mixed|null
+     * @return Planning|null
      */
     public function getByTalk(Talk $talk)
     {

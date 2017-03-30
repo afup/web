@@ -1,0 +1,88 @@
+
+<div class="bloc_jour">
+    {% for date, planningForADay in planning %}
+        <table class="planning_agenda">
+            <caption>Jour {{ loop.index }} : {{ date }}</caption>
+            <thead>
+            <tr>
+                <th class="horaire">&nbsp;</th>
+                {% for room in rooms %}
+                    <th class="activite">{{ room.name }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+                {#
+                    Le tableau hasConf contiens pour chaque salle le nombre d'itérations à ignorer pour les td vides
+                    Ce tableau est indexé selon les *noms* des salles car si on l'index par id, le merge va réindexer
+                    les valeurs. Le merge étant le seul moyen de modifier l'entrée d'un tableau dans twig, ce tableau
+                    serait alors inutile
+                 #}
+                {% set hasConf = {} %}
+                {% for hour in hourMin..hourMax %}
+                    {% set hour = "%02d"|format(hour) %}
+                    {% set numberOfRows = 60/precision %}
+                    {% for row in 1..numberOfRows %}
+                        {% set minutes = "%02d"|format(precision*loop.index0) %}
+                        {# On crée une ligne pour chaque espace de 5 minutes mais on affiche les heures que les 1/4h #}
+                        <tr>
+                            {% if loop.index0 * precision % 15 == 0 %}
+                                <td class="col_heure" rowspan="{{ 15 / precision }}" nowrap="nowrap">
+                                    {# @TODO Meilleur affichage heures et minutes #}
+                                    {{ hour }}:{{ "%02d"|format(precision*loop.index0) }}
+                                </td>
+                            {% endif %}
+
+                            {% if planningForADay[date ~ " " ~ hour ~ ":" ~ minutes] is defined %}
+                                {% set slot = planningForADay[date ~ " " ~ hour ~ ":" ~ minutes] %}
+                                {% for room in rooms %}
+                                    {% if slot[room.id] is defined %}
+                                        {% set row = slot[room.id] %}
+                                        {% set numberOfRowForThisSlot = row.length / precision %}
+
+                                        {% set hasConf = hasConf|merge({(room.name|trim):numberOfRowForThisSlot}) %}
+                                        <td rowspan="{{ numberOfRowForThisSlot }}" width="21%" class="conf {{ cycle(['conf_odd', 'conf_even'], loop.index0) }}">
+                                        <p>
+                                            <a href="/{{ event.path }}/programme/#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
+                                                {{ row.talk.title }}
+                                                <span class="conferencier">
+                                            {% for speaker in row[".aggregation"].speaker %}
+                                                {% if loop.index > 1 %} / {% endif %}
+                                                {{ speaker.label }}
+                                                {% if speaker.company %}
+                                                    - {{ speaker.company }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+                                            </a>
+                                        </p>
+
+                                        </td>
+                                    {% else %}
+                                        {% if hasConf[room.name] is defined and hasConf[room.name] > 0 %}
+                                            {% set numberOfRowForThisSlot = hasConf[room.name] - 1 %}
+                                            {% set hasConf = hasConf|merge({(room.name):numberOfRowForThisSlot}) %}
+                                        {% else %}
+                                            <td class="slot_empty">&nbsp;</td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {% for room in rooms %}
+                                    {% if hasConf[room.name] is defined and hasConf[room.name] > 1 %}
+                                        {% set numberOfRowForThisSlot = hasConf[room.name] - 1 %}
+                                        {% set hasConf = hasConf|merge({(room.name):numberOfRowForThisSlot}) %}
+                                    {% else %}
+                                        <td class="slot_empty">&nbsp;</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <br class="page_break">
+    {% endfor %}
+</div>
