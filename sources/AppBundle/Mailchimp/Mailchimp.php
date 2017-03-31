@@ -3,7 +3,6 @@
 
 namespace AppBundle\Mailchimp;
 
-
 class Mailchimp
 {
     private $client;
