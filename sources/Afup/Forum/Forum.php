@@ -476,7 +476,7 @@ CODE_HTML;
                         $m_next = sprintf('%02d', (5 * ($i + 1)) % 60);
                         $style = ($i % 2 == 0) ? 'lp' : 'li';
                         $sHeure = ($h < 10) ? '0' . $h : $h;
-                        $h_next = ($i < 3) ? $h : $h + 1;
+                        $h_next = ($i < 11) ? $h : $h + 1;
                         $sHeure_next = ($h_next < 10) ? '0' . $h_next : $h_next;
                         /* Création de la ligne avec la cellule indiquant l'heure */
                         $sTable .= <<<CODE_HTML
