@@ -93,7 +93,7 @@ class BlogController extends EventBaseController
                     'event' => $event,
                     'rooms' => $rooms,
                     'hourMin' => 8,
-                    'hourMax' => 18,
+                    'hourMax' => 17,
                     'precision' => 5
                 ]
         );
