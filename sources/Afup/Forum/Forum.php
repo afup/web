@@ -367,7 +367,7 @@ class Forum
         $aFin = explode(":", $aHeures[1]);
         $iDebut = ($aDebut[0] * 60) + $aDebut[1];
         $iFin = ($aFin[0] * 60) + $aFin[1];
-        $duree = ($iFin - $iDebut) / 15;
+        $duree = ($iFin - $iDebut) / 5;
         return $duree;
     }
 
@@ -468,12 +468,12 @@ CODE_HTML;
               <tbody>
 
 CODE_HTML;
-                /* On boucle maintenant sur chaque demi-heure de l'agenda (de 09h00 à 18h00 */
-                for ($h = 9; $h < 18; $h++) {
-                    for ($i = 0; $i < 4; $i++) {
+                /* On boucle maintenant sur chaque demi-heure de l'agenda (de 08h00 à 18h00 */
+                for ($h = 8; $h < 18; $h++) {
+                    for ($i = 0; $i < 12; $i++) {
                         $bKeynote = false;
-                        $m = sprintf('%02d', 15 * $i);
-                        $m_next = sprintf('%02d', (15 * ($i + 1)) % 60);
+                        $m = sprintf('%02d', 5 * $i);
+                        $m_next = sprintf('%02d', (5 * ($i + 1)) % 60);
                         $style = ($i % 2 == 0) ? 'lp' : 'li';
                         $sHeure = ($h < 10) ? '0' . $h : $h;
                         $h_next = ($i < 3) ? $h : $h + 1;
