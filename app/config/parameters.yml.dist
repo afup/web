@@ -28,3 +28,4 @@ parameters:
 
     mailchimp_api_key: ""
     mailchimp_members_list:
+    mailchimp_subscribers_list:

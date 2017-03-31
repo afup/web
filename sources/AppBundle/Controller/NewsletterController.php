@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Mailchimp\SubscriberType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,10 +19,19 @@ class NewsletterController extends SiteBaseController
         $subscribeForm->handleRequest($request);
 
         if ($subscribeForm->isSubmitted() && $subscribeForm->isValid()) {
-            return $this->render('');
+            try {
+                $this->get('app.mailchimp_api')->subscribeAddress(
+                    $this->getParameter('mailchimp_subscribers_list'),
+                    $subscribeForm->getData()['email']
+                );
+                $success = true;
+            } catch (\Exception $e) {
+                $success = false;
+            }
+            return $this->render(':site/newsletter:postsubscribe.html.twig', ['success' => $success]);
         }
 
-        return $this->render(':site/company_membership:adhesion_entreprise.html.twig', ['form' => $subscribeForm->createView()]);
+        return $this->redirect('/');
     }
 
     private function getSubscriberType()
@@ -31,7 +39,7 @@ class NewsletterController extends SiteBaseController
         return $this
             ->createForm(SubscriberType::class, null, [
                 'action' => $this->generateUrl('newsletter_subscribe'),
-                'method' => Request::METHOD_GET
+                'method' => Request::METHOD_POST
             ])
         ;
     }
