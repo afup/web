@@ -5,7 +5,7 @@
             <caption>Jour {{ loop.index }} : {{ date }}</caption>
             <thead>
             <tr>
-                <th class="horaire">&nbsp;</th>
+                <th class="horaire" colspan="2">&nbsp;</th>
                 {% for room in rooms %}
                     <th class="activite">{{ room.name }}</th>
                 {% endfor %}
@@ -26,12 +26,13 @@
                         {% set minutes = "%02d"|format(precision*loop.index0) %}
                         {# On crée une ligne pour chaque espace de 5 minutes mais on affiche les heures que les 1/4h #}
                         <tr>
-                            {% if loop.index0 * precision % 15 == 0 %}
-                                <td class="col_heure" rowspan="{{ 15 / precision }}" nowrap="nowrap">
+                            {% if loop.index0 * precision % 60 == 0 %}
+                                <td class="col_heure" rowspan="{{ 60 / precision }}" nowrap="nowrap">
                                     {# @TODO Meilleur affichage heures et minutes #}
-                                    {{ hour }}:{{ "%02d"|format(precision*loop.index0) }}
+                                    {{ hour }}h
                                 </td>
                             {% endif %}
+                            <td class="col_heure">{{ "%02d"|format(precision*loop.index0) }}</td>
 
                             {% if planningForADay[date ~ " " ~ hour ~ ":" ~ minutes] is defined %}
                                 {% set slot = planningForADay[date ~ " " ~ hour ~ ":" ~ minutes] %}
