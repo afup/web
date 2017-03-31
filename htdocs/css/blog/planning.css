@@ -31,7 +31,8 @@ table.planning_agenda tr td:last-child{
 }
 table.planning_agenda td.col_heure{
     border-right:1px solid #898D92;
-    vertical-align: top;
+    vertical-align: middle;
+    width:5%;
 }
 @media (max-width: 1024px) {
     table.planning_agenda span.conferencier{
