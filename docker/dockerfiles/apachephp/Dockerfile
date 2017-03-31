@@ -1,34 +1,35 @@
 FROM php:5.6-apache
 
-RUN echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install mysqli
-
-RUN apt-get update && apt-get install -y \
+# Install required php extensions for afup website and other management package
+RUN apt-get update && \
+    apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng12-dev \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd
+        wget && \
+    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+    docker-php-ext-install pdo_mysql mbstring mysqli zip gd && \
+    apt-get remove -y \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng12-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN a2enmod rewrite
-
-RUN docker-php-ext-install zip
-
-RUN echo "Include sites-enabled/" >> /etc/apache2/apache2.conf
+# Configuration of apache & php
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
-RUN ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
+RUN a2enmod rewrite && \
+    echo "Include sites-enabled/" >> /etc/apache2/apache2.conf && \
+    rm /etc/apache2/sites-enabled/000-default.conf && \
+    ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf && \
+    echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
+
+# Install local user mapped to the host user uid
 ARG uid=1008
 ARG gid=1008
 
-RUN apt-get update && apt-get install -y wget #pour installer composer
-
-RUN groupadd -g ${gid} localUser \
-    && useradd -u ${uid} -g ${gid} -m -s /bin/bash localUser
-
-RUN usermod -a -G www-data localUser
-
-RUN sed --in-place "s/User www-data/User localUser/" /etc/apache2/apache2.conf
-RUN sed --in-place  "s/Group www-data/Group localUser/" /etc/apache2/apache2.conf
+RUN groupadd -g ${gid} localUser && \
+    useradd -u ${uid} -g ${gid} -m -s /bin/bash localUser && \
+    usermod -a -G www-data localUser && \
+    sed --in-place "s/User \${APACHE_RUN_USER}/User localUser/" /etc/apache2/apache2.conf && \
+    sed --in-place  "s/Group \${APACHE_RUN_GROUP}/Group localUser/" /etc/apache2/apache2.conf

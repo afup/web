@@ -22,6 +22,16 @@ class Planning implements NotifyPropertyInterface
     private $talkId;
 
     /**
+     * @var \DateTime
+     */
+    private $start;
+
+    /**
+     * @var \DateTime
+     */
+    private $end;
+
+    /**
      * @var int
      * @Assert\NotBlank()
      * @Assert\GreaterThan(0)
@@ -73,6 +83,44 @@ class Planning implements NotifyPropertyInterface
         $this->propertyChanged('talkId', $this->talkId, $talkId);
         $this->talkId = $talkId;
 
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
+
+    /**
+     * @param \DateTime $start
+     * @return Planning
+     */
+    public function setStart(\DateTime $start)
+    {
+        $this->propertyChanged('start', $this->start, $start);
+        $this->start = $start;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param \DateTime $end
+     * @return Planning
+     */
+    public function setEnd(\DateTime $end)
+    {
+        $this->propertyChanged('end', $this->end, $end);
+        $this->end = $end;
         return $this;
     }
 

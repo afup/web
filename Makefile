@@ -1,13 +1,18 @@
+CURRENT_UID=$(shell id -u)
+
 .PHONY: install docker-up test hooks
 
 install: vendor
 
-docker-up: var/logs/.docker-build docker/data
-	docker-compose up
+docker-up: var/logs/.docker-build data docker-compose.override.yml
+	CURRENT_UID=$(CURRENT_UID) docker-compose up
 
 var/logs/.docker-build: docker-compose.yml docker-compose.override.yml $(shell find docker -type f)
-	docker-compose build
+	CURRENT_UID=$(CURRENT_UID) docker-compose build
 	touch var/logs/.docker-build
+
+docker-compose.override.yml:
+	cp docker-compose.override.yml-dist docker-compose.override.yml
 
 vendor: composer.phar composer.lock
 	php composer.phar install
@@ -19,12 +24,22 @@ composer.phar:
 	php composer-setup.php
 	rm composer-setup.php
 
+configs/application/config.php:
+	cp configs/application/config.php.dist-docker configs/application/config.php
+
+app/config/parameters.yml:
+	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
+
+config: configs/application/config.php app/config/parameters.yml
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make vendor
+
 test:
 	./bin/atoum
+	./bin/php-cs-fixer fix --dry-run -vv
 
-docker/data:
-	mkdir docker/data
-	mkdir docker/data/composer
+data:
+	mkdir data
+	mkdir data/composer
 
 hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 

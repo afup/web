@@ -43,6 +43,9 @@ class MemberShipController extends SiteBaseController
             $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
 
             foreach ($member->getInvitations() as $index => $invitation) {
+                if ($invitation->getEmail() === null) {
+                    continue;
+                }
                 $invitation
                     ->setSubmittedOn(new \DateTime())
                     ->setCompanyId($member->getId())
@@ -56,7 +59,7 @@ class MemberShipController extends SiteBaseController
 
                 $invitationRepository->save($invitation);
 
-                // Send mail to the other guy, begging for him to join the talk
+                // Send mail to the other guy, begging for him to join the company
                 $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($member, $invitation) {
                     $text = $this->get('translator')->trans('mail.invitationMembership.text',
                         [

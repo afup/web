@@ -106,7 +106,7 @@ class TweetGenerator extends \atoum
                         'twitter' => null,
                     ]
                 ],
-                'expected' => "Publier des domain events sans RabbitMQ, c'est possible ! Par Simon Delicata et Julien Salleyron à revoir sur http://afup.org/talks/1903-publier-des-domain-events-sans-rabbitmq-c-est-possible",
+                'expected' => "Publier des domain events sans RabbitMQ, c'est possible ! Par Simon Delicata et Julien Salleyron http://afup.org/talks/1903-publier-des-domain-events-sans-rabbitmq-c-est-possible",
             ],
 
             [
@@ -127,7 +127,7 @@ class TweetGenerator extends \atoum
                         'twitter' => '@maxthoon',
                     ]
                 ],
-                'expected' => "Comment Ansible et Docker changent notre environnement de mise en production. Par Simon Constans et @maxthoon sur http://afup.org/talks/1609-comment-ansible-et-docker-changent-notre-environnement-de-mise-en-production",
+                'expected' => "Comment Ansible et Docker changent notre environnement de mise en production. Par Simon Constans et @maxthoon http://afup.org/talks/1609-comment-ansible-et-docker-changent-notre-environnement-de-mise-en-production",
             ],
             [
                 'case' => "On évite d'avoir deux espaces à la suite",

@@ -59,11 +59,11 @@ class TweetGenerator
         }
 
         if ($this->getTweetLength($status) > self::TWEET_MAX_LENGTH) {
-            $status = $firstPart . ' Par ' . $speakersText . ' à revoir sur ' . $address;
+            $status = $firstPart . ' Par ' . $speakersText . ' ' . $address;
         }
 
         if ($this->getTweetLength($status) > self::TWEET_MAX_LENGTH) {
-            $status = $firstPart . ' Par ' . $speakersText . ' sur ' . $address;
+            $status = $firstPart . ' Par ' . $speakersText . ' ' . $address;
         }
 
         $status = preg_replace('/\s+/', ' ', $status);

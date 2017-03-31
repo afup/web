@@ -16,7 +16,7 @@ class PlanningRepository extends Repository implements MetadataInitializer
     /**
      * @param Talk $talk
      *
-     * @return mixed|null
+     * @return Planning|null
      */
     public function getByTalk(Talk $talk)
     {
@@ -64,6 +64,22 @@ class PlanningRepository extends Repository implements MetadataInitializer
                 'columnName' => 'id_forum',
                 'fieldName' => 'eventId',
                 'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'debut',
+                'fieldName' => 'start',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
+            ])
+            ->addField([
+                'columnName' => 'fin',
+                'fieldName' => 'end',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
             ])
             ->addField([
                 'columnName' => 'keynote',
