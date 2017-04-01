@@ -51,6 +51,23 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     }
 
     /**
+     * Add a condition about the type of users: physical, legal or all
+     *
+     * @param SelectInterface $queryBuilder
+     * @param $userType
+     */
+    private function addUserTypeCondition(SelectInterface $queryBuilder, $userType)
+    {
+        if ($userType === self::USER_TYPE_PHYSICAL) {
+            $queryBuilder->where('id_personne_morale = 0');
+        } elseif ($userType === self::USER_TYPE_COMPANY) {
+            $queryBuilder->where('id_personne_morale <> 0');
+        } elseif ($userType !== self::USER_TYPE_ALL) {
+            throw new \UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
+        }
+    }
+
+    /**
      * Retrieve all users by the date of end of membership.
      *
      * @param int $userType one of self::USER_TYPE_*
@@ -65,13 +82,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->having('MAX(ac.`date_fin`) > :start ')
         ;
 
-        if ($userType === self::USER_TYPE_PHYSICAL) {
-            $queryBuilder->where('id_personne_morale = 0');
-        } elseif ($userType === self::USER_TYPE_COMPANY) {
-            $queryBuilder->where('id_personne_morale <> 0');
-        } elseif ($userType !== self::USER_TYPE_ALL) {
-            throw new \UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
-        }
+        $this->addUserTypeCondition($queryBuilder, $userType);
 
         return $this
             ->getPreparedQuery($queryBuilder->getStatement())
@@ -100,13 +111,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->having('MAX(ac.`date_fin`) BETWEEN :start AND :end')
         ;
 
-        if ($userType === self::USER_TYPE_PHYSICAL) {
-            $queryBuilder->where('id_personne_morale = 0');
-        } elseif ($userType === self::USER_TYPE_COMPANY) {
-            $queryBuilder->where('id_personne_morale <> 0');
-        } elseif ($userType !== self::USER_TYPE_ALL) {
-            throw new \UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
-        }
+        $this->addUserTypeCondition($queryBuilder, $userType);
 
         return $this
             ->getPreparedQuery($queryBuilder->getStatement())
