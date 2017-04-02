@@ -110,3 +110,12 @@ services:
     app.twitter_api:
         class: TwitterAPIExchange
         arguments: ["%twitter_api_settings%"]
+
+    app.mailchimp_client:
+        class: Mailchimp\Mailchimp
+        arguments: ["%mailchimp_api_key%"]
+        public: false
+
+    app.mailchimp_api:
+        class: AppBundle\Mailchimp\Mailchimp
+        arguments: ["@app.mailchimp_client"]

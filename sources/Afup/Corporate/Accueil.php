@@ -26,8 +26,7 @@ class Accueil
         $articles = new Articles($this->bdd);
         $derniers_articles = $articles->chargerDerniersAjouts(10);
 
-        $colonne = '<div id="main" class="mod item left content w66 m50 t100">
-                    <h1>Promouvoir le PHP auprès des professionnels</h1>';
+        $colonne = '<h1>Promouvoir le PHP auprès des professionnels</h1>';
 
         $colonne .= '<blockquote>Apéros, rendez-vous et cycle de conférences, l\'AFUP est au coeur de la communauté PHP depuis 2000.
                     L\'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté</blockquote>
@@ -47,7 +46,6 @@ class Accueil
             $colonne .= '</a>';
         }
 
-        $colonne .= '</div>';
 
         return $colonne;
     }

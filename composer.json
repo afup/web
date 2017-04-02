@@ -14,7 +14,8 @@
     "algolia/algoliasearch-client-php": "^1.12",
     "cocur/slugify": "^2.3",
     "j7mbo/twitter-api-php": "^1.0",
-    "nojimage/twitter-text-php": "^1.1"
+    "nojimage/twitter-text-php": "^1.1",
+    "pacely/mailchimp-apiv3": "^1.0"
   },
   "scripts": {
     "post-install-cmd": [

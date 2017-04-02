@@ -25,3 +25,7 @@ parameters:
     twitter_oauth_access_token_secret: ""
     twitter_consumer_key: ""
     twitter_consumer_secret: ""
+
+    mailchimp_api_key: ""
+    mailchimp_members_list:
+    mailchimp_subscribers_list:

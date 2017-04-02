@@ -38,3 +38,11 @@ superapero:
 superapero_live:
   path: /super-apero-9-mars/live
   defaults: {_controller: AppBundle:Static:superAperoLive}
+
+void:
+  path: /void-route
+  defaults: {_controller: AppBundle:Static:void}
+
+newsletter_subscribe:
+  path: /newsletter-subscribe
+  defaults: {_controller: AppBundle:Newsletter:subscribe}

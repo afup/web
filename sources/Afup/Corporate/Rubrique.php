@@ -62,15 +62,14 @@ class Rubrique
 
         $html_pagination = $this->pagination_html();
 
-        return '<div id="main" class="mod item left content w66 m50 t100">' .
+        return
         '<h1>' . $this->titre() . '</h1>' .
         $this->corps() .
         $html_pagination .
         $this->rubriques_dans_la_rubrique() .
         $this->articles_dans_la_rubrique() .
         $html_pagination .
-        '<div class="breadcrumbs">' . $this->fil_d_ariane() . '</div>' .
-        '</div>';
+        '<div class="breadcrumbs">' . $this->fil_d_ariane() . '</div>';
     }
 
     function rubrique()

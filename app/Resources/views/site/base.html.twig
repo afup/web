@@ -324,8 +324,10 @@
                     {% endblock %}
                 </div>
                 <aside id="sidebar-article" class="mod item w33 m50 t100">
-                    <h2>L'afup<br>organise...</h2>
+                    <h2>L'afup organise...</h2>
                     {{ sidebar.naviguer(1, 2, "externe", "") }}
+                    <h2>Newsletters</h2>
+                    {{ render(controller('AppBundle:Newsletter:subscribeForm')) }}
                     <h2>Sur Twitter...</h2>
                     <a class="twitter-timeline" href="https://twitter.com/afup" data-widget-id="582135958075752448">Tweets by @afup</a>
                     <script>
