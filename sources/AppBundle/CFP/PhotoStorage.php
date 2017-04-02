@@ -97,11 +97,11 @@ class PhotoStorage
         $size = self::FORMAT[$format];
 
         $ext = substr($speaker->getPhoto(), -4);
+        $transparent = false;
         // This part is just our old script. We should do better
         if ($ext === '.png') {
+            $transparent = true;
             $img = imagecreatefrompng($originalPath);
-            imagealphablending($img, true);
-            imagesavealpha($img, true);
         } else {
             $img = imagecreatefromjpeg($originalPath);
         }
@@ -136,6 +136,11 @@ class PhotoStorage
             }
 
             $img = imagecreatetruecolor($width, $height);
+            if ($transparent === true) {
+                imagecolortransparent($img, imagecolorallocatealpha($img, 0, 0, 0, 127));
+                imagealphablending($img, false);
+                imagesavealpha($img, true);
+            }
             imagecopyresampled($img, $oldImg, 0, 0, 0, 0, $width, $height, $originalWidth, $originalHeight);
         }
         if ($ext === '.png') {
