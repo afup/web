@@ -3,7 +3,19 @@ $ = jQuery;
 $(document).ready(function(){
     'use strict';
 
-    $("#nbPersonnes option[value=" + nbInscriptions + "]").attr('selected', 'selected');
+    // Check if there is some saved data in LocalStorage
+	var storageAvailable = function (type) {
+		try {
+			var storage = window[type],
+				x = '__storage_test__';
+			storage.setItem(x, x);
+			storage.removeItem(x);
+			return true;
+		}
+		catch(e) {
+			return false;
+		}
+	}
 
     var manageFieldSet = function (nbInscriptions) {
         for (var i = 1; i < 6; i++) {
@@ -11,6 +23,7 @@ $(document).ready(function(){
         }
 
         for (var i = 1; i < (nbInscriptions + 1); i++) {
+            updateFieldsetSummary($('fieldset.f' + i));
             $('fieldset.f' + i).show();
             $('fieldset.f' + i).find('input[data-required=true]').attr('required', true);
 			if (typeof $('input[name="type_inscription' + i +'"]:checked').val() === "undefined") {
@@ -46,8 +59,6 @@ $(document).ready(function(){
             onFailure.call(this);
         }
     }
-
-    manageFieldSet(nbInscriptions);
 
     var parseUri = function (uri) {
         var a = document.createElement('a');
@@ -136,7 +147,20 @@ $(document).ready(function(){
         $('#summary').append(table);
     }
 
-    updateSummary();
+    var updateFieldsetSummary = function(fieldset) {
+		var lastname = fieldset.find('input[name^="nom"]').val();
+		var firstname = fieldset.find('input[name^="prenom"]').val();
+
+		$(fieldset).find('legend span.fieldset--legend--title').html(' - ' + firstname + ' ' + lastname);
+
+		if (fieldset.hasClass('f6') === true) {
+			var paymentId = fieldset.find('input[name="type_reglement"]:checked').attr('id');
+			$(fieldset).find('legend span.fieldset--legend--price').html($('label[for=' + paymentId + ']').html());
+		} else {
+			var price = fieldset.find('input[name^="type_inscription"]:checked').data('price');
+			$(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
+		}
+    }
 
     $('a.add_inscription').click(function (event) {
         event.preventDefault();
@@ -177,6 +201,10 @@ $(document).ready(function(){
             path = '/' + path;
         }
 
+        if (storageAvailable('localStorage')) {
+			localStorage.setItem('nbPersonnes', $(this).val());
+		}
+
         var junction = '?';
         if (path.indexOf('?') > -1) {
             junction = '&';
@@ -215,30 +243,41 @@ $(document).ready(function(){
                 $(this).find('div.fieldset--inner').hide();
             }
         });
+		if (storageAvailable('localStorage')) {
+			localStorage.removeItem('tickets');
+			localStorage.removeItem('nbPersonnes');
+		}
     });
 
     $('#formulaire input').on('change', function (event) {
+        var formData = new FormData(document.querySelector('#formulaire'));
+        var data = {};
+
+		var form = formData.entries();
+		var obj = form.next();
+		var data = {};
+
+		// Si on etait en ES6 on pourrait utiliser `for [key, value] of formData.entries()` mais bon c'est encore tot
+		while(undefined !== obj.value) {
+			data[obj.value[0]] = obj.value[1];
+			obj = form.next();
+		}
+
+        if (storageAvailable('localStorage')) {
+            localStorage.setItem('tickets', JSON.stringify(data));
+        }
+
         updateSummary();
     });
 
     $('input[name^="nom"],input[name^="prenom"],input[name^="type_inscription"]').on('change', function(){
         var fieldset = $(this).parents('fieldset').first();
-        var lastname = fieldset.find('input[name^="nom"]').val();
-        var firstname = fieldset.find('input[name^="prenom"]').val();
-
-        $(fieldset).find('legend span.fieldset--legend--title').html(' - ' + firstname + ' ' + lastname);
-
-        if (fieldset.hasClass('f6') === true) {
-            var paymentId = fieldset.find('input[name="type_reglement"]:checked').attr('id');
-            $(fieldset).find('legend span.fieldset--legend--price').html($('label[for=' + paymentId + ']').html());
-        } else {
-            var price = fieldset.find('input[name^="type_inscription"]:checked').data('price');
-            $(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
-        }
+        updateFieldsetSummary(fieldset);
     });
 
     var copyValBetweenFields = function (fromField, toField) {
         $('input[name="' + toField + '"]').val ($('input[name="' + fromField + '"]').val());
+		$('input[name="' + toField + '"]').change();
     }
 
     // Auto-fill Billing from first ticket information
@@ -250,4 +289,39 @@ $(document).ready(function(){
     $('input[name=type_reglement]:first').attr('checked', 'checked');
     $('input[name=citer_societe]:eq(0)').attr('checked', 'checked');
     $('input[name=newsletter_afup]:eq(1)').attr('checked', 'checked');
+
+    var init = function(){
+		if (storageAvailable('localStorage') && localStorage.getItem('tickets')) {
+			try {
+				var data = localStorage.getItem('tickets');
+				if (data !== null) {
+					var tickets = JSON.parse(data);
+				}
+				nbInscriptions = parseInt(localStorage.getItem('nbPersonnes'));
+			} catch (e) {
+				// There is an error in the value stored, we remove it to prevent any errors
+				localStorage.removeItem('tickets');
+				localStorage.removeItem('nbPersonnes');
+				tickets = null;
+			}
+		}
+
+		if (tickets !== null) {
+			for (var field in tickets) {
+				var value = tickets[field];
+				if (value !== '') {
+					$('input[type!=radio][name="' + field + '"],select[name="' + field + '"],textarea[name="' + field + '"]').val(value);
+					$('input[name="' + field + '"][value="' +value + '"]').attr('checked', 'checked');
+				}
+			}
+		}
+
+		$("#nbPersonnes option[value=" + nbInscriptions + "]").attr('selected', 'selected').change();
+
+		manageFieldSet(nbInscriptions);
+
+		updateSummary();
+    };
+    init();
+
 })
