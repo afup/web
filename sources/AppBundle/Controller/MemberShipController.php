@@ -79,9 +79,9 @@ class MemberShipController extends SiteBaseController
                         ['email' => $invitation->getEmail()],
                         [
                             'content' => $text,
-                            'title' => sprintf("%s vous à profiter de son compte \"Membre AFUP\"", $member->getCompanyName())
+                            'title' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $member->getCompanyName())
                         ],
-                        ['subject' => sprintf("%s vous à profiter de son compte \"Membre AFUP\"", $member->getCompanyName())]
+                        ['subject' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $member->getCompanyName())]
                     );
                 });
             }
