@@ -9,6 +9,7 @@
                 <strong>
                     {{ talk.planning.start|date('H:i') }}-{{ talk.planning.end|date('H:i') }}
                 </strong>
+                - {{ talk.talk.skillTranslationKey|trans }}
             {% endif %}
 
             <div class="details">
