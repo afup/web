@@ -41,7 +41,7 @@ security:
 
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
-        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/(login|register), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/blog, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [217.70.189.71, 127.0.0.1, 192.168.42.1] }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }

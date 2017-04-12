@@ -12,7 +12,7 @@ admin_company:
 
 admin_void:
   path: /void
-  defaults: {_controller: AppBundle:Static:voidBackOffice}
+  defaults: {_controller: AppBundle:Legacy:backOffice}
 
 admin_login:
   path: /login
@@ -20,3 +20,7 @@ admin_login:
 
 admin_logout:
   path: /logout
+
+legacy_inscription:
+  path: /register
+  defaults: {_controller: AppBundle:Legacy:register}

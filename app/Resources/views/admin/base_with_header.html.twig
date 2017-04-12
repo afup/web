@@ -10,11 +10,20 @@
     <div class="colmask leftmenu">
         <div class="colleft">
             <div class="col1">
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                        {% if type == 'error' %}
+                            <div class="flash-{{type}}">{{message}}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
                 {{ content|raw }}
             </div>
-            <div class="col2">
-                {{ render(controller('AppBundle:Admin:getMenu')) }}
-            </div>
+            {% if app.user %}
+                <div class="col2">
+                    {{ render(controller('AppBundle:Admin:getMenu')) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 

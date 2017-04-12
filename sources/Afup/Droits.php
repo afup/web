@@ -2,7 +2,9 @@
 
 namespace Afup\Site;
 use Afup\Site\Utils\Base_De_Donnees;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 define('AFUP_DROITS_NIVEAU_MEMBRE', 0);
 define('AFUP_DROITS_NIVEAU_REDACTEUR', 1);
@@ -81,22 +83,28 @@ class Droits
     private $_listeners = array();
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * Constructeur. Vérifie si l'utilisateur est connecté
      *
      * @param object $bdd Instance de la couche d'abstraction à la base de données
-     * @param TokenStorage $tokenStorage
+     * @param TokenStorageInterface $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
      * @access public
-     * @return void
      */
-    public function __construct(&$bdd, TokenStorage $tokenStorage)
+    public function __construct(&$bdd, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->_bdd = $bdd;
         $this->tokenStorage = $tokenStorage;
-
-        if (isset($_SESSION['afup_login']) && isset($_SESSION['afup_mot_de_passe'])) {
-            $this->seConnecter($_SESSION['afup_login'], $_SESSION['afup_mot_de_passe'], false);
-            $this->surchargerNiveau();
-        }
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -270,7 +278,10 @@ class Droits
      */
     public function obtenirIdentifiant()
     {
-        return $this->tokenStorage->getToken()->getUser()->getId();
+        if($this->tokenStorage->getToken()->getUser() instanceof  UserInterface) {
+            return $this->tokenStorage->getToken()->getUser()->getId();
+        }
+        return null;
     }
 
     /**
@@ -281,7 +292,10 @@ class Droits
      */
     public function obtenirNiveau()
     {
-        return $this->tokenStorage->getToken()->getUser()->getLevels();
+        if ($this->tokenStorage->getToken()->getUser() instanceof  UserInterface) {
+            return $this->tokenStorage->getToken()->getUser()->getLevels();
+        }
+        return null;
     }
 
     /**
@@ -333,7 +347,7 @@ class Droits
 
     public function dechargerToutesLesPages()
     {
-        if ($this->_niveau == AFUP_DROITS_NIVEAU_ADMINISTRATEUR) {
+        if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             return $this->_pages;
         }
 
@@ -358,22 +372,19 @@ class Droits
 
     public function verifierDroitSurLaPage($page)
     {
-        if ($this->_niveau == AFUP_DROITS_NIVEAU_ADMINISTRATEUR) {
+        if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             return true;
         }
         foreach ($this->_pages as $_page => $_page_details) {
             if ($page == $_page) {
-                if (isset($_page_details['niveau']) and $_page_details['niveau'] <= $this->_niveau) {
+                if (isset($_page_details['niveau']) && $this->authorizationChecker->isGranted($_page_details['niveau'])) {
                     return true;
                 }
             }
             if (isset($_page_details['elements']) and is_array($_page_details['elements'])) {
                 foreach ($_page_details['elements'] as $_element => $_element_details) {
                     if ($page == $_element) {
-                        if (isset($_element_details['niveau']) and $_element_details['niveau'] <= $this->_niveau) {
-                            return true;
-                        }
-                        if (isset($_element_details['module']) and $_element_details['niveau'] <= substr($this->_niveau_modules, $_element_details['module'], 1)) {
+                        if (isset($_element_details['niveau']) && $this->authorizationChecker->isGranted($_element_details['niveau'])) {
                             return true;
                         }
                     }
@@ -386,13 +397,17 @@ class Droits
 
     public function obtenirEmail()
     {
-        return $this->tokenStorage->getToken()->getUser()->getEmail();
+        if ($this->tokenStorage->getToken()->getUser() instanceof  UserInterface) {
+            return $this->tokenStorage->getToken()->getUser()->getEmail();
+        }
+        return null;
     }
 
     public function obtenirNomComplet()
     {
-
-        return $this->tokenStorage->getToken()->getUser()->getLabel();
-        return ($this->_prenom . " " . $this->_nom);
+        if ($this->tokenStorage->getToken()->getUser() instanceof  UserInterface) {
+            return $this->tokenStorage->getToken()->getUser()->getLabel();
+        }
+        return null;
     }
 }

@@ -33,9 +33,6 @@ $request = new \Symfony\Component\HttpFoundation\Request($_GET, $_POST, [], $_CO
 
 $kernel = new \Afup\Site\Utils\SymfonyKernel($request);
 
-$tokenStorage = $kernel->getKernel()->getContainer()->get('security.token_storage');
-
-
 $response = $kernel->getResponse();
 $response->send();
 

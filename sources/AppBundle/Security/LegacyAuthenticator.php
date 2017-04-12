@@ -59,7 +59,6 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        dump($credentials, $user);
         return (
             ($credentials['login'] === $user->getUsername() || $credentials['login'] === $user->getEmail())
             && $credentials['password'] === $user->getPassword()
@@ -79,7 +78,7 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return new RedirectResponse('/pages/administration/index.php');
+        return new RedirectResponse('/pages/administration/index.php?page=accueil');
     }
 
     /**

@@ -10,7 +10,7 @@ parameters:
     app.pages_backoffice:
         accueil:
             nom: 'Accueil'
-            niveau: 'ROLE_USER'
+            niveau: 'ROLE_MEMBER_EXPIRED'
         membre:
             nom: 'Mon compte'
             elements:
@@ -30,7 +30,7 @@ parameters:
                     niveau: 'ROLE_MEMBER_EXPIRED'
                 membre_personne_morale:
                     nom: 'Ma personne morale'
-                    role: 'ROLE_COMPANY_MANAGER'
+                    niveau: 'ROLE_COMPANY_MANAGER'
                 membre_ml:
                     nom: 'Listes de diffusion'
                     niveau: 'ROLE_USER'
