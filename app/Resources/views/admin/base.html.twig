@@ -17,7 +17,7 @@
     <script type="text/javascript" src="{{ asset('javascript/tinymce.js') }}"></script>
 </head>
 
-<body id="{{ page }}" class="{{ class|default('') }}">
+<body id="{{ page|default('') }}" class="{{ class|default('') }}">
 {% block body '' %}
 </body>
 </html>

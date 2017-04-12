@@ -1,5 +1,7 @@
 admin_vote:
   path: /vote/{eventSlug}
+  requirements:
+    eventSlug: .*
   defaults: {_controller: AppBundle:Vote:admin}
 
 admin_relances:

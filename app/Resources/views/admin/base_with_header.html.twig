@@ -17,7 +17,9 @@
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                {{ content|raw }}
+                {% block content %}
+                    {{ content|raw }}
+                {% endblock %}
             </div>
             {% if app.user %}
                 <div class="col2">

@@ -1,27 +1,34 @@
-<table class="afup_tab">
-    <tbody>
-    <tr>
-        <th align="left">Nom</th>
-        <th align="left">Statut mail</th>
-        <th align="left">Type relance</th>
-        <th align="left" title="Date relance">Date. rel.</th>
-    </tr>
-    {% for log in logs %}
-        <tr class="{% if loop.index is even %}even{% endif %}">
-            <td>{{ log.app.firstname }} {{ log.app.lastname }}</td>
-            <td>{% if log.asrl.mailSent %}Ok{% else %}Erreur{% endif %}</td>
-            <td>{{ log.asrl.reminderKey }}</td>
-            <td>{{ log.asrl.reminderDate|date('d/m/Y') }}</td>
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Relance des personnes physiques</h2>
+    <table class="afup_tab">
+        <tbody>
+        <tr>
+            <th align="left">Nom</th>
+            <th align="left">Statut mail</th>
+            <th align="left">Type relance</th>
+            <th align="left" title="Date relance">Date. rel.</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
-<br />
-<div class="pagination">
-    {% if page > 1 %}
-        <div class="page_precedente"><a href="{{ legacy_router.adminUrl('relances', {pagenum: page-1}) }}">Page précédente</a></div>
-    {% endif %}
-    {% if logs.count > limit %}
-        <div class="page_suivante"><a href="{{ legacy_router.adminUrl('relances', {pagenum: page+1}) }}">Page suivante</a></div>
-    {% endif %}
-</div>
+        {% for log in logs %}
+            <tr class="{% if loop.index is even %}even{% endif %}">
+                <td>{{ log.app.firstname }} {{ log.app.lastname }}</td>
+                <td>{% if log.asrl.mailSent %}Ok{% else %}Erreur{% endif %}</td>
+                <td>{{ log.asrl.reminderKey }}</td>
+                <td>{{ log.asrl.reminderDate|date('d/m/Y') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br/>
+    <div class="pagination">
+        {% if page > 1 %}
+            <div class="page_precedente"><a href="{{ legacy_router.adminUrl('relances', {pagenum: page-1}) }}">Page
+                    précédente</a></div>
+        {% endif %}
+        {% if logs.count > limit %}
+            <div class="page_suivante"><a href="{{ legacy_router.adminUrl('relances', {pagenum: page+1}) }}">Page
+                    suivante</a></div>
+        {% endif %}
+    </div>
+{% endblock %}

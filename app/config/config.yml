@@ -59,6 +59,10 @@ parameters:
                 personnes_morales:
                     nom: 'Personnes morales'
                     niveau: 'ROLE_ADMIN'
+                relances_personnes_physiques:
+                    nom: 'Relances - Personnes physiques'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/association/relances/1'
                 relances:
                     nom: 'Relances'
                     niveau: 'ROLE_ADMIN'
@@ -122,6 +126,7 @@ parameters:
                 forum_vote_github:
                     nom: 'Sessions - votes visiteurs'
                     niveau: 'ROLE_FORUM'
+                    url: '/admin/vote/'
                 forum_sessions_notees:
                     nom: 'Vote des sessions'
                     niveau: 'ROLE_FORUM'

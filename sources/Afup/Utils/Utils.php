@@ -25,7 +25,6 @@ class Utils
         $authentificationWiki = new AuthentificationWiki();
 
         $droits = new Droits($bdd, $tokenStorage, $authorizationChecker);
-        $droits->enregistreAuthentification($authentificationWiki);
 
         return $droits;
     }
