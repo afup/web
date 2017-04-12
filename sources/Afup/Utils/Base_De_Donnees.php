@@ -222,9 +222,6 @@ class Base_De_Donnees
     function executer($requete)
     {
         $result = mysqli_query($this->_lien, $requete);
-        if ($result === false) {
-            var_dump(mysqli_error($this->_lien));
-        }
         return $result;
     }
 
