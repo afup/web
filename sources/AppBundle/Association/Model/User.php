@@ -115,7 +115,12 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $reminderDate;
 
     /**
-     * @var []
+     * @var string
+     */
+    private $hash;
+
+    /**
+     * @var \Datetime
      */
     private $lastSubscription;
 
@@ -439,6 +444,25 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     {
         $this->propertyChanged('reminderDate', $this->reminderDate, $reminderDate);
         $this->reminderDate = $reminderDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param string $hash
+     * @return User
+     */
+    public function setHash($hash)
+    {
+        $this->propertyChanged('hash', $this->hash, $hash);
+        $this->hash = $hash;
         return $this;
     }
 

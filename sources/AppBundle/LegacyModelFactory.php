@@ -17,7 +17,11 @@ class LegacyModelFactory
         if (class_exists($type) === false) {
             throw new \RuntimeException(sprintf('Could not find object of type "%s". Did you forgot to require the old autoload ?', $type));
         }
-        return new $type($this->getBdd());
+        /**
+         * We need to create a variable because some legacy objects use a pass-by-reference on this param
+         */
+        $bdd = $this->getBdd();
+        return new $type($bdd);
     }
 
     /**

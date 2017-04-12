@@ -25,48 +25,11 @@ class LegacyController extends Controller
         $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
         $pages = $this->getParameter('app.pages_backoffice');
 
-        // Gestion legacy des droits
-
-        if (!empty($_POST['motdepasse_perdu'])) {
-            /**
-             * @todo ne fonctionne plus
-             */
-            $personnes_physiques = new Personnes_Physiques($bdd);
-            $result = $personnes_physiques->envoyerMotDePasse($_POST['email']);
-
-            if (!$result) {
-                $_GET['statut'] = AFUP_CONNEXION_ERROR_LOGIN;
-                $_GET['page'] = 'mot_de_passe_perdu';
-            } else {
-                afficherMessage('Votre mot de passe vous a été envoyé par mail', 'index.php');
-            }
-        }
-
-        if (!empty($_POST['inscription'])) {
-            // Initialisation de AFUP_Log
-            Logs::initialiser($bdd, $droits->obtenirIdentifiant());
-
-            /**
-             * @TODO this does not work anymore
-             */
-            require_once 'inscription.php';
-        }
-
-        if (!empty($_GET['hash'])) {
-            $droits->seDeconnecter();
-            /**
-             * @TODO this does not work anymore
-             */
-            $droits->seConnecterEnAutomatique($_GET['hash']);
-        }
-
-        /*if (!$droits->estConnecte() and $_GET['page'] != 'mot_de_passe_perdu' and
-        $_GET['page'] != 'message' and $_GET['page'] != 'inscription') {
-            header('Location: index.php?page=connexion&statut=' . $droits->obtenirStatutConnexion() . '&page_demandee=' . urlencode($_SERVER['REQUEST_URI']));
-            exit;
-        }*/
-
         $flashBag = $this->get('session')->getFlashBag();
+
+        if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__).'/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
+            $_GET['page'] = 'accueil';
+        }
 
         // On vérifie que l'utilisateur a le droit d'accéder à la page
         $droits->chargerToutesLesPages($pages);
@@ -77,10 +40,6 @@ class LegacyController extends Controller
 
         // Initialisation de AFUP_Log
         Logs::initialiser($bdd, $droits->obtenirIdentifiant());
-
-        if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__).'/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
-            $_GET['page'] = 'accueil';
-        }
 
         require_once dirname(__FILE__) . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php';
 
