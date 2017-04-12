@@ -6,10 +6,6 @@ admin_relances:
   path: /association/relances/{page}
   defaults: {_controller: AppBundle:MemberShip:reminderLog}
 
-admin_company:
-  path: /association/membres/entreprises
-  defaults: {_controller: AppBundle:MemberShip:admin}
-
 admin_void:
   path: /void
   defaults: {_controller: AppBundle:Legacy:backOffice}
