@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use Afup\Site\Association\Personnes_Physiques;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,13 +21,13 @@ class AdminController extends Controller
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('admin/login.html.twig', array(
+        return $this->render('admin/login.html.twig', [
             'last_username' => $lastUsername,
             'error'         => $error,
             'title' => "Connexion",
             'page' => 'connexion',
             'class' => 'panel-page'
-        ));
+        ]);
     }
 
     public function lostPasswordAction(Request $request)

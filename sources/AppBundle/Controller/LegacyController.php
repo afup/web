@@ -27,7 +27,7 @@ class LegacyController extends Controller
 
         $flashBag = $this->get('session')->getFlashBag();
 
-        if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__).'/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
+        if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__) . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
             $_GET['page'] = 'accueil';
         }
 
@@ -68,7 +68,7 @@ class LegacyController extends Controller
 
         $server = $_SERVER;
         $_SERVER['REQUEST_URI'] = '/administration/';
-        require_once dirname(__FILE__) .'/../../Afup/Bootstrap/Http.php';
+        require_once dirname(__FILE__) . '/../../Afup/Bootstrap/Http.php';
 
         $_SERVER = $server;
         $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
@@ -81,60 +81,60 @@ class LegacyController extends Controller
         $formulaire = &instancierFormulaire();
 
         $formulaire->setDefaults(
-            array(
+            [
                 'civilite' => 'M.',
                 'id_pays' => 'FR',
                 'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_apero' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_annuaire' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'etat' => AFUP_DROITS_ETAT_ACTIF,
-            )
+            ]
         );
 
-        $formulaire->addElement('hidden' , 'inscription', 1);
-        $formulaire->addElement('hidden' , 'niveau');
-        $formulaire->addElement('hidden' , 'niveau_apero');
-        $formulaire->addElement('hidden' , 'niveau_annuaire');
-        $formulaire->addElement('hidden' , 'etat');
-        $formulaire->addElement('hidden' , 'compte_svn');
+        $formulaire->addElement('hidden', 'inscription', 1);
+        $formulaire->addElement('hidden', 'niveau');
+        $formulaire->addElement('hidden', 'niveau_apero');
+        $formulaire->addElement('hidden', 'niveau_annuaire');
+        $formulaire->addElement('hidden', 'etat');
+        $formulaire->addElement('hidden', 'compte_svn');
 
-        $formulaire->addElement('header' , '' , 'Informations');
-        $formulaire->addElement('select' , 'civilite' , 'Civilité' , array('M.', 'Mme', 'Mlle'));
-        $formulaire->addElement('text' , 'nom' , 'Nom' , array('size' => 30, 'maxlength' => 40));
-        $formulaire->addElement('text', 'prenom' , 'Prénom' , array('size' => 30, 'maxlength' => 40));
-        $formulaire->addElement('text' , 'login' , 'Login' , array('size' => 30, 'maxlength' => 30));
-        $formulaire->addElement('text' , 'email' , 'Email' , array('size' => 30, 'maxlength' => 100));
-        $formulaire->addElement('textarea', 'adresse' , 'Adresse' , array('cols' => 42, 'rows' => 10));
-        $formulaire->addElement('text' , 'code_postal' , 'Code postal' , array('size' => 6, 'maxlength' => 10));
-        $formulaire->addElement('text' , 'ville' , 'Ville' , array('size' => 30, 'maxlength' => 50));
-        $formulaire->addElement('select' , 'id_pays' , 'Pays' , $pays->obtenirPays());
-        $formulaire->addElement('text' , 'telephone_fixe' , 'Tél. fixe' , array('size' => 20, 'maxlength' => 20));
-        $formulaire->addElement('text' , 'telephone_portable' , 'Tél. portable' , array('size' => 20, 'maxlength' => 20));
+        $formulaire->addElement('header', '', 'Informations');
+        $formulaire->addElement('select', 'civilite', 'Civilité', ['M.', 'Mme', 'Mlle']);
+        $formulaire->addElement('text', 'nom', 'Nom', ['size' => 30, 'maxlength' => 40]);
+        $formulaire->addElement('text', 'prenom', 'Prénom', ['size' => 30, 'maxlength' => 40]);
+        $formulaire->addElement('text', 'login', 'Login', ['size' => 30, 'maxlength' => 30]);
+        $formulaire->addElement('text', 'email', 'Email', ['size' => 30, 'maxlength' => 100]);
+        $formulaire->addElement('textarea', 'adresse', 'Adresse', ['cols' => 42, 'rows' => 10]);
+        $formulaire->addElement('text', 'code_postal', 'Code postal', ['size' => 6, 'maxlength' => 10]);
+        $formulaire->addElement('text', 'ville', 'Ville', ['size' => 30, 'maxlength' => 50]);
+        $formulaire->addElement('select', 'id_pays', 'Pays', $pays->obtenirPays());
+        $formulaire->addElement('text', 'telephone_fixe', 'Tél. fixe', ['size' => 20, 'maxlength' => 20]);
+        $formulaire->addElement('text', 'telephone_portable', 'Tél. portable', ['size' => 20, 'maxlength' => 20]);
 
-        $formulaire->addElement('password', 'mot_de_passe' , 'Mot de passe' , array('size' => 30, 'maxlength' => 30));
-        $formulaire->addElement('password', 'confirmation_mot_de_passe', '' , array('size' => 30, 'maxlength' => 30));
-        $formulaire->addElement('header' , 'boutons' , '');
-        $formulaire->addElement('submit' , 'soumettre' , 'Ajouter');
+        $formulaire->addElement('password', 'mot_de_passe', 'Mot de passe', ['size' => 30, 'maxlength' => 30]);
+        $formulaire->addElement('password', 'confirmation_mot_de_passe', '', ['size' => 30, 'maxlength' => 30]);
+        $formulaire->addElement('header', 'boutons', '');
+        $formulaire->addElement('submit', 'soumettre', 'Ajouter');
 
-        $formulaire->addRule('nom' , 'Nom manquant' , 'required');
-        $formulaire->addRule('prenom' , 'Prénom manquant' , 'required');
-        $formulaire->addRule('login' , 'Login manquant' , 'required');
+        $formulaire->addRule('nom', 'Nom manquant', 'required');
+        $formulaire->addRule('prenom', 'Prénom manquant', 'required');
+        $formulaire->addRule('login', 'Login manquant', 'required');
         $formulaire->addRule('login', 'Login déjà existant', 'callback', function ($value) use ($bdd) {
             $personnePhysique = new Personnes_Physiques($bdd);
             return !$personnePhysique->loginExists(0, $value);
         });
-        $formulaire->addRule('email' , 'Email manquant' , 'required');
-        $formulaire->addRule('email' , 'Email invalide' , 'email');
-        $formulaire->addRule('adresse' , 'Adresse manquante' , 'required');
-        $formulaire->addRule('code_postal' , 'Code postal manquant' , 'required');
-        $formulaire->addRule('ville' , 'Ville manquante' , 'required');
+        $formulaire->addRule('email', 'Email manquant', 'required');
+        $formulaire->addRule('email', 'Email invalide', 'email');
+        $formulaire->addRule('adresse', 'Adresse manquante', 'required');
+        $formulaire->addRule('code_postal', 'Code postal manquant', 'required');
+        $formulaire->addRule('ville', 'Ville manquante', 'required');
         $formulaire->addRule('mot_de_passe', 'Mot de passe manquant', 'required');
-        $formulaire->addRule(array('mot_de_passe', 'confirmation_mot_de_passe'), 'Le mot de passe et sa confirmation ne concordent pas', 'compare');
+        $formulaire->addRule(['mot_de_passe', 'confirmation_mot_de_passe'], 'Le mot de passe et sa confirmation ne concordent pas', 'compare');
 
         if ($formulaire->validate()) {
             // Construction du champ niveau_modules : concaténation dse différentes valeurs
-            $niveau_modules = $formulaire->exportValue('niveau_apero').
-                $formulaire->exportValue('niveau_annuaire').
+            $niveau_modules = $formulaire->exportValue('niveau_apero') .
+                $formulaire->exportValue('niveau_annuaire') .
                 $formulaire->exportValue('niveau_site');
             $login = $formulaire->exportValue('login');
             $mot_de_passe = md5($formulaire->exportValue('mot_de_passe')); /** @TODO WE SHOULD REALLY CHANGE THAT !!! */

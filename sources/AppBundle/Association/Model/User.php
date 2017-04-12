@@ -490,19 +490,19 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         if ($this->level == self::LEVEL_ADMIN) {
             $defaultRoles[] = 'ROLE_SUPER_ADMIN';
         }
-        if (isset($this->levelModules[0]) && (int)$this->levelModules[0] > 0) {
+        if (isset($this->levelModules[0]) && (int) $this->levelModules[0] > 0) {
             $defaultRoles[] = 'ROLE_APERO';
         }
-        if (isset($this->levelModules[1]) && (int)$this->levelModules[1] > 0) {
+        if (isset($this->levelModules[1]) && (int) $this->levelModules[1] > 0) {
             $defaultRoles[] = 'ROLE_ANNUAIRE';
         }
-        if (isset($this->levelModules[2]) && (int)$this->levelModules[2] > 0) {
+        if (isset($this->levelModules[2]) && (int) $this->levelModules[2] > 0) {
             $defaultRoles[] = 'ROLE_SITE';
         }
-        if (isset($this->levelModules[3]) && (int)$this->levelModules[3] > 0) {
+        if (isset($this->levelModules[3]) && (int) $this->levelModules[3] > 0) {
             $defaultRoles[] = 'ROLE_FORUM';
         }
-        if (isset($this->levelModules[4]) && (int)$this->levelModules[4] > 0) {
+        if (isset($this->levelModules[4]) && (int) $this->levelModules[4] > 0) {
             $defaultRoles[] = 'ROLE_ANTENNE';
         }
 
