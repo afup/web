@@ -2,7 +2,6 @@ admin_vote:
   path: /vote/{eventSlug}
   defaults: {_controller: AppBundle:Vote:admin}
 
-
 admin_relances:
   path: /association/relances/{page}
   defaults: {_controller: AppBundle:MemberShip:reminderLog}
@@ -21,4 +20,3 @@ admin_login:
 
 admin_logout:
   path: /logout
-
