@@ -239,10 +239,6 @@ parameters:
             nom: 'Connexion'
             masquee: true
             niveau: 'ROLE_USER'
-        mot_de_passe_perdu:
-            nom: 'Mot de passe perdu'
-            masquee: true
-            niveau: 'ROLE_USER'
         inscription:
             nom: 'Inscription'
             masquee: true

@@ -189,7 +189,7 @@ fieldset.boutons {
 	margin: 0;
 }
 
-form div.rangee {
+form div.rangee, form div#form {
 	clear: both;
 	padding-top: 5px;
 }
@@ -591,19 +591,19 @@ tr.apres td { color: #dddddd; }
     border: none;
 }
 
-.panel .rangee {
+.panel .rangee, .panel form div {
     padding: 0;
     margin: 0.5em;
 }
 
-.panel .rangee label {
+.panel .rangee label, .panel form div label {
     display: block;
     text-align: left;
     width:100%;
     font-family: Belgrano, serif;
 }
 
-.panel .rangee input {
+.panel .rangee input, .panel form input, .panel form button {
     display: block;
     text-align: left;
     width:100%;
@@ -615,7 +615,7 @@ tr.apres td { color: #dddddd; }
     border: solid #50a0dd thin;
 }
 
-.panel .rangee input[type="submit"] {
+.panel .rangee input[type="submit"], .panel form button[type=submit] {
     background: #50a0dd;
     color: #ffffff;
     width: auto;
@@ -626,7 +626,7 @@ tr.apres td { color: #dddddd; }
     transition: background-color 0.5s;
 }
 
-.panel .rangee input[type="submit"]:hover {
+.panel .rangee input[type="submit"]:hover, .panel form button[type=submit]:hover {
     background-color: #18213e;
 }
 

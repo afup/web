@@ -24,3 +24,7 @@ admin_logout:
 legacy_inscription:
   path: /register
   defaults: {_controller: AppBundle:Legacy:register}
+
+admin_password:
+  path: /password
+  defaults: {_controller: AppBundle:Admin:lostPassword}

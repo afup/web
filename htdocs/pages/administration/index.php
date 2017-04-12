@@ -29,6 +29,8 @@ if ('cli-server' === PHP_SAPI) {
     }
 }
 $server['REQUEST_URI'] = '/admin/void';
+$server['LEGACY_REFERER'] = $_SERVER['REQUEST_URI'];
+
 $request = new \Symfony\Component\HttpFoundation\Request($_GET, $_POST, [], $_COOKIE, $_FILES, $server);
 
 $kernel = new \Afup\Site\Utils\SymfonyKernel($request);
