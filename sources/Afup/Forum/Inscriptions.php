@@ -152,6 +152,7 @@ SQL;
     {
         $forum = new Forum($this->_bdd);
         $id_forum_precedent = $forum->obtenirPrecedent($id_forum);
+        $id_forum_precedent = $forum->obtenirPrecedent($id_forum_precedent);
 
         $requete = 'SELECT ';
         $requete .= '  COUNT(*) as nombre, ';
