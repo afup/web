@@ -4,6 +4,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\Form\VoteType;
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Event\Model\Vote;
@@ -159,14 +160,21 @@ class VoteController extends EventBaseController
 
     public function adminAction($eventSlug)
     {
+        if ($eventSlug === "") {
+            return $this->redirectToRoute('admin_vote', [
+                'eventSlug' => $this->get('ting')->get(EventRepository::class)->getNextEvent()->getPath()
+            ]);
+        }
         $event = $this->checkEventSlug($eventSlug);
-
         if ($event === null) {
             throw $this->createNotFoundException(sprintf('Could not found event with slug %s', $eventSlug));
         }
 
         $votes = $this->get('ting')->get(VoteRepository::class)->getVotesByEvent($event->getId());
 
-        return $this->render('admin/vote/liste.html.twig', ['votes' => $votes]);
+        return $this->render('admin/vote/liste.html.twig', [
+            'votes' => $votes,
+            'title' => 'Votes'
+        ]);
     }
 }

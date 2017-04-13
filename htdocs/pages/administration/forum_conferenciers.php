@@ -8,6 +8,10 @@ use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
 
+/**
+ * @var $this \AppBundle\Controller\LegacyController
+ */
+
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -20,15 +24,12 @@ $tris_valides = array();
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-
-$kernel = new \Afup\Site\Utils\SymfonyKernel();
-$container = $kernel->getKernel()->getContainer();
-$storage = $container->get('app.photo_storage');
+$storage = $this->get('app.photo_storage');
 
 /**
  * @var $speakerRepository \AppBundle\Event\Model\Repository\SpeakerRepository
  */
-$speakerRepository = $container->get('ting')->get(\AppBundle\Event\Model\Repository\SpeakerRepository::class);
+$speakerRepository = $this->get('ting')->get(\AppBundle\Event\Model\Repository\SpeakerRepository::class);
 $speaker = $speakerRepository->get($_GET['id']);
 
 

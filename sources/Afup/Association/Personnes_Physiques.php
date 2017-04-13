@@ -347,7 +347,7 @@ class Personnes_Physiques
                 $corps .= "Il vous permettra de vous connecter dès maintenant au site de l'AFUP.\n\n";
                 $corps .= "Votre identifiant : $identifiant \n";
                 $corps .= "Votre mot de passe : $mot_de_passe \n\n";
-                $corps .= "http://www.afup.org/pages/administration/index.php?ctx_login=$identifiant";
+                $corps .= "http://afup.org/admin/login";
 
 
                 $check = Mailing::envoyerMail(
@@ -355,7 +355,7 @@ class Personnes_Physiques
                     $email,
                     "AFUP : Mot de passe perdu ?",
                     $corps);
-
+dump($check);
                 return ($check);
 
             }

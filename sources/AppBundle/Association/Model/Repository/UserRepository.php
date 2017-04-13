@@ -23,11 +23,50 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
 
     public function loadUserByUsername($username)
     {
-        $user = $this->getOneBy(['username' => $username]);
-        if ($user === null) {
-            throw new UsernameNotFoundException(sprintf('Could not find the user "%s"', $username));
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser();
+        $queryBuilder
+            ->where('app.`login` = :username')
+        ;
+        $result = $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams([
+                'username' => $username
+            ])
+            ->query($this->getCollection(
+                (new HydratorSingleObject())
+                    ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
+                    ->mapAliasTo('hash', 'app', 'setHash')
+            ));
+
+        if ($result->count() === 0) {
+            throw new UsernameNotFoundException(sprintf('Could not find the user with login "%s"', $username));
         }
-        return $user;
+
+        return $result->first();
+    }
+
+    public function loadUserByHash($hash)
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser();
+        $queryBuilder
+            ->having('hash = :hash')
+        ;
+        $result = $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams([
+                'hash' => $hash
+            ])
+            ->query($this->getCollection(
+                (new HydratorSingleObject())
+                    ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
+                    ->mapAliasTo('hash', 'app', 'setHash')
+            ));
+
+        if ($result->count() === 0) {
+            throw new UsernameNotFoundException(sprintf('Could not find the user with login "%s"', $username));
+        }
+
+        return $result->first();
     }
 
     /**
@@ -48,6 +87,20 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         ;
 
         return $queryBuilder;
+    }
+
+    private function getQueryBuilderWithCompleteUser()
+    {
+        return $this
+            ->getQueryBuilderWithSubscriptions()
+            ->cols([
+                'app.`id`', 'app.`id_personne_morale`', 'app.`login`', 'app.`mot_de_passe`', 'app.`niveau`',
+                'app.`niveau_modules`', 'app.`roles`', 'app.`civilite`', 'app.`nom`', 'app.`prenom`', 'app.`email`',
+                'app.`adresse`', 'app.`code_postal`', 'app.`ville`', 'app.`id_pays`', 'app.`telephone_fixe`',
+                'app.`telephone_portable`', 'app.`etat`', 'app.`date_relance`', 'app.`compte_svn`',
+                'MD5(CONCAT(app.`id`, \'_\', app.`email`, \'_\', app.`login`)) as hash',
+                "MAX(ac.date_fin) AS lastsubcription"
+            ]);
     }
 
     /**
@@ -128,7 +181,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         if ($this->supportsClass(get_class($user)) === false) {
             throw new UnsupportedUserException(sprintf('Instance of %s not supported', get_class($user)));
         }
-        return $this->get($user->getId());
+
+        return $this->loadUserByUsername($user->getUsername());
     }
 
     public function supportsClass($class)

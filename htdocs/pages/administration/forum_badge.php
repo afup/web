@@ -1,9 +1,8 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Forum\Forum;
-use Afup\Site\Utils\Utils;
+use Afup\Site\Forum\Inscriptions;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
   trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -11,20 +10,6 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 }
 
 $action = verifierAction(array('lister', 'export'));
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
-// Gestion des droits
-
-$droits = Utils::fabriqueDroits($bdd);
-
-if (!$droits->estConnecte() ) {
-   header('Location: index.php?page=connexion&statut=' . $droits->obtenirStatutConnexion());
-   exit;
-}
-
-
-
-
-
 
 function array2csv(array &$array)
 {

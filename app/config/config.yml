@@ -7,6 +7,247 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    app.pages_backoffice:
+        accueil:
+            nom: 'Accueil'
+            niveau: 'ROLE_MEMBER_EXPIRED'
+        membre:
+            nom: 'Mon compte'
+            elements:
+                membre_coordonnees:
+                    nom: 'Mes coordonnées'
+                    niveau: 'ROLE_USER'
+                membre_wiki:
+                    nom: 'Accès  wiki'
+                    niveau: 'ROLE_USER'
+                    nouvelle_fenetre: true
+                membre_redmine:
+                    nom: 'Déclarer un problème (GitHub)'
+                    niveau: 'ROLE_USER'
+                    nouvelle_fenetre: true
+                membre_cotisation:
+                    nom: 'Ma cotisation'
+                    niveau: 'ROLE_MEMBER_EXPIRED'
+                membre_personne_morale:
+                    nom: 'Ma personne morale'
+                    niveau: 'ROLE_COMPANY_MANAGER'
+                membre_ml:
+                    nom: 'Listes de diffusion'
+                    niveau: 'ROLE_USER'
+                membre_assemblee_generale:
+                    nom: 'Présence prochaine AG'
+                    niveau: 'ROLE_USER'
+                membre_votes:
+                    nom: 'Votes'
+                    niveau: 'ROLE_USER'
+                membre_tags:
+                    nom: 'Tags'
+                    niveau: 'ROLE_USER'
+                membre_oeuvres:
+                    nom: 'Oeuvres'
+                    niveau: 'ROLE_USER'
+                membres_liste:
+                    nom: 'Annuaire'
+                    niveau: 'ROLE_ADMIN'
+        membres:
+            nom: 'Membres'
+            niveau: 'ROLE_ADMIN'
+            elements:
+                personnes_physiques:
+                    nom: 'Personnes physiques'
+                    niveau: 'ROLE_ADMIN'
+                personnes_morales:
+                    nom: 'Personnes morales'
+                    niveau: 'ROLE_ADMIN'
+                relances_personnes_physiques:
+                    nom: 'Relances - Personnes physiques'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/association/relances/1'
+                relances:
+                    nom: 'Relances'
+                    niveau: 'ROLE_ADMIN'
+                statistiques:
+                    nom: 'Statistiques'
+                    niveau: 'ROLE_ADMIN'
+                mailing:
+                    nom: 'Mailing'
+                    niveau: 'ROLE_ADMIN'
+                assemblee_generale:
+                    nom: 'Assemblée générale'
+                    niveau: 'ROLE_ADMIN'
+                votes:
+                    nom: 'Votes'
+                    niveau: 'ROLE_ADMIN'
+        site:
+            nom: 'Site'
+            niveau: 'ROLE_SITE'
+            elements:
+                site_feuilles:
+                    nom: 'Feuilles'
+                    niveau: 'ROLE_SITE'
+                site_rubriques:
+                    nom: 'Rubriques'
+                    niveau: 'ROLE_SITE'
+                site_articles:
+                    nom: 'Articles'
+                    niveau: 'ROLE_SITE'
+        antenne:
+            nom: 'Antennes AFUP'
+            niveau: 'ROLE_ANTENNE'
+            elements:
+                rendez_vous:
+                    nom: 'Rendez-vous'
+                    niveau: 'ROLE_ANTENNE'
+                antenne:
+                    nom: 'Liste des antennes'
+                    niveau: 'ROLE_ANTENNE'
+        forum:
+            nom: 'Forum'
+            niveau: 'ROLE_FORUM'
+            elements:
+                forum_gestion:
+                    nom: 'Gestion forum'
+                    niveau: 'ROLE_ADMIN'
+                forum_suivi:
+                    nom: 'Suivi'
+                    niveau: 'ROLE_ADMIN'
+                forum_inscriptions:
+                    nom: 'Inscriptions'
+                    niveau: 'ROLE_ADMIN'
+                forum_facturation:
+                    nom: 'Factures'
+                    niveau: 'ROLE_ADMIN'
+                forum_projet:
+                    nom: 'Projet PHP'
+                    niveau: 'ROLE_FORUM'
+                forum_sessions:
+                    nom: 'Sessions'
+                    niveau: 'ROLE_FORUM'
+                forum_vote_github:
+                    nom: 'Sessions - votes visiteurs'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/vote/'
+                forum_sessions_notees:
+                    nom: 'Vote des sessions'
+                    niveau: 'ROLE_FORUM'
+                forum_conferenciers:
+                    nom: 'Conférenciers'
+                    niveau: 'ROLE_FORUM'
+                forum_planning:
+                    nom: 'Planning'
+                    niveau: 'ROLE_FORUM'
+                forum_emargement:
+                    nom: 'Feuille d''émargement'
+                    niveau: 'ROLE_ADMIN'
+                forum_badge:
+                    nom: 'Badges'
+                    niveau: 'ROLE_ADMIN'
+                forum_planning_vote:
+                    nom: 'Vote Planning'
+                    niveau: 'ROLE_USER'
+                forum_joind_in:
+                    nom: 'Export sites externes'
+                    niveau: 'ROLE_ADMIN'
+                forum_partenaire:
+                    nom: 'Sponsors/Partenaires'
+                    niveau: 'ROLE_ADMIN'
+                forum_accreditation_presse:
+                    nom: 'Accréditation presse'
+                    niveau: 'ROLE_ADMIN'
+        annuaire:
+            nom: 'Annuaire pro'
+            niveau: 'ROLE_ANNUAIRE'
+            elements:
+                annuairepro_membres:
+                    nom: 'Membres'
+                    niveau: 'ROLE_ANNUAIRE'
+        tresorerie:
+            nom: 'Trésorerie'
+            niveau: 'ROLE_ADMIN'
+            elements:
+                compta_devis:
+                    nom: 'Devis - Facture'
+                    niveau: 'ROLE_ADMIN'
+                compta_journal:
+                    nom: 'Journal'
+                    niveau: 'ROLE_ADMIN'
+                compta_banque:
+                    nom: 'Compte Banques'
+                    niveau: 'ROLE_ADMIN'
+                compta_synthese:
+                    nom: 'Synthese Evenement'
+                    niveau: 'ROLE_ADMIN'
+                compta_balance:
+                    nom: 'Balance comptable'
+                    niveau: 'ROLE_ADMIN'
+                compta_bilan:
+                    nom: 'Bilan'
+                    niveau: 'ROLE_ADMIN'
+                compta_conf_evenement:
+                    nom: 'Configuration'
+                    niveau: 'ROLE_ADMIN'
+                compta_recherche:
+                    nom: 'Recherche comptable'
+                    niveau: 'ROLE_ADMIN'
+        apero:
+            nom: 'Apéros PHP'
+            niveau: 'ROLE_APERO'
+            elements:
+                aperos:
+                    nom: 'Apéros'
+                    niveau: 'ROLE_APERO'
+
+                aperos_inscrits:
+                    nom: 'Inscrits'
+                    niveau: 'ROLE_APERO'
+        planete:
+            nom: 'Planète PHP FR'
+            niveau: 'ROLE_ADMIN'
+            elements:
+                planete_flux:
+                    nom: 'Flux'
+                    niveau: 'ROLE_ADMIN'
+
+                planete_billet:
+                    nom: 'Billets'
+                    niveau: 'ROLE_ADMIN'
+        divers:
+            nom: 'Divers'
+            niveau: 'ROLE_ADMIN'
+            elements:
+                configuration:
+                    nom: 'Configuration'
+                    niveau: 'ROLE_ADMIN'
+                membre_administrateur:
+                    nom: 'Administrateurs du site'
+                    niveau: 'ROLE_ADMIN'
+                logs:
+                    nom: 'Logs'
+                    niveau: 'ROLE_ADMIN'
+                logsvn:
+                    nom: 'Logs SVN'
+                    niveau: 'ROLE_ADMIN'
+                loggit:
+                    nom: 'Logs GIT'
+                    niveau: 'ROLE_ADMIN'
+                updatesvn:
+                    nom: 'Mise à jour via Git'
+                    niveau: 'ROLE_ADMIN'
+                info_serveur:
+                    nom: 'Information serveur'
+                    niveau: 'ROLE_ADMIN'
+        se_deconnecter:
+            nom: 'Se déconnecter'
+            url: '/admin/logout'
+            niveau: 'ROLE_USER'
+        connexion:
+            nom: 'Connexion'
+            masquee: true
+            niveau: 'ROLE_USER'
+        inscription:
+            nom: 'Inscription'
+            masquee: true
+            niveau: 'ROLE_USER'
 
 framework:
     #esi:             ~

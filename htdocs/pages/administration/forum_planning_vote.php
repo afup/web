@@ -1,9 +1,8 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\AppelConferencier;
-use Afup\Site\Droits;
+use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -22,7 +21,7 @@ $smarty->assign('action', $action);
 
 $forum = new Forum($bdd);
 $forum_appel = new AppelConferencier($bdd);
-$droits = new Droits($bdd);
+
 $identifiant = $droits->obtenirIdentifiant();
 $forum_vote_id= $forum->obtenirDernier();
 if ($action == 'lister') {

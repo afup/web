@@ -115,6 +115,16 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $reminderDate;
 
     /**
+     * @var string
+     */
+    private $hash;
+
+    /**
+     * @var \Datetime
+     */
+    private $lastSubscription;
+
+    /**
      * @return int
      */
     public function getId()
@@ -438,13 +448,62 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     }
 
     /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param string $hash
+     * @return User
+     */
+    public function setHash($hash)
+    {
+        $this->propertyChanged('hash', $this->hash, $hash);
+        $this->hash = $hash;
+        return $this;
+    }
+
+    public function getLabel()
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function setLastSubscription($sub)
+    {
+        if ($sub !== null) {
+            $this->lastSubscription = \DateTimeImmutable::createFromFormat('U', $sub);
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     public function getRoles()
     {
         $defaultRoles = ['ROLE_USER'];
+        if ($this->lastSubscription < new \DateTime()) {
+            $defaultRoles = ['ROLE_MEMBER_EXPIRED'];
+        }
         if ($this->level == self::LEVEL_ADMIN) {
             $defaultRoles[] = 'ROLE_SUPER_ADMIN';
+        }
+        if (isset($this->levelModules[0]) && (int) $this->levelModules[0] > 0) {
+            $defaultRoles[] = 'ROLE_APERO';
+        }
+        if (isset($this->levelModules[1]) && (int) $this->levelModules[1] > 0) {
+            $defaultRoles[] = 'ROLE_ANNUAIRE';
+        }
+        if (isset($this->levelModules[2]) && (int) $this->levelModules[2] > 0) {
+            $defaultRoles[] = 'ROLE_SITE';
+        }
+        if (isset($this->levelModules[3]) && (int) $this->levelModules[3] > 0) {
+            $defaultRoles[] = 'ROLE_FORUM';
+        }
+        if (isset($this->levelModules[4]) && (int) $this->levelModules[4] > 0) {
+            $defaultRoles[] = 'ROLE_ANTENNE';
         }
 
         return array_unique(array_merge($this->roles, $defaultRoles));
@@ -484,7 +543,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
      */
     public function serialize()
     {
-        return serialize(['id' => $this->id]);
+        return serialize([
+            'id' => $this->id,
+            'username' => $this->username,
+            'password' => $this->password
+        ]);
     }
 
     /**
@@ -494,5 +557,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     {
         $array = unserialize($serialized);
         $this->id = $array['id'];
+        $this->username = $array['username'];
+        $this->password = $array['password'];
     }
 }

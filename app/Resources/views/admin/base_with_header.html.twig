@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+{% block body %}
+    <div id="header">
+        <h1>
+            <img src="{{ asset('templates/administration/images/logo_afup.png') }}" />
+            {{ title }} − Administration AFUP
+        </h1>
+    </div>
+
+    <div class="colmask leftmenu">
+        <div class="colleft">
+            <div class="col1">
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                        {% if type == 'error' %}
+                            <div class="flash-{{type}}">{{message}}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                {% block content %}
+                    {{ content|raw }}
+                {% endblock %}
+            </div>
+            {% if app.user %}
+                <div class="col2">
+                    {{ render(controller('AppBundle:Admin:getMenu')) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="footer">
+        &copy; AFUP | Icônes <a href="http://www.famfamfam.com/lab/icons/silk/">FamFamFam</a>
+    </div>
+
+
+    <!-- Dropzone -->
+    <script type="text/javascript" src="{{ asset('javascript/dropzone/dropzone.min.js') }}"></script>
+{% endblock %}

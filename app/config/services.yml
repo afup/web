@@ -68,9 +68,12 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
 
-
     app.legacy_authenticator:
         class: AppBundle\Security\LegacyAuthenticator
+        autowire: true
+
+    app.legacy_hash_authenticator:
+        class: AppBundle\Security\LegacyHashAuthenticator
         autowire: true
 
     app.unique_validator:

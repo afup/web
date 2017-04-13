@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="MSSmartTagsPreventParsing" content="TRUE" />
+    <title>{{ title }} - Administration AFUP</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('templates/administration/style.css?v=3') }}" title="AFUP" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('templates/administration/style_print.css') }}" title="AFUP" media="print" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('templates/administration/medias/css/glyphicons.css') }}" media="screen" />
+
+    <!-- JS -->
+    <script type="text/javascript" src="{{ asset('javascript/fonctions.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('javascript/jquery-1.4.4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('javascript/tiny_mce/jquery.tinymce.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('javascript/tinymce.js') }}"></script>
+</head>
+
+<body id="{{ page|default('') }}" class="{{ class|default('') }}">
+{% block body '' %}
+</body>
+</html>

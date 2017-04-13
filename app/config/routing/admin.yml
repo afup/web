@@ -1,7 +1,28 @@
 admin_vote:
   path: /vote/{eventSlug}
+  requirements:
+    eventSlug: .*
   defaults: {_controller: AppBundle:Vote:admin}
 
 admin_relances:
   path: /association/relances/{page}
   defaults: {_controller: AppBundle:MemberShip:reminderLog}
+
+admin_void:
+  path: /void
+  defaults: {_controller: AppBundle:Legacy:backOffice}
+
+admin_login:
+  path: /login
+  defaults: {_controller: AppBundle:Admin:login}
+
+admin_logout:
+  path: /logout
+
+legacy_inscription:
+  path: /register
+  defaults: {_controller: AppBundle:Legacy:register}
+
+admin_password:
+  path: /password
+  defaults: {_controller: AppBundle:Admin:lostPassword}

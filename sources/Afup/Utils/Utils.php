@@ -4,6 +4,8 @@ namespace Afup\Site\Utils;
 use Afup\Site\AuthentificationInterfaceWiki;
 use Afup\Site\AuthentificationWiki;
 use Afup\Site\Droits;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Diverses méthodes permettant de se simplifier la vie
@@ -17,16 +19,12 @@ class Utils
      * @access public
      * @return object    Afup\Site\Droits
      */
-    public static function fabriqueDroits($bdd)
+    public static function fabriqueDroits($bdd, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
     {
-
-
-
         // Gestion de l'authentification spécifique au Wiki
         $authentificationWiki = new AuthentificationWiki();
 
-        $droits = new Droits($bdd);
-        $droits->enregistreAuthentification($authentificationWiki);
+        $droits = new Droits($bdd, $tokenStorage, $authorizationChecker);
 
         return $droits;
     }

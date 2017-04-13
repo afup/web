@@ -5,13 +5,14 @@ namespace AppBundle\Security;
 use AppBundle\Association\Model\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
-class LegacyAuthenticator extends AbstractGuardAuthenticator
+class LegacyHashAuthenticator extends AbstractGuardAuthenticator
 {
     private $userRepository;
 
@@ -26,17 +27,14 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
         if (
-            $request->getPathInfo() !== '/admin/login'
-            || $request->getMethod() !== Request::METHOD_POST
-            || $request->request->has('utilisateur') === false
-            || $request->request->has('mot_de_passe') === false
+            $request->query->has('hash') === false
+            || $request->getMethod() !== Request::METHOD_GET
         ) {
             return null;
         }
 
         return [
-            'login' => $request->request->get('utilisateur'),
-            'password' => md5($request->request->get('mot_de_passe'))
+            'hash' => $request->query->get('hash')
         ];
     }
 
@@ -45,10 +43,10 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $user = $this->userRepository->loadUserByUsername($credentials['login']);
+        $user = $this->userRepository->loadUserByHash($credentials['hash']);
 
         if ($user === null) {
-            throw new AuthenticationException(sprintf('Unknown user %s', $credentials['login']));
+            throw new AuthenticationException(sprintf('Unknown user %s', $credentials['hash']));
         }
 
         return $user;
@@ -59,10 +57,7 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return (
-            ($credentials['login'] === $user->getUsername() || $credentials['login'] === $user->getEmail())
-            && $credentials['password'] === $user->getPassword()
-        );
+        return ($user->getHash() === $credentials['hash']);
     }
 
     /**
@@ -78,7 +73,13 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return new RedirectResponse('/pages/administration/index.php?page=accueil');
+        if ($request->server->has('LEGACY_REFERER') === true) {
+            $newUrl = preg_replace('/(\?|&)hash=.+?(?:&|$)/', '$1', $request->server->get('LEGACY_REFERER'));
+            $response = new RedirectResponse($newUrl, Response::HTTP_TEMPORARY_REDIRECT);
+            $response->setPrivate();
+            return $response;
+        }
+        return null;
     }
 
     /**
@@ -94,6 +95,6 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new RedirectResponse('/admin/login');
+        return null;
     }
 }

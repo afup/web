@@ -1,0 +1,48 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div id="contenu" class="panel">
+        <h1>
+            <img src="{{ asset('templates/administration/images/logo_afup.png') }}" alt="Association Française des Utilisateurs de PHP">
+        </h1>
+        <h2>Administration</h2>
+        {% for bag in ['notice', 'success', 'error'] %}
+            {% for flash_message in app.session.flashBag.get(bag) %}
+                <div class="flash flash-{{ bag }}">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <form method="post" onsubmit="return soumettreUneSeuleFois(this);">
+            {% if error is not null %}<p class="erreur">{{ error }}</p>{% endif %}
+
+            <fieldset>
+                <div class="rangee">
+                    <label for="utilisateur">Email ou nom d'utilisateur</label>
+                    <div>
+                        <input type="text" id="utilisateur" name="utilisateur" autofocus value="{{ last_username }}"/>
+                    </div>
+                </div>
+
+                <div class="rangee">
+                    <label for="utilisateur">Mot de passe</label>
+                    <div>
+                        <input type="password" name="mot_de_passe" />
+                    </div>
+                </div>
+
+                <div class="rangee">
+                    <div>
+                        <input type="submit" name="soumettre" value="Se connecter"/>
+                    </div>
+                </div>
+
+                <input type="hidden" name="connexion" value="1" />
+            </fieldset>
+
+            <p class="rangee"><a href="{{ url('admin_password') }}">Mot de passe perdu ?</a></p>
+            <p class="rangee"><a href="{{ url('legacy_inscription') }}">Vous souhaitez vous inscrire à l'AFUP?</a></p>
+        </form>
+    </div>
+{% endblock %}

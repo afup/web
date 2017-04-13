@@ -209,6 +209,11 @@ class MemberShipController extends SiteBaseController
         $repository = $this->get('ting')->get(SubscriptionReminderLogRepository::class);
         $results = $repository->getPaginatedLogs($page, $limit);
 
-        return $this->render(':admin/relances:liste.html.twig', ['logs' => $results, 'limit' => $limit, 'page' => $page]);
+        return $this->render(':admin/relances:liste.html.twig', [
+            'logs' => $results,
+            'limit' => $limit,
+            'page' => $page,
+            'title' => 'Relances'
+        ]);
     }
 }
