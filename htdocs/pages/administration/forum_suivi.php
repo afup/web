@@ -1,8 +1,8 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Inscriptions;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -22,6 +22,7 @@ if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
 $smarty->assign('id_forum', $_GET['id_forum']);
 $smarty->assign('forum_avenir', $forum->obtenir((int) $_GET['id_forum']));
 $id_precedent = $forum->obtenirPrecedent((int) $_GET['id_forum']);
+$id_precedent = $forum->obtenirPrecedent((int) $id_precedent); ## On compare avec 2 events avant
 $smarty->assign('forum_precedent', $forum->obtenir($id_precedent));
 $smarty->assign('forums', $forum->obtenirListe());
 
