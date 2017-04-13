@@ -23,11 +23,11 @@
     <br/>
     <div class="pagination">
         {% if page > 1 %}
-            <div class="page_precedente"><a href="{{ legacy_router.adminUrl('relances', {pagenum: page-1}) }}">Page
+            <div class="page_precedente"><a href="{{ url('admin_relances', {page: page-1}) }}">Page
                     précédente</a></div>
         {% endif %}
         {% if logs.count > limit %}
-            <div class="page_suivante"><a href="{{ legacy_router.adminUrl('relances', {pagenum: page+1}) }}">Page
+            <div class="page_suivante"><a href="{{ url('admin_relances', {page: page+1}) }}">Page
                     suivante</a></div>
         {% endif %}
     </div>

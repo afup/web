@@ -26,11 +26,13 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
         $queryBuilder
             ->where('app.`login` = :username')
+            ->orWhere('app.`email` = :email')
         ;
         $result = $this
             ->getPreparedQuery($queryBuilder->getStatement())
             ->setParams([
-                'username' => $username
+                'username' => $username,
+                'email' => $username
             ])
             ->query($this->getCollection(
                 (new HydratorSingleObject())
@@ -63,7 +65,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ));
 
         if ($result->count() === 0) {
-            throw new UsernameNotFoundException(sprintf('Could not find the user with login "%s"', $username));
+            throw new UsernameNotFoundException(sprintf('Could not find the user with hash "%s"', $hash));
         }
 
         return $result->first();

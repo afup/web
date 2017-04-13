@@ -25,6 +25,7 @@ parameters:
                     nom: 'Déclarer un problème (GitHub)'
                     niveau: 'ROLE_USER'
                     nouvelle_fenetre: true
+                    url: 'https://github.com/afup/web/issues?state=open'
                 membre_cotisation:
                     nom: 'Ma cotisation'
                     niveau: 'ROLE_MEMBER_EXPIRED'
@@ -144,7 +145,7 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                 forum_planning_vote:
                     nom: 'Vote Planning'
-                    niveau: 'ROLE_USER'
+                    niveau: 'ROLE_ADMIN' ##TODO voir si on conserve ou pas, on comprend pas à quoi ça sert
                 forum_joind_in:
                     nom: 'Export sites externes'
                     niveau: 'ROLE_ADMIN'
