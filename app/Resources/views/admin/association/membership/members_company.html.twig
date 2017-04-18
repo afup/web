@@ -1,0 +1,95 @@
+{% extends ':admin:base_with_header.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all"/>
+{% endblock %}
+{% block content %}
+    <article id="company-members">
+        <h2>Les membres rattachés à mon entreprise</h2>
+        <form method="post">
+            <fieldset>
+                <legend>Les membres associés à mon compte</legend>
+                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Droits de gestion du compte</th>
+                            <th>Email</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.firstName }}</td>
+                                <td>{{ user.lastName }}</td>
+                                <td>{{ user.hasRole('ROLE_COMPANY_MANAGER')?'Oui':'Non' }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    {% if user.hasRole('ROLE_COMPANY_MANAGER') %}
+                                        <button type="submit" name="promote_up" value="{{ user.id }}">Donner les droits de gestion</button>
+                                    {% else %}
+                                        <button type="submit" name="promote_down" value="{{ user.id }}">Enlever les droits de gestion</button>
+                                    {% endif %}
+                                    <button type="submit" name="remove" value="{{ user.id }}">Détacher de mon compte entreprise</button>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Aucun membre actuellement rattaché</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </fieldset>
+
+        </form>
+
+        <form method="post">
+            <fieldset>
+                <legend>Invitations en attente</legend>
+                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Droits de gestion du compte</th>
+                            <th>Date d'envoi</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        {% for invitation in invitations %}
+                            <tr>
+                                <td>{{ invitation.email }}</td>
+                                <td>{{ invitation.manager?'Oui':'Non' }}</td>
+                                <td>{{ invitation.submittedOn|date('d/m/Y H:i:s') }}</td>
+                                <td>
+                                    <button type="submit" name="resend_invitation" value="{{ invitation.id }}">Renvoyer
+                                        le mail d'invitation
+                                    </button>
+                                    <button type="submit" name="delete_invitation" value="{{ invitation.id }}">
+                                        Annuler l'invitation
+                                    </button>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Aucune invitation en attente</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </fieldset>
+        </form>
+        {{ form_start(formInvitation) }}
+        <fieldset>
+            <legend>Nouvelle invitation</legend>
+            <div>
+                {{ form_row(formInvitation.email) }}
+                {{ form_row(formInvitation.manager) }}
+                {{ form_widget(formInvitation) }}
+            </div>
+        </fieldset>
+        {{ form_end(formInvitation) }}
+    </article>
+{% endblock %}

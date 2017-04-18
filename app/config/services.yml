@@ -122,3 +122,10 @@ services:
     app.mailchimp_api:
         class: AppBundle\Mailchimp\Mailchimp
         arguments: ["@app.mailchimp_client"]
+
+    app.mail:
+        class: Afup\Site\Utils\Mail
+
+    app.invitation_mail:
+        class: AppBundle\Association\CompanyMembership\InvitationMail
+        autowire: true

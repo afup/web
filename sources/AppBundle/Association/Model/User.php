@@ -510,6 +510,20 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     }
 
     /**
+     * @param $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        $roles = $this->getRoles();
+        if (in_array($role, $roles)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param array $roles
      * @return User
      */
@@ -520,6 +534,37 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         }
         $this->propertyChanged('roles', $this->roles, $roles);
         $this->roles = $roles;
+        return $this;
+    }
+
+    /**
+     * @param string $role
+     * @return User
+     */
+    public function addRole($role)
+    {
+        $roles = $this->roles;
+        $this->roles[] = $role;
+        $this->roles = array_unique($this->roles);
+
+        $this->propertyChanged('roles', $roles, $this->roles);
+
+        return $this;
+    }
+
+    /**
+     * @param string $role
+     * @return User
+     */
+    public function removeRole($role)
+    {
+        if ($this->hasRole($role)) {
+            $roleNum = array_search($role, $this->roles);
+            $oldRoles = $this->roles;
+            unset($this->roles[$roleNum]);
+            $this->propertyChanged('roles', $oldRoles, $this->roles);
+        }
+
         return $this;
     }
 

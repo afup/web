@@ -3,6 +3,7 @@
 
 namespace AppBundle\Association\Model\Repository;
 
+use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
@@ -34,11 +35,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'username' => $username,
                 'email' => $username
             ])
-            ->query($this->getCollection(
-                (new HydratorSingleObject())
-                    ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
-                    ->mapAliasTo('hash', 'app', 'setHash')
-            ));
+            ->query($this->getCollection($this->getHydratorForUser()));
 
         if ($result->count() === 0) {
             throw new UsernameNotFoundException(sprintf('Could not find the user with login "%s"', $username));
@@ -58,17 +55,28 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->setParams([
                 'hash' => $hash
             ])
-            ->query($this->getCollection(
-                (new HydratorSingleObject())
-                    ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
-                    ->mapAliasTo('hash', 'app', 'setHash')
-            ));
+            ->query($this->getCollection($this->getHydratorForUser()));
 
         if ($result->count() === 0) {
             throw new UsernameNotFoundException(sprintf('Could not find the user with hash "%s"', $hash));
         }
 
         return $result->first();
+    }
+
+    public function loadUsersByCompany(CompanyMember $companyMember)
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser();
+        $queryBuilder
+            ->where('apm.id = :company')
+        ;
+        return $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams([
+                'company' => $companyMember->getId()
+            ])
+            ->query($this->getCollection($this->getHydratorForUser()))
+            ;
     }
 
     /**
@@ -120,6 +128,14 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         } elseif ($userType !== self::USER_TYPE_ALL) {
             throw new \UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
         }
+    }
+
+    private function getHydratorForUser()
+    {
+        return (new HydratorSingleObject())
+            ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
+            ->mapAliasTo('hash', 'app', 'setHash')
+        ;
     }
 
     /**

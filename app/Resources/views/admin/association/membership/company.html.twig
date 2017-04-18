@@ -1,0 +1,32 @@
+{% extends ':admin:base_with_header.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all" />
+{% endblock %}
+{% block content %}
+    <article id="company-membership">
+        <h2>Mon adhésion entreprise à l'AFUP</h2>
+        {{ form_start(form) }}
+        <fieldset>
+            <legend>Société</legend>
+            <div>
+                {{ form_row(form.companyName) }}
+                {{ form_row(form.siret) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.zipcode) }}
+                {{ form_row(form.city) }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Contact administratif</legend>
+            <div>
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.phone) }}
+            </div>
+        </fieldset>
+
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </article>
+{% endblock %}

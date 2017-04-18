@@ -96,6 +96,9 @@ class PhotoStorage
 
         $size = self::FORMAT[$format];
 
+        if (file_exists($originalPath) === false) {
+            return ;
+        }
         $ext = substr($speaker->getPhoto(), -4);
         $transparent = false;
         // This part is just our old script. We should do better
