@@ -21,7 +21,10 @@ class LegacyController extends Controller
 
     public function backOfficeAction(Request $request)
     {
-        global $smarty, $bdd, $conf, $droits;
+        /**
+         * All global variables (as defined in commonStart and others) should be declared here
+         */
+        global $smarty, $bdd, $conf, $droits, $AFUP_Tarifs_Forum_Lib, $AFUP_Tarifs_Forum, $debug, $translator, $services;
         $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
         $pages = $this->getParameter('app.pages_backoffice');
 
