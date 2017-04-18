@@ -355,7 +355,7 @@ class Personnes_Physiques
                     $email,
                     "AFUP : Mot de passe perdu ?",
                     $corps);
-dump($check);
+
                 return ($check);
 
             }
