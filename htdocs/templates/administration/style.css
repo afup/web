@@ -276,7 +276,10 @@ table.afup_tab td:FIRST-CHILD
 
 table.afup_tab tr.even
 {
-	background-color: #DBE1FF;
+	background-color: #eeeeee;
+}
+table.afup_tab tr:hover{
+    background-color:#dddddd;
 }
 
 table.afup_tab th
@@ -728,4 +731,8 @@ form.dropzone, form.dz-journal-form {
 
 .list-icon {
     padding: 0 4px
+}
+
+#company-members table.afup_tab td{
+    vertical-align: middle;
 }

@@ -47,17 +47,39 @@
 #company-membership #company_member, #company-membership #admin_company_member, #company-membership-invitation #user{
     text-align:right;
 }
-#company-membership #company_member button, #company-membership #admin_company_member button, #company-membership-invitation button, #company-membership-payment input[type=submit], #company-membership-payment a.button{
+#company-membership #company_member button,
+#company-membership #admin_company_member button,
+#company-membership-invitation button,
+#company-membership-payment input[type=submit],
+#company-membership-payment a.button,
+button.company--submit
+{
     text-decoration: none;
     background-color:#50a0dd;
     font-size:1.5em;
     color:white;
     padding: 20px 10px;
     border: 1px solid #2b3e74;
+    cursor:pointer;
 }
+button.company--submit{
+    font-size:1rem;
+    padding: 8px;
+    margin: 0 5px;
+}
+button.company--submit[disabled=disabled] {
+    cursor: default;
+    background-color:#c2def3;
+    color:#777;
+}
+
 #company-membership-payment a.button{
     display:inline-block;
 }
 #company-membership form[name=admin_company_member] {
     width: 50%;
+}
+
+#company-members form{
+    width: auto;
 }

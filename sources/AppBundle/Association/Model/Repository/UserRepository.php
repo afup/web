@@ -64,16 +64,18 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         return $result->first();
     }
 
-    public function loadUsersByCompany(CompanyMember $companyMember)
+    public function loadActiveUsersByCompany(CompanyMember $companyMember)
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
         $queryBuilder
             ->where('apm.id = :company')
+            ->where('app.etat = :state')
         ;
         return $this
             ->getPreparedQuery($queryBuilder->getStatement())
             ->setParams([
-                'company' => $companyMember->getId()
+                'company' => $companyMember->getId(),
+                'state' => User::STATUS_ACTIVE
             ])
             ->query($this->getCollection($this->getHydratorForUser()))
             ;

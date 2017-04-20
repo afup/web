@@ -14,7 +14,9 @@ use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use CCMBenchmark\Ting\Driver\Exception;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class AdminMemberShipController extends SiteBaseController
 {
@@ -35,7 +37,7 @@ class AdminMemberShipController extends SiteBaseController
          */
         $userRepository = $this->get('ting')->get(UserRepository::class);
 
-        $users = $userRepository->loadUsersByCompany($company);
+        $users = $userRepository->loadActiveUsersByCompany($company);
 
         /**
          * @var $invitationRepository CompanyMemberInvitationRepository
@@ -43,108 +45,132 @@ class AdminMemberShipController extends SiteBaseController
         $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
 
         $pendingInvitations = $invitationRepository->loadPendingInvitationsByCompany($company);
-        $invitationForm = $this->createForm(CompanyMemberInvitationType::class);
+
+        $invitation = new CompanyMemberInvitation();
+        $invitationForm = $this->createForm(CompanyMemberInvitationType::class, $invitation);
+        $invitationForm->handleRequest($request);
 
         if ($request->getMethod() === Request::METHOD_POST) {
-            if ($request->request->has('delete_invitation')) {
-                $idToDelete = $request->request->getInt('delete_invitation');
-                $invitationsToDelete = array_filter(iterator_to_array($pendingInvitations), function (CompanyMemberInvitation $item) use ($idToDelete) {
-                    if ($item->getId() === $idToDelete) {
-                        return true;
-                    }
-                    return false;
+            $userCompany = $this->get('app.user_company');
+
+            if ($invitationForm->isSubmitted() && $invitationForm->isValid()) {
+                // Handle invitation
+                $invitation
+                    ->setSubmittedOn(new \DateTime())
+                    ->setCompanyId($company->getId())
+                    ->setToken(base64_encode(random_bytes(30)))
+                    ->setStatus(CompanyMemberInvitation::STATUS_PENDING)
+                ;
+                $invitationRepository->save($invitation);
+
+                // Send mail to the other guy, begging for him to join the company
+                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($company, $invitation) {
+                    $this->get('app.invitation_mail')->sendInvitation($company, $invitation);
                 });
-                if (count($invitationsToDelete) > 1) {
-                    throw new \RuntimeException('Error');
-                }
+                $this->addFlash(
+                    'notice',
+                    sprintf('L\'invitation a été envoyée à l\'adresse %s.', $invitation->getEmail())
+                );
+            } elseif ($this->isCsrfTokenValid('admin_company_members', $request->request->get('token')) === false) {
+                $this->addFlash('error', 'Erreur lors de la soumission du formulaire (jeton CSRF invalide). Merci de réessayer.');
+                return $this->redirectToRoute('admin_company_members');
+            } elseif ($request->request->has('delete_invitation')) {
+                $idToDelete = $request->request->getInt('delete_invitation');
+
                 /**
                  * @var $invitationToDelete CompanyMemberInvitation
                  */
-                $invitationToDelete = current($invitationsToDelete);
+                $invitationToDelete = $this->getItemFromListById($idToDelete, $pendingInvitations);
                 $invitationToDelete->setStatus(CompanyMemberInvitation::STATUS_CANCELLED);
                 $invitationRepository->save($invitationToDelete);
-                $this->addFlash('notice', 'L\'invitation a été supprimée.');
-            }
-            if ($request->request->has('resend_invitation')) {
+                $this->addFlash('notice', 'L\'invitation a été annulée.');
+            } elseif ($request->request->has('resend_invitation')) {
                 $idToSend = $request->request->getInt('resend_invitation');
-                $invitationsToSend = array_filter(iterator_to_array($pendingInvitations), function (CompanyMemberInvitation $item) use ($idToSend) {
-                    if ($item->getId() === $idToSend) {
-                        return true;
-                    }
-                    return false;
-                });
-                if (count($invitationsToSend) > 1) {
-                    throw new \RuntimeException('Error');
-                }
+
                 /**
-                 * @var $invitationToDelete CompanyMemberInvitation
+                 * @var $invitationToSend CompanyMemberInvitation
                  */
-                $invitationToSend = current($invitationsToSend);
+                $invitationToSend = $this->getItemFromListById($idToSend, $pendingInvitations);
                 $this->get('app.invitation_mail')->sendInvitation($company, $invitationToSend);
-                $this->addFlash('notice', 'L\'invitation a bien été renvoyée');
-            }
-            if ($request->request->has('promote_up')) {
+                $this->addFlash('notice', 'L\'invitation a été renvoyée');
+            } elseif ($request->request->has('promote_up')) {
                 $idToPromote = $request->request->getInt('promote_up');
-                $usersToPromote = array_filter(iterator_to_array($users), function (User $item) use ($idToPromote) {
-                    if ($item->getId() === $idToPromote) {
-                        return true;
-                    }
-                    return false;
-                });
-                if (count($usersToPromote) > 1) {
-                    throw new \RuntimeException('Error');
-                }
+
                 /**
-                 * @var $userToPromote User
+                 * @var $user User
                  */
-                $userToPromote = current($usersToPromote);
-                $userToPromote->addRole('ROLE_COMPANY_MANAGER');
-                $userRepository->save($userToPromote);
+                $user = $this->getItemFromListById($idToPromote, $users);
+
+                $userCompany->setManager($user);
                 $this->addFlash('notice', 'Le membre a été promu en tant que manager.');
-            }
-            if ($request->request->has('promote_down')) {
+            } elseif ($request->request->has('promote_down')) {
                 $idToPromote = $request->request->getInt('promote_down');
-                $usersToPromote = array_filter(iterator_to_array($users), function (User $item) use ($idToPromote) {
-                    if ($item->getId() === $idToPromote) {
-                        return true;
-                    }
-                    return false;
-                });
-                if (count($usersToPromote) > 1) {
-                    throw new \RuntimeException('Error');
-                }
+
                 /**
-                 * @var $userToPromote User
+                 * @var $user User
                  */
-                $userToPromote = current($usersToPromote);
-                $userToPromote->removeRole('ROLE_COMPANY_MANAGER');
-                $userRepository->save($userToPromote);
-                $this->addFlash('notice', 'Le membre n\'a plus accès la gestion de l\'entreprise.');
+                $user = $this->getItemFromListById($idToPromote, $users);
+
+                if ($user->getId() === $this->getUser()->getId()) {
+                    $this->addFlash('error', 'Vous ne pouvez pas enlever vos droits de gestion');
+                } else {
+                    $userCompany->unsetManager($user);
+                    $this->addFlash('notice', 'Le membre n\'a plus accès la gestion de l\'entreprise.');
+                }
+            } elseif ($request->request->has('remove')) {
+                $idToRemove = $request->request->getInt('remove');
+                /**
+                 * @var $user User
+                 */
+                $user = $this->getItemFromListById($idToRemove, $users);
+                if ($user->getId() === $this->getUser()->getId()) {
+                    $this->addFlash('error', 'Vous ne pouvez pas détacher votre propre compte');
+                } else {
+                    $userCompany->disableUser($user);
+                    $this->addFlash('notice', 'Le compte a été détaché de votre adhésion entreprise.');
+                }
             }
 
             return $this->redirectToRoute('admin_company_members');
         }
-
-        // Afficher la liste des invitations en attente & renvoyer si nécessaire
-
-        // Pouvoir gérer les droits manager ou non
-
-        // Pouvoir supprimer un membre == suppression du rattachement à l'entreprise, le compte continue d'exister sans cotisation
-        // Penser dans ce cas à faire les désabonnements de rigueur: newsletter, etc.
-        // Enlever l'éventuel role ROLE_COMPANY_MANAGER
-
-        // Pouvoir envoyer une nouvelle invitation
-
-        // Pouvoir upgrader son compte
 
         return $this->render(':admin/association/membership:members_company.html.twig',
             [
                 'title' => 'Les membres de mon entreprise',
                 'users' => $users,
                 'invitations' => $pendingInvitations,
-                'formInvitation' => $invitationForm->createView()
+                'formInvitation' => $invitationForm->createView(),
+                'company' => $company,
+                'token' => $this->get('security.csrf.token_manager')->getToken('admin_company_members')
             ]
         );
+    }
+
+    /**
+     * @param $id
+     * @param CollectionInterface $list
+     * @return Object
+     */
+    private function getItemFromListById($id, CollectionInterface $list)
+    {
+        // Filter list ==> we keep only the matching item
+        $extractedItems = array_filter(iterator_to_array($list), function ($item) use ($id) {
+            if (method_exists($item, 'getId') === false) {
+                throw new \RuntimeException(sprintf('Method getId not found on object "%s"', get_class($item)));
+            }
+            if ($item->getId() === $id) {
+                return true;
+            }
+            return false;
+        });
+
+        // We should keep exactly one item, if we have more or less than one user there's something wrong
+        if (count($extractedItems) !== 1) {
+            throw new \RuntimeException('We could not find the wanted item');
+        }
+        $item = current($extractedItems);
+
+        return $item;
     }
 
     public function companyAction(Request $request)

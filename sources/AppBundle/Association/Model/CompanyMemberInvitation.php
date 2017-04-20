@@ -38,7 +38,6 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @var bool
-     * @Assert\
      */
     private $manager = false;
 

@@ -129,3 +129,13 @@ services:
     app.invitation_mail:
         class: AppBundle\Association\CompanyMembership\InvitationMail
         autowire: true
+
+    app.user_company:
+        class: AppBundle\Association\CompanyMembership\UserCompany
+        autowire: true
+
+    app.mailchimp_event_listener:
+        class: AppBundle\Mailchimp\EventListener
+        arguments: ["@app.mailchimp_api", "%mailchimp_members_list%"]
+        tags:
+          - { name: kernel.event_listener, event: user.disabled, method: onUserDisabled }
