@@ -1,4 +1,4 @@
-#company-membership form, #company-membership-payment form, #company-membership-invitation form{
+#company-membership form, #company-membership-payment form, #company-membership-invitation form, #company-members form{
     width: auto;
     background:transparent;
     margin: 0;
@@ -6,22 +6,22 @@
     padding: 0;
 }
 
-#company-membership form *, #company-membership-invitation form * {
+#company-membership form *, #company-membership-invitation form *, #company-members form * {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
 
-#company-membership fieldset, #company-membership-invitation fieldset{
+#company-membership fieldset, #company-membership-invitation fieldset, #company-members form fieldset{
     margin: 2em 0;
     padding: 0;
 }
-#company-membership fieldset > div, #company-membership-invitation fieldset > div{
+#company-membership fieldset > div, #company-membership-invitation fieldset > div, #company-members form fieldset > div{
     padding: 1em;
     background: #eee;
     border: 1px solid #ccc;
 }
-#company-membership legend, #company-membership-invitation legend{
+#company-membership legend, #company-membership-invitation legend, #company-members form legend{
     display:block;
     background-color:#50a0dd;
     padding: 20px 10px;
@@ -31,7 +31,7 @@
     font-size:1.5em;
     border: 1px solid #50a0dd;
 }
-#company-membership form label, #company-membership-invitation form label{
+#company-membership form label, #company-membership-invitation form label, #company-members form label{
     min-width: 45%;
     line-height: 2em;
     font-weight: normal;
@@ -52,7 +52,8 @@
 #company-membership-invitation button,
 #company-membership-payment input[type=submit],
 #company-membership-payment a.button,
-button.company--submit
+#company-members form button,
+#company-members button.company--submit
 {
     text-decoration: none;
     background-color:#50a0dd;
@@ -62,12 +63,12 @@ button.company--submit
     border: 1px solid #2b3e74;
     cursor:pointer;
 }
-button.company--submit{
+#company-members button.company--submit{
     font-size:1rem;
     padding: 8px;
     margin: 0 5px;
 }
-button.company--submit[disabled=disabled] {
+#company-members button.company--submit[disabled=disabled] {
     cursor: default;
     background-color:#c2def3;
     color:#777;
@@ -80,6 +81,12 @@ button.company--submit[disabled=disabled] {
     width: 50%;
 }
 
+#company-members{
+    max-width: 980px;
+}
 #company-members form{
     width: auto;
+}
+#company_member_invitation_submit{
+    text-align:right;
 }

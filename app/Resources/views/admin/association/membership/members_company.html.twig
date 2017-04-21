@@ -35,11 +35,11 @@
                                         </button>
                                     {% else %}
                                         {% if user.hasRole('ROLE_COMPANY_MANAGER') %}
-                                            <button type="submit" class="company--submit" name="promote_down" value="{{ user.id }}">Enlever les droits de gestion</button>
+                                            <button type="submit" class="company--submit" name="promote_down" value="{{ user.email }}">Enlever les droits de gestion</button>
                                         {% else %}
-                                            <button type="submit" class="company--submit" name="promote_up" value="{{ user.id }}">Donner les droits de gestion</button>
+                                            <button type="submit" class="company--submit" name="promote_up" value="{{ user.email }}">Donner les droits de gestion</button>
                                         {% endif %}
-                                        <button type="submit" class="company--submit" name="remove" value="{{ user.id }}">Supprimer ce compte</button>
+                                        <button type="submit" class="company--submit" name="remove" value="{{ user.email }}">Supprimer ce compte</button>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -73,11 +73,11 @@
                                 <td>{{ invitation.manager?'Oui':'Non' }}</td>
                                 <td>{{ invitation.submittedOn|date('d/m/Y H:i:s') }}</td>
                                 <td>
-                                    <button type="submit" class="company--submit" name="resend_invitation" value="{{ invitation.id }}"
+                                    <button type="submit" class="company--submit" name="resend_invitation" value="{{ invitation.email }}"
                                             title="Renvoyer le mail d'invitation">Envoyer
                                         à nouveau
                                     </button>
-                                    <button type="submit" class="company--submit" name="delete_invitation" value="{{ invitation.id }}" title="Annuler l'invitation">
+                                    <button type="submit" class="company--submit" name="delete_invitation" value="{{ invitation.email }}" title="Annuler l'invitation">
                                         Annuler
                                     </button>
                                 </td>
@@ -93,27 +93,34 @@
             <input type="hidden" name="token" value="{{ token }}" />
         </form>
 
-
-        <p>Votre cotisation actuelle vous permet d'avoir {{ company.maxMembers }} membres rattachés.</p>
-        {% if (users.count + invitations.count) < company.maxMembers %}
+        <p>
+            Votre cotisation actuelle vous permet d'avoir {{ company.maxMembers }} membres rattachés.
+        </p>
             {{ form_start(formInvitation) }}
             <fieldset>
                 <legend>Nouvelle invitation</legend>
                 <div>
-                    {{ form_row(formInvitation.email) }}
-                    {{ form_row(formInvitation.manager) }}
-                    {{ form_widget(formInvitation) }}
-                    <button type="submit" class="company--submit">Envoyer l'invitation</button>
+                        {{ form_row(formInvitation.email) }}
+                        {{ form_row(formInvitation.manager) }}
+                        {{ form_widget(formInvitation) }}
+                        <div id="company_member_invitation_submit">
+                            {% if canAddUser %}
+                                <button type="submit" class="company--submit">Envoyer l'invitation</button>
+                            {% else %}
+                                <button type="submit" class="company--submit" disabled="disabled">Envoyer l'invitation</button>
+                            {% endif %}
+                        </div>
+                    {% if canAddUser == false %}
+                        <p>
+                            Vous avez actuellement {{ users.count }} membre(s) rattaché(s) et {{ invitations.count }} invitation(s)
+                            en attente. Vous ne pouvez envoyer de nouvelle invitation, votre nombre maximum de membre permis par
+                            votre cotisation étant atteint. Si vous souhaitez rattacher d'avantage de membres, merci de nous
+                            contacter à l'adresse tresorier@afup.org afin d'augmenter le nombre de membres lié à votre cotisation.
+                        </p>
+                    {% endif %}
                 </div>
             </fieldset>
             {{ form_end(formInvitation) }}
-        {% else %}
-            <p>
-                Vous avez actuellement {{ users.count }} membre(s) rattaché(s) et {{ invitations.count }} invitation(s)
-                en attente. Vous ne pouvez envoyer de nouvelle invitation, votre nombre maximum de membre permis par
-                votre cotisation étant atteint. Si vous souhaitez rattacher d'avantage de membres, merci de nous
-                contacter à l'adresse tresorier@afup.org afin d'augmenter le nombre de membres lié à votre cotisation.
-            </p>
-        {% endif %}
+
     </article>
 {% endblock %}
