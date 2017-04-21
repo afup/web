@@ -3,7 +3,6 @@
 
 namespace AppBundle\Association\CompanyMembership;
 
-
 use Afup\Site\Utils\Mail;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;

@@ -54,7 +54,7 @@ class AdminMemberShipController extends SiteBaseController
         $invitationForm->handleRequest($request);
 
         $canAddUser = false;
-        if ( ($pendingInvitations->count() + $users->count()) < $company->getMaxMembers()) {
+        if (($pendingInvitations->count() + $users->count()) < $company->getMaxMembers()) {
             $canAddUser = true;
         }
 
@@ -62,7 +62,6 @@ class AdminMemberShipController extends SiteBaseController
             $userCompany = $this->get('app.user_company');
 
             if ($invitationForm->isSubmitted() && $invitationForm->isValid()) {
-
                 if ($canAddUser === false) {
                     $this->addFlash('error', 'Vous avez atteint le nombre maximum de membres');
                 } else {
@@ -71,10 +70,12 @@ class AdminMemberShipController extends SiteBaseController
                     $matchingUser = $matchingInvitation = null;
                     try {
                         $matchingUser = $this->getItemFromListByEmail($invitation->getEmail(), $users);
-                    } catch (\RuntimeException $e) {}
+                    } catch (\RuntimeException $e) {
+                    }
                     try {
                         $matchingInvitation = $this->getItemFromListByEmail($invitation->getEmail(), $pendingInvitations);
-                    } catch (\RuntimeException $e) {}
+                    } catch (\RuntimeException $e) {
+                    }
 
                     if ($matchingInvitation !== null || $matchingUser !== null) {
                         $this->addFlash('error', 'Vous ne pouvez pas envoyer plusieurs invitations au même email.');
