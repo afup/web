@@ -139,3 +139,6 @@ services:
         arguments: ["@app.mailchimp_api", "%mailchimp_members_list%"]
         tags:
           - { name: kernel.event_listener, event: user.disabled, method: onUserDisabled }
+
+    app.collection_filter:
+        class: AppBundle\Model\CollectionFilter

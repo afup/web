@@ -14,7 +14,6 @@ use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use CCMBenchmark\Ting\Driver\Exception;
-use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -53,6 +52,8 @@ class AdminMemberShipController extends SiteBaseController
         $invitationForm = $this->createForm(CompanyMemberInvitationType::class, $invitation);
         $invitationForm->handleRequest($request);
 
+        $filter = $this->get('app.collection_filter');
+
         $canAddUser = false;
         if (($pendingInvitations->count() + $users->count()) < $company->getMaxMembers()) {
             $canAddUser = true;
@@ -67,15 +68,8 @@ class AdminMemberShipController extends SiteBaseController
                 } else {
 
                     // Check if there is already a pending invitation for this email and this company
-                    $matchingUser = $matchingInvitation = null;
-                    try {
-                        $matchingUser = $this->getItemFromListByEmail($invitation->getEmail(), $users);
-                    } catch (\RuntimeException $e) {
-                    }
-                    try {
-                        $matchingInvitation = $this->getItemFromListByEmail($invitation->getEmail(), $pendingInvitations);
-                    } catch (\RuntimeException $e) {
-                    }
+                    $matchingUser = $filter->findOne($users, 'getEmail', $invitation->getEmail());
+                    $matchingInvitation = $filter->findOne($pendingInvitations, 'getEmail', $invitation->getEmail());
 
                     if ($matchingInvitation !== null || $matchingUser !== null) {
                         $this->addFlash('error', 'Vous ne pouvez pas envoyer plusieurs invitations au même email.');
@@ -109,37 +103,50 @@ class AdminMemberShipController extends SiteBaseController
                 /**
                  * @var $invitationToDelete CompanyMemberInvitation
                  */
-                $invitationToDelete = $this->getItemFromListByEmail($emailToDelete, $pendingInvitations);
-                $invitationToDelete->setStatus(CompanyMemberInvitation::STATUS_CANCELLED);
-                $invitationRepository->save($invitationToDelete);
-                $this->addFlash('notice', 'L\'invitation a été annulée.');
+                $invitationToDelete = $filter->findOne($pendingInvitations, 'getEmail', $emailToDelete);
+                if ($invitationToDelete !== null) {
+                    $invitationToDelete->setStatus(CompanyMemberInvitation::STATUS_CANCELLED);
+                    $invitationRepository->save($invitationToDelete);
+                    $this->addFlash('notice', 'L\'invitation a été annulée.');
+                } else {
+                    $this->addFlash('error', 'Une erreur a été rencontrée lors de la suppression de cette invitation');
+                }
             } elseif ($request->request->has('resend_invitation')) {
                 $emailToSend = $request->request->get('resend_invitation');
                 /**
                  * @var $invitationToSend CompanyMemberInvitation
                  */
-                $invitationToSend = $this->getItemFromListByEmail($emailToSend, $pendingInvitations);
-                $this->get('app.invitation_mail')->sendInvitation($company, $invitationToSend);
-                $this->addFlash('notice', 'L\'invitation a été renvoyée');
+                $invitationToSend = $filter->findOne($pendingInvitations, 'getEmail', $emailToSend);
+                if ($invitationToSend !== null) {
+                    $this->get('app.invitation_mail')->sendInvitation($company, $invitationToSend);
+                    $this->addFlash('notice', 'L\'invitation a été renvoyée');
+                } else {
+                    $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi de l\'invitation');
+                }
             } elseif ($request->request->has('promote_up')) {
                 $emailToPromote = $request->request->get('promote_up');
 
                 /**
                  * @var $user User
                  */
-                $user = $this->getItemFromListByEmail($emailToPromote, $users);
-
-                $userCompany->setManager($user);
-                $this->addFlash('notice', 'Le membre a été promu en tant que manager.');
+                $user = $filter->findOne($users, 'getEmail', $emailToPromote);
+                if ($user !== null) {
+                    $userCompany->setManager($user);
+                    $this->addFlash('notice', 'Le membre a été promu en tant que manager.');
+                } else {
+                    $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout des droits de gestion à ce membre');
+                }
             } elseif ($request->request->has('promote_down')) {
                 $emailToPromote = $request->request->get('promote_down');
 
                 /**
                  * @var $user User
                  */
-                $user = $this->getItemFromListByEmail($emailToPromote, $users);
+                $user = $filter->findOne($users, 'getEmail', $emailToPromote);
 
-                if ($user->getId() === $this->getUser()->getId()) {
+                if ($user === null) {
+                   $this->addFlash('error', 'Une erreur est survenue lors de la suppression des droits de gestion de ce membre');
+                } elseif ($user->getId() === $this->getUser()->getId()) {
                     $this->addFlash('error', 'Vous ne pouvez pas enlever vos droits de gestion');
                 } else {
                     $userCompany->unsetManager($user);
@@ -150,12 +157,15 @@ class AdminMemberShipController extends SiteBaseController
                 /**
                  * @var $user User
                  */
-                $user = $this->getItemFromListByEmail($emailToRemove, $users);
-                if ($user->getId() === $this->getUser()->getId()) {
-                    $this->addFlash('error', 'Vous ne pouvez pas détacher votre propre compte');
+                $user = $filter->findOne($users, 'getEmail', $emailToRemove);
+
+                if ($user === null) {
+                    $this->addFlash('error', 'Une erreur est survenue lors de la suppression de ce compte');
+                } elseif ($user->getId() === $this->getUser()->getId()) {
+                    $this->addFlash('error', 'Vous ne pouvez pas supprimer votre propre compte');
                 } else {
                     $userCompany->disableUser($user);
-                    $this->addFlash('notice', 'Le compte a été détaché de votre adhésion entreprise.');
+                    $this->addFlash('notice', 'Le compte a été supprimer de votre adhésion entreprise.');
                 }
             }
 
@@ -173,33 +183,6 @@ class AdminMemberShipController extends SiteBaseController
                 'token' => $this->get('security.csrf.token_manager')->getToken('admin_company_members')
             ]
         );
-    }
-
-    /**
-     * @param $email
-     * @param CollectionInterface $list
-     * @return Object
-     */
-    private function getItemFromListByEmail($email, CollectionInterface $list)
-    {
-        // Filter list ==> we keep only the matching item
-        $extractedItems = array_filter(iterator_to_array($list), function ($item) use ($email) {
-            if (method_exists($item, 'getEmail') === false) {
-                throw new \RuntimeException(sprintf('Method getEmail not found on object "%s"', get_class($item)));
-            }
-            if ($item->getEmail() === $email) {
-                return true;
-            }
-            return false;
-        });
-
-        // We should keep exactly one item, if we have more or less than one user there's something wrong
-        if (count($extractedItems) !== 1) {
-            throw new \RuntimeException('We could not find the wanted item');
-        }
-        $item = current($extractedItems);
-
-        return $item;
     }
 
     public function companyAction(Request $request)
