@@ -15,7 +15,7 @@ class CollectionFilter
     public function filter(CollectionInterface $collection, $method, $value)
     {
         $items = iterator_to_array($collection->getIterator());
-        $items = array_filter($items, function($item) use ($method, $value){
+        $items = array_filter($items, function ($item) use ($method, $value) {
             if (method_exists($item, $method) === false) {
                 throw new \RuntimeException(sprintf('Could not find method "%s" on object of type "%s"', $method, get_class($item)));
             }

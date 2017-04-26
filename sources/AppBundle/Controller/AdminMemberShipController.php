@@ -124,7 +124,6 @@ class AdminMemberShipController extends SiteBaseController
                         'userCompany' => $userCompany
                     ]
                 );
-
             } elseif ($request->request->has('remove')) {
                 $emailToRemove = $request->request->get('remove');
 
@@ -219,8 +218,7 @@ class AdminMemberShipController extends SiteBaseController
         CollectionFilter $filter,
         CollectionInterface $users,
         UserCompany $userCompany
-    )
-    {
+    ) {
         /**
          * @var $user User
          */
