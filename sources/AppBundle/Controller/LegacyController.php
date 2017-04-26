@@ -167,7 +167,6 @@ class LegacyController extends Controller
                 if ($ok) {
                     Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
 
-                    $droits->seConnecter($login, $mot_de_passe, false);
                     $user = $this->get('app.user_repository')->loadUserByUsername($login);
 
                     $personnes_physiques->sendWelcomeMailWithData(
