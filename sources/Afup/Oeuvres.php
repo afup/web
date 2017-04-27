@@ -35,12 +35,14 @@ class Oeuvres
 
     function extraireOeuvresDepuisLogGit($loggit = null)
     {
-        if (!file_exists($loggit) && !$loggit == null) {
+        if (!file_exists($loggit) && $loggit !== null) {
             return false;
         }
-        if ($loggit == null) $loggit = $this->$loggit;
+        if ($loggit == null) {
+            $loggit = $this->loggit;
+        }
 
-        $fp = fopen($this->loggit, 'r');
+        $fp = fopen($loggit, 'r');
         while (($data = fgetcsv($fp, 1000, ";")) !== false) {
             $date = strtotime($data[3]);
             $date = mktime(0, 0, 0, date("m", $date), 1, date("Y", $date));
