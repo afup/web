@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Model\Event;
@@ -76,7 +75,9 @@ class AdminEventController extends Controller
                 'event' => $event,
                 'rooms' => $rooms,
                 'addForm' => $addForm->createView(),
-                'editForms' => array_map(function(Form $form){return $form->createView();}, $editForms),
+                'editForms' => array_map(function (Form $form) {
+                    return $form->createView();
+                }, $editForms),
                 'title' => 'Gestion des salles'
             ]
         );

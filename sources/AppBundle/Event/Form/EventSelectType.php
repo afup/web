@@ -33,10 +33,10 @@ class EventSelectType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Event::class,
             'event_repository' => null,
             'csrf_protection' => false
-        ));
+        ]);
     }
 }
