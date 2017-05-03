@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Room;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -10,6 +11,15 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class RoomRepository extends Repository implements MetadataInitializer
 {
+    /**
+     * @param Event $event
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getByEvent(Event $event)
+    {
+        return $this->getBy(['eventId' => $event->getId()]);
+    }
+
     /**
      * @param SerializerFactoryInterface $serializerFactory
      * @param array $options

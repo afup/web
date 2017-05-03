@@ -729,3 +729,6 @@ form.dropzone, form.dz-journal-form {
 .list-icon {
     padding: 0 4px
 }
+form[name=event_select]{
+    margin: 10px 0;
+}

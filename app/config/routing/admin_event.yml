@@ -1,0 +1,3 @@
+admin_event_room:
+  path: /room
+  defaults: {_controller: AppBundle:AdminEvent:room}

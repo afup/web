@@ -26,3 +26,7 @@ legacy_inscription:
 admin_password:
   path: /password
   defaults: {_controller: AppBundle:Admin:lostPassword}
+
+admin_event_routes:
+    resource: "admin_event.yml"
+    prefix: /event
