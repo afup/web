@@ -1,0 +1,3 @@
+{{ form_start(form) }}
+{{ form_label(form.id, 'Choisir un autre événement:') }} {{ form_widget(form.id, {attr: {onchange:'this.name="id"; this.form.submit(); return false;'}}) }}
+{{ form_end(form) }}

@@ -118,6 +118,10 @@ parameters:
                 forum_gestion:
                     nom: 'Gestion forum'
                     niveau: 'ROLE_ADMIN'
+                forum_salle:
+                    nom: 'Gestion des salles'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/room'
                 forum_suivi:
                     nom: 'Suivi'
                     niveau: 'ROLE_ADMIN'
