@@ -29,9 +29,6 @@ parameters:
                 membre_cotisation:
                     nom: 'Ma cotisation'
                     niveau: 'ROLE_MEMBER_EXPIRED'
-                membre_personne_morale:
-                    nom: 'Ma personne morale'
-                    niveau: 'ROLE_COMPANY_MANAGER'
                 membre_ml:
                     nom: 'Listes de diffusion'
                     niveau: 'ROLE_USER'
@@ -50,6 +47,18 @@ parameters:
                 membres_liste:
                     nom: 'Annuaire'
                     niveau: 'ROLE_ADMIN'
+        company:
+            nom: "Ma société"
+            niveau: 'ROLE_COMPANY_MANAGER'
+            elements:
+                membre_personne_morale:
+                    nom: 'Coordonnées'
+                    niveau: 'ROLE_COMPANY_MANAGER'
+                    url: '/admin/company'
+                membre_rattaches:
+                    nom: 'Membres rattachés'
+                    niveau: 'ROLE_COMPANY_MANAGER'
+                    url: '/admin/company/members'
         membres:
             nom: 'Membres'
             niveau: 'ROLE_ADMIN'

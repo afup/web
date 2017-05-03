@@ -13,6 +13,7 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     const STATUS_PENDING = 0;
     const STATUS_ACCEPTED = 1;
+    const STATUS_CANCELLED = 2;
 
     /**
      * @var int
@@ -37,7 +38,6 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @var bool
-     * @Assert\
      */
     private $manager = false;
 

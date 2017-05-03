@@ -12,9 +12,7 @@
             <div class="col1">
                 {% for type, messages in app.session.flashbag.all() %}
                     {% for message in messages %}
-                        {% if type == 'error' %}
-                            <div class="flash-{{type}}">{{message}}</div>
-                        {% endif %}
+                        <div class="flash-{{type}}">{{message}}</div>
                     {% endfor %}
                 {% endfor %}
                 {% block content %}
