@@ -126,6 +126,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setFirstName($firstName)
     {
+        $this->propertyChanged('firstName', $this->firstName, $firstName);
         $this->firstName = $firstName;
         return $this;
     }
@@ -144,6 +145,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setLastName($lastName)
     {
+        $this->propertyChanged('lastName', $this->lastName, $lastName);
         $this->lastName = $lastName;
         return $this;
     }
@@ -162,6 +164,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setEmail($email)
     {
+        $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
         return $this;
     }
@@ -180,6 +183,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setCompanyName($companyName)
     {
+        $this->propertyChanged('companyName', $this->companyName, $companyName);
         $this->companyName = $companyName;
         return $this;
     }
@@ -198,6 +202,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setSiret($siret)
     {
+        $this->propertyChanged('siret', $this->siret, $siret);
         $this->siret = $siret;
         return $this;
     }
@@ -216,6 +221,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setAddress($address)
     {
+        $this->propertyChanged('address', $this->address, $address);
         $this->address = $address;
         return $this;
     }
@@ -234,6 +240,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setZipCode($zipCode)
     {
+        $this->propertyChanged('zipCode', $this->zipCode, $zipCode);
         $this->zipCode = $zipCode;
         return $this;
     }
@@ -252,6 +259,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setCity($city)
     {
+        $this->propertyChanged('city', $this->city, $city);
         $this->city = $city;
         return $this;
     }
@@ -270,6 +278,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setCountry($country)
     {
+        $this->propertyChanged('country', $this->country, $country);
         $this->country = $country;
         return $this;
     }
@@ -288,6 +297,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setPhone($phone)
     {
+        $this->propertyChanged('phone', $this->phone, $phone);
         $this->phone = $phone;
         return $this;
     }
@@ -306,6 +316,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setStatus($status)
     {
+        $this->propertyChanged('status', $this->status, $status);
         $this->status = $status;
         return $this;
     }
@@ -342,6 +353,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setMaxMembers($maxMembers)
     {
+        $this->propertyChanged('maxMembers', $this->maxMembers, $maxMembers);
         $this->maxMembers = $maxMembers;
         return $this;
     }

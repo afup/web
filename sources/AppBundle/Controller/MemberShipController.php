@@ -4,20 +4,17 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
-use Afup\Site\Utils\Mail;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class MemberShipController extends SiteBaseController
 {
@@ -61,28 +58,7 @@ class MemberShipController extends SiteBaseController
 
                 // Send mail to the other guy, begging for him to join the company
                 $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($member, $invitation) {
-                    $text = $this->get('translator')->trans('mail.invitationMembership.text',
-                        [
-                            '%firstname%' => $member->getFirstName(),
-                            '%lastname%' => $member->getLastName(),
-                            '%link%' =>$this->generateUrl(
-                                'company_invitation',
-                                ['invitationId' => $invitation->getId(), 'token' => $invitation->getToken()],
-                                UrlGeneratorInterface::ABSOLUTE_URL
-                            )
-                        ]
-                    );
-
-                    $mail = new Mail();
-                    $mail->send(
-                        'message-transactionnel-afup-org',
-                        ['email' => $invitation->getEmail()],
-                        [
-                            'content' => $text,
-                            'title' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $member->getCompanyName())
-                        ],
-                        ['subject' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $member->getCompanyName())]
-                    );
+                    $this->get('app.invitation_mail')->sendInvitation($member, $invitation);
                 });
             }
 
@@ -198,22 +174,5 @@ class MemberShipController extends SiteBaseController
         }
 
         return $this->render(':site/company_membership:member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
-    }
-
-    public function reminderLogAction($page = 1)
-    {
-        /**
-         * @var $repository SubscriptionReminderLogRepository
-         */
-        $limit = 50;
-        $repository = $this->get('ting')->get(SubscriptionReminderLogRepository::class);
-        $results = $repository->getPaginatedLogs($page, $limit);
-
-        return $this->render(':admin/relances:liste.html.twig', [
-            'logs' => $results,
-            'limit' => $limit,
-            'page' => $page,
-            'title' => 'Relances'
-        ]);
     }
 }

@@ -122,3 +122,23 @@ services:
     app.mailchimp_api:
         class: AppBundle\Mailchimp\Mailchimp
         arguments: ["@app.mailchimp_client"]
+
+    app.mail:
+        class: Afup\Site\Utils\Mail
+
+    app.invitation_mail:
+        class: AppBundle\Association\CompanyMembership\InvitationMail
+        autowire: true
+
+    app.user_company:
+        class: AppBundle\Association\CompanyMembership\UserCompany
+        autowire: true
+
+    app.mailchimp_event_listener:
+        class: AppBundle\Mailchimp\EventListener
+        arguments: ["@app.mailchimp_api", "%mailchimp_members_list%"]
+        tags:
+          - { name: kernel.event_listener, event: user.disabled, method: onUserDisabled }
+
+    app.collection_filter:
+        class: AppBundle\Model\CollectionFilter
