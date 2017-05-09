@@ -50,6 +50,15 @@ class TalkType extends AbstractType
                     'required' => false
                 ]
             )
+            ->add(
+                'codeOfConduct',
+                CheckboxType::class,
+                [
+                    'label' => 'J\'accepte le code de conduite *',
+                    'mapped' => false,
+                    'required' => true
+                ]
+            )
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;
     }
