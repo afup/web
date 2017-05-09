@@ -72,6 +72,7 @@ if ($action == 'envoyer_convocation') {
     if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
         $_GET['id_forum'] = $forum->obtenirDernier();
     }
+    $forumData = $forum->obtenir($_GET['id_forum']);
     $smarty->assign('id_forum', $_GET['id_forum']);
 
     $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
@@ -80,6 +81,8 @@ if ($action == 'envoyer_convocation') {
 
     $smarty->assign('forums', $forum->obtenirListe());
     $smarty->assign('inscriptions', $forum_inscriptions->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
+    $smarty->assign('finForum', (new \DateTime($forumData['date_fin']))->format('U'));
+    $smarty->assign('now', (new \DateTime())->format('U'));
 
 } elseif ($action == 'supprimer') {
     if ($forum_inscriptions->supprimerInscription($_GET['id']) && $forum_facturation->supprimerFacturation($_GET['id'])) {

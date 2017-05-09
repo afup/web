@@ -133,6 +133,7 @@
             <th>&nbsp;</th>
             <th>J1</th>
             <th>J2</th>
+            <th title="Applicable uniquement aux tarifs afup">Statut cotisation</th>
         </tr>
     {foreach from=$inscriptions item=inscription}
         <tr class="{cycle values="odd,even"}"{if $inscription.etat == 1} style="color:#999;font-style:italic"{/if}>
@@ -154,6 +155,19 @@
             </td>
             <td align="center">{if $inscription.presence_day1}&#x1F636;{/if}</td>
             <td align="center">{if $inscription.presence_day2}&#x1F636;{/if}</td>
+                {if $inscription.type_inscription == $smarty.const.AFUP_FORUM_2_JOURNEES_AFUP}
+                    {if $inscription.lastsubscription == null}
+                        <td class="inscriptions--cotisation-notfound">Pas trouvée</td>
+                    {elseif $inscription.lastsubscription < $now}
+                        <td class="inscriptions--cotisation-expired">A expiré le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}</td>
+                    {elseif $inscription.lastsubscription < $finForum}
+                        <td class="inscriptions--cotisation-expiring">Expire le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}</td>
+                    {else}
+                        <td class="inscriptions--cotisation-ok">OK</td>
+                    {/if}
+                {else}
+                    <td></td>
+                {/if}
         </tr>
     {foreachelse}
         <tr>

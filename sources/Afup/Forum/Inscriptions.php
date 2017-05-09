@@ -317,19 +317,26 @@ SQL;
                           $associatif = false,
                           $filtre = false)
     {
-        $requete = 'SELECT';
-        $requete .= '  ' . $champs . ' ';
-        $requete .= 'FROM';
-        $requete .= '  afup_inscription_forum i ';
-        $requete .= 'LEFT JOIN';
-        $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
-        $requete .= 'WHERE 1=1 ';
-        $requete .= '  AND i.id_forum =' . $id_forum . ' ';
+        $requete = 'SELECT
+          ' . $champs . ' , (SELECT MAX(ac.date_fin) AS lastsubcription
+        FROM afup_personnes_physiques app
+        LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
+        LEFT JOIN afup_cotisations ac ON ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)
+        WHERE app.email COLLATE latin1_swedish_ci = i.email
+        GROUP BY app.`id`
+        ) AS lastsubscription
+        FROM
+          afup_inscription_forum i 
+        LEFT JOIN afup_facturation_forum f ON i.reference = f.reference 
+        
+        WHERE 1=1 
+          AND i.id_forum =' . $id_forum . ' ';
         if ($filtre) {
-            $requete .= 'i.nom LIKE \'%' . $filtre . '%\' ';
-            $requete .= 'OR f.societe LIKE \'%' . $filtre . '%\' ';
+            $requete .= 'i.nom LIKE \'%' . $filtre . '%\' 
+            OR f.societe LIKE \'%' . $filtre . '%\' ';
         }
         $requete .= 'ORDER BY ' . $ordre;
+
         if ($associatif) {
             return $this->_bdd->obtenirAssociatif($requete);
         } else {

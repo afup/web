@@ -738,3 +738,15 @@ form[name=event_select]{
 #company-members table.afup_tab td{
     vertical-align: middle;
 }
+.inscriptions--cotisation-notfound{
+    background-color: #f07373;
+}
+.inscriptions--cotisation-expiring{
+    background-color: #e7f073;
+}
+.inscriptions--cotisation-expired{
+    background-color: #f0b973;
+}
+.inscriptions--cotisation-ok{
+    background-color: #73f084;
+}
