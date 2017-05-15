@@ -6,9 +6,11 @@ RUN apt-get update && \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng12-dev \
+        libmcrypt4 \
+        libmcrypt-dev \
         wget && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
-    docker-php-ext-install pdo_mysql mbstring mysqli zip gd && \
+    docker-php-ext-install pdo_mysql mbstring mysqli zip gd mcrypt && \
     apt-get remove -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -33,3 +35,6 @@ RUN groupadd -g ${gid} localUser && \
     usermod -a -G www-data localUser && \
     sed --in-place "s/User \${APACHE_RUN_USER}/User localUser/" /etc/apache2/apache2.conf && \
     sed --in-place  "s/Group \${APACHE_RUN_GROUP}/Group localUser/" /etc/apache2/apache2.conf
+
+# Paybox
+COPY cgi-bin/paybox.cgi /usr/lib/cgi-bin/paybox.cgi
