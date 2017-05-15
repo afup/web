@@ -2,7 +2,7 @@
 use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Forum\Forum;
 
-require_once dirname(__FILE__) .'/../../../../sources/Afup/Bootstrap/Http.php';
+require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 if (!isset($_GET['ref']) || !preg_match('`ins-([0-9]+)`', $_GET['ref'], $matches)) {
     die('Missing ref');
@@ -22,7 +22,7 @@ $inscription = $forum_inscriptions->obtenir($ref);
 
 $prix = isset($_GET['prix']) ? intval($_GET['prix']) : 100;
 
-require_once dirname(__FILE__).'/../../../../dependencies/paybox/payboxv2.inc';
+require_once dirname(__FILE__).'/../../../dependencies/paybox/payboxv2.inc';
 $paybox = new PAYBOX;
 $paybox->set_langue('FRA');
 $paybox->set_site($conf->obtenir('paybox|site'));
