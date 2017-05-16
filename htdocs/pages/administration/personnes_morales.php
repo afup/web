@@ -77,7 +77,7 @@ if ($action == 'lister') {
     if($action != 'ajouter') {
         $formulaire->addElement('header'  , ''                   , 'Personnes physiques associées');
         foreach ($personnes_physiques_liste as $personne_physique) {
-            $nom = $personne_physique['nom'] . ' ' . $personne_physique['prenom'][0];
+            $nom = $personne_physique['nom'] . ' ' . $personne_physique['prenom'];
             empty($personne_physique['etat']) and $nom = "<del>$nom</del>";
             $formulaire->addElement('static', 'info', $nom . '.',
 		    '<a href="index.php?page=personnes_physiques&action=modifier&id=' . $personne_physique['id'] . '" title="Voir la fiche de la personne physique">Voir la fiche</a>');
