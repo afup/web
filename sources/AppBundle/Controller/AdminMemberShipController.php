@@ -189,7 +189,7 @@ class AdminMemberShipController extends SiteBaseController
             sprintf('L\'invitation a été envoyée à l\'adresse %s.', $invitation->getEmail())
         );
         return $this->redirectToRoute('admin_company_members', [
-            'id' => $company->getId(),
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $company->getId() : null,
         ]);
     }
 
@@ -214,7 +214,7 @@ class AdminMemberShipController extends SiteBaseController
         }
 
         return $this->redirectToRoute('admin_company_members', [
-            'id' => $user->getCompanyId(),
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $user->getCompanyId() : null,
         ]);
     }
 
@@ -236,7 +236,7 @@ class AdminMemberShipController extends SiteBaseController
         }
 
         return $this->redirectToRoute('admin_company_members', [
-            'id' => $user->getCompanyId(),
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $user->getCompanyId() : null,
         ]);
     }
 
@@ -261,7 +261,7 @@ class AdminMemberShipController extends SiteBaseController
         }
 
         return $this->redirectToRoute('admin_company_members', [
-            'id' => $user->getCompanyId(),
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $user->getCompanyId() : null,
         ]);
     }
 
@@ -283,7 +283,7 @@ class AdminMemberShipController extends SiteBaseController
         }
 
         return $this->redirectToRoute('admin_company_members', [
-            'id' => $company->getId(),
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $company->getId() : null,
         ]);
     }
 
