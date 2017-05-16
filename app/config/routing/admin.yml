@@ -36,5 +36,5 @@ admin_company:
   defaults: {_controller: AppBundle:AdminMemberShip:company}
 
 admin_company_members:
-  path: /company/members
-  defaults: {_controller: AppBundle:AdminMemberShip:members}
+  path: /company/members/{id}
+  defaults: {_controller: AppBundle:AdminMemberShip:members, id: ~}
