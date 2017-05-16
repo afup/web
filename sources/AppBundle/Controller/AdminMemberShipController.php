@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class AdminMemberShipController extends SiteBaseController
 {
-    public function membersAction(Request $request)
+    public function membersAction(Request $request, $id = null)
     {
         /**
          * @var $companyRepository CompanyMemberRepository
@@ -31,7 +31,8 @@ class AdminMemberShipController extends SiteBaseController
         /**
          * @var $company CompanyMember
          */
-        $company = $companyRepository->get($this->getUser()->getCompanyId());
+        $companyId = ($id && $this->isGranted('ROLE_SUPER_ADMIN')) ? $id : $this->getUser()->getCompanyId();
+        $company = $companyRepository->get($companyId);
 
         if ($company === null) {
             throw $this->createNotFoundException("Company not found");
@@ -187,7 +188,9 @@ class AdminMemberShipController extends SiteBaseController
             'notice',
             sprintf('L\'invitation a été envoyée à l\'adresse %s.', $invitation->getEmail())
         );
-        return $this->redirectToRoute('admin_company_members');
+        return $this->redirectToRoute('admin_company_members', [
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $company->getId() : null,
+        ]);
     }
 
     public function removeUserAction(
@@ -210,7 +213,9 @@ class AdminMemberShipController extends SiteBaseController
             $this->addFlash('notice', 'Le compte a été supprimer de votre adhésion entreprise.');
         }
 
-        return $this->redirectToRoute('admin_company_members');
+        return $this->redirectToRoute('admin_company_members', [
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $user->getCompanyId() : null,
+        ]);
     }
 
     public function promoteUserAction(
@@ -230,7 +235,9 @@ class AdminMemberShipController extends SiteBaseController
             $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout des droits de gestion à ce membre');
         }
 
-        return $this->redirectToRoute('admin_company_members');
+        return $this->redirectToRoute('admin_company_members', [
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $user->getCompanyId() : null,
+        ]);
     }
 
     public function disapproveUserAction(
@@ -253,7 +260,9 @@ class AdminMemberShipController extends SiteBaseController
             $this->addFlash('notice', 'Le membre n\'a plus accès la gestion de l\'entreprise.');
         }
 
-        return $this->redirectToRoute('admin_company_members');
+        return $this->redirectToRoute('admin_company_members', [
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $user->getCompanyId() : null,
+        ]);
     }
 
     public function resendInvitationAction(
@@ -273,7 +282,9 @@ class AdminMemberShipController extends SiteBaseController
             $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi de l\'invitation');
         }
 
-        return $this->redirectToRoute('admin_company_members');
+        return $this->redirectToRoute('admin_company_members', [
+            'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $company->getId() : null,
+        ]);
     }
 
     public function removeInvitationAction(
