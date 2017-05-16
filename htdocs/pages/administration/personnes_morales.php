@@ -143,5 +143,6 @@ if ($action == 'lister') {
         }
     }
 
+    $smarty->assign('personne', $champs);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }

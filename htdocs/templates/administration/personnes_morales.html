@@ -46,6 +46,13 @@
         <h2>Ajouter une personne morale</h2>
     {else}
         <h2>Modifier une personne morale</h2>
+
+        <ul>
+            <li>
+                <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$personne.id}">Voir les cotisations</a>
+            </li>
+        </ul>
+
     {/if}
     {include file="formulaire.html"}
 {/if}
