@@ -154,6 +154,7 @@
                 {/if}
                 <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}" title="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a href="index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={$inscription.id}" title="Supprimer la fiche de {$inscription.nom} {$inscription.prenom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$inscription.nom} {$inscription.prenom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
+                <a href="index.php?page=personnes_physiques&amp;filtre={$inscription.nom} {$inscription.email}" title="Rechercher dans les membres" target="_blank"><img src="{$chemin_template}images/famfamfam/magnifier.png" alt="Rechercher" /></a>
             </td>
             <td align="center">{if $inscription.presence_day1}&#x1F636;{/if}</td>
             <td align="center">{if $inscription.presence_day2}&#x1F636;{/if}</td>

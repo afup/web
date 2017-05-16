@@ -53,14 +53,32 @@ class Personnes_Physiques
         $requete .= 'FROM';
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'WHERE 1 = 1 ';
+
+        // On filtre sur tous les mots possibles. Donc plus on a de mots dans la recherche plus on aura de résultats.
+        // Mais ça peut aussi permettre de trouver des personnes en entrant par exemple "Prénom email" dans le champ de recherche :
+        //   Même si l'email ne colle pas on pourra trouver la personne.
+        // C'est un peu barbare mais généralement on ne met qu'un seul terme dans la recherche… du coup c'est pas bien grave.
         if ($filtre) {
-            $filtre = $this->_bdd->echapper('%' . $filtre . '%');
-            $requete .= 'AND (nom LIKE ' . $filtre . ' ';
-            $requete .= 'OR login LIKE ' . $filtre . ' ';
-            $requete .= 'OR prenom LIKE ' . $filtre . ' ';
-            $requete .= 'OR code_postal LIKE ' . $filtre . ' ';
-            $requete .= 'OR ville LIKE ' . $filtre . ' ';
-            $requete .= 'OR email LIKE ' . $filtre . ') ';
+            $filtres = explode(' ', $filtre);
+            $filtres = array_map('trim', $filtres);
+            $requests = [];
+            foreach ($filtres as $filtre) {
+                if (!$filtre) {
+                    continue;
+                }
+                $filtre  = $this->_bdd->echapper('%' . $filtre . '%');
+                $requests[] = <<<SQL
+(
+    login LIKE $filtre
+    OR nom LIKE $filtre
+    OR prenom LIKE $filtre
+    OR code_postal LIKE $filtre
+    OR ville LIKE $filtre
+    OR email LIKE $filtre
+)
+SQL;
+            }
+            $requete .= " AND (" . implode(" OR ", $requests) . ") ";
         }
         if ($id_personne_morale) {
             $requete .= 'AND id_personne_morale = ' . $id_personne_morale . ' ';
