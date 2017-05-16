@@ -105,7 +105,7 @@ class Cotisations
         $requete .= '  afup_cotisations ';
         $requete .= 'WHERE';
         $requete .= '  LEFT(numero_facture, 4)=' . $this->_bdd->echapper(date('Y'));
-        $requete .= '  OR LEFT(numero_facture, 10)= "COTIS-' . $this->_bdd->echapper(date('Y')) . '"';
+        $requete .= '  OR LEFT(numero_facture, 10)=' . $this->_bdd->echapper("COTIS-" . date('Y'));
         $index = $this->_bdd->obtenirUn($requete);
         return 'COTIS-' . date('Y') . '-' . (is_null($index) ? 1 : $index);
     }
