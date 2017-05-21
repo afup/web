@@ -32,7 +32,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Nouveau vote sur le CFP')
-            ->setTitleLink('http://www.afup.org/pages/administration/index.php?page=forum_vote_github')
+            ->setTitleLink('http://afup.org/pages/administration/index.php?page=forum_vote_github')
             ->setFallback(sprintf(
                     'Nouveau vote sur la conférence "%s". Note: %s. Commentaire: %s',
                     $vote->getTalk()->getTitle(),
