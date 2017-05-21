@@ -1,0 +1,46 @@
+{% extends ':event:base.html.twig' %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h2>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h2>
+        <h3>Tickets déjà enregistrés</h3>
+        <table>
+            <tr>
+                <th>
+                    Prénom
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Email
+                </th>
+            </tr>
+        {% for ticket in registeredTickets %}
+            <tr>
+                <td>
+                    {{ ticket.firstName }}
+                </td>
+                <td>
+                    {{ ticket.lastName }}
+                </td>
+                <td>
+                    {{ ticket.email }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3"><em>Aucun ticket enregistré pour le moment.</em></td>
+            </tr>
+
+        {% endfor %}
+        </table>
+        <h3>Nouveau billet</h3>
+        <p>{{ 'Places disponibles'|trans }}: {{ sponsorTicket.pendingInvitations }} / {{ sponsorTicket.maxInvitations }} </p>
+        {{ form_start(ticketForm) }}
+        {{ form_errors(ticketForm) }}
+        {{ form_widget(ticketForm) }}
+        <input type="submit" value="Ajouter" />
+        {{ form_end(ticketForm) }}
+    </div>
+{% endblock %}

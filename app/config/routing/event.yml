@@ -57,3 +57,11 @@ cfp_invite:
   requirements:
     talkId: '\d+'
     token: '.+'
+
+sponsor_ticket_home:
+  path: /{eventSlug}/tickets/sponsor
+  defaults: {_controller: AppBundle:Ticket:sponsorTicket}
+
+sponsor_ticket_form:
+  path: /{eventSlug}/tickets/sponsor-form
+  defaults: {_controller: AppBundle:Ticket:sponsorTicketForm}

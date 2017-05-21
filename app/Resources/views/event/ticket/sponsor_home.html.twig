@@ -1,0 +1,17 @@
+{% extends ':event:base.html.twig' %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h2>{{ 'Billetterie sponsor'|trans }}: {{ event.title }}</h2>
+        <form method="post">
+            <div>
+                <label>Token d'inscription</label>
+                <input type="text" name="sponsor_token" />
+            </div>
+            <div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('sponsor_ticket') }}" />
+                <input type="submit" value="Valider" />
+            </div>
+        </form>
+    </div>
+{% endblock %}
