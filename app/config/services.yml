@@ -165,6 +165,11 @@ services:
         class: AppBundle\Event\Model\InvoiceFactory
         autowire: true
 
+    app.event_repository:
+        class: AppBundle\Event\Model\Repository\EventRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\EventRepository]
+
     app.sponsor_ticket_repository:
         class: AppBundle\Event\Model\Repository\SponsorTicketRepository
         factory: ["@ting", get]
@@ -176,6 +181,10 @@ services:
         arguments: [AppBundle\Event\Model\Repository\TicketRepository]
 
     app.sponsor_ticket_helper:
-        class: AppBundle\Event\SponsorTicketHelper
+        class: AppBundle\Event\Ticket\SponsorTicketHelper
+        autowire: true
+
+    app.sponsor_token_mail:
+        class: AppBundle\Event\Ticket\SponsorTokenMail
         autowire: true
 

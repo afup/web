@@ -751,8 +751,6 @@ form[name=event_select]{
     background-color: #73f084;
 }
 
-
-
 /* Menu */
 body {
     position: absolute;
@@ -835,4 +833,50 @@ body {
 .col1 {
     padding: 30px;
     float: none;
+}
+
+/** Biletterie sponsors */
+.sponsor--token-admin-view{
+    margin: 0;
+    display: inline;
+}
+form[name=sponsor_ticket]{
+    width: 600px;
+    padding: 1em;
+    border: 1px solid #ccc;
+    background: #eee
+}
+form[name=sponsor_ticket] #sponsor_ticket div{
+    margin: 0.5em 0;
+}
+
+form[name=sponsor_ticket] #sponsor_ticket div label{
+    display: inline-block;
+    min-width: 200px;
+    font-weight: 700;
+    font-family: Glegoo,Helvetica,Arial,sans-serif;
+    border-bottom: 1px #c0cce4 solid;
+    color: #333
+}
+
+form[name=sponsor_ticket] #sponsor_ticket div input{
+    min-width: 300px;
+    padding: .2em 0 .2em .2em;
+    border: 1px solid #ccc;
+}
+
+form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[type=submit], a.sponsor--token-admin-edit{
+    text-decoration: none !important;
+    background-color:#50a0dd !important;
+    font-size:0.8rem;
+    color:white;
+    padding: 20px 10px;
+    border: 1px solid #2b3e74;
+    cursor:pointer;
+    min-width: 0;
+    height: 2rem;
+    line-height:0;
+    font-weight: normal;
+    margin: 0;
+    display: inline-block;
 }

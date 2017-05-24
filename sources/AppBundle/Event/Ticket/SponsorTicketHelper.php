@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Event;
+namespace AppBundle\Event\Ticket;
 
 use AppBundle\Event\Model\InvoiceFactory;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
@@ -10,11 +10,6 @@ use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Exception;
 
-/**
- * Class Sponsor
- * @package AppBundle\Event
- * @todo trouver un meilleur nom
- */
 class SponsorTicketHelper
 {
     /**
@@ -58,6 +53,29 @@ class SponsorTicketHelper
         } catch (Exception $e) {
             $this->invoiceRepository->rollback();
         }
+    }
+
+    public function removeTicketFromSponsor(SponsorTicket $sponsorTicket, Ticket $ticket)
+    {
+        $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
+        if ($invoice->getReference() !== $ticket->getReference()) {
+            throw new \RuntimeException(sprintf('Erreur: le ticket n\'est pas rattaché à ce token'));
+        }
+        try {
+            $this->ticketRepository->startTransaction();
+            $this->ticketRepository->delete($ticket);
+            $sponsorTicket->setUsedInvitations($sponsorTicket->getUsedInvitations()-1);
+            $this->sponsorTicketRepository->save($sponsorTicket);
+            $this->ticketRepository->commit();
+        } catch (Exception $e) {
+            $this->ticketRepository->rollback();
+        }
+    }
+
+    public function doesTicketBelongsToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket)
+    {
+        $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
+        return ($ticket->getReference() === $invoice->getReference());
     }
 
     public function getRegisteredTickets(SponsorTicket $sponsorTicket)

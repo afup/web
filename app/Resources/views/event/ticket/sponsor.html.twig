@@ -1,4 +1,9 @@
-{% extends ':event:base.html.twig' %}
+{% extends ':event/ticket:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/sponsor_tickets.css') }}">
+{% endblock %}
 
 {% block content %}
     <div class="col-md-8">
@@ -15,6 +20,9 @@
                 <th>
                     Email
                 </th>
+                <th>
+                    ¤
+                </th>
             </tr>
         {% for ticket in registeredTickets %}
             <tr>
@@ -27,20 +35,35 @@
                 <td>
                     {{ ticket.email }}
                 </td>
+                <td>
+                    <form method="post" class="sponsor--ticket">
+                        <a href="{{ url('sponsor_ticket_form', {ticket: ticket.id, eventSlug: event.path}) }}" class="button">Modifier</a>
+                        <button type="submit" value="{{ ticket.id }}" name="delete">Supprimer</button>
+                    </form>
+                </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3"><em>Aucun ticket enregistré pour le moment.</em></td>
+                <td colspan="4"><em>Aucun ticket enregistré pour le moment.</em></td>
             </tr>
 
         {% endfor %}
         </table>
-        <h3>Nouveau billet</h3>
+
+        {% if edit %}
+            <h3>Modifier le ticket</h3>
+        {% else %}
+            <h3>Nouveau ticket</h3>
+        {% endif %}
         <p>{{ 'Places disponibles'|trans }}: {{ sponsorTicket.pendingInvitations }} / {{ sponsorTicket.maxInvitations }} </p>
-        {{ form_start(ticketForm) }}
-        {{ form_errors(ticketForm) }}
-        {{ form_widget(ticketForm) }}
-        <input type="submit" value="Ajouter" />
-        {{ form_end(ticketForm) }}
+        {% if sponsorTicket.pendingInvitations == 0 %}
+            <p>Merci d'avoir enregistré toutes vos invitations.</p>
+        {% else %}
+            {{ form_start(ticketForm, {attr: {class: 'sponsor--ticket-edit'}}) }}
+            {{ form_errors(ticketForm) }}
+            {{ form_widget(ticketForm) }}
+            <input type="submit" value="Enregistrer" />
+            {{ form_end(ticketForm) }}
+        {% endif %}
     </div>
 {% endblock %}

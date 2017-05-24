@@ -4,6 +4,7 @@ namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\SponsorTicket;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,6 +17,9 @@ class SponsorTicketType extends AbstractType
         $builder
             ->add('company', TextType::class, [
                 'label' => 'Sponsor (société)'
+            ])
+            ->add('contactEmail', EmailType::class, [
+                'label' => 'Email de contact'
             ])
             ->add('token', TextType::class)
             ->add('maxInvitations', IntegerType::class, [

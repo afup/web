@@ -284,4 +284,9 @@ class Event implements NotifyPropertyInterface
         $this->CFP = $CFP;
         return $this;
     }
+
+    public function getMailTemplate()
+    {
+        return 'confirmation-inscription-' . $this->getPath();
+    }
 }

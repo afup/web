@@ -1457,3 +1457,40 @@ footer #menufooter-top a:hover {
     background-color: #FFBABA;
 }
 
+form.sponsor--token-home-form{
+    width:100%;
+    background-color:transparent;
+    border: none;
+    margin: 0;
+    text-align: center;
+}
+form.sponsor--token-home-form label {
+    display:block;
+    border: none;
+    text-transform: uppercase;
+    font-size: 4rem;
+}
+form.sponsor--token-home-form input{
+    height: 5rem;
+    border: 1px solid #333;
+    font-family: Glegoo,Helvetica,Arial,sans-serif;
+    font-size: 2rem;
+}
+form.sponsor--token-home-form input[type=text] {
+    width: 80%;
+    -webkit-border-bottom-left-radius:20px;
+    -webkit-border-top-left-radius:20px;
+    -moz-border-radius-bottomleft:20px;
+    -moz-border-radius-topleft:20px;
+    border-bottom-left-radius:20px;
+    border-top-left-radius:20px;
+    border-right: none;
+}
+form.sponsor--token-home-form input[type=submit] {
+    -webkit-border-bottom-right-radius:20px;
+    -webkit-border-top-right-radius:20px;
+    -moz-border-radius-bottomright:20px;
+    -moz-border-radius-topright:20px;
+    border-bottom-right-radius:20px;
+    border-top-right-radius:20px;
+}

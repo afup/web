@@ -3,11 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\Form\TicketType;
-use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Model\Ticket;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -18,10 +17,7 @@ class TicketController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
 
         if ($event->getDateEndSales() < new \DateTime()) {
-            /**
-             * @TODO vue spécifique billeterie fermée
-             */
-            //return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
+            //return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
         }
         if ($request->getSession()->has('sponsor_ticket_id') === true) {
             $request->getSession()->remove('sponsor_ticket_id');
@@ -72,10 +68,7 @@ class TicketController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
 
         if ($event->getDateEndSales() < new \DateTime()) {
-            /**
-             * @TODO vue spécifique billeterie fermée
-             */
-            //return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
+            //return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
         }
 
         if ($request->getSession()->has('sponsor_ticket_id') === false) {
@@ -93,29 +86,71 @@ class TicketController extends EventBaseController
         }
 
         $ticketFactory = $this->get('app.ticket_factory');
-        $ticket = $ticketFactory->createTicketFromSponsorTicket($sponsorTicket);
+
+        $sponsorTicketHelper = $this->get('app.sponsor_ticket_helper');
+        $edit = false;
+        if ($request->query->has('ticket')) {
+            /**
+             * @var $ticket Ticket
+             */
+            $ticket = $this->get('ting')->get(TicketRepository::class)->get($request->query->get('ticket'));
+
+            if ($ticket === null || $sponsorTicketHelper->doesTicketBelongsToSponsor($sponsorTicket, $ticket) === false) {
+                throw $this->createNotFoundException();
+            }
+            $edit = true;
+        } else {
+            $ticket = $ticketFactory->createTicketFromSponsorTicket($sponsorTicket);
+        }
         $ticketForm = $this->createForm(TicketType::class, $ticket);
         $ticketForm->handleRequest($request);
 
-        $sponsorTicketHelper = $this->get('app.sponsor_ticket_helper');
-
         if ($ticketForm->isSubmitted() && $ticketForm->isValid() && $sponsorTicket->getPendingInvitations() > 0) {
             $sponsorTicketHelper->addTicketToSponsor($sponsorTicket, $ticket);
+            $mailer = $this->get('app.mail');
+            $logger = $this->get('logger');
+            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
+                $receiver = array(
+                    'email' => $ticket->getEmail(),
+                    'name'  => $ticket->getLabel(),
+                );
 
-            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () {
-                // @todo send mail
+                if (!$mailer->send($event->getMailTemplate(), $receiver, [])) {
+                    $logger->addWarning(sprintf('Mail not sent for inscription %s', $ticket->getEmail()));
+                }
                 return 1;
             });
 
             $this->addFlash('notice', 'Invitation enregistrée');
             return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
+        } elseif ($request->isMethod(Request::METHOD_POST) && $request->request->has('delete')) {
+            /**
+             * @var $ticket Ticket
+             */
+            $ticket = $this->get('ting')->get(TicketRepository::class)->get($request->request->get('delete'));
+
+            if ($ticket === null) {
+                $this->addFlash('error', 'Impossible de trouver ce ticket');
+
+                return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
+            }
+            try {
+                $sponsorTicketHelper->removeTicketFromSponsor($sponsorTicket, $ticket);
+                $this->addFlash('notice', 'Le billet a été supprimé');
+            } catch (\RuntimeException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
+
+            return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
+
         }
 
         return $this->render('event/ticket/sponsor.html.twig', [
             'event' => $event,
             'sponsorTicket' => $sponsorTicket,
             'ticketForm' => $ticketForm->createView(),
-            'registeredTickets' => $sponsorTicketHelper->getRegisteredTickets($sponsorTicket)
+            'registeredTickets' => $sponsorTicketHelper->getRegisteredTickets($sponsorTicket),
+            'edit' => $edit
         ]);
     }
 }

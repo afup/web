@@ -22,3 +22,5 @@ CREATE TABLE `afup_throttling` (
 ALTER TABLE `afup_inscription_forum`
   CHANGE `coupon` `coupon` varchar(255) COLLATE 'latin1_swedish_ci' NULL DEFAULT '' AFTER `reference`,
   COMMENT='Inscriptions au forum PHP';
+ALTER TABLE `afup_forum_sponsors_tickets`
+  ADD `contact_email` varchar(255) COLLATE 'utf8_general_ci' NOT NULL AFTER `token`;

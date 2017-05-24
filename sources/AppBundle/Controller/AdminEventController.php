@@ -108,19 +108,30 @@ class AdminEventController extends Controller
 
         $tokens = $sponsorTicketRepository->getBy(['idForum' => $event->getId()]);
 
-        $newToken = new SponsorTicket();
-        $newToken
-            ->setToken(base64_encode(random_bytes(30)))
-            ->setIdForum($event->getId())
-            ->setCreatedOn(new \DateTime())
-            ->setEditedOn(new \DateTime())
-            ->setCreatorId($this->getUser()->getId())
-        ;
+        $edit = false;
+        if ($request->query->has('ticket') === true) {
+            $edit = true;
+
+            $newToken = $sponsorTicketRepository->get($request->query->get('ticket'));
+            $newToken->setEditedOn(new \DateTime());
+        } else {
+            $newToken = new SponsorTicket();
+            $newToken
+                ->setToken(base64_encode(random_bytes(30)))
+                ->setIdForum($event->getId())
+                ->setCreatedOn(new \DateTime())
+                ->setEditedOn(new \DateTime())
+                ->setCreatorId($this->getUser()->getId())
+            ;
+        }
         $form = $this->createForm(SponsorTicketType::class, $newToken);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($newToken->getId() === null) {
+                $this->get('app.sponsor_token_mail')->sendNotification($newToken);
+            }
             $sponsorTicketRepository->save($newToken);
-            $this->addFlash('notice', 'Le nouveau token a été enregistré');
+            $this->addFlash('notice', 'Le token a été enregistré');
 
             return $this->redirectToRoute('admin_event_sponsor_ticket', ['id' => $event->getId()]);
         }
@@ -129,8 +140,36 @@ class AdminEventController extends Controller
             'tokens' => $tokens,
             'event' => $event,
             'title' => 'Gestion des inscriptions sponsors',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'edit' => $edit
         ]);
+    }
+
+    public function resendSponsorTokenAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        if ($event === null) {
+            return $this->createNotFoundException('Could not find event');
+        }
+        /**
+         * @var $sponsorTicketRepository SponsorTicketRepository
+         */
+        $sponsorTicketRepository = $this->get('ting')->get(SponsorTicketRepository::class);
+        $token = $sponsorTicketRepository->get($request->request->get('sponsor_token_id'));
+        if ($token === null) {
+            throw $this->createNotFoundException(sprintf('Could not find token with id: %s', $request->request->get('sponsor_token_id')));
+        }
+
+        $this->get('app.sponsor_token_mail')->sendNotification($token);
+
+        $this->addFlash('notice', 'Le mail a été renvoyé');
+
+        return $this->redirectToRoute('admin_event_sponsor_ticket', ['id' => $event->getId()]);
     }
 
     /**

@@ -578,4 +578,9 @@ class Ticket implements NotifyPropertyInterface
         $this->day2Checkin = $day2Checkin;
         return $this;
     }
+
+    public function getLabel()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
 }

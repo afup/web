@@ -41,6 +41,11 @@ class SponsorTicketRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'contact_email',
+                'fieldName' => 'contactEmail',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'max_invitations',
                 'fieldName' => 'maxInvitations',
                 'type' => 'int'

@@ -31,6 +31,13 @@ class SponsorTicket implements NotifyPropertyInterface
     private $token;
 
     /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
+    private $contactEmail;
+
+    /**
      * @var int
      * @Assert\NotBlank()
      * @Assert\Range(min=1, max=20)
@@ -116,6 +123,25 @@ class SponsorTicket implements NotifyPropertyInterface
     {
         $this->propertyChanged('token', $this->token, $token);
         $this->token = $token;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactEmail()
+    {
+        return $this->contactEmail;
+    }
+
+    /**
+     * @param string $contactEmail
+     * @return SponsorTicket
+     */
+    public function setContactEmail($contactEmail)
+    {
+        $this->propertyChanged('contactEmail', $this->contactEmail, $contactEmail);
+        $this->contactEmail = $contactEmail;
         return $this;
     }
 
