@@ -11,7 +11,7 @@ class TicketFactory
             ->setForumId($sponsorTicket->getIdForum())
             ->setAmount(0)
             ->setCompanyCitation(true)
-            ->setReference('SPONSOR-' . $sponsorTicket->getIdForum() .'-' . $sponsorTicket->getId())
+            ->setReference('SPONSOR-' . $sponsorTicket->getIdForum() . '-' . $sponsorTicket->getId())
             ->setInvoiceStatus(Ticket::INVOICE_SENT)
             ->setStatus(Ticket::STATUS_PAID)
             ->setTicketType(Ticket::TYPE_SPONSOR)

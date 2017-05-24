@@ -11,7 +11,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TicketRepository extends Repository implements MetadataInitializer
 {
-
     public function getByReference($reference)
     {
         return $this->getBy(['reference' => $reference]);

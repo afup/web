@@ -27,7 +27,7 @@ class SponsorTicketHelper
      */
     private $ticketRepository;
 
-    public function __construct (
+    public function __construct(
         InvoiceFactory $invoiceFactory,
         InvoiceRepository $invoiceRepository,
         TicketRepository $ticketRepository,

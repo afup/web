@@ -17,14 +17,13 @@ class TicketController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
 
         if ($event->getDateEndSales() < new \DateTime()) {
-            //return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
+            return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
         }
         if ($request->getSession()->has('sponsor_ticket_id') === true) {
             $request->getSession()->remove('sponsor_ticket_id');
         }
 
         if ($request->isMethod(Request::METHOD_POST)) {
-
             $csrf = $this->get('security.csrf.token_manager')->getToken('sponsor_ticket');
             $errors = [];
             if ($csrf->getValue() !== $request->get('_csrf_token')) {
@@ -68,7 +67,7 @@ class TicketController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
 
         if ($event->getDateEndSales() < new \DateTime()) {
-            //return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
+            return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
         }
 
         if ($request->getSession()->has('sponsor_ticket_id') === false) {
@@ -110,10 +109,10 @@ class TicketController extends EventBaseController
             $mailer = $this->get('app.mail');
             $logger = $this->get('logger');
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                $receiver = array(
+                $receiver = [
                     'email' => $ticket->getEmail(),
                     'name'  => $ticket->getLabel(),
-                );
+                ];
 
                 if (!$mailer->send($event->getMailTemplate(), $receiver, [])) {
                     $logger->addWarning(sprintf('Mail not sent for inscription %s', $ticket->getEmail()));
@@ -142,7 +141,6 @@ class TicketController extends EventBaseController
             }
 
             return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
-
         }
 
         return $this->render('event/ticket/sponsor.html.twig', [

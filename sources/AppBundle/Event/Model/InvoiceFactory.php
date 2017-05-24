@@ -18,7 +18,7 @@ class InvoiceFactory
 
     public function createInvoiceFromSponsorTicket(SponsorTicket $sponsorTicket)
     {
-        $reference = 'SPONSOR-' . $sponsorTicket->getIdForum() .'-' . $sponsorTicket->getId();
+        $reference = 'SPONSOR-' . $sponsorTicket->getIdForum() . '-' . $sponsorTicket->getId();
         $invoice = $this->invoiceRepository->get($reference);
         if ($invoice !== null) {
             return $invoice;
