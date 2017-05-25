@@ -145,32 +145,84 @@
 
                         var boxWith = 150;
                         var boxHeight = 50;
-                        var boxX;
-                        var boxY;
-
-                        if (legends[key]['attachment'] == 'left') {
-                            boxX = legends[key]['third_point_x'];
-                            boxY = legends[key]['third_point_y'] - (boxHeight / 2);
-                        } else if (legends[key]['attachment'] == 'top') {
-                            boxX = legends[key]['third_point_x'] - (boxWith / 2);
-                            boxY = legends[key]['third_point_y'];
-                        } else if (legends[key]['attachment'] == 'bottom') {
-                            boxX = legends[key]['third_point_x'] - (boxWith / 2);
-                            boxY = legends[key]['third_point_y'] - boxHeight;
-                        } else if (legends[key]['attachment'] == 'right') {
-                            boxX = legends[key]['third_point_x'] - (boxWith);
-                            boxY = legends[key]['third_point_y'] - (boxHeight / 2);
-                        }
-
-                        paper.rect(boxX, boxY, boxWith, boxHeight);
-
-                        var text = paper.text(boxX + 10, boxY + 25, legends[key]['title']).attr( {'text-anchor':'start', 'font-size': "14px", "font-weight": "bold"} );
-                        text.attr({'href': legends[key]['link']});
 
                         var imageHeight = 50;
                         var imageWidth = 50;
-                        var imageMargin = 2;
-                        paper.image(legends[key]['logo_url'], boxX + boxWith - imageWidth - imageMargin, boxY + imageMargin, imageWidth - (imageMargin * 2), imageHeight - (imageMargin * 2));
+                        var imageMargin = 4;
+
+                        var textMaginWithImage = 8;
+                        var textCentering = 23;
+
+                        var imagePosition = {};
+                        var linePoint1 = {};
+                        var linePoint2 = {};
+                        var textPosition = {};
+                        var textAnchor;
+
+                        if (legends[key]['attachment'] == 'left') {
+                            linePoint1.x = legends[key]['third_point_x'];
+                            linePoint1.y = legends[key]['third_point_y'] - (boxHeight / 2);
+                            linePoint2.x = linePoint1.x;
+                            linePoint2.y = linePoint1.y + boxHeight;
+                            imagePosition = {
+                                x: linePoint1.x + imageMargin,
+                                y: linePoint1.y
+                            };
+                            textPosition = {
+                                x: imagePosition.x + imageWidth + textMaginWithImage,
+                                y: imagePosition.y + textCentering
+                            };
+                            textAnchor = 'start';
+                        } else if (legends[key]['attachment'] == 'top') {
+                            linePoint1.x = legends[key]['third_point_x'] - (boxWith / 2);
+                            linePoint1.y = legends[key]['third_point_y'];
+                            linePoint2.x = linePoint1.x + boxWith;
+                            linePoint2.y = linePoint1.y;
+                            imagePosition = {
+                                x: linePoint1.x,
+                                y: linePoint1.y + imageMargin
+                            };
+                            textPosition = {
+                                x: imagePosition.x + imageWidth + textMaginWithImage,
+                                y: imagePosition.y + textCentering
+                            };
+                            textAnchor = 'start';
+                        } else if (legends[key]['attachment'] == 'bottom') {
+                            linePoint1.x = legends[key]['third_point_x'] - (boxWith / 2);
+                            linePoint1.y = legends[key]['third_point_y'] - boxHeight + boxHeight;
+                            linePoint2.x = linePoint1.x + boxWith;
+                            linePoint2.y = linePoint1.y;
+
+                            imagePosition = {
+                                x: linePoint1.x,
+                                y: linePoint1.y - imageHeight - imageMargin
+                            };
+                            textPosition = {
+                                x: imagePosition.x + imageWidth + textMaginWithImage,
+                                y: imagePosition.y + textCentering
+                            };
+                            textAnchor = 'start';
+                        } else if (legends[key]['attachment'] == 'right') {
+                            linePoint1.x = legends[key]['third_point_x'] - (boxWith) + boxWith;
+                            linePoint1.y = legends[key]['third_point_y'] - (boxHeight / 2);
+                            linePoint2.x = linePoint1.x;
+                            linePoint2.y = linePoint1.y + boxHeight;
+
+                            imagePosition = {
+                                x: linePoint1.x - imageMargin - imageWidth,
+                                y: linePoint1.y
+                            };
+                            textPosition = {
+                                x: imagePosition.x - textMaginWithImage,
+                                y: imagePosition.y + textCentering
+                            };
+                            textAnchor = 'end';
+                        }
+
+                        paper.image(legends[key]['logo_url'], imagePosition.x, imagePosition.y, imageWidth, imageHeight);
+                        var text = paper.text(textPosition.x, textPosition.y, legends[key]['title']).attr( {'text-anchor': textAnchor, 'font-size': "14px", "font-weight": "bold"} );
+                        text.attr({'href': legends[key]['link']});
+
                     }
                 }
             },
