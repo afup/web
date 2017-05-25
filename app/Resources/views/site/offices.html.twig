@@ -219,15 +219,6 @@
                             textAnchor = 'end';
                         }
 
-                        paper.path([
-                            "M",
-                            linePoint1.x,
-                            linePoint1.y,
-                            "L",
-                            linePoint2.x,
-                            linePoint2.y
-                        ]).attr({stroke: "#2b3e74"});
-
                         paper.image(legends[key]['logo_url'], imagePosition.x, imagePosition.y, imageWidth, imageHeight);
                         var text = paper.text(textPosition.x, textPosition.y, legends[key]['title']).attr( {'text-anchor': textAnchor, 'font-size': "14px", "font-weight": "bold"} );
                         text.attr({'href': legends[key]['link']});
