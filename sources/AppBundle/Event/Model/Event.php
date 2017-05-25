@@ -144,6 +144,16 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
+     * @param \DateTime $dateTime
+     *
+     * @return bool
+     */
+    public function startsBefore(\DateTime $dateTime)
+    {
+        return $this->getDateStart() < $dateTime;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getDateEnd()
