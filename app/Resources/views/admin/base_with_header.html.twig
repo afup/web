@@ -7,24 +7,19 @@
         </h1>
     </div>
 
-    <div class="colmask leftmenu">
-        <div class="colleft">
-            <div class="col1">
-                {% for type, messages in app.session.flashbag.all() %}
-                    {% for message in messages %}
-                        <div class="flash-{{type}}">{{message}}</div>
-                    {% endfor %}
-                {% endfor %}
-                {% block content %}
-                    {{ content|raw }}
-                {% endblock %}
-            </div>
-            {% if app.user %}
-                <div class="col2">
-                    {{ render(controller('AppBundle:Admin:getMenu')) }}
-                </div>
-            {% endif %}
-        </div>
+    {% if app.user %}
+        {{ render(controller('AppBundle:Admin:getMenu')) }}
+    {% endif %}
+
+    <div class="col1">
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flash-{{type}}">{{message}}</div>
+            {% endfor %}
+        {% endfor %}
+        {% block content %}
+            {{ content|raw }}
+        {% endblock %}
     </div>
 
     <div id="footer">

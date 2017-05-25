@@ -750,3 +750,89 @@ form[name=event_select]{
 .inscriptions--cotisation-ok{
     background-color: #73f084;
 }
+
+
+
+/* Menu */
+body {
+    position: absolute;
+}
+#menu {
+    padding: 0 10px 0 10px;
+    background: #50a0dd;
+}
+
+#menu > li {
+    width: 6%;
+    min-width: 130px;
+    background: #50a0dd;
+    height: 40px;
+    list-style: none;
+    text-align: center;
+    font-size: 16px;
+    vertical-align: middle;
+    overflow: visible;
+    color: white;
+    display: inline-block;
+}
+
+#menu > li > span {
+    display: block;
+    line-height: 40px;
+}
+
+#menu > li > span a {
+    color: white;
+}
+
+#menu > li > ul {
+    display: none;
+    height: auto;
+    z-index: 9999999999;
+    width: 300px;
+    list-style: none;
+    text-align: left;
+    background: white;
+    position: relative;
+    border-left: 4px solid #50a0dd;
+    border-right: 1px solid #50a0dd;
+    border-bottom: 1px solid #50a0dd;
+    padding-left: 0;
+}
+
+#menu > li > ul li a {
+    line-height: 30px;
+    display: block;
+    width: 100%;
+    padding-left: 10px;
+}
+
+#menu > li > ul li a:hover {
+    background-color: #50a0dd;
+    color: white;
+    text-decoration: none;
+}
+
+#menu > li:hover > ul {
+    display: block;
+}
+
+#menu > li:hover span,
+#menu > li:hover span > a {
+    background: white;
+    color: #666666;
+}
+
+#menu > li > span > a {
+    display: block;
+    width: 100%;
+}
+
+#menu > li:hover span > a {
+    text-decoration: none;
+}
+
+.col1 {
+    padding: 30px;
+    float: none;
+}

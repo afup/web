@@ -3,7 +3,7 @@
         {% if page.elements is defined %}
             {% if page.niveau is not defined or is_granted(page.niveau) %}
                 <li>
-                    {{ page.nom }}
+                    <span>{{ page.nom }}</span>
                     <ul>
                         {% for clef2, element in page.elements %}
                             {% if element.niveau is not defined or is_granted(element.niveau) %}
@@ -20,7 +20,7 @@
             {% endif %}
         {% elseif page.masquee is not defined or page.masquee != true %}
             <li>
-                <a href="{% if page.url is defined %}{{ page.url }}{% else %}/pages/administration/index.php?page={{ clef }}{% endif %}">{{ page.nom }}</a>
+                <span><a href="{% if page.url is defined %}{{ page.url }}{% else %}/pages/administration/index.php?page={{ clef }}{% endif %}">{{ page.nom }}</a></span>
             </li>
         {% endif %}
     {% endfor %}
