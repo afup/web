@@ -96,7 +96,7 @@ class Runner
     protected function getAllTalkInformations()
     {
         $plannings = $this->planningRepository->getAll();
-        $minimumEventDate = $this->getMininmumEventDate();
+        $minimumEventDate = $this->getMinimumEventDate();
 
         $talkInformations = [];
 
@@ -135,7 +135,7 @@ class Runner
     /**
      * @return \DateTime
      */
-    protected function getMininmumEventDate()
+    protected function getMinimumEventDate()
     {
         $datetime = new \DateTime('now');
         $datetime->modify('-2 years');
