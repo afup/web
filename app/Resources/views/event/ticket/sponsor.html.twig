@@ -57,7 +57,7 @@
         {% endif %}
         <p>{{ 'Places disponibles'|trans }}: {{ sponsorTicket.pendingInvitations }} / {{ sponsorTicket.maxInvitations }} </p>
         {% if sponsorTicket.pendingInvitations == 0 %}
-            <p>Merci d'avoir enregistré toutes vos invitations.</p>
+            <p>Vous avez utilisé toutes vos invitations. Nous avons hâte de vous retrouver lors de cet événement !</p>
         {% else %}
             {{ form_start(ticketForm, {attr: {class: 'sponsor--ticket-edit'}}) }}
             {{ form_errors(ticketForm) }}
