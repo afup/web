@@ -80,6 +80,23 @@ class LogRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @param \DateInterval $delay
+     */
+    public function clearOldLogs(\DateInterval $delay)
+    {
+        $query = $this->getPreparedQuery('
+            DELETE FROM afup_throttling
+            WHERE `created_on` < :date
+        ');
+        $date = (new \DateTime())->sub($delay);
+        $query->setParams([
+            'date' => $date->format('Y-m-d H:i:s')
+        ]);
+
+        $query->execute();
+    }
+
+    /**
      * @inheritDoc
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

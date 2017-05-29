@@ -60,4 +60,9 @@ class ActionThrottling
         ;
         $this->logRepository->save($log);
     }
+
+    public function clearOldLogs()
+    {
+        $this->logRepository->clearOldLogs(new \DateInterval('P30D'));
+    }
 }
