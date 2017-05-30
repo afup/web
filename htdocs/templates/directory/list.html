@@ -15,7 +15,7 @@
 {* Critères de recherche *}
         <table cellspacing=0 cellpadding=4 width="100%" border=0>
           <tr>
-           <form action="http://{$smarty.server.SERVER_NAME}{$smarty.server.PHP_SELF|dirname}" method="GET">
+           <form action="https://{$smarty.server.SERVER_NAME}{$smarty.server.PHP_SELF|dirname}" method="GET">
             <td class="accroche" align="center">
               {html_options name="params[Activite]"       options=$activities   selected=$smarty.get.params.Activite       class="champ_form"}
               {html_options name="params[Zone]"           options=$zones        selected=$smarty.get.params.Zone           class="champ_form"}

@@ -30,8 +30,8 @@ foreach($articles->chargerDerniersAjouts(20) as $article) {
 
 $feed = array(
 	'title'         => "Le flux RSS de l'AFUP",
-	'url'           => 'http://afup.org/',
-	'link'          => 'http://afup.org/rss.php',
+	'url'           => 'https://afup.org/',
+	'link'          => 'https://afup.org/rss.php',
 	'email'         => 'bonjour@afup.org',
 	'author'        => 'Nicolas Silberman / AFUP',
 	'date'          => date(DATE_RSS),

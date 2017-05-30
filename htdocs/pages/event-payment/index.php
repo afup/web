@@ -33,10 +33,10 @@ $paybox->set_total($prix * 100);
 $paybox->set_cmd($forumData['path'] . '-' . $ref);
 $paybox->set_porteur($inscription['email']);
 
-$paybox->set_effectue('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
-$paybox->set_refuse('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_refuse.php');
-$paybox->set_annule('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_annule.php');
-$paybox->set_erreur('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php');
+$paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
+$paybox->set_refuse('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_refuse.php');
+$paybox->set_annule('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_annule.php');
+$paybox->set_erreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php');
 
 $paybox->set_wait(50000);
 $paybox->set_boutpi('R&eacute;gler ' . $prix . ' &euro; par carte');
@@ -52,4 +52,4 @@ $smarty->assign('forum', $forumData);
 $smarty->display('paybox_formulaire.html');
 
 
-// http://afup.org/pages/phptournantes2017/paiement/?ref=FOO
+// https://afup.org/pages/phptournantes2017/paiement/?ref=FOO

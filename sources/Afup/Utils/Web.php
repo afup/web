@@ -29,7 +29,7 @@ class Web {
             // MAJ composer
             $command .= " export SYMFONY_ENV=prod && composer install --no-dev --no-interaction;";
             // Post to slack
-            $command .= "curl -X POST --data-urlencode 'payload={\"channel\": \"#outils\", \"text\": \"We just updated the website!\n<http://www.afup.org|Go check it out !>\"}' https://hooks.slack.com/services/".$GLOBALS['conf']->obtenir('slack|token');
+            $command .= "curl -X POST --data-urlencode 'payload={\"channel\": \"#outils\", \"text\": \"We just updated the website!\n<https://afup.org|Go check it out !>\"}' https://hooks.slack.com/services/".$GLOBALS['conf']->obtenir('slack|token');
             opcache_reset();
             $output = shell_exec($command);
             opcache_reset();

@@ -32,7 +32,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Nouveau vote sur le CFP')
-            ->setTitleLink('http://afup.org/pages/administration/index.php?page=forum_vote_github')
+            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_vote_github')
             ->setFallback(sprintf(
                     'Nouveau vote sur la conférence "%s". Note: %s. Commentaire: %s',
                     $vote->getTalk()->getTitle(),
@@ -82,7 +82,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Nouvelle proposition sur le CFP')
-            ->setTitleLink('http://www.afup.org/pages/administration/index.php?page=forum_sessions')
+            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_sessions')
             ->setFallback(sprintf(
                     'Nouvelle proposition intitulée "%s". Type %s - Public %s',
                     $talk->getTitle(),

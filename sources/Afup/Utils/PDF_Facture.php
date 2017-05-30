@@ -65,7 +65,7 @@ class PDF_Facture extends \FPDF
         $this->MultiCell(60, 5, utf8_decode($this->configuration->obtenir('afup|adresse')));
         $this->Ln();
         $this->SetFont('Arial', '', 10);
-        $this->Cell(130, 5, 'http://www.afup.org');
+        $this->Cell(130, 5, 'https://afup.org');
         $this->Ln();
         $this->Ln();
         $this->Cell(130, 5, 'SIRET : ' . $this->configuration->obtenir('afup|siret'));
@@ -109,7 +109,7 @@ class PDF_Facture extends \FPDF
             $this->configuration->obtenir('afup|code_postal'),
             $this->configuration->obtenir('afup|ville'),
             $this->configuration->obtenir('afup|email'),
-            'http://www.afup.org'
+            'https://afup.org'
         );
 
         $this->SetY(-30);
