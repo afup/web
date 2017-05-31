@@ -128,6 +128,10 @@ parameters:
                 forum_inscriptions:
                     nom: 'Inscriptions'
                     niveau: 'ROLE_ADMIN'
+                admin_event_sponsor_ticket:
+                    nom: 'Inscriptions sponsors'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/sponsor'
                 forum_facturation:
                     nom: 'Factures'
                     niveau: 'ROLE_ADMIN'
@@ -319,7 +323,13 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
-
+        throttling:
+            namespace : AppBundle\Security\ActionThrottling
+            directory : "@AppBundle/Security/ActionThrottling"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
 
 knpu_oauth2_client:
     clients:

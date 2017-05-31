@@ -14,11 +14,13 @@ $translator->addLoader('xliff', new \Symfony\Component\Translation\Loader\XliffF
 $translator->addResource('xliff', dirname(__FILE__) . '/../../../translations/inscription.en.xlf', 'en');
 $translator->addResource('xliff', dirname(__FILE__) . '/../../../translations/cfp.en.xlf', 'en');
 $translator->setFallbackLocales(array('fr'));
-$smarty->register_modifier('trans', [$translator, 'trans']);
+if (isset($smarty)) {
+    $smarty->register_modifier('trans', [$translator, 'trans']);
+}
 
 
 $debug = false;
-if ($_SERVER['HTTP_HOST'] === 'afup.dev') {
+if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'afup.dev') {
     $debug = true;
 }
 

@@ -1,0 +1,17 @@
+{% extends ':event:base.html.twig' %}
+
+{% block title %}Call For Papers - Afup{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/stars.css') }}">
+{% endblock %}
+
+{% block header %}
+    {% set menu = {'main': {'route' : 'event', 'title': 'Appel à conférenciers'}, 'items': [{'title': 'Proposer une conférence', 'route': 'cfp'}, {'title': 'Voter pour les conférences', 'route': 'vote_index'}]} %}
+    {{ parent() }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/js/vote.js') }}"></script>
+{% endblock %}

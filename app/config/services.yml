@@ -142,3 +142,49 @@ services:
 
     app.collection_filter:
         class: AppBundle\Model\CollectionFilter
+
+    app.log_repository:
+        class: AppBundle\Security\ActionThrottling\LogRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Security\ActionThrottling\LogRepository]
+
+    app.invoice_repository:
+        class: AppBundle\Event\Model\Repository\InvoiceRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\InvoiceRepository]
+
+    app.action_throttling:
+        class: AppBundle\Security\ActionThrottling\ActionThrottling
+        autowire: true
+
+    app.ticket_factory:
+        class: AppBundle\Event\Model\TicketFactory
+        autowire: true
+
+    app.invoice_factory:
+        class: AppBundle\Event\Model\InvoiceFactory
+        autowire: true
+
+    app.event_repository:
+        class: AppBundle\Event\Model\Repository\EventRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\EventRepository]
+
+    app.sponsor_ticket_repository:
+        class: AppBundle\Event\Model\Repository\SponsorTicketRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\SponsorTicketRepository]
+
+    app.ticket_repository:
+        class: AppBundle\Event\Model\Repository\TicketRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TicketRepository]
+
+    app.sponsor_ticket_helper:
+        class: AppBundle\Event\Ticket\SponsorTicketHelper
+        autowire: true
+
+    app.sponsor_token_mail:
+        class: AppBundle\Event\Ticket\SponsorTokenMail
+        autowire: true
+

@@ -5,9 +5,9 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('/css/grid.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/stars.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/vote.css') }}">
 {% endblock %}
+{% set menu = {'main': {'route' : 'event', 'title': 'Appel à conférences'}, 'items': [{'title': 'Proposer une conférence', 'route': 'cfp'}, {'title': 'Voter pour les conférences', 'route': 'vote_index'}]} %}
 
 {% block header %}
     <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -15,22 +15,23 @@
             <div class="navbar-header">
                 <a href="#body" class="nav-button-open" aria-label="open navigation"></a>
                 <a href="#" class="nav-button-close" aria-label="close navigation"></a>
-                <a class="navbar-brand hidden-xs {% if app.request.get('_route') == 'event' %}active{% endif %}"
-                   href="{{ url('event', {eventSlug: event.path}) }}">{{ 'Appel à conférences'|trans }}</a>
+                {% if menu.main is defined %}
+                    <a class="navbar-brand hidden-xs {% if app.request.get('_route') == menu.main.route %}active{% endif %}"
+                       href="{{ url(menu.main.route, {eventSlug: event.path}) }}">{{ menu.main.title|trans }}</a>
+                {% endif %}
             </div>
 
             <nav>
                 <ul class="nav navbar-nav">
-                    <li class="first {% if app.request.get('_route') == 'cfp' %}active{% endif %}">
-                        <a href="{{ url('cfp', {eventSlug: event.path}) }}">
-                            {{ 'Proposer une conférence'|trans }}
-                        </a>
-                    </li>
-                    <li class="{% if app.request.get('_route') == 'vote_index' %}active{% endif %}">
-                        <a href="{{ url('vote_index', {eventSlug: event.path}) }}">
-                        {{ 'Voter pour les conférences'|trans }}
-                        </a>
-                    </li>
+                    {% if menu.items is defined %}
+                        {% for item in menu.items %}
+                            <li class="{% if loop.first %}first{% endif %} {% if app.request.get('_route') == item.route %}active{% endif %}">
+                                <a href="{{ url(item.route, {eventSlug: event.path}) }}">
+                                    {{ item.title|trans }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
                     <li>
                         {% set locale = 'fr' %}
                         {% if app.request.locale == 'fr' %}
@@ -48,9 +49,4 @@
             </div>
         </div>
     </header>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('/js/vote.js') }}"></script>
 {% endblock %}

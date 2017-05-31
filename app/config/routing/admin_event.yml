@@ -1,3 +1,11 @@
 admin_event_room:
   path: /room
   defaults: {_controller: AppBundle:AdminEvent:room}
+
+admin_event_sponsor_ticket:
+  path: /sponsor
+  defaults: {_controller: AppBundle:AdminEvent:sponsorTicket}
+
+admin_event_sponsor_mail:
+  path: /sponsor/mail
+  defaults: {_controller: AppBundle:AdminEvent:resendSponsorToken}

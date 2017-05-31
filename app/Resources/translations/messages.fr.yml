@@ -46,3 +46,22 @@ skill.3: "Senior"
 type.1: "40 mn"
 type.2: "Workshop"
 type.3: "20 mn"
+'mail.sponsorTicket.subject': Inscrivez-vous pour le %event%
+'mail.sponsorTicket.text': |
+  Cher sponsor,<br />
+  Dans le cadre de votre sponsoring, l'AFUP vous offre 1 place pour son événement %event%.<br />
+  Cette place est utilisable par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
+  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à conserver cette place pour le collaborateur qui l'occupera.<br />
+  <br />
+  Pour enregistrer votre place, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
+  <br />
+  L'équipe afup.|Cher sponsor,<br />
+  Dans le cadre de votre sponsoring, l'AFUP vous offre %places% places pour son événement %event%.<br />
+  Ces places sont utilisables par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
+  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à conserver des places pour les collaborateurs qui l'occuperont.<br />
+  <br />
+  Pour enregistrer vos places, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
+  <br />
+  L'équipe afup.
+'mail.sponsorTicket.text.plurial': |
+

@@ -1,0 +1,27 @@
+form.sponsor--ticket{
+    width: auto;
+    background-color: transparent;
+    border:none;
+    padding: 0;
+    margin: 0;
+}
+form.sponsor--ticket button[type=submit], form.sponsor--ticket a.button, form.sponsor--ticket-edit input[type=submit]{
+    text-decoration: none;
+    background-color:#50a0dd !important;
+    font-size:1.3em;
+    color:white;
+    padding: 20px 10px;
+    border: 1px solid #2b3e74;
+    cursor:pointer;
+    min-width: 0;
+    height: 2em;
+    line-height:0;
+    font-weight: normal;
+    margin: 0;
+}
+form.sponsor--ticket-edit{
+    margin: 0;
+}
+form.sponsor--ticket-edit #ticket div{
+    margin: 0.5em 0;
+}

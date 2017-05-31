@@ -1,0 +1,18 @@
+{% extends ':event/ticket:base.html.twig' %}
+
+{% block title %}Billeterie sponsors - Afup{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/sponsor_tickets.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h2>{{ 'La billetterie est fermée !'|trans }} - {{ event.title }}</h2>
+        <p>
+            Désolé, la billeterie n'est plus disponible pour cet événement.
+        </p>
+    </div>
+{% endblock %}

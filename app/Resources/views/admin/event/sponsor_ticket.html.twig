@@ -1,0 +1,48 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Liste des tokens sponsors pour {{ event.title }}</h2>
+    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+    <table class="afup_tab">
+        <tr>
+            <th>Société</th>
+            <th>Token</th>
+            <th>Invitations totales</th>
+            <th>Invitations utilisées</th>
+            <th> </th>
+        </tr>
+        {% for token in tokens %}
+            <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
+                <td>{{ token.company }}</td>
+                <td>{{ token.token }}</td>
+                <td>{{ token.maxInvitations }}</td>
+                <td>{{ token.usedInvitations }}</td>
+                <td>
+                    <form class="sponsor--token-admin-view" method="post" action="{{ url('sponsor_ticket_home', {eventSlug: event.path}) }}">
+                        <input type="hidden" name="sponsor_token" value="{{ token.token }}" />
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('sponsor_ticket') }}" />
+                        <input type="submit" name="see" value="Voir les invitations" />
+                    </form>
+                    <form class="sponsor--token-admin-view" method="post" action="{{ url('admin_event_sponsor_mail', {id: event.id}) }}">
+                        <input type="hidden" name="sponsor_token_id" value="{{ token.id }}" />
+                        <input type="submit" name="resend" value="Renvoyer le mail" />
+
+                        <a class="button sponsor--token-admin-edit" href="{{ url('admin_event_sponsor_ticket', {id: event.id, ticket: token.id}) }}">Editer</a>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">Aucune invitation créée</td></tr>
+        {% endfor %}
+    </table>
+
+    {% if edit == true %}
+        <h2>Modifier le token de {{ form.vars.value.company}}</h2>
+    {% else %}
+        <h2>Nouveau token</h2>
+    {% endif %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Enregistrer</button>
+    {{ form_end(form) }}
+{% endblock %}
