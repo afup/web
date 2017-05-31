@@ -13,3 +13,21 @@ ServerName <%= node[:global][:domain] %>
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 
+
+<VirtualHost *:443>
+    DocumentRoot /var/www/afup/htdocs
+	<Directory "/var/www/afup/htdocs/">
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride All
+		Require all granted
+	</Directory>
+
+    SSLEngine On
+    SSLCertificateFile /etc/apache2/ssl/apache.crt
+    SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	LogLevel warn
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
