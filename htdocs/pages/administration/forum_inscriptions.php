@@ -126,10 +126,20 @@ if ($action == 'envoyer_convocation') {
 
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
-		$formulaire->setDefaults(array('civilite'            => 'M.',
-									   'id_pays_facturation' => 'FR',
-									   'type_inscription'    => -1,
-									   'type_reglement'      => -1));
+		$formulaire->setDefaults(
+		    [
+                'civilite' => 'M.',
+                'id_pays_facturation' => 'FR',
+                'type_inscription' => -1,
+                'type_reglement' => -1,
+                'citer_societe' => 1,
+                'mail_partenaire' => 0,
+                'newsletter_afup' => 0,
+                'newsletter_nexen' => 0,
+                'mobilite_reduite' => 0,
+                'date_reglement' => (new \DateTime())->format('Y-m-d')
+            ]
+        );
     } else {
         $champs = $forum_inscriptions->obtenir($_GET['id']);
         if ($champs == false) {
@@ -214,7 +224,10 @@ if ($action == 'envoyer_convocation') {
     $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Aucun'         , AFUP_FORUM_REGLEMENT_AUCUN);
 	$formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
     $formulaire->addElement('textarea'   , 'informations_reglement', 'Informations règlement', array('cols' => 42, 'rows' => 4));
-    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 'minYear' => 2002, 'maxYear' => date('Y') + 5));
+
+
+    $current = $forum->obtenir($_GET['id_forum']);
+    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr', 'minYear' => $current['forum_annee']-2, 'maxYear' => $current['forum_annee']+2));
 
 
 	$formulaire->addElement('header'  , ''                       , 'Facturation');
