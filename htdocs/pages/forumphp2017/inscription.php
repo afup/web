@@ -2,7 +2,7 @@
 
 if (isset($_GET['nolayout']) === false) {
     header('HTTP/1.0 301 Moved Permanently');
-    header('Location:http://event.afup.org/forumphp2017/tickets-inscriptions/');
+    header('Location:http://event.afup.org/phptournantes2017/tickets-inscriptions/');
 }
 
 use Afup\Site\Forum\Facturation;

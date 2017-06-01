@@ -151,4 +151,9 @@ class TicketController extends EventBaseController
             'edit' => $edit
         ]);
     }
+
+    public function ticketAction(Request $request)
+    {
+
+    }
 }
