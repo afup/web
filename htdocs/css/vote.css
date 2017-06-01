@@ -877,11 +877,23 @@ div.photo-container{
 /*********
 * HOME
 **********/
-#end, #endTitle{
+#countdown, #endTitle{
     font-size: 5rem;
     font-family: Glegoo, Helvetica, Arial, sans-serif;
     text-align: center;
 }
+#countdown{
+    font-size: 2rem;
+}
+
+#cfp-body {
+    border-top: 1px #c0cce4 solid;
+    margin: auto;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    width: 75%
+}
+
 #date {
     text-align: center;
     font-size: 4rem;
