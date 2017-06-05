@@ -466,6 +466,14 @@ class Talk implements NotifyPropertyInterface
     }
 
     /**
+     * @return string
+     */
+    public function getUrlKey()
+    {
+        return $this->getId() . '-' . $this->getSlug();
+    }
+
+    /**
      * @return array
      */
     public static function getTypeLabelsByKey()
