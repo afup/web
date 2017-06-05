@@ -35,11 +35,11 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [END]
 
-RewriteCond %{HTTPS} on
-RewriteRule .* http://%{HTTP_HOST}%{REQUEST_URI} [L,R=302]
+RewriteCond %{HTTPS} off
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=302]
 
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
 ## This url are handled by symfony
 RewriteRule (event|connect|_|association|talks|blog|admin/)/? /app.php [END]

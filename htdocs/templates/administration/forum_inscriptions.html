@@ -167,19 +167,19 @@
                 {if $inscription.type_inscription == $smarty.const.AFUP_FORUM_2_JOURNEES_AFUP}
                     {if $inscription.lastsubscription == null}
                         <td class="inscriptions--cotisation-notfound">Pas trouvée
-                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="http://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
+                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
                             <img src="{$chemin_template}images/famfamfam/email_edit.png" title="Copier le contenu de l'email" class="btn-email" data-name="{$inscription.prenom} {$inscription.nom}" data-ins="{$inscription.id}" />
                         </td>
                     {elseif $inscription.lastsubscription < $now}
                         <td class="inscriptions--cotisation-expired">
                             A expiré le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
-                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="http://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
+                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
                             <img src="{$chemin_template}images/famfamfam/email_edit.png" title="Copier le contenu de l'email" class="btn-email" data-name="{$inscription.prenom} {$inscription.nom}" data-ins="{$inscription.id}" />
                         </td>
                     {elseif $inscription.lastsubscription < $finForum}
                         <td class="inscriptions--cotisation-expiring">
                             Expire le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
-                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="http://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
+                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
                             <img src="{$chemin_template}images/famfamfam/email_edit.png" title="Copier le contenu de l'email" class="btn-email" data-name="{$inscription.prenom} {$inscription.nom}" data-ins="{$inscription.id}" />
                         </td>
                     {else}
@@ -211,7 +211,7 @@ Lors de votre inscription au {$info_forum.titre}, vous avez souhaité profiter d
 Pour confirmer votre adhésion, vous devez valider les informations suivantes :
 {$texte_mail}
 Cette validation s'effectuera par l'envoi d'un mail en réponse à celui-ci portant la mention :
-"Je reconnais avoir pris connaissance et accepter le règlement intérieur de l'AFUP : http://afup.org/pages/site/?route=vie-associative-afup/21/reglement-interieur"
+"Je reconnais avoir pris connaissance et accepter le règlement intérieur de l'AFUP : https://afup.org/pages/site/?route=vie-associative-afup/21/reglement-interieur"
 
 Cordialement,
 </textarea>
@@ -242,9 +242,9 @@ Sans situation régulière à la remise de votre badge lors de votre venue sur l
 Si vous souhaitez pouvoir accéder au {$forum.titre} plusieurs solutions s'offrent à vous :
 
 – Si vous êtes déjà adhérent mais que votre adhésion n'est pas à jour alors je vous invite à la mettre à jour via votre compte : http://afup.dev/pages/administration/index.php?page=membre_cotisation.
-– Soit vous payez la différence de 100€ entre le tarif AFUP et le tarif public par carte de crédit : http://afup.org/pages/event-payment/?ref=ins-#REF#&forum={$forum.id}.
-– Soit vous adhérez personnellement à l'AFUP pour un montant de 25€ : http://afup.org/association/devenir-membre. N'oubliez pas de payer la cotisation une fois l'inscription effectuée afin de valider celle-ci.
-– Soit vous adhérez par le biais de votre entreprise à l'AFUP pour un montant de 100€ par tranche de 3 personnes : http://afup.org/association/devenir-membre.
+– Soit vous payez la différence de 100€ entre le tarif AFUP et le tarif public par carte de crédit : https://afup.org/pages/event-payment/?ref=ins-#REF#&forum={$forum.id}.
+– Soit vous adhérez personnellement à l'AFUP pour un montant de 25€ : https://afup.org/association/devenir-membre. N'oubliez pas de payer la cotisation une fois l'inscription effectuée afin de valider celle-ci.
+– Soit vous adhérez par le biais de votre entreprise à l'AFUP pour un montant de 100€ par tranche de 3 personnes : https://afup.org/association/devenir-membre.
 – Soit vous régularisez le matin même lors de votre venue, mais cette solution n'est évidemment pas à privilégier.
 
 Nous vous invitons à réagir rapidement à cet email et à prendre les dispositions nécessaires pour régulariser la situation avant de venir récupérer votre badge.

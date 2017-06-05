@@ -419,16 +419,16 @@ if ($formulaire->validate()) {
             $paybox->set_porteur($valeurs['email_facturation']);
 
             if (isset($_GET['repondre_a']) === true) {
-                $paybox->set_repondreA('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_retour.php');
+                $paybox->set_repondreA('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_retour.php');
                 $paybox->set_effectue('http://event.afup.org/inscription-confirmee/');
                 $paybox->set_refuse('http://event.afup.org/inscription-refusee/');
                 $paybox->set_annule('http://event.afup.org/inscription-annulee/');
                 $paybox->set_erreur('http://event.afup.org/erreur-de-paiement/');
             } else {
-                $paybox->set_effectue('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
-                $paybox->set_refuse('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_refuse.php');
-                $paybox->set_annule('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_annule.php');
-                $paybox->set_erreur('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php');
+                $paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
+                $paybox->set_refuse('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_refuse.php');
+                $paybox->set_annule('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_annule.php');
+                $paybox->set_erreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php');
             }
 
             $paybox->set_wait(50000);

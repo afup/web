@@ -365,7 +365,7 @@ SQL;
                 $corps .= "Il vous permettra de vous connecter dès maintenant au site de l'AFUP.\n\n";
                 $corps .= "Votre identifiant : $identifiant \n";
                 $corps .= "Votre mot de passe : $mot_de_passe \n\n";
-                $corps .= "http://afup.org/admin/login";
+                $corps .= "https://afup.org/admin/login";
 
 
                 $check = Mailing::envoyerMail(

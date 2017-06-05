@@ -92,15 +92,15 @@ $paybox->set_total($montant * 100); // Total de la commande, en centimes d'euros
 $paybox->set_cmd($reference); // Référence de la commande
 $paybox->set_porteur($donnees['email']); // Email du client final (Le porteur de la carte)
 
-$paybox->set_repondreA('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_retour.php');
+$paybox->set_repondreA('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_retour.php');
 // URL en cas de reussite
-$paybox->set_effectue('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
+$paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
 // URL en cas de refus du paiement
-$paybox->set_refuse('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_refuse.php');
+$paybox->set_refuse('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_refuse.php');
 // URL en cas d'annulation du paiement de la part du client
-$paybox->set_annule('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_annule.php');
+$paybox->set_annule('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_annule.php');
 // URL en cas de disfonctionnement de PayBox
-$paybox->set_erreur('http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php');
+$paybox->set_erreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php');
 
 $paybox->set_wait(50000); // Délai d'attente avant la redirection
 $paybox->set_boutpi('R&eacute;gler par carte'); // Texte du bouton

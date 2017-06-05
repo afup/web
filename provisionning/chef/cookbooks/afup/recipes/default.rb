@@ -12,8 +12,31 @@ template "/etc/apache2/sites-available/00-afup.dev.conf" do
     source "virtualhost.erb"
 end
 
+directory '/etc/apache2/ssl' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+cookbook_file "apache.crt" do
+    path "/etc/apache2/ssl/apache.crt"
+    action :create_if_missing
+    mode "0600"
+    owner 'root'
+    group 'root'
+end
+
+cookbook_file "apache.key" do
+    path "/etc/apache2/ssl/apache.key"
+    action :create_if_missing
+    mode "0600"
+    owner 'root'
+    group 'root'
+end
+
 # Activate modules and site
-execute "a2enmod rewrite expires headers"
+execute "a2enmod rewrite expires headers ssl"
 execute "a2dissite 000-default"
 execute "a2ensite 00-afup.dev"
 
