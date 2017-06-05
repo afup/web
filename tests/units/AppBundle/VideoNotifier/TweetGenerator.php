@@ -54,7 +54,7 @@ class TweetGenerator extends \atoum
                         'twitter' => 'tapoueh',
                     ]
                 ],
-                'expected' => "Utiliser PostgreSQL en 2014. La conférence de @tapoueh à revoir sur le site de l'AFUP : http://afup.org/talks/1007-utiliser-postgresql-en-2014",
+                'expected' => "Utiliser PostgreSQL en 2014. La conférence de @tapoueh à revoir sur le site de l'AFUP : https://afup.org/talks/1007-utiliser-postgresql-en-2014",
             ],
             [
                 'case' => "On change la formulation si le titre + compte twitter sont trop longs. De plus on ne met pas de point si il y  un point d'explamation a la fin du titre",
@@ -69,7 +69,7 @@ class TweetGenerator extends \atoum
                         'twitter' => '@pascal_martin',
                     ]
                 ],
-                'expected' => "Notre environnement de développement n’est plus un bizutage ! Par @pascal_martin à revoir sur le site de l'AFUP : http://afup.org/talks/1941-notre-environnement-de-developpement-n-est-plus-un-bizutage",
+                'expected' => "Notre environnement de développement n’est plus un bizutage ! Par @pascal_martin à revoir sur le site de l'AFUP : https://afup.org/talks/1941-notre-environnement-de-developpement-n-est-plus-un-bizutage",
             ],
             [
                 'case' => "On ne met pas de point si point d'interogation à la fin + pas de twitter",
@@ -84,7 +84,7 @@ class TweetGenerator extends \atoum
                         'twitter' => null,
                     ]
                 ],
-                'expected' => "Peut-on s’affranchir de SonataAdminBundle ? La conférence de Suzanne Favot à revoir sur le site de l'AFUP : http://afup.org/talks/1941-peut-on-s-affranchir-de-sonataadminbundle",
+                'expected' => "Peut-on s’affranchir de SonataAdminBundle ? La conférence de Suzanne Favot à revoir sur le site de l'AFUP : https://afup.org/talks/1941-peut-on-s-affranchir-de-sonataadminbundle",
             ],
 
 
@@ -106,7 +106,7 @@ class TweetGenerator extends \atoum
                         'twitter' => null,
                     ]
                 ],
-                'expected' => "Publier des domain events sans RabbitMQ, c'est possible ! Par Simon Delicata et Julien Salleyron http://afup.org/talks/1903-publier-des-domain-events-sans-rabbitmq-c-est-possible",
+                'expected' => "Publier des domain events sans RabbitMQ, c'est possible ! Par Simon Delicata et Julien Salleyron https://afup.org/talks/1903-publier-des-domain-events-sans-rabbitmq-c-est-possible",
             ],
 
             [
@@ -127,7 +127,7 @@ class TweetGenerator extends \atoum
                         'twitter' => '@maxthoon',
                     ]
                 ],
-                'expected' => "Comment Ansible et Docker changent notre environnement de mise en production. Par Simon Constans et @maxthoon http://afup.org/talks/1609-comment-ansible-et-docker-changent-notre-environnement-de-mise-en-production",
+                'expected' => "Comment Ansible et Docker changent notre environnement de mise en production. Par Simon Constans et @maxthoon https://afup.org/talks/1609-comment-ansible-et-docker-changent-notre-environnement-de-mise-en-production",
             ],
             [
                 'case' => "On évite d'avoir deux espaces à la suite",
@@ -142,7 +142,7 @@ class TweetGenerator extends \atoum
                         'twitter' => "@BoiteAWeb ", // espace volontaire
                     ]
                 ],
-                'expected' => "Et si on utilisait WordPress ? La conférence de @BoiteAWeb à revoir sur le site de l'AFUP : http://afup.org/talks/1295-et-si-on-utilisait-wordpress",
+                'expected' => "Et si on utilisait WordPress ? La conférence de @BoiteAWeb à revoir sur le site de l'AFUP : https://afup.org/talks/1295-et-si-on-utilisait-wordpress",
 
             ]
         ];
@@ -187,7 +187,7 @@ class TweetGenerator extends \atoum
             ->when($generator = new TestedClass())
             ->then
                 ->string($generator->generate($talk, $speakers))
-                    ->isEqualTo("Utiliser PostgreSQL en 2014. La conférence de @tapoueh à revoir sur le site de l'AFUP : http://afup.org/talks/1007-utiliser-postgresql-en-2014")
+                    ->isEqualTo("Utiliser PostgreSQL en 2014. La conférence de @tapoueh à revoir sur le site de l'AFUP : https://afup.org/talks/1007-utiliser-postgresql-en-2014")
         ;
     }
 }

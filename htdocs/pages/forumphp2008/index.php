@@ -42,7 +42,7 @@ $infos_importantes[] = $info_importante;
 
 $info_importante['titre'] = "Un autre invité de marque attendu au Forum PHP 2008";
 $info_importante['contenu'] = "<p>C'est lui :</p>".
-"<p align='center'><img src='http://www.afup.org/IMG/jpg/crop.jpg' /></p>";
+"<p align='center'><img src='https://afup.org/IMG/jpg/crop.jpg' /></p>";
 $infos_importantes[] = $info_importante;
 
 $info_importante['titre'] = "Réservez votre agenda : ce sera les 8 et 9 décembre 2008";
@@ -71,11 +71,11 @@ $actualite['titre'] = "PHP 5.3 : les nouveautés du futur si proche";
 $actualite['contenu'] = "<p>Pascal Martin qui dissèque régulièrement les nouveautés de la version 5.3
 							de PHP sur <a href='http://blog.pascal-martin.fr/tag/php-5.3'>son blog</a>
 							sera présent au Forum PHP 2008. Il présentera une session sur
-							<a href='http://afup.org/pages/forumphp2008/sessions.php#139'>les dernières
+							<a href='https://afup.org/pages/forumphp2008/sessions.php#139'>les dernières
 							innovations du langage</a>. En outre la session de David Bonnet sur les analyses
 							de code a dû être annulée : les visiteurs intéressés par le sujet auront
 							quand même la chance de suivre
-							la <a href='http://afup.org/pages/forumphp2008/sessions.php#90'>
+							la <a href='https://afup.org/pages/forumphp2008/sessions.php#90'>
 							conférence de David Sklar</a> sur le sujet.</p>";
 $actualite['date'] = "24 novembre 2008";
 $actualites[] = $actualite;

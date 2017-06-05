@@ -5,6 +5,7 @@ use Afup\Site\Forum\AppelConferencier;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
+use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -274,6 +275,8 @@ if ($action == 'lister') {
     if ($action != 'ajouter') {
         $champs = $forum_appel->obtenirSession($_GET['id']);
 
+        $talk = $this->get('ting')->get(TalkRepository::class)->get($_GET['id']);
+
         $formulaire->setDefaults($champs);
 
     	if (isset($champs) && isset($champs['id_forum'])) {
@@ -406,4 +409,5 @@ if ($action == 'lister') {
     $current = $forum->obtenir($_GET['id_forum'], 'titre');
     $smarty->assign('forum_name', $current['titre']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
+    $smarty->assign('talk', $talk);
 }

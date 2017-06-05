@@ -20,16 +20,16 @@
             var end = new Date({{ event.dateEndCallForPapers|date("Y, m-1, d, H, i, s") }});
             var counter = document.querySelector('#end');
             function update() {
-                var ts = countdown(end, null, countdown.DEFAULTS);
+                var ts = countdown(end, null, countdown.DAYS | countdown.HOURS);
                 counter.innerHTML = ts.toHTML('strong', 'fini');
                 requestAnimationFrame(update);
             }
             update();
         })
     </script>
-    <p id="endTitle">{{ 'Fermeture du CFP:'|trans }}</p>
-    <div id="end"></div>
-    <p id="date">({{ event.dateEndCallForPapers|localizeddate('long', 'medium', app.request.locale) }})</p>
+    <p id="endTitle">{{ 'Le CFP est ouvert jusqu\'au %date%.' | trans({ '%date%': event.dateEndCallForPapers|localizeddate('long', 'none', app.request.locale) }) }}</p>
+    {# <p id="date">{{  }}</p> #}
+    <p id="countdown">{{ 'Il vous reste donc <span id="end"></span>.' | trans | raw }}</p>
     <div id="homeButtons">
         <a href="{{ url('vote_index', {eventSlug: event.path}) }}">
             <div class="button">
@@ -47,9 +47,8 @@
         <p>{% if talks > 30 %}<span class="event--stats-stat">{{ talks }}</span> {{ 'sujets soumis'|trans }}{% endif %}&nbsp;</p>
     </div>
     <div class="clear"> </div>
-    <h3>{{ 'Thème:'|trans }}</h3>
-    {{ event.cfp[app.request.locale]|raw }}
-    <p>
-        {{ 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.'| trans }}
-    </p>
+    <div id="cfp-body">
+        {{ event.cfp[app.request.locale]|raw }}
+        <p>{{ 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.'| trans }}</p>
+    </div>
 {% endblock %}

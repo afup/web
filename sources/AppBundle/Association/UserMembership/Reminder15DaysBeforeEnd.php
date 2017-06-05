@@ -17,7 +17,7 @@ qui ne serait pas tout à fait la même sans vous...</p>
 <p>Restez avec nous ! Renouvelez dès maintenant votre adhésion, en réglant votre cotisation en ligne.
 Elle prendra effet dans 2 semaines, au terme de l’adhésion actuelle. </p>
 <p>La cotisation annuelle à l’association est au tarif de ' . $this->membershipFee . ' euros. Pour prolonger votre adhésion, rendez-vous dans
-le <a href="http://www.afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
+le <a href="https://afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
  et cliquez sur “Ma Cotisation”. Un souci, une question ? Contactez-nous ! bonjour@afup.org</p>
 
 <p>À bientôt !<br />
