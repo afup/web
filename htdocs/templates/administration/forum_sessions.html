@@ -112,6 +112,7 @@
         <h2>Ajouter une session pour le {$forum_name}</h2>
     {else}
         <h2>Modifier une session pour le {$forum_name}</h2>
+        <a href="/talks/{$talk->getUrlKey()}">Voir la fiche publique</a>
     {/if}
     {include file="formulaire.html"}
 {/if}
