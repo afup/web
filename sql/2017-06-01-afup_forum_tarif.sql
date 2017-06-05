@@ -51,3 +51,16 @@ ALTER TABLE `afup_forum_tarif_event`
 ALTER TABLE `afup_forum_tarif_event`
   ADD INDEX `id_event` (`id_event`);
 
+ALTER TABLE `afup_forum_tarif`
+  ADD `day` set('one','two') NOT NULL;
+UPDATE `afup_forum_tarif` SET
+  `day` = 1
+WHERE ((`id` = '0') OR (`id` = '17') OR (`id` = '20') OR (`id` = '22'));
+
+UPDATE `afup_forum_tarif` SET
+  `day` = 3
+WHERE ((`id` = '2') OR (`id` = '3') OR (`id` = '4') OR (`id` = '5') OR (`id` = '6') OR (`id` = '7') OR (`id` = '8') OR (`id` = '9') OR (`id` = '10') OR (`id` = '11') OR (`id` = '12') OR (`id` = '13') OR (`id` = '14') OR (`id` = '15') OR (`id` = '16') OR (`id` = '19'));
+
+UPDATE `afup_forum_tarif` SET
+  `day` = 2
+WHERE ((`id` = '1') OR (`id` = '18') OR (`id` = '21') OR (`id` = '23'));

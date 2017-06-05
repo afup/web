@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\Form\TicketType;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
@@ -154,6 +156,9 @@ class TicketController extends EventBaseController
 
     public function ticketAction(Request $request)
     {
-
+        $event = new Event();
+        $event->setId(17);
+        dump(iterator_to_array($this->get('ting')->get(TicketEventTypeRepository::class)->getAvailableTicketsByEvent($event)));
+        die;
     }
 }

@@ -65,3 +65,7 @@ sponsor_ticket_home:
 sponsor_ticket_form:
   path: /{eventSlug}/tickets/sponsor-form
   defaults: {_controller: AppBundle:Ticket:sponsorTicketForm}
+
+ticket:
+  path: /{eventSlug}/tickets
+  defaults: {_controller: AppBundle:Ticket:ticket}
