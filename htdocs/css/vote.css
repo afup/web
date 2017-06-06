@@ -816,6 +816,10 @@ form[name="speaker"] textarea, form[name="talk"] textarea{
     min-height:200px;
 }
 
+#talk_staffNotes {
+    min-height: 100px;
+}
+
 form[name="talk"] {
     width: 80%;
 }

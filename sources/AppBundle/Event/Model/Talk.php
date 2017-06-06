@@ -57,6 +57,11 @@ class Talk implements NotifyPropertyInterface
     private $abstract;
 
     /**
+     * @var string
+     */
+    private $staffNotes;
+
+    /**
      * @var bool
      */
     private $scheduled = false;
@@ -199,6 +204,27 @@ class Talk implements NotifyPropertyInterface
     {
         $this->propertyChanged('abstract', $this->abstract, $abstract);
         $this->abstract = $abstract;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStaffNotes()
+    {
+        return $this->staffNotes;
+    }
+
+    /**
+     * @param string $staffNotes
+     *
+     * @return $this
+     */
+    public function setStaffNotes($staffNotes)
+    {
+        $this->propertyChanged('staffNotes', $this->staffNotes, $staffNotes);
+        $this->staffNotes = $staffNotes;
+
         return $this;
     }
 
