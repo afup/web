@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event\Model;
 
+use Afup\Site\Utils\Pays;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
@@ -77,7 +78,7 @@ class Invoice implements NotifyPropertyInterface
     /**
      * @var string
      */
-    private $countryId;
+    private $countryId = Pays::DEFAULT_ID;
 
     /**
      * @var string
@@ -103,6 +104,12 @@ class Invoice implements NotifyPropertyInterface
      * @var int
      */
     private $forumId;
+
+    /**
+     * @var Ticket[]
+     */
+    private $tickets = [];
+
 
     /**
      * @return string
@@ -463,5 +470,48 @@ class Invoice implements NotifyPropertyInterface
         $this->propertyChanged('forumId', $this->forumId, $forumId);
         $this->forumId = $forumId;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
+     * @param array $tickets
+     * @return Invoice
+     */
+    public function setTickets($tickets)
+    {
+        $this->tickets = $tickets;
+        return $this;
+    }
+
+    /**
+     * @param Ticket $ticket
+     * @return Invoice
+     */
+    public function addTicket(Ticket $ticket)
+    {
+        $this->tickets[] = $ticket;
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @throw \RuntimeException
+     */
+    public function getLabel()
+    {
+        if ($this->company !== null) {
+            return $this->company;
+        }
+        if ($this->lastname !== null) {
+            return $this->lastname;
+        }
+        throw new \RuntimeException('Could not generate label');
     }
 }

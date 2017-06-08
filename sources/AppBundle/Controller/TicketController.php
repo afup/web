@@ -1,14 +1,16 @@
 <?php
 
 namespace AppBundle\Controller;
-
-use AppBundle\Event\Form\TicketType;
-use AppBundle\Event\Model\Event;
+use Afup\Site\Forum\Facturation;
+use AppBundle\Event\Form\SponsorTicketType;
+use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Ticket\PurchaseTypeFactory;
+use CCMBenchmark\Ting\Driver\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -103,7 +105,7 @@ class TicketController extends EventBaseController
         } else {
             $ticket = $ticketFactory->createTicketFromSponsorTicket($sponsorTicket);
         }
-        $ticketForm = $this->createForm(TicketType::class, $ticket);
+        $ticketForm = $this->createForm(SponsorTicketType::class, $ticket);
         $ticketForm->handleRequest($request);
 
         if ($ticketForm->isSubmitted() && $ticketForm->isValid() && $sponsorTicket->getPendingInvitations() > 0) {
@@ -154,11 +156,45 @@ class TicketController extends EventBaseController
         ]);
     }
 
-    public function ticketAction(Request $request)
+    public function ticketAction($eventSlug, Request $request)
     {
-        $event = new Event();
-        $event->setId(17);
-        dump(iterator_to_array($this->get('ting')->get(TicketEventTypeRepository::class)->getAvailableTicketsByEvent($event)));
-        die;
+        $event = $this->checkEventSlug($eventSlug);
+
+        if ($event->getDateEndSales() < new \DateTime()) {
+            return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
+        }
+
+        /* @todo service */
+        $purchaseFactory = new PurchaseTypeFactory(
+            $this->get('security.authorization_checker'),
+            $this->container->get('form.factory'),
+            $this->container->get('app.invoice_factory')
+        );
+
+        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $request->getUser());
+
+        $purchaseForm->handleRequest($request);
+
+        if ($purchaseForm->isSubmitted() && $purchaseForm->isValid()) {
+
+            $invoiceRepository = $this->get('app.invoice_repository');
+            /**
+             * @var $invoice Invoice
+             */
+            $invoice = $purchaseForm->getData();
+
+            /**
+             * @todo: voir où le mettre ça
+             */
+            $reference = $this->get('app.legacy_model_factory')->createObject(Facturation::class)->creerReference($event->getId(), $invoice->getLabel());
+            $invoice->setReference($reference);
+            $invoiceRepository->saveWithTickets($invoice);
+
+        }
+
+        return $this->render('event/ticket/ticket.html.twig', [
+            'event' => $event,
+            'ticketForm' => $purchaseForm->createView()
+        ]);
     }
 }

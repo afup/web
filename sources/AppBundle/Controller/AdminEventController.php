@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
-use AppBundle\Event\Form\SponsorTicketType;
+use AppBundle\Event\Form\SponsorTokenType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\RoomRepository;
@@ -124,7 +124,7 @@ class AdminEventController extends Controller
                 ->setCreatorId($this->getUser()->getId())
             ;
         }
-        $form = $this->createForm(SponsorTicketType::class, $newToken);
+        $form = $this->createForm(SponsorTokenType::class, $newToken);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($newToken->getId() === null) {

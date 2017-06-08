@@ -30,6 +30,11 @@ class TicketType implements NotifyPropertyInterface
     private $isPublic;
 
     /**
+     * @var bool
+     */
+    private $isRestrictedToMembers;
+
+    /**
      * @var float
      */
     private $defaultPrice;
@@ -121,6 +126,25 @@ class TicketType implements NotifyPropertyInterface
     }
 
     /**
+     * @return bool
+     */
+    public function getIsRestrictedToMembers()
+    {
+        return $this->isRestrictedToMembers;
+    }
+
+    /**
+     * @param bool $isRestrictedToMembers
+     * @return TicketType
+     */
+    public function setIsRestrictedToMembers($isRestrictedToMembers)
+    {
+        $this->propertyChanged('isRestrictedToMembers', $this->isRestrictedToMembers, $isRestrictedToMembers);
+        $this->isRestrictedToMembers = $isRestrictedToMembers;
+        return $this;
+    }
+
+    /**
      * @return float
      */
     public function getDefaultPrice()
@@ -175,5 +199,10 @@ class TicketType implements NotifyPropertyInterface
         $this->propertyChanged('day', $this->day, $day);
         $this->day = $day;
         return $this;
+    }
+
+    public function getDays()
+    {
+        return explode(',', $this->day);
     }
 }

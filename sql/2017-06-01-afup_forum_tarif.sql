@@ -3,36 +3,37 @@ CREATE TABLE `afup_forum_tarif` (
   `technical_name` varchar(64) NOT NULL,
   `pretty_name` varchar(255) NOT NULL,
   `public` tinyint(1) unsigned NOT NULL,
+  `members_only` tinyint(1) unsigned NOT NULL,
   `default_price` float NOT NULL,
   `active` tinyint(1) NOT NULL
 ) COMMENT='' ENGINE='InnoDB' COLLATE 'utf8_general_ci';
 
-INSERT INTO afup_forum_tarif (id, technical_name, pretty_name, public, default_price, active)
+INSERT INTO afup_forum_tarif (id, technical_name, pretty_name, public, members_only, default_price, active)
 VALUES
-  (99, 'AFUP_FORUM_PREMIERE_JOURNEE', 'Première journée', 1, 150, 1),
-  (1, 'AFUP_FORUM_DEUXIEME_JOURNEE', 'Deuxième journée', 1, 150, 1),
-  (2, 'AFUP_FORUM_2_JOURNEES', '2 Jours', 1, 250, 1),
-  (3, 'AFUP_FORUM_2_JOURNEES_AFUP', '2 Jours AFUP', 1, 150, 1),
-  (4, 'AFUP_FORUM_2_JOURNEES_ETUDIANT', '2 Jours étudiant', 0, 150, 1),
-  (5, 'AFUP_FORUM_2_JOURNEES_PREVENTE', '2 Jours prévente', 0, 150, 1),
-  (6, 'AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE', '2 Jours prévente AFUP', 0, 150, 0),
-  (7, 'AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE', '2 Jours étudiant prévente', 0, 150, 0),
-  (8, 'AFUP_FORUM_2_JOURNEES_COUPON', '2 jours coupon', 0, 200, 0),
-  (9, 'AFUP_FORUM_ORGANISATION', 'Organisation', 0, 0, 1),
-  (10, 'AFUP_FORUM_SPONSOR', 'Sponsor', 0, 0, 1),
-  (11, 'AFUP_FORUM_PRESSE', 'Presse', 0, 0, 1),
-  (12, 'AFUP_FORUM_CONFERENCIER', 'Conférencier', 0, 0, 1),
-  (13, 'AFUP_FORUM_INVITATION', 'Invitation', 0, 0, 1),
-  (14, 'AFUP_FORUM_PROJET', 'Projet PHP', 0, 0, 1),
-  (15, 'AFUP_FORUM_2_JOURNEES_SPONSOR', '2 Jours par sponsor', 0, 200, 1),
-  (16, 'AFUP_FORUM_PROF', 'Enseignement supérieur', 0, 0, 1),
-  (17, 'AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE', '', 0, 100, 0),
-  (18, 'AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE', '', 0, 100, 0),
-  (19, 'AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION', '', 0, 150, 0),
-  (20, 'AFUP_FORUM_PREMIERE_JOURNEE_AFUP', 'Jour 1 AFUP', 0, 100, 0),
-  (21, 'AFUP_FORUM_DEUXIEME_JOURNEE_AFUP', 'Jour 2 AFUP', 0, 100, 0),
-  (22, 'AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT', 'Jour 1 Etudiant', 0, 100, 0),
-  (23, 'AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT', 'Jour 2 Etudiant', 0, 100, 0)
+  (99, 'AFUP_FORUM_PREMIERE_JOURNEE', 'Première journée', 1, 0, 150, 1),
+  (1, 'AFUP_FORUM_DEUXIEME_JOURNEE', 'Deuxième journée', 1, 0, 150, 1),
+  (2, 'AFUP_FORUM_2_JOURNEES', '2 Jours', 1, 0, 250, 1),
+  (3, 'AFUP_FORUM_2_JOURNEES_AFUP', '2 Jours AFUP', 1, 1, 150, 1),
+  (4, 'AFUP_FORUM_2_JOURNEES_ETUDIANT', '2 Jours étudiant', 0, 0, 150, 1),
+  (5, 'AFUP_FORUM_2_JOURNEES_PREVENTE', '2 Jours prévente', 0, 0, 150, 1),
+  (6, 'AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE', '2 Jours prévente AFUP', 0, 1, 150, 0),
+  (7, 'AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE', '2 Jours étudiant prévente', 0, 0, 150, 0),
+  (8, 'AFUP_FORUM_2_JOURNEES_COUPON', '2 jours coupon', 0, 0, 200, 0),
+  (9, 'AFUP_FORUM_ORGANISATION', 'Organisation', 0, 0, 0, 1),
+  (10, 'AFUP_FORUM_SPONSOR', 'Sponsor', 0, 0, 0, 1),
+  (11, 'AFUP_FORUM_PRESSE', 'Presse', 0, 0, 0, 1),
+  (12, 'AFUP_FORUM_CONFERENCIER', 'Conférencier', 0, 0, 0, 1),
+  (13, 'AFUP_FORUM_INVITATION', 'Invitation', 0, 0, 0, 1),
+  (14, 'AFUP_FORUM_PROJET', 'Projet PHP', 0, 0, 0, 1),
+  (15, 'AFUP_FORUM_2_JOURNEES_SPONSOR', '2 Jours par sponsor', 0, 0, 200, 1),
+  (16, 'AFUP_FORUM_PROF', 'Enseignement supérieur', 0, 0, 0, 1),
+  (17, 'AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE', '', 0, 0, 100, 0),
+  (18, 'AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE', '', 0, 0, 100, 0),
+  (19, 'AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION', '', 0, 0, 150, 0),
+  (20, 'AFUP_FORUM_PREMIERE_JOURNEE_AFUP', 'Jour 1 AFUP', 0, 1, 100, 0),
+  (21, 'AFUP_FORUM_DEUXIEME_JOURNEE_AFUP', 'Jour 2 AFUP', 0, 1, 100, 0),
+  (22, 'AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT', 'Jour 1 Etudiant', 0, 0, 100, 0),
+  (23, 'AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT', 'Jour 2 Etudiant', 0, 0, 100, 0)
 ;
 
 UPDATE afup_forum_tarif SET id=0 WHERE id=99;

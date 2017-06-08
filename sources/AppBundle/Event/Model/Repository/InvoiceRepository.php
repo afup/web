@@ -3,6 +3,8 @@
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Invoice;
+use AppBundle\Event\Model\Ticket;
+use CCMBenchmark\Ting\Driver\Exception;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -11,6 +13,38 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class InvoiceRepository extends Repository implements MetadataInitializer
 {
+    public function saveWithTickets(Invoice $invoice)
+    {
+        $totalAmount = 0;
+        /**
+         * @var Ticket[] $tickets
+         */
+        $tickets = $invoice->getTickets();
+
+        try {
+            $this->startTransaction();
+            $this->unitOfWork->pushSave($invoice);
+            foreach ($tickets as $ticket) {
+                $ticket
+                    ->setReference($invoice->getReference())
+                    ->setDate(new \DateTime())
+                    ->setAmount($ticket->getTicketType()->getPrice())
+                    ->setStatus(Ticket::STATUS_CREATED)
+                    ->setInvoiceStatus(Ticket::INVOICE_TODO)
+                    ->setForumId($invoice->getForumId())
+                    ->setComments('<tag>' . implode(';', $ticket->getTags()) . '</tag>')
+                ;
+                $totalAmount += $ticket->getAmount();
+                $this->unitOfWork->pushSave($ticket);
+            }
+            $invoice->setAmount($totalAmount);
+            $this->unitOfWork->process();
+            $this->commit();
+        } catch (Exception $e) {
+            $this->rollback();
+        }
+    }
+
     /**
      * @inheritDoc
      */

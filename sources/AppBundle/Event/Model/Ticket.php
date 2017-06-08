@@ -74,6 +74,11 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @var int
      */
+    private $ticketTypeId;
+
+    /**
+     * @var TicketType
+     */
     private $ticketType;
 
     /**
@@ -149,7 +154,7 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @var bool
      */
-    private $pmr = false; // @todo change
+    private $pmr = false;
 
     /**
      * @var bool
@@ -160,6 +165,21 @@ class Ticket implements NotifyPropertyInterface
      * @var bool
      */
     private $day2Checkin;
+
+    /**
+     * @var string
+     */
+    public $tag1;
+
+    /**
+     * @var string
+     */
+    public $tag2;
+
+    /**
+     * @var string
+     */
+    public $tag3;
 
     /**
      * @return int
@@ -240,19 +260,38 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @return int
      */
+    public function getTicketTypeId()
+    {
+        return $this->ticketTypeId;
+    }
+
+    /**
+     * @param int $ticketTypeId
+     * @return Ticket
+     */
+    public function setTicketTypeId($ticketTypeId)
+    {
+        $this->propertyChanged('ticketTypeId', $this->ticketTypeId, $ticketTypeId);
+        $this->ticketTypeId = $ticketTypeId;
+        return $this;
+    }
+
+    /**
+     * @return TicketType
+     */
     public function getTicketType()
     {
         return $this->ticketType;
     }
 
     /**
-     * @param int $ticketType
+     * @param TicketEventType $ticketEventType
      * @return Ticket
      */
-    public function setTicketType($ticketType)
+    public function setTicketType(TicketEventType $ticketEventType)
     {
-        $this->propertyChanged('ticketType', $this->ticketType, $ticketType);
-        $this->ticketType = $ticketType;
+        $this->ticketType = $ticketEventType;
+        $this->ticketTypeId = $ticketEventType->getTicketTypeId();
         return $this;
     }
 
@@ -536,6 +575,7 @@ class Ticket implements NotifyPropertyInterface
      */
     public function setPmr($pmr)
     {
+        $pmr = (bool)$pmr;
         $this->propertyChanged('pmr', $this->pmr, $pmr);
         $this->pmr = $pmr;
         return $this;
@@ -579,8 +619,19 @@ class Ticket implements NotifyPropertyInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getLabel()
     {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTags()
+    {
+        return [$this->tag1, $this->tag2, $this->tag3];
     }
 }

@@ -36,7 +36,19 @@ class InvoiceFactory
             ->setZipcode('N/A')
             ->setCity('N/A')
             ->setCountryId('FR')
-            ->setStatus(Ticket::INVOICE_RECEIVED)
+            ->setStatus(Ticket::STATUS_GUEST)
+            ->setInvoice(false)
+        ;
+
+        return $invoice;
+    }
+
+    public function createInvoiceForEvent(Event $event)
+    {
+        $invoice = new Invoice();
+        $invoice
+            ->setForumId($event->getId())
+            ->setStatus(Ticket::STATUS_CREATED)
             ->setInvoice(false)
         ;
 

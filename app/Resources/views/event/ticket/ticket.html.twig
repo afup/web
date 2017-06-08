@@ -1,0 +1,53 @@
+{% extends ':event/ticket:base.html.twig' %}
+
+{% set menu = {'main': {'route' : 'ticket', 'title': 'Billetterie'}} %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h2>{{ 'Billetterie'|trans }}: {{ event.title }}</h2>
+        {% if app.user %}
+            {% if app.user.companyId > 0 %}
+                <p>{{ 'Vous êtes connecté avec un compte afup d\'entreprise. Pour acheter des places au tarif AFUP, celles-ci doivent être enregistrées pour les membres de votre adhésion.'|trans }}</p>
+            {% else %}
+                <p>{{ 'Vous êtes connecté avec un compte afup personnel. Vous pouvez acheter une place au tarif membre pour vous seul.'|trans }}</p>
+            {% endif %}
+        {% else %}
+            <p>Pour acheter des places au tarif AFUP, vous devez vous connecter.</p>
+        {% endif %}
+        {{ form_start(ticketForm) }}
+            {% for key,ticket in ticketForm.tickets %}
+                <fieldset class="f{{ key }}">
+                    <legend><a name="inscription1">Personne</a> {{ key+1 }} <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>
+                    <div id="fieldset--{{ key }}" class="fieldset--inner">
+                        {{ form_row(ticket.civility) }}
+                        {{ form_row(ticket.firstname) }}
+                        {{ form_row(ticket.lastname) }}
+                        {{ form_row(ticket.email) }}
+                        {{ form_row(ticket.phoneNumber) }}
+                        {% for type in ticket.ticketType %}
+                            {{ form_label(type) }}
+                            {{ type.vars.attr['data-price'] }}€ {# @todo afficher toutes les infos (date vente, etc) #}
+                            {{ form_widget(type) }}
+                        {% endfor %}
+
+                        {{ 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :'|trans }}
+                        {{ form_row(ticket.pmr) }}
+
+                        {{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}
+
+                        {{ form_widget(ticket.tag1) }}
+                        {{ form_widget(ticket.tag2) }}
+                        {{ form_widget(ticket.tag3) }}
+                        <p class="raccourci"><i>Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire...</i></p>
+
+                        <p class="raccourci"></p><div style="text-align:center"><a href="#inscription{{ key+2 }}" data-registration="1" class="btn primary add_inscription">Inscription suivante</a> ou <a href="#facturation" class="btn primary fieldset--link-facturation">passer à la facturation</a></div><p></p>
+
+                    </div>
+                </fieldset>
+            {% endfor %}
+        {#{{ form_row(ticketForm.companyCitation) }}
+        {{ form_row(ticketForm.newsletterAfup) }}#}
+        <input type="submit" value="Valider" />
+        {{ form_end(ticketForm) }}
+    </div>
+{% endblock %}

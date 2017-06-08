@@ -180,6 +180,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TicketRepository]
 
+    app.ticket_event_repository:
+        class: AppBundle\Event\Model\Repository\TicketEventTypeRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TicketEventTypeRepository]
+
     app.sponsor_ticket_helper:
         class: AppBundle\Event\Ticket\SponsorTicketHelper
         autowire: true
@@ -188,3 +193,24 @@ services:
         class: AppBundle\Event\Ticket\SponsorTokenMail
         autowire: true
 
+    app.ticket_availability:
+        class: AppBundle\Event\Ticket\TicketTypeAvailability
+        autowire: true
+
+    app.ticket_form:
+        class: AppBundle\Event\Form\TicketType
+        autowire: true
+        tags:
+          - {name: form.type}
+
+    app.legacy_country:
+        class: Afup\Site\Utils\Pays
+        factory: ["@app.legacy_model_factory", 'createObject']
+        arguments:
+          - 'Afup\Site\Utils\Pays'
+
+    app.purchase_form:
+        class: AppBundle\Event\Form\PurchaseType
+        autowire: true
+        tags:
+          - {name: form.type}

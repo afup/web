@@ -49,6 +49,12 @@ class TicketTypeRepository extends Repository implements MetadataInitializer
                 'serializer' => Boolean::class
             ])
             ->addField([
+                'columnName' => 'members_only',
+                'fieldName' => 'isRestrictedToMembers',
+                'type' => 'bool',
+                'serializer' => Boolean::class
+            ])
+            ->addField([
                 'columnName' => 'default_price',
                 'fieldName' => 'defaultPrice',
                 'type' => 'float'
@@ -58,6 +64,11 @@ class TicketTypeRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'isActive',
                 'type' => 'bool',
                 'serializer' => Boolean::class
+            ])
+            ->addField([
+                'columnName' => 'day',
+                'fieldName' => 'day',
+                'type' => 'string'
             ])
         ;
 

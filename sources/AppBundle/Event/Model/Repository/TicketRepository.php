@@ -2,8 +2,10 @@
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -14,6 +16,24 @@ class TicketRepository extends Repository implements MetadataInitializer
     public function getByReference($reference)
     {
         return $this->getBy(['reference' => $reference]);
+    }
+
+    public function getPublicSoldTicketsByDay($day, Event $event)
+    {
+        $tickets = $this->getPreparedQuery('
+            SELECT COUNT(aif.id) AS sold_tickets
+            FROM afup_inscription_forum aif
+            JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
+            WHERE aif.id_forum = :event AND aft.public = 1 AND FIND_IN_SET(:day, aft.day) > 0
+        ')
+            ->setParams(['event' => $event->getId(), 'day' => $day])
+            ->query($this->getCollection(new HydratorArray()))
+        ;
+        if ($tickets === null) {
+            return 0;
+        }
+
+        return $tickets->first()['sold_tickets'];
     }
 
     /**
@@ -58,7 +78,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             ])
             ->addField([
                 'columnName' => 'type_inscription',
-                'fieldName' => 'ticketType',
+                'fieldName' => 'ticketTypeId',
                 'type' => 'int'
             ])
             ->addField([
