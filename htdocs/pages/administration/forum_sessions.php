@@ -43,6 +43,7 @@ if ($action == 'lister') {
         $list_filtre = $_GET['filtre'];
     }
     $needsMentoring = isset($_GET['filtre_needs_mentoring']) && $_GET['filtre_needs_mentoring'] == '1' ? true : null;
+    $planned = isset($_GET['filtre_planned']) && $_GET['filtre_planned'] == '1' ? true : null;
     if (isset($_GET['type'])) {
         $list_type = $_GET['type'];
     }
@@ -56,7 +57,7 @@ if ($action == 'lister') {
 
     $smarty->assign('forums', $forum->obtenirListe());
 
-    $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type, $needsMentoring);
+    $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type, $needsMentoring, $planned);
     $moi = $droits->obtenirIdentifiant();
     $votant = in_array($_SESSION['afup_login'], $conf->obtenir('bureau'));
     $maxVotant = count($conf->obtenir('bureau'));

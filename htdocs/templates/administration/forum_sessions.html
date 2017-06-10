@@ -29,6 +29,10 @@
                 <label for="filtre_needs_mentoring">Afficher seulement les sessions dont le speaker a demandé un accompagnement</label>
             </div>
             <div>
+                <input type="checkbox" name="filtre_planned" id="filtre_planned" value="1" {if $smarty.get.filtre_planned} checked="checked" {/if}>
+                <label for="filtre_planned">Afficher seulement les sessions plannifiées</label>
+            </div>
+            <div>
                 <input type="submit" value="Filtrer" name="submit_filtre">
             </div>
         </div>

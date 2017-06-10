@@ -562,7 +562,8 @@ class AppelConferencier
                                   $associatif = false,
                                   $filtre = false,
                                   $type = 'session',
-                                  $needsMentoring = null
+                                  $needsMentoring = null,
+                                  $planned = null
     )
     {
         $requete = ' SELECT ';
@@ -574,6 +575,11 @@ class AppelConferencier
         $requete .= '  afup_sessions s ';
         $requete .= ' LEFT JOIN afup_forum_sessions_commentaires co ';
         $requete .= '  ON s.session_id = co.id_session ';
+
+        if (null !== $planned) {
+            $requete .= ' JOIN afup_forum_planning ON (s.session_id = afup_forum_planning.id_session) ';
+        }
+
         $requete .= ' WHERE s.id_forum = ' . $this->_bdd->echapper($id_forum);
         if ($filtre) {
             $requete .= ' AND s.titre LIKE \'%' . $filtre . '%\' ';
