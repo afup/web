@@ -46,7 +46,7 @@ class PurchaseTypeFactory
         if (
             $this->securityChecker->isGranted('ROLE_USER', $user)
             &&
-            $this->securityChecker->isGranted('ROLE_MEMBER_EXPIRED', $user) === false
+            $user->hasRole('ROLE_MEMBER_EXPIRED') === false
         ) {
             if ($user->getCompanyId() > 0) {
                 $memberType = TicketType::MEMBER_CORPORATE;
@@ -59,6 +59,10 @@ class PurchaseTypeFactory
         $ticket = new Ticket();
         $invoice
             ->addTicket($ticket)
+            ->addTicket(clone $ticket)
+            ->addTicket(clone $ticket)
+            ->addTicket(clone $ticket)
+            ->addTicket(clone $ticket)
         ;
         $invoiceType = $this->formFactory->create(
             PurchaseType::class,

@@ -68,6 +68,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
 
+    app.company_member_repository:
+        class: AppBundle\Association\Model\Repository\CompanyMemberRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\CompanyMemberRepository]
+
     app.legacy_authenticator:
         class: AppBundle\Security\LegacyAuthenticator
         autowire: true
@@ -91,6 +96,7 @@ services:
 
     app.paybox_factory:
         class: AppBundle\Payment\PayboxFactory
+        autowire: true
 
     app.slack_message_factory:
         class: AppBundle\Slack\MessageFactory
@@ -214,3 +220,23 @@ services:
         autowire: true
         tags:
           - {name: form.type}
+
+    app.validator_logged_in:
+        class: AppBundle\Event\Validator\Constraints\LoggedInMemberValidator
+        autowire: true
+        tags:
+          - { name: validator.constraint_validator }
+
+
+    app.validator_public:
+        class: AppBundle\Event\Validator\Constraints\PublicTicketValidator
+        autowire: true
+        tags:
+          - { name: validator.constraint_validator }
+
+
+    app.validator_corporate:
+        class: AppBundle\Event\Validator\Constraints\CorporateMemberValidator
+        autowire: true
+        tags:
+          - { name: validator.constraint_validator }

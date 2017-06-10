@@ -49,6 +49,7 @@ class InvoiceFactory
         $invoice
             ->setForumId($event->getId())
             ->setStatus(Ticket::STATUS_CREATED)
+            ->setPaymentType(Ticket::PAYMENT_CREDIT_CARD)
             ->setInvoice(false)
         ;
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 use Afup\Site\Forum\Facturation;
 use AppBundle\Event\Form\SponsorTicketType;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
@@ -10,8 +11,11 @@ use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\PurchaseTypeFactory;
+use AppBundle\Payment\PayboxResponse;
+use AppBundle\Payment\PayboxResponseFactory;
 use CCMBenchmark\Ting\Driver\Exception;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class TicketController extends EventBaseController
@@ -171,7 +175,7 @@ class TicketController extends EventBaseController
             $this->container->get('app.invoice_factory')
         );
 
-        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $request->getUser());
+        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $this->getUser());
 
         $purchaseForm->handleRequest($request);
 
@@ -190,11 +194,136 @@ class TicketController extends EventBaseController
             $invoice->setReference($reference);
             $invoiceRepository->saveWithTickets($invoice);
 
+            return $this->redirectToRoute('ticket_payment', ['eventSlug' => $eventSlug, 'invoiceRef' => $invoice->getReference()]);
         }
 
         return $this->render('event/ticket/ticket.html.twig', [
             'event' => $event,
             'ticketForm' => $purchaseForm->createView()
+        ]);
+    }
+
+    public function paymentAction($eventSlug, Request $request)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+        $invoiceRepository = $this->get('app.invoice_repository');
+
+        $invoiceRef = $request->get('invoiceRef');
+        $invoice = $invoiceRepository->getByReference($invoiceRef);
+
+        if ($invoice === null) {
+            throw $this->createNotFoundException(sprintf('Could not find invoice with reference "%s"', $invoiceRef));
+        }
+
+        if ($invoice->getStatus() !== Ticket::STATUS_CREATED) {
+            // @todo à voir
+            die;
+        }
+
+        $params = [
+            'event' => $event,
+            'invoice' => $invoice,
+        ];
+
+        if ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
+            $params['paybox'] = $this->get('app.paybox_factory')->createPayboxForTicket($invoice, $event);
+        } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
+            $params['rib'] = $GLOBALS['AFUP_CONF']->obtenir('rib');
+        }
+        return $this->render('event/ticket/payment.html.twig', $params);
+    }
+
+    /**
+     * Action vers laquelle paybox post les résultats du paiement en serveur à serveur
+     *
+     * @param $eventSlug
+     * @param Request $request
+     * @return Response
+     */
+    public function payboxCallbackAction($eventSlug, Request $request)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+        $invoice = $this->get('app.invoice_repository')->getByReference($request->get('cmd'));
+
+        if ($invoice === null) {
+            throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->get('cmd')));
+        }
+
+        $payboxResponse = PayboxResponseFactory::createFromRequest($request);
+
+        $paymentStatus = Ticket::STATUS_ERROR;
+        $invoiceStatus = Ticket::INVOICE_TODO;
+        if ($payboxResponse->isSuccessful()) {
+            $paymentStatus = Ticket::STATUS_PAID;
+            $invoiceStatus = Ticket::INVOICE_SENT;
+        } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_DUPLICATE) {
+            // Designe un paiement deja effectue : on a surement deja eu le retour donc on s'arrete
+
+        } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_CANCELED) {
+            $paymentStatus = Ticket::STATUS_CANCELLED;
+        } elseif (substr($payboxResponse->getStatus(), 0, 3) === '001') {
+            $paymentStatus = Ticket::STATUS_DECLINED;
+        }
+        $invoice
+            ->setStatus($paymentStatus)
+            ->setPaymentDate(new \DateTime())
+            ->setAuthorization($payboxResponse->getAuthorizationId())
+            ->setTransaction($payboxResponse->getTransactionId())
+        ;
+        $this->get('app.invoice_repository')->save($invoice);
+        $tickets = $this->get('app.ticket_repository')->getByReference($invoice->getReference());
+        $mailer = $this->get('app.mail');
+        $logger = $this->get('logger');
+        foreach ($tickets as $ticket) {
+            /**
+             * @var $ticket Ticket
+             */
+            $ticket
+                ->setStatus($paymentStatus)
+                ->setInvoiceStatus($invoiceStatus)
+            ;
+            $this->get('app.ticket_repository')->save($ticket);
+
+            if ($paymentStatus === Ticket::STATUS_PAID) {
+                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
+                    $receiver = [
+                        'email' => $ticket->getEmail(),
+                        'name'  => $ticket->getLabel(),
+                    ];
+
+                    if (!$mailer->send($event->getMailTemplate(), $receiver, [])) {
+                        $logger->addWarning(sprintf('Mail not sent for inscription %s', $ticket->getEmail()));
+                    }
+                    return 1;
+                });
+            }
+        }
+        return new Response();
+    }
+
+    /**
+     * Action vers laquelle l'utilisateur est redirigé après paiement (ou tentative)
+     *
+     * @param $eventSlug
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function payboxRedirectAction($eventSlug, Request $request)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+        $invoice = $this->get('app.invoice_repository')->getByReference($request->get('cmd'));
+
+        if ($invoice === null) {
+            throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->get('cmd')));
+        }
+
+        $payboxResponse = PayboxResponseFactory::createFromRequest($request);
+
+        return $this->render(':event/ticket:paybox_redirect.html.twig', [
+            'event' => $event,
+            'invoice' => $invoice,
+            'payboxResponse' => $payboxResponse,
+            'status' => $request->get('status')
         ]);
     }
 }

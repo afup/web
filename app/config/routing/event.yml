@@ -69,3 +69,15 @@ sponsor_ticket_form:
 ticket:
   path: /{eventSlug}/tickets
   defaults: {_controller: AppBundle:Ticket:ticket}
+
+ticket_payment:
+  path: /{eventSlug}/tickets/payment
+  defaults: {_controller: AppBundle:Ticket:payment}
+
+ticket_paybox_callback:
+  path: /{eventSlug}/tickets/paybox-callback
+  defaults: {_controller: AppBundle:Ticket:payboxCallback}
+
+ticket_paybox_redirect:
+  path: /{eventSlug}/tickets/paybox-redirect
+  defaults: {_controller: AppBundle:Ticket:payboxRedirect}

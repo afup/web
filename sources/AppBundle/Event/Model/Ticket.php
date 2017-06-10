@@ -4,7 +4,14 @@ namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use AppBundle\Event\Validator\Constraints as Assert;
 
+/**
+ * Class Ticket
+ * @Assert\LoggedInMember(groups={"personal"})
+ * @Assert\PublicTicket(groups={"not_logged_in"})
+ * @Assert\CorporateMember(groups={"corporate"})
+ */
 class Ticket implements NotifyPropertyInterface
 {
     use NotifyProperty;
@@ -77,9 +84,9 @@ class Ticket implements NotifyPropertyInterface
     private $ticketTypeId;
 
     /**
-     * @var TicketType
+     * @var TicketEventType
      */
-    private $ticketType;
+    private $ticketEventType;
 
     /**
      * @var int
@@ -277,20 +284,20 @@ class Ticket implements NotifyPropertyInterface
     }
 
     /**
-     * @return TicketType
+     * @return TicketEventType
      */
-    public function getTicketType()
+    public function getTicketEventType()
     {
-        return $this->ticketType;
+        return $this->ticketEventType;
     }
 
     /**
      * @param TicketEventType $ticketEventType
      * @return Ticket
      */
-    public function setTicketType(TicketEventType $ticketEventType)
+    public function setTicketEventType(TicketEventType $ticketEventType)
     {
-        $this->ticketType = $ticketEventType;
+        $this->ticketEventType = $ticketEventType;
         $this->ticketTypeId = $ticketEventType->getTicketTypeId();
         return $this;
     }

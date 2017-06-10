@@ -8,7 +8,6 @@ use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,8 +35,11 @@ class TicketType extends AbstractType
      */
     private $ticketTypeAvailability;
 
-    public function __construct(EventRepository $eventRepository, TicketEventTypeRepository $ticketEventTypeRepository, TicketTypeAvailability $ticketTypeAvailability)
-    {
+    public function __construct(
+        EventRepository $eventRepository,
+        TicketEventTypeRepository $ticketEventTypeRepository,
+        TicketTypeAvailability $ticketTypeAvailability
+    ) {
         $this->eventRepository = $eventRepository;
         $this->ticketEventTypeRepository = $ticketEventTypeRepository;
         $this->ticketTypeAvailability = $ticketTypeAvailability;
@@ -50,6 +52,7 @@ class TicketType extends AbstractType
             $event = $this->eventRepository->get($options['event_id']);
             $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event);
         }
+
         if ($eventTickets === null) {
             throw new RuntimeException(sprintf('Could not find tickets configuration for event %s', $options['event_id']));
         }
@@ -75,18 +78,20 @@ class TicketType extends AbstractType
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Téléphone'
             ])
-            ->add('ticketType', ChoiceType::class, [
+            ->add('ticketEventType', ChoiceType::class, [
                 'expanded' => true,
                 'multiple' => false,
+                'label' => 'Formule',
                 'choices' => $eventTickets,
                 'choice_label' => 'ticketType.prettyName',
                 'choice_attr' => function(\AppBundle\Event\Model\TicketEventType $type, $key, $index) use ($options, $event) {
                     $attr = [
                         'data-description' => $type->getDescription(),
                         'data-price' => $type->getPrice(),
-                        'data-date-end' => $type->getDateEnd()->format('Y-m-d H:i:s'),
+                        'data-date-end' => $type->getDateEnd()->format('d/m'),
                         'data-members-only' => (int)$type->getTicketType()->getIsRestrictedToMembers(),
-                        'data-stock' => $this->ticketTypeAvailability->getStock($type, $event)
+                        'data-stock' => $this->ticketTypeAvailability->getStock($type, $event),
+                        'data-label' => $type->getTicketType()->getPrettyName()
                     ];
 
                     if (

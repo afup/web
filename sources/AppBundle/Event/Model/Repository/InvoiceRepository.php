@@ -25,10 +25,13 @@ class InvoiceRepository extends Repository implements MetadataInitializer
             $this->startTransaction();
             $this->unitOfWork->pushSave($invoice);
             foreach ($tickets as $ticket) {
+                if ($ticket->getTicketEventType() === null) {
+                    continue;
+                }
                 $ticket
                     ->setReference($invoice->getReference())
                     ->setDate(new \DateTime())
-                    ->setAmount($ticket->getTicketType()->getPrice())
+                    ->setAmount($ticket->getTicketEventType()->getPrice())
                     ->setStatus(Ticket::STATUS_CREATED)
                     ->setInvoiceStatus(Ticket::INVOICE_TODO)
                     ->setForumId($invoice->getForumId())
@@ -43,6 +46,15 @@ class InvoiceRepository extends Repository implements MetadataInitializer
         } catch (Exception $e) {
             $this->rollback();
         }
+    }
+
+    /**
+     * @param $reference
+     * @return Invoice
+     */
+    public function getByReference($reference)
+    {
+        return $this->getOneBy(['reference' => $reference]);
     }
 
     /**
