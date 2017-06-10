@@ -64,11 +64,8 @@
                             {% for type in ticket.ticketEventType %}
                                 <li>
                                     <div>
-                                         {# @todo afficher toutes les infos (date vente, etc) #}
-                                    </div>
-                                    <div>
                                         {{ form_widget(type) }}
-                                        {{ form_label(type) }} : <span class="tickets--type-price">{{ type.vars.attr['data-price'] }}€</span><br />
+                                        {{ form_label(type) }} <span class="tickets--type-price">{{ type.vars.attr['data-price'] }}€</span><br />
                                         <span class="tickets--type-dateEnd">Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}</span><br />
                                         <span class="tickets--type-desc">{{ type.vars.attr['data-description'] }}</span><br />
                                         {% if type.vars.attr['data-stock'] < 10 %}
@@ -79,10 +76,16 @@
                             {% endfor %}
                             </ul>
 
-                        {{ 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :'|trans }}
-                        {{ form_row(ticket.pmr, {attr: {class: 'pmr'}}) }}
+                        <p>{{ 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :'|trans }}</p>
+                        {{ form_label(ticket.pmr) }}
+                        <div class="tickets--pmr">
+                            {% for response in ticket.pmr %}
+                                {{ form_widget(response) }}
+                                {{ form_label(response) }}
+                            {% endfor %}
+                        </div>
 
-                        {{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}
+                        <p>{{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}</p>
 
                         {{ form_widget(ticket.tag1) }}
                         {{ form_widget(ticket.tag2) }}

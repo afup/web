@@ -154,11 +154,10 @@ $(document).ready(function(){
 		$(fieldset).find('legend span.fieldset--legend--title').html(' - ' + firstname + ' ' + lastname);
 
 		if (fieldset.hasClass('f6') === true) {
-			// @todo
-			var paymentId = fieldset.find('input[name="type_reglement"]:checked').attr('id');
+			var paymentId = fieldset.find('input[type=radio]:checked').attr('id');
+			var paymentId = fieldset.find('input[type=radio]:checked').attr('id');
 			$(fieldset).find('legend span.fieldset--legend--price').html($('label[for=' + paymentId + ']').html());
 		} else {
-			// @todo
 			var price = fieldset.find('ul.tickets--type-list input[type=radio]:checked').data('price');
 			$(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
 		}
@@ -270,7 +269,7 @@ $(document).ready(function(){
         updateSummary();
     });
 
-    $('input[name$="[lastname]"],input[name$="[firstname]"],ul.tickets--type-list input[type=radio]').on('change', function(){
+    $('input[name$="[lastname]"],input[name$="[firstname]"],ul.tickets--type-list input[type=radio], fieldset.f6 input[type=radio]').on('change', function(){
         var fieldset = $(this).parents('fieldset').first();
         updateFieldsetSummary(fieldset);
     });
