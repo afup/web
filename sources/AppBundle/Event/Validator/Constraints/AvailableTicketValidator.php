@@ -48,6 +48,5 @@ class AvailableTicketValidator extends ConstraintValidator
                 ->atPath('ticketEventType')
                 ->addViolation();
         }
-
     }
 }

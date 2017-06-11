@@ -6,7 +6,6 @@ use AppBundle\Association\Model\User;
 use AppBundle\Event\Form\PurchaseType;
 use AppBundle\Event\Form\TicketType;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\InvoiceFactory;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\FormFactoryInterface;

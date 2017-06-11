@@ -36,6 +36,5 @@ class PublicTicketValidator extends ConstraintValidator
                 ->atPath('email')
                 ->addViolation();
         }
-
     }
 }

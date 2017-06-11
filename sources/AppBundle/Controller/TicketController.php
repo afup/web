@@ -1,19 +1,17 @@
 <?php
 
 namespace AppBundle\Controller;
+
 use Afup\Site\Forum\Facturation;
 use AppBundle\Event\Form\SponsorTicketType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\Event\Ticket\PurchaseTypeFactory;
 use AppBundle\Payment\PayboxResponse;
 use AppBundle\Payment\PayboxResponseFactory;
-use CCMBenchmark\Ting\Driver\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -175,7 +173,6 @@ class TicketController extends EventBaseController
         $purchaseForm->handleRequest($request);
 
         if ($purchaseForm->isSubmitted() && $purchaseForm->isValid()) {
-
             $invoiceRepository = $this->get('app.invoice_repository');
             /**
              * @var $invoice Invoice
@@ -259,7 +256,6 @@ class TicketController extends EventBaseController
             $invoiceStatus = Ticket::INVOICE_SENT;
         } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_DUPLICATE) {
             // Designe un paiement deja effectue : on a surement deja eu le retour donc on s'arrete
-
         } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_CANCELED) {
             $paymentStatus = Ticket::STATUS_CANCELLED;
         } elseif (substr($payboxResponse->getStatus(), 0, 3) === '001') {

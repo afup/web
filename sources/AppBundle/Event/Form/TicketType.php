@@ -84,12 +84,12 @@ class TicketType extends AbstractType
                 'label' => 'Formule',
                 'choices' => $eventTickets,
                 'choice_label' => 'ticketType.prettyName',
-                'choice_attr' => function(\AppBundle\Event\Model\TicketEventType $type, $key, $index) use ($options, $event) {
+                'choice_attr' => function (\AppBundle\Event\Model\TicketEventType $type, $key, $index) use ($options, $event) {
                     $attr = [
                         'data-description' => $type->getDescription(),
                         'data-price' => $type->getPrice(),
                         'data-date-end' => $type->getDateEnd()->format('d/m'),
-                        'data-members-only' => (int)$type->getTicketType()->getIsRestrictedToMembers(),
+                        'data-members-only' => (int) $type->getTicketType()->getIsRestrictedToMembers(),
                         'data-stock' => $this->ticketTypeAvailability->getStock($type, $event),
                         'data-label' => $type->getTicketType()->getPrettyName()
                     ];

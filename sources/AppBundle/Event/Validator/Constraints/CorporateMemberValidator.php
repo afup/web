@@ -42,7 +42,7 @@ class CorporateMemberValidator extends ConstraintValidator
             return ;
         }
         $token = $this->tokenStorage->getToken();
-        
+
         /**
          * @var $constraint CorporateMember
          */

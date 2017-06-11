@@ -2,9 +2,9 @@
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Event\Validator\Constraints as Assert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
-use AppBundle\Event\Validator\Constraints as Assert;
 
 /**
  * Class Ticket
@@ -583,7 +583,7 @@ class Ticket implements NotifyPropertyInterface
      */
     public function setPmr($pmr)
     {
-        $pmr = (bool)$pmr;
+        $pmr = (bool) $pmr;
         $this->propertyChanged('pmr', $this->pmr, $pmr);
         $this->pmr = $pmr;
         return $this;

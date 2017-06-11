@@ -100,7 +100,7 @@ class PurchaseType extends AbstractType
 
                 if (is_object($this->tokenStorage->getToken()->getUser()) === false) {
                     $groups[] = 'not_logged_in';
-                } elseif ((int)$this->tokenStorage->getToken()->getUser()->getCompanyId() === 0) {
+                } elseif ((int) $this->tokenStorage->getToken()->getUser()->getCompanyId() === 0) {
                     $groups[] = 'personal';
                 } else {
                     $groups[] = 'corporate';
