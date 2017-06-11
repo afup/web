@@ -10,8 +10,6 @@ class PayboxResponseFactory
     {
         $keys = [
             'cmd',
-            'total',
-            'autorisation',
             'transaction',
             'status'
         ];

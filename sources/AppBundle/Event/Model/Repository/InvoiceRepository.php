@@ -45,6 +45,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
             $this->commit();
         } catch (Exception $e) {
             $this->rollback();
+            throw $e;
         }
     }
 

@@ -11,6 +11,7 @@ use AppBundle\Event\Validator\Constraints as Assert;
  * @Assert\LoggedInMember(groups={"personal"})
  * @Assert\PublicTicket(groups={"not_logged_in"})
  * @Assert\CorporateMember(groups={"corporate"})
+ * @Assert\AvailableTicket()
  */
 class Ticket implements NotifyPropertyInterface
 {

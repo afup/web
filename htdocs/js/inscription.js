@@ -48,7 +48,7 @@ $(document).ready(function(){
             validity &= this.checkValidity();
         });
 
-        if (validity === true) {
+        if (validity == true) {
             // Hide current fieldset
             $(this).parents('div.fieldset--inner').hide('slow');
 
@@ -165,7 +165,6 @@ $(document).ready(function(){
 
     $('a.add_inscription').click(function (event) {
         event.preventDefault();
-
         // Add data to fieldset legend
         var fieldset = $(this).parents('fieldset').first();
 
@@ -173,11 +172,11 @@ $(document).ready(function(){
             // Go to the next inscription
             var nextRegistration = parseInt($(this).data('registration')) + 1;
 
-            var nbPersonnes = parseInt($('#nbPersonnes').val(), 10);
+            var nbPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
             if (nbPersonnes < 5 && nextRegistration > nbPersonnes) {
-                $('#nbPersonnes').val(nextRegistration);
+                $('#purchase_nbPersonnes').val(nextRegistration);
             }
-            $('#nbPersonnes').change();
+            $('#purchase_nbPersonnes').change();
             manageFieldSet(nextRegistration);
         });
     });
@@ -195,30 +194,21 @@ $(document).ready(function(){
         $('fieldset.f6 div.fieldset--inner').show('slow');
     });
 
-    $("#nbPersonnes").change(function () {
-        var nb = parseInt($("#nbPersonnes").val(), 10);
-        //var path = parseUri($("#formulaire").attr("action"));
+    $("#purchase_nbPersonnes").change(function () {
+        var nb = parseInt($("#purchase_nbPersonnes").val(), 10);
 
         if (storageAvailable('localStorage')) {
 			localStorage.setItem('nbPersonnes', $(this).val());
 		}
 
-        /*var junction = '?';
-        if (path.indexOf('?') > -1) {
-            junction = '&';
-        }
-
-        $("#formulaire").attr("action", path + junction + 'nbInscriptions=' + nb);
-        */
         nbInscriptions = nb;
-
         manageFieldSet(nb);
     });
 
     $("legend").click(function(event){
         $('div.fieldset--inner')
             .not($(this).parents('fieldset').find('div.fieldset--inner'))
-            .not('#fieldset--7') // this is broken
+            .not('.f8') // this is broken
             .hide('slow')
         ;
         $(this).parents('fieldset').find('div.fieldset--inner').toggle('slow');
@@ -228,14 +218,14 @@ $(document).ready(function(){
     document.getElementById('formulaire').noValidate = true;
 
     $('#formulaire').on('submit', function(event){
-        $(this).attr('disabled', 'disabled');
+        /*$(this).attr('disabled', 'disabled');
 
         $(this).find('fieldset').each(function(){
             var validity = true;
             $(this).find('input').each(function(){
                 validity &= this.checkValidity();
             });
-            if (validity === false) {
+            if (validity == false) {
                 $(this).find('div.fieldset--inner').show();
                 event.preventDefault();
             } else if(this.classList.contains('f8') === false) {
@@ -245,7 +235,7 @@ $(document).ready(function(){
 		if (storageAvailable('localStorage')) {
 			localStorage.removeItem('tickets');
 			localStorage.removeItem('nbPersonnes');
-		}
+		}*/
     });
 
     $('#formulaire input').on('change', function (event) {
@@ -273,6 +263,11 @@ $(document).ready(function(){
         var fieldset = $(this).parents('fieldset').first();
         updateFieldsetSummary(fieldset);
     });
+
+    $('#tickets--other-payments').click(function(event){
+    	event.preventDefault();
+    	$('.tickets--bankwire').toggle('slow');
+	});
 
     var copyValBetweenFields = function (fromField, toField) {
         $('#' + toField).val ($('#' + fromField).val());
@@ -316,7 +311,7 @@ $(document).ready(function(){
 			}
 		}
 
-		$("#nbPersonnes option[value=" + nbInscriptions + "]").attr('selected', 'selected').change();
+		$("#purchase_nbPersonnes option[value=" + nbInscriptions + "]").attr('selected', 'selected').change();
 
 		manageFieldSet(nbInscriptions);
 

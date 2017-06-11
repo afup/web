@@ -168,12 +168,7 @@ class TicketController extends EventBaseController
             return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
         }
 
-        /* @todo service */
-        $purchaseFactory = new PurchaseTypeFactory(
-            $this->get('security.authorization_checker'),
-            $this->container->get('form.factory'),
-            $this->container->get('app.invoice_factory')
-        );
+        $purchaseFactory = $this->get('app.event_ticket.purchase_type_factory');
 
         $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $this->getUser());
 
@@ -186,6 +181,12 @@ class TicketController extends EventBaseController
              * @var $invoice Invoice
              */
             $invoice = $purchaseForm->getData();
+            $tickets = array_slice($invoice->getTickets(), 0, $purchaseForm->get('nbPersonnes')->getData());
+            $tickets[0]
+                ->setCompanyCitation($purchaseForm->get('companyCitation')->getData())
+                ->setNewsletter($purchaseForm->get('newsletterAfup')->getData())
+            ;
+            $invoice->setTickets($tickets);
 
             /**
              * @todo: voir où le mettre ça

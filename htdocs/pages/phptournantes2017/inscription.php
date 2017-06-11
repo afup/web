@@ -26,7 +26,7 @@ $nombre_inscrits = $forum_inscriptions->obtenirNombreInscrits($id_forum);
 $is_prevente = time() < $config_forum['date_fin_prevente'];
 
 
-$smarty->display('inscriptions_fermes.html');
+/*$smarty->display('inscriptions_fermes.html');
 die();
 
 if (!isset($_GET['passage_en_force'])) {
@@ -38,7 +38,7 @@ if (!isset($_GET['passage_en_force'])) {
       $smarty->display('inscriptions_fermes.html');
       die();
     }
-}
+}*/
 
 //nombre possible d'inscrptions sur une même commande
 $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_personnes'] : 5;

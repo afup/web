@@ -43,6 +43,7 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @var string
+     * @Assert\Email()
      */
     private $email;
 
@@ -53,31 +54,37 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $lastname;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $firstname;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $address;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $zipcode;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $city;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $countryId = Pays::DEFAULT_ID;
 

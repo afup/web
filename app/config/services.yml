@@ -234,9 +234,18 @@ services:
         tags:
           - { name: validator.constraint_validator }
 
-
     app.validator_corporate:
         class: AppBundle\Event\Validator\Constraints\CorporateMemberValidator
         autowire: true
         tags:
           - { name: validator.constraint_validator }
+
+    app.validator_available:
+        class: AppBundle\Event\Validator\Constraints\AvailableTicketValidator
+        autowire: true
+        tags:
+          - { name: validator.constraint_validator }
+
+    app.event_ticket.purchase_type_factory:
+        class: AppBundle\Event\Ticket\PurchaseTypeFactory
+        autowire: true

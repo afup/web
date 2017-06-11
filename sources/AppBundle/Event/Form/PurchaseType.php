@@ -33,6 +33,18 @@ class PurchaseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('nbPersonnes', ChoiceType::class, [
+                'choices' => [
+                    1 => 1,
+                    2 => 2,
+                    3 => 3,
+                    4 => 4,
+                    5 => 5
+                ],
+                'multiple' => false,
+                'expanded' => false,
+                'mapped' => false
+            ])
             ->add('tickets', CollectionType::class, [
                 // each entry in the array will be an "email" field
                 'entry_type' => TicketType::class,
@@ -63,19 +75,16 @@ class PurchaseType extends AbstractType
                 'label' => 'Country',
                 'choices' => array_flip($this->country->obtenirPays())
             ])
-            ->add('codeOfConduct', CheckboxType::class, [
-                'label' => 'L\'ensemble des participants s\'engage à respecter le Code de conduite*', // @todo check label et ajouter le renvoi vers l'asterisque
-                'required' => true,
+            ->add('companyCitation', CheckboxType::class, [
+                'label'    => 'J\'accepte que ma compagnie soit citée comme participant à la conférence',
+                'required' => false,
                 'mapped' => false
             ])
-            /*->add('companyCitation', CheckboxType::class, [
-                'label'    => 'Citer ma société en tant que participante à la conférence', // @todo check label
-                'required' => false
-            ])
             ->add('newsletterAfup', CheckboxType::class, [
-                'label' => 'M\'abonner à la newsletter afup', // @todo check label
-                'required' => false
-            ])*/
+                'label' => 'Je souhaite être tenu au courant des rencontres de l\'AFUP sur des sujets afférents à PHP',
+                'required' => false,
+                'mapped' => false
+            ])
         ;
     }
 

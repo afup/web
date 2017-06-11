@@ -110,7 +110,7 @@ form[name=purchase] .boutons .input tr.registration td, form[name=purchase] .bou
 form[name=purchase] .boutons .input td{
     border-left: 1px solid #7d7d7d;
 }
-ul.tickets--type-list, div.tickets--pmr {
+ul.tickets--type-list{
     margin-left:150px;
 }
 ul.tickets--type-list li {
@@ -119,4 +119,18 @@ ul.tickets--type-list li {
 ul.tickets--type-list label, div.tickets--pmr label{
     text-align: left;
     padding-left:20px;
+}
+label[for=purchase_codeOfConduct], #fieldset--7 div label{
+    width: auto;
+}
+div.tickets--bankwire{
+    display: none;
+    margin-left:200px;
+}
+ul.tickets--errors, #fieldset--7 div{
+    margin-left:200px;
+}
+ul.tickets--errors{
+    font-weight: bold;
+    color: #B0413E;
 }

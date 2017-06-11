@@ -60,8 +60,8 @@ class PayboxFactory
         $paybox->set_cmd($invoice->getReference()); // Référence de la commande
         $paybox->set_porteur($invoice->getEmail()); // Email du client final (Le porteur de la carte)
 
-        $paybox->set_repondreA($this->router->generate('ticket_paybox_callback', ['eventSlug' => $event->getPath()]));
-        $returnUrl = $this->router->generate('ticket_paybox_callback', ['eventSlug' => $event->getPath()]);
+        $paybox->set_repondreA($this->router->generate('ticket_paybox_callback', ['eventSlug' => $event->getPath()]), RouterInterface::ABSOLUTE_URL);
+        $returnUrl = $this->router->generate('ticket_paybox_redirect', ['eventSlug' => $event->getPath()], RouterInterface::ABSOLUTE_URL);
 
         $paybox->set_effectue($returnUrl);
         $paybox->set_refuse($returnUrl);

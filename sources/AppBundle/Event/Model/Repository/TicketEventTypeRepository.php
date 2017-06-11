@@ -14,9 +14,6 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
 {
     public function getTicketsByEvent(Event $event, $public = true)
     {
-        /**
-         * @todo check stock !
-         */
         $query = $this->getPreparedQuery('
             SELECT
             id_tarif, id_event, price, date_start, date_end, description,
