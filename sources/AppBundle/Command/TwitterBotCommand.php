@@ -10,6 +10,7 @@ use AppBundle\Event\Model\Repository\TweetRepository;
 use AppBundle\VideoNotifier\Runner;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TwitterBotCommand extends ContainerAwareCommand
@@ -19,7 +20,10 @@ class TwitterBotCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-        $this->setName('twitter-bot:run');
+        $this
+            ->setName('twitter-bot:run')
+            ->addOption('event-path', null, InputOption::VALUE_REQUIRED);
+        ;
     }
 
     /**
@@ -37,6 +41,31 @@ class TwitterBotCommand extends ContainerAwareCommand
             $ting->get(TweetRepository::class),
             $container->get('app.twitter_api')
         );
-        $runner->execute();
+        $runner->execute($this->getEventFilter($input));
+    }
+
+    /**
+     * @param InputInterface $input
+     *
+     * @return null
+     */
+    protected function getEventFilter(InputInterface $input)
+    {
+        if (null === ($eventPath = $input->getOption('event-path'))) {
+            return null;
+        }
+
+        $event = $this
+            ->getContainer()
+            ->get('ting')
+            ->get(EventRepository::class)
+            ->getByPath($eventPath)
+        ;
+
+        if (null === $event) {
+            throw new \InvalidArgumentException("L'événement sur lequel filter n'a pas été trouvé");
+        }
+
+        return $event;
     }
 }
