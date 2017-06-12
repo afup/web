@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class PublicTicket extends Constraint
 {
-    public $messageNotLoggedIn = 'To order this ticket you must be logged in with a valid membership.';
+    public $messageNotLoggedIn = 'You must be connected with a valid membership to order this ticket.';
 
     public function getTargets()
     {

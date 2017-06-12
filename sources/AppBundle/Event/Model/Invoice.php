@@ -493,7 +493,7 @@ class Invoice implements NotifyPropertyInterface
      * @param array $tickets
      * @return Invoice
      */
-    public function setTickets($tickets)
+    public function setTickets(array $tickets)
     {
         $this->tickets = $tickets;
         return $this;

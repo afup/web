@@ -76,7 +76,7 @@ class PurchaseType extends AbstractType
                 'choices' => array_flip($this->country->obtenirPays())
             ])
             ->add('companyCitation', CheckboxType::class, [
-                'label'    => 'J\'accepte que ma compagnie soit citée comme participant à la conférence',
+                'label'    => 'J\'accepte que ma société soit citée comme participant à la conférence',
                 'required' => false,
                 'mapped' => false
             ])
@@ -98,9 +98,10 @@ class PurchaseType extends AbstractType
             'validation_groups' => function () {
                 $groups = ['Default'];
 
-                if (is_object($this->tokenStorage->getToken()->getUser()) === false) {
+                $user = $this->tokenStorage->getToken()->getUser();
+                if (is_object($user) === false) {
                     $groups[] = 'not_logged_in';
-                } elseif ((int) $this->tokenStorage->getToken()->getUser()->getCompanyId() === 0) {
+                } elseif ((int) $user->getCompanyId() === 0) {
                     $groups[] = 'personal';
                 } else {
                     $groups[] = 'corporate';

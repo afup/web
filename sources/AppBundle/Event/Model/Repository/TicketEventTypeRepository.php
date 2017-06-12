@@ -17,9 +17,9 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
         $query = $this->getPreparedQuery('
             SELECT
             id_tarif, id_event, price, date_start, date_end, description,
-            aft.id, aft.technical_name, aft.day, aft.pretty_name, aft.public, aft.members_only, aft.default_price, aft.active
-            FROM afup_forum_tarif_event afte
-            JOIN afup_forum_tarif aft ON aft.id = afte.id_tarif
+            tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active
+            FROM afup_forum_tarif_event tarif_event
+            JOIN afup_forum_tarif tarif ON tarif.id = tarif_event.id_tarif
             WHERE date_start < NOW() AND date_end > NOW()
             AND id_event = :event
             AND public = :public
@@ -31,7 +31,7 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
 
         return $query->query(
             $this->getCollection(
-                (new HydratorSingleObject())->mapObjectTo('aft', 'afte', 'setTicketType')
+                (new HydratorSingleObject())->mapObjectTo('tarif', 'tarif_event', 'setTicketType')
             )
         );
     }

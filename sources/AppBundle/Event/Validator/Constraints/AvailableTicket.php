@@ -5,7 +5,6 @@ namespace AppBundle\Event\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class PublicTicket
  * @Annotation
  */
 class AvailableTicket extends Constraint

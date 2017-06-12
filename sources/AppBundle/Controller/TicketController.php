@@ -214,8 +214,8 @@ class TicketController extends EventBaseController
         }
 
         if ($invoice->getStatus() !== Ticket::STATUS_CREATED) {
-            // @todo à voir
-            die;
+            $this->get('logger')->addWarning(sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef));
+            return $this->render(':event/ticket:payment_already_done.html.twig');
         }
 
         $params = [
@@ -258,7 +258,7 @@ class TicketController extends EventBaseController
             // Designe un paiement deja effectue : on a surement deja eu le retour donc on s'arrete
         } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_CANCELED) {
             $paymentStatus = Ticket::STATUS_CANCELLED;
-        } elseif (substr($payboxResponse->getStatus(), 0, 3) === '001') {
+        } elseif ($payboxResponse->isErrorCode()) {
             $paymentStatus = Ticket::STATUS_DECLINED;
         }
         $invoice

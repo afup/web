@@ -7,7 +7,6 @@ use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
 /**
- * Class Ticket
  * @Assert\LoggedInMember(groups={"personal"})
  * @Assert\PublicTicket(groups={"not_logged_in"})
  * @Assert\CorporateMember(groups={"corporate"})

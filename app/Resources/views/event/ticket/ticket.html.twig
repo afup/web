@@ -43,9 +43,9 @@
         <h2>{{ 'Billetterie'|trans }}: {{ event.title }}</h2>
         {% if app.user %}
             {% if app.user.companyId > 0 %}
-                <p>{{ 'Vous êtes connecté avec un compte afup d\'entreprise. Pour acheter des places au tarif AFUP, celles-ci doivent être enregistrées pour les membres de votre adhésion.'|trans }}</p>
+                <p>{{ 'Vous êtes connecté avec un compte AFUP d\'entreprise. Pour acheter des places au tarif AFUP, celles-ci doivent être enregistrées pour les membres de votre adhésion.'|trans }}</p>
             {% else %}
-                <p>{{ 'Vous êtes connecté avec un compte afup personnel. Vous pouvez acheter une place au tarif membre pour vous seul.'|trans }}</p>
+                <p>{{ 'Vous êtes connecté avec un compte AFUP personnel. Vous pouvez acheter une place au tarif membre pour vous seul.'|trans }}</p>
             {% endif %}
             {% if app.user.lastSubscription < event.dateEnd %}
                 <p>{{ "Attention votre cotisation ne sera plus valable le jour de l'événement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l'événement."|trans }}</p>
@@ -56,7 +56,7 @@
 
         {{ form_start(ticketForm, {attr: {id: 'formulaire'}}) }}
 
-            <div id="divPersonne" style="">
+            <div id="divPersonne">
                 <fieldset>
                     <legend>
                         <a name="inscription1">Nombre de personnes</a>
@@ -68,7 +68,7 @@
             </div>
 
             {% for key,ticket in ticketForm.tickets %}
-                <fieldset class="f{{ key+1 }}">
+                <fieldset class="f{{ key+1 }} tickets--fieldset">
                     <legend><a name="inscription{{ key+1 }}">Personne</a> {{ key+1 }} <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>
                     <div id="fieldset--{{ key+1 }}" class="fieldset--inner">
                         {{ form_row(ticket.civility) }}
@@ -167,7 +167,8 @@
             <legend>Récapitulatif <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div id="fieldset--8" class="fieldset--inner">
                 <div class="clearfix">
                     <div class="input">
-                        <div id="summary"><table><tr class="registration"><th>2 jours :</th><td>250€</td><td>x1</td><td>250€</td></tr><tr><th>Total :</th><td></td><td>x1</td><td>250€</td></tr></table></div>
+                        <div id="summary">
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix">
@@ -189,8 +190,6 @@
             </div>
         </fieldset>
 
-        {#{{ form_row(ticketForm.companyCitation) }}
-        {{ form_row(ticketForm.newsletterAfup) }}#}
         {{ form_end(ticketForm) }}
     </div>
 {% endblock %}

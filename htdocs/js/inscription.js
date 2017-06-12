@@ -19,7 +19,7 @@ $(document).ready(function(){
 
     var manageFieldSet = function (nbInscriptions) {
         for (var i = 1; i < 6; i++) {
-            $('fieldset.f' + i).hide();
+            $('fieldset.tickets--fieldset').hide();
         }
 
         for (var i = 1; i < (nbInscriptions + 1); i++) {
@@ -218,24 +218,33 @@ $(document).ready(function(){
     document.getElementById('formulaire').noValidate = true;
 
     $('#formulaire').on('submit', function(event){
-        /*$(this).attr('disabled', 'disabled');
+        $(this).attr('disabled', 'disabled');
 
-        $(this).find('fieldset').each(function(){
-            var validity = true;
-            $(this).find('input').each(function(){
-                validity &= this.checkValidity();
-            });
-            if (validity == false) {
-                $(this).find('div.fieldset--inner').show();
-                event.preventDefault();
-            } else if(this.classList.contains('f8') === false) {
-                $(this).find('div.fieldset--inner').hide();
-            }
-        });
+        var fieldsets = ['f6', 'f7'];
+
+        for (var i = 1; i <= nbInscriptions; i++) {
+			fieldsets.push('f' + i);
+		}
+
+		for (var set in fieldsets) {
+			$('fieldset.' + fieldsets[set]).each(function(){
+				var validity = true;
+				$(this).find('input').each(function(){
+					validity &= this.checkValidity();
+				});
+				if (validity == false) {
+					$(this).find('div.fieldset--inner').show();
+					event.preventDefault();
+				} else if(this.classList.contains('f8') === false) {
+					$(this).find('div.fieldset--inner').hide();
+				}
+			});
+		}
+
 		if (storageAvailable('localStorage')) {
 			localStorage.removeItem('tickets');
 			localStorage.removeItem('nbPersonnes');
-		}*/
+		}
     });
 
     $('#formulaire input').on('change', function (event) {

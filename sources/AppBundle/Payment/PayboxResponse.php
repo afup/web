@@ -90,4 +90,9 @@ class PayboxResponse
     {
         return $this->status === self::STATUS_SUCCESS;
     }
+
+    public function isErrorCode()
+    {
+        return substr($this->status, 0, 3) === '001';
+    }
 }

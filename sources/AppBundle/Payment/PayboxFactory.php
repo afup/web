@@ -45,11 +45,10 @@ class PayboxFactory
         $paybox->set_annule('http://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_annule.php');
         $paybox->set_erreur('http://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_erreur.php');
 
-        if (preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
-            return $r[1];
-        } else {
+        if (!preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
             throw new \RuntimeException('Could not create the payment');
         }
+        return $r[1];
     }
 
     public function createPayboxForTicket(Invoice $invoice, Event $event)
