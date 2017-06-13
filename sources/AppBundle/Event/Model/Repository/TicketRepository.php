@@ -22,7 +22,6 @@ class TicketRepository extends Repository implements MetadataInitializer
 
     public function getByInvoiceWithDetail(Invoice $invoice)
     {
-        dump($invoice->getReference());
         return $this->getPreparedQuery(
             'SELECT
             inscriptions.id, inscriptions.date, inscriptions.reference, inscriptions.coupon, inscriptions.type_inscription,
