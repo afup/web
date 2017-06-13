@@ -156,3 +156,6 @@ ul.tickets--errors{
     font-weight: bold;
     color: #B0413E;
 }
+p.tickets--type-stock-limit{
+    margin-left:200px;
+}
