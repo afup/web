@@ -23,7 +23,7 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
             WHERE date_start < NOW() AND date_end > NOW()
             AND id_event = :event
             AND public = :public
-            ORDER BY date_start, date_end
+            ORDER BY date_start, date_end, price
         ')->setParams([
             'event' => $event->getId(),
             'public' => $public

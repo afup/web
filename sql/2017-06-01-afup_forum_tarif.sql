@@ -34,7 +34,13 @@ INSERT INTO `afup_forum_tarif` (`id`, `technical_name`, `pretty_name`, `public`,
   (20,	'AFUP_FORUM_PREMIERE_JOURNEE_AFUP',	'Jour 1 AFUP',	0,	1,	100,	0,	'one'),
   (21,	'AFUP_FORUM_DEUXIEME_JOURNEE_AFUP',	'Jour 2 AFUP',	0,	1,	100,	0,	'two'),
   (22,	'AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT',	'Jour 1 Etudiant',	0,	0,	100,	0,	'one'),
-  (23,	'AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT',	'Jour 2 Etudiant',	0,	0,	100,	0,	'two')
+  (23,	'AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT',	'Jour 2 Etudiant',	0,	0,	100,	0,	'two'),
+  (100,	'EARLY_BIRD',	'Early bird - 2 jours',	1,	0,	250,	1,	'one,two'),
+  (101,	'EARLY_BIRD_AFUP',	'Early bird - 2 jours - AFUP',	1,	1,	150,	1,	'one,two'),
+  (102,	'LATE_BIRD',	'Late bird - 2 jours',	1,	0,	325,	1,	'one,two'),
+  (103,	'LATE_BIRD_AFUP',	'Late bird - 2 jours - AFUP',	1,	1,	225,	1,	'one,two'),
+  (105,	'LATE_BIRD_PREMIERE_JOURNEE',	'Late bird - Première journée',	1,	0,	225,	1,	'one'),
+  (106,	'LATE_BIRD_DEUXIEME_JOURNEE',	'Late bird - Deuxième journée',	1,	0,	225,	1,	'two')
 ;
 
 UPDATE afup_forum_tarif SET id=0 WHERE id=99;
@@ -49,3 +55,14 @@ CREATE TABLE `afup_forum_tarif_event` (
   PRIMARY KEY (`id_tarif`,`id_event`),
   KEY `id_event` (`id_event`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `afup_forum_tarif_event` (`id_tarif`, `id_event`, `price`, `date_start`, `date_end`, `description`) VALUES
+  (0,	17,	180,	'2017-06-12 19:47:02',	'2017-09-17 23:59:59',	'Journée du jeudi 26 octobre'),
+  (1,	17,	180,	'2017-06-12 19:47:02',	'2017-09-17 23:59:59',	'Journée du vendredi 27 octobre'),
+  (2,	17,	280,	'2017-06-12 19:47:02',	'2017-09-17 23:59:59',	'2 Jours'),
+  (3,	17,	180,	'2017-06-12 19:47:02',	'2017-09-17 23:59:59',	'2 Jours - AFUP'),
+  (100,	17,	250,	'2017-06-12 19:47:02',	'2017-07-02 23:59:59',	'2 Jours'),
+  (101,	17,	150,	'2017-06-12 19:47:02',	'2017-07-02 23:59:59',	'2 Jours - AFUP'),
+  (102,	17,	325,	'2017-06-12 19:47:02',	'2017-10-15 23:59:59',	'2 Jours - Dernière minute'),
+  (103,	17,	225,	'2017-06-12 19:47:02',	'2017-10-15 23:59:59',	'2 Jours - Dernière minute - AFUP')
+;

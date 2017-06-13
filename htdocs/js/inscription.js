@@ -27,7 +27,7 @@ $(document).ready(function(){
             $('fieldset.f' + i).show();
             $('fieldset.f' + i).find('input[data-required=true]').attr('required', true);
 			if (typeof $('input[name="purchase[tickets][' + i +'][ticketType]"]:checked').val() === "undefined") {
-			    $('fieldset.f' + i).find('ul.tickets--type-list input[type=radio]:first').attr('checked', true);
+			    $('fieldset.f' + i).find('ul.tickets--type-list input[type=radio]:not(:disabled):first').attr('checked', true);
 			}
 			if (typeof $('input[name="purchase[tickets][' + i +'][pmr]"]:checked').val() === "undefined") {
 			    $('fieldset.f' + i).find('div.pmr input[type=radio]:eq(1)').attr('checked', true);
@@ -287,12 +287,6 @@ $(document).ready(function(){
     $('#purchase_tickets_0_lastname').on('change', function(){copyValBetweenFields('purchase_tickets_0_lastname', 'purchase_lastname')});
     $('#purchase_tickets_0_firstname').on('change', function(){copyValBetweenFields('purchase_tickets_0_firstname', 'purchase_firstname')});
     $('#purchase_tickets_0_email').on('change', function(){copyValBetweenFields('purchase_tickets_0_email', 'purchase_email')});
-
-    // Select radio button
-	// @todo
-    $('input[name=type_reglement]:first').attr('checked', 'checked');
-    $('input[name=citer_societe]:eq(0)').attr('checked', 'checked');
-    $('input[name=newsletter_afup]:eq(1)').attr('checked', 'checked');
 
     var init = function(){
 		if (storageAvailable('localStorage') && localStorage.getItem('tickets')) {

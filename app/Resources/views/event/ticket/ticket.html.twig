@@ -84,12 +84,15 @@
                                 <li>
                                     <div>
                                         {{ form_widget(type) }}
-                                        {{ form_label(type) }} <span class="tickets--type-price">{{ type.vars.attr['data-price'] }}€</span><br />
-                                        <span class="tickets--type-dateEnd">Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}</span><br />
-                                        <span class="tickets--type-desc">{{ type.vars.attr['data-description'] }}</span><br />
-                                        {% if type.vars.attr['data-stock'] < 10 %}
-                                            <span class="tickets--type-stock">Peu de billets disponibles</span><br />
-                                        {% endif %}
+                                        {{ form_label(type) }}
+                                        <span class="tickets--type-price">{{ type.vars.attr['data-price'] }}€</span><br />
+                                        <span class="tickets--type-details">
+                                        {% if type.vars.attr['data-members-only'] %}<span class="tickets--type-members">Réservé aux membres AFUP</span> - {% endif %}
+                                            <span class="tickets--type-dateEnd">Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}</span><br />
+                                            {% if type.vars.attr['data-stock'] < 10 %}
+                                                <span class="tickets--type-stock">Peu de billets disponibles</span><br />
+                                            {% endif %}
+                                        </span>
                                     </div>
                                 </li>
                             {% endfor %}

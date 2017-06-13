@@ -116,9 +116,27 @@ ul.tickets--type-list{
 ul.tickets--type-list li {
     padding: 1em 0;
 }
+ul.tickets--type-list label{
+    width: 500px;
+}
 ul.tickets--type-list label, div.tickets--pmr label{
     text-align: left;
     padding-left:20px;
+}
+ul.tickets--type-list input{
+    display:inline-block;
+    width: 20px;
+}
+ul.tickets--type-list span.tickets--type-details{
+    padding-left: 42px;
+}
+span.tickets--type-price{
+    font-weight:bold;
+    font-family: Glegoo,Helvetica,Arial,sans-serif;
+}
+span.tickets--type-members{
+    color: #4c6eaf;
+    font-weight:bold;
 }
 label[for=purchase_codeOfConduct], #fieldset--7 div label{
     width: auto;

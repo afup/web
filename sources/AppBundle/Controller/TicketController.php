@@ -221,6 +221,7 @@ class TicketController extends EventBaseController
         $params = [
             'event' => $event,
             'invoice' => $invoice,
+            'tickets' => $this->get('app.ticket_repository')->getByInvoiceWithDetail($invoice)
         ];
 
         if ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {

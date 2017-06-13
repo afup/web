@@ -3,9 +3,11 @@
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\HydratorArray;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -16,6 +18,32 @@ class TicketRepository extends Repository implements MetadataInitializer
     public function getByReference($reference)
     {
         return $this->getBy(['reference' => $reference]);
+    }
+
+    public function getByInvoiceWithDetail(Invoice $invoice)
+    {
+        dump($invoice->getReference());
+        return $this->getPreparedQuery(
+            'SELECT
+            inscriptions.id, inscriptions.date, inscriptions.reference, inscriptions.coupon, inscriptions.type_inscription,
+            inscriptions.montant, inscriptions.informations_reglement, inscriptions.civilite, inscriptions.nom, inscriptions.prenom,
+            inscriptions.email, inscriptions.telephone, inscriptions.citer_societe, inscriptions.newsletter_afup, inscriptions.newsletter_nexen,
+            inscriptions.commentaires, inscriptions.etat, inscriptions.facturation, inscriptions.id_forum, inscriptions.mobilite_reduite,
+            inscriptions.mail_partenaire, inscriptions.presence_day1, inscriptions.presence_day2,
+            tarif_event.id_tarif, tarif_event.id_event, tarif_event.price, tarif_event.date_start, tarif_event.date_end, tarif_event.description,
+            tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active
+            FROM afup_inscription_forum inscriptions
+            JOIN afup_forum_tarif_event tarif_event ON tarif_event.id_tarif = inscriptions.type_inscription AND tarif_event.id_event = inscriptions.id_forum
+            JOIN afup_forum_tarif tarif ON tarif.id = tarif_event.id_tarif
+            WHERE inscriptions.reference = :ref
+            '
+        )->setParams(['ref' => $invoice->getReference()])->query(
+            $this->getCollection(
+                (new HydratorSingleObject())
+                ->mapObjectTo('tarif', 'tarif_event', 'setTicketType')
+                ->mapObjectTo('tarif_event', 'inscriptions', 'setTicketEventType')
+            )
+        );
     }
 
     public function getPublicSoldTicketsByDay($day, Event $event)
