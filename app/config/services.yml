@@ -68,6 +68,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
 
+    app.company_member_repository:
+        class: AppBundle\Association\Model\Repository\CompanyMemberRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\CompanyMemberRepository]
+
     app.legacy_authenticator:
         class: AppBundle\Security\LegacyAuthenticator
         autowire: true
@@ -91,6 +96,7 @@ services:
 
     app.paybox_factory:
         class: AppBundle\Payment\PayboxFactory
+        autowire: true
 
     app.slack_message_factory:
         class: AppBundle\Slack\MessageFactory
@@ -180,6 +186,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TicketRepository]
 
+    app.ticket_event_repository:
+        class: AppBundle\Event\Model\Repository\TicketEventTypeRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TicketEventTypeRepository]
+
     app.sponsor_ticket_helper:
         class: AppBundle\Event\Ticket\SponsorTicketHelper
         autowire: true
@@ -188,3 +199,53 @@ services:
         class: AppBundle\Event\Ticket\SponsorTokenMail
         autowire: true
 
+    app.ticket_availability:
+        class: AppBundle\Event\Ticket\TicketTypeAvailability
+        autowire: true
+
+    app.ticket_form:
+        class: AppBundle\Event\Form\TicketType
+        autowire: true
+        tags:
+          - {name: form.type}
+
+    app.legacy_country:
+        class: Afup\Site\Utils\Pays
+        factory: ["@app.legacy_model_factory", 'createObject']
+        arguments:
+          - 'Afup\Site\Utils\Pays'
+
+    app.purchase_form:
+        class: AppBundle\Event\Form\PurchaseType
+        autowire: true
+        tags:
+          - {name: form.type}
+
+    app.validator_logged_in:
+        class: AppBundle\Event\Validator\Constraints\LoggedInMemberValidator
+        autowire: true
+        tags:
+          - { name: validator.constraint_validator }
+
+
+    app.validator_public:
+        class: AppBundle\Event\Validator\Constraints\PublicTicketValidator
+        autowire: true
+        tags:
+          - { name: validator.constraint_validator }
+
+    app.validator_corporate:
+        class: AppBundle\Event\Validator\Constraints\CorporateMemberValidator
+        autowire: true
+        tags:
+          - { name: validator.constraint_validator }
+
+    app.validator_available:
+        class: AppBundle\Event\Validator\Constraints\AvailableTicketValidator
+        autowire: true
+        tags:
+          - { name: validator.constraint_validator }
+
+    app.event_ticket.purchase_type_factory:
+        class: AppBundle\Event\Ticket\PurchaseTypeFactory
+        autowire: true

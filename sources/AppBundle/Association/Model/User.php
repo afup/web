@@ -471,6 +471,14 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->firstName . ' ' . $this->lastName;
     }
 
+    /**
+     * @return \Datetime
+     */
+    public function getLastSubscription()
+    {
+        return $this->lastSubscription;
+    }
+
     public function setLastSubscription($sub)
     {
         if ($sub !== null) {

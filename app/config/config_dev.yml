@@ -30,5 +30,8 @@ monolog:
         #    type:   chromephp
         #    level:  info
 
+parameters:
+    paybox_ips: [127.0.0.1, 192.168.42.1]
+
 #swiftmailer:
 #    delivery_address: me@example.com

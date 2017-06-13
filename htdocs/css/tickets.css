@@ -1,0 +1,161 @@
+form {
+    width: auto;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+input.span7 {
+    height:25px;
+}
+
+form *, #divPersonne *{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+fieldset{
+    padding: 0 0 18px;
+}
+
+fieldset legend{
+    display:block;
+    background-color:#50a0dd;
+    padding: 20px 10px;
+    color:white;
+    width:100%;
+    cursor: pointer;
+    font-size: 19.5px;
+}
+fieldset legend a {
+    color: white;
+}
+
+fieldset div.fieldset--inner {
+    background-color: #f2f2f2;
+    padding: 15px 10px;
+    width: 100%;
+}
+fieldset div.fieldset--inner > div{
+    padding: 0.4em 0;
+}
+
+fieldset p {
+    padding-top:15px;
+}
+
+input:invalid{
+    border-color: #900;
+    background-color: #FDD;
+}
+
+input:focus:invalid {
+    outline: none;
+}
+
+label{
+    width:200px;
+    font-weight: normal !important;
+    text-align: right;
+    padding: 0 1em 0 0;
+    border: none;
+}
+form .input{
+    margin-left: 230px !important;
+}
+
+span.fieldset--legend--price{
+    float:right
+}
+
+fieldset.f7 .input{
+    margin-left:50px !important;
+}
+fieldset.f7 .input .inputs-list li, fieldset.f6 .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
+    float:left;
+    width: 30%;
+}
+
+input[name^="tag"] {
+    width:200px;
+}
+div[id^="div_tags"] {
+    margin-left: 0 !important;
+}
+div[id^="div_tags"] ul li:not(:first-child){
+    float:left;
+    width:32%;
+}
+form[name=purchase] .btn{
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+}
+
+form[name=purchase] .boutons div.fieldset--inner div.clearfix .input{
+    margin: 0 20px !important;
+    text-align: right;
+}
+
+form[name=purchase] .boutons div.fieldset--inner div.clearfix:first-child .input{
+    margin: 0 auto !important;
+    width:50%;
+}
+form[name=purchase] .boutons .input tr.registration td, form[name=purchase] .boutons .input tr.registration th{
+    border-bottom: 1px solid #7d7d7d;
+    border-top:none !important;
+}
+form[name=purchase] .boutons .input td{
+    border-left: 1px solid #7d7d7d;
+}
+ul.tickets--type-list hr{
+    width:600px;
+    margin-left: 0;
+}
+ul.tickets--type-list{
+    margin-left:150px;
+}
+ul.tickets--type-list li {
+    padding: 0.5em 0;
+}
+ul.tickets--type-list label{
+    width: 500px;
+}
+ul.tickets--type-list label, div.tickets--pmr label{
+    text-align: left;
+    padding-left:20px;
+}
+ul.tickets--type-list input{
+    display:inline-block;
+    width: 20px;
+}
+ul.tickets--type-list span.tickets--type-details{
+    padding-left: 42px;
+}
+span.tickets--type-price{
+    font-weight:bold;
+    font-family: Glegoo,Helvetica,Arial,sans-serif;
+}
+span.tickets--type-members{
+    color: #4c6eaf;
+    font-weight:bold;
+}
+label[for=purchase_codeOfConduct], #fieldset--7 div label{
+    width: auto;
+}
+div.tickets--bankwire{
+    display: none;
+    margin-left:200px;
+}
+ul.tickets--errors, #fieldset--7 div{
+    margin-left:200px;
+}
+ul.tickets--errors{
+    font-weight: bold;
+    color: #B0413E;
+}
+p.tickets--type-stock-limit{
+    margin-left:200px;
+}

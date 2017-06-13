@@ -6,6 +6,8 @@ namespace Afup\Site\Utils;
  */
 class Pays
 {
+    const DEFAULT_ID = 'FR';
+
     /**
      * Instance de la couche d'abstraction à la base de données
      * @var     \Afup\Site\Utils\Base_De_Donnees

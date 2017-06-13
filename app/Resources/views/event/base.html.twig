@@ -7,46 +7,9 @@
     <link rel="stylesheet" href="{{ asset('/css/grid.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/vote.css') }}">
 {% endblock %}
-{% set menu = {'main': {'route' : 'event', 'title': 'Appel à conférences'}, 'items': [{'title': 'Proposer une conférence', 'route': 'cfp'}, {'title': 'Voter pour les conférences', 'route': 'vote_index'}]} %}
 
 {% block header %}
     <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="#body" class="nav-button-open" aria-label="open navigation"></a>
-                <a href="#" class="nav-button-close" aria-label="close navigation"></a>
-                {% if menu.main is defined %}
-                    <a class="navbar-brand hidden-xs {% if app.request.get('_route') == menu.main.route %}active{% endif %}"
-                       href="{{ url(menu.main.route, {eventSlug: event.path}) }}">{{ menu.main.title|trans }}</a>
-                {% endif %}
-            </div>
-
-            <nav>
-                <ul class="nav navbar-nav">
-                    {% if menu.items is defined %}
-                        {% for item in menu.items %}
-                            <li class="{% if loop.first %}first{% endif %} {% if app.request.get('_route') == item.route %}active{% endif %}">
-                                <a href="{{ url(item.route, {eventSlug: event.path}) }}">
-                                    {{ item.title|trans }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    {% endif %}
-                    <li>
-                        {% set locale = 'fr' %}
-                        {% if app.request.locale == 'fr' %}
-                            {% set locale = 'en' %}
-                        {% endif %}
-                        {% set parameters = app.request.attributes.get('_route_params')|merge({'_locale':locale}) %}
-                        <a href="{{ url(app.request.get('_route'), parameters) }}">
-                        [{{ locale }}]
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="navbar-right hidden-xs">
-                <a href="https://afup.org" target="_blank" id="logo"> </a>
-            </div>
-        </div>
+        {% include 'event/menu.html.twig' %}
     </header>
 {% endblock %}
