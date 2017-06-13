@@ -41,18 +41,20 @@
 
     <div class="col-md-8">
         <h2>{{ 'Billetterie'|trans }}: {{ event.title }}</h2>
-        {% if app.user %}
-            {% if app.user.companyId > 0 %}
-                <p>{{ 'Vous êtes connecté avec un compte AFUP d\'entreprise. Pour acheter des places au tarif AFUP, celles-ci doivent être enregistrées pour les membres de votre adhésion.'|trans }}</p>
+        <div class="tickets--members-detail">
+            {% if app.user %}
+                {% if app.user.companyId > 0 %}
+                    <p>{{ 'Vous êtes connecté avec un compte AFUP d\'entreprise. Pour acheter des places au tarif AFUP, celles-ci doivent être enregistrées pour les membres de votre adhésion.'|trans }}</p>
+                {% else %}
+                    <p>{{ 'Vous êtes connecté avec un compte AFUP personnel. Vous pouvez acheter une place au tarif membre pour vous seul.'|trans }}</p>
+                {% endif %}
+                {% if app.user.lastSubscription < event.dateEnd %}
+                    <p><strong>{{ "Attention votre cotisation ne sera plus valable le jour de l'événement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l'événement."|trans }}</strong></p>
+                {% endif %}
             {% else %}
-                <p>{{ 'Vous êtes connecté avec un compte AFUP personnel. Vous pouvez acheter une place au tarif membre pour vous seul.'|trans }}</p>
+                <p>Pour acheter des places au tarif AFUP, vous devez vous <a href="{{ url('admin_login') }}">connecter</a>.</p>
             {% endif %}
-            {% if app.user.lastSubscription < event.dateEnd %}
-                <p>{{ "Attention votre cotisation ne sera plus valable le jour de l'événement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l'événement."|trans }}</p>
-            {% endif %}
-        {% else %}
-            <p>Pour acheter des places au tarif AFUP, vous devez vous connecter.</p>
-        {% endif %}
+        </div>
 
         {{ form_start(ticketForm, {attr: {id: 'formulaire'}}) }}
 

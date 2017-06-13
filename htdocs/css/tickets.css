@@ -159,3 +159,12 @@ ul.tickets--errors{
 p.tickets--type-stock-limit{
     margin-left:200px;
 }
+#tickets--other-payments{
+    cursor: pointer;
+}
+div.tickets--members-detail{
+    padding: 0 1em;
+    border: 1px #50a0dd solid;
+    margin: 1em auto;
+    background-color:#f2f2f2;
+}

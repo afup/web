@@ -11,13 +11,31 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
+/**
+ * @var $this \AppBundle\Controller\LegacyController
+ */
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer','envoyer_convocation', 'generer_mail_inscription_afup', 'generer_inscription_afup'));
 $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
 
+$eventRepository = $this->get('app.event_repository');
+$ticketEventTypeRepository = $this->get('app.ticket_event_repository');
 
+function updateGlobalsForTarif(\AppBundle\Event\Model\Repository\EventRepository $eventRepository, \AppBundle\Event\Model\Repository\TicketEventTypeRepository $ticketEventTypeRepository, $forumId) {
+    global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
+    $event = $eventRepository->get($forumId);
+    $ticketTypes = $ticketEventTypeRepository->getTicketsByEvent($event, false);
+    $AFUP_Tarifs_Forum_Lib = $AFUP_Tarifs_Forum = [];
+    foreach ($ticketTypes as $ticketType) {
+        /**
+         * @var $ticketType \AppBundle\Event\Model\TicketEventType
+         */
+        $AFUP_Tarifs_Forum[$ticketType->getTicketTypeId()] = $ticketType->getPrice();
+        $AFUP_Tarifs_Forum_Lib[$ticketType->getTicketTypeId()] = $ticketType->getTicketType()->getPrettyName();
+    }
+}
 
 
 
@@ -74,6 +92,8 @@ if ($action == 'envoyer_convocation') {
     }
     $forumData = $forum->obtenir($_GET['id_forum']);
     $smarty->assign('id_forum', $_GET['id_forum']);
+
+    updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $_GET['id_forum']);
 
     $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
     $smarty->assign('forum_tarifs',$AFUP_Tarifs_Forum);
@@ -167,6 +187,7 @@ if ($action == 'envoyer_convocation') {
     	    $_GET['id_forum'] = $champs['id_forum'];
     	}
     }
+    updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $_GET['id_forum']);
 
 	$formulaire->addElement('hidden', 'old_reference', (isset($champs) ? $champs['reference'] : ''));
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);

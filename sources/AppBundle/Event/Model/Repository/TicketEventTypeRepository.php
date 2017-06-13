@@ -12,9 +12,9 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TicketEventTypeRepository extends Repository implements MetadataInitializer
 {
-    public function getTicketsByEvent(Event $event, $public = true)
+    public function getTicketsByEvent(Event $event, $publicOnly = true)
     {
-        $query = $this->getPreparedQuery('
+        $sql = '
             SELECT
             id_tarif, id_event, price, date_start, date_end, description,
             tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active
@@ -22,12 +22,17 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
             JOIN afup_forum_tarif tarif ON tarif.id = tarif_event.id_tarif
             WHERE date_start < NOW() AND date_end > NOW()
             AND id_event = :event
-            AND public = :public
+        ';
+
+        $params = ['event' => $event->getId()];
+        if ($publicOnly === true) {
+            $sql .= 'AND public = :public';
+            $params['public'] = $publicOnly;
+        }
+        $sql .='
             ORDER BY date_start, date_end, price, tarif.members_only DESC
-        ')->setParams([
-            'event' => $event->getId(),
-            'public' => $public
-        ]);
+        ';
+        $query = $this->getPreparedQuery($sql)->setParams($params);
 
         return $query->query(
             $this->getCollection(
