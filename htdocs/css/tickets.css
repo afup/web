@@ -114,7 +114,7 @@ ul.tickets--type-list{
     margin-left:150px;
 }
 ul.tickets--type-list li {
-    padding: 1em 0;
+    padding: 0.5em 0;
 }
 ul.tickets--type-list label{
     width: 500px;
