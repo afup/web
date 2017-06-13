@@ -227,7 +227,6 @@ services:
         tags:
           - { name: validator.constraint_validator }
 
-
     app.validator_public:
         class: AppBundle\Event\Validator\Constraints\PublicTicketValidator
         autowire: true
