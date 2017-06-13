@@ -110,6 +110,10 @@ form[name=purchase] .boutons .input tr.registration td, form[name=purchase] .bou
 form[name=purchase] .boutons .input td{
     border-left: 1px solid #7d7d7d;
 }
+ul.tickets--type-list hr{
+    width:600px;
+    margin-left: 0;
+}
 ul.tickets--type-list{
     margin-left:150px;
 }

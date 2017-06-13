@@ -80,15 +80,18 @@
                         {{ form_errors(ticket.ticketEventType) }}
                         {{ form_label(ticket.ticketEventType) }}
                         <ul class="tickets--type-list">
+                            {% set endDate = null %}
                             {% for type in ticket.ticketEventType %}
+                                {% if endDate != type.vars.attr['data-date-end'] and endDate != null %}<hr />{% endif %}
+                                {% set endDate=type.vars.attr['data-date-end'] %}
                                 <li>
                                     <div>
                                         {{ form_widget(type) }}
                                         {{ form_label(type) }}
                                         <span class="tickets--type-price">{{ type.vars.attr['data-price'] }}€</span><br />
                                         <span class="tickets--type-details">
-                                        {% if type.vars.attr['data-members-only'] %}<span class="tickets--type-members">Réservé aux membres AFUP</span> - {% endif %}
-                                            <span class="tickets--type-dateEnd">Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}</span><br />
+                                            <span class="tickets--type-dateEnd">Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}</span>
+                                            {% if type.vars.attr['data-members-only'] %} - <span class="tickets--type-members">Réservé aux membres AFUP</span>{% endif %}<br />
                                             {% if type.vars.attr['data-stock'] < 10 %}
                                                 <span class="tickets--type-stock">Peu de billets disponibles</span><br />
                                             {% endif %}
