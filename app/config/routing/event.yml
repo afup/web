@@ -81,3 +81,11 @@ ticket_paybox_callback:
 ticket_paybox_redirect:
   path: /{eventSlug}/tickets/paybox-redirect
   defaults: {_controller: AppBundle:Ticket:payboxRedirect}
+
+sponsor_leads:
+  path: /{eventSlug}/sponsor/become-sponsor
+  defaults: {_controller: AppBundle:Lead:becomeSponsor}
+
+sponsor_leads_post:
+  path: /{eventSlug}/sponsor/thank-you
+  defaults: {_controller: AppBundle:Lead:postLead}

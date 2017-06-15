@@ -248,3 +248,19 @@ services:
     app.event_ticket.purchase_type_factory:
         class: AppBundle\Event\Ticket\PurchaseTypeFactory
         autowire: true
+
+    app.sponsorship_lead_mailer:
+        class: AppBundle\Event\Sponsorship\SponsorshipLeadMail
+        arguments: ["@app.mail", "@translator", "@logger", "%kernel.root_dir%/../htdocs/uploads/"]
+
+    app.trello_client:
+        class: Trello\Client
+        calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const:Trello\Client::AUTH_URL_CLIENT_ID]]]
+
+    app.trello_manager:
+        class: Trello\Manager
+        arguments: ["@app.trello_client"]
+
+    app.lead_repository:
+        class: AppBundle\Event\Model\Repository\LeadRepository
+        autowire: true

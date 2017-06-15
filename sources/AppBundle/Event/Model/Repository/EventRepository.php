@@ -115,6 +115,11 @@ class EventRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'path',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'trello_list_id',
+                'fieldName' => 'trelloListId',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;

@@ -1,0 +1,62 @@
+{% extends ':event/ticket:base.html.twig' %}
+
+{% set menu = {'main': {'route' : 'ticket', 'title': 'Become a sponsor'}} %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/tickets.css') }}" />
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h2>{{ 'Devenir sponsor'|trans }}</h2>
+        <div class="sponsor--become-talk">
+            <h3>{{ 'Notre événement'|trans }}</h3>
+            <p>
+                Depuis 15 ans, l'AFUP organise le Forum PHP, événement majeur en Europe autour du PHP. Il se déroulera cette
+                année les 26 et 27 octobre au Marriott Paris - Rive Gauche, situé dans le quartier de Denfert-Rochereau.<br />
+                40 conférences et ateliers pratiques sont proposées à nos participants, dans un cadre exceptionnel.
+                2 tracks de conférences et un cycle d'ateliers ont lieu simultanément, permettant aux participants
+                de découvrir de nouvelles techniques en profondeur.
+            </p>
+            <h3>{{ 'Notre public'|trans }}</h3>
+            <p>
+                Plus de 600 développeur·se·s, décideur·se·s, expert·e·s ou novices en PHP rejoindront cette année l'AFUP
+                pour cet événement exceptionnel. Comme lors de chaque édition, des conférencier·ère·s nationaux et
+                internationaux viendront présenter des conférences qui font référence.<br />
+                De la startup au groupe du CAC 40, toutes les sociétés sont représentées lors de cet événement unique.
+            </p>
+            <h3>{{ 'Nos offres'|trans }}</h3>
+            <p>
+                Que vous ayez une offre à promouvoir, un produit à présenter ou que vous souhaitiez soutenir l'open source,
+                nous aurons une offre à vous proposer.<br />
+                Avec ou sans stand lors de l'événement, nos différents niveaux de sponsoring vous permettent de trouver
+                une offre qui correspond à vos attentes de visibilité tout en respectant votre budget.<br />
+                Pour les sponsors, cet événement est l'occasion unique à Paris de rencontrer autant de développeur·se·s
+                web dans un cadre convivial.
+            </p>
+        </div>
+
+    </div>
+    <div class="sponsor--become-form col-md-4">
+        {{ form_start(leadForm) }}
+        <fieldset>
+            <legend>{{ 'Recevoir notre dossier'|trans }}</legend>
+            <div class="fieldset--inner">
+                {{ form_row(leadForm.firstname) }}
+                {{ form_row(leadForm.lastname) }}
+                {{ form_row(leadForm.email) }}
+                {{ form_row(leadForm.phone) }}
+                {{ form_row(leadForm.position) }}
+                {{ form_row(leadForm.company) }}
+                {{ form_row(leadForm.website) }}
+                {{ form_row(leadForm.language) }}
+                {{ form_errors(leadForm) }}
+                <div class="sponsor--become-submit">
+                    <input type="submit" value="{{ 'Recevoir le dossier'|trans }}" />
+                </div>
+            </div>
+        </fieldset>
+        {{ form_end(leadForm) }}
+    </div>
+{% endblock %}

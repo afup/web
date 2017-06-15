@@ -16,6 +16,8 @@ require_once 'mandrill/Mandrill.php';
 class Mail
 {
 
+    const TEMPLATE_TRANSAC = 'message-transactionnel-afup-org';
+
     protected $_apiKey;
     protected $_mandrill;
 
@@ -99,7 +101,7 @@ class Mail
                 $sendAt
             );
         } catch (Mandrill_Error $e) {
-            //throw $e;
+            throw $e;
             return false;
         }
 
