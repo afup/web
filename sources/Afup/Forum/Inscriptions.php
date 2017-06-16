@@ -452,119 +452,42 @@ SQL;
         $statistiques = array();
 
         // Premier jour
-        $requete = 'SELECT COUNT(*) ';
-        $requete .= 'FROM afup_inscription_forum ';
-        $requete .= 'WHERE id_forum =' . $id_forum . ' ';
-        $requete .= '  AND etat NOT IN (' . AFUP_FORUM_ETAT_ANNULE . ', ' . AFUP_FORUM_ETAT_ERREUR . ', ' . AFUP_FORUM_ETAT_REFUSE . ') ';
-        $requete .= '  AND type_inscription IN (' . AFUP_FORUM_PREMIERE_JOURNEE . ','
-            . AFUP_FORUM_2_JOURNEES . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_COUPON . ','
-            . AFUP_FORUM_2_JOURNEES_SPONSOR . ','
-            . AFUP_FORUM_PROF . ','
-            . AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION . ')';
+        $baseQuery = 'SELECT COUNT(*)
+        FROM afup_inscription_forum aif
+        JOIN afup_forum_tarif aft ON aif.type_inscription = aft.id
+        WHERE id_forum =' . $id_forum . ' AND FIND_IN_SET("one", aft.day)
+        ';
+
+        $requete = $baseQuery . '
+        AND etat NOT IN (' . AFUP_FORUM_ETAT_ANNULE . ', ' . AFUP_FORUM_ETAT_ERREUR . ', ' . AFUP_FORUM_ETAT_REFUSE . ')
+        ';
         $statistiques['premier_jour']['inscrits'] = $this->_bdd->obtenirUn($requete);
 
-        $requete = 'SELECT COUNT(*) ';
-        $requete .= 'FROM afup_inscription_forum ';
-        $requete .= 'WHERE id_forum =' . $id_forum . ' ';
-        $requete .= '  AND etat IN (' . AFUP_FORUM_ETAT_REGLE . ', ' . AFUP_FORUM_ETAT_INVITE . ', ' . AFUP_FORUM_ETAT_CONFIRME . ') ';
-        $requete .= '  AND type_inscription IN (' . AFUP_FORUM_PREMIERE_JOURNEE . ','
-            . AFUP_FORUM_2_JOURNEES . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_COUPON . ','
-            . AFUP_FORUM_2_JOURNEES_SPONSOR . ','
-            . AFUP_FORUM_PROF . ','
-            . AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION . ')';
+        $requete = $baseQuery . '
+            AND etat IN (' . AFUP_FORUM_ETAT_REGLE . ', ' . AFUP_FORUM_ETAT_INVITE . ', ' . AFUP_FORUM_ETAT_CONFIRME . ')
+        ';
         $statistiques['premier_jour']['confirmes'] = $this->_bdd->obtenirUn($requete);
 
-        $requete = 'SELECT COUNT(*) ';
-        $requete .= 'FROM afup_inscription_forum ';
-        $requete .= 'WHERE id_forum =' . $id_forum . ' ';
-        $requete .= '  AND etat = ' . AFUP_FORUM_ETAT_ATTENTE_REGLEMENT . ' ';
-        $requete .= '  AND type_inscription IN (' . AFUP_FORUM_PREMIERE_JOURNEE . ','
-            . AFUP_FORUM_2_JOURNEES . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_COUPON . ','
-            . AFUP_FORUM_2_JOURNEES_SPONSOR . ','
-            . AFUP_FORUM_PROF . ','
-            . AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION . ')';
+        $requete = $baseQuery . '  AND etat = ' . AFUP_FORUM_ETAT_ATTENTE_REGLEMENT . ' ';
         $statistiques['premier_jour']['en_attente_de_reglement'] = $this->_bdd->obtenirUn($requete);
 
         // Second jour
-        $requete = 'SELECT COUNT(*) ';
-        $requete .= 'FROM afup_inscription_forum ';
-        $requete .= 'WHERE id_forum =' . $id_forum . ' ';
-        $requete .= '  AND etat NOT IN (' . AFUP_FORUM_ETAT_ANNULE . ', ' . AFUP_FORUM_ETAT_ERREUR . ', ' . AFUP_FORUM_ETAT_REFUSE . ') ';
-        $requete .= '  AND type_inscription IN (' . AFUP_FORUM_DEUXIEME_JOURNEE . ','
-            . AFUP_FORUM_2_JOURNEES . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_COUPON . ','
-            . AFUP_FORUM_2_JOURNEES_SPONSOR . ','
-            . AFUP_FORUM_PROF . ','
-            . AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION . ')';
+        $baseQuery = 'SELECT COUNT(*)
+        FROM afup_inscription_forum aif
+        JOIN afup_forum_tarif aft ON aif.type_inscription = aft.id
+        WHERE id_forum =' . $id_forum . ' AND FIND_IN_SET("two", aft.day)
+        ';
+        $requete = $baseQuery . '
+          AND etat NOT IN (' . AFUP_FORUM_ETAT_ANNULE . ', ' . AFUP_FORUM_ETAT_ERREUR . ', ' . AFUP_FORUM_ETAT_REFUSE . ')
+        ';
         $statistiques['second_jour']['inscrits'] = $this->_bdd->obtenirUn($requete);
 
-        $requete = 'SELECT COUNT(*) ';
-        $requete .= 'FROM afup_inscription_forum ';
-        $requete .= 'WHERE id_forum =' . $id_forum . ' ';
-        $requete .= '  AND etat IN (' . AFUP_FORUM_ETAT_REGLE . ', ' . AFUP_FORUM_ETAT_INVITE . ', ' . AFUP_FORUM_ETAT_CONFIRME . ') ';
-        $requete .= '  AND type_inscription IN (' . AFUP_FORUM_DEUXIEME_JOURNEE . ','
-            . AFUP_FORUM_2_JOURNEES . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_COUPON . ','
-            . AFUP_FORUM_2_JOURNEES_SPONSOR . ','
-            . AFUP_FORUM_PROF . ','
-            . AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION . ')';
+        $requete = $baseQuery . '
+         AND etat IN (' . AFUP_FORUM_ETAT_REGLE . ', ' . AFUP_FORUM_ETAT_INVITE . ', ' . AFUP_FORUM_ETAT_CONFIRME . ') ';
         $statistiques['second_jour']['confirmes'] = $this->_bdd->obtenirUn($requete);
 
-        $requete = 'SELECT COUNT(*) ';
-        $requete .= 'FROM afup_inscription_forum ';
-        $requete .= 'WHERE id_forum =' . $id_forum . ' ';
-        $requete .= '  AND etat = ' . AFUP_FORUM_ETAT_ATTENTE_REGLEMENT . ' ';
-        $requete .= '  AND type_inscription IN (' . AFUP_FORUM_DEUXIEME_JOURNEE . ','
-            . AFUP_FORUM_2_JOURNEES . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_COUPON . ','
-            . AFUP_FORUM_2_JOURNEES_SPONSOR . ','
-            . AFUP_FORUM_PROF . ','
-            . AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE . ','
-            . AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION . ')';
+        $requete = $baseQuery . '
+         AND etat = ' . AFUP_FORUM_ETAT_ATTENTE_REGLEMENT . ' ';
         $statistiques['second_jour']['en_attente_de_reglement'] = $this->_bdd->obtenirUn($requete);
 
         // Nombre de personnes validées par type d'inscription
