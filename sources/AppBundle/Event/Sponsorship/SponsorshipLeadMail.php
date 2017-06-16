@@ -4,10 +4,7 @@ namespace AppBundle\Event\Sponsorship;
 
 use Afup\Site\Utils\Mail;
 use AppBundle\Event\Model\Lead;
-use AppBundle\Event\Model\Repository\EventRepository;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class SponsorshipLeadMail
