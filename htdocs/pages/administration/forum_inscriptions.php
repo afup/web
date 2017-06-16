@@ -23,10 +23,15 @@ $smarty->assign('action', $action);
 $eventRepository = $this->get('app.event_repository');
 $ticketEventTypeRepository = $this->get('app.ticket_event_repository');
 
-function updateGlobalsForTarif(\AppBundle\Event\Model\Repository\EventRepository $eventRepository, \AppBundle\Event\Model\Repository\TicketEventTypeRepository $ticketEventTypeRepository, $forumId) {
+function updateGlobalsForTarif(
+    \AppBundle\Event\Model\Repository\EventRepository $eventRepository,
+    \AppBundle\Event\Model\Repository\TicketEventTypeRepository $ticketEventTypeRepository,
+    $forumId,
+    &$membersTickets = []
+) {
     global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
     $event = $eventRepository->get($forumId);
-    $ticketTypes = $ticketEventTypeRepository->getTicketsByEvent($event, false);
+    $ticketTypes = $ticketEventTypeRepository->getTicketsByEvent($event, false, false);
     $AFUP_Tarifs_Forum_Lib = $AFUP_Tarifs_Forum = [];
     foreach ($ticketTypes as $ticketType) {
         /**
@@ -34,6 +39,10 @@ function updateGlobalsForTarif(\AppBundle\Event\Model\Repository\EventRepository
          */
         $AFUP_Tarifs_Forum[$ticketType->getTicketTypeId()] = $ticketType->getPrice();
         $AFUP_Tarifs_Forum_Lib[$ticketType->getTicketTypeId()] = $ticketType->getTicketType()->getPrettyName();
+
+        if ($ticketType->getTicketType()->getIsRestrictedToMembers()) {
+            $membersTickets[] = $ticketType->getTicketTypeId();
+        }
     }
 }
 
@@ -92,9 +101,11 @@ if ($action == 'envoyer_convocation') {
     }
     $forumData = $forum->obtenir($_GET['id_forum']);
     $smarty->assign('id_forum', $_GET['id_forum']);
+    $memberTickets = [];
 
-    updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $_GET['id_forum']);
+    updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $_GET['id_forum'], $memberTickets);
 
+    $smarty->assign('forum_tarifs_members', $memberTickets);
     $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
     $smarty->assign('forum_tarifs',$AFUP_Tarifs_Forum);
     $smarty->assign('statistiques', $forum_inscriptions->obtenirStatistiques($_GET['id_forum']));
