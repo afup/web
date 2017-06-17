@@ -68,7 +68,7 @@ class SponsorshipLeadMail
         ];
 
         $parameters = [
-            'from_name' => 'AFUP sponsorship team',
+            'from_name' => 'AFUP sponsors',
             'from_email' => 'sponsors@afup.org',
             'attachments' => [
                 [
@@ -81,7 +81,7 @@ class SponsorshipLeadMail
         ];
 
         if (!$this->mail->send(Mail::TEMPLATE_TRANSAC, $receiver, $data, $parameters)) {
-            $this->logger->warning(sprintf('Mail not sent for inscription %s', $lead->getEmail()));
+            $this->logger->warning(sprintf('Mail not sent for sponsorship lead retrieval: "%s"', $lead->getEmail()));
         }
     }
 }

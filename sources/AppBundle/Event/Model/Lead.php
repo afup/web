@@ -4,7 +4,7 @@ namespace AppBundle\Event\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Lead
+class Lead implements \JsonSerializable
 {
     /**
      * @var string
@@ -51,7 +51,6 @@ class Lead
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @Assert\Url()
      */
     private $website;
@@ -229,5 +228,22 @@ class Lead
     {
         $this->event = $event;
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    function jsonSerialize()
+    {
+        return [
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'phone' => $this->phone,
+            'website' => $this->website,
+            'position' => $this->position,
+            'company' => $this->company,
+            'language' => $this->language,
+            'email' => $this->email
+        ];
     }
 }

@@ -4,6 +4,7 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Lead;
 
+use Psr\Log\LoggerInterface;
 use Trello\Manager;
 
 class LeadRepository
@@ -13,13 +14,21 @@ class LeadRepository
      */
     private $manager;
 
-    public function __construct(Manager $manager)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(Manager $manager, LoggerInterface $logger)
     {
         $this->manager = $manager;
+        $this->logger = $logger;
     }
 
     public function save(Lead $lead)
     {
+        $this->logger->info(sprintf('Lead collected and sent to trello: %s', json_encode($lead)));
+
         $card = $this->manager->getCard();
         $card
             ->setDueDate((new \DateTime())->add(new \DateInterval('P1W')))

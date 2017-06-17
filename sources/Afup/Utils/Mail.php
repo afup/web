@@ -6,6 +6,7 @@ namespace Afup\Site\Utils;
 use Exception;
 use Mandrill;
 use Mandrill_Error;
+use Psr\Log\LoggerInterface;
 
 require_once dirname(__FILE__) . '/Configuration.php';
 require_once 'mandrill/Mandrill.php';
@@ -21,13 +22,17 @@ class Mail
     protected $_apiKey;
     protected $_mandrill;
 
+    private $logger;
+
     /**
      * Init the object by getting the Maindrill API key
+     * @param $logger LoggerInterface
      */
-    public function __construct()
+    public function __construct(LoggerInterface $logger = null)
     {
         // Get the API key
         $this->_apiKey = $this->_getConfig()->obtenir('mandrill|key');
+        $this->logger = $logger;
     }
 
     /**
@@ -101,7 +106,9 @@ class Mail
                 $sendAt
             );
         } catch (Mandrill_Error $e) {
-            throw $e;
+            if ($this->logger !== null) {
+                $this->logger->warning(sprintf('Exception when sending a mail: "%s"', $e->getMessage()));
+            }
             return false;
         }
 
