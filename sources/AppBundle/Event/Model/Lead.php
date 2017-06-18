@@ -233,7 +233,7 @@ class Lead implements \JsonSerializable
     /**
      * @inheritDoc
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
             'firstname' => $this->firstname,
