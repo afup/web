@@ -17,6 +17,7 @@ class LeadController extends EventBaseController
         $lead = new Lead();
         $lead
             ->setEvent($event)
+            ->setLanguage($request->getLocale())
         ;
         $leadForm = $this->createForm(LeadType::class, $lead);
 

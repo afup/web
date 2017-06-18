@@ -24,7 +24,7 @@ class LeadType extends AbstractType
             ->add('website', UrlType::class, ['required' => false])
             ->add('email', EmailType::class)
             ->add('language', ChoiceType::class, [
-                'choices' => ['fr' => 'fr', 'en' => 'fr'],
+                'choices' => ['fr' => 'fr', 'en' => 'en'],
                 'multiple' => false
             ])
         ;
