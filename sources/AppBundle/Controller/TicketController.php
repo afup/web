@@ -271,11 +271,13 @@ class TicketController extends EventBaseController
         $this->get('app.invoice_repository')->save($invoice);
         $tickets = $this->get('app.ticket_repository')->getByReference($invoice->getReference());
 
-        /**
-         * @var $forumFacturation Facturation
-         */
-        $forumFacturation = $this->get('app.legacy_model_factory')->createObject(Facturation::class);
-        $forumFacturation->envoyerFacture($invoice->getReference());
+        if ($paymentStatus === Ticket::STATUS_PAID) {
+            /**
+             * @var $forumFacturation Facturation
+             */
+            $forumFacturation = $this->get('app.legacy_model_factory')->createObject(Facturation::class);
+            $forumFacturation->envoyerFacture($invoice->getReference());
+        }
 
         $mailer = $this->get('app.mail');
         $logger = $this->get('logger');
