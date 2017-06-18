@@ -100,3 +100,16 @@ Billetterie: Ticketting
 "Que vous ayez une offre à promouvoir, un produit à présenter ou que vous souhaitiez soutenir l'open source,\n                nous aurons une offre à vous proposer.": "Whether you have an offer to promote, a product to present or you want to support open source, we will have a sponsorship package to offer you."
 "Avec ou sans stand lors de l'événement, nos différents niveaux de sponsoring vous permettent de trouver\n                une offre qui correspond à vos attentes de visibilité tout en respectant votre budget.": "With or without a booth during the event, our different levels of sponsorship allow you to find an offer that meets your expectations of visibility while respecting your budget."
 "Pour les sponsors, cet événement est l'occasion unique à Paris de rencontrer autant de développeur·se·s\n                web dans un cadre convivial.": "For sponsors, this event is the unique opportunity in Paris to meet as many web developers in a friendly setting."
+'mail.sponsoringfile.title': 'Sponsoring file %eventName%'
+'mail.sponsoringfile.text': |
+  Hello,<br />
+  <p>You have requested to receive the sponsorship file for the %eventName%.</p>
+
+  <p>You will find the file as an attachment. For any queries or specifications, do not hesitate to contact us by email at
+  <a href="mailto:sponsors@afup.org">sponsors@afup.org</a>.</p>
+  <p>Best regads,<br />
+  The sponsoring team AFUP</p>
+
+  <p>Follow the AFUP on <a href="https://twitter.com/afup">Twitter</a> (@afup) and Facebook.</p>
+  <p><a href="https://afup.org">afup.org</a>
+'Merci': 'Thank you'

@@ -50,21 +50,9 @@ class SponsorshipLeadMail
         $filename = $lead->getEvent()->getPath() . '-sponsoring-' . $lead->getLanguage() . '.pdf';
         $filepath = $this->sponsorshipFileDir;
 
-        $text = 'Bonjour,<br />
-  <p>Vous avez demandé à recevoir le dossier de sponsoring pour le ' . $lead->getEvent()->getTitle() . ' </p>
-
-  <p>Vous trouverez le dossier en pièce jointe. Pour toute demande de précisions ou devis,
-  n\'hésitez pas à nous contacter par mail à l’adresse <a href="mailto:sponsors@afup.org">sponsors@afup.org</a>.</p>
-  <p>À bientôt,<br />
-  L’équipe sponsoring AFUP</p>
-
-  <p>Suivez l’AFUP sur <a href="https://twitter.com/afup">Twitter</a> (@afup) et Facebook.</p>
-  <p><a href="https://afup.org">afup.org</a>'
-        ;
-
         $data = [
-            'content' => $text,
-            'title' => sprintf("Dossier de sponsoring %s", $lead->getEvent()->getTitle())
+            'content' => $this->translator->trans('mail.sponsoringfile.text', ['%eventName%' => $lead->getEvent()->getTitle()]),
+            'title' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()])
         ];
 
         $parameters = [
@@ -77,7 +65,7 @@ class SponsorshipLeadMail
                     'content' => base64_encode(file_get_contents($filepath . $filename)),
                 ]
             ],
-            'subject' => sprintf("Dossier de sponsoring %s", $lead->getEvent()->getTitle())
+            'subject' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()])
         ];
 
         if (!$this->mail->send(

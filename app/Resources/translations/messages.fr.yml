@@ -63,8 +63,21 @@ type.3: "20 mn"
   Pour enregistrer vos places, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
   <br />
   L'équipe afup.
-'mail.sponsorTicket.text.plurial': |
 'Position': 'Poste'
 'Website': 'Site web'
 'Language': 'Langue'
 'Become a sponsor': 'Devenir sponsor'
+'mail.sponsoringfile.title': 'Dossier de sponsoring %eventName%'
+'mail.sponsoringfile.text': |
+  Bonjour,<br />
+  <p>Vous avez demandé à recevoir le dossier de sponsoring pour le %eventName%.</p>
+
+  <p>Vous trouverez le dossier en pièce jointe. Pour toute demande de précisions ou devis,
+  n'hésitez pas à nous contacter par mail à l’adresse <a href="mailto:sponsors@afup.org">sponsors@afup.org</a>.</p>
+  <p>À bientôt,<br />
+  L’équipe sponsoring AFUP</p>
+
+  <p>Suivez l’AFUP sur <a href="https://twitter.com/afup">Twitter</a> (@afup) et Facebook.</p>
+  <p><a href="https://afup.org">afup.org</a>
+Billetterie: Billetterie
+"Vous allez recevoir le dossier par mail dans quelques minutes.": "You will receive the file by mail in a few minutes."
