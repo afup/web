@@ -257,6 +257,7 @@ class TicketController extends EventBaseController
             $invoiceStatus = Ticket::INVOICE_SENT;
         } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_DUPLICATE) {
             // Designe un paiement deja effectue : on a surement deja eu le retour donc on s'arrete
+            return new Response();
         } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_CANCELED) {
             $paymentStatus = Ticket::STATUS_CANCELLED;
         } elseif ($payboxResponse->isErrorCode()) {
