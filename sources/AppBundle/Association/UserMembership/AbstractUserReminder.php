@@ -55,7 +55,11 @@ abstract class AbstractUserReminder implements MembershipReminderInterface
                 'content' => $this->getText(),
                 'title' => $this->getSubject()
             ],
-            ['subject' => $this->getSubject()]
+            ['subject' => $this->getSubject()],
+            false,
+            null,
+            null,
+            false
         );
         $log->setMailSent($status);
         $this->subscriptionReminderLogRepository->save($log);

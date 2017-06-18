@@ -75,7 +75,11 @@ class SponsorTokenMail
                 'content' => $text,
                 'title' => $this->translator->trans("mail.sponsorTicket.subject", ['%event%' => $event->getTitle()])
             ],
-            ['subject' => $this->translator->trans("mail.sponsorTicket.subject", ['%event%' => $event->getTitle()])]
+            ['subject' => $this->translator->trans("mail.sponsorTicket.subject", ['%event%' => $event->getTitle()])],
+            false,
+            null,
+            null,
+            false
         );
     }
 }

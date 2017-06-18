@@ -80,7 +80,16 @@ class SponsorshipLeadMail
             'subject' => sprintf("Dossier de sponsoring %s", $lead->getEvent()->getTitle())
         ];
 
-        if (!$this->mail->send(Mail::TEMPLATE_TRANSAC, $receiver, $data, $parameters)) {
+        if (!$this->mail->send(
+            Mail::TEMPLATE_TRANSAC,
+            $receiver,
+            $data,
+            $parameters,
+            false,
+            null,
+            null,
+            false
+        )) {
             $this->logger->warning(sprintf('Mail not sent for sponsorship lead retrieval: "%s"', $lead->getEmail()));
         }
     }

@@ -74,7 +74,7 @@ class Mail
      * @param string $sendAt See Mandrill::sendTemplate()
      * @return bool TRUE on success, FALSE on failure
      */
-    public function send($template, array $receiver, array $data = array(), array $parameters = array(), $async = false, $ipPool = null, $sendAt = null)
+    public function send($template, array $receiver, array $data = array(), array $parameters = array(), $async = false, $ipPool = null, $sendAt = null, $forceBcc = true)
     {
         // Receiver
         if (!isset($parameters['to'])) {
@@ -82,7 +82,7 @@ class Mail
         }
 
         // Blind copy
-        if (!isset($parameters['bcc_address'])) {
+        if (!isset($parameters['bcc_address']) && $forceBcc === true) {
             $parameters['bcc_address'] = $this->_getConfig()->obtenir('mandrill|bcc');
         }
 
