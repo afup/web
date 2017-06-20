@@ -27,6 +27,16 @@ class EventRepository extends Repository implements MetadataInitializer
     }
 
 
+    /**
+     * @param $path
+     *
+     * @return Event|null
+     */
+    public function getByPath($path)
+    {
+        return $this->getBy(['path' => $path])->first();
+    }
+
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
     {
         $metadata = new Metadata($serializerFactory);

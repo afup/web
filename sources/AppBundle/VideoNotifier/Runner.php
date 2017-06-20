@@ -2,6 +2,7 @@
 
 namespace AppBundle\VideoNotifier;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
@@ -67,22 +68,26 @@ class Runner
     }
 
     /**
+     * @param Event|null $eventToFilter
+     *
      * @return Tweet
      */
-    public function execute()
+    public function execute(Event $eventToFilter = null)
     {
-        $talkInfos = $this->getNextTalkInformations();
+        $talkInfos = $this->getNextTalkInformations($eventToFilter);
         $tweet = $this->tweetGenerator->generate($talkInfos['talk'], $talkInfos['speakers']);
         $id = $this->sendTweet($tweet);
         return $this->saveTweet($talkInfos['talk'], $id);
     }
 
     /**
+     * @param Event|null $eventToFilter
+     *
      * @return array
      */
-    private function getNextTalkInformations()
+    private function getNextTalkInformations(Event $eventToFilter = null)
     {
-        $all = $this->getAllTalkInformations();
+        $all = $this->getAllTalkInformations($eventToFilter);
         $tweetsFromThisRound = $this->removeTweetsFromLastRound($all);
         if (0 === count($tweetsFromThisRound)) {
             throw new \LogicException("No talk found");
@@ -91,9 +96,11 @@ class Runner
     }
 
     /**
+     * @param Event|null $eventToFilter
+     *
      * @return array
      */
-    protected function getAllTalkInformations()
+    protected function getAllTalkInformations(Event $eventToFilter = null)
     {
         $plannings = $this->planningRepository->getAll();
         $minimumEventDate = $this->getMinimumEventDate();
@@ -114,7 +121,13 @@ class Runner
                 continue;
             }
 
-            $event = $this->eventRepository->get($planning->getEventId());
+            $eventId = $planning->getEventId();
+
+            if (null !== $eventToFilter && $eventToFilter->getId() != $eventId) {
+                continue;
+            }
+
+            $event = $this->eventRepository->get($eventId);
 
             if (null === $event || $event->startsBefore($minimumEventDate)) {
                 continue;
