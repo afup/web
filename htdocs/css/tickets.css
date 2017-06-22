@@ -168,3 +168,15 @@ div.tickets--members-detail{
     margin: 1em auto;
     background-color:#f2f2f2;
 }
+
+div.sponsor--become-form {
+    margin-top:1em;
+}
+div.sponsor--become-form div.sponsor--become-submit{
+    text-align: right;
+    margin-right: 30px;
+}
+div.sponsor--become-form label{
+    min-width: 20%;
+    width:auto;
+}

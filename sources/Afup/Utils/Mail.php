@@ -6,6 +6,7 @@ namespace Afup\Site\Utils;
 use Exception;
 use Mandrill;
 use Mandrill_Error;
+use Psr\Log\LoggerInterface;
 
 require_once dirname(__FILE__) . '/Configuration.php';
 require_once 'mandrill/Mandrill.php';
@@ -16,16 +17,22 @@ require_once 'mandrill/Mandrill.php';
 class Mail
 {
 
+    const TEMPLATE_TRANSAC = 'message-transactionnel-afup-org';
+
     protected $_apiKey;
     protected $_mandrill;
 
+    private $logger;
+
     /**
      * Init the object by getting the Maindrill API key
+     * @param $logger LoggerInterface
      */
-    public function __construct()
+    public function __construct(LoggerInterface $logger = null)
     {
         // Get the API key
         $this->_apiKey = $this->_getConfig()->obtenir('mandrill|key');
+        $this->logger = $logger;
     }
 
     /**
@@ -67,7 +74,7 @@ class Mail
      * @param string $sendAt See Mandrill::sendTemplate()
      * @return bool TRUE on success, FALSE on failure
      */
-    public function send($template, array $receiver, array $data = array(), array $parameters = array(), $async = false, $ipPool = null, $sendAt = null)
+    public function send($template, array $receiver, array $data = array(), array $parameters = array(), $async = false, $ipPool = null, $sendAt = null, $forceBcc = true)
     {
         // Receiver
         if (!isset($parameters['to'])) {
@@ -75,7 +82,7 @@ class Mail
         }
 
         // Blind copy
-        if (!isset($parameters['bcc_address'])) {
+        if (!isset($parameters['bcc_address']) && $forceBcc === true) {
             $parameters['bcc_address'] = $this->_getConfig()->obtenir('mandrill|bcc');
         }
 
@@ -99,7 +106,9 @@ class Mail
                 $sendAt
             );
         } catch (Mandrill_Error $e) {
-            //throw $e;
+            if ($this->logger !== null) {
+                $this->logger->warning(sprintf('Exception when sending a mail: "%s"', $e->getMessage()));
+            }
             return false;
         }
 
