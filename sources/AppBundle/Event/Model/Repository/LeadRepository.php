@@ -35,9 +35,10 @@ class LeadRepository
             ->setName($lead->getCompany())
             ->setDescription(
                 sprintf(
-                    "%s %s \n%s - %s \n %s - %s \n %s",
+                    "%s %s (%s) \n%s - %s \n %s - %s \n %s",
                     $lead->getFirstname(),
                     $lead->getLastname(),
+                    $lead->getEmail(),
                     $lead->getPosition(),
                     $lead->getCompany(),
                     $lead->getPhone(),
