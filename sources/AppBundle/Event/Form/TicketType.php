@@ -89,6 +89,7 @@ class TicketType extends AbstractType
                         'data-description' => $type->getDescription(),
                         'data-price' => $type->getPrice(),
                         'data-date-end' => $type->getDateEnd()->format('d/m'),
+                        'data-date-end-raw' => $type->getDateEnd()->format('Y-m-d'),
                         'data-members-only' => (int) $type->getTicketType()->getIsRestrictedToMembers(),
                         'data-stock' => $this->ticketTypeAvailability->getStock($type, $event),
                         'data-label' => $type->getTicketType()->getPrettyName()

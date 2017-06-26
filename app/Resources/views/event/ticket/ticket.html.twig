@@ -69,6 +69,8 @@
                 </fieldset>
             </div>
 
+            {% set currentDate = 'now'|date('Y-m-d') %}
+
             {% for key,ticket in ticketForm.tickets %}
                 <fieldset class="f{{ key+1 }} tickets--fieldset">
                     <legend><a name="inscription{{ key+1 }}">Personne</a> {{ key+1 }} <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>
@@ -84,9 +86,12 @@
                         <ul class="tickets--type-list">
                             {% set endDate = null %}
                             {% for type in ticket.ticketEventType %}
-                                {% if endDate != type.vars.attr['data-date-end'] and endDate != null %}<hr />{% endif %}
-                                {% set endDate=type.vars.attr['data-date-end'] %}
+                                {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null %}<hr />{% endif %}
                                 <li>
+                                    {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null and endDate > currentDate %}
+                                        Vous souhaitez soutenir l'AFUP ? Vous pouvez prendre ces billets dès aujourd’hui.
+                                    {% endif %}
+                                    {% set endDate=type.vars.attr['data-date-end-raw'] %}
                                     <div>
                                         {{ form_widget(type) }}
                                         {{ form_label(type) }}
