@@ -67,7 +67,7 @@ class SlackNotifier
      * @param Message $message
      * @return bool
      */
-    private function sendMessage(Message $message)
+    public function sendMessage(Message $message)
     {
         $ch = curl_init($this->postUrl);
 
