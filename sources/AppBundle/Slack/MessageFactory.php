@@ -162,6 +162,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Total des inscriptions')
+            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_inscriptions')
             ->addField(
                 (new Field())->setShort(true)->setTitle('Premier jour')->setValue($inscriptionsData['premier_jour']['inscrits'])
             )
