@@ -18,6 +18,13 @@
     {{ parent() }}
     <meta name="algolia_appid" content="{{ algolia_app_id }}" />
     <meta name="algolia_apikey" content="{{ algolia_api_key }}" />
+
+    <meta property="og:title" content="AFUP - Vidéos des conférences" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ url('talks_list') }}" />
+    <meta property="og:image" content="{{ app.request.schemeAndHttpHost }}/images/talks/thumbnail.jpg" />
+    <meta property="og:description" content="Retrouvez l'ensemble des vidéos des conférences de l'AFUP" />
+    <meta property="og:site_name" content="AFUP" />
 {% endblock %}
 
 {% block content %}
