@@ -36,5 +36,10 @@ RUN groupadd -g ${gid} localUser && \
     sed --in-place "s/User \${APACHE_RUN_USER}/User localUser/" /etc/apache2/apache2.conf && \
     sed --in-place  "s/Group \${APACHE_RUN_GROUP}/Group localUser/" /etc/apache2/apache2.conf
 
+COPY apache.crt /etc/apache2/ssl/apache.crt
+COPY apache.key /etc/apache2/ssl/apache.key
+
+RUN a2enmod ssl
+
 # Paybox
 COPY cgi-bin/paybox.cgi /usr/lib/cgi-bin/paybox.cgi
