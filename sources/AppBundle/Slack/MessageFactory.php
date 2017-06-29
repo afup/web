@@ -143,6 +143,7 @@ class MessageFactory
         $message
             ->setChannel('bureau')
             ->setUsername('Inscriptions')
+            ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
 
         $attachment = new Attachment();
