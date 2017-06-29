@@ -3,6 +3,9 @@
 
 namespace AppBundle\Slack;
 
+use Afup\Site\Forum\Inscriptions;
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use Symfony\Component\Translation\Translator;
@@ -119,6 +122,55 @@ class MessageFactory
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
             ->setUsername('CFP')
         ;
+
+        return $message;
+    }
+
+    /**
+     * @param Event $event
+     * @param Inscriptions $inscriptions
+     * @param TicketTypeRepository $ticketRepository
+     * @param \DateTime $date
+     *
+     * @return Message
+     */
+    public function createMessageForTicketStats(Event $event, Inscriptions $inscriptions, TicketTypeRepository $ticketRepository, \DateTime $date)
+    {
+        $inscriptionsData = $inscriptions->obtenirStatistiques($event->getId());
+        $inscriptionsDataFiltered = $inscriptions->obtenirStatistiques($event->getId(), $date);
+
+        $message = new Message();
+        $message
+            ->setChannel('bureau')
+            ->setUsername('Inscriptions')
+            ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
+        ;
+
+        $attachment = new Attachment();
+        $attachment
+            ->setTitle(sprintf('Liste des inscriptions depuis le %s : ', $date->format('d/m/Y H:i')))
+        ;
+        foreach ($inscriptionsDataFiltered['types_inscriptions']['inscrits'] as $typeId => $value) {
+            if (0 === $value) {
+                continue;
+            }
+            $attachment->addField((new Field())->setShort(true)->setTitle($ticketRepository->get($typeId)->getPrettyName())->setValue($value));
+        }
+
+        $message->addAttachment($attachment);
+
+        $attachment = new Attachment();
+        $attachment
+            ->setTitle('Total des inscriptions')
+            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_inscriptions')
+            ->addField(
+                (new Field())->setShort(true)->setTitle('Premier jour')->setValue($inscriptionsData['premier_jour']['inscrits'])
+            )
+            ->addField(
+                (new Field())->setShort(true)->setTitle('Deuxième jour')->setValue($inscriptionsData['second_jour']['inscrits'])
+            )
+        ;
+        $message->addAttachment($attachment);
 
         return $message;
     }
