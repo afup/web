@@ -27,7 +27,7 @@
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content="AFUP - {{ talk.title }}" />
-    <meta property="og:url" content="{{ app.request.schemeAndHttpHost }}/talks/{{ talk.getUrlKey }}" />
+    <meta property="og:url" content="{{ url('talks_show', {id: talk.id, slug: talk.slug }) }}" />
     {% if talk.hasYoutubeId %}
         <meta property="og:image" content="https://img.youtube.com/vi/{{ talk.getYoutubeId }}/hqdefault.jpg" />
     {% endif %}
