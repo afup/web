@@ -152,7 +152,7 @@ div.tickets--bankwire{
 ul.tickets--errors, #fieldset--7 div{
     margin-left:200px;
 }
-ul.tickets--errors{
+.tickets--errors{
     font-weight: bold;
     color: #B0413E;
 }
@@ -162,13 +162,12 @@ p.tickets--type-stock-limit{
 #tickets--other-payments{
     cursor: pointer;
 }
-div.tickets--members-detail{
+div.tickets--members-detail, div.tickets--errors{
     padding: 0 1em;
     border: 1px #50a0dd solid;
     margin: 1em auto;
     background-color:#f2f2f2;
 }
-
 div.sponsor--become-form {
     margin-top:1em;
 }
@@ -176,7 +175,10 @@ div.sponsor--become-form div.sponsor--become-submit{
     text-align: right;
     margin-right: 30px;
 }
-div.sponsor--become-form label{
+div.sponsor--become-form label {
     min-width: 20%;
-    width:auto;
+    width: auto;
+}
+div.tickets--errors{
+    border-color: #B0413E;
 }

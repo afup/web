@@ -35,7 +35,7 @@
     <script src="{{ asset('js/inscription.js') }}"></script>
 
     <script type="text/javascript">
-		var nbInscriptions = 1;
+		var nbInscriptions = {{ nbPersonnes }};
     </script>
 
 
@@ -55,6 +55,12 @@
                 <p>Pour acheter des places au tarif AFUP, vous devez vous <a href="{{ url('admin_login') }}">connecter</a>.</p>
             {% endif %}
         </div>
+
+        {% if not ticketForm.vars.valid %}
+            <div class="tickets--errors">
+                {{ 'Une ou plusieurs erreurs sont survenues. Merci de vérifier le formulaire' }}
+            </div>
+        {% endif %}
 
         {{ form_start(ticketForm, {attr: {id: 'formulaire'}}) }}
 

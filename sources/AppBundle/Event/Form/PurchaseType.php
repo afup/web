@@ -43,7 +43,8 @@ class PurchaseType extends AbstractType
                 ],
                 'multiple' => false,
                 'expanded' => false,
-                'mapped' => false
+                'mapped' => false,
+                'data' => 1
             ])
             ->add('tickets', CollectionType::class, [
                 // each entry in the array will be an "email" field
