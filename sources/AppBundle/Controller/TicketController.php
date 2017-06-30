@@ -214,7 +214,7 @@ class TicketController extends EventBaseController
             throw $this->createNotFoundException(sprintf('Could not find invoice with reference "%s"', $invoiceRef));
         }
 
-        if ($invoice->getStatus() !== Ticket::STATUS_CREATED) {
+        if ($invoice->getStatus() === Ticket::STATUS_PAID) {
             $this->get('logger')->addWarning(sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef));
             return $this->render(':event/ticket:payment_already_done.html.twig', ['event' => $event]);
         }
