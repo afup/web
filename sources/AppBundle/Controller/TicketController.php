@@ -197,7 +197,8 @@ class TicketController extends EventBaseController
 
         return $this->render('event/ticket/ticket.html.twig', [
             'event' => $event,
-            'ticketForm' => $purchaseForm->createView()
+            'ticketForm' => $purchaseForm->createView(),
+            'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData() // If there is an error, this will open all fields
         ]);
     }
 
@@ -206,7 +207,7 @@ class TicketController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
         $invoiceRepository = $this->get('app.invoice_repository');
 
-        $invoiceRef = $request->get('invoiceRef');
+        $invoiceRef = $request->get('invoiceRef', $request->query->get('invoiceRef', null));
         $invoice = $invoiceRepository->getByReference($invoiceRef);
 
         if ($invoice === null) {
@@ -215,7 +216,7 @@ class TicketController extends EventBaseController
 
         if ($invoice->getStatus() !== Ticket::STATUS_CREATED) {
             $this->get('logger')->addWarning(sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef));
-            return $this->render(':event/ticket:payment_already_done.html.twig');
+            return $this->render(':event/ticket:payment_already_done.html.twig', ['event' => $event]);
         }
 
         $params = [
@@ -229,6 +230,7 @@ class TicketController extends EventBaseController
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
             $params['rib'] = $GLOBALS['AFUP_CONF']->obtenir('rib');
         }
+
         return $this->render('event/ticket/payment.html.twig', $params);
     }
 

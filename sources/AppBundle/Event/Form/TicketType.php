@@ -76,7 +76,8 @@ class TicketType extends AbstractType
                 'label' => 'Email'
             ])
             ->add('phoneNumber', TextType::class, [
-                'label' => 'Téléphone'
+                'label' => 'Téléphone',
+                'required' => false
             ])
             ->add('ticketEventType', ChoiceType::class, [
                 'expanded' => true,
