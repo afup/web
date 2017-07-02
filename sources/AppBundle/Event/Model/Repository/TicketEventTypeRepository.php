@@ -17,7 +17,7 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
         $sql = '
             SELECT
             id_tarif, id_event, price, date_start, date_end, description,
-            tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active
+            tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active, tarif.cfp_submitter_only
             FROM afup_forum_tarif_event tarif_event
             JOIN afup_forum_tarif tarif ON tarif.id = tarif_event.id_tarif
             WHERE id_event = :event 

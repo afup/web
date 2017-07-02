@@ -35,6 +35,11 @@ class TicketType implements NotifyPropertyInterface
     private $isRestrictedToMembers;
 
     /**
+     * @var bool
+     */
+    private $isRestrictedToCfpSubmitter;
+
+    /**
      * @var float
      */
     private $defaultPrice;
@@ -141,6 +146,26 @@ class TicketType implements NotifyPropertyInterface
     {
         $this->propertyChanged('isRestrictedToMembers', $this->isRestrictedToMembers, $isRestrictedToMembers);
         $this->isRestrictedToMembers = $isRestrictedToMembers;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsRestrictedToCfpSubmitter()
+    {
+        return $this->isRestrictedToCfpSubmitter;
+    }
+
+    /**
+     * @param bool isRestrictedToCfpSubmitter
+     *
+     * @return TicketType
+     */
+    public function setIsRestrictedToCfpSubmitter($isRestrictedToCfpSubmitter)
+    {
+        $this->propertyChanged('isRestrictedToCfpSubmitter', $this->isRestrictedToCfpSubmitter, $isRestrictedToCfpSubmitter);
+        $this->isRestrictedToCfpSubmitter = $isRestrictedToCfpSubmitter;
         return $this;
     }
 

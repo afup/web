@@ -55,6 +55,12 @@ class TicketTypeRepository extends Repository implements MetadataInitializer
                 'serializer' => Boolean::class
             ])
             ->addField([
+                'columnName' => 'cfp_submitter_only',
+                'fieldName' => 'isRestrictedToCfpSubmitter',
+                'type' => 'bool',
+                'serializer' => Boolean::class
+            ])
+            ->addField([
                 'columnName' => 'default_price',
                 'fieldName' => 'defaultPrice',
                 'type' => 'float'

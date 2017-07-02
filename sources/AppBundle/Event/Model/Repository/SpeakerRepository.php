@@ -53,6 +53,20 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @param Event $event
+     * @param string $email
+     *
+     * @return Speaker|null
+     */
+    public function getByEventAndEmail(Event $event, $email)
+    {
+        return $this->getBy([
+            'eventId' => $event->getId(),
+            'email' => $email,
+        ])->first();
+    }
+
+    /**
      * @inheritDoc
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

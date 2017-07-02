@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TicketType extends AbstractType
@@ -79,11 +81,23 @@ class TicketType extends AbstractType
                 'label' => 'Téléphone',
                 'required' => false
             ])
-            ->add('ticketEventType', ChoiceType::class, [
+        ;
+
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) use ($eventTickets, $options, $event) {
+            $filteredEventTickets = [];
+            foreach ($eventTickets as $eventTicket) {
+                if ($eventTicket->getTicketType()->getIsRestrictedToCfpSubmitter() && !$options['is_cfp_submitter']) {
+                    continue;
+                }
+                $filteredEventTickets[] = $eventTicket;
+            }
+
+            $formEvent->getForm()->add('ticketEventType', ChoiceType::class, [
                 'expanded' => true,
                 'multiple' => false,
                 'label' => 'Formule',
-                'choices' => $eventTickets,
+                'choices' => $filteredEventTickets,
                 'choice_label' => 'ticketType.prettyName',
                 'choice_attr' => function (\AppBundle\Event\Model\TicketEventType $type, $key, $index) use ($options, $event) {
                     $attr = [
@@ -106,6 +120,10 @@ class TicketType extends AbstractType
                     return $attr;
                 }
             ])
+            ;
+        });
+
+        $builder
             ->add('pmr', ChoiceType::class, [
                 'label' => 'Mobilité réduite',
                 'multiple' => false,
@@ -126,6 +144,7 @@ class TicketType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Ticket::class,
             'member_type' => self::MEMBER_NOT,
+            'is_cfp_submitter' => false,
             'event_id' => null
         ]);
     }
