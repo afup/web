@@ -70,7 +70,7 @@
                                 {% endfor %}
                             {% else %}
                                 {% for room in rooms %}
-                                    {% if hasConf[room.name] is defined and hasConf[room.name] > 1 %}
+                                    {% if hasConf[room.name] is defined and hasConf[room.name] >= 1 %}
                                         {% set numberOfRowForThisSlot = hasConf[room.name] - 1 %}
                                         {% set hasConf = hasConf|merge({(room.name):numberOfRowForThisSlot}) %}
                                     {% else %}
