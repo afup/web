@@ -39,11 +39,11 @@ class PayboxFactory
         $paybox->set_cmd($facture); // Référence de la commande
         $paybox->set_porteur($email); // Email du client final (Le porteur de la carte)
 
-        $paybox->set_repondreA('http://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_retour.php');
-        $paybox->set_effectue('http://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_effectue.php');
-        $paybox->set_refuse('http://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_refuse.php');
-        $paybox->set_annule('http://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_annule.php');
-        $paybox->set_erreur('http://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_erreur.php');
+        $paybox->set_repondreA('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_retour.php');
+        $paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_effectue.php');
+        $paybox->set_refuse('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_refuse.php');
+        $paybox->set_annule('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_annule.php');
+        $paybox->set_erreur('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_erreur.php');
 
         if (!preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
             throw new \RuntimeException('Could not create the payment');
