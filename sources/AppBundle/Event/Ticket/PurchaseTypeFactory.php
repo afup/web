@@ -7,6 +7,7 @@ use AppBundle\Event\Form\PurchaseType;
 use AppBundle\Event\Form\TicketType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\InvoiceFactory;
+use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -28,14 +29,21 @@ class PurchaseTypeFactory
      */
     private $invoiceFactory;
 
+    /**
+     * @var SpeakerRepository
+     */
+    private $speakerRepository;
+
     public function __construct(
         AuthorizationCheckerInterface $securityChecker,
         FormFactoryInterface $formFactory,
-        InvoiceFactory $invoiceFactory
+        InvoiceFactory $invoiceFactory,
+        SpeakerRepository $speakerRepository
     ) {
         $this->securityChecker = $securityChecker;
         $this->formFactory = $formFactory;
         $this->invoiceFactory = $invoiceFactory;
+        $this->speakerRepository = $speakerRepository;
     }
 
     public function getPurchaseForUser(Event $event, User $user = null)
@@ -54,6 +62,8 @@ class PurchaseTypeFactory
             }
         }
 
+        $isCfpSubmitter = null !== $user && null !== $this->speakerRepository->getByEventAndEmail($event, $user->getEmail());
+
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
         $ticket = new Ticket();
         $invoice
@@ -66,7 +76,7 @@ class PurchaseTypeFactory
         $invoiceType = $this->formFactory->create(
             PurchaseType::class,
             $invoice,
-            ['event_id' => $event->getId(), 'member_type' => $memberType]
+            ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter]
         );
 
         return $invoiceType;
