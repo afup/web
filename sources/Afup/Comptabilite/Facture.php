@@ -531,6 +531,8 @@ class Facture
 
         $pdf->Ln(15);
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+        $pdf->Ln();
+        $pdf->Cell(10, 5, utf8_decode('Payable à réception'));
         $pdf->Ln(10);
         if ($coordonnees['observation']) {
             $pdf->Cell(10, 5, 'Observations : ');
