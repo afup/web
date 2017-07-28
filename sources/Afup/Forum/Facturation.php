@@ -236,10 +236,13 @@ SQL;
 
     function genererDevis($reference, $chemin = null)
     {
-        $requete = 'SELECT * FROM afup_facturation_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $requete = 'SELECT aff.*, af.titre AS event_name
+        FROM afup_facturation_forum aff
+        LEFT JOIN afup_forum af ON af.id = aff.id_forum
+        WHERE reference=' . $this->_bdd->echapper($reference);
         $facture = $this->_bdd->obtenirEnregistrement($requete);
 
-        $requete = 'SELECT aif.*, aft.technical_name
+        $requete = 'SELECT aif.*, aft.pretty_name
         FROM afup_inscription_forum aif
         LEFT JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
         WHERE reference=' . $this->_bdd->echapper($reference);
@@ -275,7 +278,7 @@ SQL;
 
         $pdf->Ln(15);
 
-        $pdf->MultiCell(180, 5, utf8_decode("Devis concernant votre participation au forum organisé par l'Association Française des Utilisateurs de PHP (AFUP)."));
+        $pdf->MultiCell(180, 5, utf8_decode(sprintf("Devis concernant votre participation au %s organisé par l'Association Française des Utilisateurs de PHP (AFUP).", $facture['event_name'])));
         // Cadre
         $pdf->Ln(10);
         $pdf->SetFillColor(200, 200, 200);
@@ -288,7 +291,7 @@ SQL;
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            $pdf->Cell(50, 5, utf8_decode($inscription['technical_name']), 1);
+            $pdf->Cell(50, 5, utf8_decode($inscription['pretty_name']), 1);
             $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
             $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
             $total += $inscription['montant'];
@@ -319,10 +322,13 @@ SQL;
      */
     function genererFacture($reference, $chemin = null)
     {
-        $requete = 'SELECT * FROM afup_facturation_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $requete = 'SELECT aff.*, af.titre AS event_name
+        FROM afup_facturation_forum aff
+        LEFT JOIN afup_forum af ON af.id = aff.id_forum
+        WHERE reference=' . $this->_bdd->echapper($reference);
         $facture = $this->_bdd->obtenirEnregistrement($requete);
 
-        $requete = 'SELECT aif.*, aft.technical_name
+        $requete = 'SELECT aif.*, aft.pretty_name
         FROM afup_inscription_forum aif
         LEFT JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
         WHERE reference=' . $this->_bdd->echapper($reference);
@@ -357,7 +363,7 @@ SQL;
 
         $pdf->Ln(15);
 
-        $pdf->MultiCell(180, 5, utf8_decode("Facture concernant votre participation au forum organisé par l'Association Française des Utilisateurs de PHP (AFUP)."));
+        $pdf->MultiCell(180, 5, utf8_decode(sprintf("Facture concernant votre participation au %s organisé par l'Association Française des Utilisateurs de PHP (AFUP).", $facture['event_name'])));
 
         if ($facture['informations_reglement']) {
             $pdf->Ln(10);
@@ -382,7 +388,7 @@ SQL;
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            $pdf->Cell(50, 5, utf8_decode($inscription['technical_name']), 1);
+            $pdf->Cell(50, 5, utf8_decode($inscription['pretty_name']), 1);
             $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
             $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
             $total += $inscription['montant'];
