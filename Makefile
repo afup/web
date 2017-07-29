@@ -59,7 +59,7 @@ event/composer.phar:
 	$(eval ACTUAL_SIGNATURE = "$(shell cd event && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php'); echo hash_file('SHA384', 'composer-setup.php');")")
 	@if [ "$(EXPECTED_SIGNATURE)" != "$(ACTUAL_SIGNATURE)" ]; then echo "Invalid signature"; exit 1; fi
 	cd event && php composer-setup.php
-	cd event rm composer-setup.php
+	cd event && rm composer-setup.php
 
 event/vendor: event/composer.phar event/composer.lock
 	cd event && php composer.phar install
