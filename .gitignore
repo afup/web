@@ -48,3 +48,4 @@ deps.lock
 
 /event/vendor
 /event/wp
+/event/composer.phar
