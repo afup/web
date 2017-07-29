@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /wp-*
+Disallow: /inscription-confirmee/
+Disallow: /inscription-refusee/
+Disallow: /inscription-annulee/
+Disallow: /category/non-classe/
+Allow: /wp-content/uploads/
+Allow: *.js
+Allow: *.js?*
+Allow: *.css
+Allow: *.css?*
+Allow: *.png
