@@ -76,6 +76,11 @@
 						
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+                        if (defined('WP_DEBUG') && WP_DEBUG == true) {
+                            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        }
+
                         $return = curl_exec($ch);
 						if (curl_errno($ch) > 0) {
 							echo 'Une erreur est survenue';
