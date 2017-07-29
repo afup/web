@@ -1,0 +1,260 @@
+/**
+ * Theme Name: Basis Child
+ * Theme URI: http://thethemefoundry.com/wordpress-themes/basis/
+ * Author: The Theme Foundry
+ * Author URI: http://thethemefoundry.com/
+ * Description: A professional business theme with flexible drag and drop layouts and stunning slideshows.
+ * Version: 1.0
+ * License: GNU General Public License v2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Tags: white, light, one-column, two-column, right-sidebar, responsive-width, custom-background, custom-menu, editor-style, featured-images, infinite-scroll, post-slider, theme-options, translation-ready, blog, business, craft, magazine, news, productivity, clean, conservative, contemporary, elegant, formal, minimal, modern, professional, simple
+ * Template: basis
+ * Text Domain: basis
+ */
+
+/**
+afup light blue: #51ace4
+afup dark blue:  #18213e
+*/
+
+@import url( '../basis/style.css' );
+
+@import url(https://fonts.googleapis.com/css?family=Sansita+One|Roboto:400,100,700);
+
+/** General **/
+h1.page-title {
+    font-family: Roboto, Helvetica, sans-serif;
+    text-transform: uppercase;
+    font-weight: 100;
+    color: #51ace4;
+}
+
+/** Speakers Page **/
+article.conferenciers {
+    margin-bottom: 3em;
+    min-height: 120px;
+}
+
+.conferenciers h3 {
+    font-family: Roboto, Helvetica, sans-serif;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #045e80;
+    float: left;
+}
+
+article.conferenciers a.twitter {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+article.conferenciers .article-body.conferencier {
+    clear: both;
+}
+
+@media (min-width: 361px) {
+    .article-body.conferencier {
+        position: relative;
+    }
+
+    .article-body.conferencier .photo {
+        position: absolute;
+        top: 0.25em;
+        left: 0;
+    }
+
+    .article-body.conferencier p {
+        padding-left: 120px;
+    }
+
+    .article-body.conferencier ul {
+        padding-left: 120px;
+    }
+ 
+    #basis-header-nav{
+        max-width:55% !important;
+    }
+
+}
+
+.article-body.conferencier ul li {
+    list-style-type: none;
+}
+
+.article-body.conferencier ul li a {
+    text-decoration: none;
+    color: #51ace4;
+}
+
+.article-body.conferencier ul li a:hover {
+    text-decoration: underline;
+}
+
+/** Program Page **/
+.session h4 {
+    font-family: Roboto, Helvetica, sans-serif;
+    font-weight: 100;
+    text-transform: uppercase;
+    color: #18213e;
+    font-size: 150%;
+    border-bottom: solid #18213e thin;
+}
+
+.session .horaire {
+    font-family: Roboto, Helvetica, sans-serif;
+    font-weight: 100;
+    text-align: right;
+    margin-bottom: 1em;
+}
+
+.session .horaire span.salle {
+    font-weight: 400;
+}
+
+.session .horaire strong {
+    color: #51ace4;
+}
+
+.session .conferencier a {
+    text-decoration: none;
+    color: #51ace4;
+}
+
+/** Home Page Button **/
+.banner-content p:nth-of-type(2) {
+    font-size: 200%;
+    color: #ffffff;
+}
+
+.banner-button-container .banner-button.basis-primary-background {
+    background-color: #ed0678;
+    font-size: 150%;
+}
+
+/** Home Page Sticker **/
+.forum-php-2015-sticker {
+    background-color: #ed0678;
+    color: white;
+    text-align: center;
+    font-family: 'Sansita One', cursive;
+}
+
+@media (min-width: 1025px) {
+    .forum-php-2015-sticker {
+        width: 5em;
+        height: 5em;
+        position: fixed;
+        top: 7em;
+        left: 1em;
+        padding: 2em;
+        border-radius: 50%;
+        font-size: 150%;
+        box-shadow: 0 4px 6px 2px rgba(0,0,0,0.2 );
+        transform: rotate(-11deg);
+    }
+
+    .forum-php-2015-sticker > div {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding-top: 1.3em;
+    }
+}
+
+@media (max-width: 1024px) {
+    /* Page id 142 = home page. Section 2 = sticker's section */
+    .page-id-142 section:nth-of-type(2) p:nth-of-type(1){
+        display: none;
+    }
+    .page-id-142 section:nth-of-type(2) {
+        margin-top:0;
+        padding: 0;
+    }
+
+    .forum-php-2015-sticker {
+        padding: 1em;
+    }
+
+    .forum-php-2015-sticker > div > div {
+	display: inline-block;
+        padding: 0 2em;
+    }
+}
+
+.button--inscription {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px 24px;
+    border: 1px solid #4081b2;
+    border-radius: 8px;
+    background: #68d1ff;
+    background: -webkit-gradient(linear, left top, left bottom, from(#68d1ff), to(#4081b2));
+    background: -moz-linear-gradient(top, #68d1ff, #4081b2);
+    background: linear-gradient(to bottom, #68d1ff, #4081b2);
+    text-shadow: #28516f 1px 1px 1px;
+    font: normal normal bold 20px arial;
+    color: #ffffff;
+    text-decoration: none;
+}
+.button--inscription:hover,
+.button--inscription:focus {
+    border: 1px solid #50a1de;
+    background: #7dfbff;
+    background: -webkit-gradient(linear, left top, left bottom, from(#7dfbff), to(#4d9bd6));
+    background: -moz-linear-gradient(top, #7dfbff, #4d9bd6);
+    background: linear-gradient(to bottom, #7dfbff, #4d9bd6);
+    color: #ffffff;
+    text-decoration: none;
+}
+.button--inscription:active {
+    background: #4081b2;
+    background: -webkit-gradient(linear, left top, left bottom, from(#4081b2), to(#4081b2));
+    background: -moz-linear-gradient(top, #4081b2, #4081b2);
+    background: linear-gradient(to bottom, #4081b2, #4081b2);
+}
+.footer-widgets-left {
+    width: 100%;
+}
+footer .widget_nav_menu {
+    float: left;
+    width: 20%;
+}
+footer .widget_nav_menu a{
+    color:#859093;
+    text-decoration:none;
+    font-size:80%
+}
+
+@media screen and (min-width: 800px) {
+    div.post-header-fullwidth, .entry, .pagination{
+        float:none;
+        width: auto;
+    }
+    h2.post-title a{
+        color: #4c6eaf;
+    }
+    .single .post-header{
+        position: inherit;
+    }
+}
+
+.single .post-title{
+    color: #4c6eaf;
+}
+.post{
+    border-bottom: 5px solid #4c6eaf;
+}
+.post-header img {
+    width: 100%;
+}
+.more-link{
+    text-align: right;
+    color:#4c6eaf;
+}
+
+.post-header a.comments, .post-header a.comments-none{
+    position: relative;
+    top: 5px;
+}

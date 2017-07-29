@@ -1,0 +1,27 @@
+/*---------------------------------------------------------
+ 1. Notes (_notes.scss)
+-----------------------------------------------------------
+This stylesheet uses rem values with a pixel fallback.
+-----------------------------------------------------------
+ Examples
+-----------------------------------------------------------
+* Use a pixel value with a rem fallback for font-size, padding, margins, etc.
+	padding: 5px 0;
+	padding: 0.3125rem 0; ($base/4)
+-----------------------------------------------------------
+ Spacing
+-----------------------------------------------------------
+The $base variable ($base: 20;) is used for spacing between elements.
+Vertical spacing between most elements should use 10px, 20px or 40px
+to maintain vertical rhythm:
+
+.my-new-div {
+	margin: 10px 0;
+	margin: 0.625rem 0; ($base/2)
+}
+-----------------------------------------------------------
+ Further reading
+-----------------------------------------------------------
+http://snook.ca/archives/html_and_css/font-size-with-rem
+http://blog.typekit.com/2011/11/09/type-study-sizing-the-legible-letter/
+-------------------------------------------------------- */

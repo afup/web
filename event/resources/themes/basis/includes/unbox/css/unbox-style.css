@@ -1,0 +1,91 @@
+@import url(http://fonts.googleapis.com/css?family=Pacifico);
+.unbox-overlay {
+	z-index: 99999;
+	position: absolute;
+	top: 0; /*reset*/
+	left: 0; /*reset*/
+	right: 0; /*reset*/
+	bottom: 0; /*reset*/
+	margin-top: -28px;
+	background: url(images/background.png) top left repeat;
+	background: rgba(0, 0, 0, 0.8) ;
+}
+.unbox-message {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -206px;
+	margin-top: -190px;
+	width: 412px;
+	font-size: 15px;
+	text-align: center;
+	color: #999087;
+	line-height: 1.35;
+	background-color: #f9f9f5;
+	-webkit-box-shadow: 0 0 4px 4px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 0 4px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 4px 4px rgba(0,0,0,0.1);
+}
+.unbox-message:before {
+	content: "";
+	display: block;
+	position: relative;
+	top: -3px;
+	width: 100%;
+	height: 4px;
+	background: url(images/paper-detail.svg) repeat-x center bottom;
+}
+.unbox-message:after {
+	content: "";
+	z-index: -1;
+	display: block;
+	position: relative;
+	bottom: -5px;
+	margin: 0 auto;
+	width: 96%;
+	height: 4px;
+	background-color: #d5d5cc;
+	border-top: 1px solid #b9b9aa;
+}
+.unbox-message .wrapper {
+	padding: 50px;
+	text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+}
+.unbox-message .close {
+	display: inline-block;
+	float: right;
+	margin: 12px 14px 0 0;
+	width: 20px;
+	height: 20px;
+	border: 1px solid #d2cac4;
+	background: url(images/close.svg) center center no-repeat;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+}
+.unbox-message .close:hover {
+	border-color: #bbb1a9;
+}
+.unbox-message .authors {
+	display: block;
+	margin-top: 1.5em;
+	color: #bbb1a9;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+.unbox-message h2 {
+	margin: 0 auto 20px;
+	color: #71695f;
+	font-family: 'Pacifico';
+	font-size: 39px;
+	font-weight: 400; /*reset*/
+	-webkit-font-smoothing: antialiased;
+}
+.unbox-message a {
+	outline: none; /*reset*/
+}
+.unbox-message a:hover {
+	color: #21759b;
+}

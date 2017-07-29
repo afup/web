@@ -1,0 +1,443 @@
+# Translation of Twenty Fourteen in Chinese (China)
+# This file is distributed under the same license as the Twenty Fourteen package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2015-04-23 01:48:58+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: GlotPress/1.0-alpha-1100\n"
+"Project-Id-Version: Twenty Fourteen\n"
+
+#: footer.php:21
+msgid "Proudly powered by %s"
+msgstr "自豪地采用%s"
+
+#: archive.php:31
+msgid "Daily Archives: %s"
+msgstr "日度归档：%s"
+
+#: archive.php:34
+msgid "Monthly Archives: %s"
+msgstr "月度归档：%s"
+
+#: archive.php:37
+msgid "Yearly Archives: %s"
+msgstr "年度归档：%s"
+
+#. Author of the plugin/theme
+msgid "the WordPress team"
+msgstr "WordPress团队"
+
+#: comments.php:36 comments.php:54
+msgid "Newer Comments &rarr;"
+msgstr "较新评论 &rarr;"
+
+#: comments.php:35 comments.php:53
+msgid "&larr; Older Comments"
+msgstr "&larr; 早期评论"
+
+#: comments.php:59
+msgid "Comments are closed."
+msgstr "评论已关闭。"
+
+#: category.php:20
+msgid "Category Archives: %s"
+msgstr "分类目录归档：%s"
+
+#: comments.php:34 comments.php:52
+msgid "Comment navigation"
+msgstr "评论导航"
+
+#: tag.php:22
+msgid "Tag Archives: %s"
+msgstr "标签归档：%s"
+
+#: search.php:18
+msgid "Search Results for: %s"
+msgstr "%s的搜索结果"
+
+#: content-none.php:12
+msgid "Nothing Found"
+msgstr "未找到"
+
+#: header.php:48
+msgid "Search"
+msgstr "搜索"
+
+#: archive.php:40 taxonomy-post_format.php:51
+msgid "Archives"
+msgstr "归档"
+
+#: inc/widgets.php:127 inc/widgets.php:172
+msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+msgstr "继续阅读 <span class=\"meta-nav\">&rarr;</span>"
+
+#: content-aside.php:53 content-audio.php:53 content-gallery.php:53
+#: content-image.php:53 content-link.php:53 content-page.php:22
+#: content-quote.php:53 content-video.php:53 content.php:61 image.php:54
+msgid "Pages:"
+msgstr "页码："
+
+#: content-aside.php:40 content-audio.php:40 content-gallery.php:40
+#: content-image.php:40 content-link.php:40 content-page.php:28
+#: content-quote.php:40 content-video.php:40 content.php:42 image.php:34
+#: page-templates/contributors.php:35
+msgid "Edit"
+msgstr "编辑"
+
+#: inc/template-tags.php:51
+msgid "Next &rarr;"
+msgstr "下一个 &rarr;"
+
+#: inc/template-tags.php:50
+msgid "&larr; Previous"
+msgstr "&larr; 上一个"
+
+#: functions.php:495
+msgid "Page %s"
+msgstr "第%s页"
+
+#: inc/template-tags.php:85
+msgid "Post navigation"
+msgstr "文章导航"
+
+#: header.php:52
+msgid "Primary Menu"
+msgstr "主菜单"
+
+#: content-none.php:27
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr "我们可能无法找到您需要的内容。或许搜索功能可以帮到您。"
+
+#: content-aside.php:37 content-audio.php:37 content-gallery.php:37
+#: content-image.php:37 content-link.php:37 content-quote.php:37
+#: content-video.php:37 content.php:38 inc/widgets.php:194
+msgid "Leave a comment"
+msgstr "发表回复"
+
+#: content-none.php:18
+msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr "准备好发布第一篇文章了？<a href=\"%1$s\">从这里开始</a>。"
+
+#: inc/template-tags.php:109
+msgid "Sticky"
+msgstr "置顶"
+
+#: header.php:53
+msgid "Skip to content"
+msgstr "跳至内容"
+
+#: 404.php:17
+msgid "Not Found"
+msgstr "未找到"
+
+#: 404.php:21
+msgid "It looks like nothing was found at this location. Maybe try a search?"
+msgstr "这儿似乎什么都没有，试试搜索？"
+
+#: archive.php:34
+msgctxt "monthly archives date format"
+msgid "F Y"
+msgstr "Y年m月"
+
+#: archive.php:37
+msgctxt "yearly archives date format"
+msgid "Y"
+msgstr "Y年"
+
+#: author.php:31
+msgid "All posts by %s"
+msgstr "所有由%s发布的文章"
+
+#: comments.php:27
+msgid "One thought on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
+msgstr[0] "《%2$s》有%s个想法"
+
+#: content-aside.php:17 content-audio.php:17 content-featured-post.php:28
+#: content-gallery.php:17 content-image.php:17 content-link.php:17
+#: content-quote.php:17 content-video.php:17 content.php:19
+msgctxt "Used between list items, there is a space after the comma."
+msgid ", "
+msgstr "、"
+
+#: content-aside.php:37 content-audio.php:37 content-gallery.php:37
+#: content-image.php:37 content-link.php:37 content-quote.php:37
+#: content-video.php:37 content.php:38 inc/widgets.php:194
+msgid "1 Comment"
+msgstr "1条评论"
+
+#: content-aside.php:37 content-audio.php:37 content-gallery.php:37
+#: content-image.php:37 content-link.php:37 content-quote.php:37
+#: content-video.php:37 content.php:38 inc/widgets.php:194
+msgid "% Comments"
+msgstr "%条评论"
+
+#: content-none.php:22
+msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+msgstr "抱歉，没有符合您搜索条件的结果。请换其它关键词再试。"
+
+#: functions.php:83
+msgid "Top primary menu"
+msgstr "顶部主菜单"
+
+#: functions.php:84
+msgid "Secondary menu in left sidebar"
+msgstr "左边栏中的次要菜单"
+
+#: functions.php:171
+msgid "Primary Sidebar"
+msgstr "主边栏"
+
+#: functions.php:173
+msgid "Main sidebar that appears on the left."
+msgstr "出现在左侧的主边栏。"
+
+#: functions.php:180
+msgid "Content Sidebar"
+msgstr "内容边栏"
+
+#: functions.php:182
+msgid "Additional sidebar that appears on the right."
+msgstr "出现在右侧的附加边栏。"
+
+#: functions.php:189
+msgid "Footer Widget Area"
+msgstr "页脚挂件区"
+
+#: functions.php:191
+msgid "Appears in the footer section of the site."
+msgstr "在网站页脚区域出现。"
+
+#. Translators: If there are characters in your language that are not supported
+#. by Lato, translate this to 'off'. Do not translate into your own language.
+#: functions.php:213
+msgctxt "Lato font: on or off"
+msgid "on"
+msgstr "on"
+
+#: functions.php:258
+msgid "Previous"
+msgstr "上一"
+
+#: functions.php:259
+msgid "Next"
+msgstr "下一"
+
+#: functions.php:376
+msgid "%d Article"
+msgid_plural "%d Articles"
+msgstr[0] "%d篇文章"
+
+#: image.php:65
+msgid "Previous Image"
+msgstr "上一图片"
+
+#: image.php:66
+msgid "Next Image"
+msgstr "下一图片"
+
+#: inc/back-compat.php:37 inc/back-compat.php:47 inc/back-compat.php:60
+msgid "Twenty Fourteen requires at least WordPress version 3.6. You are running version %s. Please upgrade and try again."
+msgstr "Twenty Fourteen要求WordPress 3.6版或以上，您在运行%s版。请升级并重试。"
+
+#: inc/customizer.php:34 inc/customizer.php:35
+msgid "Background may only be visible on wide screens."
+msgstr "背景可能只在宽屏幕上可见。"
+
+#: inc/customizer.php:24
+msgid "Site Title Color"
+msgstr "站点标题颜色"
+
+#: inc/customizer.php:27
+msgid "Display Site Title &amp; Tagline"
+msgstr "显示站点标题与副标题"
+
+#: inc/customizer.php:40 inc/featured-content.php:403
+msgid "Featured Content"
+msgstr "特色内容"
+
+#: inc/customizer.php:41 inc/featured-content.php:404
+msgid "Use a <a href=\"%1$s\">tag</a> to feature your posts. If no posts match the tag, <a href=\"%2$s\">sticky posts</a> will be displayed instead."
+msgstr "使用<a href=\"%1$s\">标签</a>来选出特色内容。如果标签未匹配任何文章，<a href=\"%2$s\">置顶文章</a>会被显示。"
+
+#: inc/customizer.php:56
+msgid "Layout"
+msgstr "布局"
+
+#: inc/customizer.php:60
+msgid "Grid"
+msgstr "网格"
+
+#: inc/customizer.php:61
+msgid "Slider"
+msgstr "滑块"
+
+#. #-#-#-#-#  twentyfourteen.pot (Twenty Fourteen 1.5)  #-#-#-#-#
+#. Theme Name of the plugin/theme
+#: inc/customizer.php:105
+msgid "Twenty Fourteen"
+msgstr "Twenty Fourteen"
+
+#: inc/customizer.php:109
+msgid "Enhance your site design by using <a href=\"%s\">Featured Images</a> for posts you&rsquo;d like to stand out (also known as post thumbnails). This allows you to associate an image with your post without inserting it. Twenty Fourteen uses featured images for posts and pages&mdash;above the title&mdash;and in the Featured Content area on the home page."
+msgstr "您可在您希望脱颖而出的文章中显示<a href=\"%s\">特色图片</a>（或称文章缩略图），这可让您将图片关联到文章，而无需在文章中插入该图片。Twenty Fourteen在文章与页面的标题之上显示特色图片，也会在主页的特色内容区显示。"
+
+#: inc/customizer.php:110
+msgid "For an in-depth tutorial, and more tips and tricks, visit the <a href=\"%s\">Twenty Fourteen documentation</a>."
+msgstr "要查阅详细教程和更多提示与技巧，请访问<a href=\"%s\">Twenty Fourteen文档</a>。"
+
+#: inc/featured-content.php:426
+msgid "Tag Name"
+msgstr "标签名"
+
+#: inc/featured-content.php:431
+msgid "Don&rsquo;t display tag on front end."
+msgstr "不在前端显示标签"
+
+#: inc/template-tags.php:58
+msgid "Posts navigation"
+msgstr "文章导航"
+
+#: inc/template-tags.php:89
+msgid "<span class=\"meta-nav\">Published In</span>%title"
+msgstr "<span class=\"meta-nav\">发布于</span>%title"
+
+#: inc/template-tags.php:91
+msgid "<span class=\"meta-nav\">Previous Post</span>%title"
+msgstr "<span class=\"meta-nav\">上一文章</span>%title"
+
+#: inc/template-tags.php:92
+msgid "<span class=\"meta-nav\">Next Post</span>%title"
+msgstr "<span class=\"meta-nav\">下一文章</span>%title"
+
+#: inc/widgets.php:34
+msgid "Twenty Fourteen Ephemera"
+msgstr "Twenty Fourteen Ephemera"
+
+#: inc/widgets.php:79 taxonomy-post_format.php:30
+msgid "Asides"
+msgstr "旁白"
+
+#: inc/widgets.php:54 taxonomy-post_format.php:33
+msgid "Images"
+msgstr "图片"
+
+#: inc/widgets.php:58 taxonomy-post_format.php:36
+msgid "Videos"
+msgstr "视频"
+
+#: inc/widgets.php:62 taxonomy-post_format.php:39
+msgid "Audio"
+msgstr "音频"
+
+#: inc/widgets.php:66 taxonomy-post_format.php:42
+msgid "Quotes"
+msgstr "引用"
+
+#: inc/widgets.php:70 taxonomy-post_format.php:45
+msgid "Links"
+msgstr "链接"
+
+#: inc/widgets.php:74 taxonomy-post_format.php:48
+msgid "Galleries"
+msgstr "画廊"
+
+#: inc/widgets.php:162
+msgid "This gallery contains <a href=\"%1$s\" rel=\"bookmark\">%2$s photo</a>."
+msgid_plural "This gallery contains <a href=\"%1$s\" rel=\"bookmark\">%2$s photos</a>."
+msgstr[0] "此画廊包含<a href=\"%1$s\" rel=\"bookmark\">%2$s张图片</a>。"
+
+#: inc/widgets.php:255
+msgid "Title:"
+msgstr "标题："
+
+#: inc/widgets.php:258
+msgid "Number of posts to show:"
+msgstr "显示文章的数目："
+
+#: inc/widgets.php:261
+msgid "Post format to show:"
+msgstr "显示文章的格式："
+
+#. Description of the plugin/theme
+msgid "In 2014, our default theme lets you create a responsive magazine website with a sleek, modern design. Feature your favorite homepage content in either a grid or a slider. Use the three widget areas to customize your website, and change your content's layout with a full-width page template and a contributor page to show off your authors. Creating a magazine website with WordPress has never been easier."
+msgstr "在2014年，我们的默认主题通过时髦的现代设计，让您轻松创建响应式杂志网站。在主页的网格或滑块中显示您最喜欢的内容，通过三块挂件区域自定义您的网站，通过全宽页面模板来修改您内容的版式，通过贡献者页面来展示您的作者。使用WordPress创建杂志网站将比以往更加便捷。"
+
+#. Template Name of the plugin/theme
+msgid "Contributor Page"
+msgstr "贡献者页面"
+
+#. Template Name of the plugin/theme
+msgid "Full Width Page"
+msgstr "全宽页面"
+
+#: inc/customizer.php:42 inc/customizer.php:108 inc/featured-content.php:405
+#: inc/featured-content.php:414 inc/featured-content.php:474
+msgctxt "featured content default tag slug"
+msgid "featured"
+msgstr "特色"
+
+#: inc/widgets.php:36
+msgid "Use this widget to list your recent Aside, Quote, Video, Audio, Image, Gallery, and Link posts."
+msgstr "使用此挂件来列出您最近的旁白、引用、视频、音频、图片、画廊和链接文章。"
+
+#. #-#-#-#-#  twentyfourteen.pot (Twenty Fourteen 1.5)  #-#-#-#-#
+#. Author URI of the plugin/theme
+#: footer.php:21
+msgid "https://wordpress.org/"
+msgstr "https://cn.wordpress.org/"
+
+#. Theme URI of the plugin/theme
+msgid "https://wordpress.org/themes/twentyfourteen/"
+msgstr "https://wordpress.org/themes/twentyfourteen/"
+
+#. translators: %s: Name of current post
+#: content-aside.php:48 content-audio.php:48 content-gallery.php:48
+#: content-image.php:48 content-link.php:48 content-quote.php:48
+#: content-video.php:48 content.php:56 inc/template-tags.php:222
+msgid "Continue reading %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr "继续阅读%s <span class=\"meta-nav\">&rarr;</span>"
+
+#: inc/customizer.php:31 inc/customizer.php:32
+msgid "May only be visible on wide screens."
+msgstr "可能仅在宽屏幕上可见。"
+
+#: inc/customizer.php:108
+msgid "The home page features your choice of up to 6 posts prominently displayed in a grid or slider, controlled by a <a href=\"%1$s\">tag</a>; you can change the tag and layout in <a href=\"%2$s\">Appearance &rarr; Customize</a>. If no posts match the tag, <a href=\"%3$s\">sticky posts</a> will be displayed instead."
+msgstr "主页会于网格或滑块中突出显示您选择的最多6篇特色文章，通过<a href=\"%1$s\">标签</a>控制；您可在 <a href=\"%2$s\">“外观”&rarr;“自定义”</a>屏幕中修改标签和样式。如果标签未匹配任何文章，<a href=\"%2$s\">置顶文章</a>会被显示。"
+
+#: inc/widgets.php:55
+msgid "More images"
+msgstr "更多图片"
+
+#: inc/widgets.php:59
+msgid "More videos"
+msgstr "更多视频"
+
+#: inc/widgets.php:63
+msgid "More audio"
+msgstr "更多音频"
+
+#: inc/widgets.php:67
+msgid "More quotes"
+msgstr "更多引用"
+
+#: inc/widgets.php:71
+msgid "More links"
+msgstr "更多链接"
+
+#: inc/widgets.php:75
+msgid "More galleries"
+msgstr "更多画廊"
+
+#: inc/widgets.php:80
+msgid "More asides"
+msgstr "更多旁白"
+
+#. translators: used with More archives link
+#: inc/widgets.php:206
+msgid "%s <span class=\"meta-nav\">&rarr;</span>"
+msgstr "%s <span class=\"meta-nav\">&rarr;</span>"

@@ -1,0 +1,91 @@
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight:100;
+	font-size:17px;
+	padding: 25px;
+	line-height:30px;
+}
+
+
+code {
+	font-family: Monaco;
+	font-weight: 100;
+	padding:10px;
+	font-size:16px;
+	width:550px;
+}
+
+address {
+	display: block;
+	margin: 0 0 1.625em;
+	font-style: italic;
+}
+
+ol li {
+	list-style-type: decimal;
+}
+
+img {
+  box-shadow:0 0 4px #9a9a9a;
+}
+
+dt {
+	font-weight: 600;
+	margin:0 0 0 20px;
+}
+
+.gallery-caption {
+	margin-left: 0px;
+	padding: 0 0 0 0px;
+	text-align: center;
+	text-align: left;
+	width:150px;
+	display: block;
+	line-height: 22px;
+}
+
+.wp-caption {
+    margin: 0;
+	text-align: center;
+	background-color: #ffffff;
+	border:0;
+}
+
+dl.wp-cpation {
+	margin:10px 0 0 0;
+}
+
+.wp-caption-text {
+	 font-size:14px;
+	 color: #c3c3c3;
+}
+
+h1 {
+	font-size: 2.3em;
+	font-weight: 800;
+}
+
+h2 {
+	font-weight: 800;
+	font-size: 2.0em;
+}
+
+h3 {
+	font-weight: 800;
+	font-size: 1.7em;
+}
+
+h4 {
+	font-weight: 800;
+	font-size: 1.4em;
+}
+
+h5 {
+	font-weight: 800;
+	font-size: 1.1em;
+}
+
+h6 {
+	font-weight: 800;
+	font-size: 0.8em;
+}
