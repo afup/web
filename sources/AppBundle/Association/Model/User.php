@@ -514,7 +514,14 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
             $defaultRoles[] = 'ROLE_ANTENNE';
         }
 
-        return array_unique(array_merge($this->roles, $defaultRoles));
+        $userRoles = array_filter(
+            $this->roles,
+            function ($role) {
+                return $role != 'ROLE_MEMBER_EXPIRED';
+            }
+        );
+
+        return array_unique(array_merge($userRoles, $defaultRoles));
     }
 
     /**
