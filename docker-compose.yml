@@ -31,6 +31,8 @@ services:
       args:
         uid: ${CURRENT_UID:-1001}
         gid: "1001"
+    environment:
+      AFUP_WEBSITE_URL: 'https://apachephp:80'
     volumes:
       - ./:/var/www/html
     links:
