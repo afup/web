@@ -14,7 +14,8 @@
         "wpackagist-plugin/jquery-t-countdown-widget": "2.3.16",
         "wpackagist-plugin/qtranslate-x": "3.4.6.8",
         "symfony/filesystem": "^3.3",
-        "symfony/finder": "^3.3"
+        "symfony/finder": "^3.3",
+        "wpackagist-plugin/display-posts-shortcode": "^2.8"
     },
     "repositories": [
         {
