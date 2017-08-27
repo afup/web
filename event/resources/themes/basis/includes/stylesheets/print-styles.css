@@ -1,0 +1,39 @@
+/*---------------------------------------------------------
+ Print (print-style.css)
+-------------------------------------------------------- */
+* {
+	background: transparent !important;
+    color: #000000 !important;
+	text-shadow: none !important;
+	box-shadow: none !important;
+	font-size: 12px !important;
+}
+*:before {
+	content: "" !important;
+	padding-right: 0 !important;
+}
+*:after {
+	content: "" !important;
+	padding-left: 0 !important;
+}
+button {
+	border: 0 !important;
+}
+a {
+	text-decoration: underline;
+}
+img {
+	max-width: 100% !important;
+}
+h1,
+h2,
+h3 {
+	font-size: 20px !important;
+}
+#respond,
+#social,
+#basis-header-nav,
+#mobile-toggle,
+.post-header-fullwidth {
+	display: none !important;
+}

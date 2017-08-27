@@ -1,0 +1,83 @@
+/*---------------------------------------------------------
+ 10. Forms (_forms.scss)
+-------------------------------------------------------- */
+textarea,
+input {
+	max-width: 100%;
+	background-color: $a;
+	border: $rule;
+	@include rem('padding', $base/2);
+	@extend .box-size;
+	&:focus {
+		outline: none; //reset
+	}
+}
+textarea {
+	resize: vertical;
+}
+select {
+	max-width: 100%;
+	outline: none; //reset
+}
+/*---------------------------------------------------------
+ Placeholder text (_forms.scss)
+-------------------------------------------------------- */
+::-webkit-input-placeholder {
+	color: $k;
+}
+:-moz-placeholder {
+	color: $k;
+}
+::-moz-placeholder {
+	color: $k;
+}
+:-ms-input-placeholder {
+	color: $k;
+}
+/*---------------------------------------------------------
+ Buttons (_forms.scss)
+-------------------------------------------------------- */
+button,
+input[type="reset"],
+input[type="submit"],
+input[type="button"],
+.basis-button,
+.slide-button,
+.banner-button {
+	text-align: center;
+	text-transform: capitalize;
+	text-decoration: none; //reset
+	font-family: $sans;
+	color: $a;
+	line-height: 1; //reset
+	border: 0; //reset
+	background: $f;
+	@include rem('margin-bottom', $base);
+	@include rem('padding', 15px);
+	@include rem('font-size', 14px);
+	@include rem('letter-spacing', 1px);
+	@include border-radius;
+	@include no-select;
+	&:hover {
+		color: $a;
+	}
+}
+.slide-button,
+.banner-button {
+	line-height: 3;
+	background: $d;
+}
+/*---------------------------------------------------------
+ Contact form 7 (_forms.scss)
+-------------------------------------------------------- */
+.wpcf7 {
+	input[type="text"],
+	input[type="email"],
+	textarea {
+		width: 100%;
+		@include rem('margin-top', $base/2);
+	}
+	input[type="submit"] {
+		margin-bottom: 0; //reset
+	}
+}

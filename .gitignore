@@ -45,3 +45,7 @@ deps.lock
 /docker-compose.override.yml
 /composer.phar
 /data
+
+/event/vendor
+/event/wp
+/event/composer.phar

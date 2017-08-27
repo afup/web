@@ -1,0 +1,62 @@
+/*---------------------------------------------------------
+ 8. Sidebar (_sidebar.scss)
+-------------------------------------------------------- */
+#sidebar {
+	@include rem('margin-bottom', $base*4);
+}
+/*---------------------------------------------------------
+ Widgets (_sidebar.scss)
+-------------------------------------------------------- */
+.widgettitle {
+	@include rem('margin-bottom', $base/4);
+	@include rem('font-size', 17px);
+}
+.widget {
+	max-width: 100%;
+	line-height: 1.45;
+	@include rem('margin-bottom', $base*2);
+	@include rem('font-size', 16px);
+	&:last-of-type {
+		margin-bottom: 0; //reset
+	}
+	a:hover {
+		color: $e;
+	}
+	.children,
+	.sub-menu {
+		margin-bottom: 0; //reset
+		li:before {
+			content: "\2013  ";
+			color: $e;
+		}
+	}
+}
+.widget_archive,
+.widget_pages,
+.widget_links,
+.widget_categories {
+	color: $e;
+}
+.widget_tag_cloud a {
+	@include rem('padding', 2px);
+}
+.widget_rss {
+	.widgettitle a {
+		text-decoration: none; //reset
+		line-height: 1.55;
+		@include rem('word-spacing', -1px);
+		@include rem('font-size', 20px);
+	}
+	img {
+		display: none;
+	}
+	.rss-date,
+	cite {
+		display: block;
+		color: $e;
+		@include rem('font-size', 13px);
+	}
+	cite {
+		@include rem('margin-bottom', $base);
+	}
+}

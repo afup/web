@@ -1,0 +1,67 @@
+/*---------------------------------------------------------
+ MP6 styles (html-builder-mp6.css)
+-------------------------------------------------------- */
+/* Custom breakpoints for new sidebar width */
+@media screen and (min-width: 1160px) {
+	.wp-admin .basis-menu-product-list-item {
+		width: 100%;
+	}
+}
+@media screen and (min-width: 1260px) {
+	.wp-admin .basis-menu-product-list-item {
+		width: 50%;
+	}
+}
+/* Removing border radius from all elements */
+.wp-admin #basis_builder_product *,
+.wp-admin #basis_builder_slideshow * {
+	border-radius: 0;
+}
+/* Removing links */
+.wp-admin .basis-section-remove {
+	color: #a00;
+	padding: 0;
+	color: #a00;
+	border-bottom: 0;
+	text-decoration: none;
+}
+/* Removing links hover state */
+.wp-admin .basis-section-remove:hover {
+	color: #ff0000;
+	background: none;
+}
+/* Placeholder text */
+.wp-admin ::-webkit-input-placeholder {
+	line-height: 1.4em;
+}
+/* Section headers */
+.wp-admin .basis-section-header h3 {
+	background: #e9e9e9;
+	font-family: 'Open Sans', sans-serif !important;
+}
+/* Sections */
+.wp-admin .basis-section {
+	background: #eeeeee;
+}
+/* Featured image background */
+.wp-admin .basis-media-uploader-placeholder {
+	background-color: #e9e9e9;
+	border: 1px solid #dfdfdf;
+}
+/* Removing background arrow for handle */
+.wp-admin.js .meta-box-sortables .postbox .basis-section .handlediv {
+	background: none;
+}
+/* Section toggle arrow styling */
+.wp-admin .meta-box-sortables .postbox .basis-stage .handlediv:before {
+	content: ''; /* Important for making sure two arrows are not displayed */
+}
+.wp-admin .meta-box-sortables .postbox .basis-stage .basis-section .basis-section-header .handlediv:before {
+	content: '\f140';
+}
+.wp-admin .meta-box-sortables .postbox .basis-stage .basis-section.basis-section-open .basis-section-header .handlediv:before {
+	content: '\f142';
+}
+.wp-admin .basis-section-toggle .handlediv {
+	right: 0;
+}

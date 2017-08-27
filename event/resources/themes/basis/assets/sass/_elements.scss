@@ -1,0 +1,319 @@
+/*---------------------------------------------------------
+ 4. Elements (_elements.scss)
+-------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	clear: both;
+	color: $f;
+	@include rem('margin-bottom', $base/2);
+	@extend .break;
+	a {
+		color: $f;
+		text-decoration: none; //reset
+	}
+	* + & {
+		@include rem('margin-top', $base*2);
+	}
+}
+h1 {
+	line-height: 1.35;
+	@include rem('font-size', 42px);
+	@include rem('word-spacing', -2px);
+}
+h2,
+h2 a {
+	@include for(medium-screens) {
+		@include rem('font-size', 36px);
+	}
+	font-weight: 700;
+	line-height: 1.3;
+	@include rem('font-size', 28px);
+	@include rem('word-spacing', -1px);
+}
+h3 {
+	font-weight: 700;
+	line-height: 1.55;
+	@include rem('font-size', 20px);
+	@include rem('word-spacing', 1px);
+}
+h4 {
+	font-weight: 400;
+	line-height: 1.55;
+	@include rem('font-size', 20px);
+}
+h5 {
+	line-height: 1.7;
+	@include rem('font-size', 22px);
+}
+h6 {
+	@include for(medium-screens) {
+		@include rem('font-size', 13px);
+	}
+	text-transform: uppercase;
+	font-weight: 700;
+	line-height: 1.95;
+	@include rem('font-size', 14px);
+	@include rem('letter-spacing', 2px);
+}
+/*---------------------------------------------------------
+ Elements (_elements.scss)
+-------------------------------------------------------- */
+blockquote {
+	clear: both;
+	p {
+		@include for(medium-screens) {
+			@include rem('font-size', 24px);
+		}
+		color: $k;
+		line-height: 1.45;
+		@include rem('word-spacing', -1px);
+		@include rem('font-size', 20px);
+	    &:first-child:before,
+	    &:last-child:after {
+			color: $e;
+			line-height: 1; //reset
+	    }
+	    &:first-child:before {
+			content: "\201C  ";
+			@include rem('margin-left', -12px);
+	    }
+	    &:last-child:after {
+			content: "  \201D";
+		}
+	}
+	cite {
+		font-style: normal; //reset
+		font-family: $sans; //reset
+		color: $e;
+		@include rem('margin-bottom', $base);
+		@include rem('font-size', 17px); //reset
+	}
+}
+q {
+	&:before {
+		content: "\201C";
+	}
+	&:after {
+		content: "\201D";
+	}
+}
+tt,
+kbd,
+pre,
+code,
+samp {
+	font-family: $mono;
+	color: $k;
+	border: $rule;
+	@include rem('padding', 1px 3px);
+	@include rem('word-spacing', -1px);
+	@include border-radius;
+}
+pre {
+	overflow: auto;
+	white-space: pre-wrap;
+	@include rem('padding', $base);
+	@include rem('margin-bottom', $base);
+	@extend .box-size;
+	@extend .break;
+}
+del,
+strike {
+	color: $e;
+}
+abbr,
+acronym,
+dfn {
+	cursor: help;
+	border-bottom: $rule;
+	a & {
+		border-bottom: 0; //reset
+	}
+}
+details {
+	summary {
+		font-weight: 700;
+		@include rem('margin-bottom', $base);
+	}
+	:focus {
+		outline: none;
+	}
+}
+ins,
+mark {
+	background-color: #fff9c0;
+}
+ins {
+	text-decoration: none; //reset
+	&:before {
+		content: "\005B";
+		position: relative;
+		@include rem('right', 1px);
+	}
+	&:after {
+		content: "\005D";
+		position: relative;
+		@include rem('left', 1px);
+	}
+}
+small {
+	font-size: .75em;
+}
+big {
+	font-size: 1.25em;
+}
+sub,
+sup {
+	@include for(medium-screens) {
+		font-size: 68.75%; //11px
+	}
+	font-size: 75%; //12px
+}
+address {
+	font-style: normal; //reset
+	font-weight: 700;
+}
+hr {
+	height: 1px;
+	border: 0; //reset
+	border-top: $rule;
+	@include rem('margin', $base*2 0);
+}
+/*---------------------------------------------------------
+ Lists (_elements.scss)
+-------------------------------------------------------- */
+.basis-list {
+	ul {
+		list-style: square;
+	}
+	ol {
+		list-style: decimal;
+	}
+	ul,
+	ol {
+		@include for(medium-screens) {
+			list-style-position: outside;
+		}
+		list-style-position: inside;
+	}
+	li > ul,
+	li > ol {
+		margin-bottom: 0; //reset
+		@include rem('margin-left', 30px);
+	}
+}
+/*---------------------------------------------------------
+ Definition lists (_elements.scss)
+-------------------------------------------------------- */
+dl {
+	dt {
+		margin-bottom: 0; //reset
+	}
+	dd {
+		@include rem('margin-left', $gut);
+	}
+}
+/*---------------------------------------------------------
+ Tables (_elements.scss)
+-------------------------------------------------------- */
+table {
+	width: 100%;
+	text-align: center;
+	border: $rule;
+	@include rem('font-size', 14px);
+	@extend .break;
+	caption {
+		@include rem('margin-bottom', $base);
+	}
+	th,
+	td {
+		@include rem('padding', $base/2 0);
+	}
+	th {
+		color: $f;
+		border-left: $rule;
+	}
+	td {
+		border-top: $rule;
+		border-left: $rule;
+		&[valign="top"] {
+			vertical-align: top;
+		}
+		&[valign="bottom"] {
+			vertical-align: bottom;
+		}
+	}
+}
+/*---------------------------------------------------------
+ Galleries (_elements.scss)
+-------------------------------------------------------- */
+.gallery {
+	@include rem('margin-bottom', $base);
+}
+.gallery-item {
+	margin: 0 3% 3% 0 !important;
+	text-align: center;
+	img {
+		border: 0 !important;
+	}
+	.gallery-columns-1 & {
+		max-width: 100%;
+	}
+	.gallery-columns-2 & {
+		max-width: 48.5%;
+	}
+	.gallery-columns-3 & {
+		max-width: 31.33%;
+	}
+	.gallery-columns-4 & {
+		max-width: 22.75%;
+	}
+	.gallery-columns-5 & {
+		max-width: 17.6%;
+	}
+	.gallery-columns-6 & {
+		max-width: 14.16%;
+	}
+	.gallery-columns-7 & {
+		max-width: 11.45%;
+	}
+	.gallery-columns-8 & {
+		max-width: 9.87%;
+	}
+	.gallery-columns-9 & {
+		max-width: 8.44%;
+	}
+	.gallery-columns-1 &:nth-of-type(1n),
+	.gallery-columns-2 &:nth-of-type(2n),
+	.gallery-columns-3 &:nth-of-type(3n),
+	.gallery-columns-4 &:nth-of-type(4n),
+	.gallery-columns-5 &:nth-of-type(5n),
+	.gallery-columns-6 &:nth-of-type(6n),
+	.gallery-columns-7 &:nth-of-type(7n),
+	.gallery-columns-8 &:nth-of-type(8n),
+	.gallery-columns-9 &:nth-of-type(9n) {
+		margin-right: 0 !important; //reset
+	}
+}
+/*---------------------------------------------------------
+ Extras (_elements.scss)
+-------------------------------------------------------- */
+.alert {
+	color: $k;
+	border: $rule;
+	background-color: $a;
+	text-shadow: none; //reset
+	@include rem('padding', $base);
+	@include border-radius;
+	@extend .box-size;
+}
+.intro {
+	@include for(medium-screens) {
+		@include rem('font-size', 22px);
+	}
+	@include rem('font-size', 20px);
+}

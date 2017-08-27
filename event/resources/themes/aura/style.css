@@ -1,0 +1,1041 @@
+/*
+Theme Name: Aura
+Theme URI: http://fimply.de/?page_id=559
+Author URI: http://fimply.de
+Description: Also with Aura, our newest WordPress theme, we will convince a lot of people all over the world of our strategy of minimalism. Aura comes with a lot of phenomenal features.
+Author: Fimply
+Version: 1.0.17
+Tags: green, one-column, featured-images, threaded-comments, post-formats, sticky-post, custom-menu
+License: GNU/GPL Version 2 or later
+License URI: http://www.gnu.org/licenses/gpl.html
+*/
+
+/* ---------------------------------- Start ---------------------------------- */
+
+
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/* --------- Alignment --------- */
+
+.alignleft {
+	display: inline;
+	float: left;
+	margin-right: 1.625em;
+}
+
+img.alignleft {
+	display: inline;
+	float: left;
+	margin-right: 1.625em;
+	margin-top: 1.625em;
+	margin-bottom: 1.625em;
+}
+
+.alignright {
+	display: inline;
+	float: right;
+	margin-left: 1.625em;
+}
+
+img.alignright {
+	display: inline;
+	float: right;
+	margin-left: 1.625em;
+	margin-top: 1.625em;
+	margin-bottom: 1.625em;
+}
+
+.featured {
+	background-color: #00d49c;
+	color:#fff;
+	width: auto;
+	font-family: 'Doppio One', sans-serif;
+	padding: 2px 10px;
+	font-size: 13px;
+	display: table;
+	width: intrinsic;
+}
+
+.sticky {
+   /* not needed */
+}
+
+.aligncenter {
+	clear: both;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+img.aligncenter {
+	clear: both;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+margin-top: 1.625em;
+	margin-bottom: 1.625em;
+}
+
+img.alignnone {
+	display: block;
+	clear: both;
+	margin-top: 1.625em;
+	margin-bottom: 1.625em;
+}
+
+/* Text elements */
+
+p {
+	margin-bottom: 1.625em;
+}
+
+#article ul, #article ol, #sidebar ul, #sidebar ol, #comments ol, #comments li {
+	margin: 0 0 0 1.5em;
+}
+
+address {
+	font-style: italic;
+}
+
+/* --------- Tables --------- */
+
+table {
+	border-bottom: 1px solid #ddd;
+	margin: 10px 0 25px 0;
+	width: 100%;
+}
+
+th {
+	color: #666;
+	font-size: 14px;
+	font-weight: 500;
+	text-align: left;
+	letter-spacing: 0.1em;
+	line-height: 3.1em;
+	text-transform: uppercase;
+}
+
+td {
+	border-top: 1px solid #ddd;
+	text-align: left;
+	padding: 10px 10px 10px 0px;
+}
+
+
+ul {
+	list-style: square;
+}
+
+ol {
+	list-style-type: decimal;
+}
+
+ol ol {
+	list-style: upper-alpha;
+}
+
+ol ol ol {
+	list-style: upper-roman;
+}
+
+ol ol ol ol {
+	list-style: lower-alpha;
+}
+
+ul ul, ol ol, ul ol, ol ul {
+	margin-bottom: 0;
+}
+
+dl {
+	margin: 0 1.625em;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	margin-bottom: 1.625em;
+}
+
+strong {
+	font-weight: bold;
+}
+
+cite, em, i {
+	font-style: italic;
+}
+
+pre {
+	background-color:#fff;
+	border-left:3px solid #00d49c;
+	margin:0 0 30px 10px;
+	padding:30px 30px 30px 40px;
+	font-family: "Courier 10 Pitch", Courier, monospace;
+	font-size:15px;
+	word-break: break-word;
+	font-size: 0.937rem;
+	line-height:20px;
+}
+
+code, kbd, samp, var {
+	font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+}
+
+abbr, acronym, dfn {
+	border-bottom: 1px dotted #666;
+	cursor: help;
+}
+
+address {
+	display: block;
+	margin: 0 0 1.625em;
+}
+
+ins {
+	background: #ffccaa;
+	text-decoration: none;
+}
+
+sup, sub {
+	font-size: 10px;
+	font-size: 0.625rem;
+	height: 0;
+	line-height: 1;
+	position: relative;
+	vertical-align: baseline;
+}
+
+sup {
+	bottom: 1ex;
+}
+
+sub {
+	top: .5ex;
+}
+
+em {
+	font-style: italic;
+}
+
+strike, del, s {
+	text-decoration: line-through;
+}
+
+h2 {
+	font-size:25px;
+	line-height: ;
+}
+
+/*----------------------------------------------------*/
+
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #fff;
+}
+
+
+/* ----------------- Comments ----------------- */
+
+#comments {
+	max-width: 800px;
+	width:800px;
+	margin: 50px auto 0 auto;
+	font-family: 'PT Sans', sans-serif;
+}
+
+.comment {
+	margin:0px 0 0 -125px;
+	padding: 0 0 0 0px;
+	background-color: #f6f6f6;
+	text-align: left;
+}
+
+#respond {
+	display: block;
+	width:100%;
+	margin:0 auto;
+	float:right;
+}
+
+
+
+.comment:first-child {
+	margin:80px 0 -30px 0;
+}
+
+.show-comments {
+	margin:110px 0 0 0px;
+}
+
+
+.comment-name {
+	font-size:22px;
+	font-family: 'Doppio One', sans-serif;
+    color:#00d49c;
+}
+
+.comment-date {
+	text-transform: uppercase;
+	letter-spacing: .1em;
+	font-family: 'Doppio One', sans-serif;
+	color: #777;
+	width: auto;
+	width: intrinsic;
+	border-bottom:3px solid #eee;
+	padding: 15px 0 10px 0;
+	font-size:14px;
+	font-weight: 100;
+}
+
+.comment-text {
+    margin:25px 0 0 0;
+    font-size: 17px;
+    color:#444;
+    line-height: 28px;
+}
+
+.countcomments {
+	font-size:30px;
+	font-family: 'Doppio One', sans-serif;
+	color:#444;
+	font-size: 1.875rem;
+	margin:35px 0 50px 0;
+}
+
+.comment-fields {
+	margin:0;
+}
+
+#avatar {
+	float: left;
+
+}
+
+.comment-box {
+	margin:0px 0 0px 0px;
+	float:right;
+	padding: 15px 0 0 0;
+	width:86%;
+}
+
+.comment-line {
+    background-color:#eeeeee;
+    height:1px;
+	margin:40px 0 20px 0;
+	width:100%;
+}
+
+.commentform {
+	margin:100px 0 0 0px;
+	line-height: 30px;
+}
+
+a.comment-edit-link {
+	font-family: Helvetica;
+	font-size:9px;
+	font-size: 0.562rem;
+	font-weight: 100;
+	letter-spacing: .3em;
+	text-transform: uppercase;
+	background-color:#c1c1c1;
+	border-radius: 5px;
+	-moz-border-radius:5px;
+	-khtml-border-radius:5px;
+	-o-border-radius:5px;
+	padding: 6px 9px;
+	color:#ffffff;
+}
+
+a.comment-reply-link {
+	font-size:14px;
+	/*font-size: 0.562rem;*/
+	background-color: transparent;
+	color:#00d49c;
+}
+
+
+.avatar {
+	width:60px;
+	border-radius:60px;
+	height:60px;
+}
+
+.children .comment {
+	margin:50px 0 0 -50px;
+	padding: 0 0 0 10px;
+}
+
+.children .children .comment {
+	margin:50px 0 0 -25px;
+}
+
+.bypostauthor {
+	font-weight: 800;
+}
+
+h3#reply-title {
+	font-size: 30px;
+	color:#444;
+}
+
+
+.wp-caption {
+	text-align: center;
+	font-size:13px;
+	font-size: 0.812rem;
+	max-width: 100%;
+	font-style: italic;
+}
+
+input[type=text] {
+	background-color: #eee;
+	border: 0;
+	font-family: 'PT Sans', sans-serif;
+	font-size: 17px;
+	padding: 15px 15px;
+	width:100%;
+	outline: none;
+	margin: 10px 0 0 0;
+	
+}
+
+input[type=submit] {
+	background-color: #eee;
+	font-family: 'Doppio One', sans-serif;
+	font-size: 17px;
+	padding: 20px 25px;
+	border: 0;
+	color: #444;
+}
+
+textarea {
+	background-color: #eee;
+	border: 0;
+	font-family: 'PT Sans', sans-serif;
+	font-size: 17px;
+	padding: 15px 15px;
+	color:#444;
+	line-height: 32px;
+	width:100%;
+	outline: none;
+	margin: 10px 0 0 0;
+	
+}
+
+h1 {
+	font-family: 'Doppio One', sans-serif;
+	font-weight: 100;
+	font-size: 25px;
+	line-height: 37px;
+	margin: 20px 0 25px 0;
+}
+
+h2 {
+	font-family: 'Doppio One', sans-serif;
+	font-size: 23px;
+	line-height: 36px;
+	margin: 20px 0 25px 0;
+}
+
+h3 {
+	font-family: 'Doppio One', sans-serif;
+	font-size: 21px;
+	line-height: 31px;
+	margin: 20px 0 25px 0;
+}
+
+h4 {
+	font-family: 'Doppio One', sans-serif;
+	font-size: 19px;
+	line-height: 31px;
+	margin: 20px 0 25px 0;
+}
+
+h5 {
+	font-family: 'Doppio One', sans-serif;
+	font-size: 17px;
+	line-height: 31px;
+	margin: 20px 0 25px 0;
+}
+
+h6 {
+	font-family: 'Doppio One', sans-serif;
+	font-size: 15px;
+	line-height: 31px;
+	margin: 20px 0 25px 0;
+}
+
+
+
+
+#head {
+	background-color: #00d49c;
+	font-family:arial;
+	color:#fff;
+	font-size: 19px;
+	margin: 0 0 -40px 0;
+	padding:50px 80px 50px 80px;
+	font-weight: 100;
+}
+
+#article {
+	margin:100px 25px 100px 25px;
+	font-family: 'PT Sans', sans-serif;
+	line-height: 25px;
+	font-size: 16px;
+}
+
+
+
+
+
+blockquote {
+     font-family:Georgia, "Bitstream Charter", serif;
+     border:0;
+	 background-color: #fff;
+	 margin: 40px 0px 10px 0px;
+	 padding: 0 30px;
+	 color: #555;
+	 font-style: italic;
+     line-height: 30px;
+	 font-size: 20px;
+}
+            
+            
+            .cite {
+                margin: 5px 0 0 5px;
+	            font-size:16px;
+	            color:#777;
+            }
+            
+            .cite:before {
+	            content: '– ';
+	            color:#aaa;
+	            font-weight:bold;
+	            font-size:16px;
+            }
+
+
+
+
+.date {
+	color: #aaa;
+	font-size: 13px;
+}
+
+p {
+	margin: 0 0 25px;
+}
+
+#line {
+	height:2px;
+	width:125px;
+	border-bottom: 1px solid #eee;
+}
+
+a.blogname {
+	text-decoration: none;
+	color: #fff;
+}
+
+a.blogname:hover, a.title:hover {
+	text-decoration: none;
+}
+
+a.title {
+	color:#555;
+	text-decoration: none;
+}
+
+.clear {
+	clear: both;
+}
+
+.gallery .gallery-item {
+	float: left;
+	margin-bottom: 1.5%;
+	width: 33%;
+}
+.gallery-columns-2 .gallery-item { width: 50%; margin: 0px 0 10px 0; }
+.gallery-columns-4 .gallery-item { width: 25%; margin: 0px 0 1px 0; }
+.gallery-columns-5 .gallery-item { width: 20%; margin: 0px 0 1px 0; }
+
+.gallery img {
+    width:92%;
+    height: auto;
+	border: 0px solid white;
+	background: #fff;
+}
+
+.gallery-columns-2 img {
+	width:95%;
+	height: auto;
+}
+
+.gallery-columns-4 img {
+	width:94%;
+	height: auto;
+}
+
+.gallery-columns-2 .attachment-medium {
+	max-width: 95%;
+	height: auto;
+}
+.gallery-columns-4 .attachment-thumbnail {
+	max-width: 95%;
+	height: auto;
+}
+.gallery .gallery-caption {
+	color: #888;
+	font-size: 12px;
+	font-size: 0.75rem;
+	display: none;
+	margin: 0 0 12px;
+}
+
+.wp-caption-text {
+	 font-size:14px;
+	 color: #c3c3c3;
+}
+
+.gallery dl, .gallery dt { margin: 0; }
+.gallery br+br { display: none; }
+
+a {
+	text-decoration: none;
+	color:#00d49c;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/* post formats */
+
+.aside {
+	font-size: 23px;
+	line-height: 36px;
+}
+
+
+.quote blockquote {
+	font-size: 31px;
+	line-height: 42px;
+	color:#444;
+	padding: 0;
+}
+
+.quote cite {
+	font-size: 20px;
+}
+
+.quote cite:before {
+	content: '– ';
+	color:#444;
+	font-weight:bold;
+	font-size:20px;
+}
+
+
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+#head {
+	background-color: #00d49c;
+	color:#fff;
+	font-size: 23px;
+	margin: 0 0 -50px 0;
+	font-weight: 100;
+}
+
+#head-container {
+    width:800px;
+    margin: 20px auto;
+}
+
+#logo {
+	font-family: 'Doppio One', sans-serif;
+	font-size: 30px;
+	float: left;
+}
+
+.attachment-post-thumbnail {
+	margin: 5px 0 20px -50px;
+}
+
+#nav {
+	float: right;
+}
+
+#nav ul {
+	list-style-type: none;
+	margin: 10px 0 0 0;
+}
+
+#nav ul li a {
+	color:#b0ffea;
+}
+
+#nav ul li a:hover {
+	color:#fff;
+	text-decoration: none;
+}
+
+#nav ul li {
+    list-style-type: none;
+	font-size: 14px;
+	color:#b0ffea;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family: Helvetica;
+	margin: 0 15px;
+	display: inline;
+}
+
+#slogan {
+	font-family: 'PT Sans', sans-serif;
+	color:#b0ffea;
+	margin: 15px 0 0 0;
+	font-weight: 100;
+	font-size: 14px;
+}
+
+#article {
+	width: 800px;
+	margin:150px auto 150px auto;
+	font-family: 'PT Sans', sans-serif;
+	color: #555;
+	-webkit-hyphens: auto;
+	-ms-word-wrap: break-word;
+	word-wrap: break-word;
+    -moz-hyphens: auto;
+    hyphens: auto;
+	line-height: 31px;
+	font-size: 17px;
+}
+
+
+img.size-full {
+	margin: 25px 0 25px 0px;
+	height: auto;
+}
+
+img.alignleft {
+	margin: 0 25px 0 0;
+}
+
+img.aligncenter {
+	margin: 25px auto;
+}
+
+img.alignright {
+	margin: 0 0px 0 25px;
+}
+
+
+h1 {
+	font-family: 'Doppio One', sans-serif;
+	font-weight: 400;
+	font-size: 28px;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+	line-height: 39px;
+	color:#444;
+	margin: 20px 0 25px 0;
+}
+
+
+
+
+blockquote {
+     font-family:Georgia, "Bitstream Charter", serif;
+     border:0;
+	 background-color: #fff;
+	 margin: 40px 0px 10px 0px;
+	 padding: 0 30px;
+	 color: #555;
+	 font-style: italic;
+     line-height: 30px;
+	 font-size: 20px;
+}
+            
+            
+            .cite {
+                margin: 5px 0 0 5px;
+	            font-size:16px;
+	            color:#777;
+            }
+            
+            .cite:before {
+	            content: '– ';
+	            color:#aaa;
+	            font-weight:bold;
+	            font-size:16px;
+            }
+            
+            
+.aside {
+	font-size: 28px;
+	line-height: 42px;
+}
+
+
+
+
+
+
+
+.date {
+	color: #888;
+	display: table;
+	width: auto;
+	width: intrinsic;
+	text-transform: uppercase;
+	font-family: 'Doppio One', sans-serif;
+	font-size: 13px;
+	border-bottom: 3px solid #eee;
+	margin: -15px 0 40px 0;
+}
+
+p {
+	margin: 0 0 40px;
+}
+
+
+#footer {
+	margin: 0px 0 0 0;
+	width:100%;
+    background-color: #444;
+}
+
+
+#footer-text {
+	width:100%;
+	text-align: center;
+	padding: 30px 0 0px 0;
+	margin: 0 auto 0 auto;
+	font-family: 'Doppio One', sans-serif;
+	font-size: 15px;
+	color:#fff;
+}
+
+div.tags {
+	color:#444;
+}
+
+div.tags .tags {
+	color:#aaa;
+	margin: 0 10px 0 0;
+}
+
+div.tags {
+	color:#777;
+	font-family: 'PT Sans', sans-serif;
+	width:800px;
+	line-height: 25px;
+	margin: 30px auto 20px auto;
+}
+
+span.tags {
+	color:#aaa;
+	margin: 0 10px 0 0;
+}
+
+
+#footer-theme {
+	width:100%;
+	text-align: center;
+	padding: 10px 0 30px 0;
+	margin: 0 auto 0 auto;
+	font-family: 'Doppio One', sans-serif;
+	font-size: 15px;
+	color:#888;
+}
+
+#footer-theme a {
+	color:#bbb;
+	text-decoration: none;
+}
+
+#buttons {
+	margin: 60px 0px 0px 0px;
+	background-color: #00d49c;
+	padding: 40px 50px 90px 50px;
+}
+
+#posts-button a:hover, #posts-button2 a:hover {
+	text-decoration: none;
+}
+
+#posts-button {
+	background-color: #fff;
+	float: left;
+	padding: 20px 25px;
+	width: auto;
+	width: intrinsic;
+	font-family: 'Doppio One', sans-serif;
+	color:#444;
+}
+
+#posts-button2 {
+	background-color: #fff;
+	padding: 20px 25px;
+	float: right;
+	width: auto;
+	width: intrinsic;
+	font-family: 'Doppio One', sans-serif;
+	color:#444;
+}
+
+#wp-link-pages {
+	width: 800px;
+	font-family: 'PT Sans', sans-serif;
+	margin: 20px auto 0 auto;
+}
+
+#post-links {
+	margin: 60px 0px 0px 0px;
+	background-color: #00d49c;
+	padding: 40px 50px 0px 50px;
+}
+
+#post-links a {
+	color: #444;
+	text-decoration: none;
+}
+
+.post-button-left {
+	background-color: #fff;
+	float: left;
+	padding: 20px 25px;
+	margin: 0 0 40px 0;
+	line-height: 28px;
+	width: auto;
+	width: intrinsic;
+	font-family: 'Doppio One', sans-serif;
+	color:#444;
+	-ms-word-wrap: break-word;
+word-wrap: break-word;
+max-width: 48%;
+}
+
+.post-button-right {
+	background-color: #fff;
+	padding: 20px 25px;
+	line-height: 28px;
+	margin: 0 0 40px 0;
+	float: right;
+	width: auto;
+	width: intrinsic;
+	font-family: 'Doppio One', sans-serif;
+	color:#444;
+	-ms-word-wrap: break-word;
+word-wrap: break-word;
+max-width: 48%;
+}
+
+
+#sidebar {
+	font-family: 'PT Sans', sans-serif;
+	margin:0px 0 0 0;
+}
+
+ul.blogroll li {
+	list-style-type: none;
+	margin: 20px 0 20px -25px;
+}
+
+.widget, .widget_links {
+    width: 100%;
+	text-align: center;
+	padding: 60px 0 40px 0;
+
+	font-size: 18px;
+	font-family: 'PT Sans', sans-serif;
+	color: #444;
+}
+
+.widget:nth-child(odd) {
+	background-color: #fafafa;
+}
+
+.widget:nth-child(even) {
+	background-color: #ffffff;
+}
+
+.widget li {
+	list-style-type: none;
+	margin: 20px 0 20px -25px;
+}
+
+.widget li li {
+	margin: 20px 0 22px -5px;
+}
+
+.sidebar-headline {
+	font-family: 'Doppio One', sans-serif;
+	color:#444;
+	font-size: 30px;
+
+}

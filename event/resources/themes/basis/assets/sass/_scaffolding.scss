@@ -1,0 +1,467 @@
+/*---------------------------------------------------------
+ 3. Scaffolding (_scaffolding.scss)
+-------------------------------------------------------- */
+html {
+	@include for(small-screens) {
+		font-size: 106.25%; //17px
+	}
+	font-size: 93.75%; //15px
+}
+body {
+	font-family: $sans;
+	color: $i;
+	line-height: 1.55;
+	background-color: $a;
+	text-rendering: optimizeLegibility;
+}
+a {
+	color: $d;
+	&:hover {
+		color: $f;
+	}
+}
+/*---------------------------------------------------------
+ Select (_scaffolding.scss)
+-------------------------------------------------------- */
+::-moz-selection {
+	background-color: $b;
+	color: $f;
+	text-shadow: none; //reset
+}
+::-webkit-selection {
+	background-color: $b;
+	color: $f;
+	text-shadow: none; //reset
+}
+::selection {
+	background-color: $b;
+	color: $f;
+	text-shadow: none; //reset
+}
+img::selection {
+	background-color: transparent;
+}
+img::-moz-selection {
+	background-color: transparent;
+}
+/*---------------------------------------------------------
+ Base (_scaffolding.scss)
+-------------------------------------------------------- */
+ul,ol,dl,p,iframe,details,address,.vcard,figure,pre,fieldset,table,dt,dd,hr,.alert {
+	@include rem('margin-bottom', $base);
+}
+p,ul,ol,dl,blockquote {
+	@extend .break;
+}
+pre,
+code,
+input,
+textarea {
+	font: inherit;
+}
+/*---------------------------------------------------------
+ Structure (_scaffolding.scss)
+-------------------------------------------------------- */
+.post-content,
+.header-wrapper,
+.footer-wrapper {
+	max-width: $width;
+	margin: 0 auto;
+	@extend .clear;
+}
+.post-content {
+	@include for(medium-screens) {
+		@include rem('padding', 20px 60px);
+	}
+	@include rem('padding', 20px 40px);
+	@extend .clear;
+}
+.header-wrapper {
+	@include for(medium-screens) {
+		@include rem('padding', 25px 60px);
+	}
+}
+.footer-wrapper {
+	@include for(medium-screens) {
+		@include rem('padding', 40px 60px);
+	}
+	@include rem('padding', 40px);
+}
+/*---------------------------------------------------------
+ Custom background (_scaffolding.scss)
+-------------------------------------------------------- */
+.custom-background {
+	&.has-wide-featured-image .post-content.main {
+		margin-top: 0; //reset
+		background: none; //reset
+	}
+	#comments-wrapper {
+		max-width: 1066px;
+		margin-left: auto;
+		margin-right: auto;
+		background: none; //reset
+	}
+	#footer {
+		border-top: none; //reset
+	}
+}
+/*---------------------------------------------------------
+ Header (_scaffolding.scss)
+-------------------------------------------------------- */
+#header {
+	@include for(medium-screens) {
+		padding: 0; //reset
+	}
+	@include rem('padding-bottom', $base*1.5);
+	@extend .clear;
+	.content {
+		@include for(medium-screens) {
+			@include rem('padding', 30px 40px);
+		}
+	}
+}
+/*---------------------------------------------------------
+ Title / Logo (_scaffolding.scss)
+-------------------------------------------------------- */
+#title {
+	@include for(medium-screens) {
+		max-width: percentage(($col*4+$gut*3)/$width); //$width
+		padding: 0; //reset
+		h1 {
+			display: inline;
+		}
+	}
+	@include rem('padding', 0 $gut);
+}
+#title,
+#title a,
+#title h1 {
+	@include for(medium-screens) {
+		margin: 0; //reset
+		text-align: left;
+		@include rem('font-size', 36px);
+	}
+	margin: 0 auto;
+	color: $f;
+	font-weight: 700;
+	text-align: center;
+	text-decoration: none; //reset
+	line-height: 1; //reset
+}
+.custom-logo {
+	@include for(medium-screens) {
+		display: inline-block;
+	}
+	display: block;
+	clear: both;
+	@include rem('padding-bottom', $base/2);
+}
+/*---------------------------------------------------------
+ Tagline (_scaffolding.scss)
+-------------------------------------------------------- */
+.basis-tagline {
+	@include for(medium-screens) {
+		clear: left;
+		float: left;
+		text-align: left;
+		padding: 0; //reset
+		max-width: percentage(($col*2+$gut*2)/$width); //$width
+	}
+	display: block;
+	color: $e;
+	font-style: italic;
+	text-align: center;
+	line-height: 1.4;
+	@include rem('padding', 0 80px);
+	@include rem('font-size', 15px);
+}
+/*---------------------------------------------------------
+ Menu (_scaffolding.scss)
+-------------------------------------------------------- */
+#basis-header-nav {
+	@include for(medium-screens) {
+		float: right;
+		max-width: percentage(($col*4+$gut*3)/$width); //$width
+		text-align: right;
+		@include rem('margin-right', -12px);
+	}
+	margin-bottom: 0; //reset
+	&.opened {
+		max-height: 9999px;
+	}
+	a {
+		@include for(medium-screens) {
+			padding: 0; //reset
+			border-bottom: 0; //reset
+		}
+		display: block;
+		color: $k;
+		font-weight: 400;
+		text-decoration: none; //reset
+		border-bottom: $rule;
+		@include rem('padding', 12px 0 12px 12px);
+		@include rem('font-size', 15px);
+		&:hover {
+			color: $f;
+		}
+	}
+	ul {
+		margin-bottom: 0; //reset
+	}
+	li {
+		@include for(medium-screens) {
+			display: inline-block;
+			line-height: 2.6;
+			@include rem('padding', 0 10px);
+			&.basis-menu-item-parent {
+				a:after {
+					content: url(images/parent-menu-item-arrow.svg);
+					position: relative;
+					display: inline-block;
+					@include rem('top', -2px);
+					@include rem('padding-left', 6px);
+				}
+				@include rem('padding-right', 5px);
+				.sub-menu a:after,
+				.children a:after {
+					content: none; //reset
+				}
+			}
+			ul {
+				position: absolute;
+				display: none;
+				z-index: 999;
+				margin: 0; //reset
+				padding: 0; //reset
+				text-align: left; //reset
+				border: $rule;
+				background-color: $a;
+				min-width: 150px;
+				max-width: 200px;
+				@include rem('margin-left', -1px);
+				li {
+					@include rem('padding', 0 14px);
+					a {
+						display: block;
+					}
+					&.current-menu-item a,
+					&.current_page_item a {
+						color: $f;
+						text-decoration: underline;
+					}
+					&:last-of-type {
+						@include rem('padding-right', 14px);
+					}
+				}
+				li,
+				li a {
+					float: none;
+					display: block;
+					height: auto;
+					border: 0; //reset
+					border-bottom: $rule;
+					color: $k;
+					line-height: 1.7;
+					@include rem('margin', 12px 0);
+					@include rem('font-size', 13px);
+					&:last-child {
+						border-bottom: none;
+					}
+				}
+			}
+			&.current-menu-item,
+			&.current_page_item,
+			&.current-menu-ancestor,
+			&.current_page_ancestor {
+				a {
+					color: $f;
+					text-decoration: underline;
+				}
+				ul a {
+					color: $e;
+					text-decoration: none;
+					&:hover {
+						color: $f;
+					}
+				}
+			}
+			&:hover ul {
+				display: block;
+			}
+		}
+	}
+}
+/*---------------------------------------------------------
+ Responsive menu (_scaffolding.scss)
+-------------------------------------------------------- */
+.js #basis-header-nav {
+	@include for(medium-screens) {
+		overflow: visible;
+	}
+	clip: rect(0 0 0 0);
+	position: absolute;
+	display: block;
+	max-height: 0;
+	overflow: hidden;
+	zoom: 1;
+}
+@include for(medium-screens) {
+	.js {
+		#basis-header-nav {
+			position: relative;
+			&.closed {
+				max-height: none;
+			}
+		}
+	}
+	#mobile-toggle {
+		display: none;
+	}
+}
+/*---------------------------------------------------------
+ Mobile toggle (_scaffolding.scss)
+-------------------------------------------------------- */
+#mobile-toggle {
+	@include for(small-screens) {
+		@include rem('top', -1px);
+		@include rem('font-size', 14px);
+	}
+	position: relative;
+	z-index: 10;
+	float: right;
+	color: $k;
+	border: $rule;
+	background-color: $a;
+	border-top-color: $a;
+	cursor: pointer;
+	@include rem('top', -2px);
+	@include rem('right', 40px);
+	@include rem('margin-bottom', $base*1.5);
+	@include rem('padding', 8px 12px);
+	@include rem('font-size', 15px);
+	&:hover {
+		color: $f;
+	}
+}
+/*---------------------------------------------------------
+ Footer (_scaffolding.scss)
+-------------------------------------------------------- */
+#footer {
+	clear: both;
+	border-top: $rule;
+}
+/*---------------------------------------------------------
+ Footer columns (_scaffolding.scss)
+-------------------------------------------------------- */
+.footer-widgets {
+	@include for(medium-screens) {
+		width: percentage(($col*4+$gut*3)/$width); //$width
+	}
+	@include rem('margin-bottom', $base*2);
+}
+.footer-widgets-left {
+	float: left;
+}
+.footer-widgets-right {
+	float: right;
+}
+/*---------------------------------------------------------
+ Footer text (_scaffolding.scss)
+-------------------------------------------------------- */
+.fine-print {
+	@include for(medium-screens) {
+		width: percentage(($col*3+$gut*2)/$width); //$width
+	}
+	clear: both;
+	color: $k;
+	@extend .small-type;
+}
+.theme-byline {
+	color: $e;
+	@include rem('margin-bottom', 15px);
+	a {
+		font-weight: 700;
+		color: $e;
+		text-decoration: none; //reset
+		-webkit-font-smoothing: antialiased;
+		&:hover {
+			color: $f;
+		}
+	}
+	.by {
+		color: #c9d2d5;
+	}
+}
+.footer-text {
+	margin-bottom: 0; //reset
+	& + .theme-byline {
+		@include rem('margin-top', $base/4);
+	}
+}
+/*---------------------------------------------------------
+ Social icons (_scaffolding.scss)
+-------------------------------------------------------- */
+.icons li {
+	@include for(medium-screens) {
+		@include rem('margin-left', 5px);
+	}
+	display: inline;
+	@include rem('margin-left', 10px);
+	a {
+		display: inline-block;
+		height: 18px;
+		background: url(images/footer-social-icons.svg) no-repeat;
+	}
+	&:first-child {
+		margin-left: 0; //reset
+	}
+	.twitter {
+		background-position: 0 0;
+		width: 18px;
+		&:hover {
+			background-position: 0 -18px;
+		}
+	}
+	.facebook {
+		background-position: -19px 0;
+		width: 8px;
+		&:hover {
+			background-position: -19px -18px;
+		}
+	}
+	.google {
+		background-position: -27px 0;
+		width: 13px;
+		&:hover {
+			background-position: -27px -18px;
+		}
+	}
+	.flickr {
+		background-position: -40px 0;
+		width: 18px;
+		&:hover {
+			background-position: -40px -18px;
+		}
+	}
+	.pinterest {
+		background-position: -58px 0;
+		width: 19px;
+		&:hover {
+			background-position: -58px -18px;
+		}
+	}
+	.linkedin {
+		background-position: -78px 0;
+		width: 16px;
+		&:hover {
+			background-position: -78px -18px;
+		}
+	}
+	.rss {
+		background-position: -96px 0;
+		width: 17px;
+		&:hover {
+			background-position: -96px -18px;
+		}
+	}
+}
