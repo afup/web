@@ -8,6 +8,7 @@ use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\Talk;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BlogController extends EventBaseController
@@ -96,6 +97,35 @@ class BlogController extends EventBaseController
                     'hourMax' => 17,
                     'precision' => 5
                 ]
+        );
+    }
+
+    public function talkWidgetAction(Request $request)
+    {
+        /**
+         * @var $talkRepository TalkRepository
+         */
+        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+
+        $talks = $talkRepository->getBy(['id' => explode(',', $request->get('ids'))]);
+
+        $speakers = [];
+        $talksInfos = [];
+        foreach ($talks as $talk) {
+            foreach ($talkRepository->getByTalkWithSpeakers($talk) as $row) {
+                $talksInfos[] = $row;
+                foreach ($row['.aggregation']['speaker'] as $speaker) {
+                    $speakers[$speaker->getId()] = $speaker;
+                }
+            }
+        }
+
+        return $this->render(
+            ':blog:talk.html.twig',
+            [
+                'talks_infos' => $talksInfos,
+                'speakers' => $speakers
+            ]
         );
     }
 
