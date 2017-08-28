@@ -124,7 +124,8 @@ class BlogController extends EventBaseController
             ':blog:talk.html.twig',
             [
                 'talks_infos' => $talksInfos,
-                'speakers' => $speakers
+                'speakers' => $speakers,
+                'widget_type' => $request->get('type', 'all')
             ]
         );
     }
