@@ -258,3 +258,7 @@ footer .widget_nav_menu a{
     position: relative;
     top: 5px;
 }
+
+.twitter-follow-button {
+    margin: 0 15px;
+}
