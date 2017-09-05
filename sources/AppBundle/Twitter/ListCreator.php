@@ -49,6 +49,10 @@ class ListCreator
             throw new \RuntimeException('Erreur à la lecture des informations de la liste');
         }
 
+        if (isset($list['errors'])) {
+            throw new \RuntimeException('Erreur à la création de la liste : ' . $listJson);
+        }
+
         $this->twitterAPIExchange->request(
             'https://api.twitter.com/1.1/lists/members/create_all.json',
             'POST',
