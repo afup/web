@@ -178,7 +178,7 @@ if ($action == 'lister') {
     $formulaire->addRule('login' , 'Login manquant' , 'required');
     $formulaire->addRule(array('mot_de_passe', 'confirmation_mot_de_passe'), 'Le mot de passe et sa confirmation ne concordent pas', 'compare');
 
-    if ($formulaire->isSubmitted() && !empty($formulaire->exportValue('roles')) && @json_decode($formulaire->exportValue('roles')) === null) {
+    if ($formulaire->isSubmitted() && !empty($formulaire->exportValue('roles')) && json_decode($formulaire->exportValue('roles')) === null) {
         $formulaire->setElementError('roles', 'Les roles ne sont pas valides');
     }
 
