@@ -52,10 +52,10 @@ if ($action == 'lister') {
         $formulaire->setDefaults(array('civilite' => 'M.',
                                        'id_pays' => 'FR',
                                        'niveau'  => AFUP_DROITS_NIVEAU_REDACTEUR,
-                                       'etat'    => AFUP_DROITS_ETAT_ACTIF));
+                                       'etat'    => AFUP_DROITS_ETAT_ACTIF,
+                                        'max_members' => 3));
     } else {
         $champs = $personnes_morales->obtenir($_GET['id']);
-        unset($champs['mot_de_passe']);
         $formulaire->setDefaults($champs);
     }
 
@@ -86,6 +86,8 @@ if ($action == 'lister') {
     $formulaire->addElement('header'  , ''                   , 'Paramétres');
     $formulaire->addElement('select'  , 'etat'               , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',
                                                                                    AFUP_DROITS_ETAT_INACTIF => 'Inactif'));
+    $formulaire->addElement('select'  , 'max_members'        , 'Membres maximums', array_combine($maxMembers = range(3, 18, 3), $maxMembers));
+    $formulaire->addElement('static', 'info' , '    '        , 'Nombre de membres rattachés autorisé par la cotisation');
 
     $formulaire->addElement('header'  , 'boutons'            , '');
     $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
@@ -113,7 +115,8 @@ if ($action == 'lister') {
                                               $formulaire->exportValue('id_pays'),
                                               $formulaire->exportValue('telephone_fixe'),
                                               $formulaire->exportValue('telephone_portable'),
-                                              $formulaire->exportValue('etat'));
+                                              $formulaire->exportValue('etat'),
+                                              $formulaire->exportValue('max_members'));
         } else {
             $ok = $personnes_morales->modifier($_GET['id'],
                                                $formulaire->exportValue('civilite'),
@@ -128,7 +131,8 @@ if ($action == 'lister') {
                                                $formulaire->exportValue('id_pays'),
                                                $formulaire->exportValue('telephone_fixe'),
                                                $formulaire->exportValue('telephone_portable'),
-                                               $formulaire->exportValue('etat'));
+                                               $formulaire->exportValue('etat'),
+                                               $formulaire->exportValue('max_members'));
         }
 
         if ($ok) {
