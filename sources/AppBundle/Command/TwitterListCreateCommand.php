@@ -8,6 +8,7 @@ use AppBundle\Twitter\ListCreator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TwitterListCreateCommand extends ContainerAwareCommand
@@ -19,7 +20,8 @@ class TwitterListCreateCommand extends ContainerAwareCommand
     {
         $this
             ->setName('twitter-list:create')
-            ->addArgument('event-path', null, InputArgument::REQUIRED);
+            ->addArgument('event-path', null, InputArgument::REQUIRED)
+            ->addOption('custom-name', null, InputOption::VALUE_REQUIRED, 'Use this value as list name instead of the event title')
         ;
     }
 
@@ -33,7 +35,7 @@ class TwitterListCreateCommand extends ContainerAwareCommand
         $event = $this->getEventFilter($input);
 
         $twitterListCreator = new ListCreator($container->get('app.twitter_api'), $ting->get(SpeakerRepository::class));
-        $twitterListCreator->create($event);
+        $twitterListCreator->create($event, $input->getOption('custom-name'));
     }
 
     /**

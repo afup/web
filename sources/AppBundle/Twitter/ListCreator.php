@@ -31,14 +31,15 @@ class ListCreator
 
     /**
      * @param Event $event
+     * @param null $customName
      */
-    public function create(Event $event)
+    public function create(Event $event, $customName = null)
     {
         $listJson = $this->twitterAPIExchange->request(
             'https://api.twitter.com/1.1/lists/create.json',
             'POST',
             [
-                'name' => $event->getTitle()
+                'name' => null !== $customName ? $customName : $event->getTitle(),
             ]
         );
 
@@ -46,6 +47,10 @@ class ListCreator
 
         if (false === $list) {
             throw new \RuntimeException('Erreur à la lecture des informations de la liste');
+        }
+
+        if (isset($list['errors'])) {
+            throw new \RuntimeException('Erreur à la création de la liste : ' . $listJson);
         }
 
         $this->twitterAPIExchange->request(
