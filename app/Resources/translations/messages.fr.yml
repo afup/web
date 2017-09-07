@@ -49,16 +49,22 @@ type.3: "20 mn"
 'mail.sponsorTicket.subject': Inscrivez-vous pour le %event%
 'mail.sponsorTicket.text': |
   Cher sponsor,<br />
-  Dans le cadre de votre sponsoring, l'AFUP vous offre 1 place pour son événement %event%.<br />
+  Dans le cadre de votre sponsoring, vous bénéficiez d'une place pour l'événement %event%.<br />
   Cette place est utilisable par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
-  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à conserver cette place pour le collaborateur qui l'occupera.<br />
+  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à enregistrer cette place pour le collaborateur qui l'occupera.<br />
+  <br />
+  Nous vous remercions de bien vouloir effectuer l'enregistrement de cette place avant la fermeture de la billetterie le %endDate%.
+  Passée cette date, le formulaire ne sera plus accessible.
   <br />
   Pour enregistrer votre place, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
   <br />
   L'équipe afup.|Cher sponsor,<br />
-  Dans le cadre de votre sponsoring, l'AFUP vous offre %places% places pour son événement %event%.<br />
+  Dans le cadre de votre sponsoring, vous bénéficiez de %places% places pour l'événement %event%.<br />
   Ces places sont utilisables par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
-  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à conserver des places pour les collaborateurs qui l'occuperont.<br />
+  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à enregistrer les places des collaborateurs qui l'occuperont.<br />
+  <br />
+  Nous vous remercions de bien vouloir effectuer l'enregistrement de ces places avant la fermeture de la billetterie le %endDate%.
+  Passée cette date, le formulaire ne sera plus accessible.
   <br />
   Pour enregistrer vos places, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
   <br />

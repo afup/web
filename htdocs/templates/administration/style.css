@@ -846,11 +846,11 @@ form[name=sponsor_ticket]{
     border: 1px solid #ccc;
     background: #eee
 }
-form[name=sponsor_ticket] #sponsor_ticket div{
+form[name=sponsor_ticket] #sponsor_ticket div, form[name=sponsor_token] div{
     margin: 0.5em 0;
 }
 
-form[name=sponsor_ticket] #sponsor_ticket div label{
+form[name=sponsor_ticket] #sponsor_ticket div label, form[name=sponsor_token] div label{
     display: inline-block;
     min-width: 200px;
     font-weight: 700;
@@ -859,7 +859,7 @@ form[name=sponsor_ticket] #sponsor_ticket div label{
     color: #333
 }
 
-form[name=sponsor_ticket] #sponsor_ticket div input{
+form[name=sponsor_ticket] #sponsor_ticket div input, form[name=sponsor_token] div input{
     min-width: 300px;
     padding: .2em 0 .2em .2em;
     border: 1px solid #ccc;

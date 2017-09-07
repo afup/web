@@ -60,11 +60,12 @@ class SponsorTokenMail
                 '%token%' => $sponsorTicket->getToken(),
                 '%places%' => $sponsorTicket->getMaxInvitations(),
                 '%event%' => $event->getTitle(),
-                '%link%' =>$this->router->generate(
+                '%link%' => $this->router->generate(
                     'sponsor_ticket_home',
                     ['eventSlug' => $event->getPath()],
                     UrlGeneratorInterface::ABSOLUTE_URL
-                )
+                ),
+                '%endDate%' => $event->getDateEndSales()->format('d/m/Y')
             ]
         );
 
