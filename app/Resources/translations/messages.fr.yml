@@ -49,7 +49,7 @@ type.3: "20 mn"
 'mail.sponsorTicket.subject': Inscrivez-vous pour le %event%
 'mail.sponsorTicket.text': |
   Cher sponsor,<br />
-  Dans le cadre de votre sponsoring, vous bénéficiez d'1 place pour l'événement %event%.<br />
+  Dans le cadre de votre sponsoring, vous bénéficiez d'une place pour l'événement %event%.<br />
   Cette place est utilisable par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
   Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à enregistrer cette place pour le collaborateur qui l'occupera.<br />
   <br />
