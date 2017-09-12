@@ -125,6 +125,7 @@ parameters:
                 forum_suivi:
                     nom: 'Suivi'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/stats'
                 forum_inscriptions:
                     nom: 'Inscriptions'
                     niveau: 'ROLE_ADMIN'

@@ -880,3 +880,30 @@ form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[
     margin: 0;
     display: inline-block;
 }
+
+.event--stats-togo-container{
+    width:100%;
+    border:1px grey solid;
+    height:7em;
+    background-color:#50a0dd;
+}
+
+.event--stats-togo-container .event--stats-togo{
+    background-color:#2d8000;
+    height:100%;
+    z-index:900;
+}
+
+.event--stats-togo-container .event--stats-togo-text {
+    position:absolute;
+    width:100%;
+    z-index:1000;
+    text-align:center;
+    font-size:2rem;
+    color:white;
+}
+
+.event--stats-togo-container .event--stats-togo-text span{
+    display:block;
+}
+

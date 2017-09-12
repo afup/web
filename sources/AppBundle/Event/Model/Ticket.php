@@ -58,6 +58,9 @@ class Ticket implements NotifyPropertyInterface
     const PAYMENT_NONE = AFUP_FORUM_REGLEMENT_AUCUN;
     const PAYMENT_AFTER = AFUP_FORUM_REGLEMENT_A_POSTERIORI; // @todo check & delete je comprends pas
 
+    const DAY_ONE = 'one';
+    const DAY_TWO = 'two';
+
     /**
      * @var int
      */

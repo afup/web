@@ -9,3 +9,7 @@ admin_event_sponsor_ticket:
 admin_event_sponsor_mail:
   path: /sponsor/mail
   defaults: {_controller: AppBundle:AdminEvent:resendSponsorToken}
+
+admin_event_stats:
+  path: /stats
+  defaults: {_controller: AppBundle:AdminEvent:stats}
