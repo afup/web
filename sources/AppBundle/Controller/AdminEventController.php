@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use Afup\Site\Forum\Inscriptions;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Form\SponsorTokenType;
@@ -10,8 +11,10 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -170,6 +173,126 @@ class AdminEventController extends Controller
         $this->addFlash('notice', 'Le mail a été renvoyé');
 
         return $this->redirectToRoute('admin_event_sponsor_ticket', ['id' => $event->getId()]);
+    }
+
+    public function statsAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        /**
+         * @var $legacyInscriptions Inscriptions
+         */
+        $legacyInscriptions = $this->get('app.legacy_model_factory')->createObject(Inscriptions::class);
+
+        $stats = $legacyInscriptions->obtenirSuivi($event->getId());
+
+        $ticketsDayOne = $this->get('app.ticket_repository')->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
+        $ticketsDayTwo = $this->get('app.ticket_repository')->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
+
+        $ticketTypes = [];
+        /**
+         * @var $ticketTypeRepository TicketTypeRepository
+         */
+        $ticketTypeRepository = $this->get('ting')->get(TicketTypeRepository::class);
+
+        $chart = [
+            'chart' => [
+                'renderTo' => 'container',
+                'zoomType' => 'x',
+                'spacingRight' => 20
+            ],
+            'title' => ['text' => 'Evolution des inscriptions'],
+            'subtitle' => ['text' => 'Cliquez/glissez dans la zone pour zoomer'],
+            'xAxis' => [
+                'type' => 'linear',
+                'title' => ['text' => null],
+                'allowDecimals' => false
+            ],
+            'yAxis' => [
+                'title' => ['text' => 'Inscriptions'],
+                'min' => 0,
+                'startOnTick' => false,
+                'showFirstLabel' => false
+            ],
+            'tooltip' => ['shared' => true],
+            'legend' => ['enabled' => true],
+            'series' => [
+                [
+                    'name' => $event->getTitle(),
+                    'data' => array_values(array_map(function ($item) {
+                        return $item['n'];
+                    }, $stats['suivi']))
+                ],
+                [
+                    'name' => 'n-1',
+                    'data' => array_values(array_map(function ($item) {
+                        return $item['n_1'];
+                    }, $stats['suivi']))
+                ]
+            ]
+        ];
+
+        $rawStatsByType = $legacyInscriptions->obtenirStatistiques($event->getId())['types_inscriptions']['payants'];
+        $totalInscrits = array_sum($rawStatsByType);
+        array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits, $ticketTypeRepository) {
+            if (isset($ticketTypes[$key]) === false) {
+                $type = $ticketTypeRepository->get($key);
+                $ticketTypes[$key] = $type->getPrettyName();
+            }
+            $item = ['name' => $ticketTypes[$key], 'y' => $item / $totalInscrits ];
+        });
+
+        $rawStatsByType = array_values($rawStatsByType);
+
+        $pieChartConf = [
+            "chart" => [
+                "plotBackgroundColor" => null,
+                "plotBorderWidth" => null,
+                "plotShadow" => false,
+                "type" => 'pie'
+            ],
+            "title" => [
+                "text" => 'Répartition des types d\'inscriptions payantes'
+            ],
+            "tooltip" => [
+                "pointFormat" => '{series.name}: <b>{point.percentage:.1f}%</b>'
+            ],
+            "plotOptions" => [
+                "pie" => [
+                    "allowPointSelect" => true,
+                    "cursor" => 'pointer',
+                    "dataLabels" => [
+                        "enabled" => true,
+                        "format" => '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        "style" => [
+                            "color" => 'black'
+                        ]
+                    ]
+                ]
+            ],
+            "series" => [[
+                "name" => 'Inscriptions',
+                "colorByPoint" => true,
+                "data" => $rawStatsByType
+            ]]
+        ];
+
+        return $this->render(':admin/event:stats.html.twig', [
+            'title' => 'Suivi inscriptions',
+            'event' => $event,
+            'chartConf' => $chart,
+            'pieChartConf' => $pieChartConf,
+            'stats' => $stats,
+            'seats' => [
+                'available' => $event->getSeats(),
+                'one' => $ticketsDayOne,
+                'two' => $ticketsDayTwo
+            ]
+        ]);
     }
 
     /**
