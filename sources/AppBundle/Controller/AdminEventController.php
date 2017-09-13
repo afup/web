@@ -3,12 +3,10 @@
 
 namespace AppBundle\Controller;
 
-use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Form\SponsorTokenType;
-use AppBundle\Event\Form\TicketType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\RoomRepository;
@@ -225,18 +223,22 @@ class AdminEventController extends Controller
             'series' => [
                 [
                     'name' => $event->getTitle(),
-                    'data' => array_values(array_map(function($item){return $item['n'];}, $stats['suivi']))
+                    'data' => array_values(array_map(function ($item) {
+                        return $item['n'];
+                    }, $stats['suivi']))
                 ],
                 [
                     'name' => 'n-1',
-                    'data' => array_values(array_map(function($item){return $item['n_1'];}, $stats['suivi']))
+                    'data' => array_values(array_map(function ($item) {
+                        return $item['n_1'];
+                    }, $stats['suivi']))
                 ]
             ]
         ];
 
         $rawStatsByType = $legacyInscriptions->obtenirStatistiques($event->getId())['types_inscriptions']['payants'];
         $totalInscrits = array_sum($rawStatsByType);
-        array_walk($rawStatsByType, function(&$item, $key) use (&$ticketTypes, $totalInscrits, $ticketTypeRepository){
+        array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits, $ticketTypeRepository) {
             if (isset($ticketTypes[$key]) === false) {
                 $type = $ticketTypeRepository->get($key);
                 $ticketTypes[$key] = $type->getPrettyName();
@@ -291,7 +293,6 @@ class AdminEventController extends Controller
                 'two' => $ticketsDayTwo
             ]
         ]);
-
     }
 
     /**
