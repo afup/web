@@ -16,6 +16,15 @@
     {% endspaceless %}
 {% endblock form_errors %}
 
+{% block metas %}
+    {{ parent() }}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@afup" />
+    <meta name="twitter:title" content="Prenez votre place pour le Forum PHP 2017" />
+    <meta name="twitter:description" content="Ne manquez pas le grand rendez-vous de la communauté PHP, 26-27 octobre, Paris." />
+    <meta name="twitter:image" content="https://event.afup.org/wp-content/uploads/forumphp2017.png" />
+{% endblock %}
+
 {% block form_row %}
     <div class="form_row">
         {{ form_errors(form) }}
