@@ -196,7 +196,7 @@ SQL;
             }, $nombre_par_date));
             $suivis[$i] = [
                 'jour' => $i,
-                'n' => $daysToEndOfSales > $i ? $infoForum : null,
+                'n' => $daysToEndOfSales >= $i ? $infoForum : null,
                 'n_1' => $infoN1
             ];
         }
