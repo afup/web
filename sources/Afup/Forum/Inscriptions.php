@@ -164,7 +164,7 @@ SQL;
 
         $requete = 'SELECT 
           COUNT(*) as nombre, 
-          DATEDIFF(FROM_UNIXTIME(date, \' % Y -%m -%d\'), FROM_UNIXTIME(af.date_fin_vente, \' % Y -%m -%d\')) as jour,
+          DATEDIFF(FROM_UNIXTIME(date, \'%Y-%m-%d\'), FROM_UNIXTIME(af.date_fin_vente, \'%Y-%m-%d\')) as jour,
           id_forum
         FROM
           afup_inscription_forum i
