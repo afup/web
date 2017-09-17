@@ -15,10 +15,6 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<?php wp_head(); ?>
-    <?php $html_block = get_post_meta(get_the_ID(), 'html_head', true); ?>
-    <?php if ($html_block !== ''): ?>
-        <?php echo $html_block; ?>
-    <?php endif ?>
 </head>
 <body <?php body_class(); ?>>
 
