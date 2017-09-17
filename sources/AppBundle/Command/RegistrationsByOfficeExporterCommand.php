@@ -30,12 +30,12 @@ class RegistrationsByOfficeExporterCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $eventReposotory = $this->getContainer()->get('ting')->get(EventRepository::class);
+        $eventRepository = $this->getContainer()->get('ting')->get(EventRepository::class);
         $userRepository = $this->getContainer()->get('ting')->get(UserRepository::class);
         $invoiceRepository = $this->getContainer()->get('ting')->get(InvoiceRepository::class);
         $inscriptions = new Inscriptions($GLOBALS['AFUP_DB']);
 
-        if (null === ($event = $eventReposotory->getNextEvent())) {
+        if (null === ($event = $eventRepository->getNextEvent())) {
             $output->writeln('No event found');
             return;
         }
