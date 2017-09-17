@@ -2,7 +2,6 @@
 
 namespace AppBundle\Command;
 
-use Afup\Site\Forum\Inscriptions;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
@@ -33,7 +32,7 @@ class RegistrationsByOfficeExporterCommand extends ContainerAwareCommand
         $eventRepository = $this->getContainer()->get('ting')->get(EventRepository::class);
         $userRepository = $this->getContainer()->get('ting')->get(UserRepository::class);
         $invoiceRepository = $this->getContainer()->get('ting')->get(InvoiceRepository::class);
-        $inscriptions = new Inscriptions($GLOBALS['AFUP_DB']);
+        $inscriptions = $this->getContainer()->get('app.legacy_model_factory')->createObject('\Afup\Site\Forum\Inscriptions');
 
         if (null === ($event = $eventRepository->getNextEvent())) {
             $output->writeln('No event found');
