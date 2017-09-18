@@ -42,7 +42,7 @@
     </form>
     </table>
     <br/>
-    <table class="afup_tab">
+    <table class="afup_tab tab--filterable">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
            <th><a href="index.php?page=compta_journal&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
@@ -156,8 +156,38 @@
     <div class="js-upload-loader upload-loader" style="display: none;">
         <img class="loader" src="{$chemin_template}images/ajax-loader.gif" alt="Loading…" />
     </div>
-
+    <script src="/js/tablefilter/dist/tablefilter/tablefilter.js"></script>
     {literal}
+    <script>
+        var tf = new TableFilter(document.querySelector('.tab--filterable'), {
+            base_path: '/js/tablefilter/dist/tablefilter/',
+            filters_row_index: 1,
+			headers_row_index: 0,
+            col_1: 'select',
+            col_2: 'select',
+            col_3: 'select',
+            col_7: 'select',
+            col_8: 'none',
+            col_9: 'none',
+            theme: 'transparent',
+			alternate_rows: true,
+			rows_counter: true,
+			btn_reset: true,
+			loader: true,
+			status_bar: true,
+			col_types: [
+				{ type: 'date', locale: 'fr' },
+				'string',
+				'string',
+				'string',
+				'string',
+				{ type: 'formatted-number', decimal: ',', thousands: ' ' },
+				{ type: 'formatted-number', decimal: ',', thousands: ' ' },
+				'string'
+			],
+        });
+        tf.init();
+    </script>
     <script>
         // Ventiler une ligne
         function ventiler(idLigne, montant) {
