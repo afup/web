@@ -31,3 +31,12 @@ function afup_website_func($attrs) {
     return $body;
 }
 add_shortcode('afup_website', 'afup_website_func');
+
+
+function add_custom_head() {
+    $html_block = get_post_meta(get_the_ID(), 'html_head', true);
+    if ($html_block !== '') {
+        echo $html_block;
+    }
+}
+add_filter('wp_head', 'add_custom_head');
