@@ -248,7 +248,7 @@ $(document).ready(function(){
     });
 
     $('#formulaire input').on('change', function (event) {
-        var formData = new FormData(document.querySelector('#formulaire'));
+        var formData = new formdataPolyfill(document.querySelector('#formulaire'));
         var data = {};
 
 		var form = formData.entries();
