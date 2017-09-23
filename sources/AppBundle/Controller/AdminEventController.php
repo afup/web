@@ -3,12 +3,15 @@
 
 namespace AppBundle\Controller;
 
+use Afup\Site\Forum\Facturation;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Form\SponsorTokenType;
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
@@ -16,10 +19,13 @@ use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Util\Debug;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class AdminEventController extends Controller
 {
@@ -32,7 +38,7 @@ class AdminEventController extends Controller
         $event = $this->getEvent($eventRepository, $request);
 
         if ($event === null) {
-            return $this->createNotFoundException('Could not find event');
+            throw $this->createNotFoundException('Could not find event');
         }
 
         /**
@@ -102,7 +108,7 @@ class AdminEventController extends Controller
         $event = $this->getEvent($eventRepository, $request);
 
         if ($event === null) {
-            return $this->createNotFoundException('Could not find event');
+            throw $this->createNotFoundException('Could not find event');
         }
 
         /**
@@ -158,7 +164,7 @@ class AdminEventController extends Controller
         $event = $this->getEvent($eventRepository, $request);
 
         if ($event === null) {
-            return $this->createNotFoundException('Could not find event');
+            throw $this->createNotFoundException('Could not find event');
         }
         /**
          * @var $sponsorTicketRepository SponsorTicketRepository
@@ -335,6 +341,47 @@ class AdminEventController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return Response
+     */
+    public function pendingBankwiresAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        if ($event === null) {
+            throw $this->createNotFoundException('Could not find event');
+        }
+
+        $invoiceRepository = $this->get('app.invoice_repository');
+
+        if ($request->getMethod() === Request::METHOD_POST) {
+            if ($this->isCsrfTokenValid('admin_event_bankwires', $request->request->get('token')) === false) {
+                $this->addFlash('error', 'Erreur de token CSRF, veuillez réessayer');
+            } else {
+                $reference = $request->request->get('bankwireReceived');
+                $invoice = $this->get('app.invoice_repository')->getByReference($reference);
+                if ($invoice === null) {
+                    throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $reference));
+                }
+                $this->setInvoicePaid($event, $invoice);
+            }
+        }
+
+        $pendingBankwires = $invoiceRepository->getPendingBankwires($event);
+
+        return $this->render(':admin/event:bankwires.html.twig', [
+            'pendingBankwires' => $pendingBankwires,
+            'event' => $event,
+            'title' => 'Virements en attente',
+            'token' => $this->get('security.csrf.token_manager')->getToken('admin_event_bankwires')
+        ]);
+    }
+
+    /**
      * @param CollectionInterface $rooms
      * @return Form[]
      */
@@ -359,5 +406,48 @@ class AdminEventController extends Controller
         }
 
         return $event;
+    }
+
+    private function setInvoicePaid(Event $event, Invoice $invoice)
+    {
+        $invoice
+            ->setStatus(Ticket::STATUS_PAID)
+            ->setPaymentDate(new \DateTime())
+        ;
+        $this->get('app.invoice_repository')->save($invoice);
+        $tickets = $this->get('app.ticket_repository')->getByReference($invoice->getReference());
+
+        /**
+         * @var $forumFacturation Facturation
+         */
+        $forumFacturation = $this->get('app.legacy_model_factory')->createObject(Facturation::class);
+        $forumFacturation->envoyerFacture($invoice->getReference());
+
+        $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
+
+        $mailer = $this->get('app.mail');
+        $logger = $this->get('logger');
+        foreach ($tickets as $ticket) {
+            /**
+             * @var $ticket Ticket
+             */
+            $ticket
+                ->setStatus(Ticket::STATUS_PAID)
+                ->setInvoiceStatus(Ticket::INVOICE_SENT)
+            ;
+            $this->get('app.ticket_repository')->save($ticket);
+
+            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
+                $receiver = [
+                    'email' => $ticket->getEmail(),
+                    'name'  => $ticket->getLabel(),
+                ];
+
+                if (!$mailer->send($event->getMailTemplate(), $receiver, [])) {
+                    $logger->addWarning(sprintf('Mail not sent for inscription %s', $ticket->getEmail()));
+                }
+                return 1;
+            });
+        }
     }
 }

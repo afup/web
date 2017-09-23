@@ -17,3 +17,7 @@ admin_event_stats:
 export_anonymous:
   path: /export
   defaults: {_controller: AppBundle:AdminEvent:exportAnonymousData}
+
+admin_event_pending_bankwires:
+  path: /bankwires
+  defaults: {_controller: AppBundle:AdminEvent:pendingBankwires}
