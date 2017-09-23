@@ -9,7 +9,6 @@ use AppBundle\Event\Model\Ticket;
 use Aura\SqlQuery\Mysql\Select;
 use CCMBenchmark\Ting\Driver\Exception;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
-use CCMBenchmark\Ting\Repository\Collection;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
