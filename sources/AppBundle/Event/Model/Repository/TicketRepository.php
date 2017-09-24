@@ -64,6 +64,25 @@ class TicketRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getAllTicketsForExport()
+    {
+        return
+            $this
+                ->getPreparedQuery(
+                    'SELECT inscriptions.id, inscriptions.date, inscriptions.reference, inscriptions.coupon, inscriptions.type_inscription,
+                    inscriptions.montant, inscriptions.informations_reglement, inscriptions.civilite, inscriptions.nom, inscriptions.prenom,
+                    inscriptions.email, inscriptions.id_forum
+                    FROM afup_inscription_forum inscriptions
+                    WHERE inscriptions.etat = :state
+                    '
+                )
+                ->setParams(['state' => Ticket::STATUS_PAID])
+                ->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
      * @inheritDoc
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
