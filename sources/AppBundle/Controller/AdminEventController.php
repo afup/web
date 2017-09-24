@@ -307,25 +307,23 @@ class AdminEventController extends Controller
                 $response = new StreamedResponse(function () use ($data) {
                     $handle = fopen('php://output', 'w+');
                     // Nom des colonnes du CSV
-                    fputcsv($handle, array('Label',
+                    fputcsv($handle, ['Label',
                         'Event'
-                    ),';');
+                    ], ';');
 
                     //Champs
                     foreach ($data as $row) {
-                        fputcsv($handle,array($row['label'],
+                        fputcsv($handle, [$row['label'],
                             $row['event']
-                        ),';');
-
+                        ], ';');
                     }
 
                     fclose($handle);
-
                 });
 
                 $response->setStatusCode(200);
                 $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-                $response->headers->set('Content-Disposition','attachment; filename="inscriptions.csv"');
+                $response->headers->set('Content-Disposition', 'attachment; filename="inscriptions.csv"');
 
                 return $response;
             }
