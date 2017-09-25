@@ -229,6 +229,10 @@ class TicketController extends EventBaseController
             $params['paybox'] = $this->get('app.paybox_factory')->createPayboxForTicket($invoice, $event);
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
             $params['rib'] = $GLOBALS['AFUP_CONF']->obtenir('rib');
+
+            // For bankwire, companies need to retrieve the invoice
+            $forumFacturation = $this->get('app.legacy_model_factory')->createObject(Facturation::class);
+            $forumFacturation->envoyerFacture($invoiceRef);
         }
 
         return $this->render('event/ticket/payment.html.twig', $params);

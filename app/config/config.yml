@@ -129,6 +129,10 @@ parameters:
                 forum_inscriptions:
                     nom: 'Inscriptions'
                     niveau: 'ROLE_ADMIN'
+                forum_pending_bankwires:
+                    nom: 'Inscriptions - virements en attente'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/bankwires'
                 admin_event_sponsor_ticket:
                     nom: 'Inscriptions sponsors'
                     niveau: 'ROLE_ADMIN'
