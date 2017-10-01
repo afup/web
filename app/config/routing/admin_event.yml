@@ -13,3 +13,11 @@ admin_event_sponsor_mail:
 admin_event_stats:
   path: /stats
   defaults: {_controller: AppBundle:AdminEvent:stats}
+
+export_anonymous:
+  path: /export
+  defaults: {_controller: AppBundle:AdminEvent:exportAnonymousData}
+
+admin_event_pending_bankwires:
+  path: /bankwires
+  defaults: {_controller: AppBundle:AdminEvent:pendingBankwires}

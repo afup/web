@@ -78,7 +78,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'titre'                    , 'Titre'           , array('size' => 60, 'maxlength' => 255));
     $formulaire->addElement('textarea', 'descriptif'               , 'Descriptif'      , array('cols' => 42, 'rows'      => 10, 'class' => 'tinymce'));
     $formulaire->addElement('textarea', 'chapeau'                  , 'Chapeau'         , array('cols' => 42, 'rows'      => 10, 'class' => 'tinymce'));
-    $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , array('cols' => 42, 'rows'      => 20, 'class' => 'tinymce'));
+    $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , array('cols' => 42, 'rows'      => 20, 'class' => 'tinymce_iframe'));
 
     $formulaire->addElement('header'  , ''                         , 'M&eacute;ta-donn&eacute;es');
     $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'      , array('size' => 60, 'maxlength' => 255));

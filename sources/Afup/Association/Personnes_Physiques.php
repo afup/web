@@ -427,13 +427,13 @@ SQL;
         return false;
     }
 
-    public function sendWelcomeMailWithData($firstName, $lastName, $login, $password, $email)
+    public function sendWelcomeMailWithData($firstName, $lastName, $login, $email)
     {
         $mail = new Mail();
         return $mail->send(
             'confirmation-cr-ation-de-compte',
             ['email' => $email, 'name' => sprintf('%s %s', $firstName, $lastName)],
-            ['login' => $login, 'password' => $password]
+            ['login' => $login]
         );
     }
 
