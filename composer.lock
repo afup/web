@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ae2db4f72be9e4a3840d72f8e1bc64c",
+    "content-hash": "6f4ab011951873c7cf8f7937eb67b615",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2719,6 +2719,57 @@
             ],
             "description": "A security checker for your composer.lock",
             "time": "2015-11-07T08:07:40+00:00"
+        },
+        {
+            "name": "smarty/smarty",
+            "version": "v2.6.25",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smarty-php/smarty.git",
+                "reference": "de8354e152b60c83858ba46be1145f9faa35b7be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/de8354e152b60c83858ba46be1145f9faa35b7be",
+                "reference": "de8354e152b60c83858ba46be1145f9faa35b7be",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "libs/Smarty.class.php",
+                    "libs/Smarty_Compiler.class.php",
+                    "libs/Config_File.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Monte Ohrt",
+                    "email": "monte@ohrt.com"
+                },
+                {
+                    "name": "Uwe Tews",
+                    "email": "uwe.tews@googlemail.com"
+                }
+            ],
+            "description": "Smarty - the compiling PHP template engine",
+            "homepage": "http://www.smarty.net",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2014-10-30T23:52:59+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
