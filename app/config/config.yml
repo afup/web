@@ -41,9 +41,6 @@ parameters:
                 membre_tags:
                     nom: 'Tags'
                     niveau: 'ROLE_USER'
-                membre_oeuvres:
-                    nom: 'Oeuvres'
-                    niveau: 'ROLE_USER'
                 membres_liste:
                     nom: 'Annuaire'
                     niveau: 'ROLE_ADMIN'
@@ -250,12 +247,6 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                 logs:
                     nom: 'Logs'
-                    niveau: 'ROLE_ADMIN'
-                logsvn:
-                    nom: 'Logs SVN'
-                    niveau: 'ROLE_ADMIN'
-                loggit:
-                    nom: 'Logs GIT'
                     niveau: 'ROLE_ADMIN'
                 info_serveur:
                     nom: 'Information serveur'
