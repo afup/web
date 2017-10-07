@@ -93,3 +93,7 @@ sponsor_leads_post:
 planning_ics:
   path: /{eventSlug}/planning.ics
   defaults: {_controller: AppBundle:Event:planningIcs}
+
+planning_json_latest:
+  path: /latest/planning.json
+  defaults: {_controller: AppBundle:Event:planningJson}

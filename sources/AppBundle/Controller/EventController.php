@@ -4,9 +4,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Calendar\IcsPLanningGenerator;
+use AppBundle\Calendar\JsonPlanningGenerator;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -60,5 +62,22 @@ class EventController extends EventBaseController
         ]);
 
         return $response;
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function planningJsonAction()
+    {
+        $photoStorage = $this->get('app.photo_storage');
+        $ting = $this->get('ting');
+        $talkRepository = $ting->get(TalkRepository::class);
+        $eventRepository = $ting->get(EventRepository::class);
+
+        $event = $eventRepository->getNextEvent();
+
+        $jsonPlanningGenerator = new JsonPlanningGenerator($talkRepository, $photoStorage);
+
+        return new JsonResponse($jsonPlanningGenerator->generate($event));
     }
 }
