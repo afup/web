@@ -30,7 +30,7 @@ configs/application/config.php:
 app/config/parameters.yml:
 	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
 
-config: configs/application/config.php app/config/parameters.yml
+config: configs/application/config.php app/config/parameters.yml composer.phar
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make vendor
 
 test:
