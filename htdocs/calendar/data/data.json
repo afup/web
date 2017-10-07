@@ -1,0 +1,714 @@
+[
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1756.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1756",
+                "name": "Xavier Leune"
+            }
+        ],
+        "date": "26\/10\/2017 07:00-07:15",
+        "date_start": "2017-10-26T07:00:00+0000",
+        "date_end": "2017-10-26T07:15:00+0000",
+        "detail": "<p>Bienvenue au Forum PHP 2017<\/p>",
+        "horaire": "07:00-07:15",
+        "id": 2417,
+        "lang": null,
+        "name": "Keynote d'ouverture",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1754.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1754",
+                "name": " P\u00f4le Speakers"
+            }
+        ],
+        "date": "26\/10\/2017 07:15-07:25",
+        "date_start": "2017-10-26T07:15:00+0000",
+        "date_end": "2017-10-26T07:25:00+0000",
+        "detail": "<p>Pr&eacute;sentation des speakers pour cette premi&egrave;re matin&eacute;e de conf&eacute;rences : 2 minutes par speaker pour en savoir plus sur ce qui vous attend durant leur talk.<\/p>",
+        "horaire": "07:15-07:25",
+        "id": 2410,
+        "lang": null,
+        "name": "Pr\u00e9sentation des speakers",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1691.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1691",
+                "name": "Remi Collet"
+            }
+        ],
+        "date": "26\/10\/2017 07:30-08:10",
+        "date_start": "2017-10-26T07:30:00+0000",
+        "date_end": "2017-10-26T08:10:00+0000",
+        "detail": "<p>La version 7.2 devrait &ecirc;tre publi&eacute;e avant la fin de l'ann&eacute;e. Pr&eacute;sentation de cette nouvelle version et de ses nouveaut&eacute;s.<\/p>",
+        "horaire": "07:30-08:10",
+        "id": 2279,
+        "lang": null,
+        "name": "PHP 7.2",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1692.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1692",
+                "name": "Am\u00e9lie DUVERNET"
+            }
+        ],
+        "date": "26\/10\/2017 07:30-08:10",
+        "date_start": "2017-10-26T07:30:00+0000",
+        "date_end": "2017-10-26T08:10:00+0000",
+        "detail": "<p>Un nouveau cocktail c'est tout un challenge ! Dans le shake-up, l'objectif est d'afficher en temps r&eacute;el le compostage des places sur les plans de salle de l'Olympia. Savamment m&eacute;lang&eacute; au comptoir de Digitick, cela donne un riche retour d'exp&eacute;rience sur ce d&eacute;fi &agrave; relever. Un contenu riche et m&ecirc;me complexe, qui a &eacute;t&eacute; brillamment mis en oeuvre par une &eacute;quipe super motiv&eacute;e. Une franche r&eacute;ussite au final. Nos ingr&eacute;dients :  PHP, AngularJS pour la partie plan, PHP, NodeJS, RabbitMQ, Redis pour la partie temps-r&eacute;el. Ne pas oublier les saveurs originales : mise en place d'un syst&egrave;me de bascule, en cas de perte de connexion du serveur NodeJS, gestion des piles de si&egrave;ges suivant les filtres s&eacute;lectionn&eacute;s. La d&eacute;gustation se terminera par une d&eacute;monstration.<\/p>",
+        "horaire": "07:30-08:10",
+        "id": 2300,
+        "lang": null,
+        "name": "Cocktail Temps-R\u00e9el pour l'Olympia",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1684.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1684",
+                "name": "Nastasia Saby"
+            },
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1685.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1685",
+                "name": "Fabien de Saint pern"
+            }
+        ],
+        "date": "26\/10\/2017 08:15-08:55",
+        "date_start": "2017-10-26T08:15:00+0000",
+        "date_end": "2017-10-26T08:55:00+0000",
+        "detail": "<p>Retour d&rsquo;exp&eacute;rience sur notre solution d&rsquo;AB testing utilis&eacute;e sur 6play pour exp&eacute;rimenter de nouvelles fonctionnalit&eacute;s, telles que la recommandation et la personnalisation &agrave; la maille utilisateur.   Nous parlerons &eacute;galement de canary-testing pour l&rsquo;optimisation et la mise en production. Nous montrerons la mise en place sur une architecture en micro-services d&eacute;j&agrave; existante, utilis&eacute;e dans un environnement multiplateforme (Web, Mobile, IPTV).  Nous aborderons le monitoring et tracking des tests, ainsi que le suivi de cohorte.   Nous parlerons Symfony 3, Apcu, Redis, Varnish&hellip; mais aussi Kafka, Cassandra, Elasticsearch, Hadoop.<\/p>",
+        "horaire": "08:15-08:55",
+        "id": 2273,
+        "lang": null,
+        "name": "L\u2019AB testing chez M6 Web",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1664.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1664",
+                "name": "Kevin Nadin"
+            }
+        ],
+        "date": "26\/10\/2017 08:15-08:55",
+        "date_start": "2017-10-26T08:15:00+0000",
+        "date_end": "2017-10-26T08:55:00+0000",
+        "detail": "<p>Les dates en PHP peuvent &ecirc;tre en apparence simple d'utilisation, mais il existe plusieurs comportements inattendu g&eacute;n&eacute;ralement m&eacute;connu des d&eacute;veloppeurs, des m&eacute;thodes pratiques et des pi&egrave;ges dans la g&eacute;n&eacute;ration de dates. Cette pr&eacute;sentation permet de voir comment g&eacute;n&eacute;rer des dates simplement en utilisant des timestamps, en utilisant l'objet DateTime, les Timezone, et lors de ces revues nous verrons les pi&egrave;ges li&eacute; &agrave; ces fonctions. Nous finissons avec la r&eacute;solution de demandes r&eacute;elles &agrave; but financier ou pour du reporting.<\/p>",
+        "horaire": "08:15-08:55",
+        "id": 2274,
+        "lang": null,
+        "name": "La g\u00e9n\u00e9ration de dates en PHP",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1732.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1732",
+                "name": "Larry Garfield"
+            }
+        ],
+        "date": "26\/10\/2017 09:25-10:05",
+        "date_start": "2017-10-26T09:25:00+0000",
+        "date_end": "2017-10-26T10:05:00+0000",
+        "detail": "<p>\"The Mythical Man-Month\" is one of the seminal books in the field of software project management.  It was written in 1975, based on experience from the 1960s.  Is it even still relevant?   Turns out, it is.  Technology may have changed dramatically but people have not.  Managing software projects is about managing people, not bits, and creative people engaged in intellectual endeavors are notoriously hard to predict and manage.  (Just ask my project manager.)    Fortunately, many of the lessons-learned Brooks' presents are still relevant today.  Some are directly applicable (\"adding people to a late project makes it later\") while others are valid with a little interpretation.  Still others fly in the face of conventional wisdom.  What can we learn from that?   This session will present a modern overview of the ideas presented by Brooks and a look at what we can still learn from them even today.<\/p>",
+        "horaire": "09:25-10:05",
+        "id": 2354,
+        "lang": null,
+        "name": "Software Management Lessons from the 1960s",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1674.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1674",
+                "name": "Charles Desneuf"
+            }
+        ],
+        "date": "26\/10\/2017 09:25-10:05",
+        "date_start": "2017-10-26T09:25:00+0000",
+        "date_end": "2017-10-26T10:05:00+0000",
+        "detail": "<p>D&eacute;but de projet, bonne r&eacute;solution, cette fois on va faire des tests ! Au d&eacute;but tout se passe bien, puis petit &agrave; petit les tests commencent &agrave; devenir un frein au projet, ils prennent du temps &agrave; &eacute;crire, &agrave; s'ex&eacute;cuter, &agrave; modifier, virent au rouge &agrave; la moindre modification du code. Nous verrons entre autre comment organiser les tests, quels sont les pi&egrave;ges &agrave; &eacute;viter et comment am&eacute;liorer leur lisibilit&eacute;. Ces diff&eacute;rentes techniques permettant d'am&eacute;liorer la maintenabilit&eacute; des tests et faire qu'ils aillent m&ecirc;me jusqu'&agrave; servir de documentation.<\/p>",
+        "horaire": "09:25-10:05",
+        "id": 2260,
+        "lang": null,
+        "name": "\u00c9crire des tests pour le long terme",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1696.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1696",
+                "name": "Julien Janvier"
+            }
+        ],
+        "date": "26\/10\/2017 10:10-10:30",
+        "date_start": "2017-10-26T10:10:00+0000",
+        "date_end": "2017-10-26T10:30:00+0000",
+        "detail": "<p>C&rsquo;est bien connu, dans le d&eacute;veloppement logiciel, il n&rsquo;y a que deux choses difficiles : l&rsquo;invalidation de cache, et le nommage. C&ocirc;t&eacute; cache je ne peux malheureusement rien pour vous. En revanche, en ce qui concerne le nommage de nos ch&egrave;res variables, m&eacute;thodes et classes, il est l&eacute;gitime de se poser quelques questions. Pourquoi est-ce si compliqu&eacute; ? Y-a-t-il des pi&egrave;ges &agrave; &eacute;viter ? Existe-t-il des r&egrave;gles ou des m&eacute;thodes qui pourraient nous aider ? Dans cette br&egrave;ve pr&eacute;sentation, je vous propose d&rsquo;explorer quelques pistes afin de tenter de r&eacute;pondre &agrave; ces interrogations.<\/p>",
+        "horaire": "10:10-10:30",
+        "id": 2289,
+        "lang": null,
+        "name": "L\u2019art subtil du nommage",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1745.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1745",
+                "name": "Alexandre Balmes"
+            }
+        ],
+        "date": "26\/10\/2017 10:10-10:30",
+        "date_start": "2017-10-26T10:10:00+0000",
+        "date_end": "2017-10-26T10:30:00+0000",
+        "detail": "<p>On a tous nos petites lubies et l&rsquo;une des miennes consiste &agrave; ma&icirc;triser au mieux mes taches CLI (qu&rsquo;elles soit ex&eacute;cut&eacute;es via un cronjob ou non).  Nous allons donc &eacute;voquer ce sujet avec une petite application en ligne de commande et des processus plus ou moins co&ucirc;teux afin de voir comment am&eacute;liorer la qualit&eacute; de nos scripts PHP.<\/p>",
+        "horaire": "10:10-10:30",
+        "id": 2401,
+        "lang": null,
+        "name": "Signaux, process id et PHP",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1754.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1754",
+                "name": " P\u00f4le Speakers"
+            }
+        ],
+        "date": "26\/10\/2017 12:15-12:25",
+        "date_start": "2017-10-26T12:15:00+0000",
+        "date_end": "2017-10-26T12:25:00+0000",
+        "detail": "<p>Pr&eacute;sentation des speakers pour l'apr&egrave;s-midi de conf&eacute;rences : 2 minutes par speaker pour en savoir plus sur ce qui vous attend durant leur talk.<\/p>",
+        "horaire": "12:15-12:25",
+        "id": 2412,
+        "lang": null,
+        "name": "Pr\u00e9sentation des speakers",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1735.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1735",
+                "name": "Matthieu Napoli"
+            }
+        ],
+        "date": "26\/10\/2017 12:15-15:15",
+        "date_start": "2017-10-26T12:15:00+0000",
+        "date_end": "2017-10-26T15:15:00+0000",
+        "detail": "<p>Nous allons &eacute;crire ensemble un framework web bas&eacute; sur les middlewares PHP. Vous n'avez jamais &eacute;crit de framework, et vous ne connaissez pas les middlewares ? Parfait !  Les middlewares sont parfois vus comme un d&eacute;tail d'impl&eacute;mentation pour des probl&eacute;matiques tr&egrave;s pr&eacute;cises. Apr&egrave;s avoir d&eacute;couvert ces middlewares via PSR-7, apr&egrave;s avoir &eacute;crit un framework avec et apr&egrave;s avoir collabor&eacute; sur la prochaine PSR-15, ma vision est maintenant diff&eacute;rente : les middlewares permettent de mieux comprendre et aborder les questions d'architecture dans nos applications.  Plut&ocirc;t que de se restreindre &agrave; des probl&egrave;mes sp&eacute;cifiques, nous partirons de z&eacute;ro en commen&ccedil;ant par les concepts de base des applications web. Nous utiliserons la simplicit&eacute; du middleware pour impl&eacute;menter pas &agrave; pas les diff&eacute;rentes briques qui composent un framework jusqu'&agrave; obtenir une application web complexe.  Seul pr&eacute;-requis : connaitre PHP et avoir des bases en programmation orient&eacute; objet. On construira le reste ensemble.<\/p>\r\n<p>Atelier sur inscription, disponibles sur <a href=\"https:\/\/www.eventbrite.fr\/e\/billets-forum-php-2017-atelier-framework-base-sur-les-middlewares-ca-donne-quoi-36367911402\">Eventbrite<\/a>.<\/p>",
+        "horaire": "12:15-15:15",
+        "id": 2368,
+        "lang": null,
+        "name": "[ATELIER] Un framework bas\u00e9 sur les middlewares, \u00e7a donne quoi ?",
+        "salle": "Salle C"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1704.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1704",
+                "name": "Audrey Neveu"
+            }
+        ],
+        "date": "26\/10\/2017 12:30-13:10",
+        "date_start": "2017-10-26T12:30:00+0000",
+        "date_end": "2017-10-26T13:10:00+0000",
+        "detail": "<p>Nous savons que l&rsquo;animation est essentielle pour l'interaction avec nos utilisateurs. Mais aujourd'hui l'interactivit&eacute; ne peut plus se r&eacute;sumer &agrave; l&rsquo;UX. Twitter, Waze, Slack &hellip; toutes les applications &agrave; succ&egrave;s utilisent le temps r&eacute;el pour rendre leurs utilisateurs addicts.  Mais comment faire pour transformer votre API statique en un flux de donn&eacute;es temps-r&eacute;el ? Du pull ? Du push ? Des Webhooks?  Vous connaissez s&ucirc;rement les Web-Sockets, mais avez vous d&eacute;j&agrave; entendu parler de Server-Sent Events ?  Dans ce talk nous comparerons ces technologies pour comprendre dans quel cas elles s'appliquent le mieux avant de voir comment on peut aller encore plus loin en r&eacute;duisant la quantit&eacute; de donn&eacute;es &eacute;chang&eacute;es.<\/p>",
+        "horaire": "12:30-13:10",
+        "id": 2311,
+        "lang": null,
+        "name": "Le Streaming d'API : pourquoi ? comment ?",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1748.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1748",
+                "name": "James Titcumb"
+            }
+        ],
+        "date": "26\/10\/2017 13:15-13:55",
+        "date_start": "2017-10-26T13:15:00+0000",
+        "date_end": "2017-10-26T13:55:00+0000",
+        "detail": "<p>The new Abstract Syntax Tree (AST) in PHP 7 means the way our PHP code is being executed has changed. Understanding this new fundamental compilation step is key to understanding how our code is being run.  To demonstrate, James will show how a basic compiler works and how introducing an AST simplifies this process. We&rsquo;ll look into how these magical time-warp techniques* can also be used in your code to introspect, analyse and modify code in a way that was never possible before.  After seeing this talk, you'll have a great insight as to the wonders of an AST, and how it can be applied to both compilers and userland code.  (*actual magic or time-warp not guaranteed)<\/p>",
+        "horaire": "13:15-13:55",
+        "id": 2402,
+        "lang": null,
+        "name": "Climbing the Abstract Syntax Tree",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1682.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1682",
+                "name": "S\u00e9bastien Rogier"
+            }
+        ],
+        "date": "26\/10\/2017 13:15-13:55",
+        "date_start": "2017-10-26T13:15:00+0000",
+        "date_end": "2017-10-26T13:55:00+0000",
+        "detail": "<p>Depuis plusieurs mois maintenant, Firefox et Chrome alertent plus ou moins fortement &agrave; propos des sites qui proposent de saisir des informations sensibles sans avoir &eacute;tabli de connexion s&eacute;curis&eacute;e.  Cette conf&eacute;rence va vous expliquer comment nous avons migr&eacute; notre plateforme e-commerce en full HTTPS, les choix d'architecture que nous avons effectu&eacute;s, les diff&eacute;rentes &eacute;tapes de la migration en ayant pour objectif de n'avoir aucune interruption de service, mais aussi les diff&eacute;rents probl&egrave;mes rencontr&eacute;s et nos solutions. Enfin, cette pr&eacute;sentation vous montrera les impacts constat&eacute;s apr&egrave;s la migration sur le SEO et la webperformance.<\/p>",
+        "horaire": "13:15-13:55",
+        "id": 2297,
+        "lang": null,
+        "name": "On a migr\u00e9 nos sites en full HTTPS !",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1731.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1731",
+                "name": "K\u00e9vin Dunglas"
+            }
+        ],
+        "date": "26\/10\/2017 14:25-15:05",
+        "date_start": "2017-10-26T14:25:00+0000",
+        "date_end": "2017-10-26T15:05:00+0000",
+        "detail": "<p>Symfony est un framework universellement reconnu pour sa qualit&eacute;, sa fiabilit&eacute; et sa capacit&eacute; &agrave; propulser les gros projets \"entreprise\".  Mais depuis quelques ann&eacute;es, Symfony s'est &eacute;galement dot&eacute; de nombreuses fonctionnalit&eacute;s permettant de d&eacute;velopper toujours plus rapidement des applications web. Symfony 4 propose des am&eacute;liorations majeures dans ce domaine gr&acirc;ce &agrave; une refonte profonde de la configuration par d&eacute;faut du framework qui va changer profond&eacute;ment la mani&egrave;re dont nous d&eacute;veloppons des applications.  Au cours de cette pr&eacute;sentation, j'aborderai :  * Les grands concepts et les nouveaut&eacute;s de Symfony 4: micr-framework par d&eacute;faut, 12-factor app, nouveaux composants... * Flex, le nouvel installateur surpuissant de Symfony qui peut &eacute;galement installer et configurer automatiquement biblioth&egrave;ques et bundles * La nouvelle structure de r&eacute;pertoire simplifi&eacute;e (et sans bundle) de Symfony 4 * L'autowiring (qui est d&eacute;sormais activ&eacute; par d&eacute;faut), qui permet l'injection automatique des d&eacute;pendances sans avoir &agrave; &eacute;crire aucune configuration (fini le YAML et le XML) * Le syst&egrave;me de contr&ocirc;leurs, am&eacute;lior&eacute; et assaini * \"Encore\", le nouveau syst&egrave;me de gestion des assets (JS, CSS) bas&eacute; sur Webpack * Les int&eacute;grations officielles des biblioth&egrave;ques Doctrine (ORM), API Platform (API Rest) et EasyAdmin (g&eacute;n&eacute;rateur d'admin) * Comment utiliser facilement Symfony 4 avec Docker du poste de dev jusqu'au d&eacute;ploiement dans le Cloud, gr&acirc;ce &agrave; un squelette d&eacute;di&eacute;  A la fin de ce talk, vous saurez comment utiliser Symfony aussi bien pour vos gros projets que pour vos prototypes, vos petites applications et vos \"week-end projects\", tout en vous permettant de basculer d'un mode &agrave; l'autre.<\/p>",
+        "horaire": "14:25-15:05",
+        "id": 2349,
+        "lang": null,
+        "name": "D\u00e9velopper plus rapidement avec Symfony 4",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1711.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1711",
+                "name": "Erwan Richard"
+            }
+        ],
+        "date": "26\/10\/2017 14:25-15:05",
+        "date_start": "2017-10-26T14:25:00+0000",
+        "date_end": "2017-10-26T15:05:00+0000",
+        "detail": "<p>Entre les GAFAs et le monde fou de l'internet des objets, le num&eacute;rique ne nous a jamais autant espionn&eacute; et catalogu&eacute;. Je me pose de plus en plus de question sur notre responsabilit&eacute; en tant que d&eacute;veloppeur envers la protection de la vie priv&eacute;e. Avons-nous des alternatives ? Peut-on simplement refuser de d&eacute;velopper une fonctionnalit&eacute; qui nous d&eacute;range. Une conf&eacute;rence qui pose des questions et ouvre le d&eacute;bat.<\/p>",
+        "horaire": "14:25-15:05",
+        "id": 2320,
+        "lang": null,
+        "name": "D\u00e9veloppeur et protection de la vie priv\u00e9e",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1755.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1755",
+                "name": "John AFUP Doe"
+            }
+        ],
+        "date": "26\/10\/2017 15:10-15:40",
+        "date_start": "2017-10-26T15:10:00+0000",
+        "date_end": "2017-10-26T15:40:00+0000",
+        "detail": "<p>\\o\/<\/p>",
+        "horaire": "15:10-15:40",
+        "id": 2415,
+        "lang": null,
+        "name": "Surprise",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1755.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1755",
+                "name": "John AFUP Doe"
+            }
+        ],
+        "date": "26\/10\/2017 15:40-16:10",
+        "date_start": "2017-10-26T15:40:00+0000",
+        "date_end": "2017-10-26T16:10:00+0000",
+        "detail": "<p>&Agrave; peine quelques minutes pour mettre en lumi&egrave;re un sujet, une anecdote, une id&eacute;e : c'est &agrave; vous !<\/p>\r\n<p>&nbsp;<\/p>\r\n<p><strong>FIN DE LA PREMI&Egrave;RE JOURN&Eacute;E<br \/><\/strong>Apr&egrave;s cette session de 30 minutes, <strong>rendez-vous &agrave; l'ap&eacute;ro communautaire !&nbsp;<\/strong><\/p>",
+        "horaire": "15:40-16:10",
+        "id": 2419,
+        "lang": null,
+        "name": "Lightning-talks",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1754.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1754",
+                "name": " P\u00f4le Speakers"
+            }
+        ],
+        "date": "27\/10\/2017 07:15-07:25",
+        "date_start": "2017-10-27T07:15:00+0000",
+        "date_end": "2017-10-27T07:25:00+0000",
+        "detail": "<p>Pr&eacute;sentation des speakers pour la matin&eacute;e du deuxi&egrave;me jour : 2 minutes par speaker pour en savoir plus sur ce qui vous attend durant leur talk.<\/p>",
+        "horaire": "07:15-07:25",
+        "id": 2413,
+        "lang": null,
+        "name": "Pr\u00e9sentation des speakers",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1737.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1737",
+                "name": "Nicolas Grekas"
+            }
+        ],
+        "date": "27\/10\/2017 07:30-08:10",
+        "date_start": "2017-10-27T07:30:00+0000",
+        "date_end": "2017-10-27T08:10:00+0000",
+        "detail": "<p>En entreprise ou pas, assurer la qualit&eacute; d'un projet logiciel sur la dur&eacute;e est un challenge difficile. Parce que son code est ouvert aux yeux de tous, pour le meilleur et pour le pire, contribuer &agrave; un projet open-source est souvent l'occasion d'apprendre &agrave; revoir ses exigences. &Agrave; travers le cas \"Symfony\", je vous propose une visite guid&eacute;e des process mis en place ann&eacute;es apr&egrave;s ann&eacute;es, &eacute;cueil apr&egrave;s &eacute;cueil. Contributions, review, int&eacute;gration continue, process de publications, politique de suppression de code, standardisation des pratiques, etc. Voyons ce qui, au del&agrave; du code, contribue de fa&ccedil;on essentielle au succ&egrave;s du projet.<\/p>",
+        "horaire": "07:30-08:10",
+        "id": 2382,
+        "lang": null,
+        "name": "Les process qualit\u00e9 - le cas de Symfony",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1706.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1706",
+                "name": "Beno\u00eet Merlet"
+            }
+        ],
+        "date": "27\/10\/2017 07:30-08:10",
+        "date_start": "2017-10-27T07:30:00+0000",
+        "date_end": "2017-10-27T08:10:00+0000",
+        "detail": "<p>Malgr&eacute; une douloureuse r&eacute;-&eacute;criture en partant de z&eacute;ro, le site de la Ruche qui dit Oui ! n'avait toujours pas d'architecture &eacute;vidente permettant de faciliter les &eacute;volutions fonctionnelles et techniques.  Afin d'&eacute;viter une nouvelle \"big ball of mud\" difficile &agrave; maintenir, l'&eacute;quipe a d&eacute;cid&eacute; l'ann&eacute;e derni&egrave;re de proc&eacute;der &agrave; la migration continue de notre architecture vers un ensemble d'hexagones.  Chaque hexagone est en r&eacute;alit&eacute; un module bien born&eacute; et bien d&eacute;coupl&eacute; au sein d'un monolithe, ce qui nous permet de ne pas c&eacute;der aveugl&eacute;ment &agrave; la mode des microservices !  Voyons ensemble comment cette migration continue a d&eacute;but&eacute;, quels sont les pi&egrave;ges &agrave; &eacute;viter et bien s&ucirc;r quels b&eacute;n&eacute;fices nous en retirons au quotidien.<\/p>",
+        "horaire": "07:30-08:10",
+        "id": 2314,
+        "lang": null,
+        "name": "Les hexagones de la Ruche qui dit Oui !",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1712.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1712",
+                "name": "Antoine Lelaisant"
+            },
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1753.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1753",
+                "name": "Pierre Plazanet"
+            }
+        ],
+        "date": "27\/10\/2017 07:30-10:30",
+        "date_start": "2017-10-27T07:30:00+0000",
+        "date_end": "2017-10-27T10:30:00+0000",
+        "detail": "<p>Expliquer les bonnes pratiques de code est compliqu&eacute;. La compr&eacute;hension &eacute;tant une des cl&eacute;s pour changer l'&eacute;tat d'esprit, et les bonnes pratiques techniques un pr&eacute;-requis pour cr&eacute;er du code de qualit&eacute;, il est important de les expliquer.  Je vous propose d'utiliser les Lego pour comprendre les m&eacute;canismes et les int&eacute;r&ecirc;ts :  - de la simplicit&eacute;, - du TDD, - de la refactorisation, - de l'int&eacute;gration continue, - du code \"propre\". D'apr&egrave;s un atelier original de Mike Bowler et Bryan Beecham.  Les intervenants : Nous - 1 scrum master et 1 d&eacute;veloppeur - avons cherch&eacute; des jeux simples pour expliquer &agrave; des dev\/manager\/dirigeants\/PO &agrave; quel point les d&eacute;veloppeurs et leur mani&egrave;re de coder est une des pierres angulaires de l'agilit&eacute;. Et surtout comment leur faire prendre conscience que du bon code c'est du temps, de la r&eacute;flexion et du travail d'&eacute;quipe.  Chaque jeu dure entre 20 et 45mn. En d&eacute;but de session les participants choisiront les jeux auxquels ils souhaitent participer. Nous serons 2 animateurs donc plusieurs petits groupes pourront se former pour jouer &agrave; des jeux diff&eacute;rents. Ces jeux ont &eacute;t&eacute; cr&eacute;&eacute;s par Mike Bowler et Bryan Beecham. Attention spoil, description des jeux : http:\/\/www.gargoylesoftware.com\/ex<\/p>\r\n<p>Atelier sur inscription, disponible sur <a href=\"https:\/\/www.eventbrite.fr\/e\/billets-forum-php-2017-atelier-des-lego-des-bonnes-pratiques-et-du-fun-36368644595\">Eventbrite<\/a>.<\/p>",
+        "horaire": "07:30-10:30",
+        "id": 2313,
+        "lang": null,
+        "name": "[ATELIER] Des Lego, des bonnes pratiques et du fun !",
+        "salle": "Salle C"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1660.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1660",
+                "name": "S\u00e9bastien LE GALL"
+            }
+        ],
+        "date": "27\/10\/2017 08:15-08:55",
+        "date_start": "2017-10-27T08:15:00+0000",
+        "date_end": "2017-10-27T08:55:00+0000",
+        "detail": "<p>Un moteur d&rsquo;indexation au pays des &eacute;v&eacute;nements et des microservices.  Comment maintenir &agrave; jour un index Elasticsearch quand le ownership des donn&eacute;es &agrave; indexer est distribu&eacute; &agrave; travers de multiples micro-services? Comment requ&ecirc;ter un index sur la base de param&egrave;tres qui sont, eux aussi, fournis par d'autres services? Comment faire quand l&rsquo;ordre de r&eacute;ception des messages de mise &agrave; jour de l&rsquo;index n&rsquo;est pas forc&eacute;ment l&rsquo;ordre d&rsquo;insertion logique des donn&eacute;es?  Pour r&eacute;pondre &agrave; ces questions, je raconterai l&rsquo;histoire de Jon et Ygritte en suivant un ensemble de parcours utilisateurs emprunt&eacute; par des millions de personnes tous les jours sur nos plateformes. Nous verrons comment orchestrer Kafka, Symfony et ElasticSearch pour r&eacute;pondre &agrave; une volont&eacute; de d&eacute;couplage des micro-services et &agrave; une probl&eacute;matique de maintenance en temps r&eacute;el d'un index.  A chaque &eacute;tape, je pr&eacute;senterai les diff&eacute;rentes options envisag&eacute;es, nos contraintes (traffic, performance, robustesse) et les choix que nous avons fait dans une logique agile de d&eacute;veloppement it&eacute;ratif.<\/p>",
+        "horaire": "08:15-08:55",
+        "id": 2238,
+        "lang": null,
+        "name": "19 millions de recherches par jour @ Meetic",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1656.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1656",
+                "name": "St\u00e9phane Hulard"
+            }
+        ],
+        "date": "27\/10\/2017 08:15-08:55",
+        "date_start": "2017-10-27T08:15:00+0000",
+        "date_end": "2017-10-27T08:55:00+0000",
+        "detail": "<p>Adopter un nouveau mode de vie pour d&eacute;couvrir le monde tout en travaillant, est-ce possible ?   Travailler dans le web c'est cool, il suffit d'un ordinateur et d'une connexion internet pour bosser de n'importe o&ugrave;, m&ecirc;me sur une plage &agrave; l'autre bout du monde ! Mais adopter un nouveau mode de vie pour d&eacute;couvrir le monde tout en travaillant, est-ce possible ?  Apr&egrave;s cinq ans en tant qu'ind&eacute;pendant, on a d&eacute;cid&eacute; avec ma femme et mes trois enfants, de confronter le r&ecirc;ve &agrave; la r&eacute;alit&eacute;.  Entre joies et gal&egrave;res, je vous raconte comment &ccedil;a se passe&hellip;<\/p>",
+        "horaire": "08:15-08:55",
+        "id": 2219,
+        "lang": null,
+        "name": "T\u00e9l\u00e9travail et voyage, entre mythe et r\u00e9alit\u00e9",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1749.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1749",
+                "name": "Anna Filina"
+            }
+        ],
+        "date": "27\/10\/2017 09:25-10:05",
+        "date_start": "2017-10-27T09:25:00+0000",
+        "date_end": "2017-10-27T10:05:00+0000",
+        "detail": "<p>Avez-vous d&eacute;j&agrave; eu &agrave; maintenir une application de 17 ans? Du code mort partout, des requ&ecirc;tes &agrave; la base de donn&eacute;es entre deux balises HTML et quelques pages encore en PHP 3. Cette pr&eacute;sentation de niveau strat&eacute;gique vous m&egrave;nera &agrave; travers une r&eacute;&eacute;criture progressive depuis du code legacy &agrave; la derni&egrave;re version de PHP. Apprenez &agrave; automatiser les tests de legacy, vous balader de fa&ccedil;on transparente entre le vieux et nouveau code, et &agrave; surmonter d'autres d&eacute;fis qui se posent lorsqu'on travaille avec du legacy.<\/p>",
+        "horaire": "09:25-10:05",
+        "id": 2406,
+        "lang": null,
+        "name": "R\u00e9\u00e9criture de code vieux de 17 ans",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1698.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1698",
+                "name": "Chris Riley"
+            }
+        ],
+        "date": "27\/10\/2017 09:25-10:05",
+        "date_start": "2017-10-27T09:25:00+0000",
+        "date_end": "2017-10-27T10:05:00+0000",
+        "detail": "<p>Alice and Bob have secrets they want to talk about without Eve being able to listen in. Worse yet, the mischievous Mallory delights in changing messages sent between parties. In such a hostile environment how can Alice talk to Bob without their messages being overheard and how can she be sure that it was Bob that sent the message in the first place?  This talk will take a brief look at historic codes and ciphers before taking a look at modern day Cryptography. If you want to be able to know the difference between a block cipher and a stream cipher or get a glimpse into the mathematics behind public key Cryptography this talk is for you.<\/p>",
+        "horaire": "09:25-10:05",
+        "id": 2292,
+        "lang": null,
+        "name": "The secrets of Cryptography",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1746.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1746",
+                "name": "K\u00e9vin Gomez"
+            }
+        ],
+        "date": "27\/10\/2017 10:10-10:30",
+        "date_start": "2017-10-27T10:10:00+0000",
+        "date_end": "2017-10-27T10:30:00+0000",
+        "detail": "<p>Souvent insuffisants et au mieux mal organis&eacute;s, les logs sont pourtant un composant essentiel &agrave; la compr&eacute;hension et &agrave; la maintenance de nos applications.  Entre les niveaux de logs mal utilis&eacute;s, les messages incoh&eacute;rents ou instructions de log &eacute;parpill&eacute;es dans tout le code&hellip; il devient vite difficile d'extraire quoi que ce soit d'utile.  Et si nous prenions le temps de r&eacute;fl&eacute;chir &agrave; ce qui doit &ecirc;tre enregistr&eacute; ? Pourquoi ? Dans quel format ? Avec quelles informations ?<\/p>",
+        "horaire": "10:10-10:30",
+        "id": 2399,
+        "lang": null,
+        "name": "Log me now",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1710.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1710",
+                "name": "S\u00e9bastien LAVENANT"
+            }
+        ],
+        "date": "27\/10\/2017 10:10-10:30",
+        "date_start": "2017-10-27T10:10:00+0000",
+        "date_end": "2017-10-27T10:30:00+0000",
+        "detail": "<p>Tout comme l&rsquo;ADN, qui permet l&rsquo;identification d&rsquo;une personne, les interfaces repr&eacute;sentent la signature structurelle de votre application. Nous en utilisons tous, mais les exploitons nous au mieux ? Que se soit pour l&rsquo;injection de services, les tests, l'exposition d&rsquo;API, ou bien d&rsquo;autres usages, elles sont au coeur de notre quotidien. Je vous propose de d&eacute;couvrir comment profiter des possibilit&eacute;s offertes par l&rsquo;utilisation de ce formidable outil : l&rsquo;interface.<\/p>",
+        "horaire": "10:10-10:30",
+        "id": 2379,
+        "lang": null,
+        "name": "Les interfaces, l\u2019ADN de votre application",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1754.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1754",
+                "name": " P\u00f4le Speakers"
+            }
+        ],
+        "date": "27\/10\/2017 12:15-12:25",
+        "date_start": "2017-10-27T12:15:00+0000",
+        "date_end": "2017-10-27T12:25:00+0000",
+        "detail": "<p>Pr&eacute;sentation des speakers pour cette derni&egrave;re demi-journ&eacute;e: 2 minutes par speaker pour en savoir plus sur ce qui vous attend durant leur talk.<\/p>",
+        "horaire": "12:15-12:25",
+        "id": 2414,
+        "lang": null,
+        "name": "Pr\u00e9sentation des speakers ",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1689.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1689",
+                "name": "Fran\u00e7ois Zaninotto"
+            }
+        ],
+        "date": "27\/10\/2017 12:30-13:10",
+        "date_start": "2017-10-27T12:30:00+0000",
+        "date_end": "2017-10-27T13:10:00+0000",
+        "detail": "<p>REST est devenu un standard pour les APIs web. Mais malgr&eacute; sa popularit&eacute;, il est plein de d&eacute;fauts. Son successeur existe et il vient de Facebook. Venez d&eacute;couvrir en d&eacute;tail le principe, la mise en oeuvre et l&rsquo;&eacute;cosyst&egrave;me de GraphQL. Vous repartirez de cette conf&eacute;rence avec la r&eacute;ponse &agrave; la question : dois-je utiliser GraphQL pour mon prochain projet ?<\/p>",
+        "horaire": "12:30-13:10",
+        "id": 2283,
+        "lang": null,
+        "name": "GraphQL, l'avenir du REST ?",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1709.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1709",
+                "name": "Fr\u00e9d\u00e9ric Bouchery"
+            }
+        ],
+        "date": "27\/10\/2017 12:30-13:10",
+        "date_start": "2017-10-27T12:30:00+0000",
+        "date_end": "2017-10-27T13:10:00+0000",
+        "detail": "<p>Vous savez ce qu'est le refactoring, mais connaissez-vous le refacthon ? Normal, c'est un terme que nous avons invent&eacute; chez Figaro-CCMBenchmark et qui consiste en des s&eacute;ances de refactoring en groupe comme on pourrait le faire lors d'un \"mob programming\". Il y a d'&eacute;normes avantages &agrave; pratiquer r&eacute;guli&egrave;rement le refacthon, et nous vous proposons d'en faire un en live (petites perles de code PHP en prime).<\/p>",
+        "horaire": "12:30-13:10",
+        "id": 2316,
+        "lang": null,
+        "name": "Refacthon",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1745.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1745",
+                "name": "Alexandre Balmes"
+            }
+        ],
+        "date": "27\/10\/2017 12:30-15:30",
+        "date_start": "2017-10-27T12:30:00+0000",
+        "date_end": "2017-10-27T15:30:00+0000",
+        "detail": "<p>L'objectif de cet atelier est simple : faire en sorte que vous repartiez avec une architecture polyvalente, &eacute;volutive et permettant de couvrir petits comme gros projets.  Si vous cherchez &agrave; optimiser vos POC sans forc&eacute;ment tout passer &agrave; la poubelle, si vous cherchez &agrave; cr&eacute;er de la r&eacute;currence entre vos projets ou encore si vous &ecirc;tes juste curieux : cet atelier est fait pour vous.  Pas de niveau requis, il suffit de conna&icirc;tre les bases du PHP. C'est votre souci du d&eacute;tail qui nous permettra d'explorer toutes les pistes.<\/p>\r\n<p>Atelier sur inscription, disponible sur <a href=\"https:\/\/www.eventbrite.fr\/e\/billets-forum-php-2017-atelier-principes-et-patterns-du-ddd-36368853219\">Eventbrite<\/a>.<\/p>",
+        "horaire": "12:30-15:30",
+        "id": 2398,
+        "lang": null,
+        "name": "[ATELIER] Principes et Patterns du DDD",
+        "salle": "Salle C"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1695.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1695",
+                "name": "Jean-Fran\u00e7ois L\u00e9pine"
+            }
+        ],
+        "date": "27\/10\/2017 13:15-14:05",
+        "date_start": "2017-10-27T13:15:00+0000",
+        "date_end": "2017-10-27T14:05:00+0000",
+        "detail": "<p>Retour d'exp&eacute;rience : comment on a rendu notre stack d'int&eacute;gration continue stateless, agnostique et fiable.   Avec un legacy tr&egrave;s fort (des centaines de jobs, pas mal de bazar), nous avons voulu rationnaliser notre stack d'int&eacute;gration continue. Voici le fruit de notre exp&eacute;rience.  Cette conf&eacute;rence va vous plonger dans les m&eacute;andres de Jenkins. Nous vous pr&eacute;senterons comment nous configurons automatiquement nos jobs, puis testons automatiquement nos configurations. Nous verrons aussi ce que Jenkins nous apporte, mais aussi ses limites, et nos souhaits pour la suite.<\/p>",
+        "horaire": "13:15-14:05",
+        "id": 2284,
+        "lang": null,
+        "name": "Jenkins industrialis\u00e9 : int\u00e9gration continue des outils d'int\u00e9gration continue (et oui!)",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1702.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1702",
+                "name": "Joshua Thijssen"
+            }
+        ],
+        "date": "27\/10\/2017 13:15-13:55",
+        "date_start": "2017-10-27T13:15:00+0000",
+        "date_end": "2017-10-27T13:55:00+0000",
+        "detail": "<p>What do german tanks, your birthday and quantum physics have to do with our daily development work? It turns out, quite a lot!   During this presentation, I will explain a series of mathematical  theorems and paradoxes that we encounter every day during development, but we often fail to recognize. By using these theorems, we can create better code, find more secure and efficient solutions to our problems, and it even helps you out communicating with clients and project owners.<\/p>",
+        "horaire": "13:15-13:55",
+        "id": 2307,
+        "lang": null,
+        "name": "Paradoxes and theorems every developer should know",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1652.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1652",
+                "name": "Beaupuis Sophie"
+            }
+        ],
+        "date": "27\/10\/2017 14:25-15:05",
+        "date_start": "2017-10-27T14:25:00+0000",
+        "date_end": "2017-10-27T15:05:00+0000",
+        "detail": "<p>Comment en est-on arriv&eacute; &agrave; la n&eacute;cessit&eacute; d'un langage orient&eacute; objet ? Quelle &eacute;tait le besoin et l'id&eacute;e de d&eacute;part ? Cette conf&eacute;rence a pour but de r&eacute;pondre &agrave; ces questions et de questionner aussi le pr&eacute;sent, notre fa&ccedil;on de \"faire de l'objet\" dans PHP aujourd'hui. Enfin nous aborderons pour finir deux visions de l'objet plus r&eacute;centes : le motif \"Objet nu\" et la programmation orient&eacute;e &agrave; l'Est.<\/p>",
+        "horaire": "14:25-15:05",
+        "id": 2215,
+        "lang": null,
+        "name": "Le langage objet pass\u00e9, pr\u00e9sent futur",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1662.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1662",
+                "name": "Jonathan Van Belle"
+            }
+        ],
+        "date": "27\/10\/2017 14:25-15:05",
+        "date_start": "2017-10-27T14:25:00+0000",
+        "date_end": "2017-10-27T15:05:00+0000",
+        "detail": "<p>git, la plupart d&rsquo;entre nous l&rsquo;utilise, on a tous une connaissance plus ou moins vague de git : commit, merge, push, pull et &eacute;ventuellement des rebase ou encore des stash. Je ne vais pas vous parler de cela! Ce que nous allons voir c&rsquo;est comment &eacute;tendre git, comment faire en sorte que dans votre flux habituel de travail git soit l&agrave; pour vous &eacute;pauler avec quelques petit trucs et astuces. En gros, nous allons voir comment, au travers de git, cr&eacute;er des plug-ins vous permettant de vous &eacute;pauler au quotidien, et tout cela dans notre langage favori ! Que cela soit pour votre boulot, pour vous, pour vos projets open source ou encore pour passer de l&rsquo;un &agrave; l&rsquo;autre, je vous garantis que vous repartirez avec de l&rsquo;extra et que vous ne voudrez plus vous en s&eacute;parer.<\/p>",
+        "horaire": "14:25-15:05",
+        "id": 2361,
+        "lang": null,
+        "name": "git, vers l\u2019infini et au-del\u00e0!",
+        "salle": "Salle B"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1755.png",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1755",
+                "name": "John AFUP Doe"
+            }
+        ],
+        "date": "27\/10\/2017 15:05-15:25",
+        "date_start": "2017-10-27T15:05:00+0000",
+        "date_end": "2017-10-27T15:25:00+0000",
+        "detail": "<p>Le Forum PHP c'est vraiment foufoufou<\/p>",
+        "horaire": "15:05-15:25",
+        "id": 2416,
+        "lang": null,
+        "name": "Encore une surprise",
+        "salle": "Salle A"
+    },
+    {
+        "conferenciers": [
+            {
+                "img": "https:\/\/afup.org\/uploads\/speakers\/17\/thumbnails\/1756.jpeg",
+                "link": "https:\/\/event.afup.org\/forumphp2017\/speakers\/#1756",
+                "name": "Xavier Leune"
+            }
+        ],
+        "date": "27\/10\/2017 15:25-15:45",
+        "date_start": "2017-10-27T15:25:00+0000",
+        "date_end": "2017-10-27T15:45:00+0000",
+        "detail": "<p>Ce n'est qu'un au revoir, bien s&ucirc;r. Rendez-vous &agrave; Montpellier pour le PHP Tour 2018 !<\/p>",
+        "horaire": "15:25-15:45",
+        "id": 2418,
+        "lang": null,
+        "name": "Keynote de cl\u00f4ture",
+        "salle": "Salle A"
+    }
+]
