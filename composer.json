@@ -18,7 +18,8 @@
     "pacely/mailchimp-apiv3": "^1.0",
     "cdaguerre/php-trello-api": "^0.9.3",
     "willdurand/geocoder": "^3.3",
-    "smarty/smarty": "2.6.25"
+    "smarty/smarty": "2.6.25",
+    "sabre/vobject": "^4.1"
   },
   "scripts": {
     "post-install-cmd": [
