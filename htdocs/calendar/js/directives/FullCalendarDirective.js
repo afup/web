@@ -10,9 +10,9 @@ planningPHPTourApp.directive('fullcalendar', function() {
                     center: '',
                     right: ''
                 },
-                year: 2016,
+                year: 2017,
                 month: 09,
-                date: 27,
+                date: 26,
                 defaultView: "agendaWeek",
                 weekends:false,
                 hiddenDays: [ 1, 2, 3, 6, 7 ],

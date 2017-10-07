@@ -1,6 +1,6 @@
 planningPHPTourApp.controller('planningCtrl', ['$scope','$http', '$rootScope', 'fullCalendarService',function($scope, $http, $rootScope, fullCalendarService) {
     //Titre de la page
-    $scope.title = "Forum PHP Paris 2016";
+    $scope.title = "Forum PHP 2017";
 
     //Configuration de la vue
     $scope.hideSession = false;
