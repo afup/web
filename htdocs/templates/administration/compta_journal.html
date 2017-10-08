@@ -156,11 +156,11 @@
     <div class="js-upload-loader upload-loader" style="display: none;">
         <img class="loader" src="{$chemin_template}images/ajax-loader.gif" alt="Loading…" />
     </div>
-    <script src="/js/tablefilter/dist/tablefilter/tablefilter.js"></script>
+    <script src="/node_modules/tablefilter/dist/tablefilter/tablefilter.js"></script>
     {literal}
     <script>
         var tf = new TableFilter(document.querySelector('.tab--filterable'), {
-            base_path: '/js/tablefilter/dist/tablefilter/',
+            base_path: '/node_modules/tablefilter/dist/tablefilter/',
             filters_row_index: 1,
 			headers_row_index: 0,
             col_1: 'select',
