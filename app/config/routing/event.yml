@@ -89,3 +89,7 @@ sponsor_leads:
 sponsor_leads_post:
   path: /{eventSlug}/sponsor/thank-you
   defaults: {_controller: AppBundle:Lead:postLead}
+
+planning_ics:
+  path: /{eventSlug}/planning.ics
+  defaults: {_controller: AppBundle:Event:planningIcs}

@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Calendar\IcsPLanningGenerator;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
@@ -36,5 +37,28 @@ class EventController extends EventBaseController
         $votes = $this->get('ting')->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
 
         return $this->render(':event:home.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
+    }
+
+    /**
+     * @param $eventSlug
+     *
+     * @return Response
+     */
+    public function planningIcsAction($eventSlug)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+
+        $icsPlanningGenerator = new IcsPLanningGenerator($this->get('ting')->get(TalkRepository::class));
+
+        $response = new Response($icsPlanningGenerator->generateForEvent($event));
+
+        $response->headers->add([
+            'Content-Type' => 'text/Calendar; charset=UTF-8',
+            'Content-Disposition' => sprintf('inline; filename=planning_%s.vcs', $event->getPath()),
+            'Cache-Control' => 'no-cache',
+            'Pragma' => 'no-cache',
+        ]);
+
+        return $response;
     }
 }

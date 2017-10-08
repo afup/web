@@ -35,7 +35,6 @@ if (empty($sous_site) and strpos($_SERVER['HTTP_HOST'], "planete") !== false) {
 }
 
 // Initialisation de Smarty
-require_once dirname(__FILE__).'/../../dependencies/smarty/Smarty.class.php';
 $smarty = new Smarty;
 $smarty->template_dir  = array(dirname(__FILE__).'/../../htdocs/templates/' . $sous_site . '/',
                                dirname(__FILE__).'/../../htdocs/templates/commun/');

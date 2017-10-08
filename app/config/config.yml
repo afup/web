@@ -41,9 +41,6 @@ parameters:
                 membre_tags:
                     nom: 'Tags'
                     niveau: 'ROLE_USER'
-                membre_oeuvres:
-                    nom: 'Oeuvres'
-                    niveau: 'ROLE_USER'
                 membres_liste:
                     nom: 'Annuaire'
                     niveau: 'ROLE_ADMIN'
@@ -129,6 +126,10 @@ parameters:
                 forum_inscriptions:
                     nom: 'Inscriptions'
                     niveau: 'ROLE_ADMIN'
+                forum_pending_bankwires:
+                    nom: 'Inscriptions - virements en attente'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/bankwires'
                 admin_event_sponsor_ticket:
                     nom: 'Inscriptions sponsors'
                     niveau: 'ROLE_ADMIN'
@@ -173,6 +174,10 @@ parameters:
                 forum_accreditation_presse:
                     nom: 'Accréditation presse'
                     niveau: 'ROLE_ADMIN'
+                forum_anonymous_export:
+                    nom: 'Export anonymisé'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/export'
         annuaire:
             nom: 'Annuaire pro'
             niveau: 'ROLE_ANNUAIRE'
@@ -242,15 +247,6 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                 logs:
                     nom: 'Logs'
-                    niveau: 'ROLE_ADMIN'
-                logsvn:
-                    nom: 'Logs SVN'
-                    niveau: 'ROLE_ADMIN'
-                loggit:
-                    nom: 'Logs GIT'
-                    niveau: 'ROLE_ADMIN'
-                updatesvn:
-                    nom: 'Mise à jour via Git'
                     niveau: 'ROLE_ADMIN'
                 info_serveur:
                     nom: 'Information serveur'

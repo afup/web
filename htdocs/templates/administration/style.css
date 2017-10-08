@@ -482,10 +482,6 @@ ul.liste_membres li {
 }
 ul.liste_membres li td { white-space: normal; }
 
-ul.sparklines li span.minimum { color: #f00; }
-ul.sparklines li span.maximum { color: #0f0; }
-ul.sparklines li span.dernier { color: #000; }
-
 /* Agenda Forum */
 
 div.bloc_jour .keynote p { text-align: center; }

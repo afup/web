@@ -173,7 +173,6 @@ class LegacyController extends Controller
                         $formulaire->exportValue('prenom'),
                         $formulaire->exportValue('nom'),
                         $formulaire->exportValue('login'),
-                        $formulaire->exportValue('mot_de_passe'),
                         $formulaire->exportValue('email')
                     );
 
