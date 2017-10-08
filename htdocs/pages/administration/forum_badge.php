@@ -48,9 +48,11 @@ foreach ($badges as $nb => $badge) {
   switch ($badge['type_inscription'])
   {
     case AFUP_FORUM_PREMIERE_JOURNEE:
+    case AFUP_FORUM_LATE_BIRD_PREMIERE_JOURNEE:
       $lib_pass = 'PASS JOUR 1';
       break;
     case AFUP_FORUM_DEUXIEME_JOURNEE:
+    case AFUP_FORUM_LATE_BIRD_DEUXIEME_JOURNEE:
       $lib_pass = 'PASS JOUR 2';
       break;
     case AFUP_FORUM_2_JOURNEES:
@@ -61,6 +63,11 @@ foreach ($badges as $nb => $badge) {
     case AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE:
     case AFUP_FORUM_2_JOURNEES_COUPON:
     case AFUP_FORUM_INVITATION:
+    case AFUP_FORUM_EARLY_BIRD:
+    case AFUP_FORUM_EARLY_BIRD_AFUP:
+    case AFUP_FORUM_LATE_BIRD:
+    case AFUP_FORUM_LATE_BIRD_AFUP:
+    case AFUP_FORUM_CFP_SUBMITTER:
       $lib_pass = 'PASS 2 JOURS';
       break;
     case AFUP_FORUM_ORGANISATION:
