@@ -8,10 +8,12 @@ use AppBundle\Routing\LegacyRouter;
 class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     private $legacyRouter;
+    private $parsedown;
 
-    public function __construct(LegacyRouter $legacyRouter)
+    public function __construct(LegacyRouter $legacyRouter, \Parsedown $parsedown)
     {
         $this->legacyRouter = $legacyRouter;
+        $this->parsedown = $parsedown;
     }
 
     /**
@@ -30,6 +32,16 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
                 }
                 return '';
             }, ['is_safe' => ['html']])
+        ];
+    }
+
+    public function getFilters()
+    {
+        return [
+            new \Twig_SimpleFilter('markdown', function ($text) {
+                return $this->parsedown->text($text);
+            }, ['is_safe' => ['html']]),
+
         ];
     }
 

@@ -19,7 +19,8 @@
     "cdaguerre/php-trello-api": "^0.9.3",
     "willdurand/geocoder": "^3.3",
     "smarty/smarty": "2.6.25",
-    "sabre/vobject": "^4.1"
+    "sabre/vobject": "^4.1",
+    "erusev/parsedown": "^1.6"
   },
   "scripts": {
     "post-install-cmd": [
