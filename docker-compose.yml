@@ -25,6 +25,18 @@ services:
       - db
       - mailcatcher
 
+  planete:
+    build:
+      context: ./docker/dockerfiles/planete
+      args:
+        uid: ${CURRENT_UID:-1001}
+        gid: "1001"
+    volumes:
+      - ./:/var/www/html
+    links:
+      - db
+      - mailcatcher
+
   event:
     build:
       context: ./docker/dockerfiles/event
