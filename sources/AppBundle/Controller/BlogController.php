@@ -46,6 +46,9 @@ class BlogController extends EventBaseController
         $eventPlanning = [];
         $rooms = [];
 
+        $hourMin = null;
+        $hourMax = null;
+
         foreach ($talks as $talkWithData) {
             /**
              * @var $talk Talk
@@ -70,8 +73,18 @@ class BlogController extends EventBaseController
             if (isset($eventPlanning[$startDay]) === false) {
                 $eventPlanning[$startDay] = [];
             }
+            $dateStart = $planning->getStart()->setTimezone(new \DateTimeZone('Europe/Paris'));
+            $start = $dateStart->format('d/m/Y H:i');
 
-            $start = $planning->getStart()->setTimezone(new \DateTimeZone('Europe/Paris'))->format('d/m/Y H:i');
+            $dateEnd = $planning->getEnd()->setTimezone(new \DateTimeZone('Europe/Paris'));
+
+            if ($dateStart->format('H') < $hourMin || $hourMin === null) {
+                $hourMin = $dateStart->format('H');
+            }
+            if ($dateEnd->format('H') > $hourMax || $hourMax === null) {
+                $hourMax = $dateEnd->format('H');
+            }
+
 
             if (isset($eventPlanning[$startDay][$start])=== false) {
                 $eventPlanning[$startDay][$start] = [];
@@ -93,8 +106,8 @@ class BlogController extends EventBaseController
                     'planning' => $eventPlanning,
                     'event' => $event,
                     'rooms' => $rooms,
-                    'hourMin' => 8,
-                    'hourMax' => 17,
+                    'hourMin' => $hourMin,
+                    'hourMax' => $hourMax,
                     'precision' => 5
                 ]
         );
