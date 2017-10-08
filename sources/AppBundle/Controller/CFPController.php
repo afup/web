@@ -60,7 +60,7 @@ class CFPController extends EventBaseController
         $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
         $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
 
-        $form = $this->createForm(SpeakerType::class, $speaker);
+        $form = $this->createForm(SpeakerType::class, $speaker, ['photo_required' => empty($speaker->getPhoto())]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
