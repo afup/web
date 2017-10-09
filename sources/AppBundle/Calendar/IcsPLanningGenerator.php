@@ -53,7 +53,7 @@ class IcsPLanningGenerator
                 'SUMMARY' => $talk->getTitle(),
                 'DTSTART' => $planning->getStart(),
                 'DTEND'   => $planning->getEnd(),
-                'DESCRIPTION' => $talk->getAbstract(),
+                'DESCRIPTION' => strip_tags(html_entity_decode($talk->getAbstract())),
                 'LOCATION' => $room->getName(),
             ]);
         }
