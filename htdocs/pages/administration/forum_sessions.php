@@ -293,7 +293,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('date'    , 'date_soumission', 'Soumission', array('language' => 'fr', 'minYear' => date('Y'), 'maxYear' => date('Y')));
     $formulaire->addElement('text'    , 'titre'          , 'Titre' , array('size' => 40, 'maxlength' => 80));
-    $formulaire->addElement('textarea', 'abstract'       , 'Résumé', array('cols' => 40, 'rows' => 15,'class'=>'tinymce'));
+    $formulaire->addElement('textarea', 'abstract'       , 'Résumé', array('cols' => 40, 'rows' => 15,'class'=> 'simplemde'));
 
     $groupe = array();
     $groupe[] = &HTML_QuickForm::createElement('radio', 'journee', null, 'Fonctionnel', 1);
