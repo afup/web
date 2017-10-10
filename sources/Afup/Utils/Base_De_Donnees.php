@@ -12,28 +12,38 @@ class Base_De_Donnees
      * @var     \mysqli
      * @access  private
      */
-    var $_lien = null;
+    private $link = null;
+
+    private $config;
 
     /**
      * Contructeur. Etablit une connexion au serveur et sélectionne la base de données indiquée
      *
-     * @param string $hote Adresse du serveur
-     * @param string $base Nom de la base
-     * @param string $utilisateur Nom de l'utilisateur
-     * @param string $mot_de_passe Mot de passe
+     * @param string $host Adresse du serveur
+     * @param string $database Nom de la base
+     * @param string $user Nom de l'utilisateur
+     * @param string $password Mot de passe
      * @access public
      * @return void
      */
-    public function __construct($hote, $base, $utilisateur, $mot_de_passe)
+    public function __construct($host, $database, $user, $password)
     {
-        $this->_lien = mysqli_connect($hote, $utilisateur, $mot_de_passe) or die('Connexion à la base de données impossible');
-        mysqli_set_charset($this->_lien, "utf8");
-        $this->selectionnerBase($base);
+        $this->config = [
+            'host' => $host,
+            'database' => $database,
+            'user' => $user,
+            'password' => $password
+        ];
     }
 
     function getDbLink()
     {
-        return $this->_lien;
+        if ($this->link === null) {
+            $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['passsword']) or die('Connexion à la base de données impossible');
+            mysqli_set_charset($this->link, "utf8");
+            $this->selectionnerBase($this->config['database']);
+        }
+        return $this->link;
     }
 
     /**
@@ -161,7 +171,7 @@ class Base_De_Donnees
      */
     function selectionnerBase($nom)
     {
-        return mysqli_select_db($this->_lien, $nom);
+        return mysqli_select_db($this->getDbLink(), $nom);
     }
 
     /**
@@ -174,7 +184,7 @@ class Base_De_Donnees
     function echapper($valeur)
     {
         if (is_string($valeur)) {
-            $valeur = "'" . mysqli_real_escape_string($this->_lien, $valeur) . "'";
+            $valeur = "'" . mysqli_real_escape_string($this->getDbLink(), $valeur) . "'";
         } elseif (is_null($valeur)) {
             $valeur = 'NULL';
         }
@@ -209,7 +219,7 @@ class Base_De_Donnees
      */
     public function getLastErrorMessage()
     {
-        return mysqli_error($this->_lien);
+        return mysqli_error($this->getDbLink());
     }
 
     /**
@@ -221,7 +231,7 @@ class Base_De_Donnees
      */
     function executer($requete)
     {
-        $result = mysqli_query($this->_lien, $requete);
+        $result = mysqli_query($this->getDbLink(), $requete);
         return $result;
     }
 
@@ -279,7 +289,7 @@ class Base_De_Donnees
      */
     function obtenirEnregistrement($requete, $type = MYSQLI_ASSOC)
     {
-        $ressource = mysqli_query($this->_lien, $requete);
+        $ressource = mysqli_query($this->getDbLink(), $requete);
         if ($ressource === false) {
             return false;
         }
@@ -305,7 +315,7 @@ class Base_De_Donnees
      */
     function obtenirTous($requete, $type = MYSQLI_ASSOC)
     {
-        $ressource = mysqli_query($this->_lien, $requete);
+        $ressource = mysqli_query($this->getDbLink(), $requete);
         if ($ressource === false) {
             return false;
         }
@@ -331,7 +341,7 @@ class Base_De_Donnees
      */
     function obtenirColonne($requete)
     {
-        $ressource = mysqli_query($this->_lien, $requete);
+        $ressource = mysqli_query($this->getDbLink(), $requete);
         if ($ressource === false) {
             return false;
         }
@@ -354,7 +364,7 @@ class Base_De_Donnees
      */
     function obtenirAssociatif($requete)
     {
-        $ressource = mysqli_query($this->_lien, $requete);
+        $ressource = mysqli_query($this->getDbLink(), $requete);
         $nombre_champs = mysqli_num_fields($ressource);
         if ($ressource === false || $nombre_champs < 2) {
             return false;
@@ -385,7 +395,7 @@ class Base_De_Donnees
 
     function obtenirDernierId()
     {
-        return mysqli_insert_id($this->_lien);
+        return mysqli_insert_id($this->getDbLink());
     }
 
 
