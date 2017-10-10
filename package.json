@@ -4,10 +4,8 @@
   "description": "Afup web",
   "main": "index.js",
   "dependencies": {
-    "tablefilter": "^0.5.42"
-  },
-  "devDependencies": {
     "copy-webpack-plugin": "^4.1.1",
+    "tablefilter": "^0.5.42",
     "webpack": "^3.6.0"
   },
   "scripts": {
