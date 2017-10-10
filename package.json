@@ -6,7 +6,10 @@
   "dependencies": {
     "tablefilter": "^0.5.42"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.1.1",
+    "webpack": "^3.6.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

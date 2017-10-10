@@ -1,7 +1,7 @@
 var TableFilter = require('tablefilter');
 
 var tf = new TableFilter(document.querySelector('.tab--filterable'), {
-	base_path: 'node_modules/tablefilter/dist/tablefilter/',
+	base_path: '/js_dist/tablefilter/',
 	filters_row_index: 1,
 	headers_row_index: 0,
 	col_1: 'select',
