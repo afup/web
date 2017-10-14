@@ -32,3 +32,5 @@ parameters:
 
     trello_api_key: ""
     trello_token: ""
+
+    google_maps_api_key: ""

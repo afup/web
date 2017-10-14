@@ -9,9 +9,8 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use Geocoder\Exception\NoResult;
+use Geocoder\Geocoder;
 use Geocoder\Model\Coordinates;
-use Geocoder\Provider\GoogleMaps;
-use Ivory\HttpAdapter\CurlHttpAdapter;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class OfficeFinder
@@ -37,12 +36,24 @@ class OfficeFinder
     private $officesCollection;
 
     /**
+     * @var Geocoder
+     */
+    private $geocoder;
+
+    /**
+     * @var array
+     */
+    private $geocodeCache = [];
+
+    /**
+     * @param Geocoder $geocoder
      * @param UserRepository $userRepository
      * @param InvoiceRepository $invoiceRepository
      * @param Inscriptions $inscriptions
      */
-    public function __construct(UserRepository $userRepository, InvoiceRepository $invoiceRepository, Inscriptions $inscriptions)
+    public function __construct(Geocoder $geocoder, UserRepository $userRepository, InvoiceRepository $invoiceRepository, Inscriptions $inscriptions)
     {
+        $this->geocoder = $geocoder;
         $this->userRepository = $userRepository;
         $this->invoiceRepository = $invoiceRepository;
         $this->inscriptions = $inscriptions;
@@ -99,29 +110,50 @@ class OfficeFinder
      */
     protected function findCoordinates(Invoice $invoice, User $user = null)
     {
-        $curl = new CurlHttpAdapter();
-        $geocoder = new GoogleMaps($curl);
-
         if (null !== $user) {
             if ($user->getCountry() != 'FR') {
                 return null;
             }
 
             try {
-                $adressCollection = $geocoder->geocode($user->getZipCode() . ' ' . $user->getCity());
+                $adressCollection = $this->geocode($user->getZipCode() . ' ' . $user->getCity());
             } catch (NoResult $noResult) {
-                $adressCollection = $geocoder->geocode($user->getCity());
+                $adressCollection = $this->geocode($user->getCity());
             }
         } else {
             try {
-                $adressCollection = $geocoder->geocode($invoice->getZipCode() . ' ' . $invoice->getCity());
+                $adressCollection = $this->geocode($invoice->getZipCode() . ' ' . $invoice->getCity());
             } catch (NoResult $noResult) {
-                $adressCollection = $geocoder->geocode($invoice->getCity());
+                $adressCollection = $this->geocode($invoice->getCity());
             }
+        }
+
+        if (null === $adressCollection) {
+            return null;
         }
 
         $address = $adressCollection->first();
         return $address->getCoordinates();
+    }
+
+    /**
+     * @param string $address
+     *
+     * @return \Geocoder\Model\AddressCollection
+     */
+    private function geocode($address)
+    {
+        $address = trim(trim($address), '-');
+
+        if (0 === strlen($address)) {
+            return null;
+        }
+
+        if (isset($this->geocodeCache[$address])) {
+            return $this->geocodeCache[$address];
+        }
+
+        return $this->geocodeCache[$address] = $this->geocoder->geocode($address);
     }
 
     /**
