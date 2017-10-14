@@ -47,7 +47,7 @@ class OfficesCollection
                 'latitude' => '46.581945',
                 'longitude' => '0.336112'
             ],
-            'reimes' => [
+            'reims' => [
                 'latitude' => '49.26278',
                 'longitude' => '4.03472'
             ],
