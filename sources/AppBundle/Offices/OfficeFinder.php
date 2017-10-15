@@ -146,6 +146,7 @@ class OfficeFinder
      */
     private function geocode($address)
     {
+        $address = str_replace('n/a', '', strtolower($address));
         $address = trim(trim($address), '-');
 
         if (0 === strlen($address)) {
