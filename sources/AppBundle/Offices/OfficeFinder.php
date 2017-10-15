@@ -80,6 +80,7 @@ class OfficeFinder
             $row = [
                 'reference' => $invoice->getReference(),
                 'nearest' => null,
+                'distance' => null,
                 'error' => null,
                 'city' => null !== $user ? $user->getCity() : $invoice->getCity(),
                 'zip_code' => null !== $user ? $user->getZipCode() : $invoice->getZipCode(),
@@ -92,7 +93,9 @@ class OfficeFinder
                 $row['error'] = 'Coordonnées non trouvées';
             } else {
                 try {
-                    $row['nearest'] = $this->locateNearestLocalOffice($coordinates);
+                    $infosNearest = $this->locateNearestLocalOffice($coordinates);
+                    $row['nearest'] = $infosNearest['key'];
+                    $row['distance'] = $infosNearest['distance'];
                 } catch (\Exception $e) {
                     $row['error'] = $e->getMessage();
                 }
@@ -172,7 +175,9 @@ class OfficeFinder
 
         asort($localOfficesDistance);
 
-        return key($localOfficesDistance);
+        $nearest = key($localOfficesDistance);
+
+        return ['key' => $nearest, 'distance' => $localOfficesDistance[$nearest]];
     }
 
     /**
