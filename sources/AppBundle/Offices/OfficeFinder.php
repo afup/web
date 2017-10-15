@@ -170,7 +170,11 @@ class OfficeFinder
      */
     private function geocode($address)
     {
-        $address = str_replace('n/a', '', strtolower($address));
+        if (false !== stripos($address, 'n/a')) {
+            return null;
+        }
+
+        $address = str_replace('cedex', '', strtolower($address));
         $address = trim(trim($address), '-');
 
         if (0 === strlen($address)) {
