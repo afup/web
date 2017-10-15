@@ -118,17 +118,17 @@ class OfficeFinder
                 return null;
             }
 
-            try {
-                $adressCollection = $this->geocode($user->getZipCode() . ' ' . $user->getCity());
-            } catch (NoResult $noResult) {
-                $adressCollection = $this->geocode($user->getCity());
-            }
+            $adressCollection = $this->geocodeAdresses([
+                $user->getZipCode() . ' ' . $user->getCity() . ' ' . $user->getCountry(),
+                $user->getZipCode() . ' ' . $user->getCity(),
+                $user->getCity()
+            ]);
         } else {
-            try {
-                $adressCollection = $this->geocode($invoice->getZipCode() . ' ' . $invoice->getCity());
-            } catch (NoResult $noResult) {
-                $adressCollection = $this->geocode($invoice->getCity());
-            }
+            $adressCollection = $this->geocodeAdresses([
+                $invoice->getZipCode() . ' ' . $invoice->getCity() . ' ' . $invoice->getCountryId(),
+                $invoice->getZipCode() . ' ' . $invoice->getCity(),
+                $invoice->getCity()
+            ]);
         }
 
         if (null === $adressCollection) {
@@ -137,6 +137,24 @@ class OfficeFinder
 
         $address = $adressCollection->first();
         return $address->getCoordinates();
+    }
+
+    /**
+     * @param array $addresses
+     *
+     * @return \Geocoder\Model\AddressCollection|null
+     */
+    private function geocodeAdresses(array $addresses)
+    {
+        foreach ($addresses as $address) {
+            try {
+                return $this->geocode($address);
+            } catch (NoResult $noResult) {
+                continue;
+            }
+        }
+
+        return null;
     }
 
     /**
