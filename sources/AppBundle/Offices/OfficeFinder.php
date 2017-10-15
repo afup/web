@@ -15,6 +15,8 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class OfficeFinder
 {
+    const MAX_DISTANCE_TO_OFFICE = 50000;
+
     /**
      * @var UserRepository
      */
@@ -94,8 +96,12 @@ class OfficeFinder
             } else {
                 try {
                     $infosNearest = $this->locateNearestLocalOffice($coordinates);
-                    $row['nearest'] = $infosNearest['key'];
                     $row['distance'] = $infosNearest['distance'];
+                    if ($row['distance'] > self::MAX_DISTANCE_TO_OFFICE) {
+                        $row['error'] = "Trop éloigné d'une antenne";
+                    } else {
+                        $row['nearest'] = $infosNearest['key'];
+                    }
                 } catch (\Exception $e) {
                     $row['error'] = $e->getMessage();
                 }
