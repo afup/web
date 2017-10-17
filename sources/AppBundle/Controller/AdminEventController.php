@@ -180,6 +180,41 @@ class AdminEventController extends Controller
         return $this->redirectToRoute('admin_event_sponsor_ticket', ['id' => $event->getId()]);
     }
 
+    public function sendLastCallSponsorTokenAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        if ($event === null) {
+            throw $this->createNotFoundException('Could not find event');
+        }
+        /**
+         * @var $sponsorTicketRepository SponsorTicketRepository
+         */
+        $sponsorTicketRepository = $this->get('ting')->get(SponsorTicketRepository::class);
+
+        /**
+         * @var $tokens SponsorTicket[]
+         */
+        $tokens = $sponsorTicketRepository->getBy(['idForum' => $event->getId()]);
+
+        $mailSent = 0;
+
+        foreach ($tokens as $token) {
+            if ($token->getPendingInvitations() > 0) {
+                $mailSent++;
+                $this->get('app.sponsor_token_mail')->sendNotification($token, true);
+            }
+        }
+
+        $this->addFlash('notice', sprintf('%s mails de relances ont été envoyés', $mailSent));
+
+        return $this->redirectToRoute('admin_event_sponsor_ticket', ['id' => $event->getId()]);
+    }
+
     public function statsAction(Request $request)
     {
         /**
