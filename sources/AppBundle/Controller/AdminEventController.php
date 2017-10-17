@@ -114,7 +114,7 @@ class AdminEventController extends Controller
          */
         $sponsorTicketRepository = $this->get('ting')->get(SponsorTicketRepository::class);
 
-        $tokens = $sponsorTicketRepository->getBy(['idForum' => $event->getId()]);
+        $tokens = $sponsorTicketRepository->getByEvent($event);
 
         $edit = false;
         if ($request->query->has('ticket') === true) {
@@ -199,7 +199,7 @@ class AdminEventController extends Controller
         /**
          * @var $tokens SponsorTicket[]
          */
-        $tokens = $sponsorTicketRepository->getBy(['idForum' => $event->getId()]);
+        $tokens = $sponsorTicketRepository->getByEvent($event);
 
         $mailSent = 0;
 
@@ -210,7 +210,7 @@ class AdminEventController extends Controller
             }
         }
 
-        $this->addFlash('notice', sprintf('%s mails de relances ont été envoyés', $mailSent));
+        $this->addFlash('notice', sprintf('%s mails de relance ont été envoyés', $mailSent));
 
         return $this->redirectToRoute('admin_event_sponsor_ticket', ['id' => $event->getId()]);
     }

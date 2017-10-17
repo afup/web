@@ -47,7 +47,7 @@
     </table>
     <p>
         Lorsque la fermeture de la billetterie approche, ce bouton permet d'envoyer des mails de rappel pour inciter les sponsors à enregistrer leurs places.<br/>
-        <a class="button sponsor--token-admin-edit" href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}">Envoyer le mail de rappel</a>
+        <a class="button sponsor--token-admin-edit" href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}" onclick="return confirm('Souhaitez-vous vraiment envoyer des mails relance à tous les sponsors ayant encore des places ?');">Envoyer le mail de rappel</a>
     </p>
 
     {% if edit == true %}
