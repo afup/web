@@ -6,6 +6,8 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Offices\OfficeFinder;
+use Geocoder\Provider\GoogleMaps;
+use Ivory\HttpAdapter\CurlHttpAdapter;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,9 +41,12 @@ class RegistrationsByOfficeExporterCommand extends ContainerAwareCommand
             return;
         }
 
+        $curl = new CurlHttpAdapter();
+        $geocoder = new GoogleMaps($curl, null, null, true, $this->getContainer()->getParameter('google_maps_api_key'));
+
         $file = new \SplFileObject($input->getArgument('file'), 'w+');
 
-        $ticketLocator = new OfficeFinder($userRepository, $invoiceRepository, $inscriptions);
+        $ticketLocator = new OfficeFinder($geocoder, $userRepository, $invoiceRepository, $inscriptions);
 
         foreach ($ticketLocator->getFromRegistrationsOnEvent($event) as $row) {
             $output->writeln(sprintf('%s => %s', $row['reference'], $row['nearest']));

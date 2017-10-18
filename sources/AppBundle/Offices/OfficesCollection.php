@@ -47,7 +47,7 @@ class OfficesCollection
                 'latitude' => '46.581945',
                 'longitude' => '0.336112'
             ],
-            'reimes' => [
+            'reims' => [
                 'latitude' => '49.26278',
                 'longitude' => '4.03472'
             ],
@@ -62,6 +62,10 @@ class OfficesCollection
             'valence' => [
                 'latitude' => '44.933333',
                 'longitude' => '4.891667'
+            ],
+            'clermont' => [
+                'latitude' => '45.786781',
+                'longitude' => '3.115074',
             ],
         ];
     }
