@@ -63,6 +63,10 @@ class OfficesCollection
                 'latitude' => '44.933333',
                 'longitude' => '4.891667'
             ],
+            'clermont' => [
+                'latitude' => '45.786781',
+                'longitude' => '3.115074',
+            ],
         ];
     }
 }
