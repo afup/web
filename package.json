@@ -1,0 +1,24 @@
+{
+  "name": "afup",
+  "version": "0.0.1",
+  "description": "Afup web",
+  "main": "index.js",
+  "dependencies": {
+    "copy-webpack-plugin": "^4.1.1",
+    "tablefilter": "^0.5.42",
+    "webpack": "^3.6.0"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afup/web.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/afup/web/issues"
+  },
+  "homepage": "https://github.com/afup/web#readme"
+}

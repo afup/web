@@ -32,6 +32,7 @@ class IcsPLanningGenerator
         $events = [];
 
         $vcalendar = new VCalendar($events);
+        $vcalendar->add('X-WR-CALNAME', $event->getTitle());
         foreach ($talks as $talkWithData) {
             /**
              * @var $talk Talk
@@ -52,7 +53,7 @@ class IcsPLanningGenerator
                 'SUMMARY' => $talk->getTitle(),
                 'DTSTART' => $planning->getStart(),
                 'DTEND'   => $planning->getEnd(),
-                'DESCRIPTION' => $talk->getAbstract(),
+                'DESCRIPTION' => strip_tags(html_entity_decode($talk->getAbstract())),
                 'LOCATION' => $room->getName(),
             ]);
         }

@@ -44,17 +44,27 @@ class SponsorTokenMail
      * Send mail to a sponsor with a custom token to get tickets
      *
      * @param SponsorTicket $sponsorTicket
+     * @param $lastCall boolean
      * @return bool
      */
-    public function sendNotification(SponsorTicket $sponsorTicket)
+    public function sendNotification(SponsorTicket $sponsorTicket, $lastCall = false)
     {
         /**
          * @var $event Event
          */
         $event = $this->eventRepository->get($sponsorTicket->getIdForum());
 
+
+        $textLabel = 'mail.sponsorTicket.text';
+        $subjectLabel = "mail.sponsorTicket.subject";
+
+        if ($lastCall === true) {
+            $textLabel = 'mail.sponsorTicketLastCall.text';
+            $subjectLabel = "mail.sponsorTicketLastCall.subject";
+        }
+
         $text = $this->translator->transChoice(
-            'mail.sponsorTicket.text',
+            $textLabel,
             $sponsorTicket->getMaxInvitations(),
             [
                 '%token%' => $sponsorTicket->getToken(),
@@ -74,9 +84,9 @@ class SponsorTokenMail
             ['email' => $sponsorTicket->getContactEmail()],
             [
                 'content' => $text,
-                'title' => $this->translator->trans("mail.sponsorTicket.subject", ['%event%' => $event->getTitle()])
+                'title' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()])
             ],
-            ['subject' => $this->translator->trans("mail.sponsorTicket.subject", ['%event%' => $event->getTitle()])],
+            ['subject' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()])],
             false,
             null,
             null,
