@@ -1,51 +1,45 @@
 <?php
 
-namespace AppBundle\Command;
+namespace AppBundle\Calendar;
 
+use AppBundle\CFP\PhotoStorage;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Planning;
-use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-class CalendrierDataCommand extends ContainerAwareCommand
+class JsonPlanningGenerator
 {
     /**
-     * @see Command
+     * @var TalkRepository
      */
-    protected function configure()
+    private $talkRepository;
+
+    /**
+     * @var PhotoStorage
+     */
+    private $photoStorage;
+
+    /**
+     * @param TalkRepository $talkRepository
+     * @param PhotoStorage $photoStorage
+     */
+    public function __construct(TalkRepository $talkRepository, PhotoStorage $photoStorage)
     {
-        $this
-            ->setName('calendrier:extract-data')
-        ;
+        $this->talkRepository = $talkRepository;
+        $this->photoStorage = $photoStorage;
     }
 
     /**
-     * @see Command
+     * @param Event $event
+     *
+     * @return array
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function generate(Event $event)
     {
-        $ting = $this->getContainer()->get('ting');
-
-        $photoStorage = $this->getContainer()->get('app.photo_storage');
-
-        /**
-         * @var TalkRepository
-         */
-        $talkRepository = $ting->get(TalkRepository::class);
-
-        /**
-         * @var EventRepository
-         */
-        $eventRepository = $ting->get(EventRepository::class);
-
-        $event = $eventRepository->getNextEvent();
-
-        $talks = $talkRepository->getByEventWithSpeakers($event);
+        $talks = $this->talkRepository->getByEventWithSpeakers($event);
 
         $data = [];
 
@@ -73,7 +67,7 @@ class CalendrierDataCommand extends ContainerAwareCommand
             $conferenciers = [];
             foreach ($speakers as $speaker) {
                 $conferenciers[] = [
-                    'img' => 'https://afup.org' . $photoStorage->getUrl($speaker),
+                    'img' => 'https://afup.org' . $this->photoStorage->getUrl($speaker),
                     'link' => sprintf('https://event.afup.org/%s/speakers/#%d', $event->getPath(), $speaker->getId()),
                     'name' => $speaker->getLabel(),
                 ];
@@ -93,6 +87,6 @@ class CalendrierDataCommand extends ContainerAwareCommand
             ];
         }
 
-        $output->writeln(json_encode($data, JSON_PRETTY_PRINT));
+        return $data;
     }
 }
