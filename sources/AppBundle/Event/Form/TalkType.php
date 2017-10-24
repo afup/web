@@ -26,7 +26,6 @@ class TalkType extends AbstractType
                     [
                         'Conférence plénière (40 mn)' =>  Talk::TYPE_FULL_LONG,
                         'Conférence plénière (20 mn)' => Talk::TYPE_FULL_SHORT,
-                        'Atelier' => Talk::TYPE_WORKSHOP,
                     ]
                 ]
             )
