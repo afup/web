@@ -46,7 +46,7 @@
                                         <p>
                                             <a href="/{{ event.path }}/programme/#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
                                                 {{ row.talk.title }}
-                                                <span class="conferencier">
+                                                <div class="conferencier">
                                             {% for speaker in row[".aggregation"].speaker %}
                                                 {% if loop.index > 1 %} / {% endif %}
                                                 {{ speaker.label }}
@@ -54,7 +54,7 @@
                                                     - {{ speaker.company }}
                                                 {% endif %}
                                             {% endfor %}
-                                        </span>
+                                                </div>
                                             </a>
                                         </p>
 
