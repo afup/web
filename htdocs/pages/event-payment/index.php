@@ -42,7 +42,7 @@ $paybox->set_rang($conf->obtenir('paybox|rang'));
 $paybox->set_identifiant('83166771');
 
 $paybox->set_total($prix * 100);
-$paybox->set_cmd($forumData['path'] . '-' . $ref);
+$paybox->set_cmd($forumData['path'] . '-elephpant-' . $ref);
 $paybox->set_porteur($inscription['email']);
 
 $paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
