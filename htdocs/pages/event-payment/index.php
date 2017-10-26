@@ -4,7 +4,15 @@ use Afup\Site\Forum\Forum;
 
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
-if (!isset($_GET['ref']) || !preg_match('`ins-([0-9]+)`', $_GET['ref'], $matches)) {
+if (
+    !isset($_GET['ref'])
+    ||
+    !(
+        preg_match('`ins-([0-9]+)`', $_GET['ref'], $matches)
+        ||
+        preg_match('`elephpant-([0-9]+)`', $_GET['ref'], $matches)
+    )
+) {
     die('Missing ref');
 }
 
@@ -20,7 +28,11 @@ if (!isset($forumData['id']) || !$forumData['id']) {
 $ref = $matches[1];
 $inscription = $forum_inscriptions->obtenir($ref);
 
-$prix = isset($_GET['prix']) ? intval($_GET['prix']) : 100;
+if (preg_match('`elephpant-([0-9]+)`', $_GET['ref'], $matches)) {
+    $prix = 25;
+} else {
+    $prix = isset($_GET['prix']) ? intval($_GET['prix']) : 100;
+}
 
 require_once dirname(__FILE__).'/../../../dependencies/paybox/payboxv2.inc';
 $paybox = new PAYBOX;
