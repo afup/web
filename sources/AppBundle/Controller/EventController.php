@@ -74,7 +74,7 @@ class EventController extends EventBaseController
         $talkRepository = $ting->get(TalkRepository::class);
         $eventRepository = $ting->get(EventRepository::class);
 
-        $event = $eventRepository->getNextEvent();
+        $event = $eventRepository->getCurrentEvent();
 
         $jsonPlanningGenerator = new JsonPlanningGenerator($talkRepository, $photoStorage);
 

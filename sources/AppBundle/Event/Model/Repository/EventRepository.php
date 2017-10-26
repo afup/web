@@ -26,6 +26,20 @@ class EventRepository extends Repository implements MetadataInitializer
         return $events->first();
     }
 
+    /**
+     * @return Event|null
+     */
+    public function getCurrentEvent()
+    {
+        $query = $this
+            ->getQuery('SELECT id, path FROM afup_forum WHERE (date_debut > NOW() OR (NOW() BETWEEN date_debut AND date_fin)) ORDER BY date_debut LIMIT 1')
+        ;
+        $events = $query->query($this->getCollection(new HydratorSingleObject()));
+        if ($events->count() === 0) {
+            return null;
+        }
+        return $events->first();
+    }
 
     /**
      * @param $path
