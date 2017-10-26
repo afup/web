@@ -74,14 +74,16 @@ class JsonPlanningGenerator
             }
 
             $timeZone = new \DateTimeZone("Europe/Paris");
+            $start = $planning->getStart()->setTimezone($timeZone);
+            $end = $planning->getEnd()->setTimezone($timeZone);
 
             $data[] = [
                 'conferenciers' => $conferenciers,
-                'date' => $planning->getStart()->format('d/m/Y H:i') . '-' . $planning->getEnd()->format('H:i'),
-                'date_start' => $planning->getStart()->setTimezone($timeZone)->format(\Datetime::ISO8601),
-                'date_end' => $planning->getEnd()->setTimezone($timeZone)->format(\Datetime::ISO8601),
+                'date' => $start->format('d/m/Y H:i') . '-' . $end->format('H:i'),
+                'date_start' => $start->format(\Datetime::ISO8601),
+                'date_end' => $end->format(\Datetime::ISO8601),
                 'detail' => strip_tags(html_entity_decode($talk->getAbstract())),
-                'horaire' => $planning->getStart()->format('H:i') . '-' . $planning->getEnd()->format('H:i'),
+                'horaire' => $start->format('H:i') . '-' . $end->format('H:i'),
                 'id' => $talk->getId(),
                 'lang' => $talk->getLanguageLabel(),
                 'name' => $talk->getTitle(),
