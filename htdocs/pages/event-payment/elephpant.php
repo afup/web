@@ -16,8 +16,14 @@ if (
     die('Missing ref');
 }
 
+if (isset($_GET['prix'])) {
+    $prix = abs(intval($_GET['prix']));
+} else {
+    $prix = 25;
+}
+
 
 $mail = new Mail();
-$mail->sendSimpleMessage('Lien paiement elephpant', 'https://afup.org/pages/event-payment/index.php?ref=' . $_GET['ref'] .  '&forum=' . $_GET['forum'], [['email' => $_GET['email'], 'name' => $_GET['email']]]);
+$mail->sendSimpleMessage('Lien paiement stand AFUP', 'https://afup.org/pages/event-payment/index.php?prix=' . $prix . '&ref=' . $_GET['ref'] .  '&forum=' . $_GET['forum'], [['email' => $_GET['email'], 'name' => $_GET['email']]]);
 
 echo 'mail envoyé sur ' . $_GET['email'];
