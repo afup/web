@@ -30,7 +30,7 @@ $inscription = $forum_inscriptions->obtenir($ref);
 
 if (preg_match('`elephpant-([0-9]+)`', $_GET['ref'], $matches)) {
     $prix = 25;
-    $action = 'elephpant';
+    $action = 'elep';
 } else {
     $prix = 100;
     $action = 'subs';
@@ -47,7 +47,7 @@ $paybox->set_rang($conf->obtenir('paybox|rang'));
 $paybox->set_identifiant('83166771');
 
 $paybox->set_total($prix * 100);
-$paybox->set_cmd($forumData['path'] . '-' . $action . '-' . $ref . '--' . $prix);
+$paybox->set_cmd(strtr($forumData['path'], ['forum' => 'frm', 'phptour' => 'tour']) . '-' . $action . '-' . $ref . '-' . $prix);
 $paybox->set_porteur($inscription['email']);
 
 $paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
