@@ -65,3 +65,35 @@ sponsor_ticket_home:
 sponsor_ticket_form:
   path: /{eventSlug}/tickets/sponsor-form
   defaults: {_controller: AppBundle:Ticket:sponsorTicketForm}
+
+ticket:
+  path: /{eventSlug}/tickets
+  defaults: {_controller: AppBundle:Ticket:ticket}
+
+ticket_payment:
+  path: /{eventSlug}/tickets/payment
+  defaults: {_controller: AppBundle:Ticket:payment}
+
+ticket_paybox_callback:
+  path: /{eventSlug}/tickets/paybox-callback
+  defaults: {_controller: AppBundle:Ticket:payboxCallback}
+
+ticket_paybox_redirect:
+  path: /{eventSlug}/tickets/paybox-redirect
+  defaults: {_controller: AppBundle:Ticket:payboxRedirect}
+
+sponsor_leads:
+  path: /{eventSlug}/sponsor/become-sponsor
+  defaults: {_controller: AppBundle:Lead:becomeSponsor}
+
+sponsor_leads_post:
+  path: /{eventSlug}/sponsor/thank-you
+  defaults: {_controller: AppBundle:Lead:postLead}
+
+planning_ics:
+  path: /{eventSlug}/planning.ics
+  defaults: {_controller: AppBundle:Event:planningIcs}
+
+planning_json_latest:
+  path: /latest/planning.json
+  defaults: {_controller: AppBundle:Event:planningJson}

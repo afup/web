@@ -11,7 +11,7 @@
   Pour accepter, suivez ce lien: %link%<br />
   Sinon, ignorez tout simplement cet email.<br />
   <br />
-  L'équipe afup.
+  L'équipe AFUP.
 'Address': 'Adresse'
 'Zip code': 'Code postal'
 'City': 'Ville'
@@ -34,7 +34,7 @@
   <p>À bientôt,<br />
   L’équipe AFUP</p>
 
-  <p><a href="http://afup.org">afup.org</a>
+  <p><a href="https://afup.org">afup.org</a>
 'Username': 'Nom d''utilisateur'
 'Create my account': 'Créer mon compte'
 'Max members': 'Nombre de membres à rattacher'
@@ -49,19 +49,65 @@ type.3: "20 mn"
 'mail.sponsorTicket.subject': Inscrivez-vous pour le %event%
 'mail.sponsorTicket.text': |
   Cher sponsor,<br />
-  Dans le cadre de votre sponsoring, l'AFUP vous offre 1 place pour son événement %event%.<br />
+  Dans le cadre de votre sponsoring, vous bénéficiez d'une place pour l'événement %event%.<br />
   Cette place est utilisable par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
-  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à conserver cette place pour le collaborateur qui l'occupera.<br />
+  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à enregistrer cette place pour le collaborateur qui l'occupera.<br />
+  <br />
+  Nous vous remercions de bien vouloir effectuer l'enregistrement de cette place avant la fermeture de la billetterie le %endDate%.
+  Passée cette date, le formulaire ne sera plus accessible.
   <br />
   Pour enregistrer votre place, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
   <br />
-  L'équipe afup.|Cher sponsor,<br />
-  Dans le cadre de votre sponsoring, l'AFUP vous offre %places% places pour son événement %event%.<br />
+  L'équipe AFUP.|Cher sponsor,<br />
+  Dans le cadre de votre sponsoring, vous bénéficiez de %places% places pour l'événement %event%.<br />
   Ces places sont utilisables par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
-  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à conserver des places pour les collaborateurs qui l'occuperont.<br />
+  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à enregistrer les places des collaborateurs qui l'occuperont.<br />
+  <br />
+  Nous vous remercions de bien vouloir effectuer l'enregistrement de ces places avant la fermeture de la billetterie le %endDate%.
+  Passée cette date, le formulaire ne sera plus accessible.
   <br />
   Pour enregistrer vos places, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
   <br />
-  L'équipe afup.
-'mail.sponsorTicket.text.plurial': |
+  L'équipe AFUP.
+'mail.sponsorTicketLastCall.subject': "Sponsor: enregistrez-vous pour le %event%"
+'mail.sponsorTicketLastCall.text': |
+  Cher sponsor,<br />
+  <strong>Le %event% approche ! Le %endDate% la billetterie fermera et il sera trop tard pour enregistrer votre place sponsor.</strong><br />
+  Dans le cadre de votre sponsoring, vous bénéficiez d'une place pour l'événement %event%.<br />
+  Cette place est utilisable par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
+  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à enregistrer cette place pour le collaborateur qui l'occupera.<br />
+  <br />
+  Nous vous remercions de bien vouloir effectuer l'enregistrement de cette place avant la fermeture de la billetterie le %endDate%.
+  Passée cette date, le formulaire ne sera plus accessible.
+  <br />
+  Pour enregistrer votre place, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
+  <br />
+  L'équipe AFUP.|Cher sponsor,<br />
+  <strong>Le %event% approche ! Le %endDate% la billetterie fermera et il sera trop tard pour enregistrer vos places sponsor.</strong><br />
+  Dans le cadre de votre sponsoring, vous bénéficiez de %places% places pour l'événement %event%.<br />
+  Ces places sont utilisables par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
+  Attention toutefois, si votre sponsoring inclus un stand, vous devez penser à enregistrer les places des collaborateurs qui l'occuperont.<br />
+  <br />
+  Nous vous remercions de bien vouloir effectuer l'enregistrement de ces places avant la fermeture de la billetterie le %endDate%.
+  Passée cette date, le formulaire ne sera plus accessible.
+  <br />
+  Pour enregistrer vos places, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
+  <br />
+  L'équipe AFUP.
+'Position': 'Poste'
+'Website': 'Site web'
+'Language': 'Langue'
+'Become a sponsor': 'Devenir sponsor'
+'mail.sponsoringfile.title': 'Dossier de sponsoring %eventName%'
+'mail.sponsoringfile.text': |
+  Bonjour,<br />
+  <p>Vous avez demandé à recevoir le dossier de sponsoring pour le %eventName%.</p>
 
+  <p>Vous trouverez le dossier en pièce jointe. Pour toute demande de précisions ou devis,
+  n'hésitez pas à nous contacter par mail à l’adresse <a href="mailto:sponsors@afup.org">sponsors@afup.org</a>.</p>
+  <p>À bientôt,<br />
+  L’équipe sponsoring AFUP</p>
+
+  <p>Suivez l’AFUP sur <a href="https://twitter.com/afup">Twitter</a> (@afup) et Facebook.</p>
+  <p><a href="https://afup.org">afup.org</a>
+Billetterie: Billetterie

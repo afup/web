@@ -84,7 +84,7 @@ th {
 
 <body style="margin: 0; padding: 0px; ">
  <div style="padding:0px 20px;width: 500px;text-align: center;margin: auto;" ><?php foreach($programme as $date => $programme_jour): ?>
- <a href="http://www.afup.org/forumphp">www.afup.org/forumphp</a>
+ <a href="https://afup.org/forumphp">www.afup.org/forumphp</a>
     <div style="font-size: 15px; font-weight: bold; padding: 3px;"><?php echo $date == '09-11-2010'?'Mardi 09':'Mercredi 10';?>
     Novembre 2010</div>
     <?php foreach($programme_jour as $hour => $session_hours): ?> <?php $nb++;$session = $session_hours[0];?>

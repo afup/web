@@ -1,0 +1,419 @@
+/*---------------------------------------------------------
+ 7. Pages (_pages.scss)
+-------------------------------------------------------- */
+.page-template-default {
+	// With nothing
+	.entry {
+		width: 100%;
+	}
+	// With image
+	&.has-featured-image .entry {
+		@include for(medium-screens) {
+			float: right;
+			margin-left: percentage($gut/$width);
+			width: percentage(($col*5+$gut*6)/$width); //$width
+		}
+	}
+	// With sidebar
+	&.has-sidebar .entry {
+		@include for(medium-screens) {
+			float: left;
+			width: percentage(($col*5+$gut*6)/$width); //$width
+		}
+	}
+	// With image and sidebar
+	&.has-featured-image.has-sidebar {
+		@include for(medium-screens) {
+			.entry {
+				width: percentage(($col*4+$gut*3)/$width); //$width
+			}
+		}
+	}
+	.page-header {
+		@include for(medium-screens) {
+			float: left;
+			width: percentage(($col*2+$gut)/$width); //$width
+			margin-bottom: 0; //reset
+		}
+		color: $k;
+		@include rem('margin', $base/4 0 $base);
+		@extend .small-type;
+		img {
+			@include rem('margin-bottom', $base/2);
+		}
+	}
+}
+/*---------------------------------------------------------
+ Archive (_pages.scss)
+-------------------------------------------------------- */
+.archive-header {
+	@include rem('margin-bottom', $base*2);
+	@extend .clear;
+	.has-sidebar & {
+		.archive-title,
+		.search {
+			float: left;
+			width: 100%;
+		}
+	}
+	.search {
+		@include for(medium-screens) {
+			float: right;
+			width: percentage(($col*5+$gut*5)/$width); //$width
+		}
+		input {
+			width: 100%;
+		}
+	}
+}
+.archive-title {
+	@include for(medium-screens) {
+		float: left;
+		width: percentage(($col*2+$gut)/$width); //$width
+		@include rem('margin-top', $base/4);
+	}
+	font-weight: 400; //reset
+	@include rem('margin-bottom', $base);
+}
+/*---------------------------------------------------------
+ Search (_pages.scss)
+-------------------------------------------------------- */
+.search .page {
+	border-bottom: $rule;
+	@include rem('padding', $base*1.5 0 $base*3);
+	@extend .clear;
+	&:first-of-type {
+		padding-top: 0; //reset
+	}
+	&:last-of-type {
+		border-bottom: 0; //reset
+	}
+}
+/*---------------------------------------------------------
+ Attachment (_pages.scss)
+-------------------------------------------------------- */
+.attachment {
+	.entry,
+	.pagination {
+		width: 100%;
+	}
+	.entry {
+		@include rem('margin-top', $base);
+		p {
+			color: $k;
+			@include rem('font-size', 13px);
+		}
+	}
+	.pagination {
+		@include rem('margin-bottom', $base);
+		a {
+			margin-top: 0; //reset
+		}
+	}
+}
+.attachment-image {
+	text-align: center;
+}
+.attachment-return {
+	@include for(medium-screens) {
+		margin-bottom: 0; //reset
+	}
+	@include rem('margin-bottom', $base);
+}
+/*---------------------------------------------------------
+ Slideshow & Banner Typography (_pages.scss)
+-------------------------------------------------------- */
+.slide-content,
+.banner {
+	color: #ffffff;
+	text-align: center;
+	h2 {
+		@include for(medium-screens) {
+			@include rem('font-size', 62px);
+			@include rem('letter-spacing', -2px);
+		}
+		margin-bottom: 0; //reset
+		@include rem('font-size', 36px);
+		@include rem('word-spacing', -4px);
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: #ffffff;
+	}
+}
+.slide-button,
+.banner-button {
+	line-height: 47px; //button height
+	background: $d;
+}
+/*---------------------------------------------------------
+ Banner layout (_pages.scss)
+-------------------------------------------------------- */
+.banner {
+	@include for(medium-screens) {
+		@include rem('padding', 60px);
+	}
+	margin: 0 auto;
+	@include rem('padding', 40px);
+}
+/*---------------------------------------------------------
+ Slideshow layout (_pages.scss)
+-------------------------------------------------------- */
+.page-template-slideshow-php {
+	height: 100%;
+	.js & #footer {
+		visibility: hidden;
+	}
+}
+.slide-content {
+	margin: 0 auto;
+	@include rem('padding', 10px);
+	overflow: hidden;
+	max-height: 80%;
+	@media (max-height: 600px) {
+		max-height: 90%;
+		margin-top: 5%;
+		margin-bottom: 5%;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+/*---------------------------------------------------------
+ Slideshow / Banner overlay (_pages.scss)
+-------------------------------------------------------- */
+.slide-content,
+.banner .product-section {
+	max-width: 680px;
+}
+.banner .product-section {
+	@include for(medium-screens) {
+		@include rem('margin-top', $base*3);
+		@include rem('margin-bottom', $base*3);
+	}
+	@include rem('margin-top', $base*2);
+	@include rem('margin-bottom', $base*2);
+}
+.slideshow-slide,
+.banner {
+	position: relative;
+	height: 100%;
+	background-position: center;
+	background-size: cover;
+	background-color: $detail-washedgray;
+}
+.slide-overlay {
+	z-index: -1;
+}
+.slide-overlay,
+.banner-overlay {
+	@include for(medium-screens) {
+		background-image: -moz-linear-gradient(bottom, rgba(0,0,0,0.4) 0%, rgba(255,255,255,0) 50%);
+		background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,.4) 0%, rgba(255,255,255,0) 50%);
+		background-image: -ms-linear-gradient(bottom, rgba(0,0,0,0.4) 0%, rgba(255,255,255,0) 50%);
+		background-image: linear-gradient(bottom, rgba(0,0,0,0.4) 0%, rgba(255,255,255,0) 50%);
+		background-color: rgba(0,0,0,0.3);
+	}
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.4);
+}
+/*---------------------------------------------------------
+ Slider functions (_pages.scss)
+-------------------------------------------------------- */
+.cycle-slideshow {
+	opacity: 0;
+	position: relative;
+	width: 100%;
+	margin: 0; //reset
+	padding: 0; //reset
+	list-style: none; //reset
+	overflow: hidden;
+	.slideshow-slide {
+		position: absolute;
+		width: 100%;
+		left: 0; //reset
+		top: 0; //reset
+		&:first-child {
+			position: relative;
+			display: block;
+			float: left;
+		}
+	}
+}
+.cycle-pager {
+	display: none;
+	z-index: 500;
+	position: absolute;
+	bottom: 3%;
+	overflow: hidden;
+	width: 100%;
+	text-align: center;
+	span {
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		font-family: arial;
+		font-size: 50px;
+		color: $a;
+		line-height: 16px;
+		cursor: pointer;
+		@include rem('margin', 0 2px);
+		&.cycle-pager-active {
+			color: $d;
+		}
+	}
+	> * {
+		cursor: pointer;
+	}
+	@include for(medium-screens) {
+		display: block;
+	}
+	@media (max-height: 600px) {
+		display: none;
+	}
+}
+.cycle-prev,
+.cycle-next {
+	position: absolute;
+	z-index: 800;
+	top: 0;
+	width: 15%;
+	height: 100%;
+	cursor: pointer;
+}
+.cycle-prev {
+	left: 0; //reset
+}
+.cycle-next {
+	right: 0; //reset
+}
+/*---------------------------------------------------------
+ Sections (_pages.scss)
+-------------------------------------------------------- */
+.product-section {
+	@include for(medium-screens) {
+		@include rem('margin-top', $base*2);
+		@include rem('padding', 0 60px);
+	}
+	margin: 0 auto;
+	max-width: $width;
+	@include rem('margin-top', $base);
+	@include rem('padding', 0 40px);
+	@extend .clear;
+	&.first {
+		@include rem('margin-top', $base);
+	}
+	&.last {
+		@include for(medium-screens) {
+			@include rem('margin-bottom', $base*2);
+		}
+		@include rem('margin-bottom', $base);
+	}
+	&.prev-banner {
+		@include for(medium-screens) {
+			@include rem('margin-top', $base*3);
+		}
+		@include rem('margin-top', $base*2);
+	}
+	.product-section-custom-link {
+		text-decoration: none; //reset
+	}
+}
+/*---------------------------------------------------------
+ Section titles (_pages.scss)
+-------------------------------------------------------- */
+.profile-column-title,
+.feature-section-title,
+.text-section-title {
+	line-height: 1.35;
+}
+/*---------------------------------------------------------
+ Profile section (_pages.scss)
+-------------------------------------------------------- */
+.profile {
+	color: $k;
+	@extend .small-type;
+	.profile-column-title {
+		@include rem('margin', 0 0 $base/4);
+	}
+	.profile-column-img {
+		@include rem('margin-bottom', $base);
+	}
+	.profile-column-1,
+	.profile-column-2 {
+		@include for(medium-screens) {
+			padding-right: percentage($gut/$width); //$width
+		}
+	}
+	.profile-column {
+		@include for(medium-screens) {
+			float: left;
+			width: percentage(($col*2+$gut*3+9)/$width); //$width
+		}
+	}
+}
+/*---------------------------------------------------------
+ Feature section (_pages.scss)
+-------------------------------------------------------- */
+.feature {
+	color: $k;
+	@extend .small-type;
+	.feature-section-title {
+		@include rem('margin', 0 0 $base/4);
+	}
+	.feature-image {
+		@include for(medium-screens) {
+			width: percentage(($col*5+$gut*4)/$width); //$width
+			text-align: center;
+		}
+		max-width: 100%;
+	}
+	.feature-content {
+		@include for(medium-screens) {
+			width: percentage(($col*2+$gut*4+14)/$width); //$width
+		}
+	}
+	.feature-content,
+	.feature-image {
+		&.left {
+			float: left;
+		}
+		&.right {
+			float: right;
+		}
+	}
+}
+/*---------------------------------------------------------
+ Banner section (_pages.scss)
+-------------------------------------------------------- */
+.banner {
+	@include for(medium-screens) {
+		min-height: 500px;
+		@include rem('margin-top', $base*2);
+		@include rem('padding', 60px);
+	}
+	min-height: 300px;
+	@include rem('margin-top', $base);
+	@include rem('padding', 40px);
+	&.first {
+		margin-top: 0;
+	}
+	& + .banner {
+		margin-top: 0; //reset
+	}
+	.product-section {
+		@include for(medium-screens) {
+			@include rem('margin-top', $base*5);
+		}
+		position: relative;
+		z-index: 1;
+		padding: 0; //reset
+	}
+}

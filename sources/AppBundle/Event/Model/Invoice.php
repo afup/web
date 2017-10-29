@@ -2,8 +2,10 @@
 
 namespace AppBundle\Event\Model;
 
+use Afup\Site\Utils\Pays;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Invoice implements NotifyPropertyInterface
 {
@@ -41,6 +43,7 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @var string
+     * @Assert\Email()
      */
     private $email;
 
@@ -51,33 +54,39 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $lastname;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $firstname;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $address;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $zipcode;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $city;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
-    private $countryId;
+    private $countryId = Pays::DEFAULT_ID;
 
     /**
      * @var string
@@ -103,6 +112,13 @@ class Invoice implements NotifyPropertyInterface
      * @var int
      */
     private $forumId;
+
+    /**
+     * @var Ticket[]
+     * @Assert\Valid()
+     */
+    private $tickets = [];
+
 
     /**
      * @return string
@@ -463,5 +479,48 @@ class Invoice implements NotifyPropertyInterface
         $this->propertyChanged('forumId', $this->forumId, $forumId);
         $this->forumId = $forumId;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
+     * @param array $tickets
+     * @return Invoice
+     */
+    public function setTickets(array $tickets)
+    {
+        $this->tickets = $tickets;
+        return $this;
+    }
+
+    /**
+     * @param Ticket $ticket
+     * @return Invoice
+     */
+    public function addTicket(Ticket $ticket)
+    {
+        $this->tickets[] = $ticket;
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @throw \RuntimeException
+     */
+    public function getLabel()
+    {
+        if ($this->company !== null) {
+            return $this->company;
+        }
+        if ($this->lastname !== null) {
+            return $this->lastname;
+        }
+        throw new \RuntimeException('Could not generate label');
     }
 }

@@ -1,0 +1,120 @@
+/*---------------------------------------------------------
+ Body (editor-style.css)
+-------------------------------------------------------- */
+body {
+	font-family: Arimo, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 93.75%; /* 15px */
+	line-height: 1.55;
+	color: #484b50;
+}
+/*---------------------------------------------------------
+ Code (editor-style.css)
+-------------------------------------------------------- */
+tt,
+kbd,
+pre,
+code,
+samp {
+	font-family: 'Andale Mono', AndaleMono, Consolas, Monaco, monospace;
+	font-size: 100%; /* 16px */
+}
+/*---------------------------------------------------------
+ Elements (editor-style.css)
+-------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	clear: both;
+	color: #131212;
+}
+h4 {
+	font-weight: 400;
+	font-size: 112.5%;
+}
+h6 {
+	text-transform: uppercase;
+}
+blockquote p {
+	color: #859093;
+}
+tt,
+kbd,
+pre,
+code,
+samp,
+.alert {
+	border: 1px solid #e6e6e6;
+	padding: 1px 3px;
+	color: #859093;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+pre,
+.alert {
+	padding: 15px;
+}
+mark{
+	font-style: italic;
+}
+del,
+strike {
+	color: #b1b7ba;
+}
+ins {
+	color: inherit; /* reset */
+}
+ins:before {
+	content: "\005B";
+	position: relative;
+}
+ins:after {
+	content: "\005D";
+	position: relative;
+}
+/*---------------------------------------------------------
+ Lists (editor-style.css)
+-------------------------------------------------------- */
+ul {
+	list-style: square outside;
+}
+ol {
+	list-style: decimal outside;
+}
+/*---------------------------------------------------------
+ Extras (editor-style.css)
+-------------------------------------------------------- */
+.intro {
+	font-size: 125%; /* 20px */
+}
+.basis-button {
+	text-align: center;
+	text-transform: capitalize;
+	text-decoration: none;
+	font-family: Arimo, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #fefefe;
+	line-height: 1;
+	border: 0;
+	background: #13171a;
+	margin-bottom: 20px;
+	margin-bottom: 1.25rem;
+	padding: 15px;
+	padding: 0.9375rem;
+	font-size: 14px;
+	font-size: 0.875rem;
+	letter-spacing: 1px;
+	letter-spacing: 0.0625rem;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.basis-button:hover {
+	color: #fefefe;
+}

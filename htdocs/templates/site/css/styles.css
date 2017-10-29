@@ -1494,3 +1494,6 @@ form.sponsor--token-home-form input[type=submit] {
     border-bottom-right-radius:20px;
     border-top-right-radius:20px;
 }
+footer.footer--fork{
+    text-align: center;
+}

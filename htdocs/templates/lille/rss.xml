@@ -9,7 +9,7 @@
 	<lastBuildDate>{$feed.lastBuildDate}</lastBuildDate>
 	<generator>AFUP internal framework professionnal edition 'alamano'</generator>
 	<image>
-	  <url>http://afup.org/templates/site/images/logo_afup.png</url>
+	  <url>https://afup.org/templates/site/images/logo_afup.png</url>
 	  <title>{$feed.title}</title>
 	  <link>{$feed.link}</link>
   </image>

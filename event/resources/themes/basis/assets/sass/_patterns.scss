@@ -1,0 +1,107 @@
+/*---------------------------------------------------------
+ 5. Patterns (_patterns.scss)
+-------------------------------------------------------- */
+img {
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
+	&.size-full,
+	&.size-large,
+	&.wp-post-image {
+		height: auto;
+	}
+	&[class*="align"],
+	&[class*="wp-image-"],
+	&[class*="attachment-"] {
+		height: auto;
+	}
+	&.alignleft,
+	&.alignright,
+	&.aligncenter {
+		@include rem('margin-bottom', $base);
+	}
+	&.wp-smiley {
+		margin: 0; //reset
+		padding: 0; //reset
+		background: 0; //reset
+	}
+}
+/*---------------------------------------------------------
+ Captions (_patterns.scss)
+-------------------------------------------------------- */
+div.wp-caption {
+	max-width: 100%;
+	img {
+		@include rem('margin-bottom', $base/4);
+	}
+}
+.wp-caption-text,
+dd.wp-caption-dd {
+	color: $k;
+	@include rem('margin-top', $base/4);
+	@extend .small-type;
+}
+/*---------------------------------------------------------
+ Media (_patterns.scss)
+-------------------------------------------------------- */
+embed,
+object,
+video,
+iframe {
+	max-width: 100%;
+}
+.fluid-width-video-wrapper {
+	width: auto !important;
+}
+/*---------------------------------------------------------
+ Inline slideshow (_patterns.scss)
+-------------------------------------------------------- */
+.slideshow-window img {
+	max-width: 100%;
+}
+.slideshow-window {
+	-webkit-border-radius: 0 !important; //resest
+	-moz-border-radius: 0 !important; //reset
+	border-radius: 0 !important; //reset
+}
+/*---------------------------------------------------------
+ General (_patterns.scss)
+-------------------------------------------------------- */
+.clear {
+	clear: both;
+}
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}
+.aligncenter {
+	clear: both;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.hide {
+	display: none;
+	visibility: hidden;
+}
+.hidden {
+	visibility: hidden;
+}
+.noborder {
+	border: none;
+}
+div {
+	.alignleft {
+		text-align: left;
+		@include rem('margin-right', $base);
+	}
+	.alignright {
+		text-align: right;
+		@include rem('margin-left', $base);
+	}
+	.aligncenter {
+		text-align: center;
+	}
+}

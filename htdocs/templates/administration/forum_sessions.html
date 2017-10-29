@@ -16,7 +16,7 @@
       <input type="hidden" name="page" value="forum_sessions" />
       <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
       <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-      <input type="hidden" name="forum_id" value="{$id_forum}" />
+      <input type="hidden" name="id_forum" value="{$id_forum}" />
         <div>
             <div>
                 Filtre:
@@ -27,6 +27,10 @@
             <div>
                 <input type="checkbox" name="filtre_needs_mentoring" id="filtre_needs_mentoring" value="1" {if $smarty.get.filtre_needs_mentoring} checked="checked" {/if}>
                 <label for="filtre_needs_mentoring">Afficher seulement les sessions dont le speaker a demandé un accompagnement</label>
+            </div>
+            <div>
+                <input type="checkbox" name="filtre_planned" id="filtre_planned" value="1" {if $smarty.get.filtre_planned} checked="checked" {/if}>
+                <label for="filtre_planned">Afficher seulement les sessions plannifiées</label>
             </div>
             <div>
                 <input type="submit" value="Filtrer" name="submit_filtre">
@@ -112,6 +116,7 @@
         <h2>Ajouter une session pour le {$forum_name}</h2>
     {else}
         <h2>Modifier une session pour le {$forum_name}</h2>
+        <a href="/talks/{$talk->getUrlKey()}">Voir la fiche publique</a>
     {/if}
     {include file="formulaire.html"}
 {/if}

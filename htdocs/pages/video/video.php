@@ -16,7 +16,7 @@
 <html lang="#LANG">
 <head>
 <title>Annuaire des professionnels PHP</title>
-<!-- base href="http://www.afup.org/" -->
+<!-- base href="https://afup.org/" -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="css/style_afup.css" type="text/css">
 </head>
@@ -28,7 +28,7 @@
 	  <table width="490" border="0" cellpadding="0" cellspacing="0">
 
 		<tr>
-		  <td width="191"><a href="http://www.afup.org"><img src="images/charte2_01.gif" width="191" height="61" alt="Retour afup" border="0"></a></td>
+		  <td width="191"><a href="https://afup.org"><img src="images/charte2_01.gif" width="191" height="61" alt="Retour afup" border="0"></a></td>
 		  <td width="16"><img src="images/charte2_02.gif" width="16" height="61" alt=""></td>
 		  <td>&nbsp;</td>
 		</tr>
@@ -212,7 +212,7 @@
 
         </tr>
       </table>
-      <form name="form_auth" method="post" action="http://www.afup.org/forum/login.php">
+      <form name="form_auth" method="post" action="https://afup.org/forum/login.php">
         <table width="120" border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td>&nbsp;</td>
@@ -281,8 +281,8 @@
       	</table>
 
       </td>
-    	<td class="footer"><a href="http://www.afup.org/article.php3?id_article=53" class="footer_link">Contact</a>&nbsp;&nbsp;&nbsp;
-	      | &nbsp;&nbsp;&nbsp;<a href="http://www.afup.org/article.php3?id_article=71" class="footer_link">Mentions
+    	<td class="footer"><a href="https://afup.org/article.php3?id_article=53" class="footer_link">Contact</a>&nbsp;&nbsp;&nbsp;
+	      | &nbsp;&nbsp;&nbsp;<a href="https://afup.org/article.php3?id_article=71" class="footer_link">Mentions
 	      l&eacute;gales</a>&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;<a href="./plan.php3" class="footer_link">Plan
 	      du site</a> </td>
 		<td align="center" valign="bottom"> <img src="images/afup_25.gif" width="124" height="44">

@@ -272,6 +272,24 @@ class Speaker implements NotifyPropertyInterface
     }
 
     /**
+     * @return bool|string
+     */
+    public function getCleanedTwitter()
+    {
+        $twitter = $this->getTwitter();
+        $twitter = trim($twitter, '@');
+        if (0 === strpos($twitter, 'https://twitter.com/')) {
+            $twitter = substr($twitter, strlen('https://twitter.com/'));
+        }
+
+        if (0 === strlen(trim($twitter))) {
+            return null;
+        }
+
+        return $twitter;
+    }
+
+    /**
      * @param string $twitter
      * @return Speaker
      */

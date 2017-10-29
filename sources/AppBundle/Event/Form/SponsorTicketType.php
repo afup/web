@@ -2,10 +2,10 @@
 
 namespace AppBundle\Event\Form;
 
-use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,15 +15,22 @@ class SponsorTicketType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('company', TextType::class, [
-                'label' => 'Sponsor (société)'
+            ->add('civility', ChoiceType::class, [
+                'label' => 'Civilité',
+                'choices' => [
+                    'M.' => 'M.',
+                    'Mlle' => 'Mlle',
+                    'Mme' => 'Mme'
+                ]
             ])
-            ->add('contactEmail', EmailType::class, [
-                'label' => 'Email de contact'
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom'
             ])
-            ->add('token', TextType::class)
-            ->add('maxInvitations', IntegerType::class, [
-                'label' => 'Nombre d\'invitations'
+            ->add('lastname', TextType::class, [
+                'label' => 'Nom'
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Email'
             ])
         ;
     }
@@ -31,7 +38,7 @@ class SponsorTicketType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => SponsorTicket::class
+            'data_class' => Ticket::class
         ]);
     }
 }

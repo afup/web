@@ -19,7 +19,7 @@ security:
 
         legacy_secured_area:
             anonymous: ~
-            pattern: ^(/admin/)
+            pattern: ^(/admin/|/event/\w+/tickets)
             logout:
                 path:   /admin/logout
                 target: /
@@ -45,8 +45,11 @@ security:
         - { path: ^/admin/(login|register|password), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
-        - { path: ^/blog, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: [217.70.189.71, 127.0.0.1, 192.168.42.1] }
+        - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1" }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }
+        - { path: ^/event/\w+/tickets/paybox-callback, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: "%paybox_ips%" }
+        - { path: ^/event/\w+/tickets/paybox-callback, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/event/\w+/tickets/paybox-callback, roles: ROLE_NO_ACCESS }
 
     role_hierarchy:
         ROLE_USER: [ROLE_MEMBER_EXPIRED]

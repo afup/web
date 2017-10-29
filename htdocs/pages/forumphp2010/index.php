@@ -53,7 +53,7 @@ bloquez sur le 71ème mot après avoir trouvé facilement les 70 premiers...
 Nous mettons fin à vos souffrances! Retrouvez ici toutes les réponses à ce
 jeu diabolique.
 <br /><br />
-<a href='http://www.afup.org/templates/forumphp2010/pdf/Jeu-Concours-Forum-PHP.png'>Télécharger la grille</a> (PNG - 206 Ko).</p><br />";
+<a href='https://afup.org/templates/forumphp2010/pdf/Jeu-Concours-Forum-PHP.png'>Télécharger la grille</a> (PNG - 206 Ko).</p><br />";
 $actualite['date'] = "29 novembre 2010";
 $actualites[] = $actualite;
 
@@ -62,7 +62,7 @@ $actualites[] = $actualite;
 $actualite['titre'] = "Communiqué de presse : L'AFUP propulse le Forum PHP au sommet pour sa 10ème édition";
 $actualite['contenu'] = "<p>2010 est l'année de tous les records : espace d'échanges et de mutualisation des compétences, le Forum PHP, via le soutien sans faille d'une équipe d'experts passionnés, a réuni les 9 et 10 novembre derniers plus de 500 visiteurs par jour, soit 35% de plus qu'en 2009.
 <br /><br />
-<a href='http://www.afup.org/templates/forumphp2010/pdf/bilan_forum_php_2010.pdf'>Télécharger le Communiqué de presse</a> (PDF - 85 Ko).</p><br />";
+<a href='https://afup.org/templates/forumphp2010/pdf/bilan_forum_php_2010.pdf'>Télécharger le Communiqué de presse</a> (PDF - 85 Ko).</p><br />";
 $actualite['date'] = "18 novembre 2010";
 $actualites[] = $actualite;
 
@@ -88,14 +88,14 @@ $actualite['date'] = "3 novembre 2010";
 $actualites[] = $actualite;
 
 $actualite['titre'] = "Forum PHP 2010 : Zeev Suraski répond présent.";
-$actualite['contenu'] = "<p>Zend Technologies, partenaire du Forum PHP 2010, nous propose une conférence intitulée <a href=\"http://afup.org/pages/forumphp2010/sessions.php#512\">« Le paradoxe des performances PHP »</a>, animée par Zeev Suraski (co-fondateur de Zend Technologies).
+$actualite['contenu'] = "<p>Zend Technologies, partenaire du Forum PHP 2010, nous propose une conférence intitulée <a href=\"https://afup.org/pages/forumphp2010/sessions.php#512\">« Le paradoxe des performances PHP »</a>, animée par Zeev Suraski (co-fondateur de Zend Technologies).
 Ces dernières années, de nombreuses fonctions ont été ajoutées à PHP 5, mais paradoxalement, il est également devenu significativement plus rapide avec chaque sortie majeure.
 Cette conférence décrira les composants de PHP, la machine virtuelle de PHP et les plus importants changements et optimisations de PHP5 liés à la performance.</p>";
 $actualite['date'] = "27 octobre 2010";
 $actualites[] = $actualite;
 
 $actualite['titre'] = "SkySQL en exclusivité pour le Forum PHP 2010 !";
-$actualite['contenu'] = "<p>Michael « Monty » Widenius – Monty Program Ab- et Kaj Arnö – SkySQL Ab- nous font l'honneur d'animer ensemble la conférence de clôture du Forum PHP 2010, ayant pour thème <a href=\"http://afup.org/pages/forumphp2010/sessions.php#511\">« Etat de l'art de l'écosystème MySQL »</a>.
+$actualite['contenu'] = "<p>Michael « Monty » Widenius – Monty Program Ab- et Kaj Arnö – SkySQL Ab- nous font l'honneur d'animer ensemble la conférence de clôture du Forum PHP 2010, ayant pour thème <a href=\"https://afup.org/pages/forumphp2010/sessions.php#511\">« Etat de l'art de l'écosystème MySQL »</a>.
 Au programme, le futur de MySQL et la présentation de leur alternative à Oracle, SkySQL. Que cela signifie-t-il pour l'écosystème des partenaires, développeurs, clients, utilisateurs professionnels et la communauté des contributeurs de MySQL ?
 Que peut-on attendre du futur de MySQL : forks, correction des bugs, support commercial et feuille de route ?</p>";
 $actualite['date'] = "26 octobre 2010";
@@ -105,7 +105,7 @@ $actualite['titre'] = "Communiqué de presse : l'AFUP reçoit en exclusivité Sk
 $actualite['contenu'] = "<p>L'AFUP fédère l'ensemble des communautés PHP et reçoit en exclusivité SkySQL Ab et Monty Program Ab.
 <br />
 Une édition exceptionnelle pour fêter les 15 ans de PHP.<br /><br />
-<a href='http://www.afup.org/templates/forumphp2010/pdf/L-AFUP recoit SkySQL et Monty Program.pdf'>Télécharger le Communiqué de presse</a> (PDF - 109 Ko).</p><br />";
+<a href='https://afup.org/templates/forumphp2010/pdf/L-AFUP recoit SkySQL et Monty Program.pdf'>Télécharger le Communiqué de presse</a> (PDF - 109 Ko).</p><br />";
 $actualite['date'] = "22 octobre 2010";
 $actualites[] = $actualite;
 
@@ -134,7 +134,7 @@ $actualite['date'] = "01 octobre 2010";
 $actualites[] = $actualite;
 
 $actualite['titre'] = "Projets PHP Open Source";
-$actualite['contenu'] = "<p>Vous avez un projet communautaire développé autour de PHP (frameworks, applicatifs, utilitaires, ...) ? Vous souhaitez le présenter à un public averti? L'AFUP vous propose un espace dédié lors du Forum PHP 2010 ! <a href=\"http://www.afup.org/pages/forumphp2010/projets-php-inscription.php\">Inscrivez-vous dès maintenant</a> !</p>";
+$actualite['contenu'] = "<p>Vous avez un projet communautaire développé autour de PHP (frameworks, applicatifs, utilitaires, ...) ? Vous souhaitez le présenter à un public averti? L'AFUP vous propose un espace dédié lors du Forum PHP 2010 ! <a href=\"https://afup.org/pages/forumphp2010/projets-php-inscription.php\">Inscrivez-vous dès maintenant</a> !</p>";
 $actualite['date'] = "01 octobre 2010";
 $actualites[] = $actualite;
 
@@ -156,11 +156,11 @@ $actualite['contenu'] = "<p><strong>Rasmus Lerdorf</strong>, créateur de PHP, s
 							<li><strong>Technologies autour de PHP</strong> :  HTML 5, référencement...</li>
 						</ul>
 						<p>
-							<a href=\"http://afup.org/pages/forumphp2010/sessions.php\">=> Les sessions</a><br />
-							<a href=\"http://afup.org/pages/forumphp2010/conferenciers.php\">=> Les conférenciers</a><br />
-							<a href=\"http://afup.org/pages/forumphp2010/deroulement.php\">=> Le déroulement</a>
+							<a href=\"https://afup.org/pages/forumphp2010/sessions.php\">=> Les sessions</a><br />
+							<a href=\"https://afup.org/pages/forumphp2010/conferenciers.php\">=> Les conférenciers</a><br />
+							<a href=\"https://afup.org/pages/forumphp2010/deroulement.php\">=> Le déroulement</a>
 						</p>
-						<p>Pour vous inscrire, ne perdez pas de temps, <a href=\"http://afup.org/pages/forumphp2010/inscription.php\">réservez votre place au forum PHP</a> !</p>";
+						<p>Pour vous inscrire, ne perdez pas de temps, <a href=\"https://afup.org/pages/forumphp2010/inscription.php\">réservez votre place au forum PHP</a> !</p>";
 $actualite['date'] = "03 septembre 2010";
 $actualites[] = $actualite;
 

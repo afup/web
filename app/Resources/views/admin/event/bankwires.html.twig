@@ -1,0 +1,44 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Virements en attente de réception pour {{ event.title }}</h2>
+    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+
+    <form method="post" style="width:auto;">
+        <table class="afup_tab">
+            <tr>
+                <th>Facture</th>
+                <th>Société</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Places</th>
+                <th>¤</th>
+            </tr>
+            {% for invoice in pendingBankwires %}
+                <tr>
+                    <td>
+                        {{ invoice['invoices'].reference }}
+                    </td>
+                    <td>
+                        {{ invoice['invoices'].company }}
+                    </td>
+                    <td>
+                        {{ invoice['invoices'].amount }}
+                    </td>
+                    <td>
+                        {{ invoice['invoices'].invoiceDate|date('d/m/Y') }}
+                    </td>
+                    <td>
+                    {% for ticket in invoice['.aggregation']['inscriptions'] %}
+                        {{ ticket.label }}<br />
+                    {% endfor %}
+                    </td>
+                    <td>
+                        <button type="submit" name="bankwireReceived" value="{{ invoice['invoices'].reference }}">Virement reçu</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="hidden" name="token" value="{{ token }}" />
+    </form>
+{% endblock %}

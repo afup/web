@@ -107,6 +107,10 @@ class Runner
      */
     protected function prepareObject(Planning $planning)
     {
+        if ($planning->getStart() > new \DateTime()) {
+            return null;
+        }
+
         $talk = $this->ting->get(TalkRepository::class)->get($planning->getTalkId());
 
         if (null === $talk || !$talk->isDisplayedOnHistory()) {

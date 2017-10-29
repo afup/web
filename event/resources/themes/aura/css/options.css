@@ -1,0 +1,66 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url(http://fonts.googleapis.com/css?family=Oswald);
+
+
+#line {
+	height:8px;
+	width:101%;
+	margin:0px 0 0px -19px;
+	background-color: #0092e0;
+}
+
+#blogtitle {
+    margin:50px 0 0 0;
+	font: 55px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	letter-spacing: 0.05em;
+	text-align: center;
+	word-break: break-word;
+	font-weight: 100;
+	color:#0092e0;
+}
+
+#blogdescription {
+	font: 22px Helvetica, Arial, sans-serif;
+	margin:35px auto 35px auto;
+	text-align: center;
+	width: 500px;
+	line-height: 140%;
+	word-break: break-word;
+	font-weight: 800;
+	color:#333333;
+}
+
+#top-bar {
+	background-color: #de4747;
+	width:100%;
+	font-size: 16px;
+	padding: 30px;
+	color:#ffffff;
+}
+
+
+#theme {
+	border-radius: 5px;
+	text-align: center;
+	margin:0px auto;
+	width:600px;
+}
+
+img.screenshot {
+	margin:30px auto 10px auto;
+	text-align: center;
+	box-shadow: 0 1px 3px #9e9e9e;
+}
+
+#theme #name {
+	font-family: 'Oswald', sans-serif;
+	font-size: 22px;
+	line-height: 25px;
+	padding: 15px 0 15px 0;
+}
+
+#theme #info {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 17px;
+	line-height: 29px;
+}

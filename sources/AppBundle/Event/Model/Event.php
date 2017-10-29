@@ -65,6 +65,11 @@ class Event implements NotifyPropertyInterface
     private $path;
 
     /**
+     * @var string
+     */
+    private $trelloListId;
+
+    /**
      * @return int
      */
     public function getId()
@@ -288,5 +293,24 @@ class Event implements NotifyPropertyInterface
     public function getMailTemplate()
     {
         return 'confirmation-inscription-' . $this->getPath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTrelloListId()
+    {
+        return $this->trelloListId;
+    }
+
+    /**
+     * @param string $trelloListId
+     * @return Event
+     */
+    public function setTrelloListId($trelloListId)
+    {
+        $this->propertyChanged('trelloListId', $this->trelloListId, $trelloListId);
+        $this->trelloListId = $trelloListId;
+        return $this;
     }
 }

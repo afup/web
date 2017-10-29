@@ -34,11 +34,11 @@ $info_importante['contenu'] =
 </p>'."<p>Vous avez raté le Forum PHP 2007 ? ".
 "Pour très bientôt un <a href='resumes.php'>résumé complet avec les présentations</a> des conférenciers.</p>";
 $infos_importantes[] = $info_importante;
-//   <param name="FlashVars" value="flv=http://www.afup.org/pages/video/forumphp2007.flv&amp;showstop=1&amp;autoplay=0&amp;bgcolor1=ffffff&amp;bgcolor2=cccccc&amp;buttoncolor=999999&amp;buttonovercolor=0&amp;slidercolor1=cccccc&amp;slidercolor2=999999&amp;sliderovercolor=666666&amp;playercolor=eeeeee&amp;title=Lecture_video&amp;height=252&amp;width=330" />
+//   <param name="FlashVars" value="flv=https://afup.org/pages/video/forumphp2007.flv&amp;showstop=1&amp;autoplay=0&amp;bgcolor1=ffffff&amp;bgcolor2=cccccc&amp;buttoncolor=999999&amp;buttonovercolor=0&amp;slidercolor1=cccccc&amp;slidercolor2=999999&amp;sliderovercolor=666666&amp;playercolor=eeeeee&amp;title=Lecture_video&amp;height=252&amp;width=330" />
 $info_importante['titre'] = "Eyrolles offre des livres !";
 $info_importante['contenu'] = "<p>Notre partenaire Eyrolles offre <a href='http://www.eyrolles.com/Accueil/Livre/9782212121674/livre-php-5-avance.php'>dix exemplaires de son best seller PHP 5 avancé</a> ainsi que cinq exemplaires du livre <a href='http://www.eyrolles.com/Informatique/Livre/9782212121148/livre-securite-php-5-et-mysql.php'>Sécurité PHP 5</a>.</p>".
-"</p><p align='center'><a href='http://www.eyrolles.com/Accueil/Livre/9782212121674/livre-php-5-avance.php'><img src='http://www.afup.org//templates/forumphp2007/images/livre-php5-avance.gif' border=0></a>" .
-" <a href='http://www.eyrolles.com/Informatique/Livre/9782212121148/livre-securite-php-5-et-mysql.php'><img src='http://www.afup.org//templates/forumphp2007/images/livre-php5securite.gif' border=0></a></p>".
+"</p><p align='center'><a href='http://www.eyrolles.com/Accueil/Livre/9782212121674/livre-php-5-avance.php'><img src='https://afup.org//templates/forumphp2007/images/livre-php5-avance.gif' border=0></a>" .
+" <a href='http://www.eyrolles.com/Informatique/Livre/9782212121148/livre-securite-php-5-et-mysql.php'><img src='https://afup.org//templates/forumphp2007/images/livre-php5securite.gif' border=0></a></p>".
 "<p>Les livres seront offert par tirage au sort lors des conférences.</p>";
 $infos_importantes[] = $info_importante;
 

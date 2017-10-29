@@ -50,7 +50,7 @@ class TweetGenerator
 
         $firstPart = $talk->getTitle() . ($talkTitleEndsWithPunctuation ? '' : '.') ;
         $watchAgain = " à revoir sur le site de l'AFUP : ";
-        $address = 'http://afup.org/talks/' . $talk->getId() . '-' . $talk->getSlug();
+        $address = 'https://afup.org/talks/' . $talk->getId() . '-' . $talk->getSlug();
 
         $status = $firstPart . ' La conférence de ' . $speakersText . $watchAgain . $address;
 

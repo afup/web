@@ -12,7 +12,7 @@ class Reminder15DaysAfterEnd extends AbstractUserReminder
 <p>Votre adhésion à l’AFUP s’est terminée il y a quelques jours… Vous nous manquez, pas vous ?</p>
 <p>Votre compte est toujours accessible si vous souhaitez nous rejoindre pour une nouvelle année.
 Pour cela, il vous suffit de vous rendre dans le
-<a href="http://www.afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
+<a href="https://afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
 et de cliquer sur “Ma Cotisation”. Une fois le règlement de ' . $this->membershipFee . ' euros effectué, elle prendra effet immédiatement.
 Un souci, une question ? Contactez-nous ! bonjour@afup.org </p>
 

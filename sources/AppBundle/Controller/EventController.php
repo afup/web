@@ -3,9 +3,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Calendar\IcsPLanningGenerator;
+use AppBundle\Calendar\JsonPlanningGenerator;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,5 +39,45 @@ class EventController extends EventBaseController
         $votes = $this->get('ting')->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
 
         return $this->render(':event:home.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
+    }
+
+    /**
+     * @param $eventSlug
+     *
+     * @return Response
+     */
+    public function planningIcsAction($eventSlug)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+
+        $icsPlanningGenerator = new IcsPLanningGenerator($this->get('ting')->get(TalkRepository::class));
+
+        $response = new Response($icsPlanningGenerator->generateForEvent($event));
+
+        $response->headers->add([
+            'Content-Type' => 'text/Calendar; charset=UTF-8',
+            'Content-Disposition' => sprintf('inline; filename=planning_%s.vcs', $event->getPath()),
+            'Cache-Control' => 'no-cache',
+            'Pragma' => 'no-cache',
+        ]);
+
+        return $response;
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function planningJsonAction()
+    {
+        $photoStorage = $this->get('app.photo_storage');
+        $ting = $this->get('ting');
+        $talkRepository = $ting->get(TalkRepository::class);
+        $eventRepository = $ting->get(EventRepository::class);
+
+        $event = $eventRepository->getCurrentEvent();
+
+        $jsonPlanningGenerator = new JsonPlanningGenerator($talkRepository, $photoStorage);
+
+        return new JsonResponse($jsonPlanningGenerator->generate($event));
     }
 }

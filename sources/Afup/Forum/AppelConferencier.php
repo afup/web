@@ -4,6 +4,7 @@ namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mailing;
+use AppBundle\Event\Model\Talk;
 use Symfony\Component\Translation\Translator;
 
 class AppelConferencier
@@ -14,6 +15,8 @@ class AppelConferencier
      * @access  private
      */
     var $_bdd;
+
+    const DEFAULT_JOURNEE = 0;
 
     /**
      * Constructeur.
@@ -562,7 +565,8 @@ class AppelConferencier
                                   $associatif = false,
                                   $filtre = false,
                                   $type = 'session',
-                                  $needsMentoring = null
+                                  $needsMentoring = null,
+                                  $planned = null
     )
     {
         $requete = ' SELECT ';
@@ -574,6 +578,11 @@ class AppelConferencier
         $requete .= '  afup_sessions s ';
         $requete .= ' LEFT JOIN afup_forum_sessions_commentaires co ';
         $requete .= '  ON s.session_id = co.id_session ';
+
+        if (null !== $planned) {
+            $requete .= ' JOIN afup_forum_planning ON (s.session_id = afup_forum_planning.id_session) ';
+        }
+
         $requete .= ' WHERE s.id_forum = ' . $this->_bdd->echapper($id_forum);
         if ($filtre) {
             $requete .= ' AND s.titre LIKE \'%' . $filtre . '%\' ';
@@ -654,14 +663,27 @@ class AppelConferencier
         return $this->_bdd->obtenirUn('select LAST_INSERT_ID()');
     }
 
-    public function modifierSession($id, $id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie, $joindin = null, $youtubeId = null, $slidesUrl = null, $blogPostUrl = null, $languageCode = null)
-    {
+    public function modifierSession(
+        $id,
+        $id_forum,
+        $date_soumission,
+        $titre,
+        $abstract,
+        $genre,
+        $plannifie,
+        $joindin = null,
+        $youtubeId = null,
+        $slidesUrl = null,
+        $blogPostUrl = null,
+        $languageCode = null,
+        $skill = null,
+        $needs_mentoring = null
+    ) {
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
         $requete .= ' date_soumission = ' . $this->_bdd->echapper($date_soumission) . ', ';
         $requete .= ' titre = ' . $this->_bdd->echapper($titre) . ', ';
         $requete .= ' abstract = ' . $this->_bdd->echapper($abstract) . ', ';
-        $requete .= ' journee = ' . $this->_bdd->echapper($journee) . ', ';
         $requete .= ' genre = ' . $this->_bdd->echapper($genre) . ', ';
         if ($joindin !== null) {
             $requete .= ' joindin = ' . $this->_bdd->echapper($joindin) . ', ';
@@ -678,6 +700,12 @@ class AppelConferencier
         if ($languageCode !== null) {
             $requete .= ' language_code = ' . $this->_bdd->echapper($languageCode) . ', ';
         }
+        if ($skill !== null) {
+            $requete .= 'skill = ' . $this->_bdd->echapper($skill) . ', ';
+        }
+        if ($needs_mentoring !== null) {
+            $requete .= 'needs_mentoring = ' . $this->_bdd->echapper($needs_mentoring) . ', ';
+        }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;
 
@@ -693,23 +721,33 @@ class AppelConferencier
         return $this->_bdd->executer($requete);
     }
 
-    public function ajouterSession($id_forum, $date_soumission, $titre, $abstract, $journee, $genre, $plannifie = 0)
-    {
+    public function ajouterSession(
+        $id_forum,
+        $date_soumission,
+        $titre,
+        $abstract,
+        $genre,
+        $plannifie = 0,
+        $needs_mentoring = 0,
+        $level = Talk::SKILL_NA
+    ) {
 
         $donnees = array(
             $this->_bdd->echapper($id_forum),
             $this->_bdd->echapper($date_soumission),
             $this->_bdd->echapper($titre),
             $this->_bdd->echapper($abstract),
-            $this->_bdd->echapper($journee),
+            self::DEFAULT_JOURNEE,
             $this->_bdd->echapper($genre),
-            $this->_bdd->echapper($plannifie)
+            $this->_bdd->echapper($plannifie),
+            $this->_bdd->echapper($needs_mentoring),
+            $this->_bdd->echapper($level)
         );
 
-        $requete = ' INSERT INTO afup_sessions';
-        $requete .= '  (id_forum, date_soumission, titre, abstract, journee, genre, plannifie)';
-        $requete .= ' VALUES ';
-        $requete .= '  (' . implode(',', $donnees) . ')';
+        $requete = ' INSERT INTO afup_sessions
+          (id_forum, date_soumission, titre, abstract, journee, genre, plannifie, needs_mentoring, skill)
+         VALUES 
+          (' . implode(',', $donnees) . ')';
 
         $res = $this->_bdd->executer($requete);
         if ($res === false) {

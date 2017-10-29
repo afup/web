@@ -236,10 +236,16 @@ SQL;
 
     function genererDevis($reference, $chemin = null)
     {
-        $requete = 'SELECT * FROM afup_facturation_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $requete = 'SELECT aff.*, af.titre AS event_name
+        FROM afup_facturation_forum aff
+        LEFT JOIN afup_forum af ON af.id = aff.id_forum
+        WHERE reference=' . $this->_bdd->echapper($reference);
         $facture = $this->_bdd->obtenirEnregistrement($requete);
 
-        $requete = 'SELECT * FROM afup_inscription_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $requete = 'SELECT aif.*, aft.pretty_name
+        FROM afup_inscription_forum aif
+        LEFT JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
+        WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
 
@@ -272,7 +278,7 @@ SQL;
 
         $pdf->Ln(15);
 
-        $pdf->MultiCell(180, 5, utf8_decode("Devis concernant votre participation au forum organisé par l'Association Française des Utilisateurs de PHP (AFUP)."));
+        $pdf->MultiCell(180, 5, utf8_decode(sprintf("Devis concernant votre participation au %s organisé par l'Association Française des Utilisateurs de PHP (AFUP).", $facture['event_name'])));
         // Cadre
         $pdf->Ln(10);
         $pdf->SetFillColor(200, 200, 200);
@@ -285,37 +291,7 @@ SQL;
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            switch ($inscription['type_inscription']) {
-                case AFUP_FORUM_PREMIERE_JOURNEE :
-                    $code = 'FONC';
-                    break;
-                case AFUP_FORUM_DEUXIEME_JOURNEE :
-                    $code = 'TECH';
-                    break;
-                case AFUP_FORUM_2_JOURNEES :
-                    $code = '2JOU';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_AFUP :
-                    $code = 'AFUP';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_ETUDIANT :
-                    $code = 'ETUD';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_PREVENTE :
-                    $code = 'PREV';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE :
-                    $code = 'AFUP-PRE';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE :
-                    $code = 'ETUD-PRE';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_COUPON :
-                    $code = 'COUPON';
-                    break;
-            }
-
-            $pdf->Cell(50, 5, $code, 1);
+            $pdf->Cell(50, 5, utf8_decode($inscription['pretty_name']), 1);
             $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
             $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
             $total += $inscription['montant'];
@@ -346,10 +322,16 @@ SQL;
      */
     function genererFacture($reference, $chemin = null)
     {
-        $requete = 'SELECT * FROM afup_facturation_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $requete = 'SELECT aff.*, af.titre AS event_name
+        FROM afup_facturation_forum aff
+        LEFT JOIN afup_forum af ON af.id = aff.id_forum
+        WHERE reference=' . $this->_bdd->echapper($reference);
         $facture = $this->_bdd->obtenirEnregistrement($requete);
 
-        $requete = 'SELECT * FROM afup_inscription_forum WHERE reference=' . $this->_bdd->echapper($reference);
+        $requete = 'SELECT aif.*, aft.pretty_name
+        FROM afup_inscription_forum aif
+        LEFT JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
+        WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
         $configuration = $GLOBALS['AFUP_CONF'];
@@ -381,7 +363,7 @@ SQL;
 
         $pdf->Ln(15);
 
-        $pdf->MultiCell(180, 5, utf8_decode("Facture concernant votre participation au forum organisé par l'Association Française des Utilisateurs de PHP (AFUP)."));
+        $pdf->MultiCell(180, 5, utf8_decode(sprintf("Facture concernant votre participation au %s organisé par l'Association Française des Utilisateurs de PHP (AFUP).", $facture['event_name'])));
 
         if ($facture['informations_reglement']) {
             $pdf->Ln(10);
@@ -406,84 +388,7 @@ SQL;
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            switch ($inscription['type_inscription']) {
-                case AFUP_FORUM_PREMIERE_JOURNEE :
-                    $code = 'FONC';
-                    break;
-                case AFUP_FORUM_DEUXIEME_JOURNEE :
-                    $code = 'TECH';
-                    break;
-                case AFUP_FORUM_2_JOURNEES :
-                    $code = '2JOU';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_AFUP :
-                    $code = 'AFUP';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_ETUDIANT :
-                    $code = 'ETUD';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_PREVENTE :
-                    $code = 'PREV';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE :
-                    $code = 'AFUP-PRE';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE :
-                    $code = 'ETUD-PRE';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_COUPON :
-                    $code = 'COUPON';
-                    break;
-                case AFUP_FORUM_ORGANISATION :
-                    $code = 'ORGANISATION';
-                    break;
-                case AFUP_FORUM_SPONSOR :
-                    $code = 'SPONSOR';
-                    break;
-                case AFUP_FORUM_PRESSE :
-                    $code = 'PRESSE';
-                    break;
-                case AFUP_FORUM_CONFERENCIER :
-                    $code = 'CONFERENCIER';
-                    break;
-                case AFUP_FORUM_INVITATION :
-                    $code = 'INVITATION';
-                    break;
-                case AFUP_FORUM_PROJET :
-                    $code = 'PROJET';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_SPONSOR :
-                    $code = '2_JOURNEES_SPONSOR';
-                    break;
-                case AFUP_FORUM_PROF :
-                    $code = 'PROF';
-                    break;
-                case AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE :
-                    $code = 'PREMIERE_JOURNEE_ETUDIANT_PREVENTE';
-                    break;
-                case AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE :
-                    $code = 'DEUXIEME_JOURNEE_ETUDIANT_PREVENTE';
-                    break;
-                case AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION :
-                    $code = '2_JOURNEES_PREVENTE_ADHESION';
-                    break;
-                case AFUP_FORUM_PREMIERE_JOURNEE_AFUP :
-                    $code = 'PREMIERE_JOURNEE_AFUP';
-                    break;
-                case AFUP_FORUM_DEUXIEME_JOURNEE_AFUP :
-                    $code = 'DEUXIEME_JOURNEE_AFUP';
-                    break;
-                case AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT :
-                    $code = 'PREMIERE_JOURNEE_ETUDIANT';
-                    break;
-                case AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT :
-                    $code = 'DEUXIEME_JOURNEE_ETUDIANT';
-                    break;
-                default:
-                    $code = 'XXX';
-            }
-
-            $pdf->Cell(50, 5, $code, 1);
+            $pdf->Cell(50, 5, utf8_decode($inscription['pretty_name']), 1);
             $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
             $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
             $total += $inscription['montant'];

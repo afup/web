@@ -16,12 +16,15 @@ deps.lock
 
 /htdocs/cache
 /htdocs/tmp/twig
+node_modules
 /configs/application/config.php
 /tests/simpletest
 /tests/unitaires/config.php
 
 /vendor/
 
+/htdocs/assets
+js_dist
 # uploads
 /htdocs/uploads
 
@@ -45,3 +48,7 @@ deps.lock
 /docker-compose.override.yml
 /composer.phar
 /data
+
+/event/vendor
+/event/wp
+/event/composer.phar

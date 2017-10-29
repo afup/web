@@ -18,12 +18,21 @@
 {% block metas %}
     {{ parent() }}
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="afup.org {{ talk.title }}">
+    <meta name="twitter:title" content="AFUP - {{ talk.title }}">
     <meta name="twitter:description" content="{{ talk.description|striptags|raw }}">
     {% if talk.hasYoutubeId %}
         <meta name="twitter:image:src" content="https://img.youtube.com/vi/{{ talk.getYoutubeId }}/hqdefault.jpg">
     {% endif %}
     <meta name="twitter:domain" content="afup.org">
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="AFUP - {{ talk.title }}" />
+    <meta property="og:url" content="{{ url('talks_show', {id: talk.id, slug: talk.slug }) }}" />
+    {% if talk.hasYoutubeId %}
+        <meta property="og:image" content="https://img.youtube.com/vi/{{ talk.getYoutubeId }}/hqdefault.jpg" />
+    {% endif %}
+    <meta property="og:description" content="{{ talk.description|striptags|raw }}" />
+    <meta property="og:site_name" content="AFUP" />
 {% endblock %}
 
 {% block content %}
@@ -102,7 +111,7 @@
                             {{ speaker.label }}
                             </h3>
                             {% if speaker.twitter %}
-                                <a href="http://twitter.com/{{ speaker.twitter }}">
+                                <a href="https://twitter.com/{{ speaker.twitter }}">
                                     <i class="fa fa-twitter"></i>
                                 </a>
                             {% endif %}
