@@ -192,6 +192,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'staff_notes',
+                'fieldName' => 'staffNotes',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'genre',
                 'fieldName' => 'type',
                 'type' => 'int'

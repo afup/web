@@ -20,6 +20,14 @@ class TalkType extends AbstractType
             ->add('title', TextType::class, ['label' => 'Titre'])
             ->add('abstract', TextareaType::class, ['label' => 'Résumé'])
             ->add(
+                'staffNotes',
+                TextareaType::class,
+                    [
+                        'label' => 'Notes aux organisateurs **',
+                        'required' => false,
+                    ]
+            )
+            ->add(
                 'type',
                 ChoiceType::class,
                 ['label' => 'Type', 'choices' =>
