@@ -70,6 +70,11 @@ class Event implements NotifyPropertyInterface
     private $trelloListId;
 
     /**
+     * @var string
+     */
+    private $logoUrl;
+
+    /**
      * @return int
      */
     public function getId()
@@ -311,6 +316,27 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('trelloListId', $this->trelloListId, $trelloListId);
         $this->trelloListId = $trelloListId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoUrl()
+    {
+        return $this->logoUrl;
+    }
+
+    /**
+     * @param string $logoUrl
+     *
+     * @return Event
+     */
+    public function setLogoUrl($logoUrl)
+    {
+        $this->propertyChanged('logoUrl', $this->logoUrl, $logoUrl);
+        $this->logoUrl = $logoUrl;
+
         return $this;
     }
 }
