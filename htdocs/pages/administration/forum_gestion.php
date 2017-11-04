@@ -74,6 +74,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'  , 'path'                 , 'Chemin du template'                 , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('static', 'path_help'            , '', '<i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>');
     $formulaire->addElement('text'  , 'trello_list_id'       , 'Liste trello pour les leads'        , array('size' => 30, 'maxlength' => 100));
+    $formulaire->addElement('text'  , 'logo_url'             , "URL du logo de l'événement"         , array('size' => 30, 'maxlength' => 255));
     $formulaire->addElement('text'  , 'nb_places'            , 'Nombre de places'                   , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('date'  , 'date_debut'           , 'Date de début'                      , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin'             , 'Date de fin'                        , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
@@ -106,7 +107,8 @@ if ($action == 'lister') {
                 $formulaire->exportValue('date_fin_vente'),
                 $formulaire->exportValue('path'),
                 ['fr' => $formulaire->exportValue('cfp_fr'), 'en' => $formulaire->exportValue('cfp_en')],
-                $formulaire->exportValue('trello_list_id')
+                $formulaire->exportValue('trello_list_id'),
+                $formulaire->exportValue('logo_url')
             );
             $id_forum = $forums->obtenirDernier();
         } else {
@@ -123,7 +125,8 @@ if ($action == 'lister') {
                 $formulaire->exportValue('date_fin_vente'),
                 $formulaire->exportValue('path'),
                 ['fr' => $formulaire->exportValue('cfp_fr'), 'en' => $formulaire->exportValue('cfp_en')],
-                $formulaire->exportValue('trello_list_id')
+                $formulaire->exportValue('trello_list_id'),
+                $formulaire->exportValue('logo_url')
             );
         }
 
