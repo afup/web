@@ -67,7 +67,7 @@ class MessageFactory
 
         $message = new Message();
         $message
-            ->setChannel('cfp')
+            ->setChannel('cfp-votes')
             ->addAttachment($attachment)
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
             ->setUsername('CFP')
