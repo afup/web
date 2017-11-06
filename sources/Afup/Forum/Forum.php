@@ -690,11 +690,11 @@ CODE_HTML;
     }
 
     function ajouter($titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
-                     $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template, array $text, $trello_list_id)
+                     $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template, array $text, $trello_list_id, $logoUrl)
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum (id, titre, nb_places, date_debut, date_fin, annee, date_fin_appel_projet,';
-        $requete .= '  date_fin_appel_conferencier, date_fin_prevente, date_fin_vente, path, `text`, `trello_list_id`) ';
+        $requete .= '  date_fin_appel_conferencier, date_fin_prevente, date_fin_vente, path, `text`, `trello_list_id`, `logo_url`) ';
         $requete .= 'VALUES (null,';
         $requete .= $this->_bdd->echapper($titre) . ',';
         $requete .= (int)$nb_places . ',';
@@ -707,13 +707,14 @@ CODE_HTML;
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true) . ',';
         $requete .= $this->_bdd->echapper($chemin_template, true) . ',';
         $requete .= $this->_bdd->echapper(json_encode($text)) . ', ';
-        $requete .= $this->_bdd->echapper($trello_list_id) . ')';
+        $requete .= $this->_bdd->echapper($trello_list_id) . ',';
+        $requete .= $this->_bdd->echapper($logoUrl) . ')';
 
         return $this->_bdd->executer($requete);
     }
 
     function modifier($id, $titre, $nb_places, $date_debut, $date_fin, $date_fin_appel_projet,
-                      $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template, array $text, $trello_list_id = null)
+                      $date_fin_appel_conferencier, $date_fin_prevente, $date_fin_vente, $chemin_template, array $text, $trello_list_id = null, $logoUrl = null)
     {
         $requete = 'UPDATE ';
         $requete .= '  afup_forum ';
@@ -729,7 +730,8 @@ CODE_HTML;
         $requete .= '  date_fin_vente=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true) . ',';
         $requete .= '  path=' . $this->_bdd->echapper($chemin_template, true) . ', ';
         $requete .= ' `text` = ' . $this->_bdd->echapper(json_encode($text)) . ', ';
-        $requete .= ' `trello_list_id` = ' . $this->_bdd->echapper($trello_list_id) . ' ';
+        $requete .= ' `trello_list_id` = ' . $this->_bdd->echapper($trello_list_id) . ',';
+        $requete .= ' `logo_url` = ' . $this->_bdd->echapper($logoUrl) . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
 

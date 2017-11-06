@@ -1,76 +1,82 @@
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="keywords" content="Planete PHP FR : tous les blogs PHP francophones" lang="fr" />
-    <link rel="stylesheet" href="{$chemin_template}styles.css" type="text/css" media="all" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="Planete PHP FR : tous les blogs PHP francophones" lang="fr" />
+	<link rel="stylesheet" href="{$chemin_template}styles.css" type="text/css" media="all" />
 	<link rel="alternate" type="application/atom+xml" title="Atom" href="https://feeds.feedburner.com/planetephpfr" />
 	<link rel="alternate" type="application/rss+xml" title="RSS" href="https://planete-php.fr/rss.php" />
 	<title>Planete PHP FR : tous les blogs PHP francophones</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-<div id="le-contenu">
-	<div id="les-billets">
-	<img src="{$chemin_template}images/planetephp.png" alt="planetePHP.fr" />
-	{foreach from=$billets item=billet} 
-		<div class="un-billet">
-			<span class="flux"><a href="{$billet.flux_url}">{$billet.flux_nom}</a></span>
-			<span class="auteur">{$billet.auteur}</span>
-			<span class="date">{$billet.maj}</span>
-			<h2 class="titre"><a href="{$billet.url}">{$billet.titre}</a></h2>
-			<div class="contenu">{$billet.contenu}</a></div>
-		</div>
-	{/foreach}
-	<div id="les-pages-suivantes">
-		{if $suivant >= 0}
-			<a href="?page={$suivant}">précédents</a>
-		{/if}
-		{if $precedant >= 0}
-			<a href="?page={$precedant}">suivants</a>
-		{/if}
-	</div>
-	</div>
-	
-	<div id="la-navigation">
-		<div id="les-flux">
-			{if $smarty.now < 1338847200}
-				<a href="https://afup.org/pages/forumphp2012/">
-					<img src="{$chemin_template}images/forum_php_2012.jpg" alt="Forum PHP 2012" />
+
+	<div id="en-tete">
+		<div class="container">
+			<span class="en-tete-title">planete-php.fr</span>
+			<span class="en-tete-links">
+				<a href="#articles" class="en-tete-link">Articles</a>
+				<a href="#blogs" class="en-tete-link">Blogs</a>
+				<a href="#infos" class="en-tete-link">Infos</a>
+				<a href="http://planete-php.fr/rss.php" class="en-tete-link">
+					<i class="fa fa-rss" aria-hidden="true"></i>
+					RSS Feed
 				</a>
-				<br />
-				<br />
-				<br />
-			{/if}
-			<a href="http://feeds.feedburner.com/planetephpfr">
-				<img src="{$chemin_template}images/atom.gif" alt="" />
-				<br />Flux ATOM
-			</a>
-			<br />
-			<a href="http://planete-php.fr/rss.php">Flux RSS</a>
-			<br />
-			<a href="http://twitter.com/planetephp">Twitter</a>
-
-			<h3>Les sources</h3>
-			<ul>
-			{foreach from=$flux item=flux_simple} 
-				<li class="un-flux"><a href="{$flux_simple.url}">{$flux_simple.nom}</a></li>
-			{/foreach}
-			</ul>
-
-			<h3>Ajouter une source ?</h3>
-			Envoyez un email avec l'URL du site et du flux à planetephpfr AT afup POINT org
-
-			<h3>Infos</h3>
-			<ul>
-				<li>Gestion : <a href="https://afup.org/">AFUP</a></li>
-				<li>Réalisation : <a href="http://onpk.net/">Perrick Penet</a> (<a href="http://noparking.net/">No Parking</a>)</li>
-				<li>Hébergement : <a href="http://www.nexenservices.com/">Nexen Services</a></li>
-			</ul>
+				<a href="http://feeds.feedburner.com/planetephpfr" class="en-tete-link">
+					<i class="fa fa-rss-square" aria-hidden="true"></i>
+					Atom Feed
+				</a>
+				<a href="http://twitter.com/planetephp" class="en-tete-link">
+					<i class="fa fa-twitter" aria-hidden="true"></i>
+					Twitter
+				</a>
+			</span>
 		</div>
 	</div>
-</div>
 
-<br />
-<br />
+	<div id="le-contenu">
+		<div class="container">
 
-</body> 
+			<a name="articles"></a>
+			<h2>Articles</h2>
+			<div id="les-billets">
+				{foreach from=$billets item=billet}
+					<div class="un-billet">
+						<h3 class="titre"><a href="{$billet.url}">{$billet.titre}</a></h3>
+						<span class="flux"><a href="{$billet.flux_url}">{$billet.flux_nom}</a></span>
+						{if $billet.flux_nom != $billet.auteur}
+							<span class="auteur">{$billet.auteur}</span>
+						{/if}
+						<span class="date">{$billet.maj|date_format:"%d/%m/%y"}</span>
+						<div class="contenu">{$billet.contenu}</a></div>
+					</div>
+				{/foreach}
+				<div id="les-pages-suivantes">
+					{if $suivant >= 0}
+						<a href="?page={$suivant}" class="btn">Articles précédents</a>
+					{/if}
+					{if $precedant >= 0}
+						<a href="?page={$precedant}" class="btn">Articles suivants</a>
+					{/if}
+				</div>
+			</div>
+
+			<a name="blogs"></a>
+			<h2>Blogs</h2>
+			<ul>
+				{foreach from=$flux item=flux_simple}
+				<li class="un-flux"><a href="{$flux_simple.url}">{$flux_simple.nom}</a></li>
+				{/foreach}
+			</ul>
+
+			<a name="infos"></a>
+			<h2>Infos</h2>
+			<b>Ajouter une source ?</b><br/>
+			<p>Envoyez un email avec l'URL du site et du flux à planetephpfr AT afup POINT org</p>
+			<b>Gestion</b>
+			<p><a href="https://afup.org/">AFUP</a></p>
+		</div>
+	</div>
+
+</body>

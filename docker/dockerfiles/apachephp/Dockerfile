@@ -26,6 +26,14 @@ RUN a2enmod rewrite && \
     ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf && \
     echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
 
+RUN apt-get update && apt-get install -y build-essential
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get update && apt-get install -y nodejs
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y yarn
+
 # Install local user mapped to the host user uid
 ARG uid=1008
 ARG gid=1008

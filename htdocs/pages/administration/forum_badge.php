@@ -39,7 +39,7 @@ $badge_col = 1;
 $badge_page = 1;
 
 foreach ($badges as $nb => $badge) {
-	preg_match('@\<tag\>(.*)\</tags\>@i', $badge['commentaires'], $matches);
+	preg_match('@\<tag\>(.*)\</tags?\>@i', $badge['commentaires'], $matches);
   $tags =  isset($matches[1]) ? $matches[1] : '';
   $tags = explode(';',$tags);
   $tags = implode(' - ',array_filter($tags));

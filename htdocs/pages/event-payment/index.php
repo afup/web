@@ -4,7 +4,15 @@ use Afup\Site\Forum\Forum;
 
 require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
-if (!isset($_GET['ref']) || !preg_match('`ins-([0-9]+)`', $_GET['ref'], $matches)) {
+if (
+    !isset($_GET['ref'])
+    ||
+    !(
+        preg_match('`ins-([0-9]+)`', $_GET['ref'], $matches)
+        ||
+        preg_match('`elephpant-([0-9]+)`', $_GET['ref'], $matches)
+    )
+) {
     die('Missing ref');
 }
 
@@ -20,7 +28,16 @@ if (!isset($forumData['id']) || !$forumData['id']) {
 $ref = $matches[1];
 $inscription = $forum_inscriptions->obtenir($ref);
 
-$prix = isset($_GET['prix']) ? intval($_GET['prix']) : 100;
+if (preg_match('`elephpant-([0-9]+)`', $_GET['ref'], $matches)) {
+    $prix = 25;
+    $action = 'elep';
+} else {
+    $prix = 100;
+    $action = 'subs';
+}
+if (isset($_GET['prix'])) {
+    $prix = intval($_GET['prix']);
+}
 
 require_once dirname(__FILE__).'/../../../dependencies/paybox/payboxv2.inc';
 $paybox = new PAYBOX;
@@ -30,7 +47,7 @@ $paybox->set_rang($conf->obtenir('paybox|rang'));
 $paybox->set_identifiant('83166771');
 
 $paybox->set_total($prix * 100);
-$paybox->set_cmd($forumData['path'] . '-' . $ref);
+$paybox->set_cmd(strtr($forumData['path'], ['forum' => 'frm', 'phptour' => 'tour']) . '-' . $action . '-' . $ref . '-' . $prix);
 $paybox->set_porteur($inscription['email']);
 
 $paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');

@@ -1,8 +1,8 @@
 CURRENT_UID=$(shell id -u)
 
-.PHONY: install docker-up test hooks
+.PHONY: install docker-up test hooks vendors
 
-install: vendor event/vendor
+install: vendors event/vendor
 
 docker-up: var/logs/.docker-build data docker-compose.override.yml
 	CURRENT_UID=$(CURRENT_UID) docker-compose up
@@ -14,8 +14,13 @@ var/logs/.docker-build: docker-compose.yml docker-compose.override.yml $(shell f
 docker-compose.override.yml:
 	cp docker-compose.override.yml-dist docker-compose.override.yml
 
+vendors: vendor node_modules
+
 vendor: composer.phar composer.lock
 	php composer.phar install
+
+node_modules:
+	yarn install
 
 composer.phar:
 	$(eval EXPECTED_SIGNATURE = "$(shell wget -q -O - https://composer.github.io/installer.sig)")
@@ -24,6 +29,9 @@ composer.phar:
 	php composer-setup.php
 	rm composer-setup.php
 
+assets:
+	./node_modules/.bin/webpack -p
+
 configs/application/config.php:
 	cp configs/application/config.php.dist-docker configs/application/config.php
 
@@ -31,7 +39,8 @@ app/config/parameters.yml:
 	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
 
 config: configs/application/config.php app/config/parameters.yml
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make vendor
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make vendors
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make assets
 
 test:
 	./bin/atoum

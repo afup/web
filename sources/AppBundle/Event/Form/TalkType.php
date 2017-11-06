@@ -20,13 +20,20 @@ class TalkType extends AbstractType
             ->add('title', TextType::class, ['label' => 'Titre'])
             ->add('abstract', TextareaType::class, ['label' => 'Résumé'])
             ->add(
+                'staffNotes',
+                TextareaType::class,
+                    [
+                        'label' => 'Notes aux organisateurs **',
+                        'required' => false,
+                    ]
+            )
+            ->add(
                 'type',
                 ChoiceType::class,
                 ['label' => 'Type', 'choices' =>
                     [
                         'Conférence plénière (40 mn)' =>  Talk::TYPE_FULL_LONG,
                         'Conférence plénière (20 mn)' => Talk::TYPE_FULL_SHORT,
-                        'Atelier' => Talk::TYPE_WORKSHOP,
                     ]
                 ]
             )

@@ -6,9 +6,12 @@ services:
   apachephp:
     ports:
       - "9205:80"
+  planete:
+    ports:
+      - "9215:80"
   mailcatcher:
     ports:
       - "1181:1080"
   event:
     ports:
-      - "9215:80"
+      - "9225:80"

@@ -26,6 +26,20 @@ class EventRepository extends Repository implements MetadataInitializer
         return $events->first();
     }
 
+    /**
+     * @return Event|null
+     */
+    public function getCurrentEvent()
+    {
+        $query = $this
+            ->getQuery('SELECT id, path FROM afup_forum WHERE (date_debut > NOW() OR (NOW() BETWEEN date_debut AND DATE_ADD(date_fin, INTERVAL 1 DAY))) ORDER BY date_debut LIMIT 1')
+        ;
+        $events = $query->query($this->getCollection(new HydratorSingleObject()));
+        if ($events->count() === 0) {
+            return null;
+        }
+        return $events->first();
+    }
 
     /**
      * @param $path
@@ -128,6 +142,11 @@ class EventRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'trello_list_id',
                 'fieldName' => 'trelloListId',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'logo_url',
+                'fieldName' => 'logoUrl',
                 'type' => 'string'
             ])
         ;

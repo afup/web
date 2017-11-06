@@ -23,6 +23,8 @@ node_modules
 
 /vendor/
 
+/htdocs/assets
+js_dist
 # uploads
 /htdocs/uploads
 

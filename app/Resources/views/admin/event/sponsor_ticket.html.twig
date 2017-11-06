@@ -11,8 +11,12 @@
             <th>Invitations utilisées</th>
             <th> </th>
         </tr>
+        {% set totalInvitations = 0 %}
+        {% set totalUsedInvitations = 0 %}
         {% for token in tokens %}
             <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
+                {% set totalInvitations = totalInvitations + token.maxInvitations %}
+                {% set totalUsedInvitations = totalUsedInvitations + token.usedInvitations %}
                 <td>{{ token.company }}</td>
                 <td>{{ token.token }}</td>
                 <td>{{ token.maxInvitations }}</td>
@@ -32,9 +36,19 @@
                 </td>
             </tr>
         {% else %}
-            <tr><td colspan="4">Aucune invitation créée</td></tr>
+            <tr><td colspan="5">Aucune invitation créée</td></tr>
         {% endfor %}
+        <tr class="even">
+            <th colspan="2"><strong>Total</strong></th>
+            <th>{{ totalInvitations }}</th>
+            <th>{{ totalUsedInvitations }}</th>
+            <th>¤</th>
+        </tr>
     </table>
+    <p>
+        Lorsque la fermeture de la billetterie approche, ce bouton permet d'envoyer des mails de rappel pour inciter les sponsors à enregistrer leurs places.<br/>
+        <a class="button sponsor--token-admin-edit" href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}" onclick="return confirm('Souhaitez-vous vraiment envoyer des mails relance à tous les sponsors ayant encore des places ?');">Envoyer le mail de rappel</a>
+    </p>
 
     {% if edit == true %}
         <h2>Modifier le token de {{ form.vars.value.company}}</h2>

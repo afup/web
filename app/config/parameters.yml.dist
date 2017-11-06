@@ -3,12 +3,12 @@
 # http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
     database_host:     127.0.0.1
-    database_port:     ~
+    database_port:     3306
     database_name:     symfony
     database_user:     root
     database_password: ~
-    # You should uncomment this if you want use pdo_sqlite
-    # database_path: "%kernel.root_dir%/data.db3"
+
+    slack_url: ""
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
@@ -32,3 +32,5 @@ parameters:
 
     trello_api_key: ""
     trello_token: ""
+
+    google_maps_api_key: ""

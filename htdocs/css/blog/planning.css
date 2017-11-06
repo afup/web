@@ -49,3 +49,8 @@ table.planning_agenda td.col_heure{
         hyphens: auto;
     }
 }
+
+.planning-link {
+    display: block;
+    padding: 10px 0;
+}
