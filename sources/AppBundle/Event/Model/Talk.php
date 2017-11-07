@@ -608,7 +608,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function setUseMarkdown($useMarkdown)
     {
-        $useMarkdown = (bool)$useMarkdown;
+        $useMarkdown = (bool) $useMarkdown;
         $this->propertyChanged('useMarkdown', $this->useMarkdown, $useMarkdown);
         $this->useMarkdown = $useMarkdown;
         return $this;
