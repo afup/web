@@ -4,7 +4,13 @@
         <div class="event--vote-meta">
             {{ talk.talk.skillTranslationKey|trans }} - {{ talk.talk.typeTranslationKey|trans }}
         </div>
-        <div>{{ talk.talk.getAbstract|raw|markdown }}</div>
+        <div class="event--vote-abstract">
+        {% if talk.talk.useMarkdown %}
+            {{ talk.talk.getAbstract|raw|markdown }}
+        {% else %}
+            {{ talk.talk.getAbstract|raw }}
+        {% endif %}
+        </div>
     </div>
     <div class="event--vote-form">
         {{ form_start(talk.form) }}
