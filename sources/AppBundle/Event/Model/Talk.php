@@ -539,7 +539,9 @@ class Talk implements NotifyPropertyInterface
      */
     public function isDisplayedOnHistory()
     {
-        return $this->getType() != self::TYPE_CLINIC;
+        $type = $this->getType();
+
+        return $type != self::TYPE_CLINIC && $type != self::TYPE_SPEAKER_INTRODUCTIONS;
     }
 
     /**
