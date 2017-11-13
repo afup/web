@@ -624,17 +624,16 @@ TXT;
         } else {
             $endSubscription = DateTime::createFromFormat('U', $cotisation['date_fin']);
         }
-        $now = new DateTime();
+        $base = $now = new DateTime();
 
         $year = new DateInterval('P1Y');
-        if ($endSubscription->add($year) > $now) {
-            // Cotisation is not ended yet or since less than a year : the renewal will start from $cotisation['date_fin']
-            return $endSubscription;
-        } else {
-            // The subscription ended since more than a year: we start a new subscription
-            $now->add($year);
-            return $now;
+
+        if ($endSubscription > $now) {
+            $base = $endSubscription;
         }
+
+        $base->add($year);
+        return $base;
     }
 
     /**
