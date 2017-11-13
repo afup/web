@@ -119,7 +119,7 @@ class CFPController extends EventBaseController
         }
         $this->denyAccessUnlessGranted('edit', $talk);
 
-        $talkForm = $this->createForm(TalkType::class, $talk);
+        $talkForm = $this->createForm(TalkType::class, $talk, ['codeOfConductChecked' => true]);
         $formResponse = $this->handleTalkForm($request, $event, $talkForm);
         if ($formResponse instanceof Response) {
             return $formResponse;
