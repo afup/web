@@ -7,7 +7,7 @@ use Twitter_Validation;
 
 class TweetGenerator
 {
-    const TWEET_MAX_LENGTH = 140;
+    const TWEET_MAX_LENGTH = 280;
 
     /**
      * @var Twitter_Validation
