@@ -111,6 +111,11 @@ class EventRepository extends Repository implements MetadataInitializer
                 ]
             ])
             ->addField([
+                'columnName' => 'date_fin_vote',
+                'fieldName' => 'dateEndVote',
+                'type' => 'datetime'
+            ])
+            ->addField([
                 'columnName' => 'date_fin_prevente',
                 'fieldName' => 'dateEndPreSales',
                 'type' => 'datetime',
