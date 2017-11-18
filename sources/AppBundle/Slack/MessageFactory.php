@@ -5,6 +5,8 @@ namespace AppBundle\Slack;
 
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
@@ -173,5 +175,76 @@ class MessageFactory
         $message->addAttachment($attachment);
 
         return $message;
+    }
+
+
+    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, \DateTime $since, \DateTime $currentDate)
+    {
+        //Il n'y a pas les heures dans les dates de soumission en base
+        $since = clone $since;
+        $since->setTime(0, 0, 0);
+
+        $message = new Message();
+        $message
+            ->setChannel('phptour2018')
+            ->setUsername('CFP')
+            ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
+        ;
+
+        $fields = $this->prepareCfpStatsFields($talkRepository, $talkToSpeakersRepository, $event, $since);
+
+        if (count($fields)) {
+            $attachment = new Attachment();
+            $attachment
+                ->setTitle(sprintf('Réponses au CFP du %s depuis le %s : ', $event->getTitle(), $since->format('d/m/Y H:i')))
+            ;
+
+            foreach ($fields as $field) {
+                $attachment->addField($field);
+            }
+
+            $message->addAttachment($attachment);
+        }
+
+        $attachment = new Attachment();
+        $attachment
+            ->setTitle(sprintf('Total des réponses au CFP du %s', $event->getTitle()))
+            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_sessions')
+        ;
+
+        foreach ($this->prepareCfpStatsFields($talkRepository, $talkToSpeakersRepository, $event) as $field) {
+            $attachment->addField($field);
+        }
+
+        $message->addAttachment($attachment);
+
+        $diff = $event->getDateEndCallForPapers()->diff($currentDate)->format("%a");
+
+        $attachment = new Attachment();
+        $attachment->setTitle(sprintf('Il reste %s jours avant la fin du CFP.', $diff));
+        $message->addAttachment($attachment);
+
+        return $message;
+    }
+
+    private function prepareCfpStatsFields(TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, Event $event, \DateTime $since = null)
+    {
+        $infos = [
+            'Nombre de talks' => $talkRepository->getNumberOfTalksByEvent($event, $since)['talks'],
+            'Nombre de speakers' => $talkToSpeakersRepository->getNumberOfSpeakers($event, $since),
+            'Nombre de talks FR' => $talkRepository->getNumberOfTalksByEventAndLanguage($event, Talk::LANGUAGE_CODE_FR, $since)['talks'],
+            'Nombre de talks EN' => $talkRepository->getNumberOfTalksByEventAndLanguage($event, Talk::LANGUAGE_CODE_EN, $since)['talks'],
+        ];
+
+        if (0 === array_sum($infos)) {
+            return [];
+        }
+
+        $fields = [];
+        foreach ($infos as $title => $value) {
+            $fields[] = (new Field())->setShort(true)->setTitle($title)->setValue($value);
+        }
+
+        return $fields;
     }
 }
