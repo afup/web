@@ -232,8 +232,6 @@ class MessageFactory
         $infos = [
             'Nombre de talks' => $talkRepository->getNumberOfTalksByEvent($event, $since)['talks'],
             'Nombre de speakers' => $talkToSpeakersRepository->getNumberOfSpeakers($event, $since),
-            'Nombre de talks FR' => $talkRepository->getNumberOfTalksByEventAndLanguage($event, Talk::LANGUAGE_CODE_FR, $since)['talks'],
-            'Nombre de talks EN' => $talkRepository->getNumberOfTalksByEventAndLanguage($event, Talk::LANGUAGE_CODE_EN, $since)['talks'],
         ];
 
         if (0 === array_sum($infos)) {
