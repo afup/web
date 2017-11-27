@@ -4,14 +4,8 @@
 namespace AppBundle\Command;
 
 use Afup\Site\Utils\Mail;
-use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
-use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\Association\Model\User;
-use AppBundle\Association\UserMembership\Reminder15DaysAfterEnd;
-use AppBundle\Association\UserMembership\Reminder15DaysBeforeEnd;
-use AppBundle\Association\UserMembership\Reminder7DaysBeforeEnd;
-use AppBundle\Association\UserMembership\ReminderDDay;
-use AppBundle\Association\UserMembership\UserReminderFactory;
+use AppBundle\Association;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,12 +30,16 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $factory = new UserReminderFactory((new Mail()), $this->getContainer()->get('ting')->get(SubscriptionReminderLogRepository::class));
+        $factory = new Association\UserMembership\UserReminderFactory((new Mail()), $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class));
+        $companyFactory = new Association\CompanyMembership\CompanyReminderFactory(
+            (new Mail()),
+            $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class)
+        );
 
         /**
-         * @var $repository UserRepository
+         * @var $repository Association\Model\Repository\UserRepository
          */
-        $repository = $this->getContainer()->get('ting')->get(UserRepository::class);
+        $repository = $this->getContainer()->get('ting')->get(Association\Model\Repository\UserRepository::class);
 
         $dryRun = $input->getOption('dry-run');
 
@@ -50,37 +48,56 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
         $reminders = [
             'in 15 days' => [
                 'date' => $today->add(new \DateInterval('P15D')),
-                'class' => Reminder15DaysBeforeEnd::class
+                'physical' => Association\UserMembership\Reminder15DaysBeforeEnd::class,
+                'company' => Association\CompanyMembership\Reminder15DaysBeforeEnd::class
             ],
             'in 7 days' => [
                 'date' => $today->add(new \DateInterval('P7D')),
-                'class' => Reminder7DaysBeforeEnd::class
+                'physical' => Association\UserMembership\Reminder7DaysBeforeEnd::class,
+                'company' => Association\CompanyMembership\Reminder7DaysBeforeEnd::class
             ],
             'Today' => [
                 'date' => $today,
-                'class' => ReminderDDay::class
+                'physical' => Association\UserMembership\ReminderDDay::class,
+                'company' => Association\CompanyMembership\ReminderDDay::class
             ],
             '15 days ago' => [
                 'date' => $today->sub(new \DateInterval('P15D')),
-                'class' => Reminder15DaysAfterEnd::class
+                'physical' => Association\UserMembership\Reminder15DaysAfterEnd::class,
+                'company' => Association\CompanyMembership\Reminder15DaysAfterEnd::class
             ],
         ];
 
-        $output->writeln('<info>Reminders des souscriptions des personnes physiques</info>');
+        $output->writeln('<info>Reminders des souscriptions</info>');
         foreach ($reminders as $name => $details) {
-            $reminder = $factory->getReminder($details['class']);
+            $reminder = $factory->getReminder($details['physical']);
+            $users = $repository->getUsersByEndOfMembership($details['date'], Association\Model\Repository\UserRepository::USER_TYPE_PHYSICAL);
 
-            $users = $repository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_PHYSICAL);
             $output->writeln(sprintf('%s (%s)', $name, $details['date']->format('d/m/Y')));
             $output->writeln(sprintf('<info>%s membres</info>', $users->count()));
-            foreach ($users as $user) {
-                /**
-                 * @var $user User
-                 */
-                $output->writeln($user->getEmail());
-                if ($dryRun === false) {
-                    $reminder->sendReminder($user);
-                }
+            $this->handleReminders($output, $reminder, $users, $dryRun);
+
+
+            $reminder = $companyFactory->getReminder($details['company']);
+            $users = $repository->getUsersByEndOfMembership($details['date'], Association\Model\Repository\UserRepository::USER_TYPE_COMPANY);
+            $output->writeln(sprintf('<info>%s entreprises</info>', $users->count()));
+            $this->handleReminders($output, $reminder, $users, $dryRun);
+        }
+    }
+
+    private function handleReminders(
+        OutputInterface $output,
+        Association\MembershipReminderInterface $reminder,
+        CollectionInterface $users,
+        $dryRun = true
+    ) {
+        foreach ($users as $user) {
+            /**
+             * @var $user Association\Model\User
+             */
+            $output->writeln($user->getEmail());
+            if ($dryRun === false) {
+                $reminder->sendReminder($user);
             }
         }
     }
