@@ -49,12 +49,12 @@ class Runner
 
         $command = $this->meetupClient->getCommand(
             'GetEvents',
-            array(
+            [
                 'group_id' => implode(',', $this->getGroupIds()),
                 'status' => 'upcoming,past',
                 'order' => 'time',
                 'desc' => 'true',
-            )
+            ]
         );
 
         $command->prepare();
