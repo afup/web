@@ -93,6 +93,7 @@ class Runner
             'attributesForFaceting' => [
                 'office.label',
                 'year',
+                'is_upcoming',
             ],
             'customRanking' => [
                 "desc(timestamp)",

@@ -43,6 +43,7 @@ class Transformer
                 'logo_url' => $office['logo_url'],
             ],
             'description' => $meetup['description'],
+            'is_upcoming' => $meetup['status'] == 'upcoming',
         ];
 
         if (isset($meetup['venue'])) {

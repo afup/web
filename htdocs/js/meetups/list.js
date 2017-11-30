@@ -110,6 +110,21 @@ search.addWidget(
     })
 );
 
+search.addWidget(
+    instantsearch.widgets.toggle({
+        container: '#refinement-is-upcoming',
+        attributeName: 'is_upcoming',
+        label: 'Meetup à venir',
+        values: {
+            on: true
+        },
+        autoHideContainer: false,
+        templates: {
+            item: refinementItemTemplate
+        }
+    })
+);
+
 
 search.addWidget(
     instantsearch.widgets.refinementList({
