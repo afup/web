@@ -18,6 +18,10 @@ talks:
     resource: "routing/talks.yml"
     prefix: /talks
 
+meetups:
+    resource: "routing/meetups.yml"
+    prefix: /meetups
+
 blog:
     resource: "routing/blog.yml"
     prefix: /blog
