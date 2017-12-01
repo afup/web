@@ -3,8 +3,9 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Forum\Facturation;
+use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\Model\User;
 use AppBundle\Event\Form\SponsorTicketType;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
@@ -172,17 +173,47 @@ class TicketController extends EventBaseController
 
         $purchaseForm->handleRequest($request);
 
+        /**
+         * @var $user User
+         */
+        $user = $this->getUser();
+
         if ($purchaseForm->isSubmitted() && $purchaseForm->isValid()) {
             $invoiceRepository = $this->get('app.invoice_repository');
             /**
              * @var $invoice Invoice
              */
             $invoice = $purchaseForm->getData();
+
+            /**
+             * @var $tickets Ticket[]
+             */
             $tickets = array_slice($invoice->getTickets(), 0, $purchaseForm->get('nbPersonnes')->getData());
             $tickets[0]
                 ->setCompanyCitation($purchaseForm->get('companyCitation')->getData())
                 ->setNewsletter($purchaseForm->get('newsletterAfup')->getData())
             ;
+
+
+            $memberId = $user->getId();
+            $memberType = UserRepository::USER_TYPE_PHYSICAL;
+            if ($user instanceof User && $user->isMemberForCompany()) {
+                $memberId = $user->getCompanyId();
+                $memberType = UserRepository::USER_TYPE_COMPANY;
+            }
+
+            foreach ($tickets as $ticket)
+            {
+                if ($ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers()) {
+                    if ($user instanceof User && $user->isMemberForCompany()) {
+                        $ticket
+                            ->setMemberId($memberId)
+                            ->setMemberType($memberType)
+                        ;
+                    }
+                }
+            }
+
             $invoice->setTickets($tickets);
 
             /**
@@ -198,7 +229,12 @@ class TicketController extends EventBaseController
         return $this->render('event/ticket/ticket.html.twig', [
             'event' => $event,
             'ticketForm' => $purchaseForm->createView(),
-            'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData() // If there is an error, this will open all fields
+            'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
+            'soldTicketsForMember' => $this->get('app.ticket_repository')->getTotalOfSoldTicketsByMember(
+                $user->isMemberForCompany() ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
+                $user->isMemberForCompany() ? $user->getCompanyId() : $user->getId(),
+                $event->getId()
+            )
         ]);
     }
 

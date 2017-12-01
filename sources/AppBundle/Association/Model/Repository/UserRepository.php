@@ -91,7 +91,10 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
          */
         $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
         $queryBuilder
-            ->cols(['app.`id`', 'app.`login`', 'app.`prenom`', 'app.`nom`', 'app.`email`'])
+            ->cols([
+                'app.`id`', 'app.`login`', 'app.`prenom`', 'app.`nom`',
+                'app.`email`', 'apm.`id`', 'apm.`raison_sociale`', 'apm.`max_members`'
+            ])
             ->from('afup_personnes_physiques app')
             ->join('LEFT', 'afup_personnes_morales apm', 'apm.id = app.id_personne_morale')
             ->join('LEFT', 'afup_cotisations ac', 'ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)')
@@ -137,6 +140,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         return (new HydratorSingleObject())
             ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
             ->mapAliasTo('hash', 'app', 'setHash')
+            ->mapObjectTo('apm', 'app', 'setCompany')
         ;
     }
 

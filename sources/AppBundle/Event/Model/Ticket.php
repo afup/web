@@ -9,7 +9,6 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 /**
  * @Assert\LoggedInMember(groups={"personal"})
  * @Assert\PublicTicket(groups={"not_logged_in"})
- * @Assert\CorporateMember(groups={"corporate"})
  * @Assert\AvailableTicket()
  */
 class Ticket implements NotifyPropertyInterface
@@ -160,6 +159,16 @@ class Ticket implements NotifyPropertyInterface
      * @var int
      */
     private $forumId;
+
+    /**
+     * @var int
+     */
+    private $memberType;
+
+    /**
+     * @var int
+     */
+    private $memberId;
 
     /**
      * @var bool
@@ -568,6 +577,48 @@ class Ticket implements NotifyPropertyInterface
     {
         $this->propertyChanged('forumId', $this->forumId, $forumId);
         $this->forumId = $forumId;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemberType()
+    {
+        return $this->memberType;
+    }
+
+    /**
+     * @param int $memberType
+     * @return Ticket
+     */
+    public function setMemberType($memberType)
+    {
+        $memberType = (int) $memberType;
+        $this->propertyChanged('memberType', $this->memberType, $memberType);
+
+        $this->memberType = $memberType;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemberId()
+    {
+        return $this->memberId;
+    }
+
+    /**
+     * @param int $memberId
+     * @return Ticket
+     */
+    public function setMemberId($memberId)
+    {
+        $memberId = (int)$memberId;
+        $this->propertyChanged('memberId', $this->memberId, $memberId);
+
+        $this->memberId = $memberId;
         return $this;
     }
 

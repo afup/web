@@ -2,8 +2,10 @@
 
 namespace AppBundle\Event\Validator\Constraints;
 
+use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,25 +24,43 @@ class CorporateMemberValidator extends ConstraintValidator
     private $companyMemberRepository;
 
     /**
-     * @var UserRepository
+     * @var TicketRepository
      */
-    private $userRepository;
+    private $ticketRepository;
 
-    public function __construct(TokenStorageInterface $tokenStorage, CompanyMemberRepository $companyMemberRepository, UserRepository $userRepository)
-    {
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        CompanyMemberRepository $companyMemberRepository,
+        TicketRepository $ticketRepository
+    ) {
         $this->tokenStorage = $tokenStorage;
         $this->companyMemberRepository = $companyMemberRepository;
-        $this->userRepository = $userRepository;
+        $this->ticketRepository = $ticketRepository;
     }
 
-    public function validate($ticket, Constraint $constraint)
+    public function validate($tickets, Constraint $constraint)
     {
         /**
-         * @var $ticket Ticket
+         * @var $tickets Ticket[]
          */
-        if (!($ticket instanceof Ticket) || $ticket->getTicketEventType() === null || $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() === false) {
+
+        $restrictedTickets = 0;
+        $eventId = null;
+
+        foreach ($tickets as $ticket) {
+            if (!($ticket instanceof Ticket) || $ticket->getTicketEventType() === null || $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() === false) {
+                continue;
+            }
+            if ($eventId === null) {
+                $eventId = $ticket->getTicketEventType()->getEventId();
+            }
+            $restrictedTickets++;
+        }
+
+        if ($restrictedTickets === 0) {
             return ;
         }
+
         $token = $this->tokenStorage->getToken();
 
         /**
@@ -49,30 +69,36 @@ class CorporateMemberValidator extends ConstraintValidator
         if ($token === null) {
             // Il faut etre connecté pour avoir accès aux tickets membre
             $this->context->buildViolation($constraint->messageNotLoggedIn)
-                ->atPath('ticketTypeId')
-                ->addViolation();
+                ->addViolation()
+            ;
+            return ;
         }
 
+        /**
+         * @var $company CompanyMember
+         */
         $company = $this->companyMemberRepository->get($token->getUser()->getCompanyId());
 
         if ($company === null) {
             // Il faut etre connecté pour avoir accès aux tickets membre
             $this->context->buildViolation($constraint->messageNotLoggedIn)
-                ->atPath('ticketTypeId')
                 ->addViolation();
+            return ;
         }
 
-        $users = $this->userRepository->loadActiveUsersByCompany($company);
-        $foundUser = false;
-        foreach ($users as $user) {
-            if ($user->getEmail() === $ticket->getEmail()) {
-                $foundUser = true;
-            }
+        $ticketsSoldToThisCompany = $this->ticketRepository->getTotalOfSoldTicketsByMember(
+            UserRepository::USER_TYPE_COMPANY,
+            $company->getId(),
+            $eventId
+        );
+
+        if ( ($ticketsSoldToThisCompany + $restrictedTickets) > $company->getMaxMembers() ) {
+            $this->context->buildViolation($constraint->messageTooMuchRestrictedTickets)
+                ->atPath('tickets')
+                ->addViolation()
+            ;
+            return;
         }
-        if ($foundUser === false) {
-            $this->context->buildViolation($constraint->messageBadMail)
-                ->atPath('email')
-                ->addViolation();
-        }
+
     }
 }
