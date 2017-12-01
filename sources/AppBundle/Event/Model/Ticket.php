@@ -615,7 +615,7 @@ class Ticket implements NotifyPropertyInterface
      */
     public function setMemberId($memberId)
     {
-        $memberId = (int)$memberId;
+        $memberId = (int) $memberId;
         $this->propertyChanged('memberId', $this->memberId, $memberId);
 
         $this->memberId = $memberId;

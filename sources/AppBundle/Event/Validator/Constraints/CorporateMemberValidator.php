@@ -92,13 +92,12 @@ class CorporateMemberValidator extends ConstraintValidator
             $eventId
         );
 
-        if ( ($ticketsSoldToThisCompany + $restrictedTickets) > $company->getMaxMembers() ) {
+        if (($ticketsSoldToThisCompany + $restrictedTickets) > $company->getMaxMembers()) {
             $this->context->buildViolation($constraint->messageTooMuchRestrictedTickets)
                 ->atPath('tickets')
                 ->addViolation()
             ;
             return;
         }
-
     }
 }

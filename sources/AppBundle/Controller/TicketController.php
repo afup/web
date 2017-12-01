@@ -202,8 +202,7 @@ class TicketController extends EventBaseController
                 $memberType = UserRepository::USER_TYPE_COMPANY;
             }
 
-            foreach ($tickets as $ticket)
-            {
+            foreach ($tickets as $ticket) {
                 if ($ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers()) {
                     if ($user instanceof User && $user->isMemberForCompany()) {
                         $ticket
