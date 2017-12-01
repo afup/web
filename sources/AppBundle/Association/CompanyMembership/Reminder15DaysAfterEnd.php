@@ -14,7 +14,7 @@ class Reminder15DaysAfterEnd extends AbstractCompanyReminder
 Pour cela, il vous suffit de vous rendre dans le
 <a href="https://afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
 et de cliquer sur “Ma Cotisation”. Une fois le règlement de ' . $this->membershipFee . ' euros effectué (valable pour 
-' . $this->membersPerFee .' salarié·e·s), elle prendra effet immédiatement.
+' . $this->membersPerFee . ' salarié·e·s), elle prendra effet immédiatement.
 Un souci, une question ? Contactez-nous ! bonjour@afup.org </p>
 
 <p>Si non, c’est promis, nous tournons la page sur votre adhésion mais n\'oublions pas votre engagement passé.
