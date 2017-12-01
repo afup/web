@@ -18,10 +18,10 @@ conviviale et soudée !</p>
 
 <p><strong>Renouvelez dès maintenant votre adhésion</strong>, en réglant votre cotisation en ligne. Elle prendra effet immédiatement. </p>
 
-<p>La cotisation à l’association  est au tarif de ' . $this->membershipFee . ' euros pour 3 salarié·e·s.
+<p>La cotisation à l’association  est au tarif de ' . $this->membershipFee . ' euros pour ' . $this->membersPerFee . ' salarié·e·s.
 Pour prolonger votre adhésion, rendez-vous dans le 
 <a href="https://afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
-et cliquez sur “Ma Cotisation”. Un souci, une question ? Contactez-nous ! bonjour@afup.org</p>
+et cliquez sur “Ma Cotisation”. Un souci, une question ? Contactez-nous ! <a href="mailto:bonjour@afup.org">bonjour@afup.org</a></p>
 
 <p>À bientôt !<br />
 L’équipe AFUP</p>

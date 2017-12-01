@@ -24,8 +24,6 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
     private $subscriptionReminderLogRepository;
 
     /**
-     * AbstractCompanyReminder constructor.
-     *
      * @param Mail $mail
      * @param int $membershipFee
      * @param int $membersPerFee
