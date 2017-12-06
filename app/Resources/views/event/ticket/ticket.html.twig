@@ -104,8 +104,7 @@
                         <ul class="tickets--type-list">
                             {% set endDate = null %}
                             {% for type in ticket.ticketEventType %}
-                                {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null %}<hr />{% endif %}
-                                <li>
+                                <li {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null %}class="tickets--type-list-emphasis" {% endif %}>
                                     {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null and endDate > currentDate %}
                                         Vous souhaitez soutenir l'AFUP ? Vous pouvez prendre ces billets dès aujourd’hui.
                                     {% endif %}
@@ -198,6 +197,14 @@
 
         <fieldset class="f8 boutons">
             <legend>Récapitulatif <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div id="fieldset--8" class="fieldset--inner">
+
+                <div>
+                    <p>Une fois votre commande effectuée, <strong>chaque participant recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
+                        Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'événement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.<br>
+                        Le jour J il leur suffira de se présenter à l'accueil badges <strong>avec une pièce d'identité</strong>.
+                    </p>
+                </div>
+
                 <div class="clearfix">
                     <div class="input">
                         <div id="summary">

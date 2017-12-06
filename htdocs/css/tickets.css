@@ -118,8 +118,21 @@ ul.tickets--type-list{
     margin-left:150px;
 }
 ul.tickets--type-list li {
-    padding: 0.5em 0;
+    padding: 1em 0;
+    border-top: 1px #4c6eaf solid;
+    width: 600px;
 }
+
+ul.tickets--type-list li:first-child{
+    border-top: none;
+}
+
+ul.tickets--type-list li.tickets--type-list-emphasis {
+    border-top-color: black;
+    margin-top:2em;
+    padding-top:2em;
+}
+
 ul.tickets--type-list label{
     width: 500px;
 }
@@ -130,6 +143,8 @@ ul.tickets--type-list label, div.tickets--pmr label{
 ul.tickets--type-list input{
     display:inline-block;
     width: 20px;
+    position: relative;
+    top: 12px;
 }
 ul.tickets--type-list span.tickets--type-details{
     padding-left: 42px;

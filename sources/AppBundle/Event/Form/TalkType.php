@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TalkType extends AbstractType
 {
@@ -63,10 +64,21 @@ class TalkType extends AbstractType
                 [
                     'label' => 'J\'accepte le code de conduite *',
                     'mapped' => false,
-                    'required' => true
+                    'required' => true,
+                    'data' => $options['codeOfConductChecked']
                 ]
             )
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'codeOfConductChecked' => false
+        ]);
     }
 }
