@@ -36,7 +36,6 @@ class EventController extends EventBaseController
         $votes = $this->get('ting')->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
 
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
-
             if ($event->getDateEndVote() < new \DateTime()) {
                 return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
             }
