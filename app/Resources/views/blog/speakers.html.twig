@@ -1,5 +1,5 @@
 <script type="application/ld+json">
-    {{ jsonld|json_encode }}
+    {{ jsonld|json_encode|raw }}
 </script>
 
 {% for row in speakers %}
