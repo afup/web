@@ -237,7 +237,7 @@ class Event implements NotifyPropertyInterface
      * @param \DateTime $dateEndVote
      * @return Event
      */
-    public function setDateEndVote(\DateTime $dateEndVote)
+    public function setDateEndVote(\DateTime $dateEndVote = null)
     {
         $this->propertyChanged('dateEndVote', $this->dateEndVote, $dateEndVote);
         $this->dateEndVote = $dateEndVote;
