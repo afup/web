@@ -727,7 +727,7 @@ CODE_HTML;
         $requete .= '  annee=' . (int)$date_debut['Y'] . ',';
         $requete .= '  date_fin_appel_projet=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true) . ',';
         $requete .= '  date_fin_appel_conferencier=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
-        $requete .= '  date_fin_vote=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vote, true) . ',';
+        $requete .= '  date_fin_vote=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vote, false) . ',';
         $requete .= '  date_fin_prevente=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true) . ',';
         $requete .= '  date_fin_vente=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true) . ',';
         $requete .= '  path=' . $this->_bdd->echapper($chemin_template, true) . ', ';

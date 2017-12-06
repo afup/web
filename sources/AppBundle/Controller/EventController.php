@@ -31,12 +31,18 @@ class EventController extends EventBaseController
     public function eventAction($eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
-        if ($event->getDateEndCallForPapers() < new \DateTime()) {
-            return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
-        }
 
         $talks = $this->get('ting')->get(TalkRepository::class)->getNumberOfTalksByEvent($event);
         $votes = $this->get('ting')->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
+
+        if ($event->getDateEndCallForPapers() < new \DateTime()) {
+
+            if ($event->getDateEndVote() < new \DateTime()) {
+                return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
+            }
+
+            return $this->render(':event/cfp:vote_only.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
+        }
 
         return $this->render(':event:home.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
     }
