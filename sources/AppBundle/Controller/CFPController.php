@@ -34,31 +34,14 @@ class CFPController extends EventBaseController
         $now = new \DateTime();
         if ($event->getDateEndCallForPapers() < $now) {
             if ($event->getDateEndVote() > $now) {
-                return $this->forward('AppBundle:CFP:indexWithOnlyVotes', ['event' => $event]);
+                return $this->redirectToRoute('event_index');
             }
-
-            return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
 
         $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get('app.speaker_factory')->getSpeaker($event));
 
         return $this->render(
             ':event/cfp:home.html.twig',
-            [
-                'event' => $event,
-                'talks' => $talks,
-                'speaker' => $this->get('app.speaker_factory')->getSpeaker($event),
-                'photoStorage' => $this->get('app.photo_storage')
-            ]
-        );
-    }
-
-    public function indexWithOnlyVotesAction(Event $event)
-    {
-        $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get('app.speaker_factory')->getSpeaker($event));
-
-        return $this->render(
-            ':event/cfp:homeOnlyVotes.html.twig',
             [
                 'event' => $event,
                 'talks' => $talks,
