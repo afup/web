@@ -3,19 +3,27 @@
 
 namespace AppBundle\Controller;
 
+use Afup\Site\Forum\Facturation;
+use Afup\Site\Forum\Inscriptions;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Form\SponsorTokenType;
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class AdminEventController extends Controller
 {
@@ -28,7 +36,7 @@ class AdminEventController extends Controller
         $event = $this->getEvent($eventRepository, $request);
 
         if ($event === null) {
-            return $this->createNotFoundException('Could not find event');
+            throw $this->createNotFoundException('Could not find event');
         }
 
         /**
@@ -98,7 +106,7 @@ class AdminEventController extends Controller
         $event = $this->getEvent($eventRepository, $request);
 
         if ($event === null) {
-            return $this->createNotFoundException('Could not find event');
+            throw $this->createNotFoundException('Could not find event');
         }
 
         /**
@@ -106,7 +114,7 @@ class AdminEventController extends Controller
          */
         $sponsorTicketRepository = $this->get('ting')->get(SponsorTicketRepository::class);
 
-        $tokens = $sponsorTicketRepository->getBy(['idForum' => $event->getId()]);
+        $tokens = $sponsorTicketRepository->getByEvent($event);
 
         $edit = false;
         if ($request->query->has('ticket') === true) {
@@ -154,7 +162,7 @@ class AdminEventController extends Controller
         $event = $this->getEvent($eventRepository, $request);
 
         if ($event === null) {
-            return $this->createNotFoundException('Could not find event');
+            throw $this->createNotFoundException('Could not find event');
         }
         /**
          * @var $sponsorTicketRepository SponsorTicketRepository
@@ -170,6 +178,240 @@ class AdminEventController extends Controller
         $this->addFlash('notice', 'Le mail a été renvoyé');
 
         return $this->redirectToRoute('admin_event_sponsor_ticket', ['id' => $event->getId()]);
+    }
+
+    public function sendLastCallSponsorTokenAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        if ($event === null) {
+            throw $this->createNotFoundException('Could not find event');
+        }
+        /**
+         * @var $sponsorTicketRepository SponsorTicketRepository
+         */
+        $sponsorTicketRepository = $this->get('ting')->get(SponsorTicketRepository::class);
+
+        /**
+         * @var $tokens SponsorTicket[]
+         */
+        $tokens = $sponsorTicketRepository->getByEvent($event);
+
+        $mailSent = 0;
+
+        foreach ($tokens as $token) {
+            if ($token->getPendingInvitations() > 0) {
+                $mailSent++;
+                $this->get('app.sponsor_token_mail')->sendNotification($token, true);
+            }
+        }
+
+        $this->addFlash('notice', sprintf('%s mails de relance ont été envoyés', $mailSent));
+
+        return $this->redirectToRoute('admin_event_sponsor_ticket', ['id' => $event->getId()]);
+    }
+
+    public function statsAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        /**
+         * @var $legacyInscriptions Inscriptions
+         */
+        $legacyInscriptions = $this->get('app.legacy_model_factory')->createObject(Inscriptions::class);
+
+        $stats = $legacyInscriptions->obtenirSuivi($event->getId());
+
+        $ticketsDayOne = $this->get('app.ticket_repository')->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
+        $ticketsDayTwo = $this->get('app.ticket_repository')->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
+
+        $ticketTypes = [];
+        /**
+         * @var $ticketTypeRepository TicketTypeRepository
+         */
+        $ticketTypeRepository = $this->get('ting')->get(TicketTypeRepository::class);
+
+        $chart = [
+            'chart' => [
+                'renderTo' => 'container',
+                'zoomType' => 'x',
+                'spacingRight' => 20
+            ],
+            'title' => ['text' => 'Evolution des inscriptions'],
+            'subtitle' => ['text' => 'Cliquez/glissez dans la zone pour zoomer'],
+            'xAxis' => [
+                'type' => 'linear',
+                'title' => ['text' => null],
+                'allowDecimals' => false
+            ],
+            'yAxis' => [
+                'title' => ['text' => 'Inscriptions'],
+                'min' => 0,
+                'startOnTick' => false,
+                'showFirstLabel' => false
+            ],
+            'tooltip' => ['shared' => true],
+            'legend' => ['enabled' => true],
+            'series' => [
+                [
+                    'name' => $event->getTitle(),
+                    'data' => array_values(array_map(function ($item) {
+                        return $item['n'];
+                    }, $stats['suivi']))
+                ],
+                [
+                    'name' => 'n-1',
+                    'data' => array_values(array_map(function ($item) {
+                        return $item['n_1'];
+                    }, $stats['suivi']))
+                ]
+            ]
+        ];
+
+        $rawStatsByType = $legacyInscriptions->obtenirStatistiques($event->getId())['types_inscriptions']['payants'];
+        $totalInscrits = array_sum($rawStatsByType);
+        array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits, $ticketTypeRepository) {
+            if (isset($ticketTypes[$key]) === false) {
+                $type = $ticketTypeRepository->get($key);
+                $ticketTypes[$key] = $type->getPrettyName();
+            }
+            $item = ['name' => $ticketTypes[$key], 'y' => $item / $totalInscrits ];
+        });
+
+        $rawStatsByType = array_values($rawStatsByType);
+
+        $pieChartConf = [
+            "chart" => [
+                "plotBackgroundColor" => null,
+                "plotBorderWidth" => null,
+                "plotShadow" => false,
+                "type" => 'pie'
+            ],
+            "title" => [
+                "text" => 'Répartition des types d\'inscriptions payantes'
+            ],
+            "tooltip" => [
+                "pointFormat" => '{series.name}: <b>{point.percentage:.1f}%</b>'
+            ],
+            "plotOptions" => [
+                "pie" => [
+                    "allowPointSelect" => true,
+                    "cursor" => 'pointer',
+                    "dataLabels" => [
+                        "enabled" => true,
+                        "format" => '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        "style" => [
+                            "color" => 'black'
+                        ]
+                    ]
+                ]
+            ],
+            "series" => [[
+                "name" => 'Inscriptions',
+                "colorByPoint" => true,
+                "data" => $rawStatsByType
+            ]]
+        ];
+
+        return $this->render(':admin/event:stats.html.twig', [
+            'title' => 'Suivi inscriptions',
+            'event' => $event,
+            'chartConf' => $chart,
+            'pieChartConf' => $pieChartConf,
+            'stats' => $stats,
+            'seats' => [
+                'available' => $event->getSeats(),
+                'one' => $ticketsDayOne,
+                'two' => $ticketsDayTwo
+            ]
+        ]);
+    }
+
+    public function exportAnonymousDataAction(Request $request)
+    {
+        if ($request->getMethod() === Request::METHOD_POST) {
+            if ($this->isCsrfTokenValid('event_anonymous_export', $request->request->get('token')) === false) {
+                $this->addFlash('error', 'Token invalide');
+            } else {
+                $data = $this->get('app.event_anonymous_export')->exportData();
+
+                $response = new StreamedResponse(function () use ($data) {
+                    $handle = fopen('php://output', 'w+');
+                    // Nom des colonnes du CSV
+                    fputcsv($handle, ['Label',
+                        'Event'
+                    ], ';');
+
+                    //Champs
+                    foreach ($data as $row) {
+                        fputcsv($handle, [$row['label'],
+                            $row['event']
+                        ], ';');
+                    }
+
+                    fclose($handle);
+                });
+
+                $response->setStatusCode(200);
+                $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+                $response->headers->set('Content-Disposition', 'attachment; filename="inscriptions.csv"');
+
+                return $response;
+            }
+        }
+        return $this->render(':admin/event:export_anonymous.html.twig', [
+            'title' => 'Export anonymisé des données d\'inscriptions',
+            'token' => $this->get('security.csrf.token_manager')->getToken('event_anonymous_export')
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function pendingBankwiresAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        if ($event === null) {
+            throw $this->createNotFoundException('Could not find event');
+        }
+
+        $invoiceRepository = $this->get('app.invoice_repository');
+
+        if ($request->getMethod() === Request::METHOD_POST) {
+            if ($this->isCsrfTokenValid('admin_event_bankwires', $request->request->get('token')) === false) {
+                $this->addFlash('error', 'Erreur de token CSRF, veuillez réessayer');
+            } else {
+                $reference = $request->request->get('bankwireReceived');
+                $invoice = $this->get('app.invoice_repository')->getByReference($reference);
+                if ($invoice === null) {
+                    throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $reference));
+                }
+                $this->setInvoicePaid($event, $invoice);
+            }
+        }
+
+        $pendingBankwires = $invoiceRepository->getPendingBankwires($event);
+
+        return $this->render(':admin/event:bankwires.html.twig', [
+            'pendingBankwires' => $pendingBankwires,
+            'event' => $event,
+            'title' => 'Virements en attente',
+            'token' => $this->get('security.csrf.token_manager')->getToken('admin_event_bankwires')
+        ]);
     }
 
     /**
@@ -197,5 +439,48 @@ class AdminEventController extends Controller
         }
 
         return $event;
+    }
+
+    private function setInvoicePaid(Event $event, Invoice $invoice)
+    {
+        $invoice
+            ->setStatus(Ticket::STATUS_PAID)
+            ->setPaymentDate(new \DateTime())
+        ;
+        $this->get('app.invoice_repository')->save($invoice);
+        $tickets = $this->get('app.ticket_repository')->getByReference($invoice->getReference());
+
+        /**
+         * @var $forumFacturation Facturation
+         */
+        $forumFacturation = $this->get('app.legacy_model_factory')->createObject(Facturation::class);
+        $forumFacturation->envoyerFacture($invoice->getReference());
+
+        $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
+
+        $mailer = $this->get('app.mail');
+        $logger = $this->get('logger');
+        foreach ($tickets as $ticket) {
+            /**
+             * @var $ticket Ticket
+             */
+            $ticket
+                ->setStatus(Ticket::STATUS_PAID)
+                ->setInvoiceStatus(Ticket::INVOICE_SENT)
+            ;
+            $this->get('app.ticket_repository')->save($ticket);
+
+            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
+                $receiver = [
+                    'email' => $ticket->getEmail(),
+                    'name'  => $ticket->getLabel(),
+                ];
+
+                if (!$mailer->send($event->getMailTemplate(), $receiver, [])) {
+                    $logger->addWarning(sprintf('Mail not sent for inscription %s', $ticket->getEmail()));
+                }
+                return 1;
+            });
+        }
     }
 }

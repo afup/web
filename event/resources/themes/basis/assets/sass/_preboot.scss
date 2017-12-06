@@ -1,0 +1,129 @@
+// _preboot.scss
+// Variables and mixins
+
+// Variables
+// --------------------------------------------------
+
+//Descriptive colors
+$bg-light:			#fefefe;
+$bg-lightgray:		#f3f4f5;
+$accent:			#18a374;
+$detail-lightgray:	#b1b7ba;
+$detail-black:		#13171a;
+$detail-basegray:	#484b50;
+$detail-washedgray:	#859093;
+
+//Functional colors
+$a:					$bg-light;
+$b:					$bg-lightgray;
+$d:					$accent;
+$e:					$detail-lightgray;
+$f:					$detail-black;
+$i:					$detail-basegray;
+$k:					$detail-washedgray;
+
+//Fonts
+$sans: 				Arimo, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$mono: 				'Andale Mono', AndaleMono, Consolas, Monaco, monospace;
+
+//Break points
+$one:				600px;
+$two:				800px;
+
+//Grid
+$width:				940px;
+$col:				86px;
+$gut:				36px;
+
+//Baseline
+$base: 				20px;
+
+//Element
+$indent:			1.5em;
+$rule: 				1px solid $b;
+
+// Mixins
+// --------------------------------------------------
+
+@mixin no-select {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	   	-ms-user-select: none;
+	   		user-select: none;
+}
+
+@mixin border-radius($radius: 2px) {
+	-webkit-border-radius: $radius;
+		 -moz-border-radius: $radius;
+			  border-radius: $radius;
+}
+
+@mixin for($media) {
+	@if $media == small-screens {
+		@media screen and (min-width: $one) { @content; }
+	}
+	@else if $media == medium-screens {
+		@media screen and (min-width: $two) { @content; }
+	}
+}
+
+$baseline-px: 16px;
+
+@mixin rem($property, $px-values) {
+	// Convert the baseline into rems
+	$baseline-rem: $baseline-px / 1rem;
+	// Print the first line in pixel values
+	#{$property}: $px-values;
+	// If there is only one (numeric) value, return the property/value line for it.
+	@if type-of($px-values) == "number" {
+		#{$property}: $px-values / $baseline-rem; }
+	@else {
+		// Create an empty list that we can dump values into
+		$rem-values: unquote("");
+		@each $value in $px-values {
+			// If the value is zero, return 0
+			@if $value == 0 {
+				$rem-values: append($rem-values, $value); }
+			@else {
+				$rem-values: append($rem-values, $value / $baseline-rem); } }
+		// Return the property and its list of converted values
+		#{$property}: $rem-values; } }
+
+/*---------------------------------------------------------
+ Extends (_preboot.scss)
+-------------------------------------------------------- */
+.clear {
+	zoom: 1;
+	&:before,
+	&:after {
+		display: table;
+		content: "";
+	}
+	&:after {
+		clear: both;
+	}
+}
+.break {
+	word-break: break-word;
+	word-wrap: break-word;
+}
+.box-size {
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	   		box-sizing: border-box;
+}
+.small-type {
+	@include for(small-screens) {
+		@include rem('font-size', 13px);
+	}
+	@include rem('font-size', 15px);
+}
+/*---------------------------------------------------------
+ Custom color classes (_preboot.scss)
+-------------------------------------------------------- */
+.basis-primary-text {
+	color: $d;
+}
+.basis-primary-background {
+	background-color: $d;
+}

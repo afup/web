@@ -69,7 +69,7 @@ if ($action == 'lister') {
 } elseif ($action == 'envoi_bienvenue') {
     $password = $personnes_physiques->generatePassword($_GET['id']);
     $data = $personnes_physiques->obtenir($_GET['id'], 'prenom, nom, email, login');
-    if ($personnes_physiques->sendWelcomeMailWithData($data['prenom'], $data['nom'], $data['login'], $password, $data['email'])) {
+    if ($personnes_physiques->sendWelcomeMailWithData($data['prenom'], $data['nom'], $data['login'], $data['email'])) {
         Logs::log('Envoi d\'un message de bienvenue à la personne physique ' . $_GET['id']);
         afficherMessage('Un mail de bienvenue a été envoyé à la personne physique', 'index.php?page=personnes_physiques&action=lister');
     } else {
@@ -79,6 +79,9 @@ if ($action == 'lister') {
     $personnes_morales = new Personnes_Morales($bdd);
     $pays = new Pays($bdd);
 
+    /**
+     * @var $formulaire HTML_QuickForm
+     */
     $formulaire = &instancierFormulaire();
     if ($action == 'ajouter') {
         $mot_de_passe = md5(time());
@@ -100,6 +103,7 @@ if ($action == 'lister') {
     } else {
         $champs = $personnes_physiques->obtenir($_GET['id']);
         unset($champs['mot_de_passe']);
+
         $formulaire->setDefaults($champs);
     }
 
@@ -159,6 +163,7 @@ if ($action == 'lister') {
     }
     $formulaire->addElement('password', 'mot_de_passe' , 'Mot de passe' , array('size' => 30, 'maxlength' => 30));
     $formulaire->addElement('password', 'confirmation_mot_de_passe', '' , array('size' => 30, 'maxlength' => 30));
+    $formulaire->addElement('textarea', 'roles', 'Roles',  array('cols' => 42, 'rows' => 5));
 
     $formulaire->addElement('header' , 'boutons' , '');
     $formulaire->addElement('submit' , 'soumettre' , ucfirst($action));
@@ -172,6 +177,10 @@ if ($action == 'lister') {
     $formulaire->addRule('ville' , 'Ville manquante' , 'required');
     $formulaire->addRule('login' , 'Login manquant' , 'required');
     $formulaire->addRule(array('mot_de_passe', 'confirmation_mot_de_passe'), 'Le mot de passe et sa confirmation ne concordent pas', 'compare');
+
+    if ($formulaire->isSubmitted() && !empty($formulaire->exportValue('roles')) && json_decode($formulaire->exportValue('roles')) === null) {
+        $formulaire->setElementError('roles', 'Les roles ne sont pas valides');
+    }
 
     if ($formulaire->validate()) {
         if ($action == 'ajouter') {
@@ -228,7 +237,8 @@ if ($action == 'lister') {
                 $formulaire->exportValue('telephone_fixe'),
                 $formulaire->exportValue('telephone_portable'),
                 $formulaire->exportValue('etat'),
-                $formulaire->exportValue('compte_svn'));
+                $formulaire->exportValue('compte_svn'),
+                $formulaire->exportValue('roles'));
         }
 
         if ($ok) {

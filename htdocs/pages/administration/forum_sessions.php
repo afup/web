@@ -90,11 +90,6 @@ if ($action == 'lister') {
     }
 
 } elseif ($action == 'commenter') {
-    $journees = array();
-    $journees[1] = 'Fonctionnel';
-    $journees[2] = 'Technique';
-    $journees[3] = 'Les deux';
-
     $genres = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
 
     $formulaire = &instancierFormulaire();
@@ -116,7 +111,6 @@ if ($action == 'lister') {
         );
     }
     $formulaire->addElement('static', 'date_soumission', 'Soumission'     , $champs['date_soumission']);
-    $formulaire->addElement('static', 'journee'        , 'Public visé'    , $journees[$champs['journee']]);
     $formulaire->addElement('static', 'genre'          , 'Type de session', $genres[$champs['genre']]);
 
     $formulaire->addElement('header', null, 'Commentaires');
@@ -177,10 +171,6 @@ if ($action == 'lister') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } elseif ($action == 'voter') {
-    $journees = array();
-    $journees[1] = 'Fonctionnel';
-    $journees[2] = 'Technique';
-    $journees[3] = 'Les deux';
 
     $genres = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
 
@@ -198,7 +188,6 @@ if ($action == 'lister') {
     	$formulaire->addElement('static', 'conferencier_id_'.$conferencier['conferencier_id'], 'Conférencier', $conferencier['nom'].' '.$conferencier['prenom'].' ('.$conferencier['societe'].')');
     }
     $formulaire->addElement('static', 'date_soumission', 'Soumission'     , $champs['date_soumission']);
-    $formulaire->addElement('static', 'journee'        , 'Public visé'    , $journees[$champs['journee']]);
     $formulaire->addElement('static', 'genre'          , 'Type de session', $genres[$champs['genre']]);
 
     $formulaire->addElement('header', null, 'Commentaires');
@@ -295,26 +284,26 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'titre'          , 'Titre' , array('size' => 40, 'maxlength' => 80));
     $formulaire->addElement('textarea', 'abstract'       , 'Résumé', array('cols' => 40, 'rows' => 15,'class'=>'tinymce'));
 
+    $typesLabelsByKey = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
+    asort($typesLabelsByKey);
     $groupe = array();
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'journee', null, 'Fonctionnel', 1);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'journee', null, 'Technique'  , 2);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'journee', null, 'Les deux'   , 3);
-    $formulaire->addGroup($groupe, 'groupe_pres', "Public visé", '<br />', false);
-
-    $groupe = array();
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (40 min)', 1);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (20 min)', 3);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Keynote'            , 4);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Lightning Talk'            , 5);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Clinique'            , 6);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Atelier'            , 2);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Projet'            , 9);
+    foreach ($typesLabelsByKey as $genreKey => $genreLabel) {
+        $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, $genreLabel, $genreKey);
+    }
     $formulaire->addGroup($groupe, 'groupe_type_pres', "Type de session", '<br />', false);
 
     $groupe = array();
     $groupe[] = &HTML_QuickForm::createElement('radio', 'plannifie', null, 'Oui', 1);
     $groupe[] = &HTML_QuickForm::createElement('radio', 'plannifie', null, 'Non', 0);
     $formulaire->addGroup($groupe, 'groupe_plannifie', "Plannifi&eacute;", '<br />', false);
+
+    $groupe = array();
+
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'skill', null, 'N/A', Talk::SKILL_NA);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'skill', null, 'Junior', Talk::SKILL_JUNIOR);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'skill', null, 'Medior', Talk::SKILL_MEDIOR);
+    $groupe[] = &HTML_QuickForm::createElement('radio', 'skill', null, 'Senior', Talk::SKILL_SENIOR);
+    $formulaire->addGroup($groupe, 'groupe_skill', "Niveau", '<br />', false);
 
     $formulaire->addElement('checkbox'    , 'needs_mentoring'          , "Demande a bénéficier du programme d'accompagnement des jeunes speakers");
 
@@ -363,13 +352,16 @@ if ($action == 'lister') {
 		$valeurs = $formulaire->exportValues();
 
 		if ($action == 'ajouter') {
-			$session_id = $forum_appel->ajouterSession($valeurs['id_forum'],
-                                                       $valeurs['date_soumission']['Y'].'-'.$valeurs['date_soumission']['M'].'-'.$valeurs['date_soumission']['d'],
-			                                           $valeurs['titre'],
-			                                           $valeurs['abstract'],
-			                                           $valeurs['journee'],
-			                                           $valeurs['genre'],
-			                                           $valeurs['plannifie']);
+			$session_id = $forum_appel->ajouterSession(
+			    $valeurs['id_forum'],
+                $valeurs['date_soumission']['Y'].'-'.$valeurs['date_soumission']['M'].'-'.$valeurs['date_soumission']['d'],
+                $valeurs['titre'],
+                $valeurs['abstract'],
+                $valeurs['genre'],
+                $valeurs['plannifie'],
+                $valeurs['needs_mentoring'],
+                $valeurs['skill']
+            );
 			$ok = (bool)$session_id;
         } else {
             $session_id = (int)$_GET['id'];
@@ -378,14 +370,15 @@ if ($action == 'lister') {
                                                 $valeurs['date_soumission']['Y'].'-'.$valeurs['date_soumission']['M'].'-'.$valeurs['date_soumission']['d'],
 			                                    $valeurs['titre'],
 			                                    $valeurs['abstract'],
-			                                    $valeurs['journee'],
 			                                    $valeurs['genre'],
 			                                    $valeurs['plannifie'],
                                                 $valeurs['joindin'],
                                                 $valeurs['youtube_id'],
                                                 $valeurs['slides_url'],
                                                 $valeurs['blog_post_url'],
-                                                $valeurs['language_code']
+                                                $valeurs['language_code'],
+                                                $valeurs['skill'],
+                                                $valeurs['needs_mentoring']
             );
             $forum_appel->delierSession($session_id);
         }

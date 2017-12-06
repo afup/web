@@ -4,7 +4,6 @@ use Afup\Site\Pagination;
 
 require_once dirname(__FILE__) . '/config.dist.php';
 require_once dirname(__FILE__) . '/../../sources/Afup/Bootstrap/Simpletest/Unit.php';
-require_once 'smarty/Smarty.class.php';
 
 $smarty = new Smarty();
 $smarty->template_dir = (dirname(__FILE__).'/../../htdocs/templates/site/');

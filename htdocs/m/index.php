@@ -1,3 +1,3 @@
 <?php
 // Redirect pour line court pendant le Forum
-header('Location: http://event.afup.org/forum-php-2016/planning/');
+header('Location: https://event.afup.org/forumphp2017/planning/');

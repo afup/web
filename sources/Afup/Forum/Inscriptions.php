@@ -154,75 +154,59 @@ SQL;
         $id_forum_precedent = $forum->obtenirPrecedent($id_forum);
         $id_forum_precedent = $forum->obtenirPrecedent($id_forum_precedent);
 
-        $requete = 'SELECT ';
-        $requete .= '  COUNT(*) as nombre, ';
-        $requete .= '  UNIX_TIMESTAMP(FROM_UNIXTIME(date, \'%Y-%m-%d\')) as jour, ';
-        $requete .= '  id_forum ';
-        $requete .= 'FROM';
-        $requete .= '  afup_inscription_forum i ';
-        $requete .= 'WHERE ';
-        $requete .= '  i.id_forum IN (' . (int)$id_forum . ', ' . (int)$id_forum_precedent . ') ';
-        $requete .= 'AND ';
-        $requete .= '  etat <> 1 ';
-        $requete .= 'GROUP BY jour, id_forum ';
-        $requete .= 'ORDER BY jour DESC ';
+        $now = new \DateTime();
+        $dateForum = \DateTime::createFromFormat('U', $forum->obtenir($id_forum)['date_fin_vente']);
+
+        $daysToEndOfSales = 0;
+        if ($dateForum >= $now) {
+            $daysToEndOfSales = $dateForum->diff($now)->format('%r%a');
+        }
+
+        $requete = 'SELECT 
+          COUNT(*) as nombre, 
+          DATEDIFF(FROM_UNIXTIME(date, \'%Y-%m-%d\'), FROM_UNIXTIME(af.date_fin_vente, \'%Y-%m-%d\')) as jour,
+          id_forum
+        FROM
+          afup_inscription_forum i
+        RIGHT JOIN afup_forum_tarif aft ON (aft.id = i.type_inscription AND aft.default_price > 0)
+        LEFT JOIN afup_forum af ON af.id = i.id_forum
+        WHERE
+          i.id_forum IN (' . (int)$id_forum . ', ' . (int)$id_forum_precedent . ') 
+        AND 
+          etat <> 1 
+        GROUP BY jour, i.id_forum 
+        HAVING jour < 0
+        ORDER BY jour ASC ';
         $nombre_par_date = $this->_bdd->obtenirTous($requete);
 
-        foreach ($nombre_par_date as $nombre) {
-            $inscrits[$nombre['id_forum']][$nombre['jour']] = $nombre['nombre'];
+        $suivis = [];
+
+        for($i = $nombre_par_date[0]['jour']; $i <= 0; $i++) {
+            $infoForum = array_sum(array_map(function ($info) use ($i, $id_forum) {
+                if ($info['id_forum'] == $id_forum && $info['jour'] <= $i) {
+                    return $info['nombre'];
+                }
+                return 0;
+            }, $nombre_par_date));
+            $infoN1 = array_sum(array_map(function ($info) use ($i, $id_forum_precedent) {
+                if ($info['id_forum'] == $id_forum_precedent && $info['jour'] <= $i) {
+                    return $info['nombre'];
+                }
+                return 0;
+            }, $nombre_par_date));
+            $suivis[$i] = [
+                'jour' => $i,
+                'n' => $daysToEndOfSales >= $i ? $infoForum : null,
+                'n_1' => $infoN1
+            ];
         }
 
-        if (!isset($inscrits[$id_forum])) {
-            // Pas encore d'inscrits
-            return false;
-        }
-
-        $debut = $forum->obtenirDebut($id_forum);
-        $debut_precedent = $forum->obtenirDebut($id_forum_precedent);
-
-        $premiere_inscription = min(array_keys($inscrits[$id_forum]));
-        $premiere_inscription_precedent = min(array_keys($inscrits[$id_forum_precedent]));
-
-        $debut_jd = gregoriantojd(date("m", $debut), date("d", $debut), date("Y", $debut));
-        $premiere_inscription_jd = gregoriantojd(date("m", $premiere_inscription), date("d", $premiere_inscription), date("Y", $premiere_inscription));
-
-        $debut_precedent_jd = gregoriantojd(date("m", $debut_precedent), date("d", $debut_precedent), date("Y", $debut_precedent));
-        $premiere_inscription_precedent_jd = gregoriantojd(date("m", $premiere_inscription_precedent), date("d", $premiere_inscription_precedent), date("Y", $premiere_inscription_precedent));
-
-        $ecart = max($debut_jd - $premiere_inscription_jd, $debut_precedent_jd - $premiere_inscription_precedent_jd);
-
-        $suivis = array();
-        $total_cumule = 0;
-        $total_cumule_precedent = 0;
-        $aujourdhui = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
-        for ($i = $ecart; $i--; $i == 0) {
-            $jour = mktime(0, 0, 0, date("m", $debut), date("d", $debut) - $i, date("Y", $debut));
-            if (isset($inscrits[$id_forum][$jour])) {
-                $total_cumule += $inscrits[$id_forum][$jour];
-            }
-
-            $jour_precedent = mktime(0, 0, 0, date("m", $debut_precedent), date("d", $debut_precedent) - $i, date("Y", $debut_precedent));
-            if (isset($inscrits[$id_forum_precedent][$jour_precedent])) {
-                $total_cumule_precedent += $inscrits[$id_forum_precedent][$jour_precedent];
-            }
-
-            if ($jour < $aujourdhui) {
-                $periode = "avant";
-            } elseif ($jour > $aujourdhui) {
-                $periode = "apres";
-            } else {
-                $periode = "aujourdhui";
-            }
-
-            $suivis[] = array(
-                'periode' => $periode,
-                'jour' => date("d/m/Y", $jour),
-                'n' => $total_cumule,
-                'n_1' => $total_cumule_precedent,
-            );
-        }
-
-        return $suivis;
+        return [
+            'suivi' => $suivis,
+            'min' => $nombre_par_date[0]['jour'],
+            'max' => $i,
+            'daysToEndOfSales' => $daysToEndOfSales
+        ];
     }
 
     function obtenirListePourEmargement($id_forum = null)

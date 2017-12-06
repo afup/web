@@ -1,0 +1,709 @@
+# Copyright (C) 2013 The Theme Foundry
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Basis 1.0.15\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tags/build\n"
+"POT-Creation-Date: 2013-12-05 01:05:17+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: 404.php:13
+msgid "404: Page not found"
+msgstr ""
+
+#: 404.php:15
+msgid "We are terribly sorry, but nothing exists at this URL:"
+msgstr ""
+
+#: 404.php:16
+msgid "Try searching the site:"
+msgstr ""
+
+#: _pagination-index.php:10
+msgid "Newer posts"
+msgstr ""
+
+#: _pagination-index.php:13
+msgid "Older posts"
+msgstr ""
+
+#: _post-category.php:9
+msgid "From: %s"
+msgstr ""
+
+#: _post-content.php:9 functions.php:856
+msgid "Read more"
+msgstr ""
+
+#: _post-sticky.php:8 functions/options.php:107
+msgid "Featured"
+msgstr ""
+
+#: _post-tag.php:9
+msgid "Tagged: "
+msgstr ""
+
+#: _post-title.php:11
+msgid "Link to the full post"
+msgstr ""
+
+#: _posts-none.php:15
+msgid "Sorry, your search for &#8216;%s&#8217; did not return any results."
+msgstr ""
+
+#: _posts-none.php:17
+msgid "Sorry, there is no content here."
+msgstr ""
+
+#: _posts.php:15 _posts.php:33
+msgid "Read the full post"
+msgstr ""
+
+#: _posts.php:16 _posts.php:34 functions.php:1018 single.php:25 single.php:33
+msgid "F jS, Y"
+msgstr ""
+
+#: attachment.php:17
+msgid "Return"
+msgstr ""
+
+#: attachment.php:42
+msgid "Previous"
+msgstr ""
+
+#: attachment.php:43
+msgid "Next"
+msgstr ""
+
+#: comments.php:20
+msgid "One response to <span>%2$s</span>"
+msgid_plural "%1$s responses to <span>%2$s</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: comments.php:28
+msgid "Older comments"
+msgstr ""
+
+#: comments.php:29
+msgid "Newer comments"
+msgstr ""
+
+#: comments.php:34
+msgid "Comments are closed."
+msgstr ""
+
+#: footer.php:19
+msgid "Proudly powered by %s"
+msgstr ""
+
+#: footer.php:20
+msgid "Theme: %1$s by %2$s."
+msgstr ""
+
+#: footer.php:22
+msgid "Theme info"
+msgstr ""
+
+#: footer.php:22
+msgid "by"
+msgstr ""
+
+#: footer.php:22
+msgid "The Theme Foundry home page"
+msgstr ""
+
+#: functions/avatar.php:90 functions/functions-wpcom.php:18
+msgid "Basis Mystery Person"
+msgstr ""
+
+#: functions/help.php:52
+msgid "Help"
+msgstr ""
+
+#: functions/help.php:53
+msgid ""
+"This feature is unavailable for this page while using the current page "
+"template."
+msgstr ""
+
+#: functions/help.php:79
+msgid "Page Templates"
+msgstr ""
+
+#: functions/help.php:97
+msgid "Here is how to make the most out of each of the page templates in %s:"
+msgstr ""
+
+#: functions/help.php:98
+msgid "Default template:"
+msgstr ""
+
+#: functions/help.php:100
+msgid ""
+"Set a featured image. This will create a column to the left of the content "
+"where the image will appear."
+msgstr ""
+
+#: functions/help.php:101
+msgid ""
+"Add content to the description field of the featured image, and it will "
+"appear beneath the image in the left column."
+msgstr ""
+
+#: functions/help.php:103
+msgid "Slideshow template:"
+msgstr ""
+
+#: functions/help.php:105
+msgid "Add slides. For each one:"
+msgstr ""
+
+#: functions/help.php:107
+msgid ""
+"Set a background image that is at least <strong>800 pixels</strong> wide."
+msgstr ""
+
+#: functions/help.php:108
+msgid ""
+"Add text to the Title field for a short statement in large letters. Add text "
+"to the content editor for a longer content block in a smaller font."
+msgstr ""
+
+#: functions/help.php:109
+msgid ""
+"Add a button URL and label if you want the slide to link to somewhere else."
+msgstr ""
+
+#: functions/help.php:112
+msgid "Arrange the slides. Drag and drop them into the order you want."
+msgstr ""
+
+#: functions/help.php:114
+msgid "Product template:"
+msgstr ""
+
+#: functions/help.php:116
+msgid "Add sections:"
+msgstr ""
+
+#: functions/help.php:118
+msgid ""
+"For best results and a visually interesting layout, add a variety of section "
+"types."
+msgstr ""
+
+#: functions/help.php:119
+msgid ""
+"<em>Banner</em>: Make sure the background image is at least <strong>800 "
+"pixels</strong> wide."
+msgstr ""
+
+#: functions/help.php:120
+msgid ""
+"<em>Feature</em>: Drag and drop the featured image to switch the side on "
+"which it will appear."
+msgstr ""
+
+#: functions/help.php:121
+msgid "<em>Profile</em>: Drag and drop the columns to change their order."
+msgstr ""
+
+#: functions/help.php:124
+msgid "Arrange the sections. Drag and drop them into the order you want."
+msgstr ""
+
+#: functions/help.php:126
+msgid ""
+"Check out the <a href=\"%1$s\" target=\"_blank\">%2$s tutorial</a> for more "
+"information."
+msgstr ""
+
+#: functions/logo.php:93
+msgid "Logo"
+msgstr ""
+
+#: functions/logo.php:114
+msgid "Regular Logo"
+msgstr ""
+
+#: functions/logo.php:138
+msgid "Retina Logo"
+msgstr ""
+
+#: functions/options-helpers.php:36
+msgid "RSS"
+msgstr ""
+
+#: functions/options.php:31
+msgid "Accent Color"
+msgstr ""
+
+#: functions/options.php:58
+msgid "Theme"
+msgstr ""
+
+#: functions/options.php:71
+msgid "Display"
+msgstr ""
+
+#: functions/options.php:81
+msgid "Footer"
+msgstr ""
+
+#: functions/options.php:118
+msgid "Sticky post label"
+msgstr ""
+
+#: functions/options.php:139
+msgid "Enable simple archive view"
+msgstr ""
+
+#: functions/options.php:173
+msgid "Show the footer widgets"
+msgstr ""
+
+#: functions/options.php:176
+msgid "Everywhere"
+msgstr ""
+
+#: functions/options.php:177
+msgid "Everywhere but my front page"
+msgstr ""
+
+#: functions/options.php:178
+msgid "On my front page only"
+msgstr ""
+
+#: functions/options.php:199
+msgid "Footer Text"
+msgstr ""
+
+#: functions/options.php:220
+msgid "Twitter URL"
+msgstr ""
+
+#: functions/options.php:241
+msgid "Facebook URL"
+msgstr ""
+
+#: functions/options.php:262
+msgid "Google&#43; URL"
+msgstr ""
+
+#: functions/options.php:283
+msgid "Flickr URL"
+msgstr ""
+
+#: functions/options.php:304
+msgid "Pinterest URL"
+msgstr ""
+
+#: functions/options.php:325
+msgid "LinkedIn URL"
+msgstr ""
+
+#: functions/options.php:346
+msgid "RSS URL"
+msgstr ""
+
+#: functions/tinymce.php:35
+msgid "Introduction"
+msgstr ""
+
+#: functions/tinymce.php:40
+msgid "Alert"
+msgstr ""
+
+#: functions/tinymce.php:45
+msgid "Button Link"
+msgstr ""
+
+#: functions.php:72
+msgid "Header Menu"
+msgstr ""
+
+#: functions.php:109
+msgid "Sidebar"
+msgstr ""
+
+#: functions.php:110
+msgid ""
+"Widgets placed here will appear in a sidebar to the right of your content on "
+"the blog. If you do not place any widgets here, no sidebar will be shown, "
+"and the blog will use a full-width layout."
+msgstr ""
+
+#: functions.php:119
+msgid "Left Footer Column"
+msgstr ""
+
+#: functions.php:120
+msgid "Widgets placed here will appear in the left column of your site footer."
+msgstr ""
+
+#: functions.php:129
+msgid "Right Footer Column"
+msgstr ""
+
+#: functions.php:130
+msgid ""
+"Widgets placed here will appear in the right column of your site footer."
+msgstr ""
+
+#: functions.php:182
+msgctxt "Arimo font: on or off"
+msgid "on"
+msgstr ""
+
+#: functions.php:319
+msgid "Page %d"
+msgstr ""
+
+#: functions.php:388
+msgid "Show Menu"
+msgstr ""
+
+#: functions.php:395
+msgid "Hide Menu"
+msgstr ""
+
+#: functions.php:547
+msgid "Archive"
+msgstr ""
+
+#: functions.php:550 functions.php:554 functions.php:556 functions.php:558
+msgid "From <strong>%s</strong>"
+msgstr ""
+
+#: functions.php:552
+msgid "Tagged <strong>%s</strong>"
+msgstr ""
+
+#: functions.php:563
+msgid "By <strong>%s</strong>"
+msgstr ""
+
+#: functions.php:568
+msgid "<strong>%s</strong> archive"
+msgstr ""
+
+#: functions.php:571
+msgid "%1$d result for: &#8216;<strong>%2$s</strong>&#8217;"
+msgid_plural "%1$d results for &#8216;<strong>%2$s</strong>&#8217;"
+msgstr[0] ""
+msgstr[1] ""
+
+#: functions.php:776
+msgid "Comments are closed"
+msgstr ""
+
+#: functions.php:784
+msgid "No comments"
+msgstr ""
+
+#: functions.php:791
+msgid "%d comment"
+msgid_plural "%d comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: functions.php:813
+msgid ""
+"This post is password protected. To view it please enter your password below:"
+msgstr ""
+
+#: functions.php:818
+msgid "Password"
+msgstr ""
+
+#: functions.php:819
+msgid "Submit"
+msgstr ""
+
+#: functions.php:839
+msgid " &hellip;"
+msgstr ""
+
+#: functions.php:907
+msgctxt "plural noun"
+msgid "Leave a reply"
+msgstr ""
+
+#: functions.php:913
+msgid ""
+"Basic <abbr title=\"Hypertext Markup Language\">HTML</abbr> is allowed. Your "
+"email address will not be published."
+msgstr ""
+
+#: functions.php:921
+msgid "Name"
+msgstr ""
+
+#: functions.php:931
+msgid "Email"
+msgstr ""
+
+#: functions.php:941
+msgid "Website"
+msgstr ""
+
+#: functions.php:956
+msgid "Begin message here&hellip;"
+msgstr ""
+
+#: functions.php:995
+msgid "Post Author"
+msgstr ""
+
+#: functions.php:999 functions.php:1038
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: functions.php:1015
+msgid "Link to this comment"
+msgstr ""
+
+#: functions.php:1174
+msgid "Full Width"
+msgstr ""
+
+#: header.php:48
+msgid "Home"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:105
+msgid "Banner"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:106
+msgid "A full-width background image with custom text and an optional button."
+msgstr ""
+
+#: includes/html-builder/html-builder.php:110
+msgid "Feature"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:111
+msgid ""
+"A featured image accompanied on the left or right side by a narrow column of "
+"text."
+msgstr ""
+
+#: includes/html-builder/html-builder.php:115
+msgid "Profile"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:116
+msgid "Three sortable columns, each featuring an image, title and text."
+msgstr ""
+
+#: includes/html-builder/html-builder.php:120
+msgid "Text"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:121
+msgid "A blank canvas for standard content or HTML code."
+msgstr ""
+
+#: includes/html-builder/html-builder.php:140
+msgid "Page Builder"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:149
+msgid "Slideshow Builder"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:229
+#: includes/html-builder/html-builder.php:1068
+msgid "Slide"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:958
+msgid "Hide the site header on this page"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:984
+msgid "Set featured image"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:985
+msgid "Remove featured image"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:986
+msgid "Featured Image"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:987
+msgid "Use as Featured Image"
+msgstr ""
+
+#: includes/html-builder/html-builder.php:1168
+msgid "Add Media"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:11
+#: includes/html-builder/templates/slide.php:11
+msgid "Set background image"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:12
+#: includes/html-builder/templates/slide.php:12
+msgid "Remove background image"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:13
+#: includes/html-builder/templates/slide.php:13
+msgid "Background image"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:14
+#: includes/html-builder/templates/slide.php:14
+msgid "Use as Background Image"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:21
+#: includes/html-builder/templates/slide.php:21
+msgid "Button"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:23
+#: includes/html-builder/templates/slide.php:23
+msgid "Enter URL here"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:26
+#: includes/html-builder/templates/slide.php:26
+msgid "Enter label here"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:28
+#: includes/html-builder/templates/slide.php:29
+msgid "Background"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:32
+#: includes/html-builder/templates/slide.php:33
+msgid "Darken to improve readability"
+msgstr ""
+
+#: includes/html-builder/templates/banner.php:41
+#: includes/html-builder/templates/feature.php:36
+#: includes/html-builder/templates/profile.php:24
+#: includes/html-builder/templates/slide.php:42
+#: includes/html-builder/templates/text.php:6
+msgid "Enter title here"
+msgstr ""
+
+#: includes/html-builder/templates/feature.php:9
+#: includes/html-builder/templates/feature.php:26
+#: includes/html-builder/templates/profile.php:8
+msgid "Drag-and-drop this column into place"
+msgstr ""
+
+#: includes/html-builder/templates/feature.php:14
+#: includes/html-builder/templates/feature.php:31
+#: includes/html-builder/templates/profile.php:13
+msgid "Enter link here"
+msgstr ""
+
+#: includes/html-builder/templates/menu-product.php:7
+msgid "Add"
+msgstr ""
+
+#: includes/html-builder/templates/menu-product.php:26
+msgid "Add New Section"
+msgstr ""
+
+#: includes/html-builder/templates/menu-slideshow.php:2
+msgid "Add Slide"
+msgstr ""
+
+#: includes/html-builder/templates/section-footer.php:2
+msgid "Remove"
+msgstr ""
+
+#: includes/html-builder/templates/section-header.php:21
+msgid "Click to toggle"
+msgstr ""
+
+#: includes/unbox/template-unbox.php:3
+msgid "Thank you!"
+msgstr ""
+
+#: includes/unbox/template-unbox.php:8
+msgid ""
+"Thanks for choosing %1$s. It really means the world to us here at The Theme "
+"Foundry."
+msgstr ""
+
+#: includes/unbox/template-unbox.php:18
+msgid ""
+"To get started, be sure to read your <a target=\"_blank\" href=\"%1$s"
+"\">theme's documentation</a>. If you have any questions, please stop by our "
+"<a target=\"_blank\" href=\"%2$s\">support forums</a>."
+msgstr ""
+
+#: includes/unbox/template-unbox.php:30
+msgid "Click to close this message"
+msgstr ""
+
+#: includes/unbox/template-unbox.php:35
+msgid "Corey, Drew, Jennifer, Scott, and Zack"
+msgstr ""
+
+#: searchform.php:8
+msgid "Search"
+msgstr ""
+
+#: single.php:52
+msgid "Read next post"
+msgstr ""
+
+#: single.php:52
+msgid "Next post"
+msgstr ""
+
+#: single.php:53
+msgid "Read previous post"
+msgstr ""
+
+#: single.php:53
+msgid "Previous post"
+msgstr ""
+
+#. Theme Name of the plugin/theme
+msgid "Basis"
+msgstr ""
+
+#. Theme URI of the plugin/theme
+msgid "http://thethemefoundry.com/wordpress-themes/basis/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"A professional business theme with flexible drag and drop layouts and "
+"stunning slideshows."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "The Theme Foundry"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://thethemefoundry.com/"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Product Template"
+msgstr ""
+
+#. Template Name of the plugin/theme
+msgid "Slideshow Template"
+msgstr ""

@@ -18,6 +18,7 @@ class Talk implements NotifyPropertyInterface
     const TYPE_LIGHTNING_TALK = 5;
     const TYPE_CLINIC = 6;
     const TYPE_PHP_PROJECT = 9;
+    const TYPE_SPEAKER_INTRODUCTIONS = 7;
 
     const SKILL_JUNIOR = 1;
     const SKILL_MEDIOR = 2;
@@ -55,6 +56,11 @@ class Talk implements NotifyPropertyInterface
      * @Assert\NotBlank()
      */
     private $abstract;
+
+    /**
+     * @var string
+     */
+    private $staffNotes;
 
     /**
      * @var bool
@@ -199,6 +205,27 @@ class Talk implements NotifyPropertyInterface
     {
         $this->propertyChanged('abstract', $this->abstract, $abstract);
         $this->abstract = $abstract;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStaffNotes()
+    {
+        return $this->staffNotes;
+    }
+
+    /**
+     * @param string $staffNotes
+     *
+     * @return $this
+     */
+    public function setStaffNotes($staffNotes)
+    {
+        $this->propertyChanged('staffNotes', $this->staffNotes, $staffNotes);
+        $this->staffNotes = $staffNotes;
+
         return $this;
     }
 
@@ -486,6 +513,7 @@ class Talk implements NotifyPropertyInterface
             self::TYPE_LIGHTNING_TALK => 'Lightning Talk',
             self::TYPE_CLINIC => 'Clinique',
             self::TYPE_PHP_PROJECT => 'Projet PHP',
+            self::TYPE_SPEAKER_INTRODUCTIONS => 'Introductions des speakers',
         ];
     }
 
@@ -511,7 +539,9 @@ class Talk implements NotifyPropertyInterface
      */
     public function isDisplayedOnHistory()
     {
-        return $this->getType() != self::TYPE_CLINIC;
+        $type = $this->getType();
+
+        return $type != self::TYPE_CLINIC && $type != self::TYPE_SPEAKER_INTRODUCTIONS;
     }
 
     /**

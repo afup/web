@@ -264,3 +264,7 @@ services:
     app.lead_repository:
         class: AppBundle\Event\Model\Repository\LeadRepository
         autowire: true
+
+    app.event_anonymous_export:
+        class: AppBundle\Event\AnonymousExport
+        autowire: true

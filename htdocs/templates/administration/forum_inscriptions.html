@@ -68,43 +68,12 @@
 
     <br/>
 
-    <strong>Nombre de personnes validées par type d'inscription</strong>
-
-    <ul>
-        <li>
-            Journée fonctionnelle :
-            {$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_PREMIERE_JOURNEE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE]}
-            <em>dont {$statistiques.types_inscriptions.payants[$smarty.const.AFUP_FORUM_PREMIERE_JOURNEE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE]} payants</em>
-        </li>
-        <li>
-            Journée technique :
-            {$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_DEUXIEME_JOURNEE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE]}
-            <em>dont {$statistiques.types_inscriptions.payants[$smarty.const.AFUP_FORUM_DEUXIEME_JOURNEE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE]} payants</em>
-        </li>
-        <li>Deux jours :
-            {$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_PREVENTE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_COUPON]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_PROF]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_INVITATION]}
-            <em>dont {$statistiques.types_inscriptions.payants[$smarty.const.AFUP_FORUM_2_JOURNEES]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_PREVENTE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_COUPON]} payants</em>
-        </li>
-        <li>
-            Deux jours (membre AFUP) : {$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_AFUP]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION]}
-            <em>dont {$statistiques.types_inscriptions.payants[$smarty.const.AFUP_FORUM_2_JOURNEES_AFUP]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION]} payants</em>
-        </li>
-        <li>Deux jours (etudiant) :
-            {$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_ETUDIANT]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE]}
-            <em>dont {$statistiques.types_inscriptions.payants[$smarty.const.AFUP_FORUM_2_JOURNEES_ETUDIANT]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE]} payants</em>
-        </li>
-        <li>Organisation, sponsor, presse, conférencier &amp; projets (non payants) :
-            {$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_ORGANISATION]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_SPONSOR]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_PRESSE]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_CONFERENCIER]+$statistiques.types_inscriptions.inscrits[$smarty.const.AFUP_FORUM_PROJET]}
-        </li>
-    </ul>
-    <br/>
-
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
     <a href="index.php?page=forum_inscriptions&amp;action=ajouter&amp;id_forum={$id_forum}" title="Ajouter une inscription">Ajouter une inscription</a><br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
     <a href="index.php?page=forum_inscriptions&amp;action=envoyer_convocation&amp;id_forum={$id_forum}" title="Ajouter une inscription">Envoyer convocation</a><br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?page=forum_badge&amp;action=export&amp;id_forum={$id_forum}" title="Exporter les inscriptions">Exporter les insctriptions</a><br />
+    <a href="index.php?page=forum_badge&amp;action=export&amp;id_forum={$id_forum}" title="Exporter les inscriptions">Exporter les inscriptions</a><br />
     <br/>
     <table>
       <form method="GET" name="filtre">
@@ -188,6 +157,9 @@
                 {else}
                     <td></td>
                 {/if}
+        <td>
+            <a target="_blank" onclick="javascript:var prix=prompt('prix ?', '25'); if (prix) this.href='/pages/event-payment/elephpant.php?ref=elephpant-{$inscription.id}&forum={$id_forum}&email={$inscription.email}&prix=' + prix;">PAY</a>
+        </td>
         </tr>
     {foreachelse}
         <tr>

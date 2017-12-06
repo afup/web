@@ -482,10 +482,6 @@ ul.liste_membres li {
 }
 ul.liste_membres li td { white-space: normal; }
 
-ul.sparklines li span.minimum { color: #f00; }
-ul.sparklines li span.maximum { color: #0f0; }
-ul.sparklines li span.dernier { color: #000; }
-
 /* Agenda Forum */
 
 div.bloc_jour .keynote p { text-align: center; }
@@ -846,11 +842,11 @@ form[name=sponsor_ticket]{
     border: 1px solid #ccc;
     background: #eee
 }
-form[name=sponsor_ticket] #sponsor_ticket div{
+form[name=sponsor_ticket] #sponsor_ticket div, form[name=sponsor_token] div{
     margin: 0.5em 0;
 }
 
-form[name=sponsor_ticket] #sponsor_ticket div label{
+form[name=sponsor_ticket] #sponsor_ticket div label, form[name=sponsor_token] div label{
     display: inline-block;
     min-width: 200px;
     font-weight: 700;
@@ -859,7 +855,7 @@ form[name=sponsor_ticket] #sponsor_ticket div label{
     color: #333
 }
 
-form[name=sponsor_ticket] #sponsor_ticket div input{
+form[name=sponsor_ticket] #sponsor_ticket div input, form[name=sponsor_token] div input{
     min-width: 300px;
     padding: .2em 0 .2em .2em;
     border: 1px solid #ccc;
@@ -879,4 +875,34 @@ form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[
     font-weight: normal;
     margin: 0;
     display: inline-block;
+}
+
+.event--stats-togo-container{
+    width:100%;
+    border:1px grey solid;
+    height:7em;
+    background-color:#50a0dd;
+}
+
+.event--stats-togo-container .event--stats-togo{
+    background-color:#2d8000;
+    height:100%;
+    z-index:900;
+}
+
+.event--stats-togo-container .event--stats-togo-text {
+    position:absolute;
+    width:100%;
+    z-index:1000;
+    text-align:center;
+    font-size:2rem;
+    color:white;
+}
+
+.event--stats-togo-container .event--stats-togo-text span{
+    display:block;
+}
+
+.tab--filterable th a{
+    color: #333 !important;
 }

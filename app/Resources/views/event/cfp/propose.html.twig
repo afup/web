@@ -10,6 +10,7 @@
         {{ form(form) }}
         <p>* {{ 'Le code de conduite est <a href="http://event.afup.org/code-de-conduite/" target="_blank">disponible en ligne</a>.'|trans|raw }}
             {{ 'En tant que conférencier, j\'accepte d\'être filmé et photographié gratuitement au profit exclusif de l\'AFUP, pour diffusion sur internet ou sur tout autre support de communication diffusé notamment en Europe, pour une durée de 10 ans après ma conférence.'|trans }}</p>
+        <p>** {{ 'Ces notes facultatives peuvent contenir des informations sur votre conférence que vous ne voudriez pas voir apparaitre sur le système de vote et dans le programme'|trans }}.</p>
     </div>
     {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
 {% endblock %}

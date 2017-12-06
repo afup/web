@@ -2,10 +2,12 @@
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkToSpeaker;
 use CCMBenchmark\Ting\Query\QueryException;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -13,6 +15,24 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TalkToSpeakersRepository extends Repository implements MetadataInitializer
 {
+    public function getNumberOfSpeakers(Event $event, \DateTime $since = null)
+    {
+        $sql = 'SELECT COUNT(distinct conferencier_id) AS count 
+                FROM afup_conferenciers_sessions
+                JOIN afup_sessions ON (afup_conferenciers_sessions.session_id = afup_sessions.session_id)
+                WHERE id_forum = :event
+        ';
+        $params = ['event' => $event->getId()];
+        if (null !== $since) {
+            $sql .= ' AND afup_sessions.date_soumission >= :since ';
+            $params['since'] = $since->format('Y-m-d');
+        }
+        $query = $this->getQuery($sql);
+        $query->setParams($params);
+
+        return $query->query($this->getCollection(new HydratorArray()))->first()['count'];
+    }
+
     /**
      * @param Talk $talk
      * @param Speaker[] $speakers

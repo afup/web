@@ -137,7 +137,7 @@ class Planete_Billet
         $contenu_tronque = $purifier->purify($contenu_tronque);
 
         if ($est_tronque) {
-            $contenu_tronque .= "<p><a href=\"" . $url . "\">la suite...</a></p>";
+            $contenu_tronque .= "<p><a class=\"btn\" href=\"" . $url . "\">Voir la suite</a></p>";
         }
 
         return $contenu_tronque;

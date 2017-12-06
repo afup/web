@@ -1,0 +1,124 @@
+/*---------------------------------------------------------
+ 9. Comments (_comments.scss)
+-------------------------------------------------------- */
+#comments-wrapper {
+	background-color: $b;
+	@include rem('padding-bottom', $base);
+	@extend .clear;
+	.post-content {
+		background-color: transparent; //reset
+	}
+}
+#respond,
+#comments {
+	@extend .small-type;
+}
+/*---------------------------------------------------------
+ Comment details (_comments.scss)
+-------------------------------------------------------- */
+.comment {
+	list-style: none; //reset
+	&:first-of-type {
+		padding-top: 0; //reset
+	}
+	.children {
+		@include for(medium-screens) {
+			@include rem('padding-left', 64px+($gut/2));
+		}
+		margin-left: 0; //reset
+	}
+	.depth-4 .children {
+		padding-left: 0; //reset
+	}
+	.avatar {
+		@include for(medium-screens) {
+			display: block;
+		}
+		display: none;
+		float: left;
+		width: 64px;
+		@include border-radius(50%);
+	}
+}
+.comment-name {
+	display: inline-block;
+	font-weight: 700;
+	@include rem('margin-bottom', $base/2);
+}
+.comment-date {
+	float: right;
+	color: $e;
+	text-decoration: none; //reset
+}
+.comment-label {
+	position: relative;
+	@include rem('top', -1px);
+	@include rem('margin-left', 4px);
+}
+.comment-notice {
+	color: $e;
+}
+.comment-content,
+.comment-reply-link {
+	@include for(medium-screens) {
+		@include rem('margin-left', 64px+($gut/2));
+	}
+	@include rem('margin-bottom', $base*2);
+	@include rem('padding-top', $base/2);
+}
+.comment-reply-title {
+	@include rem('padding-bottom', $base);
+}
+#cancel-comment-reply-link {
+	font-weight: 400; //reset
+	border-left: $rule;
+	@include rem('padding-left', 6px);
+}
+#comment-headline {
+	@include rem('margin', $base 0);
+	span {
+		&:before {
+			content: "\2018";
+		}
+		&:after {
+			content: "\2019";
+		}
+	}
+}
+#comments-nav {
+	width: 100%;
+	@include rem('margin-bottom', $base*2);
+	@extend .clear;
+}
+/*---------------------------------------------------------
+ Pingbacks / trackbacks (_comments.scss)
+-------------------------------------------------------- */
+.pingback,
+.trackback {
+	padding-top: 0; //reset
+	list-style: none; //reset
+}
+/*---------------------------------------------------------
+ Respond form (_comments.scss)
+-------------------------------------------------------- */
+.respond-type {
+	width: 100%;
+}
+.comment-guidelines {
+	display: block;
+	color: $e;
+}
+.respond-body {
+	margin: 0; //reset
+	border-bottom: $rule;
+	@include rem('padding-bottom', $base*2);
+}
+#respond {
+	.form-submit,
+	input[type="submit"] {
+		margin-bottom: 0; //reset
+	}
+	li + & {
+		@include rem('margin-bottom', $base*3);
+	}
+}

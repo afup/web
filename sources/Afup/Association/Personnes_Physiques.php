@@ -239,7 +239,7 @@ SQL;
      * @return bool Succès de la modification
      */
     function modifier($id, $id_personne_morale, $login, $mot_de_passe, $niveau, $niveau_modules, $civilite, $nom, $prenom,
-                      $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn)
+                      $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn, $roles)
     {
         $erreur = $this->loginExists($id, $login);
         $erreur = $erreur || !$this->_companyExists($id_personne_morale);
@@ -269,6 +269,12 @@ SQL;
             $requete .= '  telephone_fixe=' . $this->_bdd->echapper($telephone_fixe) . ',';
             $requete .= '  telephone_portable=' . $this->_bdd->echapper($telephone_portable) . ',';
             $requete .= '  etat=' . $this->_bdd->echapper($etat) . ',';
+            if ($roles !== null) {
+                if (@json_decode($roles) === null) {
+                    return false;
+                }
+                $requete .= '  roles=' . $this->_bdd->echapper($roles) . ',';
+            }
             $requete .= '  compte_svn=' . $this->_bdd->echapper($compte_svn) . ' ';
             $requete .= 'WHERE';
             $requete .= '  id=' . $id;
@@ -421,13 +427,13 @@ SQL;
         return false;
     }
 
-    public function sendWelcomeMailWithData($firstName, $lastName, $login, $password, $email)
+    public function sendWelcomeMailWithData($firstName, $lastName, $login, $email)
     {
         $mail = new Mail();
         return $mail->send(
             'confirmation-cr-ation-de-compte',
             ['email' => $email, 'name' => sprintf('%s %s', $firstName, $lastName)],
-            ['login' => $login, 'password' => $password]
+            ['login' => $login]
         );
     }
 

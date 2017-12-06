@@ -1,0 +1,49 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+
+{% block content %}
+    <h2>Suivi des ventes: {{ event.title }}</h2>
+    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+    <div id="container"></div>
+
+    <h3>Jours de vente restants</h3>
+    <div class="event--stats-togo-container">
+        {% set percentage = ( (stats.min - stats.daysToEndOfSales) / stats.min * 100)|round %}
+        <div class="event--stats-togo-text">
+            <span class="event--stats-percentage">{{ percentage }}%</span>
+            <span class="event--stats-days">{{ stats.daysToEndOfSales * -1 }} jours restants sur {{ stats.min * -1 }}</span>
+        </div>
+        <div class="event--stats-togo" style="width:{{ percentage }}%"></div>
+    </div>
+
+    <h3>Progression des ventes: Jour 1</h3>
+    <div class="event--stats-togo-container">
+        {% set percentage = ( (seats.one) / seats.available * 100)|round %}
+        <div class="event--stats-togo-text">
+            <span class="event--stats-percentage">{{ percentage }}%</span>
+            <span class="event--stats-days">{{ seats.one }} places vendues sur {{ seats.available }}</span>
+        </div>
+        <div class="event--stats-togo" style="width:{{ percentage }}%"></div>
+    </div>
+    <h3>Progression des ventes: Jour 2</h3>
+    <div class="event--stats-togo-container">
+        {% set percentage = ( (seats.two) / seats.available * 100)|round %}
+        <div class="event--stats-togo-text">
+            <span class="event--stats-percentage">{{ percentage }}%</span>
+            <span class="event--stats-days">{{ seats.two }} places vendues sur {{ seats.available }}</span>
+        </div>
+        <div class="event--stats-togo" style="width:{{ percentage }}%"></div>
+    </div>
+
+    <h3>Répartition des billets</h3>
+    <div id="pieChartContainer">
+
+    </div>
+
+
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script>
+        var chartLines = new Highcharts.Chart( {{ chartConf|json_encode|raw }} );
+        var chartPie = new Highcharts.Chart('pieChartContainer', {{ pieChartConf | json_encode | raw }});
+    </script>
+{% endblock %}

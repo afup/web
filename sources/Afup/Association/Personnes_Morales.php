@@ -109,24 +109,24 @@ class Personnes_Morales
      * @access public
      * @return bool     Succès de l'ajout
      */
-    function ajouter($civilite, $nom, $prenom, $email, $raison_sociale, $siret, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat)
+    function ajouter($civilite, $nom, $prenom, $email, $raison_sociale, $siret, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $max_members)
     {
-        $requete = 'INSERT INTO ';
-        $requete .= '  afup_personnes_morales (civilite, nom, prenom, email, raison_sociale, siret, adresse, code_postal, ville, id_pays, telephone_fixe, telephone_portable, etat) ';
-        $requete .= 'VALUES (';
-        $requete .= $civilite . ',';
-        $requete .= $this->_bdd->echapper($nom) . ',';
-        $requete .= $this->_bdd->echapper($prenom) . ',';
-        $requete .= $this->_bdd->echapper($email) . ',';
-        $requete .= $this->_bdd->echapper($raison_sociale) . ',';
-        $requete .= $this->_bdd->echapper($siret) . ',';
-        $requete .= $this->_bdd->echapper($adresse) . ',';
-        $requete .= $this->_bdd->echapper($code_postal) . ',';
-        $requete .= $this->_bdd->echapper($ville) . ',';
-        $requete .= $this->_bdd->echapper($id_pays) . ',';
-        $requete .= $this->_bdd->echapper($telephone_fixe) . ',';
-        $requete .= $this->_bdd->echapper($telephone_portable) . ',';
-        $requete .= $etat . ')';
+        $requete = 'INSERT INTO
+        afup_personnes_morales (civilite, nom, prenom, email, raison_sociale, siret, adresse, code_postal, ville, id_pays, telephone_fixe, telephone_portable, etat, max_members)
+        VALUES (' . $civilite . ', ' .
+        $this->_bdd->echapper($nom) . ', ' .
+        $this->_bdd->echapper($prenom) . ', ' .
+        $this->_bdd->echapper($email) . ', ' .
+        $this->_bdd->echapper($raison_sociale) . ', ' .
+        $this->_bdd->echapper($siret) . ', ' .
+        $this->_bdd->echapper($adresse) . ', ' .
+        $this->_bdd->echapper($code_postal) . ', ' .
+        $this->_bdd->echapper($ville) . ', ' .
+        $this->_bdd->echapper($id_pays) . ', ' .
+        $this->_bdd->echapper($telephone_fixe) . ', ' .
+        $this->_bdd->echapper($telephone_portable) . ', ' .
+        $this->_bdd->echapper($etat) . ', ' .
+        $this->_bdd->echapper($max_members) . ')';
         return $this->_bdd->executer($requete);
 
     }
@@ -145,26 +145,28 @@ class Personnes_Morales
      * @access public
      * @return bool     Succès de l'ajout
      */
-    function modifier($id, $civilite, $nom, $prenom, $email, $raison_sociale, $siret, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat)
+    function modifier($id, $civilite, $nom, $prenom, $email, $raison_sociale, $siret, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $max_members = null)
     {
-        $requete = 'UPDATE ';
-        $requete .= '  afup_personnes_morales ';
-        $requete .= 'SET';
-        $requete .= '  civilite=' . $civilite . ',';
-        $requete .= '  nom=' . $this->_bdd->echapper($nom) . ',';
-        $requete .= '  prenom=' . $this->_bdd->echapper($prenom) . ',';
-        $requete .= '  email=' . $this->_bdd->echapper($email) . ',';
-        $requete .= '  raison_sociale=' . $this->_bdd->echapper($raison_sociale) . ',';
-        $requete .= '  siret=' . $this->_bdd->echapper($siret) . ',';
-        $requete .= '  adresse=' . $this->_bdd->echapper($adresse) . ',';
-        $requete .= '  code_postal=' . $this->_bdd->echapper($code_postal) . ',';
-        $requete .= '  ville=' . $this->_bdd->echapper($ville) . ',';
-        $requete .= '  id_pays=' . $this->_bdd->echapper($id_pays) . ',';
-        $requete .= '  telephone_fixe=' . $this->_bdd->echapper($telephone_fixe) . ',';
-        $requete .= '  telephone_portable=' . $this->_bdd->echapper($telephone_portable) . ',';
-        $requete .= '  etat=' . $this->_bdd->echapper($etat) . ' ';
-        $requete .= 'WHERE';
-        $requete .= '  id=' . $id;
+        $requete  = 'UPDATE 
+          afup_personnes_morales 
+        SET
+          civilite=' . $civilite . ',
+          nom=' . $this->_bdd->echapper($nom) . ',
+          prenom=' . $this->_bdd->echapper($prenom) . ',
+          email=' . $this->_bdd->echapper($email) . ',
+          raison_sociale=' . $this->_bdd->echapper($raison_sociale) . ',
+          siret=' . $this->_bdd->echapper($siret) . ',
+          adresse=' . $this->_bdd->echapper($adresse) . ',
+          code_postal=' . $this->_bdd->echapper($code_postal) . ',
+          ville=' . $this->_bdd->echapper($ville) . ',
+          id_pays=' . $this->_bdd->echapper($id_pays) . ',
+          telephone_fixe=' . $this->_bdd->echapper($telephone_fixe) . ',
+          telephone_portable=' . $this->_bdd->echapper($telephone_portable) . ',
+          etat=' . $this->_bdd->echapper($etat) ;
+        if ($max_members !== null) {
+            $requete .= ', max_members = ' . $this->_bdd->echapper($max_members);
+        }
+        $requete .= 'WHERE  id=' . (int)$id;
         return $this->_bdd->executer($requete);
     }
 

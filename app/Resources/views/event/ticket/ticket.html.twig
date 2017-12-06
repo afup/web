@@ -16,6 +16,17 @@
     {% endspaceless %}
 {% endblock form_errors %}
 
+{% block metas %}
+    {{ parent() }}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@afup" />
+    <meta name="twitter:title" content="Prenez votre place pour le {{ event.title }}" />
+    <meta name="twitter:description" content="Ne manquez pas le grand rendez-vous de la communauté PHP, {{ event.dateStart|date('d') }}-{{ event.dateEnd|date('d') }} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM') }}." />
+    {% if event.logoUrl %}
+        <meta name="twitter:image" content="{{ event.logoUrl }}" />
+    {% endif %}
+{% endblock %}
+
 {% block form_row %}
     <div class="form_row">
         {{ form_errors(form) }}
@@ -32,6 +43,7 @@
 {% block content %}
     {# @todo #}
     <script src="{{ asset('templates/site/js/vendor/jquery-1.8.0.min.js') }}"></script>
+    <script src="https://wzrd.in/standalone/formdata-polyfill@latest"></script>
     <script src="{{ asset('js/inscription.js') }}"></script>
 
     <script type="text/javascript">
@@ -92,8 +104,7 @@
                         <ul class="tickets--type-list">
                             {% set endDate = null %}
                             {% for type in ticket.ticketEventType %}
-                                {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null %}<hr />{% endif %}
-                                <li>
+                                <li {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null %}class="tickets--type-list-emphasis" {% endif %}>
                                     {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null and endDate > currentDate %}
                                         Vous souhaitez soutenir l'AFUP ? Vous pouvez prendre ces billets dès aujourd’hui.
                                     {% endif %}
@@ -186,6 +197,14 @@
 
         <fieldset class="f8 boutons">
             <legend>Récapitulatif <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div id="fieldset--8" class="fieldset--inner">
+
+                <div>
+                    <p>Une fois votre commande effectuée, <strong>chaque participant recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
+                        Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'événement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.<br>
+                        Le jour J il leur suffira de se présenter à l'accueil badges <strong>avec une pièce d'identité</strong>.
+                    </p>
+                </div>
+
                 <div class="clearfix">
                     <div class="input">
                         <div id="summary">

@@ -17,10 +17,26 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TalkRepository extends Repository implements MetadataInitializer
 {
-    public function getNumberOfTalksByEvent(Event $event)
+    public function getNumberOfTalksByEvent(Event $event, \DateTime $since = null)
     {
-        $query = $this->getQuery('SELECT COUNT(session_id) AS talks FROM afup_sessions WHERE id_forum = :event');
-        $query->setParams(['event' => $event->getId()]);
+        return $this->getNumberOfTalksByEventAndLanguage($event, null, $since);
+    }
+
+    public function getNumberOfTalksByEventAndLanguage(Event $event, $languageCode = null, \DateTime $since = null)
+    {
+        $sql = 'SELECT COUNT(session_id) AS talks FROM afup_sessions WHERE id_forum = :event';
+        $params = ['event' => $event->getId()];
+        if (null !== $since) {
+            $sql .= ' AND date_soumission >= :since ';
+            $params['since'] = $since->format('Y-m-d');
+        }
+        if (null !== $languageCode) {
+            $sql .= ' AND language_code = :language ';
+            $params['language'] = $languageCode;
+        }
+        $query = $this->getQuery($sql);
+        $query->setParams($params);
+
         return $query->query($this->getCollection(new HydratorArray()))->first();
     }
 
@@ -101,13 +117,38 @@ class TalkRepository extends Repository implements MetadataInitializer
      * @param Event $event
      * @return \CCMBenchmark\Ting\Repository\CollectionInterface
      */
-    public function getByEventWithSpeakers(Event $event)
+    public function getByTalkWithSpeakers(Talk $talk)
     {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
         $query = $this->getPreparedQuery(
             'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie,
+            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.biographie,
+            planning.debut, planning.fin, room.id, room.nom
+            FROM afup_sessions AS talk
+            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
+            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
+            LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
+            LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
+            WHERE talk.session_id = :talk AND plannifie = 1
+            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC '
+        )->setParams(['talk' => $talk->getId()]);
+
+        return $query->query($this->getCollection($hydrator));
+    }
+
+    /**
+     * @param Event $event
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getByEventWithSpeakers(Event $event)
+    {
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('talk', 'speaker', 'getId');
+
+        $query = $this->getPreparedQuery(
+            'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, 
             planning.debut, planning.fin, room.id, room.nom
             FROM afup_sessions AS talk
@@ -164,6 +205,11 @@ class TalkRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'abstract',
                 'fieldName' => 'abstract',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'staff_notes',
+                'fieldName' => 'staffNotes',
                 'type' => 'string'
             ])
             ->addField([

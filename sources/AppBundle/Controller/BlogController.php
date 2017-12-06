@@ -12,6 +12,7 @@ use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TicketEventType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BlogController extends EventBaseController
@@ -151,6 +152,9 @@ class BlogController extends EventBaseController
         $eventPlanning = [];
         $rooms = [];
 
+        $hourMin = null;
+        $hourMax = null;
+
         foreach ($talks as $talkWithData) {
             /**
              * @var $talk Talk
@@ -175,8 +179,18 @@ class BlogController extends EventBaseController
             if (isset($eventPlanning[$startDay]) === false) {
                 $eventPlanning[$startDay] = [];
             }
+            $dateStart = $planning->getStart()->setTimezone(new \DateTimeZone('Europe/Paris'));
+            $start = $dateStart->format('d/m/Y H:i');
 
-            $start = $planning->getStart()->setTimezone(new \DateTimeZone('Europe/Paris'))->format('d/m/Y H:i');
+            $dateEnd = $planning->getEnd()->setTimezone(new \DateTimeZone('Europe/Paris'));
+
+            if ($dateStart->format('H') < $hourMin || $hourMin === null) {
+                $hourMin = $dateStart->format('H');
+            }
+            if ($dateEnd->format('H') > $hourMax || $hourMax === null) {
+                $hourMax = $dateEnd->format('H');
+            }
+
 
             if (isset($eventPlanning[$startDay][$start])=== false) {
                 $eventPlanning[$startDay][$start] = [];
@@ -198,10 +212,40 @@ class BlogController extends EventBaseController
                     'planning' => $eventPlanning,
                     'event' => $event,
                     'rooms' => $rooms,
-                    'hourMin' => 8,
-                    'hourMax' => 17,
+                    'hourMin' => $hourMin,
+                    'hourMax' => $hourMax,
                     'precision' => 5
                 ]
+        );
+    }
+
+    public function talkWidgetAction(Request $request)
+    {
+        /**
+         * @var $talkRepository TalkRepository
+         */
+        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+
+        $talks = $talkRepository->getBy(['id' => explode(',', $request->get('ids'))]);
+
+        $speakers = [];
+        $talksInfos = [];
+        foreach ($talks as $talk) {
+            foreach ($talkRepository->getByTalkWithSpeakers($talk) as $row) {
+                $talksInfos[] = $row;
+                foreach ($row['.aggregation']['speaker'] as $speaker) {
+                    $speakers[$speaker->getId()] = $speaker;
+                }
+            }
+        }
+
+        return $this->render(
+            ':blog:talk.html.twig',
+            [
+                'talks_infos' => $talksInfos,
+                'speakers' => $speakers,
+                'widget_type' => $request->get('type', 'all')
+            ]
         );
     }
 

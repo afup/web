@@ -56,8 +56,6 @@ if (empty($sous_site) and strpos($_SERVER['HTTP_HOST'], "planete") !== false) {
 
 // initialisation de Smarty, le moteur de template (html)
 
-require_once 'smarty/Smarty.class.php';
-
 $smarty = new Smarty;
 $smarty->template_dir  = array(
     AFUP_CHEMIN_RACINE . 'templates/' . $sous_site . '/',
