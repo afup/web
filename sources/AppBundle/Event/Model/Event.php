@@ -230,6 +230,10 @@ class Event implements NotifyPropertyInterface
      */
     public function getDateEndVote()
     {
+        if (null === $this->dateEndVote) {
+            return $this->getDateEndCallForPapers();
+        }
+
         return $this->dateEndVote;
     }
 
