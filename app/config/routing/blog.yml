@@ -14,10 +14,6 @@ planning:
   path: /{eventSlug}/planning
   defaults: {_controller: AppBundle:Blog:planning}
 
-test_json:
-  path: /{eventSlug}/json
-  defaults: {_controller: AppBundle:Blog:testJson}
-
 talk_widget:
   path: /talk_widget
   defaults: {_controller: AppBundle:Blog:talkWidget}
