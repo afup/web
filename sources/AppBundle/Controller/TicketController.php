@@ -230,8 +230,8 @@ class TicketController extends EventBaseController
             'ticketForm' => $purchaseForm->createView(),
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
             'soldTicketsForMember' => $this->get('app.ticket_repository')->getTotalOfSoldTicketsByMember(
-                $user->isMemberForCompany() ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
-                $user->isMemberForCompany() ? $user->getCompanyId() : $user->getId(),
+                ($user !== null && $user->isMemberForCompany()) ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
+                ($user !== null && $user->isMemberForCompany()) ? $user->getCompanyId() : $user->getId(),
                 $event->getId()
             )
         ]);
