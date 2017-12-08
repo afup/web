@@ -154,6 +154,16 @@ class EventRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'logoUrl',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'place_name',
+                'fieldName' => 'placeName',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'place_address',
+                'fieldName' => 'placeAddress',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;

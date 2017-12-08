@@ -80,6 +80,16 @@ class Event implements NotifyPropertyInterface
     private $logoUrl;
 
     /**
+     * @var string
+     */
+    private $placeName;
+
+    /**
+     * @var string
+     */
+    private $placeAddress;
+
+    /**
      * @return int
      */
     public function getId()
@@ -365,6 +375,44 @@ class Event implements NotifyPropertyInterface
         $this->propertyChanged('logoUrl', $this->logoUrl, $logoUrl);
         $this->logoUrl = $logoUrl;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceName()
+    {
+        return $this->placeName;
+    }
+
+    /**
+     * @param string $placeName
+     * @return Event
+     */
+    public function setPlaceName($placeName)
+    {
+        $this->propertyChanged('placeName', $this->placeName, $placeName);
+        $this->placeName = $placeName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceAddress()
+    {
+        return $this->placeAddress;
+    }
+
+    /**
+     * @param string $placeAddress
+     * @return Event
+     */
+    public function setPlaceAddress($placeAddress)
+    {
+        $this->propertyChanged('placeAddress', $this->placeAddress, $placeAddress);
+        $this->placeAddress = $placeAddress;
         return $this;
     }
 }

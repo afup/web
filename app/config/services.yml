@@ -68,6 +68,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
 
+    app.talk_repository:
+        class: AppBundle\Event\Model\Repository\TalkRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TalkRepository]
+
     app.company_member_repository:
         class: AppBundle\Association\Model\Repository\CompanyMemberRepository
         factory: ["@ting", get]
@@ -267,4 +272,8 @@ services:
 
     app.event_anonymous_export:
         class: AppBundle\Event\AnonymousExport
+        autowire: true
+
+    app.event_json_ld:
+        class: AppBundle\Event\JsonLd
         autowire: true

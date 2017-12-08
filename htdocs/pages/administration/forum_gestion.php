@@ -76,6 +76,8 @@ if ($action == 'lister') {
     $formulaire->addElement('text'  , 'trello_list_id'       , 'Liste trello pour les leads'        , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'logo_url'             , "URL du logo de l'événement"         , array('size' => 30, 'maxlength' => 255));
     $formulaire->addElement('text'  , 'nb_places'            , 'Nombre de places'                   , array('size' => 30, 'maxlength' => 100));
+    $formulaire->addElement('text'  , 'place_name'           , 'Nom du lieu'                        , array('size' => 30, 'maxlength' => 255));
+    $formulaire->addElement('text'  , 'place_address'        , 'Adresse du lieu'                    , array('size' => 30, 'maxlength' => 255));
     $formulaire->addElement('date'  , 'date_debut'           , 'Date de début'                      , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin'             , 'Date de fin'                        , array('language' => 'fr', 'format' => "dMY", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_appel_projet', 'Date de fin de l\'appel aux projets', array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
@@ -110,7 +112,9 @@ if ($action == 'lister') {
                 $formulaire->exportValue('path'),
                 ['fr' => $formulaire->exportValue('cfp_fr'), 'en' => $formulaire->exportValue('cfp_en')],
                 $formulaire->exportValue('trello_list_id'),
-                $formulaire->exportValue('logo_url')
+                $formulaire->exportValue('logo_url'),
+                $formulaire->exportValue('place_name'),
+                $formulaire->exportValue('place_address')
             );
             $id_forum = $forums->obtenirDernier();
         } else {
@@ -129,7 +133,9 @@ if ($action == 'lister') {
                 $formulaire->exportValue('path'),
                 ['fr' => $formulaire->exportValue('cfp_fr'), 'en' => $formulaire->exportValue('cfp_en')],
                 $formulaire->exportValue('trello_list_id'),
-                $formulaire->exportValue('logo_url')
+                $formulaire->exportValue('logo_url'),
+                $formulaire->exportValue('place_name'),
+                $formulaire->exportValue('place_address')
             );
         }
 
