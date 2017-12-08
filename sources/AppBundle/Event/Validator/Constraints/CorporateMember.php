@@ -11,11 +11,11 @@ use Symfony\Component\Validator\Constraint;
 class CorporateMember extends Constraint
 {
     public $messageNotLoggedIn = 'You must be connected to order this ticket.';
-    public $messageBadMail = 'This email is not a valid member of your company. Please check your membership.';
     public $messageFeeOutOfDate = 'You must have paid your membership fee to order this ticket.';
+    public $messageTooMuchRestrictedTickets = 'You cannot order as many tickets at the discounted rate.';
 
     public function getTargets()
     {
-        return self::CLASS_CONSTRAINT;
+        return self::PROPERTY_CONSTRAINT;
     }
 }

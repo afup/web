@@ -3,6 +3,7 @@
 namespace AppBundle\Event\Model;
 
 use Afup\Site\Utils\Pays;
+use AppBundle\Event\Validator\Constraints as AfupAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -116,6 +117,7 @@ class Invoice implements NotifyPropertyInterface
     /**
      * @var Ticket[]
      * @Assert\Valid()
+     * @AfupAssert\CorporateMember(groups={"corporate"})
      */
     private $tickets = [];
 
