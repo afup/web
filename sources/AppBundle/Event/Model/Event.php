@@ -52,6 +52,11 @@ class Event implements NotifyPropertyInterface
     /**
      * @var \DateTime
      */
+    private $dateEndVote;
+
+    /**
+     * @var \DateTime
+     */
     private $dateEndPreSales;
 
     /**
@@ -227,6 +232,29 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('dateEndCallForPapers', $this->dateEndCallForPapers, $dateEndCallForPapers);
         $this->dateEndCallForPapers = $dateEndCallForPapers;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateEndVote()
+    {
+        if (null === $this->dateEndVote) {
+            return $this->getDateEndCallForPapers();
+        }
+
+        return $this->dateEndVote;
+    }
+
+    /**
+     * @param \DateTime $dateEndVote
+     * @return Event
+     */
+    public function setDateEndVote(\DateTime $dateEndVote = null)
+    {
+        $this->propertyChanged('dateEndVote', $this->dateEndVote, $dateEndVote);
+        $this->dateEndVote = $dateEndVote;
         return $this;
     }
 

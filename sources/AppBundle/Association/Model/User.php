@@ -125,6 +125,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $lastSubscription;
 
     /**
+     * @var CompanyMember
+     */
+    private $company;
+
+    /**
      * @return int
      */
     public function getId()
@@ -484,6 +489,32 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         if ($sub !== null) {
             $this->lastSubscription = \DateTimeImmutable::createFromFormat('U', $sub);
         }
+    }
+
+    /**
+     * @return CompanyMember
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param CompanyMember $company
+     * @return User
+     */
+    public function setCompany(CompanyMember $company)
+    {
+        $this->company = $company;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMemberForCompany()
+    {
+        return ($this->companyId !== null && $this->companyId > 0);
     }
 
     /**

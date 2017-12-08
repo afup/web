@@ -1,1 +1,7 @@
 'Another entity exists for this data: {{ data }}': 'Un autre compte existe avec cette information: {{ data }}'
+'You cannot order as many tickets at the discounted rate': 'Vous ne pouvez pas commander autant de billets au tarif réduit'
+'You must be connected to order this ticket.': 'Vous devez être connecté pour commander ce ticket.'
+'You must have paid your membership fee to order this ticket.': 'Vous devez être à jour de cotisation pour commander ce ticket.'
+'This ticket is not available anymore.': "Ce ticket n'est plus disponible."
+'You must use the same email for your ticket and you membership.': "Vous devez utiliser l'adresse email liée à votre adhésion pour ce billet."
+'You must be connected with a valid membership to order this ticket.': "Vous devez être connecté et avoir une adhésion en cours de validité pour commander ce billet"

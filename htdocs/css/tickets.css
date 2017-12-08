@@ -164,6 +164,11 @@ div.tickets--bankwire{
     display: none;
     margin-left:200px;
 }
+
+div.tickets--errors ul.tickets--errors{
+    margin-left: 1em;
+}
+
 ul.tickets--errors, #fieldset--7 div{
     margin-left:200px;
 }

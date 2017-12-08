@@ -696,6 +696,7 @@ CODE_HTML;
         $date_fin,
         $date_fin_appel_projet,
         $date_fin_appel_conferencier,
+        $date_fin_vote,
         $date_fin_prevente,
         $date_fin_vente,
         $chemin_template,
@@ -707,7 +708,7 @@ CODE_HTML;
     ) {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum (id, titre, nb_places, date_debut, date_fin, annee, date_fin_appel_projet,';
-        $requete .= '  date_fin_appel_conferencier, date_fin_prevente, date_fin_vente, path, `text`, `trello_list_id`,
+        $requete .= '  date_fin_appel_conferencier, date_fin_vote, date_fin_prevente, date_fin_vente, path, `text`, `trello_list_id`,
         `logo_url`, `place_name`, `place_address`) ';
         $requete .= 'VALUES (null,';
         $requete .= $this->_bdd->echapper($titre) . ',';
@@ -717,6 +718,7 @@ CODE_HTML;
         $requete .= (int)$date_debut['Y'] . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vote, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true) . ',';
         $requete .= $this->_bdd->echapper($chemin_template, true) . ',';
@@ -738,7 +740,8 @@ CODE_HTML;
         $date_debut,
         $date_fin,
         $date_fin_appel_projet,
-                      $date_fin_appel_conferencier,
+        $date_fin_appel_conferencier,
+        $date_fin_vote,
         $date_fin_prevente,
         $date_fin_vente,
         $chemin_template,
@@ -758,6 +761,7 @@ CODE_HTML;
         $requete .= '  annee=' . (int)$date_debut['Y'] . ',';
         $requete .= '  date_fin_appel_projet=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true) . ',';
         $requete .= '  date_fin_appel_conferencier=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
+        $requete .= '  date_fin_vote=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vote, false) . ',';
         $requete .= '  date_fin_prevente=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true) . ',';
         $requete .= '  date_fin_vente=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true) . ',';
         $requete .= '  path=' . $this->_bdd->echapper($chemin_template, true) . ', ';

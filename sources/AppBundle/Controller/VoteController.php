@@ -28,7 +28,7 @@ class VoteController extends EventBaseController
     public function indexAction($eventSlug, $page = 1, $all = false)
     {
         $event = $this->checkEventSlug($eventSlug);
-        if ($event->getDateEndCallForPapers() < new \DateTime()) {
+        if ($event->getDateEndVote() < new \DateTime()) {
             return $this->render(':event:cfp/closed.html.twig', ['event' => $event]);
         }
 
