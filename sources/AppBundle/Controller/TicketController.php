@@ -225,15 +225,19 @@ class TicketController extends EventBaseController
             return $this->redirectToRoute('ticket_payment', ['eventSlug' => $eventSlug, 'invoiceRef' => $invoice->getReference()]);
         }
 
+        $totalOfSoldTicketsByMember = 0;
+        if ($user !== null) {
+            $totalOfSoldTicketsByMember = $this->get('app.ticket_repository')->getTotalOfSoldTicketsByMember(
+                $user->isMemberForCompany() ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
+                $user->isMemberForCompany() ? $user->getCompanyId() : $user->getId(),
+                $event->getId()
+            );
+        }
         return $this->render('event/ticket/ticket.html.twig', [
             'event' => $event,
             'ticketForm' => $purchaseForm->createView(),
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
-            'soldTicketsForMember' => $this->get('app.ticket_repository')->getTotalOfSoldTicketsByMember(
-                ($user !== null && $user->isMemberForCompany()) ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
-                ($user !== null && $user->isMemberForCompany()) ? $user->getCompanyId() : $user->getId(),
-                $event->getId()
-            )
+            'soldTicketsForMember' => $totalOfSoldTicketsByMember
         ]);
     }
 
