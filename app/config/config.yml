@@ -60,12 +60,9 @@ parameters:
                     nom: 'Personnes morales'
                     niveau: 'ROLE_ADMIN'
                 relances_personnes_physiques:
-                    nom: 'Relances - Personnes physiques'
+                    nom: 'Relances cotisations'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/association/relances/1'
-                relances:
-                    nom: 'Relances'
-                    niveau: 'ROLE_ADMIN'
                 statistiques:
                     nom: 'Statistiques'
                     niveau: 'ROLE_ADMIN'
