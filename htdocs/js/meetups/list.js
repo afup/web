@@ -44,7 +44,7 @@ search.addWidget(
 
 
                 content += ''
-                    + '<div class="col-md-8">'
+                    + '<div class="col-md-' + (data.is_upcoming ? '6' : '8') + '">'
                     + '<div class="talk-list-title-container"><a href="' + data.event_url + '" ><h2>' + data.label + '</h2></a></div>'
                 ;
 
@@ -62,6 +62,14 @@ search.addWidget(
                 content += ''
                     + '</div>'
                 ;
+
+
+                if (data.is_upcoming) {
+                    content += '<div class="col-md-2">';
+                    content += '<a href="' + data.event_url + '" class="button">S\'inscrire</a>';
+                    content += '</div>';
+                }
+
 
                 content += ''
                     + '</div>'
