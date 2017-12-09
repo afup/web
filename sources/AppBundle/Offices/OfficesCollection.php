@@ -70,7 +70,7 @@ class OfficesCollection
                 'longitude' => '-1.55278',
                 'meetup_urlname' => 'afup-nantes-php',
                 'meetup_id' => '23839991',
-                'logo_url' => '/images/offices/afup-icon-color.svg',
+                'logo_url' => '/images/offices/nantes.svg',
             ],
             'paris' => [
                 'label' => 'Paris',
