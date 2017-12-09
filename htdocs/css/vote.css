@@ -904,22 +904,6 @@ div.photo-container{
     font-family: Glegoo, Helvetica, Arial, sans-serif;
 }
 
-.button {
-    background-color: #415e96;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    margin: 1em;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-
-.button svg{
-    fill:white;
-    margin-bottom: -12px;
-}
 #homeButtons {
     text-align:center;
     margin: 2em 0;
