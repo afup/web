@@ -60,9 +60,13 @@ div.container:after {
 .col-md-11,
 .col-md-12 {
     float: left;
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 460px) {
     .col-sm-12 {
         width: 100%;
     }
@@ -70,21 +74,19 @@ div.container:after {
     .col-sm-6 {
         width: 50%;
     }
-}
 
-.col-md-1,
-.col-md-2,
-.col-md-3,
-.col-md-4,
-.col-md-6,
-.col-md-8,
-.col-md-9,
-.col-md-10,
-.col-md-11,
-.col-md-12
-{
-    position: relative;
-    min-height: 1px;
-    padding-left: 15px;
-    padding-right: 15px;
+    .col-md-1,
+    .col-md-2,
+    .col-md-3,
+    .col-md-4,
+    .col-md-6,
+    .col-md-8,
+    .col-md-9,
+    .col-md-10,
+    .col-md-11,
+    .col-md-12
+    {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
 }
