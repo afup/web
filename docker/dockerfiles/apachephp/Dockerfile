@@ -8,9 +8,10 @@ RUN apt-get update && \
         libpng12-dev \
         libmcrypt4 \
         libmcrypt-dev \
+        libicu-dev \
         wget && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
-    docker-php-ext-install pdo_mysql mbstring mysqli zip gd mcrypt && \
+    docker-php-ext-install pdo_mysql mbstring mysqli zip gd mcrypt intl && \
     apt-get remove -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -33,8 +34,6 @@ RUN apt-get update && apt-get install -y nodejs
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y yarn
-
-RUN apt-get update && apt-get install -y libicu-dev && docker-php-ext-install intl
 
 # Install local user mapped to the host user uid
 ARG uid=1008
