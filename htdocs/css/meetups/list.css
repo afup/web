@@ -3,3 +3,39 @@
     padding: 15px;
     margin: 15px 0;
 }
+
+.meetups-meetup-date {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.meetups-office-logo {
+    text-align: right;
+}
+
+.meetups-meetup-date {
+    text-align: left;
+}
+
+
+/* en mobile */
+@media (max-width: 460px) {
+
+    .meetups-office-logo img {
+        max-height: 80px;
+    }
+
+    .meetups-register {
+        text-align: center;
+        margin: 0 0 20px 0;
+    }
+
+    .meetups-list-title-container {
+        margin: 13px 0;
+        text-align: center;
+    }
+
+    .meetups-meetup-date {
+        font-size: 0.85em;
+    }
+}
