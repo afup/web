@@ -95,3 +95,25 @@
 .ais-toggle--item input[type=checkbox] {
     margin: 0 5px 0 0;
 }
+
+/* on doit surcharger le min-with à 300px du style.css */
+input[type="text"].ais-search-box--input {
+    min-width: 100%;
+}
+
+@media (max-width: 460px) {
+    .ais-toggle--item label,
+    .ais-refinement-list--item label {
+        /* on doit surcharger le important qui est dans style.css */
+        display: inline-block !important;
+    }
+
+    .ais-toggle--item,
+    .ais-refinement-list--item {
+        padding: 10px;
+    }
+
+    .ais-pagination--item__page {
+        display: none;
+    }
+}
