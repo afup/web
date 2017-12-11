@@ -172,7 +172,7 @@ class MailingList implements NotifyPropertyInterface
     /**
      * @return bool
      */
-    public function isAutoRegistration()
+    public function getAutoRegistration()
     {
         return $this->autoRegistration;
     }
