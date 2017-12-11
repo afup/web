@@ -32,8 +32,9 @@ if ($timestamp > strtotime("-1 day", time())) {
     if ($timestamp > strtotime("+14 day", $cotisation['date_fin'])) {
         $smarty->assign('erreur', 'La date d\'échéance de votre dernière cotisation précède la date de la prochaine assemblée générale.<br/><br/>Vous ne pourrez donc pas voter lors de cette assemblée générale.<br/><br/>Vous pouvez dès à présent régler votre cotisation via <a href="/pages/administration/index.php?page=membre_cotisation">"Ma cotisation"</a>');
     } else {
-        list($presence, $id_personne_avec_pouvoir) = $assemblee_generale->obtenirInfos($_SESSION['afup_login'], $timestamp);
-        $assemblee_generale->marquerConsultation($_SESSION['afup_login'], $timestamp);
+        $login = $this->getUser()->getUsername();
+        list($presence, $id_personne_avec_pouvoir) = $assemblee_generale->obtenirInfos($login, $timestamp);
+        $assemblee_generale->marquerConsultation($login, $timestamp);
 
 
         $formulaire = &instancierFormulaire('index.php?page=membre_assemblee_generale');
@@ -48,7 +49,7 @@ if ($timestamp > strtotime("-1 day", time())) {
 
         $formulaire->addElement('header'  , ''                         , 'Je donne mon pouvoir à');
 
-        $formulaire->addElement('select'  , 'id_personne_avec_pouvoir' , 'Nom' , array(null => '' ) + $assemblee_generale->obtenirPresents($timestamp, ['exclure_login' => $_SESSION['afup_login']]));
+        $formulaire->addElement('select'  , 'id_personne_avec_pouvoir' , 'Nom' , array(null => '' ) + $assemblee_generale->obtenirPresents($timestamp, ['exclure_login' => $login]));
 
         $formulaire->addElement('header'  , 'boutons'   , '');
         $formulaire->addElement('hidden'  , 'date'      , $timestamp);
@@ -56,7 +57,7 @@ if ($timestamp > strtotime("-1 day", time())) {
 
         if ($formulaire->validate()) {
             if ($action == 'modifier') {
-                $ok = $assemblee_generale->modifier($_SESSION['afup_login'],
+                $ok = $assemblee_generale->modifier($login,
                                                     $timestamp,
                                                     $formulaire->exportValue('presence'),
                                                     $formulaire->exportValue('id_personne_avec_pouvoir'));
