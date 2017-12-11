@@ -5,7 +5,6 @@ namespace AppBundle\Command;
 
 
 use Afup\Site\Association\Assemblee_Generale;
-use Afup\Site\Association\Personnes_Physiques;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,6 +49,8 @@ class UpdateMailingListMembersCommand extends ContainerAwareCommand
             $output->writeln($list->getEmail());
             $membersOfList = $groupsRepository->getMembers($list->getEmail());
             $membersOfListNonMemberAfup = array_filter($membersOfList, $filter);
+
+            // Get expired members, which are still member of a mailing list
             foreach ($membersOfListNonMemberAfup as $member) {
                 $output->write(sprintf('Removing "%s"', $member->getEmail()));
                 if ($groupsRepository->removeMember($list->getEmail(), $member->getEmail()) !== false) {

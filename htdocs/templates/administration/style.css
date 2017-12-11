@@ -917,8 +917,16 @@ form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[
 .mailinglists--form button[disabled]{
     background-color:#a8bdce !important;
 }
-.mailinglists--form p{
+body#groups p{
     padding:0;
+}
+
+.mailinglists--form h3{
+    margin: 1em 0;
+}
+
+.mailinglists--form button{
+    margin: 1em 0;
 }
 
 .mailinglists--form h4{

@@ -28,7 +28,7 @@ class MailingListRepository extends Repository implements MetadataInitializer
         $query = $this->getQueryBuilder(self::QUERY_SELECT);
         $query
             ->cols(['id', 'email', 'name', 'description', 'members_only', 'category'])
-            ->from('mailing_lists')
+            ->from('afup_mailing_lists')
             ->orderBy(['category', 'name'])
         ;
         $params = [];
@@ -58,7 +58,7 @@ class MailingListRepository extends Repository implements MetadataInitializer
         $metadata->setEntity(MailingList::class);
         $metadata->setConnectionName('main');
         $metadata->setDatabase($options['database']);
-        $metadata->setTable('mailing_lists');
+        $metadata->setTable('afup_mailing_lists');
 
         $metadata
             ->addField([
@@ -93,6 +93,12 @@ class MailingListRepository extends Repository implements MetadataInitializer
                 'columnName' => 'category',
                 'fieldName' => 'category',
                 'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'auto_registration',
+                'fieldName' => 'autoRegistration',
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
         ;
 

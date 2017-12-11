@@ -33,7 +33,8 @@ class GroupsController extends Controller
             'csrf_token' => $token,
             'lists' => $lists,
             'subscriptions' => $subscriptions,
-            'title' => 'Mes listes de diffusion'
+            'title' => 'Mes listes de diffusion',
+            'page' => 'groups'
         ]);
     }
 

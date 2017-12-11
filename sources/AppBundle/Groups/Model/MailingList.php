@@ -35,6 +35,11 @@ class MailingList implements NotifyPropertyInterface
     private $membersOnly;
 
     /**
+     * @var boolean
+     */
+    private $autoRegistration;
+
+    /**
      * @var string
      */
     private $category;
@@ -162,5 +167,25 @@ class MailingList implements NotifyPropertyInterface
     public function getCategoryLabel()
     {
         return $this->categoryLabels[$this->category];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoRegistration()
+    {
+        return $this->autoRegistration;
+    }
+
+    /**
+     * @param bool $autoRegistration
+     * @return MailingList
+     */
+    public function setAutoRegistration($autoRegistration)
+    {
+        $autoRegistration = (bool)$autoRegistration;
+        $this->propertyChanged('autoRegistration', $this->autoRegistration, $autoRegistration);
+        $this->autoRegistration = $autoRegistration;
+        return $this;
     }
 }
