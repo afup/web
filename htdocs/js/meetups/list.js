@@ -16,7 +16,7 @@ search.addWidget(
 
 search.addWidget(
     instantsearch.widgets.hits({
-        hitsPerPage: 7,
+        hitsPerPage: 14,
         container: '#hits-container',
         templates: {
             empty: "Pas de résultat",
@@ -26,13 +26,13 @@ search.addWidget(
                 ;
 
                 content += ''
-                    + '<div class="col-md-1">'
+                    + '<div class="col-sm-6 col-md-1 meetups-office-logo">'
                     + '<img src="' + data.office.logo_url + '" />'
                     + '</div>'
                 ;
 
                 content += ''
-                    + '<div class="col-md-2" style="text-align: center;font-size: 1.2em">'
+                    + '<div class="col-sm-6 col-md-2 meetups-meetup-date">'
                     + data.office.label + '<br />'
                     + '<span style="font-size: 1.2em">'
                     + data.day_month
@@ -44,8 +44,8 @@ search.addWidget(
 
 
                 content += ''
-                    + '<div class="col-md-8">'
-                    + '<div class="talk-list-title-container"><a href="' + data.event_url + '" ><h2>' + data.label + '</h2></a></div>'
+                    + '<div class="col-md-' + (data.is_upcoming ? '6' : '8') + '">'
+                    + '<div class="talk-list-title-container meetups-list-title-container"><a href="' + data.event_url + '" ><h2>' + data.label + '</h2></a></div>'
                 ;
 
                 if ('undefined' !== typeof data.venue) {
@@ -62,6 +62,14 @@ search.addWidget(
                 content += ''
                     + '</div>'
                 ;
+
+
+                if (data.is_upcoming) {
+                    content += '<div class="col-sm-12 col-md-2 meetups-register">';
+                    content += '<a href="' + data.event_url + '" class="button">S\'inscrire</a>';
+                    content += '</div>';
+                }
+
 
                 content += ''
                     + '</div>'

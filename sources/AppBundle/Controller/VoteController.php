@@ -103,7 +103,7 @@ class VoteController extends EventBaseController
     public function newAction(Request $request, $eventSlug, $talkId)
     {
         $event = $this->checkEventSlug($eventSlug);
-        if ($event->getDateEndCallForPapers() < new \DateTime()) {
+        if ($event->getDateEndVote() < new \DateTime()) {
             return new JsonResponse(['errors' => ['Cfp is closed !']], Response::HTTP_BAD_REQUEST);
         }
 
