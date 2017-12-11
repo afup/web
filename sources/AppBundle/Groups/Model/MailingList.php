@@ -40,8 +40,8 @@ class MailingList implements NotifyPropertyInterface
     private $category;
 
     private $categoryLabels = [
-        'office' => 'Antennes',
-        'member' => 'Membres'
+        'office' => 'Toutes les mailing lists de nos antennes',
+        'member' => 'Mailing lists réservées aux membres'
     ];
 
     /**

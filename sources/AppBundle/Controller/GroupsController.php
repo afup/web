@@ -29,22 +29,6 @@ class GroupsController extends Controller
             $subscriptions[$list->getEmail()] = $groupRepository->hasMember($list->getEmail(), $this->getUser()->getEmail());
         }
 
-        /*$groupClient = $this->get('app.group_client');
-
-        dump($groupClient->members->get('test-gestion-auto@afup.org', 'xavier.leune@gmail.com'));
-        try {
-            dump($groupClient->members->get('test-gestion-auto@afup.org', 'bureau@afup.org'));
-        } catch (\Google_Service_Exception $exception) {
-            if ($exception->getCode() !== 404) {
-                throw $exception;
-            } else {
-                dump("not a member");
-            }
-        }
-        dump($groupClient->members->listMembers('test-gestion-auto@afup.org')->getMembers());*/
-        /*$member = new \Google_Service_Directory_Member();
-        $member->setEmail('xavier.leune@gmail.com');
-        dump($groupClient->members->insert('test-gestion-auto@afup.org', $member));*/
         return $this->render('admin/groups/lists.html.twig', [
             'csrf_token' => $token,
             'lists' => $lists,
@@ -73,7 +57,7 @@ class GroupsController extends Controller
             $mailing = $mailingListRepository->get($mailingId);
 
             if ($groupRepository->addMember($mailing->getEmail(), $email)) {
-                $this->addFlash('info', sprintf('Vous avez été abonné à la liste "%s"', $mailing->getName()));
+                $this->addFlash('success', sprintf('Vous avez été abonné à la liste "%s"', $mailing->getName()));
             } else {
                 $this->addFlash('error', 'Une erreur est survenue lors de la prise en compte de votre abonnement.');
             }
@@ -85,7 +69,7 @@ class GroupsController extends Controller
             $mailing = $mailingListRepository->get($mailingId);
 
             if ($groupRepository->removeMember($mailing->getEmail(), $email)) {
-                $this->addFlash('info', sprintf('Vous avez été désabonné de la liste "%s"', $mailing->getName()));
+                $this->addFlash('success', sprintf('Vous avez été désabonné de la liste "%s"', $mailing->getName()));
             } else {
                 $this->addFlash('error', 'Une erreur est survenue lors de la prise en compte de votre désabonnement.');
             }

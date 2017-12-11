@@ -13,7 +13,14 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class MailingListRepository extends Repository implements MetadataInitializer
 {
-    public function getAllMailingLists($membersOnly = true, $category = null)
+    /**
+     * @param bool $membersOnly
+     * @param null $category
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface|MailingList[]
+     * @throws \CCMBenchmark\Ting\Exception
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
+    public function getAllMailingLists($membersOnly = false, $category = null)
     {
         /**
          * @var $query Select

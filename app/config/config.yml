@@ -28,6 +28,7 @@ parameters:
                 membre_ml:
                     nom: 'Listes de diffusion'
                     niveau: 'ROLE_USER'
+                    url: '/admin/groups/'
                 membre_assemblee_generale:
                     nom: 'Présence prochaine AG'
                     niveau: 'ROLE_USER'

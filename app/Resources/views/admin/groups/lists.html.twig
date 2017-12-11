@@ -4,10 +4,14 @@
     <h2>Listes de diffusion</h2>
 
     <form method="post">
-        {{ dump(subscriptions) }}
+        {% set label='' %}
         {% for list in lists %}
-            {% if loop.first %}
-                <h3>{{ list.categoryLabel }}</h3>
+            {% if label != list.categoryLabel %}
+                {% if not loop.first %}
+                    <hr />
+                {% endif %}
+                {% set label=list.categoryLabel %}
+                <h3>{{ label }}</h3>
             {% endif %}
             <h4>{{ list.name }} ({{ list.email }})</h4>
             <p>{{ list.description }}</p>
