@@ -76,7 +76,7 @@ class OfficesCollection
                 'label' => 'Paris',
                 'latitude' => '48.856578',
                 'longitude' => '2.351828',
-                'meetup_urlname' => 'afup-nantes-php',
+                'meetup_urlname' => 'afup-paris-php',
                 'meetup_id' => '23839991',
                 'logo_url' => '/images/offices/paris.png',
             ],
