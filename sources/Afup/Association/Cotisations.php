@@ -279,6 +279,13 @@ class Cotisations
         return $result;
     }
 
+    public function getAccountFromCmd($cmd)
+    {
+        list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
+
+        return ['type' => $type_personne, 'id' => $id_personne];
+    }
+
     /**
      * Supprime une cotisation
      *

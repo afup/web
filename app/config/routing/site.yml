@@ -46,3 +46,7 @@ void:
 newsletter_subscribe:
   path: /newsletter-subscribe
   defaults: {_controller: AppBundle:Newsletter:subscribe}
+
+membership_payment:
+  path: /paybox-callback
+  defaults: {_controller: AppBundle:MemberShip:payboxCallback}

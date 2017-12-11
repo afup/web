@@ -4,6 +4,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Utils\Logs;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
@@ -12,6 +13,8 @@ use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Groups\Model\MailingList;
+use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -174,5 +177,62 @@ class MemberShipController extends SiteBaseController
         }
 
         return $this->render(':site/company_membership:member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
+    }
+
+    public function payboxCallbackAction(Request $request)
+    {
+        $payboxResponse = PayboxResponseFactory::createFromRequest($request);
+        /**
+         * @var $cotisations Cotisations
+         */
+        $cotisations = $this->get('app.legacy_model_factory')->createObject(Cotisations::class);
+        $logs = $this->get('app.legacy_model_factory')->createObject(Logs::class);
+
+        $status = $payboxResponse->getStatus();
+        $etat = AFUP_COTISATIONS_PAIEMENT_ERREUR;
+
+        if ($status === '00000') {
+            $etat = AFUP_COTISATIONS_PAIEMENT_REGLE;
+        } elseif ($status === '00015') {
+            // Designe un paiement deja effectue : on a surement deja eu le retour donc on s'arrete
+            return new Response();
+        } elseif ($status === '00117') {
+            $etat = AFUP_COTISATIONS_PAIEMENT_ANNULE;
+        } elseif (substr($status, 0, 3) === '001') {
+            $etat = AFUP_COTISATIONS_PAIEMENT_REFUSE;
+        }
+
+        if ($etat == AFUP_COTISATIONS_PAIEMENT_REGLE) {
+            $account = $cotisations->getAccountFromCmd($payboxResponse->getCmd());
+            $lastCotisation = $cotisations->obtenirDerniere($account['type'], $account['id']);
+
+            if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
+                // Premiere cotisation payée: il faut abonner le membre à toutes les ml définies par défaut
+                /**
+                 * @var $user User
+                 */
+                $user = $this->get('app.user_repository')->get($account['id']);
+
+                /**
+                 * @var $lists MailingList[]
+                 */
+                $lists = $this->get('app.mailing_list_repository')->getBy(['autoRegistration' => true]);
+                $groupRepository = $this->get('app.group_repository');
+                try {
+                    foreach ($lists as $list) {
+                        $groupRepository->addMember($list->getEmail(), $user->getEmail());
+                    }
+                } catch (\Google_Service_Exception $e) {
+
+                }
+            }
+
+            $cotisations->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
+            $cotisations->notifierRegelementEnLigneAuTresorier($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
+            $logs::log("Ajout de la cotisation " . $payboxResponse->getCmd() . " via Paybox.");
+
+
+        }
+        return new Response();
     }
 }
