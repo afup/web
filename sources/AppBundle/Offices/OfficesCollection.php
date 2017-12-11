@@ -77,7 +77,7 @@ class OfficesCollection
                 'latitude' => '48.856578',
                 'longitude' => '2.351828',
                 'meetup_urlname' => 'afup-paris-php',
-                'meetup_id' => '23839991',
+                'meetup_id' => '19629965',
                 'logo_url' => '/images/offices/paris.png',
             ],
             'poitiers' => [
