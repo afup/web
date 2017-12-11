@@ -16,10 +16,10 @@ parameters:
             elements:
                 membre_coordonnees:
                     nom: 'Mes coordonnées'
-                    niveau: 'ROLE_USER'
+                    niveau: 'ROLE_MEMBER_EXPIRED'
                 membre_redmine:
                     nom: 'Déclarer un problème (GitHub)'
-                    niveau: 'ROLE_USER'
+                    niveau: 'ROLE_MEMBER_EXPIRED'
                     nouvelle_fenetre: true
                     url: 'https://github.com/afup/web/issues?state=open'
                 membre_cotisation:
@@ -27,7 +27,7 @@ parameters:
                     niveau: 'ROLE_MEMBER_EXPIRED'
                 membre_ml:
                     nom: 'Listes de diffusion'
-                    niveau: 'ROLE_USER'
+                    niveau: 'ROLE_MEMBER_EXPIRED' ## Some mailing lists are open to any member of the community
                     url: '/admin/groups/'
                 membre_assemblee_generale:
                     nom: 'Présence prochaine AG'

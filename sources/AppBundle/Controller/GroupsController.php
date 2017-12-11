@@ -43,7 +43,7 @@ class GroupsController extends Controller
 
         if ($csrf->getValue() !== $request->get('token')) {
             $this->addFlash('error', 'Jeton anti-csrf invalide.');
-            goto redirect;
+            return $this->redirectToRoute('my_groups');
         }
 
         $email = $this->getUser()->getEmail();
@@ -77,7 +77,6 @@ class GroupsController extends Controller
             $this->addFlash('error', 'Impossible vous abonner à cette liste');
         }
 
-        redirect:;
         return $this->redirectToRoute('my_groups');
     }
 }

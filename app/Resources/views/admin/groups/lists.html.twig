@@ -2,8 +2,12 @@
 
 {% block content %}
     <h2>Listes de diffusion</h2>
+    <p>
+        L'AFUP propose de nombreuses mailing lists pour que les membres de la communauté PHP puissent échanger.
+        Si certaines listes sont réservées aux membres, les listes des antennes sont ouvertes à tous les membres de l'AFUP.
+    </p>
 
-    <form method="post">
+    <form method="post" class="mailinglists--form">
         {% set label='' %}
         {% for list in lists %}
             {% if label != list.categoryLabel %}
@@ -15,7 +19,9 @@
             {% endif %}
             <h4>{{ list.name }} ({{ list.email }})</h4>
             <p>{{ list.description }}</p>
-            {% if subscriptions[list.email] %}
+            {% if list.membersOnly and app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
+                <button disabled>Cette mailing list est réservée aux membres de l'AFUP.</button>
+            {% elseif subscriptions[list.email] %}
                 <button name="unsubscribe" value="{{ list.id }}">Me désabonner</button>
             {% else %}
                 <button name="subscribe" value="{{ list.id }}">M'abonner</button>
