@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Utils\Logs;
+use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
@@ -173,6 +174,9 @@ class MemberShipController extends SiteBaseController
             $invitationRepository->save($invitation);
             $this->addFlash('success', 'Votre compte a été créé !');
 
+            $event = new NewMemberEvent($user);
+            $this->get('event_dispatcher')->dispatch($event::NAME, $event);
+
             return $this->redirect('/pages/administration/');
         }
 
@@ -207,24 +211,9 @@ class MemberShipController extends SiteBaseController
             $lastCotisation = $cotisations->obtenirDerniere($account['type'], $account['id']);
 
             if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
-                // Premiere cotisation payée: il faut abonner le membre à toutes les ml définies par défaut
-                /**
-                 * @var $user User
-                 */
                 $user = $this->get('app.user_repository')->get($account['id']);
-
-                /**
-                 * @var $lists MailingList[]
-                 */
-                $lists = $this->get('app.mailing_list_repository')->getBy(['autoRegistration' => true]);
-                $groupRepository = $this->get('app.group_repository');
-                try {
-                    foreach ($lists as $list) {
-                        $groupRepository->addMember($list->getEmail(), $user->getEmail());
-                    }
-                } catch (\Google_Service_Exception $e) {
-
-                }
+                $event = new NewMemberEvent($user);
+                $this->get('event_dispatcher')->dispatch($event::NAME, $event);
             }
 
             $cotisations->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());

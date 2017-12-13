@@ -8,6 +8,11 @@
     </p>
 
     <form method="post" class="mailinglists--form">
+
+        {% if error is not null %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
         {% set label='' %}
         {% for list in lists %}
             {% if label != list.categoryLabel %}
@@ -21,7 +26,9 @@
             <p>{{ list.description }}</p>
             {% if list.membersOnly and app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
                 <button disabled>Cette mailing list est réservée aux membres de l'AFUP.</button>
-            {% elseif subscriptions[list.email] %}
+            {% elseif error is not null %}
+                <p class="error">{{ error }}</p>
+            {% elseif subscriptions[list.email] is defined and subscriptions[list.email] %}
                 <button name="unsubscribe" value="{{ list.id }}">Me désabonner</button>
             {% else %}
                 <button name="subscribe" value="{{ list.id }}">M'abonner</button>

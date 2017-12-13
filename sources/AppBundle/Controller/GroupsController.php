@@ -24,14 +24,21 @@ class GroupsController extends Controller
 
         $subscriptions = [];
 
-        foreach ($lists as $list)
-        {
-            $subscriptions[$list->getEmail()] = $groupRepository->hasMember($list->getEmail(), $this->getUser()->getEmail());
+        $error = null;
+
+        try {
+            foreach ($lists as $list)
+            {
+                $subscriptions[$list->getEmail()] = $groupRepository->hasMember($list->getEmail(), $this->getUser()->getEmail());
+            }
+        } catch (\Exception $exception) { // Can be a guzzle exception or google exception, does not matter actually
+            $error = 'Une erreur est survenue en vérifiant les listes auxquelles vous etes abonnés. Les résultats ci-dessous peuvent ne pas refléter vos abonnements.';
         }
 
         return $this->render('admin/groups/lists.html.twig', [
             'csrf_token' => $token,
             'lists' => $lists,
+            'error' => $error,
             'subscriptions' => $subscriptions,
             'title' => 'Mes listes de diffusion',
             'page' => 'groups'

@@ -297,3 +297,9 @@ services:
     app.group_repository:
         class: AppBundle\Groups\GroupRepository
         autowire: true
+
+    app.members_groups_listener:
+        class: AppBundle\Association\Listener\MembersGroupsListener
+        autowire: true
+        tags:
+          - { name: kernel.event_listener, event: member.new, method: onNewMemberEvent }
