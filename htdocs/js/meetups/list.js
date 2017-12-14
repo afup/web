@@ -104,7 +104,7 @@ search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-office',
         attributeName: 'office.label',
-        operator: "and",
+        operator: "or",
         templates: {
             header: "<h4>Antenne</h4>",
             item: refinementItemTemplate
@@ -138,7 +138,7 @@ search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-year',
         attributeName: 'year',
-        operator: "and",
+        operator: "or",
         templates: {
             header: "<h4>Année</h4>",
             item: refinementItemTemplate
