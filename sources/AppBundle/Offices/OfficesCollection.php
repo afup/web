@@ -28,7 +28,7 @@ class OfficesCollection
                 'latitude' => '50.637222',
                 'longitude' => '3.063333',
                 'meetup_urlname' => 'afup-hauts-de-france-php',
-                'meetip_id' => '23840677',
+                'meetup_id' => '23840677',
                 'logo_url' => '/images/offices/hdf.jpg',
             ],
             'luxembourg' => [
