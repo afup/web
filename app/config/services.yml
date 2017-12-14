@@ -286,7 +286,7 @@ services:
     app.google_client:
         class: Google_Client
         calls:
-          - ["setAuthConfig", ["%kernel.root_dir%/config/gestion-mailing-4c166d0d6b6a.json"]]
+          - ["setAuthConfig", ["%kernel.root_dir%/config/gestion-mailing-49e890b9dfe4.json"]]
           - ["setScopes", [[!php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP, !php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY]]]
           - ["setSubject", ['admin-mailing-listes-api@afup.org']]
 
