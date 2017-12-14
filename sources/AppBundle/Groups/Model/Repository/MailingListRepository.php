@@ -45,7 +45,6 @@ class MailingListRepository extends Repository implements MetadataInitializer
             ->setParams($params)
             ->query($this->getCollection(new HydratorSingleObject()))
         ;
-
     }
 
     /**

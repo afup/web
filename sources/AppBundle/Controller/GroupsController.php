@@ -27,8 +27,7 @@ class GroupsController extends Controller
         $error = null;
 
         try {
-            foreach ($lists as $list)
-            {
+            foreach ($lists as $list) {
                 $subscriptions[$list->getEmail()] = $groupRepository->hasMember($list->getEmail(), $this->getUser()->getEmail());
             }
         } catch (\Exception $exception) { // Can be a guzzle exception or google exception, does not matter actually
@@ -69,7 +68,7 @@ class GroupsController extends Controller
             } else {
                 $this->addFlash('error', 'Une erreur est survenue lors de la prise en compte de votre abonnement.');
             }
-        } elseif($request->request->get('unsubscribe') !== null) {
+        } elseif ($request->request->get('unsubscribe') !== null) {
             $mailingId = $request->request->getInt('unsubscribe');
             /**
              * @var $mailing MailingList

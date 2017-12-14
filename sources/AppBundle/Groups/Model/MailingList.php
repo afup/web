@@ -139,7 +139,7 @@ class MailingList implements NotifyPropertyInterface
      */
     public function setMembersOnly($membersOnly)
     {
-        $membersOnly = (boolean)$membersOnly;
+        $membersOnly = (boolean) $membersOnly;
         $this->propertyChanged('membersOnly', $this->membersOnly, $membersOnly);
         $this->membersOnly = $membersOnly;
         return $this;
@@ -183,7 +183,7 @@ class MailingList implements NotifyPropertyInterface
      */
     public function setAutoRegistration($autoRegistration)
     {
-        $autoRegistration = (bool)$autoRegistration;
+        $autoRegistration = (bool) $autoRegistration;
         $this->propertyChanged('autoRegistration', $this->autoRegistration, $autoRegistration);
         $this->autoRegistration = $autoRegistration;
         return $this;

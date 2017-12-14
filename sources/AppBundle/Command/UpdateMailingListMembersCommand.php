@@ -3,7 +3,6 @@
 
 namespace AppBundle\Command;
 
-
 use Afup\Site\Association\Assemblee_Generale;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,20 +31,18 @@ class UpdateMailingListMembersCommand extends ContainerAwareCommand
 
         $assembly = $this->getContainer()->get('app.legacy_model_factory')->createObject(Assemblee_Generale::class);
         $membersAfup = explode(';', strtolower($assembly->obtenirListeEmailPersonnesAJourDeCotisation()));
-        $membersAfup = array_map(function($email) use ($groupsRepository){
+        $membersAfup = array_map(function ($email) use ($groupsRepository) {
             return $groupsRepository->cleanEmail($email);
         }, $membersAfup);
 
-        $filter = function (\Google_Service_Directory_Member $member) use ($groupsRepository, $membersAfup)
-        {
+        $filter = function (\Google_Service_Directory_Member $member) use ($groupsRepository, $membersAfup) {
             // Remove every mail if not a member
             return !in_array($member->getEmail(), $membersAfup);
         };
 
         $lists = $mailingListRepository->getAllMailingLists(true);
 
-        foreach ($lists as $list)
-        {
+        foreach ($lists as $list) {
             $output->writeln($list->getEmail());
             $membersOfList = $groupsRepository->getMembers($list->getEmail());
             $membersOfListNonMemberAfup = array_filter($membersOfList, $filter);
