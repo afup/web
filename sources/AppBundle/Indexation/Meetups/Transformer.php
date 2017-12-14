@@ -30,6 +30,8 @@ class Transformer
 
         $datetime = new \DateTime('@' . ($meetup['time'] / 1000));
 
+        $isUpcoming = $meetup['status'] == 'upcoming';
+
         $item = [
             'meetup_id' => $meetup['id'],
             'label' => $meetup['name'],
@@ -43,7 +45,8 @@ class Transformer
                 'logo_url' => $office['logo_url'],
             ],
             'description' => $meetup['description'],
-            'is_upcoming' => $meetup['status'] == 'upcoming',
+            'is_upcoming' => $isUpcoming,
+            'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup['time'] : $meetup['time'],
         ];
 
         if (isset($meetup['venue'])) {

@@ -96,7 +96,7 @@ class Runner
                 'is_upcoming',
             ],
             'customRanking' => [
-                "desc(timestamp)",
+                "desc(custom_sort)",
             ],
             'searchableAttributes' => [
                 'label',
