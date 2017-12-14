@@ -44,7 +44,7 @@ search.addWidget(
 
 
                 content += ''
-                    + '<div class="col-md-' + (data.is_upcoming ? '6' : '8') + '">'
+                    + '<div class="col-md-' + (data.is_upcoming ? '6' : '9') + '">'
                     + '<div class="talk-list-title-container meetups-list-title-container"><a href="' + data.event_url + '" ><h2>' + data.label + '</h2></a></div>'
                 ;
 
@@ -65,7 +65,7 @@ search.addWidget(
 
 
                 if (data.is_upcoming) {
-                    content += '<div class="col-sm-12 col-md-2 meetups-register">';
+                    content += '<div class="col-sm-12 col-md-3 meetups-register">';
                     content += '<a href="' + data.event_url + '" class="button">S\'inscrire</a>';
                     content += '</div>';
                 }
