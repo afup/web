@@ -194,17 +194,18 @@ class TicketController extends EventBaseController
                 ->setNewsletter($purchaseForm->get('newsletterAfup')->getData())
             ;
 
-
-            $memberId = $user->getId();
-            $memberType = UserRepository::USER_TYPE_PHYSICAL;
-            if ($user instanceof User && $user->isMemberForCompany()) {
-                $memberId = $user->getCompanyId();
-                $memberType = UserRepository::USER_TYPE_COMPANY;
+            if ($user instanceof User) {
+                $memberId = $user->getId();
+                $memberType = UserRepository::USER_TYPE_PHYSICAL;
+                if ($user->isMemberForCompany()) {
+                    $memberId = $user->getCompanyId();
+                    $memberType = UserRepository::USER_TYPE_COMPANY;
+                }
             }
 
             foreach ($tickets as $ticket) {
                 if ($ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers()) {
-                    if ($user instanceof User && $user->isMemberForCompany()) {
+                    if (isset($memberId, $memberType)) {
                         $ticket
                             ->setMemberId($memberId)
                             ->setMemberType($memberType)
