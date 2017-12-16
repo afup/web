@@ -26,6 +26,8 @@
             <p>{{ list.description }}</p>
             {% if list.membersOnly and app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
                 <button disabled>Cette mailing list est réservée aux membres de l'AFUP.</button>
+            {% elseif list.email == 'membres@afup.org' %}
+                <button disabled>Vous ne pouvez pas vous désabonner de cette liste.</button>
             {% elseif error is not null %}
                 <p class="error">{{ error }}</p>
             {% elseif subscriptions[list.email] is defined and subscriptions[list.email] %}
