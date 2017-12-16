@@ -4,6 +4,8 @@
 namespace AppBundle\Command;
 
 use Afup\Site\Association\Assemblee_Generale;
+use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\Model\User;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,17 +29,22 @@ class UpdateMailingListMembersCommand extends ContainerAwareCommand
 
         $output->writeln("Synchronisation Mailing Lists " . date('Y-m-d H:i:s'));
 
-        $output->writeln(" - recuperation membres à jour de cotisation...");
+        $output->writeln(" - récupération des membres à jour de cotisation...");
 
         $assembly = $this->getContainer()->get('app.legacy_model_factory')->createObject(Assemblee_Generale::class);
-        $membersAfup = explode(';', strtolower($assembly->obtenirListeEmailPersonnesAJourDeCotisation()));
-        $membersAfup = array_map(function ($email) use ($groupsRepository) {
-            return $groupsRepository->cleanEmail($email);
-        }, $membersAfup);
+        /**
+         * @var $membersAfup User[]
+         */
+        $membersAfup = $this->getContainer()->get('app.user_repository')->getActiveMembers(UserRepository::USER_TYPE_ALL);
 
-        $filter = function (\Google_Service_Directory_Member $member) use ($groupsRepository, $membersAfup) {
+        $emails = [];
+        foreach ($membersAfup as $member) {
+            $emails[] = $groupsRepository->cleanEmail($member->getEmail());
+        }
+
+        $filter = function (\Google_Service_Directory_Member $member) use ($groupsRepository, $emails) {
             // Remove every mail if not a member
-            return !in_array($member->getEmail(), $membersAfup);
+            return !in_array($member->getEmail(), $emails);
         };
 
         $lists = $mailingListRepository->getAllMailingLists(true);

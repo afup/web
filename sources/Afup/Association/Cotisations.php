@@ -281,9 +281,9 @@ class Cotisations
 
     public function getAccountFromCmd($cmd)
     {
-        list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
+        list($ref, $date, $memberType, $memberId, $stuff) = explode('-', $cmd, 5);
 
-        return ['type' => $type_personne, 'id' => $id_personne];
+        return ['type' => $memberType, 'id' => $memberId];
     }
 
     /**

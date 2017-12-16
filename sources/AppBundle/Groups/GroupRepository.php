@@ -32,7 +32,6 @@ class GroupRepository
         try {
             return $this->directory->members->insert($mailing, $member);
         } catch (\Google_Service_Exception $exception) {
-            throw $exception;
             return false;
         }
     }
@@ -57,10 +56,10 @@ class GroupRepository
         $nextPage = [];
         do {
             $list = $this->directory->members->listMembers($mailing, $nextPage);
+
+            $nextPage = [];
             if ($list->getNextPageToken() !== null) {
                 $nextPage = ['pageToken' => $list->getNextPageToken()];
-            } else {
-                $nextPage = [];
             }
 
             $members = array_merge($members, $list->getMembers());
