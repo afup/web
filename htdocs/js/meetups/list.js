@@ -57,7 +57,15 @@ search.addWidget(
                     ;
                 }
                 content += '<a href="#" class="description-toggler" data-toggled-html="Masquer la description">Voir la description</a>';
-                content += '<div class="event-description" style="display:none">' + data.description + '</div>';
+                content += '<div class="event-description" style="display:none">'
+                    + data.description
+                ;
+
+                if ('undefined' !== typeof data.twitter) {
+                    content += '<div><i class="fa fa-twitter" aria-hidden="true"></i> <a href="http://twitter.com/' + data.twitter + '">@' + data.twitter + '</a></div>'
+                }
+
+                content += '</div>';
 
                 content += ''
                     + '</div>'

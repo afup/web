@@ -49,6 +49,10 @@ class Transformer
             'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup['time'] : $meetup['time'],
         ];
 
+        if (isset($office['twitter'])) {
+            $item['twitter'] = $office['twitter'];
+        }
+
         if (isset($meetup['venue'])) {
             $item['venue'] = [
                 'name' => $meetup['venue']['name'],
