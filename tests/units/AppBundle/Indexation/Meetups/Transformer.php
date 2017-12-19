@@ -75,6 +75,8 @@ class Transformer extends \atoum
                                 'address_1' => 'Gare SNCF, 2 Boulevard Louis Roederer',
                                 'city' => 'Reims',
                             ),
+                        'twitter' => 'afup_reims',
+                        'custom_sort' => 9223370523582175807,
                         'is_upcoming' => true,
                     ))
         ;

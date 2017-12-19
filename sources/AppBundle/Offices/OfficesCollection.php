@@ -14,6 +14,7 @@ class OfficesCollection
                 'meetup_urlname' => 'Bordeaux-PHP-Meetup',
                 'meetup_id' => '18197674',
                 'logo_url' => '/images/offices/bordeaux.jpg',
+                'twitter' => 'AFUP_Bordeaux',
             ],
             'limoges' => [
                 'label' => 'Limoges',
@@ -22,14 +23,16 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-limoges-php',
                 'meetup_id' => '23162834',
                 'logo_url' => '/images/offices/limoges.jpg',
+                'twitter' => 'AFUP_Limoges',
             ],
             'lille' => [
                 'label' => 'Hauts de France',
                 'latitude' => '50.637222',
                 'longitude' => '3.063333',
                 'meetup_urlname' => 'afup-hauts-de-france-php',
-                'meetip_id' => '23840677',
+                'meetup_id' => '23840677',
                 'logo_url' => '/images/offices/hdf.jpg',
+                'twitter' => 'afup_lille',
             ],
             'luxembourg' => [
                 'label' => 'Luxembourg',
@@ -38,6 +41,7 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-luxembourg-php',
                 'meetup_id' => '19631843',
                 'logo_url' => '/images/offices/luxembourg.jpg',
+                'twitter' => 'afup_luxembourg',
             ],
             'lyon' => [
                 'label' => 'Lyon',
@@ -46,6 +50,7 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-lyon-php',
                 'meetup_id' => '19630036',
                 'logo_url' => '/images/offices/lyon.png',
+                'twitter' => 'AFUP_Lyon',
             ],
             'marseille' => [
                 'label' => 'Marseille',
@@ -54,6 +59,7 @@ class OfficesCollection
                 'meetup_urlname' => 'Marseille-PHP-User-Group',
                 'meetup_id' => '18152912',
                 'logo_url' => '/images/offices/marseille.jpg',
+                'twitter' => 'AFUP_Marseille',
 
             ],
             'montpellier' => [
@@ -63,6 +69,7 @@ class OfficesCollection
                 'meetup_urlname' => 'montpellier-php-Meetup',
                 'meetup_id' => '18724486',
                 'logo_url' => '/images/offices/montpellier.jpg',
+                'twitter' => 'afup_mtp',
             ],
             'nantes' => [
                 'label' => 'Nantes',
@@ -71,6 +78,7 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-nantes-php',
                 'meetup_id' => '23839991',
                 'logo_url' => '/images/offices/nantes.svg',
+                'twitter' => 'afup_nantes'
             ],
             'paris' => [
                 'label' => 'Paris',
@@ -79,6 +87,7 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-paris-php',
                 'meetup_id' => '19629965',
                 'logo_url' => '/images/offices/paris.png',
+                'twitter' => 'afup_paris',
             ],
             'poitiers' => [
                 'label' => 'Poitiers',
@@ -87,6 +96,7 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-poitiers-php',
                 'meetup_id' => '23106095',
                 'logo_url' => '/images/offices/afup-icon-color.svg',
+                'twitter' => 'afup_poitiers',
             ],
             'reims' => [
                 'label' => 'Reims',
@@ -95,6 +105,7 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-reims-php',
                 'meetup_id' => '23255694',
                 'logo_url' => '/images/offices/reims.jpg',
+                'twitter' => 'afup_reims',
             ],
             'rennes' => [
                 'label' => 'Rennes',
@@ -103,6 +114,7 @@ class OfficesCollection
                 'meetup_urlname' => 'AFUP-Rennes',
                 'meetup_id' => '22364687',
                 'logo_url' => '/images/offices/rennes.jpg',
+                'twitter' => 'AFUP_Rennes',
             ],
             'toulouse' => [
                 'label' => 'Toulouse',
@@ -111,12 +123,14 @@ class OfficesCollection
                 'meetup_urlname' => 'AperoPHP-Toulouse',
                 'meetup_id' => '19947513',
                 'logo_url' => '/images/offices/toulouse.jpg',
+                'twitter' => 'afup_toulouse',
             ],
             'valence' => [
                 'label' => 'Valence',
                 'latitude' => '44.933333',
                 'longitude' => '4.891667',
                 'logo_url' => '/images/offices/afup-icon-color.svg',
+                'twitter' => 'afup_dromardech',
             ],
             'clermont' => [
                 'label' => 'Clermont',
