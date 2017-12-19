@@ -239,8 +239,7 @@ if ($action == 'inscrire_forum') {
         $formulaire->addElement('file', 'photo', 'Photo (90x120)');
     }
     if ($action == 'modifier') {
-
-        if (intval($valeurs['id_forum']) < ID_FORUM_PHOTO_STORAGE) {
+        if (intval($champs['id_forum']) < ID_FORUM_PHOTO_STORAGE) {
             if (is_file($imagePath)) {
                 $formulaire->addElement('static', 'html', '', '<img src="/templates/' . $rs['path'] . '/images/intervenants/' . $_GET['id'] . '.jpg" /><br />');
             }
