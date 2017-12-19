@@ -25,63 +25,40 @@ search.addWidget(
                     + '<div class="container event-line">'
                 ;
 
-                content += ''
-                    + '<div class="col-sm-6 col-md-1 meetups-office-logo">'
-                    + '<img src="' + data.office.logo_url + '" />'
-                    + '</div>'
+                content += `<div class="col-sm-6 col-md-1 meetups-office-logo"><img src="${ data.office.logo_url }" /></div>`;
+
+                content += `<div class="col-sm-6 col-md-2 meetups-meetup-date">
+                                ${data.office.label} <br />
+                                <span style="font-size: 1.2em">${data.day_month}<br />${data.year}</span>
+                            </div>`
                 ;
 
-                content += ''
-                    + '<div class="col-sm-6 col-md-2 meetups-meetup-date">'
-                    + data.office.label + '<br />'
-                    + '<span style="font-size: 1.2em">'
-                    + data.day_month
-                    + '<br />'
-                    + data.year
-                    + '</span>'
-                    + '</div>'
-                ;
-
-
-                content += ''
-                    + '<div class="col-md-' + (data.is_upcoming ? '6' : '9') + '">'
-                    + '<div class="talk-list-title-container meetups-list-title-container"><a href="' + data.event_url + '" ><h2>' + data.label + '</h2></a></div>'
+                content += `<div class="col-md-${ data.is_upcoming ? '6' : '9' }">
+                    <div class="talk-list-title-container meetups-list-title-container"><a href="${data.event_url}"><h2>${data.label}</h2></a></div>`
                 ;
 
                 if ('undefined' !== typeof data.venue) {
-                    content += ''
-                        + data.venue.name
-                        + '<br />' + data.venue.address_1
-                        + '<br />' + data.venue.city
-                        + '<br />'
-                    ;
+                    content += `${data.venue.name}<br />${data.venue.address_1}<br />${data.venue.city}<br />`;
                 }
-                content += '<a href="#" class="description-toggler" data-toggled-html="Masquer la description">Voir la description</a>';
-                content += '<div class="event-description" style="display:none">'
-                    + data.description
-                ;
+                content += `<a href="#" class="description-toggler" data-toggled-html="Masquer la description">Voir la description</a>`;
 
+                content += `<div class="event-description" style="display:none">${data.description}`;
                 if ('undefined' !== typeof data.twitter) {
-                    content += '<div><i class="fa fa-twitter" aria-hidden="true"></i> <a href="http://twitter.com/' + data.twitter + '">@' + data.twitter + '</a></div>'
+                    content += `<div><i class="fa fa-twitter" aria-hidden="true"></i> <a href="http://twitter.com/${data.twitter}">@${data.twitter}</a></div>`
                 }
+                content += '</div>';
+
 
                 content += '</div>';
 
-                content += ''
-                    + '</div>'
-                ;
-
-
                 if (data.is_upcoming) {
                     content += '<div class="col-sm-12 col-md-3 meetups-register">';
-                    content += '<a href="' + data.event_url + '" class="button">S\'inscrire</a>';
+                    content += `<a href="${data.event_url}" class="button">S'inscrire</a>`;
                     content += '</div>';
                 }
 
 
-                content += ''
-                    + '</div>'
-                ;
+                content += '</div>';
 
                 return content;
             }
