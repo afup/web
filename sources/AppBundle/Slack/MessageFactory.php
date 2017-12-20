@@ -3,6 +3,7 @@
 
 namespace AppBundle\Slack;
 
+use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
@@ -124,6 +125,38 @@ class MessageFactory
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
             ->setUsername('CFP')
         ;
+
+        return $message;
+    }
+
+    public function createMessageForGeneralMeeting(Assemblee_Generale $assembleeGenerale)
+    {
+        $timestamp = $assembleeGenerale->obternirDerniereDate();
+
+        $message = new Message();
+        $message
+            ->setChannel('bureau')
+            ->setUsername('Assemblée Générale')
+            ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
+        ;
+
+        $attachment = new Attachment();
+        $attachment
+            ->setTitleLink('https://afup.org/pages/administration/index.php?page=assemblee_generale')
+            ->addField(
+                (new Field())->setShort(true)->setTitle('Membres à jour de cotisation')->setValue($assembleeGenerale->obtenirNombrePersonnesAJourDeCotisation($timestamp))
+            )
+            ->addField(
+                (new Field())->setShort(true)->setTitle('Présences et pouvoirs')->setValue($assembleeGenerale->obtenirNombrePresencesEtPouvoirs($timestamp))
+            )
+            ->addField(
+                (new Field())->setShort(true)->setTitle('Présences')->setValue($assembleeGenerale->obtenirNombrePresences($timestamp))
+            )
+            ->addField(
+                (new Field())->setShort(true)->setTitle('Quorum')->setValue($assembleeGenerale->obtenirEcartQuorum($timestamp))
+            )
+        ;
+        $message->addAttachment($attachment);
 
         return $message;
     }
