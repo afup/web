@@ -7,6 +7,7 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TicketStatsNotificationCommand extends ContainerAwareCommand
@@ -18,6 +19,7 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
     {
         $this
             ->setName('ticket-stats-notification')
+            ->addOption('display-diff', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -35,8 +37,12 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
             return;
         }
 
-        $date = new \DateTime();
-        $date->modify('- 1 day');
+        $date = null;
+
+        if ($input->getOption('display-diff')) {
+            $date = new \DateTime();
+            $date->modify('- 1 day');
+        }
 
         $message = $this->getContainer()->get('app.slack_message_factory')->createMessageForTicketStats(
             $event,

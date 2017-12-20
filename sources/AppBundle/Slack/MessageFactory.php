@@ -136,11 +136,9 @@ class MessageFactory
      *
      * @return Message
      */
-    public function createMessageForTicketStats(Event $event, Inscriptions $inscriptions, TicketTypeRepository $ticketRepository, \DateTime $date)
+    public function createMessageForTicketStats(Event $event, Inscriptions $inscriptions, TicketTypeRepository $ticketRepository, \DateTime $date = null)
     {
         $inscriptionsData = $inscriptions->obtenirStatistiques($event->getId());
-        $inscriptionsDataFiltered = $inscriptions->obtenirStatistiques($event->getId(), $date);
-
         $message = new Message();
         $message
             ->setChannel('bureau')
@@ -148,18 +146,22 @@ class MessageFactory
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
 
-        $attachment = new Attachment();
-        $attachment
-            ->setTitle(sprintf('Liste des inscriptions depuis le %s : ', $date->format('d/m/Y H:i')))
-        ;
-        foreach ($inscriptionsDataFiltered['types_inscriptions']['inscrits'] as $typeId => $value) {
-            if (0 === $value) {
-                continue;
-            }
-            $attachment->addField((new Field())->setShort(true)->setTitle($ticketRepository->get($typeId)->getPrettyName())->setValue($value));
-        }
+        if (null !== $date) {
+            $inscriptionsDataFiltered = $inscriptions->obtenirStatistiques($event->getId(), $date);
 
-        $message->addAttachment($attachment);
+            $attachment = new Attachment();
+            $attachment
+                ->setTitle(sprintf('Liste des inscriptions depuis le %s : ', $date->format('d/m/Y H:i')))
+            ;
+            foreach ($inscriptionsDataFiltered['types_inscriptions']['inscrits'] as $typeId => $value) {
+                if (0 === $value) {
+                    continue;
+                }
+                $attachment->addField((new Field())->setShort(true)->setTitle($ticketRepository->get($typeId)->getPrettyName())->setValue($value));
+            }
+
+            $message->addAttachment($attachment);
+        }
 
         $attachment = new Attachment();
         $attachment
