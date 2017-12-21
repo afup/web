@@ -361,7 +361,7 @@ if ($action == 'lister') {
                 $valeurs['abstract'],
                 $valeurs['genre'],
                 $valeurs['plannifie'],
-                isset($valeurs['needs_mentoring']) ? $valeurs['needs_mentoring'] : false,,
+                isset($valeurs['needs_mentoring']) ? $valeurs['needs_mentoring'] : 0,
                 $valeurs['skill']
             );
 			$ok = (bool)$session_id;
