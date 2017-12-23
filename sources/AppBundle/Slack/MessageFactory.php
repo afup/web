@@ -174,7 +174,7 @@ class MessageFactory
         $inscriptionsData = $inscriptions->obtenirStatistiques($event->getId());
         $message = new Message();
         $message
-            ->setChannel('bureau')
+            ->setChannel('phptour2018')
             ->setUsername('Inscriptions')
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
