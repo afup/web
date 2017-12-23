@@ -261,6 +261,8 @@ if ($action == 'lister') {
 
     $pays = new Pays($bdd);
 
+    $talk = null;
+	
     $formulaire = &instancierFormulaire();
     if ($action != 'ajouter') {
         $champs = $forum_appel->obtenirSession($_GET['id']);
@@ -359,7 +361,7 @@ if ($action == 'lister') {
                 $valeurs['abstract'],
                 $valeurs['genre'],
                 $valeurs['plannifie'],
-                $valeurs['needs_mentoring'],
+                isset($valeurs['needs_mentoring']) ? $valeurs['needs_mentoring'] : 0,
                 $valeurs['skill']
             );
 			$ok = (bool)$session_id;
