@@ -154,6 +154,17 @@ class OfficesCollection
         throw new \InvalidArgumentException('Office nout found');
     }
 
+    public function findByCode($code)
+    {
+        $all = $this->getAll();
+
+        if (!isset($all[$code])) {
+            throw new \InvalidArgumentException('Office not found');
+        }
+
+        return $all[$code];
+    }
+
     public function getOrderedLabelsByKey()
     {
         $labels = [];
