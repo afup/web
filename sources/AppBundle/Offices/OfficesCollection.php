@@ -153,4 +153,16 @@ class OfficesCollection
 
         throw new \InvalidArgumentException('Office nout found');
     }
+
+    public function getOrderedLabelsByKey()
+    {
+        $labels = [];
+        foreach ($this->getAll() as $key => $office) {
+            $labels[$key] = $office['label'];
+        }
+
+        natcasesort($labels);
+
+        return $labels;
+    }
 }
