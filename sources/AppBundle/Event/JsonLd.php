@@ -79,19 +79,25 @@ class JsonLd
                 ];
             }
 
-            $subEvents[] = [
+            $subEvent = [
                 '@type' => 'Event',
                 'name' => $talkInfo['talk']->getTitle(),
                 'description' => html_entity_decode(strip_tags($talkInfo['talk']->getDescription())),
                 'location' => [
                     '@type' => 'Place',
-                    'name' => $talkInfo['room']->getName(),
+                    'name' => $talkInfo['room'] ? $talkInfo['room']->getName() : '',
                     'address' => $event->getPlaceAddress()
                 ],
                 'performers' => $performers,
-                'startDate' => $talkInfo['planning']->getStart()->format('c'),
-                'endDate' => $talkInfo['planning']->getEnd()->format('c')
+
             ];
+
+            if ($talkInfo['planning']) {
+                $subEvent['startDate'] = $talkInfo['planning']->getStart()->format('c');
+                $subEvent['endDate'] = $talkInfo['planning']->getEnd()->format('c');
+            }
+
+            $subEvents[] = $subEvent;
         }
 
         $offers = [];
