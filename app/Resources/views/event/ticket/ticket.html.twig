@@ -41,10 +41,9 @@
 {% endblock %}
 
 {% block content %}
-    {# @todo #}
     <script src="{{ asset('templates/site/js/vendor/jquery-1.8.0.min.js') }}"></script>
-    <script src="https://wzrd.in/standalone/formdata-polyfill@latest"></script>
-    <script src="{{ asset('js/inscription.js') }}"></script>
+    <script src="https://wzrd.in/standalone/formdata-polyfill@3.0"></script>
+    <script src="{{ asset('js/inscription.js') }}?2"></script>
 
     <script type="text/javascript">
 		var nbInscriptions = {{ nbPersonnes }};
