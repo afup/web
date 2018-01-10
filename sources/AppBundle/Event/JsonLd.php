@@ -104,7 +104,7 @@ class JsonLd
         /**
          * @var $eventTickets TicketEventType[]
          */
-        $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event);
+        $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event, true, TicketEventTypeRepository::ACTUAL_TICKETS_ONLY);
 
         $available = [
             '@type' => 'ItemAvailability',

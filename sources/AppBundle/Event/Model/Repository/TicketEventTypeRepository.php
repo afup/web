@@ -12,7 +12,18 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TicketEventTypeRepository extends Repository implements MetadataInitializer
 {
-    public function getTicketsByEvent(Event $event, $publicOnly = true, $actualTickets = true)
+    const REMOVE_PAST_TICKETS = 1;
+    const REMOVE_FUTURE_TICKETS = 2;
+    const ACTUAL_TICKETS_ONLY = 3; // Combination of REMOVE_PAST_TICKETS and REMOVE_FUTURE_TICKETS
+
+    /**
+     * @param Event $event
+     * @param bool $publicOnly
+     * @param null|int $datesFilter can be one of self::REMOVE_PAST_TICKETS, self::REMOVE_FUTURE_TICKETS. self::ACTUAL_TICKETS == self::REMOVE_PAST_TICKETS | self::REMOVE_FUTURE_TICKETS. Default value is ACTUAL_TICKETS
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
+    public function getTicketsByEvent(Event $event, $publicOnly = true, $datesFilter = null)
     {
         $sql = '
             SELECT
@@ -24,9 +35,14 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
         ';
 
         $params = ['event' => $event->getId()];
-        if ($actualTickets === true) {
-            $sql .= ' AND date_start < NOW() AND date_end > NOW() ';
+
+        if ($datesFilter & self::REMOVE_PAST_TICKETS) {
+            $sql .= ' AND date_end > NOW() ';
         }
+        if ($datesFilter & self::REMOVE_FUTURE_TICKETS) {
+            $sql .= ' AND date_start < NOW() ';
+        }
+
         if ($publicOnly === true) {
             $sql .= 'AND public = :public';
             $params['public'] = $publicOnly;

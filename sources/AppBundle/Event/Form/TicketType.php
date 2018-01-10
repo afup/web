@@ -52,7 +52,7 @@ class TicketType extends AbstractType
         $eventTickets = null;
         if ($options['event_id'] !== null) {
             $event = $this->eventRepository->get($options['event_id']);
-            $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event, true, false);
+            $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS);
         }
 
         if ($eventTickets === null) {
