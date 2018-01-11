@@ -25,3 +25,7 @@ meetups:
 blog:
     resource: "routing/blog.yml"
     prefix: /blog
+
+groups:
+    resource: "routing/groups.yml"
+    prefix: /admin/groups

@@ -35,3 +35,5 @@ parameters:
 
     google_maps_api_key: ""
     meetup_api_key: ""
+
+    google_groups_api_key: ""

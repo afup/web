@@ -196,6 +196,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TicketEventTypeRepository]
 
+    app.mailing_list_repository:
+        class: AppBundle\Groups\Model\Repository\MailingListRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Groups\Model\Repository\MailingListRepository]
+
     app.sponsor_ticket_helper:
         class: AppBundle\Event\Ticket\SponsorTicketHelper
         autowire: true
@@ -277,3 +282,24 @@ services:
     app.event_json_ld:
         class: AppBundle\Event\JsonLd
         autowire: true
+
+    app.google_client:
+        class: Google_Client
+        calls:
+          - ["setAuthConfig", ["%google_groups_api_key%"]]
+          - ["setScopes", [[!php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP, !php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY]]]
+          - ["setSubject", ['admin-mailing-listes-api@afup.org']]
+
+    app.group_client:
+        class: Google_Service_Directory
+        arguments: ["@app.google_client"]
+
+    app.group_repository:
+        class: AppBundle\Groups\GroupRepository
+        autowire: true
+
+    app.members_groups_listener:
+        class: AppBundle\Association\Listener\MembersGroupsListener
+        autowire: true
+        tags:
+          - { name: kernel.event_listener, event: member.new, method: onNewMemberEvent }

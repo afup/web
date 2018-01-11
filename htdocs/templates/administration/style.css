@@ -231,6 +231,9 @@ p.note {
 	border: 1px #A6A6A6 solid;
 	padding-left: 30px;
 }
+p.error{
+    color: red;
+}
 
 p.html {
 	float: right;
@@ -861,7 +864,7 @@ form[name=sponsor_ticket] #sponsor_ticket div input, form[name=sponsor_token] di
     border: 1px solid #ccc;
 }
 
-form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[type=submit], a.sponsor--token-admin-edit{
+form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[type=submit], a.sponsor--token-admin-edit, .mailinglists--form button{
     text-decoration: none !important;
     background-color:#50a0dd !important;
     font-size:0.8rem;
@@ -905,4 +908,28 @@ form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[
 
 .tab--filterable th a{
     color: #333 !important;
+}
+
+.mailinglists--form{
+    width: auto;
+}
+
+.mailinglists--form button[disabled]{
+    background-color:#a8bdce !important;
+}
+body#groups p{
+    padding:0;
+}
+
+.mailinglists--form h3{
+    margin: 1em 0;
+}
+
+.mailinglists--form button{
+    margin: 1em 0;
+}
+
+.mailinglists--form h4{
+    font-weight:bold;
+    margin: 2em 0 .5em;
 }
