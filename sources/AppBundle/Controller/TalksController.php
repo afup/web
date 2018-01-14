@@ -6,16 +6,18 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends SiteBaseController
 {
-    public function listAction()
+    public function listAction(Request $request)
     {
         return $this->render(
             ':site:talks/list.html.twig',
             [
                 'algolia_app_id' => $this->getParameter('algolia_app_id'),
                 'algolia_api_key' => $this->getParameter('algolia_frontend_api_key'),
+                'source' => $request->get('src'),
             ]
         );
     }
