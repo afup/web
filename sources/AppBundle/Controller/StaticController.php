@@ -3,13 +3,20 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\HttpFoundation\Request;
 
 class StaticController extends SiteBaseController
 {
     public function officesAction()
     {
-        return $this->render(':site:offices.html.twig');
+        $officesCollection = new OfficesCollection();
+        return $this->render(
+        ':site:offices.html.twig',
+            [
+                'offices' => $officesCollection->getAllSortedByLabels()
+            ]
+        );
     }
 
     public function superAperoAction()
