@@ -57,8 +57,7 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-hauts-de-france-php',
                 'meetup_id' => '23840677',
                 'logo_url' => '/images/offices/hdf.jpg',
-                'twitter' => 'afup_lille',
-                'blog_url' => 'http://lille.afup.org/',
+                'twitter' => 'afup_hdf',
                 'map' => [
                     "legend-first-point-x" => "490",
                     "legend-first-point-y" => "55",
@@ -70,7 +69,7 @@ class OfficesCollection
                     "point-latitude" => "50.637222",
                     "point-longitude" => "3.063333",
                 ],
-                'departements' => ['59'],
+                'departements' => ['59', '80'],
             ],
             'luxembourg' => [
                 'label' => 'Luxembourg',
