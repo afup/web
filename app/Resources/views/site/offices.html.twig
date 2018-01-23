@@ -308,12 +308,12 @@
                  {% if office.departements is defined %}
                     data-departements="{{ office.departements|join(',') }}"
                  {% endif %}
-                {% if office.pays is defined %}
+                 {% if office.pays is defined %}
                     data-pays="{{ office.pays|join(',') }}"
-                {% endif %}
-                {% if office.map_use_second_color is defined%}
+                 {% endif %}
+                 {% if office.map_use_second_color is defined%}
                     data-use-second-color="1"
-                {% endif %}
+                 {% endif %}
             >
                 <div class="col-md-1">
                     <img src="{{ office.logo_url }}" />
