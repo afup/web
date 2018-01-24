@@ -1,0 +1,24 @@
+{% extends ':admin:base_with_header.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all"/>
+{% endblock %}
+{% block content %}
+    <article id="members-stats">
+        <h2>Statistiques concernant les membres</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Personnes physiques*</th>
+                    <th>Personnes morales*</th>
+                    <th>Personnes physiques rattachées à une personne morale*</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+
+            </tr>
+            </tbody>
+        </table>
+        <p><em>* Membres avec des cotisations en cours de validité uniquement</em></p>
+    </article>
+{% endblock %}
