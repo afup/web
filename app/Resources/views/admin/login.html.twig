@@ -43,6 +43,9 @@
 
             <p class="rangee"><a href="{{ url('admin_password') }}">Mot de passe perdu ?</a></p>
             <p class="rangee"><a href="{{ url('legacy_inscription') }}">Vous souhaitez vous inscrire à l'AFUP?</a></p>
+            {% if target_path is not null %}
+                <input type="hidden" name="_target_path" value="{{ target_path }}" />
+            {% endif %}
         </form>
     </div>
 {% endblock %}

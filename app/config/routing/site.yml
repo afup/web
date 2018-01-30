@@ -50,3 +50,7 @@ newsletter_subscribe:
 membership_payment:
   path: /paybox-callback
   defaults: {_controller: AppBundle:MemberShip:payboxCallback}
+
+techletter_subscribe:
+  path: /techletter/subscribe
+  defaults: {_controller: AppBundle:Techletter:subscribe}

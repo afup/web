@@ -1,0 +1,18 @@
+div.techletter-subscription{
+
+}
+
+ul.techletter-subscription--check li span{
+    font-size:3em;
+    vertical-align: middle;
+}
+ul.techletter-subscription--check li span.techletter-subscription--check-unchecked{
+    color: red;
+}
+
+ul.techletter-subscription--check li span.techletter-subscription--check-checked{
+    color: green;
+}
+ul.techletter-subscription--check li{
+    list-style-type: none;
+}
