@@ -10,68 +10,15 @@
 
 <div class="techletter-subscription" id="container">
     <div class="techletter-subscription--header">
-        <h2>Simplifiez votre veille sur PHP.</h2>
-        <p>
-            Tous les 15 jours, recevez les infos à ne pas rater, sélectionnées par les experts de l'AFUP.
-        </p>
-    </div>
-
-    <div class="techletter-subscription-body">
-        <div class="techletter-subscription-argument">
-            <h3>Le meilleur de PHP, directement par mail</h3>
+        <div class="techletter-subscription-capture">
+            <img src="{{ asset('images/techletter/sample.png') }}" />
+        </div>
+        <div class="techletter-subscription-header-content">
+            <h2>Bravo !</h2>
             <p>
-                Une sélection drastique est effectuée en amont, afin de vous permettre d'accéder aux meilleurs articles
-                du moment. Ne perdez plus de temps à aller de lien en lien et concentrez-vous sur votre métier.
+                Vous &ecirc;tes désormais inscrit à la techletter de l'AFUP !
             </p>
         </div>
-
-        <div class="techletter-subscription-argument">
-            <h3>Un avantage exclusif pour nos membres</h3>
-            <p>
-                Seuls les membres AFUP peuvent accéder à ce concentré de veille qui couvre l'essentiel de
-                l'actualité de PHP et des technologies connexes.
-            </p>
-        </div>
-
-        <div class="techletter-subscription-argument">
-            <ul class="techletter-subscription--check">
-                <li>
-                    {% if loggedIn %}
-                        <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
-                    {% else %}
-                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
-                    {% endif %}
-                    Être connecté au <a href="{{ url('admin_login') }}">Back-office de l'AFUP</a>
-                </li>
-
-                <li>
-                    {% if feeUpToDate %}
-                        <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
-                    {% else %}
-                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
-                    {% endif %}
-                    Être membre à jour de cotisation
-                </li>
-
-                <li>
-                    {% if subscribed %}
-                        <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
-                    {% else %}
-                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
-                    {% endif %}
-                    Être inscrit depuis cette page
-                </li>
-
-                <li>
-                    <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
-                    Test unchecked
-                </li>
-            </ul>
-        </div>
-
     </div>
-
-
-
 </div>
 {% endblock %}

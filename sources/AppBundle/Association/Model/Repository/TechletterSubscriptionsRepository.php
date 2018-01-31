@@ -12,6 +12,16 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TechletterSubscriptionsRepository extends Repository implements MetadataInitializer
 {
+    public function subscribe(User $user = null)
+    {
+        $subscription = new TechletterSubscription();
+        $subscription
+            ->setSubscriptionDate(new \DateTime())
+            ->setUserId($user->getId())
+        ;
+        $this->save($subscription);
+    }
+
     public function hasUserSubscribed(User $user = null)
     {
         $subscription = null;

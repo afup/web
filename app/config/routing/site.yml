@@ -51,6 +51,11 @@ membership_payment:
   path: /paybox-callback
   defaults: {_controller: AppBundle:MemberShip:payboxCallback}
 
+techletter:
+  path: /techletter
+  defaults: {_controller: AppBundle:Techletter:index}
+
 techletter_subscribe:
-  path: /techletter/subscribe
-  defaults: {_controller: AppBundle:Techletter:subscribe}
+  path: /techletter/subscription
+  defaults: {_controller: AppBundle:Techletter:subscribe }
+  methods: ["POST"]

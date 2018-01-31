@@ -1,0 +1,93 @@
+{% extends ':site:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/glyphicons.css') }}" media="screen" />
+    <link rel="stylesheet" href="{{ asset('css/techletter.css') }}" media="screen" />
+{% endblock %}
+
+{% block content %}
+
+<div class="techletter-subscription" id="container">
+    <div class="techletter-subscription--header">
+        <div class="techletter-subscription-capture">
+            <img src="{{ asset('images/techletter/sample.png') }}" />
+        </div>
+        <div class="techletter-subscription-header-content">
+            <h2>Simplifiez votre veille sur PHP.</h2>
+            <p>
+                Tous les 15 jours, recevez les infos à ne pas rater, sélectionnées par les experts de l'AFUP.<br />
+            </p>
+            <p>
+                <a class="banner-button" href="#techletter-inscription">&gt;&gt; Je m'inscris &lt;&lt;</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="techletter-subscription-body">
+        <div class="techletter-subscription-argument">
+            <h3>Le meilleur de PHP, directement par mail</h3>
+            <p>
+                Une sélection drastique est effectuée en amont, afin de vous permettre d'accéder aux meilleurs articles
+                du moment.<br />Ne perdez plus de temps à aller de lien en lien et concentrez-vous sur votre métier.
+            </p>
+        </div>
+
+        <div class="techletter-subscription-argument">
+            <h3>Un avantage exclusif pour nos membres</h3>
+            <p>
+                Seuls les membres AFUP peuvent accéder à ce concentré de veille qui couvre l'essentiel de
+                l'actualité de PHP et des technologies connexes.
+            </p>
+        </div>
+
+        <div class="techletter-subscription-argument">
+            <h3>Inscription</h3>
+            <ul class="techletter-subscription--check" id="techletter-inscription">
+                <li>
+                    {% if loggedIn %}
+                        <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
+                    {% else %}
+                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
+                    {% endif %}
+                    Être connecté au <a href="{{ url('admin_login') }}?target={{ path('techletter') }}">Back-office de l'AFUP</a>
+                </li>
+
+                <li>
+                    {% if feeUpToDate %}
+                        <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
+                        Être membre à jour de cotisation
+                    {% else %}
+                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
+                        Être membre à jour de cotisation. <a href="{{ legacy_router.adminUrl('membre_cotisation') }}">Payer ma cotisation</a>.
+                    {% endif %}
+
+                </li>
+
+                <li>
+                    {% if subscribed %}
+                        {% if not feeUpToDate %}
+                            <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
+                            Vous etes inscrit mais votre cotisation n'est plus à jour. Vous ne recevrez la newsletter que lorsque celle-ci sera à jour.
+                        {% else %}
+                            <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
+                            Félicitations vous &ecirc;tes déjà inscrit!
+                        {% endif %}
+                    {% else %}
+                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
+                        Vous inscrire en cliquant sur ce bouton:
+                        <form class="techletter-subscription--form" method="post" action="{{ path('techletter_subscribe') }}">
+                            <input type="hidden" name="_csrf_token" value="{{ token }}" />
+                            <button class="banner-button">&gt;&gt; Je m'inscris &lt;&lt;</button>
+                        </form>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+
+</div>
+{% endblock %}
