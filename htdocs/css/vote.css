@@ -1,5 +1,4 @@
 body{
-    padding-top: 80px;
     background-color:white;
 }
 
@@ -193,7 +192,8 @@ body{
     position: relative;
     min-height: 60px;
     margin-bottom: 0;
-    border: 1px solid transparent
+    border: 0;
+    border-radius: 0;
 }
 
 .navbar:before,.navbar:after {
@@ -207,7 +207,7 @@ body{
 
 @media (min-width: 768px) {
     .navbar {
-        border-radius:4px
+        border-radius: 0;
     }
 }
 
