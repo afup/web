@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Sansita+One|Roboto:400,100,700);
+
 html {
     font-size: 62.5%
 }
@@ -1497,8 +1499,6 @@ form.sponsor--token-home-form input[type=submit] {
 footer.footer--fork{
     text-align: center;
 }
-
-@import url(https://fonts.googleapis.com/css?family=Sansita+One|Roboto:400,100,700);
 
 #afup-global-menu {
     text-align: center;
