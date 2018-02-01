@@ -48,7 +48,7 @@ div.techletter-subscription{
         grid-template-columns: 33% 33% 33%;
     }
     div.techletter-subscription-body div.techletter-subscription-argument{
-        padding: 1.5em;
+        padding: 3em;
         text-align: center;
     }
 }

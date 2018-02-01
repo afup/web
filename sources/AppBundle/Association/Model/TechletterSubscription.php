@@ -61,7 +61,7 @@ class TechletterSubscription implements NotifyPropertyInterface
      */
     public function setUserId($userId)
     {
-        $userId = (int)$userId;
+        $userId = (int) $userId;
         $this->propertyChanged('userId', $this->userId, $userId);
         $this->userId = $userId;
         return $this;

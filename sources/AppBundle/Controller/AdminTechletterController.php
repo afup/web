@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 
 class AdminTechletterController extends SiteBaseController
