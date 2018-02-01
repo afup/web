@@ -1497,3 +1497,37 @@ form.sponsor--token-home-form input[type=submit] {
 footer.footer--fork{
     text-align: center;
 }
+
+@import url(https://fonts.googleapis.com/css?family=Sansita+One|Roboto:400,100,700);
+
+#afup-global-menu {
+    text-align: center;
+    background-color: #1d2241;
+    height: 30px;
+    color: #fff
+}
+#afup-global-menu .lien-entete {
+    box-sizing: border-box;
+    font-family: Roboto, Helvetica, sans-serif;
+    letter-spacing: 0.08em;
+    font-size: 13px;
+    color: #fff;
+    padding: 4px 15px;
+    text-decoration: none;
+    height: 30px;
+    display: inline-block;
+    line-height: 1.55;
+}
+#afup-global-menu .lien-entete:hover {
+    background-color: #36a7df;
+}
+
+#afup-global-menu .lien-entete__active {
+    background-color: #36a7df;
+}
+
+@media (max-width: 460px) {
+    #afup-global-menu {
+        display: none;
+    }
+}
