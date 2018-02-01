@@ -25,6 +25,11 @@ class TechletterSubscription implements NotifyPropertyInterface
     private $subscriptionDate;
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * @return int
      */
     public function getId()
@@ -56,6 +61,8 @@ class TechletterSubscription implements NotifyPropertyInterface
      */
     public function setUserId($userId)
     {
+        $userId = (int)$userId;
+        $this->propertyChanged('userId', $this->userId, $userId);
         $this->userId = $userId;
         return $this;
     }
@@ -74,7 +81,26 @@ class TechletterSubscription implements NotifyPropertyInterface
      */
     public function setSubscriptionDate(\DateTime $subscriptionDate)
     {
+        $this->propertyChanged('subscriptionDate', $this->subscriptionDate, $subscriptionDate);
         $this->subscriptionDate = $subscriptionDate;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return TechletterSubscription
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
         return $this;
     }
 }

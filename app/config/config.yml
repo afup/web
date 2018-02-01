@@ -73,6 +73,10 @@ parameters:
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
+                techletter:
+                    nom: 'Abonnés à la techletter'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/techletter'
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'

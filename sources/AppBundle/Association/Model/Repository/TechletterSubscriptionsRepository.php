@@ -5,6 +5,7 @@ namespace AppBundle\Association\Model\Repository;
 use AppBundle\Association\Model\TechletterSubscription;
 use AppBundle\Association\Model\User;
 use CCMBenchmark\Ting\Repository\HydratorArray;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -36,6 +37,25 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
         return true;
     }
 
+    public function getAllSubscriptionsWithUser()
+    {
+        $hydrator = new HydratorSingleObject();
+        $hydrator
+            ->mapAliasTo('lastsubscription', 'app', 'setLastSubscription')
+            ->mapObjectTo('app', 'ats', 'setUser')
+        ;
+
+        return $this->getQuery(
+            'SELECT app.login, app.email, app.nom, app.prenom, MAX(ac.date_fin) AS lastsubscription, ats.subscription_date, ats.id, ats.user_id
+            FROM afup_techletter_subscriptions ats
+            LEFT JOIN afup_personnes_physiques app ON app.id = ats.user_id
+            LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
+            LEFT JOIN afup_cotisations ac ON ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)
+            GROUP BY app.id
+          ')->query($this->getCollection($hydrator))
+            ;
+    }
+
     /**
      * Returns all members who subscribed to this techletter with a valid membership
      */
@@ -44,7 +64,7 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
         return $this->getQuery(
             'SELECT app.email
             FROM afup_techletter_subscriptions ats
-            LEFT JOIN afup_personnes_physiques app ON app.id = ats.id
+            LEFT JOIN afup_personnes_physiques app ON app.id = ats.user_id
             LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
             LEFT JOIN afup_cotisations ac ON ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)
             WHERE ac.date_fin > UNIX_TIMESTAMP()
