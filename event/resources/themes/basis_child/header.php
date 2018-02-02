@@ -15,38 +15,14 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<?php wp_head(); ?>
+    <?php $globalMenuPrefix = getenv('AFUP_GLOBAL_MENU_PREFIX') ?>
+    <?php if (false === $globalMenuPrefix): ?>
+        <?php $globalMenuPrefix = 'https://afup.org' ?>
+    <?Php endif ?>
+    <link rel="stylesheet" href="<?php echo $globalMenuPrefix ?>/templates/site/css/global-menu.css" media="all" />
 </head>
 <body <?php body_class(); ?>>
 
-<style>
-    @import url(https://fonts.googleapis.com/css?family=Sansita+One|Roboto:400,100,700);
-
-    #afup-global-menu {
-        text-align: center;
-        background-color: #1d2241;
-        height: 30px;
-        color: #fff
-    }
-    #afup-global-menu .lien-entete {
-        box-sizing: border-box;
-        font-family: Roboto, Helvetica, sans-serif;
-        letter-spacing: 0.08em;
-        font-size: 13px;
-        color: #fff;
-        padding: 4px 15px;
-        text-decoration: none;
-        height: 30px;
-        display: inline-block;
-        line-height: 1.55;
-    }
-    #afup-global-menu .lien-entete:hover {
-        background-color: #36a7df;
-    }
-
-    #afup-global-menu .lien-entete__active {
-        background-color: #36a7df;
-    }
-</style>
 <div id="afup-global-menu">
     <a href="https://afup.org" class="lien-entete">AFUP</a>
     <a href="https://event.afup.org" class="lien-entete lien-entete__active">PHPTour 2018</a>
