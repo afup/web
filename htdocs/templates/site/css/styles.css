@@ -622,11 +622,6 @@ input, button, select, label {
         content: ""
     }
 
-    html #joinus {
-        width: calc(100% - 3.5rem);
-        padding-right:0.2em;
-    }
-
     #subheader {
         position: absolute;
         top: 150px;
@@ -709,9 +704,6 @@ input, button, select, label {
         display: block;
     }
 
-    html #subheader #joinus p {
-        font-size: 1.4em
-    }
     #main {
         padding:0 !important;
     }
@@ -1235,17 +1227,6 @@ header #espace-membre ul li:before {
 
 header #espace-membre ul li:last-child:before {
     content: ""
-}
-
-#joinus {
-    font-family: "Glegoo", serif;
-    text-transform: uppercase;
-    z-index: 2;
-}
-
-#joinus p {
-    font-size: 1.61em;
-    line-height: 1.14
 }
 
 #subheader {
