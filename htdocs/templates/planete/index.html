@@ -9,6 +9,8 @@
 	<title>Planete PHP FR : tous les blogs PHP francophones</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+	<link rel="stylesheet" href="{$smarty.env.AFUP_GLOBAL_MENU_PREFIX|default:'https://afup.org'}/templates/site/css/global-menu.css" media="all" />
+
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67701567-2"></script>
 	{literal}
@@ -23,6 +25,13 @@
 </head>
 
 <body>
+
+<div id="afup-global-menu">
+	<a href="https://afup.org" class="lien-entete">AFUP</a>
+	<a href="https://event.afup.org" class="lien-entete">PHPTour 2018</a>
+	<a href="https://barometre.afup.org" class="lien-entete">Baromètre</a>
+	<a href="http://www.planete-php.fr" class="lien-entete lien-entete__active">Planète PHP</a>
+</div>
 
 	<div id="en-tete">
 		<div class="container">
