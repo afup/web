@@ -445,10 +445,22 @@
                 </div>
             </div>
 
-            <div class="mw1400p center" style="text-align: center;">
-                {{ footer }}
+            <div class="mw1400p center footer-nav">
+                <div class="container">
+                    {% for footer_column in footer %}
+                    <div class="col-md-4 col-sm-12">
+                        <h2>{{ footer_column.nom }}</h2>
+                        <ul>
+                            {% for item in footer_column.items %}
+                                <li><a href="{{ item.lien }}">{{ item.nom }}<i class="fa fa-chevron-right"></i></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div id="copyright">© AFUP 2003-{{ date()|date('Y') }}</div>
             </div>
-            <div id="copyright">© AFUP 2003-{{ date()|date('Y') }}</div>
         </footer>
     {% endautoescape %}
 {% endblock %}

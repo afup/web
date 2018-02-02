@@ -86,9 +86,19 @@ class Page
                 ';
     }
 
-    function footer() {
+    function footer()
+    {
         $branche = new Branche($this->bdd);
-        return $branche->naviguer(38, 2, "menufooter-top");
+
+        $footerColumns = [];
+        foreach ($branche->feuillesEnfants(38) as $feuilleColonne) {
+            $footerColumns[] = [
+                'nom' => $branche->getNom($feuilleColonne['id']),
+                'items' => $branche->feuillesEnfants($feuilleColonne['id'])
+            ];
+        }
+
+        return $footerColumns;
     }
 
     function getRightColumn() {

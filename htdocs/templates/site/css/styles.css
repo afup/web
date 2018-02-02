@@ -821,18 +821,6 @@ input, button, select, label {
     html header #espace-membre ul li:before {
         content: ""
     }
-
-    html #footer-top #menufooter-top {
-        position: static
-    }
-
-    html #footer-top #menufooter-top li {
-        float: none
-    }
-
-    html #footer-top #menufooter-top li a {
-        border: 0
-    }
 }
 
 @media (orientation: landscape) and (max-device-width: 640px) {
@@ -1380,35 +1368,6 @@ form #subscriber_save{
     border: 1px solid #ed0678;
 }
 
-footer #menufooter-top {
-    list-style: none;
-}
-
-footer #menufooter-top:after {
-    content: "";
-    display: table;
-    clear: both
-}
-
-footer #menufooter-top li {
-    display: inline-block;
-}
-
-footer #menufooter-top li:first-child a, footer #menufooter-top li:first-child span {
-    border: 0
-}
-
-footer #menufooter-top a, footer #menufooter-top span {
-    color: #4c6eaf;
-    padding: 0 17px 0 16px;
-    border-left: 1px solid #4c6eaf;
-    text-decoration: none
-}
-
-footer #menufooter-top a:hover {
-    text-decoration: underline
-}
-
 footer .pre-footer-container {
     background-color: #1d2241
 }
@@ -1431,6 +1390,25 @@ footer .pre-footer-newsletter-title {
 footer .pre-footer-newsletter-caption {
     color: #fff;
     font-style: italic
+}
+
+footer .footer-nav li {
+    border-top: 1px solid #e5e5e5;
+    list-style: none;
+}
+
+footer .footer-nav li a {
+    padding: 10px 0;
+    display: block;
+    text-decoration: none;
+    color: #999;
+    position: relative;
+}
+
+footer .footer-nav li a i {
+    position: absolute;
+    right: 20px;
+    top: 15px;
 }
 
 .pagination {
@@ -1525,7 +1503,4 @@ form.sponsor--token-home-form input[type=submit] {
     -moz-border-radius-topright:20px;
     border-bottom-right-radius:20px;
     border-top-right-radius:20px;
-}
-footer.footer--fork{
-    text-align: center;
 }
