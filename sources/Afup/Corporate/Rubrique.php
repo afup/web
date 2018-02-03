@@ -18,6 +18,7 @@ class Rubrique
     public $date;
     public $etat;
     public $pagination;
+    public $feuille_associee;
 
     /**
      * @var \Afup\Site\Utils\Base_De_Donnees
@@ -133,6 +134,7 @@ class Rubrique
         $this->date = $rubrique['date'];
         $this->etat = $rubrique['etat'];
         $this->pagination = isset($rubrique['pagination']) ? $rubrique['pagination'] : null;
+        $this->feuille_associee = $rubrique['feuille_associee'];
     }
 
     function charger()
@@ -186,6 +188,7 @@ class Rubrique
             'contenu' => $this->contenu,
             'date' => date('Y-m-d', $this->date),
             'etat' => $this->etat,
+            'feuille_associee' => $this->feuille_associee,
         );
     }
 
@@ -218,7 +221,8 @@ class Rubrique
          			descriptif           = ' . $this->bdd->echapper($this->descriptif) . ',
            			contenu              = ' . $this->bdd->echapper($this->contenu) . ',
            			icone                = ' . $this->bdd->echapper($this->icone) . ',
-           			etat                 = ' . $this->bdd->echapper($this->etat) . '
+           			etat                 = ' . $this->bdd->echapper($this->etat) . ',
+           			feuille_associee     = ' . $this->bdd->echapper($this->feuille_associee) . '
            			WHERE id             = ' . $this->bdd->echapper($this->id);
 
         return $this->bdd->executer($requete);
@@ -237,6 +241,7 @@ class Rubrique
          			descriptif           = ' . $this->bdd->echapper($this->descriptif) . ',
            			contenu              = ' . $this->bdd->echapper($this->contenu) . ',
            			icone                = ' . $this->bdd->echapper($this->icone) . ',
+           			feuille_associee     = ' . $this->bdd->echapper($this->feuille_associee) . ',
            			etat                 = ' . $this->bdd->echapper($this->etat);
         if ($this->id > 0) {
             $requete .= ', id            = ' . $this->bdd->echapper($this->id);

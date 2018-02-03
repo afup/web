@@ -2,6 +2,7 @@
 
 // Impossible to access the file itself
 use Afup\Site\Association\Personnes_Physiques;
+use Afup\Site\Corporate\Feuilles;
 use Afup\Site\Corporate\Rubrique;
 use Afup\Site\Corporate\Rubriques;
 use Afup\Site\Utils\Logs;
@@ -21,6 +22,7 @@ $smarty->assign('action', $action);
 
 $rubriques = new Rubriques($bdd);
 $personnes_physiques = new Personnes_Physiques($bdd);
+$feuilles = new Feuilles($bdd);
 
 if ($action == 'lister') {
     $list_champs     = '*';
@@ -87,6 +89,7 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date'                     , 'Date'             , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
     $formulaire->addElement('select'  , 'position'                 , 'Position'         , $rubrique->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'             , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
+    $formulaire->addElement('select'  , 'feuille_associee'         , 'Feuille associée'    , array(null => '' ) + $feuilles->obtenirListe('id, nom', 'nom', true));
 
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
@@ -116,6 +119,7 @@ if ($action == 'lister') {
         $date = $formulaire->exportValue('date');
         $rubrique->date = mktime(0, 0, 0, $date['M'], $date['d'], $date['Y']);
         $rubrique->etat = $formulaire->exportValue('etat');
+        $rubrique->feuille_associee = $formulaire->exportValue('feuille_associee');
 
         if ($action == 'ajouter') {
             $ok = $rubrique->inserer();
