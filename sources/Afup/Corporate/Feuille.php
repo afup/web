@@ -1,10 +1,11 @@
 <?php
+
 namespace Afup\Site\Corporate;
-
-
 
 class Feuille
 {
+    const ID_FEUILLE_ANTENNES = 71;
+
     public $id;
     public $id_parent;
     public $nom;

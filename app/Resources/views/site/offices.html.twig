@@ -234,17 +234,31 @@
 {% endblock %}
 
 
-{% block inner_content %}
+{% block content %}
+<div class="mw1400p center" id="container">
+<div class="line" id="main">
+    <h1>Antennes</h1>
 
-    <h1>Antennes locales</h1>
+    {{ render(controller(
+        'AppBundle\\Controller\\SecondaryMenuController::displayAction',
+        { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') }
+    )) }}
+
     <p>Une dizaine d'antennes locales, représentantes de l'AFUP en région, organise rencontres, meetups et apéros PHP
         tout au long de l'année, tisse un lien entre les développeurs et fait la promotion du PHP dans les entreprises
         partout en France.</p>
 
-    <div class="map-container">
-        <div class="map">Antennes AFUP françaises</div>
+    <div class="container">
+        <div class="col-md-8">
+            <div class="map-container">
+                <div class="map">Antennes AFUP françaises</div>
+            </div>
+        </div>
+        <div class="col-md-4 tablet-hidden">
+            <a class="twitter-timeline" data-lang="fr" data-chrome="noheader,nofooter,noborders" data-height="800" data-dnt="true" data-theme="light" href="https://twitter.com/afup/lists/antennes-afup">A Twitter List by afup</a>
+            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
     </div>
-
 
     <h2>Concrètement que se passe-t-il près de chez moi ?</h2>
     <h3>Meetups et apéros PHP</h3>
@@ -345,8 +359,6 @@
             </div>
         {% endfor %}
     </div>
-
-    <a class="twitter-timeline" data-lang="fr" data-height="500" data-dnt="true" data-theme="light" href="https://twitter.com/afup/lists/antennes-afup">A Twitter List by afup</a>
-    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
+</div>
+</div>
 {% endblock %}

@@ -1493,3 +1493,57 @@ form.sponsor--token-home-form input[type=submit] {
     border-bottom-right-radius:20px;
     border-top-right-radius:20px;
 }
+
+.secondary-menu {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.secondary-menu-item {
+    display: table-cell;
+    border: 1px solid #999;
+    border-left: none;
+    padding: 10px 0;
+    text-align: center;
+    text-decoration: none;
+    color: #000;
+}
+
+.secondary-menu-first {
+    border-left: 1px solid #999;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.secondary-menu-last {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.secondary-menu-current {
+    background-color: #415e96;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .secondary-menu {
+        display: block;
+    }
+    .secondary-menu-item {
+        display: block;
+        border-left: 1px solid #999;
+        border-top: none;
+    }
+
+    .secondary-menu-first {
+        border-top: 1px solid #999;
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 0;
+    }
+
+    .secondary-menu-last {
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 5px;
+    }
+}

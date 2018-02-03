@@ -1,0 +1,5 @@
+<div class="secondary-menu">
+    {% for item in menu %}
+        <a class="secondary-menu-item {% if loop.first %}secondary-menu-first{% endif %} {% if loop.last %}secondary-menu-last{% endif %} {% if item.is_active %}secondary-menu-current{% endif %}" href="{{ item.lien }}">{{ item.nom }}</a>
+    {% endfor %}
+</div>
