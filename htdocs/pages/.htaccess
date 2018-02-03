@@ -11,3 +11,12 @@ RewriteRule ^annuaire.*$ /pages/site? [R=301]
 
 RewriteCond %{QUERY_STRING} route=actualites/961/lafup-lance-un-super-apero
 RewriteRule ^site.*$ /association/super-apero-9-mars? [L,R=302]
+
+RewriteCond %{QUERY_STRING} ^route=vie-associative-afup/266/definition-du-benevole$
+RewriteRule ^(.*)$  "/pages/site/?route=vie-associative-afup/981/poles"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/70/formulaires-d-inscription$
+RewriteRule ^(.*)$  "/association/devenir-membre"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/19/qu-est-ce-que-l-afup$
+RewriteRule ^(.*)$  "/pages/site/?route=qui-sommes-nous/82"  [L,R=302]
