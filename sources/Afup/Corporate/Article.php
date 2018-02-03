@@ -150,6 +150,14 @@ class Article
         $this->remplir($this->bdd->obtenirEnregistrement($requete));
     }
 
+    function chargerDepuisRaccourci($raccourci)
+    {
+        $requete = 'SELECT *
+                    FROM afup_site_article
+                    WHERE CONCAT(id, "-", raccourci) = ' . $this->bdd->echapper($raccourci);
+        $this->remplir($this->bdd->obtenirEnregistrement($requete));
+    }
+
     function charger_dernier_depuis_rubrique()
     {
         $requete = 'SELECT *

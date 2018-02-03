@@ -6,6 +6,8 @@ use Afup\Site\Utils\Configuration;
 
 class Rubrique
 {
+    const ID_RUBRIQUE_ASSOCIATION = 85;
+
     public $id;
     public $id_personne_physique;
     public $id_parent;
