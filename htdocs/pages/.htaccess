@@ -64,3 +64,19 @@ RewriteRule ^(.*)$  "/pages/site/?route=association/70/formulaires-d-inscription
 
 RewriteCond %{QUERY_STRING}  ^route=faq/53/comment-contacter-l-afup$
 RewriteRule ^(.*)$  "/pages/site/?route=divers/53/comment-contacter-l-afup"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=association/981/poles$
+RewriteRule ^(.*)$  "/p/981-poles"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=association/222/bureaux-de-l-afup-fondateurs-et-conseil-d-administration$
+RewriteRule ^(.*)$  "/p/222-bureaux-de-l-afup-fondateurs-et-conseil-d-administration"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=association/1/statuts-de-l-association-francaise-des-utilisateurs-de-php$
+RewriteRule ^(.*)$  "/p/1-statuts-de-l-association-francaise-des-utilisateurs-de-php"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=association/21/reglement-interieur$
+RewriteRule ^(.*)$  "/p/21-reglement-interieur"  [L,R=302]
+
+
+
+
