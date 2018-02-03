@@ -12,6 +12,8 @@ RewriteRule ^annuaire.*$ /pages/site? [R=301]
 RewriteCond %{QUERY_STRING} route=actualites/961/lafup-lance-un-super-apero
 RewriteRule ^site.*$ /association/super-apero-9-mars? [L,R=302]
 
+
+#pages supprimées
 RewriteCond %{QUERY_STRING} ^route=vie-associative-afup/266/definition-du-benevole$
 RewriteRule ^(.*)$  "/pages/site/?route=vie-associative-afup/981/poles"  [L,R=302]
 
@@ -20,3 +22,45 @@ RewriteRule ^(.*)$  "/association/devenir-membre"  [L,R=302]
 
 RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/19/qu-est-ce-que-l-afup$
 RewriteRule ^(.*)$  "/pages/site/?route=qui-sommes-nous/82"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative/4$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/57/pourquoi-doit-on-souscrire-une-cotisation$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/22/le-niveau-n-est-il-pas-trop-lev$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/20/pourquoi-la-priorit-aux-professionnels$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/54/je-suis-un-professionnel-ou-un-institutionnel-li-php-pourquoi-devenir-membre$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/55/je-suis-un-amateur-de-php-pourquoi-devenir-membre$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=302]
+
+
+RewriteCond %{QUERY_STRING}  ^route=faq/6$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=302]
+
+
+#pages déplacées
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/981/poles$
+RewriteRule ^(.*)$  "/pages/site/?route=association/981/poles"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/222/bureaux-de-l-afup-fondateurs-et-conseil-d-administration$
+RewriteRule ^(.*)$  "/pages/site/?route=association/222/bureaux-de-l-afup-fondateurs-et-conseil-d-administration"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/1/statuts-de-l-association-francaise-des-utilisateurs-de-php$
+RewriteRule ^(.*)$  "/pages/site/?route=association/1/statuts-de-l-association-francaise-des-utilisateurs-de-php"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/21/reglement-interieur$
+RewriteRule ^(.*)$  "/pages/site/?route=association/21/reglement-interieur"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/70/formulaires-d-inscription$
+RewriteRule ^(.*)$  "/pages/site/?route=association/70/formulaires-d-inscription"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/53/comment-contacter-l-afup$
+RewriteRule ^(.*)$  "/pages/site/?route=divers/53/comment-contacter-l-afup"  [L,R=302]
