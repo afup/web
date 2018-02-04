@@ -96,6 +96,8 @@ RewriteRule ^(.*)$  "/p/985-code-of-conduct?"  [L,R=301]
 RewriteCond %{QUERY_STRING}  ^route=association/986/code-de-conduite$
 RewriteRule ^(.*)$  "/p/986-code-de-conduite?"  [L,R=301]
 
+RewriteCond %{QUERY_STRING}  ^route=association/85$
+RewriteRule ^(.*)$  "/p/984-qui-sommes-nous?"  [L,R=301]
 
 
 
