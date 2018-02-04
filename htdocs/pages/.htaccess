@@ -87,6 +87,15 @@ RewriteRule ^(.*)$  "/p/1-statuts-de-l-association-francaise-des-utilisateurs-de
 RewriteCond %{QUERY_STRING}  ^route=association/21/reglement-interieur$
 RewriteRule ^(.*)$  "/p/21-reglement-interieur"  [L,R=302]
 
+RewriteCond %{QUERY_STRING}  ^route=association/984/qui-sommes-nous$
+RewriteRule ^(.*)$  "/p/984-qui-sommes-nous"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=association/985/code-of-conduct$
+RewriteRule ^(.*)$  "/p/985-code-of-conduct"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=association/986/code-de-conduite$
+RewriteRule ^(.*)$  "/p/986-code-de-conduite"  [L,R=302]
+
 
 
 
