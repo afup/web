@@ -80,6 +80,7 @@ class Articles
         $requete .= '  afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id';
         $requete .= ' WHERE afup_site_article.etat = 1 ';
         $requete .= ' AND id_parent <> 52 '; // On affiche pas les articles des forums
+        $requete .= ' AND afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ASSOCIATION . ' '; // On affiche pas les articles de la page assocition
         $requete .= ' ORDER BY date DESC';
         $requete .= ' LIMIT 0, ' . (int)$rowcount;
 
