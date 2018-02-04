@@ -5,6 +5,7 @@ namespace Afup\Site\Corporate;
 class Feuille
 {
     const ID_FEUILLE_ANTENNES = 71;
+    const ID_FEUILLE_ASSOCIATION = 74;
 
     public $id;
     public $id_parent;
