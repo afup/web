@@ -6,6 +6,7 @@ class Feuille
 {
     const ID_FEUILLE_ANTENNES = 71;
     const ID_FEUILLE_ASSOCIATION = 74;
+    const ID_FEUILLE_COLONNE_DROITE = 1;
 
     public $id;
     public $id_parent;

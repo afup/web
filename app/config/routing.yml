@@ -33,3 +33,6 @@ groups:
 cms_page:
     resource: "routing/cms_page.yml"
     prefix: /p
+
+global:
+    resource: "routing/global.yml"
