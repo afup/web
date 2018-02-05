@@ -1562,9 +1562,13 @@ form.sponsor--token-home-form input[type=submit] {
     color: rgb(62, 61, 64);
 }
 
-.home-list__actualites li.home-list-item_first a p {
-    margin: 0 0 15px 0;
+.home-list-chapeau-container {
+    margin: 15px 0;
     color: rgb(62, 61, 64);
+}
+
+.home-list-chapeau-container p {
+    display: inline;
 }
 
 .home-view-more {
@@ -1572,6 +1576,11 @@ form.sponsor--token-home-form input[type=submit] {
     margin: 10px 0;
     padding: 5px 10px;
     text-decoration: none;
+}
+
+.home-read-more {
+    color: #147fab;
+    display: inline;
 }
 
 .home-talk-of-the-day img {
