@@ -45,6 +45,22 @@ RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
 RewriteCond %{QUERY_STRING}  ^route=faq/6$
 RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
 
+RewriteCond %{QUERY_STRING}  ^route=divers/231/le-livre-blanc-php-en-entreprise$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=divers/232/annuaire-de-prestataires$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=communication-externe/102/$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=divers/220/who-is-afup$
+RewriteRule ^(.*)$  "/p/984-qui-sommes-nous?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=antenne-de-lille/74$
+RewriteRule ^(.*)$  "/association/antennes?"  [L,R=302]
+
+
 
 #pages déplacées
 RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/981/poles$
