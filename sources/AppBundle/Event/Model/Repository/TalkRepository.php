@@ -86,6 +86,27 @@ class TalkRepository extends Repository implements MetadataInitializer
         return $query->query();
     }
 
+    public function getTalkOfTheDay(\DateTime $currentDate)
+    {
+        $query = $this
+            ->getPreparedQuery(
+            'SELECT afup_sessions.*
+            FROM afup_sessions
+            WHERE plannifie = 1 and LENGTH(youtube_id) > 0
+            AND id_forum IN (
+              SELECT id
+              FROM afup_forum
+              WHERE date_debut > DATE_SUB(NOW(), INTERVAL 2 YEAR)
+            )
+            ORDER BY RAND(:randomSeed)
+            LIMIT 1
+            ')
+            ->setParams(['randomSeed' => $currentDate->format('Y-m-d')])
+        ;
+
+        return $query->query($this->getCollection(new HydratorSingleObject()))->first();
+    }
+
     /**
      * Retrieve all talks with ratings from current user if applicable
      * It retrieve $limit + 1 row. So if `count($results) <= $limit` there is no more result.

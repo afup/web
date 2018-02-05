@@ -1547,3 +1547,53 @@ form.sponsor--token-home-form input[type=submit] {
         border-bottom-left-radius: 5px;
     }
 }
+
+.home-list {
+    list-style: none;
+}
+
+.home-list li a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 4px 0;
+}
+
+.home-list-date {
+    color: rgb(62, 61, 64);
+}
+
+.home-list-chapeau-container {
+    margin: 15px 0;
+    color: rgb(62, 61, 64);
+}
+
+.home-list-chapeau-container p {
+    display: inline;
+}
+
+.home-view-more {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.home-read-more {
+    color: #147fab;
+    display: inline;
+}
+
+.home-talk-of-the-day img {
+    max-width: 250px;
+}
+
+.home-talk-of-the-day {
+    text-decoration: none;
+}
+
+
+@media (max-width: 768px) {
+    .home-list li a {
+        padding: 10px 0;
+    }
+}
