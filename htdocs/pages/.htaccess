@@ -72,6 +72,13 @@ RewriteRule ^(.*)$  "/?"  [L,R=302]
 RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/27$
 RewriteRule ^(.*)$  "/?"  [L,R=302]
 
+RewriteCond %{QUERY_STRING}  ^route=certification-php/367/25-octobre-1er-barcamp-mysql-par-lemug-fr$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=certification-php/49$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+
 
 #pages déplacées
 RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/981/poles$
