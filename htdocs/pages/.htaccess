@@ -78,6 +78,28 @@ RewriteRule ^(.*)$  "/?"  [L,R=302]
 RewriteCond %{QUERY_STRING}  ^route=certification-php/49$
 RewriteRule ^(.*)$  "/?"  [L,R=302]
 
+RewriteCond %{QUERY_STRING}  ^route=01-php/248/php-5-disponible-pour-la-production$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/228/t-l-charger-php$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/229/t-l-charger-mysql$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/230/t-l-charger-apache$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=briques-logicielles-en-php/241/egroupware$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=briques-logicielles-en-php/63$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/53$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+
 
 
 #pages déplacées
