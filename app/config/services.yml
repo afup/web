@@ -27,6 +27,12 @@ services:
         tags:
             -  { name: twig.extension }
 
+    app_twig_assets:
+        class: AppBundle\Twig\AssetsExtension
+        arguments: ["%kernel.root_dir%"]
+        tags:
+            -  { name: twig.extension }
+
     app.locale_listener:
         class: AppBundle\Listener\LocaleListener
         arguments: [ "%kernel.default_locale%" ]

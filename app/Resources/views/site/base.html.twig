@@ -6,9 +6,9 @@
     <!--[if lt IE 9]><script src="{{ asset('templates/site/js/html5shiv.js') }}"></script><![endif]-->
     <link href='https://fonts.googleapis.com/css?family=Podkova:400,700|Glegoo' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ asset('templates/site/css/styles.css') }}" media="all" />
+    <link rel="stylesheet" href="{{ asset('templates/site/css/styles.css') }}?v={{ asset_md5_start('templates/site/css/styles.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('templates/site/css/global-menu.css') }}" media="all" />
-    <link rel="stylesheet" href="{{ asset('/css/grid.css') }}" media="all" />
+    <link rel="stylesheet" href="{{ asset('/css/grid.css') }}?v={{ asset_md5_start('css/grid.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('templates/site/css/styles-without-compass.css') }}" media="all">
 {% endblock %}
