@@ -101,7 +101,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             ORDER BY RAND(:randomSeed)
             LIMIT 1
             ')
-            ->setParams(['randomSeed' => $currentDate->format('Y-m-d')])
+            ->setParams(['randomSeed' => md5($currentDate->format('Y-m-d'))])
         ;
 
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
