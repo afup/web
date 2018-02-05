@@ -60,6 +60,17 @@ RewriteRule ^(.*)$  "/p/984-qui-sommes-nous?"  [L,R=302]
 RewriteCond %{QUERY_STRING}  ^route=antenne-de-lille/74$
 RewriteRule ^(.*)$  "/association/antennes?"  [L,R=302]
 
+RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/312/appel-t-moignages-recherche-retour-d-exp-rience-php-5$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/90/entretiens$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/76/cr-ation-d-un-syst-me-de-question-r-ponse-pour-promouvoir-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/27$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
 
 
 #pages déplacées
