@@ -99,7 +99,32 @@ RewriteRule ^(.*)$  "/talks?"  [L,R=302]
 RewriteCond %{QUERY_STRING}  ^route=01-php/53$
 RewriteRule ^(.*)$  "/talks?"  [L,R=302]
 
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/233/o-trouver-du-support$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
 
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/116/php-est-il-long-apprendre$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/115/quels-sont-les-co-ts-cach-s$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/114/quel-est-le-co-t-de-la-license-php$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/113/quels-sont-les-diteurs-et-environnements-de-d-veloppement-int-gr-s-disponibles$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/112/quelles-sont-les-librairies-disponibles$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/111/php-fonctionne-t-il-avec-les-sgbd-du-march$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/110/php-fonctionne-t-il-sur-les-syst-mes-d-exploitation-pr-sents-en-entreprise$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/46$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
 
 
 #pages déplacées
