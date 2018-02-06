@@ -126,6 +126,84 @@ RewriteRule ^(.*)$  "/talks?"  [L,R=302]
 RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/46$
 RewriteRule ^(.*)$  "/talks?"  [L,R=302]
 
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/453/twenga-et-php-un-duo-gagnant-pour-le-moteur-de-recherche-de-shopping$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/440/plus-de-700-outils-.*-sous-PHP-chez-BNPParibas$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/436/Pixmania-une-confiance-historique-en-PHP$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/434/sebastien-barbieri-rtbf-le-choix-de-lopen-source$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/373/php-partout-chez-20minutes-fr$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/335/philips-la-meilleure-arme-est-g-n-ralement-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/317/l-etat-fran-ais-se-modernise-avec-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/313/sugarcrm-un-logiciel-crm-performant-commercial-et-open-source$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/297/flickr-le-service-de-partage-de-photo-de-yahoo-utilise-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/289/lemonde-fr-ajoute-une-couche-xul-sur-son-back-office-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/249/houra-fr-de-vignette-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/282/mod-le-conomique-et-technique-d-une-solution-de-comptabilit-en-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/246/le-gouvernement-fran-ais-oeuvre-pour-php-et-pour-le-libre$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/212/le-journal-en-ligne-le-monde$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/197/nous-d-veloppons-nos-logiciels-m-tier-avec-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/188/sdvp-le-parisien-migre-d-asp-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/184/le-bhv-joue-gagnant-avec-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/177/france-3-streaming-et-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/167/tv5-utilise-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/198/toute-notre-activit-repose-sur-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/134/yahoo-passe-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/129/alain-fortune-m6web-loftstory$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/130/j-r-me-texier-lib-ration$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/126/utilisation-de-php-par-wanadoo-voila$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/132/questions-au-cr-ateur-de-php-rasmus$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/19$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
 
 #pages déplacées
 RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/981/poles$
