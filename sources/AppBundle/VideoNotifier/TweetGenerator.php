@@ -29,13 +29,10 @@ class TweetGenerator
     {
         $twitters = [];
         foreach ($speakers as $speaker) {
-            if (!$twitter = $speaker->getTwitter()) {
+            if (!$twitter = $speaker->getCleanedTwitter()) {
                 $twitters[] = $speaker->getLabel();
             } else {
-                if ($twitter[0] != '@') {
-                    $twitter = '@' . $twitter;
-                }
-                $twitters[] = $twitter;
+                $twitters[] = "@" . $twitter;
             }
         }
 
