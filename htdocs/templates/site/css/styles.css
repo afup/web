@@ -1597,3 +1597,31 @@ form.sponsor--token-home-form input[type=submit] {
         padding: 10px 0;
     }
 }
+
+
+a.article-teaser {
+    background: none;
+}
+
+a.article-teaser p {
+    display: inline;
+}
+
+a.article-teaser h2 {
+    margin: 0;
+}
+
+a.article-teaser .article-date {
+    padding: 0  0 5px 0;
+}
+
+form.news-filters {
+    width:auto;
+    background: none;
+    border: 0;
+}
+
+form.news-filters label {
+    display:inline;
+    font-weight: normal;
+}

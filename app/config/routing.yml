@@ -34,5 +34,9 @@ cms_page:
     resource: "routing/cms_page.yml"
     prefix: /p
 
+news:
+    resource: "routing/news.yml"
+    prefix: /news
+
 global:
     resource: "routing/global.yml"

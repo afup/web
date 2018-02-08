@@ -1,0 +1,8 @@
+news_list:
+  path: /
+  defaults: {_controller: AppBundle:News:list}
+
+news_display:
+  path: /{code}
+  defaults: {_controller: AppBundle:News:display}
+

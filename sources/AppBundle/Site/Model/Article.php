@@ -219,4 +219,29 @@ class Article implements NotifyPropertyInterface
 
         return $this;
     }
+
+    /**
+     * @return bool|string
+     */
+    public function getTeaser()
+    {
+        if (strlen($leadParagraph = $this->getLeadParagraph())) {
+            return $leadParagraph;
+        }
+
+
+        if (strlen($description = $this->getDescription())) {
+            return $description;
+        }
+
+        return  substr(strip_tags($this->getContent()), 0, 200);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->getId() . '-' . $this->getPath();
+    }
 }

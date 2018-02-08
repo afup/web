@@ -207,6 +207,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Groups\Model\Repository\MailingListRepository]
 
+    app.articles_repository:
+        class: AppBundle\Site\Model\Repository\ArticleRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Site\Model\Repository\ArticleRepository]
+
     app.sponsor_ticket_helper:
         class: AppBundle\Event\Ticket\SponsorTicketHelper
         autowire: true
@@ -221,6 +226,12 @@ services:
 
     app.ticket_form:
         class: AppBundle\Event\Form\TicketType
+        autowire: true
+        tags:
+          - {name: form.type}
+
+    app.news_filters:
+        class: AppBundle\Site\Form\NewsFiltersType
         autowire: true
         tags:
           - {name: form.type}
