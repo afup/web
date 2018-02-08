@@ -1,0 +1,31 @@
+<div id="pagination-container">
+    <div id="pagination">
+        <ul class="ais-pagination">
+            {% if current_page > 1 %}
+                <li class="ais-pagination--item ais-pagination--item__first">
+                    <a class="ais-pagination--link" href="{{ path('news_list', {page: 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-double-left"></i></a>
+                </li>
+            {% endif %}
+            {% if current_page > 1 %}
+                <li class="ais-pagination--item ais-pagination--item__previous">
+                    <a class="ais-pagination--link" href="{{ path('news_list', {page: current_page - 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-left"></i></a>
+                </li>
+            {% endif %}
+            {% for page in displayed_pages %}
+                <li class="ais-pagination--item ais-pagination--item__page{% if page == current_page %} ais-pagination--item__active{% endif %}">
+                    <a class="ais-pagination--link" href="{{ path('news_list', {page: page}|merge(extra_parameters)) }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+            {% if current_page < nb_pages %}
+                <li class="ais-pagination--item ais-pagination--item__next">
+                    <a class="ais-pagination--link" href="{{ path('news_list', {page: current_page + 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-right"></i></a>
+                </li>
+            {% endif %}
+            {% if current_page < nb_pages %}
+                <li class="ais-pagination--item ais-pagination--item__last">
+                    <a class="ais-pagination--link" href="{{ path('news_list', {page: nb_pages}|merge(extra_parameters)) }}"><i class="fa fa-angle-double-right"></i></a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
