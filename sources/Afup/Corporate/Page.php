@@ -66,8 +66,8 @@ class Page
 
         $header = str_replace("</ul>", "", $header);
 
-        $header .= "<li class='desktop-hidden'><a href=''>Se connecter</a></li>";
-        $header .= "<li class='desktop-hidden'><a href=''>Adhérer</a></li>";
+        $header .= "<li class='desktop-hidden'><a href='/pages/administration'>Se connecter</a></li>";
+        $header .= "<li class='desktop-hidden'><a href='/association/devenir-membre'>Adhérer</a></li>";
 
         $header .= '</ul>';
 
