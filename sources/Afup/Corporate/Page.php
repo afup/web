@@ -62,7 +62,6 @@ class Page
     function header($url = null)
     {
         $branche = new Branche($this->bdd);
-
         $url = urldecode($url);
         $str = '<ul>';
         foreach ($branche->feuillesEnfants(Feuille::ID_FEUILLE_HEADER) as $feuille) {
@@ -98,6 +97,10 @@ class Page
 
             $str .= sprintf("<li class='%s'><a href='%s'>%s</a></li>", $class, $feuille['lien'], $feuille['nom']);
         }
+
+        $str .= "<li class='desktop-hidden'><a href='/pages/administration'>Se connecter</a></li>";
+        $str .= "<li class='desktop-hidden'><a href='/association/devenir-membre'>Adhérer</a></li>";
+
         $str .= '<ul>';
 
         return $str;
