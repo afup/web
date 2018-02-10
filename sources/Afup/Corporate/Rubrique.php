@@ -6,6 +6,7 @@ use Afup\Site\Utils\Configuration;
 
 class Rubrique
 {
+    const ID_RUBRIQUE_ACTUALITES = 9;
     const ID_RUBRIQUE_ASSOCIATION = 85;
 
     public $id;
