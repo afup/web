@@ -62,7 +62,16 @@ class Page
     function header()
     {
         $branche = new Branche($this->bdd);
-        return $branche->naviguer(21, 2);
+        $header = $branche->naviguer(21, 2);
+
+        $header = str_replace("</ul>", "", $header);
+
+        $header .= "<li class='desktop-hidden'><a href='/pages/administration'>Se connecter</a></li>";
+        $header .= "<li class='desktop-hidden'><a href='/association/devenir-membre'>Adhérer</a></li>";
+
+        $header .= '</ul>';
+
+        return $header;
     }
 
     function content()
