@@ -7,6 +7,7 @@ class Feuille
     const ID_FEUILLE_ANTENNES = 71;
     const ID_FEUILLE_ASSOCIATION = 74;
     const ID_FEUILLE_COLONNE_DROITE = 1;
+    const ID_FEUILLE_HEADER = 21;
 
     public $id;
     public $id_parent;
@@ -17,6 +18,7 @@ class Feuille
     public $position;
     public $date;
     public $etat;
+    public $patterns;
 
     /**
      * @var \Afup\Site\Utils\Base_De_Donnees
@@ -47,6 +49,7 @@ class Feuille
         			image     = ' . $this->bdd->echapper($this->image) . ',
         			position  = ' . $this->bdd->echapper($this->position) . ',
         			date      = ' . $this->bdd->echapper($this->date) . ',
+        			patterns  = ' . $this->bdd->echapper($this->patterns) . ',
         			etat    = ' . $this->bdd->echapper($this->etat);
         if ($this->id > 0) {
             $requete .= ', id = ' . $this->bdd->echapper($this->id);
@@ -66,6 +69,7 @@ class Feuille
         			image     = ' . $this->bdd->echapper($this->image) . ',
         			position  = ' . $this->bdd->echapper($this->position) . ',
         			date      = ' . $this->bdd->echapper($this->date) . ',
+        			patterns  = ' . $this->bdd->echapper($this->patterns) . ',
         			etat      = ' . $this->bdd->echapper($this->etat) . '
         			WHERE id  = ' . (int)$this->id;
 
@@ -83,6 +87,7 @@ class Feuille
         $this->position = $f['position'];
         $this->date = $f['date'];
         $this->etat = $f['etat'];
+        $this->patterns = $f['patterns'];
     }
 
     function exportable()
@@ -97,6 +102,7 @@ class Feuille
             'position' => $this->position,
             'date' => date('Y-m-d', $this->date),
             'etat' => $this->etat,
+            'patterns' => $this->patterns,
         );
     }
 
