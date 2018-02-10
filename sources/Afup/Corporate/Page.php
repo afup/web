@@ -59,10 +59,48 @@ class Page
         return $branche->naviguer(5, 2);
     }
 
-    function header()
+    function header($url = null)
     {
         $branche = new Branche($this->bdd);
-        return $branche->naviguer(21, 2);
+
+        $url = urldecode($url);
+        $str = '<ul>';
+        foreach ($branche->feuillesEnfants(Feuille::ID_FEUILLE_HEADER) as $feuille) {
+            $isCurrent = false;
+            foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
+                $pattern = trim($pattern);
+                if (strlen($pattern) === 0) {
+                    continue;
+                }
+
+                if (preg_match($pattern, $url)) {
+                    $isCurrent = true;
+                }
+            }
+
+            if (false !== strpos($url, $feuille['lien'])) {
+                $isCurrent = true;
+            }
+
+            if (false === $isCurrent) {
+                $enfants = $branche->feuillesEnfants($feuille['id']);
+                foreach ($enfants as $feuilleEnfant) {
+                    foreach ($branche->feuillesEnfants($feuilleEnfant['id']) as $feuillesEnfant2) {
+                        if (false !== strpos($url, $feuillesEnfant2['lien'])) {
+                            $isCurrent = true;
+                        }
+                    }
+
+                }
+            }
+
+            $class = $isCurrent ? " subheader-current " : "";
+
+            $str .= sprintf("<li class='%s'><a href='%s'>%s</a></li>", $class, $feuille['lien'], $feuille['nom']);
+        }
+        $str .= '<ul>';
+
+        return $str;
     }
 
     function content()

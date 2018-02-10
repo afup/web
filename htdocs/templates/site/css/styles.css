@@ -1244,9 +1244,6 @@ header #espace-membre ul li:last-child:before {
     float:left;
     padding: 10px;
 }
-#subheader nav ul li:first-child {
-    padding-left:0;
-}
 
 #subheader nav ul a {
     font-family: "Podkova", serif;
@@ -1260,6 +1257,14 @@ header #espace-membre ul li:last-child:before {
 
 #subheader nav ul a:hover {
     text-decoration: underline
+}
+
+#subheader .subheader-current {
+    background-color: #fff;
+}
+
+#subheader .subheader-current a {
+    color: #50a0dd;
 }
 
 #main {
