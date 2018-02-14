@@ -26,16 +26,8 @@ class Accueil
         $articles = new Articles($this->bdd);
         $derniers_articles = $articles->chargerDerniersAjouts(10);
 
-        $colonne = '<h1>Promouvoir le PHP auprès des professionnels</h1>';
-
-        $colonne .= '<blockquote>Apéros, rendez-vous et cycle de conférences, l\'AFUP est au coeur de la communauté PHP depuis 2000.
-                    L\'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté</blockquote>
-                     <p>L\'AFUP, Association Française des Utilisateurs de PHP est une association loi 1901,
-		     dont le principal but est de promouvoir le langage PHP auprès des professionnels et de participer à son développement.
-             L\'AFUP a été créée pour répondre à un besoin croissant des entreprises,
-		     celui d\'avoir un interlocuteur unique pour répondre à leurs questions sur PHP.
-		     Par ailleurs, l\'AFUP offre un cadre de rencontre et de ressources techniques
-		     pour les développeurs qui souhaitent faire avancer le langage PHP lui même.</p>';
+        $colonne = '<blockquote>Apéros, rendez-vous et cycle de conférences, l\'AFUP est au coeur de la communauté PHP depuis 2000.
+                    L\'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté</blockquote>';
 
         foreach ($derniers_articles as $article) {
             $descriptif = ($article->descriptif) ? $article->descriptif : $article->chapeau;
