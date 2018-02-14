@@ -52,6 +52,10 @@ h2, .h2-like {
     margin: 30px 0 10px 0
 }
 
+.home h2, .home .h2-like {
+    border-bottom: 1px solid #2b3e74;
+}
+
 h2 a, .h2-like a {
     font-size: 1em;
     color: #2b3e74;
