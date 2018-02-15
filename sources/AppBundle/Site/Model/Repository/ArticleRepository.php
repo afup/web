@@ -69,7 +69,9 @@ class ArticleRepository extends Repository implements MetadataInitializer
     private function getSqlPublishedNews(array $filters)
     {
         $yearParams = [];
+        $themeParams = [];
         $yearSqlFilter = '';
+        $themeSqlFilter = '';
         if (isset($filters['year']) && count($filters['year'])) {
             $cpt = 1;
             $yearPreaparedParams = [];
@@ -81,19 +83,30 @@ class ArticleRepository extends Repository implements MetadataInitializer
             $yearSqlFilter = sprintf('AND YEAR(FROM_UNIXTIME(date)) IN (%s)', implode(',', $yearPreaparedParams));
         }
 
+        if (isset($filters['theme']) && count($filters['theme'])) {
+            $cpt = 1;
+            $themesPreparedParams = [];
+            foreach ($filters['theme'] as $theme) {
+                $paramName = 'theme_' . $cpt++;
+                $themeParams[$paramName] = $theme;
+                $themesPreparedParams[] = ':' . $paramName;
+            }
+            $themeSqlFilter = sprintf('AND theme IN (%s)', implode(',', $themesPreparedParams));
+        }
+
         $sql  = sprintf('SELECT afup_site_article.*
         FROM afup_site_article
         WHERE afup_site_article.id_site_rubrique = :rubricId
         AND etat = 1
-        %s
+        %s %s
         ORDER BY date DESC
-        ', $yearSqlFilter);
+        ', $yearSqlFilter, $themeSqlFilter);
 
         $params = [
             'rubricId' => Rubrique::ID_RUBRIQUE_ACTUALITES,
         ];
 
-        $params = array_merge($params, $yearParams);
+        $params = array_merge($params, $yearParams, $themeParams);
 
         return [$sql, $params];
     }
