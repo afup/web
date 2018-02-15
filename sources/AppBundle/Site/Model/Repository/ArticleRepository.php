@@ -40,6 +40,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
         FROM afup_site_article
         JOIN afup_forum ON (afup_site_article.id_forum = afup_forum.id)
         GROUP BY afup_forum.id
+        ORDER BY afup_forum.date_debut DESC
         ";
 
         $query = $this->getQuery($sql);
