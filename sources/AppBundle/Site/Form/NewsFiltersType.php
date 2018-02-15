@@ -2,6 +2,7 @@
 
 namespace AppBundle\Site\Form;
 
+use Afup\Site\Corporate\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -42,6 +43,26 @@ class NewsFiltersType extends AbstractType
                         'expanded' => true,
                         'choices' => $yearValues,
                     ]
+            )
+            ->add(
+                'theme',
+                ChoiceType::class,
+                [
+                    'label' => 'Thème',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'choices' => array_flip(Article::getThemesLabels()),
+                ]
+            )
+            ->add(
+                'event',
+                ChoiceType::class,
+                [
+                    'label' => 'Cycle de conférences',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'choices' => array_flip($this->articleRepository->getEventsLabelsById()),
+                ]
             )
             ->add('submit', SubmitType::class, ['label' => 'Filtrer'])
         ;
