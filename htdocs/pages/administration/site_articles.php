@@ -45,8 +45,14 @@ if ($action == 'lister') {
         $_GET['filtre'] = $list_filtre;
     }
 
+    $articlesList = [];
+    foreach ($articles->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre) as $article) {
+        $article['theme_label'] = Article::getThemeLabel($article['theme']);
+        $articlesList[] = $article;
+    }
+
     // Mise en place de la liste dans le scope de smarty
-    $smarty->assign('articles', $articles->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre));
+    $smarty->assign('articles', $articlesList);
 
 } elseif ($action == 'supprimer') {
     $article = new Article($_GET['id']);
