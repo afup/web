@@ -20,6 +20,45 @@ class Article
     public $etat;
     public $route;
 
+    public $theme;
+    public $id_forum;
+
+    const THEME_ID_CYCLE_CONFERENCE = 1;
+    const THEME_ID_ANTENNES = 2;
+    const THEME_ID_ASSOCIATIF = 3;
+    const THEME_ID_BAROMETRE = 4;
+    const THEME_ID_AFUP_SOUTIEN = 5;
+
+    public static function getThemesLabels()
+    {
+        return [
+            self::THEME_ID_CYCLE_CONFERENCE => 'Cycles de conférences',
+            self::THEME_ID_ANTENNES => 'Antennes',
+            self::THEME_ID_ASSOCIATIF => 'Associatif',
+            self::THEME_ID_BAROMETRE => 'Baromètre',
+            self::THEME_ID_AFUP_SOUTIEN => "L'AFUP soutient",
+        ];
+    }
+
+    public static function getThemeLabel($code)
+    {
+        $themes = self::getThemesLabels();
+
+        if (isset($themes[$code])) {
+            return $themes[$code];
+        }
+
+        return '';
+    }
+
+    /**
+     * @param mixed $position
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
     protected $rubrique;
 
     /**
@@ -132,6 +171,7 @@ class Article
             'contenu' => $this->contenu,
             'position' => $this->position,
             'date' => date('Y-m-d', $this->date),
+            'theme' => $this->theme,
             'etat' => $this->etat,
         );
     }
@@ -181,6 +221,8 @@ class Article
         $this->position = $article['position'];
         $this->date = $article['date'];
         $this->etat = $article['etat'];
+        $this->theme = $article['theme'];
+        $this->id_forum = $article['id_forum'];
         $this->route = $this->route();
     }
 
@@ -198,6 +240,7 @@ class Article
         			contenu               = ' . $this->bdd->echapper($this->contenu) . ',
         			position              = ' . $this->bdd->echapper($this->position) . ',
         			date                  = ' . $this->bdd->echapper($this->date) . ',
+        			theme                 = ' . $this->bdd->echapper($this->theme) . ',
         			etat                  = ' . $this->bdd->echapper($this->etat) . '
                     WHERE
                     id = ' . $this->bdd->echapper($this->id);
@@ -219,6 +262,7 @@ class Article
         			contenu               = ' . $this->bdd->echapper($this->contenu) . ',
         			position              = ' . $this->bdd->echapper($this->position) . ',
         			date                  = ' . $this->bdd->echapper($this->date) . ',
+        			theme                  = ' . $this->bdd->echapper($this->theme) . ',
         			etat                  = ' . $this->bdd->echapper($this->etat);
         if ($this->id > 0) {
             $requete .= ', id = ' . $this->bdd->echapper($this->id);

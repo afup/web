@@ -87,6 +87,7 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date'                     , 'Date'           , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
     $formulaire->addElement('select'  , 'position'                 , 'Position'       , $article->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'           , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
+    $formulaire->addElement('select'  , 'theme'                    , 'Thème'          , ['' => ''] + Article::getThemesLabels());
 
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
@@ -108,6 +109,7 @@ if ($action == 'lister') {
         $date = $formulaire->exportValue('date');
         $article->date = mktime(0, 0, 0, $date['M'], $date['d'], $date['Y']);
         $article->etat = $formulaire->exportValue('etat');
+        $article->theme = $formulaire->exportValue('theme');
 
         if ($action == 'ajouter') {
             $ok = $article->inserer();
