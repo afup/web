@@ -172,6 +172,7 @@ class Article
             'position' => $this->position,
             'date' => date('Y-m-d', $this->date),
             'theme' => $this->theme,
+            'id_forum' => $this->id_forum,
             'etat' => $this->etat,
         );
     }
@@ -241,6 +242,7 @@ class Article
         			position              = ' . $this->bdd->echapper($this->position) . ',
         			date                  = ' . $this->bdd->echapper($this->date) . ',
         			theme                 = ' . $this->bdd->echapper($this->theme) . ',
+        			id_forum              = ' . $this->bdd->echapper($this->id_forum) . ',
         			etat                  = ' . $this->bdd->echapper($this->etat) . '
                     WHERE
                     id = ' . $this->bdd->echapper($this->id);
@@ -262,7 +264,8 @@ class Article
         			contenu               = ' . $this->bdd->echapper($this->contenu) . ',
         			position              = ' . $this->bdd->echapper($this->position) . ',
         			date                  = ' . $this->bdd->echapper($this->date) . ',
-        			theme                  = ' . $this->bdd->echapper($this->theme) . ',
+        			theme                 = ' . $this->bdd->echapper($this->theme) . ',
+        			id_forum              = ' . $this->bdd->echapper($this->id_forum) . ',
         			etat                  = ' . $this->bdd->echapper($this->etat);
         if ($this->id > 0) {
             $requete .= ', id = ' . $this->bdd->echapper($this->id);

@@ -23,6 +23,12 @@ $smarty->assign('action', $action);
 $articles = new Articles($bdd);
 $personnes_physiques = new Personnes_Physiques($bdd);
 
+$forum  = new \Afup\Site\Forum\Forum($bdd);
+$forumLabelsById = [];
+foreach ($forum->obtenirListe(null, '*', 'date_debut DESC') as $forum) {
+    $forumLabelsById[$forum['id']] = $forum['titre'];
+}
+
 if ($action == 'lister') {
     $list_champs     = '*';
     $list_ordre      = 'date';
@@ -94,6 +100,7 @@ if ($action == 'lister') {
     $formulaire->addElement('select'  , 'position'                 , 'Position'       , $article->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'           , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
     $formulaire->addElement('select'  , 'theme'                    , 'Thème'          , ['' => ''] + Article::getThemesLabels());
+    $formulaire->addElement('select'  , 'id_forum'                , 'Forum'          , ['' => ''] + $forumLabelsById);
 
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
@@ -116,6 +123,7 @@ if ($action == 'lister') {
         $article->date = mktime(0, 0, 0, $date['M'], $date['d'], $date['Y']);
         $article->etat = $formulaire->exportValue('etat');
         $article->theme = $formulaire->exportValue('theme');
+        $article->id_forum = $formulaire->exportValue('id_forum');
 
         if ($action == 'ajouter') {
             $ok = $article->inserer();
