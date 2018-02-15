@@ -226,7 +226,7 @@ class Article implements NotifyPropertyInterface
     public function getTeaser()
     {
         if (strlen($leadParagraph = $this->getLeadParagraph())) {
-            return $leadParagraph;
+            return strip_tags($leadParagraph);
         }
 
 
