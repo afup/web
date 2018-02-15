@@ -77,6 +77,24 @@
                         </div>
                     </div>
 
+                    <div class="ais-root ais-refinement-list">
+                        <div class="ais-refinement-list--header ais-header">
+                            <h4>Cycle de conférences</h4>
+                        </div>
+
+                        <div class="ais-body ais-refinement-list--body">
+                            <div class="ais-refinement-list--list">
+                                <div class="ais-refinement-list--item">
+                                    {% for item in form.event %}
+                                        <div>
+                                            {{ form_widget(item) }}
+                                            {{ form_label(item) }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     {{ form_widget(form.submit, {attr: {style: "display:none "}}) }}
 

@@ -54,6 +54,16 @@ class NewsFiltersType extends AbstractType
                     'choices' => array_flip(Article::getThemesLabels()),
                 ]
             )
+            ->add(
+                'event',
+                ChoiceType::class,
+                [
+                    'label' => 'Cycle de conférences',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'choices' => array_flip($this->articleRepository->getEventsLabelsById()),
+                ]
+            )
             ->add('submit', SubmitType::class, ['label' => 'Filtrer'])
         ;
     }
