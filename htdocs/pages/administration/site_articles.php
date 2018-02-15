@@ -54,6 +54,7 @@ if ($action == 'lister') {
     $articlesList = [];
     foreach ($articles->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre) as $article) {
         $article['theme_label'] = Article::getThemeLabel($article['theme']);
+        $article['forum_label'] = isset($forumLabelsById[$article['id_forum']]) ? $forumLabelsById[$article['id_forum']] : '';
         $articlesList[] = $article;
     }
 
