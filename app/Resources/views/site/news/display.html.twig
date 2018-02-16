@@ -1,0 +1,26 @@
+{% extends ':site:base.html.twig' %}
+
+{% block content %}
+    <div class="mw1400p center" id="container">
+        <div class="line" id="main">
+
+            <div class="container">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+
+                    <h1>{{ article.getTitle }}</h1>
+
+                    <h4>{{ article.publishedAt|localizeddate('long', 'none') }}</h4>
+
+                    <blockquote>
+                        {{ article.leadParagraph|raw }}
+                    </blockquote>
+
+                    {{ article.getContent|raw }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

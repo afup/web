@@ -39,7 +39,7 @@ class PayboxFactory
         $paybox->set_cmd($facture); // Référence de la commande
         $paybox->set_porteur($email); // Email du client final (Le porteur de la carte)
 
-        $paybox->set_repondreA('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_retour.php');
+        $paybox->set_repondreA($this->router->generate('membership_payment', [], RouterInterface::ABSOLUTE_URL));
         $paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_effectue.php');
         $paybox->set_refuse('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_refuse.php');
         $paybox->set_annule('https://' . $_SERVER['HTTP_HOST'] . '/pages/administration/paybox_annule.php');

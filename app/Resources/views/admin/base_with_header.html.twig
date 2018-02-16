@@ -9,6 +9,11 @@
 
     {% if app.user %}
         {{ render(controller('AppBundle:Admin:getMenu')) }}
+        {% if app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
+            <p class="note error">
+                Votre cotisation a expiré. Les fonctionnalités réservées aux membres ne vous sont pas accessibles.
+            </p>
+        {% endif %}
     {% endif %}
 
     <div class="col1">

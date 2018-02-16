@@ -31,7 +31,7 @@ function updateGlobalsForTarif(
 ) {
     global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
     $event = $eventRepository->get($forumId);
-    $ticketTypes = $ticketEventTypeRepository->getTicketsByEvent($event, false, false);
+    $ticketTypes = $ticketEventTypeRepository->getTicketsByEvent($event, false);
 
     foreach ($ticketTypes as $ticketType) {
         /**

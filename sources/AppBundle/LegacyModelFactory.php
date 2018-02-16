@@ -4,6 +4,7 @@
 namespace AppBundle;
 
 use Afup\Site\Utils\Base_De_Donnees;
+use Afup\Site\Utils\Logs;
 
 class LegacyModelFactory
 {
@@ -21,6 +22,12 @@ class LegacyModelFactory
          * We need to create a variable because some legacy objects use a pass-by-reference on this param
          */
         $bdd = $this->getBdd();
+
+        if ($type === Logs::class) {
+            Logs::initialiser($bdd, 0);
+            return Logs::_obtenirInstance();
+        }
+
         return new $type($bdd);
     }
 

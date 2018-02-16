@@ -47,7 +47,6 @@ class PurchaseType extends AbstractType
                 'data' => 1
             ])
             ->add('tickets', CollectionType::class, [
-                // each entry in the array will be an "email" field
                 'entry_type' => TicketType::class,
                 'prototype' => true,
                 'allow_add'    => true,
