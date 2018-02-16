@@ -94,6 +94,12 @@ class LegacyController extends Controller
             ]
         );
 
+        $officesCollection = new \AppBundle\Offices\OfficesCollection();
+        $offices = ['' => '-Aucune-'];
+        foreach ($officesCollection->getOrderedLabelsByKey() as $key => $label) {
+            $offices[$key] = $label;
+        }
+
         $formulaire->addElement('hidden', 'inscription', 1);
         $formulaire->addElement('hidden', 'niveau');
         $formulaire->addElement('hidden', 'niveau_apero');
@@ -113,6 +119,7 @@ class LegacyController extends Controller
         $formulaire->addElement('select', 'id_pays', 'Pays', $pays->obtenirPays());
         $formulaire->addElement('text', 'telephone_fixe', 'Tél. fixe', ['size' => 20, 'maxlength' => 20]);
         $formulaire->addElement('text', 'telephone_portable', 'Tél. portable', ['size' => 20, 'maxlength' => 20]);
+        $formulaire->addElement('select', 'nearest_office', 'Antenne la plus proche', $offices);
 
         $formulaire->addElement('password', 'mot_de_passe', 'Mot de passe', ['size' => 30, 'maxlength' => 30]);
         $formulaire->addElement('password', 'confirmation_mot_de_passe', '', ['size' => 30, 'maxlength' => 30]);
@@ -161,6 +168,7 @@ class LegacyController extends Controller
                     $formulaire->exportValue('telephone_portable'),
                     $formulaire->exportValue('etat'),
                     $formulaire->exportValue('compte_svn'),
+                    $formulaire->exportValue('nearest_office'),
                     true // Throws exception!
                 );
 

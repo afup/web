@@ -24,8 +24,17 @@ unset($membre['mot_de_passe']);
 // Obtention du gravatar
 $membre["gravatar"] = Utils::get_gravatar($membre["email"]);
 $membre["tags"] = $tags->obtenirTagsSurPersonnePhysique($membre["id"]);
- 
-//var_dump($membre);die;
+
+$officesCollection = new \AppBundle\Offices\OfficesCollection();
+
+try {
+    $nearestOffice = $officesCollection->findByCode($membre['nearest_office']);
+} catch (\InvalidArgumentException $e) {
+    $nearestOffice = null;
+}
+
+
 $smarty->assign('membre', $membre);
 $smarty->assign('pays',$pays->obtenirPays());
+$smarty->assign('nearest_office', $nearestOffice);
 ?>

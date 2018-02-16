@@ -380,4 +380,25 @@ class OfficesCollection
 
         return $offices;
     }
+
+    public function findByCode($code)
+    {
+        $all = $this->getAll();
+
+        if (!isset($all[$code])) {
+            throw new \InvalidArgumentException('Office not found');
+        }
+
+        return $all[$code];
+    }
+
+    public function getOrderedLabelsByKey()
+    {
+        $labels = [];
+        foreach ($this->getAllSortedByLabels() as $key => $office) {
+            $labels[$key] = $office['label'];
+        }
+
+        return $labels;
+    }
 }

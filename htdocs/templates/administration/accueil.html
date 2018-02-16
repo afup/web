@@ -39,6 +39,16 @@
         <label class="libelle"> Tél. portable :</label>
         <span class="element">{$membre.telephone_portable}</span>
     </div>
+    <div class="rangee">
+        <label class="libelle"> Antenne la plus proche :</label>
+        <span class="element">
+            {if $nearest_office.label}
+                {$nearest_office.label}
+            {else}
+                Non définie
+            {/if}
+        </span>
+    </div>
     <br /><br />
     <div class="rangee">
         <label class="libelle"> Tags :</label>

@@ -32,6 +32,12 @@ $formulaire->addElement('text'    , 'ville'                    , 'Ville'        
 $formulaire->addElement('select'  , 'id_pays'                  , 'Pays'           , $pays->obtenirPays());
 $formulaire->addElement('text'    , 'telephone_fixe'           , 'Tél. fixe'      , array('size' => 20, 'maxlength' => 20));
 $formulaire->addElement('text'    , 'telephone_portable'       , 'Tél. portable'  , array('size' => 20, 'maxlength' => 20));
+$officesCollection = new \AppBundle\Offices\OfficesCollection();
+$offices = ['' => '-Aucune-'];
+foreach ($officesCollection->getOrderedLabelsByKey() as $key => $label) {
+    $offices[$key] = $label;
+}
+$formulaire->addElement('select'  , 'nearest_office'           , 'Antenne la plus proche', $offices);
 
 $formulaire->addElement('header'  , ''                         , 'Paramètres');
 $formulaire->addElement('text'    , 'login'                    , 'Login'          , array('size' => 30, 'maxlength' => 30));
@@ -61,7 +67,9 @@ if ($formulaire->validate()) {
         $formulaire->exportValue('ville'),
         $formulaire->exportValue('id_pays'),
         $formulaire->exportValue('telephone_fixe'),
-        $formulaire->exportValue('telephone_portable'));
+        $formulaire->exportValue('telephone_portable'),
+        $formulaire->exportValue('nearest_office')
+    );
 
     if ($ok) {
         Logs::log('Modification de la personne physique par l\'utilisateur (' . $_GET['id'] . ')');
