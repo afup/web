@@ -22,7 +22,7 @@
       </form>
     </table>
     <br/>
-    <table>
+    <table class="afup_tab tab--filterable">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
             <th align="left"><a href="index.php?page=assemblee_generale&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a> Prénom</th>
@@ -54,6 +54,8 @@
         </tr>
     {/foreach}
     </table>
+
+    <script src="/js_dist/admin.js"></script>
 {elseif $action == 'listing'}
      Liste des présences de l'assemblée générale le {$smarty.get.date|stripslashes}<br />
     <br />
