@@ -395,11 +395,9 @@ class OfficesCollection
     public function getOrderedLabelsByKey()
     {
         $labels = [];
-        foreach ($this->getAll() as $key => $office) {
+        foreach ($this->getAllSortedByLabels() as $key => $office) {
             $labels[$key] = $office['label'];
         }
-
-        natcasesort($labels);
 
         return $labels;
     }
