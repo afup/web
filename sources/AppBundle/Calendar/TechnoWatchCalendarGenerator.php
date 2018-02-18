@@ -42,7 +42,9 @@ class TechnoWatchCalendarGenerator
         foreach ($this->prepareEvents($googleSpreadsheetCsvUrl, $filter) as $event) {
             $vcalendar->add('VEVENT', [
                 'SUMMARY' => $eventLabelPrefix . $event['first_chair'] . " / " . $event['second_chair'],
-                'DTSTART' => "VALUE=DATE:" . $event['date']->format('Y-m-d'),
+                'DTSTART;VALUE=DATE' => $event['date']->format('Ymd'),
+                'DESCRIPTION' => '',
+                'TRANSP' => 'TRANSPARENT',
             ]);
         }
 
