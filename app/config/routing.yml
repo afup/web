@@ -38,5 +38,9 @@ news:
     resource: "routing/news.yml"
     prefix: /news
 
+techno_watch:
+    resource: "routing/techno_watch.yml"
+    prefix: /techno_watch
+
 global:
     resource: "routing/global.yml"
