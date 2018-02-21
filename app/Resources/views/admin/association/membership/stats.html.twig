@@ -5,7 +5,7 @@
 {% block content %}
     <article id="members-stats">
         <h2>Statistiques concernant les membres</h2>
-        <table>
+        <table class="afup_tab">
             <thead>
                 <tr>
                     <th>Personnes physiques*</th>
@@ -15,7 +15,15 @@
             </thead>
             <tbody>
             <tr>
-
+                <td>
+                    {{ validUsers }}
+                </td>
+                <td>
+                    {{ validCompanies }}
+                </td>
+                <td>
+                    {{ companiesUsers }}
+                </td>
             </tr>
             </tbody>
         </table>

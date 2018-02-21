@@ -35,18 +35,17 @@ class MembershipAdminController extends Controller
             }
         }
 
-        // Nombre de personnes morales en cours d'adhésion
-
-        // Nombre de personnes physiques rattachées à une personne morale en cours d'adhésion
-
-        // Nombre de personnes physiques en cours d'adhésion
-
-        // Evolution nombre de personnes physiques en cours d'adhésion
+        // @todo Evolution nombre de personnes physiques en cours d'adhésion
 
         // Evolution sur 1 an:
         // Calculer le nombre au début de l'année
         // puis on fait une requete pour les nouvelles cotisations par jour & les périmées par jour
 
-        dump([$validUsers, $validCompanies, $companiesUsers]);die;
+        return $this->render('admin/association/membership/stats.html.twig', [
+            'validUsers' => $validUsers,
+            'validCompanies' => $validCompanies,
+            'companiesUsers' => $companiesUsers,
+            'title' => 'Reporting membres [WIP]'
+        ]);
     }
 }
