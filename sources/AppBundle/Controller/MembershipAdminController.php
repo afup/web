@@ -29,7 +29,6 @@ class MembershipAdminController extends Controller
                     $companies[$user->getCompanyId()] = true;
                     $validCompanies++;
                 }
-
             } else {
                 $validUsers++;
             }
