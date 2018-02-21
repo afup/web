@@ -42,6 +42,7 @@ class Assemblee_Generale
         $requete .= '  afup_personnes_physiques.login, ';
         $requete .= '  afup_personnes_physiques.nom, ';
         $requete .= '  afup_personnes_physiques.prenom, ';
+        $requete .= '  afup_personnes_physiques.nearest_office, ';
         $requete .= '  afup_presences_assemblee_generale.date_consultation, ';
         $requete .= '  afup_presences_assemblee_generale.presence, ';
         $requete .= '  afup_personnes_avec_pouvoir.nom as personnes_avec_pouvoir_nom, ';

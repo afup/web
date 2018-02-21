@@ -22,12 +22,13 @@
       </form>
     </table>
     <br/>
-    <table>
+    <table class="afup_tab tab--filterable">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
             <th align="left"><a href="index.php?page=assemblee_generale&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a> Prénom</th>
             <th><a href="index.php?page=assemblee_generale">Email</a></th>
             <th><a href="index.php?page=assemblee_generale">A jour</a></th>
+            <th>Antenne</th>
             <th><a href="index.php?page=assemblee_generale&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Consultation</a></th>
             <th><a href="index.php?page=assemblee_generale&amp;tri=presence&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'presence'}desc{else}asc{/if}">Présence</a></th>
             <th><a href="index.php?page=assemblee_generale&amp;tri=personnes_avec_pouvoir_nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'personnes_avec_pouvoir_nom'}desc{else}asc{/if}">Pouvoir</a></th>
@@ -39,6 +40,7 @@
             <td>{$personne.nom} {$personne.prenom}</td>
             <td>{$personne.email}</td>
             <td>{if $personne.ajour}Oui{else}Non{/if}</td>
+            <td>{$personne.nearest_office}</td>
             <td>{$personne.date_consultation|convertirTimestampEnDate}</td>
             <td style="text-align: center">{if $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI}Présent{elseif $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON}Absent{else}??{/if}</td>
             <td>{$personne.personnes_avec_pouvoir_nom} {$personne.personnes_avec_pouvoir_prenom}</td>
@@ -52,6 +54,8 @@
         </tr>
     {/foreach}
     </table>
+
+    <script src="/js_dist/admin.js"></script>
 {elseif $action == 'listing'}
      Liste des présences de l'assemblée générale le {$smarty.get.date|stripslashes}<br />
     <br />

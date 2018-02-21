@@ -13,4 +13,4 @@
 
 // redirection vers le sous-site AFUP
 
-header("Location: /pages/site");
+header("Location: /home");

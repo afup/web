@@ -169,6 +169,38 @@ class TweetGenerator extends \atoum
                 ],
                 'expected' => "Et si on utilisait WordPress ? La conférence de @BoiteAWeb à revoir sur le site de l'AFUP : https://afup.org/talks/1295-et-si-on-utilisait-wordpress",
 
+            ],
+            [
+                'case' => "Speaker avec compte twitter ayant une URL complète en http",
+                'talk' => [
+                    'id' => 2314,
+                    'title' => 'Les hexagones de la Ruche qui dit Oui !',
+                ],
+                'speakers' => [
+                    [
+                        'firstname' => 'Benoit',
+                        'lastname' => 'Merlet',
+                        'twitter' => "http://twitter.com/trompouet",
+                    ]
+                ],
+                'expected' => "Les hexagones de la Ruche qui dit Oui ! La conférence de @trompouet à revoir sur le site de l'AFUP : https://afup.org/talks/2314-les-hexagones-de-la-ruche-qui-dit-oui",
+
+            ],
+            [
+                'case' => "Speaker avec compte twitter ayant une URL complète en https",
+                'talk' => [
+                    'id' => 2314,
+                    'title' => 'Les hexagones de la Ruche qui dit Oui !',
+                ],
+                'speakers' => [
+                    [
+                        'firstname' => 'Benoit',
+                        'lastname' => 'Merlet',
+                        'twitter' => "https://twitter.com/trompouet",
+                    ]
+                ],
+                'expected' => "Les hexagones de la Ruche qui dit Oui ! La conférence de @trompouet à revoir sur le site de l'AFUP : https://afup.org/talks/2314-les-hexagones-de-la-ruche-qui-dit-oui",
+
             ]
         ];
     }
