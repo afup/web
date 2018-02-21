@@ -67,6 +67,10 @@ parameters:
                 statistiques:
                     nom: 'Statistiques'
                     niveau: 'ROLE_ADMIN'
+                reporting:
+                    nom: 'Reporting [WIP]'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/reporting'
                 mailing:
                     nom: 'Mailing'
                     niveau: 'ROLE_ADMIN'
