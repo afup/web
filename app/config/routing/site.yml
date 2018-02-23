@@ -32,7 +32,7 @@ offices:
   defaults: {_controller: AppBundle:Static:offices}
 
 superapero:
-  path: /super-apero-9-mars
+  path: /super-apero-8-mars-2018
   defaults: {_controller: AppBundle:Static:superApero}
 
 superapero_live:
