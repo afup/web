@@ -35,10 +35,6 @@ superapero:
   path: /super-apero-8-mars-2018
   defaults: {_controller: AppBundle:Static:superApero}
 
-superapero_live:
-  path: /super-apero-9-mars/live
-  defaults: {_controller: AppBundle:Static:superAperoLive}
-
 void:
   path: /void-route
   defaults: {_controller: AppBundle:Static:void}
