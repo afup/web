@@ -87,7 +87,6 @@ EOF
             ],
             [
                 'code' => 'montpellier',
-                'meetup_id' => '247317894',
                 'content' => <<<EOF
 RDV à 19h à la Baraka Jeux, allée d'Ulysse, Quartier Odysseum, lieu de rendez-vous bien nommé pour participer au quiz qui mettra en compétition les antennes AFUP en compagnie des développeurs locaux ! 
 EOF
