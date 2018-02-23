@@ -33,6 +33,11 @@ services:
         tags:
             -  { name: twig.extension }
 
+    app_twig_offices:
+        class: AppBundle\Twig\OfficesExtension
+        tags:
+            -  { name: twig.extension }
+
     app.locale_listener:
         class: AppBundle\Listener\LocaleListener
         arguments: [ "%kernel.default_locale%" ]
