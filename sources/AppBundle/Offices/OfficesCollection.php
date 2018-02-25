@@ -116,14 +116,14 @@ class OfficesCollection
                 'departements' => ['69'],
             ],
             'marseille' => [
-                'label' => 'Marseille',
+                'label' => 'Aix-Marseille',
                 'latitude' => '43.296346',
                 'longitude' => '5.36988923',
                 'meetup_urlname' => 'Marseille-PHP-User-Group',
                 'meetup_id' => '18152912',
                 'logo_url' => '/images/offices/marseille.jpg',
                 'twitter' => 'AFUP_Marseille',
-                'blog_url' => 'http://marseille.afup.org',
+                'blog_url' => 'http://aix-marseille.afup.org/',
                 'map' => [
                     "legend-first-point-x" => "600",
                     "legend-first-point-y" => "540",
