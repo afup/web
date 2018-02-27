@@ -21,9 +21,8 @@ Utiliser le compte `root:root`
 
 * Récupérer un dump de la base (demander au pôle outils @ afup.org) et le placer décompressé à la racine du projet
 * Récupérer le port MySQL du container `db` : `docker-compose port db 3306`
-* Créer la base de données de dev : `mysqladmin -h 127.0.0.1 -P <port> -u root -p create afup_dev`
 * Importer le dump : `mysql -h 127.0.0.1 -P <port> -u root -p < dump.sql`
-* Mettre à jour le `app/cofnig/parameters.yml` (Attention : garder le port `3306` dans ce fichier de config)
+* Il faut une instance Algolia pour le `algolia_app_id`, `algolia_backend_api_key` et `algolia_frontend_api_key` (contacter le pôle outil)
 
 ## Mise en place avec Vagrant (obsolète)
 
