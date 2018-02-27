@@ -37,6 +37,7 @@ class OfficesCollection
                 'meetup_id' => '23162834',
                 'logo_url' => '/images/offices/limoges.jpg',
                 'twitter' => 'AFUP_Limoges',
+                'blog_url' => 'http://limoges.afup.org/',
                 'map' => [
                     "legend-first-point-x" => "410",
                     "legend-first-point-y" => "380",
