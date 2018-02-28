@@ -80,7 +80,7 @@
 
         {{ form_start(ticketForm, {attr: {id: 'formulaire'}}) }}
 
-            <div id="divPersonne">
+            <div id="divPersonne" data-nb-max-personnes="{{ maxNbPersonnes }}">
                 <fieldset>
                     <legend>
                         <a name="inscription1">Nombre de personnes</a>
@@ -158,7 +158,7 @@
                 <a name="facturation">Facturation</a>
                 <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span>
             </legend>
-            <div id="fieldset--6" class="fieldset--inner">
+            <div class="fieldset--inner">
                 {# On ne souhaite pas mettre en avant le VB, on affiche donc avant tout la CB #}
                 {{ form_label(ticketForm.paymentType) }}
                 {{ form_widget(ticketForm.paymentType[0]) }}
@@ -183,7 +183,7 @@
         </fieldset>
 
         <fieldset class="f7">
-            <legend>Divers <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div id="fieldset--7" class="fieldset--inner">
+            <legend>Divers <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div id="fieldset--optin" class="fieldset--inner">
                 <div>
                     {{ form_widget(ticketForm.companyCitation) }}
                     {{ form_label(ticketForm.companyCitation) }}
@@ -200,7 +200,7 @@
         </fieldset>
 
         <fieldset class="f8 boutons">
-            <legend>Récapitulatif <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div id="fieldset--8" class="fieldset--inner">
+            <legend>Récapitulatif <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div class="fieldset--inner">
 
                 <div>
                     <p>Une fois votre commande effectuée, <strong>chaque participant recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
