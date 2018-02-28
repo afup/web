@@ -80,7 +80,7 @@
 
         {{ form_start(ticketForm, {attr: {id: 'formulaire'}}) }}
 
-            <div id="divPersonne" data-nb-max-personnes="{{ constant('AppBundle\\Event\\Form\\PurchaseType::MAX_NB_PERSONNES') }}">
+            <div id="divPersonne" data-nb-max-personnes="{{ maxNbPersonnes }}">
                 <fieldset>
                     <legend>
                         <a name="inscription1">Nombre de personnes</a>
