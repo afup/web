@@ -17,6 +17,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class PurchaseType extends AbstractType
 {
+
+    const MAX_NB_PERSONNES = 11;
+
     /**
      * @var Pays
      */
@@ -32,15 +35,14 @@ class PurchaseType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $nbPersonnesChoices = [];
+        for ($i=1; $i<=self::MAX_NB_PERSONNES; $i++) {
+            $nbPersonnesChoices[$i] = $i;
+        }
+
         $builder
             ->add('nbPersonnes', ChoiceType::class, [
-                'choices' => [
-                    1 => 1,
-                    2 => 2,
-                    3 => 3,
-                    4 => 4,
-                    5 => 5
-                ],
+                'choices' => $nbPersonnesChoices,
                 'multiple' => false,
                 'expanded' => false,
                 'mapped' => false,
