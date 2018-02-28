@@ -17,7 +17,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class PurchaseType extends AbstractType
 {
-
     const MAX_NB_PERSONNES = 11;
 
     /**
