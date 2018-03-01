@@ -77,6 +77,14 @@ parameters:
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
+        veille:
+            nom: "Veille"
+            niveau: "ROLE_VEILLE"
+            elements:
+                veille_ generer_campagne:
+                    nom: "Générer campagne"
+                    niveau: "ROLE_VEILLE"
+                    url: '/admin/techletter/generate'
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'
