@@ -222,7 +222,7 @@ $(document).ready(function(){
     $('#formulaire').on('submit', function(event){
         $(this).attr('disabled', 'disabled');
 
-        var fieldsets = ['f6', 'f7'];
+        var fieldsets = ['f' + nbMaxPersonnes +1, 'f' + nbMaxPersonnes + 2];
 
         for (var i = 1; i <= nbInscriptions; i++) {
 			fieldsets.push('f' + i);

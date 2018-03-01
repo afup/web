@@ -70,10 +70,10 @@ span.fieldset--legend--price{
     float:right
 }
 
-fieldset.f7 .input{
+fieldset.fieldset-divers .input{
     margin-left:50px !important;
 }
-fieldset.f7 .input .inputs-list li, fieldset.f6 .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
+fieldset.fieldset-divers .input .inputs-list li, fieldset.fieldset-facturation .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
     float:left;
     width: 30%;
 }

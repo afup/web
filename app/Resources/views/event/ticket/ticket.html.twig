@@ -153,7 +153,7 @@
                 </fieldset>
             {% endfor %}
 
-        <fieldset class="f6">
+        <fieldset class="f{{ ticketForm.tickets|length +1 }} fieldset-facturation">
             <legend>
                 <a name="facturation">Facturation</a>
                 <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span>
@@ -182,7 +182,7 @@
             </div>
         </fieldset>
 
-        <fieldset class="f7">
+        <fieldset class="f{{ ticketForm.tickets|length +2 }} fieldset-divers">
             <legend>Divers <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div id="fieldset--optin" class="fieldset--inner">
                 <div>
                     {{ form_widget(ticketForm.companyCitation) }}
@@ -199,7 +199,7 @@
             </div>
         </fieldset>
 
-        <fieldset class="f8 boutons">
+        <fieldset class="f{{ ticketForm.tickets|length +3 }} boutons">
             <legend>Récapitulatif <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div class="fieldset--inner">
 
                 <div>
