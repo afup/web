@@ -16,7 +16,7 @@ class MembershipFeeReferenceGenerator
      */
     public function generate(\DateTimeImmutable $currentDate, $typePersonne, $idPersonne, $nomPersonne)
     {
-        $reference = strtoupper('C' . $currentDate->format('Y') . '-' . $currentDate->format('dmYHi') . '-' . $typePersonne . '-' . $idPersonne . '-' . substr($nomPersonne, 0, 5));
+        $reference = strtoupper('C' . $currentDate->format('Y') . '-' . $currentDate->format('dmYHi') . '-' . $typePersonne . '-' . $idPersonne . '-' . substr(supprimerAccents($nomPersonne), 0, 5));
         $reference = supprimerAccents($reference);
         $reference = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', $reference);
         $reference .= '-' . strtoupper(substr(md5($reference), - 3));
