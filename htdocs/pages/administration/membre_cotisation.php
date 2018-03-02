@@ -76,10 +76,9 @@ $formulaire->addRule('type_cotisation' , 'Type de cotisation manquant' , 'requir
 
 $donnees = $personnes_physiques->obtenir($identifiant);
 
-$reference = strtoupper('C' . date('Y') . '-' . date('dmYHi') . '-' . $type_personne . '-' . $id_personne . '-' . substr($donnees['nom'], 0, 5));
-$reference = supprimerAccents($reference);
-$reference = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', $reference);
-$reference .= '-' . strtoupper(substr(md5($reference), - 3));
+$feeReferenceGenerator = new \AppBundle\Association\MembershipFeeReferenceGenerator();
+$reference = $feeReferenceGenerator->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
+
 
 $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
     $reference,
