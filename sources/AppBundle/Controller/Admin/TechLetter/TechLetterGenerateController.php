@@ -4,6 +4,10 @@ namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\Controller\SiteBaseController;
 use AppBundle\TechLetter\Form\GenerateType;
+use AppBundle\TechLetter\Model\Article;
+use AppBundle\TechLetter\Model\News;
+use AppBundle\TechLetter\Model\Project;
+use AppBundle\TechLetter\Model\TechLetter;
 use Symfony\Component\HttpFoundation\Request;
 
 class TechLetterGenerateController extends SiteBaseController
@@ -18,70 +22,70 @@ class TechLetterGenerateController extends SiteBaseController
                 ->render(
                     ':admin/techletter:mail_template.html.twig',
                     [
-                        'first_news' => [
-                            'title' => 'Sortie de Symfony 4.0.4',
-                            'url' => 'http://symfony.com/blog/symfony-4-0-4-released',
-                            'date' => new \DateTimeImmutable('2018-01-29')
-
-                        ],
-                        'second_news' => [
-                            'title' => 'Sortie de Laravel 5.6',
-                            'url' => 'https://laravel-news.com/laravel-5-6',
-                            'date' => new \DateTimeImmutable('2018-02-07')
-                        ],
-                        'articles' => [
+                        'tech_letter' => new TechLetter(
+                            new News(
+                                'Sortie de Symfony 4.0.4',
+                                'http://symfony.com/blog/symfony-4-0-4-released',
+                                new \DateTimeImmutable('2018-01-29')
+                            ),
+                            new News(
+                                'Sortie de Laravel 5.6',
+                                'https://laravel-news.com/laravel-5-6',
+                                new \DateTimeImmutable('2018-02-07')
+                            ),
                             [
-                                'title' => 'Normalizing composer.json - Andreas Möller',
-                                'url' => 'https://localheinz.com/blog/2018/01/15/normalizing-composer.json/',
-                                'host' => 'localheinz.com',
-                                'reading_time' => 4,
-                                'excerpt' => 'If you are using composer, you have probably modified composer.json at least once to keep things nice and tidy...',
+                                new Article(
+                                    'https://localheinz.com/blog/2018/01/15/normalizing-composer.json/',
+                                    'Normalizing composer.json - Andreas Möller',
+                                    'localheinz.com',
+                                    4,
+                                    'If you are using composer, you have probably modified composer.json at least once to keep things nice and tidy...'
+                                ),
+                                new Article(
+                                    'https://mwop.net/blog/2018-01-23-psr-15.html',
+                                    'PSR-15 - Matthew Weier O\'phinney',
+                                    'mwop.net',
+                                    9,
+                                    'Yesterday, following a unanimous vote from its Core Committee, PHP-FIG formally accepted the proposed PSR-15, HTTP Server Handlers standard...'
+                                ),
+                                new Article(
+                                    'https://murze.be/introducing-browsershot-v3-the-best-way-to-convert-html-to-pdfs-and-images',
+                                    'Introducing Browsershot v3 - murze.be',
+                                    'murze.be',
+                                    5,
+                                    'To convert html to a pdf or an image using wkhtmltopdf and wkhtmltoimage tends to be the popular option. Unfortunately those tools contain an outdated ...'
+                                ),
+                                new Article(
+                                    'http://sergeyzhuk.me/2018/02/02/why-asynchronous-php/',
+                                    'Asynchronous PHP: Why?',
+                                    'sergeyzhuk.me',
+                                    7,
+                                    'Asynchronous programming is on demand today. Especially in web-development where responsiveness of the application plays a huge role...'
+                                ),
                             ],
                             [
-                                'title' => 'PSR-15 - Matthew Weier O\'phinney',
-                                'url' => 'https://mwop.net/blog/2018-01-23-psr-15.html',
-                                'host' => 'mwop.net',
-                                'reading_time' => 9,
-                                'excerpt' => 'Yesterday, following a unanimous vote from its Core Committee, PHP-FIG formally accepted the proposed PSR-15, HTTP Server Handlers standard...',
-                            ],
-                            [
-                                'title' => 'Introducing Browsershot v3 - murze.be',
-                                'url' => 'https://murze.be/introducing-browsershot-v3-the-best-way-to-convert-html-to-pdfs-and-images',
-                                'host' => 'murze.be',
-                                'reading_time' => 5,
-                                'excerpt' => 'To convert html to a pdf or an image using wkhtmltopdf and wkhtmltoimage tends to be the popular option. Unfortunately those tools contain an outdated ...',
-                            ],
-                            [
-                                'title' => 'Asynchronous PHP: Why?',
-                                'url' => 'http://sergeyzhuk.me/2018/02/02/why-asynchronous-php/',
-                                'host' => 'sergeyzhuk.me',
-                                'reading_time' => 7,
-                                'excerpt' => 'Asynchronous programming is on demand today. Especially in web-development where responsiveness of the application plays a huge role...',
-                            ],
-                        ],
-                        'projects' => [
-                            [
-                                'name' => 'angeloskath/php-nlp-tools',
-                                'url' => 'https://github.com/angeloskath/php-nlp-tools',
-                                'description' => 'Natural Language Processing Tools in PHP',
-                            ],
-                            [
-                                'name' => 'eleme/geohash',
-                                'url' => 'https://github.com/eleme/geohash',
-                                'description' => 'php geohash encoder/decoder',
-                            ],
-                            [
-                                'name' => 'novaway/elasticsearch-client',
-                                'url' => 'https://github.com/novaway/elasticsearch-client',
-                                'description' => 'A lightweight PHP 7.0+ client for Elasticsearch',
-                            ],
-                            [
-                                'name' => 'jenssegers/date',
-                                'url' => 'https://github.com/jenssegers/date',
-                                'description' => 'A library to help you work with dates in multiple languages',
-                            ],
-
-                        ],
+                                new Project(
+                                    'https://github.com/angeloskath/php-nlp-tools',
+                                    'angeloskath/php-nlp-tools',
+                                    'Natural Language Processing Tools in PHP'
+                                ),
+                                new Project(
+                                    'https://github.com/eleme/geohash',
+                                    'eleme/geohash',
+                                    'php geohash encoder/decoder'
+                                ),
+                                new Project(
+                                    'https://github.com/novaway/elasticsearch-client',
+                                    'novaway/elasticsearch-client',
+                                    'A lightweight PHP 7.0+ client for Elasticsearch'
+                                ),
+                                new Project(
+                                    'https://github.com/jenssegers/date',
+                                    'jenssegers/date',
+                                    'A library to help you work with dates in multiple languages'
+                                )
+                            ]
+                        ),
                     ]
                 )
                 ->getContent()

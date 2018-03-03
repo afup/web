@@ -613,7 +613,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        {% if first_news or second_news %}
+                                        {% if tech_letter.firstNews or tech_letter.secondNews %}
                                         <table class="mcnDividerBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
                                             <tbody class="mcnDividerBlockOuter">
                                             <tr>
@@ -704,11 +704,11 @@
                                                             <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
 
                                                                 <ul>
-                                                                    {% if first_news %}
-                                                                    <li><span style="font-size:14px">{{ first_news.date|date('d/m') }}</span> <a href="{{ first_news.url }}" target="_blank">{{ first_news.title }}</a></li>
+                                                                    {% if tech_letter.firstNews %}
+                                                                    <li><span style="font-size:14px">{{ tech_letter.firstNews.date|date('d/m') }}</span> <a href="{{ tech_letter.firstNews.url }}" target="_blank">{{ tech_letter.firstNews.title }}</a></li>
                                                                     {% endif %}
-                                                                    {% if second_news %}
-                                                                    <li><span style="font-size:14px">{{ second_news.date|date('d/m') }}</span> <a href="{{ second_news.url }}" target="_blank">{{ second_news.title }}</a></li>
+                                                                    {% if tech_letter.secondNews %}
+                                                                    <li><span style="font-size:14px">{{ tech_letter.secondNews.date|date('d/m') }}</span> <a href="{{ tech_letter.secondNews.url }}" target="_blank">{{ tech_letter.secondNews.title }}</a></li>
                                                                     {% endif %}
                                                                 </ul>
 
@@ -814,9 +814,9 @@
 
                                                             <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
 
-                                                                {% for article in articles %}
+                                                                {% for article in tech_letter.articles %}
                                                                 <a href="https://localheinz.com/blog/2018/01/15/normalizing-composer.json/" target="_blank">{{ article.title }}</a><br>
-                                                                <span style="font-size:12px">{{ article.host }} - {{ article.reading_time }} minutes de lecture</span><br>
+                                                                <span style="font-size:12px">{{ article.host }} - {{ article.readingTime}} minutes de lecture</span><br>
                                                                 <em>{{ article.excerpt }}</em><br>
                                                                 {% endfor %}
                                                             </td>
@@ -834,7 +834,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        {% if projects|length > 0 %}
+                                        {% if tech_letter.projects|length > 0 %}
                                         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width:100%;">
                                             <tbody class="mcnDividerBlockOuter">
                                             <tr>
@@ -922,7 +922,7 @@
                                                             <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
 
                                                                 <ul>
-                                                                    {% for project in projects %}
+                                                                    {% for project in tech_letter.projects %}
                                                                         <li><a href="{{ project.url }}" target="_blank">{{ project.name }}</a> : {{ project.description }}</li>
                                                                     {% endfor %}
                                                                 </ul>
