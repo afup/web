@@ -76,8 +76,7 @@ $formulaire->addRule('type_cotisation' , 'Type de cotisation manquant' , 'requir
 
 $donnees = $personnes_physiques->obtenir($identifiant);
 
-$feeReferenceGenerator = new \AppBundle\Association\MembershipFeeReferenceGenerator();
-$reference = $feeReferenceGenerator->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
+$reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
 
 $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
     $reference,
