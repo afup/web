@@ -612,7 +612,9 @@
                                                 </td>
                                             </tr>
                                             </tbody>
-                                        </table><table class="mcnDividerBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                        </table>
+                                        {% if first_news or second_news %}
+                                        <table class="mcnDividerBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
                                             <tbody class="mcnDividerBlockOuter">
                                             <tr>
                                                 <td class="mcnDividerBlockInner" style="min-width: 100%; padding: 0px 18px;">
@@ -630,7 +632,8 @@
                                                 </td>
                                             </tr>
                                             </tbody>
-                                        </table><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                        </table>
+                                        <table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
                                             <tbody class="mcnTextBlockOuter">
                                             <tr>
                                                 <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top">
@@ -663,7 +666,8 @@
                                                 </td>
                                             </tr>
                                             </tbody>
-                                        </table><table class="mcnDividerBlock" style="min-width:100%;" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                        </table>
+                                        <table class="mcnDividerBlock" style="min-width:100%;" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tbody class="mcnDividerBlockOuter">
                                             <tr>
                                                 <td class="mcnDividerBlockInner" style="min-width: 100%; padding: 0px 18px;">
@@ -681,7 +685,8 @@
                                                 </td>
                                             </tr>
                                             </tbody>
-                                        </table><table class="mcnTextBlock" style="min-width:100%;" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                        </table>
+                                        <table class="mcnTextBlock" style="min-width:100%;" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tbody class="mcnTextBlockOuter">
                                             <tr>
                                                 <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top">
@@ -699,8 +704,12 @@
                                                             <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
 
                                                                 <ul>
-                                                                    <li><span style="font-size:14px">29/01</span> <a href="http://symfony.com/blog/symfony-4-0-4-released" target="_blank">Sortie de Symfony 4.0.4</a></li>
-                                                                    <li><span style="font-size:14px">07/02</span> <a href="https://laravel-news.com/laravel-5-6" target="_blank">Sortie de Laravel 5.6</a></li>
+                                                                    {% if first_news %}
+                                                                    <li><span style="font-size:14px">{{ first_news.date|date('d/m') }}</span> <a href="{{ first_news.url }}" target="_blank">{{ first_news.title }}</a></li>
+                                                                    {% endif %}
+                                                                    {% if second_news %}
+                                                                    <li><span style="font-size:14px">{{ second_news.date|date('d/m') }}</span> <a href="{{ second_news.url }}" target="_blank">{{ second_news.title }}</a></li>
+                                                                    {% endif %}
                                                                 </ul>
 
                                                             </td>
@@ -717,7 +726,9 @@
                                                 </td>
                                             </tr>
                                             </tbody>
-                                        </table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width:100%;">
+                                        </table>
+                                        {% endif %}
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width:100%;">
                                             <tbody class="mcnDividerBlockOuter">
                                             <tr>
                                                 <td class="mcnDividerBlockInner" style="min-width: 100%; padding: 0px 18px;">
@@ -803,21 +814,11 @@
 
                                                             <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
 
-                                                                <a href="https://localheinz.com/blog/2018/01/15/normalizing-composer.json/" target="_blank">Normalizing composer.json - Andreas Möller</a><br>
-                                                                <span style="font-size:12px">localheinz.com - 4 minutes de lecture</span><br>
-                                                                <em>If you are using composer, you have probably modified composer.json at least once to keep things nice and tidy...</em><br>
-                                                                <br>
-                                                                <a href="https://mwop.net/blog/2018-01-23-psr-15.html" target="_blank">PSR-15 - Matthew Weier O'phinney</a><br>
-                                                                <span style="font-size:12px">mwop.net - 9 minutes de lecture</span><br>
-                                                                <em>Yesterday, following a unanimous vote from its Core Committee, PHP-FIG formally accepted the proposed PSR-15, HTTP Server Handlers standard...</em><br>
-                                                                <br>
-                                                                <a href="https://murze.be/introducing-browsershot-v3-the-best-way-to-convert-html-to-pdfs-and-images" target="_blank">Introducing Browsershot v3 - murze.be</a><br>
-                                                                <span style="font-size:12px">murze.be - 5 minutes de lecture</span><br>
-                                                                <em><span style="font-size:Default Size">To convert html to a pdf or an image using wkhtmltopdf and wkhtmltoimage tends to be the popular option. Unfortunately those tools contain an outdated ...</span></em><br>
-                                                                <br>
-                                                                <a href="http://sergeyzhuk.me/2018/02/02/why-asynchronous-php/" target="_blank">Asynchronous PHP: Why?</a><br>
-                                                                <span style="font-size:12px">sergeyzhuk.me - 7 minutes de lecture</span><br>
-                                                                Asynchronous programming is on demand today. Especially in web-development where responsiveness of the application plays a huge role...
+                                                                {% for article in articles %}
+                                                                <a href="https://localheinz.com/blog/2018/01/15/normalizing-composer.json/" target="_blank">{{ article.title }}</a><br>
+                                                                <span style="font-size:12px">{{ article.host }} - {{ article.reading_time }} minutes de lecture</span><br>
+                                                                <em>{{ article.excerpt }}</em><br>
+                                                                {% endfor %}
                                                             </td>
                                                         </tr>
                                                         </tbody></table>
@@ -832,7 +833,9 @@
                                                 </td>
                                             </tr>
                                             </tbody>
-                                        </table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width:100%;">
+                                        </table>
+                                        {% if projects|length > 0 %}
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width:100%;">
                                             <tbody class="mcnDividerBlockOuter">
                                             <tr>
                                                 <td class="mcnDividerBlockInner" style="min-width: 100%; padding: 0px 18px;">
@@ -919,10 +922,9 @@
                                                             <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
 
                                                                 <ul>
-                                                                    <li><a href="https://github.com/angeloskath/php-nlp-tools" target="_blank">angeloskath/php-nlp-tools</a> : Natural Language Processing Tools in PHP</li>
-                                                                    <li><a href="https://github.com/eleme/geohash" target="_blank">eleme/geohash</a> : php geohash encoder/decoder</li>
-                                                                    <li><a href="https://github.com/novaway/elasticsearch-client" target="_blank">novaway/elasticsearch-client</a> : A lightweight PHP 7.0+ client for Elasticsearch</li>
-                                                                    <li><a href="https://github.com/jenssegers/date" target="_blank">jenssegers/date</a> : A library to help you work with dates in multiple languages</li>
+                                                                    {% for project in projects %}
+                                                                        <li><a href="{{ project.url }}" target="_blank">{{ project.name }}</a> : {{ project.description }}</li>
+                                                                    {% endfor %}
                                                                 </ul>
 
                                                             </td>
@@ -939,7 +941,9 @@
                                                 </td>
                                             </tr>
                                             </tbody>
-                                        </table><table class="mcnDividerBlock" style="min-width: 100%;background-color: #1D2241;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                        </table>
+                                        {% endif %}
+                                        <table class="mcnDividerBlock" style="min-width: 100%;background-color: #1D2241;" width="100%" cellspacing="0" cellpadding="0" border="0">
                                             <tbody class="mcnDividerBlockOuter">
                                             <tr>
                                                 <td class="mcnDividerBlockInner" style="min-width: 100%; padding: 10px 18px;">
