@@ -79,7 +79,6 @@ $donnees = $personnes_physiques->obtenir($identifiant);
 $feeReferenceGenerator = new \AppBundle\Association\MembershipFeeReferenceGenerator();
 $reference = $feeReferenceGenerator->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
 
-
 $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
     $reference,
     (float) $montant,
