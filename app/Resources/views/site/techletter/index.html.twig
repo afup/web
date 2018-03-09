@@ -47,10 +47,11 @@
                 <li>
                     {% if loggedIn %}
                         <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
+                        Être connecté au Back-office de l'AFUP
                     {% else %}
                         <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
+                        Être connecté au <a href="{{ url('admin_login') }}?target={{ path('techletter') }}">Back-office de l'AFUP</a>
                     {% endif %}
-                    Être connecté au <a href="{{ url('admin_login') }}?target={{ path('techletter') }}">Back-office de l'AFUP</a>
                 </li>
 
                 <li>
