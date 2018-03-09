@@ -24,6 +24,12 @@
         </script>
     </head>
     <body id="body">
+        <div id="afup-global-menu">
+            <a href="https://afup.org" class="lien-entete lien-entete__active">AFUP</a>
+            <a href="https://event.afup.org" class="lien-entete">PHPTour 2018</a>
+            <a href="https://barometre.afup.org" class="lien-entete">Baromètre</a>
+            <a href="http://www.planete-php.fr" class="lien-entete">Planète PHP</a>
+        </div>
         {% block header '' %}
         <div class="container" style="padding: 0px">
             {% for bag in ['notice', 'success', 'error'] %}
@@ -38,9 +44,6 @@
         </div>
 
         {% block footer '' %}
-        <footer class="footer--fork">
-            <p>With ❤ by afup. Fork and edit on <a href="https://github.com/afup/web/">github</a> !</p>
-        </footer>
         {% block javascripts '' %}
     </body>
 </html>

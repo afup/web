@@ -43,8 +43,10 @@ security:
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
         - { path: ^/admin/(login|register|password), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
+        - { path: ^/admin/(members/reporting|association/relances|event), roles: ROLE_ADMIN}
+        - { path: ^/admin/(members/reporting|association/relances|event), roles: ROLE_NO_ACCESS}
+        - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1" }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }
         - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: "%paybox_ips%" }

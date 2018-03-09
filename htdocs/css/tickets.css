@@ -70,10 +70,10 @@ span.fieldset--legend--price{
     float:right
 }
 
-fieldset.f7 .input{
+fieldset.fieldset-divers .input{
     margin-left:50px !important;
 }
-fieldset.f7 .input .inputs-list li, fieldset.f6 .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
+fieldset.fieldset-divers .input .inputs-list li, fieldset.fieldset-facturation .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
     float:left;
     width: 30%;
 }
@@ -157,7 +157,7 @@ span.tickets--type-members{
     color: #4c6eaf;
     font-weight:bold;
 }
-label[for=purchase_codeOfConduct], #fieldset--7 div label{
+label[for=purchase_codeOfConduct], #fieldset--optin div label{
     width: auto;
 }
 div.tickets--bankwire{
@@ -169,7 +169,7 @@ div.tickets--errors ul.tickets--errors{
     margin-left: 1em;
 }
 
-ul.tickets--errors, #fieldset--7 div{
+ul.tickets--errors, #fieldset--optin div{
     margin-left:200px;
 }
 .tickets--errors{

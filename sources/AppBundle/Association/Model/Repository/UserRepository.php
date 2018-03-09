@@ -93,7 +93,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $queryBuilder
             ->cols([
                 'app.`id`', 'app.`login`', 'app.`prenom`', 'app.`nom`',
-                'app.`email`', 'apm.`id`', 'apm.`raison_sociale`', 'apm.`max_members`'
+                'app.`email`', 'apm.`id`', 'apm.`raison_sociale`', 'apm.`max_members`', 'app.`id_personne_morale`'
             ])
             ->from('afup_personnes_physiques app')
             ->join('LEFT', 'afup_personnes_morales apm', 'apm.id = app.id_personne_morale')

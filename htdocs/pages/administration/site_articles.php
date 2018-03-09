@@ -23,6 +23,12 @@ $smarty->assign('action', $action);
 $articles = new Articles($bdd);
 $personnes_physiques = new Personnes_Physiques($bdd);
 
+$forum  = new \Afup\Site\Forum\Forum($bdd);
+$forumLabelsById = [];
+foreach ($forum->obtenirListe(null, '*', 'date_debut DESC') as $forum) {
+    $forumLabelsById[$forum['id']] = $forum['titre'];
+}
+
 if ($action == 'lister') {
     $list_champs     = '*';
     $list_ordre      = 'date';
@@ -45,8 +51,15 @@ if ($action == 'lister') {
         $_GET['filtre'] = $list_filtre;
     }
 
+    $articlesList = [];
+    foreach ($articles->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre) as $article) {
+        $article['theme_label'] = Article::getThemeLabel($article['theme']);
+        $article['forum_label'] = isset($forumLabelsById[$article['id_forum']]) ? $forumLabelsById[$article['id_forum']] : '';
+        $articlesList[] = $article;
+    }
+
     // Mise en place de la liste dans le scope de smarty
-    $smarty->assign('articles', $articles->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre));
+    $smarty->assign('articles', $articlesList);
 
 } elseif ($action == 'supprimer') {
     $article = new Article($_GET['id']);
@@ -87,6 +100,8 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date'                     , 'Date'           , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
     $formulaire->addElement('select'  , 'position'                 , 'Position'       , $article->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'           , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
+    $formulaire->addElement('select'  , 'theme'                    , 'Thème'          , ['' => ''] + Article::getThemesLabels());
+    $formulaire->addElement('select'  , 'id_forum'                , 'Forum'          , ['' => ''] + $forumLabelsById);
 
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
@@ -108,6 +123,8 @@ if ($action == 'lister') {
         $date = $formulaire->exportValue('date');
         $article->date = mktime(0, 0, 0, $date['M'], $date['d'], $date['Y']);
         $article->etat = $formulaire->exportValue('etat');
+        $article->theme = $formulaire->exportValue('theme');
+        $article->id_forum = $formulaire->exportValue('id_forum');
 
         if ($action == 'ajouter') {
             $ok = $article->inserer();

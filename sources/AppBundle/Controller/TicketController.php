@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Afup\Site\Forum\Facturation;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Event\Form\PurchaseType;
 use AppBundle\Event\Form\SponsorTicketType;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
@@ -238,6 +239,7 @@ class TicketController extends EventBaseController
             'event' => $event,
             'ticketForm' => $purchaseForm->createView(),
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
+            'maxNbPersonnes' => PurchaseType::MAX_NB_PERSONNES,
             'soldTicketsForMember' => $totalOfSoldTicketsByMember
         ]);
     }

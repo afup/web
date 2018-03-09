@@ -67,6 +67,10 @@ parameters:
                 statistiques:
                     nom: 'Statistiques'
                     niveau: 'ROLE_ADMIN'
+                reporting:
+                    nom: 'Reporting [WIP]'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/reporting'
                 mailing:
                     nom: 'Mailing'
                     niveau: 'ROLE_ADMIN'
@@ -308,6 +312,13 @@ ting:
         event:
             namespace : AppBundle\Event\Model\Repository
             directory : "@AppBundle/Event/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        site:
+            namespace : AppBundle\Site\Model\Repository
+            directory : "@AppBundle/Site/Model/Repository"
             options:
                 default:
                     connection: main

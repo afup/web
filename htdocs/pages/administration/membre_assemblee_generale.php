@@ -42,7 +42,7 @@ if ($timestamp > strtotime("-1 day", time())) {
                                        'presence' => $presence,
                                        'id_personne_avec_pouvoir' => $id_personne_avec_pouvoir));
 
-        $formulaire->addElement('header'  , ''         , 'Je serais présent(e)');
+        $formulaire->addElement('header'  , ''         , 'Je serai présent(e)');
         $formulaire->addElement('radio'   , 'presence' , 'Oui'                   , '', AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI);
         $formulaire->addElement('radio'   , 'presence' , 'Non'                   , '', AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON);
         $formulaire->addElement('radio'   , 'presence' , 'Je ne sais pas encore' , '', AFUP_ASSEMBLEE_GENERALE_PRESENCE_INDETERMINE);

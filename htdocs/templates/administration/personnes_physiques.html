@@ -28,6 +28,7 @@
             <th align="left"><a href="index.php?page=personnes_physiques&amp;tri=prenom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'prenom'}desc{else}asc{/if}">Prénom</a></th>
             <th align="left">Login</th>
             <th><a href="index.php?page=personnes_physiques&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+            <th>Antenne</th>
             <th>&nbsp;</th>
         </tr>
     {foreach from=$personnes item=personne}
@@ -36,11 +37,13 @@
             <td>{$personne.prenom}</td>
             <td>{$personne.login}</td>
             <td style="text-align: center">{if $personne.etat == 1}Actif{elseif $personne.etat == -1}Non finalisé{else}Inactif{/if}</td>
+            <td>{$personne.nearest_office}</td>
             <td style="text-align: right">
                 {if empty($personne.id_personne_morale)}
                     <a id="cotisations_{$personne.id}" href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_PHYSIQUES}&amp;id_personne={$personne.id}" title="Gérer les cotisations de {$personne.prenom} {$personne.nom}"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
                 {else}
-                    <img src="{$chemin_template}images/famfamfam/status_offline.png" alt="Gestion des cotisations impossible" />
+                <a id="modifier_moral_{$personne.id}" href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$personne.id_personne_morale}" title="Accéder à la fiche de la personne morale"><img src="{$chemin_template}images/famfamfam/building.png" alt="Fiche de la personne morale" /></a>
+                <a id="cotisations_{$personne.id}" href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$personne.id_personne_morale}" title="Gérer les cotisations de la personne morale"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
                 {/if}
                 <a id="modifier_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$personne.id}" title="Modifier la fiche de {$personne.prenom} {$personne.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a id="supprimer_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=supprimer&amp;id={$personne.id}" title="Supprimer la fiche de {$personne.prenom} {$personne.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.prenom} {$personne.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>

@@ -66,13 +66,11 @@ class PurchaseTypeFactory
 
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
         $ticket = new Ticket();
-        $invoice
-            ->addTicket($ticket)
-            ->addTicket(clone $ticket)
-            ->addTicket(clone $ticket)
-            ->addTicket(clone $ticket)
-            ->addTicket(clone $ticket)
-        ;
+
+        for ($i=1; $i<=PurchaseType::MAX_NB_PERSONNES; $i++) {
+            $invoice->addTicket(clone $ticket);
+        }
+
         $invoiceType = $this->formFactory->create(
             PurchaseType::class,
             $invoice,

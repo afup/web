@@ -19,6 +19,9 @@
 
 RewriteEngine On
 
+RewriteRule association/super-apero-9-mars$  "/association/super-apero-8-mars-2018" [L,R=302]
+RewriteRule association/super-apero-9-mars/live$  "/association/super-apero-8-mars-2018" [L,R=302]
+
 # Determine the RewriteBase automatically and set it as environment variable.
 # If you are using Apache aliases to do mass virtual hosting or installed the
 # project in a subdirectory, the base path will be prepended to allow proper
@@ -42,4 +45,4 @@ RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [END]
 
 ## This url are handled by symfony
-RewriteRule (event|connect|_|association|talks|meetups|blog|admin/)/? /app.php [END]
+RewriteRule (event|connect|_|association|talks|meetups|blog|admin|p|home|news|techno_watch|/)/? /app.php [END]

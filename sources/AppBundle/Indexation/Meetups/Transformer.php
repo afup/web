@@ -32,6 +32,15 @@ class Transformer
 
         $isUpcoming = $meetup['status'] == 'upcoming';
 
+        if (isset($office['meetup_filter'])) {
+            $matches = [];
+            if (!preg_match($office['meetup_filter'], $meetup['name'], $matches)) {
+                return null;
+            }
+
+            $meetup['name'] = $matches[1];
+        }
+
         $item = [
             'meetup_id' => $meetup['id'],
             'label' => $meetup['name'],

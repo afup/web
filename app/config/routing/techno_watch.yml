@@ -1,0 +1,3 @@
+calendar:
+  path: /calendar
+  defaults: {_controller: AppBundle:TechnoWatch:calendar}

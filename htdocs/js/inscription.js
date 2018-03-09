@@ -3,6 +3,8 @@ $ = jQuery;
 $(document).ready(function(){
     'use strict';
 
+    var nbMaxPersonnes = $('#divPersonne').data('nb-max-personnes');
+
     // Check if there is some saved data in LocalStorage
 	var storageAvailable = function (type) {
 		try {
@@ -18,7 +20,7 @@ $(document).ready(function(){
 	}
 
     var manageFieldSet = function (nbInscriptions) {
-        for (var i = 1; i < 6; i++) {
+        for (var i = 1; i < (nbMaxPersonnes - 1); i++) {
             $('fieldset.tickets--fieldset').hide();
         }
 
@@ -34,7 +36,7 @@ $(document).ready(function(){
 			}
         }
 
-        if (nbInscriptions === 5) {
+        if (nbInscriptions === nbMaxPersonnes) {
             $('a.add_inscription').attr('disabled', 'true');
         } else {
             $('a.add_inscription').removeAttr('disabled');
@@ -173,7 +175,7 @@ $(document).ready(function(){
             var nextRegistration = parseInt($(this).data('registration')) + 1;
 
             var nbPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
-            if (nbPersonnes < 5 && nextRegistration > nbPersonnes) {
+            if (nbPersonnes < nbMaxPersonnes && nextRegistration > nbPersonnes) {
                 $('#purchase_nbPersonnes').val(nextRegistration);
             }
             $('#purchase_nbPersonnes').change();
@@ -220,7 +222,7 @@ $(document).ready(function(){
     $('#formulaire').on('submit', function(event){
         $(this).attr('disabled', 'disabled');
 
-        var fieldsets = ['f6', 'f7'];
+        var fieldsets = ['f' + nbMaxPersonnes +1, 'f' + nbMaxPersonnes + 2];
 
         for (var i = 1; i <= nbInscriptions; i++) {
 			fieldsets.push('f' + i);
