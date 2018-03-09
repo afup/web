@@ -20,6 +20,11 @@ div.techletter-subscription{
         vertical-align: bottom;
         padding-top: 180px;
     }
+    div.techletter-subscription--header div.techletter-subscription-capture img{
+        -webkit-box-shadow: 0px 0px 5px 2px #1d2241;
+        -moz-box-shadow: 0px 0px 5px 2px #1d2241;
+        box-shadow: 0px 0px 5px 2px #1d2241;
+    }
     div.techletter-subscription--header div.techletter-subscription-header-content{
         grid-area: 1/2;
         display: flex;
