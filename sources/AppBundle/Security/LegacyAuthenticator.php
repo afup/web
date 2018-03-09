@@ -78,6 +78,16 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        $actualUrl = $request->getSchemeAndHttpHost() . $request->getRequestUri();
+        if (
+            $request->request->has('_target_path')
+                and $target_path = $request->request->get('_target_path')
+                and $target_path !== $actualUrl
+                and parse_url($target_path, PHP_URL_HOST) === null
+        ) {
+            return new RedirectResponse($target_path);
+        }
+
         return new RedirectResponse('/pages/administration/index.php?page=accueil');
     }
 
@@ -94,6 +104,9 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
+        if ($request->server->has('LEGACY_REFERER')) {
+            return new RedirectResponse(sprintf('/admin/login?target=%s', urlencode($request->server->get('LEGACY_REFERER'))));
+        }
         return new RedirectResponse('/admin/login');
     }
 }

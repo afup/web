@@ -1,0 +1,84 @@
+div.techletter-subscription{
+    padding: 0 !important;
+
+}
+
+@media (min-width: 768px) {
+    div.techletter-subscription--header{
+        height: 500px;
+        display: grid;
+        background-image: url('https://event.afup.org/wp-content/uploads/header_afup-1.svg');
+        -webkit-background-size: cover;
+        background-size: cover;
+        grid-template-columns: 50% 50%;
+    }
+    div.techletter-subscription--header div{
+        text-align: center;
+    }
+    div.techletter-subscription--header div.techletter-subscription-capture{
+        grid-area: 1 / 1;
+        vertical-align: bottom;
+        padding-top: 180px;
+    }
+    div.techletter-subscription--header div.techletter-subscription-capture img{
+        -webkit-box-shadow: 0px 0px 5px 2px #1d2241;
+        -moz-box-shadow: 0px 0px 5px 2px #1d2241;
+        box-shadow: 0px 0px 5px 2px #1d2241;
+    }
+    div.techletter-subscription--header div.techletter-subscription-header-content{
+        grid-area: 1/2;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        color: white;
+    }
+    div.techletter-subscription--header div.techletter-subscription-header-content h2{
+        color: white;
+        margin-top: 1.5em;
+    }
+    .banner-button{
+        background-color: #ed0678;
+        font-size: 150%;
+        line-height: 3;
+        text-align: center;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: white;
+        border-radius: 2px;
+        padding: 0.9375rem;
+        letter-spacing: 0.0625rem;
+    }
+    div.techletter-subscription-body{
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+    }
+    div.techletter-subscription-body div.techletter-subscription-argument{
+        padding: 3em;
+        text-align: center;
+    }
+}
+
+ul.techletter-subscription--check{
+    text-align: left;
+}
+ul.techletter-subscription--check li span{
+    font-size:3em;
+    vertical-align: middle;
+}
+ul.techletter-subscription--check li span.techletter-subscription--check-unchecked{
+    color: #ed0678;
+}
+
+ul.techletter-subscription--check li span.techletter-subscription--check-checked{
+    color: #1ebdff;
+}
+ul.techletter-subscription--check li{
+    list-style-type: none;
+}
+
+form.techletter-subscription--form{
+    margin: 0;
+    background-color: transparent;
+    width: auto;
+    border: none;
+}
