@@ -145,6 +145,15 @@ services:
         class: AppBundle\Mailchimp\Mailchimp
         arguments: ["@app.mailchimp_client"]
 
+    app.mailchimp_techletter_client:
+        class: Mailchimp\Mailchimp
+        arguments: ["%mailchimp_techletter_api_key%"]
+        public: false
+
+    app.mailchimp_techletter_api:
+        class: AppBundle\Mailchimp\Mailchimp
+        arguments: ["@app.mailchimp_techletter_client"]
+
     app.mail:
         class: Afup\Site\Utils\Mail
 

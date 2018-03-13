@@ -42,3 +42,7 @@ admin_company_members:
 admin_members_reporting:
   path: /members/reporting
   defaults: {_controller: AppBundle:MembershipAdmin:reporting}
+
+admin_techletter_generate:
+  path: /techletter/generate
+  defaults: {_controller: AppBundle:Admin/TechLetter/TechLetterGenerate:generate}
