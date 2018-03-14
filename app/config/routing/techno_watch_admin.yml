@@ -1,0 +1,8 @@
+admin_techletter_generate:
+  path: /generate
+  defaults: {_controller: AppBundle:Admin/TechLetter/TechLetterGenerate:generate}
+
+preview:
+  path: /preview
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:preview}
+

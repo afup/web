@@ -3,5 +3,131 @@
 {% block content %}
     <h2>Générer une veille de l'AFUP</h2>
 
+    <style>
+        #preview-techletter{
+            width: 50%;
+            float:left;
+            border: 1px grey solid;
+            box-sizing: content-box;
+        }
+    </style>
+
+    <iframe src="{{ url('preview') }}" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
     {{ form(form) }}
+
+    <script>
+        (function(w, d){
+        	'use strict';
+
+        	let iframeParams = {
+        		top: 0,
+                left: 0,
+				right: 0,
+				bottom: 0,
+                width: 0,
+                height: 0,
+                x: 0,
+                y: 0
+            };
+
+        	let overlayElement = null;
+
+        	let createElement = function ()
+            {
+            	overlayElement = d.createElement('div');
+            	overlayElement.setAttribute('id', 'overlayOnIframe');
+            	d.body.appendChild(overlayElement);
+
+            	return overlayElement;
+            };
+
+			w.IframeOverlay = {};
+			IframeOverlay = function(iframe, clickCallback) {
+				this.iframe = iframe;
+				this.clickCallback = clickCallback;
+
+				iframeParams = iframe.getBoundingClientRect();
+			};
+
+			IframeOverlay.prototype = {
+				iframe: null,
+				clickCallback: null,
+				overlayColor: 'rgba(120, 120, 120, .8)',
+
+				/**
+                 * Creates an overlay in the parent window.
+                 * Values x and y are referring to the position of the overlay IN the iframe
+                 *
+				 * @param x
+				 * @param y
+				 * @param width
+				 * @param height
+				 */
+				show: function(x, y, width, height) {
+					this.remove();
+                    createElement();
+
+                    x += iframeParams.left;
+                    y += iframeParams.top;
+
+                    overlayElement.setAttribute(
+                    	'style',
+                        'position: absolute; display: block; z-index: 1000; ' +
+                        'top: ' + y + 'px; left: ' + x + 'px;' +
+                        'cursor: pointer;' +
+                        'width: ' + width + 'px; height: ' + height + 'px; ' +
+                        'background-color: ' + this.overlayColor + ';'
+                    );
+                    overlayElement.addEventListener('click', this.clickCallback);
+					overlayElement.addEventListener('mouseleave', this.remove);
+				},
+				remove: function() {
+					if (overlayElement !== null) {
+						overlayElement.remove();
+						overlayElement = null;
+                    }
+				}
+			};
+        })(window, document);
+
+		(function (w, d) {
+        	'use strict';
+
+        	let iframeOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), event => {
+        		console.log('click');
+        	});
+
+            let editableElements = [
+            	{ type: "news", selector: '#templateNews li' },
+                { type: "article", selector: '#templateArticles div.template--article' },
+                { type: "project", selector: '#templateProjects li' }
+            ];
+
+        	let onEditableElement = function(event)
+            {
+            	let elementPosition = event.toElement.getBoundingClientRect();
+            	iframeOverlay.show(elementPosition.x, elementPosition.y, elementPosition.width, elementPosition.height);
+            };
+
+        	let declareListeners = function(iframeDocument)
+            {
+                editableElements.forEach(item => {
+                    iframeDocument.querySelectorAll(item.selector).forEach(element => {
+                    	element.addEventListener('mouseenter', onEditableElement);
+                    });
+                });
+            };
+
+			let onPreviewLoaded = function(event)
+			{
+				this.style.height =	this.contentWindow.document.body.offsetHeight + 'px';
+				declareListeners(this.contentWindow.document);
+			};
+
+        	d.getElementById('preview-techletter').onload = onPreviewLoaded;
+
+        })(window, document);
+
+    </script>
+
 {% endblock %}
