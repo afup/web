@@ -706,8 +706,6 @@
                                                                 <ul id="templateNews">
                                                                     {% if tech_letter.firstNews %}
                                                                     <li><span style="font-size:14px">{{ tech_letter.firstNews.date|date('d/m') }}</span> <a href="{{ tech_letter.firstNews.url }}" target="_blank">{{ tech_letter.firstNews.title }}</a></li>
-                                                                    {% elseif preview %}
-                                                                    <li><span style="font-size:14px; color: red;">TODO</span> Titre de la news</li>
                                                                     {% endif %}
                                                                     {% if tech_letter.secondNews %}
                                                                     <li><span style="font-size:14px">{{ tech_letter.secondNews.date|date('d/m') }}</span> <a href="{{ tech_letter.secondNews.url }}" target="_blank">{{ tech_letter.secondNews.title }}</a></li>

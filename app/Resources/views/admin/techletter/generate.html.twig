@@ -19,17 +19,6 @@
         (function(w, d){
         	'use strict';
 
-        	let iframeParams = {
-        		top: 0,
-                left: 0,
-				right: 0,
-				bottom: 0,
-                width: 0,
-                height: 0,
-                x: 0,
-                y: 0
-            };
-
         	let overlayElement = null;
 
         	let createElement = function ()
@@ -45,8 +34,6 @@
 			IframeOverlay = function(iframe, clickCallback) {
 				this.iframe = iframe;
 				this.clickCallback = clickCallback;
-
-				iframeParams = iframe.getBoundingClientRect();
 			};
 
 			IframeOverlay.prototype = {
@@ -65,6 +52,8 @@
 				 */
 				show: function(x, y, width, height) {
 					this.remove();
+
+					let iframeParams = this.iframe.getBoundingClientRect();
                     createElement();
 
                     x += iframeParams.left;
@@ -72,7 +61,7 @@
 
                     overlayElement.setAttribute(
                     	'style',
-                        'position: absolute; display: block; z-index: 1000; ' +
+                        'position: fixed; display: block; z-index: 1000; ' +
                         'top: ' + y + 'px; left: ' + x + 'px;' +
                         'cursor: pointer;' +
                         'width: ' + width + 'px; height: ' + height + 'px; ' +
@@ -93,14 +82,12 @@
 		(function (w, d) {
         	'use strict';
 
-        	let iframeOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), event => {
-        		console.log('click');
-        	});
+        	let iframeOverlay, iframePlusOverlay;
 
             let editableElements = [
-            	{ type: "news", selector: '#templateNews li' },
-                { type: "article", selector: '#templateArticles div.template--article' },
-                { type: "project", selector: '#templateProjects li' }
+            	{ type: "news", container: '#templateNews', selector: 'li', maxItems: 2, newItemType: 'li' },
+                { type: "article", container: '#templateArticles', selector: 'div.template--article', maxItems: 10, newItemType: 'div' },
+                { type: "project", container: '#templateProjects', selector: 'li', maxItems: 5, newItemType: 'div' }
             ];
 
         	let onEditableElement = function(event)
@@ -109,22 +96,52 @@
             	iframeOverlay.show(elementPosition.x, elementPosition.y, elementPosition.width, elementPosition.height);
             };
 
+        	let onPlusElement = function(event)
+			{
+				let elementPosition = event.toElement.getBoundingClientRect();
+				iframePlusOverlay.show(elementPosition.x, elementPosition.y, elementPosition.width, elementPosition.height);
+			}
+
         	let declareListeners = function(iframeDocument)
             {
-                editableElements.forEach(item => {
-                    iframeDocument.querySelectorAll(item.selector).forEach(element => {
+				editableElements.forEach(item => {
+                	let items = iframeDocument.querySelectorAll(item.container + ' ' + item.selector);
+                	if (items.length < item.maxItems) {
+                		// Add "new item" node
+						let plusElement = iframeDocument.createElement(item.newItemType);
+						plusElement.setAttribute(
+							'style',
+							'text-align:center; font-width: 20px; font-weight:bold; color: black; list-style-type:none;'
+						);
+
+						let text = iframeDocument.createTextNode('+');
+						plusElement.appendChild(text);
+
+						iframeDocument.querySelector(item.container).appendChild(plusElement);
+						plusElement.addEventListener('mouseenter', onPlusElement);
+					}
+                    items.forEach(element => {
                     	element.addEventListener('mouseenter', onEditableElement);
                     });
                 });
-            };
+				iframeOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), event => {
+					console.log('click');
+				});
+				iframePlusOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), event => {
+					console.log('click plus');
+				});
+			};
 
 			let onPreviewLoaded = function(event)
 			{
 				this.style.height =	this.contentWindow.document.body.offsetHeight + 'px';
 				declareListeners(this.contentWindow.document);
+				this.style.height =	this.contentWindow.document.body.offsetHeight + 'px';
 			};
 
         	d.getElementById('preview-techletter').onload = onPreviewLoaded;
+
+        	// @todo add overlay when iframe is loading
 
         })(window, document);
 

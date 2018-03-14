@@ -77,7 +77,7 @@ class TechLetterGenerateController extends SiteBaseController
         return $this->render('admin/techletter/mail_template.html.twig', [
             'preview' => true,
             'tech_letter' => new Techletter\TechLetter(
-                null,//new Techletter\News('http://symfony.com/blog/symfony-4-0-4-released', 'Sortie de Symfony 4.0.4', new \DateTimeImmutable('2018-01-29')),
+                new Techletter\News('http://symfony.com/blog/symfony-4-0-4-released', 'Sortie de Symfony 4.0.4', new \DateTimeImmutable('2018-01-29')),
                 null, //new Techletter\News('https://laravel-news.com/laravel-5-6', 'Sortie de Laravel 5.6', new \DateTimeImmutable('2018-02-07')),
                 [
                     new Techletter\Article(
