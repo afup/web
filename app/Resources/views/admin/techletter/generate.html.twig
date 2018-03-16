@@ -130,11 +130,20 @@
 			};
         })(window, document);
 
-		(function(w, d){
+		(function(w, d) {
 			'use strict';
 
-			let updateDataForLink = function (oldLink, newData)
-			{
+			let getModelForType = (type) => {
+				let model = editableElements.find(item => {
+					return item.type === type;
+				});
+				if (typeof model !== "undefined") {
+					return model.model;
+				}
+				return false; // or throw error ?
+			};
+
+			let updateDataForLink = function (oldLink, newData) {
 				if (techletter.firstNews && techletter.firstNews.url === oldLink) {
 					techletter.firstNews = newData;
 					return true;
@@ -146,7 +155,7 @@
 
 				let updated = false;
 
-				Object.keys(techletter.articles).map( (key, index) => {
+				Object.keys(techletter.articles).map((key, index) => {
 					if (techletter.articles[key].url === oldLink) {
 						techletter.articles[key] = newData;
 						updated = true;
@@ -155,7 +164,7 @@
 
 				if (updated === true) return true;
 
-				Object.keys(techletter.projects).map( (key, index) => {
+				Object.keys(techletter.projects).map((key, index) => {
 					if (techletter.projects[key].url === oldLink) {
 						techletter.projects[key] = newData;
 						updated = true;
@@ -166,8 +175,7 @@
 				return false;
 			};
 
-			let getDataForLink = function (link)
-			{
+			let getDataForLink = function (link) {
 				if (techletter.firstNews && techletter.firstNews.url === link) {
 					return {model: "news", data: techletter.firstNews};
 				}
@@ -194,7 +202,7 @@
 			};
 
 			w.LinkEditor = {};
-			LinkEditor = function(form) {
+			LinkEditor = function (form) {
 				this.form = form;
 				this.fieldset = form.querySelector('fieldset');
 			};
@@ -202,43 +210,50 @@
 			LinkEditor.prototype = {
 				form: null,
 				fieldset: null,
-				updateLink: function (link)
+
+
+				createForm: function (model, data)
 				{
-					return new Promise( (resolve, reject) => {
+					// Remove all children of the fieldset
+					while (this.fieldset.firstChild) {
+						this.fieldset.removeChild(this.fieldset.firstChild);
+					}
+
+					this.fieldset.dataset.link = data.url;
+
+					Object.keys(model).forEach((key, index) => {
+						let label = d.createElement('label');
+						let text = d.createTextNode(key);
+						label.appendChild(text);
+						label.setAttribute('for', `input-${key}`);
+
+						let input = d.createElement(model[key].inputType);
+						input.setAttribute('id', `input-${key}`);
+						input.dataset.key = key;
+						input.value = data[key];
+
+						Object.keys(model[key]).forEach((inputOption, index) => {
+							input[inputOption] = model[key][inputOption];
+						});
+
+						let div = d.createElement('div');
+						div.appendChild(label);
+						div.appendChild(input);
+
+						this.fieldset.appendChild(div);
+					});
+				},
+
+				updateLink: function (link) {
+					// @todo add "Close" X button
+
+					return new Promise((resolve, reject) => {
 						// Create fields for the data
 						let data = getDataForLink(link);
 						let model = getModelForType(data.model);
 						data = data.data; //@todo do better
-						console.log(model, data);
 
-						// Remove all children of the fieldset
-						while (this.fieldset.firstChild) {
-							this.fieldset.removeChild(this.fieldset.firstChild);
-						}
-
-						this.fieldset.dataset.link = link;
-
-						Object.keys(model).forEach( (key,index) => {
-							let label = d.createElement('label');
-							let text = d.createTextNode(key);
-							label.appendChild(text);
-							label.setAttribute('for', `input-${key}`);
-
-							let input = d.createElement(model[key].inputType);
-							input.setAttribute('id', `input-${key}`);
-							input.dataset.key = key;
-							input.value = data[key];
-
-							Object.keys(model[key]).forEach( (inputOption, index) => {
-								input[inputOption] = model[key][inputOption];
-							});
-
-							let div = d.createElement('div');
-							div.appendChild(label);
-							div.appendChild(input);
-
-							this.fieldset.appendChild(div);
-						});
+						this.createForm(model, data);
 						this.form.classList.remove('hidden');
 
 						// Add Listener on submit for this form, get new data, resolve promise
@@ -255,7 +270,7 @@
 
 							resolve(data); // Data has been updated so we can resolve the promise
 
-							// check for rejection
+							// check how to reject
 						});
 						this.form.addEventListener('reset', event => {
 							this.form.classList.add('hidden');
@@ -263,6 +278,10 @@
 					});
 				}
 			};
+		})(window, document);
+
+		(function(w, d) {
+			'use strict';
 
         	let iframeOverlay, iframePlusOverlay;
 
@@ -281,7 +300,7 @@
         	// Make sure the preview is loaded when loading the page
         	updatePreview();
 
-            let editableElements = [
+            w.editableElements = [
             	{
             		type: "news",
 					container: '#templateNews',
@@ -321,16 +340,6 @@
 					}
                 }
             ];
-
-            let getModelForType = (type) => {
-				let model = editableElements.find( item => {
-					return item.type === type;
-				});
-				if (typeof model !== "undefined") {
-					return model.model;
-				}
-				return false; // or throw error ?
-			};
 
         	let onEditableElement = function(event)
             {
