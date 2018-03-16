@@ -10,9 +10,51 @@
             border: 1px grey solid;
             box-sizing: content-box;
         }
+		form#link-editor {
+			width: 600px !important;
+			margin-left: 30%;
+			padding: 1em;
+			box-sizing: content-box;
+
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			/* bring your own prefixes */
+			transform: translate(-50%, -50%);
+
+			background: #CCCCCC;
+		}
+		form#link-editor.hidden{
+			display: none;
+		}
+
+		form#link-editor label {
+			display: inline-block;
+			width: 15%;
+		}
+		form#link-editor input{
+			width: 85%;
+		}
+		form#link-editor input, form#link-editor textarea{
+			border: 1px grey solid;
+		}
     </style>
 
-    <iframe src="{{ url('preview') }}" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
+    <iframe src="" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
+
+	<form id="link-editor" class="hidden">
+		<fieldset id="update-link">
+
+		</fieldset>
+		<input type="reset" value="Annuler" />
+		<input type="submit" value="Mettre à jour" />
+	</form>
+
+	<form method="post" action="{{ url('preview') }}" target="preview-techletter" id="form-update">
+		<textarea name="techletter" cols="200" rows="20">{{ tech_letter|json_encode }}</textarea>
+		<input type="submit" value="Update preview" />
+	</form>
+
     {{ form(form) }}
 
     <script>
@@ -21,40 +63,47 @@
 
         	let overlayElement = null;
 
-        	let createElement = function ()
+        	let createElement = function (textContent)
             {
             	overlayElement = d.createElement('div');
             	overlayElement.setAttribute('id', 'overlayOnIframe');
+
+				let text = d.createTextNode(textContent);
+				overlayElement.appendChild(text);
+
             	d.body.appendChild(overlayElement);
 
             	return overlayElement;
             };
 
 			w.IframeOverlay = {};
-			IframeOverlay = function(iframe, clickCallback) {
+			IframeOverlay = function(iframe, clickCallback, text) {
 				this.iframe = iframe;
 				this.clickCallback = clickCallback;
+				this.text = text;
 			};
 
 			IframeOverlay.prototype = {
 				iframe: null,
 				clickCallback: null,
 				overlayColor: 'rgba(120, 120, 120, .8)',
+				text: null,
 
 				/**
                  * Creates an overlay in the parent window.
                  * Values x and y are referring to the position of the overlay IN the iframe
                  *
-				 * @param x
-				 * @param y
-				 * @param width
-				 * @param height
+				 * @param {String} reference is given to the callback as the first parameter
+				 * @param {Int} x
+				 * @param {Int} y
+				 * @param {Int} width
+				 * @param {Int} height
 				 */
-				show: function(x, y, width, height) {
+				show: function(reference, x, y, width, height) {
 					this.remove();
 
 					let iframeParams = this.iframe.getBoundingClientRect();
-                    createElement();
+                    createElement(this.text);
 
                     x += iframeParams.left;
                     y += iframeParams.top;
@@ -65,9 +114,11 @@
                         'top: ' + y + 'px; left: ' + x + 'px;' +
                         'cursor: pointer;' +
                         'width: ' + width + 'px; height: ' + height + 'px; ' +
-                        'background-color: ' + this.overlayColor + ';'
+                        'background-color: ' + this.overlayColor + ';' +
+						'font-size: 20px; color:white; text-align:center;'
                     );
-                    overlayElement.addEventListener('click', this.clickCallback);
+
+                    overlayElement.addEventListener('click', event => { this.clickCallback(reference, event); });
 					overlayElement.addEventListener('mouseleave', this.remove);
 				},
 				remove: function() {
@@ -79,40 +130,245 @@
 			};
         })(window, document);
 
-		(function (w, d) {
-        	'use strict';
+		(function(w, d){
+			'use strict';
+
+			let updateDataForLink = function (oldLink, newData)
+			{
+				if (techletter.firstNews && techletter.firstNews.url === oldLink) {
+					techletter.firstNews = newData;
+					return true;
+				}
+				if (techletter.secondNews && techletter.secondNews.url === oldLink) {
+					techletter.secondNews = newData;
+					return true;
+				}
+
+				let updated = false;
+
+				Object.keys(techletter.articles).map( (key, index) => {
+					if (techletter.articles[key].url === oldLink) {
+						techletter.articles[key] = newData;
+						updated = true;
+					}
+				});
+
+				if (updated === true) return true;
+
+				Object.keys(techletter.projects).map( (key, index) => {
+					if (techletter.projects[key].url === oldLink) {
+						techletter.projects[key] = newData;
+						updated = true;
+					}
+				});
+				if (updated === true) return true;
+
+				return false;
+			};
+
+			let getDataForLink = function (link)
+			{
+				if (techletter.firstNews && techletter.firstNews.url === link) {
+					return {model: "news", data: techletter.firstNews};
+				}
+				if (techletter.secondNews && techletter.secondNews.url === link) {
+					return {model: "news", data: techletter.secondNews};
+				}
+				let article = techletter.articles.find(item => {
+					if (item.url === link) {
+						return true;
+					}
+				});
+				if (typeof article !== "undefined") {
+					return {model: "article", data: article};
+				}
+				let project = techletter.projects.find(item => {
+					if (item.url === link) {
+						return true;
+					}
+				});
+				if (project !== "undefined") {
+					return {model: "project", data: project};
+				}
+				return false; // or throw error ?
+			};
+
+			w.LinkEditor = {};
+			LinkEditor = function(form) {
+				this.form = form;
+				this.fieldset = form.querySelector('fieldset');
+			};
+
+			LinkEditor.prototype = {
+				form: null,
+				fieldset: null,
+				updateLink: function (link)
+				{
+					return new Promise( (resolve, reject) => {
+						// Create fields for the data
+						let data = getDataForLink(link);
+						let model = getModelForType(data.model);
+						data = data.data; //@todo do better
+						console.log(model, data);
+
+						// Remove all children of the fieldset
+						while (this.fieldset.firstChild) {
+							this.fieldset.removeChild(this.fieldset.firstChild);
+						}
+
+						this.fieldset.dataset.link = link;
+
+						Object.keys(model).forEach( (key,index) => {
+							let label = d.createElement('label');
+							let text = d.createTextNode(key);
+							label.appendChild(text);
+							label.setAttribute('for', `input-${key}`);
+
+							let input = d.createElement(model[key].inputType);
+							input.setAttribute('id', `input-${key}`);
+							input.dataset.key = key;
+							input.value = data[key];
+
+							Object.keys(model[key]).forEach( (inputOption, index) => {
+								input[inputOption] = model[key][inputOption];
+							});
+
+							let div = d.createElement('div');
+							div.appendChild(label);
+							div.appendChild(input);
+
+							this.fieldset.appendChild(div);
+						});
+						this.form.classList.remove('hidden');
+
+						// Add Listener on submit for this form, get new data, resolve promise
+						this.form.addEventListener('submit', event => {
+							event.preventDefault();
+							let data = [].reduce.call(this.form.elements, (data, element) => {
+								if ("key" in element.dataset) {
+									data[element.dataset.key] = element.value;
+								}
+								return data;
+							}, {});
+
+							updateDataForLink(this.fieldset.dataset.link, data);
+
+							resolve(data); // Data has been updated so we can resolve the promise
+
+							// check for rejection
+						});
+						this.form.addEventListener('reset', event => {
+							this.form.classList.add('hidden');
+						});
+					});
+				}
+			};
 
         	let iframeOverlay, iframePlusOverlay;
 
+        	let form = document.querySelector('#form-update');
+			w.techletter = {{ tech_letter|json_encode|raw }};
+
+			let linkEditor = new LinkEditor(document.querySelector('#link-editor'));
+
+        	let updatePreview = function ()
+			{
+				// @todo add overlay when iframe is loading
+				form.querySelector('input[name=techletter],textarea[name=techletter]').value = JSON.stringify(techletter);
+				form.submit();
+			};
+
+        	// Make sure the preview is loaded when loading the page
+        	updatePreview();
+
             let editableElements = [
-            	{ type: "news", container: '#templateNews', selector: 'li', maxItems: 2, newItemType: 'li' },
-                { type: "article", container: '#templateArticles', selector: 'div.template--article', maxItems: 10, newItemType: 'div' },
-                { type: "project", container: '#templateProjects', selector: 'li', maxItems: 5, newItemType: 'div' }
+            	{
+            		type: "news",
+					container: '#templateNews',
+					selector: 'li',
+					maxItems: 2,
+					newItemType: 'li',
+					model: {
+						url: {inputType: "input", type: "url"},
+						title: {inputType: "input", type: "text"},
+						date: {inputType: "input", type: "date"}
+					}
+				},
+                {
+                	type: "article",
+					container: '#templateArticles',
+					selector: 'div.template--article',
+					maxItems: 10,
+					newItemType: 'div',
+					model: {
+                		url: {inputType: "input", type: "url"},
+						title: {inputType: "input", type: "text"},
+						host: {inputType: "input", type: "text"},
+						readingTime: {inputType: "input", type: "number", min: 1, max: 100, step: 1},
+						excerpt: {inputType: "textarea", cols: 50, rows: 10}
+					}
+				},
+                {
+                	type: "project",
+					container: '#templateProjects',
+					selector: 'li',
+					maxItems: 5,
+					newItemType: 'div',
+					model: {
+						url: {inputType: "input", type: "url"},
+						name: {inputType: "input", type: "text"},
+						description: {inputType: "input", type: "text"}
+					}
+                }
             ];
+
+            let getModelForType = (type) => {
+				let model = editableElements.find( item => {
+					return item.type === type;
+				});
+				if (typeof model !== "undefined") {
+					return model.model;
+				}
+				return false; // or throw error ?
+			};
 
         	let onEditableElement = function(event)
             {
             	let elementPosition = event.toElement.getBoundingClientRect();
-            	iframeOverlay.show(elementPosition.x, elementPosition.y, elementPosition.width, elementPosition.height);
+            	iframeOverlay.show(
+            		event.toElement.dataset.url,
+            		elementPosition.x,
+					elementPosition.y,
+					elementPosition.width,
+					elementPosition.height
+				);
             };
 
         	let onPlusElement = function(event)
 			{
 				let elementPosition = event.toElement.getBoundingClientRect();
-				iframePlusOverlay.show(elementPosition.x, elementPosition.y, elementPosition.width, elementPosition.height);
-			}
+				iframePlusOverlay.show(
+					event.toElement.dataset.type,
+					elementPosition.x,
+					elementPosition.y,
+					elementPosition.width,
+					elementPosition.height
+				);
+			};
 
         	let declareListeners = function(iframeDocument)
             {
 				editableElements.forEach(item => {
                 	let items = iframeDocument.querySelectorAll(item.container + ' ' + item.selector);
+
                 	if (items.length < item.maxItems) {
                 		// Add "new item" node
 						let plusElement = iframeDocument.createElement(item.newItemType);
 						plusElement.setAttribute(
 							'style',
-							'text-align:center; font-width: 20px; font-weight:bold; color: black; list-style-type:none;'
+							'text-align:center; font-size: 20px; font-weight:bold; color: black; list-style-type:none;'
 						);
+						plusElement.dataset.type = item.type;
 
 						let text = iframeDocument.createTextNode('+');
 						plusElement.appendChild(text);
@@ -124,12 +380,22 @@
                     	element.addEventListener('mouseenter', onEditableElement);
                     });
                 });
-				iframeOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), event => {
-					console.log('click');
-				});
-				iframePlusOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), event => {
-					console.log('click plus');
-				});
+				iframeOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), (reference, event) => {
+					console.log('click', reference);
+
+					linkEditor
+						.updateLink(reference)
+						.then(newdata => {
+							updatePreview();
+						})
+						.catch(reason => {
+							console.log('error in promise', reason);
+						});
+					;
+				}, 'Editer');
+				iframePlusOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), (reference, event) => {
+					console.log('click plus', reference);
+				}, 'Ajouter');
 			};
 
 			let onPreviewLoaded = function(event)
@@ -140,8 +406,6 @@
 			};
 
         	d.getElementById('preview-techletter').onload = onPreviewLoaded;
-
-        	// @todo add overlay when iframe is loading
 
         })(window, document);
 

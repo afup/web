@@ -705,10 +705,10 @@
 
                                                                 <ul id="templateNews">
                                                                     {% if tech_letter.firstNews %}
-                                                                    <li><span style="font-size:14px">{{ tech_letter.firstNews.date|date('d/m') }}</span> <a href="{{ tech_letter.firstNews.url }}" target="_blank">{{ tech_letter.firstNews.title }}</a></li>
+                                                                    <li {% if preview %}data-url="{{ tech_letter.firstNews.url }}"{% endif %}><span style="font-size:14px">{{ tech_letter.firstNews.date|date('d/m') }}</span> <a href="{{ tech_letter.firstNews.url }}" target="_blank">{{ tech_letter.firstNews.title }}</a></li>
                                                                     {% endif %}
                                                                     {% if tech_letter.secondNews %}
-                                                                    <li><span style="font-size:14px">{{ tech_letter.secondNews.date|date('d/m') }}</span> <a href="{{ tech_letter.secondNews.url }}" target="_blank">{{ tech_letter.secondNews.title }}</a></li>
+                                                                    <li {% if preview %}data-url="{{ tech_letter.secondNews.url }}"{% endif %}><span style="font-size:14px">{{ tech_letter.secondNews.date|date('d/m') }}</span> <a href="{{ tech_letter.secondNews.url }}" target="_blank">{{ tech_letter.secondNews.title }}</a></li>
                                                                     {% endif %}
                                                                 </ul>
 
@@ -815,7 +815,7 @@
                                                             <td class="mcnTextContent" id="templateArticles" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
 
                                                                 {% for article in tech_letter.articles %}
-                                                                    <div class="template--article">
+                                                                    <div class="template--article" {% if preview %}data-url="{{ article.url }}"{% endif %}>
                                                                         <a href="{{ article.url }}" target="_blank">{{ article.title }}</a><br>
                                                                         <span style="font-size:12px">{{ article.host }} - {{ article.readingTime}} minutes de lecture</span><br>
                                                                         <em>{{ article.excerpt }}</em><br>
@@ -925,7 +925,7 @@
 
                                                                 <ul id="templateProjects">
                                                                     {% for project in tech_letter.projects %}
-                                                                        <li><a href="{{ project.url }}" target="_blank">{{ project.name }}</a> : {{ project.description }}</li>
+                                                                        <li {% if preview %}data-url="{{ project.url }}"{% endif %}><a href="{{ project.url }}" target="_blank">{{ project.name }}</a> : {{ project.description }}</li>
                                                                     {% endfor %}
                                                                 </ul>
 

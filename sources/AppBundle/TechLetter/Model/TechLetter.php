@@ -2,7 +2,7 @@
 
 namespace AppBundle\TechLetter\Model;
 
-class TechLetter
+class TechLetter implements \JsonSerializable
 {
     /**
      * @var News|null
@@ -59,5 +59,22 @@ class TechLetter
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'firstNews' => $this->firstNews ? $this->firstNews->jsonSerialize() : null,
+            'secondNews' => $this->secondNews ? $this->secondNews->jsonSerialize() : null,
+            'articles' => array_map(function(Article $article) {
+                return $article->jsonSerialize();
+            }, $this->articles),
+            'projects' => array_map(function(Project $project) {
+                return $project->jsonSerialize();
+            }, $this->projects)
+        ];
     }
 }

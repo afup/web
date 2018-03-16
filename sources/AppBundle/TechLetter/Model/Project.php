@@ -2,7 +2,7 @@
 
 namespace AppBundle\TechLetter\Model;
 
-class Project
+class Project implements \JsonSerializable
 {
     /**
      * @var string
@@ -53,5 +53,17 @@ class Project
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'url' => $this->url,
+            'name' => $this->name,
+            'description' => $this->description
+        ];
     }
 }

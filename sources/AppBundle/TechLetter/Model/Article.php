@@ -2,7 +2,7 @@
 
 namespace AppBundle\TechLetter\Model;
 
-class Article
+class Article implements \JsonSerializable
 {
     /**
      * @var string
@@ -83,5 +83,19 @@ class Article
     public function getExcerpt()
     {
         return $this->excerpt;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'url' => $this->url,
+            'title' => $this->title,
+            'host' => $this->host,
+            'readingTime' => $this->readingTime,
+            'excerpt' => $this->excerpt
+        ];
     }
 }

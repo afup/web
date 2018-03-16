@@ -2,7 +2,7 @@
 
 namespace AppBundle\TechLetter\Model;
 
-class News
+class News implements \JsonSerializable
 {
     /**
      * @var string
@@ -52,5 +52,14 @@ class News
     public function getDate()
     {
         return $this->date;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'url' => $this->url,
+            'title' => $this->title,
+            'date' => $this->date->format(\DateTime::RFC1123)
+        ];
     }
 }
