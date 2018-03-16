@@ -20,11 +20,11 @@ class TechLetterFactory
         $firstNews = $secondNews = null;
 
         if (isset($array['firstNews']) && $array['firstNews'] !== null) {
-            $firstNews = new News($array['firstNews']['url'], $array['firstNews']['title'], \DateTimeImmutable::createFromFormat(\DateTime::RFC1123, $array['firstNews']['date']));
+            $firstNews = new News($array['firstNews']['url'], $array['firstNews']['title'], \DateTimeImmutable::createFromFormat('Y-m-d', $array['firstNews']['date']));
         }
 
         if (isset($array['secondNews']) && $array['secondNews'] !== null) {
-            $secondNews = new News($array['secondNews']['url'], $array['secondNews']['title'], \DateTimeImmutable::createFromFormat(\DateTime::RFC1123, $array['secondNews']['date']));
+            $secondNews = new News($array['secondNews']['url'], $array['secondNews']['title'], \DateTimeImmutable::createFromFormat('Y-m-d', $array['secondNews']['date']));
         }
 
         return new TechLetter(

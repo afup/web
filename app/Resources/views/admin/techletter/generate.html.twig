@@ -12,16 +12,14 @@
         }
 		form#link-editor {
 			width: 600px !important;
-			margin-left: 30%;
+			margin-left: 50%;
 			padding: 1em;
 			box-sizing: content-box;
 
 			position: fixed;
 			top: 50%;
-			left: 50%;
-			/* bring your own prefixes */
-			transform: translate(-50%, -50%);
-
+			left:0;
+			transform: translate(0, -50%);
 			background: #CCCCCC;
 		}
 		form#link-editor.hidden{
@@ -230,7 +228,10 @@
 						let input = d.createElement(model[key].inputType);
 						input.setAttribute('id', `input-${key}`);
 						input.dataset.key = key;
-						input.value = data[key];
+
+						let value = data[key];
+
+						input.value = value;
 
 						Object.keys(model[key]).forEach((inputOption, index) => {
 							input[inputOption] = model[key][inputOption];

@@ -59,7 +59,7 @@ class News implements \JsonSerializable
         return [
             'url' => $this->url,
             'title' => $this->title,
-            'date' => $this->date->format(\DateTime::RFC1123)
+            'date' => $this->date->format('Y-m-d')
         ];
     }
 }
