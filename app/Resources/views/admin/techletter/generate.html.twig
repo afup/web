@@ -30,10 +30,8 @@
 			display: inline-block;
 			width: 15%;
 		}
-		form#link-editor input{
-			width: 85%;
-		}
 		form#link-editor input, form#link-editor textarea{
+			width: 85%;
 			border: 1px grey solid;
 		}
     </style>
@@ -44,8 +42,11 @@
 		<fieldset id="update-link">
 
 		</fieldset>
+		<button id="refresh" title="Ecraser la saisie actuelle par les informations récupérées depuis l'url indiquée">
+			Actualiser depuis l'url saisie
+		</button>
 		<button id="delete">Supprimer ce lien</button>
-		<input type="reset" value="Annuler" />
+		<input type="reset" value="Fermer" />
 		<input type="submit" value="Mettre à jour" />
 	</form>
 
@@ -224,6 +225,7 @@
 				// Add Listener on submit for this form, get new data, resolve promise
 				this.form.addEventListener('submit', this.handleSubmit.bind(this));
 				this.form.addEventListener('reset', this.handleReset.bind(this));
+				this.form.querySelector('button#refresh').addEventListener('click', this.handleRefresh.bind(this));
 				this.form.querySelector('button#delete').addEventListener('click', this.handleDelete.bind(this));
 			};
 
@@ -322,7 +324,6 @@
 					if ("link" in this.fieldset.dataset) {
 						updateDataForLink(this.fieldset.dataset.link, data);
 					} else {
-						// @todo type ????
 						if (this.fieldset.dataset.type === "news") {
 							if (techletter.firstNews === null) {
 								techletter.firstNews = data;
@@ -331,7 +332,6 @@
 							}
 						} else {
 							techletter[this.fieldset.dataset.type].push(data);
-							console.log(data);
 						}
 						this.resolve(data);
 						this.form.classList.add('hidden');
@@ -341,21 +341,44 @@
 
 					updatePreview();
 
-					// check how to reject
+					// @todo check how to reject
 				},
 
 				handleReset: function (event) {
+					event.preventDefault();
 					this.form.classList.add('hidden');
-					this.resolve(data); // Data has been updated so we can resolve the promise
+					this.resolve(techletter); // Data has been updated so we can resolve the promise
 				},
 
 				handleDelete: function (event) {
+					event.preventDefault();
 					if ("link" in this.fieldset.dataset) {
 						updateDataForLink(this.fieldset.dataset.link, null);
 					}
 					updatePreview();
 					this.form.classList.add('hidden');
-					this.resolve(data); // Data has been updated so we can resolve the promise
+					this.resolve(techletter); // Data has been updated so we can resolve the promise
+				},
+
+				handleRefresh: function (event) {
+					event.preventDefault();
+
+					fetch ('{{ url('retrieve') }}', {
+						method: 'POST',
+						credentials: 'same-origin',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+						},
+						body: 'url=' + encodeURIComponent(this.fieldset.querySelector('#input-url').value)
+					})
+						.then((response) => response.json())
+						.then(json => {
+							console.log('data', json);
+						})
+						.catch(error => {
+							console.log('error', error);
+						})
+					;
 				}
 			};
 		})(window, document);
@@ -404,7 +427,7 @@
 						title: {inputType: "input", type: "text"},
 						host: {inputType: "input", type: "text"},
 						readingTime: {inputType: "input", type: "number", min: 1, max: 100, step: 1},
-						excerpt: {inputType: "textarea", cols: 50, rows: 10}
+						excerpt: {inputType: "textarea", rows: 10}
 					}
 				},
                 {

@@ -5,8 +5,12 @@ namespace AppBundle\Controller\Admin\TechLetter;
 use AppBundle\Controller\SiteBaseController;
 use AppBundle\TechLetter\Form\GenerateType;
 use AppBundle\TechLetter\Generator;
+use AppBundle\TechLetter\HtmlParser;
+use AppBundle\TechLetter\UrlCrawler;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\TechLetter\Model as Techletter;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TechLetterGenerateController extends SiteBaseController
 {
@@ -109,7 +113,35 @@ class TechLetterGenerateController extends SiteBaseController
 
     public function retrieveDataAction(Request $request)
     {
+        $url = $request->request->get('url');
+        if ($url === null) {
+            throw new BadRequestHttpException('Undefined url parameter');
+        }
 
+        $urlInfo = parse_url($url);
+
+        $urlCrawler = new UrlCrawler();
+        $html = $urlCrawler->crawlUrl($url);
+
+        $parser = new HtmlParser($html);
+
+        $data = [
+            'title' => $parser->getTitle(),
+            'description' => $parser->getMeta('description'),
+            'host' => $urlInfo['host']
+        ];
+
+        $richSchema = $parser->getRichSchema();
+
+        if ($richSchema !== false) {
+            foreach($richSchema as $schema) {
+                if (isset($schema['datePublished'])) { // @todo warning not bulletproof, should check entity type
+                    $data['date'] = $schema['datePublished']; // @todo convert to YYYY-mm-dd
+                }
+            }
+        }
+
+        return new JsonResponse($data);
     }
 
     public function previewAction(Request $request)

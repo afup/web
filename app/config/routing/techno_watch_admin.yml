@@ -6,3 +6,7 @@ preview:
   path: /preview
   defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:preview}
 
+retrieve:
+  path: /retrieve
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:retrieveData}
+  methods: ["POST"]
