@@ -44,6 +44,7 @@
 		<fieldset id="update-link">
 
 		</fieldset>
+		<button id="delete">Supprimer ce lien</button>
 		<input type="reset" value="Annuler" />
 		<input type="submit" value="Mettre à jour" />
 	</form>
@@ -141,6 +142,12 @@
 				return false; // or throw error ?
 			};
 
+			/**
+			 *
+			 * @param oldLink
+			 * @param newData if null, will remove the entry
+			 * @returns {boolean}
+			 */
 			let updateDataForLink = function (oldLink, newData) {
 				if (techletter.firstNews && techletter.firstNews.url === oldLink) {
 					techletter.firstNews = newData;
@@ -151,24 +158,27 @@
 					return true;
 				}
 
-				let updated = false;
-
-				Object.keys(techletter.articles).map((key, index) => {
-					if (techletter.articles[key].url === oldLink) {
-						techletter.articles[key] = newData;
-						updated = true;
+				for (let index in techletter.articles) {
+					if (techletter.articles[index].url === oldLink) {
+						if (newData === null) {
+							techletter.articles.splice(index, 1);
+						} else {
+							techletter.articles[key] = newData;
+						}
+						return true;
 					}
-				});
+				}
 
-				if (updated === true) return true;
-
-				Object.keys(techletter.projects).map((key, index) => {
-					if (techletter.projects[key].url === oldLink) {
-						techletter.projects[key] = newData;
-						updated = true;
+				for (let index in techletter.projects) {
+					if (techletter.projects[index].url === oldLink) {
+						if (newData === null) {
+							techletter.projects.splice(index, 1);
+						} else {
+							techletter.projects[key] = newData;
+						}
+						return true;
 					}
-				});
-				if (updated === true) return true;
+				}
 
 				return false;
 			};
@@ -274,6 +284,10 @@
 							// check how to reject
 						});
 						this.form.addEventListener('reset', event => {
+							this.form.classList.add('hidden');
+						});
+						this.form.querySelector('button#delete').addEventListener('click', event => {
+							updateDataForLink(this.fieldset.dataset.link, null);
 							this.form.classList.add('hidden');
 						});
 					});
