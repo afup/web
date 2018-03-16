@@ -50,7 +50,8 @@
 	</form>
 
 	<form method="post" action="{{ url('preview') }}" target="preview-techletter" id="form-update">
-		<textarea name="techletter" cols="200" rows="20">{{ tech_letter|json_encode }}</textarea>
+		<label for="textarea">JSON</label>
+		<textarea name="techletter" id="textarea" cols="200" rows="20">{{ tech_letter|json_encode }}</textarea>
 		<input type="submit" value="Update preview" />
 	</form>
 
@@ -150,7 +151,12 @@
 			 */
 			let updateDataForLink = function (oldLink, newData) {
 				if (techletter.firstNews && techletter.firstNews.url === oldLink) {
-					techletter.firstNews = newData;
+					if (newData === null) {
+						techletter.firstNews = techletter.secondNews;
+						techletter.secondNews = null;
+					} else {
+						techletter.firstNews = newData;
+					}
 					return true;
 				}
 				if (techletter.secondNews && techletter.secondNews.url === oldLink) {
@@ -163,7 +169,7 @@
 						if (newData === null) {
 							techletter.articles.splice(index, 1);
 						} else {
-							techletter.articles[key] = newData;
+							techletter.articles[index] = newData;
 						}
 						return true;
 					}
@@ -174,7 +180,7 @@
 						if (newData === null) {
 							techletter.projects.splice(index, 1);
 						} else {
-							techletter.projects[key] = newData;
+							techletter.projects[index] = newData;
 						}
 						return true;
 					}
@@ -196,7 +202,7 @@
 					}
 				});
 				if (typeof article !== "undefined") {
-					return {model: "article", data: article};
+					return {model: "articles", data: article};
 				}
 				let project = techletter.projects.find(item => {
 					if (item.url === link) {
@@ -204,30 +210,43 @@
 					}
 				});
 				if (project !== "undefined") {
-					return {model: "project", data: project};
+					return {model: "projects", data: project};
 				}
 				return false; // or throw error ?
 			};
+
 
 			w.LinkEditor = {};
 			LinkEditor = function (form) {
 				this.form = form;
 				this.fieldset = form.querySelector('fieldset');
+
+				// Add Listener on submit for this form, get new data, resolve promise
+				this.form.addEventListener('submit', this.handleSubmit.bind(this));
+				this.form.addEventListener('reset', this.handleReset.bind(this));
+				this.form.querySelector('button#delete').addEventListener('click', this.handleDelete.bind(this));
 			};
 
 			LinkEditor.prototype = {
 				form: null,
 				fieldset: null,
+				resolve: null,
+				reject: null,
 
-
-				createForm: function (model, data)
-				{
+				/**
+				 *
+				 * @param model
+				 * @param data if null, we will create a blank form
+				 */
+				createForm: function (model, data) {
 					// Remove all children of the fieldset
 					while (this.fieldset.firstChild) {
 						this.fieldset.removeChild(this.fieldset.firstChild);
 					}
 
-					this.fieldset.dataset.link = data.url;
+					if (data !== null) {
+						this.fieldset.dataset.link = data.url;
+					}
 
 					Object.keys(model).forEach((key, index) => {
 						let label = d.createElement('label');
@@ -239,9 +258,10 @@
 						input.setAttribute('id', `input-${key}`);
 						input.dataset.key = key;
 
-						let value = data[key];
-
-						input.value = value;
+						if (data !== null) {
+							let value = data[key];
+							input.value = value;
+						}
 
 						Object.keys(model[key]).forEach((inputOption, index) => {
 							input[inputOption] = model[key][inputOption];
@@ -257,40 +277,85 @@
 
 				updateLink: function (link) {
 					// @todo add "Close" X button
-
 					return new Promise((resolve, reject) => {
+						this.resolve = resolve;
+						this.reject = reject;
+
 						// Create fields for the data
 						let data = getDataForLink(link);
 						let model = getModelForType(data.model);
 						data = data.data; //@todo do better
 
+						this.fieldset.dataset.type = data.model;
+
 						this.createForm(model, data);
 						this.form.classList.remove('hidden');
-
-						// Add Listener on submit for this form, get new data, resolve promise
-						this.form.addEventListener('submit', event => {
-							event.preventDefault();
-							let data = [].reduce.call(this.form.elements, (data, element) => {
-								if ("key" in element.dataset) {
-									data[element.dataset.key] = element.value;
-								}
-								return data;
-							}, {});
-
-							updateDataForLink(this.fieldset.dataset.link, data);
-
-							resolve(data); // Data has been updated so we can resolve the promise
-
-							// check how to reject
-						});
-						this.form.addEventListener('reset', event => {
-							this.form.classList.add('hidden');
-						});
-						this.form.querySelector('button#delete').addEventListener('click', event => {
-							updateDataForLink(this.fieldset.dataset.link, null);
-							this.form.classList.add('hidden');
-						});
 					});
+				},
+
+				addLink: function (type) {
+					return new Promise((resolve, reject) => {
+						this.resolve = resolve;
+						this.reject = reject;
+
+
+						// Create fields for the data
+						let model = getModelForType(type);
+
+						this.createForm(model, null);
+						this.form.classList.remove('hidden');
+						this.fieldset.dataset.type = type;
+						delete this.fieldset.dataset.link;
+					});
+				},
+
+				handleSubmit: function(event) {
+					event.preventDefault();
+					let data = [].reduce.call(this.form.elements, (data, element) => {
+						if ("key" in element.dataset) {
+							data[element.dataset.key] = element.value;
+						}
+						return data;
+					}, {});
+
+
+					if ("link" in this.fieldset.dataset) {
+						updateDataForLink(this.fieldset.dataset.link, data);
+					} else {
+						// @todo type ????
+						if (this.fieldset.dataset.type === "news") {
+							if (techletter.firstNews === null) {
+								techletter.firstNews = data;
+							} else {
+								techletter.secondNews = data;
+							}
+						} else {
+							techletter[this.fieldset.dataset.type].push(data);
+							console.log(data);
+						}
+						this.resolve(data);
+						this.form.classList.add('hidden');
+						this.form.reset();
+						this.updateLink(data.url);
+					}
+
+					updatePreview();
+
+					// check how to reject
+				},
+
+				handleReset: function (event) {
+					this.form.classList.add('hidden');
+					this.resolve(data); // Data has been updated so we can resolve the promise
+				},
+
+				handleDelete: function (event) {
+					if ("link" in this.fieldset.dataset) {
+						updateDataForLink(this.fieldset.dataset.link, null);
+					}
+					updatePreview();
+					this.form.classList.add('hidden');
+					this.resolve(data); // Data has been updated so we can resolve the promise
 				}
 			};
 		})(window, document);
@@ -305,7 +370,7 @@
 
 			let linkEditor = new LinkEditor(document.querySelector('#link-editor'));
 
-        	let updatePreview = function ()
+        	w.updatePreview = function ()
 			{
 				// @todo add overlay when iframe is loading
 				form.querySelector('input[name=techletter],textarea[name=techletter]').value = JSON.stringify(techletter);
@@ -329,7 +394,7 @@
 					}
 				},
                 {
-                	type: "article",
+                	type: "articles",
 					container: '#templateArticles',
 					selector: 'div.template--article',
 					maxItems: 10,
@@ -343,7 +408,7 @@
 					}
 				},
                 {
-                	type: "project",
+                	type: "projects",
 					container: '#templateProjects',
 					selector: 'li',
 					maxItems: 5,
@@ -419,6 +484,17 @@
 				}, 'Editer');
 				iframePlusOverlay = new w.IframeOverlay(d.getElementById('preview-techletter'), (reference, event) => {
 					console.log('click plus', reference);
+
+					linkEditor
+						.addLink(reference)
+						.then(newdata => {
+							updatePreview();
+						})
+						.catch(reason => {
+							console.log('error in promise', reason);
+						})
+					;
+
 				}, 'Ajouter');
 			};
 
