@@ -14,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TechLetterGenerateController extends SiteBaseController
 {
+    const WORD_READ_BY_MINUTES = 250;
+
     public function generateAction(Request $request)
     {
         $form = $this->createForm(GenerateType::class);
@@ -125,21 +127,55 @@ class TechLetterGenerateController extends SiteBaseController
 
         $parser = new HtmlParser($html);
 
+        /**
+         * Certaines données sont représentées sous 2 titres car les différents modèles utilisent des noms différents pour
+         * des choses similaires
+         * @todo fix it
+         */
         $data = [
-            'title' => $parser->getTitle(),
+            'title' => substr($parser->getTitle(), 0, 250),
+            'name' => substr($parser->getTitle(), 0, 250),
+            'excerpt' => $parser->getMeta('description'),
             'description' => $parser->getMeta('description'),
             'host' => $urlInfo['host']
         ];
 
         $richSchema = $parser->getRichSchema();
 
+
+        $listOfTypes = [
+            "NewsArticle",
+            "Report",
+            "ScholarlyArticle",
+            "SocialMediaPosting",
+            "TechArticle",
+            "Article",
+            "BlogPosting",
+        ];
+
         if ($richSchema !== false) {
             foreach($richSchema as $schema) {
-                if (isset($schema['datePublished'])) { // @todo warning not bulletproof, should check entity type
-                    $data['date'] = $schema['datePublished']; // @todo convert to YYYY-mm-dd
+                if (
+                    ! isset($schema['@type'])
+                    || !in_array($schema["@type"], $listOfTypes)
+                ) {
+                    continue;
+                }
+
+                if (isset($schema['datePublished'])) {
+                    $date = new \DateTimeImmutable($schema['datePublished']);
+                    $data['date'] = $date->format('Y-m-d');
+                }
+                if (isset($schema['articleBody'])) {
+                    $body = strip_tags($schema['articleBody']);
+                    $data['readingTime'] = floor(str_word_count($body) / self::WORD_READ_BY_MINUTES);
                 }
             }
         }
+
+        $data = array_map(function($value) {
+            return trim($value);
+        }, $data);
 
         return new JsonResponse($data);
     }

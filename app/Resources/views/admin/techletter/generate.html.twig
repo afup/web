@@ -362,7 +362,7 @@
 
 				handleRefresh: function (event) {
 					event.preventDefault();
-
+					// @todo hide form during retrieval
 					fetch ('{{ url('retrieve') }}', {
 						method: 'POST',
 						credentials: 'same-origin',
@@ -373,7 +373,12 @@
 					})
 						.then((response) => response.json())
 						.then(json => {
-							console.log('data', json);
+							Object.keys(json).forEach(key => {
+								let input = this.form.querySelector(`#input-${key}`);
+								if (input !== null) {
+									input.value = json[key];
+								}
+							});
 						})
 						.catch(error => {
 							console.log('error', error);
