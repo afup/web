@@ -142,6 +142,8 @@
 
                         <p>{{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}</p>
 
+                        {{ form_widget(ticket.specialPriceToken) }}
+
                         {{ form_widget(ticket.tag1) }}
                         {{ form_widget(ticket.tag2) }}
                         {{ form_widget(ticket.tag3) }}

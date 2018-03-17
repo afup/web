@@ -51,6 +51,8 @@ class Ticket implements NotifyPropertyInterface
     const TYPE_DAY_1_STUDENT = AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT;
     const TYPE_DAY_2_STUDENT = AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT;
 
+    const SPECIAL_PRICE = AFUP_FORUM_SPECIAL_PRICE;
+
     const PAYMENT_CREDIT_CARD = AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE;
     const PAYMENT_CHEQUE = AFUP_FORUM_REGLEMENT_CHEQUE;
     const PAYMENT_BANKWIRE = AFUP_FORUM_REGLEMENT_VIREMENT;
@@ -199,6 +201,11 @@ class Ticket implements NotifyPropertyInterface
      * @var string
      */
     public $tag3;
+
+    /**
+     * @var null|string
+     */
+    protected $specialPriceToken;
 
     /**
      * @return int
@@ -694,5 +701,26 @@ class Ticket implements NotifyPropertyInterface
     public function getTags()
     {
         return [$this->tag1, $this->tag2, $this->tag3];
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSpecialPriceToken()
+    {
+        return $this->specialPriceToken;
+    }
+
+    /**
+     * @param null|string $specialPriceToken
+     *
+     * @return Ticket
+     */
+    public function setSpecialPriceToken($specialPriceToken)
+    {
+        $this->propertyChanged('specialPriceToken', $this->specialPriceToken, $specialPriceToken);
+        $this->specialPriceToken = $specialPriceToken;
+
+        return $this;
     }
 }

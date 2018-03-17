@@ -249,6 +249,11 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'type' => 'bool',
                 'serializer' => Boolean::class
             ])
+            ->addField([
+                'columnName' => 'special_price_token',
+                'fieldName' => 'specialPriceToken',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;

@@ -46,7 +46,7 @@ class PurchaseTypeFactory
         $this->speakerRepository = $speakerRepository;
     }
 
-    public function getPurchaseForUser(Event $event, User $user = null)
+    public function getPurchaseForUser(Event $event, User $user = null, $specialPriceToken = null)
     {
         $memberType = TicketType::MEMBER_NOT;
 
@@ -67,14 +67,19 @@ class PurchaseTypeFactory
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
         $ticket = new Ticket();
 
-        for ($i=1; $i<=PurchaseType::MAX_NB_PERSONNES; $i++) {
+        if (null !== $specialPriceToken) {
+            $ticket->setSpecialPriceToken($specialPriceToken);
             $invoice->addTicket(clone $ticket);
+        } else {
+            for ($i=1; $i<=PurchaseType::MAX_NB_PERSONNES; $i++) {
+                $invoice->addTicket(clone $ticket);
+            }
         }
 
         $invoiceType = $this->formFactory->create(
             PurchaseType::class,
             $invoice,
-            ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter]
+            ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter, 'special_price_token' => $specialPriceToken]
         );
 
         return $invoiceType;
