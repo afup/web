@@ -25,6 +25,11 @@ class TicketSpecialPrice implements NotifyPropertyInterface
     private $price;
 
     /**
+     * @var string
+     */
+    private $token;
+
+    /**
      * @var \DateTime
      */
     private $dateStart;
@@ -45,9 +50,19 @@ class TicketSpecialPrice implements NotifyPropertyInterface
     private $ticketType;
 
     /**
+     * @var \DateTime
+     */
+    private $createdOn;
+
+    /**
+     * @var int
+     */
+    private $creatorId;
+
+    /**
      * @return int
      */
-    public function getTicketTypeId()
+    public function getId()
     {
         return $this->id;
     }
@@ -186,6 +201,69 @@ class TicketSpecialPrice implements NotifyPropertyInterface
     public function setTicketType(TicketType $ticketType)
     {
         $this->ticketType = $ticketType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     *
+     * @return $this
+     */
+    public function setToken($token)
+    {
+        $this->propertyChanged('token', $this->token, $token);
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @param \DateTime $createdOn
+     *
+     * @return $this
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->propertyChanged('createdOn', $this->createdOn, $createdOn);
+        $this->createdOn = $createdOn;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCreatorId()
+    {
+        return $this->creatorId;
+    }
+
+    /**
+     * @param int $creatorId
+     *
+     * @return $this
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->propertyChanged('creatorId', $this->creatorId, $creatorId);
+        $this->creatorId = $creatorId;
 
         return $this;
     }

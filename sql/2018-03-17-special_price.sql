@@ -13,3 +13,9 @@ CREATE TABLE `afup_forum_special_price` (
   `date_end` datetime NOT NULL,
   `description` varchar(255) NOT NULL
 ) COMMENT='' ENGINE='InnoDB';
+
+
+ALTER TABLE `afup_forum_special_price`
+ADD `created_on` datetime NOT NULL,
+ADD `creator_id` int(10) unsigned NOT NULL
+;

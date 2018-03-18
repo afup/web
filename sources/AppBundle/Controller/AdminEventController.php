@@ -8,15 +8,18 @@ use Afup\Site\Forum\Inscriptions;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Form\SponsorTokenType;
+use AppBundle\Event\Form\TicketSpecialPriceType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketSpecialPrice;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -95,6 +98,49 @@ class AdminEventController extends Controller
             ['event_repository' => $this->get('ting')->get(EventRepository::class)]
         );
         return $this->render(':admin/event:change_event.html.twig', ['form' => $form->createView()]);
+    }
+
+
+    public function specialPriceAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        if ($event === null) {
+            throw $this->createNotFoundException('Could not find event');
+        }
+
+        $ticketSpecialPriceRepository = $this->get('ting')->get(TicketSpecialPriceRepository::class);
+
+        $specialPrice = new TicketSpecialPrice();
+        $specialPrice
+            ->setToken(base64_encode(random_bytes(30)))
+            ->setEventId($event->getId())
+            ->setDateStart(new \DateTime())
+            ->setDateEnd($event->getDateEndSales())
+            ->setCreatedOn(new \DateTime())
+            ->setCreatorId($this->getUser()->getId())
+        ;
+
+        $form = $this->createForm(TicketSpecialPriceType::class, $specialPrice);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ticketSpecialPriceRepository->save($form->getData());
+            $this->addFlash('notice', 'Le token a été enregistré');
+
+            return $this->redirectToRoute('admin_event_special_price', ['id' => $event->getId()]);
+        }
+
+        return $this->render(':admin/event:special_price.html.twig', [
+            'special_prices' => $ticketSpecialPriceRepository->getByEvent($event),
+            'event' => $event,
+            'title' => 'Gestion des prix custom',
+            'form' => $form->createView(),
+        ]);
     }
 
     public function sponsorTicketAction(Request $request)

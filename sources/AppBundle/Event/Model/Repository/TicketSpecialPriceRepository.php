@@ -3,6 +3,7 @@
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\TicketSpecialPrice;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -41,6 +42,29 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
     }
 
     /**
+     * @param Event $event
+     *
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getByEvent(Event $event)
+    {
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('special_price', 'inscription', 'getId');
+
+        $query = $this->getPreparedQuery(
+            'SELECT special_price.*, inscription.*, creator.*
+            FROM afup_forum_special_price as special_price
+            LEFT JOIN afup_inscription_forum as inscription ON (special_price.token = inscription.special_price_token)
+            LEFT JOIN afup_personnes_physiques as creator ON (special_price.creator_id = creator.id)
+            WHERE special_price.id_event = :id_event
+            ORDER BY special_price.id_event, special_price.id DESC, inscription.id DESC
+            '
+        )->setParams(['id_event' => $event->getId()]);
+
+        return $query->query($this->getCollection($hydrator));
+    }
+
+    /**
      * @inheritDoc
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
@@ -64,6 +88,11 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
                 'type' => 'int'
             ])
             ->addField([
+                'columnName' => 'token',
+                'fieldName' => 'token',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'price',
                 'fieldName' => 'price',
                 'type' => 'float'
@@ -82,6 +111,16 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
                 'columnName' => 'description',
                 'fieldName' => 'description',
                 'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'created_on',
+                'fieldName' => 'createdOn',
+                'type' => 'datetime'
+            ])
+            ->addField([
+                'columnName' => 'creator_id',
+                'fieldName' => 'creatorId',
+                'type' => 'int'
             ])
         ;
 
