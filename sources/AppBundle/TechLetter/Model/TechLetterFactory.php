@@ -9,12 +9,16 @@ class TechLetterFactory
         $array = json_decode($json, true);
 
         $articles = $projects = [];
-        foreach ($array['projects'] as $project) {
-            $projects[] = new Project($project['url'], $project['name'], $project['description']);
+        if (isset($array['projects'])) {
+            foreach ($array['projects'] as $project) {
+                $projects[] = new Project($project['url'], $project['name'], $project['description']);
+            }
         }
 
-        foreach ($array['articles'] as $article) {
-            $articles[] = new Article($article['url'], $article['title'], $article['host'], $article['readingTime'], $article['excerpt']);
+        if (isset($array['articles'])) {
+            foreach ($array['articles'] as $article) {
+                $articles[] = new Article($article['url'], $article['title'], $article['host'], $article['readingTime'], $article['excerpt']);
+            }
         }
 
         $firstNews = $secondNews = null;

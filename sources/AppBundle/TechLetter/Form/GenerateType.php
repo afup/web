@@ -24,53 +24,12 @@ class GenerateType extends AbstractType
         $builder
 
             ->add(
-                'news',
+                'sendingId',
                 CollectionType::class,
                 [
                     'entry_type' => TextType::class,
                     'data' => array_fill(0, self::MAX_NB_NEWS, ''),
                     'label' => 'URLs des news sélectionnées',
-                    'entry_options' => [
-                        'required' => false,
-                        'constraints' => [
-                            new Url(),
-                        ],
-                    ]
-                ]
-            )
-            ->add(
-                'articles',
-                CollectionType::class,
-                [
-                    'entry_type' => TextType::class,
-                    'data' => array_fill(0, self::MAX_NB_ARTICLES, ''),
-                    'label' => 'URLs des articles sélectionnées',
-                    'entry_options' => [
-                        'required' => false,
-                        'constraints' => [
-                            new Url(),
-                        ],
-                    ],
-                    'constraints' => [
-                        new Count(['min' => 1]),
-                        new Callback([
-                            'callback' => function ($data, ExecutionContextInterface $context) {
-                                $data = array_filter($data);
-                                if (0 === count($data)) {
-                                    $context->buildViolation('Aucun article ajouté')->atPath('articles')->addViolation();
-                                }
-                            }
-                        ])
-                    ],
-                ]
-            )
-            ->add(
-                'projects',
-                CollectionType::class,
-                [
-                    'entry_type' => TextType::class,
-                    'data' => array_fill(0, self::MAX_NB_PROJECTS, ''),
-                    'label' => 'URLs des projets sélectionnées',
                     'entry_options' => [
                         'required' => false,
                         'constraints' => [

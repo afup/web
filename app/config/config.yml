@@ -82,9 +82,9 @@ parameters:
             niveau: "ROLE_VEILLE"
             elements:
                 veille_ generer_campagne:
-                    nom: "Générer campagne"
+                    nom: "Liste des campagnes"
                     niveau: "ROLE_VEILLE"
-                    url: '/admin/techletter/generate'
+                    url: '/admin/techletter'
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'
@@ -348,6 +348,13 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
+        techletter:
+            namespace: AppBundle\TechLetter\Model\Repository
+            directory: "@AppBundle/TechLetter/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
 
 knpu_oauth2_client:
     clients:

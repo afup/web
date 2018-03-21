@@ -25,7 +25,8 @@ const config = {
             { from: path.resolve(__dirname, 'node_modules/angular/lib/angular.min.js'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/js/angular.min.js') },
             { from: path.resolve(__dirname, 'node_modules/bootstrap/dist/js/bootstrap.min.js'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/js/bootstrap.min.js') },
             { from: path.resolve(__dirname, 'node_modules/bootswatch/yeti/bootstrap.min.css'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/css/bootstrap.min.css') },
-            { from: path.resolve(__dirname, 'node_modules/bootswatch/fonts/'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/fonts/') }
+            { from: path.resolve(__dirname, 'node_modules/bootswatch/fonts/'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/fonts/') },
+            { from: path.resolve(__dirname, 'node_modules/notyf/dist/'), to: path.resolve(__dirname, 'htdocs/assets/techletter/') }
 		])
 	]
 	/*,

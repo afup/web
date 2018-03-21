@@ -1,0 +1,42 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Liste des techletters de l'AFUP</h2>
+
+    <table class="afup_tab">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date d'envoi planifiée</th>
+                <th>Envoyée à mailchimp ?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for techletter in techletters %}
+                <tr>
+                    <td>{{ techletter.id }}</td>
+                    <td>
+                        {% if techletter.sentToMailchimp %}
+                            {{ techletter.sendingDate|date('d/m/Y') }}
+                        {% else %}
+                            <a href="{{ url('admin_techletter_generate', {techletterId: techletter.id}) }}">
+                                {{ techletter.sendingDate|date('d/m/Y') }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{% if techletter.sentToMailchimp %}Oui{% else %}Non{% endif %}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="3">Aucune donnée</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {{ form_start(form, {attr: {class: 'afup--form'}}) }}
+        <fieldset>
+            <legend>Nouvelle techletter</legend>
+            {{ form_row(form.sendingDate) }}
+            {{ form_row(form.save) }}
+        </fieldset>
+    {{ form_end(form)}}
+{% endblock %}

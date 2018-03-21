@@ -12,15 +12,14 @@
         }
 		form#link-editor {
 			width: 600px !important;
-			margin-left: 50%;
+			margin-left: calc(50% + 1em);
 			padding: 1em;
 			box-sizing: content-box;
-
 			position: fixed;
 			top: 50%;
 			left:0;
 			transform: translate(0, -50%);
-			background: #CCCCCC;
+			background: #b4cbde;
 		}
 		form#link-editor.hidden{
 			display: none;
@@ -34,11 +33,30 @@
 			width: 85%;
 			border: 1px grey solid;
 		}
+		form#link-editor input[type=submit], form#link-editor input[type=reset], form#link-editor button{
+			width: 33%;
+			color: #000;
+			background-color: #fff;
+			border: 1px solid #fff;
+			margin: .1em 0;
+		}
+		form#link-editor input[type=submit]{
+			color: #fff;
+			background-color: #ed0678;
+			border: 1px solid #ed0678;
+		}
+		form #close{
+			display: block;
+			float: right;
+		}
     </style>
+	<link rel="stylesheet" href="{{ asset('assets/techletter/notyf.min.css') }}" />
+	<script src="{{ asset('assets/techletter/notyf.min.js') }}"></script>
 
     <iframe src="" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
 
 	<form id="link-editor" class="hidden">
+		<a href="#" id="close">X</a>
 		<fieldset id="update-link">
 
 		</fieldset>
@@ -47,16 +65,28 @@
 		</button>
 		<button id="delete">Supprimer ce lien</button>
 		<input type="reset" value="Fermer" />
-		<input type="submit" value="Mettre à jour" />
+		<input type="submit" value="Sauvegarder et mettre à jour" />
 	</form>
 
 	<form method="post" action="{{ url('preview') }}" target="preview-techletter" id="form-update">
-		<label for="textarea">JSON</label>
-		<textarea name="techletter" id="textarea" cols="200" rows="20">{{ tech_letter|json_encode }}</textarea>
-		<input type="submit" value="Update preview" />
+		<input type="hidden" name="techletterId" value="{{ sending.id }}" />
+		<input name="techletter" id="textarea" type="hidden" value="" />
 	</form>
 
-    {{ form(form) }}
+	<form method="post" class="afup--form">
+		<fieldset>
+			<legend>Synchronisation vers mailchimp</legend>
+
+			<input
+					type="submit"
+					name="sendToMailchimp"
+					value="Verrouiller et envoyer à mailchimp"
+					onclick="return confirm('Etes-vous sur que cette NL est prete ?');"
+			/>
+
+			<input type="hidden" name="_csrf_token" value="{{ csrf_token('sendToMailchimp') }}" />
+		</fieldset>
+	</form>
 
     <script>
         (function(w, d){
@@ -227,6 +257,7 @@
 				this.form.addEventListener('reset', this.handleReset.bind(this));
 				this.form.querySelector('button#refresh').addEventListener('click', this.handleRefresh.bind(this));
 				this.form.querySelector('button#delete').addEventListener('click', this.handleDelete.bind(this));
+				this.form.querySelector('#close').addEventListener('click', this.handleReset.bind(this));
 			};
 
 			LinkEditor.prototype = {
@@ -252,7 +283,11 @@
 
 					Object.keys(model).forEach((key, index) => {
 						let label = d.createElement('label');
-						let text = d.createTextNode(key);
+						let text = d.createTextNode(
+							key
+								.replace(/([A-Z])/g, str => {return ' ' + str.toLowerCase();})
+								.replace(/^./, str => {return str.toUpperCase();})
+						);
 						label.appendChild(text);
 						label.setAttribute('for', `input-${key}`);
 
@@ -362,7 +397,8 @@
 
 				handleRefresh: function (event) {
 					event.preventDefault();
-					// @todo hide form during retrieval
+					this.lock();
+
 					fetch ('{{ url('retrieve') }}', {
 						method: 'POST',
 						credentials: 'same-origin',
@@ -379,11 +415,24 @@
 									input.value = json[key];
 								}
 							});
+							// @todo move to an event
+							notyf.confirm('Mise à jour du lien effectuée');
+							this.unlock();
 						})
 						.catch(error => {
-							console.log('error', error);
+							// @todo move to an event
+							notyf.error('Erreur lors de la mise à jour: ' + error);
+							this.unlock();
 						})
 					;
+				},
+
+				lock: function () {
+					this.fieldset.disabled = "disabled";
+				},
+
+				unlock: function () {
+					this.fieldset.disabled = "";
 				}
 			};
 		})(window, document);
@@ -395,6 +444,12 @@
 
         	let form = document.querySelector('#form-update');
 			w.techletter = {{ tech_letter|json_encode|raw }};
+
+			/**
+			 * @todo should not be global, we should use events
+			 * @type {Notyf}
+			 */
+			w.notyf = new Notyf();
 
 			let linkEditor = new LinkEditor(document.querySelector('#link-editor'));
 
@@ -503,9 +558,11 @@
 					linkEditor
 						.updateLink(reference)
 						.then(newdata => {
+							notyf.confirm('Mise à jour en cours');
 							updatePreview();
 						})
 						.catch(reason => {
+							notyf.alert('Erreur lors de la mise à jour des données : ' + reason);
 							console.log('error in promise', reason);
 						});
 					;
@@ -516,9 +573,11 @@
 					linkEditor
 						.addLink(reference)
 						.then(newdata => {
+							notyf.confirm('Mise à jour en cours');
 							updatePreview();
 						})
 						.catch(reason => {
+							notyf.alert('Erreur lors de la mise à jour des données : ' + reason);
 							console.log('error in promise', reason);
 						})
 					;

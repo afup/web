@@ -226,6 +226,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Site\Model\Repository\ArticleRepository]
 
+    app.techletter_sending_repository:
+        class: AppBundle\TechLetter\Model\Repository\SendingRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
+
     app.sponsor_ticket_helper:
         class: AppBundle\Event\Ticket\SponsorTicketHelper
         autowire: true
