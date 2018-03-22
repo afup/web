@@ -70,6 +70,7 @@
 
 	<form method="post" action="{{ url('preview') }}" target="preview-techletter" id="form-update">
 		<input type="hidden" name="techletterId" value="{{ sending.id }}" />
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterPreview') }}" />
 		<input name="techletter" id="textarea" type="hidden" value="" />
 	</form>
 
