@@ -56,7 +56,7 @@ let updateDataForLink = function (oldLink, newData) {
 	return false;
 };
 
-let getDataForLink = function (link) {
+let getDetailsForLink = function (link) {
 	if (techletter.firstNews && techletter.firstNews.url === link) {
 		return {model: "news", data: techletter.firstNews};
 	}
@@ -87,6 +87,7 @@ let LinkEditor = {};
 LinkEditor = function (form) {
 	this.form = form;
 	this.fieldset = form.querySelector('fieldset');
+	this.retrievePath = this.form.dataset.refresh;
 
 	// Add Listener on submit for this form, get new data, resolve promise
 	this.form.addEventListener('submit', this.handleSubmit.bind(this));
@@ -101,6 +102,7 @@ LinkEditor.prototype = {
 	fieldset: null,
 	resolve: null,
 	reject: null,
+	retrievePath: null,
 
 	/**
 	 *
@@ -154,13 +156,12 @@ LinkEditor.prototype = {
 			this.reject = reject;
 
 			// Create fields for the data
-			let data = getDataForLink(link);
-			let model = getModelForType(data.model);
-			data = data.data; //@todo do better
+			let details = getDetailsForLink(link);
+			let model = getModelForType(details.model);
 
-			this.fieldset.dataset.type = data.model;
+			this.fieldset.dataset.type = details.model;
 
-			this.createForm(model, data);
+			this.createForm(model, details.data);
 			this.form.classList.remove('hidden');
 		});
 	},
@@ -232,7 +233,7 @@ LinkEditor.prototype = {
 		event.preventDefault();
 		this.lock();
 
-		fetch ('/admin/techletter/retrieve', { //@todo parameter
+		fetch (this.retrievePath, {
 			method: 'POST',
 			credentials: 'same-origin',
 			headers: {
@@ -240,7 +241,7 @@ LinkEditor.prototype = {
 			},
 			body: 'url=' + encodeURIComponent(this.fieldset.querySelector('#input-url').value)
 		})
-	.then((response) => response.json())
+		.then((response) => response.json())
 			.then(json => {
 				Object.keys(json).forEach(key => {
 					let input = this.form.querySelector(`#input-${key}`);

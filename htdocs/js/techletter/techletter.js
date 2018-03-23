@@ -127,8 +127,6 @@ import { IframeOverlay } from './iframeOverlay';
 			;
 		}, 'Editer');
 		iframePlusOverlay = new IframeOverlay(d.getElementById('preview-techletter'), (reference, event) => {
-			console.log('click plus', reference);
-
 			linkEditor
 				.addLink(reference)
 				.then(newdata => {
