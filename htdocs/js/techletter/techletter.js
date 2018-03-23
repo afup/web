@@ -1,5 +1,5 @@
 import { LinkEditor } from './linkEditor';
-import { IframeOverlay } from './iframeOverlay';
+import { IframeOverlay, LoadingOverlay } from './iframeOverlay';
 
 (function(w, d) {
 	'use strict';
@@ -13,10 +13,11 @@ import { IframeOverlay } from './iframeOverlay';
 	w.notyf = new Notyf();
 
 	let linkEditor = new LinkEditor(document.querySelector('#link-editor'));
+	let loadingOverlay = new LoadingOverlay(d.getElementById('preview-techletter'));
 
 	w.updatePreview = function ()
 	{
-		// @todo add overlay when iframe is loading
+		loadingOverlay.show();
 		form.querySelector('input[name=techletter],textarea[name=techletter]').value = JSON.stringify(techletter);
 		form.submit();
 	};
@@ -147,6 +148,7 @@ import { IframeOverlay } from './iframeOverlay';
 		this.style.height =	this.contentWindow.document.body.offsetHeight + 'px';
 		declareListeners(this.contentWindow.document);
 		this.style.height =	this.contentWindow.document.body.offsetHeight + 'px';
+		loadingOverlay.hide();
 	};
 
 	d.getElementById('preview-techletter').onload = onPreviewLoaded;

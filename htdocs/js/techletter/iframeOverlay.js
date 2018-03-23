@@ -7,8 +7,10 @@ let createElement = function (textContent)
 	overlayElement = document.createElement('div');
 	overlayElement.setAttribute('id', 'overlayOnIframe');
 
-	let text = document.createTextNode(textContent);
-	overlayElement.appendChild(text);
+	if (typeof textContent !== "undefined") {
+		let text = document.createTextNode(textContent);
+		overlayElement.appendChild(text);
+	}
 
 	document.body.appendChild(overlayElement);
 
@@ -67,4 +69,42 @@ IframeOverlay.prototype = {
 		}
 	}
 };
-export { IframeOverlay };
+
+let LoadingOverlay = {};
+
+LoadingOverlay = function (element)
+{
+	this.element = element;
+};
+
+LoadingOverlay.prototype = {
+	element: null,
+	overlayColor: 'rgba(120, 120, 120, .8)',
+	/**
+	 * Creates an overlay on an element.
+	 */
+	show: function() {
+		this.hide();
+
+		createElement();
+		let elementParams = this.element.getBoundingClientRect();
+
+		overlayElement.setAttribute(
+			'style',
+			'position: fixed; display: block; z-index: 1000; ' +
+			'top: ' + elementParams.top + 'px; left: ' + elementParams.left + 'px;' +
+			'cursor: pointer;' +
+			'width: ' + elementParams.width + 'px; height: ' + elementParams.height + 'px; ' +
+			'background-color: ' + this.overlayColor + ';' +
+			'font-size: 20px; color:white; text-align:center;'
+		);
+	},
+	hide: function() {
+		if (overlayElement !== null) {
+			overlayElement.remove();
+			overlayElement = null;
+		}
+	}
+};
+
+export { IframeOverlay, LoadingOverlay };
