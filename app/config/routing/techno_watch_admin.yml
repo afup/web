@@ -16,3 +16,7 @@ retrieve:
 admin_techletter_index:
   path: /
   defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:index}
+
+admin_techletter_members:
+  path: /members
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:members}

@@ -39,10 +39,6 @@ admin_company_members:
   path: /company/members/{id}
   defaults: {_controller: AppBundle:AdminMemberShip:members, id: ~}
 
-admin_techletter:
-  path: /techletter
-  defaults: {_controller: AppBundle:AdminTechletter:index}
-
 admin_members_reporting:
   path: /members/reporting
   defaults: {_controller: AppBundle:MembershipAdmin:reporting}

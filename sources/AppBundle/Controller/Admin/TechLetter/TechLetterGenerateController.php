@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin\TechLetter;
 
+use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Controller\SiteBaseController;
 use AppBundle\TechLetter\Form\GenerateType;
 use AppBundle\TechLetter\Form\SendingType;
@@ -209,6 +210,15 @@ class TechLetterGenerateController extends SiteBaseController
         return $this->render('admin/techletter/mail_template.html.twig', [
             'preview' => true,
             'tech_letter' => $techletter
+        ]);
+    }
+
+    public function membersAction()
+    {
+        $subscribers = $this->get('ting')->get(TechletterSubscriptionsRepository::class)->getAllSubscriptionsWithUser();
+        return $this->render('admin/techletter/members.html.twig', [
+            'subscribers' => $subscribers,
+            'title' => 'Liste des abonnés à la techletter'
         ]);
     }
 }
