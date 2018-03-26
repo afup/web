@@ -8,10 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Url;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class GenerateType extends AbstractType
 {

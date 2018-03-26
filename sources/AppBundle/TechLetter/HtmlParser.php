@@ -3,7 +3,6 @@
 
 namespace AppBundle\TechLetter;
 
-
 class HtmlParser
 {
     /**
@@ -124,10 +123,10 @@ class HtmlParser
 
     public function getRichSchema()
     {
-        $jsonScripts = $this->xpath->query( '//script[@type="application/ld+json"]' );
+        $jsonScripts = $this->xpath->query('//script[@type="application/ld+json"]');
 
         $data = [];
-        foreach( $jsonScripts as $script) {
+        foreach ($jsonScripts as $script) {
             $data[] = json_decode($script->nodeValue, true);
         }
         return $data;

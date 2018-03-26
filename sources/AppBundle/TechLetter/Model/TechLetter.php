@@ -69,10 +69,10 @@ class TechLetter implements \JsonSerializable
         return [
             'firstNews' => $this->firstNews ? $this->firstNews->jsonSerialize() : null,
             'secondNews' => $this->secondNews ? $this->secondNews->jsonSerialize() : null,
-            'articles' => array_map(function(Article $article) {
+            'articles' => array_map(function (Article $article) {
                 return $article->jsonSerialize();
             }, $this->articles),
-            'projects' => array_map(function(Project $project) {
+            'projects' => array_map(function (Project $project) {
                 return $project->jsonSerialize();
             }, $this->projects)
         ];

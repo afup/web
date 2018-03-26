@@ -2,7 +2,6 @@
 
 namespace AppBundle\TechLetter;
 
-
 class UrlCrawler
 {
     public function crawlUrl($url)

@@ -3,7 +3,6 @@
 
 namespace AppBundle\TechLetter\Form;
 
-
 use AppBundle\TechLetter\Model\Sending;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;

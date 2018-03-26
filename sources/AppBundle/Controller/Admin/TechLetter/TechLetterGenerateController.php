@@ -7,10 +7,10 @@ use AppBundle\Controller\SiteBaseController;
 use AppBundle\TechLetter\Form\GenerateType;
 use AppBundle\TechLetter\Form\SendingType;
 use AppBundle\TechLetter\HtmlParser;
+use AppBundle\TechLetter\Model as Techletter;
 use AppBundle\TechLetter\UrlCrawler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\TechLetter\Model as Techletter;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TechLetterGenerateController extends SiteBaseController
@@ -34,7 +34,7 @@ class TechLetterGenerateController extends SiteBaseController
             return $this->redirectToRoute('admin_techletter_generate', ['id' => $techletter->getId()]);
         }
 
-        return $this->render('admin/techletter/index.html.twig',[
+        return $this->render('admin/techletter/index.html.twig', [
             'title' => "Veille de l'AFUP",
             'techletters' => $techLetters,
             'form' => $form->createView()
@@ -92,7 +92,7 @@ class TechLetterGenerateController extends SiteBaseController
             $sending->setSentToMailchimp(true);
             $sendingRepository->save($sending);
 
-            $message = "La campagne a été générée. Il faut maintenant <a href='https://us8.admin.mailchimp.com/campaigns/edit?id=" . $response['web_id'] ."' target='_blank'>se connecter sur Mailchimp</a> pour la valider/en planifier l'envoi";
+            $message = "La campagne a été générée. Il faut maintenant <a href='https://us8.admin.mailchimp.com/campaigns/edit?id=" . $response['web_id'] . "' target='_blank'>se connecter sur Mailchimp</a> pour la valider/en planifier l'envoi";
             $this->addFlash('notice', $message);
 
             return $this->redirectToRoute('admin_techletter_index');
@@ -154,7 +154,7 @@ class TechLetterGenerateController extends SiteBaseController
         ];
 
         if ($richSchema !== false) {
-            foreach($richSchema as $schema) {
+            foreach ($richSchema as $schema) {
                 if (
                     ! isset($schema['@type'])
                     || !in_array($schema["@type"], $listOfTypes)
@@ -173,7 +173,7 @@ class TechLetterGenerateController extends SiteBaseController
             }
         }
 
-        $data = array_map(function($value) {
+        $data = array_map(function ($value) {
             return trim($value);
         }, $data);
 
