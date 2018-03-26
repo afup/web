@@ -62,7 +62,10 @@ class Runner
         $meetups = [];
 
         foreach ($command->execute() as $meetup) {
-            $meetups[] = $this->transformer->transform($meetup);
+            if (null === ($transformedMeetup = $this->transformer->transform($meetup))) {
+                continue;
+            }
+            $meetups[] = $transformedMeetup;
         }
 
         $index->clearIndex();

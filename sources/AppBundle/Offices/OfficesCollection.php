@@ -120,10 +120,10 @@ class OfficesCollection
                 'label' => 'Aix-Marseille',
                 'latitude' => '43.296346',
                 'longitude' => '5.36988923',
-                'meetup_urlname' => 'Marseille-PHP-User-Group',
+                'meetup_urlname' => 'afup-aix-marseille-php',
                 'meetup_id' => '18152912',
                 'logo_url' => '/images/offices/marseille.jpg',
-                'twitter' => 'AFUP_Marseille',
+                'twitter' => 'AFUP_AixMrs',
                 'blog_url' => 'http://aix-marseille.afup.org/',
                 'map' => [
                     "legend-first-point-x" => "600",
@@ -298,7 +298,9 @@ class OfficesCollection
                 'logo_url' => '/images/offices/afup-icon-color.svg',
                 'twitter' => 'afup_dromardech',
                 'blog_url' => 'http://valence.afup.org/',
-
+                'meetup_urlname' => 'Ardech-Drom-Dev',
+                'meetup_id' => '26169682',
+                'meetup_filter' => "/.*\\[AFUP\\]\\s*(.*)/",
                 'map' => [
                     "legend-first-point-x" => "570",
                     "legend-first-point-y" => "440",

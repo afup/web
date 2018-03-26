@@ -19,7 +19,7 @@ security:
 
         legacy_secured_area:
             anonymous: ~
-            pattern: ^(/admin/|/event/\w+/tickets)
+            pattern: ^(/admin/|/event/\w+/tickets|/association/techletter)
             logout:
                 path:   /admin/logout
                 target: /

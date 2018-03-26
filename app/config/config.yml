@@ -85,6 +85,10 @@ parameters:
                     nom: "Liste des campagnes"
                     niveau: "ROLE_VEILLE"
                     url: '/admin/techletter'
+                techletter:
+                    nom: 'Abonnés à la techletter'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/techletter/members'
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'
