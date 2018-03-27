@@ -499,30 +499,6 @@ SQL;
         return $ok;
     }
 
-    function envoyerATous($id_forum)
-    {
-        $requete = 'SELECT';
-        $requete .= '  reference ';
-        $requete .= 'FROM';
-        $requete .= '  afup_facturation_forum ';
-        $requete .= 'WHERE etat = ' . AFUP_FORUM_ETAT_REGLE . ' ';
-        $requete .= '  AND id_forum =' . $id_forum . ' ';
-        $factures = $this->_bdd->obtenirTous($requete);
-
-        $ok = true;
-        foreach ($factures as $facture) {
-            flush();
-            if ($this->envoyerFacture($facture['reference'], false)) {
-                Logs::log('Envoi par email de la facture n°' . $facture['reference'] . ' OK');
-            } else {
-                $ok = false;
-                Logs::log('Envoi par email de la facture n°' . $facture['reference'] . ' Erreur');
-            }
-        }
-
-        return $ok;
-    }
-
     /**
      * Changement de la date de réglement d'une facture
      * @param integer $reference

@@ -10,7 +10,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'envoyer_tout', 'facturer_facture', 'supprimer_facture', 'changer_date_reglement'));
+$action = verifierAction(array('lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'facturer_facture', 'supprimer_facture', 'changer_date_reglement'));
 $tris_valides = array('date_facture', 'email', 'societe', 'etat');
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
@@ -55,12 +55,6 @@ if ($action == 'lister') {
 		afficherMessage('La facture a été envoyée', 'index.php?page=forum_facturation&action=lister');
 	} else {
 		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=forum_facturation&action=lister', true);
-	}
-} elseif ($action == 'envoyer_tout'){
-	if ($forum_facturation->envoyerATous($_GET['id_forum'])) {
-		afficherMessage('Les factures ont été envoyées', 'index.php?page=forum_facturation&action=lister');
-	} else {
-		afficherMessage('Au moins une facture n\'a pas pu être envoyé. Se conférer aux logs pour plus de détails', 'index.php?page=forum_facturation&action=lister', true);
 	}
 } elseif ($action == 'facturer_facture'){
 	if($forum_facturation->estFacture($_GET['ref'])){
