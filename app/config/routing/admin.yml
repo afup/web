@@ -43,6 +43,6 @@ admin_members_reporting:
   path: /members/reporting
   defaults: {_controller: AppBundle:MembershipAdmin:reporting}
 
-admin_techno_watch:
-  resource: "techno_watch_admin.yml"
+admin_techletter:
+  resource: "techletter_admin.yml"
   prefix: /techletter

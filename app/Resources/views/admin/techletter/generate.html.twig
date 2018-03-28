@@ -8,12 +8,12 @@
 
     <iframe src="" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
 
-	<form id="link-editor" class="hidden" data-refresh="{{ url('retrieve') }}">
+	<form id="link-editor" class="hidden" data-refresh="{{ url('admin_techletter_retrieve') }}">
 		<a href="#" id="close">X</a>
 		<fieldset id="update-link">
 
 		</fieldset>
-		<button id="refresh" title="Ecraser la saisie actuelle par les informations récupérées depuis l'url indiquée">
+		<button id="refresh" title="Écraser la saisie actuelle par les informations récupérées depuis l'url indiquée">
 			Actualiser depuis l'url saisie
 		</button>
 		<button id="delete">Supprimer ce lien</button>
@@ -21,7 +21,7 @@
 		<input type="submit" value="Sauvegarder et mettre à jour" />
 	</form>
 
-	<form method="post" action="{{ url('preview') }}" target="preview-techletter" id="form-update">
+	<form method="post" action="{{ url('admin_techletter_preview') }}" target="preview-techletter" id="form-update">
 		<input type="hidden" name="techletterId" value="{{ sending.id }}" />
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterPreview') }}" />
 		<input name="techletter" id="textarea" type="hidden" value="" />
@@ -29,12 +29,12 @@
 
 	<form method="post" class="afup--form">
 		<fieldset>
-			<legend>Synchronisation vers mailchimp</legend>
+			<legend>Synchronisation vers Mailchimp</legend>
 
 			<input
 					type="submit"
 					name="sendToMailchimp"
-					value="Verrouiller et envoyer à mailchimp"
+					value="Verrouiller et envoyer à Mailchimp"
 					onclick="return confirm('Etes-vous sur que cette NL est prete ?');"
 			/>
 

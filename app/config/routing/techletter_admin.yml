@@ -4,11 +4,11 @@ admin_techletter_generate:
   requirements:
     techletterId: '\d+'
 
-preview:
+admin_techletter_preview:
   path: /preview
   defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:preview}
 
-retrieve:
+admin_techletter_retrieve:
   path: /retrieve
   defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:retrieveData}
   methods: ["POST"]
