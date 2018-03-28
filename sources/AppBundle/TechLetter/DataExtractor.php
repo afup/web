@@ -11,7 +11,6 @@ class DataExtractor
 
     public function extractDataForTechLetter($url)
     {
-
         $urlInfo = parse_url($url);
 
         $urlCrawler = new UrlCrawler();
