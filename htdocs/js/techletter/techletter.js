@@ -68,9 +68,9 @@ import { IframeOverlay, LoadingOverlay } from './iframeOverlay';
 
 	let onEditableElement = function(event)
 	{
-		let elementPosition = event.toElement.getBoundingClientRect();
+		let elementPosition = event.currentTarget.getBoundingClientRect();
 		iframeOverlay.show(
-			event.toElement.dataset.url,
+			event.currentTarget.dataset.url,
 			elementPosition.x,
 			elementPosition.y,
 			elementPosition.width,
@@ -80,9 +80,9 @@ import { IframeOverlay, LoadingOverlay } from './iframeOverlay';
 
 	let onPlusElement = function(event)
 	{
-		let elementPosition = event.toElement.getBoundingClientRect();
+		let elementPosition = event.currentTarget.getBoundingClientRect();
 		iframePlusOverlay.show(
-			event.toElement.dataset.type,
+			event.currentTarget.dataset.type,
 			elementPosition.x,
 			elementPosition.y,
 			elementPosition.width,

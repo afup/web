@@ -24,7 +24,7 @@ class TechLetterGenerateController extends SiteBaseController
             $techletter = $form->getData();
             $repository->save($techletter);
 
-            return $this->redirectToRoute('admin_techletter_generate', ['id' => $techletter->getId()]);
+            return $this->redirectToRoute('admin_techletter_generate', ['techletterId' => $techletter->getId()]);
         }
 
         return $this->render('admin/techletter/index.html.twig', [
