@@ -255,7 +255,7 @@ LinkEditor.prototype = {
 			})
 			.catch(error => {
 				// @todo move to an event
-				notyf.error('Erreur lors de la mise à jour: ' + error);
+				notyf.alert('Erreur lors de la mise à jour: ' + error);
 				this.unlock();
 			})
 		;
