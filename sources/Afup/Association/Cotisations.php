@@ -413,18 +413,15 @@ class Cotisations
         );
         $subject = 'Facture AFUP';
         $parameters = [
-            'subject' => $subject
-        ];
-
-        $parameters += array(
-            "attachments" => array(
-                array(
+            'subject' => $subject,
+            "attachments" => [
+                [
                     "type" => "application/pdf",
                     "name" => 'facture-' . $numeroFacture . '.pdf',
                     "content" => base64_encode(file_get_contents($chemin_facture)),
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $ok = $mail->send(Mail::TEMPLATE_TRANSAC, $receiver, [
             'content' => $corps,
