@@ -1,0 +1,22 @@
+admin_techletter_generate:
+  path: /generate/{techletterId}
+  defaults: {_controller: AppBundle:Admin/TechLetter/TechLetterGenerate:generate}
+  requirements:
+    techletterId: '\d+'
+
+admin_techletter_preview:
+  path: /preview
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:preview}
+
+admin_techletter_retrieve:
+  path: /retrieve
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:retrieveData}
+  methods: ["POST"]
+
+admin_techletter_index:
+  path: /
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:index}
+
+admin_techletter_members:
+  path: /members
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:members}

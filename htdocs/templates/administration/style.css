@@ -834,7 +834,7 @@ body {
     float: none;
 }
 
-/** Biletterie sponsors */
+/** Billetterie sponsors */
 .sponsor--token-admin-view{
     margin: 0;
     display: inline;
@@ -845,11 +845,25 @@ form[name=sponsor_ticket]{
     border: 1px solid #ccc;
     background: #eee
 }
-form[name=sponsor_ticket] #sponsor_ticket div, form[name=sponsor_token] div{
+form[name=sponsor_ticket] #sponsor_ticket div, form[name=sponsor_token] div, form.afup--form div{
     margin: 0.5em 0;
 }
 
-form[name=sponsor_ticket] #sponsor_ticket div label, form[name=sponsor_token] div label{
+form.afup--form{
+    clear:both;
+    padding: 1em 0;
+}
+
+/* Useful for special symfony types like "date selector" */
+form.afup--form div div{
+    display: inline-block;
+}
+
+form.afup--form div div select{
+    margin: 0 .2em;
+}
+
+form[name=sponsor_ticket] #sponsor_ticket div label, form[name=sponsor_token] div label, form.afup--form div label{
     display: inline-block;
     min-width: 200px;
     font-weight: 700;
@@ -858,13 +872,13 @@ form[name=sponsor_ticket] #sponsor_ticket div label, form[name=sponsor_token] di
     color: #333
 }
 
-form[name=sponsor_ticket] #sponsor_ticket div input, form[name=sponsor_token] div input{
+form[name=sponsor_ticket] #sponsor_ticket div input, form[name=sponsor_token] div input, form.afup--form div input{
     min-width: 300px;
     padding: .2em 0 .2em .2em;
     border: 1px solid #ccc;
 }
 
-form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[type=submit], a.sponsor--token-admin-edit, .mailinglists--form button{
+form[name=sponsor_ticket] button[type=submit], .sponsor--token-admin-view input[type=submit], a.sponsor--token-admin-edit, .mailinglists--form button, form.afup--form button, form.afup--form input[type=submit]{
     text-decoration: none !important;
     background-color:#50a0dd !important;
     font-size:0.8rem;
@@ -932,4 +946,53 @@ body#groups p{
 .mailinglists--form h4{
     font-weight:bold;
     margin: 2em 0 .5em;
+}
+
+/**
+Techletter
+**/
+#preview-techletter{
+    width: 50%;
+    float:left;
+    border: 1px grey solid;
+    box-sizing: content-box;
+}
+form#link-editor {
+    width: 600px !important;
+    margin-left: calc(50% + 1em);
+    padding: 1em;
+    box-sizing: content-box;
+    position: fixed;
+    top: 50%;
+    left:0;
+    transform: translate(0, -50%);
+    background: #b4cbde;
+}
+form#link-editor.hidden{
+    display: none;
+}
+
+form#link-editor label {
+    display: inline-block;
+    width: 15%;
+}
+form#link-editor input, form#link-editor textarea{
+    width: 85%;
+    border: 1px grey solid;
+}
+form#link-editor input[type=submit], form#link-editor input[type=reset], form#link-editor button{
+    width: 33%;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #fff;
+    margin: .1em 0;
+}
+form#link-editor input[type=submit]{
+    color: #fff;
+    background-color: #ed0678;
+    border: 1px solid #ed0678;
+}
+form#link-editor #close{
+    display: block;
+    float: right;
 }

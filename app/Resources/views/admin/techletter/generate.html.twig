@@ -1,0 +1,52 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Générer une veille de l'AFUP</h2>
+
+	<link rel="stylesheet" href="{{ asset('assets/techletter/notyf.min.css') }}" />
+	<script src="{{ asset('assets/techletter/notyf.min.js') }}"></script>
+
+    <iframe src="" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
+
+	<form id="link-editor" class="hidden" data-refresh="{{ url('admin_techletter_retrieve') }}">
+		<a href="#" id="close">X</a>
+		<fieldset id="update-link">
+
+		</fieldset>
+		<button id="refresh" title="Écraser la saisie actuelle par les informations récupérées depuis l'url indiquée">
+			Actualiser depuis l'url saisie
+		</button>
+		<button id="delete">Supprimer ce lien</button>
+		<input type="reset" value="Fermer" />
+		<input type="submit" value="Sauvegarder et mettre à jour" />
+	</form>
+
+	<form method="post" action="{{ url('admin_techletter_preview') }}" target="preview-techletter" id="form-update">
+		<input type="hidden" name="techletterId" value="{{ sending.id }}" />
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterPreview') }}" />
+		<input name="techletter" id="textarea" type="hidden" value="" />
+	</form>
+
+	<form method="post" class="afup--form">
+		<fieldset>
+			<legend>Synchronisation vers Mailchimp</legend>
+
+			<input
+					type="submit"
+					name="sendToMailchimp"
+					value="Verrouiller et envoyer à Mailchimp"
+					onclick="return confirm('Etes-vous sur que cette NL est prete ?');"
+			/>
+
+			<input type="hidden" name="_csrf_token" value="{{ csrf_token('sendToMailchimp') }}" />
+		</fieldset>
+	</form>
+
+    <script>
+		(function (w) {
+			w.techletter = {{ tech_letter|json_encode|raw }};
+		})(window);
+    </script>
+	<script src="{{ asset('js_dist/techletter.js') }}"></script>
+
+{% endblock %}

@@ -53,4 +53,30 @@ class Mailchimp
     {
         return md5($email);
     }
+
+
+    public function createTemplate($title, $html)
+    {
+        return $this->client->post(
+            'templates',
+            [
+                'name' => $title,
+                'html' => $html,
+            ]
+        );
+    }
+
+    public function createCampaign($list, array $settings)
+    {
+        return $this->client->post(
+            'campaigns',
+            [
+                'type' => 'regular',
+                'recipients' => [
+                    'list_id' => $list,
+                ],
+                'settings' => $settings
+            ]
+        );
+    }
 }

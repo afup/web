@@ -145,6 +145,15 @@ services:
         class: AppBundle\Mailchimp\Mailchimp
         arguments: ["@app.mailchimp_client"]
 
+    app.mailchimp_techletter_client:
+        class: Mailchimp\Mailchimp
+        arguments: ["%mailchimp_techletter_api_key%"]
+        public: false
+
+    app.mailchimp_techletter_api:
+        class: AppBundle\Mailchimp\Mailchimp
+        arguments: ["@app.mailchimp_techletter_client"]
+
     app.mail:
         class: Afup\Site\Utils\Mail
 
@@ -216,6 +225,11 @@ services:
         class: AppBundle\Site\Model\Repository\ArticleRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Site\Model\Repository\ArticleRepository]
+
+    app.techletter_sending_repository:
+        class: AppBundle\TechLetter\Model\Repository\SendingRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
 
     app.sponsor_ticket_helper:
         class: AppBundle\Event\Ticket\SponsorTicketHelper
