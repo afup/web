@@ -36,6 +36,6 @@ class CmsPageController extends SiteBaseController
 
     protected function isRubriqueAllowed($rubrique)
     {
-        return $rubrique['id'] == Rubrique::ID_RUBRIQUE_ASSOCIATION;
+        return $rubrique['id'] == Rubrique::ID_RUBRIQUE_ASSOCIATION || $rubrique['id'] == Rubrique::ID_RUBRIQUE_ANTENNES;
     }
 }

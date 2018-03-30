@@ -8,6 +8,7 @@ class Rubrique
 {
     const ID_RUBRIQUE_ACTUALITES = 9;
     const ID_RUBRIQUE_ASSOCIATION = 85;
+    const ID_RUBRIQUE_ANTENNES = 84;
 
     public $id;
     public $id_personne_physique;
