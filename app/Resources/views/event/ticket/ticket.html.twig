@@ -123,7 +123,7 @@
                                             {% if type.vars.attr['data-stock'] <= 0 %}
                                                 <span class="tickets--type-stock">Plus aucun billet disponible</span><br />
                                             {% elseif type.vars.attr['data-stock'] < 10 %}
-                                                <span class="tickets--type-stock">Peu de billets disponibles</span><br />
+                                                <span class="tickets--type-stock tickets--type-stock-close-to-sold-out">Peu de billets disponibles</span><br />
                                             {% endif %}
                                         </span>
                                     </div>
