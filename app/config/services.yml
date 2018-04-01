@@ -154,6 +154,10 @@ services:
         class: AppBundle\Mailchimp\Mailchimp
         arguments: ["@app.mailchimp_techletter_client"]
 
+    app.techletter_mailchimp_synchronizer:
+        class: AppBundle\TechLetter\MailchimpSynchronizer
+        arguments: ["@app.mailchimp_techletter_api", "@app.techletter_subscriptions_repository", "%mailchimp_techletter_list%"]
+
     app.mail:
         class: Afup\Site\Utils\Mail
 
@@ -183,6 +187,11 @@ services:
         class: AppBundle\Event\Model\Repository\InvoiceRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\InvoiceRepository]
+
+    app.techletter_subscriptions_repository:
+        class: AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository]
 
     app.action_throttling:
         class: AppBundle\Security\ActionThrottling\ActionThrottling

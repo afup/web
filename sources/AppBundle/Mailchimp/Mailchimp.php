@@ -28,6 +28,35 @@ class Mailchimp
     }
 
     /**
+     * Quand on atteindra ce nombre d'inscrits on aura un problème
+     */
+    const MAX_MEMBERS_PER_PAGE = 999;
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    public function getAllSubscribedMembersAddresses($list)
+    {
+        $response = $this->client->get(
+            'lists/' . $list . '/members',
+            [
+                'count' => self::MAX_MEMBERS_PER_PAGE,
+                'fields' => 'members.email_address',
+                'status' => 'subscribed',
+            ]
+        );
+
+        $addresses = [];
+        foreach ($response->all() as $member) {
+            $addresses[] = $member->email_address;
+        }
+
+        return $addresses;
+    }
+
+    /**
      * Unsubscribe an address from a list
      *
      * @param string $list
