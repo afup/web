@@ -31,6 +31,7 @@ parameters:
     mailchimp_subscribers_list:
     mailchimp_techletter_list:
     mailchimp_techletter_api_key:
+    mailchimp_techletter_webhook_key: "abc"
 
     trello_api_key: ""
     trello_token: ""

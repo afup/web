@@ -55,3 +55,8 @@ techletter_subscribe:
   path: /techletter/subscription
   defaults: {_controller: AppBundle:Techletter:subscribe }
   methods: ["POST"]
+
+techletter_webhook:
+  path: /techletter/webhook
+  defaults: {_controller: AppBundle:Techletter:webhook }
+  methods: ["GET", "POST"]
