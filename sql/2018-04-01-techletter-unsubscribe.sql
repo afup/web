@@ -5,3 +5,4 @@ CREATE TABLE `afup_techletter_unsubscriptions` (
   `reason` varchar(255) DEFAULT NULL,
   `mailchimp_id` varchar(255) DEFAULT NULL
 ) COMMENT='' ENGINE='InnoDB';
+alter table `afup_techletter_unsubscriptions` convert to character set latin1 collate latin1_general_ci;
