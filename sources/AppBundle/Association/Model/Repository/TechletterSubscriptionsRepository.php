@@ -25,16 +25,27 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
 
     public function hasUserSubscribed(User $user = null)
     {
-        $subscription = null;
-        if ($user !== null) {
-            $subscription = $this->getOneBy(['userId' => $user->getId()]);
-        }
-
-        if ($user === null or $subscription === null) {
+        if (null === $user) {
             return false;
         }
 
-        return true;
+        $query = $this->getPreparedQuery(
+            "SELECT ats.*
+                 FROM afup_techletter_subscriptions ats
+                 LEFT JOIN afup_personnes_physiques app ON app.id = ats.user_id
+                 LEFT JOIN (
+                  SELECT afup_techletter_unsubscriptions.email, MAX(afup_techletter_unsubscriptions.unsubscription_date) as max_unsubscriptions_date
+                  FROM afup_techletter_unsubscriptions
+                  GROUP BY afup_techletter_unsubscriptions.email
+                 ) as latest_unsubscriptions ON (app.email = latest_unsubscriptions.email AND latest_unsubscriptions.max_unsubscriptions_date > ats.subscription_date) 
+                 WHERE latest_unsubscriptions.email IS NULL
+                 AND ats.user_id = :userId
+              "
+        );
+
+        $query->setParams(['userId' => $user->getId()]);
+
+        return $query->query()->count() > 0;
     }
 
     public function getAllSubscriptionsWithUser()
@@ -51,6 +62,12 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
             LEFT JOIN afup_personnes_physiques app ON app.id = ats.user_id
             LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
             LEFT JOIN afup_cotisations ac ON ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)
+            LEFT JOIN (
+              SELECT afup_techletter_unsubscriptions.email, MAX(afup_techletter_unsubscriptions.unsubscription_date) as max_unsubscriptions_date
+              FROM afup_techletter_unsubscriptions
+              GROUP BY afup_techletter_unsubscriptions.email
+            ) as latest_unsubscriptions ON (app.email = latest_unsubscriptions.email AND latest_unsubscriptions.max_unsubscriptions_date > ats.subscription_date) 
+            WHERE latest_unsubscriptions.email IS NULL
             GROUP BY app.id
           ')->query($this->getCollection($hydrator))
             ;
@@ -67,7 +84,13 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
             LEFT JOIN afup_personnes_physiques app ON app.id = ats.user_id
             LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
             LEFT JOIN afup_cotisations ac ON ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)
-            WHERE ac.date_fin > UNIX_TIMESTAMP()
+            LEFT JOIN (
+              SELECT afup_techletter_unsubscriptions.email, MAX(afup_techletter_unsubscriptions.unsubscription_date) as max_unsubscriptions_date
+              FROM afup_techletter_unsubscriptions
+              GROUP BY afup_techletter_unsubscriptions.email
+            ) as latest_unsubscriptions ON (app.email = latest_unsubscriptions.email AND latest_unsubscriptions.max_unsubscriptions_date > ats.subscription_date)
+            WHERE latest_unsubscriptions.email IS NULL
+            AND ac.date_fin > UNIX_TIMESTAMP()
             GROUP BY app.id
           ')->query($this->getCollection(new HydratorArray()))
         ;

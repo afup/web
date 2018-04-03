@@ -27,6 +27,46 @@ class Mailchimp
         );
     }
 
+    const MAX_MEMBERS_PER_PAGE = 50;
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    public function getAllSubscribedMembersAddresses($list)
+    {
+        $response = $this->client->get(
+            'lists/' . $list . '/members',
+            [
+                'count' => 0,
+                'status' => 'subscribed',
+            ]
+        );
+
+        $totalItems = $response->get('total_items');
+
+        $addresses = [];
+
+        for ($i=0; $i<=ceil($totalItems / self::MAX_MEMBERS_PER_PAGE); $i++) {
+            $response = $this->client->get(
+                'lists/' . $list . '/members',
+                [
+                    'count' => self::MAX_MEMBERS_PER_PAGE,
+                    'offset' => $i,
+                    'fields' => 'members.email_address',
+                    'status' => 'subscribed',
+                ]
+            );
+
+            foreach ($response->all() as $member) {
+                $addresses[] = $member->email_address;
+            }
+        }
+
+        return array_unique($addresses);
+    }
+
     /**
      * Unsubscribe an address from a list
      *
