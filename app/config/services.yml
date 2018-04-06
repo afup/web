@@ -220,10 +220,20 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TicketRepository]
 
+    app.ticket_type_repository:
+        class: AppBundle\Event\Model\Repository\TicketTypeRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TicketTypeRepository]
+
     app.ticket_event_repository:
         class: AppBundle\Event\Model\Repository\TicketEventTypeRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TicketEventTypeRepository]
+
+    app.ticket_special_price_repository:
+        class: AppBundle\Event\Model\Repository\TicketSpecialPriceRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TicketSpecialPriceRepository]
 
     app.mailing_list_repository:
         class: AppBundle\Groups\Model\Repository\MailingListRepository

@@ -138,6 +138,10 @@ parameters:
                     nom: 'Inscriptions sponsors'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/sponsor'
+                admin_event_special_price:
+                    nom: 'Inscriptions - prix custom'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/special_price'
                 forum_facturation:
                     nom: 'Factures'
                     niveau: 'ROLE_ADMIN'

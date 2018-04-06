@@ -34,8 +34,10 @@ class PurchaseType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $maxNbPersonne = $options['special_price_token'] ? 1 : self::MAX_NB_PERSONNES;
+
         $nbPersonnesChoices = [];
-        for ($i=1; $i<=self::MAX_NB_PERSONNES; $i++) {
+        for ($i=1; $i<=$maxNbPersonne; $i++) {
             $nbPersonnesChoices[$i] = $i;
         }
 
@@ -55,6 +57,7 @@ class PurchaseType extends AbstractType
                     'event_id' => $options['event_id'],
                     'member_type' => $options['member_type'],
                     'is_cfp_submitter' => $options['is_cfp_submitter'],
+                    'special_price_token' => $options['special_price_token'],
                 ]
             ])
             ->add('paymentType', ChoiceType::class, [
@@ -96,6 +99,7 @@ class PurchaseType extends AbstractType
             'data_class' => Invoice::class,
             'member_type' => TicketType::MEMBER_NOT,
             'is_cfp_submitter' => false,
+            'special_price_token' => null,
             'event_id' => null,
             'cascade_validation' => true,
             'validation_groups' => function () {
