@@ -107,9 +107,8 @@ class AdminEventController extends Controller
          * @var $eventRepository EventRepository
          */
         $eventRepository = $this->get('ting')->get(EventRepository::class);
-        $event = $this->getEvent($eventRepository, $request);
 
-        if ($event === null) {
+        if (null === ($event = $this->getEvent($eventRepository, $request))) {
             throw $this->createNotFoundException('Could not find event');
         }
 
