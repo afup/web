@@ -179,6 +179,11 @@ ul.tickets--errors, #fieldset--optin div{
 p.tickets--type-stock-limit{
     margin-left:200px;
 }
+
+.tickets--type-stock-close-to-sold-out {
+    font-weight: bold;
+}
+
 #tickets--other-payments{
     cursor: pointer;
 }
