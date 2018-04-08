@@ -815,7 +815,7 @@
                                                             <td class="mcnTextContent" id="templateArticles" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
 
                                                                 {% for article in tech_letter.articles %}
-                                                                    <div class="template--article" {% if preview %}data-url="{{ article.url }}"{% endif %}>
+                                                                    <div style="padding: 0 0 12px" class="template--article" {% if preview %}data-url="{{ article.url }}"{% endif %}>
                                                                         {% if article.language == 'fr' %}
                                                                         🇫🇷
                                                                         {% else %}
