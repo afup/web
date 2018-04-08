@@ -17,7 +17,7 @@ class TechLetterFactory
 
         if (isset($array['articles'])) {
             foreach ($array['articles'] as $article) {
-                $articles[] = new Article($article['url'], $article['title'], $article['host'], $article['readingTime'], $article['excerpt']);
+                $articles[] = new Article($article['url'], $article['title'], $article['host'], $article['readingTime'], $article['excerpt'], $article['language']);
             }
         }
 

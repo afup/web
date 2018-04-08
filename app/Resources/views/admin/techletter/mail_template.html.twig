@@ -816,6 +816,11 @@
 
                                                                 {% for article in tech_letter.articles %}
                                                                     <div class="template--article" {% if preview %}data-url="{{ article.url }}"{% endif %}>
+                                                                        {% if article.language == 'fr' %}
+                                                                        🇫🇷
+                                                                        {% else %}
+                                                                        🇺🇸
+                                                                        {% endif %}
                                                                         <a href="{{ article.url }}" target="_blank">{{ article.title }}</a><br>
                                                                         <span style="font-size:12px">{{ article.host }} - {{ article.readingTime}} minutes de lecture</span><br>
                                                                         <em>{{ article.excerpt }}</em><br>

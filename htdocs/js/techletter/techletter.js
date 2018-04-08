@@ -49,7 +49,8 @@ import { IframeOverlay, LoadingOverlay } from './iframeOverlay';
 				title: {inputType: "input", type: "text"},
 				host: {inputType: "input", type: "text"},
 				readingTime: {inputType: "input", type: "number", min: 1, max: 100, step: 1},
-				excerpt: {inputType: "textarea", rows: 10}
+				excerpt: {inputType: "textarea", rows: 10},
+                language: {inputType: "select", values: { "fr": "fr", "en": "en"}}
 			}
 		},
 		{
