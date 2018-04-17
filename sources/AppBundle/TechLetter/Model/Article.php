@@ -30,19 +30,25 @@ class Article implements \JsonSerializable
     private $excerpt;
 
     /**
+     * @var string
+     */
+    private $language;
+
+    /**
      * @param string $url
      * @param string $title
      * @param string $host
      * @param int $readingTime
      * @param string $excerpt
      */
-    public function __construct($url, $title, $host, $readingTime, $excerpt)
+    public function __construct($url, $title, $host, $readingTime, $excerpt, $language)
     {
         $this->url = $url;
         $this->title = $title;
         $this->host = $host;
         $this->readingTime = $readingTime;
         $this->excerpt = $excerpt;
+        $this->language = $language;
     }
 
     /**
@@ -86,6 +92,14 @@ class Article implements \JsonSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
      * @inheritDoc
      */
     public function jsonSerialize()
@@ -95,7 +109,8 @@ class Article implements \JsonSerializable
             'title' => $this->title,
             'host' => $this->host,
             'readingTime' => $this->readingTime,
-            'excerpt' => $this->excerpt
+            'excerpt' => $this->excerpt,
+            'language' => $this->language,
         ];
     }
 }

@@ -142,6 +142,20 @@ LinkEditor.prototype = {
 				input[inputOption] = model[key][inputOption];
 			});
 
+			if (model[key].inputType === "select" && typeof model[key].values !== 'undefined') {
+                Object.keys(model[key].values).forEach((modelIndex) => {
+                	let option = document.createElement('option');
+                	var modelValue = model[key].values[modelIndex];
+                	option.setAttribute('value', modelIndex);
+                	if (data !== null && modelIndex === data[key]) {
+                        option.setAttribute('selected', 'selected');
+					}
+					option.innerHTML = modelValue;
+                    input.appendChild(option);
+                });
+			}
+
+
 			let div = document.createElement('div');
 			div.appendChild(label);
 			div.appendChild(input);
