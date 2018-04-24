@@ -9,6 +9,8 @@ class TicketType implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
+    const SPECIAL_PRICE_TECHNICAL_NAME = 'SPECIAL_PRICE';
+
     /**
      * @var int
      */
