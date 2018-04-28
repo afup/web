@@ -48,9 +48,30 @@ class RegistrationsByOfficeExporterCommand extends ContainerAwareCommand
 
         $ticketLocator = new OfficeFinder($geocoder, $userRepository, $invoiceRepository, $inscriptions);
 
+        $columns = [
+            'id',
+            'reference',
+            'prenom',
+            'nom',
+            'societe',
+            'tags',
+            'type_pass',
+            'email',
+            'member_since',
+            'office'
+        ];
+
+        $file->fputcsv($columns);
+
         foreach ($ticketLocator->getFromRegistrationsOnEvent($event) as $row) {
-            $output->writeln(sprintf('%s => %s', $row['reference'], $row['nearest']));
-            $file->fputcsv($row);
+            $preparedRow = [];
+            foreach ($columns as $column) {
+                if (!array_key_exists($column, $row)) {
+                    throw new \RuntimeException(sprintf('Colonne "%s" non trouvée : %s', $column, var_export($row, true)));
+                }
+                $preparedRow[] = $row[$column];
+            }
+            $file->fputcsv($preparedRow);
         }
     }
 }
