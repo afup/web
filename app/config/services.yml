@@ -280,6 +280,12 @@ services:
         arguments:
           - 'Afup\Site\Utils\Pays'
 
+    app.legacy_inscriptions:
+        class: Afup\Site\Forum\Inscriptions
+        factory: ["@app.legacy_model_factory", 'createObject']
+        arguments:
+          - 'Afup\Site\Forum\Inscriptions'
+
     app.purchase_form:
         class: AppBundle\Event\Form\PurchaseType
         autowire: true
@@ -370,3 +376,7 @@ services:
     app.geocoder.adapter:
         class: Ivory\HttpAdapter\CurlHttpAdapter
         public: false
+
+    app.registration_export_generator:
+        class : AppBundle\Event\Ticket\RegistrationsExportGenerator
+        arguments: ["@app.offices_finder", "@app.legacy_inscriptions", "@app.invoice_repository", "@app.user_repository"]

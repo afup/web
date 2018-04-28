@@ -2,13 +2,6 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Ticket\RegistrationsExportGenerator;
-use AppBundle\Offices\OfficeFinder;
-use Geocoder\Provider\GoogleMaps;
-use Ivory\HttpAdapter\CurlHttpAdapter;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,22 +25,15 @@ class RegistrationsExporterCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $officeFinder = $this->getContainer()->get('app.offices_finder');
+        $container = $this->getContainer();
 
-        $userRepository = $this->getContainer()->get('ting')->get(UserRepository::class);
-        $invoiceRepository = $this->getContainer()->get('ting')->get(InvoiceRepository::class);
-        $inscriptions = $this->getContainer()->get('app.legacy_model_factory')->createObject('\Afup\Site\Forum\Inscriptions');
-        $exportGenerator = new RegistrationsExportGenerator($officeFinder, $inscriptions, $invoiceRepository, $userRepository);
-
-        $eventRepository = $this->getContainer()->get('ting')->get(EventRepository::class);
-
-        if (null === ($event = $eventRepository->getNextEvent())) {
+        if (null === ($event = $container->get('app.event_repository')->getNextEvent())) {
             $output->writeln('No event found');
             return;
         }
 
         $file = new \SplFileObject($input->getArgument('file'), 'w+');
 
-        $exportGenerator->export($event, $file);
+        $container->get('app.registration_export_generator')->export($event, $file);
     }
 }
