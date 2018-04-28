@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RegistrationsByOfficeExporterCommand extends ContainerAwareCommand
+class RegistrationsExporterCommand extends ContainerAwareCommand
 {
     /**
      * @see Command
@@ -22,7 +22,7 @@ class RegistrationsByOfficeExporterCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('export-registrations-by-office')
+            ->setName('export-registrations')
             ->addArgument('file', InputArgument::REQUIRED)
         ;
     }
