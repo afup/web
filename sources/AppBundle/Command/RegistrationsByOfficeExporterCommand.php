@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
+use AppBundle\Event\Ticket\RegistrationsExportGenerator;
 use AppBundle\Offices\OfficeFinder;
 use Geocoder\Provider\GoogleMaps;
 use Ivory\HttpAdapter\CurlHttpAdapter;
@@ -48,30 +49,7 @@ class RegistrationsByOfficeExporterCommand extends ContainerAwareCommand
 
         $ticketLocator = new OfficeFinder($geocoder, $userRepository, $invoiceRepository, $inscriptions);
 
-        $columns = [
-            'id',
-            'reference',
-            'prenom',
-            'nom',
-            'societe',
-            'tags',
-            'type_pass',
-            'email',
-            'member_since',
-            'office'
-        ];
-
-        $file->fputcsv($columns);
-
-        foreach ($ticketLocator->getFromRegistrationsOnEvent($event) as $row) {
-            $preparedRow = [];
-            foreach ($columns as $column) {
-                if (!array_key_exists($column, $row)) {
-                    throw new \RuntimeException(sprintf('Colonne "%s" non trouvée : %s', $column, var_export($row, true)));
-                }
-                $preparedRow[] = $row[$column];
-            }
-            $file->fputcsv($preparedRow);
-        }
+        $exportGenerator = new RegistrationsExportGenerator($ticketLocator);
+        $exportGenerator->export($event, $file);
     }
 }
