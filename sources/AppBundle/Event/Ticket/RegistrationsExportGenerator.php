@@ -168,44 +168,14 @@ class RegistrationsExportGenerator
      */
     private function getTypePass($type)
     {
-        $AFUP_Tarifs_Forum_Lib = [
-            AFUP_FORUM_INVITATION => 'Invitation',
-            AFUP_FORUM_ORGANISATION => 'Organisation',
-            AFUP_FORUM_PROJET => 'Projet PHP',
-            AFUP_FORUM_SPONSOR => 'Sponsor',
-            AFUP_FORUM_PRESSE => 'Presse',
-            AFUP_FORUM_PROF => 'Enseignement supérieur',
-            AFUP_FORUM_CONFERENCIER => 'Conferencier',
-            AFUP_FORUM_PREMIERE_JOURNEE => 'Jour 1 ',
-            AFUP_FORUM_DEUXIEME_JOURNEE => 'Jour 2',
-            AFUP_FORUM_2_JOURNEES => '2 Jours',
-            AFUP_FORUM_2_JOURNEES_AFUP => '2 Jours AFUP',
-            AFUP_FORUM_PREMIERE_JOURNEE_AFUP => 'Jour 1 AFUP',
-            AFUP_FORUM_DEUXIEME_JOURNEE_AFUP => 'Jour 2 AFUP',
-            AFUP_FORUM_2_JOURNEES_ETUDIANT => '2 Jours Etudiant',
-            AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT => 'Jour 1 Etudiant',
-            AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT => 'Jour 2 Etudiant',
-            AFUP_FORUM_2_JOURNEES_PREVENTE => '2 Jours prévente',
-            AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE => '2 Jours AFUP prévente',
-            AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION => '2 Jours prévente + adhésion',
-            AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE => '2 Jours Etudiant prévente',
-            AFUP_FORUM_2_JOURNEES_COUPON => '2 Jours avec coupon de réduction',
-            AFUP_FORUM_2_JOURNEES_SPONSOR => '2 Jours par Sponsor',
-            AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => '',
-            AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => '',
-            AFUP_FORUM_SPECIAL_PRICE => 'Tarif Spécial',
-        ];
-
-        $lib_pass = isset($AFUP_Tarifs_Forum_Lib[$type]) ? $AFUP_Tarifs_Forum_Lib[$type] : null;
-
         switch ($type) {
             case AFUP_FORUM_PREMIERE_JOURNEE:
             case AFUP_FORUM_LATE_BIRD_PREMIERE_JOURNEE:
-                $lib_pass = 'PASS JOUR 1';
+                return 'PASS JOUR 1';
                 break;
             case AFUP_FORUM_DEUXIEME_JOURNEE:
             case AFUP_FORUM_LATE_BIRD_DEUXIEME_JOURNEE:
-                $lib_pass = 'PASS JOUR 2';
+                return 'PASS JOUR 2';
                 break;
             case AFUP_FORUM_2_JOURNEES:
             case AFUP_FORUM_2_JOURNEES_AFUP:
@@ -221,20 +191,23 @@ class RegistrationsExportGenerator
             case AFUP_FORUM_LATE_BIRD_AFUP:
             case AFUP_FORUM_CFP_SUBMITTER:
             case AFUP_FORUM_SPECIAL_PRICE:
-                $lib_pass = 'PASS 2 JOURS';
+                return 'PASS 2 JOURS';
                 break;
             case AFUP_FORUM_ORGANISATION:
-            case AFUP_FORUM_PRESSE:
-            case AFUP_FORUM_CONFERENCIER:
-            case AFUP_FORUM_SPONSOR:
-                $lib_pass = strtoupper($AFUP_Tarifs_Forum_Lib[$type]);
+                return 'ORGANISATION';
                 break;
-
+            case AFUP_FORUM_PRESSE:
+                return 'PRESSE';
+                break;
+            case AFUP_FORUM_CONFERENCIER:
+                return 'CONFERENCIER';
+                break;
+            case AFUP_FORUM_SPONSOR:
+                return 'SPONSOR';
+                break;
             default:
-                ;
+                throw new \RuntimeException(sprintf('Libellé du type %s non trouvé', var_export($type, true)));
                 break;
         }
-
-        return $lib_pass;
     }
 }
