@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event\Ticket;
 
+use Afup\Site\Association\Cotisations;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
@@ -23,6 +24,11 @@ class RegistrationsExportGenerator
     private $inscriptions;
 
     /**
+     * @var Cotisations
+     */
+    private $cotisations;
+
+    /**
      * @var InvoiceRepository
      */
     private $invoiceRepository;
@@ -30,13 +36,15 @@ class RegistrationsExportGenerator
     /**
      * @param OfficeFinder $officeFinder
      * @param Inscriptions $inscriptions
+     * @param Cotisations $cotisations
      * @param InvoiceRepository $invoiceRepository
      * @param UserRepository $userRepository
      */
-    public function __construct(OfficeFinder $officeFinder, Inscriptions $inscriptions, InvoiceRepository $invoiceRepository, UserRepository $userRepository)
+    public function __construct(OfficeFinder $officeFinder, Inscriptions $inscriptions, Cotisations $cotisations, InvoiceRepository $invoiceRepository, UserRepository $userRepository)
     {
         $this->officeFinder = $officeFinder;
         $this->inscriptions = $inscriptions;
+        $this->cotisations = $cotisations;
         $this->invoiceRepository = $invoiceRepository;
         $this->userRepository = $userRepository;
     }
@@ -132,8 +140,7 @@ class RegistrationsExportGenerator
      */
     private function comptureSeniority(User $user)
     {
-        $cotisations = new \Afup\Site\Association\Cotisations($GLOBALS['AFUP_DB']);
-        $cotis = $cotisations->obtenirListe(AFUP_PERSONNES_PHYSIQUES, $user->getId());
+        $cotis = $this->cotisations->obtenirListe(AFUP_PERSONNES_PHYSIQUES, $user->getId());
         $now = new \DateTime();
         $diffs = [];
 
