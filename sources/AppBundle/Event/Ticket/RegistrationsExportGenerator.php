@@ -120,9 +120,9 @@ class RegistrationsExportGenerator
     {
         preg_match('@\<tag\>(.*)\</tags?\>@i', $comments, $matches);
         $tags =  isset($matches[1]) ? $matches[1] : '';
-        $tags = explode(';',$tags);
+        $tags = explode(';', $tags);
 
-        return implode(' - ',array_filter($tags));
+        return implode(' - ', array_filter($tags));
     }
 
     /**
@@ -161,7 +161,7 @@ class RegistrationsExportGenerator
      */
     private function getTypePass($type)
     {
-        $AFUP_Tarifs_Forum_Lib = array(
+        $AFUP_Tarifs_Forum_Lib = [
             AFUP_FORUM_INVITATION => 'Invitation',
             AFUP_FORUM_ORGANISATION => 'Organisation',
             AFUP_FORUM_PROJET => 'Projet PHP',
@@ -187,12 +187,11 @@ class RegistrationsExportGenerator
             AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => '',
             AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => '',
             AFUP_FORUM_SPECIAL_PRICE => 'Tarif Spécial',
-        );
+        ];
 
         $lib_pass = isset($AFUP_Tarifs_Forum_Lib[$type]) ? $AFUP_Tarifs_Forum_Lib[$type] : null;
 
-        switch ($type)
-        {
+        switch ($type) {
             case AFUP_FORUM_PREMIERE_JOURNEE:
             case AFUP_FORUM_LATE_BIRD_PREMIERE_JOURNEE:
                 $lib_pass = 'PASS JOUR 1';
