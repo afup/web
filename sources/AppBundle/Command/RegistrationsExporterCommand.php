@@ -32,24 +32,28 @@ class RegistrationsExporterCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $eventRepository = $this->getContainer()->get('ting')->get(EventRepository::class);
+        //$curl = new CurlHttpAdapter();
+        //$geocoder = new GoogleMaps($curl, null, null, true, $this->getContainer()->getParameter('google_maps_api_key'));
+        //$officeFinder = new OfficeFinder($geocoder);
+
+        $officeFinder = $this->getContainer()->get('app.offices_finder');
+
+
         $userRepository = $this->getContainer()->get('ting')->get(UserRepository::class);
         $invoiceRepository = $this->getContainer()->get('ting')->get(InvoiceRepository::class);
         $inscriptions = $this->getContainer()->get('app.legacy_model_factory')->createObject('\Afup\Site\Forum\Inscriptions');
+        $exportGenerator = new RegistrationsExportGenerator($officeFinder, $inscriptions, $invoiceRepository, $userRepository);
+
+
+        $eventRepository = $this->getContainer()->get('ting')->get(EventRepository::class);
 
         if (null === ($event = $eventRepository->getNextEvent())) {
             $output->writeln('No event found');
             return;
         }
 
-        $curl = new CurlHttpAdapter();
-        $geocoder = new GoogleMaps($curl, null, null, true, $this->getContainer()->getParameter('google_maps_api_key'));
-
         $file = new \SplFileObject($input->getArgument('file'), 'w+');
 
-        $ticketLocator = new OfficeFinder($geocoder);
-
-        $exportGenerator = new RegistrationsExportGenerator($ticketLocator, $inscriptions, $invoiceRepository, $userRepository);
         $exportGenerator->export($event, $file);
     }
 }

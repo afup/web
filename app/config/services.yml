@@ -358,3 +358,15 @@ services:
         autowire: true
         tags:
           - { name: kernel.event_listener, event: member.new, method: onNewMemberEvent }
+
+    app.offices_finder:
+        class: AppBundle\Offices\OfficeFinder
+        arguments: ["@app.geocoder"]
+
+    app.geocoder:
+        class: Geocoder\Provider\GoogleMaps
+        arguments: ["@app.geocoder.adapter", null, null, true, "%google_maps_api_key%"]
+
+    app.geocoder.adapter:
+        class: Ivory\HttpAdapter\CurlHttpAdapter
+        public: false
