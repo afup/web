@@ -47,9 +47,9 @@ class RegistrationsByOfficeExporterCommand extends ContainerAwareCommand
 
         $file = new \SplFileObject($input->getArgument('file'), 'w+');
 
-        $ticketLocator = new OfficeFinder($geocoder, $userRepository, $invoiceRepository, $inscriptions);
+        $ticketLocator = new OfficeFinder($geocoder);
 
-        $exportGenerator = new RegistrationsExportGenerator($ticketLocator);
+        $exportGenerator = new RegistrationsExportGenerator($ticketLocator, $inscriptions, $invoiceRepository, $userRepository);
         $exportGenerator->export($event, $file);
     }
 }
