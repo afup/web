@@ -280,6 +280,18 @@ services:
         arguments:
           - 'Afup\Site\Utils\Pays'
 
+    app.legacy_inscriptions:
+        class: Afup\Site\Forum\Inscriptions
+        factory: ["@app.legacy_model_factory", 'createObject']
+        arguments:
+          - 'Afup\Site\Forum\Inscriptions'
+
+    app.legacy_cotisations:
+        class: Afup\Site\Association\Cotisations
+        factory: ["@app.legacy_model_factory", 'createObject']
+        arguments:
+          - 'Afup\Site\Association\Cotisations'
+
     app.purchase_form:
         class: AppBundle\Event\Form\PurchaseType
         autowire: true
@@ -358,3 +370,19 @@ services:
         autowire: true
         tags:
           - { name: kernel.event_listener, event: member.new, method: onNewMemberEvent }
+
+    app.offices_finder:
+        class: AppBundle\Offices\OfficeFinder
+        arguments: ["@app.geocoder"]
+
+    app.geocoder:
+        class: Geocoder\Provider\GoogleMaps
+        arguments: ["@app.geocoder.adapter", null, null, true, "%google_maps_api_key%"]
+
+    app.geocoder.adapter:
+        class: Ivory\HttpAdapter\CurlHttpAdapter
+        public: false
+
+    app.registration_export_generator:
+        class : AppBundle\Event\Ticket\RegistrationsExportGenerator
+        arguments: ["@app.offices_finder", "@app.legacy_inscriptions", "@app.legacy_cotisations", "@app.invoice_repository", "@app.user_repository"]
