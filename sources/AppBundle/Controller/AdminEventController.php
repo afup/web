@@ -23,6 +23,7 @@ use AppBundle\Event\Model\TicketSpecialPrice;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -527,5 +528,22 @@ class AdminEventController extends Controller
                 return 1;
             });
         }
+    }
+
+    public function badgesGenerateAction(Request $request)
+    {
+        $event = $this->getEvent($this->get('app.event_repository'), $request);
+
+        $file = new \SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('badges_'), 'w+');
+        $this->get('app.registration_export_generator')->export($event, $file);
+
+        $headers = [
+            'Content-Type' =>  'text/html; charset=utf-8',
+            'Content-Disposition' => sprintf('attachment; filename="inscriptions_%s_%s.csv"', $event->getPath(), date('Ymd-His')),
+        ];
+
+        $response = new BinaryFileResponse($file, BinaryFileResponse::HTTP_OK, $headers);
+        $response->deleteFileAfterSend(true);
+        return $response;
     }
 }
