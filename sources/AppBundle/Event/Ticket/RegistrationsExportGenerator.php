@@ -91,6 +91,11 @@ class RegistrationsExportGenerator
     {
         $inscriptionsData = $this->inscriptions->obtenirListe($event->getId());
         foreach ($inscriptionsData as $inscriptionsDataRow) {
+            if ($inscriptionsDataRow['etat'] == AFUP_FORUM_ETAT_ANNULE) {
+                // On n'exporte pas les billets inscriptions annulées
+                continue;
+            }
+
             $invoice = $this->invoiceRepository->getByReference($inscriptionsDataRow['reference']);
 
             try {
