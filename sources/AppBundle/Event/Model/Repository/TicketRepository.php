@@ -86,6 +86,24 @@ class TicketRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @param Event $event
+     *
+     * @return Ticket[]
+     */
+    public function getByEvent(Event $event)
+    {
+        $sql = 'SELECT afup_inscription_forum.*
+        FROM afup_inscription_forum
+        WHERE afup_inscription_forum.id_forum = :id_forum
+        ORDER BY afup_inscription_forum.date';
+
+        return $this->getPreparedQuery($sql)
+            ->setParams(['id_forum' => $event->getId()])
+            ->query($this->getCollection(new HydratorSingleObject()))
+        ;
+    }
+
+    /**
      * @return \CCMBenchmark\Ting\Repository\CollectionInterface
      */
     public function getAllTicketsForExport()
