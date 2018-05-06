@@ -314,7 +314,7 @@ ting:
     connections:
         main:
             namespace: CCMBenchmark\Ting\Driver\Mysqli
-            charset: utf8
+            charset: utf8mb4
             master:
                 host:     "%database_host%"
                 port:     "%database_port%"
