@@ -20,6 +20,10 @@ vote_all:
   path: /{eventSlug}/vote-all
   defaults: {_controller: AppBundle:Vote:index, all: true, page: 1}
 
+submit_speaker:
+  path: /{eventSlug}/submit-speaker
+  defaults: {_controller: AppBundle:SubmitSpeaker:index }
+
 vote_all_paginated:
   path: /{eventSlug}/vote-all/{page}
   defaults: {_controller: AppBundle:Vote:index, all: true}
