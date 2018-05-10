@@ -52,7 +52,7 @@
             <div class="button">{{ 'Soumettre une conférence'|trans }} <svg width="32" height="32"><use xlink:href="#octocat"></use></svg> </div>
         </a>
 
-        <a href="{{ url('submit_speaker', {eventSlug: event.path}) }}">
+        <a href="{{ url('speaker-suggestion', {eventSlug: event.path}) }}">
             <div class="button">{{ 'Suggérer un·e conférencier·e'|trans }}</div>
         </a>
     </div>

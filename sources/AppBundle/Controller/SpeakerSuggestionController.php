@@ -2,14 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Event\Form\SubmitSpeakerType;
+use AppBundle\Event\Form\SpeakerSuggestionType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerSuggestionRepository;
 use AppBundle\Event\Model\SpeakerSuggestion;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SubmitSpeakerController extends EventBaseController
+class SpeakerSuggestionController extends EventBaseController
 {
     /**
      * @param string $eventSlug
@@ -20,7 +21,7 @@ class SubmitSpeakerController extends EventBaseController
     {
         $event = $this->checkEventSlug($eventSlug);
 
-        $form = $this->createForm(SubmitSpeakerType::class);
+        $form = $this->createForm(SpeakerSuggestionType::class);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -35,7 +36,7 @@ class SubmitSpeakerController extends EventBaseController
             $this->sendMail($event, $speakerSuggestion);
 
             return $this->render(
-                'event/submit-speaker/submit_success.html.twig',
+                'event/speaker-suggestion/submit_success.html.twig',
                 [
                     'event' => $event,
                 ]
@@ -43,7 +44,7 @@ class SubmitSpeakerController extends EventBaseController
         }
 
         return $this->render(
-            'event/submit-speaker/submit.html.twig',
+            'event/speaker-suggestion/submit.html.twig',
             [
                 'form' => $form->createView(),
                 'event' => $event,
@@ -78,7 +79,7 @@ class SubmitSpeakerController extends EventBaseController
         $subject = sprintf('%s - Nouvelle suggestion de speaker', $event->getTitle());
 
         $content = $this->renderView(
-            'event/submit-speaker/mail.txt.twig',
+            'event/speaker-suggestion/mail.txt.twig',
             [
                 'event' => $event,
                 'speaker_suggestion' => $speakerSuggestion,
