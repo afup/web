@@ -18,7 +18,7 @@ class SubmitSpeakerType extends AbstractType
     {
         $builder
             ->add(
-                'submitter_mail',
+                'suggester_email',
                 TextType::class,
                 [
                     'label' => 'Votre email',
@@ -30,7 +30,7 @@ class SubmitSpeakerType extends AbstractType
                 ]
             )
             ->add(
-                'submitter_name',
+                'suggester_name',
                 TextType::class,
                 [
                     'label' => 'Vos nom/prénom',
