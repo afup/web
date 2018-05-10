@@ -21,6 +21,15 @@ class SpeakerSuggestionController extends EventBaseController
     {
         $event = $this->checkEventSlug($eventSlug);
 
+        if ($event->getDateEndCallForPapers() < new \DateTime()) {
+            return $this->render(
+                'event/speaker-suggestion/closed.html.twig',
+                [
+                    'event' => $event,
+                ]
+            );
+        }
+
         $form = $this->createForm(SpeakerSuggestionType::class);
         $form->handleRequest($request);
 
