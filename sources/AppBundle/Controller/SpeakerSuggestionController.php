@@ -35,16 +35,13 @@ class SpeakerSuggestionController extends EventBaseController
 
             $this->sendMail($event, $speakerSuggestion);
 
-            return $this->render(
-                'event/speaker-suggestion/submit_success.html.twig',
-                [
-                    'event' => $event,
-                ]
-            );
+            $this->addFlash('success', 'Merci pour votre suggestion');
+
+            return new RedirectResponse($this->generateUrl('speaker-suggestion', ['eventSlug' => $event->getPath()]));
         }
 
         return $this->render(
-            'event/speaker-suggestion/submit.html.twig',
+            'event/speaker-suggestion/index.html.twig',
             [
                 'form' => $form->createView(),
                 'event' => $event,
