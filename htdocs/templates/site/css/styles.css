@@ -1660,3 +1660,25 @@ form.news-filters label {
     display:inline;
     font-weight: normal;
 }
+
+form .form-line {
+    margin: 20px 0;
+}
+
+form.speaker-suggestion-form {
+    margin-top: 0;
+}
+
+form.speaker-suggestion-form textarea {
+    min-height: 250px;
+}
+
+.speaker-suggestion-description {
+    font-size: 1.3em;
+}
+
+.speaker-suggestion-form__comment-help {
+    font-style: italic;
+    font-size: 0.9em;
+    margin: 20px 0 30px 0;
+}

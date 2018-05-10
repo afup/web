@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <h2>Suggérer un·e conférencier·e</h2>
 
-        <div class="col-md-6">
+        <div class="col-md-6 speaker-suggestion-description">
 
             À chaque événement, le pôle conférences travaille dur pour vous proposer des sujets pointus, novateurs, enrichissants, présentés par des speakers reconnus comme de nouvelles têtes, aux univers et aux backgrounds variés.<br />
             <br />
@@ -17,10 +17,44 @@
         </div>
 
         <div class="col-md-6">
-            {{ form(form) }}
+            {{ form_start(form, { attr: { class: 'speaker-suggestion-form' }}) }}
 
-            Dans le commentaire, vous pouvez nous indiquer pourquoi vous souhaiteriez voir ce/cette conférencier(ère),
-            ainsi que d'éventuels moyens pour le/la contacter ou des liens vers des slides/conférences précédements données.
+            <div class="form-line">
+                {{ form_errors(form.suggester_email) }}
+                {{ form_label(form.suggester_email) }}
+                {{ form_widget(form.suggester_email) }}
+            </div>
+
+            <div class="form-line">
+                {{ form_errors(form.suggester_name) }}
+                {{ form_label(form.suggester_name) }}
+                {{ form_widget(form.suggester_name) }}
+            </div>
+
+            <div class="form-line">
+                {{ form_errors(form.suggester_name) }}
+                {{ form_label(form.speaker_name) }}
+                {{ form_widget(form.speaker_name) }}
+            </div>
+
+            <div class="form-line">
+                {{ form_errors(form.comment) }}
+                {{ form_label(form.comment) }}
+                {{ form_widget(form.comment) }}
+            </div>
+
+            <div class="speaker-suggestion-form__comment-help">
+                Dans le commentaire, vous pouvez nous indiquer pourquoi vous souhaiteriez voir ce/cette conférencier(ère),
+                ainsi que d'éventuels moyens pour le/la contacter ou des liens vers des slides/conférences précédements données.
+            </div>
+
+            <div class="txtcenter">
+                {{ form_widget(form.save) }}
+            </div>
+
+            {{ form_end(form) }}
+
+
         </div>
     </div>
 
