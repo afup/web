@@ -26,8 +26,9 @@ class BlogController extends EventBaseController
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $talks = $talkRepository->getByEventWithSpeakers($event);
+        $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
 
-        return $this->render(':blog:program.html.twig', ['talks' => $talks, 'event' => $event]);
+        return $this->render(':blog:program.html.twig', ['talks' => $talks, 'event' => $event, 'jsonld' => $jsonld]);
     }
     /**
      * @param $eventSlug
@@ -42,6 +43,7 @@ class BlogController extends EventBaseController
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $talks = $talkRepository->getByEventWithSpeakers($event);
+        $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
 
         $eventPlanning = [];
         $rooms = [];
@@ -108,7 +110,8 @@ class BlogController extends EventBaseController
                     'rooms' => $rooms,
                     'hourMin' => $hourMin,
                     'hourMax' => $hourMax,
-                    'precision' => 5
+                    'precision' => 5,
+                    'jsonld' => $jsonld
                 ]
         );
     }
@@ -156,7 +159,8 @@ class BlogController extends EventBaseController
          */
         $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
         $speakers = $speakerRepository->getScheduledSpeakersByEvent($event);
+        $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
 
-        return $this->render(':blog:speakers.html.twig', ['speakers' => $speakers, 'event' => $event]);
+        return $this->render(':blog:speakers.html.twig', ['speakers' => $speakers, 'event' => $event, 'jsonld' => $jsonld]);
     }
 }

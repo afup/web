@@ -17,7 +17,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getNextEvent()
     {
         $query = $this
-            ->getQuery('SELECT id, path FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut LIMIT 1')
+            ->getQuery('SELECT id, path, titre, date_fin_appel_conferencier FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut LIMIT 1')
         ;
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
         if ($events->count() === 0) {
@@ -111,6 +111,11 @@ class EventRepository extends Repository implements MetadataInitializer
                 ]
             ])
             ->addField([
+                'columnName' => 'date_fin_vote',
+                'fieldName' => 'dateEndVote',
+                'type' => 'datetime'
+            ])
+            ->addField([
                 'columnName' => 'date_fin_prevente',
                 'fieldName' => 'dateEndPreSales',
                 'type' => 'datetime',
@@ -147,6 +152,16 @@ class EventRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'logo_url',
                 'fieldName' => 'logoUrl',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'place_name',
+                'fieldName' => 'placeName',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'place_address',
+                'fieldName' => 'placeAddress',
                 'type' => 'string'
             ])
         ;

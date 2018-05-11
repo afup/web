@@ -5,11 +5,13 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('/css/grid.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/vote.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/vote.css') }}?1">
+    <link rel="stylesheet" href="{{ asset('templates/site/css/global-menu.css') }}" media="all" />
 {% endblock %}
 
 {% block header %}
-    <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <header class="navbar navbar-inverse" role="navigation">
         {% include 'event/menu.html.twig' %}
     </header>
 {% endblock %}

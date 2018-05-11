@@ -3,11 +3,11 @@
 namespace Afup\Site\Association;
 use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
+use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
 use DateInterval;
 use DateTime;
-use PHPMailer;
 
 
 define('AFUP_COTISATIONS_REGLEMENT_ESPECES', 0);
@@ -279,6 +279,13 @@ class Cotisations
         return $result;
     }
 
+    public function getAccountFromCmd($cmd)
+    {
+        list($ref, $date, $memberType, $memberId, $stuff) = explode('-', $cmd, 5);
+
+        return ['type' => $memberType, 'id' => $memberId];
+    }
+
     /**
      * Supprime une cotisation
      *
@@ -374,7 +381,7 @@ class Cotisations
      * @access public
      * @return bool Succès de l'envoi
      */
-    function envoyerFacture($id_cotisation)
+    public function envoyerFacture($id_cotisation, Mail $mail)
     {
 
         $configuration = $GLOBALS['AFUP_CONF'];
@@ -388,50 +395,40 @@ class Cotisations
         }
         $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email');
 
-        $sujet = "Facture AFUP\n";
-
-        $corps = "Bonjour, \n\n";
-        $corps .= "Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.\n";
-        $corps .= "Nous restons à votre disposition pour toute demande complémentaire.\n\n";
-        $corps .= "Le bureau\n\n";
-        $corps .= $configuration->obtenir('afup|raison_sociale') . "\n";
-        $corps .= $configuration->obtenir('afup|adresse') . "\n";
-        $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "\n";
+        $corps = "Bonjour,<br />";
+        $corps .= "<p>Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.</p>";
+        $corps .= "<p>Nous restons à votre disposition pour toute demande complémentaire.</p>";
+        $corps .= "<p>Le bureau</p>";
+        $corps .= $configuration->obtenir('afup|raison_sociale') . "<br />";
+        $corps .= $configuration->obtenir('afup|adresse') . "<br />";
+        $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "<br />";
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $numeroFacture = $this->genererFacture($id_cotisation, $chemin_facture);
 
-        /*
-        $ok = Afup\Site\Utils\Mailing::envoyerMail(
-                    $GLOBALS['conf']->obtenir('mails|email_expediteur'),
-                    array($contactPhysique['email'], $contactPhysique['nom']." ".$contactPhysique['prenom']),
-                    $sujet,
-                    $corps,
-                    array('file'=>array($chemin_facture,'facture.pdf')));
-         TODO : Il faut debugguer l envoi de PJ dans la classe Afup\Site\Utils\Mailing
-         */
 
-        require_once 'phpmailer/class.phpmailer.php';
-        $mail = new PHPMailer;
-        $mail->AddAddress($contactPhysique['email'], $contactPhysique['nom'] . " " . $contactPhysique['prenom']);
-        $mail->From = $configuration->obtenir('mails|email_expediteur');
-        $mail->FromName = $configuration->obtenir('mails|nom_expediteur');
+        $receiver = array(
+            'email' => $contactPhysique['email'],
+            'name' => sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom'])
+        );
+        $subject = 'Facture AFUP';
+        $parameters = [
+            'subject' => $subject,
+            "attachments" => [
+                [
+                    "type" => "application/pdf",
+                    "name" => 'facture-' . $numeroFacture . '.pdf',
+                    "content" => base64_encode(file_get_contents($chemin_facture)),
+                ]
+            ]
+        ];
 
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->Host = $configuration->obtenir('mails|serveur_smtp');
-            $mail->Mailer = "smtp";
-        } else {
-            $mail->Mailer = "mail";
-        }
-
-        $mail->Subject = $sujet;
-        $mail->Body = $corps;
-        $mail->AddAttachment($chemin_facture, 'facture-' . $numeroFacture . '.pdf');
-        $ok = $mail->Send();
+        $ok = $mail->send(Mail::TEMPLATE_TRANSAC, $receiver, [
+            'content' => $corps,
+            'title' => $subject
+        ], $parameters);
         @unlink($chemin_facture);
 
-
-        @unlink($chemin_facture);
         return $ok;
     }
 
@@ -624,17 +621,16 @@ TXT;
         } else {
             $endSubscription = DateTime::createFromFormat('U', $cotisation['date_fin']);
         }
-        $now = new DateTime();
+        $base = $now = new DateTime();
 
         $year = new DateInterval('P1Y');
-        if ($endSubscription->add($year) > $now) {
-            // Cotisation is not ended yet or since less than a year : the renewal will start from $cotisation['date_fin']
-            return $endSubscription;
-        } else {
-            // The subscription ended since more than a year: we start a new subscription
-            $now->add($year);
-            return $now;
+
+        if ($endSubscription > $now) {
+            $base = $endSubscription;
         }
+
+        $base->add($year);
+        return $base;
     }
 
     /**

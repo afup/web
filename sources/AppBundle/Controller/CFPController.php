@@ -30,8 +30,12 @@ class CFPController extends EventBaseController
     public function indexAction($eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
-        if ($event->getDateEndCallForPapers() < new \DateTime()) {
-            return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
+
+        $now = new \DateTime();
+        if ($event->getDateEndCallForPapers() < $now) {
+            if ($event->getDateEndVote() > $now) {
+                return $this->redirectToRoute('event_index');
+            }
         }
 
         $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get('app.speaker_factory')->getSpeaker($event));
@@ -119,7 +123,7 @@ class CFPController extends EventBaseController
         }
         $this->denyAccessUnlessGranted('edit', $talk);
 
-        $talkForm = $this->createForm(TalkType::class, $talk);
+        $talkForm = $this->createForm(TalkType::class, $talk, ['codeOfConductChecked' => true]);
         $formResponse = $this->handleTalkForm($request, $event, $talkForm);
         if ($formResponse instanceof Response) {
             return $formResponse;

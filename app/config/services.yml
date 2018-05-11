@@ -27,6 +27,17 @@ services:
         tags:
             -  { name: twig.extension }
 
+    app_twig_assets:
+        class: AppBundle\Twig\AssetsExtension
+        arguments: ["%kernel.root_dir%"]
+        tags:
+            -  { name: twig.extension }
+
+    app_twig_offices:
+        class: AppBundle\Twig\OfficesExtension
+        tags:
+            -  { name: twig.extension }
+
     app.locale_listener:
         class: AppBundle\Listener\LocaleListener
         arguments: [ "%kernel.default_locale%" ]
@@ -67,6 +78,11 @@ services:
         class: AppBundle\Association\Model\Repository\UserRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
+
+    app.talk_repository:
+        class: AppBundle\Event\Model\Repository\TalkRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TalkRepository]
 
     app.company_member_repository:
         class: AppBundle\Association\Model\Repository\CompanyMemberRepository
@@ -129,6 +145,19 @@ services:
         class: AppBundle\Mailchimp\Mailchimp
         arguments: ["@app.mailchimp_client"]
 
+    app.mailchimp_techletter_client:
+        class: Mailchimp\Mailchimp
+        arguments: ["%mailchimp_techletter_api_key%"]
+        public: false
+
+    app.mailchimp_techletter_api:
+        class: AppBundle\Mailchimp\Mailchimp
+        arguments: ["@app.mailchimp_techletter_client"]
+
+    app.techletter_mailchimp_synchronizer:
+        class: AppBundle\TechLetter\MailchimpSynchronizer
+        arguments: ["@app.mailchimp_techletter_api", "@app.techletter_subscriptions_repository", "%mailchimp_techletter_list%"]
+
     app.mail:
         class: Afup\Site\Utils\Mail
 
@@ -159,6 +188,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\InvoiceRepository]
 
+    app.techletter_subscriptions_repository:
+        class: AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository]
+
     app.action_throttling:
         class: AppBundle\Security\ActionThrottling\ActionThrottling
         autowire: true
@@ -186,10 +220,35 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TicketRepository]
 
+    app.ticket_type_repository:
+        class: AppBundle\Event\Model\Repository\TicketTypeRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TicketTypeRepository]
+
     app.ticket_event_repository:
         class: AppBundle\Event\Model\Repository\TicketEventTypeRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TicketEventTypeRepository]
+
+    app.ticket_special_price_repository:
+        class: AppBundle\Event\Model\Repository\TicketSpecialPriceRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TicketSpecialPriceRepository]
+
+    app.mailing_list_repository:
+        class: AppBundle\Groups\Model\Repository\MailingListRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Groups\Model\Repository\MailingListRepository]
+
+    app.articles_repository:
+        class: AppBundle\Site\Model\Repository\ArticleRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Site\Model\Repository\ArticleRepository]
+
+    app.techletter_sending_repository:
+        class: AppBundle\TechLetter\Model\Repository\SendingRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
 
     app.sponsor_ticket_helper:
         class: AppBundle\Event\Ticket\SponsorTicketHelper
@@ -209,11 +268,29 @@ services:
         tags:
           - {name: form.type}
 
+    app.news_filters:
+        class: AppBundle\Site\Form\NewsFiltersType
+        autowire: true
+        tags:
+          - {name: form.type}
+
     app.legacy_country:
         class: Afup\Site\Utils\Pays
         factory: ["@app.legacy_model_factory", 'createObject']
         arguments:
           - 'Afup\Site\Utils\Pays'
+
+    app.legacy_inscriptions:
+        class: Afup\Site\Forum\Inscriptions
+        factory: ["@app.legacy_model_factory", 'createObject']
+        arguments:
+          - 'Afup\Site\Forum\Inscriptions'
+
+    app.legacy_cotisations:
+        class: Afup\Site\Association\Cotisations
+        factory: ["@app.legacy_model_factory", 'createObject']
+        arguments:
+          - 'Afup\Site\Association\Cotisations'
 
     app.purchase_form:
         class: AppBundle\Event\Form\PurchaseType
@@ -272,3 +349,44 @@ services:
     app.html_to_markdown:
         class: Parsedown
         autowire: true
+
+    app.event_json_ld:
+        class: AppBundle\Event\JsonLd
+        autowire: true
+
+    app.google_client:
+        class: Google_Client
+        calls:
+          - ["setAuthConfig", ["%google_groups_api_key%"]]
+          - ["setScopes", [[!php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP, !php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY]]]
+          - ["setSubject", ['admin-mailing-listes-api@afup.org']]
+
+    app.group_client:
+        class: Google_Service_Directory
+        arguments: ["@app.google_client"]
+
+    app.group_repository:
+        class: AppBundle\Groups\GroupRepository
+        autowire: true
+
+    app.members_groups_listener:
+        class: AppBundle\Association\Listener\MembersGroupsListener
+        autowire: true
+        tags:
+          - { name: kernel.event_listener, event: member.new, method: onNewMemberEvent }
+
+    app.offices_finder:
+        class: AppBundle\Offices\OfficeFinder
+        arguments: ["@app.geocoder"]
+
+    app.geocoder:
+        class: Geocoder\Provider\GoogleMaps
+        arguments: ["@app.geocoder.adapter", null, null, true, "%google_maps_api_key%"]
+
+    app.geocoder.adapter:
+        class: Ivory\HttpAdapter\CurlHttpAdapter
+        public: false
+
+    app.registration_export_generator:
+        class : AppBundle\Event\Ticket\RegistrationsExportGenerator
+        arguments: ["@app.offices_finder", "@app.legacy_inscriptions", "@app.legacy_cotisations", "@app.invoice_repository", "@app.user_repository"]

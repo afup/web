@@ -17,5 +17,8 @@ monolog:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+        syslog_handler:
+            type: syslog
+            level: error
         console:
             type:  console

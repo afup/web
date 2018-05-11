@@ -1,11 +1,12 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Relance des personnes physiques</h2>
+    <h2>Relance des cotisations</h2>
     <table class="afup_tab">
         <tbody>
         <tr>
             <th align="left">Nom</th>
+            <th align="left">Société</th>
             <th align="left">Statut mail</th>
             <th align="left">Type relance</th>
             <th align="left" title="Date relance">Date. rel.</th>
@@ -13,6 +14,7 @@
         {% for log in logs %}
             <tr class="{% if loop.index is even %}even{% endif %}">
                 <td>{{ log.app.firstname }} {{ log.app.lastname }}</td>
+                <td>{% if log.apm is not null %}{{ log.apm.companyName }}{% else %}¤{% endif %}</td>
                 <td>{% if log.asrl.mailSent %}Ok{% else %}Erreur{% endif %}</td>
                 <td>{{ log.asrl.reminderKey }}</td>
                 <td>{{ log.asrl.reminderDate|date('d/m/Y') }}</td>

@@ -38,3 +38,11 @@ admin_company:
 admin_company_members:
   path: /company/members/{id}
   defaults: {_controller: AppBundle:AdminMemberShip:members, id: ~}
+
+admin_members_reporting:
+  path: /members/reporting
+  defaults: {_controller: AppBundle:MembershipAdmin:reporting}
+
+admin_techletter:
+  resource: "techletter_admin.yml"
+  prefix: /techletter

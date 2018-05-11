@@ -1,0 +1,22 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Abonnés à la techletter de l'AFUP</h2>
+
+    <p>Nombre d'abonnés : {{ subscribers|length }}</p>
+
+    <table class="afup_tab">
+        <tbody>
+        <tr>
+            <th align="left">Nom</th>
+            <th align="left">Date d'enregistrement</th>
+        </tr>
+        {% for subscription in subscribers %}
+            <tr class="{% if loop.index is even %}even{% endif %}">
+                <td>{{ subscription.user.label }}</td>
+                <td>{{ subscription.subscriptionDate|date('d/m/Y') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

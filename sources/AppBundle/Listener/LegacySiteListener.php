@@ -34,7 +34,7 @@ class LegacySiteListener
 
         $controller->setDefaultBlocks([
             'community' => $page->community(),
-            'header' => $page->header(),
+            'header' => $page->header($_SERVER['REQUEST_URI']),
             'sidebar' => $page->getRightColumn(),
             'social' => $page->social(),
             'footer' => $page->footer()

@@ -278,9 +278,7 @@ class Speaker implements NotifyPropertyInterface
     {
         $twitter = $this->getTwitter();
         $twitter = trim($twitter, '@');
-        if (0 === strpos($twitter, 'https://twitter.com/')) {
-            $twitter = substr($twitter, strlen('https://twitter.com/'));
-        }
+        $twitter = preg_replace('!^https?://twitter.com/!', '', $twitter);
 
         if (0 === strlen(trim($twitter))) {
             return null;

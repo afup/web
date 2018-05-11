@@ -17,8 +17,8 @@ class SubscriptionReminderLogRepository extends Repository implements MetadataIn
             SELECT asrl.id, asrl.user_id, asrl.user_type, asrl.email, asrl.reminder_key, asrl.reminder_date, asrl.mail_sent,
             app.id, apm.id, app.nom, apm.nom, app.prenom, apm.prenom, apm.raison_sociale
             FROM `afup_subscription_reminder_log` asrl
-            LEFT JOIN afup_personnes_physiques app ON asrl.user_type = 0 AND app.id = asrl.user_id
-            LEFT JOIN afup_personnes_morales apm ON asrl.user_type = 1 AND apm.id = asrl.user_id
+            LEFT JOIN afup_personnes_physiques app ON app.id = asrl.user_id
+            LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
             ORDER BY asrl.reminder_date DESC
             LIMIT ' . (((int) $page-1) * $limit) . ', ' . (int) ($limit + 1)
         )->query();

@@ -17,6 +17,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class PurchaseType extends AbstractType
 {
+    const MAX_NB_PERSONNES = 15;
+
     /**
      * @var Pays
      */
@@ -32,22 +34,22 @@ class PurchaseType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $maxNbPersonne = $options['special_price_token'] ? 1 : self::MAX_NB_PERSONNES;
+
+        $nbPersonnesChoices = [];
+        for ($i=1; $i<=$maxNbPersonne; $i++) {
+            $nbPersonnesChoices[$i] = $i;
+        }
+
         $builder
             ->add('nbPersonnes', ChoiceType::class, [
-                'choices' => [
-                    1 => 1,
-                    2 => 2,
-                    3 => 3,
-                    4 => 4,
-                    5 => 5
-                ],
+                'choices' => $nbPersonnesChoices,
                 'multiple' => false,
                 'expanded' => false,
                 'mapped' => false,
                 'data' => 1
             ])
             ->add('tickets', CollectionType::class, [
-                // each entry in the array will be an "email" field
                 'entry_type' => TicketType::class,
                 'prototype' => true,
                 'allow_add'    => true,
@@ -55,6 +57,7 @@ class PurchaseType extends AbstractType
                     'event_id' => $options['event_id'],
                     'member_type' => $options['member_type'],
                     'is_cfp_submitter' => $options['is_cfp_submitter'],
+                    'special_price_token' => $options['special_price_token'],
                 ]
             ])
             ->add('paymentType', ChoiceType::class, [
@@ -96,6 +99,7 @@ class PurchaseType extends AbstractType
             'data_class' => Invoice::class,
             'member_type' => TicketType::MEMBER_NOT,
             'is_cfp_submitter' => false,
+            'special_price_token' => null,
             'event_id' => null,
             'cascade_validation' => true,
             'validation_groups' => function () {

@@ -18,6 +18,29 @@ talks:
     resource: "routing/talks.yml"
     prefix: /talks
 
+meetups:
+    resource: "routing/meetups.yml"
+    prefix: /meetups
+
 blog:
     resource: "routing/blog.yml"
     prefix: /blog
+
+groups:
+    resource: "routing/groups.yml"
+    prefix: /admin/groups
+
+cms_page:
+    resource: "routing/cms_page.yml"
+    prefix: /p
+
+news:
+    resource: "routing/news.yml"
+    prefix: /news
+
+techletter:
+    resource: "routing/techletter.yml"
+    prefix: /techno_watch
+
+global:
+    resource: "routing/global.yml"

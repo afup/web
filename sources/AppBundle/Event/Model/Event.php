@@ -52,6 +52,11 @@ class Event implements NotifyPropertyInterface
     /**
      * @var \DateTime
      */
+    private $dateEndVote;
+
+    /**
+     * @var \DateTime
+     */
     private $dateEndPreSales;
 
     /**
@@ -73,6 +78,16 @@ class Event implements NotifyPropertyInterface
      * @var string
      */
     private $logoUrl;
+
+    /**
+     * @var string
+     */
+    private $placeName;
+
+    /**
+     * @var string
+     */
+    private $placeAddress;
 
     /**
      * @return int
@@ -223,6 +238,29 @@ class Event implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
+    public function getDateEndVote()
+    {
+        if (null === $this->dateEndVote) {
+            return $this->getDateEndCallForPapers();
+        }
+
+        return $this->dateEndVote;
+    }
+
+    /**
+     * @param \DateTime $dateEndVote
+     * @return Event
+     */
+    public function setDateEndVote(\DateTime $dateEndVote = null)
+    {
+        $this->propertyChanged('dateEndVote', $this->dateEndVote, $dateEndVote);
+        $this->dateEndVote = $dateEndVote;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
     public function getDateEndPreSales()
     {
         return $this->dateEndPreSales;
@@ -337,6 +375,44 @@ class Event implements NotifyPropertyInterface
         $this->propertyChanged('logoUrl', $this->logoUrl, $logoUrl);
         $this->logoUrl = $logoUrl;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceName()
+    {
+        return $this->placeName;
+    }
+
+    /**
+     * @param string $placeName
+     * @return Event
+     */
+    public function setPlaceName($placeName)
+    {
+        $this->propertyChanged('placeName', $this->placeName, $placeName);
+        $this->placeName = $placeName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceAddress()
+    {
+        return $this->placeAddress;
+    }
+
+    /**
+     * @param string $placeAddress
+     * @return Event
+     */
+    public function setPlaceAddress($placeAddress)
+    {
+        $this->propertyChanged('placeAddress', $this->placeAddress, $placeAddress);
+        $this->placeAddress = $placeAddress;
         return $this;
     }
 }

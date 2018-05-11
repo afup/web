@@ -11,3 +11,260 @@ RewriteRule ^annuaire.*$ /pages/site? [R=301]
 
 RewriteCond %{QUERY_STRING} route=actualites/961/lafup-lance-un-super-apero
 RewriteRule ^site.*$ /association/super-apero-9-mars? [L,R=302]
+
+
+#pages supprimées
+RewriteCond %{QUERY_STRING} ^route=vie-associative-afup/266/definition-du-benevole$
+RewriteRule ^(.*)$  "/pages/site/?route=vie-associative-afup/981/poles"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/70/formulaires-d-inscription$
+RewriteRule ^(.*)$  "/association/devenir-membre"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/19/qu-est-ce-que-l-afup$
+RewriteRule ^(.*)$  "/pages/site/?route=qui-sommes-nous/82"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative/4$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/57/pourquoi-doit-on-souscrire-une-cotisation$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/22/le-niveau-n-est-il-pas-trop-lev$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/20/pourquoi-la-priorit-aux-professionnels$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/54/je-suis-un-professionnel-ou-un-institutionnel-li-php-pourquoi-devenir-membre$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/55/je-suis-un-amateur-de-php-pourquoi-devenir-membre$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
+
+
+RewriteCond %{QUERY_STRING}  ^route=faq/6$
+RewriteRule ^(.*)$  "/pages/site/?route=association/85"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=divers/231/le-livre-blanc-php-en-entreprise$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=divers/232/annuaire-de-prestataires$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=communication-externe/102/$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=divers/220/who-is-afup$
+RewriteRule ^(.*)$  "/p/984-qui-sommes-nous?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=antenne-de-lille/74$
+RewriteRule ^(.*)$  "/association/antennes?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/312/appel-t-moignages-recherche-retour-d-exp-rience-php-5$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/90/entretiens$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/76/cr-ation-d-un-syst-me-de-question-r-ponse-pour-promouvoir-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=02-projets-en-cours/27$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=certification-php/367/25-octobre-1er-barcamp-mysql-par-lemug-fr$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=certification-php/49$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/248/php-5-disponible-pour-la-production$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/228/t-l-charger-php$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/229/t-l-charger-mysql$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/230/t-l-charger-apache$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=briques-logicielles-en-php/241/egroupware$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=briques-logicielles-en-php/63$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=01-php/53$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/233/o-trouver-du-support$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/116/php-est-il-long-apprendre$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/115/quels-sont-les-co-ts-cach-s$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/114/quel-est-le-co-t-de-la-license-php$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/113/quels-sont-les-diteurs-et-environnements-de-d-veloppement-int-gr-s-disponibles$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/112/quelles-sont-les-librairies-disponibles$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/111/php-fonctionne-t-il-avec-les-sgbd-du-march$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/110/php-fonctionne-t-il-sur-les-syst-mes-d-exploitation-pr-sents-en-entreprise$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=php-questions-fr-quentes/46$
+RewriteRule ^(.*)$  "/talks?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/453/twenga-et-php-un-duo-gagnant-pour-le-moteur-de-recherche-de-shopping$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/440/plus-de-700-outils-.*-sous-PHP-chez-BNPParibas$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/436/Pixmania-une-confiance-historique-en-PHP$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/434/sebastien-barbieri-rtbf-le-choix-de-lopen-source$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/373/php-partout-chez-20minutes-fr$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/335/philips-la-meilleure-arme-est-g-n-ralement-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/317/l-etat-fran-ais-se-modernise-avec-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/313/sugarcrm-un-logiciel-crm-performant-commercial-et-open-source$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/297/flickr-le-service-de-partage-de-photo-de-yahoo-utilise-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/289/lemonde-fr-ajoute-une-couche-xul-sur-son-back-office-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/249/houra-fr-de-vignette-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/282/mod-le-conomique-et-technique-d-une-solution-de-comptabilit-en-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/246/le-gouvernement-fran-ais-oeuvre-pour-php-et-pour-le-libre$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/212/le-journal-en-ligne-le-monde$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/197/nous-d-veloppons-nos-logiciels-m-tier-avec-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/188/sdvp-le-parisien-migre-d-asp-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/184/le-bhv-joue-gagnant-avec-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/177/france-3-streaming-et-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/167/tv5-utilise-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/198/toute-notre-activit-repose-sur-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/134/yahoo-passe-php$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/129/alain-fortune-m6web-loftstory$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/130/j-r-me-texier-lib-ration$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/126/utilisation-de-php-par-wanadoo-voila$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/132/questions-au-cr-ateur-de-php-rasmus$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=retours-d-experience/19$
+RewriteRule ^(.*)$  "/?"  [L,R=302]
+
+
+#pages déplacées
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/981/poles$
+RewriteRule ^(.*)$  "/pages/site/?route=association/981/poles"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/222/bureaux-de-l-afup-fondateurs-et-conseil-d-administration$
+RewriteRule ^(.*)$  "/pages/site/?route=association/222/bureaux-de-l-afup-fondateurs-et-conseil-d-administration"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/1/statuts-de-l-association-francaise-des-utilisateurs-de-php$
+RewriteRule ^(.*)$  "/pages/site/?route=association/1/statuts-de-l-association-francaise-des-utilisateurs-de-php"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/21/reglement-interieur$
+RewriteRule ^(.*)$  "/pages/site/?route=association/21/reglement-interieur"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/70/formulaires-d-inscription$
+RewriteRule ^(.*)$  "/pages/site/?route=association/70/formulaires-d-inscription"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=faq/53/comment-contacter-l-afup$
+RewriteRule ^(.*)$  "/pages/site/?route=divers/53/comment-contacter-l-afup"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=qui-sommes-nous/82$
+RewriteRule ^(.*)$  "/pages/site/?route=association/984/qui-sommes-nous"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=code-of-conduct/79$
+RewriteRule ^(.*)$  "/pages/site/?route=association/985/code-of-conduct"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=code-de-conduite/80$
+RewriteRule ^(.*)$  "/pages/site/?route=association/986/code-de-conduite"  [L,R=301]
+
+
+RewriteCond %{QUERY_STRING}  ^route=association/981/poles$
+RewriteRule ^(.*)$  "/p/981-poles?"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=association/222/bureaux-de-l-afup-fondateurs-et-conseil-d-administration$
+RewriteRule ^(.*)$  "/p/222-bureaux-de-l-afup-fondateurs-et-conseil-d-administration?"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=association/1/statuts-de-l-association-francaise-des-utilisateurs-de-php$
+RewriteRule ^(.*)$  "/p/1-statuts-de-l-association-francaise-des-utilisateurs-de-php?"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=association/21/reglement-interieur$
+RewriteRule ^(.*)$  "/p/21-reglement-interieur?"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=association/984/qui-sommes-nous$
+RewriteRule ^(.*)$  "/p/984-qui-sommes-nous?"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=association/985/code-of-conduct$
+RewriteRule ^(.*)$  "/p/985-code-of-conduct?"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=association/986/code-de-conduite$
+RewriteRule ^(.*)$  "/p/986-code-de-conduite?"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^route=association/85$
+RewriteRule ^(.*)$  "/p/984-qui-sommes-nous?"  [L,R=301]
+
+RewriteCond %{QUERY_STRING}  ^$
+RewriteRule ^site/$ "/home?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=actualites/(\d*)/(.*)$
+RewriteRule ^site/$ "/news/%1-%2?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=06-actualit/9$
+RewriteRule ^site/$  "/news?"  [L,R=302]
+
+

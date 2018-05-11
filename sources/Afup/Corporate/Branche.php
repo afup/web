@@ -31,6 +31,31 @@ class Branche
         }
     }
 
+    public function feuillesEnfants($id)
+    {
+        $requete = 'SELECT *
+                    FROM afup_site_feuille
+                    WHERE id_parent = '.$this->bdd->echapper($id).'
+                    AND etat = 1
+                    ORDER BY position';
+        return $this->bdd->obtenirTous($requete);
+    }
+
+    public function getNom($id)
+    {
+        $requete = 'SELECT nom
+                    FROM afup_site_feuille
+                    WHERE id = ' . $this->bdd->echapper($id) . '
+                    AND etat = 1';
+        $enregistrement = $this->bdd->obtenirEnregistrement($requete);
+
+        if (false === $enregistrement) {
+            return null;
+        }
+
+        return $enregistrement['nom'];
+    }
+
     function naviguer($id, $profondeur = 1, $identification = "")
     {
         $requete = 'SELECT *

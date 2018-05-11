@@ -32,12 +32,8 @@ offices:
   defaults: {_controller: AppBundle:Static:offices}
 
 superapero:
-  path: /super-apero-9-mars
+  path: /super-apero-8-mars-2018
   defaults: {_controller: AppBundle:Static:superApero}
-
-superapero_live:
-  path: /super-apero-9-mars/live
-  defaults: {_controller: AppBundle:Static:superAperoLive}
 
 void:
   path: /void-route
@@ -46,3 +42,21 @@ void:
 newsletter_subscribe:
   path: /newsletter-subscribe
   defaults: {_controller: AppBundle:Newsletter:subscribe}
+
+membership_payment:
+  path: /paybox-callback
+  defaults: {_controller: AppBundle:MemberShip:payboxCallback}
+
+techletter:
+  path: /techletter
+  defaults: {_controller: AppBundle:Techletter:index}
+
+techletter_subscribe:
+  path: /techletter/subscription
+  defaults: {_controller: AppBundle:Techletter:subscribe }
+  methods: ["POST"]
+
+techletter_webhook:
+  path: /techletter/webhook
+  defaults: {_controller: AppBundle:Techletter:webhook }
+  methods: ["GET", "POST"]

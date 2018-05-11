@@ -9,12 +9,17 @@
 
     {% if app.user %}
         {{ render(controller('AppBundle:Admin:getMenu')) }}
+        {% if app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
+            <p class="note error">
+                Votre cotisation a expiré. Les fonctionnalités réservées aux membres ne vous sont pas accessibles.
+            </p>
+        {% endif %}
     {% endif %}
 
     <div class="col1">
         {% for type, messages in app.session.flashbag.all() %}
             {% for message in messages %}
-                <div class="flash-{{type}}">{{message}}</div>
+                <div class="flash-{{type}}">{{message|raw}}</div>
             {% endfor %}
         {% endfor %}
         {% block content %}

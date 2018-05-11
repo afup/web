@@ -2,7 +2,5 @@ ces fichiers sont éditables au [format markdow](http://daringfireball.net/proje
 
 # procédures
 
-* [Envoi des convocations aux visiteurs](convocations.md)
 * Procédure pour la confirmation / refus des conférenciers
-* [Procédure pour la mise à jour du site](maj_site.md)
-
+* [Import des scans](import-scans.md)

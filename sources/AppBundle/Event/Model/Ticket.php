@@ -9,7 +9,6 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 /**
  * @Assert\LoggedInMember(groups={"personal"})
  * @Assert\PublicTicket(groups={"not_logged_in"})
- * @Assert\CorporateMember(groups={"corporate"})
  * @Assert\AvailableTicket()
  */
 class Ticket implements NotifyPropertyInterface
@@ -51,6 +50,8 @@ class Ticket implements NotifyPropertyInterface
     const TYPE_DAY_2_STUDENT_EARLY = AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE;
     const TYPE_DAY_1_STUDENT = AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT;
     const TYPE_DAY_2_STUDENT = AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT;
+
+    const SPECIAL_PRICE = AFUP_FORUM_SPECIAL_PRICE;
 
     const PAYMENT_CREDIT_CARD = AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE;
     const PAYMENT_CHEQUE = AFUP_FORUM_REGLEMENT_CHEQUE;
@@ -162,6 +163,16 @@ class Ticket implements NotifyPropertyInterface
     private $forumId;
 
     /**
+     * @var int
+     */
+    private $memberType;
+
+    /**
+     * @var int
+     */
+    private $memberId;
+
+    /**
      * @var bool
      */
     private $pmr = false;
@@ -190,6 +201,11 @@ class Ticket implements NotifyPropertyInterface
      * @var string
      */
     public $tag3;
+
+    /**
+     * @var null|string
+     */
+    protected $specialPriceToken;
 
     /**
      * @return int
@@ -572,6 +588,48 @@ class Ticket implements NotifyPropertyInterface
     }
 
     /**
+     * @return int
+     */
+    public function getMemberType()
+    {
+        return $this->memberType;
+    }
+
+    /**
+     * @param int $memberType
+     * @return Ticket
+     */
+    public function setMemberType($memberType)
+    {
+        $memberType = (int) $memberType;
+        $this->propertyChanged('memberType', $this->memberType, $memberType);
+
+        $this->memberType = $memberType;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemberId()
+    {
+        return $this->memberId;
+    }
+
+    /**
+     * @param int $memberId
+     * @return Ticket
+     */
+    public function setMemberId($memberId)
+    {
+        $memberId = (int) $memberId;
+        $this->propertyChanged('memberId', $this->memberId, $memberId);
+
+        $this->memberId = $memberId;
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function getPmr()
@@ -643,5 +701,26 @@ class Ticket implements NotifyPropertyInterface
     public function getTags()
     {
         return [$this->tag1, $this->tag2, $this->tag3];
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSpecialPriceToken()
+    {
+        return $this->specialPriceToken;
+    }
+
+    /**
+     * @param null|string $specialPriceToken
+     *
+     * @return Ticket
+     */
+    public function setSpecialPriceToken($specialPriceToken)
+    {
+        $this->propertyChanged('specialPriceToken', $this->specialPriceToken, $specialPriceToken);
+        $this->specialPriceToken = $specialPriceToken;
+
+        return $this;
     }
 }

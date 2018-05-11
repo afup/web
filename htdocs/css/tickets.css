@@ -70,10 +70,10 @@ span.fieldset--legend--price{
     float:right
 }
 
-fieldset.f7 .input{
+fieldset.fieldset-divers .input{
     margin-left:50px !important;
 }
-fieldset.f7 .input .inputs-list li, fieldset.f6 .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
+fieldset.fieldset-divers .input .inputs-list li, fieldset.fieldset-facturation .input .inputs-list li, div[id^="div_groupe_mobilite_reduite"] .inputs-list li{
     float:left;
     width: 30%;
 }
@@ -118,8 +118,21 @@ ul.tickets--type-list{
     margin-left:150px;
 }
 ul.tickets--type-list li {
-    padding: 0.5em 0;
+    padding: 1em 0;
+    border-top: 1px #4c6eaf solid;
+    width: 600px;
 }
+
+ul.tickets--type-list li:first-child{
+    border-top: none;
+}
+
+ul.tickets--type-list li.tickets--type-list-emphasis {
+    border-top-color: black;
+    margin-top:2em;
+    padding-top:2em;
+}
+
 ul.tickets--type-list label{
     width: 500px;
 }
@@ -130,6 +143,8 @@ ul.tickets--type-list label, div.tickets--pmr label{
 ul.tickets--type-list input{
     display:inline-block;
     width: 20px;
+    position: relative;
+    top: 12px;
 }
 ul.tickets--type-list span.tickets--type-details{
     padding-left: 42px;
@@ -142,14 +157,19 @@ span.tickets--type-members{
     color: #4c6eaf;
     font-weight:bold;
 }
-label[for=purchase_codeOfConduct], #fieldset--7 div label{
+label[for=purchase_codeOfConduct], #fieldset--optin div label{
     width: auto;
 }
 div.tickets--bankwire{
     display: none;
     margin-left:200px;
 }
-ul.tickets--errors, #fieldset--7 div{
+
+div.tickets--errors ul.tickets--errors{
+    margin-left: 1em;
+}
+
+ul.tickets--errors, #fieldset--optin div{
     margin-left:200px;
 }
 .tickets--errors{
@@ -159,6 +179,11 @@ ul.tickets--errors, #fieldset--7 div{
 p.tickets--type-stock-limit{
     margin-left:200px;
 }
+
+.tickets--type-stock-close-to-sold-out {
+    font-weight: bold;
+}
+
 #tickets--other-payments{
     cursor: pointer;
 }

@@ -16,14 +16,10 @@ parameters:
             elements:
                 membre_coordonnees:
                     nom: 'Mes coordonnées'
-                    niveau: 'ROLE_USER'
-                membre_wiki:
-                    nom: 'Accès  wiki'
-                    niveau: 'ROLE_USER'
-                    nouvelle_fenetre: true
+                    niveau: 'ROLE_MEMBER_EXPIRED'
                 membre_redmine:
                     nom: 'Déclarer un problème (GitHub)'
-                    niveau: 'ROLE_USER'
+                    niveau: 'ROLE_MEMBER_EXPIRED'
                     nouvelle_fenetre: true
                     url: 'https://github.com/afup/web/issues?state=open'
                 membre_cotisation:
@@ -31,12 +27,10 @@ parameters:
                     niveau: 'ROLE_MEMBER_EXPIRED'
                 membre_ml:
                     nom: 'Listes de diffusion'
-                    niveau: 'ROLE_USER'
+                    niveau: 'ROLE_MEMBER_EXPIRED' ## Some mailing lists are open to any member of the community
+                    url: '/admin/groups/'
                 membre_assemblee_generale:
                     nom: 'Présence prochaine AG'
-                    niveau: 'ROLE_USER'
-                membre_votes:
-                    nom: 'Votes'
                     niveau: 'ROLE_USER'
                 membre_tags:
                     nom: 'Tags'
@@ -67,24 +61,34 @@ parameters:
                     nom: 'Personnes morales'
                     niveau: 'ROLE_ADMIN'
                 relances_personnes_physiques:
-                    nom: 'Relances - Personnes physiques'
+                    nom: 'Relances cotisations'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/association/relances/1'
-                relances:
-                    nom: 'Relances'
-                    niveau: 'ROLE_ADMIN'
                 statistiques:
                     nom: 'Statistiques'
                     niveau: 'ROLE_ADMIN'
+                reporting:
+                    nom: 'Reporting [WIP]'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/reporting'
                 mailing:
                     nom: 'Mailing'
                     niveau: 'ROLE_ADMIN'
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
-                votes:
-                    nom: 'Votes'
+        veille:
+            nom: "Veille"
+            niveau: "ROLE_VEILLE"
+            elements:
+                veille_ generer_campagne:
+                    nom: "Liste des campagnes"
+                    niveau: "ROLE_VEILLE"
+                    url: '/admin/techletter'
+                techletter:
+                    nom: 'Abonnés à la techletter'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/techletter/members'
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'
@@ -134,12 +138,13 @@ parameters:
                     nom: 'Inscriptions sponsors'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/sponsor'
+                admin_event_special_price:
+                    nom: 'Inscriptions - prix custom'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/special_price'
                 forum_facturation:
                     nom: 'Factures'
                     niveau: 'ROLE_ADMIN'
-                forum_projet:
-                    nom: 'Projet PHP'
-                    niveau: 'ROLE_FORUM'
                 forum_sessions:
                     nom: 'Sessions'
                     niveau: 'ROLE_FORUM'
@@ -156,23 +161,14 @@ parameters:
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
-                forum_emargement:
-                    nom: 'Feuille d''émargement'
-                    niveau: 'ROLE_ADMIN'
                 forum_badge:
                     nom: 'Badges'
                     niveau: 'ROLE_ADMIN'
-                forum_planning_vote:
-                    nom: 'Vote Planning'
-                    niveau: 'ROLE_ADMIN' ##TODO voir si on conserve ou pas, on comprend pas à quoi ça sert
                 forum_joind_in:
                     nom: 'Export sites externes'
                     niveau: 'ROLE_ADMIN'
                 forum_partenaire:
                     nom: 'Sponsors/Partenaires'
-                    niveau: 'ROLE_ADMIN'
-                forum_accreditation_presse:
-                    nom: 'Accréditation presse'
                     niveau: 'ROLE_ADMIN'
                 forum_anonymous_export:
                     nom: 'Export anonymisé'
@@ -332,9 +328,23 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
+        site:
+            namespace : AppBundle\Site\Model\Repository
+            directory : "@AppBundle/Site/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
         association:
             namespace : AppBundle\Association\Model\Repository
             directory : "@AppBundle/Association/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        groups:
+            namespace : AppBundle\Groups\Model\Repository
+            directory : "@AppBundle/Groups/Model/Repository"
             options:
                 default:
                     connection: main
@@ -346,6 +356,13 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
+        techletter:
+            namespace: AppBundle\TechLetter\Model\Repository
+            directory: "@AppBundle/TechLetter/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
 
 knpu_oauth2_client:
     clients:

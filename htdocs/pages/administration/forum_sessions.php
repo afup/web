@@ -261,6 +261,8 @@ if ($action == 'lister') {
 
     $pays = new Pays($bdd);
 
+    $talk = null;
+	
     $formulaire = &instancierFormulaire();
     if ($action != 'ajouter') {
         $champs = $forum_appel->obtenirSession($_GET['id']);
@@ -294,14 +296,12 @@ if ($action == 'lister') {
     $formulaire->addElement('hidden', 'use_markdown', (int)$useMarkdown);
 
 
+    $typesLabelsByKey = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
+    asort($typesLabelsByKey);
     $groupe = array();
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (40 min)', 1);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Conférence plénière (20 min)', 3);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Keynote'            , 4);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Lightning Talk'            , 5);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Démo'            , 6);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Atelier'            , 2);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, 'Projet'            , 9);
+    foreach ($typesLabelsByKey as $genreKey => $genreLabel) {
+        $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, $genreLabel, $genreKey);
+    }
     $formulaire->addGroup($groupe, 'groupe_type_pres', "Type de session", '<br />', false);
 
     $groupe = array();
@@ -373,7 +373,7 @@ if ($action == 'lister') {
                 $valeurs['abstract'],
                 $valeurs['genre'],
                 $valeurs['plannifie'],
-                $valeurs['needs_mentoring'],
+                isset($valeurs['needs_mentoring']) ? $valeurs['needs_mentoring'] : 0,
                 $valeurs['skill'],
                 $valeurs['use_markdown']
             );

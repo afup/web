@@ -2,35 +2,15 @@
 
 namespace AppBundle\Offices;
 
-use Afup\Site\Forum\Inscriptions;
-use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
-use AppBundle\Event\Model\Repository\InvoiceRepository;
 use Geocoder\Exception\NoResult;
 use Geocoder\Geocoder;
 use Geocoder\Model\Coordinates;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class OfficeFinder
 {
     const MAX_DISTANCE_TO_OFFICE = 50000;
-
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-
-    /**
-     * @var InvoiceRepository
-     */
-    private $invoiceRepository;
-
-    /**
-     * @var Inscriptions
-     */
-    private $inscriptions;
 
     /**
      * @var OfficesCollection
@@ -49,66 +29,59 @@ class OfficeFinder
 
     /**
      * @param Geocoder $geocoder
-     * @param UserRepository $userRepository
-     * @param InvoiceRepository $invoiceRepository
-     * @param Inscriptions $inscriptions
      */
-    public function __construct(Geocoder $geocoder, UserRepository $userRepository, InvoiceRepository $invoiceRepository, Inscriptions $inscriptions)
+    public function __construct(Geocoder $geocoder)
     {
         $this->geocoder = $geocoder;
-        $this->userRepository = $userRepository;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->inscriptions = $inscriptions;
         $this->officesCollection = new OfficesCollection();
     }
 
     /**
-     * @param Event $event
+     * @param Invoice $invoice
+     * @param User $user
      *
-     * @return \Generator
+     * @return string|null
      */
-    public function getFromRegistrationsOnEvent(Event $event)
+    public function findOffice(Invoice $invoice, User $user = null)
     {
-        $inscriptionsData = $this->inscriptions->obtenirListe($event->getId());
-        foreach ($inscriptionsData as $inscriptionsDataRow) {
-            $invoice = $this->invoiceRepository->getByReference($inscriptionsDataRow['reference']);
+        $infos = $this->findInfos($invoice, $user);
 
-            try {
-                $user = $this->userRepository->loadUserByUsername($inscriptionsDataRow['email']);
-            } catch (UsernameNotFoundException $exception) {
-                $user = null;
-            }
-
-            $row = [
-                'reference' => $invoice->getReference(),
-                'nearest' => null,
-                'distance' => null,
-                'error' => null,
-                'city' => null !== $user ? $user->getCity() : $invoice->getCity(),
-                'zip_code' => null !== $user ? $user->getZipCode() : $invoice->getZipCode(),
-                'country' => null !== $user ? $user->getCountry() : $invoice->getCountryId(),
-            ];
-
-            $coordinates = $this->findCoordinates($invoice, $user);
-
-            if (null === $coordinates) {
-                $row['error'] = 'Coordonnées non trouvées';
-            } else {
-                try {
-                    $infosNearest = $this->locateNearestLocalOffice($coordinates);
-                    $row['distance'] = $infosNearest['distance'];
-                    if ($row['distance'] > self::MAX_DISTANCE_TO_OFFICE) {
-                        $row['error'] = "Trop éloigné d'une antenne";
-                    } else {
-                        $row['nearest'] = $infosNearest['key'];
-                    }
-                } catch (\Exception $e) {
-                    $row['error'] = $e->getMessage();
-                }
-            }
-
-            yield $row;
+        if (!isset($infos['office'])) {
+            return null;
         }
+
+        return $infos['office'];
+    }
+
+    /**
+     * @param Invoice $invoice
+     * @param User $user
+     *
+     * @return array
+     */
+    protected function findInfos(Invoice $invoice, User $user = null)
+    {
+        $coordinates = $this->findCoordinates($invoice, $user);
+
+        $infos = [];
+
+        if (null === $coordinates) {
+            $infos['error'] = 'Coordonnées non trouvées';
+        } else {
+            try {
+                $infosNearest = $this->locateNearestLocalOffice($coordinates);
+                $infos['distance'] = $infosNearest['distance'];
+                if ($infos['distance'] > self::MAX_DISTANCE_TO_OFFICE) {
+                    $infos['error'] = "Trop éloigné d'une antenne";
+                } else {
+                    $infos['office'] = $infosNearest['key'];
+                }
+            } catch (\Exception $e) {
+                $infos['error'] = $e->getMessage();
+            }
+        }
+
+        return $infos;
     }
 
     /**

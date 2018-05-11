@@ -25,3 +25,11 @@ export_anonymous:
 admin_event_pending_bankwires:
   path: /bankwires
   defaults: {_controller: AppBundle:AdminEvent:pendingBankwires}
+
+admin_event_special_price:
+  path: /special_price
+  defaults: {_controller: AppBundle:AdminEvent:specialPrice}
+
+admin_event_badges:
+  path: /badges
+  defaults: {_controller: AppBundle:AdminEvent:badgesGenerate}

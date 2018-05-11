@@ -6,6 +6,7 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -18,6 +19,27 @@ class TicketRepository extends Repository implements MetadataInitializer
     public function getByReference($reference)
     {
         return $this->getBy(['reference' => $reference]);
+    }
+
+    public function getTotalOfSoldTicketsByMember($userType, $userId, $eventId)
+    {
+        try {
+            return $this->getPreparedQuery(
+                'SELECT COUNT(inscriptions.id) AS total
+            FROM afup_inscription_forum inscriptions
+            WHERE inscriptions.id_member = :member
+            AND inscriptions.member_type = :type
+            AND inscriptions.id_forum = :forum
+            AND inscriptions.etat = :state'
+            )->setParams([
+                'member' => $userId,
+                'type' => $userType,
+                'forum' => $eventId,
+                'state' => Ticket::STATUS_PAID
+            ])->query($this->getCollection(new HydratorArray()))->first()['total'];
+        } catch (QueryException $exception) {
+            return 0;
+        }
     }
 
     public function getByInvoiceWithDetail(Invoice $invoice)
@@ -194,6 +216,16 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'type' => 'int'
             ])
             ->addField([
+                'columnName' => 'id_member',
+                'fieldName' => 'memberId',
+                'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'member_type',
+                'fieldName' => 'memberType',
+                'type' => 'int'
+            ])
+            ->addField([
                 'columnName' => 'mobilite_reduite',
                 'fieldName' => 'pmr',
                 'type' => 'bool',
@@ -216,6 +248,11 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'day2Checkin',
                 'type' => 'bool',
                 'serializer' => Boolean::class
+            ])
+            ->addField([
+                'columnName' => 'special_price_token',
+                'fieldName' => 'specialPriceToken',
+                'type' => 'string'
             ])
         ;
 

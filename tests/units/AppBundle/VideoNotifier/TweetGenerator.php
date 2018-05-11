@@ -60,7 +60,7 @@ class TweetGenerator extends \atoum
                 'case' => "On change la formulation si le titre + compte twitter sont trop longs. De plus on ne met pas de point si il y  un point d'explamation a la fin du titre",
                 'talk' => [
                     'id' => 1941,
-                    'title' => 'Notre environnement de développement n’est plus un bizutage !',
+                    'title' => 'Notre environnement de développement n’est plus un bizutage ! Et meme si les tweets nous permettent 280 caractères il faut checker la longueur totale du tweet généré pour savoir si ça dépasse !',
                 ],
                 'speakers' => [
                     [
@@ -69,7 +69,7 @@ class TweetGenerator extends \atoum
                         'twitter' => '@pascal_martin',
                     ]
                 ],
-                'expected' => "Notre environnement de développement n’est plus un bizutage ! Par @pascal_martin à revoir sur le site de l'AFUP : https://afup.org/talks/1941-notre-environnement-de-developpement-n-est-plus-un-bizutage",
+                'expected' => "Notre environnement de développement n’est plus un bizutage ! Et meme si les tweets nous permettent 280 caractères il faut checker la longueur totale du tweet généré pour savoir si ça dépasse ! Par @pascal_martin à revoir sur le site de l'AFUP : https://afup.org/talks/1941-notre-environnement-de-developpement-n-est-plus-un-bizutage-et-meme-si-les-tweets-nous-permettent-280-caracteres-il-faut-checker-la-longueur-totale-du-tweet-genere-pour-savoir-si-ca-depasse",
             ],
             [
                 'case' => "On ne met pas de point si point d'interogation à la fin + pas de twitter",
@@ -97,20 +97,20 @@ class TweetGenerator extends \atoum
                 'speakers' => [
                     [
                         'firstname' => 'Simon',
-                        'lastname' => 'Delicata',
+                        'lastname' => 'DelicataAvecUnNomVraimentTresLongPourQueLeTweetSoitConsidereCommeEtantARaccourcirCaDevientPresqueRidicule',
                         'twitter' => null,
                     ],
                     [
                         'firstname' => 'Julien',
-                        'lastname' => 'Salleyron',
+                        'lastname' => 'SalleyronMoiAussiJaiUnNomTresLongMaisPasEncoreAssez',
                         'twitter' => null,
                     ]
                 ],
-                'expected' => "Publier des domain events sans RabbitMQ, c'est possible ! Par Simon Delicata et Julien Salleyron https://afup.org/talks/1903-publier-des-domain-events-sans-rabbitmq-c-est-possible",
+                'expected' => "Publier des domain events sans RabbitMQ, c'est possible ! Par Simon DelicataAvecUnNomVraimentTresLongPourQueLeTweetSoitConsidereCommeEtantARaccourcirCaDevientPresqueRidicule et Julien SalleyronMoiAussiJaiUnNomTresLongMaisPasEncoreAssez https://afup.org/talks/1903-publier-des-domain-events-sans-rabbitmq-c-est-possible",
             ],
 
             [
-                'case' => "Titre long et deux speakers",
+                'case' => "Titre long et un grand nombre de speakers",
                 'talk' => [
                     'id' => 1609,
                     'title' => "Comment Ansible et Docker changent notre environnement de mise en production",
@@ -125,9 +125,34 @@ class TweetGenerator extends \atoum
                         'firstname' => '',
                         'lastname' => '',
                         'twitter' => '@maxthoon',
-                    ]
+                    ],
+                    [
+                        'firstname' => 'Jean-Paul',
+                        'lastname' => 'Belmondo',
+                        'twitter' => null,
+                    ],
+                    [
+                        'firstname' => 'Louis',
+                        'lastname' => 'De Funes',
+                        'twitter' => null,
+                    ],
+                    [
+                        'firstname' => 'Arnold',
+                        'lastname' => 'Schwarzenegger',
+                        'twitter' => null,
+                    ],
+                    [
+                        'firstname' => 'Jake',
+                        'lastname' => 'Gyllenhaal',
+                        'twitter' => null,
+                    ],
+                    [
+                        'firstname' => 'Leighton',
+                        'lastname' => 'Meester',
+                        'twitter' => null,
+                    ],
                 ],
-                'expected' => "Comment Ansible et Docker changent notre environnement de mise en production. Par Simon Constans et @maxthoon https://afup.org/talks/1609-comment-ansible-et-docker-changent-notre-environnement-de-mise-en-production",
+                'expected' => "Comment Ansible et Docker changent notre environnement de mise en production. Par Simon Constans et @maxthoon et Jean-Paul Belmondo et Louis De Funes et Arnold Schwarzenegger et Jake Gyllenhaal et Leighton Meester à revoir sur le site de l'AFUP : https://afup.org/talks/1609-comment-ansible-et-docker-changent-notre-environnement-de-mise-en-production",
             ],
             [
                 'case' => "On évite d'avoir deux espaces à la suite",
@@ -143,6 +168,38 @@ class TweetGenerator extends \atoum
                     ]
                 ],
                 'expected' => "Et si on utilisait WordPress ? La conférence de @BoiteAWeb à revoir sur le site de l'AFUP : https://afup.org/talks/1295-et-si-on-utilisait-wordpress",
+
+            ],
+            [
+                'case' => "Speaker avec compte twitter ayant une URL complète en http",
+                'talk' => [
+                    'id' => 2314,
+                    'title' => 'Les hexagones de la Ruche qui dit Oui !',
+                ],
+                'speakers' => [
+                    [
+                        'firstname' => 'Benoit',
+                        'lastname' => 'Merlet',
+                        'twitter' => "http://twitter.com/trompouet",
+                    ]
+                ],
+                'expected' => "Les hexagones de la Ruche qui dit Oui ! La conférence de @trompouet à revoir sur le site de l'AFUP : https://afup.org/talks/2314-les-hexagones-de-la-ruche-qui-dit-oui",
+
+            ],
+            [
+                'case' => "Speaker avec compte twitter ayant une URL complète en https",
+                'talk' => [
+                    'id' => 2314,
+                    'title' => 'Les hexagones de la Ruche qui dit Oui !',
+                ],
+                'speakers' => [
+                    [
+                        'firstname' => 'Benoit',
+                        'lastname' => 'Merlet',
+                        'twitter' => "https://twitter.com/trompouet",
+                    ]
+                ],
+                'expected' => "Les hexagones de la Ruche qui dit Oui ! La conférence de @trompouet à revoir sur le site de l'AFUP : https://afup.org/talks/2314-les-hexagones-de-la-ruche-qui-dit-oui",
 
             ]
         ];

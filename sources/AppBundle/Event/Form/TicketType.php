@@ -4,12 +4,16 @@ namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
+use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketEventType;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -37,14 +41,28 @@ class TicketType extends AbstractType
      */
     private $ticketTypeAvailability;
 
+    /**
+     * @var TicketSpecialPriceRepository
+     */
+    private $ticketSpecialPriceRepository;
+
+    /**
+     * @var TicketTypeRepository
+     */
+    private $ticketTypeRepository;
+
     public function __construct(
         EventRepository $eventRepository,
         TicketEventTypeRepository $ticketEventTypeRepository,
-        TicketTypeAvailability $ticketTypeAvailability
+        TicketTypeAvailability $ticketTypeAvailability,
+        TicketSpecialPriceRepository $ticketSpecialPriceRepository,
+        TicketTypeRepository $ticketTypeRepository
     ) {
         $this->eventRepository = $eventRepository;
         $this->ticketEventTypeRepository = $ticketEventTypeRepository;
         $this->ticketTypeAvailability = $ticketTypeAvailability;
+        $this->ticketSpecialPriceRepository = $ticketSpecialPriceRepository;
+        $this->ticketTypeRepository = $ticketTypeRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -52,7 +70,7 @@ class TicketType extends AbstractType
         $eventTickets = null;
         if ($options['event_id'] !== null) {
             $event = $this->eventRepository->get($options['event_id']);
-            $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event);
+            $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS);
         }
 
         if ($eventTickets === null) {
@@ -91,6 +109,25 @@ class TicketType extends AbstractType
                     continue;
                 }
                 $filteredEventTickets[] = $eventTicket;
+            }
+
+            if ($options['event_id'] !== null) {
+                $event = $this->eventRepository->get($options['event_id']);
+                $ticketSpecialPrice = $this->ticketSpecialPriceRepository->findUnusedToken($event, $options['special_price_token']);
+
+                if (null !== $ticketSpecialPrice) {
+                    $ticketType = $this->ticketTypeRepository->get(AFUP_FORUM_SPECIAL_PRICE);
+
+                    $eToken = new TicketEventType();
+                    $eToken->setDateStart($ticketSpecialPrice->getDateStart());
+                    $eToken->setDateEnd($ticketSpecialPrice->getDateEnd());
+                    $eToken->setPrice($ticketSpecialPrice->getPrice());
+                    $eToken->setTicketType($ticketType);
+                    $eToken->setEventId($ticketSpecialPrice->getEventId());
+                    $eToken->setTicketTypeId(AFUP_FORUM_SPECIAL_PRICE);
+                    $filteredEventTickets = [];
+                    $filteredEventTickets[] = $eToken;
+                }
             }
 
             $formEvent->getForm()->add('ticketEventType', ChoiceType::class, [
@@ -136,6 +173,7 @@ class TicketType extends AbstractType
             ->add('tag1', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 1 ou Id Twitter (ex: @afup)']])
             ->add('tag2', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 2']])
             ->add('tag3', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 3']])
+            ->add('specialPriceToken', HiddenType::class)
         ;
     }
 
@@ -145,7 +183,8 @@ class TicketType extends AbstractType
             'data_class' => Ticket::class,
             'member_type' => self::MEMBER_NOT,
             'is_cfp_submitter' => false,
-            'event_id' => null
+            'event_id' => null,
+            'special_price_token' => null,
         ]);
     }
 }

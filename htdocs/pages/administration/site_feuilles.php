@@ -73,6 +73,7 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date'                 , 'Date'      , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
 	$formulaire->addElement('select'  , 'position'             , 'Position'  , $feuille->positionable());
 	$formulaire->addElement('select'  , 'etat'                 , 'Etat'      , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
+    $formulaire->addElement('textarea'  , 'patterns'                 , 'Patterns URL');
 	$formulaire->addElement('header'  , 'boutons'              , '');
 	$formulaire->addElement('submit'  , 'soumettre'            , ucfirst($action));
 
@@ -99,6 +100,7 @@ if ($action == 'lister') {
 		$date = $formulaire->exportValue('date');
 		$feuille->date = mktime(0, 0, 0, $date['M'], $date['d'], $date['Y']);
 		$feuille->etat = $formulaire->exportValue('etat');
+		$feuille->patterns = $formulaire->exportValue('patterns');
 
 		if ($action == 'ajouter') {
 		    if ($feuille->inserer()) {

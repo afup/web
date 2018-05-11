@@ -42,7 +42,7 @@ if (!$cotisation) {
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'envoyer_facture') {
-    if ($cotisations->envoyerFacture($_GET['id'])) {
+    if ($cotisations->envoyerFacture($_GET['id'], $this->get('app.mail'))) {
         Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
         afficherMessage('La facture a été envoyée par mail', 'index.php?page=membre_cotisation');
     } else {
@@ -76,42 +76,15 @@ $formulaire->addRule('type_cotisation' , 'Type de cotisation manquant' , 'requir
 
 $donnees = $personnes_physiques->obtenir($identifiant);
 
-$reference = strtoupper('C' . date('Y') . '-' . date('dmYHi') . '-' . $type_personne . '-' . $id_personne . '-' . substr($donnees['nom'], 0, 5));
-$reference = supprimerAccents($reference);
-$reference = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', $reference);
-$reference .= '-' . strtoupper(substr(md5($reference), - 3));
+$reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
 
-require_once 'paybox/payboxv2.inc';
-$paybox = new PAYBOX;
-$paybox->set_langue('FRA'); // Langue de l'interface PayBox
-$paybox->set_site($conf->obtenir('paybox|site'));
-$paybox->set_rang($conf->obtenir('paybox|rang'));
-$paybox->set_identifiant('83166771');
+$paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
+    $reference,
+    (float) $montant,
+    $donnees['email']
+);
 
-$paybox->set_total($montant * 100); // Total de la commande, en centimes d'euros
-$paybox->set_cmd($reference); // Référence de la commande
-$paybox->set_porteur($donnees['email']); // Email du client final (Le porteur de la carte)
-
-$paybox->set_repondreA('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_retour.php');
-// URL en cas de reussite
-$paybox->set_effectue('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php');
-// URL en cas de refus du paiement
-$paybox->set_refuse('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_refuse.php');
-// URL en cas d'annulation du paiement de la part du client
-$paybox->set_annule('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_annule.php');
-// URL en cas de disfonctionnement de PayBox
-$paybox->set_erreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php');
-
-$paybox->set_wait(50000); // Délai d'attente avant la redirection
-$paybox->set_boutpi('R&eacute;gler par carte'); // Texte du bouton
-$paybox->set_bkgd('#FAEBD7'); // Fond de page
-$paybox->set_output('B'); // On veut gerer l'affichage dans la page intermediaire
-if (preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
-    $smarty->assign('paybox', $r[1]);
-} else {
-    $smarty->assign('paybox', '');
-}
-
+$smarty->assign('paybox', $paybox);
 $smarty->assign('message', $message);
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 

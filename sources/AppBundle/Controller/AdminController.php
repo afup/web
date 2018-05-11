@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends Controller
 {
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -21,9 +21,21 @@ class AdminController extends Controller
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $actualUrl = $request->getSchemeAndHttpHost() . $request->getRequestUri();
+        $targetPath = null;
+        if (
+            $request->query->has('target')
+            and $targetUri = $request->query->get('target')
+            and $targetUri !== $actualUrl
+            and parse_url($targetUri, PHP_URL_HOST) === null // Ensure there is no domain here
+        ) {
+            $targetPath = $targetUri;
+        }
+
         return $this->render('admin/login.html.twig', [
             'last_username' => $lastUsername,
             'error'         => $error,
+            'target_path'   => $targetPath,
             'title' => "Connexion",
             'page' => 'connexion',
             'class' => 'panel-page'

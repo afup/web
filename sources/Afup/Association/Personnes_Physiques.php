@@ -169,7 +169,7 @@ SQL;
      * @throws \Exception
      */
     public function ajouter($id_personne_morale, $login, $mot_de_passe, $niveau, $niveau_modules, $civilite, $nom, $prenom,
-                            $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn, $throwsException = false)
+                            $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn, $nearest_office = null, $throwsException = false)
     {
         if (empty($id_personne_morale)) {
             $id_personne_morale = null;
@@ -183,7 +183,7 @@ SQL;
         if (!$erreur) {
             $requete = 'INSERT INTO ';
             $requete .= '  afup_personnes_physiques (id_personne_morale, login, mot_de_passe, niveau, niveau_modules, civilite, nom, prenom, email, ';
-            $requete .= '  adresse, code_postal, ville, id_pays, telephone_fixe, telephone_portable, etat, compte_svn) ';
+            $requete .= '  adresse, code_postal, ville, id_pays, telephone_fixe, telephone_portable, etat, nearest_office, compte_svn) ';
             $requete .= 'VALUES (';
             $requete .= (int)$id_personne_morale . ',';
             $requete .= $this->_bdd->echapper($login) . ',';
@@ -201,6 +201,7 @@ SQL;
             $requete .= $this->_bdd->echapper($telephone_fixe) . ',';
             $requete .= $this->_bdd->echapper($telephone_portable) . ',';
             $requete .= (int)$etat . ',';
+            $requete .= $this->_bdd->echapper($nearest_office) . ',';
             $requete .= $this->_bdd->echapper($compte_svn) . ')';
 
             $inserted = $this->_bdd->executer($requete);
@@ -302,7 +303,7 @@ SQL;
      * @return bool Succès de la modification
      */
     function modifierCoordonnees($id, $login, $mot_de_passe,
-                                 $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable)
+                                 $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $nearest_office = '')
     {
         $erreur = $this->loginExists($id, $login);
         $erreur = $erreur || !$this->_countryExists($id_pays);
@@ -321,6 +322,7 @@ SQL;
             $requete .= '  code_postal=' . $this->_bdd->echapper($code_postal) . ',';
             $requete .= '  ville=' . $this->_bdd->echapper($ville) . ',';
             $requete .= '  id_pays=' . $this->_bdd->echapper($id_pays) . ',';
+            $requete .= '  nearest_office=' . $this->_bdd->echapper($nearest_office) . ',';
             $requete .= '  telephone_fixe=' . $this->_bdd->echapper($telephone_fixe) . ',';
             $requete .= '  telephone_portable=' . $this->_bdd->echapper($telephone_portable);
             $requete .= 'WHERE';
