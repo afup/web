@@ -53,7 +53,7 @@ class Mailchimp
                 'lists/' . $list . '/members',
                 [
                     'count' => self::MAX_MEMBERS_PER_PAGE,
-                    'offset' => $i,
+                    'offset' => $i * self::MAX_MEMBERS_PER_PAGE,
                     'fields' => 'members.email_address',
                     'status' => 'subscribed',
                 ]
