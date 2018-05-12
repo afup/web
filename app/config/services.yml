@@ -385,4 +385,4 @@ services:
 
     app.registration_export_generator:
         class : AppBundle\Event\Ticket\RegistrationsExportGenerator
-        arguments: ["@app.offices_finder", "@app.legacy_inscriptions", "@app.legacy_cotisations", "@app.invoice_repository", "@app.user_repository"]
+        arguments: ["@app.offices_finder", "@app.legacy_cotisations", "@app.ticket_repository", "@app.invoice_repository", "@app.user_repository"]

@@ -3,11 +3,12 @@
 namespace AppBundle\Event\Ticket;
 
 use Afup\Site\Association\Cotisations;
-use Afup\Site\Forum\Inscriptions;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
+use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Model\Ticket;
 use AppBundle\Offices\OfficeFinder;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -17,11 +18,6 @@ class RegistrationsExportGenerator
      * @var OfficeFinder
      */
     private $officeFinder;
-
-    /**
-     * @var Inscriptions
-     */
-    private $inscriptions;
 
     /**
      * @var Cotisations
@@ -34,17 +30,22 @@ class RegistrationsExportGenerator
     private $invoiceRepository;
 
     /**
+     * @var TicketRepository
+     */
+    private $ticketRepository;
+
+    /**
      * @param OfficeFinder $officeFinder
-     * @param Inscriptions $inscriptions
      * @param Cotisations $cotisations
+     * @param TicketRepository $ticketRepository
      * @param InvoiceRepository $invoiceRepository
      * @param UserRepository $userRepository
      */
-    public function __construct(OfficeFinder $officeFinder, Inscriptions $inscriptions, Cotisations $cotisations, InvoiceRepository $invoiceRepository, UserRepository $userRepository)
+    public function __construct(OfficeFinder $officeFinder, Cotisations $cotisations, TicketRepository $ticketRepository, InvoiceRepository $invoiceRepository, UserRepository $userRepository)
     {
         $this->officeFinder = $officeFinder;
-        $this->inscriptions = $inscriptions;
         $this->cotisations = $cotisations;
+        $this->ticketRepository = $ticketRepository;
         $this->invoiceRepository = $invoiceRepository;
         $this->userRepository = $userRepository;
     }
@@ -89,30 +90,31 @@ class RegistrationsExportGenerator
      */
     protected function getFromRegistrationsOnEvent(Event $event)
     {
-        $inscriptionsData = $this->inscriptions->obtenirListe($event->getId());
-        foreach ($inscriptionsData as $inscriptionsDataRow) {
-            if ($inscriptionsDataRow['etat'] == AFUP_FORUM_ETAT_ANNULE) {
+        $tickets = $this->ticketRepository->getByEvent($event);
+
+        foreach ($tickets as $ticket) {
+            if ($ticket->getStatus() == Ticket::STATUS_CANCELLED) {
                 // On n'exporte pas les billets inscriptions annulées
                 continue;
             }
 
-            $invoice = $this->invoiceRepository->getByReference($inscriptionsDataRow['reference']);
+            $invoice = $this->invoiceRepository->getByReference($ticket->getReference());
 
             try {
-                $user = $this->userRepository->loadUserByUsername($inscriptionsDataRow['email']);
+                $user = $this->userRepository->loadUserByUsername($ticket->getEmail());
             } catch (UsernameNotFoundException $exception) {
                 $user = null;
             }
 
             yield [
-                'id' => $inscriptionsDataRow['id'],
+                'id' => $ticket->getId(),
                 'reference' => $invoice->getReference(),
-                'prenom' => $inscriptionsDataRow['prenom'],
-                'nom' => $inscriptionsDataRow['nom'],
+                'prenom' => $ticket->getFirstname(),
+                'nom' => $ticket->getLastname(),
                 'societe' => $invoice->getCompany(),
-                'tags' => $this->extractAndCleanTags($inscriptionsDataRow['commentaires']),
-                'type_pass' => $this->getTypePass($inscriptionsDataRow['type_inscription']),
-                'email' => $inscriptionsDataRow['email'],
+                'tags' => $this->extractAndCleanTags($ticket->getComments()),
+                'type_pass' => $this->getTypePass($ticket->getTicketTypeId()),
+                'email' => $ticket->getEmail(),
                 'member_since' => null !== $user ? $this->comptureSeniority($user) : null,
                 'office' => $this->officeFinder->findOffice($invoice, $user),
                 'distance' => null,
