@@ -8,6 +8,7 @@ use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Model\Ticket;
 use AppBundle\Offices\OfficeFinder;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -92,7 +93,7 @@ class RegistrationsExportGenerator
         $tickets = $this->ticketRepository->getByEvent($event);
 
         foreach ($tickets as $ticket) {
-            if ($ticket->getStatus() == AFUP_FORUM_ETAT_ANNULE) {
+            if ($ticket->getStatus() == Ticket::STATUS_CANCELLED) {
                 // On n'exporte pas les billets inscriptions annulées
                 continue;
             }
