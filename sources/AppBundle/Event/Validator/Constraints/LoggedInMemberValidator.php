@@ -39,7 +39,7 @@ class LoggedInMemberValidator extends ConstraintValidator
          */
         $token = $this->tokenStorage->getToken();
 
-        $membershipEligibilityErrors = $this->discountEligibiliityComputer->computeMembershipDiscountEligibility($token);
+        $membershipEligibilityErrors = $this->discountEligibiliityComputer->computeMembershipDiscountEligibility($token->getUser());
 
         $message = null;
         if (MembershipDiscountEligibiliityComputer::USER_NOT_CONNECTED === $membershipEligibilityErrors) {
