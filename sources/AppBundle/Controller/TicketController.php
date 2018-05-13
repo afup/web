@@ -11,6 +11,7 @@ use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Ticket\MembershipDiscountEligibiliityComputer;
 use AppBundle\Payment\PayboxResponse;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -239,7 +240,8 @@ class TicketController extends EventBaseController
             'ticketForm' => $purchaseForm->createView(),
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
             'maxNbPersonnes' => count($purchaseForm->getData()->getTickets()),
-            'soldTicketsForMember' => $totalOfSoldTicketsByMember
+            'soldTicketsForMember' => $totalOfSoldTicketsByMember,
+            'minimum_membership_months' => MembershipDiscountEligibiliityComputer::MINIMUM_MEMBERSHIP_MONTHS_FOR_DISCOUNT_ELIGIBILITY,
         ]);
     }
 
