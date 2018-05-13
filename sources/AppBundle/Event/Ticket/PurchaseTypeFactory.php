@@ -68,7 +68,7 @@ class PurchaseTypeFactory
                 'event_id' => $event->getId(),
                 'is_cfp_submitter' => $isCfpSubmitter,
                 'special_price_token' => $specialPriceToken,
-                'user_eligible_for_membership_discount' => $this->membershipDiscountEligibilityComputer->computeMembershipDiscountEligibility($user)
+                'user_eligible_for_membership_discount' => $this->membershipDiscountEligibilityComputer->isEligibleToMembershopDiscount($user)
             ]
         );
 

@@ -26,14 +26,16 @@ class MembershipDiscountEligibiliityComputer extends \atoum
     /**
      * @dataProvider computeDataProvider
      */
-    public function testCompute($case, callable $user = null, array $allowedRoles, $expected)
+    public function testCompute($case, callable $user = null, array $allowedRoles, $expectedIs, $expectedCompute)
     {
         $this
             ->assert($case)
             ->given($computer = new TestedClass(new AutorisationChecker($allowedRoles)))
             ->then
-                ->boolean($computer->computeMembershipDiscountEligibility($user()))
-                    ->isEqualTo($expected, $case)
+                ->boolean($computer->isEligibleToMembershopDiscount($user()))
+                    ->isEqualTo($expectedIs, $case)
+                ->integer($computer->computeMembershipDiscountEligibility($user()))
+                    ->isEqualTo($expectedCompute, $case)
         ;
     }
 
@@ -44,13 +46,15 @@ class MembershipDiscountEligibiliityComputer extends \atoum
                 'case' => 'Sans user',
                 'user' => function() { return null; },
                 'security_checked_allowed_roles' => [],
-                'expected' => false,
+                'expected_is' => false,
+                'expected_compute' => TestedClass::USER_NOT_CONNECTED,
             ],
             [
                 'case' => "Avec un user qui n'a pas le role user",
                 'user' => function() { return new User(); },
                 'security_checked_allowed_roles' => [],
-                'expected' => false,
+                'expected_is' => false,
+                'expected_compute' => TestedClass::USER_NOT_CONNECTED,
             ],
             [
                 'case' => "Avec un user personne physique qui n'a pas le role user et qui n'a pas expiré",
@@ -60,7 +64,8 @@ class MembershipDiscountEligibiliityComputer extends \atoum
                     return $user;
                 },
                 'security_checked_allowed_roles' => [],
-                'expected' => false,
+                'expected_is' => false,
+                'expected_compute' => TestedClass::USER_NOT_CONNECTED,
             ],
             [
                 'case' => "Avec un user personne physique qui a le role user et qui n'a pas expiré",
@@ -70,7 +75,8 @@ class MembershipDiscountEligibiliityComputer extends \atoum
                     return $user;
                 },
                 'security_checked_allowed_roles' => ['ROLE_USER'],
-                'expected' => true,
+                'expected_is' => true,
+                'expected_compute' => TestedClass::NO_ERROR,
             ],
             [
                 'case' => "Avec un user personne physique qui a le role user et qui a expiré",
@@ -80,7 +86,8 @@ class MembershipDiscountEligibiliityComputer extends \atoum
                     return $user;
                 },
                 'security_checked_allowed_roles' => ['ROLE_USER'],
-                'expected' => false,
+                'expected_is' => false,
+                'expected_compute' => TestedClass::USER_MEMBERSHIP_EXPIRED,
             ],
         ];
     }
