@@ -46,6 +46,8 @@ class LoggedInMemberValidator extends ConstraintValidator
             $message = $constraint->messageNotLoggedIn;
         } elseif (MembershipDiscountEligibiliityComputer::USER_MEMBERSHIP_EXPIRED === $membershipEligibilityErrors) {
             $message = $constraint->messageFeeOutOfDate;
+        } elseif (MembershipDiscountEligibiliityComputer::USER_MEMBERSHIP_MINIMUM_MONTHS_NOT_REACHED === $membershipEligibilityErrors) {
+            $message = $constraint->messageMinimumMembership;
         } elseif ($token->getUser()->getEmail() !== $ticket->getEmail()) {
             $message = $constraint->messageBadMail;
         }
