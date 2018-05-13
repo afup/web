@@ -34,7 +34,7 @@ class PurchaseTypeFactory
     private $membershipDiscountEligibilityComputer;
 
     public function __construct(
-        AuthorizationCheckerInterface $securityChecker,
+        MembershipDiscountEligibiliityComputer $membershipDiscountEligibilityComputer,
         FormFactoryInterface $formFactory,
         InvoiceFactory $invoiceFactory,
         SpeakerRepository $speakerRepository
@@ -42,7 +42,7 @@ class PurchaseTypeFactory
         $this->formFactory = $formFactory;
         $this->invoiceFactory = $invoiceFactory;
         $this->speakerRepository = $speakerRepository;
-        $this->membershipDiscountEligibilityComputer = new MembershipDiscountEligibiliityComputer($securityChecker);
+        $this->membershipDiscountEligibilityComputer = $membershipDiscountEligibilityComputer;
     }
 
     public function getPurchaseForUser(Event $event, User $user = null, $specialPriceToken = null)

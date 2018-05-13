@@ -326,6 +326,10 @@ services:
         class: AppBundle\Event\Ticket\PurchaseTypeFactory
         autowire: true
 
+    app.event_ticket.membership_discount_eligibility_computer:
+        class: AppBundle\Event\Ticket\MembershipDiscountEligibiliityComputer
+        autowire: true
+
     app.sponsorship_lead_mailer:
         class: AppBundle\Event\Sponsorship\SponsorshipLeadMail
         arguments: ["@app.mail", "@translator", "@logger", "%kernel.root_dir%/../htdocs/uploads/"]
