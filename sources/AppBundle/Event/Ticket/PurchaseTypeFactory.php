@@ -4,7 +4,6 @@ namespace AppBundle\Event\Ticket;
 
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Form\PurchaseType;
-use AppBundle\Event\Form\TicketType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\InvoiceFactory;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
@@ -14,11 +13,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PurchaseTypeFactory
 {
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $securityChecker;
-
     /**
      * @var FormFactoryInterface
      */
@@ -34,34 +28,25 @@ class PurchaseTypeFactory
      */
     private $speakerRepository;
 
+    /**
+     * @var MembershipDiscountEligibiliityComputer
+     */
+    private $membershipDiscountEligibilityComputer;
+
     public function __construct(
         AuthorizationCheckerInterface $securityChecker,
         FormFactoryInterface $formFactory,
         InvoiceFactory $invoiceFactory,
         SpeakerRepository $speakerRepository
     ) {
-        $this->securityChecker = $securityChecker;
         $this->formFactory = $formFactory;
         $this->invoiceFactory = $invoiceFactory;
         $this->speakerRepository = $speakerRepository;
+        $this->membershipDiscountEligibilityComputer = new MembershipDiscountEligibiliityComputer($securityChecker);
     }
 
     public function getPurchaseForUser(Event $event, User $user = null, $specialPriceToken = null)
     {
-        $memberType = TicketType::MEMBER_NOT;
-
-        if (
-            $this->securityChecker->isGranted('ROLE_USER', $user)
-            &&
-            $user->hasRole('ROLE_MEMBER_EXPIRED') === false
-        ) {
-            if ($user->getCompanyId() > 0) {
-                $memberType = TicketType::MEMBER_CORPORATE;
-            } else {
-                $memberType = TicketType::MEMBER_PERSONAL;
-            }
-        }
-
         $isCfpSubmitter = null !== $user && null !== $this->speakerRepository->getByEventAndEmail($event, $user->getEmail());
 
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
@@ -79,7 +64,12 @@ class PurchaseTypeFactory
         $invoiceType = $this->formFactory->create(
             PurchaseType::class,
             $invoice,
-            ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter, 'special_price_token' => $specialPriceToken]
+            [
+                'event_id' => $event->getId(),
+                'is_cfp_submitter' => $isCfpSubmitter,
+                'special_price_token' => $specialPriceToken,
+                'user_eligible_for_membership_discount' => $this->membershipDiscountEligibilityComputer->computeMembershipDiscountEligibility($user)
+            ]
         );
 
         return $invoiceType;

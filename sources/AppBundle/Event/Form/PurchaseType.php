@@ -55,9 +55,9 @@ class PurchaseType extends AbstractType
                 'allow_add'    => true,
                 'entry_options' => [
                     'event_id' => $options['event_id'],
-                    'member_type' => $options['member_type'],
                     'is_cfp_submitter' => $options['is_cfp_submitter'],
                     'special_price_token' => $options['special_price_token'],
+                    'user_eligible_for_membership_discount' => $options['user_eligible_for_membership_discount']
                 ]
             ])
             ->add('paymentType', ChoiceType::class, [
@@ -97,9 +97,9 @@ class PurchaseType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Invoice::class,
-            'member_type' => TicketType::MEMBER_NOT,
             'is_cfp_submitter' => false,
             'special_price_token' => null,
+            'user_eligible_for_membership_discount' => null,
             'event_id' => null,
             'cascade_validation' => true,
             'validation_groups' => function () {

@@ -148,7 +148,7 @@ class TicketType extends AbstractType
                     ];
 
                     if (
-                        ($type->getTicketType()->getIsRestrictedToMembers() === true && $options['member_type'] === self::MEMBER_NOT)
+                        ($type->getTicketType()->getIsRestrictedToMembers() === true && !$options['user_eligible_for_membership_discount'])
                         ||
                         $attr['data-stock'] <= 0
                     ) {
@@ -181,10 +181,10 @@ class TicketType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Ticket::class,
-            'member_type' => self::MEMBER_NOT,
             'is_cfp_submitter' => false,
             'event_id' => null,
             'special_price_token' => null,
+            'user_eligible_for_membership_discount' => null,
         ]);
     }
 }

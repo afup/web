@@ -129,6 +129,13 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
      */
     private $company;
 
+    private $currentDate;
+
+    public function __construct(\DateTimeInterface $currentDate = null)
+    {
+        $this->currentDate = null !== $currentDate ? $currentDate : new \DateTime();
+    }
+
     /**
      * @return int
      */
@@ -523,7 +530,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     public function getRoles()
     {
         $defaultRoles = ['ROLE_USER'];
-        if ($this->lastSubscription < new \DateTime()) {
+        if ($this->lastSubscription < $this->currentDate) {
             $defaultRoles = ['ROLE_MEMBER_EXPIRED'];
         }
         if ($this->level == self::LEVEL_ADMIN) {
