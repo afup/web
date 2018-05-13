@@ -3,7 +3,6 @@
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Association\Model\User;
-use AppBundle\Event\Form\TicketType;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class MembershipDiscountEligibiliityComputer

@@ -9,7 +9,6 @@ use AppBundle\Event\Model\InvoiceFactory;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PurchaseTypeFactory
 {
