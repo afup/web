@@ -7,9 +7,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class MembershipDiscountEligibiliityComputer
 {
+    const MINIMUM_MEMBERSHIP_MONTHS_FOR_DISCOUNT_ELIGIBILITY = 3;
+
     const NO_ERROR = 0;
     const USER_NOT_CONNECTED = 1;
     const USER_MEMBERSHIP_EXPIRED = 2;
+    const USER_MEMBERSHIP_MINIMUM_MONTHS_NOT_REACHED = 4;
 
     /**
      * @var AuthorizationCheckerInterface
@@ -17,11 +20,18 @@ class MembershipDiscountEligibiliityComputer
     private $securityChecker;
 
     /**
-     * @param AuthorizationCheckerInterface $securityChecker
+     * @var SeniorityComputer
      */
-    public function __construct(AuthorizationCheckerInterface $securityChecker)
+    private $seniorityComputer;
+
+    /**
+     * @param AuthorizationCheckerInterface $securityChecker
+     * @param SeniorityComputer $seniorityComputer
+     */
+    public function __construct(AuthorizationCheckerInterface $securityChecker, SeniorityComputer $seniorityComputer)
     {
         $this->securityChecker = $securityChecker;
+        $this->seniorityComputer = $seniorityComputer;
     }
 
     /**
@@ -41,6 +51,13 @@ class MembershipDiscountEligibiliityComputer
 
         if ($user->hasRole('ROLE_MEMBER_EXPIRED')) {
             return self::USER_MEMBERSHIP_EXPIRED;
+        }
+
+        $seniority = $this->seniorityComputer->computeSeniority($user);
+        $seniorityMonths = $seniority->m + ($seniority->y * 12);
+
+        if ($seniorityMonths <= self::MINIMUM_MEMBERSHIP_MONTHS_FOR_DISCOUNT_ELIGIBILITY) {
+            return self::USER_MEMBERSHIP_MINIMUM_MONTHS_NOT_REACHED;
         }
 
         return self::NO_ERROR;

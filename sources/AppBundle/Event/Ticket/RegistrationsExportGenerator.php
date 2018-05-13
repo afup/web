@@ -145,26 +145,12 @@ class RegistrationsExportGenerator
      */
     private function comptureSeniority(User $user)
     {
-        $cotis = $this->cotisations->obtenirListe(AFUP_PERSONNES_PHYSIQUES, $user->getId());
-        $now = new \DateTime();
-        $diffs = [];
-
-        foreach ($cotis as $coti) {
-            $from = \DateTimeImmutable::createFromFormat('U', $coti['date_debut']);
-            $to = \DateTimeImmutable::createFromFormat('U', $coti['date_fin']);
-            $to = min($now, $to);
-            $diffs[] = $from->diff($to);
+        if ($user->isMemberForCompany()) {
+            return 0;
         }
 
-        $reference = new \DateTimeImmutable();
-        $lastest = clone $reference;
-        foreach ($diffs as $dif) {
-            $lastest = $lastest->add($dif);
-        }
-
-        $totalDiffs = $reference->diff($lastest);
-
-        return $totalDiffs->y;
+        $computer = new SeniorityComputer($this->cotisations);
+        return $computer->computeSeniority($user)->y;
     }
 
     /**
