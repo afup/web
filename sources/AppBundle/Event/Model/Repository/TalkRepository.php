@@ -280,6 +280,12 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'languageCode',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'markdown',
+                'fieldName' => 'useMarkdown',
+                'type' => 'bool',
+                'serializer' => Boolean::class
+            ])
         ;
 
         return $metadata;

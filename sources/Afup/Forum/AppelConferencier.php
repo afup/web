@@ -677,7 +677,8 @@ class AppelConferencier
         $blogPostUrl = null,
         $languageCode = null,
         $skill = null,
-        $needs_mentoring = null
+        $needs_mentoring = null,
+        $use_markdown = null
     ) {
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
@@ -706,6 +707,9 @@ class AppelConferencier
         if ($needs_mentoring !== null) {
             $requete .= 'needs_mentoring = ' . $this->_bdd->echapper($needs_mentoring) . ', ';
         }
+        if ($use_markdown !== null) {
+            $requete .= 'markdown = ' . $this->_bdd->echapper($use_markdown) . ', ';
+        }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;
 
@@ -729,7 +733,8 @@ class AppelConferencier
         $genre,
         $plannifie = 0,
         $needs_mentoring = 0,
-        $level = Talk::SKILL_NA
+        $level = Talk::SKILL_NA,
+        $useMarkdown = false
     ) {
 
         $donnees = array(
@@ -741,11 +746,12 @@ class AppelConferencier
             $this->_bdd->echapper($genre),
             $this->_bdd->echapper($plannifie),
             $this->_bdd->echapper($needs_mentoring),
-            $this->_bdd->echapper($level)
+            $this->_bdd->echapper($level),
+            (int)$useMarkdown
         );
 
         $requete = ' INSERT INTO afup_sessions
-          (id_forum, date_soumission, titre, abstract, journee, genre, plannifie, needs_mentoring, skill)
+          (id_forum, date_soumission, titre, abstract, journee, genre, plannifie, needs_mentoring, skill, markdown)
          VALUES 
           (' . implode(',', $donnees) . ')';
 

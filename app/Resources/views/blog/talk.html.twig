@@ -5,7 +5,11 @@
         <tr>
             <td width="80%" style="text-align: left;padding: 10px;vertical-align: top">
                 <h4>{{ talks_info.talk.getTitle }}</h4>
-                {{ talks_info.talk.getAbstract|raw }}
+                {% if talks_info.talk.useMarkdown %}
+                    {{ talks_info.talk.getAbstract|raw|markdown }}
+                {% else %}
+                    {{ talks_info.talk.getAbstract|raw }}
+                {% endif %}
             </td>
             <td width="20%" style="vertical-align: middle">
                 {{ talks_info.room.name }}<br />

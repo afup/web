@@ -20,6 +20,7 @@
     "willdurand/geocoder": "^3.3",
     "smarty/smarty": "2.6.25",
     "sabre/vobject": "^4.1",
+    "erusev/parsedown": "^1.6",
     "dms/meetup-api-client": "^2.3",
     "google/apiclient": "^2.0"
   },

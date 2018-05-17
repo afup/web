@@ -14,3 +14,15 @@
     </div>
     {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+		document.querySelector('#talk_abstract').required = false;
+		var simplemde = new SimpleMDE({
+			spellChecker: false,
+			hideIcons: ['side-by-side', 'fullscreen']
+		});
+		document.querySelector('.CodeMirror textarea').required = true;
+    </script>
+{% endblock %}

@@ -801,6 +801,13 @@ div.event--vote-meta {
     font-weight: bold;
 }
 
+div.event--vote-abstract{
+    font-size:75%;
+}
+div.event--vote-abstract h1{
+    font-size:1.9em;
+}
+
 @media (max-width: 767px) {
     div.event--vote-form label{
     }

@@ -112,6 +112,11 @@ class Talk implements NotifyPropertyInterface
     private $languageCode;
 
     /**
+     * @var bool
+     */
+    private $useMarkdown = true;
+
+    /**
      * @return int
      */
     public function getId()
@@ -590,6 +595,26 @@ class Talk implements NotifyPropertyInterface
         $this->propertyChanged('languageCode', $this->languageCode, $languageCode);
         $this->languageCode = $languageCode;
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUseMarkdown()
+    {
+        return $this->useMarkdown;
+    }
+
+    /**
+     * @param bool $useMarkdown
+     * @return Talk
+     */
+    public function setUseMarkdown($useMarkdown)
+    {
+        $useMarkdown = (bool) $useMarkdown;
+        $this->propertyChanged('useMarkdown', $this->useMarkdown, $useMarkdown);
+        $this->useMarkdown = $useMarkdown;
         return $this;
     }
 }

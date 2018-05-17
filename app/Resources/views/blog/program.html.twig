@@ -18,7 +18,13 @@
             {% endif %}
 
             <div class="details">
-                <div class="abstract"><p>{{ talk.talk.abstract|raw }}</p></div>
+                <div class="abstract">
+                    {% if talk.talk.useMarkdown %}
+                        <p>{{ talk.talk.abstract|raw|markdown }}</p>
+                    {% else %}
+                        <p>{{ talk.talk.abstract|raw }}</p>
+                    {% endif %}
+                </div>
                 <div>
                     {% for speaker in talk[".aggregation"].speaker %}
                         {% if speaker is not null %}

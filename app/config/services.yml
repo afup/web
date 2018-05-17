@@ -23,7 +23,7 @@ services:
 
     app_twig:
         class: AppBundle\Twig\TwigExtension
-        arguments: ["@app.legacy_router"]
+        autowire: true
         tags:
             -  { name: twig.extension }
 
@@ -344,6 +344,10 @@ services:
 
     app.event_anonymous_export:
         class: AppBundle\Event\AnonymousExport
+        autowire: true
+
+    app.html_to_markdown:
+        class: Parsedown
         autowire: true
 
     app.event_json_ld:

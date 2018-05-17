@@ -284,7 +284,17 @@ if ($action == 'lister') {
 
     $formulaire->addElement('date'    , 'date_soumission', 'Soumission', array('language' => 'fr', 'minYear' => date('Y'), 'maxYear' => date('Y')));
     $formulaire->addElement('text'    , 'titre'          , 'Titre' , array('size' => 40, 'maxlength' => 80));
-    $formulaire->addElement('textarea', 'abstract'       , 'Résumé', array('cols' => 40, 'rows' => 15,'class'=>'tinymce'));
+
+    $abstractClass = 'simplemde';
+    $useMarkdown = true;
+    if ($talk !== null && $talk->getUseMarkdown() === false) {
+        $useMarkdown = false;
+        $abstractClass = 'tinymce';
+    }
+
+    $formulaire->addElement('textarea', 'abstract'       , 'Résumé', array('cols' => 40, 'rows' => 15,'class'=> $abstractClass));
+    $formulaire->addElement('hidden', 'use_markdown', (int)$useMarkdown);
+
 
     $typesLabelsByKey = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
     asort($typesLabelsByKey);
@@ -308,6 +318,7 @@ if ($action == 'lister') {
     $formulaire->addGroup($groupe, 'groupe_skill', "Niveau", '<br />', false);
 
     $formulaire->addElement('checkbox'    , 'needs_mentoring'          , "Demande a bénéficier du programme d'accompagnement des jeunes speakers");
+
 
     if ($action != 'ajouter') {
         $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
@@ -352,6 +363,7 @@ if ($action == 'lister') {
 
     if ($formulaire->validate()) {
 		$valeurs = $formulaire->exportValues();
+		$valeurs += ['needs_mentoring' => 0];
 
 		if ($action == 'ajouter') {
 			$session_id = $forum_appel->ajouterSession(
@@ -362,7 +374,8 @@ if ($action == 'lister') {
                 $valeurs['genre'],
                 $valeurs['plannifie'],
                 isset($valeurs['needs_mentoring']) ? $valeurs['needs_mentoring'] : 0,
-                $valeurs['skill']
+                $valeurs['skill'],
+                $valeurs['use_markdown']
             );
 			$ok = (bool)$session_id;
         } else {
@@ -380,7 +393,8 @@ if ($action == 'lister') {
                                                 $valeurs['blog_post_url'],
                                                 $valeurs['language_code'],
                                                 $valeurs['skill'],
-                                                $valeurs['needs_mentoring']
+                                                $valeurs['needs_mentoring'],
+                                                $valeurs['use_markdown']
             );
             $forum_appel->delierSession($session_id);
         }
