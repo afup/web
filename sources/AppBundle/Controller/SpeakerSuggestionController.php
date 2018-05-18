@@ -92,10 +92,16 @@ class SpeakerSuggestionController extends EventBaseController
             ]
         );
 
-        $this->get('app.mail')->sendSimpleMessageViaSmtp(
+        $this->get('app.mail')->sendSimpleMessage(
             $subject,
             $content,
-            'conferences@afup.org'
+            [
+                [
+                    'name' => 'Pôle conférences',
+                    'email' => 'conferences@afup.org'
+                ]
+            ]
+
         );
     }
 }

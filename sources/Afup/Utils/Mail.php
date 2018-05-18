@@ -143,19 +143,5 @@ class Mail
 
         return $this->send('message', array(), $data, $parameters);
     }
-
-    /**
-     * Début de migration pour être décorrolé de l'API Mandrill et passer sur un smtp gratuit.
-     *
-     * @param string $subject
-     * @param string $message
-     * @param string $receivers
-     */
-    public function sendSimpleMessageViaSmtp($subject, $message, $receivers)
-    {
-        $mailing = new Mailing($GLOBALS['AFUP_BDD']);
-        $mailing->envoyerMail('bureau@afup.org', $receivers, $subject, $message);
-    }
-
 }
 
