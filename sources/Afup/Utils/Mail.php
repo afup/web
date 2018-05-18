@@ -143,6 +143,5 @@ class Mail
 
         return $this->send('message', array(), $data, $parameters);
     }
-
 }
 
