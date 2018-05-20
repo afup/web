@@ -25,7 +25,7 @@
 
 <div id="afup-global-menu">
     <a href="https://afup.org" class="lien-entete">AFUP</a>
-    <a href="https://event.afup.org" class="lien-entete lien-entete__active">PHPTour 2018</a>
+    <a href="https://event.afup.org" class="lien-entete lien-entete__active">Forum PHP 2018</a>
     <a href="https://barometre.afup.org" class="lien-entete">Baromètre</a>
     <a href="http://www.planete-php.fr" class="lien-entete">Planète PHP</a>
 </div>
