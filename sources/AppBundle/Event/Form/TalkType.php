@@ -19,7 +19,14 @@ class TalkType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, ['label' => 'Titre'])
-            ->add('abstract', TextareaType::class, ['label' => 'Résumé'])
+            ->add(
+                'abstract',
+                TextareaType::class,
+                [
+                    'label' => 'Résumé',
+                    'required' => false,
+                ]
+            )
             ->add(
                 'staffNotes',
                 TextareaType::class,
