@@ -32,9 +32,6 @@ parameters:
                 membre_assemblee_generale:
                     nom: 'Présence prochaine AG'
                     niveau: 'ROLE_USER'
-                membre_tags:
-                    nom: 'Tags'
-                    niveau: 'ROLE_USER'
                 membres_liste:
                     nom: 'Annuaire'
                     niveau: 'ROLE_ADMIN'
