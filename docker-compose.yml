@@ -16,7 +16,6 @@ services:
       context: ./docker/dockerfiles/apachephp
       args:
         uid: ${CURRENT_UID:-1001}
-        gid: "1001"
     environment:
       SYMFONY_ENV: "dev"
     volumes:
@@ -30,7 +29,6 @@ services:
       context: ./docker/dockerfiles/planete
       args:
         uid: ${CURRENT_UID:-1001}
-        gid: "1001"
     volumes:
       - ./:/var/www/html
     links:
@@ -42,7 +40,6 @@ services:
       context: ./docker/dockerfiles/event
       args:
         uid: ${CURRENT_UID:-1001}
-        gid: "1001"
     environment:
       AFUP_WEBSITE_URL: 'https://apachephp:80'
     volumes:
@@ -66,10 +63,8 @@ services:
       context: ./docker/dockerfiles/apachephp
       args:
         uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-    user: localUser
     volumes:
-        - ./data/composer:/home/localUser/.composer
+#        - ./data/composer:/home/localUser/.composer
         - ./:/var/www/html
     links:
       - db
