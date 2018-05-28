@@ -21,41 +21,6 @@ class Tags
         $this->_bdd = $bdd;
     }
 
-    function preparerFichierDot($elements = array())
-    {
-        $dot = "graph G {\n";
-
-        $noeuds_par_lien = array();
-        foreach ($elements as $element) {
-            $element['noeud'] = strtolower($element['noeud']);
-            $element['noeud'] = str_replace(".", "", $element['noeud']);
-            $element['noeud'] = str_replace(" ", "", $element['noeud']);
-            if (!empty($element['noeud']) and !preg_match("/^[0-9]/", $element['noeud'])) {
-                $noeuds_par_lien[$element['lien']][] = $element['noeud'];
-            }
-        }
-
-        $dots = array();
-        foreach ($noeuds_par_lien as $lien => $noeuds) {
-            while (sizeof($noeuds) > 0) {
-                $first_noeud = array_shift($noeuds);
-                foreach ($noeuds as $noeud) {
-                    if ($noeud != $first_noeud) {
-                        $line = "  " . $first_noeud . " -- " . $noeud . ";\n";
-                        $line_alternative = "  " . $noeud . " -- " . $first_noeud . ";\n";
-                        if (!in_array($line, $dots) and !in_array($line_alternative, $dots)) {
-                            $dots[] = $line;
-                        }
-                    }
-                }
-            }
-        }
-        $dot .= implode("", $dots);
-        $dot .= "}\n";
-
-        return $dot;
-    }
-
     function extraireTags($chaine)
     {
         $regex = <<<HERE
