@@ -44,6 +44,7 @@ js_dist
 !var/SymfonyRequirements.php
 /htdocs/bundles/
 /bin/atoum
+/bin/phinx
 /bin/php-cs-fixer
 /docker-compose.override.yml
 /composer.phar

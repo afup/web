@@ -20,10 +20,6 @@ class HomeController extends SiteBaseController
         $articles = new Articles();
         $derniers_articles = $articles->chargerDerniersAjouts(self::MAX_ARTICLES);
 
-        $algolia = $this->get('app.algolia_client');
-        $index = $algolia->initIndex('afup_meetups');
-        $results = $index->search('', ['hitsPerPage' => self::MAX_MEETUPS]);
-
         $branche = new Branche($afupBdd);
         $enfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_COLONNE_DROITE);
 
@@ -34,7 +30,7 @@ class HomeController extends SiteBaseController
             ':site:home.html.twig',
             [
                 'actualites' => $derniers_articles,
-                'meetups' => $results['hits'],
+                'meetups' => $this->getLatestMeetups(),
                 'premiere_feuille' => $premiereFeuille,
                 'deuxieme_feuille' => $deuxiemeFeuille,
                 'autres_feuilles' => $enfants,
@@ -49,5 +45,21 @@ class HomeController extends SiteBaseController
     protected function getTalkOfTheDay()
     {
         return $this->get('ting')->get(TalkRepository::class)->getTalkOfTheDay(new \DateTime());
+    }
+
+    /**
+     * @return array
+     */
+    protected function getLatestMeetups()
+    {
+        if (false === $this->getParameter('home_algolia_enabled')) {
+            return [];
+        }
+
+        $algolia = $this->get('app.algolia_client');
+        $index = $algolia->initIndex('afup_meetups');
+        $results = $index->search('', ['hitsPerPage' => self::MAX_MEETUPS]);
+
+        return $results['hits'];
     }
 }
