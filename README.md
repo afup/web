@@ -7,8 +7,8 @@ Vous retrouverez les ports dans le fichier `docker-compose.override.yml`
 
 Par défaut:
 * Site AFUP : <https://localhost:9205/>
-* Forum PHP : <https://localhost:9215/>
-* PHP Tour : <https://localhost:9225/>
+* Planète PHP : <https://localhost:9215/>
+* Event : <https://localhost:9225/>
 * Mailcatcher: <https://localhost:1181/>
 
 _Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.override.yml`._
