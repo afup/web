@@ -5,7 +5,7 @@ RUN apt-get update && \
     apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libpng12-dev \
+        libpng-dev \
         libmcrypt4 \
         libmcrypt-dev \
         libicu-dev \
@@ -15,7 +15,7 @@ RUN apt-get update && \
     apt-get remove -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libpng12-dev && \
+        libpng-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Configuration of apache & php
@@ -27,7 +27,7 @@ RUN a2enmod rewrite && \
     ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf && \
     echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
 
-RUN apt-get update && apt-get install -y build-essential
+RUN apt-get update && apt-get install -y build-essential wget gnupg
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 

@@ -5,7 +5,7 @@ RUN apt-get update && \
     apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libpng12-dev \
+        libpng-dev \
         libmcrypt4 \
         libmcrypt-dev \
         wget && \
@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get remove -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libpng12-dev && \
+        libpng-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Configuration of apache & php

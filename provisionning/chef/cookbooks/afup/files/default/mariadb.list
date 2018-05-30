@@ -1,4 +1,0 @@
-# MariaDB 10.0 repository list - created 2016-01-14 14:49 UTC
-# https://downloads.mariadb.org/mariadb/repositories/#mirror=cnrs
-deb [arch=amd64,i386] http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian jessie main
-deb-src http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian jessie main
