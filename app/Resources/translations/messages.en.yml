@@ -9,6 +9,7 @@
 'Le CFP est ouvert jusqu''au %date%.': 'The CFP is open until %date%.'
 'Il vous reste donc <span id="end"></span>.': 'So you have <span id="end"></span> left.'
 'Soumettre une conférence': 'Submit a talk'
+'Suggérer un·e conférencier·e': 'Suggest a speaker'
 'Mon profil conférencier': 'My speaker profile'
 'Ma photo de profil': 'My picture'
 'Mon espace conférencier': 'My speaker area'
@@ -59,6 +60,12 @@ Conférenciers: Speakers
 'Faire cette conférence à plusieurs': 'Present this conference with other speakers'
 'Si vous présentez ce sujet à plusieurs, vous pouvez inviter d''autres conférenciers via le formulaire ci-dessous.': 'If you want to present this talk with some other speakers, you can invite them using the following form.'
 'Profil sauvegardé.': 'Profile saved.'
+'Votre email': 'Your email'
+'Vos nom/prénom': 'Your surname/name'
+'Conférencier·e suggéré·e': 'Suggested speaker'
+'Commentaire': 'Comment'
+"Dans le commentaire, vous pouvez nous indiquer pourquoi vous souhaiteriez voir ce/cette conférencier(ère), ainsi que d'éventuels moyens pour le/la contacter ou des liens vers des slides/conférences précédements données.": "In the commment you can write the reasons why you want to see the suggested speaker with optional ways to contact the speaker or links to previously done talks."
+"Suggérer": "Suggest"
 'Retrouvez ici les votes déposés sur cette proposition. Ils peuvent vous aider à l''améliorer si nécessaire.': 'Here are the votes about this submission. They can help you improve your proposal if necessary.'
 skill.0: N/A
 skill.1: Junior
