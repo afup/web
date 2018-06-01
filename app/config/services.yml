@@ -328,7 +328,7 @@ services:
 
     app.sponsorship_lead_mailer:
         class: AppBundle\Event\Sponsorship\SponsorshipLeadMail
-        arguments: ["@app.mail", "@translator", "@logger", "%kernel.root_dir%/../htdocs/uploads/"]
+        arguments: ["@app.mail", "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
 
     app.trello_client:
         class: Trello\Client
