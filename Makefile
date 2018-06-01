@@ -1,4 +1,4 @@
-include .env
+-include .env .test
 
 CURRENT_UID ?= $(shell id -u)
 
