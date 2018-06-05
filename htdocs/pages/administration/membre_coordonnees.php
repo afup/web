@@ -42,8 +42,8 @@ $formulaire->addElement('select'  , 'nearest_office'           , 'Antenne la plu
 $formulaire->addElement('header'  , ''                         , 'Paramètres');
 $formulaire->addElement('text'    , 'login'                    , 'Login'          , array('size' => 30, 'maxlength' => 30));
 $formulaire->addElement('static',   'note'                 , '    '           , 'Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer');
-$formulaire->addElement('password', 'mot_de_passe'             , 'Mot de passe'   , array('size' => 30, 'maxlength' => 30));
-$formulaire->addElement('password', 'confirmation_mot_de_passe', ''               , array('size' => 30, 'maxlength' => 30));
+$formulaire->addElement('password', 'mot_de_passe'             , 'Mot de passe'   , array('size' => 30));
+$formulaire->addElement('password', 'confirmation_mot_de_passe', ''               , array('size' => 30));
 
 $formulaire->addElement('header'  , 'boutons'                  , '');
 $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
