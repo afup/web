@@ -19,6 +19,10 @@ _Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.ove
 * effectuer un `make docker-up` pour la création de l'infrastructure sous docker
 * effectuer un `make init` pour la copie des fichiers de config par défaut, l'installation des dépendances ainsi que l'init de la base de donnée avec les données de test.
 
+La base de test inclus un utilisateur administration avec les identifiants suivants:
+- user: admin@admin.fr
+- pass: admin
+
 ## Base de données
 
 Config par défaut:
