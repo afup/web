@@ -1,14 +1,14 @@
 -include .env .test
 
 CURRENT_UID ?= $(shell id -u)
-DETACHED_MODE ?= -d
+DOCKER_UP_OPTIONS ?= -d
 
 .PHONY: install docker-up test hooks vendors
 
 install: vendors event/vendor
 
 docker-up: var/logs/.docker-build data docker-compose.override.yml
-	CURRENT_UID=$(CURRENT_UID) docker-compose up $(DETACHED_MODE)
+	CURRENT_UID=$(CURRENT_UID) docker-compose up $(DOCKER_UP_OPTIONS)
 
 docker-down:
 	CURRENT_UID=$(CURRENT_UID) docker-compose down
