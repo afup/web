@@ -9,7 +9,7 @@ services:
       MYSQL_PASSWORD: afup
       MYSQL_DATABASE: web
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - db_data:/var/lib/mysql
 
   apachephp:
     build:
@@ -56,7 +56,7 @@ services:
       MYSQL_PASSWORD: afup
       MYSQL_DATABASE: event
     volumes:
-      - ./data/mysql_event:/var/lib/mysql
+      - dbevent_data:/var/lib/mysql
 
   cliphp:
     build:
@@ -73,3 +73,7 @@ services:
 
   mailcatcher:
     image: schickling/mailcatcher
+
+volumes:
+    db_data:
+    dbevent_data:
