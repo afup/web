@@ -92,6 +92,16 @@ class Talk implements NotifyPropertyInterface
     private $youTubeId;
 
     /**
+     * @var bool
+     */
+    private $videoHasFrSubtitles = false;
+
+    /**
+     * @var bool
+     */
+    private $videoHasEnSubtitles = false;
+
+    /**
      * @var string|null
      */
     private $slidesUrl;
@@ -615,6 +625,50 @@ class Talk implements NotifyPropertyInterface
         $useMarkdown = (bool) $useMarkdown;
         $this->propertyChanged('useMarkdown', $this->useMarkdown, $useMarkdown);
         $this->useMarkdown = $useMarkdown;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function videoHasEnSubtitles()
+    {
+        return $this->videoHasEnSubtitles;
+    }
+
+    /**
+     * @param bool $videoHasEnSubtitles
+     *
+     * @return $this
+     */
+    public function setVideoHasEnSubtitles($videoHasEnSubtitles)
+    {
+        $videoHasEnSubtitles = (bool) $videoHasEnSubtitles;
+        $this->propertyChanged('useMarkdown', $this->videoHasEnSubtitles, $videoHasEnSubtitles);
+        $this->videoHasEnSubtitles = $videoHasEnSubtitles;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function videoHasFrSubtitles()
+    {
+        return $this->videoHasFrSubtitles;
+    }
+
+    /**
+     * @param bool $videoHasFrSubtitles
+     *
+     * @return $this
+     */
+    public function setVideoHasFrSubtitles($videoHasFrSubtitles)
+    {
+        $videoHasFrSubtitles = (bool) $videoHasFrSubtitles;
+        $this->propertyChanged('useMarkdown', $this->videoHasFrSubtitles, $videoHasFrSubtitles);
+        $this->videoHasFrSubtitles = $videoHasFrSubtitles;
+
         return $this;
     }
 }
