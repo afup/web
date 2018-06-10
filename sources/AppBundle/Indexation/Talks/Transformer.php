@@ -37,6 +37,8 @@ class Transformer
             'has_slides' => $talk->hasSlidesUrl(),
             'has_joindin' => $talk->hasJoindinId(),
             'has_blog_post' => $talk->hasBlogPostUrl(),
+            'video_has_fr_subtitles' => $talk->videoHasFrSubtitles(),
+            'video_has_en_subtitles' => $talk->videoHasEnSubtitles(),
             'language' => [
                 'code' => $talk->getLanguageCode(),
                 'label' => $talk->getLanguageLabel(),
