@@ -142,6 +142,21 @@ search.addWidget(
 );
 
 search.addWidget(
+    instantsearch.widgets.toggle({
+        container: '#refinement-video-has-fr-subtitles',
+        attributeName: 'video_has_fr_subtitles',
+        label: 'Avec sous titres français',
+        values: {
+            on: true
+        },
+        autoHideContainer: false,
+        templates: {
+            item: refinementItemTemplate
+        }
+    })
+);
+
+search.addWidget(
     instantsearch.widgets.refinementList({
         container: '#refinement-event',
         attributeName: 'event.title',
