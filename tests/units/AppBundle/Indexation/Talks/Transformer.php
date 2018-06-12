@@ -97,6 +97,8 @@ class Transformer extends \atoum
                         'has_video' => true,
                         'video_url' => 'https://www.youtube.com/watch?v=hzn0ODTMNDk',
                         'video_id' => 'hzn0ODTMNDk',
+                        'video_has_fr_subtitles' => false,
+                        'video_has_en_subtitles' => false,
                         'has_slides' => true,
                         'slides_url' => 'http://tapoueh.org/images/confs/PHPTour_2014_PostgreSQL.pdf',
                         'has_joindin' => true,

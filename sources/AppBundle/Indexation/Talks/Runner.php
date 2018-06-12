@@ -72,6 +72,8 @@ class Runner
                 'speakers.label',
                 'has_video',
                 'has_slides',
+                'video_has_fr_subtitles',
+                'video_has_en_subtitles',
                 'has_blog_post',
                 'type.label',
                 'language.label',

@@ -261,6 +261,16 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'video_has_fr_subtitles',
+                'fieldName' => 'videoHasFrSubtitles',
+                'type' => 'bool'
+            ])
+            ->addField([
+                'columnName' => 'video_has_en_subtitles',
+                'fieldName' => 'videoHasEnSubtitles',
+                'type' => 'bool'
+            ])
+            ->addField([
                 'columnName' => 'slides_url',
                 'fieldName' => 'slidesUrl',
                 'type' => 'string'
