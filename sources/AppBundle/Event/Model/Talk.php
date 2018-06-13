@@ -631,7 +631,7 @@ class Talk implements NotifyPropertyInterface
     /**
      * @return bool
      */
-    public function videoHasEnSubtitles()
+    public function getVideoHasEnSubtitles()
     {
         return $this->videoHasEnSubtitles;
     }
@@ -653,7 +653,7 @@ class Talk implements NotifyPropertyInterface
     /**
      * @return bool
      */
-    public function videoHasFrSubtitles()
+    public function getVideoHasFrSubtitles()
     {
         return $this->videoHasFrSubtitles;
     }
