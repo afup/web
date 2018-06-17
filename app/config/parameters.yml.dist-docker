@@ -48,3 +48,6 @@ parameters:
     techno_watch_calendar_key: "9Yt0feebMyMrUWx"
 
     super_apero_csv_url: ""
+
+    google_analytics_enabled: false
+    google_analytics_id: "UA-192127-3"
