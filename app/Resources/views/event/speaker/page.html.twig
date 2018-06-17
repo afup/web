@@ -1,0 +1,162 @@
+{% extends ':event:base.html.twig' %}
+
+{% block header %}
+    {% set menu = {'main': {'route' : 'event', 'title': 'Ma page speaker : Forum PHP 2018'}, 'items': []} %}
+    {{ parent() }}
+{% endblock %}
+
+{% form_theme speakers_diner_form 'bootstrap_3_layout.html.twig' %}
+{% form_theme hotel_reservation_form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+
+    <style>
+        .speakers-infos-form {
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .speakers-infos-form label {
+            font-size: 1.1em;
+            margin: 20px 0;
+        }
+
+        .speakers-infos-form .radio label,
+        .speakers-infos-form .checkbox label {
+            border: none;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        .speakers-infos-form .list-unstyled {
+            color: red;
+        }
+    </style>
+
+    <div class="container">
+        <div class="col-md-6">
+            <h2>
+                {% if talks|length > 1 %}
+                    Vos talks
+                {% else %}
+                    Votre talk
+                {% endif %}
+            </h2>
+
+            {% for talk in talks %}
+                <li>
+                    {{ talk.title }} <i>(salle et dates de passage à venir)</i>
+                </li>
+            {% endfor %}
+
+            <h2>🍽️ Nous vous invitons au restaurant</h2>
+
+            <p>Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du mercredi 24 octobre à Paris.</p>
+
+            <p>Si vous avez un régime alimentaire spécifique, n'hésitez pas à nous en faire part pour prévenir le chef.</p>
+
+            {{ form_start(speakers_diner_form, { attr: { class: "speakers-infos-form" }}) }}
+
+            <div class="container">
+                <div class="col-md-6">
+                    {{ form_label(speakers_diner_form.will_attend) }}
+                    {{ form_errors(speakers_diner_form.will_attend) }}
+                    {{ form_widget(speakers_diner_form.will_attend) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_label(speakers_diner_form.has_special_diet) }}
+                    {{ form_errors(speakers_diner_form.has_special_diet) }}
+                    {{ form_widget(speakers_diner_form.has_special_diet) }}
+
+                    {{ form_label(speakers_diner_form.special_diet_description) }}
+                    {{ form_errors(speakers_diner_form.special_diet_description) }}
+                    {{ form_widget(speakers_diner_form.special_diet_description) }}
+                </div>
+            </div>
+
+            <div style="text-align: right; padding: 0 15px 0 0">
+                {{ form_widget(speakers_diner_form.submit) }}
+            </div>
+
+            {{ form_end(speakers_diner_form) }}
+
+            <h2>🛎️ Nous vous hébergeons</h2>
+
+            {{ form_start(hotel_reservation_form, { attr: { class: 'speakers-infos-form'}}) }}
+
+            <div class="container">
+                <div class="col-md-6">
+                    {{ form_label(hotel_reservation_form.nights) }}
+                    {{ form_errors(hotel_reservation_form.nights) }}
+                    {{ form_widget(hotel_reservation_form.nights) }}
+                </div>
+                <div class="col-md-6">
+                    <i>Vous disposez de deux nuits d'hôtel maximum. Donnez-nous les dates qui vous conviennent, nous nous chargeons de la réservation ! (les speakers intercontinentaux peuvent bénéficier de plus de nuités, si vous êtes dans ce cas, le pôle conférence vous aura contacté).</i>
+
+                </div>
+            </div>
+
+            <div style="text-align: right; padding: 0 15px 0 0">
+                {{ form_widget(hotel_reservation_form.submit) }}
+            </div>
+
+            {{ form_end(hotel_reservation_form) }}
+
+        </div>
+
+        <div class="col-md-6">
+            <h2>Informations sur votre venue</h2>
+
+            <h3>Votre trajet</h3>
+
+            <p>🛤️  vous venez en train, merci de réserver dès que possible, afin de bénéficier des meilleurs tarifs, votre A/R en seconde classe. Les réservations SNCF pour la période de l’événement ouvrent le [DATE].
+              <br/> ✈️  vous venez en avion, veuillez nous faire parvenir les tarifs et horaires disponibles avant toute réservation. => amelie@afup.org</p>
+            <p>🏖️  vous souhaitez prolonger votre séjour, merci de nous en avertir avant votre réservation en nous indiquant les tarifs disponibles. Une question, un doute sur la réservation ? Contactez-nous avant !</p>
+
+            <p>Une fois votre réservation effectuée, envoyez-nous votre justificatif de paiement et votre RIB, afin de vous rembourser. => amelie@afup.org</p>
+
+
+            <p>💳 Pour information, le remboursement a lieu dans la semaine suivant le cycle de conférences. Le mail de confirmation de réservation ou une capture d’écran de votre réservation ne constituent pas des justificatifs suffisants pour une pièce comptable : merci de nous faire parvenir une copie de votre billet / e-billet ou une facture (Trainline peut fournir une facture, contrairement au site de la SNCF).</p>
+
+            <h3>🏨 Le Marriott Rive Gauche</h3>
+            <p>Le Forum PHP 2018 se déroulera au Marriott Rive Gauche Hotel & Conference Center, 17 boulevard St Jacques, 75014 Paris.
+                Vous êtes logé au même endroit.</p>
+
+            <h3>🚌 Nous rejoindre</h3>
+            <ul>
+                <li>En métro/RER : Denfert-Rochereau (7 minutes à pieds) ou Glacière (3 minutes à pieds). Ces deux stations donnent sur le boulevard Saint Jacques.</li>
+                <li>En voiture, stationnement parking public : 3,10 EUR par heure, 18,40 EUR par jour</li>
+                <li>Station Velib’ au 46 boulevard Saint Jacques</li>
+                <li>
+                    Depuis l’aéroport CDG : Charles de Gaulle International Airport - CDG
+                    <ul>
+                        <li>Service de bus, tarif : 17 EUR  (par trajet)</li>
+                        <li>Métro, tarif :  10 EUR  (par trajet)</li>
+                        <li>Tarif de taxi estimé : 55 EUR  (par trajet)</li>
+                    </ul>
+                </li>
+                <li>
+                    Depuis l’aéroport d’Orly :
+                    <ul>
+                        <li>Service de bus, tarif : 7,7 EUR  (par trajet)</li>
+                        <li>Métro, tarif :  12,05 EUR  (par trajet)</li>
+                        <li>Tarif de taxi estimé : 30 EUR  (par trajet)</li>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <h3>🔊 annonçons votre venue</h3>
+
+            <p>Le Forum PHP 2018 est annoncé sur Joind.in : lorsque le programme sera en ligne le 2 juillet, pensez à indiquer votre venue, réclamer votre conférence, et demander des commentaires à votre audience ! En attendant la publication du programme, merci de garder le secret sur votre participation !</p>
+            <p>Joind.in : https://joind.in/event/forum-php-2017-2018</p>
+            <p>Twitter : @afup, #forumphp</p>
+
+        </div>
+    </div>
+
+{% endblock %}

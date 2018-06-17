@@ -18,11 +18,11 @@ class SpeakersDinerType extends AbstractType
                 'will_attend',
                 ChoiceType::class,
                 [
-                    'label' => 'Présence à au repas',
+                    'label' => 'Serez-vous des nôtres ?',
                     'expanded' => true,
                     'choices' => [
-                        'Oui, je serais présent au restaurant.' => 1,
-                        'Non, je ne serais pas présent au restaurant.' => 0,
+                        'Oui.' => 1,
+                        'Non' => 0,
                     ],
                 ]
             )
@@ -42,7 +42,7 @@ class SpeakersDinerType extends AbstractType
                 'special_diet_description',
                 TextareaType::class,
                 [
-                    'label' => 'Précisions sur le régime',
+                    'label' => 'Précisions sur le régime alimentaire',
                     'required' => false,
                 ]
             )
