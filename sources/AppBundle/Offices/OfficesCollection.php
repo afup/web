@@ -342,6 +342,28 @@ class OfficesCollection
                 'logo_url' => '/images/offices/afup-icon-color.svg',
                 'hide_on_offices_page' => true,
             ],
+            'tours' => [
+                'label' => 'Tours',
+                'latitude' => '47.380001068115234',
+                'longitude' => '0.6899999976158142',
+                'logo_url' => '/images/offices/tours.png',
+                'twitter' => 'AFUP_Tours',
+                'blog_url' => 'http://tours.afup.org',
+                'departements' => ['37'],
+                'meetup_urlname' => 'afup-tours-php',
+                'meetup_id' => '28638984',
+                'map' => [
+                    "legend-first-point-x" => "380",
+                    "legend-first-point-y" => "270",
+                    "legend-second-point-x" => "240",
+                    "legend-second-point-y" => "90",
+                    "legend-third-point-x" => "200",
+                    "legend-third-point-y" => "90",
+                    "legend-attachment" => "right",
+                    "point-latitude" => "47.380001068115234",
+                    "point-longitude" => "0.6899999976158142",
+                ],
+            ]
         ];
     }
 
