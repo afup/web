@@ -84,6 +84,7 @@ class SpeakerController extends EventBaseController
             'talks' => $talks,
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
+            'day_before_event' => \DateTimeImmutable::createFromMutable($event->getDateStart())->modify('- 1 day'),
         ]);
     }
 }
