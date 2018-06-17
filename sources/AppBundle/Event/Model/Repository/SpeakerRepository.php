@@ -41,7 +41,11 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         $hydrator->aggregateOn('speaker', 'talk', 'getId');
 
         $query = $this->getPreparedQuery('SELECT speaker.conferencier_id, speaker.id_forum, speaker.civilite, speaker.nom, speaker.prenom, speaker.email, speaker.societe,
-        speaker.biographie, speaker.twitter, speaker.user_github, speaker.photo, talk.titre, talk.session_id
+        speaker.biographie, speaker.twitter, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
+        speaker.will_attend_speakers_diner,
+        speaker.has_special_diet,
+        speaker.special_diet_description,
+        speaker.hotel_nights
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id

@@ -57,7 +57,7 @@ class SpeakerController extends EventBaseController
 
         $nights = $speaker->getHotelNightsArray();
 
-        if (null === $nights) {
+        if ($speaker->hasNoHotelNight()) {
             $nights[] = HotelReservationType::NIGHT_NONE;
         }
 

@@ -438,8 +438,12 @@ class Speaker implements NotifyPropertyInterface
      */
     public function getHotelNightsArray()
     {
-        if (0 === strlen($this->hotelNights)) {
+        if (null === $this->hotelNights) {
             return null;
+        }
+
+        if (0 === strlen($this->hotelNights)) {
+            return [];
         }
 
         return explode(',', $this->hotelNights);
@@ -466,5 +470,53 @@ class Speaker implements NotifyPropertyInterface
         $this->hotelNights = $hotelNights;
 
         return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function hasHotelNightBefore()
+    {
+        if (null === ($hotelNights = $this->getHotelNightsArray())) {
+            return null;
+        }
+
+        return in_array(self::NIGHT_BEFORE, $hotelNights);
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function hasHotelNightBetween()
+    {
+        if (null === ($hotelNights = $this->getHotelNightsArray())) {
+            return null;
+        }
+
+        return in_array(self::NIGHT_BETWEEN, $hotelNights);
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function hasHotelNightAfter()
+    {
+        if (null === ($hotelNights = $this->getHotelNightsArray())) {
+            return null;
+        }
+
+        return in_array(self::NIGHT_AFTER, $hotelNights);
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function hasNoHotelNight()
+    {
+        if (null === ($hotelNights = $this->getHotelNightsArray())) {
+            return null;
+        }
+
+        return 0 === count($hotelNights);
     }
 }
