@@ -157,6 +157,26 @@ class SpeakerRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'photo',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'will_attend_speakers_diner',
+                'fieldName' => 'willAttendSpeakersDiner',
+                'type' => 'bool'
+            ])
+            ->addField([
+                'columnName' => 'has_special_diet',
+                'fieldName' => 'hasSpecialDiet',
+                'type' => 'bool'
+            ])
+            ->addField([
+                'columnName' => 'special_diet_description',
+                'fieldName' => 'specialDietDescription',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'hotel_nights',
+                'fieldName' => 'hotelNights',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;

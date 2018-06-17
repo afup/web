@@ -9,6 +9,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Speaker implements NotifyPropertyInterface
 {
     use NotifyProperty;
+
+    const NIGHT_BEFORE = 'before';
+    const NIGHT_BETWEEN = 'between';
+    const NIGHT_AFTER = 'after';
+
     /**
      * @var int
      */
@@ -83,6 +88,26 @@ class Speaker implements NotifyPropertyInterface
      * @var string
      */
     private $photo;
+
+    /**
+     * @var bool|null
+     */
+    private $willAttendSpeakersDiner;
+
+    /**
+     * @var bool|null
+     */
+    private $hasSpecialDiet;
+
+    /**
+     * @var string
+     */
+    private $specialDietDescription;
+
+    /**
+     * @var string|null
+     */
+    private $hotelNights;
 
     /**
      * @return int
@@ -332,6 +357,114 @@ class Speaker implements NotifyPropertyInterface
     {
         $this->propertyChanged('photo', $this->photo, $photo);
         $this->photo = $photo;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getWillAttendSpeakersDiner()
+    {
+        return $this->willAttendSpeakersDiner;
+    }
+
+    /**
+     * @param bool|null $willAttendSpeakersDiner
+     *
+     * @return $this
+     */
+    public function setWillAttendSpeakersDiner($willAttendSpeakersDiner)
+    {
+        $this->propertyChanged('willAttendSpeakersDiner', $this->willAttendSpeakersDiner, $willAttendSpeakersDiner);
+
+        $this->willAttendSpeakersDiner = $willAttendSpeakersDiner;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getHasSpecialDiet()
+    {
+        return $this->hasSpecialDiet;
+    }
+
+    /**
+     * @param bool|null $hasSpecialDiet
+     *
+     * @return $this
+     */
+    public function setHasSpecialDiet($hasSpecialDiet)
+    {
+        $this->propertyChanged('hasSpecialDiet', $this->hasSpecialDiet, $hasSpecialDiet);
+
+        $this->hasSpecialDiet = $hasSpecialDiet;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpecialDietDescription()
+    {
+        return $this->specialDietDescription;
+    }
+
+    /**
+     * @param string $specialDietDescription
+     *
+     * @return $this
+     */
+    public function setSpecialDietDescription($specialDietDescription)
+    {
+        $this->propertyChanged('specialDietDescription', $this->specialDietDescription, $specialDietDescription);
+        $this->specialDietDescription = $specialDietDescription;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getHotelNights()
+    {
+        return $this->hotelNights;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHotelNightsArray()
+    {
+        if (0 === strlen($this->hotelNights)) {
+            return null;
+        }
+
+        return explode(',', $this->hotelNights);
+    }
+
+    /**
+     * @param array $hotelNights
+     *
+     * @return Speaker
+     */
+    public function setHotelNightsArray(array $hotelNights)
+    {
+        return $this->setHotelNights(implode(',', $hotelNights));
+    }
+
+    /**
+     * @param null|string $hotelNights
+     *
+     * @return $this
+     */
+    public function setHotelNights($hotelNights)
+    {
+        $this->propertyChanged('hotelNights', $this->hotelNights, $hotelNights);
+        $this->hotelNights = $hotelNights;
+
         return $this;
     }
 }
