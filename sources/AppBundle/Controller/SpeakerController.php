@@ -79,8 +79,17 @@ class SpeakerController extends EventBaseController
             return $this->redirectToRoute('speaker-infos', ['eventSlug' => $event->getPath()]);
         }
 
+        $description = '';
+        $eventCfp = $event->getCFP();
+        if ($request->getLocale() == 'en' && isset($eventCfp['speaker_management_en'])) {
+            $description = $eventCfp['speaker_management_en'];
+        } elseif (isset($eventCfp['speaker_management_fr'])) {
+            $description = $eventCfp['speaker_management_fr'];
+        }
+
         return $this->render('event/speaker/page.html.twig', [
             'event' => $event,
+            'description' => $description,
             'talks' => $talks,
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
