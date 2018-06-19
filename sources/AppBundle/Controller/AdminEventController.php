@@ -572,4 +572,26 @@ class AdminEventController extends Controller
         $response->deleteFileAfterSend(true);
         return $response;
     }
+
+    public function speakerInfosAction(Request $request)
+    {
+        $ting = $this->container->get('ting');
+
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $ting->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        /**
+         * @var $speakerRepository SpeakerRepository
+         */
+        $speakerRepository = $ting->get(SpeakerRepository::class);
+        $speaker = $speakerRepository->get($request->get('speaker_id'));
+
+        $controller = new SpeakerController();
+        $controller->setContainer($this->container);
+
+        return $controller->internalSpeakerPageAction($request, $event, $speaker);
+    }
 }
