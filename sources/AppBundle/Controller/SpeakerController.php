@@ -33,6 +33,7 @@ class SpeakerController extends EventBaseController
          */
         $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
 
+        $now = new \DateTime('now');
 
         $speakersDinerDefaults = [
             'will_attend' => $speaker->getWillAttendSpeakersDiner(),
@@ -41,8 +42,6 @@ class SpeakerController extends EventBaseController
         ];
         $speakersDinerType = $this->createForm(SpeakersDinerType::class, $speakersDinerDefaults);
         $speakersDinerType->handleRequest($request);
-
-        $now = new \DateTime('now');
 
         $shouldDisplaySpeakersDinerForm = $event->getDateEndSpeakersDinerInfosCollection() > $now;
 
@@ -72,7 +71,9 @@ class SpeakerController extends EventBaseController
         $hotelReservationType = $this->createForm(HotelReservationType::class, $hotelReservationDefaults, ['event' => $event]);
         $hotelReservationType->handleRequest($request);
 
-        if ($hotelReservationType->isValid()) {
+        $shouldDisplayHotelReservationForm = $event->getDateEndHotelInfosCollection() > $now;
+
+        if ($shouldDisplayHotelReservationForm && $hotelReservationType->isValid()) {
             $hotelReservationData = $hotelReservationType->getData();
             $speaker->setHotelNightsArray($hotelReservationData['nights']);
 
@@ -95,7 +96,9 @@ class SpeakerController extends EventBaseController
             'event' => $event,
             'description' => $description,
             'talks' => $talks,
+            'speaker' => $speaker,
             'should_display_speakers_diner_form' => $shouldDisplaySpeakersDinerForm,
+            'should_display_hotel_reservation_form' => $shouldDisplayHotelReservationForm,
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
             'day_before_event' => \DateTimeImmutable::createFromMutable($event->getDateStart())->modify('- 1 day'),

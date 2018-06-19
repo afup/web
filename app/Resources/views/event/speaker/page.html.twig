@@ -108,25 +108,44 @@
 
             <h2>🛎️ {% trans %}Nous vous hébergeons{% endtrans %}</h2>
 
-            {{ form_start(hotel_reservation_form, { attr: { class: 'speakers-infos-form'}}) }}
+            {% if should_display_hotel_reservation_form %}
+                {{ form_start(hotel_reservation_form, { attr: { class: 'speakers-infos-form'}}) }}
 
-            <div class="container">
-                <div class="col-md-6">
-                    {{ form_label(hotel_reservation_form.nights) }}
-                    {{ form_errors(hotel_reservation_form.nights) }}
-                    {{ form_widget(hotel_reservation_form.nights) }}
+                <div class="container">
+                    <div class="col-md-6">
+                        {{ form_label(hotel_reservation_form.nights) }}
+                        {{ form_errors(hotel_reservation_form.nights) }}
+                        {{ form_widget(hotel_reservation_form.nights) }}
+                    </div>
+                    <div class="col-md-6">
+                        <i>Vous disposez de deux nuits d'hôtel maximum. Donnez-nous les dates qui vous conviennent, nous nous chargeons de la réservation ! (les speakers intercontinentaux peuvent bénéficier de plus de nuités, si vous êtes dans ce cas, le pôle conférence vous aura contacté).</i>
+
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <i>Vous disposez de deux nuits d'hôtel maximum. Donnez-nous les dates qui vous conviennent, nous nous chargeons de la réservation ! (les speakers intercontinentaux peuvent bénéficier de plus de nuités, si vous êtes dans ce cas, le pôle conférence vous aura contacté).</i>
 
+                <div style="text-align: right; padding: 0 15px 0 0">
+                    {{ form_widget(hotel_reservation_form.submit) }}
                 </div>
-            </div>
 
-            <div style="text-align: right; padding: 0 15px 0 0">
-                {{ form_widget(hotel_reservation_form.submit) }}
-            </div>
-
-            {{ form_end(hotel_reservation_form) }}
+                {{ form_end(hotel_reservation_form) }}
+            {% else %}
+                {% if speaker.hasNoHotelNight %}
+                    {% trans %}Vous nous avez indiqué que n'avez pas besoin de nuit d'hotel.{% endtrans %}
+                {% else %}
+                    {% trans %}Des nuits d'hôtel vous seront réservées ces nuits :{% endtrans %}
+                    <ul>
+                    {% if speaker.hasHotelNightBefore %}
+                        <li>{% trans %}La nuit entre la veille de l'événement et le premier jour.{% endtrans %}</li>
+                    {% endif %}
+                    {% if speaker.hasHotelNightBefore %}
+                        <li>{% trans %}La nuit entre le premier jour et le second jour.{% endtrans %}</li>
+                    {% endif %}
+                    {% if speaker.hasHotelNightAfter %}
+                        <li>{% trans %}La nuit entre le deuxième jour de l'événement et le lendemain de l'événement.{% endtrans %}</li>
+                    {% endif %}
+                    </ul>
+                {% endif %}
+            {% endif %}
 
         </div>
 
