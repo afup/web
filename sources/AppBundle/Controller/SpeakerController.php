@@ -42,7 +42,11 @@ class SpeakerController extends EventBaseController
         $speakersDinerType = $this->createForm(SpeakersDinerType::class, $speakersDinerDefaults);
         $speakersDinerType->handleRequest($request);
 
-        if ($speakersDinerType->isValid()) {
+        $now = new \DateTime('now');
+
+        $shouldDisplaySpeakersDinerForm = $event->getDateEndSpeakersDinerInfosCollection() > $now;
+
+        if ($shouldDisplaySpeakersDinerForm && $speakersDinerType->isValid()) {
             $speakersDinerData = $speakersDinerType->getData();
 
             $speaker->setWillAttendSpeakersDiner($speakersDinerData['will_attend']);
@@ -91,6 +95,7 @@ class SpeakerController extends EventBaseController
             'event' => $event,
             'description' => $description,
             'talks' => $talks,
+            'should_display_speakers_diner_form' => $shouldDisplaySpeakersDinerForm,
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
             'day_before_event' => \DateTimeImmutable::createFromMutable($event->getDateStart())->modify('- 1 day'),
