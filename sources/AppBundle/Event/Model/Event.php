@@ -65,6 +65,16 @@ class Event implements NotifyPropertyInterface
     private $dateEndSales;
 
     /**
+     * @var \DateTime
+     */
+    private $dateEndSpeakersDinerInfosCollection;
+
+    /**
+     * @var \DateTime
+     */
+    private $dateEndHotelInfosCollection;
+
+    /**
      * @var string
      */
     private $path;
@@ -413,6 +423,48 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('placeAddress', $this->placeAddress, $placeAddress);
         $this->placeAddress = $placeAddress;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateEndSpeakersDinerInfosCollection()
+    {
+        return $this->dateEndSpeakersDinerInfosCollection;
+    }
+
+    /**
+     * @param \DateTime $dateEndSpeakersDinerInfosCollection
+     *
+     * @return $this
+     */
+    public function setDateEndSpeakersDinerInfosCollection(\DateTime $dateEndSpeakersDinerInfosCollection)
+    {
+        $this->propertyChanged('dateEndSpeakersDinerInfosCollection', $this->dateEndSpeakersDinerInfosCollection, $dateEndSpeakersDinerInfosCollection);
+        $this->dateEndSpeakersDinerInfosCollection = $dateEndSpeakersDinerInfosCollection;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateEndHotelInfosCollection()
+    {
+        return $this->dateEndHotelInfosCollection;
+    }
+
+    /**
+     * @param \DateTime $dateEndHotelInfosCollection
+     *
+     * @return $this
+     */
+    public function setDateEndHotelInfosCollection($dateEndHotelInfosCollection)
+    {
+        $this->propertyChanged('dateEndHotelInfosCollection', $this->dateEndHotelInfosCollection, $dateEndHotelInfosCollection);
+        $this->dateEndHotelInfosCollection = $dateEndHotelInfosCollection;
+
         return $this;
     }
 }

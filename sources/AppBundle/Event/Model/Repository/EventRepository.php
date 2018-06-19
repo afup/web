@@ -132,6 +132,22 @@ class EventRepository extends Repository implements MetadataInitializer
                 ]
             ])
             ->addField([
+                'columnName' => 'date_fin_saisie_repas_speakers',
+                'fieldName' => 'dateEndSpeakersDinerInfosCollection',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
+            ])
+            ->addField([
+                'columnName' => 'date_fin_saisie_nuites_hotel',
+                'fieldName' => 'dateEndHotelInfosCollection',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
+            ])
+            ->addField([
                 'columnName' => 'text',
                 'fieldName' => 'cfp',
                 'type' => 'json',
