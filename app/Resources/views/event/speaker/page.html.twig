@@ -40,9 +40,9 @@
         <div class="col-md-6">
             <h2>
                 {% if talks|length > 1 %}
-                    Vos talks
+                    {% trans %}Vos conférences{% endtrans %}
                 {% else %}
-                    Votre talk
+                    {% trans %}Votre conférence{% endtrans %}
                 {% endif %}
             </h2>
 
@@ -52,11 +52,11 @@
                 </li>
             {% endfor %}
 
-            <h2>🍽️ Nous vous invitons au restaurant</h2>
+            <h2>🍽️ {% trans %}Nous vous invitons au restaurant{% endtrans %}</h2>
 
-            <p>Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du {{ day_before_event|date('d/m/Y') }} à Paris.</p>
+            <p>{{ "Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du %date% à Paris." | trans({"%date%": day_before_event|date('d/m/Y')}) }}</p>
 
-            <p>Si vous avez un régime alimentaire spécifique, n'hésitez pas à nous en faire part pour prévenir le chef.</p>
+            <p>{% trans %}Si vous avez un régime alimentaire spécifique, n'hésitez pas à nous en faire part pour prévenir le chef.{% endtrans %}</p>
 
             {{ form_start(speakers_diner_form, { attr: { class: "speakers-infos-form" }}) }}
 
@@ -84,7 +84,7 @@
 
             {{ form_end(speakers_diner_form) }}
 
-            <h2>🛎️ Nous vous hébergeons</h2>
+            <h2>🛎️ {% trans %}Nous vous hébergeons{% endtrans %}</h2>
 
             {{ form_start(hotel_reservation_form, { attr: { class: 'speakers-infos-form'}}) }}
 
@@ -109,8 +109,6 @@
         </div>
 
         <div class="col-md-6">
-            <h2>Informations sur votre venue</h2>
-
             {{ description|raw }}
         </div>
     </div>

@@ -21,7 +21,7 @@ class SpeakersDinerType extends AbstractType
                     'label' => 'Serez-vous des nôtres ?',
                     'expanded' => true,
                     'choices' => [
-                        'Oui.' => 1,
+                        'Oui' => 1,
                         'Non' => 0,
                     ],
                 ]
@@ -33,7 +33,7 @@ class SpeakersDinerType extends AbstractType
                     'label' => 'Régime alimentaire',
                     'expanded' => true,
                     'choices' => [
-                        "Non, je n'ai pas de régime alimentaire particulier." => 0,
+                        "Non, je n'ai pas de régime alimentaire particulier" => 0,
                         "J'ai un régime alimentaire particulier / des contraines alimentaires" => 1,
                     ],
                 ]
