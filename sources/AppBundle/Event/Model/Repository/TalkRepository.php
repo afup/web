@@ -48,7 +48,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getTalksBySpeaker(Event $event, Speaker $speaker)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, id_forum
+            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie
             FROM afup_sessions sessions
             LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
             WHERE id_forum = :event AND cs.conferencier_id = :speaker

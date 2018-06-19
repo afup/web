@@ -6,6 +6,7 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Model\Talk;
 use AppBundle\SpeakerInfos\Form\HotelReservationType;
 use AppBundle\SpeakerInfos\Form\SpeakersDinerType;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,12 @@ class SpeakerController extends EventBaseController
          * @var $talkRepository TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $talks = $talkRepository->getTalksBySpeaker($event, $speaker);
+        $talks = array_filter(
+            iterator_to_array($talkRepository->getTalksBySpeaker($event, $speaker)),
+            function(Talk $talk) {
+                return true === $talk->getScheduled();
+            }
+        );
 
         /**
          * @var SpeakerRepository $speakerRepository
