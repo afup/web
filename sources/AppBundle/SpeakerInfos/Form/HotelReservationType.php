@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -17,6 +18,23 @@ class HotelReservationType extends AbstractType
 {
     const NIGHT_NONE = 'none';
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         /**
@@ -34,9 +52,17 @@ class HotelReservationType extends AbstractType
         $end = \DateTimeImmutable::createFromMutable($event->getDateEnd());
 
 
-        $choices['Nuit du ' . $start->modify('-1 day')->format('d/m') . ' au ' . $start->format('d/m')] = Speaker::NIGHT_BEFORE;
-        $choices['Nuit du ' . $start->format('d/m') . ' au ' . $end->format('d/m')] = Speaker::NIGHT_BETWEEN;
-        $choices['Nuit du ' . $end->format('d/m') . ' au ' . $end->modify('+1 day')->format('d/m')] = Speaker::NIGHT_AFTER;
+        $nights = [
+            Speaker::NIGHT_BEFORE => ['from' => $start->modify('-1 day'), 'to' => $start],
+            Speaker::NIGHT_BETWEEN => ['from' => $start, 'to' => $end],
+            Speaker::NIGHT_AFTER => ['from' => $end, 'to' => $end->modify('+1 day')],
+        ];
+
+        foreach ($nights as $code => $infos) {
+            $label = $this->translator->trans("Nuit du %date_from% au %date_to%", ['%date_from%' => $infos['from']->format('d/m'), '%date_to%' => $infos['to']->format('d/m')]);
+            $choices[$label] = $code;
+        }
+
         $choices['Aucune nuité'] = self::NIGHT_NONE;
 
         $builder
