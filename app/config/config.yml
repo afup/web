@@ -139,6 +139,10 @@ parameters:
                     nom: 'Inscriptions - prix custom'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/special_price'
+                admin_event_speakers_management:
+                    nom: 'Gestion documentaire des speakers'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/speakers-management'
                 forum_facturation:
                     nom: 'Factures'
                     niveau: 'ROLE_ADMIN'

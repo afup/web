@@ -26,9 +26,17 @@ admin_event_pending_bankwires:
   path: /bankwires
   defaults: {_controller: AppBundle:AdminEvent:pendingBankwires}
 
+admin_event_speakers_management:
+  path: /speakers-management
+  defaults: {_controller: AppBundle:AdminEvent:speakersManagement}
+
 admin_event_special_price:
   path: /special_price
   defaults: {_controller: AppBundle:AdminEvent:specialPrice}
+
+admin_event_speaker_infos:
+  path: /speaker-infos
+  defaults: {_controller: AppBundle:AdminEvent:speakerInfos}
 
 admin_event_badges:
   path: /badges

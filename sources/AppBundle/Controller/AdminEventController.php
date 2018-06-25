@@ -13,6 +13,7 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\RoomRepository;
+use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
@@ -140,6 +141,31 @@ class AdminEventController extends Controller
             'event' => $event,
             'title' => 'Gestion des prix custom',
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function speakersManagementAction(Request $request)
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+
+        if (null === ($event = $this->getEvent($eventRepository, $request))) {
+            throw $this->createNotFoundException('Could not find event');
+        }
+
+        /**
+         * @var SpeakerRepository $speakersRepository
+         */
+        $speakersRepository = $this->get('ting')->get(SpeakerRepository::class);
+
+        $speakers = $speakersRepository->getScheduledSpeakersByEvent($event);
+
+        return $this->render(':admin/event:speakers_management.html.twig', [
+            'event' => $event,
+            'title' => 'Gestion documentaire des speakers',
+            'speakers' => $speakers,
         ]);
     }
 
@@ -545,5 +571,27 @@ class AdminEventController extends Controller
         $response = new BinaryFileResponse($file, BinaryFileResponse::HTTP_OK, $headers);
         $response->deleteFileAfterSend(true);
         return $response;
+    }
+
+    public function speakerInfosAction(Request $request)
+    {
+        $ting = $this->container->get('ting');
+
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $ting->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        /**
+         * @var $speakerRepository SpeakerRepository
+         */
+        $speakerRepository = $ting->get(SpeakerRepository::class);
+        $speaker = $speakerRepository->get($request->get('speaker_id'));
+
+        $controller = new SpeakerController();
+        $controller->setContainer($this->container);
+
+        return $controller->internalSpeakerPageAction($request, $event, $speaker);
     }
 }

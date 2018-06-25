@@ -1,0 +1,166 @@
+{% extends ':event:base.html.twig' %}
+
+{% block header %}
+    {% set menu = {'main': {'route' : 'event', 'title': 'Ma page speaker : Forum PHP 2018'}, 'items': []} %}
+    {{ parent() }}
+{% endblock %}
+
+{% form_theme speakers_diner_form 'bootstrap_3_layout.html.twig' %}
+{% form_theme hotel_reservation_form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+
+    <style>
+        .speakers-infos-form {
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .speakers-infos-form label {
+            font-size: 1.1em;
+            margin: 20px 0;
+        }
+
+        .speakers-infos-form .radio label,
+        .speakers-infos-form .checkbox label {
+            border: none;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        .speakers-infos-form .list-unstyled {
+            color: red;
+        }
+    </style>
+
+    {% if talks|length %}
+    <div class="container">
+        <div class="col-md-6">
+            <h2>
+                {% if talks|length > 1 %}
+                    {% trans %}Vos conférences{% endtrans %}
+                {% else %}
+                    {% trans %}Votre conférence{% endtrans %}
+                {% endif %}
+            </h2>
+
+            <ul>
+            {% for talk in talks %}
+                <li>
+                    {{ talk.title }} <i>(salle et dates de passage à venir)</i>
+                </li>
+            {% endfor %}
+            </ul>
+
+            <h2>🍽️ {% trans %}Nous vous invitons au restaurant{% endtrans %}</h2>
+
+            <p>{{ "Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du %date% à Paris." | trans({"%date%": day_before_event|date('d/m/Y')}) }}</p>
+
+            {% if should_display_speakers_diner_form %}
+                <p>{% trans %}Si vous avez un régime alimentaire spécifique, n'hésitez pas à nous en faire part pour prévenir le chef.{% endtrans %}</p>
+
+                {{ form_start(speakers_diner_form, { attr: { class: "speakers-infos-form" }}) }}
+
+                <div class="container">
+                    <div class="col-md-6">
+                        {{ form_label(speakers_diner_form.will_attend) }}
+                        {{ form_errors(speakers_diner_form.will_attend) }}
+                        {{ form_widget(speakers_diner_form.will_attend) }}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form_label(speakers_diner_form.has_special_diet) }}
+                        {{ form_errors(speakers_diner_form.has_special_diet) }}
+                        {{ form_widget(speakers_diner_form.has_special_diet) }}
+
+                        {{ form_label(speakers_diner_form.special_diet_description) }}
+                        {{ form_errors(speakers_diner_form.special_diet_description) }}
+                        {{ form_widget(speakers_diner_form.special_diet_description) }}
+                    </div>
+                </div>
+
+                <div style="text-align: right; padding: 0 15px 0 0">
+                    {{ form_widget(speakers_diner_form.submit) }}
+                </div>
+
+                {{ form_end(speakers_diner_form) }}
+            {% else %}
+                {% if speaker.willAttendSpeakersDiner is null %}
+                    <p>{% trans %}Vous ne nous avez pas indiqué d'informations à propos de votre venue au repas des speakers.{% endtrans %}</p>
+                {% else %}
+                    {% if speaker.willAttendSpeakersDiner %}
+                        <p>{% trans %}Vous nous avez indiqué être présent au repas.{% endtrans %}</p>
+
+                        {% if speaker.hasSpecialDiet and speaker.specialDietDescription%}
+                            <p>{% trans %}Vous nous avez indiqué avoir un régime alimentaire particulier, avec ces précisions :{% endtrans %}</p>
+
+                            <pre>
+                        {{ speaker.specialDietDescription }}
+                    </pre>
+                        {% else %}
+                            <p>{% trans %}Vous nous avez indiqué ne pas avoir de régime alimentaire particulier.{% endtrans %}</p>
+                        {% endif %}
+                    {% else %}
+                        <p>Vous nous avez indiqué ne pas être présent au repas.</p>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+            <h2>🛎️ {% trans %}Nous vous hébergeons{% endtrans %}</h2>
+
+            {% if should_display_hotel_reservation_form %}
+                {{ form_start(hotel_reservation_form, { attr: { class: 'speakers-infos-form'}}) }}
+
+                <div class="container">
+                    <div class="col-md-6">
+                        {{ form_label(hotel_reservation_form.nights) }}
+                        {{ form_errors(hotel_reservation_form.nights) }}
+                        {{ form_widget(hotel_reservation_form.nights) }}
+                    </div>
+                    <div class="col-md-6">
+                        <i>Vous disposez de deux nuits d'hôtel maximum. Donnez-nous les dates qui vous conviennent, nous nous chargeons de la réservation ! (les speakers intercontinentaux peuvent bénéficier de plus de nuités, si vous êtes dans ce cas, le pôle conférence vous aura contacté).</i>
+
+                    </div>
+                </div>
+
+                <div style="text-align: right; padding: 0 15px 0 0">
+                    {{ form_widget(hotel_reservation_form.submit) }}
+                </div>
+
+                {{ form_end(hotel_reservation_form) }}
+            {% else %}
+                {% if speaker.hasNoHotelNight %}
+                    {% trans %}Vous nous avez indiqué que n'avez pas besoin de nuit d'hotel.{% endtrans %}
+                {% else %}
+                    {% trans %}Des nuits d'hôtel vous seront réservées ces nuits :{% endtrans %}
+                    <ul>
+                    {% if speaker.hasHotelNightBefore %}
+                        <li>{% trans %}La nuit entre la veille de l'événement et le premier jour.{% endtrans %}</li>
+                    {% endif %}
+                    {% if speaker.hasHotelNightBefore %}
+                        <li>{% trans %}La nuit entre le premier jour et le second jour.{% endtrans %}</li>
+                    {% endif %}
+                    {% if speaker.hasHotelNightAfter %}
+                        <li>{% trans %}La nuit entre le deuxième jour de l'événement et le lendemain de l'événement.{% endtrans %}</li>
+                    {% endif %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+
+        </div>
+
+        <div class="col-md-6">
+            {{ description|raw }}
+        </div>
+    </div>
+    {% else %}
+        <div class="container">
+            <div class="col-md-12">
+                Aucune conférence programmée trouvée.
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

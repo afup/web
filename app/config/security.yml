@@ -30,7 +30,7 @@ security:
                 entry_point: app.legacy_authenticator
 
         github_secured_area:
-            pattern: ^(/event/.*/(vote|cfp)|/connect/github/check)
+            pattern: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check)
 
             guard:
                 authenticators:

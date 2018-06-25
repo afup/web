@@ -58,6 +58,8 @@ if ($action == 'lister') {
             $text = json_decode($champs['text'], true);
             $champs['cfp_fr'] = $text['fr'];
             $champs['cfp_en'] = $text['en'];
+            $champs['speaker_management_fr'] = $text['speaker_management_fr'];
+            $champs['speaker_management_en'] = $text['speaker_management_en'];
         }
 
         $formulaire->setDefaults($champs);
@@ -85,8 +87,12 @@ if ($action == 'lister') {
     $formulaire->addElement('date'  , 'date_fin_vote', 'Date de fin de vote sur le CFP', array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_prevente'    , 'Date de fin de pré-vente'           , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('date'  , 'date_fin_vente'       , 'Date de fin de vente'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
+    $formulaire->addElement('date'  , 'date_fin_saisie_repas_speakers'       , 'Date de fin saisie repas confférenciers'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
+    $formulaire->addElement('date'  , 'date_fin_saisie_nuites_hotel'       , 'Date de fin saisie nuités hotel'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
 	$formulaire->addElement('textarea', 'cfp_fr'             , 'CFP (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
 	$formulaire->addElement('textarea', 'cfp_en'             , 'CFP (en)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    $formulaire->addElement('textarea', 'speaker_management_fr'             , 'Infos speakers (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    $formulaire->addElement('textarea', 'speaker_management_en'             , 'Infos speakers (eb)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
 
     $formulaire->addElement('header', ''                     , 'Coupons');
     $legend = "Ici c'est une liste de coupons séparées par des virgules";
@@ -109,8 +115,15 @@ if ($action == 'lister') {
                 $formulaire->exportValue('date_fin_vote'),
                 $formulaire->exportValue('date_fin_prevente'),
                 $formulaire->exportValue('date_fin_vente'),
+                $formulaire->exportValue('date_fin_saisie_repas_speakers'),
+                $formulaire->exportValue('date_fin_saisie_nuites_hotel'),
                 $formulaire->exportValue('path'),
-                ['fr' => $formulaire->exportValue('cfp_fr'), 'en' => $formulaire->exportValue('cfp_en')],
+                [
+                    'fr' => $formulaire->exportValue('cfp_fr'),
+                    'en' => $formulaire->exportValue('cfp_en'),
+                    'speaker_management_fr' => $formulaire->exportValue('speaker_management_fr'),
+                    'speaker_management_en' => $formulaire->exportValue('speaker_management_en'),
+                ],
                 $formulaire->exportValue('trello_list_id'),
                 $formulaire->exportValue('logo_url'),
                 $formulaire->exportValue('place_name'),
@@ -130,8 +143,15 @@ if ($action == 'lister') {
                 $formulaire->exportValue('date_fin_vote'),
                 $formulaire->exportValue('date_fin_prevente'),
                 $formulaire->exportValue('date_fin_vente'),
+                $formulaire->exportValue('date_fin_saisie_repas_speakers'),
+                $formulaire->exportValue('date_fin_saisie_nuites_hotel'),
                 $formulaire->exportValue('path'),
-                ['fr' => $formulaire->exportValue('cfp_fr'), 'en' => $formulaire->exportValue('cfp_en')],
+                [
+                    'fr' => $formulaire->exportValue('cfp_fr'),
+                    'en' => $formulaire->exportValue('cfp_en'),
+                    'speaker_management_fr' => $formulaire->exportValue('speaker_management_fr'),
+                    'speaker_management_en' => $formulaire->exportValue('speaker_management_en'),
+                ],
                 $formulaire->exportValue('trello_list_id'),
                 $formulaire->exportValue('logo_url'),
                 $formulaire->exportValue('place_name'),
