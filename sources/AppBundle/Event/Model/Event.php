@@ -439,7 +439,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setDateEndSpeakersDinerInfosCollection(\DateTime $dateEndSpeakersDinerInfosCollection)
+    public function setDateEndSpeakersDinerInfosCollection(\DateTime $dateEndSpeakersDinerInfosCollection = null)
     {
         $this->propertyChanged('dateEndSpeakersDinerInfosCollection', $this->dateEndSpeakersDinerInfosCollection, $dateEndSpeakersDinerInfosCollection);
         $this->dateEndSpeakersDinerInfosCollection = $dateEndSpeakersDinerInfosCollection;
@@ -460,7 +460,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setDateEndHotelInfosCollection($dateEndHotelInfosCollection)
+    public function setDateEndHotelInfosCollection(\DateTime $dateEndHotelInfosCollection = null)
     {
         $this->propertyChanged('dateEndHotelInfosCollection', $this->dateEndHotelInfosCollection, $dateEndHotelInfosCollection);
         $this->dateEndHotelInfosCollection = $dateEndHotelInfosCollection;
