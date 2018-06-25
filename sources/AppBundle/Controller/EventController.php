@@ -39,8 +39,8 @@ class EventController extends EventBaseController
         if ($event === null) {
             return $this->render(':event:none.html.twig');
         }
-        return new RedirectResponse($this->generateUrl('speaker-infos', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
 
+        return new RedirectResponse($this->generateUrl('speaker-infos', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
     }
 
     public function eventAction($eventSlug)
