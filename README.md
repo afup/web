@@ -23,6 +23,8 @@ La base de test inclus un utilisateur administration avec les identifiants suiva
 - user: admin@admin.fr
 - pass: admin
 
+Vous pouvez aussi y accéder directement via la commande: `docker/bin/mysql`
+
 ## Base de données
 
 Config par défaut:
