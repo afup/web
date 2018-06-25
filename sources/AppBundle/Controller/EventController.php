@@ -28,6 +28,21 @@ class EventController extends EventBaseController
         return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
     }
 
+    public function speakerInfosIndexAction()
+    {
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $eventRepository->getNextEvent();
+
+        if ($event === null) {
+            return $this->render(':event:none.html.twig');
+        }
+        return new RedirectResponse($this->generateUrl('speaker-infos', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
+
+    }
+
     public function eventAction($eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
