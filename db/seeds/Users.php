@@ -28,14 +28,16 @@ class Users extends AbstractSeed
             ->save()
         ;
 
+        $now = time();
+        $oneMonthInSeconds = 60*60*24*30;
 
         $data = [
             [
-                'date_debut' => 1514761200, // 2018-01-01
+                'date_debut' => $now - $oneMonthInSeconds,
                 'type_personne' => 0, // AFUP_PERSONNE_PHYSIQUE
                 'id_personne' => self::ID_USER_ADMIN,
                 'montant' => 25,
-                'date_fin' => 1546300799, // 2018-12-31
+                'date_fin' => $now + $oneMonthInSeconds * 12,
             ]
         ];
 
