@@ -29,7 +29,7 @@ class SpeakerController extends EventBaseController
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $talks = array_filter(
             iterator_to_array($talkRepository->getTalksBySpeaker($event, $speaker)),
-            function(Talk $talk) {
+            function (Talk $talk) {
                 return true === $talk->getScheduled();
             }
         );
