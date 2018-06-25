@@ -9,7 +9,7 @@ Par défaut:
 * Site AFUP : <https://localhost:9205/>
 * Planète PHP : <https://localhost:9215/>
 * Event : <https://localhost:9225/>
-* Mailcatcher: <https://localhost:1181/>
+* Mailcatcher: <http://localhost:1181/>
 
 _Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.override.yml`._
 
@@ -19,11 +19,17 @@ _Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.ove
 * effectuer un `make docker-up` pour la création de l'infrastructure sous docker
 * effectuer un `make init` pour la copie des fichiers de config par défaut, l'installation des dépendances ainsi que l'init de la base de donnée avec les données de test.
 
+La base de test inclus un utilisateur administration avec les identifiants suivants:
+- user: admin@admin.fr
+- pass: admin
+
+Vous pouvez aussi y accéder directement via la commande: `docker/bin/mysql`
+
 ## Base de données
 
-Utiliser le compte `root:root`
-
-* Récupérer un dump de la base (demander au pôle outils @ afup.org) et le placer décompressé à la racine du projet
-* Récupérer le port MySQL du container `db` : `docker-compose port db 3306`
-* Importer le dump : `mysql -h 127.0.0.1 -P <port> -u root -p < dump.sql`
-* Il faut une instance Algolia pour le `algolia_app_id`, `algolia_backend_api_key` et `algolia_frontend_api_key` (contacter le pôle outil)
+Config par défaut:
+- user: afup
+- pass: afup
+- host: localhost
+- port: 3606
+- database: web
