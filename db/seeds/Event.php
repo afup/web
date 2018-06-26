@@ -24,7 +24,7 @@ class Event extends AbstractSeed
                 'date_debut' => date('Y-m-d', $event),
                 'date_fin' => date('Y-m-d', $event + $oneDayInSeconds),
                 'annee' => date('Y', $event),
-                'text' => 'Lorem ipsum dolor amet cronut four loko cloud bread, chicharrones salvia chia vice aesthetic edison bulb ugh hashtag kogi venmo. Shaman raclette humblebrag cray tousled. Direct trade cliche keffiyeh small batch mustache. Marfa heirloom mixtape fingerstache deep v. 3 wolf moon keytar unicorn kitsch, pabst biodiesel umami pok pok ugh normcore iPhone tofu squid. Green juice vexillologist edison bulb echo park air plant adaptogen. Everyday carry flexitarian green juice, unicorn leggings mixtape prism knausgaard chambray cray woke helvetica tousled cred.',
+                'text' => '{"fr":"François le français", "en": "Henri l\'anglais"}',
                 'date_fin_appel_projet' => $now + $oneMonthInSeconds,
                 'date_fin_appel_conferencier' => $event - $oneMonthInSeconds * 2,
                 'date_fin_vote' => date('Y-m-d H:i:s', ($event - $oneMonthInSeconds * 2) + $oneDayInSeconds * 7),
