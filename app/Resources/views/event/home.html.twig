@@ -33,7 +33,7 @@
             function update() {
                 var format = countdown.DAYS | countdown.HOURS;
                 if((end.getTime() - (new Date()).getTime()) < (1000 * 60 * 60)) {
-                    format = countdown.DAYS | countdown.HOURS | countdown.MINUTES | countdown.SECONDS;
+                    format = countdown.MINUTES | countdown.SECONDS;
                 }
 
                 var ts = countdown(end, null, format);
