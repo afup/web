@@ -680,7 +680,8 @@ class AppelConferencier
         $needs_mentoring = null,
         $use_markdown = null,
         $video_has_fr_subtitles = null,
-        $video_has_en_subtitles = null
+        $video_has_en_subtitles = null,
+        $date_publication = null
     ) {
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
@@ -717,6 +718,9 @@ class AppelConferencier
         }
         if ($video_has_en_subtitles !== null) {
             $requete .= 'video_has_en_subtitles = ' . $this->_bdd->echapper($video_has_en_subtitles) . ', ';
+        }
+        if ($date_publication !== null) {
+            $requete .= 'date_publication = ' . $this->_bdd->echapper($date_publication) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;
