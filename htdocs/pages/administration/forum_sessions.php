@@ -329,7 +329,9 @@ if ($action == 'lister') {
 
         $formulaire->addElement('checkbox'    , 'video_has_fr_subtitles'          , "Sous titres FR présents");
         $formulaire->addElement('checkbox'    , 'video_has_en_subtitles'          , "Sous titres EN présents");
+        $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
     }
+
 
     $formulaire->addElement('header', null, 'Conférencier(s)');
     $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'c.nom, c.conferencier_id', true);
@@ -399,7 +401,8 @@ if ($action == 'lister') {
                                                 $valeurs['needs_mentoring'],
                                                 $valeurs['use_markdown'],
                                                 $valeurs['video_has_fr_subtitles'],
-                                                $valeurs['video_has_en_subtitles']
+                                                $valeurs['video_has_en_subtitles'],
+                                                $valeurs['date_publication']['Y'].'-'.$valeurs['date_publication']['M'].'-'.$valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s']
             );
             $forum_appel->delierSession($session_id);
         }
