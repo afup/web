@@ -31,7 +31,7 @@
             var end = new Date({{ event.dateEndCallForPapers|date("Y, m-1, d, H, i, s") }});
             var counter = document.querySelector('#end');
             function update() {
-                var ts = countdown(end, null, countdown.DAYS | countdown.HOURS);
+                var ts = countdown(end, null, countdown.DAYS | countdown.HOURS | countdown.MINUTES | countdown.SECONDS);
                 counter.innerHTML = ts.toHTML('strong', 'fini');
                 requestAnimationFrame(update);
             }
