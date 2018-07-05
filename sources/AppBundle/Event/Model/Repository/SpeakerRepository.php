@@ -49,7 +49,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
-        WHERE speaker.id_forum = :event AND talk.plannifie=1
+        WHERE speaker.id_forum = :event AND talk.plannifie=1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)
         ORDER BY speaker.prenom ASC, speaker.nom ASC
         ')->setParams(['event' => $event->getId()]);
 
