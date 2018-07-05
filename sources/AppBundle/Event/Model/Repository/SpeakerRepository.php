@@ -33,12 +33,19 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     /**
      * Retrieve speakers with a scheduled talk for a given event
      * @param Event $event
+     * @param bool $returnTalksThatWillBePublished
+     *
      * @return \CCMBenchmark\Ting\Repository\CollectionInterface
      */
-    public function getScheduledSpeakersByEvent(Event $event)
+    public function getScheduledSpeakersByEvent(Event $event, $returnTalksThatWillBePublished = false)
     {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('speaker', 'talk', 'getId');
+
+        $publishedAtFilter = '(talk.date_publication < NOW() OR talk.date_publication IS NULL)';
+        if ($returnTalksThatWillBePublished) {
+            $publishedAtFilter = '(1 = 1)';
+        }
 
         $query = $this->getPreparedQuery('SELECT speaker.conferencier_id, speaker.id_forum, speaker.civilite, speaker.nom, speaker.prenom, speaker.email, speaker.societe,
         speaker.biographie, speaker.twitter, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
@@ -49,7 +56,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
-        WHERE speaker.id_forum = :event AND talk.plannifie=1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)
+        WHERE speaker.id_forum = :event AND talk.plannifie=1 AND ' . $publishedAtFilter . '
         ORDER BY speaker.prenom ASC, speaker.nom ASC
         ')->setParams(['event' => $event->getId()]);
 

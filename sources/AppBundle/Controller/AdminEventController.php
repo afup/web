@@ -160,7 +160,7 @@ class AdminEventController extends Controller
          */
         $speakersRepository = $this->get('ting')->get(SpeakerRepository::class);
 
-        $speakers = $speakersRepository->getScheduledSpeakersByEvent($event);
+        $speakers = $speakersRepository->getScheduledSpeakersByEvent($event, true);
 
         return $this->render(':admin/event:speakers_management.html.twig', [
             'event' => $event,
