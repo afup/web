@@ -4,16 +4,31 @@
 namespace AppBundle\Twig;
 
 use AppBundle\Routing\LegacyRouter;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
+    /**
+     * @var LegacyRouter
+     */
     private $legacyRouter;
+
+    /**
+     * @var \Parsedown
+     */
     private $parsedown;
 
-    public function __construct(LegacyRouter $legacyRouter, \Parsedown $parsedown)
+    /**
+     * @var Container
+     */
+    private $container;
+
+    public function __construct(LegacyRouter $legacyRouter, \Parsedown $parsedown, ContainerInterface $container)
     {
         $this->legacyRouter = $legacyRouter;
         $this->parsedown = $parsedown;
+        $this->container = $container;
     }
 
     /**
@@ -47,7 +62,11 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
 
     public function getGlobals()
     {
-        return ['legacy_router' => $this->legacyRouter];
+        return [
+            'legacy_router' => $this->legacyRouter,
+            'google_analytics_enabled' => $this->container->getParameter('google_analytics_enabled'),
+            'google_analytics_id' => $this->container->getParameter('google_analytics_id')
+        ];
     }
 
     /**
