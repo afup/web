@@ -268,24 +268,7 @@ SQL;
 
         return $liste_emargement;
     }
-
-    function obtenirListePourBadges($id_forum = null, $id = null)
-    {
-        $requete = 'SELECT';
-        $requete .= '  i.*, f.societe, f.type_reglement ';
-        $requete .= 'FROM';
-        $requete .= '  afup_inscription_forum i ';
-        $requete .= 'LEFT JOIN';
-        $requete .= '  afup_facturation_forum f ON i.reference = f.reference ';
-        $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
-        if (isset($id) and $id > 0) {
-            $requete .= 'AND  i.id =' . $id . ' ';
-        }
-        $requete .= 'ORDER BY i.date';
-        return $this->_bdd->obtenirTous($requete);
-
-    }
-
+    
     /**
      * Renvoit la liste des inscriptions au forum
      *

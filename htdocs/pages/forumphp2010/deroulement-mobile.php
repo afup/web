@@ -18,7 +18,6 @@ $sessions = $appel->obtenirListeSessionsPlannifies($config_forum['id']);
 
 $forum = new Forum($bdd);
 $id_forum = 5;
-//$badges =  $forum_inscriptions->obtenirListePourBadges($id_forum);
 $badges = array();
 $badge_prints =array();
 $nb_cols = 3;
