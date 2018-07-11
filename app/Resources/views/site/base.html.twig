@@ -18,8 +18,12 @@
     <header>
         <div class="mw1400p center">
             <div id="espace-membre" class="w33 tablet-hidden">
-                <a href="/pages/administration" class="header-button header-button__connect">Se connecter</a>
-                <a href="{{ path('become_member') }}" class="header-button header-button__become-member">Adhérer</a>
+                {% if app.user %}
+                    <a href="/pages/administration" class="header-button header-button__connect">Administration</a>
+                {%  else  %}
+                    <a href="/pages/administration" class="header-button header-button__connect">Se connecter</a>
+                    <a href="{{ path('become_member') }}" class="header-button header-button__become-member">Adhérer</a>
+                {% endif %}
             </div>
             <h1 id="logo">
                 <a href="/">
