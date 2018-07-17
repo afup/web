@@ -15,6 +15,7 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Room;
@@ -570,6 +571,34 @@ class AdminEventController extends Controller
 
         $response = new BinaryFileResponse($file, BinaryFileResponse::HTTP_OK, $headers);
         $response->deleteFileAfterSend(true);
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return BinaryFileResponse
+     */
+    public function previousRegistrationsAction(Request $request)
+    {
+        $file = new \SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('inscrits_'), 'w+');
+
+        $headers = [
+            'Content-Type' =>  'text/csv; charset=utf-8',
+            'Content-Disposition' => sprintf('attachment; filename="inscriptions_%d_derniers_events.csv"', date('Ymd-His')),
+        ];
+
+        $events = $this->get('ting')->get(EventRepository::class)->getPreviousEvents($request->query->getInt('event_count', 4));
+
+        $registrations = $this->get('ting')->get(TicketRepository::class)->getRegistrationsForEvents($events);
+
+        foreach ($registrations as $registration) {
+            $file->fputcsv($registration);
+        }
+
+        $response = new BinaryFileResponse($file, BinaryFileResponse::HTTP_OK, $headers);
+        $response->deleteFileAfterSend(true);
+
         return $response;
     }
 

@@ -42,6 +42,38 @@ class TicketRepository extends Repository implements MetadataInitializer
         }
     }
 
+    /**
+     * @param Event[]|\Traversable $events
+     *
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getRegistrationsForEvents(\Traversable $events)
+    {
+        $params = [];
+        $cpt = 0;
+        foreach ($events as $event) {
+            $key = 'event_id' . ++$cpt;
+            $params[$key] = $event->getId();
+            $idsParams[] = ':' . $key;
+        }
+        return $this
+            ->getPreparedQuery(strtr(
+                'SELECT afup_inscription_forum.nom,
+                        afup_inscription_forum.prenom,
+                        afup_inscription_forum.email
+                 FROM afup_inscription_forum
+                 WHERE afup_inscription_forum.id_forum IN (%ids%)
+                 GROUP BY afup_inscription_forum.nom, afup_inscription_forum.prenom, afup_inscription_forum.email
+                 ORDER BY afup_inscription_forum.nom, afup_inscription_forum.prenom, afup_inscription_forum.email',
+                [
+                    '%ids%' => implode(',', $idsParams),
+                ]
+            ))
+            ->setParams($params)
+            ->query($this->getCollection(new HydratorArray()))
+       ;
+    }
+
     public function getByInvoiceWithDetail(Invoice $invoice)
     {
         return $this->getPreparedQuery(
