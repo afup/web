@@ -42,6 +42,19 @@ class EventRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @param int $eventCount
+     *
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function getPreviousEvents($eventCount)
+    {
+        $query = $this->getQuery('SELECT * FROM afup_forum WHERE date_debut < NOW() ORDER BY date_debut DESC LIMIT :limit');
+        $query->setParams(['limit' => $eventCount]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
      * @param $path
      *
      * @return Event|null

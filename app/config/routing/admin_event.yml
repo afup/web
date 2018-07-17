@@ -41,3 +41,7 @@ admin_event_speaker_infos:
 admin_event_badges:
   path: /badges
   defaults: {_controller: AppBundle:AdminEvent:badgesGenerate}
+
+admin_event_previous_registrations:
+  path: /previous_registrations
+  defaults: {_controller: AppBundle:AdminEvent:previousRegistrations}
