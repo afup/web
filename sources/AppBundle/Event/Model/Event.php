@@ -75,6 +75,11 @@ class Event implements NotifyPropertyInterface
     private $dateEndHotelInfosCollection;
 
     /**
+     * @var \DateTime
+     */
+    private $datePlanningAnnouncement;
+
+    /**
      * @var string
      */
     private $path;
@@ -464,6 +469,36 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('dateEndHotelInfosCollection', $this->dateEndHotelInfosCollection, $dateEndHotelInfosCollection);
         $this->dateEndHotelInfosCollection = $dateEndHotelInfosCollection;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPlanningDisplayable()
+    {
+        $date = $this->getDatePlanningAnnouncement();
+        return $date === null || new \DateTime() >= $date;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDatePlanningAnnouncement()
+    {
+        return $this->datePlanningAnnouncement;
+    }
+
+    /**
+     * @param \DateTime|null $datePlanningAnnouncement
+     *
+     * @return $this
+     */
+    public function setDatePlanningAnnouncement(\DateTime $datePlanningAnnouncement = null)
+    {
+        $this->propertyChanged('datePlanningAnnouncement', $this->datePlanningAnnouncement, $datePlanningAnnouncement);
+        $this->datePlanningAnnouncement = $datePlanningAnnouncement;
 
         return $this;
     }
