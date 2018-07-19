@@ -92,7 +92,7 @@ class JsonLd
 
             ];
 
-            if ($talkInfo['planning']) {
+            if ($talkInfo['planning'] && $event->isPlanningDisplayable()) {
                 $subEvent['startDate'] = $talkInfo['planning']->getStart()->format('c');
                 $subEvent['endDate'] = $talkInfo['planning']->getEnd()->format('c');
             }
