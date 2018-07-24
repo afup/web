@@ -1,10 +1,14 @@
 become_member:
   path: /devenir-membre
   defaults: {_controller: AppBundle:MemberShip:becomeMember}
+  options:
+    sitemap: true
 
 company_membership:
   path: /adherer/entreprise
   defaults: {_controller: AppBundle:MemberShip:company}
+  options:
+    sitemap: true
 
 company_membership_payment:
   path: /adherer/entreprise/paiement-{invoiceNumber}-{token}
@@ -30,10 +34,14 @@ company_invitation:
 offices:
   path: /antennes
   defaults: {_controller: AppBundle:Static:offices}
+  options:
+    sitemap: true
 
 superapero:
   path: /super-apero-8-mars-2018
   defaults: {_controller: AppBundle:Static:superApero}
+  options:
+    sitemap: true
 
 void:
   path: /void-route
@@ -42,6 +50,8 @@ void:
 newsletter_subscribe:
   path: /newsletter-subscribe
   defaults: {_controller: AppBundle:Newsletter:subscribe}
+  options:
+    sitemap: true
 
 membership_payment:
   path: /paybox-callback
@@ -50,6 +60,8 @@ membership_payment:
 techletter:
   path: /techletter
   defaults: {_controller: AppBundle:Techletter:index}
+  options:
+    sitemap: true
 
 techletter_subscribe:
   path: /techletter/subscription

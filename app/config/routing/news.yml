@@ -1,6 +1,8 @@
 news_list:
   path: /
   defaults: {_controller: AppBundle:News:list}
+  options:
+    sitemap: true
 
 news_display:
   path: /{code}
