@@ -42,5 +42,8 @@ techletter:
     resource: "routing/techletter.yml"
     prefix: /techno_watch
 
+presta_sitemap:
+    resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
+
 global:
     resource: "routing/global.yml"
