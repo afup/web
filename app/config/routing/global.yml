@@ -1,3 +1,5 @@
 home:
   path: /home
   defaults: {_controller: AppBundle:Home:display}
+  options:
+    sitemap: true
