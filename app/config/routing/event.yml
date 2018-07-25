@@ -106,6 +106,14 @@ planning_ics:
   path: /{eventSlug}/planning.ics
   defaults: {_controller: AppBundle:Event:planningIcs}
 
-planning_json_latest:
-  path: /latest/planning.json
+event_calendar_latest:
+  path: /latest/calendar
+  defaults: {_controller: AppBundle:Event:calendarLatest}
+
+event_calendar:
+  path: /{eventSlug}/calendar
+  defaults: {_controller: AppBundle:Event:calendar}
+
+planning_json:
+  path: /{eventSlug}/planning.json
   defaults: {_controller: AppBundle:Event:planningJson}

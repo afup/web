@@ -91,5 +91,5 @@
     {% endfor %}
 </div>
 
-<a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/calendrier">Créer mon planning personnalisé</a>
+<a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/calendar">Créer mon planning personnalisé</a>
 <a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/planning.ics">Télécharger le planning au format Ical</a>
