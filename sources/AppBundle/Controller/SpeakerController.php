@@ -101,7 +101,7 @@ class SpeakerController extends EventBaseController
         return $this->render('event/speaker/page.html.twig', [
             'event' => $event,
             'description' => $description,
-            'talks' => $talks,
+            'talks_infos' => $this->addTalkInfos($event, $talks),
             'speaker' => $speaker,
             'should_display_speakers_diner_form' => $shouldDisplaySpeakersDinerForm,
             'should_display_hotel_reservation_form' => $shouldDisplayHotelReservationForm,
@@ -109,5 +109,31 @@ class SpeakerController extends EventBaseController
             'hotel_reservation_form' => $hotelReservationType->createView(),
             'day_before_event' => \DateTimeImmutable::createFromMutable($event->getDateStart())->modify('- 1 day'),
         ]);
+    }
+
+    /**
+     * @param Event $event
+     * @param array $talks
+     *
+     * @return array
+     */
+    protected function addTalkInfos(Event $event, array $talks)
+    {
+        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+        $allTalks = $talkRepository->getByEventWithSpeakers($event);
+        $allTalksById = [];
+        foreach ($allTalks as $allTalk) {
+            $allTalksById[$allTalk['talk']->getId()] = $allTalk;
+        }
+
+        $speakerTalks = [];
+        foreach ($talks as $talk) {
+            if (!isset($allTalksById[$talk->getId()])) {
+                continue;
+            }
+            $speakerTalks[] = $allTalksById[$talk->getId()];
+        }
+
+        return $speakerTalks;
     }
 }

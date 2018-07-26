@@ -36,11 +36,11 @@
         }
     </style>
 
-    {% if talks|length %}
+    {% if talks_infos|length %}
     <div class="container">
         <div class="col-md-6">
             <h2>
-                {% if talks|length > 1 %}
+                {% if talks_infos|length > 1 %}
                     {% trans %}Vos conférences{% endtrans %}
                 {% else %}
                     {% trans %}Votre conférence{% endtrans %}
@@ -48,9 +48,17 @@
             </h2>
 
             <ul>
-            {% for talk in talks %}
+            {% for talk_info in talks_infos %}
                 <li>
-                    {{ talk.title }} <i>(salle et dates de passage à venir)</i>
+                    {{ talk_info.talk.title }}
+                    <i>
+                        {% if talk_info.planning %}
+                            ({{ talk_info.room.name }})
+                            ({{ talk_info.planning.start|localizeddate('full', 'short', app.request.locale) }})
+                        {% else %}
+                            (salle et dates de passage à venir)
+                        {% endif %}
+                    </i>
                 </li>
             {% endfor %}
             </ul>
