@@ -87,17 +87,42 @@ class EventController extends EventBaseController
     /**
      * @return JsonResponse
      */
-    public function planningJsonAction()
+    public function planningJsonAction($eventSlug)
     {
+        $event = $this->checkEventSlug($eventSlug);
+
         $photoStorage = $this->get('app.photo_storage');
         $ting = $this->get('ting');
         $talkRepository = $ting->get(TalkRepository::class);
-        $eventRepository = $ting->get(EventRepository::class);
-
-        $event = $eventRepository->getCurrentEvent();
 
         $jsonPlanningGenerator = new JsonPlanningGenerator($talkRepository, $photoStorage);
 
         return new JsonResponse($jsonPlanningGenerator->generate($event));
+    }
+
+    /**
+     * @param $eventSlug
+     *
+     * @return Response
+     */
+    public function calendarAction($eventSlug)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+
+        if ($event === null) {
+            throw $this->createNotFoundException('Event not found');
+        }
+
+        return $this->render(':event:calendar.html.twig', ['event' => $event]);
+    }
+
+    /**
+     * @return Response
+     */
+    public function calendarLatestAction()
+    {
+        $event = $this->get('ting')->get(EventRepository::class)->getCurrentEvent();
+
+        return new RedirectResponse($this->generateUrl('event_calendar', ['eventSlug' => $event->getPath()]));
     }
 }

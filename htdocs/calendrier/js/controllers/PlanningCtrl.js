@@ -17,7 +17,7 @@ planningPHPTourApp.controller('planningCtrl', ['$scope','$http', '$rootScope', '
     $scope.events = [];
 
     //Chargement des conférences
-    $http.get('/event/latest/planning.json').success(function(data) {
+    $http.get($('body').data('planning-url')).success(function(data) {
         //Save Data
         $scope.confs = data;
 
