@@ -59,7 +59,6 @@ class Speaker implements NotifyPropertyInterface
     private $email;
 
     /**
-     * @Assert\NotBlank()
      * @var string
      */
     private $company;
