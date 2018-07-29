@@ -86,6 +86,10 @@ parameters:
                     nom: 'Abonnés à la techletter'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/techletter/members'
+                history:
+                    nom: 'Historique de la techletter'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/techletter/history'
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'

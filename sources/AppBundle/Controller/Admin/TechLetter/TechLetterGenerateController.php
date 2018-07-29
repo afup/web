@@ -34,6 +34,59 @@ class TechLetterGenerateController extends SiteBaseController
         ]);
     }
 
+    public function historyAction(Request $request)
+    {
+        $sendingRepository = $this->get('ting')->get(Techletter\Repository\SendingRepository::class)->getAll();
+
+        $history = [];
+        foreach ($sendingRepository as $sending) {
+            $defaultColumns = [
+                'date' => $sending->getSendingDate(),
+            ];
+
+            $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
+
+            if (null !== ($firstNews = $techLetter->getFirstNews())) {
+                $url = $firstNews->getUrl();
+                $history[] = $defaultColumns + [
+                    'type' => 'First news',
+                    'url' => $url,
+                    'title' => $firstNews->getTitle()
+                ];
+            }
+
+            if (null !== ($secondNewsNews = $techLetter->getSecondNews())) {
+                $url = $secondNewsNews->getUrl();
+                $history[] = $defaultColumns + [
+                    'type' => 'second news',
+                    'url' => $url,
+                    'title' => $secondNewsNews->getTitle(),
+                ];
+            }
+
+            foreach ($techLetter->getArticles() as $article) {
+                $history[] = $defaultColumns + [
+                    'type' => 'article',
+                    'url' => $article->getUrl(),
+                    'title' => $article->getTitle(),
+                ];
+            }
+
+            foreach ($techLetter->getProjects() as $project) {
+                $history[] = $defaultColumns + [
+                    'type' => 'project',
+                    'url' => $project->getUrl(),
+                    'title' => $project->getName(),
+                ];
+            }
+        }
+
+        return $this->render('admin/techletter/history.html.twig', [
+            'title' => "Veille de l'AFUP",
+            'history' => $history,
+        ]);
+    }
+
     public function generateAction($techletterId, Request $request)
     {
         $sendingRepository = $this->get('app.techletter_sending_repository');

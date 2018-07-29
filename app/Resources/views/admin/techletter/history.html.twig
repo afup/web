@@ -1,0 +1,26 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Historique des techletters de l'AFUP</h2>
+
+    <table class="afup_tab tab--filterable TF">
+        <thead>
+            <tr>
+                <th>Date d'envoi</th>
+                <th>Type</th>
+                <th>URL</th>
+                <th>Titre</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for history_item in history %}
+                <tr>
+                    <td>{{ history_item.date|date('d/m/Y') }}</td>
+                    <td>{{ history_item.type }}</td>
+                    <td><a href="{{ history_item.url }}">{{ history_item.url }}</a></td>
+                    <td>{{ history_item.title }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

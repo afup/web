@@ -17,6 +17,10 @@ admin_techletter_index:
   path: /
   defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:index}
 
+admin_techletter_history:
+  path: /history
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:history}
+
 admin_techletter_members:
   path: /members
   defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:members}
