@@ -6,64 +6,70 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-8">
-        <h2>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h2>
-        <h3>Tickets déjà enregistrés</h3>
-        <table>
-            <tr>
-                <th>
-                    Prénom
-                </th>
-                <th>
-                    Nom
-                </th>
-                <th>
-                    Email
-                </th>
-                <th>
-                    ¤
-                </th>
-            </tr>
-        {% for ticket in registeredTickets %}
-            <tr>
-                <td>
-                    {{ ticket.firstName }}
-                </td>
-                <td>
-                    {{ ticket.lastName }}
-                </td>
-                <td>
-                    {{ ticket.email }}
-                </td>
-                <td>
-                    <form method="post" class="sponsor--ticket">
-                        <a href="{{ url('sponsor_ticket_form', {ticket: ticket.id, eventSlug: event.path}) }}" class="button">Modifier</a>
-                        <button type="submit" value="{{ ticket.id }}" name="delete">Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4"><em>Aucun ticket enregistré pour le moment.</em></td>
-            </tr>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h2>
 
-        {% endfor %}
-        </table>
+            <h4>Tickets déjà enregistrés</h4>
+            <table>
+                <tr>
+                    <th>
+                        Prénom
+                    </th>
+                    <th>
+                        Nom
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        ¤
+                    </th>
+                </tr>
+            {% for ticket in registeredTickets %}
+                <tr>
+                    <td>
+                        {{ ticket.firstName }}
+                    </td>
+                    <td>
+                        {{ ticket.lastName }}
+                    </td>
+                    <td>
+                        {{ ticket.email }}
+                    </td>
+                    <td>
+                        <form method="post" class="sponsor--ticket">
+                            <a href="{{ url('sponsor_ticket_form', {ticket: ticket.id, eventSlug: event.path}) }}" class="button">Modifier</a>
+                            <button type="submit" value="{{ ticket.id }}" name="delete">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4"><em>Aucun ticket enregistré pour le moment.</em></td>
+                </tr>
 
-        {% if edit %}
-            <h3>Modifier le ticket</h3>
-        {% else %}
-            <h3>Nouveau ticket</h3>
-        {% endif %}
-        <p>{{ 'Places disponibles'|trans }}: {{ sponsorTicket.pendingInvitations }} / {{ sponsorTicket.maxInvitations }} </p>
-        {% if sponsorTicket.pendingInvitations == 0 %}
-            <p>Vous avez utilisé toutes vos invitations. Nous avons hâte de vous retrouver lors de cet événement !</p>
-        {% else %}
-            {{ form_start(ticketForm, {attr: {class: 'sponsor--ticket-edit'}}) }}
-            {{ form_errors(ticketForm) }}
-            {{ form_widget(ticketForm) }}
-            <input type="submit" value="Enregistrer" />
-            {{ form_end(ticketForm) }}
-        {% endif %}
+            {% endfor %}
+            </table>
+
+            {% if edit %}
+                <h4>Modifier le ticket</h4>
+            {% else %}
+                <h4>Nouveau ticket</h4>
+            {% endif %}
+            <p>{{ 'Places disponibles'|trans }}: {{ sponsorTicket.pendingInvitations }} / {{ sponsorTicket.maxInvitations }} </p>
+            {% if sponsorTicket.pendingInvitations == 0 %}
+                <p>Vous avez utilisé toutes vos invitations. Nous avons hâte de vous retrouver lors de cet événement !</p>
+            {% else %}
+                {{ form_start(ticketForm, {attr: {class: 'sponsor--ticket-edit'}}) }}
+                {{ form_errors(ticketForm) }}
+                {{ form_widget(ticketForm) }}
+                <input type="submit" value="Enregistrer" />
+                {{ form_end(ticketForm) }}
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            {{ sponsors_infos|raw }}
+        </div>
     </div>
 {% endblock %}
