@@ -10,6 +10,16 @@
         <div class="col-md-6">
             <h2>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h2>
 
+            <h3>{% trans %}VOS PLACES GRATUITES{% endtrans %}</h3>
+
+            <p>
+                {% trans with { '%date%': event.dateEndSales|localizeddate('full', 'none') } %}
+                    Enregistrez vous-même vos invités avant le <b>%date%</b> dernier délai. Vos invités recevront leur convocation quelques jours avant l’événement.
+                {% endtrans %}
+            </p>
+
+            <p>{% trans %}Pour rappel, les personnes en charge de l’animation de votre stand doivent bénéficier en priorité de ces places.{% endtrans %}</p>
+
             <h4>Tickets déjà enregistrés</h4>
             <table>
                 <tr>
