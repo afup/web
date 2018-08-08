@@ -262,3 +262,7 @@ footer .widget_nav_menu a{
 .twitter-follow-button {
     margin: 0 15px;
 }
+
+article .basis-list ul {
+    list-style-position: inside;
+}
