@@ -88,7 +88,7 @@ parameters:
                     url: '/admin/techletter/members'
                 history:
                     nom: 'Historique de la techletter'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_VEILLE'
                     url: '/admin/techletter/history'
         site:
             nom: 'Site'
