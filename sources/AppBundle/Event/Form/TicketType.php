@@ -9,6 +9,7 @@ use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketEventType;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
+use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -51,6 +52,11 @@ class TicketType extends AbstractType
      */
     private $ticketTypeRepository;
 
+    /**
+     * @var OfficesCollection
+     */
+    protected $officesCollection;
+
     public function __construct(
         EventRepository $eventRepository,
         TicketEventTypeRepository $ticketEventTypeRepository,
@@ -63,6 +69,7 @@ class TicketType extends AbstractType
         $this->ticketTypeAvailability = $ticketTypeAvailability;
         $this->ticketSpecialPriceRepository = $ticketSpecialPriceRepository;
         $this->ticketTypeRepository = $ticketTypeRepository;
+        $this->officesCollection = new OfficesCollection();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -99,8 +106,12 @@ class TicketType extends AbstractType
                 'label' => 'Téléphone',
                 'required' => false
             ])
+            ->add('nearestOffice', ChoiceType::class, [
+                'label' => 'Antenne AFUP la plus proche',
+                'required' => false,
+                'choices' => array_flip($this->officesCollection->getOrderedLabelsByKey()),
+            ])
         ;
-
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) use ($eventTickets, $options, $event) {
             $filteredEventTickets = [];
