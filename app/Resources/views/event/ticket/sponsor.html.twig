@@ -13,8 +13,8 @@
             <h3>{% trans %}VOS PLACES GRATUITES{% endtrans %}</h3>
 
             <p>
-                {% trans with { '%date%': event.dateEndSales|localizeddate('full', 'none') } %}
-                    Enregistrez vous-même vos invités avant le <b>%date%</b> dernier délai. Vos invités recevront leur convocation quelques jours avant l’événement.
+                {% trans with { '%date%': "<b>" ~ event.dateEndSales|localizeddate('full', 'none') ~ "</b>" } %}
+                    Enregistrez vous-même vos invités avant le %date% dernier délai. Vos invités recevront leur convocation quelques jours avant l’événement.
                 {% endtrans %}
             </p>
 
