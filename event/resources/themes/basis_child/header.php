@@ -10,7 +10,28 @@
 <!--[if IE 9]>    <html class="no-js IE9 IE" <?php language_attributes(); ?>> <![endif]-->
 <!--[if gt IE 9]><!--> <html class="no-js" <?php language_attributes(); ?>> <!--<![endif]-->
 <head>
-	<title><?php wp_title( ' | ', true, 'right' ); ?></title>
+    <title>
+        <?php
+            $current = $post->ID;
+            $parent = $post->post_parent;
+            $categories = get_the_category();
+            $category = null;
+            if (isset($categories[0])) {
+                $category = $categories[0];
+            }
+        ?>
+        <?php if ($parent): ?>
+            <?php echo get_the_title($current) ?> | <?php echo get_the_title($parent) ?>
+        <?php elseif (null !== $category && isset($posts) && count($posts) > 1): ?>
+            <?php echo $category->name ?>
+        <?php elseif (count($childPages = get_pages(['parent' => $current]))): ?>
+            <?php echo get_the_title($current) ?>
+        <?php elseif (null !== $category): ?>
+            <?php echo $post->post_title ?> | <?php echo $category->name ?>
+        <?php else: ?>
+            <?php wp_title( ' | ', true, 'right' ); ?>
+        <?php endif ?>
+    </title>
 
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
