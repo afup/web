@@ -107,7 +107,7 @@ class TicketType extends AbstractType
                 'required' => false
             ])
             ->add('nearestOffice', ChoiceType::class, [
-                'label' => 'Antenne AFUP la plus proche',
+                'label' => 'Antenne de prédilection',
                 'required' => false,
                 'choices' => array_flip($this->officesCollection->getOrderedLabelsByKey()),
             ])
