@@ -208,6 +208,11 @@ class Ticket implements NotifyPropertyInterface
     protected $specialPriceToken;
 
     /**
+     * @var null|string
+     */
+    protected $nearestOffice;
+
+    /**
      * @return int
      */
     public function getId()
@@ -720,6 +725,28 @@ class Ticket implements NotifyPropertyInterface
     {
         $this->propertyChanged('specialPriceToken', $this->specialPriceToken, $specialPriceToken);
         $this->specialPriceToken = $specialPriceToken;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getNearestOffice()
+    {
+        return $this->nearestOffice;
+    }
+
+    /**
+     * @param null|string $nearestOffice
+     *
+     * @return $this
+     */
+    public function setNearestOffice($nearestOffice)
+    {
+        $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
+
+        $this->nearestOffice = $nearestOffice;
 
         return $this;
     }

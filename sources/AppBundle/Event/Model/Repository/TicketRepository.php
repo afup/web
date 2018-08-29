@@ -304,6 +304,11 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'specialPriceToken',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'nearest_office',
+                'fieldName' => 'nearestOffice',
+                'type' => 'string',
+            ])
         ;
 
         return $metadata;
