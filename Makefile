@@ -1,11 +1,17 @@
-CURRENT_UID=$(shell id -u)
+-include .env .test
+
+CURRENT_UID ?= $(shell id -u)
+DOCKER_UP_OPTIONS ?= -d
 
 .PHONY: install docker-up test hooks vendors db-seed db-migrations reset-db init
 
 install: vendors event/vendor
 
 docker-up: var/logs/.docker-build data docker-compose.override.yml
-	CURRENT_UID=$(CURRENT_UID) docker-compose up
+	CURRENT_UID=$(CURRENT_UID) docker-compose up $(DOCKER_UP_OPTIONS)
+
+docker-down:
+	CURRENT_UID=$(CURRENT_UID) docker-compose down
 
 var/logs/.docker-build: docker-compose.yml docker-compose.override.yml $(shell find docker -type f)
 	CURRENT_UID=$(CURRENT_UID) docker-compose build

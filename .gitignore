@@ -53,3 +53,5 @@ js_dist
 /event/vendor
 /event/wp
 /event/composer.phar
+
+.env

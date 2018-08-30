@@ -28,13 +28,8 @@ RUN a2enmod rewrite && \
 
 # Install local user mapped to the host user uid
 ARG uid=1008
-ARG gid=1008
 
-RUN groupadd -g ${gid} localUser && \
-    useradd -u ${uid} -g ${gid} -m -s /bin/bash localUser && \
-    usermod -a -G www-data localUser && \
-    sed --in-place "s/User \${APACHE_RUN_USER}/User localUser/" /etc/apache2/apache2.conf && \
-    sed --in-place  "s/Group \${APACHE_RUN_GROUP}/Group localUser/" /etc/apache2/apache2.conf
+RUN usermod -u ${uid} www-data
 
 COPY apache.crt /etc/apache2/ssl/apache.crt
 COPY apache.key /etc/apache2/ssl/apache.key
