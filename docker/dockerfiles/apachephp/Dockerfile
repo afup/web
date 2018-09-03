@@ -40,7 +40,7 @@ ARG uid=1008
 ARG gid=1008
 
 RUN groupadd -g ${gid} localUser && \
-    useradd -u ${uid} -g ${gid} -m -s /bin/bash localUser && \
+    useradd -l -u ${uid} -g ${gid} -m -s /bin/bash localUser && \
     usermod -a -G www-data localUser && \
     sed --in-place "s/User \${APACHE_RUN_USER}/User localUser/" /etc/apache2/apache2.conf && \
     sed --in-place  "s/Group \${APACHE_RUN_GROUP}/Group localUser/" /etc/apache2/apache2.conf
