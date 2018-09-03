@@ -1,3 +1,5 @@
+.env
+
 deps.lock
 .idea
 # OS X

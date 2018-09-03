@@ -25,6 +25,22 @@ La base de test inclus un utilisateur administration avec les identifiants suiva
 
 Vous pouvez aussi y accéder directement via la commande: `docker/bin/mysql`
 
+### Autres commandes
+
+* `make docker-stop` : éteint les containers en fonctionnement.
+* `make docker-down` : détruit les containers existants.
+
+### Configuration avancée
+
+Plusieurs possibilités de configuration des containers sont disponibles, via l'utilisation de variables d'environnement.
+
+Pour faciliter leur configuration, un fichier `.env` est créé à la racine du projet à la première exécution de la commande `make docker-up`.
+Ce fichier contient la liste des options disponibles.
+
+#### `DOCKER_UP_OPTIONS`
+
+liste des options à passer à la commande `docker-composer up`. 
+
 ## Base de données
 
 Config par défaut:
