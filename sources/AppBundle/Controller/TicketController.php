@@ -152,6 +152,7 @@ class TicketController extends EventBaseController
 
         return $this->render('event/ticket/sponsor.html.twig', [
             'event' => $event,
+            'sponsors_infos' => $event->getSponsorInfos($request->getLocale()),
             'sponsorTicket' => $sponsorTicket,
             'ticketForm' => $ticketForm->createView(),
             'registeredTickets' => $sponsorTicketHelper->getRegisteredTickets($sponsorTicket),

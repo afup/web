@@ -348,6 +348,23 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
+    /**
+     * @param string $locale
+     *
+     * @return null|string
+     */
+    public function getSponsorInfos($locale)
+    {
+        $cfp = $this->getCFP();
+        $key = 'sponsor_management_' . $locale;
+
+        if (!isset($cfp[$key])) {
+            return null;
+        }
+
+        return $cfp[$key];
+    }
+
     public function getMailTemplate()
     {
         return 'confirmation-inscription-' . $this->getPath();
