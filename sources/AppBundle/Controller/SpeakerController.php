@@ -120,7 +120,7 @@ class SpeakerController extends EventBaseController
     protected function addTalkInfos(Event $event, array $talks)
     {
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $allTalks = $talkRepository->getByEventWithSpeakers($event);
+        $allTalks = $talkRepository->getByEventWithSpeakers($event, false);
         $allTalksById = [];
         foreach ($allTalks as $allTalk) {
             $allTalksById[$allTalk['talk']->getId()] = $allTalk;

@@ -161,15 +161,22 @@ class TalkRepository extends Repository implements MetadataInitializer
 
     /**
      * @param Event $event
+     * @param bool $applyPublicationdateFilters
      * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @throws \CCMBenchmark\Ting\Query\QueryException
      */
-    public function getByEventWithSpeakers(Event $event)
+    public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true)
     {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
+        $publicationdateFilters = '';
+        if ($applyPublicationdateFilters) {
+            $publicationdateFilters = 'AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
+        }
+
         $query = $this->getPreparedQuery(
-            'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
+            sprintf('SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, 
             planning.debut, planning.fin, room.id, room.nom
             FROM afup_sessions AS talk
@@ -177,8 +184,8 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
-            WHERE talk.id_forum = :event AND plannifie = 1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL) 
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC '
+            WHERE talk.id_forum = :event AND plannifie = 1 %s
+            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $publicationdateFilters)
         )->setParams(['event' => $event->getId()]);
 
         return $query->query($this->getCollection($hydrator));
