@@ -28,6 +28,7 @@ security:
                     - app.legacy_authenticator
                     - app.legacy_hash_authenticator
                 entry_point: app.legacy_authenticator
+            context: share_context
 
         github_secured_area:
             pattern: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check)
@@ -39,6 +40,7 @@ security:
 
         main:
             anonymous: ~
+            context: share_context
 
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
