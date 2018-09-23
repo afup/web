@@ -267,4 +267,12 @@ RewriteRule ^site/$ "/news/%1-%2?"  [L,R=302]
 RewriteCond %{QUERY_STRING}  ^route=06-actualit/9$
 RewriteRule ^site/$  "/news?"  [L,R=302]
 
+RewriteCond %{QUERY_STRING}  ^route=divers/231/le-livre-blanc-php-en-entreprise$
+RewriteRule ^site/$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=divers/232/annuaire-de-prestataires$
+RewriteRule ^site/$  "/?"  [L,R=302]
+
+RewriteCond %{QUERY_STRING}  ^route=divers/22$
+RewriteRule ^site/$  "/?"  [L,R=302]
 
