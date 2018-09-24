@@ -17,5 +17,3 @@ planning:
 talk_widget:
   path: /talk_widget
   defaults: {_controller: AppBundle:Blog:talkWidget}
-  options:
-    sitemap: true

@@ -7,8 +7,6 @@ event_index:
 event_index_speaker_infos:
   path: /speaker-infos
   defaults: {_controller: AppBundle:Event:speakerInfosIndex}
-  options:
-    sitemap: true
 
 event:
   path: /{eventSlug}
