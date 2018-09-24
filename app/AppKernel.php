@@ -16,7 +16,8 @@ class AppKernel extends Kernel
             new \CCMBenchmark\TingBundle\TingBundle(),
             new \KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle(),
             new AppBundle\AppBundle(),
-            new \JMS\SerializerBundle\JMSSerializerBundle()
+            new \JMS\SerializerBundle\JMSSerializerBundle(),
+            new Presta\SitemapBundle\PrestaSitemapBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -1,6 +1,8 @@
 talks_list:
   path: /
   defaults: {_controller: AppBundle:Talks:list}
+  options:
+    sitemap: true
 
 talks_show:
   path: /{id}-{slug}
