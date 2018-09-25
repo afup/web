@@ -2,7 +2,9 @@ talks_list:
   path: /
   defaults: {_controller: AppBundle:Talks:list}
   options:
-    sitemap: true
+    sitemap:
+      section: talks
+      changefreq: monthly
 
 talks_show:
   path: /{id}-{slug}
