@@ -46,54 +46,138 @@ skill.3: "Senior"
 type.1: "40 mn"
 type.2: "Workshop"
 type.3: "20 mn"
-'mail.sponsorTicket.subject': Inscrivez-vous pour le %event%
+'mail.sponsorTicket.subject': Toutes les informations concernant votre sponsoring du %event%
 'mail.sponsorTicket.text': |
   Cher sponsor,<br />
-  Dans le cadre de votre sponsoring, vous bénéficiez d'une place pour l'événement %event%.<br />
-  Cette place est utilisable par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
-  Attention toutefois, si votre sponsoring inclut un stand, vous devez penser à enregistrer cette place pour le collaborateur qui l'occupera.<br />
+
   <br />
-  Nous vous remercions de bien vouloir effectuer l'enregistrement de cette place avant la fermeture de la billetterie le %endDate%.
-  Passée cette date, le formulaire ne sera plus accessible.
+
+  L'événement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
+
   <br />
-  Pour enregistrer votre place, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
+
+  <b>Toutes les informations logistiques</b><br />
+  Toutes les informations concernant les adresses, les horaires, les dates limites de livraison, la réception des goodies, votre stand et son aménagement (si vous en avez un) y sont indiquées.<br />
+  Visitez dès maintenant votre page pour ne pas manquer une information importante !<br />
+
   <br />
-  L'équipe AFUP.|Cher sponsor,<br />
-  Dans le cadre de votre sponsoring, vous bénéficiez de %places% places pour l'événement %event%.<br />
-  Ces places sont utilisables par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
-  Attention toutefois, si votre sponsoring inclut un stand, vous devez penser à enregistrer les places des collaborateurs qui l'occuperont.<br />
+
+  <b>Enregistrez vous-même vos invités</b><br />
+  Sur cette même page sponsor, vous enregistrez les noms de vos collaborateurs ou des invités qui profiteront de la place comprise dans votre sponsoring.
+  Cette place est utilisable par vous, par vos collaborateurs ou toute autre personne que vous souhaiteriez inviter.
+  Si votre sponsoring inclut un stand, vous devez penser à en faire profiter le collaborateur qui s'en occupera.<br />
   <br />
-  Nous vous remercions de bien vouloir effectuer l'enregistrement de ces places avant la fermeture de la billetterie le %endDate%.
-  Passée cette date, le formulaire ne sera plus accessible.
+
+  Nous vous remercions de bien vouloir procéder à l’enregistrement de ces places avant la fermeture de la billetterie le %endDate%.<br />
+  Passée cette date le formulaire ne sera plus accessible. Les informations logistiques seront cependant toujours visibles.<br />
+
   <br />
-  Pour enregistrer vos places, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
+
+  Une question, besoin d’informations complémentaires ? Contactez sponsors@afup.org !<br />
+
   <br />
-  L'équipe AFUP.
+
+  À bientôt !<br />
+  L'équipe AFUP|Cher sponsor,<br />
+
+  <br />
+
+  L'événement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
+
+  <br />
+
+  <b>Toutes les informations logistiques</b><br />
+  Toutes les informations concernant les adresses, les horaires, les dates limites de livraison, la réception des goodies, votre stand et son aménagement (si vous en avez un) y sont indiquées.<br />
+  Visitez dès maintenant votre page pour ne pas manquer une information importante !<br />
+
+  <br />
+
+  <b>Enregistrez vous-même vos invités</b><br />
+  Sur cette même page sponsor, vous enregistrez les noms de vos collaborateurs ou des invités qui profiteront des places comprises dans votre sponsoring.
+  Vous bénéficiez de %places% places pour le %event%.
+  Ces places sont utilisables par vous, par vos collaborateurs ou toute autre personne que vous souhaiteriez inviter.
+  Si votre sponsoring inclut un stand, vous devez penser à en faire profiter les collaborateurs qui s'en occuperont.<br />
+  <br />
+
+  Nous vous remercions de bien vouloir procéder à l’enregistrement de ces places avant la fermeture de la billetterie le %endDate%.<br />
+  Passée cette date le formulaire ne sera plus accessible. Les informations logistiques seront cependant toujours visibles.<br />
+
+  <br />
+
+  Une question, besoin d’informations complémentaires ? Contactez sponsors@afup.org !<br />
+
+  <br />
+
+  À bientôt !<br />
+  L'équipe AFUP
 'mail.sponsorTicketLastCall.subject': "Sponsor: enregistrez-vous pour le %event%"
 'mail.sponsorTicketLastCall.text': |
   Cher sponsor,<br />
-  <strong>Le %event% approche ! Le %endDate% la billetterie fermera et il sera trop tard pour enregistrer votre place sponsor.</strong><br />
-  Dans le cadre de votre sponsoring, vous bénéficiez d'une place pour l'événement %event%.<br />
-  Cette place est utilisable par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
-  Attention toutefois, si votre sponsoring inclut un stand, vous devez penser à enregistrer cette place pour le collaborateur qui l'occupera.<br />
+
+  <strong>Le %endDate% la billetterie fermera et il sera trop tard pour enregistrer votre place sponsor.</strong><br />
+
   <br />
-  Nous vous remercions de bien vouloir effectuer l'enregistrement de cette place avant la fermeture de la billetterie le %endDate%.
-  Passée cette date, le formulaire ne sera plus accessible.
+
+  L'événement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
+
   <br />
-  Pour enregistrer votre place, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
+
+  <b>Toutes les informations logistiques</b><br />
+  Toutes les informations concernant les adresses, les horaires, les dates limites de livraison, la réception des goodies, votre stand et son aménagement (si vous en avez un) y sont indiquées.<br />
+  Visitez dès maintenant votre page pour ne pas manquer une information importante !<br />
+
   <br />
-  L'équipe AFUP.|Cher sponsor,<br />
-  <strong>Le %event% approche ! Le %endDate% la billetterie fermera et il sera trop tard pour enregistrer vos places sponsor.</strong><br />
-  Dans le cadre de votre sponsoring, vous bénéficiez de %places% places pour l'événement %event%.<br />
-  Ces places sont utilisables par vous, vos collaborateurs ou toute autre personne à qui vous souhaiteriez en faire profiter.<br />
-  Attention toutefois, si votre sponsoring inclut un stand, vous devez penser à enregistrer les places des collaborateurs qui l'occuperont.<br />
+
+  <b>Enregistrez vous-même vos invités</b><br />
+  Sur cette même page sponsor, vous enregistrez les noms de vos collaborateurs ou des invités qui profiteront de la place comprise dans votre sponsoring.
+  Cette places est utilisable par vous, par vos collaborateurs ou toute autre personne que vous souhaiteriez inviter.
+  Si votre sponsoring inclut un stand, vous devez penser à en faire profiter le collaborateur qui s'en occupera.<br />
   <br />
-  Nous vous remercions de bien vouloir effectuer l'enregistrement de ces places avant la fermeture de la billetterie le %endDate%.
-  Passée cette date, le formulaire ne sera plus accessible.
+
+  Nous vous remercions de bien vouloir procéder à l’enregistrement de ces places avant la fermeture de la billetterie le %endDate%.<br />
+  Passée cette date le formulaire ne sera plus accessible. Les informations logistiques seront cependant toujours visibles.<br />
+
   <br />
-  Pour enregistrer vos places, rendez-vous sur <a href="%link%">la page dédiée aux sponsors</a> (%link%) et inscrivez le token unique suivant: <pre>%token%</pre>
+
+  Une question, besoin d’informations complémentaires ? Contactez sponsors@afup.org !<br />
+
   <br />
-  L'équipe AFUP.
+
+  À bientôt !<br />
+  L'équipe AFUP|Cher sponsor,<br />
+
+  <strong>Le %endDate% la billetterie fermera et il sera trop tard pour enregistrer votre place sponsor.</strong><br />
+
+  <br />
+
+  L'événement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
+
+  <br />
+
+  <b>Toutes les informations logistiques</b><br />
+  Toutes les informations concernant les adresses, les horaires, les dates limites de livraison, la réception des goodies, votre stand et son aménagement (si vous en avez un) y sont indiquées.<br />
+  Visitez dès maintenant votre page pour ne pas manquer une information importante !<br />
+
+  <br />
+
+  <b>Enregistrez vous-même vos invités</b><br />
+  Sur cette même page sponsor, vous enregistrez les noms de vos collaborateurs ou des invités qui profiteront des places comprises dans votre sponsoring.
+  Vous bénéficiez de %places% places pour le %event%.
+  Ces places sont utilisables par vous, par vos collaborateurs ou toute autre personne que vous souhaiteriez inviter.
+  Si votre sponsoring inclut un stand, vous devez penser à en faire profiter les collaborateurs qui s'en occuperont.<br />
+  <br />
+
+  Nous vous remercions de bien vouloir procéder à l’enregistrement de ces places avant la fermeture de la billetterie le %endDate%.<br />
+  Passée cette date le formulaire ne sera plus accessible. Les informations logistiques seront cependant toujours visibles.<br />
+
+  <br />
+
+  Une question, besoin d’informations complémentaires ? Contactez sponsors@afup.org !<br />
+
+  <br />
+
+  À bientôt !<br />
+  L'équipe AFUP
 'Position': 'Poste'
 'Website': 'Site web'
 'Language': 'Langue'
