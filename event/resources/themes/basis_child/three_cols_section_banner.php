@@ -7,7 +7,6 @@ $max = 20;
 $nthChild = $default;
 
 if (isset($_GET['nth-child']) && $_GET['nth-child'] >= $min && $_GET['nth-child'] <= $max) {
-    //die('a');
     $nthChild = $_GET['nth-child'];
 }
 
