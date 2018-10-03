@@ -685,8 +685,12 @@ TXT;
         return true;
     }
 
-    public function isRightUser($invoiceId)
+    public function isCurrentUserAllowedToReadInvoice ($invoiceId)
     {
+        if (!$this->_droits) {
+            throw new \RuntimeException('La variable $_droits ne doit pas être null.');
+        }
+
         $sql = 'SELECT type_personne, id_personne FROM afup_cotisations WHERE id = ' . $this->_bdd->echapper($invoiceId);
         $result = $this->_bdd->obtenirEnregistrement($sql);
 
@@ -705,7 +709,7 @@ TXT;
          * si type_personne = 1, alors personne morale: id_personne doit être égale à compagnyId de l'utilisateur connecté
          * qui doit aussi avoir le droit "ROLE_COMPAGNY_MANAGER"
          */
-        if ($result['type_personne'] === "1") {
+        if ($result['type_personne'] == AFUP_PERSONNES_MORALES) {
             return $this->_droits->verifierDroitManagerPersonneMorale($result['id_personne']);
         }
 

@@ -225,7 +225,7 @@ class Droits
     {
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
-        if ($user instanceof  UserInterface) {
+        if ($user instanceof UserInterface) {
             return $user->getCompanyId() == $compagnyId && $this->authorizationChecker->isGranted('ROLE_COMPANY_MANAGER');
         }
 

@@ -43,7 +43,7 @@ if (!$cotisation) {
 
 
 if (isset($_GET['action']) && in_array($_GET['action'], ['envoyer_facture', 'telecharger_facture'])) {
-    if (false === $cotisations->isRightUser($_GET['id'])) {
+    if (false === $cotisations->isCurrentUserAllowedToReadInvoice ($_GET['id'])) {
         Logs::log('L\'utilisateur id: ' . $identifiant . ' a tenté de voir la facture id:' . $_GET['id'] . ' de l\'utilisateur id:' . $_GET['id_personne']);
         afficherMessage(null, 'index.php?page=membre_cotisation', 'Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
     } elseif ($_GET['action'] == 'envoyer_facture') {
