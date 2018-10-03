@@ -1,6 +1,7 @@
 <?php
 
 namespace Afup\Site\Association;
+use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mail;
@@ -33,15 +34,21 @@ class Cotisations
     var $_bdd;
 
     /**
+     * @var Droits|null
+     */
+    private $_droits;
+
+    /**
      * Constructeur.
      *
      * @param object $bdd Instance de la couche d'abstraction à la base de données
      * @access public
      * @return void
      */
-    function __construct(&$bdd)
+    function __construct(&$bdd, $droits = null)
     {
         $this->_bdd = $bdd;
+        $this->_droits = $droits;
     }
 
     /**
@@ -678,4 +685,34 @@ TXT;
         return true;
     }
 
+    public function isCurrentUserAllowedToReadInvoice ($invoiceId)
+    {
+        if (!$this->_droits) {
+            throw new \RuntimeException('La variable $_droits ne doit pas être null.');
+        }
+
+        $sql = 'SELECT type_personne, id_personne FROM afup_cotisations WHERE id = ' . $this->_bdd->echapper($invoiceId);
+        $result = $this->_bdd->obtenirEnregistrement($sql);
+
+        if (!$result) {
+            return false;
+        }
+
+        /**
+         * si type_personne = 0, alors personne physique: id_personne doit être identique l'id de l'utilisateur connecté
+         */
+        if ($result['type_personne'] === "0") {
+            return $result['id_personne'] == $this->_droits->obtenirIdentifiant();
+        }
+
+        /**
+         * si type_personne = 1, alors personne morale: id_personne doit être égale à compagnyId de l'utilisateur connecté
+         * qui doit aussi avoir le droit "ROLE_COMPAGNY_MANAGER"
+         */
+        if ($result['type_personne'] == AFUP_PERSONNES_MORALES) {
+            return $this->_droits->verifierDroitManagerPersonneMorale($result['id_personne']);
+        }
+
+        return false;
+    }
 }

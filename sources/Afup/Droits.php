@@ -2,6 +2,7 @@
 
 namespace Afup\Site;
 use Afup\Site\Utils\Base_De_Donnees;
+use AppBundle\Association\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -218,5 +219,16 @@ class Droits
             return $this->tokenStorage->getToken()->getUser()->getLabel();
         }
         return null;
+    }
+
+    public function verifierDroitManagerPersonneMorale($compagnyId)
+    {
+        /** @var User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+        if ($user instanceof UserInterface) {
+            return $user->getCompanyId() == $compagnyId && $this->authorizationChecker->isGranted('ROLE_COMPANY_MANAGER');
+        }
+
+        return false;
     }
 }

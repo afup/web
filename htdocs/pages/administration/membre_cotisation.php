@@ -24,7 +24,7 @@ $identifiant = $droits->obtenirIdentifiant();
 $champs = $personnes_physiques->obtenir($identifiant);
 $cotisation = $personnes_physiques->obtenirDerniereCotisation($identifiant);
 unset($champs['mot_de_passe']);
-$cotisations = new Cotisations($bdd);
+$cotisations = new Cotisations($bdd, $droits);
 
 
 if (!$cotisation) {
@@ -41,16 +41,22 @@ if (!$cotisation) {
     );
 }
 
-if (isset($_GET['action']) && $_GET['action'] == 'envoyer_facture') {
-    if ($cotisations->envoyerFacture($_GET['id'], $this->get('app.mail'))) {
-        Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
-        afficherMessage('La facture a été envoyée par mail', 'index.php?page=membre_cotisation');
-    } else {
-        afficherMessage("La facture n'a pas pu être envoyée par mail", 'index.php?page=membre_cotisation', true);
+
+if (isset($_GET['action']) && in_array($_GET['action'], ['envoyer_facture', 'telecharger_facture'])) {
+    if (false === $cotisations->isCurrentUserAllowedToReadInvoice ($_GET['id'])) {
+        Logs::log('L\'utilisateur id: ' . $identifiant . ' a tenté de voir la facture id:' . $_GET['id'] . ' de l\'utilisateur id:' . $_GET['id_personne']);
+        afficherMessage(null, 'index.php?page=membre_cotisation', 'Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
+    } elseif ($_GET['action'] == 'envoyer_facture') {
+        if ($cotisations->envoyerFacture($_GET['id'], $this->get('app.mail'))) {
+            Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
+            afficherMessage('La facture a été envoyée par mail', 'index.php?page=membre_cotisation');
+        } else {
+            afficherMessage("La facture n'a pas pu être envoyée par mail", 'index.php?page=membre_cotisation', true);
+        }
+    } elseif ($_GET['action'] == 'telecharger_facture') {
+        $cotisations->genererFacture($_GET['id']);
+        die();
     }
-} elseif (isset($_GET['action']) && $_GET['action'] == 'telecharger_facture') {
-    $cotisations->genererFacture($_GET['id']);
-    die();
 }
 
 $formulaire->addElement('header' , '' , 'Paiement');
