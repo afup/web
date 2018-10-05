@@ -197,6 +197,53 @@ class TechLetterGenerateController extends SiteBaseController
         ]);
     }
 
+    public function sendTestAction(Request $request)
+    {
+        $sendingId = $request->query->getInt('techletterId');
+        $repository = $this->get('app.techletter_sending_repository');
+        /**
+         * @var $sending Techletter\Sending
+         */
+        $sending = $repository->get($sendingId);
+
+        if ($sending === null) {
+            throw $this->createNotFoundException('Could not find this techletter');
+        }
+
+        if ($sending->getSentToMailchimp() === true) {
+            throw $this->createAccessDeniedException('You send a test on a sent techletter');
+        }
+
+        $subject = sprintf("[Test] Veille de l'AFUP du %s", $sending->getSendingDate()->format('d/m/Y'));
+
+        $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
+
+        $mailContent = $this
+            ->render(
+                ':admin/techletter:mail_template.html.twig',
+                [
+                    'tech_letter' => $techLetter,
+                    'preview' => false
+                ]
+            )
+            ->getContent()
+        ;
+
+        $this->get('app.mail')->sendSimpleMessage(
+            $subject,
+            $mailContent,
+            [
+                [
+                    'email' => $this->getParameter('techletter_test_email_address'),
+                ]
+            ]
+        );
+
+        $this->addFlash('notice', 'Le mail de test à été envoyé');
+
+        return $this->redirectToRoute('admin_techletter_generate', ['techletterId' => $sendingId]);
+    }
+
     public function membersAction()
     {
         $subscribers = $this->get('ting')->get(TechletterSubscriptionsRepository::class)->getAllSubscriptionsWithUser();

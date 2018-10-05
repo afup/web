@@ -51,3 +51,5 @@ parameters:
 
     google_analytics_enabled: false
     google_analytics_id: "UA-192127-3"
+
+    techletter_test_email_address: "pole-veille@afup.org"

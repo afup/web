@@ -8,6 +8,10 @@ admin_techletter_preview:
   path: /preview
   defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:preview}
 
+admin_techletter_send_test:
+  path: /send_test
+  defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:sendTest}
+
 admin_techletter_retrieve:
   path: /retrieve
   defaults: {_controller: AppBundle:Admin\TechLetter\TechLetterGenerate:retrieveData}
