@@ -45,6 +45,8 @@ security:
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
         - { path: ^/admin/(login|register|password), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/techletter/members, roles: ROLE_ADMIN }
+        - { path: ^/admin/techletter, roles: ROLE_VEILLE }
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
         - { path: ^/admin/(members/reporting|association/relances|event), roles: ROLE_ADMIN}
         - { path: ^/admin/(members/reporting|association/relances|event), roles: ROLE_NO_ACCESS}
