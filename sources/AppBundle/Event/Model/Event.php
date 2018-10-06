@@ -104,6 +104,8 @@ class Event implements NotifyPropertyInterface
      */
     private $placeAddress;
 
+    private $voteEnabled;
+
     /**
      * @return int
      */
@@ -271,6 +273,16 @@ class Event implements NotifyPropertyInterface
         $this->propertyChanged('dateEndVote', $this->dateEndVote, $dateEndVote);
         $this->dateEndVote = $dateEndVote;
         return $this;
+    }
+
+    /**
+     * @param \DateTime $currentDate
+     *
+     * @return bool
+     */
+    public function isVoteAvailable(\DateTime $currentDate)
+    {
+        return $this->getVoteEnabled() && $this->getDateEndVote() >= $currentDate;
     }
 
     /**
@@ -518,5 +530,21 @@ class Event implements NotifyPropertyInterface
         $this->datePlanningAnnouncement = $datePlanningAnnouncement;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVoteEnabled()
+    {
+        return $this->voteEnabled;
+    }
+
+    /**
+     * @param mixed $voteEnabled
+     */
+    public function setVoteEnabled($voteEnabled)
+    {
+        $this->voteEnabled = $voteEnabled;
     }
 }

@@ -50,8 +50,10 @@ class EventController extends EventBaseController
         $talks = $this->get('ting')->get(TalkRepository::class)->getNumberOfTalksByEvent($event);
         $votes = $this->get('ting')->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
 
-        if ($event->getDateEndCallForPapers() < new \DateTime()) {
-            if ($event->getDateEndVote() < new \DateTime()) {
+        $currentDate = new \DateTime();
+
+        if ($event->getDateEndCallForPapers() < $currentDate) {
+            if (!$event->isVoteAvailable($currentDate)) {
                 return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
             }
 
