@@ -106,6 +106,10 @@ class RegistrationsExportGenerator
                 $user = null;
             }
 
+            if (null === ($office = $ticket->getNearestOffice())) {
+                $office = $this->officeFinder->findOffice($invoice, $user);
+            }
+
             yield [
                 'id' => $ticket->getId(),
                 'reference' => $invoice->getReference(),
@@ -116,7 +120,7 @@ class RegistrationsExportGenerator
                 'type_pass' => $this->getTypePass($ticket->getTicketTypeId()),
                 'email' => $ticket->getEmail(),
                 'member_since' => null !== $user ? $this->comptureSeniority($user) : null,
-                'office' => $this->officeFinder->findOffice($invoice, $user),
+                'office' => $office,
                 'distance' => null,
                 'error' => null,
                 'city' => null !== $user ? $user->getCity() : $invoice->getCity(),
