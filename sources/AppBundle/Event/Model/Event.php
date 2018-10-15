@@ -541,10 +541,17 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param mixed $voteEnabled
+     * @param bool $voteEnabled
+     *
+     * @return $this
      */
     public function setVoteEnabled($voteEnabled)
     {
+        $voteEnabled = (bool) $voteEnabled;
+
+        $this->propertyChanged('voteEnabled', $this->voteEnabled, $voteEnabled);
         $this->voteEnabled = $voteEnabled;
+
+        return $this;
     }
 }
