@@ -13,7 +13,7 @@ class OfficesCollection
                 'longitude' => '-0.579541',
                 'meetup_urlname' => 'Bordeaux-PHP-Meetup',
                 'meetup_id' => '18197674',
-                'logo_url' => '/images/offices/bordeaux.jpg',
+                'logo_url' => '/images/offices/bordeaux.svg',
                 'twitter' => 'AFUP_Bordeaux',
                 'blog_url' => 'http://bordeaux.afup.org/',
                 'map' => [
@@ -35,7 +35,7 @@ class OfficesCollection
                 'longitude' => '1.25',
                 'meetup_urlname' => 'afup-limoges-php',
                 'meetup_id' => '23162834',
-                'logo_url' => '/images/offices/limoges.jpg',
+                'logo_url' => '/images/offices/limoges.svg',
                 'twitter' => 'AFUP_Limoges',
                 'blog_url' => 'http://limoges.afup.org/',
                 'map' => [
@@ -57,7 +57,7 @@ class OfficesCollection
                 'longitude' => '3.063333',
                 'meetup_urlname' => 'afup-hauts-de-france-php',
                 'meetup_id' => '23840677',
-                'logo_url' => '/images/offices/hdf.jpg',
+                'logo_url' => '/images/offices/hdf.svg',
                 'twitter' => 'afup_hdf',
                 'map' => [
                     "legend-first-point-x" => "490",
@@ -86,7 +86,7 @@ class OfficesCollection
                 'longitude' => '6.13333',
                 'meetup_urlname' => 'afup-luxembourg-php',
                 'meetup_id' => '19631843',
-                'logo_url' => '/images/offices/luxembourg.jpg',
+                'logo_url' => '/images/offices/luxembourg.svg',
                 'twitter' => 'afup_luxembourg',
                 'blog_url' => 'http://luxembourg.afup.org/',
                 'map' => [
@@ -108,7 +108,7 @@ class OfficesCollection
                 'longitude' => '4.842223',
                 'meetup_urlname' => 'afup-lyon-php',
                 'meetup_id' => '19630036',
-                'logo_url' => '/images/offices/lyon.png',
+                'logo_url' => '/images/offices/lyon.svg',
                 'twitter' => 'AFUP_Lyon',
                 'blog_url' => 'http://lyon.afup.org',
                 'map' => [
@@ -130,7 +130,7 @@ class OfficesCollection
                 'longitude' => '5.36988923',
                 'meetup_urlname' => 'afup-aix-marseille-php',
                 'meetup_id' => '18152912',
-                'logo_url' => '/images/offices/marseille.jpg',
+                'logo_url' => '/images/offices/marseille.svg',
                 'twitter' => 'AFUP_AixMrs',
                 'blog_url' => 'http://aix-marseille.afup.org/',
                 'map' => [
@@ -152,7 +152,7 @@ class OfficesCollection
                 'longitude' => '3.877222',
                 'meetup_urlname' => 'montpellier-php-Meetup',
                 'meetup_id' => '18724486',
-                'logo_url' => '/images/offices/montpellier.jpg',
+                'logo_url' => '/images/offices/montpellier.svg',
                 'twitter' => 'afup_mtp',
                 'map' => [
                     "legend-first-point-x" => "530",
@@ -196,7 +196,7 @@ class OfficesCollection
                 'longitude' => '2.351828',
                 'meetup_urlname' => 'afup-paris-php',
                 'meetup_id' => '19629965',
-                'logo_url' => '/images/offices/paris.png',
+                'logo_url' => '/images/offices/paris.svg',
                 'twitter' => 'afup_paris',
                 'blog_url' => 'http://paris.afup.org/',
 
@@ -219,7 +219,7 @@ class OfficesCollection
                 'longitude' => '0.336112',
                 'meetup_urlname' => 'afup-poitiers-php',
                 'meetup_id' => '23106095',
-                'logo_url' => '/images/offices/afup-icon-color.svg',
+                'logo_url' => '/images/offices/empty.svg',
                 'twitter' => 'afup_poitiers',
                 'map' => [
                     "legend-first-point-x" => "365",
@@ -240,7 +240,7 @@ class OfficesCollection
                 'longitude' => '4.03472',
                 'meetup_urlname' => 'afup-reims-php',
                 'meetup_id' => '23255694',
-                'logo_url' => '/images/offices/reims.jpg',
+                'logo_url' => '/images/offices/reims.svg',
                 'twitter' => 'afup_reims',
                 'map' => [
                     "legend-first-point-x" => "540",
@@ -261,7 +261,7 @@ class OfficesCollection
                 'longitude' => '-1.679444',
                 'meetup_urlname' => 'AFUP-Rennes',
                 'meetup_id' => '22364687',
-                'logo_url' => '/images/offices/rennes.jpg',
+                'logo_url' => '/images/offices/rennes.svg',
                 'twitter' => 'AFUP_Rennes',
 
                 'map' => [
@@ -283,7 +283,7 @@ class OfficesCollection
                 'longitude' => '1.443962',
                 'meetup_urlname' => 'AperoPHP-Toulouse',
                 'meetup_id' => '19947513',
-                'logo_url' => '/images/offices/toulouse.jpg',
+                'logo_url' => '/images/offices/toulouse.svg',
                 'twitter' => 'afup_toulouse',
                 'blog_url' => 'http://toulouse.afup.org/',
                 'map' => [
@@ -303,7 +303,7 @@ class OfficesCollection
                 'label' => 'Drome Ardèche',
                 'latitude' => '44.933333',
                 'longitude' => '4.891667',
-                'logo_url' => '/images/offices/afup-icon-color.svg',
+                'logo_url' => '/images/offices/empty.svg',
                 'twitter' => 'afup_dromardech',
                 'blog_url' => 'http://valence.afup.org/',
                 'meetup_urlname' => 'Ardech-Drom-Dev',
@@ -326,7 +326,7 @@ class OfficesCollection
                 'label' => 'Lorraine',
                 'latitude' => '49.0685',
                 'longitude' => '6.6151',
-                'logo_url' => '/images/offices/lorraine.png',
+                'logo_url' => '/images/offices/lorraine.svg',
                 'twitter' => 'AFUP_Lorraine',
                 'departements' => ['54', '55', '57', '88'],
                 'meetup_urlname' => 'afup-lorraine-php',
@@ -354,7 +354,7 @@ class OfficesCollection
                 'label' => 'Tours',
                 'latitude' => '47.380001068115234',
                 'longitude' => '0.6899999976158142',
-                'logo_url' => '/images/offices/tours.png',
+                'logo_url' => '/images/offices/tours.svg',
                 'twitter' => 'AFUP_Tours',
                 'blog_url' => 'http://tours.afup.org',
                 'departements' => ['37'],
