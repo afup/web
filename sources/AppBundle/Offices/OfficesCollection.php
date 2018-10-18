@@ -314,7 +314,7 @@ class OfficesCollection
                     "legend-first-point-y" => "440",
                     "legend-second-point-x" => "680",
                     "legend-second-point-y" => "390",
-                    "legend-third-point-x" => "710",
+                    "legend-third-point-x" => "695",
                     "legend-third-point-y" => "390",
                     "legend-attachment" => "left",
                     "point-latitude" => "44.933333",
