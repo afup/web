@@ -24,11 +24,17 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
      */
     private $container;
 
-    public function __construct(LegacyRouter $legacyRouter, \Parsedown $parsedown, ContainerInterface $container)
+    /**
+     * @var \Parsedown
+     */
+    private $emailParsedown;
+
+    public function __construct(LegacyRouter $legacyRouter, \Parsedown $parsedown, \Parsedown $emailParsedown, ContainerInterface $container)
     {
         $this->legacyRouter = $legacyRouter;
         $this->parsedown = $parsedown;
         $this->container = $container;
+        $this->emailParsedown = $emailParsedown;
     }
 
     /**
@@ -56,7 +62,9 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
             new \Twig_SimpleFilter('markdown', function ($text) {
                 return $this->parsedown->text($text);
             }, ['is_safe' => ['html']]),
-
+            new \Twig_SimpleFilter('markdown_email', function ($text) {
+                return $this->emailParsedown->text($text);
+            }, ['is_safe' => ['html']]),
         ];
     }
 

@@ -54,5 +54,23 @@
     {else}
         <h2>Modifier un forum</h2>
     {/if}
+
+    {if $action != 'ajouter'}
+    <a href="/admin/event/send-test-mail-inscription?id={$id_forum}" >Envoyer un test du mail d'inscription sur bureau@afup.org</a>
+    {/if}
+
     {include file="formulaire.html"}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    {literal}
+    <script>
+        var simplemde = new SimpleMDE({
+            element: document.querySelector('.simplemde'),
+            spellChecker: false,
+            hideIcons: ['side-by-side', 'fullscreen']
+        });
+    </script>
+    {/literal}
+
 {/if}

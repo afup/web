@@ -23,7 +23,7 @@ services:
 
     app_twig:
         class: AppBundle\Twig\TwigExtension
-        autowire: true
+        arguments: ["@app.legacy_router", "@app.html_to_markdown", "@app.html_to_markdown_email", "@service_container"]
         tags:
             -  { name: twig.extension }
 
@@ -160,6 +160,10 @@ services:
 
     app.mail:
         class: Afup\Site\Utils\Mail
+
+    app.emails:
+        class: AppBundle\Email\Emails
+        arguments: ["@twig", "@app.mail"]
 
     app.invitation_mail:
         class: AppBundle\Association\CompanyMembership\InvitationMail
@@ -349,6 +353,9 @@ services:
     app.html_to_markdown:
         class: Parsedown
         autowire: true
+
+    app.html_to_markdown_email:
+        class: AppBundle\Email\Parsedown
 
     app.event_json_ld:
         class: AppBundle\Event\JsonLd

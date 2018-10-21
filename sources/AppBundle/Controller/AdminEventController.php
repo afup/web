@@ -26,6 +26,7 @@ use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -544,14 +545,7 @@ class AdminEventController extends Controller
             $this->get('app.ticket_repository')->save($ticket);
 
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                $receiver = [
-                    'email' => $ticket->getEmail(),
-                    'name'  => $ticket->getLabel(),
-                ];
-
-                if (!$mailer->send($event->getMailTemplate(), $receiver, [])) {
-                    $logger->addWarning(sprintf('Mail not sent for inscription %s', $ticket->getEmail()));
-                }
+                $this->get('app.emails')->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
                 return 1;
             });
         }
@@ -622,5 +616,23 @@ class AdminEventController extends Controller
         $controller->setContainer($this->container);
 
         return $controller->internalSpeakerPageAction($request, $event, $speaker);
+    }
+
+    public function sendTestInscriptionEmailAction(Request $request)
+    {
+        $ting = $this->container->get('ting');
+
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $ting->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
+        $this->get('app.emails')->sendInscription($event, 'bureau@afup.org', 'Bureau AFUP');
+        $this->addFlash('notice', 'Mail de test envoyé');
+
+        $url = $this->get('app.legacy_router')->getAdminUrl('forum_gestion', ['action' => 'modifier', 'id' => $event->getId()]);
+
+        return $this->redirect($url);
     }
 }

@@ -365,9 +365,16 @@ class Event implements NotifyPropertyInterface
         return $cfp[$key];
     }
 
-    public function getMailTemplate()
+    public function getMailInscriptionContent()
     {
-        return 'confirmation-inscription-' . $this->getPath();
+        $cfp = $this->getCFP();
+        $key = 'mail_inscription_content';
+
+        if (!isset($cfp[$key])) {
+            return null;
+        }
+
+        return $cfp[$key];
     }
 
     /**

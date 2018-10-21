@@ -116,14 +116,7 @@ class TicketController extends EventBaseController
             $mailer = $this->get('app.mail');
             $logger = $this->get('logger');
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                $receiver = [
-                    'email' => $ticket->getEmail(),
-                    'name'  => $ticket->getLabel(),
-                ];
-
-                if (!$mailer->send($event->getMailTemplate(), $receiver, [])) {
-                    $logger->addWarning(sprintf('Mail not sent for inscription %s', $ticket->getEmail()));
-                }
+                $this->get('app.emails')->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
                 return 1;
             });
 
@@ -342,14 +335,7 @@ class TicketController extends EventBaseController
 
             if ($paymentStatus === Ticket::STATUS_PAID) {
                 $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                    $receiver = [
-                        'email' => $ticket->getEmail(),
-                        'name'  => $ticket->getLabel(),
-                    ];
-
-                    if (!$mailer->send($event->getMailTemplate(), $receiver, [])) {
-                        $logger->addWarning(sprintf('Mail not sent for inscription %s', $ticket->getEmail()));
-                    }
+                    $this->get('app.emails')->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
                     return 1;
                 });
             }

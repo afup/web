@@ -62,6 +62,7 @@ if ($action == 'lister') {
             $champs['speaker_management_en'] = $text['speaker_management_en'];
             $champs['sponsor_management_fr'] = $text['sponsor_management_fr'];
             $champs['sponsor_management_en'] = $text['sponsor_management_en'];
+            $champs['mail_inscription_content'] = $text['mail_inscription_content'];
         }
 
         $formulaire->setDefaults($champs);
@@ -98,6 +99,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'speaker_management_en'             , 'Infos speakers (eb)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
     $formulaire->addElement('textarea', 'sponsor_management_fr'             , 'Infos sponsors (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
     $formulaire->addElement('textarea', 'sponsor_management_en'             , 'Infos sponsors (en)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    $formulaire->addElement('textarea', 'mail_inscription_content'             , 'Contenu mail inscription'                           , ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 
 
     $formulaire->addElement('header', ''                     , 'Coupons');
@@ -132,6 +134,7 @@ if ($action == 'lister') {
                     'speaker_management_en' => $formulaire->exportValue('speaker_management_en'),
                     'sponsor_management_fr' => $formulaire->exportValue('sponsor_management_fr'),
                     'sponsor_management_en' => $formulaire->exportValue('sponsor_management_en'),
+                    'mail_inscription_content' => $formulaire->exportValue('mail_inscription_content'),
                 ],
                 $formulaire->exportValue('trello_list_id'),
                 $formulaire->exportValue('logo_url'),
@@ -163,6 +166,7 @@ if ($action == 'lister') {
                     'speaker_management_en' => $formulaire->exportValue('speaker_management_en'),
                     'sponsor_management_fr' => $formulaire->exportValue('sponsor_management_fr'),
                     'sponsor_management_en' => $formulaire->exportValue('sponsor_management_en'),
+                    'mail_inscription_content' => $formulaire->exportValue('mail_inscription_content'),
                 ],
                 $formulaire->exportValue('trello_list_id'),
                 $formulaire->exportValue('logo_url'),
@@ -191,4 +195,5 @@ if ($action == 'lister') {
     }
 
     $smarty->assign('formulaire', genererFormulaire($formulaire));
+    $smarty->assign('id_forum', $_GET['id']);
 }
