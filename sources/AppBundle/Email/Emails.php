@@ -43,7 +43,7 @@ class Emails
             throw new \Exception("Contenu du mail d'inscription non trouvé pour le forum " . $event->getTitle());
         }
 
-        $content = $this->twig->render( ':admin/event:mail_inscription.html.twig', ['content' => $mailContent, 'logo_url' => $event->getLogoUrl()]);
+        $content = $this->twig->render(':admin/event:mail_inscription.html.twig', ['content' => $mailContent, 'logo_url' => $event->getLogoUrl()]);
 
         $subject = sprintf("[%s] Merci !", $event->getTitle());
 

@@ -21,17 +21,14 @@ class Parsedown extends \Parsedown
 
     protected function blockHeader($Line)
     {
-        if (isset($Line['text'][1]))
-        {
+        if (isset($Line['text'][1])) {
             $level = 1;
 
-            while (isset($Line['text'][$level]) and $Line['text'][$level] === '#')
-            {
+            while (isset($Line['text'][$level]) and $Line['text'][$level] === '#') {
                 $level ++;
             }
 
-            if ($level > 6)
-            {
+            if ($level > 6) {
                 return;
             }
 
@@ -43,13 +40,13 @@ class Parsedown extends \Parsedown
             if ($min == 1) {
                 $Block = $this->customHeaderBlock($text);
             } else {
-                $Block = array(
-                    'element' => array(
+                $Block = [
+                    'element' => [
                         'name' => 'h' . min(6, $level),
                         'text' => $text,
                         'handler' => 'line',
-                    ),
-                );
+                    ],
+                ];
             }
 
 
@@ -59,8 +56,8 @@ class Parsedown extends \Parsedown
 
     private function customHeaderBlock($text)
     {
-        return array(
-            'element' => array(
+        return [
+            'element' => [
                 'name' => 'div',
                 'attributes' => [
                     'class' => 'title',
@@ -68,7 +65,7 @@ class Parsedown extends \Parsedown
                 ],
                 'text' => $text,
                 'handler' => 'line',
-            ),
-        );
+            ],
+        ];
     }
 }
