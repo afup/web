@@ -23,9 +23,6 @@ class TicketController extends EventBaseController
     {
         $event = $this->checkEventSlug($eventSlug);
 
-        if ($event->getDateEndSales() < new \DateTime()) {
-            return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
-        }
         if ($request->getSession()->has('sponsor_ticket_id') === true) {
             $request->getSession()->remove('sponsor_ticket_id');
         }
@@ -73,10 +70,6 @@ class TicketController extends EventBaseController
     {
         $event = $this->checkEventSlug($eventSlug);
 
-        if ($event->getDateEndSales() < new \DateTime()) {
-            return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
-        }
-
         if ($request->getSession()->has('sponsor_ticket_id') === false) {
             $this->addFlash('error', 'Merci de renseigner votre token');
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
@@ -112,6 +105,10 @@ class TicketController extends EventBaseController
         $ticketForm->handleRequest($request);
 
         if ($ticketForm->isSubmitted() && $ticketForm->isValid() && $sponsorTicket->getPendingInvitations() > 0) {
+            if ($event->getDateEndSales() < new \DateTime()) {
+                return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
+            }
+
             $sponsorTicketHelper->addTicketToSponsor($sponsorTicket, $ticket);
             $mailer = $this->get('app.mail');
             $logger = $this->get('logger');
@@ -156,7 +153,8 @@ class TicketController extends EventBaseController
             'sponsorTicket' => $sponsorTicket,
             'ticketForm' => $ticketForm->createView(),
             'registeredTickets' => $sponsorTicketHelper->getRegisteredTickets($sponsorTicket),
-            'edit' => $edit
+            'edit' => $edit,
+            'sold_out' => $event->getDateEndSales() < new \DateTime(),
         ]);
     }
 
