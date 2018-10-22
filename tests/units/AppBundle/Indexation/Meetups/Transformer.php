@@ -66,7 +66,7 @@ class Transformer extends \atoum
                         'office' =>
                             array (
                                 'label' => 'Reims',
-                                'logo_url' => '/images/offices/reims.jpg',
+                                'logo_url' => '/images/offices/reims.svg',
                             ),
                         'description' => '<p>Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d\'un verre.</p>',
                         'venue' =>
@@ -142,7 +142,7 @@ class Transformer extends \atoum
                 'day_month' => '08 Mar',
                 'office' => array (
                     'label' => 'Drome Ardèche',
-                    'logo_url' => '/images/offices/afup-icon-color.svg',
+                    'logo_url' => '/images/offices/empty.svg',
                 ),
                 'description' => '<p>Au programme<br/>[AFUP] Super Apéro PHP</p> <p>Viens faire connaissance avec l\'AFUP avec les talks dédiés à PHP au sein de ADD.</p> <p>Au programme :<br/>- quizz sur ton langage préféré, en compétition avec toutes les antennes AFUP de France<br/>- présentations des prochaines événements PHP nationaux<br/>- échanges entre développeurs de la région</p> <p>À prendre avec vous</p> <p><br/>Important</p>',
                 'is_upcoming' => true,

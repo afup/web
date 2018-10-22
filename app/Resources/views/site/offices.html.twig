@@ -53,6 +53,12 @@
                 second_point_y: city.data("map-legend-second-point-y"),
                 third_point_x: city.data("map-legend-third-point-x"),
                 third_point_y: city.data("map-legend-third-point-y"),
+                second_city_first_point_x: city.data("map-legend-second-city-first-point-x"),
+                second_city_first_point_y: city.data("map-legend-second-city-first-point-y"),
+                second_city_second_point_x: city.data("map-legend-second-city-second-point-x"),
+                second_city_second_point_y: city.data("map-legend-second-city-second-point-y"),
+                second_city_third_point_x: city.data("map-legend-second-city-third-point-x"),
+                second_city_third_point_y: city.data("map-legend-second-city-third-point-y"),
                 attachment: city.data("map-legend-attachment"),
                 title: $('h3', city).text(),
                 subtitle: city.data("map-legend-subtitle"),
@@ -67,6 +73,20 @@
                     fill: "#2b3e74"
                 }
             };
+
+            if ('undefined' !== typeof city.data("map-second-city-point-latitude")
+                && 'undefined' !== typeof city.data("map-second-city-point-longitude")
+            ) {
+                plots[city.data('mapKey') + '-second-city'] = {
+                    latitude: city.data("map-second-city-point-latitude"),
+                    longitude: city.data("map-second-city-point-longitude"),
+                    size: 20,
+                    attrs: {
+                        fill: "#2b3e74"
+                    }
+                };
+            }
+
             if (typeof city.data('departements') != 'undefined') {
                 $.each(city.data('departements').toString().split(','), function(index, departementCode) {
                     var area = jQuery.extend({}, baseArea);
@@ -133,7 +153,7 @@
                             "L",
                             legends[key]['second_point_x'],
                             legends[key]['second_point_y']
-                        ]).attr({stroke: "#2b3e74"});
+                        ]).attr({stroke: "#000"});
                         paper.path([
                             "M",
                             legends[key]['second_point_x'],
@@ -141,13 +161,38 @@
                             "L",
                             legends[key]['third_point_x'],
                             legends[key]['third_point_y']
-                        ]).attr({stroke: "#2b3e74"});
+                        ]).attr({stroke: "#000"});
+
+                        if ('undefined' !== typeof legends[key]['second_city_first_point_x']
+                            && 'undefined' !== typeof legends[key]['second_city_first_point_y']
+                            && 'undefined' !== typeof legends[key]['second_city_second_point_x']
+                            && 'undefined' !== typeof legends[key]['second_city_second_point_y']
+                            && 'undefined' !== typeof legends[key]['second_city_third_point_x']
+                            && 'undefined' !== typeof legends[key]['second_city_third_point_y']
+                        ) {
+                            paper.path([
+                                "M",
+                                legends[key]['second_city_first_point_x'],
+                                legends[key]['second_city_first_point_y'],
+                                "L",
+                                legends[key]['second_city_second_point_x'],
+                                legends[key]['second_city_second_point_y']
+                            ]).attr({stroke: "#000"});
+                            paper.path([
+                                "M",
+                                legends[key]['second_city_second_point_x'],
+                                legends[key]['second_city_second_point_y'],
+                                "L",
+                                legends[key]['second_city_third_point_x'],
+                                legends[key]['second_city_third_point_y']
+                            ]).attr({stroke: "#000"});
+                        }
 
                         var boxWith = 150;
                         var boxHeight = 50;
 
                         var imageHeight = 50;
-                        var imageWidth = 50;
+                        var imageWidth = 45;
                         var imageMargin = 4;
 
                         var textMaginWithImage = 8;
@@ -318,6 +363,14 @@
                     data-map-legend-attachment="{{ office.map['legend-attachment'] }}"
                     data-map-point-latitude="{{ office.map['point-latitude'] }}"
                     data-map-point-longitude="{{ office.map['point-longitude'] }}"
+                     {% if office.map['legend-second-city-first-point-x'] is defined %}data-map-legend-second-city-first-point-x="{{ office.map['legend-second-city-first-point-x'] }}"{% endif %}
+                     {% if office.map['legend-second-city-first-point-y'] is defined %}data-map-legend-second-city-first-point-y="{{ office.map['legend-second-city-first-point-y'] }}"{% endif %}
+                     {% if office.map['legend-second-city-second-point-x'] is defined %}data-map-legend-second-city-second-point-x="{{ office.map['legend-second-city-second-point-x'] }}"{% endif %}
+                     {% if office.map['legend-second-city-second-point-y'] is defined %}data-map-legend-second-city-second-point-y="{{ office.map['legend-second-city-second-point-y'] }}"{% endif %}
+                     {% if office.map['legend-second-city-third-point-x'] is defined %}data-map-legend-second-city-third-point-x="{{ office.map['legend-second-city-third-point-x'] }}"{% endif %}
+                     {% if office.map['legend-second-city-third-point-y'] is defined %}data-map-legend-second-city-third-point-y="{{ office.map['legend-second-city-third-point-y'] }}"{% endif %}
+                     {% if office.map['point-second-city-latitude'] is defined %}data-map-second-city-point-latitude="{{ office.map['point-second-city-latitude'] }}"{% endif %}
+                     {% if office.map['point-second-city-longitude'] is defined %}data-map-second-city-point-longitude="{{ office.map['point-second-city-longitude'] }}"{% endif %}
                  {% endif %}
                  {% if office.departements is defined %}
                     data-departements="{{ office.departements|join(',') }}"
