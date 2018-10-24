@@ -38,6 +38,10 @@ admin_event_speaker_infos:
   path: /speaker-infos
   defaults: {_controller: AppBundle:AdminEvent:speakerInfos}
 
+admin_event_send_test_mail_inscription:
+  path: /send-test-mail-inscription
+  defaults: {_controller: AppBundle:AdminEvent:sendTestInscriptionEmail}
+
 admin_event_badges:
   path: /badges
   defaults: {_controller: AppBundle:AdminEvent:badgesGenerate}
