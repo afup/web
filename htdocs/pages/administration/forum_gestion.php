@@ -99,7 +99,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'speaker_management_en'             , 'Infos speakers (eb)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
     $formulaire->addElement('textarea', 'sponsor_management_fr'             , 'Infos sponsors (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
     $formulaire->addElement('textarea', 'sponsor_management_en'             , 'Infos sponsors (en)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
-    $formulaire->addElement('textarea', 'mail_inscription_content'             , 'Contenu mail inscription'                           , ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+    $formulaire->addElement('textarea', 'mail_inscription_content'          , 'Contenu mail inscription'                      , ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 
 
     $formulaire->addElement('header', ''                     , 'Coupons');
