@@ -7,6 +7,12 @@ use AppBundle\Event\Model\Event;
 
 class Emails
 {
+    const EMAIL_BUREAU_ADDRESS = 'bureau@afup.org';
+    const EMAIL_BUREAU_LABEL = 'Bureau AFUP';
+    const EMAIL_BONJOUR_ADDRESS = 'bonjour@afup.org';
+    const EMAIL_BONJOUR_LABEL = 'AFUP';
+    const EMAIL_TRESORIER_ADDRESS = 'tresorier@afup.org';
+
     /**
      * @var \Twig_Environment
      */
@@ -48,9 +54,9 @@ class Emails
         $subject = sprintf("[%s] Merci !", $event->getTitle());
 
         $this->mail->getMandrill()->messages->send([
-            'from_email' => 'bonjour@afup.org',
-            'from_name' => 'AFUP',
-            'bcc_address' => 'tresorier@afup.org',
+            'from_email' => self::EMAIL_BONJOUR_ADDRESS,
+            'from_name' => self::EMAIL_BONJOUR_LABEL,
+            'bcc_address' => self::EMAIL_TRESORIER_ADDRESS,
             'html' => $content,
             'subject' => $subject,
             'to' => [

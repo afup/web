@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 use Afup\Site\Forum\Facturation;
 use Afup\Site\Forum\Inscriptions;
+use AppBundle\Email\Emails;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Form\SponsorTokenType;
@@ -627,7 +628,7 @@ class AdminEventController extends Controller
         $eventRepository = $ting->get(EventRepository::class);
         $event = $this->getEvent($eventRepository, $request);
 
-        $this->get('app.emails')->sendInscription($event, 'bureau@afup.org', 'Bureau AFUP');
+        $this->get('app.emails')->sendInscription($event, Emails::EMAIL_BUREAU_ADDRESS, Emails::EMAIL_BUREAU_LABEL);
         $this->addFlash('notice', 'Mail de test envoyé');
 
         $url = $this->get('app.legacy_router')->getAdminUrl('forum_gestion', ['action' => 'modifier', 'id' => $event->getId()]);
