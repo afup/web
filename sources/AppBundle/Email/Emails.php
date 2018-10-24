@@ -50,6 +50,7 @@ class Emails
         $this->mail->getMandrill()->messages->send([
             'from_email' => 'bonjour@afup.org',
             'from_name' => 'AFUP',
+            'bcc_address' => 'tresorier@afup.org',
             'html' => $content,
             'subject' => $subject,
             'to' => [
