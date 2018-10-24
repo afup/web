@@ -28,7 +28,7 @@ class VoteController extends EventBaseController
     public function indexAction($eventSlug, $page = 1, $all = false)
     {
         $event = $this->checkEventSlug($eventSlug);
-        if ($event->getDateEndVote() < new \DateTime()) {
+        if (!$event->isVoteAvailable(new \DateTime())) {
             return $this->render(':event:cfp/closed.html.twig', ['event' => $event]);
         }
 
@@ -103,7 +103,7 @@ class VoteController extends EventBaseController
     public function newAction(Request $request, $eventSlug, $talkId)
     {
         $event = $this->checkEventSlug($eventSlug);
-        if ($event->getDateEndVote() < new \DateTime()) {
+        if (!$event->isVoteAvailable(new \DateTime())) {
             return new JsonResponse(['errors' => ['Cfp is closed !']], Response::HTTP_BAD_REQUEST);
         }
 
