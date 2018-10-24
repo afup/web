@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Email;
 
 class Parsedown extends \Parsedown
