@@ -16,6 +16,9 @@ deps.lock
 .vagrant
 /default
 
+/bin/generate_vcards
+/bin/vobject
+
 /htdocs/cache
 /htdocs/tmp/twig
 node_modules
