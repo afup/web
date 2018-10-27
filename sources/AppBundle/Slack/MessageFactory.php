@@ -282,10 +282,6 @@ class MessageFactory
             'Nombre de speakers' => $talkToSpeakersRepository->getNumberOfSpeakers($event, $since),
         ];
 
-        if (0 === array_sum($infos)) {
-            return [];
-        }
-
         $fields = [];
         foreach ($infos as $title => $value) {
             $fields[] = (new Field())->setShort(true)->setTitle($title)->setValue($value);
