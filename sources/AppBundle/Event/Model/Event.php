@@ -561,4 +561,17 @@ class Event implements NotifyPropertyInterface
 
         return $this;
     }
+
+    public function lastsOneDay()
+    {
+        if (null === ($dateStart = $this->getDateStart())) {
+            throw new \RuntimeException('Undefined start date for event ' . $this->getId());
+        }
+
+        if (null === ($dateEnd = $this->getDateEnd())) {
+            throw new \RuntimeException('Undefined end date for event ' . $this->getId());
+        }
+
+        return $dateStart->format('Y-m-d') === $dateEnd->format('Y-m-d');
+    }
 }
