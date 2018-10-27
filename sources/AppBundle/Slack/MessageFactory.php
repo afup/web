@@ -174,8 +174,8 @@ class MessageFactory
         $inscriptionsData = $inscriptions->obtenirStatistiques($event->getId());
         $message = new Message();
         $message
-            ->setChannel('forum-general')
-            ->setUsername('Inscriptions')
+            ->setChannel('test-cfp')
+            ->setUsername($event->getTitle() . ' - Inscriptions')
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
 
@@ -200,13 +200,26 @@ class MessageFactory
         $attachment
             ->setTitle('Total des inscriptions')
             ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_inscriptions')
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Premier jour')->setValue($inscriptionsData['premier_jour']['inscrits'])
-            )
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Deuxième jour')->setValue($inscriptionsData['second_jour']['inscrits'])
-            )
         ;
+
+
+        if ($event->lastsOneDay()) {
+            $attachment
+                ->addField(
+                (new Field())->setShort(true)->setTitle('Journée unique')->setValue($inscriptionsData['premier_jour']['inscrits'])
+            )
+            ;
+        } else {
+            $attachment
+                ->addField(
+                    (new Field())->setShort(true)->setTitle('Premier jour')->setValue($inscriptionsData['premier_jour']['inscrits'])
+                )
+                ->addField(
+                    (new Field())->setShort(true)->setTitle('Deuxième jour')->setValue($inscriptionsData['second_jour']['inscrits'])
+                )
+            ;
+        }
+
         $message->addAttachment($attachment);
 
         return $message;
