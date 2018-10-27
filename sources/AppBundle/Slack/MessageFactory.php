@@ -226,12 +226,8 @@ class MessageFactory
     }
 
 
-    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, \DateTime $since, \DateTime $currentDate)
+    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, \DateTime $currentDate, \DateTime $since = null)
     {
-        //Il n'y a pas les heures dans les dates de soumission en base
-        $since = clone $since;
-        $since->setTime(0, 0, 0);
-
         $message = new Message();
         $message
             ->setChannel('afupday2019')
@@ -239,19 +235,25 @@ class MessageFactory
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
 
-        $fields = $this->prepareCfpStatsFields($talkRepository, $talkToSpeakersRepository, $event, $since);
+        if (null !== $since) {
+            //Il n'y a pas les heures dans les dates de soumission en base
+            $since = clone $since;
+            $since->setTime(0, 0, 0);
 
-        if (count($fields)) {
-            $attachment = new Attachment();
-            $attachment
-                ->setTitle(sprintf('Réponses au CFP du %s depuis le %s : ', $event->getTitle(), $since->format('d/m/Y H:i')))
-            ;
+            $fields = $this->prepareCfpStatsFields($talkRepository, $talkToSpeakersRepository, $event, $since);
 
-            foreach ($fields as $field) {
-                $attachment->addField($field);
+            if (count($fields)) {
+                $attachment = new Attachment();
+                $attachment
+                    ->setTitle(sprintf('Réponses au CFP du %s depuis le %s : ', $event->getTitle(), $since->format('d/m/Y H:i')))
+                ;
+
+                foreach ($fields as $field) {
+                    $attachment->addField($field);
+                }
+
+                $message->addAttachment($attachment);
             }
-
-            $message->addAttachment($attachment);
         }
 
         $attachment = new Attachment();

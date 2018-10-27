@@ -19,6 +19,7 @@ class CfpNotificationCommand extends ContainerAwareCommand
     {
         $this
             ->setName('cfp-stats-notification')
+            ->addOption('display-diff', null, InputOption::VALUE_NONE)
             ->addOption('event-path', null, InputOption::VALUE_REQUIRED)
 
         ;
@@ -41,8 +42,13 @@ class CfpNotificationCommand extends ContainerAwareCommand
         if (null === $event) {
             return;
         }
-        $since = new \DateTime();
-        $since->modify('-1 day');
+
+        $since = null;
+
+        if ($input->getOption('display-diff')) {
+            $since = new \DateTime();
+            $since->modify('- 1 day');
+        }
 
         $currentDate = new \DateTime();
 
@@ -50,8 +56,8 @@ class CfpNotificationCommand extends ContainerAwareCommand
             $event,
             $ting->get(TalkRepository::class),
             $ting->get(TalkToSpeakersRepository::class),
-            $since,
-            $currentDate
+            $currentDate,
+            $since
         );
 
         $this->getContainer()->get('app.slack_notifier')->sendMessage($message);
