@@ -7,6 +7,7 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CfpNotificationCommand extends ContainerAwareCommand
@@ -18,6 +19,8 @@ class CfpNotificationCommand extends ContainerAwareCommand
     {
         $this
             ->setName('cfp-stats-notification')
+            ->addOption('event-path', null, InputOption::VALUE_REQUIRED)
+
         ;
     }
 
@@ -27,13 +30,17 @@ class CfpNotificationCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $ting = $this->getContainer()->get('ting');
+        $eventReposotory = $this->getContainer()->get('ting')->get(EventRepository::class);
 
-        $event = $ting->get(EventRepository::class)->getNextEvent();
+        $event = $this->getEventFilter($input);
+
+        if (null === $event) {
+            $event = $eventReposotory->getNextEvent();
+        }
 
         if (null === $event) {
             return;
         }
-
         $since = new \DateTime();
         $since->modify('-1 day');
 
@@ -48,5 +55,30 @@ class CfpNotificationCommand extends ContainerAwareCommand
         );
 
         $this->getContainer()->get('app.slack_notifier')->sendMessage($message);
+    }
+
+    /**
+     * @param InputInterface $input
+     *
+     * @return null
+     */
+    protected function getEventFilter(InputInterface $input)
+    {
+        if (null === ($eventPath = $input->getOption('event-path'))) {
+            return null;
+        }
+
+        $event = $this
+            ->getContainer()
+            ->get('ting')
+            ->get(EventRepository::class)
+            ->getByPath($eventPath)
+        ;
+
+        if (null === $event) {
+            throw new \InvalidArgumentException("L'événement sur lequel filter n'a pas été trouvé");
+        }
+
+        return $event;
     }
 }
