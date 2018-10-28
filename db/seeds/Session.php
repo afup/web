@@ -70,6 +70,23 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
             ->save()
         ;
 
+        $conferenciers = [];
+        foreach ($sessions as $session) {
+            $conferenciers[] = [
+                'session_id' => $session['session_id'],
+                'conferencier_id' => Conferenciers::ID_CONFERENCIER
+            ];
+        }
+
+        $table = $this->table('afup_conferenciers_sessions');
+        $table->truncate();
+
+        $table
+            ->insert($conferenciers)
+            ->save()
+        ;
+
+
         $i = 1;
         $plannings = [];
         foreach ($sessions as $session) {
