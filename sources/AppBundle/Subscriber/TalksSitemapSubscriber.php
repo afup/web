@@ -5,11 +5,11 @@ namespace AppBundle\Subscriber;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Presta\SitemapBundle\Event\SitemapPopulateEvent;
+use Presta\SitemapBundle\Service\UrlContainerInterface;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Presta\SitemapBundle\Event\SitemapPopulateEvent;
-use Presta\SitemapBundle\Service\UrlContainerInterface;
 
 class TalksSitemapSubscriber implements EventSubscriberInterface
 {
@@ -42,8 +42,7 @@ class TalksSitemapSubscriber implements EventSubscriberInterface
         $talks = $this->ting->get(TalkRepository::class)->getAll();
 
         /** @var Talk $talk */
-        foreach ($talks as $talk)
-        {
+        foreach ($talks as $talk) {
             $urls->addUrl(
                 new UrlConcrete(
                     $this->urlGenerator->generate(
