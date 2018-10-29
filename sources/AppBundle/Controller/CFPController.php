@@ -287,8 +287,8 @@ class CFPController extends EventBaseController
                 $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
 
                 if ($this->get('ting.unitofwork')->isManaged($talk) === false) {
-                    $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($talk) {
-                        $this->get('app.slack_notifier')->notifyTalk($talk);
+                    $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($talk, $event) {
+                        $this->get('app.slack_notifier')->notifyTalk($talk, $event);
                     });
                 }
 
