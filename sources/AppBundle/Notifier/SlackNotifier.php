@@ -3,6 +3,7 @@
 
 namespace AppBundle\Notifier;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\Slack\Message;
@@ -55,11 +56,13 @@ class SlackNotifier
      * Send a message to slack for a new talk
      *
      * @param Talk $talk
+     * @param Event $event
+     *
      * @return bool
      */
-    public function notifyTalk(Talk $talk)
+    public function notifyTalk(Talk $talk, Event $event)
     {
-        $message = $this->messageFactory->createMessageForTalk($talk);
+        $message = $this->messageFactory->createMessageForTalk($talk, $event);
         return $this->sendMessage($message);
     }
 

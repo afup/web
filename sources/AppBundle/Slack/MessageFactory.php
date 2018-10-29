@@ -81,14 +81,16 @@ class MessageFactory
 
     /**
      * @param Talk $talk
+     * @param Event $event
+     *
      * @return Message $message
      */
-    public function createMessageForTalk(Talk $talk)
+    public function createMessageForTalk(Talk $talk, Event $event)
     {
         $attachment = new Attachment();
         $attachment
-            ->setTitle('Nouvelle proposition sur le CFP')
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_sessions')
+            ->setTitle('Nouvelle proposition sur le CFP - ' . $event->getTitle())
+            ->setTitleLink('https://afup.org/pages/administration/index.php?' . http_build_query(['page' => 'forum_sessions', 'id_forum' => $event->getId()]))
             ->setFallback(sprintf(
                     'Nouvelle proposition intitulée "%s". Type %s - Public %s',
                     $talk->getTitle(),
