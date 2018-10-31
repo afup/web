@@ -37,7 +37,7 @@ Plusieurs possibilités de configuration des containers sont disponibles, via l'
 Pour faciliter leur configuration, un fichier `.env` est créé à la racine du projet à la première exécution de la commande `make docker-up`.
 Ce fichier contient la liste des options disponibles.
 
-#### `DOCKER_UP_OPTIONS`
+#### `DOCKER_UP_OPTIONSS`
 
 liste des options à passer à la commande `docker-composer up`. 
 
