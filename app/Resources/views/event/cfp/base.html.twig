@@ -8,7 +8,18 @@
 {% endblock %}
 
 {% block header %}
-    {% set menu = {'main': {'route' : 'event', 'title': 'Appel à conférenciers'}, 'items': [{'title': 'Proposer une conférence', 'route': 'cfp'}, {'title': 'Voter pour les conférences', 'route': 'vote_index'}]} %}
+    {% set menu = {
+        'main': {'route' : 'event', 'title': 'Appel à conférences'},
+        'items': [
+            {'title': 'Proposer une conférence', 'route': 'cfp'},
+        ]
+    } %}
+    {% if event is defined and event.getVoteEnabled %}
+        {% set menu = {
+            'main': menu.main,
+            'items': menu.items|merge([{'title': 'Voter pour les conférences', 'route': 'vote_index'}]),
+        } %}
+    {% endif %}
     {{ parent() }}
 {% endblock %}
 {% block javascripts %}
