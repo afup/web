@@ -191,6 +191,19 @@ class TalkRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection($hydrator));
     }
 
+    public function getAllPastTalks(\DateTime $dateTime)
+    {
+        $query = $this->getPreparedQuery(
+            '
+            SELECT talk.*
+            FROM afup_sessions AS talk
+            LEFT JOIN afup_forum_planning afp ON talk.session_id = afp.id_session
+            WHERE afp.fin <= :date_fin'
+        )->setParams(['date_fin' => $dateTime->format('U')]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
     /**
      * @param SerializerFactoryInterface $serializerFactory
      * @param array $options

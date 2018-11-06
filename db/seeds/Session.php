@@ -11,6 +11,7 @@ class Session extends AbstractSeed
 
     public function run()
     {
+        $dateDebut = DateTimeImmutable::createFromFormat('U', strtotime('-' .rand(5, 6). ' days'));
         $date = DateTimeImmutable::createFromFormat('U', strtotime('-' .rand(1, 5). ' days'));
 
         $sessions = [
@@ -93,8 +94,8 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
             $plannings[] = [
                 'id' => $i,
                 'id_session' => $session['session_id'],
-                'debut' => $date->format('Y-m-d H:i:s'),
-                'fin' => $date->format('Y-m-d H:i:s'),
+                'debut' => $dateDebut->format('U'),
+                'fin' => $date->format('U'),
                 'id_salle' => 0,
                 'id_forum' => Event::ID_FORUM,
                 'keynote' => ''

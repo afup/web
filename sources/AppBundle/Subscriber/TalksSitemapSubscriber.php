@@ -39,21 +39,23 @@ class TalksSitemapSubscriber implements EventSubscriberInterface
 
     public function registerTalksUrls(UrlContainerInterface $urls)
     {
-        $talks = $this->ting->get(TalkRepository::class)->getAll();
+        $talks = $this->ting->get(TalkRepository::class)->getAllPastTalks(new \DateTime());
 
         /** @var Talk $talk */
         foreach ($talks as $talk) {
-            $urls->addUrl(
-                new UrlConcrete(
-                    $this->urlGenerator->generate(
-                        'talks_show',
-                        ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
-                        UrlGeneratorInterface::ABSOLUTE_URL
+            if ($talk->isDisplayedOnHistory()) {
+                $urls->addUrl(
+                    new UrlConcrete(
+                        $this->urlGenerator->generate(
+                            'talks_show',
+                            ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
+                            UrlGeneratorInterface::ABSOLUTE_URL
+                        ),
+                        $talk->getSubmittedOn()
                     ),
-                    $talk->getSubmittedOn()
-                ),
-                'talks'
-            );
+                    'talks'
+                );
+            }
         }
     }
 }

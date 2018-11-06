@@ -3,7 +3,7 @@
 CURRENT_UID ?= $(shell id -u)
 DOCKER_UP_OPTIONS ?=
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init db
+.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init
 
 install: vendors event/vendor
 
@@ -53,12 +53,8 @@ app/config/parameters.yml:
 init:
 	make config
 	make reset-db
-	make db-migrations
-	make db-seed
-
-db:
-	make db-migrations
-	make db-seed
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make db-migrations
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make db-seed
 
 config: configs/application/config.php app/config/parameters.yml
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make vendors
@@ -100,7 +96,7 @@ reset-db:
 	echo 'CREATE DATABASE web' | docker-compose run --rm db /opt/mysql_no_db
 
 db-migrations:
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp php bin/phinx migrate
+	php bin/phinx migrate
 
 db-seed:
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp php bin/phinx seed:run
+	php bin/phinx seed:run
