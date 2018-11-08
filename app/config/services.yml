@@ -403,3 +403,11 @@ services:
         arguments: ["@translator"]
         tags:
           - {name: form.type}
+
+    app.sitemap.talks:
+        class: AppBundle\Subscriber\TalksSitemapSubscriber
+        arguments:
+            - "@router"
+            - "@ting"
+        tags:
+            - { name: "kernel.event_subscriber", priority: 100 }
