@@ -20,7 +20,7 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
      * @param Event $event
      * @param bool $publicOnly
      * @param null|int $datesFilter can be one of self::REMOVE_PAST_TICKETS, self::REMOVE_FUTURE_TICKETS. self::ACTUAL_TICKETS == self::REMOVE_PAST_TICKETS | self::REMOVE_FUTURE_TICKETS. Default value is ACTUAL_TICKETS
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface|TicketEventType[]
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
     public function getTicketsByEvent(Event $event, $publicOnly = true, $datesFilter = null)
@@ -57,6 +57,28 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
                 (new HydratorSingleObject())->mapObjectTo('tarif', 'tarif_event', 'setTicketType')
             )
         );
+    }
+
+    /**
+     * @param Event $event
+     * @param bool $publicOnly
+     * @param null $datesFilter
+     *
+     * @return bool
+     *
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
+    public function doesEventHasRestrictedToMembersTickets(Event $event, $publicOnly = true, $datesFilter = null)
+    {
+        $tickets = $this->getTicketsByEvent($event, $publicOnly, $datesFilter);
+
+        foreach ($tickets as $ticket) {
+            if ($ticket->getTicketType()->getIsRestrictedToMembers()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
