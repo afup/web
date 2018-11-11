@@ -52,6 +52,8 @@
 
     <div class="col-md-8">
         <h2>{{ 'Billetterie'|trans }}: {{ event.title }}</h2>
+
+        {% if hasMembersTickets %}
         <div class="tickets--members-detail">
             {% if app.user %}
                 {% if app.user.companyId > 0 %}
@@ -70,6 +72,7 @@
                 <p>Pour acheter des places au tarif AFUP, vous devez vous <a href="{{ url('admin_login') }}">connecter</a>.</p>
             {% endif %}
         </div>
+        {% endif %}
 
         {% if not ticketForm.vars.valid %}
             <div class="tickets--errors">

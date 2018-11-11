@@ -8,6 +8,7 @@ use AppBundle\Association\Model\User;
 use AppBundle\Event\Form\SponsorTicketType;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
@@ -226,12 +227,15 @@ class TicketController extends EventBaseController
                 $event->getId()
             );
         }
+
         return $this->render('event/ticket/ticket.html.twig', [
             'event' => $event,
             'ticketForm' => $purchaseForm->createView(),
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
             'maxNbPersonnes' => count($purchaseForm->getData()->getTickets()),
-            'soldTicketsForMember' => $totalOfSoldTicketsByMember
+            'soldTicketsForMember' => $totalOfSoldTicketsByMember,
+            'hasMembersTickets' => $this->get('ting')->get(TicketEventTypeRepository::class)->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
+
         ]);
     }
 
