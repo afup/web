@@ -71,6 +71,10 @@
     <div class="clear"> </div>
     <div id="cfp-body">
         {{ event.cfp[app.request.locale]|raw }}
-        <p>{{ 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.'| trans }}</p>
+        {% if (event.getVoteEnabled) %}
+            <p>{{ 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.'| trans }}</p>
+        {% else %}
+            <p>{{ 'Pour pouvoir proposer une conférence, il vous sera nécessaire de vous authentifier avec Github.'| trans }}</p>
+        {%  endif %}
     </div>
 {% endblock %}

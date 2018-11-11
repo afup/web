@@ -38,6 +38,7 @@ Intermédiaire: 'Intermediary level'
 Avancé: Expert
 N/A: N/A
 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.': 'To submit a talk or rate submitted ones, you have to connect to your github account.'
+'Pour pouvoir proposer une conférence, il vous sera nécessaire de vous authentifier avec Github.': 'To submit a talk, you have to connect to your github account.'
 Civility: Civility
 Firstname: Firstname
 Lastname: Lastname
