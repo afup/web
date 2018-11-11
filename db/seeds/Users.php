@@ -14,6 +14,7 @@ class Users extends AbstractSeed
                 'login' => 'admin',
                 'mot_de_passe' => md5('admin'),
                 'nom' => 'Admin',
+                'niveau' => 2, // AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
                 'prenom' => 'Admin',
                 'email' => 'admin@admin.fr',
             ],
