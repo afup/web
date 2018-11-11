@@ -556,7 +556,7 @@ class Talk implements NotifyPropertyInterface
     {
         $type = $this->getType();
 
-        return $type != self::TYPE_CLINIC && $type != self::TYPE_SPEAKER_INTRODUCTIONS;
+        return $type != self::TYPE_CLINIC && $type != self::TYPE_SPEAKER_INTRODUCTIONS && true === $this->getScheduled();
     }
 
     /**
