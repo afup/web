@@ -48,7 +48,11 @@
                 <div class="container">
                     <div class="col-md-12">
                         <h2>Description</h2>
-                        {{ talk.abstract|raw }}
+                        {% if talk.useMarkdown %}
+                            {{ talk.abstract|raw|markdown }}
+                        {% else %}
+                            {{ talk.abstract|raw }}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="container talk-date-container">
