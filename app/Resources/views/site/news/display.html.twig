@@ -1,5 +1,18 @@
 {% extends ':site:base.html.twig' %}
 
+{% block metas %}
+    {{ parent() }}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="AFUP - {{ article.getTitle }}">
+    <meta name="twitter:description" content="{{ article.textTeaser }}">
+    <meta name="twitter:domain" content="afup.org">
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="AFUP - {{ article.getTitle }}" />
+    <meta property="og:url" content="{{ url('news_display', {code: article.getSlug }) }}" />
+    <meta property="og:description" content="{{ article.textTeaser }}" />
+    <meta property="og:site_name" content="AFUP" />
+{% endblock %}
+
 {% block content %}
     <div class="mw1400p center" id="container">
         <div class="line" id="main">
