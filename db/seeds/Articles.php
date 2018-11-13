@@ -22,7 +22,7 @@ EOF;
                 'chapeau' => $chapeau,
                 'contenu' => $contenu,
                 'raccourci' => 'les-videos-du-forum-2018-en-ligne',
-                'id_site_rubrique' => 9, // Rubrique::ID_RUBRIQUE_ACTUALITES
+                'id_site_rubrique' => SiteRubrique::ID_ACTUALITES,
                 'date' => 1542150000,
                 'id_forum' => Event::ID_FORUM,
                 'etat' => 1,
