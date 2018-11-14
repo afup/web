@@ -240,6 +240,14 @@ class Article implements NotifyPropertyInterface
     /**
      * @return string
      */
+    public function getTextTeaser()
+    {
+        return html_entity_decode($this->getTeaser());
+    }
+
+    /**
+     * @return string
+     */
     public function getSlug()
     {
         return $this->getId() . '-' . $this->getPath();
