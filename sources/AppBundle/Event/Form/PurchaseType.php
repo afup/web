@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class PurchaseType extends AbstractType
 {
@@ -84,6 +85,15 @@ class PurchaseType extends AbstractType
                 'label'    => 'J\'accepte que ma société soit citée comme participant à la conférence',
                 'required' => false,
                 'mapped' => false
+            ])
+            ->add('cgv', CheckboxType::class, [
+                'required' => true,
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'Vous devez valider les conditions.',
+                    ]),
+                ],
             ])
             ->add('newsletterAfup', CheckboxType::class, [
                 'label' => 'Je souhaite être tenu au courant des rencontres de l\'AFUP sur des sujets afférents à PHP',
