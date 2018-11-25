@@ -1,0 +1,4 @@
+admin_talk_export:
+  path: /export
+  defaults: {_controller: AppBundle:AdminTalk:export}
+
