@@ -1,16 +1,15 @@
 <?php
 
+use Afup\Site\Corporate\Feuille;
 use Phinx\Seed\AbstractSeed;
 
 class Feuilles extends AbstractSeed
 {
-    const ID_ZONE_HEADER = 21;
-
     public function run()
     {
         $data = [
             [
-                'id' => self::ID_ZONE_HEADER,
+                'id' => Feuille::ID_FEUILLE_HEADER,
                 'id_parent' => 0,
                 'nom' => 'Zone "header"',
                 'lien' => '/',
@@ -23,7 +22,7 @@ class Feuilles extends AbstractSeed
             ],
             [
                 'id' => 24,
-                'id_parent' => self::ID_ZONE_HEADER,
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
                 'nom' => 'Actualités',
                 'lien' => '/news',
                 'alt' => '',
@@ -35,7 +34,7 @@ class Feuilles extends AbstractSeed
             ],
             [
                 'id' => 44,
-                'id_parent' => self::ID_ZONE_HEADER,
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
                 'nom' => 'Vidéos',
                 'lien' => '/talks',
                 'alt' => '',
@@ -47,7 +46,7 @@ class Feuilles extends AbstractSeed
             ],
             [
                 'id' => 88,
-                'id_parent' => self::ID_ZONE_HEADER,
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
                 'nom' => 'Boutique',
                 'lien' => 'http://shop.afup.org',
                 'alt' => '',
