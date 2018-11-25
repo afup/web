@@ -31,6 +31,10 @@ admin_event_routes:
     resource: "admin_event.yml"
     prefix: /event
 
+admin_talk_routes:
+  resource: "admin_talk.yml"
+  prefix: /talk
+
 admin_company:
   path: /company
   defaults: {_controller: AppBundle:AdminMemberShip:company}

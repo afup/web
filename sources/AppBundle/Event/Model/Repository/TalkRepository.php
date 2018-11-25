@@ -191,6 +191,30 @@ class TalkRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection($hydrator));
     }
 
+    /**
+     * @param Event $event
+     * @param bool $applyPublicationdateFilters
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
+    public function getAllByEventWithSpeakers(Event $event)
+    {
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('talk', 'speaker', 'getId');
+
+        $query = $this->getPreparedQuery(
+            'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes,
+            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe 
+            FROM afup_sessions AS talk
+            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
+            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
+            WHERE talk.id_forum = :event
+            ORDER BY talk.session_id ASC '
+        )->setParams(['event' => $event->getId()]);
+
+        return $query->query($this->getCollection($hydrator));
+    }
+
     public function getAllPastTalks(\DateTime $dateTime)
     {
         $query = $this->getPreparedQuery(
