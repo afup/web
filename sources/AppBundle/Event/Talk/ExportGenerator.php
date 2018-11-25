@@ -90,7 +90,7 @@ class ExportGenerator
             'speaker' => $this->prepareSpeakersLabel($speakers),
             'provenance' => '',
             'theme' => '',
-            'langue' => $talk->getLanguageLabel(),
+            'langue' => $this->getLanguageLabel($talk),
             'titre' => $talk->getTitle(),
             'description' => $talk->getAbstract(),
             'staff_notes' => $talk->getStaffNotes(),
@@ -121,5 +121,19 @@ class ExportGenerator
         }
 
         return $names;
+    }
+
+    /**
+     * @param Talk $talk
+     *
+     * @return string
+     */
+    private function getLanguageLabel(Talk $talk)
+    {
+        try {
+            return $talk->getLanguageLabel();
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 }
