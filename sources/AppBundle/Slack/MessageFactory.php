@@ -270,10 +270,15 @@ class MessageFactory
 
         $message->addAttachment($attachment);
 
-        $diff = $event->getDateEndCallForPapers()->diff($currentDate)->format("%a");
-
+        $message = 'Le CFP est clos';
+        
+        if($event->getDateEndCallForPapers() > $currentDate) {
+            $diff = $event->getDateEndCallForPapers()->diff($currentDate)->format("%a");
+            $message = \sprintf('Il reste %s jours avant la fin du CFP.', $diff);
+        }
+        
         $attachment = new Attachment();
-        $attachment->setTitle(sprintf('Il reste %s jours avant la fin du CFP.', $diff));
+        $attachment->setTitle($message);
         $message->addAttachment($attachment);
 
         return $message;
