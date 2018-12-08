@@ -94,11 +94,28 @@ SQL;
         }
 
         if ($a_jour_de_cotisation) {
-            $requete .= " AND id IN (
-                SELECT id_personne
-                FROM afup_cotisations
-                WHERE date_debut <= NOW() AND date_fin <= NOW()
-            ) ";
+            $requete .= strtr(
+               " AND
+               (
+                  id IN (
+                    SELECT id_personne
+                    FROM afup_cotisations
+                    WHERE NOW() BETWEEN FROM_UNIXTIME(date_debut) AND FROM_UNIXTIME(date_fin)
+                    AND type_personne = :id_personne_physiques:
+                  )
+                  OR id_personne_morale IN (
+                    SELECT id_personne
+                    FROM afup_cotisations
+                    WHERE NOW() BETWEEN FROM_UNIXTIME(date_debut) AND FROM_UNIXTIME(date_fin)
+                    AND type_personne = :id_personne_morale:
+                  )
+               )
+               ",
+               [
+                   ':id_personne_physiques:' => AFUP_PERSONNES_PHYSIQUES,
+                   ':id_personne_morale:' => AFUP_PERSONNES_MORALES,
+               ]
+            );
         }
 
         $requete .= 'ORDER BY ' . $ordre;
