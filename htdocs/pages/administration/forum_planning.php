@@ -85,8 +85,8 @@ if ($action == 'lister') {
 	}
 
 	$formulaire->addElement('header', null, 'Plannification');
-	$formulaire->addElement('date'	, 'debut'   , 'Début', array('language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y'), 'minHour' => 8, 'maxHour' => 18, 'optionIncrement' => array('i' => 5)));
-	$formulaire->addElement('date'	, 'fin'	 , 'Fin'  , array('language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y'), 'optionIncrement' => array('i' => 5), 'minHour' => 8, 'maxHour' => 18));
+	$formulaire->addElement('date'	, 'debut'   , 'Début', array('language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'minHour' => 8, 'maxHour' => 18, 'optionIncrement' => array('i' => 5)));
+	$formulaire->addElement('date'	, 'fin'	 , 'Fin'  , array('language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'optionIncrement' => array('i' => 5), 'minHour' => 8, 'maxHour' => 18));
 	$formulaire->addElement('select'  , 'id_salle', 'Salle', array(null => '' ) + $forum_appel->obtenirListeSalles($champs['id_forum'], true));
     $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
 
