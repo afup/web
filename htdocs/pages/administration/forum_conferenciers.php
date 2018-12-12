@@ -256,6 +256,7 @@ if ($action == 'inscrire_forum') {
         } else {
             $url = $storage->getUrl($speaker, \AppBundle\CFP\PhotoStorage::DIR_THUMBS);
             $formulaire->addElement('static', 'html', '', '<img src="' . $url . '" /><br />');
+            $formulaire->addElement('static', 'html', '', sprintf('<a href="%s">Voir la photo orignale</a>', $storage->getUrl($speaker, \AppBundle\CFP\PhotoStorage::DIR_ORIGINAL)));
         }
     }
 
