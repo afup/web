@@ -62,7 +62,7 @@ class TalkType extends AbstractType
                 'codeOfConduct',
                 CheckboxType::class,
                 [
-                    'label' => 'J\'accepte le code de conduite *',
+                    'label' => 'J\'accepte le code de conduite et les conditions générales de participation*',
                     'mapped' => false,
                     'required' => true,
                     'data' => $options['codeOfConductChecked']
