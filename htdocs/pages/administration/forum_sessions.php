@@ -283,7 +283,7 @@ if ($action == 'lister') {
     $formulaire->addElement('header', null, 'Présentation');
 
     $formulaire->addElement('date'    , 'date_soumission', 'Soumission', array('language' => 'fr', 'minYear' => date('Y'), 'maxYear' => date('Y')));
-    $formulaire->addElement('text'    , 'titre'          , 'Titre' , array('size' => 40, 'maxlength' => 80));
+    $formulaire->addElement('text'    , 'titre'          , 'Titre' , array('size' => 40, 'maxlength' => 150));
 
     $abstractClass = 'simplemde';
     $useMarkdown = true;
