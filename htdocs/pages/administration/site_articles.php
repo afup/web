@@ -97,7 +97,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'      , array('size' => 60, 'maxlength' => 255));
     $formulaire->addElement('select'  , 'id_site_rubrique'         , 'Rubrique'       , array(null => '' ) + $rubriques->obtenirListe('id, nom', 'nom', true));
     $formulaire->addElement('select'  , 'id_personne_physique'     , 'Auteur'         , array(null => '' ) + $personnes_physiques->obtenirListe('id, CONCAT(prenom, " ", nom) as nom', 'nom', false, false, true));
-    $formulaire->addElement('date'    , 'date'                     , 'Date'           , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
+    $formulaire->addElement('date'    , 'date'                     , 'Date'           , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y') + 1));
     $formulaire->addElement('select'  , 'position'                 , 'Position'       , $article->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'           , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
     $formulaire->addElement('select'  , 'theme'                    , 'Thème'          , ['' => ''] + Article::getThemesLabels());
