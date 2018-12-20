@@ -14,7 +14,7 @@
                 <strong>
                     {{ talk.planning.start|date('H:i') }}-{{ talk.planning.end|date('H:i') }}
                 </strong>
-                - {{ talk.talk.skillTranslationKey|trans }}
+                - Niveau : {{ talk.talk.skillTranslationKey|trans }}
                 {% if talk.talk.languageCode %}- {{ talk.talk.languageLabel }}{% endif %}
             {% endif %}
 
