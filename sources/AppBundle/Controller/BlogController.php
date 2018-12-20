@@ -179,7 +179,7 @@ class BlogController extends EventBaseController
         return $this->render(
             ':blog:speakers.html.twig',
             [
-                'speakers' => $speakers,
+                'speakers' => iterator_to_array($speakers),
                 'event' => $event,
                 'jsonld' => $jsonld,
                 'programPagePrefix' => $request->query->get('program-page-prefix', '/' . $event->getPath() . '/programme/'),

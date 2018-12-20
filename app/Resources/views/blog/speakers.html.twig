@@ -2,35 +2,39 @@
     {{ jsonld|json_encode|raw }}
 </script>
 
-{% for row in speakers %}
-<article class="first conferenciers">
-    <h3>
-        {{ row.speaker.label }}
-        {% if row.speaker.company %}- <span class="societe">{{ row.speaker.company }}</span>{% endif %}
-    </h3>
-    {% if row.speaker.twitter %}
-        <a class="twitter-follow-button"
-           href="https://twitter.com/{{ row.speaker.twitter }}"
-           data-size="large">
-            Follow @{{ row.speaker.twitter }}
-        </a>
-    {% endif %}
-    <div class="article-body conferencier">
-        <div class="photo">
-            <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(row.speaker) }}" alt="{{ row.speaker.label }}">
+{% if speakers|length > 0 %}
+    {% for row in speakers %}
+    <article class="first conferenciers">
+        <h3>
+            {{ row.speaker.label }}
+            {% if row.speaker.company %}- <span class="societe">{{ row.speaker.company }}</span>{% endif %}
+        </h3>
+        {% if row.speaker.twitter %}
+            <a class="twitter-follow-button"
+               href="https://twitter.com/{{ row.speaker.twitter }}"
+               data-size="large">
+                Follow @{{ row.speaker.twitter }}
+            </a>
+        {% endif %}
+        <div class="article-body conferencier">
+            <div class="photo">
+                <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(row.speaker) }}" alt="{{ row.speaker.label }}">
+            </div>
+            <p>
+                <a name="{{ row.speaker.id }}" ></a>
+                {{ row.speaker.biography }}
+            </p>
+            <ul>
+                {% for talk in row[".aggregation"].talk %}
+                <li class="conferencier_session">
+                    <a href="{{ programPagePrefix }}#{{ talk.id }}">{{ talk.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
-        <p>
-            <a name="{{ row.speaker.id }}" ></a>
-            {{ row.speaker.biography }}
-        </p>
-        <ul>
-            {% for talk in row[".aggregation"].talk %}
-            <li class="conferencier_session">
-                <a href="{{ programPagePrefix }}#{{ talk.id }}">{{ talk.title }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</article>
-{% endfor %}
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </article>
+    {% endfor %}
+    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+{% else %}
+    Le programme n'est pas encore dévoilé, il le sera sous peu. Revenez bientôt.
+{% endif %}
