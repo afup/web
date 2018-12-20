@@ -30,7 +30,15 @@ class BlogController extends EventBaseController
         $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
         $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
 
-        return $this->render(':blog:program.html.twig', ['talks' => $talks, 'event' => $event, 'jsonld' => $jsonld]);
+        return $this->render(
+            ':blog:program.html.twig',
+            [
+                'talks' => $talks,
+                'event' => $event,
+                'jsonld' => $jsonld,
+                'speakersPagePrefix' => $request->query->get('speakers-page-prefix', '/' . $event->getPath() . '/speakers/'),
+            ]
+        );
     }
 
     /**
