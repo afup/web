@@ -2,6 +2,7 @@
     {{ jsonld|json_encode|raw }}
 </script>
 
+{% if talks|length %}
 <div class="sessions">
     {% for talk in talks %}
         <div class="session boss geek">
@@ -41,3 +42,6 @@
         </div>
     {% endfor %}
 </div>
+{% else %}
+    Le programme n'est pas encore dévoilé, il le sera sous peu. Revenez bientôt.
+{% endif %}
