@@ -124,7 +124,8 @@ class BlogController extends EventBaseController
                     'hourMin' => $hourMin,
                     'hourMax' => $hourMax,
                     'precision' => 5,
-                    'jsonld' => $jsonld
+                    'jsonld' => $jsonld,
+                    'programPagePrefix' => $request->query->get('program-page-prefix', '/' . $event->getPath() . '/programme/'),
                 ]
         );
     }

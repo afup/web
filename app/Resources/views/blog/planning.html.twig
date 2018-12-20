@@ -50,7 +50,7 @@
                                         {% set hasConf = hasConf|merge({(room.name|trim):numberOfRowForThisSlot}) %}
                                         <td rowspan="{{ numberOfRowForThisSlot }}" width="21%" class="conf {{ cycle(['conf_odd', 'conf_even'], loop.index0) }}">
                                         <p>
-                                            <a href="/{{ event.path }}/programme/#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
+                                            <a href="{{ programPagePrefix }}#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
                                                 {{ row.talk.title }}
                                                 <div class="conferencier">
                                             {% for speaker in row[".aggregation"].speaker %}
