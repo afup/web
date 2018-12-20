@@ -14,10 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 class BlogController extends EventBaseController
 {
     /**
+     * @param Request $request
      * @param $eventSlug
+     *
      * @return Response
      */
-    public function programAction($eventSlug)
+    public function programAction(Request $request, $eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
 
@@ -25,16 +27,19 @@ class BlogController extends EventBaseController
          * @var $talkRepository TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $talks = $talkRepository->getByEventWithSpeakers($event);
         $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
+        $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
 
         return $this->render(':blog:program.html.twig', ['talks' => $talks, 'event' => $event, 'jsonld' => $jsonld]);
     }
+
     /**
+     * @param Request $request
      * @param $eventSlug
+     *
      * @return Response
      */
-    public function planningAction($eventSlug)
+    public function planningAction(Request $request, $eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
 
@@ -42,7 +47,7 @@ class BlogController extends EventBaseController
          * @var $talkRepository TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $talks = $talkRepository->getByEventWithSpeakers($event);
+        $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
         $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
 
         $eventPlanning = [];
@@ -147,10 +152,12 @@ class BlogController extends EventBaseController
     }
 
     /**
+     * @param Request $request
      * @param $eventSlug
+     *
      * @return Response
      */
-    public function speakersAction($eventSlug)
+    public function speakersAction(Request $request, $eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
 
@@ -158,7 +165,7 @@ class BlogController extends EventBaseController
          * @var $speakerRepository SpeakerRepository
          */
         $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
-        $speakers = $speakerRepository->getScheduledSpeakersByEvent($event);
+        $speakers = $speakerRepository->getScheduledSpeakersByEvent($event, !$request->query->getBoolean('apply-publication-date-filters', true));
         $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
 
         return $this->render(':blog:speakers.html.twig', ['speakers' => $speakers, 'event' => $event, 'jsonld' => $jsonld]);
