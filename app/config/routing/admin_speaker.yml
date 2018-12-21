@@ -1,0 +1,4 @@
+admin_speaker_export:
+  path: /export
+  defaults: {_controller: AppBundle:AdminSpeaker:export}
+

@@ -402,6 +402,9 @@ services:
         class : AppBundle\Event\Talk\ExportGenerator
         arguments: ["@app.talk_repository"]
 
+    app.speaker_export_generator:
+        class : AppBundle\Event\Speaker\ExportGenerator
+        arguments: ["@app.talk_repository"]
 
     app.hotel_reservation_type:
         class: AppBundle\SpeakerInfos\Form\HotelReservationType
