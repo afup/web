@@ -3,8 +3,6 @@
 namespace Afup\Site\Comptabilite;
 use FPDF;
 
-require_once 'fpdf/fpdf.php';
-
 class PDF extends FPDF
 {
 
