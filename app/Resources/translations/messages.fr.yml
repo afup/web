@@ -40,9 +40,9 @@
 'Max members': 'Nombre de membres à rattacher'
 'saveMembership': 'Enregistrer mon adhésion'
 skill.0: "N/A"
-skill.1: "Junior"
-skill.2: "Medior"
-skill.3: "Senior"
+skill.1: "Grand public"
+skill.2: "Intermédiaire"
+skill.3: "Confirmé"
 type.1: "40 mn"
 type.2: "Workshop"
 type.3: "20 mn"
