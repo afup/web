@@ -66,7 +66,7 @@
             {% if event.speakersDinerEnabled %}
             <h2>🍽️ {% trans %}Nous vous invitons au restaurant{% endtrans %}</h2>
 
-            <p>{{ "Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du %date% à Paris." | trans({"%date%": day_before_event|date('d/m/Y')}) }}</p>
+            <p>{{ "Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du %date%." | trans({"%date%": day_before_event|date('d/m/Y')}) }}</p>
 
             {% if should_display_speakers_diner_form %}
                 <p>{% trans %}Si vous avez un régime alimentaire spécifique, n'hésitez pas à nous en faire part pour prévenir le chef.{% endtrans %}</p>
