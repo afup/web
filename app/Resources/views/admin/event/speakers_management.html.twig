@@ -90,7 +90,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('admin_event_speaker_infos', {speaker_id: speaker.speaker.id}) }}">Voir sa page</a>
+                    <a href="{{ path('admin_event_speaker_infos', {speaker_id: speaker.speaker.id, id: event.id }) }}">Voir sa page</a>
                 </td>
             </tr>
         {% endfor %}
