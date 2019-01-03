@@ -233,6 +233,16 @@ class EventRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'voteEnabled',
                 'type' => 'boolean'
             ])
+            ->addField([
+                'columnName' => 'speakers_diner_enabled',
+                'fieldName' => 'speakersDinerEnabled',
+                'type' => 'boolean'
+            ])
+            ->addField([
+                'columnName' => 'accomodation_enabled',
+                'fieldName' => 'accomodationEnabled',
+                'type' => 'boolean'
+            ])
         ;
 
         return $metadata;
