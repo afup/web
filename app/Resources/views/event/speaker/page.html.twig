@@ -1,7 +1,7 @@
 {% extends ':event:base.html.twig' %}
 
 {% block header %}
-    {% set menu = {'main': {'route' : 'event', 'title': 'Ma page speaker : Forum PHP 2018'}, 'items': []} %}
+    {% set menu = {'main': {'route' : 'event', 'title': 'Ma page speaker : ' ~ event.title }, 'items': []} %}
     {{ parent() }}
 {% endblock %}
 
