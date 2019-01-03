@@ -63,6 +63,7 @@
             {% endfor %}
             </ul>
 
+            {% if event.speakersDinerEnabled %}
             <h2>🍽️ {% trans %}Nous vous invitons au restaurant{% endtrans %}</h2>
 
             <p>{{ "Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du %date% à Paris." | trans({"%date%": day_before_event|date('d/m/Y')}) }}</p>
@@ -116,7 +117,9 @@
                     {% endif %}
                 {% endif %}
             {% endif %}
+            {% endif %}
 
+            {% if event.accomodationEnabled %}
             <h2>🛎️ {% trans %}Nous vous hébergeons{% endtrans %}</h2>
 
             {% if should_display_hotel_reservation_form %}
@@ -156,6 +159,7 @@
                     {% endif %}
                     </ul>
                 {% endif %}
+            {% endif %}
             {% endif %}
 
         </div>
