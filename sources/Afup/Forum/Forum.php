@@ -708,12 +708,14 @@ CODE_HTML;
         $logoUrl,
         $placeName,
         $placeAddress,
-        $voteEnabled = true
+        $voteEnabled = true,
+        $speakersDinerEnabled = true,
+        $accomodationEnabled = true
     ) {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum (id, titre, nb_places, date_debut, date_fin, annee, date_fin_appel_projet,';
         $requete .= '  date_fin_appel_conferencier, date_fin_vote, date_fin_prevente, date_fin_vente, date_fin_saisie_repas_speakers, date_fin_saisie_nuites_hotel, date_annonce_planning, path, `text`, `trello_list_id`,
-        `logo_url`, `place_name`, `vote_enabled`, `place_address`) ';
+        `logo_url`, `place_name`, `vote_enabled`, `speakers_diner_enabled`, `accomodation_enabled`, `place_address`) ';
         $requete .= 'VALUES (null,';
         $requete .= $this->_bdd->echapper($titre) . ',';
         $requete .= (int)$nb_places . ',';
@@ -734,6 +736,8 @@ CODE_HTML;
         $requete .= $this->_bdd->echapper($logoUrl) . ',';
         $requete .= $this->_bdd->echapper($placeName) . ',';
         $requete .= $this->_bdd->echapper($voteEnabled ? 1 : 0) . ',';
+        $requete .= $this->_bdd->echapper($speakersDinerEnabled ? 1 : 0) . ',';
+        $requete .= $this->_bdd->echapper($accomodationEnabled ? 1 : 0) . ',';
         $requete .= $this->_bdd->echapper($placeAddress);
 
         $requete .= ')';
@@ -761,7 +765,9 @@ CODE_HTML;
         $logoUrl = null,
         $placeName = null,
         $placeAddress = null,
-        $voteEnabled = true
+        $voteEnabled = true,
+        $speakersDinerEnabled = true,
+        $accomodationEnabled = true
     ) {
         $requete = 'UPDATE ';
         $requete .= '  afup_forum ';
@@ -785,6 +791,8 @@ CODE_HTML;
         $requete .= ' `logo_url` = ' . $this->_bdd->echapper($logoUrl) . ', ';
         $requete .= ' `place_name` = ' . $this->_bdd->echapper($placeName) . ', ';
         $requete .= ' `vote_enabled` = ' . $this->_bdd->echapper($voteEnabled ? 1 : 0) . ', ';
+        $requete .= ' `speakers_diner_enabled` = ' . $this->_bdd->echapper($speakersDinerEnabled ? 1 : 0) . ', ';
+        $requete .= ' `accomodation_enabled` = ' . $this->_bdd->echapper($accomodationEnabled ? 1 : 0) . ', ';
         $requete .= ' `place_address` = ' . $this->_bdd->echapper($placeAddress) . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;

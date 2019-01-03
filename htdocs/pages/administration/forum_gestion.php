@@ -101,7 +101,8 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'sponsor_management_fr'             , 'Infos sponsors (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
     $formulaire->addElement('textarea', 'sponsor_management_en'             , 'Infos sponsors (en)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
     $formulaire->addElement('textarea', 'mail_inscription_content'          , 'Contenu mail inscription'                      , ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
-
+    $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
+    $formulaire->addElement('checkbox', 'accomodation_enabled', "Activer les nuits d'hôtel");
 
     $formulaire->addElement('header', ''                     , 'Coupons');
     $legend = "Ici c'est une liste de coupons séparées par des virgules";
@@ -141,7 +142,9 @@ if ($action == 'lister') {
                 $formulaire->exportValue('logo_url'),
                 $formulaire->exportValue('place_name'),
                 $formulaire->exportValue('place_address'),
-                $formulaire->exportValue('vote_enabled')
+                $formulaire->exportValue('vote_enabled'),
+                $formulaire->exportValue('speakers_diner_enabled'),
+                $formulaire->exportValue('accomodation_enabled')
             );
             $id_forum = $forums->obtenirDernier();
         } else {
@@ -174,7 +177,9 @@ if ($action == 'lister') {
                 $formulaire->exportValue('logo_url'),
                 $formulaire->exportValue('place_name'),
                 $formulaire->exportValue('place_address'),
-                $formulaire->exportValue('vote_enabled')
+                $formulaire->exportValue('vote_enabled'),
+                $formulaire->exportValue('speakers_diner_enabled'),
+                $formulaire->exportValue('accomodation_enabled')
             );
         }
 
