@@ -49,7 +49,7 @@ class SpeakerController extends EventBaseController
         $speakersDinerType = $this->createForm(SpeakersDinerType::class, $speakersDinerDefaults);
         $speakersDinerType->handleRequest($request);
 
-        $shouldDisplaySpeakersDinerForm = $event->getDateEndSpeakersDinerInfosCollection() > $now;
+        $shouldDisplaySpeakersDinerForm = $event->getSpeakersDinerEnabled() && $event->getDateEndSpeakersDinerInfosCollection() > $now;
 
         if ($shouldDisplaySpeakersDinerForm && $speakersDinerType->isValid()) {
             $speakersDinerData = $speakersDinerType->getData();
@@ -77,7 +77,7 @@ class SpeakerController extends EventBaseController
         $hotelReservationType = $this->createForm(HotelReservationType::class, $hotelReservationDefaults, ['event' => $event]);
         $hotelReservationType->handleRequest($request);
 
-        $shouldDisplayHotelReservationForm = $event->getDateEndHotelInfosCollection() > $now;
+        $shouldDisplayHotelReservationForm = $event->getAccomodationEnabled() && $event->getDateEndHotelInfosCollection() > $now;
 
         if ($shouldDisplayHotelReservationForm && $hotelReservationType->isValid()) {
             $hotelReservationData = $hotelReservationType->getData();

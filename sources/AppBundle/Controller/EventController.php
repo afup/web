@@ -34,7 +34,7 @@ class EventController extends EventBaseController
          * @var $eventRepository EventRepository
          */
         $eventRepository = $this->get('ting')->get(EventRepository::class);
-        $event = $eventRepository->getNextEvent();
+        $event = $eventRepository->getNextEventForGithubUser($this->getUser());
 
         if ($event === null) {
             return $this->render(':event:none.html.twig');

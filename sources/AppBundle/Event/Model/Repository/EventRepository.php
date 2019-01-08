@@ -3,6 +3,7 @@
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\GithubUser;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -23,6 +24,32 @@ class EventRepository extends Repository implements MetadataInitializer
         if ($events->count() === 0) {
             return null;
         }
+        return $events->first();
+    }
+
+    public function getNextEventForGithubUser(GithubUser $githubUser)
+    {
+        $events = $this
+            ->getPreparedQuery('SELECT id, path, titre, date_debut, date_fin, date_fin_appel_conferencier
+                             FROM afup_forum
+                             WHERE date_debut > NOW()
+                             AND afup_forum.id IN (
+                               SELECT afup_sessions.id_forum
+                               FROM afup_conferenciers_sessions
+                               JOIN afup_sessions ON (afup_conferenciers_sessions.session_id = afup_sessions.session_id)
+                               JOIN afup_conferenciers ON (afup_conferenciers_sessions.conferencier_id = afup_conferenciers.conferencier_id)
+                               WHERE afup_sessions.plannifie = 1
+                               AND afup_conferenciers.user_github = :user_github_id
+                               )
+                             ORDER BY date_debut LIMIT 1')
+            ->setParams(['user_github_id' => $githubUser->getId()])
+            ->query($this->getCollection(new HydratorSingleObject()))
+        ;
+
+        if ($events->count() === 0) {
+            return null;
+        }
+
         return $events->first();
     }
 
@@ -204,6 +231,16 @@ class EventRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'vote_enabled',
                 'fieldName' => 'voteEnabled',
+                'type' => 'boolean'
+            ])
+            ->addField([
+                'columnName' => 'speakers_diner_enabled',
+                'fieldName' => 'speakersDinerEnabled',
+                'type' => 'boolean'
+            ])
+            ->addField([
+                'columnName' => 'accomodation_enabled',
+                'fieldName' => 'accomodationEnabled',
                 'type' => 'boolean'
             ])
         ;

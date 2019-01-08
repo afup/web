@@ -106,6 +106,10 @@ class Event implements NotifyPropertyInterface
 
     private $voteEnabled;
 
+    private $speakersDinerEnabled;
+
+    private $accomodationEnabled;
+
     /**
      * @return int
      */
@@ -573,5 +577,51 @@ class Event implements NotifyPropertyInterface
         }
 
         return $dateStart->format('Y-m-d') === $dateEnd->format('Y-m-d');
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSpeakersDinerEnabled()
+    {
+        return $this->speakersDinerEnabled;
+    }
+
+    /**
+     * @param bool $speakersDinerEnabled
+     *
+     * @return $this
+     */
+    public function setSpeakersDinerEnabled($speakersDinerEnabled)
+    {
+        $speakersDinerEnabled = (bool) $speakersDinerEnabled;
+
+        $this->propertyChanged('speakersDinerEnabled', $this->speakersDinerEnabled, $speakersDinerEnabled);
+        $this->speakersDinerEnabled = $speakersDinerEnabled;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getAccomodationEnabled()
+    {
+        return $this->accomodationEnabled;
+    }
+
+    /**
+     * @param bool $accomodationEnabled
+     *
+     * @return $this
+     */
+    public function setAccomodationEnabled($accomodationEnabled)
+    {
+        $accomodationEnabled = (bool) $accomodationEnabled;
+
+        $this->propertyChanged('accomodationEnabled', $this->accomodationEnabled, $accomodationEnabled);
+        $this->accomodationEnabled = $accomodationEnabled;
+
+        return $this;
     }
 }
