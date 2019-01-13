@@ -102,6 +102,11 @@ class Article
         return $this->titre;
     }
 
+    public function getCode()
+    {
+        return $this->id . '-' . $this->raccourci;
+    }
+
     function teaser()
     {
         switch (true) {
