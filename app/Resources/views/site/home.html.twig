@@ -32,7 +32,7 @@
                     <ul class="home-list home-list__actualites">
                         {% for actualite in actualites %}
                             <li class="{% if loop.first %} home-list-item_first {% endif %}">
-                                <a href="{{ actualite.route }}">
+                                <a href="{{ path('news_display', {code: actualite.code}) }}">
                                     <span class="home-list-date">{{ actualite.date|date('d/m') }}</span>
                                     {% if loop.first  %}
                                         <h4 style="display: inline-block">{{ actualite.titre }}</h4>
