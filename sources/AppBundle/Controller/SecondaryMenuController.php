@@ -25,13 +25,36 @@ class SecondaryMenuController extends Controller
     {
         $preparedMenu = [];
 
-        foreach ($menu as $item) {
-            $pattern = '/' . preg_quote($item['lien'], '/') . '/';
-            $isActive = preg_match($pattern, $masterRequest->getUri());
-            $item['is_active'] = $isActive;
-            $preparedMenu[] = $item;
+        foreach ($menu as $feuille) {
+            $feuille['is_active'] = $this->isActive($masterRequest, $feuille);
+            $preparedMenu[] = $feuille;
         }
 
         return $preparedMenu;
+    }
+
+    private function isActive(Request $masterRequest, array $feuille)
+    {
+        $url = $masterRequest->getUri();
+
+        $pattern = '/' . preg_quote($feuille['lien'], '/') . '/';
+
+        if (preg_match($pattern, $url)) {
+            return true;
+        }
+
+        $isCurrent = false;
+        foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
+            $pattern = trim($pattern);
+            if (strlen($pattern) === 0) {
+                continue;
+            }
+
+            if (preg_match($pattern, $url)) {
+                $isCurrent = true;
+            }
+        }
+
+        return $isCurrent;
     }
 }
