@@ -47,7 +47,7 @@ class TicketRepository extends Repository implements MetadataInitializer
      *
      * @return \CCMBenchmark\Ting\Repository\CollectionInterface
      */
-    public function getRegistrationsForEvents(\Traversable $events)
+    public function getRegistrationsForEventsWithNewsletterAllowed(\Traversable $events)
     {
         $params = [];
         $cpt = 0;
@@ -63,6 +63,7 @@ class TicketRepository extends Repository implements MetadataInitializer
                         afup_inscription_forum.email
                  FROM afup_inscription_forum
                  WHERE afup_inscription_forum.id_forum IN (%ids%)
+                   AND afup_inscription_forum.newsletter_afup = 1
                  GROUP BY afup_inscription_forum.nom, afup_inscription_forum.prenom, afup_inscription_forum.email
                  ORDER BY afup_inscription_forum.nom, afup_inscription_forum.prenom, afup_inscription_forum.email',
                 [

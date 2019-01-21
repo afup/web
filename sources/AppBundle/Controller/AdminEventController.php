@@ -584,7 +584,7 @@ class AdminEventController extends Controller
 
         $events = $this->get('ting')->get(EventRepository::class)->getPreviousEvents($request->query->getInt('event_count', 4));
 
-        $registrations = $this->get('ting')->get(TicketRepository::class)->getRegistrationsForEvents($events);
+        $registrations = $this->get('ting')->get(TicketRepository::class)->getRegistrationsForEventsWithNewsletterAllowed($events);
 
         foreach ($registrations as $registration) {
             $file->fputcsv($registration);
