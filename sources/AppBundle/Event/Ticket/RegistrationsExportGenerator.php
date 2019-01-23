@@ -182,6 +182,10 @@ class RegistrationsExportGenerator
         switch ($type) {
             case AFUP_FORUM_PREMIERE_JOURNEE:
             case AFUP_FORUM_LATE_BIRD_PREMIERE_JOURNEE:
+            case Ticket::TYPE_AFUP_DAY_EARLY_BIRD:
+            case Ticket::TYPE_AFUP_DAY_CROISIERE:
+            case Ticket::TYPE_AFUP_DAY_LATE:
+            case Ticket::TYPE_AFUP_DAY_CFP_SUBMITTER:
                 return 'PASS JOUR 1';
                 break;
             case AFUP_FORUM_DEUXIEME_JOURNEE:
