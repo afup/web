@@ -57,6 +57,13 @@ class Feuilles extends AbstractSeed
                 'patterns' => null,
             ],
             [
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Veille',
+                'position' => 6,
+                'lien' => '/association/techletter',
+                'etat' => 1,
+            ],
+            [
                 'id' => 88,
                 'id_parent' => Feuille::ID_FEUILLE_HEADER,
                 'nom' => 'Boutique',
