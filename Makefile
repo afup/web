@@ -52,6 +52,9 @@ app/config/parameters.yml:
 
 init:
 	make config
+	make init-db
+
+init-db:
 	make reset-db
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make db-migrations
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make db-seed
