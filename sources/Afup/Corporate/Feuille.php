@@ -8,6 +8,7 @@ class Feuille
     const ID_FEUILLE_ASSOCIATION = 74;
     const ID_FEUILLE_COLONNE_DROITE = 1;
     const ID_FEUILLE_HEADER = 21;
+    const ID_FEUILLE_FOOTER = 38;
 
     public $id;
     public $id_parent;
