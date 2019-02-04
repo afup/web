@@ -33,6 +33,18 @@ class Feuilles extends AbstractSeed
                 'patterns' => "#/news/\d*-.*#",
             ],
             [
+                'id' => 55,
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Antennes',
+                'lien' => '/meetups/',
+                'alt' => '',
+                'position' => 1,
+                'date' => 1254002400,
+                'etat' => 1,
+                'image' => null,
+                'patterns' => null,
+            ],
+            [
                 'id' => 44,
                 'id_parent' => Feuille::ID_FEUILLE_HEADER,
                 'nom' => 'Vidéos',
@@ -55,6 +67,25 @@ class Feuilles extends AbstractSeed
                 'etat' => 1,
                 'image' => null,
                 'patterns' => null,
+            ],
+            [
+                'id' => Feuille::ID_FEUILLE_ANTENNES,
+                'id_parent' =>null,
+                'nom' => 'Second Menu Antennes',
+                'lien' => '/',
+                'etat' => 1,
+            ],
+            [
+                'id_parent' =>Feuille::ID_FEUILLE_ANTENNES,
+                'nom' => 'Meetups',
+                'lien' => '/meetups/',
+                'etat' => 1,
+            ],
+            [
+                'id_parent' =>Feuille::ID_FEUILLE_ANTENNES,
+                'nom' => 'Liste des antennes',
+                'lien' => '/association/antennes',
+                'etat' => 1,
             ],
         ];
 
