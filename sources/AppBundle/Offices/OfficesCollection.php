@@ -347,7 +347,7 @@ class OfficesCollection
                 'label' => 'Clermont',
                 'latitude' => '45.786781',
                 'longitude' => '3.115074',
-                'logo_url' => '/images/offices/afup-icon-color.svg',
+                'logo_url' => '/images/offices/empty.svg',
                 'hide_on_offices_page' => true,
             ],
             'tours' => [

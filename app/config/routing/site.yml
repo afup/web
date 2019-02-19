@@ -38,7 +38,7 @@ offices:
     sitemap: true
 
 superapero:
-  path: /super-apero-8-mars-2018
+  path: /super-apero
   defaults: {_controller: AppBundle:Static:superApero}
   options:
     sitemap: true
