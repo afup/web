@@ -15,7 +15,7 @@ class SendingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sendingDate', DateType::class, ['label' => 'Date planifiée', 'data' => new \DateTime('+2 days')])
+            ->add('sendingDate', DateType::class, ['label' => 'Date planifiée', 'data' => new \DateTime('next wednesday')])
             ->add('save', SubmitType::class, ['label' => 'Créer cette techletter'])
         ;
     }
