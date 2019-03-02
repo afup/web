@@ -2,8 +2,6 @@
 
 namespace Afup\Site\Utils;
 
-require_once 'fpdf/fpdf.php';
-
 class PDF_Facture extends \FPDF
 {
     /**
