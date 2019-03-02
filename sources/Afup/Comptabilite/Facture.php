@@ -594,7 +594,6 @@ class Facture
 
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        require_once 'phpmailer/class.phpmailer.php';
         $personne = $this->obtenir($reference, 'email, nom, prenom');
 
         $mail = new \PHPMailer;
