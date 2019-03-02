@@ -132,7 +132,7 @@ class Page
         $branche = new Branche($this->bdd);
 
         $footerColumns = [];
-        foreach ($branche->feuillesEnfants(38) as $feuilleColonne) {
+        foreach ($branche->feuillesEnfants(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
             $footerColumns[] = [
                 'nom' => $branche->getNom($feuilleColonne['id']),
                 'items' => $branche->feuillesEnfants($feuilleColonne['id'])
