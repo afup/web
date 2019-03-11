@@ -13,9 +13,9 @@
     {foreach from=$liste_cotisations item=cotisation}
         <tr class="{cycle values="odd,even"}">
             <td style="text-align: center">{if $cotisation.date_debut < $time and  $cotisation.date_fin > $time}
-            <img src="{$chemin_template}images/famfamfam/status_offline.png" alt="Cotisation active" />
+            <img src="{$chemin_template}images/famfamfam/status_online.png" alt="Cotisation active" />
             { else }
-            <img src="{$chemin_template}images/famfamfam/status_online.png" alt="Cotisation inactive" />
+            <img src="{$chemin_template}images/famfamfam/status_offline.png" alt="Cotisation inactive" />
             {/if}</td>
             <td>{$cotisation.date_debut|date_format:'%d/%m/%y'}</td>
             <td>{$cotisation.date_fin|date_format:'%d/%m/%y'}</td>
