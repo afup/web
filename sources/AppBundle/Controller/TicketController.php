@@ -85,9 +85,9 @@ class TicketController extends EventBaseController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        $ticketFactory = $this->get('app.ticket_factory');
+        $ticketFactory = $this->get(\AppBundle\Event\Model\TicketFactory::class);
 
-        $sponsorTicketHelper = $this->get('app.sponsor_ticket_helper');
+        $sponsorTicketHelper = $this->get(\AppBundle\Event\Ticket\SponsorTicketHelper::class);
         $edit = false;
         if ($request->query->has('ticket')) {
             /**
@@ -172,7 +172,7 @@ class TicketController extends EventBaseController
         $user = $this->getUser();
 
         if ($purchaseForm->isSubmitted() && $purchaseForm->isValid()) {
-            $invoiceRepository = $this->get('app.invoice_repository');
+            $invoiceRepository = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
             /**
              * @var $invoice Invoice
              */
@@ -212,7 +212,7 @@ class TicketController extends EventBaseController
             /**
              * @todo: voir où le mettre ça
              */
-            $reference = $this->get('app.legacy_model_factory')->createObject(Facturation::class)->creerReference($event->getId(), $invoice->getLabel());
+            $reference = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class)->creerReference($event->getId(), $invoice->getLabel());
             $invoice->setReference($reference);
             $invoiceRepository->saveWithTickets($invoice);
 
@@ -221,7 +221,7 @@ class TicketController extends EventBaseController
 
         $totalOfSoldTicketsByMember = 0;
         if ($user !== null) {
-            $totalOfSoldTicketsByMember = $this->get('app.ticket_repository')->getTotalOfSoldTicketsByMember(
+            $totalOfSoldTicketsByMember = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getTotalOfSoldTicketsByMember(
                 $user->isMemberForCompany() ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
                 $user->isMemberForCompany() ? $user->getCompanyId() : $user->getId(),
                 $event->getId()
@@ -242,7 +242,7 @@ class TicketController extends EventBaseController
     public function paymentAction($eventSlug, Request $request)
     {
         $event = $this->checkEventSlug($eventSlug);
-        $invoiceRepository = $this->get('app.invoice_repository');
+        $invoiceRepository = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
 
         $invoiceRef = $request->get('invoiceRef', $request->query->get('invoiceRef', null));
         $invoice = $invoiceRepository->getByReference($invoiceRef);
@@ -259,16 +259,16 @@ class TicketController extends EventBaseController
         $params = [
             'event' => $event,
             'invoice' => $invoice,
-            'tickets' => $this->get('app.ticket_repository')->getByInvoiceWithDetail($invoice)
+            'tickets' => $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByInvoiceWithDetail($invoice)
         ];
 
         if ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
-            $params['paybox'] = $this->get('app.paybox_factory')->createPayboxForTicket($invoice, $event);
+            $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event);
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
             $params['rib'] = $GLOBALS['AFUP_CONF']->obtenir('rib');
 
             // For bankwire, companies need to retrieve the invoice
-            $forumFacturation = $this->get('app.legacy_model_factory')->createObject(Facturation::class);
+            $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);
             $forumFacturation->envoyerFacture($invoiceRef);
         }
 
@@ -285,7 +285,7 @@ class TicketController extends EventBaseController
     public function payboxCallbackAction($eventSlug, Request $request)
     {
         $event = $this->checkEventSlug($eventSlug);
-        $invoice = $this->get('app.invoice_repository')->getByReference($request->get('cmd'));
+        $invoice = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->getByReference($request->get('cmd'));
 
         if ($invoice === null) {
             throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->get('cmd')));
@@ -312,14 +312,14 @@ class TicketController extends EventBaseController
             ->setAuthorization($payboxResponse->getAuthorizationId())
             ->setTransaction($payboxResponse->getTransactionId())
         ;
-        $this->get('app.invoice_repository')->save($invoice);
-        $tickets = $this->get('app.ticket_repository')->getByReference($invoice->getReference());
+        $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->save($invoice);
+        $tickets = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByReference($invoice->getReference());
 
         if ($paymentStatus === Ticket::STATUS_PAID) {
             /**
              * @var $forumFacturation Facturation
              */
-            $forumFacturation = $this->get('app.legacy_model_factory')->createObject(Facturation::class);
+            $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);
             $forumFacturation->envoyerFacture($invoice->getReference());
         }
 
@@ -333,7 +333,7 @@ class TicketController extends EventBaseController
                 ->setStatus($paymentStatus)
                 ->setInvoiceStatus($invoiceStatus)
             ;
-            $this->get('app.ticket_repository')->save($ticket);
+            $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->save($ticket);
 
             if ($paymentStatus === Ticket::STATUS_PAID) {
                 $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
@@ -355,7 +355,7 @@ class TicketController extends EventBaseController
     public function payboxRedirectAction($eventSlug, Request $request)
     {
         $event = $this->checkEventSlug($eventSlug);
-        $invoice = $this->get('app.invoice_repository')->getByReference($request->get('cmd'));
+        $invoice = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->getByReference($request->get('cmd'));
 
         if ($invoice === null) {
             throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->get('cmd')));

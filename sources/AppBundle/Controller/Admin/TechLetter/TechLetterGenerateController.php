@@ -15,7 +15,7 @@ class TechLetterGenerateController extends SiteBaseController
 {
     public function indexAction(Request $request)
     {
-        $repository = $this->get('app.techletter_sending_repository');
+        $repository = $this->get(\AppBundle\TechLetter\Model\Repository\SendingRepository::class);
         $techLetters = $repository->getAll();
         $form = $this->createForm(SendingType::class);
         $form->handleRequest($request);
@@ -89,7 +89,7 @@ class TechLetterGenerateController extends SiteBaseController
 
     public function generateAction($techletterId, Request $request)
     {
-        $sendingRepository = $this->get('app.techletter_sending_repository');
+        $sendingRepository = $this->get(\AppBundle\TechLetter\Model\Repository\SendingRepository::class);
         /**
          * @var $sending Techletter\Sending
          */
@@ -167,7 +167,7 @@ class TechLetterGenerateController extends SiteBaseController
     public function previewAction(Request $request)
     {
         $sendingId = $request->request->getInt('techletterId');
-        $repository = $this->get('app.techletter_sending_repository');
+        $repository = $this->get(\AppBundle\TechLetter\Model\Repository\SendingRepository::class);
         /**
          * @var $sending Techletter\Sending
          */
@@ -200,7 +200,7 @@ class TechLetterGenerateController extends SiteBaseController
     public function sendTestAction(Request $request)
     {
         $sendingId = $request->query->getInt('techletterId');
-        $repository = $this->get('app.techletter_sending_repository');
+        $repository = $this->get(\AppBundle\TechLetter\Model\Repository\SendingRepository::class);
         /**
          * @var $sending Techletter\Sending
          */

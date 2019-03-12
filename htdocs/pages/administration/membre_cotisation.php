@@ -84,7 +84,7 @@ $donnees = $personnes_physiques->obtenir($identifiant);
 
 $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
 
-$paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
+$paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
     $reference,
     (float) $montant,
     $donnees['email']

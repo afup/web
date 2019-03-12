@@ -210,7 +210,7 @@ class AdminEventController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($newToken->getId() === null) {
-                $this->get('app.sponsor_token_mail')->sendNotification($newToken);
+                $this->get(\AppBundle\Event\Ticket\SponsorTokenMail::class)->sendNotification($newToken);
             }
             $sponsorTicketRepository->save($newToken);
             $this->addFlash('notice', 'Le token a été enregistré');
@@ -247,7 +247,7 @@ class AdminEventController extends Controller
             throw $this->createNotFoundException(sprintf('Could not find token with id: %s', $request->request->get('sponsor_token_id')));
         }
 
-        $this->get('app.sponsor_token_mail')->sendNotification($token);
+        $this->get(\AppBundle\Event\Ticket\SponsorTokenMail::class)->sendNotification($token);
 
         $this->addFlash('notice', 'Le mail a été renvoyé');
 
@@ -280,7 +280,7 @@ class AdminEventController extends Controller
         foreach ($tokens as $token) {
             if ($token->getPendingInvitations() > 0) {
                 $mailSent++;
-                $this->get('app.sponsor_token_mail')->sendNotification($token, true);
+                $this->get(\AppBundle\Event\Ticket\SponsorTokenMail::class)->sendNotification($token, true);
             }
         }
 
@@ -300,12 +300,12 @@ class AdminEventController extends Controller
         /**
          * @var $legacyInscriptions Inscriptions
          */
-        $legacyInscriptions = $this->get('app.legacy_model_factory')->createObject(Inscriptions::class);
+        $legacyInscriptions = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Inscriptions::class);
 
         $stats = $legacyInscriptions->obtenirSuivi($event->getId());
 
-        $ticketsDayOne = $this->get('app.ticket_repository')->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
-        $ticketsDayTwo = $this->get('app.ticket_repository')->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
+        $ticketsDayOne = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
+        $ticketsDayTwo = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
 
         $ticketTypes = [];
         /**
@@ -463,14 +463,14 @@ class AdminEventController extends Controller
             throw $this->createNotFoundException('Could not find event');
         }
 
-        $invoiceRepository = $this->get('app.invoice_repository');
+        $invoiceRepository = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
 
         if ($request->getMethod() === Request::METHOD_POST) {
             if ($this->isCsrfTokenValid('admin_event_bankwires', $request->request->get('token')) === false) {
                 $this->addFlash('error', 'Erreur de token CSRF, veuillez réessayer');
             } else {
                 $reference = $request->request->get('bankwireReceived');
-                $invoice = $this->get('app.invoice_repository')->getByReference($reference);
+                $invoice = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->getByReference($reference);
                 if ($invoice === null) {
                     throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $reference));
                 }
@@ -521,13 +521,13 @@ class AdminEventController extends Controller
             ->setStatus(Ticket::STATUS_PAID)
             ->setPaymentDate(new \DateTime())
         ;
-        $this->get('app.invoice_repository')->save($invoice);
-        $tickets = $this->get('app.ticket_repository')->getByReference($invoice->getReference());
+        $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->save($invoice);
+        $tickets = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByReference($invoice->getReference());
 
         /**
          * @var $forumFacturation Facturation
          */
-        $forumFacturation = $this->get('app.legacy_model_factory')->createObject(Facturation::class);
+        $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);
         $forumFacturation->envoyerFacture($invoice->getReference());
 
         $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
@@ -542,7 +542,7 @@ class AdminEventController extends Controller
                 ->setStatus(Ticket::STATUS_PAID)
                 ->setInvoiceStatus(Ticket::INVOICE_SENT)
             ;
-            $this->get('app.ticket_repository')->save($ticket);
+            $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->save($ticket);
 
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
                 $this->get('app.emails')->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
@@ -553,7 +553,7 @@ class AdminEventController extends Controller
 
     public function badgesGenerateAction(Request $request)
     {
-        $event = $this->getEvent($this->get('app.event_repository'), $request);
+        $event = $this->getEvent($this->get(\AppBundle\Event\Model\Repository\EventRepository::class), $request);
 
         $file = new \SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('badges_'), 'w+');
         $this->get('app.registration_export_generator')->export($event, $file);

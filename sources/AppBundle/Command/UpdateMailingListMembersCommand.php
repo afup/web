@@ -24,14 +24,14 @@ class UpdateMailingListMembersCommand extends ContainerAwareCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $mailingListRepository = $this->getContainer()->get('app.mailing_list_repository');
-        $groupsRepository = $this->getContainer()->get('app.group_repository');
+        $mailingListRepository = $this->getContainer()->get(\AppBundle\Groups\Model\Repository\MailingListRepository::class);
+        $groupsRepository = $this->getContainer()->get(\AppBundle\Groups\GroupRepository::class);
 
         $output->writeln("Synchronisation Mailing Lists " . date('Y-m-d H:i:s'));
 
         $output->writeln(" - récupération des membres à jour de cotisation...");
 
-        $assembly = $this->getContainer()->get('app.legacy_model_factory')->createObject(Assemblee_Generale::class);
+        $assembly = $this->getContainer()->get(\AppBundle\LegacyModelFactory::class)->createObject(Assemblee_Generale::class);
         /**
          * @var $membersAfup User[]
          */
