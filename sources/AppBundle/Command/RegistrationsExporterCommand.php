@@ -27,7 +27,7 @@ class RegistrationsExporterCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
 
-        if (null === ($event = $container->get('app.event_repository')->getNextEvent())) {
+        if (null === ($event = $container->get(\AppBundle\Event\Model\Repository\EventRepository::class)->getNextEvent())) {
             $output->writeln('No event found');
             return;
         }

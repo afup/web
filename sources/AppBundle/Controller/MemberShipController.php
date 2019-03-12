@@ -79,7 +79,7 @@ class MemberShipController extends SiteBaseController
         /**
          * @var $subscription Cotisations
          */
-        $subscription = $this->get('app.legacy_model_factory')->createObject(Cotisations::class);
+        $subscription = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
         $invoice = $subscription->getByInvoice($invoiceNumber, $token);
         /**
          * @var $company CompanyMember
@@ -90,7 +90,7 @@ class MemberShipController extends SiteBaseController
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
-        $paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
+        $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
             'F' . $invoiceNumber,
             (float) $invoice['montant'],
             $company->getEmail()
@@ -109,7 +109,7 @@ class MemberShipController extends SiteBaseController
         /**
          * @var $subscription Cotisations
          */
-        $subscription = $this->get('app.legacy_model_factory')->createObject(Cotisations::class);
+        $subscription = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
         $invoice = $subscription->getByInvoice($invoiceNumber, $token);
 
         if (!$invoice) {
@@ -188,8 +188,8 @@ class MemberShipController extends SiteBaseController
         /**
          * @var $cotisations Cotisations
          */
-        $cotisations = $this->get('app.legacy_model_factory')->createObject(Cotisations::class);
-        $logs = $this->get('app.legacy_model_factory')->createObject(Logs::class);
+        $cotisations = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
+        $logs = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Logs::class);
 
         $status = $payboxResponse->getStatus();
         $etat = AFUP_COTISATIONS_PAIEMENT_ERREUR;

@@ -309,7 +309,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-      photo_storage: "@app.photo_storage"
+      photo_storage: '@AppBundle\CFP\PhotoStorage'
 
 ting:
     connections:
