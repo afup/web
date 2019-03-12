@@ -93,7 +93,7 @@ class EventController extends EventBaseController
     {
         $event = $this->checkEventSlug($eventSlug);
 
-        $photoStorage = $this->get('app.photo_storage');
+        $photoStorage = $this->get(\AppBundle\CFP\PhotoStorage::class);
         $ting = $this->get('ting');
         $talkRepository = $ting->get(TalkRepository::class);
 
