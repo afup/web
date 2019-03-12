@@ -46,7 +46,7 @@ class CFPController extends EventBaseController
                 'event' => $event,
                 'talks' => $talks,
                 'speaker' => $this->get('app.speaker_factory')->getSpeaker($event),
-                'photoStorage' => $this->get('app.photo_storage')
+                'photoStorage' => $this->get(\AppBundle\CFP\PhotoStorage::class)
             ]
         );
     }
@@ -70,7 +70,7 @@ class CFPController extends EventBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $speakerRepository->save($speaker);
             $file = $speaker->getPhoto();
-            $fileName = $this->get('app.photo_storage')->store($file, $speaker);
+            $fileName = $this->get(\AppBundle\CFP\PhotoStorage::class)->store($file, $speaker);
             $speaker->setPhoto($fileName);
             $speakerRepository->save($speaker);
 
@@ -87,7 +87,7 @@ class CFPController extends EventBaseController
 
         $photo = null;
         if (!empty($speaker->getPhoto())) {
-            $photo = $this->get('app.photo_storage')->getUrl($speaker, PhotoStorage::DIR_ORIGINAL);
+            $photo = $this->get(\AppBundle\CFP\PhotoStorage::class)->getUrl($speaker, PhotoStorage::DIR_ORIGINAL);
         }
 
         return $this->render(':event/cfp:speaker.html.twig', ['event' => $event, 'form' => $form->createView(), 'photo' => $photo]);

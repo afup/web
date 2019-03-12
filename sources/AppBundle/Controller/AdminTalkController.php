@@ -11,7 +11,7 @@ class AdminTalkController extends Controller
 {
     public function exportAction(Request $request)
     {
-        $event = $this->getEvent($this->get('app.event_repository'), $request);
+        $event = $this->getEvent($this->get(EventRepository::class), $request);
 
         $file = new \SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('talk_'), 'w+');
         $this->get('app.talk_export_generator')->export($event, $file);

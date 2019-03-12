@@ -11,7 +11,7 @@ class AdminSpeakerController extends Controller
 {
     public function exportAction(Request $request)
     {
-        $event = $this->getEvent($this->get('app.event_repository'), $request);
+        $event = $this->getEvent($this->get(\AppBundle\Event\Model\Repository\EventRepository::class), $request);
 
         $file = new \SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('speaker_'), 'w+');
         $this->get('app.speaker_export_generator')->export($event, $file);

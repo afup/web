@@ -19,8 +19,8 @@ class GroupsController extends Controller
         /**
          * @var $lists MailingList[]
          */
-        $lists = $this->get('app.mailing_list_repository')->getAllMailingLists();
-        $groupRepository = $this->get('app.group_repository');
+        $lists = $this->get(\AppBundle\Groups\Model\Repository\MailingListRepository::class)->getAllMailingLists();
+        $groupRepository = $this->get(\AppBundle\Groups\GroupRepository::class);
 
         $subscriptions = [];
 
@@ -54,8 +54,8 @@ class GroupsController extends Controller
         }
 
         $email = $this->getUser()->getEmail();
-        $groupRepository = $this->get('app.group_repository');
-        $mailingListRepository = $this->get('app.mailing_list_repository');
+        $groupRepository = $this->get(\AppBundle\Groups\GroupRepository::class);
+        $mailingListRepository = $this->get(\AppBundle\Groups\Model\Repository\MailingListRepository::class);
         if ($request->request->get('subscribe') !== null) {
             $mailingId = $request->request->getInt('subscribe');
             /**
