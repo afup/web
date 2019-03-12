@@ -126,7 +126,7 @@ services:
         class: AppBundle\Routing\LegacyRouter
     app.algolia_client:
         class: AlgoliaSearch\Client
-        arguments: [%algolia_app_id%, %algolia_backend_api_key%]
+        arguments: ["%algolia_app_id%", "%algolia_backend_api_key%"]
 
     app.joindin.comments:
         class: AppBundle\Joindin\JoindinComments
