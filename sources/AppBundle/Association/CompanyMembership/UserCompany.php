@@ -5,7 +5,7 @@ namespace AppBundle\Association\CompanyMembership;
 use AppBundle\Association\Event\UserDisabledEvent;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UserCompany
 {
@@ -15,11 +15,11 @@ class UserCompany
     private $userRepository;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
-    public function __construct(UserRepository $userRepository, EventDispatcher $eventDispatcher)
+    public function __construct(UserRepository $userRepository, EventDispatcherInterface $eventDispatcher)
     {
         $this->userRepository = $userRepository;
         $this->eventDispatcher = $eventDispatcher;
