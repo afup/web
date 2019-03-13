@@ -36,7 +36,7 @@ if ($action == 'lister') {
 } elseif ($action == 'telecharger_facture'){
 	$cotisations->genererFacture($_GET['id']);
 } elseif ($action == 'envoyer_facture'){
-	if($cotisations->envoyerFacture($_GET['id'], $this->get('app.mail'))){
+	if($cotisations->envoyerFacture($_GET['id'], $this->get(\Afup\Site\Utils\Mail::class))){
 	   Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
        afficherMessage('La facture a été envoyée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne']);
 	} else {

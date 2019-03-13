@@ -20,8 +20,8 @@ $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
 
-$eventRepository = $this->get('app.event_repository');
-$ticketEventTypeRepository = $this->get('app.ticket_event_repository');
+$eventRepository = $this->get(\AppBundle\Event\Model\Repository\EventRepository::class);
+$ticketEventTypeRepository = $this->get(\AppBundle\Event\Model\Repository\TicketEventTypeRepository::class);
 
 function updateGlobalsForTarif(
     \AppBundle\Event\Model\Repository\EventRepository $eventRepository,
