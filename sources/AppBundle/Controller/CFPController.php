@@ -38,14 +38,14 @@ class CFPController extends EventBaseController
             }
         }
 
-        $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get('app.speaker_factory')->getSpeaker($event));
+        $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event));
 
         return $this->render(
             ':event/cfp:home.html.twig',
             [
                 'event' => $event,
                 'talks' => $talks,
-                'speaker' => $this->get('app.speaker_factory')->getSpeaker($event),
+                'speaker' => $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event),
                 'photoStorage' => $this->get(\AppBundle\CFP\PhotoStorage::class)
             ]
         );
@@ -62,7 +62,7 @@ class CFPController extends EventBaseController
          * @var $speakerRepository SpeakerRepository
          */
         $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
-        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        $speaker = $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event);
 
         $form = $this->createForm(SpeakerType::class, $speaker, ['photo_required' => empty($speaker->getPhoto())]);
 
@@ -99,7 +99,7 @@ class CFPController extends EventBaseController
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
-        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        $speaker = $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event);
         if ($speaker->getId() === null) {
             $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
             return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
@@ -195,7 +195,7 @@ class CFPController extends EventBaseController
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
         }
-        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        $speaker = $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event);
         if ($speaker->getId() === null) {
             $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
             return new RedirectResponse($this->generateUrl('cfp_speaker', ['eventSlug' => $event->getPath()]));
@@ -220,7 +220,7 @@ class CFPController extends EventBaseController
             return new Response('');
         }
 
-        $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get('app.speaker_factory')->getSpeaker($event));
+        $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event));
         return $this->render(':event/cfp:sidebar.html.twig', ['talks' => $talks, 'event' => $event]);
     }
 
@@ -246,7 +246,7 @@ class CFPController extends EventBaseController
             throw $this->createNotFoundException('Invitation or talk not found');
         }
 
-        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        $speaker = $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event);
         if ($speaker->getId() === null) {
             $this->addFlash('error', $this->get('translator')->trans('Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.'));
             $this->get('session')->set('pendingInvitation', ['talkId' => $talkId, 'token' => $token, 'eventSlug' => $eventSlug]);
@@ -284,16 +284,16 @@ class CFPController extends EventBaseController
 
             if ($form->isValid()) {
                 $talk->setSubmittedOn(new \DateTime());
-                $this->get('ting')->get(SpeakerRepository::class)->save($this->get('app.speaker_factory')->getSpeaker($event));
+                $this->get('ting')->get(SpeakerRepository::class)->save($this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event));
 
                 if ($this->get('ting.unitofwork')->isManaged($talk) === false) {
                     $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($talk, $event) {
-                        $this->get('app.slack_notifier')->notifyTalk($talk, $event);
+                        $this->get(\AppBundle\Notifier\SlackNotifier::class)->notifyTalk($talk, $event);
                     });
                 }
 
                 $talkRepository->save($talk);
-                $this->get('ting')->get(TalkToSpeakersRepository::class)->addSpeakerToTalk($talk, $this->get('app.speaker_factory')->getSpeaker($event));
+                $this->get('ting')->get(TalkToSpeakersRepository::class)->addSpeakerToTalk($talk, $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event));
 
                 $this->addFlash('success', $this->get('translator')->trans('Proposition enregistrée !'));
 

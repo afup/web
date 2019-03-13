@@ -39,7 +39,7 @@ class TwitterBotCommand extends ContainerAwareCommand
             $ting->get(EventRepository::class),
             $ting->get(SpeakerRepository::class),
             $ting->get(TweetRepository::class),
-            $container->get('app.twitter_api')
+            $container->get(\TwitterAPIExchange::class)
         );
         $runner->execute($this->getEventFilter($input));
     }

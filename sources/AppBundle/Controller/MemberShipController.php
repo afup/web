@@ -61,11 +61,11 @@ class MemberShipController extends SiteBaseController
 
                 // Send mail to the other guy, begging for him to join the company
                 $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($member, $invitation) {
-                    $this->get('app.invitation_mail')->sendInvitation($member, $invitation);
+                    $this->get(\AppBundle\Association\CompanyMembership\InvitationMail::class)->sendInvitation($member, $invitation);
                 });
             }
 
-            $subscriptionManager = $this->get('app.company_subscription');
+            $subscriptionManager = $this->get(\AppBundle\Association\CompanyMembership\SubscriptionManagement::class);
             $invoice = $subscriptionManager->createInvoiceForInscription($member, count($member->getInvitations()));
 
             return $this->redirectToRoute('company_membership_payment', ['invoiceNumber' => $invoice['invoice'], 'token' => $invoice['token']]);
@@ -210,7 +210,7 @@ class MemberShipController extends SiteBaseController
             $lastCotisation = $cotisations->obtenirDerniere($account['type'], $account['id']);
 
             if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
-                $user = $this->get('app.user_repository')->get($account['id']);
+                $user = $this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->get($account['id']);
                 $event = new NewMemberEvent($user);
                 $this->get('event_dispatcher')->dispatch($event::NAME, $event);
             }

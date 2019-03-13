@@ -56,7 +56,7 @@ class AdminMemberShipController extends SiteBaseController
         $invitationForm = $this->createForm(CompanyMemberInvitationType::class, $invitation);
         $invitationForm->handleRequest($request);
 
-        $filter = $this->get('app.collection_filter');
+        $filter = $this->get(\AppBundle\Model\CollectionFilter::class);
 
         $canAddUser = false;
         if (($pendingInvitations->count() + $users->count()) < $company->getMaxMembers()) {
@@ -64,7 +64,7 @@ class AdminMemberShipController extends SiteBaseController
         }
 
         if ($request->getMethod() === Request::METHOD_POST) {
-            $userCompany = $this->get('app.user_company');
+            $userCompany = $this->get(\AppBundle\Association\CompanyMembership\UserCompany::class);
 
             if ($invitationForm->isSubmitted() && $invitationForm->isValid()) {
                 if ($canAddUser === false) {
@@ -182,7 +182,7 @@ class AdminMemberShipController extends SiteBaseController
 
         // Send mail to the other guy, begging for him to join the company
         $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($company, $invitation) {
-            $this->get('app.invitation_mail')->sendInvitation($company, $invitation);
+            $this->get(\AppBundle\Association\CompanyMembership\InvitationMail::class)->sendInvitation($company, $invitation);
         });
         $this->addFlash(
             'notice',
@@ -276,7 +276,7 @@ class AdminMemberShipController extends SiteBaseController
          */
         $invitationToSend = $filter->findOne($pendingInvitations, 'getEmail', $emailToSend);
         if ($invitationToSend !== null) {
-            $this->get('app.invitation_mail')->sendInvitation($company, $invitationToSend);
+            $this->get(\AppBundle\Association\CompanyMembership\InvitationMail::class)->sendInvitation($company, $invitationToSend);
             $this->addFlash('notice', 'L\'invitation a été renvoyée');
         } else {
             $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi de l\'invitation');

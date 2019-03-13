@@ -27,7 +27,7 @@ class BlogController extends EventBaseController
          * @var $talkRepository TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
+        $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
         $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
 
         return $this->render(
@@ -56,7 +56,7 @@ class BlogController extends EventBaseController
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
-        $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
+        $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
 
         $eventPlanning = [];
         $rooms = [];
@@ -175,7 +175,7 @@ class BlogController extends EventBaseController
          */
         $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
         $speakers = $speakerRepository->getScheduledSpeakersByEvent($event, !$request->query->getBoolean('apply-publication-date-filters', true));
-        $jsonld = $this->get('app.event_json_ld')->getDataForEvent($event);
+        $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
 
         return $this->render(
             ':blog:speakers.html.twig',
