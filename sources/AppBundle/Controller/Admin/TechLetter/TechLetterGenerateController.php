@@ -229,7 +229,7 @@ class TechLetterGenerateController extends SiteBaseController
             ->getContent()
         ;
 
-        $this->get('app.mail')->sendSimpleMessage(
+        $this->get(\Afup\Site\Utils\Mail::class)->sendSimpleMessage(
             $subject,
             $mailContent,
             [

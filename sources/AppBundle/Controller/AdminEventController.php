@@ -415,7 +415,7 @@ class AdminEventController extends Controller
             if ($this->isCsrfTokenValid('event_anonymous_export', $request->request->get('token')) === false) {
                 $this->addFlash('error', 'Token invalide');
             } else {
-                $data = $this->get('app.event_anonymous_export')->exportData();
+                $data = $this->get(\AppBundle\Event\AnonymousExport::class)->exportData();
 
                 $response = new StreamedResponse(function () use ($data) {
                     $handle = fopen('php://output', 'w+');
@@ -532,7 +532,7 @@ class AdminEventController extends Controller
 
         $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
 
-        $mailer = $this->get('app.mail');
+        $mailer = $this->get(\Afup\Site\Utils\Mail::class);
         $logger = $this->get('logger');
         foreach ($tickets as $ticket) {
             /**
@@ -545,7 +545,7 @@ class AdminEventController extends Controller
             $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->save($ticket);
 
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                $this->get('app.emails')->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
+                $this->get(\AppBundle\Email\Emails::class)->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
                 return 1;
             });
         }
@@ -556,7 +556,7 @@ class AdminEventController extends Controller
         $event = $this->getEvent($this->get(\AppBundle\Event\Model\Repository\EventRepository::class), $request);
 
         $file = new \SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('badges_'), 'w+');
-        $this->get('app.registration_export_generator')->export($event, $file);
+        $this->get(\AppBundle\Event\Ticket\RegistrationsExportGenerator::class)->export($event, $file);
 
         $headers = [
             'Content-Type' =>  'text/html; charset=utf-8',
@@ -628,10 +628,10 @@ class AdminEventController extends Controller
         $eventRepository = $ting->get(EventRepository::class);
         $event = $this->getEvent($eventRepository, $request);
 
-        $this->get('app.emails')->sendInscription($event, Emails::EMAIL_BUREAU_ADDRESS, Emails::EMAIL_BUREAU_LABEL);
+        $this->get(\AppBundle\Email\Emails::class)->sendInscription($event, Emails::EMAIL_BUREAU_ADDRESS, Emails::EMAIL_BUREAU_LABEL);
         $this->addFlash('notice', 'Mail de test envoyé');
 
-        $url = $this->get('app.legacy_router')->getAdminUrl('forum_gestion', ['action' => 'modifier', 'id' => $event->getId()]);
+        $url = $this->get(\AppBundle\Routing\LegacyRouter::class)->getAdminUrl('forum_gestion', ['action' => 'modifier', 'id' => $event->getId()]);
 
         return $this->redirect($url);
     }

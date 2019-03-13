@@ -40,7 +40,7 @@ class UpdateMailchimpMembersCommand extends ContainerAwareCommand
          */
         $userRepository = $ting->get(UserRepository::class);
 
-        $mailchimp = $this->getContainer()->get('app.mailchimp_api');
+        $mailchimp = $this->getContainer()->get(\AppBundle\Mailchimp\Mailchimp::class);
 
         $runner = new Runner(
             $mailchimp,

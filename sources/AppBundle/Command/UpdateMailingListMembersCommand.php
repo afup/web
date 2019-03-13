@@ -35,7 +35,7 @@ class UpdateMailingListMembersCommand extends ContainerAwareCommand
         /**
          * @var $membersAfup User[]
          */
-        $membersAfup = $this->getContainer()->get('app.user_repository')->getActiveMembers(UserRepository::USER_TYPE_ALL);
+        $membersAfup = $this->getContainer()->get(\AppBundle\Association\Model\Repository\UserRepository::class)->getActiveMembers(UserRepository::USER_TYPE_ALL);
 
         $emails = [];
         foreach ($membersAfup as $member) {

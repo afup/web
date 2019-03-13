@@ -14,7 +14,7 @@ class AdminTalkController extends Controller
         $event = $this->getEvent($this->get(EventRepository::class), $request);
 
         $file = new \SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('talk_'), 'w+');
-        $this->get('app.talk_export_generator')->export($event, $file);
+        $this->get(\AppBundle\Event\Talk\ExportGenerator::class)->export($event, $file);
 
         $headers = [
             'Content-Type' =>  'text/html; charset=utf-8',

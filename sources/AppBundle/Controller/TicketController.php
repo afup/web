@@ -42,7 +42,7 @@ class TicketController extends EventBaseController
                  */
                 $sponsorTicket = $this->get('ting')->get(SponsorTicketRepository::class)->getOneBy(['token' => $token]);
                 if (
-                    $this->get('app.action_throttling')->isActionBlocked('sponsor_token', $request->getClientIp(), null)
+                    $this->get(\AppBundle\Security\ActionThrottling\ActionThrottling::class)->isActionBlocked('sponsor_token', $request->getClientIp(), null)
                     ||
                     $sponsorTicket === null
                 ) {
@@ -50,10 +50,10 @@ class TicketController extends EventBaseController
                     // L'ip est bloquée pendant un temps mais il ne faut pas en informer celui qui tente - pour éviter
                     // qu'il ne change d'IP
                     $errors[] = 'Ce token n\'existe pas.';
-                    $this->get('app.action_throttling')->log('sponsor_token', $request->getClientIp(), null);
+                    $this->get(\AppBundle\Security\ActionThrottling\ActionThrottling::class)->log('sponsor_token', $request->getClientIp(), null);
                 } else {
                     $request->getSession()->set('sponsor_ticket_id', $sponsorTicket->getId());
-                    $this->get('app.action_throttling')->clearLogsForIp('sponsor_token', $request->getClientIp());
+                    $this->get(\AppBundle\Security\ActionThrottling\ActionThrottling::class)->clearLogsForIp('sponsor_token', $request->getClientIp());
 
                     return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
                 }
@@ -111,10 +111,10 @@ class TicketController extends EventBaseController
             }
 
             $sponsorTicketHelper->addTicketToSponsor($sponsorTicket, $ticket);
-            $mailer = $this->get('app.mail');
+            $mailer = $this->get(\Afup\Site\Utils\Mail::class);
             $logger = $this->get('logger');
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                $this->get('app.emails')->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
+                $this->get(\AppBundle\Email\Emails::class)->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
                 return 1;
             });
 
@@ -160,7 +160,7 @@ class TicketController extends EventBaseController
             return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
         }
 
-        $purchaseFactory = $this->get('app.event_ticket.purchase_type_factory');
+        $purchaseFactory = $this->get(\AppBundle\Event\Ticket\PurchaseTypeFactory::class);
 
         $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $this->getUser(), $request->query->get('token', null));
 
@@ -323,7 +323,7 @@ class TicketController extends EventBaseController
             $forumFacturation->envoyerFacture($invoice->getReference());
         }
 
-        $mailer = $this->get('app.mail');
+        $mailer = $this->get(\Afup\Site\Utils\Mail::class);
         $logger = $this->get('logger');
         foreach ($tickets as $ticket) {
             /**
@@ -337,7 +337,7 @@ class TicketController extends EventBaseController
 
             if ($paymentStatus === Ticket::STATUS_PAID) {
                 $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                    $this->get('app.emails')->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
+                    $this->get(\AppBundle\Email\Emails::class)->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
                     return 1;
                 });
             }

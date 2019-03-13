@@ -56,7 +56,7 @@ class HomeController extends SiteBaseController
             return [];
         }
 
-        $algolia = $this->get('app.algolia_client');
+        $algolia = $this->get(\AlgoliaSearch\Client::class);
         $index = $algolia->initIndex('afup_meetups');
         $results = $index->search('', ['hitsPerPage' => self::MAX_MEETUPS]);
 
