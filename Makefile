@@ -103,3 +103,6 @@ db-migrations:
 
 db-seed:
 	php bin/phinx seed:run
+
+console:
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp bash
