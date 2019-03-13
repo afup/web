@@ -16,7 +16,7 @@ class SpeakerController extends EventBaseController
     public function speakerPageAction(Request $request, $eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
-        $speaker = $this->get('app.speaker_factory')->getSpeaker($event);
+        $speaker = $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event);
 
         return $this->internalSpeakerPageAction($request, $event, $speaker);
     }

@@ -50,14 +50,14 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
             $date->modify('- 1 day');
         }
 
-        $message = $this->getContainer()->get('app.slack_message_factory')->createMessageForTicketStats(
+        $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForTicketStats(
             $event,
             $forum_inscriptions,
             $ticketRepository,
             $date
         );
 
-        $this->getContainer()->get('app.slack_notifier')->sendMessage($message);
+        $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
     }
 
     /**

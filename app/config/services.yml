@@ -14,59 +14,47 @@ services:
     _defaults:
         public: true
 
-    my_github_authenticator:
-        class: AppBundle\Security\MyGithubAuthenticator
+    AppBundle\Security\MyGithubAuthenticator:
         autowire: true
-
-    github_user_repository: '@AppBundle\Event\Model\Repository\GithubUserRepository'
 
     AppBundle\Event\Model\Repository\GithubUserRepository:
         class: AppBundle\Event\Model\Repository\GithubUserRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\GithubUserRepository]
 
-    app_twig:
-        class: AppBundle\Twig\TwigExtension
-        arguments: ["@app.legacy_router", "@app.html_to_markdown", "@app.html_to_markdown_email", "@service_container"]
+    AppBundle\Twig\TwigExtension:
+        arguments: ['@AppBundle\Routing\LegacyRouter', "@Parsedown", '@AppBundle\Email\Parsedown', "@service_container"]
         tags:
             -  { name: twig.extension }
 
-    app_twig_assets:
-        class: AppBundle\Twig\AssetsExtension
+    AppBundle\Twig\AssetsExtension:
         arguments: ["%kernel.root_dir%"]
         tags:
             -  { name: twig.extension }
 
-    app_twig_offices:
-        class: AppBundle\Twig\OfficesExtension
+    AppBundle\Twig\OfficesExtension:
         tags:
             -  { name: twig.extension }
 
-    app.locale_listener:
-        class: AppBundle\Listener\LocaleListener
+    AppBundle\Listener\LocaleListener:
         arguments: [ "%kernel.default_locale%" ]
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 100 }
 
-    app.legacy_listener:
-        class: AppBundle\Listener\LegacySiteListener
+    AppBundle\Listener\LegacySiteListener:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, priority: 100 }
-
-    app.speaker_repository: '@AppBundle\Event\Model\Repository\SpeakerRepository'
 
     AppBundle\Event\Model\Repository\SpeakerRepository:
         class: AppBundle\Event\Model\Repository\SpeakerRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\SpeakerRepository]
 
-    app.speaker_factory:
-        class: AppBundle\CFP\SpeakerFactory
-        arguments: ["@security.token_storage", "@app.speaker_repository"]
+    AppBundle\CFP\SpeakerFactory:
+        arguments: ["@security.token_storage", '@AppBundle\Event\Model\Repository\SpeakerRepository']
 
-    app.talk_voter:
-        class: AppBundle\Security\TalkVoter
-        arguments: ["@app.speaker_repository"]
+    AppBundle\Security\TalkVoter:
+        arguments: ['@AppBundle\Event\Model\Repository\SpeakerRepository']
         tags:
           - { name: security.voter }
         public: false
@@ -74,12 +62,10 @@ services:
     AppBundle\CFP\PhotoStorage:
         arguments: ["%kernel.root_dir%/../htdocs/uploads/speakers", "/uploads/speakers"]
 
-    twig.extension.intl:
+    Twig_Extensions_Extension_Intl:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
-
-    app.user_repository: '@AppBundle\Association\Model\Repository\UserRepository'
 
     AppBundle\Association\Model\Repository\UserRepository:
         class: AppBundle\Association\Model\Repository\UserRepository
@@ -91,21 +77,18 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TalkRepository]
 
-    app.company_member_repository:
+    AppBundle\Association\Model\Repository\CompanyMemberRepository:
         class: AppBundle\Association\Model\Repository\CompanyMemberRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\CompanyMemberRepository]
 
-    app.legacy_authenticator:
-        class: AppBundle\Security\LegacyAuthenticator
+    AppBundle\Security\LegacyAuthenticator:
         autowire: true
 
-    app.legacy_hash_authenticator:
-        class: AppBundle\Security\LegacyHashAuthenticator
+    AppBundle\Security\LegacyHashAuthenticator:
         autowire: true
 
-    app.unique_validator:
-        class: AppBundle\Validator\Constraints\UniqueEntityValidator
+    AppBundle\Validator\Constraints\UniqueEntityValidator:
         autowire: true
         tags:
             - { name: validator.constraint_validator }
@@ -114,43 +97,37 @@ services:
         autowire: true
 
 
-    app.company_subscription:
-        class: AppBundle\Association\CompanyMembership\SubscriptionManagement
+    AppBundle\Association\CompanyMembership\SubscriptionManagement:
         autowire: true
 
     AppBundle\Payment\PayboxFactory:
         autowire: true
 
-    app.slack_message_factory:
-        class: AppBundle\Slack\MessageFactory
+    AppBundle\Slack\MessageFactory:
         autowire: true
 
-    app.slack_notifier:
-        class: AppBundle\Notifier\SlackNotifier
-        arguments: ["%slack_url%", "@app.slack_message_factory", "@jms_serializer.serializer"]
+    AppBundle\Notifier\SlackNotifier:
+        arguments: ["%slack_url%", '@AppBundle\Slack\MessageFactory', "@jms_serializer.serializer"]
 
-    app.legacy_router:
-        class: AppBundle\Routing\LegacyRouter
-    app.algolia_client:
-        class: AlgoliaSearch\Client
+    AppBundle\Routing\LegacyRouter:
+        autowire: true
+
+    AlgoliaSearch\Client:
         arguments: ["%algolia_app_id%", "%algolia_backend_api_key%"]
 
-    app.joindin.comments:
-        class: AppBundle\Joindin\JoindinComments
+    AppBundle\Joindin\JoindinComments:
         arguments: ["@cache.system"]
 
-    app.twitter_api:
+    TwitterAPIExchange:
         class: TwitterAPIExchange
         arguments: ["%twitter_api_settings%"]
 
-    app.mailchimp_client:
-        class: Mailchimp\Mailchimp
+    Mailchimp\Mailchimp:
         arguments: ["%mailchimp_api_key%"]
         public: false
 
-    app.mailchimp_api:
-        class: AppBundle\Mailchimp\Mailchimp
-        arguments: ["@app.mailchimp_client"]
+    AppBundle\Mailchimp\Mailchimp:
+        arguments: ['@Mailchimp\Mailchimp']
 
     app.mailchimp_techletter_client:
         class: Mailchimp\Mailchimp
@@ -163,33 +140,28 @@ services:
 
     app.techletter_mailchimp_synchronizer:
         class: AppBundle\TechLetter\MailchimpSynchronizer
-        arguments: ["@app.mailchimp_techletter_api", "@app.techletter_subscriptions_repository", "%mailchimp_techletter_list%"]
+        arguments: ["@app.mailchimp_techletter_api", '@AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository', "%mailchimp_techletter_list%"]
 
-    app.mail:
-        class: Afup\Site\Utils\Mail
+    Afup\Site\Utils\Mail:
         arguments:
             $logger: "@logger"
 
-    app.emails:
-        class: AppBundle\Email\Emails
-        arguments: ["@twig", "@app.mail"]
+    AppBundle\Email\Emails:
+        arguments: ["@twig", '@Afup\Site\Utils\Mail']
 
-    app.invitation_mail:
-        class: AppBundle\Association\CompanyMembership\InvitationMail
+    AppBundle\Association\CompanyMembership\InvitationMail:
         autowire: true
 
-    app.user_company:
-        class: AppBundle\Association\CompanyMembership\UserCompany
+    AppBundle\Association\CompanyMembership\UserCompany:
         autowire: true
 
-    app.mailchimp_event_listener:
-        class: AppBundle\Mailchimp\EventListener
-        arguments: ["@app.mailchimp_api", "%mailchimp_members_list%"]
+    AppBundle\Mailchimp\EventListener:
+        arguments: ['@AppBundle\Mailchimp\Mailchimp', "%mailchimp_members_list%"]
         tags:
           - { name: kernel.event_listener, event: user.disabled, method: onUserDisabled }
 
-    app.collection_filter:
-        class: AppBundle\Model\CollectionFilter
+    AppBundle\Model\CollectionFilter:
+        autowire: true
 
     AppBundle\Security\ActionThrottling\LogRepository:
         class: AppBundle\Security\ActionThrottling\LogRepository
@@ -201,13 +173,12 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\InvoiceRepository]
 
-    app.techletter_subscriptions_repository:
+    AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository:
         class: AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository]
 
-    app.action_throttling:
-        class: AppBundle\Security\ActionThrottling\ActionThrottling
+    AppBundle\Security\ActionThrottling\ActionThrottling:
         autowire: true
 
     AppBundle\Event\Model\TicketFactory:
@@ -270,14 +241,12 @@ services:
     AppBundle\Event\Ticket\TicketTypeAvailability:
         autowire: true
 
-    app.ticket_form:
-        class: AppBundle\Event\Form\TicketType
+    AppBundle\Event\Form\TicketType:
         autowire: true
         tags:
           - {name: form.type}
 
-    app.news_filters:
-        class: AppBundle\Site\Form\NewsFiltersType
+    AppBundle\Site\Form\NewsFiltersType:
         autowire: true
         tags:
           - {name: form.type}
@@ -325,43 +294,37 @@ services:
         tags:
           - { name: validator.constraint_validator }
 
-    app.event_ticket.purchase_type_factory:
-        class: AppBundle\Event\Ticket\PurchaseTypeFactory
+    AppBundle\Event\Ticket\PurchaseTypeFactory:
         autowire: true
 
-    app.sponsorship_lead_mailer:
-        class: AppBundle\Event\Sponsorship\SponsorshipLeadMail
-        arguments: ["@app.mail", "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
+    AppBundle\Event\Sponsorship\SponsorshipLeadMail:
+        arguments: ['@Afup\Site\Utils\Mail', "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
 
-    app.trello_client:
-        class: Trello\Client
+    Trello\Client:
         calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const:Trello\Client::AUTH_URL_CLIENT_ID]]]
 
     Trello\Manager:
-        arguments: ["@app.trello_client"]
+        arguments: ['@Trello\Client']
 
-    app.lead_repository:
-        class: AppBundle\Event\Model\Repository\LeadRepository
+    AppBundle\Event\Model\Repository\LeadRepository:
         arguments:
             $logger: "@logger"
         autowire: true
 
-    app.event_anonymous_export:
-        class: AppBundle\Event\AnonymousExport
+    AppBundle\Event\AnonymousExport:
         autowire: true
 
-    app.html_to_markdown:
+    Parsedown:
         class: Parsedown
         autowire: true
 
-    app.html_to_markdown_email:
-        class: AppBundle\Email\Parsedown
-
-    app.event_json_ld:
-        class: AppBundle\Event\JsonLd
+    AppBundle\Email\Parsedown:
         autowire: true
 
-    app.google_client:
+    AppBundle\Event\JsonLd:
+        autowire: true
+
+    Google_Client:
         class: Google_Client
         calls:
           - ["setAuthConfig", ["%google_groups_api_key%"]]
@@ -370,51 +333,42 @@ services:
 
     Google_Service_Directory:
         class: Google_Service_Directory
-        arguments: ["@app.google_client"]
+        arguments: ["@Google_Client"]
 
     AppBundle\Groups\GroupRepository:
         autowire: true
 
-    app.members_groups_listener:
-        class: AppBundle\Association\Listener\MembersGroupsListener
+    AppBundle\Association\Listener\MembersGroupsListener:
         arguments:
             $logger: "@logger"
         autowire: true
         tags:
           - { name: kernel.event_listener, event: member.new, method: onNewMemberEvent }
 
-    app.offices_finder:
-        class: AppBundle\Offices\OfficeFinder
-        arguments: ["@app.geocoder"]
+    AppBundle\Offices\OfficeFinder:
+        arguments: ['@Geocoder\Provider\GoogleMaps']
 
-    app.geocoder:
-        class: Geocoder\Provider\GoogleMaps
-        arguments: ["@app.geocoder.adapter", null, null, true, "%google_maps_api_key%"]
+    Geocoder\Provider\GoogleMaps:
+        arguments: ['@Ivory\HttpAdapter\CurlHttpAdapter', null, null, true, "%google_maps_api_key%"]
 
-    app.geocoder.adapter:
-        class: Ivory\HttpAdapter\CurlHttpAdapter
+    Ivory\HttpAdapter\CurlHttpAdapter:
         public: false
 
-    app.registration_export_generator:
-        class : AppBundle\Event\Ticket\RegistrationsExportGenerator
-        arguments: ["@app.offices_finder", '@Afup\Site\Association\Cotisations', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', "@app.user_repository"]
+    AppBundle\Event\Ticket\RegistrationsExportGenerator:
+        arguments: ['@AppBundle\Offices\OfficeFinder', '@Afup\Site\Association\Cotisations', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
 
-    app.talk_export_generator:
-        class : AppBundle\Event\Talk\ExportGenerator
+    AppBundle\Event\Talk\ExportGenerator:
         arguments: ['@AppBundle\Event\Model\Repository\TalkRepository']
 
-    app.speaker_export_generator:
-        class : AppBundle\Event\Speaker\ExportGenerator
+    AppBundle\Event\Speaker\ExportGenerator:
         arguments: ['@AppBundle\Event\Model\Repository\TalkRepository']
 
-    app.hotel_reservation_type:
-        class: AppBundle\SpeakerInfos\Form\HotelReservationType
+    AppBundle\SpeakerInfos\Form\HotelReservationType:
         arguments: ["@translator"]
         tags:
           - {name: form.type}
 
-    app.sitemap.talks:
-        class: AppBundle\Subscriber\TalksSitemapSubscriber
+    AppBundle\Subscriber\TalksSitemapSubscriber:
         arguments:
             - "@router"
             - "@ting"
