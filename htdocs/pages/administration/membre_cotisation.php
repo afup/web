@@ -47,7 +47,7 @@ if (isset($_GET['action']) && in_array($_GET['action'], ['envoyer_facture', 'tel
         Logs::log('L\'utilisateur id: ' . $identifiant . ' a tenté de voir la facture id:' . $_GET['id'] . ' de l\'utilisateur id:' . $_GET['id_personne']);
         afficherMessage(null, 'index.php?page=membre_cotisation', 'Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
     } elseif ($_GET['action'] == 'envoyer_facture') {
-        if ($cotisations->envoyerFacture($_GET['id'], $this->get('app.mail'))) {
+        if ($cotisations->envoyerFacture($_GET['id'], $this->get(\Afup\Site\Utils\Mail::class))) {
             Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
             afficherMessage('La facture a été envoyée par mail', 'index.php?page=membre_cotisation');
         } else {
