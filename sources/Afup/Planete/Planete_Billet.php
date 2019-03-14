@@ -131,8 +131,8 @@ class Planete_Billet
 
         //require_once 'htmlpurifier/HTMLPurifier.auto.php';
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('Core', 'Encoding', 'UTF-8');
-        $config->set('HTML', 'Doctype', 'HTML 4.01 Transitional');
+        $config->set('Core.Encoding', 'UTF-8');
+        $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
         $purifier = new HTMLPurifier($config);
         $contenu_tronque = $purifier->purify($contenu_tronque);
 
