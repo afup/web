@@ -129,7 +129,6 @@ class Planete_Billet
             }
         }
 
-        //require_once 'htmlpurifier/HTMLPurifier.auto.php';
         $config = HTMLPurifier_Config::createDefault();
         $config->set('Core.Encoding', 'UTF-8');
         $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
