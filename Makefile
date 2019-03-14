@@ -3,7 +3,7 @@
 CURRENT_UID ?= $(shell id -u)
 DOCKER_UP_OPTIONS ?=
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init
+.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console
 
 install: vendors event/vendor
 
