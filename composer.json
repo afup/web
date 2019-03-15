@@ -25,7 +25,8 @@
     "google/apiclient": "^2.0",
     "robmorgan/phinx": "^0.9.2",
     "presta/sitemap-bundle": "^1.5",
-    "setasign/fpdf": "1.53"
+    "setasign/fpdf": "1.53",
+    "ezyang/htmlpurifier": "^4.10"
   },
   "scripts": {
     "post-install-cmd": [
