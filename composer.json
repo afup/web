@@ -26,7 +26,8 @@
     "robmorgan/phinx": "^0.9.2",
     "presta/sitemap-bundle": "^1.5",
     "setasign/fpdf": "1.53",
-    "ezyang/htmlpurifier": "^4.10"
+    "ezyang/htmlpurifier": "^4.10",
+    "phpoffice/phpspreadsheet": "^1.6"
   },
   "scripts": {
     "post-install-cmd": [
