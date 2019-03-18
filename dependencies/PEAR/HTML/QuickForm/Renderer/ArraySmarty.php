@@ -20,7 +20,7 @@
  * @author      Thomas Schulz <ths@4bconsult.de>
  * @copyright   2001-2011 The PHP Group
  * @license     http://www.php.net/license/3_01.txt PHP License 3.01
- * @version     CVS: $Id: ArraySmarty.php 317587 2011-10-01 07:55:53Z avb $
+ * @version     CVS: $Id$
  * @link        http://pear.php.net/package/HTML_QuickForm
  */
 
@@ -87,7 +87,7 @@ require_once 'HTML/QuickForm/Renderer/Array.php';
  * @author      Alexey Borzov <avb@php.net>
  * @author      Bertrand Mansion <bmansion@mamasam.com>
  * @author      Thomas Schulz <ths@4bconsult.de>
- * @version     Release: 3.2.13
+ * @version     Release: 3.2.16
  * @since       3.0
  */
 class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
@@ -400,4 +400,3 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
         $this->_error = $template;
     } // end func setErrorTemplate
 }
-?>

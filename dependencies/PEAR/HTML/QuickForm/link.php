@@ -18,7 +18,7 @@
  * @author      Bertrand Mansion <bmansion@mamasam.com>
  * @copyright   2001-2011 The PHP Group
  * @license     http://www.php.net/license/3_01.txt PHP License 3.01
- * @version     CVS: $Id: link.php 317587 2011-10-01 07:55:53Z avb $
+ * @version     CVS: $Id$
  * @link        http://pear.php.net/package/HTML_QuickForm
  */
 
@@ -34,7 +34,7 @@ require_once 'HTML/QuickForm/static.php';
  * @package     HTML_QuickForm
  * @author      Adam Daniel <adaniel1@eesus.jnj.com>
  * @author      Bertrand Mansion <bmansion@mamasam.com>
- * @version     Release: 3.2.13
+ * @version     Release: 3.2.16
  * @since       2.0
  */
 class HTML_QuickForm_link extends HTML_QuickForm_static
@@ -197,4 +197,4 @@ class HTML_QuickForm_link extends HTML_QuickForm_static
     // }}}
 
 } //end class HTML_QuickForm_textarea
-?>
+

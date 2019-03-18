@@ -29,7 +29,7 @@
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Alexey Borzov <avb@php.net>
- * @version     Release: 3.2.13
+ * @version     Release: 3.2.16
  * @since       3.0
  * @abstract
  */
@@ -155,4 +155,4 @@ class HTML_QuickForm_Renderer
         return;
     } // end func finishGroup
 } // end class HTML_QuickForm_Renderer
-?>
+
