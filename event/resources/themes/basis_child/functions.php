@@ -13,7 +13,7 @@ add_filter('upload_mimes', 'cc_mime_types');
 
 
 function afup_website_func($attrs) {
-    $url = getenv('AFUP_WEBSITE_URL') . $attrs['path'];
+    $url = getenv('AFUP_WEBSITE_URL') . html_entity_decode($attrs['path']);
     $ch = curl_init();
 
     if (defined('WP_DEBUG') && WP_DEBUG == true) {
