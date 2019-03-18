@@ -19,7 +19,7 @@
  * @author      Alexey Borzov <avb@php.net>
  * @copyright   2001-2011 The PHP Group
  * @license     http://www.php.net/license/3_01.txt PHP License 3.01
- * @version     CVS: $Id: select.php 317587 2011-10-01 07:55:53Z avb $
+ * @version     CVS: $Id$
  * @link        http://pear.php.net/package/HTML_QuickForm
  */
 
@@ -36,7 +36,7 @@ require_once 'HTML/QuickForm/element.php';
  * @author      Adam Daniel <adaniel1@eesus.jnj.com>
  * @author      Bertrand Mansion <bmansion@mamasam.com>
  * @author      Alexey Borzov <avb@php.net>
- * @version     Release: 3.2.13
+ * @version     Release: 3.2.16
  * @since       1.0
  */
 class HTML_QuickForm_select extends HTML_QuickForm_element {
@@ -611,4 +611,4 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
 
     // }}}
 } //end class HTML_QuickForm_select
-?>
+

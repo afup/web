@@ -17,7 +17,7 @@
  * @author      Alexey Borzov <avb@php.net>
  * @copyright   2001-2011 The PHP Group
  * @license     http://www.php.net/license/3_01.txt PHP License 3.01
- * @version     CVS: $Id: html.php 317587 2011-10-01 07:55:53Z avb $
+ * @version     CVS: $Id$
  * @link        http://pear.php.net/package/HTML_QuickForm
  */
 
@@ -35,7 +35,7 @@ require_once 'HTML/QuickForm/static.php';
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Alexey Borzov <avb@php.net>
- * @version     Release: 3.2.13
+ * @version     Release: 3.2.16
  * @since       3.0
  * @deprecated  Please use the templates rather than add raw HTML via this element
  */
@@ -63,10 +63,12 @@ class HTML_QuickForm_html extends HTML_QuickForm_static
     * Accepts a renderer
     *
     * @param HTML_QuickForm_Renderer    renderer object (only works with Default renderer!)
+    * @param bool $sc1                  unused, for signature compatibility
+    * @param bool $sc2                  unused, for signature compatibility
     * @access public
     * @return void 
     */
-    function accept(&$renderer)
+    function accept(&$renderer, $sc1 = false, $sc2 = null)
     {
         $renderer->renderHtml($this);
     } // end func accept
@@ -74,4 +76,4 @@ class HTML_QuickForm_html extends HTML_QuickForm_static
     // }}}
 
 } //end class HTML_QuickForm_html
-?>
+
