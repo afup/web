@@ -462,4 +462,4 @@ class HTML_Common
         return $charset;
     } // end func charset
 } // end class HTML_Common
-?>
+
