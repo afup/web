@@ -3,6 +3,11 @@
 // Impossible to access the file itself
 use Afup\Site\Comptabilite\Comptabilite;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -109,10 +114,10 @@ if ($action == 'lister') {
                 'bold' => true,
                 'name' => 'Ubuntu'
             ),
-            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER),
             'borders' => array(
                 'allborders' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'style' => Border::BORDER_THIN,
                     'color' => array('rgb' => 'FF666666')
                 )
             )
@@ -124,12 +129,12 @@ if ($action == 'lister') {
             ),
             'borders' => array(
                 'allborders' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'style' => Border::BORDER_THIN,
                     'color' => array('rgb' => 'FF666666')
                 )
             )
         ));
-        $sheet->getStyle('J3:I200')->applyFromArray(array('alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER)));
+        $sheet->getStyle('J3:I200')->applyFromArray(array('alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER)));
 
         $sheet->setCellValue('E' . $compteurLigne[$i], 'TOTAL');
         $sheet->setCellValue('F' . $compteurLigne[$i], $sousTotal[$i]['debit']);
@@ -145,23 +150,23 @@ if ($action == 'lister') {
                 'name' => 'Ubuntu'
             )
         ));
-        $sheet->getStyle('F' . ($compteurLigne[$i] + 1))->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
+        $sheet->getStyle('F' . ($compteurLigne[$i] + 1))->getAlignment()->applyFromArray(array('horizontal' => Alignment::HORIZONTAL_CENTER));
 
-        $sheet->getStyle('F4:G200')->applyFromArray(array('numberformat' => array('code' => PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00)));
+        $sheet->getStyle('F4:G200')->applyFromArray(array('numberformat' => array('code' => NumberFormat::FORMAT_NUMBER_00)));
 
         $sheet->getColumnDimension('A')->setWidth(8);
         $sheet->getColumnDimension('C')->setWidth(36);
         $sheet->getColumnDimension('D')->setWidth(12);
         $sheet->getColumnDimension('E')->setWidth(12);
-        $sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
-        $sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A4);
+        $sheet->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
         $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 3);
         $sheet->getHeaderFooter()->setOddFooter('&CPage &P de &N');
 
-        $objDrawing = new PHPExcel_Worksheet_Drawing();
+        $objDrawing = new Drawing();
         $objDrawing->setName('Logo_AFUP');
         $objDrawing->setDescription('Logo_AFUP');
-        $objDrawing->setPath(dirname(__FILE__) . '/../../templates/administration/images/logo_afup.png');
+        $objDrawing->setPath(__DIR__ . '/../../templates/administration/images/logo_afup.png');
         $objDrawing->setCoordinates('H1');
         $objDrawing->setHeight(35);
         $objDrawing->setWidth(70);
