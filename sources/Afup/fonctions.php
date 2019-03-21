@@ -27,8 +27,8 @@ function &instancierFormulaire($url = null, $nom = 'formulaire') {
     if (is_null($url)) {
         $url = $_SERVER['REQUEST_URI'];
     }
-    require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm.php';
-    require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm/altselect.php';
+    //require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm.php';
+    //require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm/altselect.php';
     $formulaire = new HTML_QuickForm($nom, 'post', $url);
     $formulaire->removeAttribute('name');
     return $formulaire;
@@ -41,7 +41,7 @@ function &instancierFormulaire($url = null, $nom = 'formulaire') {
  * @return  array
  */
 function genererFormulaire(&$formulaire) {
-    require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm/Renderer/Array.php';
+    //require_once dirname(__FILE__).'/../../dependencies/PEAR/HTML/QuickForm/Renderer/Array.php';
     $renderer = new HTML_QuickForm_Renderer_Array(true, true);
     $formulaire->accept($renderer);
     $resultat = $renderer->toArray();

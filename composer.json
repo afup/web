@@ -27,7 +27,10 @@
     "presta/sitemap-bundle": "^1.5",
     "setasign/fpdf": "1.53",
     "ezyang/htmlpurifier": "^4.10",
-    "mandrill/mandrill": "^1.0"
+    "mandrill/mandrill": "^1.0",
+    "pear/html_quickform": "^3.2",
+    "pear/pear_exception": "*",
+    "pear/html_common": "*"
   },
   "scripts": {
     "post-install-cmd": [
@@ -96,6 +99,38 @@
             "fpdf.php"
           ]
         }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "pear/html_quickform",
+        "version": "3.2.16",
+        "dist": {
+          "url": "https://github.com/pear/HTML_QuickForm/archive/3.2.16.zip",
+          "type": "zip"
+        }
+      },
+      "autoload": {
+        "classmap": [
+          "./"
+        ]
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "pear/html_common",
+        "version": "v2.0.0",
+        "dist": {
+          "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip",
+          "type": "zip"
+        }
+      },
+      "autoload": {
+        "classmap": [
+          "./HTML"
+        ]
       }
     }
   ]
