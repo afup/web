@@ -17,7 +17,7 @@
  * @author      Alexey Borzov <avb@php.net>
  * @copyright   2001-2011 The PHP Group
  * @license     http://www.php.net/license/3_01.txt PHP License 3.01
- * @version     CVS: $Id$
+ * @version     CVS: $Id: xbutton.php 317587 2011-10-01 07:55:53Z avb $
  * @link        http://pear.php.net/package/HTML_QuickForm
  */
 
@@ -32,7 +32,7 @@ require_once 'HTML/QuickForm/element.php';
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Alexey Borzov <avb@php.net>
- * @version     Release: 3.2.16
+ * @version     Release: 3.2.13
  * @since       3.2.3
  */
 class HTML_QuickForm_xbutton extends HTML_QuickForm_element
@@ -150,4 +150,4 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
         }
     }
 }
-
+?>

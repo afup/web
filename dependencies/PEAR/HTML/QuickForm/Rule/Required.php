@@ -17,7 +17,7 @@
  * @author      Bertrand Mansion <bmansion@mamasam.com>
  * @copyright   2001-2011 The PHP Group
  * @license     http://www.php.net/license/3_01.txt PHP License 3.01
- * @version     CVS: $Id$
+ * @version     CVS: $Id: Required.php 317587 2011-10-01 07:55:53Z avb $
  * @link        http://pear.php.net/package/HTML_QuickForm
  */
 
@@ -32,7 +32,7 @@ require_once 'HTML/QuickForm/Rule.php';
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Bertrand Mansion <bmansion@mamasam.com>
- * @version     Release: 3.2.16
+ * @version     Release: 3.2.13
  * @since       3.2
  */
 class HTML_QuickForm_Rule_Required extends HTML_QuickForm_Rule
@@ -47,9 +47,7 @@ class HTML_QuickForm_Rule_Required extends HTML_QuickForm_Rule
      */
     function validate($value, $options = null)
     {
-        if (is_array($value)) {
-            return (bool) $value;
-        } else if ((string)$value == '') {
+        if ((string)$value == '') {
             return false;
         }
         return true;
@@ -62,4 +60,4 @@ class HTML_QuickForm_Rule_Required extends HTML_QuickForm_Rule
     } // end func getValidationScript
 
 } // end class HTML_QuickForm_Rule_Required
-
+?>

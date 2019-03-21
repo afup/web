@@ -17,7 +17,7 @@
  * @author      Wojciech Gdela <eltehaem@poczta.onet.pl>
  * @copyright   2001-2011 The PHP Group
  * @license     http://www.php.net/license/3_01.txt PHP License 3.01
- * @version     CVS: $Id$
+ * @version     CVS: $Id: static.php 317587 2011-10-01 07:55:53Z avb $
  * @link        http://pear.php.net/package/HTML_QuickForm
  */
 
@@ -32,7 +32,7 @@ require_once 'HTML/QuickForm/element.php';
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Wojciech Gdela <eltehaem@poczta.onet.pl>
- * @version     Release: 3.2.16
+ * @version     Release: 3.2.13
  * @since       2.7
  */
 class HTML_QuickForm_static extends HTML_QuickForm_element {
@@ -198,4 +198,4 @@ class HTML_QuickForm_static extends HTML_QuickForm_element {
     
     // }}}
 } //end class HTML_QuickForm_static
-
+?>

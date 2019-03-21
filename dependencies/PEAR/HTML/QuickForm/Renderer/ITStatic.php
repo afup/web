@@ -18,7 +18,7 @@
  * @author      Bertrand Mansion <bmansion@mamasam.com>
  * @copyright   2001-2011 The PHP Group
  * @license     http://www.php.net/license/3_01.txt PHP License 3.01
- * @version     CVS: $Id$
+ * @version     CVS: $Id: ITStatic.php 317587 2011-10-01 07:55:53Z avb $
  * @link        http://pear.php.net/package/HTML_QuickForm
  */
 
@@ -38,7 +38,7 @@ require_once 'HTML/QuickForm/Renderer.php';
  * @category    HTML
  * @package     HTML_QuickForm
  * @author      Bertrand Mansion <bmansion@mamasam.com>
- * @version     Release: 3.2.16
+ * @version     Release: 3.2.13
  * @since       3.0
  */
 class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
@@ -501,3 +501,4 @@ class HTML_QuickForm_Renderer_ITStatic extends HTML_QuickForm_Renderer
         return $ret;
     }
 } // end class HTML_QuickForm_Renderer_ITStatic
+?>
