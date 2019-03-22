@@ -34,7 +34,7 @@
             <a href="http://www.planete-php.fr" class="lien-entete">Planète PHP</a>
         </div>
         {% block header '' %}
-        <div class="container" style="padding: 0px">
+        <div class="container">
             {% for bag in ['notice', 'success', 'error'] %}
                 {% for flash_message in app.session.flashBag.get(bag) %}
                     <div class="flash flash-{{ bag }}">

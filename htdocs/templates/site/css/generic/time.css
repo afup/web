@@ -1,0 +1,14 @@
+time {
+  font-family: "Podkova", serif;
+  background: url(../img/bg/date.png) no-repeat;
+  width: 90px;
+  height: 40px;
+  color: #fff;
+  padding: 10px 0 0 20px;
+  display: block;
+  margin-left: -20px
+}
+
+time + h2 {
+  margin-top: 10px
+}
