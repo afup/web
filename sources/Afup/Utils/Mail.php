@@ -9,7 +9,6 @@ use Mandrill_Error;
 use Psr\Log\LoggerInterface;
 
 require_once dirname(__FILE__) . '/Configuration.php';
-require_once __DIR__ . '/../../../dependencies/mandrill/Mandrill.php';
 
 /**
  * Send emails via Mandrill
