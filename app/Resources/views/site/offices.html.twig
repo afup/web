@@ -372,29 +372,39 @@
                     </div>
                 </div>
                 <div class="container">
-                    {% if office.blog_url is defined %}
-                        <a class="button-white" href="{{ office.blog_url }}">
-                            <i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Blog
-                        </a>
-                    {% endif %}
-              
-                    {% if office.twitter is defined %}
-                        <a class="button-white" href="https://twitter.com/{{ office.twitter }}">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>&nbsp;Twitter
-                        </a>
-                    {% endif %}
+                    <div class="row">
+                        {% if office.blog_url is defined %}
+                        <div class="col-xd-2 col-lg-3">
+                            <a class="button-white" href="{{ office.blog_url }}">
+                                <i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Blog
+                            </a>
+                        </div>
+                        {% endif %}
+                
+                        {% if office.twitter is defined %}
+                        <div class="col-xd-2 col-lg-3">
+                            <a class="button-white" href="https://twitter.com/{{ office.twitter }}">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>&nbsp;Twitter
+                            </a>
+                        </div>
+                        {% endif %}
 
-                    {% if office.meetup_urlname is defined %}
-                        <a class="button-white" href="https://www.meetup.com/fr-FR/{{ office.meetup_urlname }}/>
-                            <i class="fa fa-meetup icon" aria-hidden="true"></i>&nbsp;Meetup
-                        </a>
-                    {% endif %}
-                    
-                    {% if office.youtube is defined %}
-                        <a class="button-white" href="{{ office.youtube }}">
-                            <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
-                        </a>
-                    {% endif %}
+                        {% if office.meetup_urlname is defined %}
+                        <div class="col-xd-2 col-lg-3">
+                            <a class="button-white" href="https://www.meetup.com/fr-FR/{{ office.meetup_urlname }}">
+                                <i class="fa fa-meetup" aria-hidden="true"></i>&nbsp;Meetup
+                            </a>
+                        </div>    
+                        {% endif %}
+                        
+                        {% if office.youtube is defined %}
+                        <div class="col-xd-6 col-lg-3">
+                            <a class="button-white" href="{{ office.youtube }}">
+                                <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             {% if loop.index is even %}
