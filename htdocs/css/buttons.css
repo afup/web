@@ -1,7 +1,7 @@
 .button,
-a.button-white:hover {
+a.button-inverted:hover {
     background-color: #415e96;
-    border: none;
+    border: 1px solid #415e96;
     color: white;
     padding: 15px 32px;
     margin: 1em;
@@ -11,7 +11,7 @@ a.button-white:hover {
     font-size: 16px;
 }
 
-a.button-white {
+a.button-inverted {
     background-color: white;
     border: 1px solid #415e96;
     color: #415e96;
