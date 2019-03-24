@@ -24,6 +24,7 @@ RewriteRule ^super-apero$  "/association/super-apero" [L,R=302]
 RewriteRule ^association/super-apero-8-mars-2018$ "/super-apero" [L,R=302]
 RewriteRule ^association/super-apero-9-mars$  "/association/super-apero-8-mars-2018" [L,R=302]
 RewriteRule ^association/super-apero-9-mars/live$  "/association/super-apero-8-mars-2018" [L,R=302]
+RewriteRule ^enquete$ "https://docs.google.com/forms/d/e/1FAIpQLSdtPRqp7AL73RhUSTFVxPHChSR2deXODQcdSvhORAY-xmc4iA/viewform" [L,R=302]
 
 # Determine the RewriteBase automatically and set it as environment variable.
 # If you are using Apache aliases to do mass virtual hosting or installed the
