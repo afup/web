@@ -201,7 +201,6 @@ class OfficesCollection
                 'meetup_id' => '19629965',
                 'logo_url' => '/images/offices/paris.svg',
                 'twitter' => 'afup_paris',
-                'blog_url' => 'http://paris.afup.org/',
 
                 'map' => [
                     "legend-first-point-x" => "460",
