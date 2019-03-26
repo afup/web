@@ -14,17 +14,17 @@
         <div id="become_member">
             <h3>Je suis un particulier</h3>
             <p>
-                L'inscription se fait directement sur la page dédiée. Elle coute 25 euros pour 12 mois.
+                L'inscription se fait directement sur la page dédiée. Elle coute {{ membership_fee_natural_person }} euros pour 12 mois.
             </p>
             <div>
-                <a href="{{ url('legacy_inscription') }}"><div class="button">Adhérer en tant que particulier<br />25€ / an</div></a>
+                <a href="{{ url('legacy_inscription') }}"><div class="button">Adhérer en tant que particulier<br />{{ membership_fee_natural_person }}€ / an</div></a>
             </div>
             <h3>Nous sommes une entreprise</h3>
             <p>
                 Une préinscription est à réaliser via le formulaire ci-dessous. Notre trésorier vous recontactera pour finaliser ensuite l'inscription.
-                Le montant de la cotisation est de 100 euro HT par tranche de 3 employés pour 12 mois. A noter, l'afup ne facture pas de TVA.
+                Le montant de la cotisation est de {{ membership_fee_legal_entity }} euro HT par tranche de 3 employés pour 12 mois. A noter, l'afup ne facture pas de TVA.
             </p>
-            <a href="{{ url('company_membership') }}"><div class="button">Adhérer en tant qu'entreprise<br />100 € / 3 employés</div></a>
+            <a href="{{ url('company_membership') }}"><div class="button">Adhérer en tant qu'entreprise<br />{{ membership_fee_legal_entity }} € / 3 employés</div></a>
         </div>
         <p>
             Le paiement d'une adhésion professionnelle peut se faire soit par carte bancaire, par chèque ou par virement. Pour les particuliers, seul le paiement par carte bancaire est disponible.<br />
