@@ -29,7 +29,7 @@
     "ezyang/htmlpurifier": "^4.10",
     "mandrill/mandrill": "^1.0",
     "pear/html_quickform": "^3.2",
-    "friendsofpear/pear_exception": "*",
+    "friendsofpear/pear_exception": "0.0.*",
     "pear/html_common": "*"
   },
   "scripts": {
