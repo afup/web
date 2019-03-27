@@ -48,4 +48,8 @@
     .arguments-list--wide {
         max-width: 100%;
     }
+
+    .argument-list {
+        padding: 0;
+    }
 }
