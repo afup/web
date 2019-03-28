@@ -2,7 +2,6 @@
 
 namespace AppBundle\Site\Model;
 
-use AppBundle\Email\Parsedown;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
