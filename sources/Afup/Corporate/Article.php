@@ -15,6 +15,7 @@ class Article
     public $descriptif;
     public $chapeau;
     public $contenu;
+    public $type_contenu;
     public $position;
     public $date;
     public $etat;
@@ -28,6 +29,9 @@ class Article
     const THEME_ID_ASSOCIATIF = 3;
     const THEME_ID_BAROMETRE = 4;
     const THEME_ID_AFUP_SOUTIEN = 5;
+
+    const TYPE_CONTENU_HTML = 'html';
+    const TYPE_CONTENU_MARKDOWN = 'markdown';
 
     public static function getThemesLabels()
     {
@@ -174,6 +178,7 @@ class Article
             'descriptif' => $this->descriptif,
             'chapeau' => $this->chapeau,
             'contenu' => $this->contenu,
+            'type_contenu' => $this->type_contenu,
             'position' => $this->position,
             'date' => date('Y-m-d', $this->date),
             'theme' => $this->theme,
@@ -224,6 +229,7 @@ class Article
         $this->descriptif = $article['descriptif'];
         $this->chapeau = $article['chapeau'];
         $this->contenu = $article['contenu'];
+        $this->type_contenu = $article['type_contenu'];
         $this->position = $article['position'];
         $this->date = $article['date'];
         $this->etat = $article['etat'];
@@ -244,6 +250,7 @@ class Article
         			descriptif            = ' . $this->bdd->echapper($this->descriptif) . ',
         			chapeau               = ' . $this->bdd->echapper($this->chapeau) . ',
         			contenu               = ' . $this->bdd->echapper($this->contenu) . ',
+        			type_contenu               = ' . $this->bdd->echapper($this->type_contenu) . ',
         			position              = ' . $this->bdd->echapper($this->position) . ',
         			date                  = ' . $this->bdd->echapper($this->date) . ',
         			theme                 = ' . $this->bdd->echapper($this->theme) . ',
@@ -267,6 +274,7 @@ class Article
         			descriptif            = ' . $this->bdd->echapper($this->descriptif) . ',
         			chapeau               = ' . $this->bdd->echapper($this->chapeau) . ',
         			contenu               = ' . $this->bdd->echapper($this->contenu) . ',
+        			type_contenu               = ' . $this->bdd->echapper($this->type_contenu) . ',
         			position              = ' . $this->bdd->echapper($this->position) . ',
         			date                  = ' . $this->bdd->echapper($this->date) . ',
         			theme                 = ' . $this->bdd->echapper($this->theme) . ',
@@ -314,5 +322,10 @@ class Article
         $articles = new Articles($this->bdd);
 
         return $articles->chargerArticlesDeRubrique($this->id_site_rubrique);
+    }
+
+    public function isTypeContenuMarkdown()
+    {
+        return self::TYPE_CONTENU_MARKDOWN == $this->type_contenu;
     }
 }
