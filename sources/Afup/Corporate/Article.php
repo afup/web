@@ -328,4 +328,16 @@ class Article
     {
         return self::TYPE_CONTENU_MARKDOWN == $this->type_contenu;
     }
+
+    public function getChapeau()
+    {
+        $chapeau = $this->chapeau;
+
+        if ($this->isTypeContenuMarkdown()) {
+            $parseDown = new \Parsedown();
+            $chapeau = $parseDown->parse($chapeau);
+        }
+
+        return $chapeau;
+    }
 }
