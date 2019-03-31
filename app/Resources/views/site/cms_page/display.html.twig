@@ -12,7 +12,11 @@
 
         <h2>{{ article.titre }}</h2>
 
-        {{ article.contenu|raw }}
+        {% if article.type_contenu == constant('\\Afup\\Site\\Corporate\\Article::TYPE_CONTENU_MARKDOWN') %}
+            {{ article.contenu|markdown|raw }}
+        {% else %}
+            {{ article.contenu|raw }}
+        {% endif %}
     </div>
 </div>
 {% endblock %}
