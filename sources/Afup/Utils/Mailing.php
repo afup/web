@@ -76,13 +76,9 @@ class Mailing
 
         $options = array_merge($optionsDefault, $options);
 
-        require_once 'phpmailer/class.phpmailer.php';
-        require_once 'phpmailer/class.smtp.php';
-
         $mail = new \PHPMailer();
         $mail->CharSet = "utf-8";
         $mail->IsHTML($options['html']);
-
         if ($configuration->obtenir('mails|serveur_smtp')) {
             $mail->IsSMTP();
             $mail->Host = $configuration->obtenir('mails|serveur_smtp');

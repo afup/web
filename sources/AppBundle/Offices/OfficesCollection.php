@@ -37,6 +37,7 @@ class OfficesCollection
                 'meetup_id' => '23162834',
                 'logo_url' => '/images/offices/limoges.svg',
                 'twitter' => 'AFUP_Limoges',
+                'youtube' => 'https://www.youtube.com/channel/UCPYMUpcC3b5zd-hVNGEWHAA',
                 'blog_url' => 'http://limoges.afup.org/',
                 'map' => [
                     "legend-first-point-x" => "410",
@@ -59,6 +60,7 @@ class OfficesCollection
                 'meetup_id' => '23840677',
                 'logo_url' => '/images/offices/hdf.svg',
                 'twitter' => 'afup_hdf',
+                'youtube' => 'https://www.youtube.com/channel/UCkMGtNcB-VeqMlQ9p2JMIKg',
                 'map' => [
                     "legend-first-point-x" => "490",
                     "legend-first-point-y" => "55",
@@ -132,6 +134,7 @@ class OfficesCollection
                 'meetup_id' => '18152912',
                 'logo_url' => '/images/offices/marseille.svg',
                 'twitter' => 'AFUP_AixMrs',
+                'youtube' => 'https://www.youtube.com/channel/UC77cQ1izl155u6Y8daMZYiA',
                 'blog_url' => 'http://aix-marseille.afup.org/',
                 'map' => [
                     "legend-first-point-x" => "600",
@@ -198,7 +201,6 @@ class OfficesCollection
                 'meetup_id' => '19629965',
                 'logo_url' => '/images/offices/paris.svg',
                 'twitter' => 'afup_paris',
-                'blog_url' => 'http://paris.afup.org/',
 
                 'map' => [
                     "legend-first-point-x" => "460",
@@ -242,6 +244,7 @@ class OfficesCollection
                 'meetup_id' => '23255694',
                 'logo_url' => '/images/offices/reims.svg',
                 'twitter' => 'afup_reims',
+                'youtube' => 'https://www.youtube.com/channel/UCmkMmVqrt7eI7YMZovew_xw',
                 'map' => [
                     "legend-first-point-x" => "540",
                     "legend-first-point-y" => "150",
@@ -263,7 +266,7 @@ class OfficesCollection
                 'meetup_id' => '22364687',
                 'logo_url' => '/images/offices/rennes.svg',
                 'twitter' => 'AFUP_Rennes',
-
+                'youtube' => 'https://www.youtube.com/channel/UCv1VGfqKhygjTOZkdVUWfpQ',
                 'map' => [
                     "legend-first-point-x" => "285",
                     "legend-first-point-y" => "220",

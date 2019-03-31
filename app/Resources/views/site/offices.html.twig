@@ -2,6 +2,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/grid.css') }}" media="all" />
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style type="text/css">
 
@@ -326,9 +327,9 @@
 
     <h2>Liste des antennes</h2>
     <div class="super-apero-officies">
-
+        <div class="container">
         {% for office_code, office in offices %}
-            <div class="container afup-office"
+            <div class="col-md-6 afup-office"
                 data-map-key="{{ office_code }}"
                  {% if office.map is defined %}
                     data-map-legend-first-point-x="{{ office.map['legend-first-point-x'] }}"
@@ -359,35 +360,48 @@
                     data-use-second-color="1"
                  {% endif %}
             >
-                <div class="col-md-1">
-                    <img src="{{ office.logo_url }}" />
+               <div class="container">
+                    <div class="col-md-2">
+                        <img src="{{ office.logo_url }}" />
+                    </div>
+                    <div class="col-md-10">
+                        <h3>{{ office.label }}</h3>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <h3>{{ office.label }}</h3>
-                </div>
-
-                <div class="col-md-2 city-link">
-                    {% if office.blog_url is defined %}
-                        <i class="fa fa-rss" aria-hidden="true"></i>
-                        <a href="{{ office.blog_url }}">Blog</a>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-2 city-link">
-                    {% if office.twitter is defined %}
-                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                        <a href="https://twitter.com/{{ office.twitter }}">Twitter</a>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-4 city-link">
-                    {% if office.meetup_urlname is defined %}
-                        <i class="fa fa-meetup" aria-hidden="true"></i>
-                        <a href="https://www.meetup.com/fr-FR/{{ office.meetup_urlname }}/">Meetup</a>
-                    {% endif %}
+                <div class="container">
+                    <div class="row">
+                        {% if office.blog_url is defined %}
+                            <a class="button-inverted" href="{{ office.blog_url }}">
+                                <i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Blog
+                            </a>
+                        {% endif %}
+                
+                        {% if office.twitter is defined %}
+                            <a class="button-inverted" href="https://twitter.com/{{ office.twitter }}">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>&nbsp;Twitter
+                            </a>
+                        {% endif %}
+                        
+                        {% if office.meetup_urlname is defined %}
+                            <a class="button-inverted" href="https://www.meetup.com/fr-FR/{{ office.meetup_urlname }}">
+                                <i class="fa fa-meetup" aria-hidden="true"></i>&nbsp;Meetup
+                            </a>
+                        {% endif %}
+                            
+                        {% if office.youtube is defined %}
+                            <a class="button-inverted" href="{{ office.youtube }}">
+                                <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
+            {% if loop.index is even %}
+                </div>
+                <div class="container">
+            {% endif %}
         {% endfor %}
+        </div>
     </div>
 </div>
 </div>

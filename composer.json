@@ -28,7 +28,8 @@
     "setasign/fpdf": "1.53",
     "ezyang/htmlpurifier": "^4.10",
     "mandrill/mandrill": "^1.0",
-    "phpoffice/phpspreadsheet": "^1.6"
+    "phpoffice/phpspreadsheet": "^1.6",
+    "phpmailer/phpmailer": "5.2.9"
   },
   "scripts": {
     "post-install-cmd": [

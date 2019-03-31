@@ -23,7 +23,13 @@ class MemberShipController extends SiteBaseController
 {
     public function becomeMemberAction()
     {
-        return $this->render(':site:become_member.html.twig');
+        return $this->render(
+            ':site:become_member.html.twig',
+            [
+                'membership_fee_natural_person' => AFUP_COTISATION_PERSONNE_PHYSIQUE,
+                'membership_fee_legal_entity' => AFUP_COTISATION_PERSONNE_MORALE
+            ]
+        );
     }
 
     public function companyAction(Request $request)
