@@ -27,7 +27,8 @@
     "presta/sitemap-bundle": "^1.5",
     "setasign/fpdf": "1.53",
     "ezyang/htmlpurifier": "^4.10",
-    "mandrill/mandrill": "^1.0"
+    "mandrill/mandrill": "^1.0",
+    "phpmailer/phpmailer": "5.2.9"
   },
   "scripts": {
     "post-install-cmd": [
