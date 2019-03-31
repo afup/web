@@ -1,5 +1,10 @@
 {% extends ':site:base.html.twig' %}
 
+{% block header %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
+{% endblock %}
+
 {% block content %}
 <div class="mw1400p center" id="container">
     <div class="line" id="main">
