@@ -148,7 +148,7 @@ class VoteController extends EventBaseController
         try {
             $vote->setTalk($talk);
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($vote) {
-                $this->get('app.slack_notifier')->notifyVote($vote);
+                $this->get(\AppBundle\Notifier\SlackNotifier::class)->notifyVote($vote);
             });
             $voteRepository->upsert($vote);
         } catch (Ting\Exception $e) {

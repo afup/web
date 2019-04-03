@@ -11,7 +11,7 @@ class MembershipAdminController extends Controller
 {
     public function reportingAction(Request $request)
     {
-        $userRepository = $this->get('app.user_repository');
+        $userRepository = $this->get(\AppBundle\Association\Model\Repository\UserRepository::class);
 
         /**
          * @var $users User[]

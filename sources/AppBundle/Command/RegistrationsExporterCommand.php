@@ -27,13 +27,13 @@ class RegistrationsExporterCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
 
-        if (null === ($event = $container->get('app.event_repository')->getNextEvent())) {
+        if (null === ($event = $container->get(\AppBundle\Event\Model\Repository\EventRepository::class)->getNextEvent())) {
             $output->writeln('No event found');
             return;
         }
 
         $file = new \SplFileObject($input->getArgument('file'), 'w+');
 
-        $container->get('app.registration_export_generator')->export($event, $file);
+        $container->get(\AppBundle\Event\Ticket\RegistrationsExportGenerator::class)->export($event, $file);
     }
 }

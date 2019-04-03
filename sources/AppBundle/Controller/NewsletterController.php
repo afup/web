@@ -20,7 +20,7 @@ class NewsletterController extends SiteBaseController
 
         if ($subscribeForm->isSubmitted() && $subscribeForm->isValid()) {
             try {
-                $this->get('app.mailchimp_api')->subscribeAddress(
+                $this->get(\AppBundle\Mailchimp\Mailchimp::class)->subscribeAddress(
                     $this->getParameter('mailchimp_subscribers_list'),
                     $subscribeForm->getData()['email']
                 );

@@ -56,7 +56,7 @@ class AdminController extends Controller
             /**
              * @var $personnesPhysiques Personnes_Physiques
              */
-            $personnesPhysiques = $this->get('app.legacy_model_factory')->createObject(Personnes_Physiques::class);
+            $personnesPhysiques = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Personnes_Physiques::class);
             $personnesPhysiques->envoyerMotDePasse($form->getData()['email']);
             $this->addFlash('notice', 'Votre demande a été prise en compte. Si un compte correspond à cet email vous recevez un nouveau mot de passe rapidement.');
         }

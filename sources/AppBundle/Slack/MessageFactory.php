@@ -11,20 +11,20 @@ use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class MessageFactory
 {
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
     /**
      * MessageFactory constructor.
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      */
-    public function __construct(Translator $translator)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
