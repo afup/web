@@ -211,17 +211,6 @@ parameters:
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'
-        apero:
-            nom: 'Apéros PHP'
-            niveau: 'ROLE_APERO'
-            elements:
-                aperos:
-                    nom: 'Apéros'
-                    niveau: 'ROLE_APERO'
-
-                aperos_inscrits:
-                    nom: 'Inscrits'
-                    niveau: 'ROLE_APERO'
         planete:
             nom: 'Planète PHP FR'
             niveau: 'ROLE_ADMIN'
