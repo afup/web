@@ -28,7 +28,7 @@
     "setasign/fpdf": "1.53",
     "ezyang/htmlpurifier": "^4.10",
     "mandrill/mandrill": "^1.0",
-    "znk3r/html_quickform": "dev-master",
+    "znk3r/html_quickform": "4.0.1",
     "friendsofpear/pear_exception": "0.0.*",
     "znk3r/html_common": "*",
     "pear/pear": "^1.10"
@@ -106,7 +106,7 @@
       "type": "package",
       "package": {
         "name": "znk3r/html_quickform",
-        "version": "dev-master",
+        "version": "4.0.1",
         "dist": {
           "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/php7-migration.zip",
           "type": "zip"

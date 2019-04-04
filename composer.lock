@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c32a11577252f04fecf1c9617c2bc22",
+    "content-hash": "bfcbaf3130b298e5ec6369c77b2bd9e7",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4409,7 +4409,7 @@
         },
         {
             "name": "znk3r/html_quickform",
-            "version": "dev-master",
+            "version": "4.0.0",
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/php7-migration.zip"
@@ -4788,9 +4788,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "znk3r/html_quickform": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
