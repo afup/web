@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfcbaf3130b298e5ec6369c77b2bd9e7",
+    "content-hash": "2f27bef67edf959680d34d95ecce171a",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2634,7 +2634,13 @@
                 "type": "zip",
                 "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip"
             },
-            "type": "library"
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "PEAR.php",
+                    "PEAR/"
+                ]
+            }
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4409,7 +4415,7 @@
         },
         {
             "name": "znk3r/html_quickform",
-            "version": "4.0.0",
+            "version": "4.0.2",
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/php7-migration.zip"
@@ -4607,24 +4613,6 @@
             ],
             "description": "A tool to automatically fix PHP code style",
             "time": "2016-12-01T00:05:05+00:00"
-        },
-        {
-            "name": "pear/html_common",
-            "version": "v2.0.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip"
-            },
-            "type": "library"
-        },
-        {
-            "name": "pear/html_quickform",
-            "version": "3.2.16",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/znk3r/HTML_QuickForm/archive/php7-migration.zip"
-            },
-            "type": "library"
         },
         {
             "name": "sebastian/diff",
