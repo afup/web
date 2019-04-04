@@ -28,9 +28,10 @@
     "setasign/fpdf": "1.53",
     "ezyang/htmlpurifier": "^4.10",
     "mandrill/mandrill": "^1.0",
-    "pear/html_quickform": "^3.2",
+    "znk3r/html_quickform": "dev-master",
     "friendsofpear/pear_exception": "0.0.*",
-    "pear/html_common": "*"
+    "znk3r/html_common": "*",
+    "pear/pear": "^1.10"
   },
   "scripts": {
     "post-install-cmd": [
@@ -104,33 +105,45 @@
     {
       "type": "package",
       "package": {
-        "name": "pear/html_quickform",
-        "version": "3.2.16",
+        "name": "znk3r/html_quickform",
+        "version": "dev-master",
         "dist": {
-          "url": "https://github.com/pear/HTML_QuickForm/archive/3.2.16.zip",
+          "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/php7-migration.zip",
           "type": "zip"
+        },
+        "autoload": {
+          "classmap": ["HTML/"]
         }
-      },
-      "autoload": {
-        "classmap": [
-          "./"
-        ]
       }
     },
     {
       "type": "package",
       "package": {
-        "name": "pear/html_common",
+        "name": "znk3r/html_common",
         "version": "v2.0.0",
         "dist": {
-          "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip",
+          "url": "https://github.com/macintoshplus/HTML_Common/archive/master.zip",
           "type": "zip"
+        },
+        "autoload": {
+          "classmap": ["HTML/"]
         }
-      },
-      "autoload": {
-        "classmap": [
-          "./HTML"
-        ]
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "pear/pear",
+        "version": "v1.10.9",
+        "dist": {
+          "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip",
+          "type": "zip"
+        },
+        "autoload": {
+          "classmap": [
+            "./"
+          ]
+        }
       }
     }
   ]

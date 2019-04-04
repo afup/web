@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e9de2f1c8610a958ac36b1e143b7310",
+    "content-hash": "9c32a11577252f04fecf1c9617c2bc22",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2628,20 +2628,11 @@
             "time": "2017-03-13T16:27:32+00:00"
         },
         {
-            "name": "pear/html_common",
-            "version": "v2.0.0",
+            "name": "pear/pear",
+            "version": "v1.10.9",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip"
-            },
-            "type": "library"
-        },
-        {
-            "name": "pear/html_quickform",
-            "version": "3.2.16",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/pear/HTML_QuickForm/archive/3.2.16.zip"
+                "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip"
             },
             "type": "library"
         },
@@ -4401,6 +4392,34 @@
                 "psr-7"
             ],
             "time": "2017-09-13T14:47:08+00:00"
+        },
+        {
+            "name": "znk3r/html_common",
+            "version": "v2.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/macintoshplus/HTML_Common/archive/master.zip"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "HTML/"
+                ]
+            }
+        },
+        {
+            "name": "znk3r/html_quickform",
+            "version": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/php7-migration.zip"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "HTML/"
+                ]
+            }
         }
     ],
     "packages-dev": [
@@ -4590,101 +4609,22 @@
             "time": "2016-12-01T00:05:05+00:00"
         },
         {
-            "name": "pear/html_common2",
-            "version": "v2.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pear/HTML_Common2.git",
-                "reference": "3dd2e0364f564f0912c439aac4463585cd949faf"
-            },
+            "name": "pear/html_common",
+            "version": "v2.0.0",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/HTML_Common2/zipball/3dd2e0364f564f0912c439aac4463585cd949faf",
-                "reference": "3dd2e0364f564f0912c439aac4463585cd949faf",
-                "shasum": ""
+                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip"
             },
-            "require": {
-                "pear/pear_exception": "*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "HTML": "./"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "./"
-            ],
-            "license": [
-                "BSD License"
-            ],
-            "authors": [
-                {
-                    "name": "Alexey Borzov",
-                    "email": "avb@php.net",
-                    "role": "Lead"
-                },
-                {
-                    "name": "Klaus Guenther",
-                    "email": "thesaur@php.net",
-                    "role": "Lead"
-                }
-            ],
-            "description": "More info available on: http://pear.php.net/package/HTML_Common2",
-            "time": "2014-06-18T15:06:53+00:00"
+            "type": "library"
         },
         {
-            "name": "pear/html_quickform2",
-            "version": "v2.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pear/HTML_QuickForm2.git",
-                "reference": "0b6a807807ec67bf04b5f12eab8c71f54c15ac0b"
-            },
+            "name": "pear/html_quickform",
+            "version": "3.2.16",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/HTML_QuickForm2/zipball/0b6a807807ec67bf04b5f12eab8c71f54c15ac0b",
-                "reference": "0b6a807807ec67bf04b5f12eab8c71f54c15ac0b",
-                "shasum": ""
+                "url": "https://github.com/znk3r/HTML_QuickForm/archive/php7-migration.zip"
             },
-            "require": {
-                "pear/html_common2": "*",
-                "pear/pear_exception": "*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "HTML": "./"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "./"
-            ],
-            "license": [
-                "BSD"
-            ],
-            "authors": [
-                {
-                    "name": "Alexey Borzov",
-                    "email": "avb@php.net",
-                    "role": "Lead"
-                },
-                {
-                    "name": "Bertrand Mansion",
-                    "email": "golgote@mamasam.com",
-                    "role": "Lead"
-                }
-            ],
-            "description": "Provides methods to create, validate and render HTML forms in PHP.",
-            "time": "2014-06-28T07:44:13+00:00"
+            "type": "library"
         },
         {
             "name": "sebastian/diff",
@@ -4848,7 +4788,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "znk3r/html_quickform": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
