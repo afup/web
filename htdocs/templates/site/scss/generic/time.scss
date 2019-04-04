@@ -6,9 +6,9 @@ time {
   color: #fff;
   padding: 10px 0 0 20px;
   display: block;
-  margin-left: -20px
-}
+  margin-left: -20px;
 
-time + h2 {
-  margin-top: 10px
+  + h2 {
+    margin-top: 10px;
+  }
 }

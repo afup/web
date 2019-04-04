@@ -1,7 +1,12 @@
 <div class="secondary-menu">
-	<div class="mw1400p center">
-	    {% for item in menu %}
-	        <a class="secondary-menu__item {% if loop.first %}secondary-menu-first{% endif %} {% if loop.last %}secondary-menu-last{% endif %} {% if item.is_active %}active{% endif %}" href="{{ item.lien }}">{{ item.nom }}</a>
-	    {% endfor %}
-	</div>
+    {% for item in menu if item.is_active %}
+        <a href="" class="secondary-menu__current-item">{{ item.nom }}</a>
+    {% endfor %}
+    <div class="mw1400p center">
+        <div class="secondary-menu__list">
+            {% for item in menu %}
+                <a class="secondary-menu__item {% if loop.first %}secondary-menu-first{% endif %} {% if loop.last %}secondary-menu-last{% endif %} {% if item.is_active %}active{% endif %}" href="{{ item.lien }}">{{ item.nom }}</a>
+            {% endfor %}
+        </div>
+    </div>
 </div>

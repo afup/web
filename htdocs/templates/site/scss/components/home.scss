@@ -1,11 +1,11 @@
 .home-list {
   list-style: none;
-}
 
-.home-list li a {
-  text-decoration: none;
-  display: inline-block;
-  padding: 4px 0;
+  li a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 4px 0;
+  }
 }
 
 .home-list-date {
@@ -15,10 +15,10 @@
 .home-list-chapeau-container {
   margin: 15px 0;
   color: rgb(62, 61, 64);
-}
 
-.home-list-chapeau-container p {
-  display: inline;
+  p {
+    display: inline;
+  }
 }
 
 .home-view-more {

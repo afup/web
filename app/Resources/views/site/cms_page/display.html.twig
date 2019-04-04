@@ -1,15 +1,13 @@
 {% extends ':site:base.html.twig' %}
 
 {% block content %}
+{{ render(controller(
+    'AppBundle\\Controller\\SecondaryMenuController::displayAction',
+    { 'feuille_id': rubrique.feuille_associee }
+)) }}
 <div class="mw1400p center" id="container">
     <div class="line" id="main">
         <h1>{{ rubrique.nom }}</h1>
-
-        {{ render(controller(
-            'AppBundle\\Controller\\SecondaryMenuController::displayAction',
-            { 'feuille_id': rubrique.feuille_associee }
-        )) }}
-
         <h2>{{ article.titre }}</h2>
 
         {{ article.contenu|raw }}

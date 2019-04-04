@@ -12,7 +12,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
     <script src="/js/meetups/list.js"></script>
 {% endblock %}
@@ -24,23 +23,10 @@
 {% endblock %}
 
 {% block content %}
-  <!--   {{ render(controller(
+    {{ render(controller(
         'AppBundle\\Controller\\SecondaryMenuController::displayAction',
         { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') }
-    )) }} -->
-
-    <div class="secondary-menu">
-        <div class="mw1400p center">
-            <a class="secondary-menu__item">Présentation</a>
-            <a class="secondary-menu__item">Adhésion</a>
-            <a class="secondary-menu__item">Pôles et missions</a>
-            <a class="secondary-menu__item">Statuts</a>
-            <a class="secondary-menu__item">Bureaux</a>
-            <a class="secondary-menu__item">Code de conduite</a>
-            <a class="secondary-menu__item">Règlement</a>
-            <a class="secondary-menu__item">FAQ</a>
-        </div>
-    </div>
+    )) }}
 
     <div class="mw1400p center" id="container">
         <div class="line" id="main">

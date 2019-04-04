@@ -1,5 +1,5 @@
 div.container {
-	padding: 0;
+  padding: 0;
 }
 
 .row {
@@ -8,7 +8,7 @@ div.container {
   width: 100%;
 }
 
-.row > *, 
+.row > *,
 .col {
   display: table-cell;
   vertical-align: top;
@@ -122,17 +122,5 @@ div.container {
 .pl3, .pll { padding-left: 30px; }
 
 @media (max-width: 1400px) {
-	.mw1400p { width: 100%; }
-}
-
-@media (max-width: 760px) {
-	div.container {
-		padding: 110px 0;
-	}
-}
-
-@media (max-width: 460px) {
-	div.container {
-		padding: 85px 0;
-	}
+  .mw1400p { width: 100%; }
 }

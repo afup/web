@@ -14,14 +14,14 @@ table {
 
 tbody {
   border: 1px solid #ccc;
-}
 
-tbody tr:nth-child(odd) {
-  background: #eee;
-}
+  tr:nth-child(odd) {
+    background: #eee;
+  }
 
-tbody tr > * + * {
-  border-left: 1px solid rgba(0, 0, 0, .05);
+  tr > * + * {
+    border-left: 1px solid rgba(0, 0, 0, .05);
+  }
 }
 
 tr > :last-child {

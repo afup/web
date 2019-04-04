@@ -101,13 +101,13 @@ input, button, select, label {
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding-top: 110px;
+  .wrapper {
+    padding-top: 110px !important;
   }
 }
 
 @media (max-width: 460px) {
-  .container {
-    padding-top: 85px;
+  .wrapper {
+    padding-top: 90px !important;
   }
 }
