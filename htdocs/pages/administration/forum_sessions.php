@@ -337,6 +337,7 @@ if ($action == 'lister') {
     $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'c.nom, c.conferencier_id', true);
 	$formulaire->addElement('select', 'conferencier_id_1'    , 'N°1', $conferenciers);
 	$formulaire->addElement('select', 'conferencier_id_2'    , 'N°2', $conferenciers);
+    $formulaire->addElement('select', 'conferencier_id_3'    , 'N°3', $conferenciers);
 
 	if ($action != 'ajouter') {
         $conferenciers = $forum_appel->obtenirConferenciersPourSession($id);
@@ -410,6 +411,7 @@ if ($action == 'lister') {
         if ($ok) {
             $ok &= $forum_appel->lierConferencierSession($valeurs['conferencier_id_1'], $session_id);
             $ok &= $forum_appel->lierConferencierSession($valeurs['conferencier_id_2'], $session_id);
+            $ok &= $forum_appel->lierConferencierSession($valeurs['conferencier_id_3'], $session_id);
         }
 
         if ($ok) {

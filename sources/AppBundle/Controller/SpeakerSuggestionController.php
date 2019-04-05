@@ -92,7 +92,7 @@ class SpeakerSuggestionController extends EventBaseController
             ]
         );
 
-        $this->get('app.mail')->sendSimpleMessage(
+        $this->get(\Afup\Site\Utils\Mail::class)->sendSimpleMessage(
             $subject,
             $content,
             [

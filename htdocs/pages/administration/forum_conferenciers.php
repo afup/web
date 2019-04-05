@@ -24,7 +24,7 @@ $tris_valides = array();
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-$storage = $this->get('app.photo_storage');
+$storage = $this->get(\AppBundle\CFP\PhotoStorage::class);
 
 /**
  * @var $speakerRepository \AppBundle\Event\Model\Repository\SpeakerRepository

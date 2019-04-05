@@ -52,7 +52,7 @@ class CfpNotificationCommand extends ContainerAwareCommand
 
         $currentDate = new \DateTime();
 
-        $message = $this->getContainer()->get('app.slack_message_factory')->createMessageForCfpStats(
+        $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForCfpStats(
             $event,
             $ting->get(TalkRepository::class),
             $ting->get(TalkToSpeakersRepository::class),
@@ -60,7 +60,7 @@ class CfpNotificationCommand extends ContainerAwareCommand
             $since
         );
 
-        $this->getContainer()->get('app.slack_notifier')->sendMessage($message);
+        $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
     }
 
     /**

@@ -25,8 +25,8 @@ class GeneralMeetupNotificationCommand extends ContainerAwareCommand
     {
         $assembleeGenerale = new \Afup\Site\Association\Assemblee_Generale($GLOBALS['AFUP_DB']);
 
-        $message = $this->getContainer()->get('app.slack_message_factory')->createMessageForGeneralMeeting($assembleeGenerale);
+        $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForGeneralMeeting($assembleeGenerale);
 
-        $this->getContainer()->get('app.slack_notifier')->sendMessage($message);
+        $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
     }
 }
