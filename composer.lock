@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "14b0eb080368c1702634a893bb362ff2",
+    "content-hash": "33af26d47856af416ab38b748bff19e0",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4716,7 +4716,7 @@
             "version": "v2.0.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/macintoshplus/HTML_Common/archive/master.zip"
+                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip"
             },
             "type": "library",
             "autoload": {
@@ -4730,7 +4730,7 @@
             "version": "4.0.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/php7-migration.zip"
+                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.0.zip"
             },
             "type": "library",
             "autoload": {
