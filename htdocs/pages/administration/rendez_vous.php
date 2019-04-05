@@ -143,8 +143,8 @@ if ($action == 'lister' || $action== 'listing' ) {
     $formulaire->addElement('header'  , ''         , 'Mode d\'inscriptions');
     $formulaire->addElement('static', null, null, "L'inscription est gérée par le back-office de l'AFUP");
     $grp_inscription = array();
-    $grp_inscription[] = &HTML_QuickForm::createElement('radio', 'inscription', null, 'oui', 1);
-    $grp_inscription[] = &HTML_QuickForm::createElement('radio', 'inscription', null, 'non', 0);
+    $grp_inscription[] = $formulaire->createElement('radio', 'inscription', null, 'oui', 1);
+    $grp_inscription[] = $formulaire->createElement('radio', 'inscription', null, 'non', 0);
     $formulaire->addGroup($grp_inscription, 'inscription', null, '&nbsp;', false);
     
     $formulaire->addElement('static', null, null, "Si non, saisir l'URL d'enregistrement (possible ne rien remplir) ");

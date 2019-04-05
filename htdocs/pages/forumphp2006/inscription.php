@@ -41,11 +41,11 @@ for ($i=1;$i <= $nombre_personnes;$i++)
 	$formulaire->addElement('text'  , 'email'.$i                    , 'Email'          , array('size' => 30, 'maxlength' => 100));
 	$formulaire->addElement('text'  , 'telephone'.$i                , 'Tél.'           , array('size' => 20, 'maxlength' => 20));
 	$groupe = array();
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée fonctionnelle, jeudi 09 novembre 2006 : <strong>100,00 ' . EURO . '</strong>', AFUP_FORUM_PREMIERE_JOURNEE);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Journée technique, vendredi 10 novembre 2006 : <strong>100,00 ' . EURO . '</strong>'       , AFUP_FORUM_DEUXIEME_JOURNEE);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Deux jours : <strong>150,00 ' . EURO . '</strong>'                                      , AFUP_FORUM_2_JOURNEES);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Deux jours (membre AFUP) : <strong>100,00 ' . EURO . '</strong>'                        , AFUP_FORUM_2_JOURNEES_AFUP);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription'.$i, null, 'Deux jours (étudiant) : <strong>100,00 ' . EURO . '</strong>'                           , AFUP_FORUM_2_JOURNEES_ETUDIANT);
+	$groupe[] = $formulaire->createElement('radio', 'type_inscription'.$i, null, 'Journée fonctionnelle, jeudi 09 novembre 2006 : <strong>100,00 ' . EURO . '</strong>', AFUP_FORUM_PREMIERE_JOURNEE);
+	$groupe[] = $formulaire->createElement('radio', 'type_inscription'.$i, null, 'Journée technique, vendredi 10 novembre 2006 : <strong>100,00 ' . EURO . '</strong>'       , AFUP_FORUM_DEUXIEME_JOURNEE);
+	$groupe[] = $formulaire->createElement('radio', 'type_inscription'.$i, null, 'Deux jours : <strong>150,00 ' . EURO . '</strong>'                                      , AFUP_FORUM_2_JOURNEES);
+	$groupe[] = $formulaire->createElement('radio', 'type_inscription'.$i, null, 'Deux jours (membre AFUP) : <strong>100,00 ' . EURO . '</strong>'                        , AFUP_FORUM_2_JOURNEES_AFUP);
+	$groupe[] = $formulaire->createElement('radio', 'type_inscription'.$i, null, 'Deux jours (étudiant) : <strong>100,00 ' . EURO . '</strong>'                           , AFUP_FORUM_2_JOURNEES_ETUDIANT);
 	$formulaire->addGroup($groupe, 'groupe_type_inscription'.$i, 'Formule', '<br />', false);
 	if ($i == $nombre_personnes)
 		$formulaire->addElement('static'  , 'raccourci'                   , ''               , '<a href="#facturation" class="double">passer à la facturation</a>.');
@@ -55,8 +55,8 @@ for ($i=1;$i <= $nombre_personnes;$i++)
 
 $formulaire->addElement('header'  , ''                       , '<a name="facturation">Facturation</a>');
 $groupe = array();
-$groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
-$groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
+$groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
+$groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
 $formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
 $formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
 $formulaire->addElement('text'    , 'societe_facturation'    , 'Société'        , array('size' => 50, 'maxlength' => 100));
@@ -70,18 +70,18 @@ $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           
 $formulaire->addElement('header', null, 'Divers');
 $formulaire->addElement('static', null, null, "J'accepte que ma compagnie soit citée comme participant à la conférence");
 $groupe = array();
-$groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'oui', 1);
-$groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'non', 0);
+$groupe[] = $formulaire->createElement('radio', 'citer_societe', null, 'oui', 1);
+$groupe[] = $formulaire->createElement('radio', 'citer_societe', null, 'non', 0);
 $formulaire->addGroup($groupe, 'groupe_citer_societe', null, '&nbsp;', false);
 $formulaire->addElement('static', null, null, "Je souhaite être tenu au courant des rencontres de l'AFUP sur des sujets afférents à PHP");
 $groupe = array();
-$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'oui', 1);
-$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'non', 0);
+$groupe[] = $formulaire->createElement('radio', 'newsletter_afup', null, 'oui', 1);
+$groupe[] = $formulaire->createElement('radio', 'newsletter_afup', null, 'non', 0);
 $formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
 $formulaire->addElement('static', null, null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
 $groupe = array();
-$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
-$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
+$groupe[] = $formulaire->createElement('radio', 'newsletter_nexen', null, 'oui', 1);
+$groupe[] = $formulaire->createElement('radio', 'newsletter_nexen', null, 'non', 0);
 $formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
 
 $formulaire->addElement('header', 'boutons'  , '');

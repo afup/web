@@ -300,21 +300,21 @@ if ($action == 'lister') {
     asort($typesLabelsByKey);
     $groupe = array();
     foreach ($typesLabelsByKey as $genreKey => $genreLabel) {
-        $groupe[] = &HTML_QuickForm::createElement('radio', 'genre', null, $genreLabel, $genreKey);
+        $groupe[] = $formulaire->createElement('radio', 'genre', null, $genreLabel, $genreKey);
     }
     $formulaire->addGroup($groupe, 'groupe_type_pres', "Type de session", '<br />', false);
 
     $groupe = array();
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'plannifie', null, 'Oui', 1);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'plannifie', null, 'Non', 0);
+    $groupe[] = $formulaire->createElement('radio', 'plannifie', null, 'Oui', 1);
+    $groupe[] = $formulaire->createElement('radio', 'plannifie', null, 'Non', 0);
     $formulaire->addGroup($groupe, 'groupe_plannifie', "Plannifi&eacute;", '<br />', false);
 
     $groupe = array();
 
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'skill', null, 'N/A', Talk::SKILL_NA);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'skill', null, 'Junior', Talk::SKILL_JUNIOR);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'skill', null, 'Medior', Talk::SKILL_MEDIOR);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'skill', null, 'Senior', Talk::SKILL_SENIOR);
+    $groupe[] = $formulaire->createElement('radio', 'skill', null, 'N/A', Talk::SKILL_NA);
+    $groupe[] = $formulaire->createElement('radio', 'skill', null, 'Junior', Talk::SKILL_JUNIOR);
+    $groupe[] = $formulaire->createElement('radio', 'skill', null, 'Medior', Talk::SKILL_MEDIOR);
+    $groupe[] = $formulaire->createElement('radio', 'skill', null, 'Senior', Talk::SKILL_SENIOR);
     $formulaire->addGroup($groupe, 'groupe_skill', "Niveau", '<br />', false);
 
     $formulaire->addElement('checkbox'    , 'needs_mentoring'          , "Demande a bénéficier du programme d'accompagnement des jeunes speakers");
