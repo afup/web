@@ -18,7 +18,7 @@ $personnes_physiques = new Personnes_Physiques($bdd);
 
 $pays = new Pays($bdd);
 
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 
 $identifiant = $droits->obtenirIdentifiant();
 $champs = $personnes_physiques->obtenir($identifiant);

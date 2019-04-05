@@ -55,7 +55,7 @@ if (isset($prochain_rendezvous) and is_array($prochain_rendezvous)) {
 		$smarty->assign('message_inscription', 'Les pré-inscriptions s\'effectuent en cliquant sur le lien ci-dessous');
 	} else {	
 	
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
 
     $formulaire->addElement('hidden'  , 'id_rendezvous' , $prochain_rendezvous['id']);
     $formulaire->addElement('hidden'  , 'id'            , 0);

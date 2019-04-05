@@ -82,7 +82,7 @@ if ($action == 'lister') {
     /**
      * @var $formulaire HTML_QuickForm
      */
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $mot_de_passe = md5(time());
         $formulaire->setDefaults(array('civilite' => 'M.',

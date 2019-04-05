@@ -34,7 +34,7 @@ if ($action == 'lister') {
 } elseif ($action == 'ajouter' || $action == 'modifier') {
     $pays = new Pays($bdd);
 
-  	$formulaire = &instancierFormulaire();
+  	$formulaire = instancierFormulaire();
 
    if ($action == 'modifier')
    {

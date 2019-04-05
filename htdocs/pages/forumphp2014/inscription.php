@@ -47,7 +47,7 @@ $nombre_inscriptions = isset($_GET['nbInscriptions']) ? (int)$_GET['nbInscriptio
 $smarty->assign('nbInscriptions', $nombre_inscriptions);
 
 // On créé le formulaire
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 $formulaire->setDefaults(array('id_pays_facturation' => 'FR'));
 
 for ($i=1; $i <= $nombre_personnes; $i++) {

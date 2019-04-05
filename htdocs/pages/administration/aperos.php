@@ -49,7 +49,7 @@ if ($action == 'lister') {
     }
 
 } else {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
     	$champs['date'] = time();
         $formulaire->setDefaults(array('etat' => 0, 'date' => time()));

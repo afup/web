@@ -43,7 +43,7 @@ if ($action == 'mailing')
             $liste = '';
             break;
     }
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     $id_forum = $forum->obtenirDernier();
     $rs_forum = $forum->obtenir($id_forum);
     $formulaire->setDefaults(array('from_email' => $GLOBALS['conf']->obtenir('mails|email_expediteur'),

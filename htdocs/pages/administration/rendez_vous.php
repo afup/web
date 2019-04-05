@@ -64,7 +64,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     }
 
 } elseif ($action == 'envoyer') {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     $sujet = $rendez_vous->preparerSujetDuMessage();
     $corps = $rendez_vous->preparerCorpsDuMessage($_GET['id']);
     $formulaire->setDefaults(array('sujet' => $sujet,
@@ -96,7 +96,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } elseif ($action == 'preparer') {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
 
 	$id = 0;
 	$current_year = date('Y');
@@ -222,7 +222,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } elseif (in_array($action, array('ajouter', 'modifier'))) {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
 
 	if (isset($_GET['id'])) {
 		if ($action == 'modifier') {

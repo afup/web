@@ -81,7 +81,7 @@ class LegacyController extends Controller
         $personnes_morales = new Personnes_Morales($bdd);
         $pays = new Pays($bdd);
 
-        $formulaire = &instancierFormulaire();
+        $formulaire = instancierFormulaire();
 
         $formulaire->setDefaults(
             [

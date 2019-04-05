@@ -24,7 +24,7 @@ $nombre_personnes = 5;
 
 
 // On créé le formulaire
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 $formulaire->setDefaults(array('civilite'            => 'M.',
                                'id_pays_facturation' => 'FR',
                                'type_inscription'    => -1,

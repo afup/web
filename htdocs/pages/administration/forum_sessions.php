@@ -92,7 +92,7 @@ if ($action == 'lister') {
 } elseif ($action == 'commenter') {
     $genres = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
 
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     $id = isset($_GET['id']) ? $_GET['id'] : 0;
     $id_forum = isset($_GET['id_forum']) ? $_GET['id_forum'] : $forum->obtenirDernier();
     $formulaire->addElement('hidden', 'id'      , $id);
@@ -174,7 +174,7 @@ if ($action == 'lister') {
 
     $genres = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
 
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     $id = isset($_GET['id']) ? $_GET['id'] : 0;
     $id_forum = isset($_GET['id_forum']) ? $_GET['id_forum'] : $forum->obtenirDernier();
     $formulaire->addElement('hidden', 'id'      , $id);
@@ -263,7 +263,7 @@ if ($action == 'lister') {
 
     $talk = null;
 	
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action != 'ajouter') {
         $champs = $forum_appel->obtenirSession($_GET['id']);
 

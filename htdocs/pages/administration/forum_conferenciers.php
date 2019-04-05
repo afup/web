@@ -203,7 +203,7 @@ if ($action == 'inscrire_forum') {
 } else {
     $pays = new \Afup\Site\Utils\Pays($bdd);
 
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(array('civilite' => 'M.',
             'id_pays_facturation' => 'FR',

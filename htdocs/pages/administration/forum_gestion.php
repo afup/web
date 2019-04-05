@@ -47,7 +47,7 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression du forum', 'index.php?page=forum_gestion&action=lister', true);
     }
 } else {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
 		$formulaire->setDefaults(array('civilite' => 'M.',
 									   'id_pays'  => 'FR'));

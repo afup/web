@@ -18,7 +18,7 @@ if ((time() - $fin_de_lappel) > 0) {
     exit();
 }
 
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 $formulaire->setDefaults(array('civilite'            => 'M.',
                         ));
 

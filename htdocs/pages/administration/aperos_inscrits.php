@@ -46,7 +46,7 @@ if ($action == 'lister') {
     }
 
 } else {
-	$formulaire = &instancierFormulaire();
+	$formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(array('validation' => '0'));
     } else {

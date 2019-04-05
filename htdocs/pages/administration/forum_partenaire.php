@@ -33,7 +33,7 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression du partenaire', 'index.php?page=forum_partenaire&action=lister', true);
     }
 } else {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
 		$formulaire->setDefaults(array('ranking' => 1));
     } else {

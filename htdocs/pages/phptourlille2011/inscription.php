@@ -46,7 +46,7 @@ $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_person
 $nombre_tags = 3;
 
 // On créé le formulaire
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 $formulaire->setDefaults(array('civilite'            => 'M.',
                                'id_pays_facturation' => 'FR',
                                'type_inscription'    => -1,

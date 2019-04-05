@@ -43,7 +43,7 @@ $nombre_personnes = isset($_GET['nombre_personnes']) ? (int)$_GET['nombre_person
 $nombre_tags = 3;
 
 // On créé le formulaire
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 $formulaire->setDefaults(array('id_pays_facturation' => 'FR'));
 
 for ($i=1; $i <= $nombre_personnes; $i++) {

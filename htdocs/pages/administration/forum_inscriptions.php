@@ -55,7 +55,7 @@ $forum_facturation = new Facturation($bdd);
 if ($action == 'envoyer_convocation') {
     $current = $forum->obtenir($_GET['id_forum'], 'titre');
 
-	$formulaire = &instancierFormulaire();
+	$formulaire = instancierFormulaire();
     $formulaire->setDefaults(array('template' => 'convocation-???'));
 
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
@@ -155,7 +155,7 @@ if ($action == 'envoyer_convocation') {
 
     $pays = new Pays($bdd);
 
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
 		$formulaire->setDefaults(
 		    [
