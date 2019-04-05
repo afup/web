@@ -1,7 +1,20 @@
-.button {
+.button,
+a.button-inverted:hover {
     background-color: #415e96;
-    border: none;
+    border: 1px solid #415e96;
     color: white;
+    padding: 15px 32px;
+    margin: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+a.button-inverted {
+    background-color: white;
+    border: 1px solid #415e96;
+    color: #415e96;
     padding: 15px 32px;
     margin: 1em;
     text-align: center;
@@ -13,4 +26,10 @@
 .button svg{
     fill:white;
     margin-bottom: -12px;
+}
+
+.button--call-to-action {
+    background-color: #ed0678;
+    border-color: #ed0678;
+    font-weight: bold;
 }

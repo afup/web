@@ -80,6 +80,7 @@ if ($action == 'lister') {
         $formulaire->setDefaults(array('date' => time(),
                                        'position' => 0,
                                        'id_personne_physique' => $droits->obtenirIdentifiant(),
+                                       'type_contenu' => Article::TYPE_CONTENU_MARKDOWN,
                                        'etat' => 0));
     } else {
         $champs = $article->charger();
@@ -87,11 +88,18 @@ if ($action == 'lister') {
     }
 
     $formulaire->addElement('header'  , ''                         , 'Article');
-    $formulaire->addElement('textarea', 'surtitre'                 , 'Surtitre'        , array('cols' => 42, 'rows'      => 5, 'class' => 'tinymce'));
+
+    $abstractClass = 'simplemde';
+    if ($action != 'ajouter' && false === $article->isTypeContenuMarkdown()) {
+        $abstractClass = 'tinymce';
+    }
+
+    $formulaire->addElement('textarea', 'surtitre'                 , 'Surtitre'        , array('cols' => 42, 'rows'      => 5, 'class' => $abstractClass));
     $formulaire->addElement('text'    , 'titre'                    , 'Titre'           , array('size' => 60, 'maxlength' => 255));
-    $formulaire->addElement('textarea', 'descriptif'               , 'Descriptif'      , array('cols' => 42, 'rows'      => 10, 'class' => 'tinymce'));
-    $formulaire->addElement('textarea', 'chapeau'                  , 'Chapeau'         , array('cols' => 42, 'rows'      => 10, 'class' => 'tinymce'));
-    $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , array('cols' => 42, 'rows'      => 20, 'class' => 'tinymce_iframe'));
+    $formulaire->addElement('textarea', 'descriptif'               , 'Descriptif'      , array('cols' => 42, 'rows'      => 10, 'class' => $abstractClass));
+    $formulaire->addElement('textarea', 'chapeau'                  , 'Chapeau'         , array('cols' => 42, 'rows'      => 10, 'class' => $abstractClass));
+    $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , array('cols' => 42, 'rows'      => 20, 'class'=> $abstractClass));
+    $formulaire->addElement('hidden', 'type_contenu');
 
     $formulaire->addElement('header'  , ''                         , 'M&eacute;ta-donn&eacute;es');
     $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'      , array('size' => 60, 'maxlength' => 255));
@@ -119,6 +127,7 @@ if ($action == 'lister') {
         $article->descriptif = $formulaire->exportValue('descriptif');
         $article->chapeau = $formulaire->exportValue('chapeau');
         $article->contenu = $formulaire->exportValue('contenu');
+        $article->type_contenu = $formulaire->exportValue('type_contenu');
         $article->position = $formulaire->exportValue('position');
         $date = $formulaire->exportValue('date');
         $article->date = mktime(0, 0, 0, $date['M'], $date['d'], $date['Y']);

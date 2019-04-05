@@ -45,6 +45,11 @@ class Article implements NotifyPropertyInterface
      */
     private $content;
 
+    /***
+     * @var string
+     */
+    private $contentType;
+
     /**
      * @var \DateTime
      */
@@ -141,7 +146,14 @@ class Article implements NotifyPropertyInterface
      */
     public function getLeadParagraph()
     {
-        return $this->leadParagraph;
+        $leadParagraph = $this->leadParagraph;
+
+        if ($this->isContentTypeMarkdown()) {
+            $parseDown = new \Parsedown();
+            $leadParagraph = $parseDown->parse($leadParagraph);
+        }
+
+        return $leadParagraph;
     }
 
     /**
@@ -162,7 +174,14 @@ class Article implements NotifyPropertyInterface
      */
     public function getDescription()
     {
-        return $this->description;
+        $description = $this->description;
+
+        if ($this->isContentTypeMarkdown()) {
+            $parseDown = new \Parsedown();
+            $description = $parseDown->parse($description);
+        }
+
+        return $description;
     }
 
     /**
@@ -183,7 +202,14 @@ class Article implements NotifyPropertyInterface
      */
     public function getContent()
     {
-        return $this->content;
+        $content = $this->content;
+
+        if ($this->isContentTypeMarkdown()) {
+            $parseDown = new \Parsedown();
+            $content = $parseDown->parse($content);
+        }
+
+        return $content;
     }
 
     /**
@@ -197,6 +223,35 @@ class Article implements NotifyPropertyInterface
         $this->content = $content;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param string $contentType
+     *
+     * @return $this
+     */
+    public function setContentType($contentType)
+    {
+        $this->propertyChanged('contentType', $this->contentType, $contentType);
+        $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isContentTypeMarkdown()
+    {
+        return $this->contentType == \Afup\Site\Corporate\Article::TYPE_CONTENU_MARKDOWN;
     }
 
     /**

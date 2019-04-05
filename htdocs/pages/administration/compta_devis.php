@@ -16,7 +16,6 @@ $action = verifierAction(array(
 					'ajouter',
 					'modifier',
 					'telecharger_devis',
-					'envoyer_devis',
 					'transfert',
 					));
 $smarty->assign('action', $action);
@@ -32,13 +31,6 @@ if ($action == 'lister') {
     afficherMessage('Le devis a été transformé en facture', 'index.php?page=compta_facture&action=lister');
 } elseif ($action == 'telecharger_devis') {
 	$comptaFact->genererDevis($_GET['ref']);
-} elseif ($action == 'envoyer_devis'){
-	if($comptaFact->envoyerDevis($_GET['ref'])){
-		Logs::log('Envoi par email de la devis n°' . $_GET['ref']);
-		afficherMessage('Le devis a été envoyé', 'index.php?page=compta_devis&action=lister');
-	} else {
-		afficherMessage("Le devis n'a pas pu être envoyé", 'index.php?page=compta_devis&action=lister', true);
-	}
 } elseif ($action == 'ajouter' || $action == 'modifier') {
     $pays = new Pays($bdd);
 
