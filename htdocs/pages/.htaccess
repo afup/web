@@ -206,6 +206,8 @@ RewriteRule ^(.*)$  "/?"  [L,R=302]
 
 RewriteRule ^lille.*$ /association/antennes? [R=302]
 
+RewriteRule ^phptourluxembourg2015.*$ https://event.afup.org/archives/? [R=302]
+
 
 #pages déplacées
 RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/981/poles$
