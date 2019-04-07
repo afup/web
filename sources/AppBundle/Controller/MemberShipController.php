@@ -4,7 +4,10 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Pays;
+use Afup\Site\Utils\Utils;
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\UserType;
@@ -17,6 +20,7 @@ use AppBundle\Association\Model\User;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class MemberShipController extends SiteBaseController
@@ -226,5 +230,28 @@ class MemberShipController extends SiteBaseController
             $logs::log("Ajout de la cotisation " . $payboxResponse->getCmd() . " via Paybox.");
         }
         return new Response();
+    }
+
+    public function contactDetailsAction(Request $request)
+    {
+        $repo = $this->get('ting')->get(UserRepository::class);
+        $user = $repo->getOneBy(['id' => $this->getUserId()]);
+        $pays = new Pays($bdd);
+
+        $form = $this->createForm(UserType::class, $user);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+           dump($form->getData());
+        }
+
+        return $this->render(':admin/association/membership:member_contact_details.html.twig', ['title' => 'Mes coordonnées', 'form' => $form->createView()]);
+    }
+
+    private function getUserId()
+    {
+        global $bdd;
+        $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
+        return $droits->obtenirIdentifiant();
     }
 }
