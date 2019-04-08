@@ -5,7 +5,6 @@
             <th>Prénom</th>
             <th>Etat</th>
             <th>Administration site</th>
-            <th>Module apéro</th>
             <th>Module annuaire</th>
             <th>Module site</th>
             <th>Module forum</th>
@@ -20,7 +19,6 @@
             <td>{$administrateur.prenom}</td>
             <td>{if $administrateur.etat}Actif{else}Inactif{/if}</td>
             <td>{if $administrateur.niveau == 2}Administrateur{else}---{/if}</td>
-            <td>{if $administrateur.niveau_apero == 2}Gestionnaire{else}---{/if}</td>
             <td>{if $administrateur.niveau_annuaire == 2}Gestionnaire{else}---{/if}</td>
             <td>{if $administrateur.niveau_site == 2}Gestionnaire{else}---{/if}</td>
             <td>{if $administrateur.niveau_forum == 2}Gestionnaire{else}---{/if}</td>
