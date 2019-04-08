@@ -88,7 +88,6 @@ if ($action == 'lister') {
         $formulaire->setDefaults(array('civilite' => 'M.',
                 'id_pays' => 'FR',
                 'niveau' => AFUP_DROITS_NIVEAU_MEMBRE,
-                'niveau_apero' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_annuaire' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_forum' => AFUP_DROITS_NIVEAU_MEMBRE,
                 'niveau_site' => AFUP_DROITS_NIVEAU_MEMBRE,
@@ -141,8 +140,7 @@ if ($action == 'lister') {
     $formulaire->addElement('select' , 'niveau' , 'Niveau' , array(AFUP_DROITS_NIVEAU_MEMBRE => 'Membre',
             AFUP_DROITS_NIVEAU_REDACTEUR => 'Rédacteur',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Administrateur'));
-    $formulaire->addElement('select' , 'niveau_apero' , 'Apéros PHP' , array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
-            AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
+
     $formulaire->addElement('select' , 'niveau_annuaire' , 'Annuaire des prestataires', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
     $formulaire->addElement('select' , 'niveau_forum' , 'Forum PHP & PHP Tour', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
@@ -185,7 +183,7 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         if ($action == 'ajouter') {
             // Construction du champ niveau_modules : concaténation dse différentes valeurs
-            $niveau_modules = $formulaire->exportValue('niveau_apero').
+            $niveau_modules = AFUP_DROITS_NIVEAU_MEMBRE. //Anciennement apéro
                               $formulaire->exportValue('niveau_annuaire').
                               $formulaire->exportValue('niveau_site').
                               $formulaire->exportValue('niveau_forum').
@@ -214,7 +212,7 @@ if ($action == 'lister') {
             /**
             * Niveau modules : concaténation
             */
-            $niveau_modules = $formulaire->exportValue('niveau_apero').
+            $niveau_modules = AFUP_DROITS_NIVEAU_MEMBRE. //Anciennement Apero
                               $formulaire->exportValue('niveau_annuaire').
                               $formulaire->exportValue('niveau_site').
                               $formulaire->exportValue('niveau_forum').
