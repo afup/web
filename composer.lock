@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33af26d47856af416ab38b748bff19e0",
+    "content-hash": "b93049d32def28141f219376dc1bad63",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4727,10 +4727,10 @@
         },
         {
             "name": "znk3r/html_quickform",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.0.zip"
+                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.1.zip"
             },
             "type": "library",
             "autoload": {
