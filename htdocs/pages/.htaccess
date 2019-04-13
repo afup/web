@@ -211,6 +211,7 @@ RewriteRule ^phptourlyon2014.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptournantes2012.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2014.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2013.*$ https://event.afup.org/archives/? [R=302]
+RewriteRule ^forumphp2012.*$ https://event.afup.org/archives/? [R=302]
 
 RewriteRule ^questionnaire.*$ https:///barometre.afup.org [R=302]
 
