@@ -208,6 +208,7 @@ RewriteRule ^lille.*$ /association/antennes? [R=302]
 
 RewriteRule ^phptourluxembourg2015.*$ https://event.afup.org/archives/? [R=302]
 
+RewriteRule ^questionnaire.*$ https:///barometre.afup.org [R=302]
 
 #pages déplacées
 RewriteCond %{QUERY_STRING}  ^route=vie-associative-afup/981/poles$
