@@ -105,6 +105,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $phone;
 
     /**
+     * @var string
+     */
+    private $mobilephone;
+
+    /**
      * @var int
      */
     private $status = 0;
@@ -145,6 +150,25 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobilephone()
+    {
+        return $this->mobilephone;
+    }
+
+    /**
+     * @param string $mobilephone
+     * @return User
+     */
+    public function setMobilephone($mobilephone)
+    {
+        $this->propertyChanged('mobilephone', $this->mobilephone, $mobilephone);
+        $this->mobilephone = $mobilephone;
         return $this;
     }
 

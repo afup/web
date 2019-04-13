@@ -308,6 +308,11 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'telephone_portable',
+                'fieldName' => 'mobilephone',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'status',
                 'type' => 'int'

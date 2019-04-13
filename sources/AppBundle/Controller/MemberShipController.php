@@ -10,6 +10,7 @@ use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;
+use AppBundle\Association\Form\ContactDetailsType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
@@ -20,7 +21,6 @@ use AppBundle\Association\Model\User;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class MemberShipController extends SiteBaseController
@@ -238,11 +238,17 @@ class MemberShipController extends SiteBaseController
         $user = $repo->getOneBy(['id' => $this->getUserId()]);
         $pays = new Pays($bdd);
 
-        $form = $this->createForm(UserType::class, $user);
+        dump($user);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        $form = $this->createForm(ContactDetailsType::class, $user);
 
-           dump($form->getData());
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $userForm = $form->getData();
+            dump($userForm);
+
+           die();
         }
 
         return $this->render(':admin/association/membership:member_contact_details.html.twig', ['title' => 'Mes coordonnées', 'form' => $form->createView()]);
