@@ -24,7 +24,7 @@ class IndexTalksCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $runner = new Runner($this->getContainer()->get('app.algolia_client'), $this->getContainer()->get('ting'));
+        $runner = new Runner($this->getContainer()->get(\AlgoliaSearch\Client::class), $this->getContainer()->get('ting'));
         $runner->run();
     }
 }

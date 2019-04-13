@@ -2,6 +2,13 @@
 
 // Impossible to access the file itself
 use Afup\Site\Comptabilite\Comptabilite;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -13,55 +20,56 @@ $action = verifierAction(array('lister', 'exporter', 'download_attachments'));
 $smarty->assign('action', $action);
 
 if (isset($_GET['compte']) && $_GET['compte']) {
-    $compte=$_GET['compte'];
+    $compte = $_GET['compte'];
 } else {
-    $compte=1;
+    $compte = 1;
 }
 
 $compta = new Comptabilite($bdd);
 
 if (isset($_GET['id_periode']) && $_GET['id_periode']) {
-    $id_periode=$_GET['id_periode'];
+    $id_periode = $_GET['id_periode'];
 } else {
-    $id_periode="";
+    $id_periode = "";
 }
 
 $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
 
 $listPeriode = $compta->obtenirListPeriode();
-$smarty->assign('listPeriode', $listPeriode );
+$smarty->assign('listPeriode', $listPeriode);
 
 if ($action == 'lister') {
-    $periode_debut=$listPeriode[$id_periode-1]['date_debut'];
-    $periode_fin=$listPeriode[$id_periode-1]['date_fin'];
+    $periode_debut = $listPeriode[$id_periode - 1]['date_debut'];
+    $periode_fin = $listPeriode[$id_periode - 1]['date_fin'];
 
-    $smarty->assign('compteurLigne',1);
+    $smarty->assign('compteurLigne', 1);
 
-    $journal = $compta->obtenirJournalBanque($compte,$periode_debut,$periode_fin);
+    $journal = $compta->obtenirJournalBanque($compte, $periode_debut, $periode_fin);
     $smarty->assign('journal', $journal);
 
-    $sousTotal = $compta->obtenirSousTotalJournalBanque($compte,$periode_debut,$periode_fin);
+    $sousTotal = $compta->obtenirSousTotalJournalBanque($compte, $periode_debut, $periode_fin);
     $smarty->assign('sousTotal', $sousTotal);
 
-    $total = $compta->obtenirTotalJournalBanque($compte,$periode_debut,$periode_fin);
+    $total = $compta->obtenirTotalJournalBanque($compte, $periode_debut, $periode_fin);
     $smarty->assign('total', $total);
 } elseif ($action == 'exporter') {
-    $periode_debut=$listPeriode[$id_periode-1]['date_debut'];
-    $periode_fin=$listPeriode[$id_periode-1]['date_fin'];
+    $periode_debut = $listPeriode[$id_periode - 1]['date_debut'];
+    $periode_fin = $listPeriode[$id_periode - 1]['date_fin'];
 
-    $journal = $compta->obtenirJournalBanque($compte,$periode_debut,$periode_fin);
-    $sousTotal = $compta->obtenirSousTotalJournalBanque($compte,$periode_debut,$periode_fin);
+    $journal = $compta->obtenirJournalBanque($compte, $periode_debut, $periode_fin);
+    $sousTotal = $compta->obtenirSousTotalJournalBanque($compte, $periode_debut, $periode_fin);
     setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
 
-    require_once 'PEAR/PHPExcel.php';
-    $workbook = new PHPExcel;
+    //require_once 'PEAR/PHPExcel.php';
+    $workbook = new Spreadsheet();
 
-    for ($i = 1 ; $i < 13 ; $i++) {
+    for ($i = 1; $i < 13; $i++) {
         $compteurLigne[$i] = 4;
         $sheet = $workbook->createSheet($i);
         $sheet->setTitle('Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, date('Y', strtotime($periode_debut)))));
-        $sheet->setCellValue('A1', 'Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, date('Y', strtotime($periode_debut)))));
+        $sheet->setCellValue('A1',
+            'Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, date('Y', strtotime($periode_debut)))));
         $sheet->setCellValue('A3', 'Date');
         $sheet->setCellValue('B3', 'Opération');
         $sheet->setCellValue('C3', 'Description');
@@ -90,52 +98,75 @@ if ($action == 'lister') {
         $sheet->setCellValue('J' . $compteurLigne[$ecriture['mois']], $ecriture['attachment_filename']);
         $compteurLigne[$ecriture['mois']]++;
     }
-    for ($i = 1 ; $i < 13 ; $i++) {
+    for ($i = 1; $i < 13; $i++) {
         $sheet = $workbook->getSheet($i);
-        $sheet->duplicateStyleArray(array('font' => array('size' => 12,
-                                                          'bold' => true,
-                                                          'name' => 'Ubuntu')),
-                                    'A1');
-        $sheet->duplicateStyleArray(array('font' => array('size' => 10,
-                                                          'bold' => true,
-                                                          'name' => 'Ubuntu'),
-                                          'alignment'=>array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
-                                          'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,
-                                                                                   'color' => array('rgb' => 'FF666666')))),
-                                    'A3:J3');
-        $sheet->duplicateStyleArray(array('font' => array('size' => 10,
-                                                          'name' => 'Ubuntu'),
-                                          'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,
-                                                                                   'color' => array('rgb' => 'FF666666')))),
-                                    'A4:J' . ($compteurLigne[$i] + 1));
-        $sheet->duplicateStyleArray(array('alignment'=>array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER)),
-                                    'J3:I200');
+
+        $sheet->getStyle('A1')->applyFromArray(array(
+            'font' => array(
+                'size' => 12,
+                'bold' => true,
+                'name' => 'Ubuntu'
+            )
+        ));
+        $sheet->getStyle('A3:J3')->applyFromArray(array(
+            'font' => array(
+                'size' => 10,
+                'bold' => true,
+                'name' => 'Ubuntu'
+            ),
+            'alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => Border::BORDER_THIN,
+                    'color' => array('rgb' => 'FF666666')
+                )
+            )
+        ));
+        $sheet->getStyle('A4:J' . ($compteurLigne[$i] + 1))->applyFromArray(array(
+            'font' => array(
+                'size' => 10,
+                'name' => 'Ubuntu'
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => Border::BORDER_THIN,
+                    'color' => array('rgb' => 'FF666666')
+                )
+            )
+        ));
+        $sheet->getStyle('J3:I200')->applyFromArray(array('alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER)));
+
         $sheet->setCellValue('E' . $compteurLigne[$i], 'TOTAL');
         $sheet->setCellValue('F' . $compteurLigne[$i], $sousTotal[$i]['debit']);
         $sheet->setCellValue('G' . $compteurLigne[$i], $sousTotal[$i]['credit']);
         $sheet->setCellValue('E' . ($compteurLigne[$i] + 1), 'SOLDE');
         $sheet->setCellValue('F' . ($compteurLigne[$i] + 1), $sousTotal[$i]['dif']);
         $sheet->mergeCells('F' . ($compteurLigne[$i] + 1) . ':G' . ($compteurLigne[$i] + 1));
-        $sheet->duplicateStyleArray(array('font' => array('size' => 10,
-                                                          'bold' => true,
-                                                          'name' => 'Ubuntu')),
-                                    'A' . $compteurLigne[$i] . ':J' . ($compteurLigne[$i] + 1));
-        $sheet->getStyle('F' . ($compteurLigne[$i] + 1))->getAlignment()->applyFromArray(array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
-        $sheet->duplicateStyleArray(array('numberformat' => array('code' => PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00)),
-                                    'F4:G200');
+
+        $sheet->getStyle('A' . $compteurLigne[$i] . ':J' . ($compteurLigne[$i] + 1))->applyFromArray(array(
+            'font' => array(
+                'size' => 10,
+                'bold' => true,
+                'name' => 'Ubuntu'
+            )
+        ));
+        $sheet->getStyle('F' . ($compteurLigne[$i] + 1))->getAlignment()->applyFromArray(array('horizontal' => Alignment::HORIZONTAL_CENTER));
+
+        $sheet->getStyle('F4:G200')->applyFromArray(array('numberformat' => array('code' => NumberFormat::FORMAT_NUMBER_00)));
+
         $sheet->getColumnDimension('A')->setWidth(8);
         $sheet->getColumnDimension('C')->setWidth(36);
         $sheet->getColumnDimension('D')->setWidth(12);
         $sheet->getColumnDimension('E')->setWidth(12);
-        $sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
-        $sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A4);
+        $sheet->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
         $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 3);
         $sheet->getHeaderFooter()->setOddFooter('&CPage &P de &N');
 
-        $objDrawing = new PHPExcel_Worksheet_Drawing();
+        $objDrawing = new Drawing();
         $objDrawing->setName('Logo_AFUP');
         $objDrawing->setDescription('Logo_AFUP');
-        $objDrawing->setPath(dirname(__FILE__).'/../../templates/administration/images/logo_afup.png');
+        $objDrawing->setPath(__DIR__ . '/../../templates/administration/images/logo_afup.png');
         $objDrawing->setCoordinates('H1');
         $objDrawing->setHeight(35);
         $objDrawing->setWidth(70);
@@ -148,15 +179,13 @@ if ($action == 'lister') {
     header('Content-Disposition: attachment;filename="compta_afup_' . date('Y', strtotime($periode_debut)) . '.xlsx"');
     header('Cache-Control: max-age=0');
 
-    $writer = new PHPExcel_Writer_Excel2007($workbook);
+    $writer = new Xlsx($workbook);
     $writer->save('php://output');
     exit();
-}
-
-/**
- * Export all attachments in a zipball
- */
-elseif ($action === 'download_attachments') {
+} elseif ($action === 'download_attachments') {
+    /**
+     * Export all attachments in a zipball
+     */
 
     try {
         // Get the year
@@ -164,16 +193,16 @@ elseif ($action === 'download_attachments') {
 
         // Create the zip
         $zipFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'afup_justificatifs-' . $year . '.zip';
-        $zip         = new ZipArchive();
-        $ret         = $zip->open($zipFilename, ZipArchive::CREATE);
+        $zip = new ZipArchive();
+        $ret = $zip->open($zipFilename, ZipArchive::CREATE);
         if ($ret !== true) {
             throw new RuntimeException("Impossible to open the Zip archive.");
         } else {
             for ($month = 1; $month <= 12; $month++) {
                 $searchDir = sprintf('%d%02d', $year, $month);
-                $zipDir    = sprintf('%d%02d', $year, $month);
-                $options   = [
-                    'add_path'        => 'afup_justificatifs-' . $year . '/' . $zipDir . '/',
+                $zipDir = sprintf('%d%02d', $year, $month);
+                $options = [
+                    'add_path' => 'afup_justificatifs-' . $year . '/' . $zipDir . '/',
                     'remove_all_path' => true,
                 ];
                 $zip->addGlob(AFUP_CHEMIN_RACINE . '/uploads/' . $searchDir . '/*.*', 0, $options);

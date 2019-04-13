@@ -26,7 +26,7 @@ class IndexMeetupsCommand extends ContainerAwareCommand
     {
         $meetupClient = \DMS\Service\Meetup\MeetupKeyAuthClient::factory(['key' => $this->getContainer()->getParameter('meetup_api_key')]);
 
-        $runner = new Runner($this->getContainer()->get('app.algolia_client'), $meetupClient);
+        $runner = new Runner($this->getContainer()->get(\AlgoliaSearch\Client::class), $meetupClient);
         $runner->run();
     }
 }

@@ -211,17 +211,6 @@ parameters:
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'
-        apero:
-            nom: 'Apéros PHP'
-            niveau: 'ROLE_APERO'
-            elements:
-                aperos:
-                    nom: 'Apéros'
-                    niveau: 'ROLE_APERO'
-
-                aperos_inscrits:
-                    nom: 'Inscrits'
-                    niveau: 'ROLE_APERO'
         planete:
             nom: 'Planète PHP FR'
             niveau: 'ROLE_ADMIN'
@@ -296,7 +285,6 @@ framework:
         engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
-    trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         storage_id: session.storage.php_bridge
@@ -310,7 +298,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-      photo_storage: "@app.photo_storage"
+      photo_storage: '@AppBundle\CFP\PhotoStorage'
 
 ting:
     connections:
@@ -371,7 +359,7 @@ knpu_oauth2_client:
         # will create a service: knpu.oauth2.client.facebook_main
         github_main:
             type: github
-            client_id: %github_client_id%
-            client_secret: %github_client_secret%
+            client_id: "%github_client_id%"
+            client_secret: "%github_client_secret%"
             # see below
             redirect_route: connection_github_check
