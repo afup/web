@@ -83,20 +83,19 @@ class ContactDetailsType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'first_options'  => [
                     'label' => 'Password',
-                    'attr' => ['class' => 'element'],
                     'label_attr' => [
                         'class' => self::LABEL_CLASS
                     ]
                 ],
                 'second_options' => [
                     'label' => 'Repeat Password',
-                    'attr' => ['class' => 'element'],
                     'label_attr' => [
                         'class' => self::LABEL_CLASS
                     ]
                 ],
                 'type' => PasswordType::class,
-                'required' => false
+                'required' => false,
+                'invalid_message' => 'The password fields must match'
             ])
             ->add('save', SubmitType::class, ['label' => 'Modify'])
         ;
@@ -113,8 +112,8 @@ class ContactDetailsType extends AbstractType
     {
         $officesCollection = new OfficesCollection();
         $offices = ['' => '-Aucune-'];
-        foreach ($officesCollection->getOrderedLabelsByKey() as $key => $label) {
-            $offices[$key] = $label;
+        foreach ($officesCollection->getOrderedLabelsByKey() as $id => $city) {
+            $offices[$city] = $id;
         }
         return $offices;
     }

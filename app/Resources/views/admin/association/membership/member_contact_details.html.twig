@@ -6,28 +6,32 @@
     <article id="company-membership">
         <h2>Mes coordonnées</h2>
         {{ form_start(form) }}
-        <fieldset>
+        <fieldset class="f1">
             <legend>Informations</legend>
             <div class="rangee">
                 {{ form_label(form.email) }}
+                <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                     {{ form_widget(form.email) }}
                 </span>
             </div>
             <div class="rangee">
                 {{ form_label(form.address) }}
+                <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                 {{ form_widget(form.address) }}
                 </span>
             </div>
             <div class="rangee">
                 {{ form_label(form.zipcode) }}
+                <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                 {{ form_widget(form.zipcode) }}
                 </span>
             </div>
             <div class="rangee">
                 {{ form_label(form.city) }}
+                <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                 {{ form_widget(form.city) }}
                 </span>
@@ -58,21 +62,41 @@
             </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset class="f2">
             <legend>Paramètres</legend>
             <div class="rangee">
                 {{ form_label(form.username) }}
+                <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                 {{ form_widget(form.username) }}
                 </span>
             </div>
-            <p class="note">
-                Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
-            </p>
             <div class="rangee">
-                {{ form_widget(form.password) }}
+                <p class="note">
+                    Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
+                </p>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.password.first) }}
+                <span class="element">
+                    {{ form_widget(form.password.first) }}
+                </span>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.password.second) }}
+                <span class="element">
+                    {{ form_widget(form.password.second) }}
+                </span>
             </div>
         </fieldset>
+        <fieldset class="f3 boutons">
+            <div class="rangee">
+                {{ form_widget(form.save) }}
+            </div>
+        </fieldset>
+        <p>
+            <span class="obligatoire">*</span>&nbsp; indique un champ obligatoire
+        </p>
         {{ form_end(form) }}
     </article>
 {% endblock %}
