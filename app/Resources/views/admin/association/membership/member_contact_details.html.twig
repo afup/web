@@ -1,13 +1,78 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
 {% block stylesheets %}
-   <!-- <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all" />-->
 {% endblock %}
 {% block content %}
     <article id="company-membership">
         <h2>Mes coordonnées</h2>
         {{ form_start(form) }}
+        <fieldset>
+            <legend>Informations</legend>
+            <div class="rangee">
+                {{ form_label(form.email) }}
+                <span class="element">
+                    {{ form_widget(form.email) }}
+                </span>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.address) }}
+                <span class="element">
+                {{ form_widget(form.address) }}
+                </span>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.zipcode) }}
+                <span class="element">
+                {{ form_widget(form.zipcode) }}
+                </span>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.city) }}
+                <span class="element">
+                {{ form_widget(form.city) }}
+                </span>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.country) }}
+                <span class="element">
+                {{ form_widget(form.country) }}
+                </span>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.phone) }}
+                <span class="element">
+                {{ form_widget(form.phone) }}
+                </span>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.mobilephone) }}
+                <span class="element">
+                {{ form_widget(form.mobilephone) }}
+                </span>
+            </div>
+            <div class="rangee">
+                {{ form_label(form.nearest_office) }}
+                <span class="element">
+                {{ form_widget(form.nearest_office) }}
+                </span>
+            </div>
+        </fieldset>
 
+        <fieldset>
+            <legend>Paramètres</legend>
+            <div class="rangee">
+                {{ form_label(form.username) }}
+                <span class="element">
+                {{ form_widget(form.username) }}
+                </span>
+            </div>
+            <p class="note">
+                Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
+            </p>
+            <div class="rangee">
+                {{ form_widget(form.password) }}
+            </div>
+        </fieldset>
         {{ form_end(form) }}
     </article>
 {% endblock %}

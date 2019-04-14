@@ -3,7 +3,9 @@
 
 namespace AppBundle\Association\Form;
 
+use Afup\Site\Utils\Pays;
 use AppBundle\Association\Model\User;
+use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -17,21 +19,82 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContactDetailsType extends AbstractType
 {
+    const LABEL_CLASS = 'libelle';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $data = $options['data'];
         $builder
-            ->add('email', EmailType::class)
-            ->add('address', TextareaType::class)
-            ->add('zipcode', TextType::class, ['label' => 'Zip code'])
-            ->add('city', TextType::class)
-            // ->add('country', ChoiceType::class)
-            ->add('phone', TextType::class, ['required' => false])
-            ->add('mobilephone', TextType::class, ['label' => 'Mobile phone', 'required' => false])
-           // ->add('nearest_office', ChoiceType::class)
-            ->add('username', TextType::class, ['label' => 'Login', 'attr' => ['maxlength' => 30]])
+            ->add('email', EmailType::class, [
+                'label_attr'=> [
+                    'class' => self::LABEL_CLASS
+                ]
+            ])
+            ->add('address', TextareaType::class, [
+                'label_attr'=> [
+                    'class' => self::LABEL_CLASS
+                ]
+            ])
+            ->add('zipcode', TextType::class, [
+                'label' => 'Zip code',
+                'label_attr'=> [
+                    'class' => self::LABEL_CLASS
+                ]
+            ])
+            ->add('city', TextType::class, [
+                'label_attr'=> [
+                    'class' => self::LABEL_CLASS
+                ]
+            ])
+            ->add('country', ChoiceType::class, [
+                'choices' => $this->getCountyList(),
+                'label_attr'=> [
+                   'class' => self::LABEL_CLASS
+                ]
+            ])
+            ->add('phone', TextType::class, [
+                'required' => false,
+                'label_attr'=> [
+                    'class' => self::LABEL_CLASS
+                ]
+            ])
+            ->add('mobilephone', TextType::class, [
+                'label' => 'Mobile phone',
+                'required' => false,
+                'label_attr'=> [
+                    'class' => self::LABEL_CLASS
+                ]])
+            ->add('nearest_office', ChoiceType::class, [
+                'label' => 'Nearest office',
+                'choices' => $this->getOfficesList($data->getNearestOffice()),
+                'label_attr'=> [
+                    'class' => self::LABEL_CLASS
+                ]
+            ])
+            ->add('username', TextType::class, [
+                'label' => 'Login',
+                'attr' => [
+                    'maxlength' => 30
+                ],
+                'label_attr'=> [
+                    'class' => self::LABEL_CLASS
+                ]
+            ])
             ->add('password', RepeatedType::class, [
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => [
+                    'label' => 'Password',
+                    'attr' => ['class' => 'element'],
+                    'label_attr' => [
+                        'class' => self::LABEL_CLASS
+                    ]
+                ],
+                'second_options' => [
+                    'label' => 'Repeat Password',
+                    'attr' => ['class' => 'element'],
+                    'label_attr' => [
+                        'class' => self::LABEL_CLASS
+                    ]
+                ],
                 'type' => PasswordType::class,
                 'required' => false
             ])
@@ -44,5 +107,22 @@ class ContactDetailsType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
+    }
+
+    private function getOfficesList($nearestOffice)
+    {
+        $officesCollection = new OfficesCollection();
+        $offices = ['' => '-Aucune-'];
+        foreach ($officesCollection->getOrderedLabelsByKey() as $key => $label) {
+            $offices[$key] = $label;
+        }
+        return $offices;
+    }
+
+    private function getCountyList()
+    {
+        global $bdd;
+        $pays = new Pays($bdd);
+        return  $pays->obtenirPays();
     }
 }
