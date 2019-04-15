@@ -30,11 +30,11 @@ class Accueil
                     L\'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté</blockquote>';
 
         foreach ($derniers_articles as $article) {
-            $descriptif = ($article->descriptif) ? $article->descriptif : $article->chapeau;
+            $chapeau = $article->chapeau;
             $colonne .= '<a href="'.$article->route().'" class="article article-teaser">';
             $colonne .= '<time datetime="'.date('Y-m-d', $article->date).'">'.date('d|m|y', $article->date).'</time>';
             $colonne .= '<h2>'.$article->titre.'</h2>';
-            $colonne .= '<p>'.strip_tags($descriptif, '<p><strong>').'</p>';
+            $colonne .= '<p>'.strip_tags($chapeau, '<p><strong>').'</p>';
             $colonne .= '</a>';
         }
 
