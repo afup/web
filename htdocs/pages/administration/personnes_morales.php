@@ -47,7 +47,7 @@ if ($action == 'lister') {
 
     $pays = new Pays($bdd);
 
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(array('civilite' => 'M.',
                                        'id_pays' => 'FR',

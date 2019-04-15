@@ -18,7 +18,7 @@ $personnes_physiques = new Personnes_Physiques($bdd);
 
 $pays = new Pays($bdd);
 
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 
 $identifiant = $droits->obtenirIdentifiant();
 $champs = $personnes_physiques->obtenir($identifiant);
@@ -67,13 +67,13 @@ if ($champs['id_personne_morale'] > 0) {
     $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
 
     $type_personne = AFUP_PERSONNES_MORALES;
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_cotisation', null, 'Personne morale : <strong>' . $personne_morale->getMembershipFee($id_personne) . ',00 ' . EURO . '</strong>', AFUP_COTISATION_PERSONNE_MORALE);
+    $groupe[] = $formulaire->createElement('radio', 'type_cotisation', null, 'Personne morale : <strong>' . $personne_morale->getMembershipFee($id_personne) . ',00 ' . EURO . '</strong>', AFUP_COTISATION_PERSONNE_MORALE);
     $formulaire->setDefaults(array('type_cotisation' => AFUP_COTISATION_PERSONNE_MORALE));
     $montant = $personne_morale->getMembershipFee($id_personne);
 } else {
     $id_personne = $identifiant;
     $type_personne = AFUP_PERSONNES_PHYSIQUES;
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_cotisation', null, 'Personne physique : <strong>' . AFUP_COTISATION_PERSONNE_PHYSIQUE . ',00 ' . EURO . '</strong>' , AFUP_COTISATION_PERSONNE_PHYSIQUE);
+    $groupe[] = $formulaire->createElement('radio', 'type_cotisation', null, 'Personne physique : <strong>' . AFUP_COTISATION_PERSONNE_PHYSIQUE . ',00 ' . EURO . '</strong>' , AFUP_COTISATION_PERSONNE_PHYSIQUE);
     $formulaire->setDefaults(array('type_cotisation' => AFUP_COTISATION_PERSONNE_PHYSIQUE));
     $montant = AFUP_COTISATION_PERSONNE_PHYSIQUE;
 }

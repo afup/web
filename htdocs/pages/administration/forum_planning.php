@@ -57,7 +57,7 @@ if ($action == 'lister') {
 } else {
 
 	$pays = new Pays($bdd);
-	$formulaire = &instancierFormulaire();
+	$formulaire = instancierFormulaire();
 
 	$champs = $forum_appel->obtenirPlanningDeSession($_GET['id_session']);
 	$conferenciers = $forum_appel->obtenirConferenciersPourSession($_GET['id_session']);

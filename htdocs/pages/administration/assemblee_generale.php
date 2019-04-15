@@ -66,7 +66,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('personnes', $personnes_physiques);
 
 } elseif ($action == 'envoyer') {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     $timestamp = $assemblee_generale->obternirDerniereDate();
     $sujet = $assemblee_generale->preparerSujetDuMessage($timestamp);
     $corps = $assemblee_generale->preparerCorpsDuMessage($timestamp);
@@ -99,7 +99,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 
 } elseif ($action == 'preparer') {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     $formulaire->setDefaults(array('date' => date("d/m/Y", time())));
 
     $formulaire->addElement('header'  , ''                   , 'Informations');

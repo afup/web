@@ -56,7 +56,7 @@ if ($action == 'lister') {
 } else {
 		$pays = new Pays($bdd);
 
-		$formulaire = &instancierFormulaire();
+		$formulaire = instancierFormulaire();
 		if ($action == 'ajouter') {
 				$formulaire->setDefaults(array('id_pays' => 'FR',
 																			'SIREN-Test'    => 'KO',

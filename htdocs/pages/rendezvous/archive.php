@@ -38,7 +38,7 @@ if (isset($archive_rendezvous) and is_array($archive_rendezvous)) {
 		die();
 	}
 	
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
 
     $formulaire->addElement('hidden'  , 'id_rendezvous' , $archive_rendezvous['id']);
     $formulaire->addElement('hidden'  , 'id'            , 0);

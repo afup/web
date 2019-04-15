@@ -41,7 +41,7 @@ $tags = new Tags($bdd);
     $smarty->assign('pays', $pays->obtenirPays());
 
     
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
 
 	$formulaire->addElement('header'  , ''         , 'Rechercher un membre');
 	

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b560ef3d9619d64db401a4c1df60d3ca",
+    "content-hash": "b93049d32def28141f219376dc1bad63",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -1180,6 +1180,64 @@
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
             "time": "2017-06-27T22:17:23+00:00"
+        },
+        {
+            "name": "friendsofpear/pear_exception",
+            "version": "0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfPear/PEAR_Exception.git",
+                "reference": "a385d46e98f5aa8d6ef9495382080edbdcef9820"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfPear/PEAR_Exception/zipball/a385d46e98f5aa8d6ef9495382080edbdcef9820",
+                "reference": "a385d46e98f5aa8d6ef9495382080edbdcef9820",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "replace": {
+                "pear/pear_exception": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.7"
+            },
+            "type": "class",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PEAR\\Exception\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "."
+            ],
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Helgi Thormar",
+                    "email": "dufuz@php.net"
+                },
+                {
+                    "name": "Greg Beaver",
+                    "email": "cellog@php.net"
+                }
+            ],
+            "description": "The PEAR Exception base class.",
+            "homepage": "https://github.com/FriendsOfPear/PEAR_Exception",
+            "keywords": [
+                "exception"
+            ],
+            "time": "2019-03-25T15:55:08+00:00"
         },
         {
             "name": "google/apiclient",
@@ -2733,6 +2791,21 @@
                 "random"
             ],
             "time": "2017-03-13T16:27:32+00:00"
+        },
+        {
+            "name": "pear/pear",
+            "version": "v1.10.9",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "PEAR.php",
+                    "PEAR/"
+                ]
+            }
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4637,6 +4710,34 @@
                 "psr-7"
             ],
             "time": "2017-09-13T14:47:08+00:00"
+        },
+        {
+            "name": "znk3r/html_common",
+            "version": "v2.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "HTML/"
+                ]
+            }
+        },
+        {
+            "name": "znk3r/html_quickform",
+            "version": "4.0.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.1.zip"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "HTML/"
+                ]
+            }
         }
     ],
     "packages-dev": [

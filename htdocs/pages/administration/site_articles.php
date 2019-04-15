@@ -75,7 +75,7 @@ if ($action == 'lister') {
     $article = new Article($id);
     $rubriques = new Rubriques();
 
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(array('date' => time(),
                                        'position' => 0,
