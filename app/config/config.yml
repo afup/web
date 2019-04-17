@@ -145,7 +145,7 @@ parameters:
                     url: '/admin/event/special_price'
                 admin_event_speakers_management:
                     nom: 'Gestion documentaire des speakers'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_FORUM'
                     url: '/admin/event/speakers-management'
                 forum_facturation:
                     nom: 'Factures'
