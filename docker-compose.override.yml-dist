@@ -6,6 +6,8 @@ services:
   apachephp:
     ports:
       - "9205:80"
+   # environment:
+   #   XDEBUG_CONFIG: "remote_connect_back=1 profiler_enable=1 remote_autostart=0 remote_enable=1"
   planete:
     ports:
       - "9215:80"
@@ -22,3 +24,5 @@ services:
   apachephp7:
     ports:
       - "9235:80"
+   # environment:
+   #   XDEBUG_CONFIG: "remote_connect_back=1 profiler_enable=1 remote_autostart=0 remote_enable=1"
