@@ -7,8 +7,8 @@ class SuppressionAperosPhp extends AbstractMigration
 {
     public function change()
     {
-        $this->dropTable('afup_aperos');
-        $this->dropTable('afup_aperos_inscrits');
-        $this->dropTable('afup_aperos_villes');
+        $this->execute('DROP TABLE IF EXISTS afup_aperos');
+        $this->execute('DROP TABLE IF EXISTS afup_aperos_inscrits');
+        $this->execute('DROP TABLE IF EXISTS afup_aperos_villes');
     }
 }
