@@ -9,53 +9,53 @@
         <fieldset class="f1">
             <legend>Informations</legend>
             <div class="rangee">
-                {{ form_label(form.email) }}
+                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                     {{ form_widget(form.email) }}
                 </span>
             </div>
             <div class="rangee">
-                {{ form_label(form.address) }}
+                {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                 {{ form_widget(form.address) }}
                 </span>
             </div>
             <div class="rangee">
-                {{ form_label(form.zipcode) }}
+                {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                 {{ form_widget(form.zipcode) }}
                 </span>
             </div>
             <div class="rangee">
-                {{ form_label(form.city) }}
+                {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                 {{ form_widget(form.city) }}
                 </span>
             </div>
             <div class="rangee">
-                {{ form_label(form.country) }}
+                {{ form_label(form.country, 'country', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                 {{ form_widget(form.country) }}
                 </span>
             </div>
             <div class="rangee">
-                {{ form_label(form.phone) }}
+                {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                 {{ form_widget(form.phone) }}
                 </span>
             </div>
             <div class="rangee">
-                {{ form_label(form.mobilephone) }}
+                {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                 {{ form_widget(form.mobilephone) }}
                 </span>
             </div>
             <div class="rangee">
-                {{ form_label(form.nearest_office) }}
+                {{ form_label(form.nearest_office, 'Nearest office', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                 {{ form_widget(form.nearest_office) }}
                 </span>
@@ -65,7 +65,7 @@
         <fieldset class="f2">
             <legend>Paramètres</legend>
             <div class="rangee">
-                {{ form_label(form.username) }}
+                {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
                 {{ form_widget(form.username) }}
@@ -77,13 +77,13 @@
                 </p>
             </div>
             <div class="rangee">
-                {{ form_label(form.password.first) }}
+                {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                     {{ form_widget(form.password.first) }}
                 </span>
             </div>
             <div class="rangee">
-                {{ form_label(form.password.second) }}
+                {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                     {{ form_widget(form.password.second) }}
                 </span>

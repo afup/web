@@ -4,6 +4,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\Event\NewMemberEvent;
@@ -232,31 +233,31 @@ class MemberShipController extends SiteBaseController
 
     public function contactDetailsAction(Request $request)
     {
+        $logs = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Logs::class);
         $repo = $this->get('ting')->get(UserRepository::class);
-        $user = $repo->getOneBy(['id' => $this->getUserId()]);
+        $userDb = $repo->getOneBy(['id' => $this->getUserId()]);
 
-        $userForm = $this->createForm(ContactDetailsType::class, $user);
+        $userForm = $this->createForm(ContactDetailsType::class, $userDb);
 
         $userForm->handleRequest($request);
-        if($userForm->isSubmitted() && $userForm->isValid())
+        if($userForm->isSubmitted())
         {
             $user = $userForm->getData();
 
             // Save password if not empty
-            if(! empty($user->getPassword()))
+            if(is_null($user->getPassword()) || empty($user->getPassword()))
+            {
+                $user->setPassword($userDb->getPassword());
+            }
+            else
             {
                 $user->setPassword(md5($user->getPassword())); /** @TODO We should change that */
             }
 
-          //  die();
+            $repo->save($user);
 
-         //   $repo->save($user);
-
-            $logs = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Logs::class);
             $logs::log("Modification des coordonnées de l'utilisateur " . $user->getUsername() . " effectuée avec succès.");
-
             $this->addFlash('success', 'Votre compte a été modifié !');
-            return $this->redirect('/pages/administration/');
         }
 
         return $this->render(':admin/association/membership:member_contact_details.html.twig', ['title' => 'Mes coordonnées', 'form' => $userForm->createView()]);

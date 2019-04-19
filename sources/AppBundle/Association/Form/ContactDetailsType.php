@@ -25,74 +25,28 @@ class ContactDetailsType extends AbstractType
     {
         $data = $options['data'];
         $builder
-            ->add('email', EmailType::class, [
-                'label_attr'=> [
-                    'class' => self::LABEL_CLASS
-                ]
-            ])
-            ->add('address', TextareaType::class, [
-                'label_attr'=> [
-                    'class' => self::LABEL_CLASS
-                ]
-            ])
-            ->add('zipcode', TextType::class, [
-                'label' => 'Zip code',
-                'label_attr'=> [
-                    'class' => self::LABEL_CLASS
-                ]
-            ])
-            ->add('city', TextType::class, [
-                'label_attr'=> [
-                    'class' => self::LABEL_CLASS
-                ]
-            ])
+            ->add('email', EmailType::class)
+            ->add('address', TextareaType::class)
+            ->add('zipcode', TextType::class)
+            ->add('city', TextType::class)
             ->add('country', ChoiceType::class, [
-                'choices' => $this->getCountyList(),
-                'label_attr'=> [
-                   'class' => self::LABEL_CLASS
-                ]
+                'choices' => $this->getCountyList()
             ])
             ->add('phone', TextType::class, [
-                'required' => false,
-                'label_attr'=> [
-                    'class' => self::LABEL_CLASS
-                ]
+                'required' => false
             ])
             ->add('mobilephone', TextType::class, [
-                'label' => 'Mobile phone',
-                'required' => false,
-                'label_attr'=> [
-                    'class' => self::LABEL_CLASS
-                ]])
+                'required' => false
+            ])
             ->add('nearest_office', ChoiceType::class, [
-                'label' => 'Nearest office',
                 'choices' => $this->getOfficesList($data->getNearestOffice()),
-                'label_attr'=> [
-                    'class' => self::LABEL_CLASS
-                ]
             ])
             ->add('username', TextType::class, [
-                'label' => 'Login',
                 'attr' => [
                     'maxlength' => 30
-                ],
-                'label_attr'=> [
-                    'class' => self::LABEL_CLASS
                 ]
             ])
             ->add('password', RepeatedType::class, [
-                'first_options'  => [
-                    'label' => 'Password',
-                    'label_attr' => [
-                        'class' => self::LABEL_CLASS
-                    ]
-                ],
-                'second_options' => [
-                    'label' => 'Repeat Password',
-                    'label_attr' => [
-                        'class' => self::LABEL_CLASS
-                    ]
-                ],
                 'type' => PasswordType::class,
                 'required' => false,
                 'invalid_message' => 'The password fields must match'
