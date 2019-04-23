@@ -29,6 +29,7 @@ node_modules
 /vendor/
 
 /htdocs/assets
+/htdocs/templates/site/css/styles.css
 js_dist
 # uploads
 /htdocs/uploads
