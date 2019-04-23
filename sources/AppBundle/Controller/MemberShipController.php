@@ -240,7 +240,7 @@ class MemberShipController extends SiteBaseController
         $userForm = $this->createForm(ContactDetailsType::class, $userDb);
 
         $userForm->handleRequest($request);
-        if($userForm->isSubmitted())
+        if($userForm->isValid())
         {
             $user = $userForm->getData();
 
