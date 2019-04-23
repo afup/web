@@ -85,6 +85,16 @@
                                 <a class="talk-info-link" href="{{ talk.getJoindinUrl }}"><i class="fa fa-comments"></i> Fiche joind.in</a>
                             </li>
                         {% endif %}
+
+                        <li><i class="fa fa-headphones"></i> Audio : {{ talk.getLanguageLabel|lower }}</li>
+
+                        {% if talk.getVideoHasEnSubtitles %}
+                            <li><i class="fa fa-cc"></i> Sous titres : anglais</li>
+                        {% endif %}
+
+                        {% if talk.getVideoHasFrSubtitles %}
+                            <li><i class="fa fa-cc"></i> Sous titres : français</li>
+                        {% endif %}
                         </ul>
                     </div>
                 </div>
