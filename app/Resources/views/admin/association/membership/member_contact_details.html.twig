@@ -13,28 +13,28 @@
                 {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
-                    {{ form_widget(form.email) }}
+                    {{ form_widget(form.email, {'attr': {'size': '30', 'maxlength': '100'}}) }}
                 </span>
             </div>
             <div class="rangee">
                 {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
-                {{ form_widget(form.address) }}
+                {{ form_widget(form.address, {'attr': {'rows': '10', 'cols': '42'}}) }}
                 </span>
             </div>
             <div class="rangee">
                 {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
-                {{ form_widget(form.zipcode) }}
+                {{ form_widget(form.zipcode, {'attr': {'size': '6', 'maxlength': '10'}}) }}
                 </span>
             </div>
             <div class="rangee">
                 {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
-                {{ form_widget(form.city) }}
+                {{ form_widget(form.city, {'attr': {'size': '30', 'maxlength': '50'}}) }}
                 </span>
             </div>
             <div class="rangee">
@@ -46,13 +46,13 @@
             <div class="rangee">
                 {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
-                {{ form_widget(form.phone) }}
+                {{ form_widget(form.phone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
                 </span>
             </div>
             <div class="rangee">
                 {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
-                {{ form_widget(form.mobilephone) }}
+                {{ form_widget(form.mobilephone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
                 </span>
             </div>
             <div class="rangee">
@@ -69,7 +69,7 @@
                 {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
-                {{ form_widget(form.username) }}
+                {{ form_widget(form.username, {'attr': {'size': '30', 'maxlength': '30'}}) }}
                 </span>
             </div>
             <div class="rangee">
@@ -80,13 +80,13 @@
             <div class="rangee">
                 {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
-                    {{ form_widget(form.password.first) }}
+                    {{ form_widget(form.password.first, {'attr': {'size': '30'}}) }}
                 </span>
             </div>
             <div class="rangee">
                 {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
-                    {{ form_widget(form.password.second) }}
+                    {{ form_widget(form.password.second, {'attr': {'size': '30'}}) }}
                 </span>
             </div>
         </fieldset>

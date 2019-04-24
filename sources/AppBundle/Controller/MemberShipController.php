@@ -17,6 +17,7 @@ use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -233,25 +234,42 @@ class MemberShipController extends SiteBaseController
 
     public function contactDetailsAction(Request $request)
     {
-        $logs = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Logs::class);
+        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
         $repo = $this->get('ting')->get(UserRepository::class);
-        $userDb = $repo->getOneBy(['id' => $this->getUserId()]);
 
-        $userForm = $this->createForm(ContactDetailsType::class, $userDb);
+        $user = $repo->get($this->getUserId());
+        $data = [
+            'email' => $user->getEmail(),
+            'address' => $user->getAddress(),
+            'username' => $user->getUsername(),
+            'zipcode' => $user->getZipCode(),
+            'city' => $user->getCity(),
+            'phone' => $user->getPhone(),
+            'mobilephone' => $user->getMobilePhone(),
+            'country' => $user->getCountry(),
+            'nearest_office' => $user->getNearestOffice()
+        ];
 
+        $userForm = $this->createForm(ContactDetailsType::class, $data);
         $userForm->handleRequest($request);
         if($userForm->isValid())
         {
-            $user = $userForm->getData();
+            $data = $userForm->getData();
+            dump($data);
 
+            $user->setEmail($data['email']);
+            $user->setAddress($data['address']);
+            $user->setZipCode($data['zipcode']);
+            $user->setCity($data['city']);
+            $user->setUsername($data['username']);
+            $user->setPhone($data['phone']);
+            $user->setMobilePhone($data['mobilephone']);
+            $user->setCountry($data['country']);
+            $user->setNearestOffice($data['nearest_office']);
             // Save password if not empty
-            if(is_null($user->getPassword()) || empty($user->getPassword()))
+            if(! empty($data['password']))
             {
-                $user->setPassword($userDb->getPassword());
-            }
-            else
-            {
-                $user->setPassword(md5($user->getPassword())); /** @TODO We should change that */
+                $user->setPassword(md5($data['password'])); /** @TODO We should change that */
             }
 
             $repo->save($user);

@@ -17,6 +17,7 @@ parameters:
                 membre_coordonnees:
                     nom: 'Mes coordonnées'
                     niveau: 'ROLE_MEMBER_EXPIRED'
+                    url: '/admin/member/contact'
                 membre_redmine:
                     nom: 'Déclarer un problème (GitHub)'
                     niveau: 'ROLE_MEMBER_EXPIRED'

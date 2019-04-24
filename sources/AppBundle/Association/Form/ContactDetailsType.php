@@ -23,7 +23,7 @@ class ContactDetailsType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $data = $options['data'];
+        //$data = $options['data'];
         $builder
             ->add('email', EmailType::class)
             ->add('address', TextareaType::class)
@@ -39,7 +39,7 @@ class ContactDetailsType extends AbstractType
                 'required' => false
             ])
             ->add('nearest_office', ChoiceType::class, [
-                'choices' => $this->getOfficesList($data->getNearestOffice()),
+                'choices' => $this->getOfficesList(),
             ])
             ->add('username', TextType::class, [
                 'attr' => [
@@ -57,12 +57,10 @@ class ContactDetailsType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
+        $resolver->setDefaults([]);
     }
 
-    private function getOfficesList($nearestOffice)
+    private function getOfficesList()
     {
         $officesCollection = new OfficesCollection();
         $offices = ['' => '-Aucune-'];
