@@ -44,6 +44,9 @@ composer.phar:
 assets:
 	./node_modules/.bin/webpack -p
 
+watch:
+	./node_modules/.bin/webpack --progress --colors --watch
+
 configs/application/config.php:
 	cp configs/application/config.php.dist-docker configs/application/config.php
 

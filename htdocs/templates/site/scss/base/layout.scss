@@ -1,0 +1,113 @@
+html {
+  font-size: 62.5%
+}
+
+body {
+  background-color: #ddd;
+  color: #3e3d40;
+  font-family: helvetica, arial, sans-serif;
+  font-size: 1.3em;
+  line-height: 1.54
+}
+
+#main {
+  padding: 0 30px
+}
+
+#container{
+  position: relative;
+  min-height: 100vh;
+  background-color: #fff;
+  padding: 20px;
+}
+
+.m-reset { margin: 0 !important; }
+.p-reset { padding: 0 !important; }
+
+.mod { padding: 20px 10px; }
+.mod.left,
+.col.left { margin-right: 0 ;}
+.mod.right,
+.col.right { margin-left: 0; }
+
+.item { overflow: hidden; }
+
+.center { margin: auto; }
+
+.txtcenter { text-align: center; }
+
+.left {
+  float: left;
+  margin-right: 10px;
+}
+
+.right {
+  float: right;
+  margin-left: 10px;
+}
+
+.txtleft { text-align: left; }
+.txtright { text-align: right; }
+
+.inbl {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.visually-hidden {
+  position: absolute;
+  left: -7000px;
+  overflow: hidden;
+}
+
+[dir=rtl] .visually-hidden {
+  left: auto;
+  right: -7000px;
+}
+
+.desktop-hidden { display: none; }
+
+.text-hidden {
+  white-space: nowrap;
+  text-indent: 100%;
+  overflow: hidden;
+}
+
+.readmore {
+  color: #1ebdff;
+  font-family: "Podkova", serif;
+  font-weight: 700;
+  font-size: 1.38em;
+}
+
+.readmore:before {
+  content: "›› ";
+}
+
+input, button, select, label {
+  vertical-align: middle;
+}
+
+#become_member div.button{
+  background-color: #50a0dd;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  margin: 1em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding-top: 110px !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .wrapper {
+    padding-top: 90px !important;
+  }
+}

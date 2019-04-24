@@ -1,0 +1,39 @@
+table,
+.table {
+	display: table;
+	table-layout: fixed;
+	border-collapse: collapse;
+	vertical-align: top;
+}
+
+table {
+  margin-bottom: 20px;
+  width: 100%;
+  caption-side: bottom;
+}
+
+tbody {
+  border: 1px solid #ccc;
+
+  tr:nth-child(odd) {
+    background: #eee;
+  }
+
+  tr > * + * {
+    border-left: 1px solid rgba(0, 0, 0, .05);
+  }
+}
+
+tr > :last-child {
+  text-align: right;
+}
+
+table th, table td {
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+table td {
+  color: #555;
+}

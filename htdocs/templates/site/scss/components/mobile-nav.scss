@@ -1,0 +1,36 @@
+@media (max-width: 768px) {
+  [class^="nav-button"] {
+    display: block;
+    z-index: 1;
+    height: 3rem;
+    width: 3rem;
+    background-color: transparent;
+    background-image: linear-gradient(to right, #fff, #fff),
+                      linear-gradient(to right, #fff, #fff),
+                      linear-gradient(to right, #fff, #fff);
+    background-position: center top, center, center bottom;
+    background-repeat: no-repeat;
+    background-size: 3.5rem .6rem;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+  }
+
+  .nav-button-close,
+  body:target .nav-button-open {
+    display: none;
+  }
+
+  .nav-button-open,
+  body:target .nav-button-close {
+    display: block;
+  }
+}
+
+@media (max-width: 460px) {}

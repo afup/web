@@ -1,7 +1,3 @@
-div.container {
-    padding: 10px;
-}
-
 div.container, div.container * {
     box-sizing: border-box;
 }
