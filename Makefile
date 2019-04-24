@@ -17,7 +17,7 @@ docker-down:
 	CURRENT_UID=$(CURRENT_UID) docker-compose down
 
 var/logs/.docker-build: docker-compose.yml docker-compose.override.yml $(shell find docker -type f)
-	CURRENT_UID=$(CURRENT_UID) docker-compose build
+	CURRENT_UID=$(CURRENT_UID) ENABLE_XDEBUG=$(ENABLE_XDEBUG) docker-compose build
 	touch var/logs/.docker-build
 
 .env:
