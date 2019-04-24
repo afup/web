@@ -11,7 +11,7 @@ Logs::initialiser($bdd, 0);
 
 $partenariat = new Partenariat($bdd);
 
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 
 $formulaire->addElement('header'  , ''  , 'Vérifier l\'existence d\'un membre');
 $formulaire->addElement('text', 'nom', 'Nom');

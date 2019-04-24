@@ -90,7 +90,7 @@ elseif ($action == 'credit') {
 
 } elseif ($action == 'ajouter' || $action == 'modifier') {
 
-  	$formulaire = &instancierFormulaire();
+  	$formulaire = instancierFormulaire();
 
    if ($action == 'modifier')
    {
@@ -558,7 +558,7 @@ elseif ($action == 'supprimer') {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'écriture', 'index.php?page=compta_journal&action=lister', true);
     }
 } elseif ($action == 'importer') {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
 	$formulaire->addElement('header', null          , 'Import CSV');
     $formulaire->addElement('file', 'fichiercsv', 'Fichier banque'     );
 

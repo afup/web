@@ -51,7 +51,7 @@ if ($action == 'lister') {
     }
 } else {
     // Formulaire
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
 
     if ($action == 'ajouter') {
         $date_debut = $cotisations->obtenirDateDebut($_GET['type_personne'], $_GET['id_personne']);

@@ -32,7 +32,7 @@ $personnes_physiques_liste = $personnes_physiques->obtenirListe('*', 'nom, preno
 
 $pays = new Pays($bdd);
 
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 $champs = $personnes_morales->obtenir($id_personne_morale);
 unset($champs['mot_de_passe']);
 $formulaire->setDefaults($champs);

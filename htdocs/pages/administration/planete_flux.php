@@ -67,7 +67,7 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression du flux', 'index.php?page=planete_flux&action=lister', true);
     }
 } else {
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(array('url' => 'http://',
                                        'feed' => 'http://',
