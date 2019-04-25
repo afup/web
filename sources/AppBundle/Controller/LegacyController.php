@@ -81,7 +81,7 @@ class LegacyController extends Controller
         $personnes_morales = new Personnes_Morales($bdd);
         $pays = new Pays($bdd);
 
-        $formulaire = &instancierFormulaire();
+        $formulaire = instancierFormulaire();
 
         $formulaire->setDefaults(
             [
@@ -175,7 +175,7 @@ class LegacyController extends Controller
                 if ($ok) {
                     Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
 
-                    $user = $this->get('app.user_repository')->loadUserByUsername($login);
+                    $user = $this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->loadUserByUsername($login);
 
                     $personnes_physiques->sendWelcomeMailWithData(
                         $formulaire->exportValue('prenom'),
@@ -190,7 +190,7 @@ class LegacyController extends Controller
                         ->authenticateUserAndHandleSuccess(
                             $user,
                             $request,
-                            $this->get('app.legacy_authenticator'),
+                            $this->get(\AppBundle\Security\LegacyAuthenticator::class),
                             'legacy_secured_area'
                         );
                 } else {

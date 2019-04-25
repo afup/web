@@ -24,7 +24,7 @@ $tris_valides = array();
 $sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-$storage = $this->get('app.photo_storage');
+$storage = $this->get(\AppBundle\CFP\PhotoStorage::class);
 
 /**
  * @var $speakerRepository \AppBundle\Event\Model\Repository\SpeakerRepository
@@ -203,7 +203,7 @@ if ($action == 'inscrire_forum') {
 } else {
     $pays = new \Afup\Site\Utils\Pays($bdd);
 
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(array('civilite' => 'M.',
             'id_pays_facturation' => 'FR',

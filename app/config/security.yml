@@ -5,9 +5,9 @@ security:
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         github_user:
-            id: "github_user_repository"
+            id: 'AppBundle\Event\Model\Repository\GithubUserRepository'
         legacy_user:
-            id: "app.user_repository"
+            id: 'AppBundle\Association\Model\Repository\UserRepository'
         in_memory:
             memory: ~
 
@@ -25,9 +25,9 @@ security:
                 target: /
             guard:
                 authenticators:
-                    - app.legacy_authenticator
-                    - app.legacy_hash_authenticator
-                entry_point: app.legacy_authenticator
+                    - 'AppBundle\Security\LegacyAuthenticator'
+                    - 'AppBundle\Security\LegacyHashAuthenticator'
+                entry_point: 'AppBundle\Security\LegacyAuthenticator'
             context: share_context
 
         github_secured_area:
@@ -35,8 +35,8 @@ security:
 
             guard:
                 authenticators:
-                    - my_github_authenticator
-                entry_point: my_github_authenticator
+                    - 'AppBundle\Security\MyGithubAuthenticator'
+                entry_point: 'AppBundle\Security\MyGithubAuthenticator'
 
         main:
             anonymous: ~
@@ -48,8 +48,9 @@ security:
         - { path: ^/admin/techletter/members, roles: ROLE_ADMIN }
         - { path: ^/admin/techletter, roles: ROLE_VEILLE }
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
-        - { path: ^/admin/(members/reporting|association/relances|event|talk), roles: ROLE_ADMIN}
-        - { path: ^/admin/(members/reporting|association/relances|event|talk), roles: ROLE_NO_ACCESS}
+        - { path: ^/admin/event/speakers-management, roles: ROLE_FORUM }
+        - { path: ^/admin/(members/reporting|association/relances|talk), roles: ROLE_ADMIN}
+        - { path: ^/admin/(members/reporting|association/relances|talk), roles: ROLE_NO_ACCESS}
         - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1" }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }

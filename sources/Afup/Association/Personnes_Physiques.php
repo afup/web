@@ -680,9 +680,7 @@ SQL;
 
         foreach ($resultats as &$r) {
             /*On redivise les droits sur les modules*/
-            if (isset($r['niveau_modules'][0])) {
-                $r['niveau_apero'] = $r['niveau_modules'][0];
-            }
+            //$r['niveau_modules'][0] Anciennement apéro a été supprimé
             if (isset($r['niveau_modules'][1])) {
                 $r['niveau_annuaire'] = $r['niveau_modules'][1];
             }

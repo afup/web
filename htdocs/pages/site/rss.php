@@ -33,7 +33,7 @@ $feed = array(
 	'url'           => 'https://afup.org/',
 	'link'          => 'https://afup.org/rss.php',
 	'email'         => 'bonjour@afup.org',
-	'author'        => 'Nicolas Silberman / AFUP',
+	'author'        => 'AFUP',
 	'date'          => date(DATE_RSS),
 	'lastBuildDate' => 
         isset($derniersArticles[0]['maj']) ?

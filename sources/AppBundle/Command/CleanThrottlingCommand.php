@@ -23,6 +23,6 @@ class CleanThrottlingCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getContainer()->get('app.action_throttling')->clearOldLogs();
+        $this->getContainer()->get(\AppBundle\Security\ActionThrottling\ActionThrottling::class)->clearOldLogs();
     }
 }

@@ -27,7 +27,13 @@
     "presta/sitemap-bundle": "^1.5",
     "setasign/fpdf": "1.53",
     "ezyang/htmlpurifier": "^4.10",
-    "mandrill/mandrill": "^1.0"
+    "mandrill/mandrill": "^1.0",
+    "phpoffice/phpspreadsheet": "^1.6",
+    "phpmailer/phpmailer": "5.2.9",
+    "znk3r/html_quickform": "4.0.2",
+    "friendsofpear/pear_exception": "0.0.*",
+    "znk3r/html_common": "*",
+    "pear/pear": "^1.10"
   },
   "scripts": {
     "post-install-cmd": [
@@ -94,6 +100,50 @@
         "autoload": {
           "files": [
             "fpdf.php"
+          ]
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "znk3r/html_quickform",
+        "version": "4.0.2",
+        "dist": {
+          "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip",
+          "type": "zip"
+        },
+        "autoload": {
+          "classmap": ["HTML/"]
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "znk3r/html_common",
+        "version": "v2.0.0",
+        "dist": {
+          "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip",
+          "type": "zip"
+        },
+        "autoload": {
+          "classmap": ["HTML/"]
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "pear/pear",
+        "version": "v1.10.9",
+        "dist": {
+          "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip",
+          "type": "zip"
+        },
+        "autoload": {
+          "classmap": [
+            "PEAR.php", "PEAR/"
           ]
         }
       }

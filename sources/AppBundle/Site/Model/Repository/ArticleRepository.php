@@ -214,6 +214,11 @@ class ArticleRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'type_contenu',
+                'fieldName' => 'contentType',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'date',
                 'fieldName' => 'publishedAt',
                 'type' => 'datetime',

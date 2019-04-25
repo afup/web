@@ -24,6 +24,14 @@
     background-color: #36a7df;
 }
 
+@media (max-width: 768px) {
+    #afup-global-menu {
+        position: fixed;
+        width: 100%;
+        z-index: 10;
+    }
+}
+
 @media (max-width: 460px) {
     #afup-global-menu {
         display: none;

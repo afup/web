@@ -18,7 +18,7 @@ $personnes_physiques = new Personnes_Physiques($bdd);
 
 $pays = new Pays($bdd);
 
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 
 $identifiant = $droits->obtenirIdentifiant();
 $champs = $personnes_physiques->obtenir($identifiant);
@@ -47,7 +47,7 @@ if (isset($_GET['action']) && in_array($_GET['action'], ['envoyer_facture', 'tel
         Logs::log('L\'utilisateur id: ' . $identifiant . ' a tenté de voir la facture id:' . $_GET['id'] . ' de l\'utilisateur id:' . $_GET['id_personne']);
         afficherMessage(null, 'index.php?page=membre_cotisation', 'Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
     } elseif ($_GET['action'] == 'envoyer_facture') {
-        if ($cotisations->envoyerFacture($_GET['id'], $this->get('app.mail'))) {
+        if ($cotisations->envoyerFacture($_GET['id'], $this->get(\Afup\Site\Utils\Mail::class))) {
             Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
             afficherMessage('La facture a été envoyée par mail', 'index.php?page=membre_cotisation');
         } else {
@@ -67,13 +67,13 @@ if ($champs['id_personne_morale'] > 0) {
     $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
 
     $type_personne = AFUP_PERSONNES_MORALES;
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_cotisation', null, 'Personne morale : <strong>' . $personne_morale->getMembershipFee($id_personne) . ',00 ' . EURO . '</strong>', AFUP_COTISATION_PERSONNE_MORALE);
+    $groupe[] = $formulaire->createElement('radio', 'type_cotisation', null, 'Personne morale : <strong>' . $personne_morale->getMembershipFee($id_personne) . ',00 ' . EURO . '</strong>', AFUP_COTISATION_PERSONNE_MORALE);
     $formulaire->setDefaults(array('type_cotisation' => AFUP_COTISATION_PERSONNE_MORALE));
     $montant = $personne_morale->getMembershipFee($id_personne);
 } else {
     $id_personne = $identifiant;
     $type_personne = AFUP_PERSONNES_PHYSIQUES;
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_cotisation', null, 'Personne physique : <strong>' . AFUP_COTISATION_PERSONNE_PHYSIQUE . ',00 ' . EURO . '</strong>' , AFUP_COTISATION_PERSONNE_PHYSIQUE);
+    $groupe[] = $formulaire->createElement('radio', 'type_cotisation', null, 'Personne physique : <strong>' . AFUP_COTISATION_PERSONNE_PHYSIQUE . ',00 ' . EURO . '</strong>' , AFUP_COTISATION_PERSONNE_PHYSIQUE);
     $formulaire->setDefaults(array('type_cotisation' => AFUP_COTISATION_PERSONNE_PHYSIQUE));
     $montant = AFUP_COTISATION_PERSONNE_PHYSIQUE;
 }
@@ -84,7 +84,7 @@ $donnees = $personnes_physiques->obtenir($identifiant);
 
 $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
 
-$paybox = $this->get('app.paybox_factory')->createPayboxForSubscription(
+$paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
     $reference,
     (float) $montant,
     $donnees['email']

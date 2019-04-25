@@ -281,14 +281,13 @@
 
 
 {% block content %}
+{{ render(controller(
+    'AppBundle\\Controller\\SecondaryMenuController::displayAction',
+    { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') }
+)) }}
 <div class="mw1400p center" id="container">
 <div class="line" id="main">
     <h1>Antennes</h1>
-
-    {{ render(controller(
-        'AppBundle\\Controller\\SecondaryMenuController::displayAction',
-        { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') }
-    )) }}
 
     <p>Une dizaine d'antennes locales, représentantes de l'AFUP en région, organise rencontres, meetups et apéros PHP
         tout au long de l'année, tisse des liens au sein de la communauté  de développeuses et de développeurs et fait la promotion du PHP dans les entreprises partout en France.</p>

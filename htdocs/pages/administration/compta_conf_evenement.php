@@ -22,7 +22,7 @@ if ($action == 'lister') {
 
 } elseif ($action == 'ajouter' || $action == 'modifier') {
 
-  	$formulaire = &instancierFormulaire();
+  	$formulaire = instancierFormulaire();
 
    if ($action == 'modifier')
    {

@@ -37,7 +37,7 @@ if (is_array($prochain_rendezvous)) {
 	$smarty->assign('rendezvous', $prochain_rendezvous);
 
 	if (isset($champs) and is_array($champs)) {
-	    $formulaire = &instancierFormulaire();
+	    $formulaire = instancierFormulaire();
         $formulaire->setDefaults($champs);
 	
 	    $formulaire->addElement('hidden'  , 'id'            , $champs['id']);

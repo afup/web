@@ -20,8 +20,8 @@ $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
 
-$eventRepository = $this->get('app.event_repository');
-$ticketEventTypeRepository = $this->get('app.ticket_event_repository');
+$eventRepository = $this->get(\AppBundle\Event\Model\Repository\EventRepository::class);
+$ticketEventTypeRepository = $this->get(\AppBundle\Event\Model\Repository\TicketEventTypeRepository::class);
 
 function updateGlobalsForTarif(
     \AppBundle\Event\Model\Repository\EventRepository $eventRepository,
@@ -55,7 +55,7 @@ $forum_facturation = new Facturation($bdd);
 if ($action == 'envoyer_convocation') {
     $current = $forum->obtenir($_GET['id_forum'], 'titre');
 
-	$formulaire = &instancierFormulaire();
+	$formulaire = instancierFormulaire();
     $formulaire->setDefaults(array('template' => 'convocation-???'));
 
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
@@ -155,7 +155,7 @@ if ($action == 'envoyer_convocation') {
 
     $pays = new Pays($bdd);
 
-    $formulaire = &instancierFormulaire();
+    $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
 		$formulaire->setDefaults(
 		    [
@@ -207,7 +207,7 @@ if ($action == 'envoyer_convocation') {
 	$groupe = array();
 	foreach ($AFUP_Tarifs_Forum as $tarif_key => $tarifs)
 	{
-	  $groupe[] = &HTML_QuickForm::createElement('radio', 'type_inscription', null, $AFUP_Tarifs_Forum_Lib[$tarif_key] . ' (<strong>' . $AFUP_Tarifs_Forum[$tarif_key] . ' €</strong>)' , $tarif_key);
+	  $groupe[] = $formulaire->createElement('radio', 'type_inscription', null, $AFUP_Tarifs_Forum_Lib[$tarif_key] . ' (<strong>' . $AFUP_Tarifs_Forum[$tarif_key] . ' €</strong>)' , $tarif_key);
 	}
 
 
@@ -220,8 +220,8 @@ if ($action == 'envoyer_convocation') {
 	$formulaire->addElement('text'  , 'telephone'                , 'Tél.'           , array('size' => 20, 'maxlength' => 20));
 
     $groupe = array();
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'mobilite_reduite', null, 'oui', 1);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'mobilite_reduite', null, 'non', 0);
+    $groupe[] = $formulaire->createElement('radio', 'mobilite_reduite', null, 'oui', 1);
+    $groupe[] = $formulaire->createElement('radio', 'mobilite_reduite', null, 'non', 0);
     $formulaire->addGroup($groupe, 'groupe_mobilite_reduite', 'Personne à mobilité réduite', '<br/>', false);
 
 	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
@@ -250,10 +250,10 @@ if ($action == 'envoyer_convocation') {
 
 	$formulaire->addElement('header'  , ''                       , 'Règlement');
 	$groupe = array();
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Virement'      , AFUP_FORUM_REGLEMENT_VIREMENT);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'type_reglement', null, 'Aucun'         , AFUP_FORUM_REGLEMENT_AUCUN);
+	$groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
+	$groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Virement'      , AFUP_FORUM_REGLEMENT_VIREMENT);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Aucun'         , AFUP_FORUM_REGLEMENT_AUCUN);
 	$formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
     $formulaire->addElement('textarea'   , 'informations_reglement', 'Informations règlement', array('cols' => 42, 'rows' => 4));
 
@@ -278,23 +278,23 @@ if ($action == 'envoyer_convocation') {
     $formulaire->addElement('textarea', 'commentaires'           , 'Commentaires', array('cols' => 42, 'rows' => 5));
 	$formulaire->addElement('static', null, null, "J'accepte que ma compagnie soit citée comme participant à la conférence");
 	$groupe = array();
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'oui', 1);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'citer_societe', null, 'non', 0);
+	$groupe[] = $formulaire->createElement('radio', 'citer_societe', null, 'oui', 1);
+	$groupe[] = $formulaire->createElement('radio', 'citer_societe', null, 'non', 0);
 	$formulaire->addGroup($groupe, 'groupe_citer_societe', null, '&nbsp;', false);
 	$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant des rencontres de l'AFUP sur des sujets afférents à PHP");
 	$groupe = array();
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'oui', 1);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_afup', null, 'non', 0);
+	$groupe[] = $formulaire->createElement('radio', 'newsletter_afup', null, 'oui', 1);
+	$groupe[] = $formulaire->createElement('radio', 'newsletter_afup', null, 'non', 0);
 	$formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
 	$formulaire->addElement('static', null, null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
     $groupe = array();
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'oui', 1);
-    $groupe[] = &HTML_QuickForm::createElement('radio', 'newsletter_nexen', null, 'non', 0);
+    $groupe[] = $formulaire->createElement('radio', 'newsletter_nexen', null, 'oui', 1);
+    $groupe[] = $formulaire->createElement('radio', 'newsletter_nexen', null, 'non', 0);
     $formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
     $formulaire->addElement('static', null, null, "Je souhaite recevoir des informations de la part de vos partenaires presse/media");
 	$groupe = array();
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'oui', 1);
-	$groupe[] = &HTML_QuickForm::createElement('radio', 'mail_partenaire', null, 'non', 0);
+	$groupe[] = $formulaire->createElement('radio', 'mail_partenaire', null, 'oui', 1);
+	$groupe[] = $formulaire->createElement('radio', 'mail_partenaire', null, 'non', 0);
 	$formulaire->addGroup($groupe, 'groupe_mail_partenaire', null, '&nbsp;', false);
 
 	$formulaire->addElement('header', 'boutons'  , '');

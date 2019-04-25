@@ -10,6 +10,7 @@ class Rubrique
     const ID_RUBRIQUE_ASSOCIATION = 85;
     const ID_RUBRIQUE_ANTENNES = 84;
     const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
+    const ID_RUBRIQUE_NOS_ACTIONS = 88;
 
     public $id;
     public $id_personne_physique;

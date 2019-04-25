@@ -51,7 +51,7 @@ if ($action == 'lister') {
 	$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 	$feuille = new Feuille($id);
 
-	$formulaire = &instancierFormulaire();
+	$formulaire = instancierFormulaire();
 	if ($action == 'ajouter') {
 		$formulaire->setDefaults(array('date' => time(),
 									   'position' => 0,

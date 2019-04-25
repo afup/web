@@ -19,7 +19,7 @@ $personnes_physiques = new Personnes_Physiques($bdd);
 
 $pays = new Pays($bdd);
 
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 $champs = $personnes_physiques->obtenir($droits->obtenirIdentifiant());
 unset($champs['mot_de_passe']);
 $formulaire->setDefaults($champs);

@@ -8,7 +8,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$formulaire = &instancierFormulaire();
+$formulaire = instancierFormulaire();
 $defaults = $conf->exporter();
 if ($defaults['paybox_prod|site'] == $defaults['paybox|site'] &&
     $defaults['paybox_prod|rang'] == $defaults['paybox|rang']) {
