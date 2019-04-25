@@ -4,7 +4,6 @@
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
-use AppBundle\Association\Model\User;
 use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

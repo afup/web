@@ -4,7 +4,6 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
-use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\Event\NewMemberEvent;
@@ -252,8 +251,7 @@ class MemberShipController extends SiteBaseController
 
         $userForm = $this->createForm(ContactDetailsType::class, $data);
         $userForm->handleRequest($request);
-        if($userForm->isValid())
-        {
+        if ($userForm->isValid()) {
             $data = $userForm->getData();
             dump($data);
 
@@ -267,8 +265,7 @@ class MemberShipController extends SiteBaseController
             $user->setCountry($data['country']);
             $user->setNearestOffice($data['nearest_office']);
             // Save password if not empty
-            if(! empty($data['password']))
-            {
+            if (! empty($data['password'])) {
                 $user->setPassword(md5($data['password'])); /** @TODO We should change that */
             }
 
