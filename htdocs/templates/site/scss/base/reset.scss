@@ -1,0 +1,97 @@
+html,
+body,
+label {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol { padding-left: 10px; }
+
+li p,
+li ul,
+li ol {
+  margin-top: 0;
+  margin-bottom: 0
+}
+
+code,
+pre,
+samp {
+  white-space: pre-wrap;
+  font-family: consolas, 'DejaVu Sans Mono', courier, monospace;
+}
+
+code { line-height: 1em; }
+
+table { margin-bottom: 20px; }
+
+p,
+ul,
+ol,
+dl,
+blockquote,
+pre,
+td,
+th,
+label,
+textarea {
+  font-size: 1em;
+  line-height: 1.54;
+  margin: 10px 0;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section { display: block; }
+
+img,
+table,
+td,
+blockquote,
+code,
+pre,
+textarea,
+input,
+object,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+textarea,
+table,
+td,
+th,
+code,
+pre,
+samp,
+div,
+p {
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -o-hyphens: auto;
+  hyphens: auto;
+}
+
+img {
+  width: auto;
+  vertical-align: middle;
+}
+
+a img { border: 0; }
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}

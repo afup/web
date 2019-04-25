@@ -1,0 +1,58 @@
+@media print {
+  p, blockquote {
+    orphans: 2;
+    widows: 2
+  }
+
+  blockquote, ul, ol {
+    page-break-inside: avoid
+  }
+
+  h1, h2, h3, caption {
+    page-break-after: avoid
+  }
+
+  body {
+    width: auto !important;
+    margin: auto !important;
+    font-family: serif;
+    font-size: 12pt;
+    background-color: #fff !important;
+    color: #333 !important
+  }
+
+  p, h1, h2, h3, h4, h5, h6, blockquote, ul, ol {
+    color: #000 !important;
+    margin: auto !important
+  }
+
+  .print {
+    display: block
+  }
+
+  p, blockquote {
+    orphans: 3;
+    widows: 3
+  }
+
+  blockquote, ul, ol {
+    page-break-inside: avoid
+  }
+
+  h1 {
+    page-break-before: always
+  }
+
+  h1, h2, h3, caption {
+    page-break-after: avoid
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline !important
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")"
+  }
+}

@@ -1,5 +1,10 @@
 FROM php:7.0-apache
 
+ARG ENABLE_XDEBUG=false
+
+RUN if [ "$ENABLE_XDEBUG" = "true" ]; then echo ************ XDEBUG ENABLED **********; \
+else echo ------------ XDEBUG DISABLED ==========; fi
+
 # Install required php extensions for afup website and other management package
 RUN apt-get update && \
     apt-get install -y \
@@ -12,6 +17,7 @@ RUN apt-get update && \
         wget && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install pdo_mysql mbstring mysqli zip gd mcrypt intl && \
+    if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-2.6.1 && docker-php-ext-enable xdebug; fi && \
     apt-get remove -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \

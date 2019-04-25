@@ -7,6 +7,10 @@
 {% endblock %}
 
 {% block content %}
+{{ render(controller(
+    'AppBundle\\Controller\\SecondaryMenuController::displayAction',
+    { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_NOS_ACTIONS') }
+)) }}
 
 <div class="techletter-subscription" id="container">
     <div class="techletter-subscription--header">

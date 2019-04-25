@@ -1,0 +1,152 @@
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child { margin-top: 0; }
+
+h1,
+.h1-like {
+  font-size: 2.92em;
+  font-weight: 400;
+  line-height: 1.21em;
+  font-family: "Glegoo", serif;
+  color: #2b3e74;
+  margin: 10px 0 10px 0;
+}
+
+h1 a,
+.h1-like a {
+  font-size: 1em;
+  color: #2b3e74;
+  text-decoration: none;
+}
+
+h2,
+.h2-like {
+  font-size: 1.82em;
+  font-weight: 400;
+  line-height: 1.75em;
+  font-family: "Glegoo", serif;
+  color: #2b3e74;
+  margin: 30px 0 10px 0;
+}
+
+h2 a,
+.h2-like a {
+  font-size: 1em;
+  color: #2b3e74;
+  text-decoration: none;
+}
+
+h3, .h3-like {
+  font-size: 1.46em;
+  font-weight: 700;
+  line-height: 1.909em;
+  font-family: "Glegoo", serif;
+  margin: 20px 0 10px 0;
+  color: #1ebdff;
+}
+
+h3 a,
+.h3-like a {
+  font-size: 1em;
+  color: #1ebdff;
+  text-decoration: none;
+}
+
+h4,
+.h4-like {
+  font-size: 1.23em;
+  font-weight: 700;
+  line-height: 1.05em;
+  font-family: "Glegoo", serif;
+  color: #4c6eaf;
+  margin: 20px 0 10px 0;
+}
+
+h4 a,
+.h4-like a {
+  font-size: 1em;
+  color: #4c6eaf;
+  text-decoration: none;
+}
+
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+.h1-like a:hover,
+.h2-like a:hover,
+.h3-like a:hover,
+.h4-like a:hover {
+  text-decoration: underline;
+}
+
+.home h2, .home .h2-like {
+    border-bottom: 1px solid #2b3e74;
+}
+
+.small {
+  font-size: .8571em;
+  line-height: 1.75em;
+}
+
+.smaller {
+  font-size: .7143em;
+  line-height: 2.1em;
+}
+
+.big {
+  font-size: 1.1429em;
+  line-height: 1.3125em;
+}
+
+.bigger {
+  font-size: 1.2857em;
+  line-height: 1.1667em;
+}
+
+.biggest {
+  font-size: 1.4286em;
+  line-height: 1.05em;
+}
+
+a {
+  color: #147fab;
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+blockquote {
+  font-weight: 700;
+  font-family: "Podkova", serif;
+  font-size: 1.23em;
+  line-height: 1.25;
+  color: #1ebdff;
+}
+
+caption {
+  padding: 10px;
+  color: #555;
+  font-style: italic;
+}
+
+label {
+  cursor: pointer
+}
+
+legend {
+  border: 0;
+  white-space: normal;
+}
+
+button, input, select {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+  vertical-align: middle;
+}
