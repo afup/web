@@ -50,17 +50,17 @@ abstract class AbstractUserReminder implements MembershipReminderInterface
             ->setUserType(UserRepository::USER_TYPE_PHYSICAL)
         ;
 
-        $status = $this->mail->send('message-transactionnel-afup-org',
+        $status = $this->mail->send(
+            'message-transactionnel-afup-org',
             ['email' => $user->getEmail()],
             [
                 'content' => $this->getText(),
-                'title' => $this->getSubject()
+                'title' => $this->getSubject(),
             ],
-            ['subject' => $this->getSubject()],
-            false,
-            null,
-            null,
-            false
+            [
+                'subject' => $this->getSubject(),
+                'force_bcc' => true,
+            ]
         );
         $log->setMailSent($status);
         $this->subscriptionReminderLogRepository->save($log);

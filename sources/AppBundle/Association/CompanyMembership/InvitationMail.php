@@ -62,11 +62,10 @@ class InvitationMail
                 'content' => $text,
                 'title' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName())
             ],
-            ['subject' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName())],
-            false,
-            null,
-            null,
-            false
+            [
+                'subject' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName()),
+                'force_bcc' => true,
+            ]
         );
     }
 }

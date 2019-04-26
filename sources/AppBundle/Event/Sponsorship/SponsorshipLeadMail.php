@@ -65,19 +65,11 @@ class SponsorshipLeadMail
                     'content' => base64_encode(file_get_contents($filepath . $filename)),
                 ]
             ],
-            'subject' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()])
+            'subject' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()]),
+            'force_bcc' => true,
         ];
 
-        if (!$this->mail->send(
-            Mail::TEMPLATE_TRANSAC,
-            $receiver,
-            $data,
-            $parameters,
-            false,
-            null,
-            null,
-            false
-        )) {
+        if (!$this->mail->send(Mail::TEMPLATE_TRANSAC, $receiver, $data, $parameters)) {
             $this->logger->warning(sprintf('Mail not sent for sponsorship lead retrieval: "%s"', $lead->getEmail()));
         }
     }

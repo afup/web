@@ -86,11 +86,10 @@ class SponsorTokenMail
                 'content' => $text,
                 'title' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()])
             ],
-            ['subject' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()])],
-            false,
-            null,
-            null,
-            false
+            [
+                'subject' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()]),
+                'force_bcc' => true,
+            ]
         );
     }
 }

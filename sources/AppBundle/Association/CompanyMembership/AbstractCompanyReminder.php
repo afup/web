@@ -62,11 +62,10 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
                 'content' => $this->getText(),
                 'title' => $this->getSubject(),
             ],
-            ['subject' => $this->getSubject()],
-            false,
-            null,
-            null,
-            false
+            [
+                'subject' => $this->getSubject(),
+                'force_bcc' => true,
+            ]
         );
         $log->setMailSent($status);
         $this->subscriptionReminderLogRepository->save($log);
