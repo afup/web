@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/grid.css">
+    <link rel="stylesheet" href="/css/buttons.css">
     <link rel="stylesheet" href="/css/talk/list.css">
 {% endblock %}
 
@@ -58,6 +59,44 @@
                 <div id="pagination"></div>
             </div>
 
+        </div>
+
+        <hr width="50%">
+        <div class="line" id="main">
+            <h2>Retrouvez également les vidéos des conférences captées par nos antennes</h2>
+            <p>
+                Certaines de nos antennes locales filment les conférences qu’elles organisent : leurs captations sont ensuite mises en ligne sur leur chaîne YouTube. Découvrez toutes leurs vidéos et pensez à vous abonner pour ne rien manquer de leur futures publications !
+            </p>
+
+            <div class="super-apero-officies">
+                <div class="container">
+                    {% for office_code, office in offices %}
+                     {% if office.youtube is defined %}
+                        <div class="col-md-6 afup-office">
+                            <div class="container">
+                                <div class="col-md-6">
+                                    <div class="col-md-3">
+                                        <img src="{{ office.logo_url }}" />
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h3>{{ office.label }}</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <a class="button-inverted" href="{{ office.youtube }}">
+                                        <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% if loop.index is even %}
+                            </div>
+                            <div class="container">
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
