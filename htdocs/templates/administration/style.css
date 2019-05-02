@@ -441,14 +441,13 @@ body#message {
 
 body#message #contenu {
 	width: 412px;
-	height: 92px;
 	padding: 5px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	margin: -46px 0 0 -206px;
-	background: url(images/fond_message.png) top left no-repeat;
-	border: 1px #dddddd solid;
+    border: 3px #999 solid;
+	background: #fff;
 }
 
 body#message p {
