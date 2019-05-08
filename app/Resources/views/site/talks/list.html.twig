@@ -74,15 +74,13 @@
                      {% if office.youtube is defined %}
                         <div class="col-md-6 afup-office">
                             <div class="container">
-                                <div class="col-md-6">
-                                    <div class="col-md-3">
-                                        <img src="{{ office.logo_url }}" />
-                                    </div>
-                                    <div class="col-md-9">
-                                        <h3>{{ office.label }}</h3>
-                                    </div>
+                                <div class="col-sm-12 col-md-2 txtcenter">
+                                    <img src="{{ office.logo_url }}">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-sm-12 col-md-5 txtcenter">
+                                    <h3 style="line-height: 4em; vertical-align: center">{{ office.label }}</h3>
+                                </div>
+                                <div class="col-sm-12 col-md-5 txtcenter">
                                     <a class="button-inverted" href="{{ office.youtube }}">
                                         <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
                                     </a>
