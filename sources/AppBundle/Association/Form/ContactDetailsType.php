@@ -96,8 +96,7 @@ class ContactDetailsType extends AbstractType
     {
         $officesCollection = new OfficesCollection();
         $offices = ['' => '-Aucune-'];
-        foreach ($officesCollection->getOrderedLabelsByKey() as $id => $city)
-        {
+        foreach ($officesCollection->getOrderedLabelsByKey() as $id => $city) {
             $offices[$city] = $id;
         }
         return $offices;
@@ -106,8 +105,7 @@ class ContactDetailsType extends AbstractType
     private function getCountyChoices()
     {
         $choices = [];
-        foreach ($this->countryService->obtenirPays() as $id => $country)
-        {
+        foreach ($this->countryService->obtenirPays() as $id => $country) {
             $choices[$country] = $id;
         }
         return $choices;
