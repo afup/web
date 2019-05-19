@@ -1,7 +1,7 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
-{% block stylesheets %}
-{% endblock %}
+{% form_theme form _self %}
+
 {% block content %}
     <article id="company-membership">
         <h2>Mes coordonnées</h2>
@@ -10,6 +10,7 @@
         <fieldset class="f1">
             <legend>Informations</legend>
             <div class="rangee">
+                {{ form_errors(form.email) }}
                 {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
@@ -17,6 +18,7 @@
                 </span>
             </div>
             <div class="rangee">
+                {{ form_errors(form.address) }}
                 {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
@@ -24,6 +26,7 @@
                 </span>
             </div>
             <div class="rangee">
+                {{ form_errors(form.zipcode) }}
                 {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
@@ -31,6 +34,7 @@
                 </span>
             </div>
             <div class="rangee">
+                {{ form_errors(form.city) }}
                 {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
@@ -38,24 +42,28 @@
                 </span>
             </div>
             <div class="rangee">
+                {{ form_errors(form.country) }}
                 {{ form_label(form.country, 'country', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                 {{ form_widget(form.country) }}
                 </span>
             </div>
             <div class="rangee">
+                {{ form_errors(form.phone) }}
                 {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                 {{ form_widget(form.phone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
                 </span>
             </div>
             <div class="rangee">
+                {{ form_errors(form.mobilephone) }}
                 {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                 {{ form_widget(form.mobilephone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
                 </span>
             </div>
             <div class="rangee">
+                {{ form_errors(form.nearest_office) }}
                 {{ form_label(form.nearest_office, 'Nearest office', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                 {{ form_widget(form.nearest_office) }}
@@ -66,6 +74,7 @@
         <fieldset class="f2">
             <legend>Paramètres</legend>
             <div class="rangee">
+                {{ form_errors(form.username) }}
                 {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="obligatoire">&nbsp;*</span>
                 <span class="element">
@@ -78,12 +87,14 @@
                 </p>
             </div>
             <div class="rangee">
+                {{ form_errors(form.password.first) }}
                 {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                     {{ form_widget(form.password.first, {'attr': {'size': '30'}}) }}
                 </span>
             </div>
             <div class="rangee">
+                {{ form_errors(form.password.second) }}
                 {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
                 <span class="element">
                     {{ form_widget(form.password.second, {'attr': {'size': '30'}}) }}
@@ -101,3 +112,15 @@
         {{ form_end(form) }}
     </article>
 {% endblock %}
+
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+        <div class="flash-error">
+                {% for error in errors %}
+                    <p>{{ error.message }}</p>
+                {% endfor %}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}

@@ -377,3 +377,7 @@ services:
             - "@ting"
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
+
+    AppBundle\Association\Form\ContactDetailsType:
+        arguments: ['@Afup\Site\Utils\Pays']
+        tags: [form.type]

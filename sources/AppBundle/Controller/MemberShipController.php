@@ -246,14 +246,13 @@ class MemberShipController extends SiteBaseController
             'phone' => $user->getPhone(),
             'mobilephone' => $user->getMobilePhone(),
             'country' => $user->getCountry(),
-            'nearest_office' => $user->getNearestOffice()
+            'nearest_office' => $user->getNearestOffice(),
         ];
 
         $userForm = $this->createForm(ContactDetailsType::class, $data);
         $userForm->handleRequest($request);
         if ($userForm->isValid()) {
             $data = $userForm->getData();
-            dump($data);
 
             $user->setEmail($data['email']);
             $user->setAddress($data['address']);
