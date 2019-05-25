@@ -200,7 +200,7 @@ class MemberShipController extends SiteBaseController
             throw $this->createAccessDeniedException("Vous n'êtes pas autorité à demander une invitation");
         }
 
-        //TODO envoi de l'ivnitation
+        $this->get('slack_members_legacy_client')->invite($this->getUser()->getEmail());
 
         $this->addFlash('success', 'En mail vous a été envoyé pour rejoindre le slack des membres !');
 
