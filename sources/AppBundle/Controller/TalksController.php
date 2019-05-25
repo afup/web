@@ -49,4 +49,21 @@ class TalksController extends SiteBaseController
             ]
         );
     }
+
+    public function joindinAction($id, $slug)
+    {
+        $talk = $this->get('ting')->get(TalkRepository::class)->get($id);
+
+        if (null === $talk || $talk->getSlug() != $slug || !$talk->isDisplayedOnHistory()) {
+            throw $this->createNotFoundException();
+        }
+
+        $stub = $this->get(\AppBundle\Joindin\JoindinTalk::class)->getStubFromTalk($talk);
+
+        if (null === $stub) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->redirect('https://joind.in/talk/' . $stub);
+    }
 }
