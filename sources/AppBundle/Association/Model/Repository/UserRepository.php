@@ -312,6 +312,11 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'fieldName' => 'status',
                 'type' => 'int'
             ])
+            ->addField([
+                'columnName' => 'slack_invite_status',
+                'fieldName' => 'slackInviteStatus',
+                'type' => 'int',
+            ])
         ;
 
         return $metadata;
