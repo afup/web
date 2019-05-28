@@ -57,7 +57,7 @@
                 </div>
                 <div class="container talk-date-container">
                     <div class="col-md-12">
-                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>, ayant eut lieu les {{ event.dateStart|date('d/m/Y') }} et {{ event.dateEnd|date('d/m/Y') }}.
+                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>, ayant eut lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et {{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM YYYY') }}.
                     </div>
 
                 </div>
