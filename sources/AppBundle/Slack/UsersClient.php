@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright Macintoshplus (c) 2019
- * Added by : Macintoshplus at 28/05/19 21:01
- */
 
 namespace AppBundle\Slack;
 
@@ -29,8 +25,8 @@ class UsersClient
 
     /**
      * UsersClient constructor.
-     * @param string $token
-     * @param string $apiBaseUrl
+     * @param string $token Token des API Slack
+     * @param string $apiBaseUrl URL de base des API Slack
      * @param UserRepository $userRepository
      */
     public function __construct($token, $apiBaseUrl, UserRepository $userRepository)
@@ -51,6 +47,7 @@ class UsersClient
         $cursor = '';
         $today = new \DateTimeImmutable();
         do {
+            //Récupère une page d'utilisateur dans Slack
             $page = $this->send($cursor);
             foreach ($page['members'] as $user) {
                 // Ne traite pas les utilisateurs sans adresse courriel ou supprimé
@@ -66,6 +63,7 @@ class UsersClient
                     'afup_last_subscription' => null,
                     'afup_status' => null,
                 ];
+                //Vérification de l'utilisateur Slack dans la base du site
                 try {
                     $userDb = $this->userRepository->loadUserByUsername($email);
                     $userInfo['afup_last_subscription']=$userDb->getLastSubscription();
@@ -86,13 +84,13 @@ class UsersClient
     }
 
     /**
-     * @param string $cursor
+     * Retourne une page d'utilisateur Slack
+     * @param string $cursor curseur pour obtenir la page suivante des utilisateurs Slack
      * @return array
      */
     private function send($cursor = '')
     {
-        $return = file_get_contents(sprintf("%s%s?token=%s&limit=100&cursor=%s", $this->apiBaseUrl, self::USER_LIST_API,
-            $this->token, $cursor));
+        $return = file_get_contents(sprintf("%s%s?token=%s&limit=100&cursor=%s", $this->apiBaseUrl, self::USER_LIST_API, $this->token, $cursor));
         if (false === $return) {
             throw new \RuntimeException("Erreur lors de l'appel à l'API slack");
         }
