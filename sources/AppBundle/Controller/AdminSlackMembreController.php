@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Slack\UsersClient;
+use AppBundle\Slack\UsersChecker;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -11,7 +11,7 @@ class AdminSlackMembreController extends Controller
 {
     public function checkMembersAction()
     {
-        $result = $this->get(UsersClient::class)->checkUsersValidity();
+        $result = $this->get(UsersChecker::class)->checkUsersValidity();
         $csv = [];
         if (count($result) > 0) {
             $csv[] = implode(';', array_keys($result[0]));

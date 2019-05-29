@@ -107,6 +107,9 @@ services:
         autowire: true
         arguments: ["%slack_membre_token%", "%slack_api_url%"]
 
+    AppBundle\Slack\UsersChecker:
+        autowire: true
+
     AppBundle\Slack\MessageFactory:
         autowire: true
 
