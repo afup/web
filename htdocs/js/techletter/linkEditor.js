@@ -95,6 +95,8 @@ LinkEditor = function (form) {
 	this.form.querySelector('button#refresh').addEventListener('click', this.handleRefresh.bind(this));
 	this.form.querySelector('button#delete').addEventListener('click', this.handleDelete.bind(this));
 	this.form.querySelector('#close').addEventListener('click', this.handleReset.bind(this));
+	this.form.querySelector('button#up').addEventListener('click', this.handleUp.bind(this));
+	this.form.querySelector('button#down').addEventListener('click', this.handleDown.bind(this));
 };
 
 LinkEditor.prototype = {
@@ -240,6 +242,24 @@ LinkEditor.prototype = {
 		}
 		updatePreview();
 		this.form.classList.add('hidden');
+		this.resolve(techletter); // Data has been updated so we can resolve the promise
+	},
+
+	handleUp: function(event) {
+		event.preventDefault();
+		console.log("Up link: " + this.fieldset.dataset);
+
+		updatePreview();
+		// No close form
+		this.resolve(techletter); // Data has been updated so we can resolve the promise
+	},
+
+	handleDown: function(event) {
+		event.preventDefault();
+		console.log("Down link: " + this.fieldset.dataset);
+
+		updatePreview();
+		// No close form
 		this.resolve(techletter); // Data has been updated so we can resolve the promise
 	},
 
