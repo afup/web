@@ -2,12 +2,10 @@
 
 namespace AppBundle\Slack;
 
-
 use AppBundle\Association\Model\Repository\UserRepository;
 
 class UsersChecker
 {
-
     /**
      * @var UsersClient
      */

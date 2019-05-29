@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Slack\UsersChecker;
 use SplFileObject;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -40,7 +39,7 @@ class AdminSlackMembreController extends Controller
 
         return new Response($csv, 200, [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Utilisateurs à désactiver du ' . date('Y-m-d h_i_s') . '.csv"',
+            'Content-Disposition' => 'attachment; filename="Utilisateurs à désactiver du ' . date('Y-m-d H_i_s') . '.csv"',
             'Expires' => '0',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Content-Transfer-Encoding' => 'binary',
