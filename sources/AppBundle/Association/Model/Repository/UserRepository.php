@@ -22,6 +22,11 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     const USER_TYPE_COMPANY = 1;
     const USER_TYPE_ALL = 2;
 
+    /**
+     * @param string $username
+     * @return User|UserInterface
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
     public function loadUserByUsername($username)
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();

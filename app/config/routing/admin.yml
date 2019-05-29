@@ -54,3 +54,7 @@ admin_members_reporting:
 admin_techletter:
   resource: "techletter_admin.yml"
   prefix: /techletter
+
+admin_slack_members_check:
+  path: /slackmembers/check
+  defaults: {_controller: AppBundle:AdminSlackMembre:checkMembers }

@@ -103,6 +103,10 @@ services:
     AppBundle\Payment\PayboxFactory:
         autowire: true
 
+    AppBundle\Slack\UsersClient:
+        autowire: true
+        arguments: ["%slack_membre_token%", "%slack_api_url%"]
+
     AppBundle\Slack\MessageFactory:
         autowire: true
 
