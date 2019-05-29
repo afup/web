@@ -16,6 +16,7 @@ class MemberController extends SiteBaseController
             ':site:member/index.html.twig',
             [
                 'badges' => $this->getBadges($user),
+                'user' => $user,
             ]
         );
     }
