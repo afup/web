@@ -18,7 +18,6 @@ class UsersClient
     private $apiBaseUrl;
 
     /**
-     * UsersClient constructor.
      * @param string $token Token des API Slack
      * @param string $apiBaseUrl URL de base des API Slack
      */
