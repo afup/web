@@ -176,8 +176,17 @@ search.addWidget(
         container: '#refinement-event',
         attributeName: 'event.title',
         sortBy: function(a, b) {
-            var aYear = parseInt(a.name.substring(a.name.length - 4), 10);
-            var bYear = parseInt(b.name.substring(b.name.length - 4), 10);
+            if (a.name.substring(0, 8) === 'AFUP Day') {
+                var aYear = a.name.split(' ').splice(-2, 1).join('');
+            } else {
+                var aYear = parseInt(a.name.substring(a.name.length - 4), 10);
+            }
+
+            if (b.name.substring(0, 8) === 'AFUP Day') {
+                var bYear = b.name.split(' ').splice(-2, 1).join('');
+            } else {
+                var bYear = parseInt(b.name.substring(b.name.length - 4), 10);
+            }
 
             if (aYear < bYear) {
                 return 1;
