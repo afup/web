@@ -357,8 +357,11 @@ services:
     Ivory\HttpAdapter\CurlHttpAdapter:
         public: false
 
+    AppBundle\Association\UserMembership\SeniorityComputer:
+        arguments: ['@Afup\Site\Association\Cotisations']
+
     AppBundle\Event\Ticket\RegistrationsExportGenerator:
-        arguments: ['@AppBundle\Offices\OfficeFinder', '@Afup\Site\Association\Cotisations', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
+        arguments: ['@AppBundle\Offices\OfficeFinder', '@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
 
     AppBundle\Event\Talk\ExportGenerator:
         arguments: ['@AppBundle\Event\Model\Repository\TalkRepository']
