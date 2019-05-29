@@ -1,0 +1,143 @@
+{% extends ':site:base.html.twig' %}
+
+{% block content %}
+
+    <style>
+        .square {
+            border: 1px solid #ccc;
+            padding: 45px;
+        }
+
+        .square .fa {
+            font-size: 3em;
+            margin:  0 20px 0 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+
+    <div class="mw1400p center" id="container">
+        <div class="line" id="main">
+
+
+            <h1>Espace membre</h1>
+
+            <div class="container">
+                <div class="col-md-6">
+                    <div class="square">
+                        <i class="fa fa-user"></i> Mes coordonnées : Nom / Prénom
+                        <div style="text-align: right">
+                            <a href="">Modifer</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="square">
+                        <i class="fa fa-dollar"></i> Cotisations
+                        <div style="text-align: right">
+                            <a href="">TODO</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container">
+                <div class="col-md-6">
+                    <div class="square">
+                        <i class="fa fa-bullhorn"></i> Veille de l'AFUP : non inscrit/inscrite
+                        <div style="text-align: right">
+                            <a href="">S'inscrire</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="square">
+                        <i class="fa fa-envelope"></i> Listes de difusion
+                        <div style="text-align: right">
+                            <a href="">Consulter</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+
+                <div class="col-md-6">
+                    <div class="square">
+                        <i class="fa fa-building"></i> Présence prochaine AG
+                        <div style="text-align: right">
+                            <a href="">Indiquer sa présence</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="square">
+                        <i class="fa fa-map-marker"></i> Antenne la plus proche : Lyon
+                        <div style="text-align: right">
+                            <a href="">Modifier</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="col-md-6">
+                    <div class="square">
+                        <i class="fa fa-book"></i> Comptes-rendus d'AG
+                        <div style="text-align: right">
+                            <a href="">Voir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <h2>
+                Badges
+            </h2>
+
+            <style>
+                .badges img {
+                    max-height: 150px;
+                }
+                .badges .col-md-6 {
+                    text-align: center;
+                }
+            </style>
+
+            <div class="badges">
+                <div class="container">
+            {% for badge in badges %}
+                    <div class="col-md-6">
+                        <img src="/images/badges/{{ badge }}.png" alt="Badge {{ badge }}">
+                    </div>
+            {% endfor %}
+                </div>
+            </div>
+<!--
+            <div class="badges">
+                <div class="container">
+                    <div class="col-md-6">
+                        <img src="/images/badges/4ans.png">
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/images/badges/3ans.png">
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="col-md-6">
+                        <img src="/images/badges/2ans.png">
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/images/badges/1ans.png">
+                    </div>
+                </div>
+            </div>
+-->
+
+        </div>
+    </div>
+{% endblock %}
