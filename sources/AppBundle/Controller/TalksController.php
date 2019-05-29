@@ -6,14 +6,17 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Offices\OfficesCollection;
 
 class TalksController extends SiteBaseController
 {
     public function listAction()
     {
+        $officesCollection = new OfficesCollection();
         return $this->render(
             ':site:talks/list.html.twig',
             [
+                'offices' => $officesCollection->getAllSortedByLabels(),
                 'algolia_app_id' => $this->getParameter('algolia_app_id'),
                 'algolia_api_key' => $this->getParameter('algolia_frontend_api_key'),
             ]
@@ -48,5 +51,22 @@ class TalksController extends SiteBaseController
                 'comments' => $comments,
             ]
         );
+    }
+
+    public function joindinAction($id, $slug)
+    {
+        $talk = $this->get('ting')->get(TalkRepository::class)->get($id);
+
+        if (null === $talk || $talk->getSlug() != $slug || !$talk->isDisplayedOnHistory()) {
+            throw $this->createNotFoundException();
+        }
+
+        $stub = $this->get(\AppBundle\Joindin\JoindinTalk::class)->getStubFromTalk($talk);
+
+        if (null === $stub) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->redirect('https://joind.in/talk/' . $stub);
     }
 }

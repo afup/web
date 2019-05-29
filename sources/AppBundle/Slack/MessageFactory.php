@@ -176,7 +176,7 @@ class MessageFactory
         $inscriptionsData = $inscriptions->obtenirStatistiques($event->getId());
         $message = new Message();
         $message
-            ->setChannel('afupday2019')
+            ->setChannel('pole-forum')
             ->setUsername($event->getTitle() . ' - Inscriptions')
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
@@ -232,7 +232,7 @@ class MessageFactory
     {
         $message = new Message();
         $message
-            ->setChannel('afupday2019')
+            ->setChannel('pole-forum')
             ->setUsername('CFP')
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
