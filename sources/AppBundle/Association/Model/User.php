@@ -24,6 +24,9 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
+    const SLACK_INVITE_STATUS_NONE = 0;
+    const SLACK_INVITE_STATUS_REQUESTED = 1;
+
     /**
      * @var int
      */
@@ -128,6 +131,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
      * @var CompanyMember
      */
     private $company;
+
+    /**
+     * @var int
+     */
+    private $slackInviteStatus;
 
     /**
      * @return int
@@ -507,6 +515,35 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     {
         $this->company = $company;
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSlackInviteStatus()
+    {
+        return $this->slackInviteStatus;
+    }
+
+    /**
+     * @param int $slackInviteStatus
+     *
+     * @return User
+     */
+    public function setSlackInviteStatus($slackInviteStatus)
+    {
+        $this->propertyChanged('slackInviteStatus', $this->slackInviteStatus, $slackInviteStatus);
+        $this->slackInviteStatus = $slackInviteStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canRequestSlackInvite()
+    {
+        return false === $this->hasRole('ROLE_MEMBER_EXPIRED') && $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_NONE;
     }
 
     /**

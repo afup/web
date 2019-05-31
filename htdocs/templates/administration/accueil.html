@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/css/buttons.css">
+
 <h2>Bienvenue dans l'administration de l'AFUP</h2>
 
 <p>
@@ -6,6 +8,10 @@
 <p><em>Fait avec ❤ par la team AFUP.</em></p>
 
 <br /><br />
+
+{if $can_request_slack_invite}
+<a href="/admin/member/slack-invite" class="button">Rejoignez le Slack réservé aux membres AFUP</a>
+{/if}
 
 <fieldset id="accueil">
     <img src="{$membre.gravatar}" />

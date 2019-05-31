@@ -28,8 +28,8 @@ try {
     $nearestOffice = null;
 }
 
-
 $smarty->assign('membre', $membre);
 $smarty->assign('pays',$pays->obtenirPays());
 $smarty->assign('nearest_office', $nearestOffice);
+$smarty->assign('can_request_slack_invite', $this->getUser()->canRequestSlackInvite() && $_GET['beta'] == 1);
 ?>
