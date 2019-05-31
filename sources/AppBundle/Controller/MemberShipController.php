@@ -201,7 +201,7 @@ class MemberShipController extends SiteBaseController
 
         $this->get('slack_members_legacy_client')->invite($this->getUser()->getEmail());
 
-        $this->addFlash('success', 'En mail vous a été envoyé pour rejoindre le slack des membres !');
+        $this->addFlash('success', 'Un email vous a été envoyé pour rejoindre le Slack des membres !');
 
         $user->setSlackInviteStatus(User::SLACK_INVITE_STATUS_REQUESTED);
         $this->get('ting')->get(UserRepository::class)->save($user);
