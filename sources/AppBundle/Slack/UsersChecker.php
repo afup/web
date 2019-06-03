@@ -37,7 +37,7 @@ class UsersChecker
             $page = $this->usersClient->loadPage($cursor);
             foreach ($page['members'] as $user) {
                 // Ne traite pas les utilisateurs sans adresse courriel ou supprimé
-                if (!isset($user['profile']['email']) || $user['deleted'] === true) {
+                if (!isset($user['profile']['email']) || $user['deleted'] === true || $user['is_admin'] === true) {
                     continue;
                 }
                 $email = $user['profile']['email'];
