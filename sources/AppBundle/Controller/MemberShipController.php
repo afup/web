@@ -4,6 +4,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\Event\NewMemberEvent;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class MemberShipController extends SiteBaseController
 {
+    use DbLoggerTrait;
+
     public function becomeMemberAction()
     {
         return $this->render(
@@ -189,6 +192,26 @@ class MemberShipController extends SiteBaseController
         }
 
         return $this->render(':site/company_membership:member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
+    }
+
+    public function slackInviteRequestAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        if (!$user->canRequestSlackInvite()) {
+            throw $this->createAccessDeniedException("Vous n'êtes pas autorité à demander une invitation");
+        }
+
+        $this->get('slack_members_legacy_client')->invite($this->getUser()->getEmail());
+
+        $this->addFlash('success', 'Un email vous a été envoyé pour rejoindre le Slack des membres !');
+
+        $user->setSlackInviteStatus(User::SLACK_INVITE_STATUS_REQUESTED);
+        $this->get('ting')->get(UserRepository::class)->save($user);
+
+        $this->log('Demande invitation slack', $this->getUser());
+
+        return $this->redirect('/pages/administration');
     }
 
     public function payboxCallbackAction(Request $request)

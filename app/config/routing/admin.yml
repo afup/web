@@ -47,6 +47,10 @@ admin_company_members:
   path: /company/members/{id}
   defaults: {_controller: AppBundle:AdminMemberShip:members, id: ~}
 
+member_slack_invite:
+  path: /member/slack-invite
+  defaults: {_controller: AppBundle:MemberShip:slackInviteRequest}
+
 admin_members_reporting:
   path: /members/reporting
   defaults: {_controller: AppBundle:MembershipAdmin:reporting}
