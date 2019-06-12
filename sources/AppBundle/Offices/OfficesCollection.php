@@ -221,7 +221,7 @@ class OfficesCollection
                 'longitude' => '0.336112',
                 'meetup_urlname' => 'afup-poitiers-php',
                 'meetup_id' => '23106095',
-                'logo_url' => '/images/offices/empty.svg',
+                'logo_url' => '/images/offices/poitiers.svg',
                 'twitter' => 'afup_poitiers',
                 'map' => [
                     "legend-first-point-x" => "365",
