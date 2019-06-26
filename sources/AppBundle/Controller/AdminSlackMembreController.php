@@ -34,7 +34,7 @@ class AdminSlackMembreController extends Controller
             }
             $file = null;
             $csv = file_get_contents($filename);
-            unlink($filename);
+            @unlink($filename);
         }
 
         return new Response($csv, 200, [
