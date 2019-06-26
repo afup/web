@@ -9,13 +9,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminSlackMembreController extends Controller
 {
+    private $filename;
+    
     public function checkMembersAction()
     {
         $result = $this->get(UsersChecker::class)->checkUsersValidity();
         $csv = '';
         if (count($result) > 0) {
-            $filename = tempnam(sys_get_temp_dir(), 'AFUP');
-            $file = new SplFileObject($filename, 'w');
+            $this->filename = tempnam(sys_get_temp_dir(), 'AFUP');
+            $file = new SplFileObject($this->filename, 'w');
 
             $file->fputcsv([
                 'Nom d\'utilisateur Slack',
@@ -33,8 +35,8 @@ class AdminSlackMembreController extends Controller
                 $file->fputcsv($user);
             }
             $file = null;
-            $csv = file_get_contents($filename);
-            @unlink($filename);
+            $csv = file_get_contents($this->filename);
+            @unlink($this->filename);
         }
 
         return new Response($csv, 200, [
@@ -44,5 +46,11 @@ class AdminSlackMembreController extends Controller
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Content-Transfer-Encoding' => 'binary',
         ]);
+    }
+    public function __destruct()
+    {
+        if (file_exists($this->filename)) {
+            @unlink($this->filename);
+        }
     }
 }
