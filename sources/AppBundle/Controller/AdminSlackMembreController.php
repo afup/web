@@ -16,7 +16,7 @@ class AdminSlackMembreController extends Controller
         $result = $this->get(UsersChecker::class)->checkUsersValidity();
         $csv = '';
         if (count($result) > 0) {
-            $this->filename = tempnam(sys_get_temp_dir(), 'AFUP');
+            $this->filename = tempnam(sys_get_temp_dir(), 'AFUP_CSV');
             $file = new SplFileObject($this->filename, 'w');
 
             $file->fputcsv([
@@ -47,6 +47,7 @@ class AdminSlackMembreController extends Controller
             'Content-Transfer-Encoding' => 'binary',
         ]);
     }
+    
     public function __destruct()
     {
         if (file_exists($this->filename)) {
