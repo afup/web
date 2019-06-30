@@ -247,7 +247,8 @@ LinkEditor.prototype = {
 
 	handleUp: function(event) {
 		event.preventDefault();
-		console.log("Up link: " + this.fieldset.dataset);
+
+		this.up();
 
 		updatePreview();
 		// No close form
@@ -256,7 +257,8 @@ LinkEditor.prototype = {
 
 	handleDown: function(event) {
 		event.preventDefault();
-		console.log("Down link: " + this.fieldset.dataset);
+
+		this.down();
 
 		updatePreview();
 		// No close form
@@ -301,6 +303,65 @@ LinkEditor.prototype = {
 
 	unlock: function () {
 		this.fieldset.disabled = "";
+	},
+
+	up: function () {
+		let actualIndex = this.getLinkIndex(/*this.fieldset.dataset*/);
+		// News
+		if (this.fieldset.dataset.type === 'news') {
+			if (actualIndex === 1) {
+				const tmp = techletter.firstNews;
+				techletter.firstNews = techletter.secondNews;
+				techletter.secondNews = tmp;
+			}
+		} else {
+			// Other types (array)
+			let data = techletter[this.fieldset.dataset.type];
+			if (actualIndex > -1 && data.length > 1) {
+                const newIndex = (actualIndex > 1) ? actualIndex-1 : 0;
+                if (newIndex < actualIndex) {
+                    data = data.slice(0, actualIndex-1).concat(data[actualIndex], data[newIndex], data.slice(newIndex+2));
+                }
+            }
+			techletter[this.fieldset.dataset.type] = data;
+		}
+
+
+	},
+
+	down: function () {
+		let actualIndex = this.getLinkIndex(/*this.fieldset.dataset*/);
+		if (this.fieldset.dataset.type === 'news') {
+			if (actualIndex === 0) {
+				const tmp = techletter.firstNews;
+				techletter.firstNews = techletter.secondNews;
+				techletter.secondNews = tmp;
+			}
+		} else {
+			// Other types (array)
+			let data = techletter[this.fieldset.dataset.type];
+			if (actualIndex > -1 && data.length > 1) {
+				let newIndex = (actualIndex < data.length-1) ? actualIndex+1 : data.length-1;
+				if (actualIndex < newIndex) {
+					data = data.slice(0, actualIndex).concat(data[newIndex], data[actualIndex], data.slice(newIndex+1));
+				}
+			}
+			techletter[this.fieldset.dataset.type] = data;
+		}
+	},
+
+	getLinkIndex: function () {
+		if (this.fieldset.dataset.type === 'news') {
+			return (techletter.firstNews.url === this.fieldset.dataset.link) ? 0 : 1;
+		} else {
+			let data = techletter[this.fieldset.dataset.type];
+			for (let i=0; i<data.length; i++) {
+				if (data[i].url === this.fieldset.dataset.link) {
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 };
 export { LinkEditor };

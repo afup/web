@@ -18,7 +18,6 @@ import { IframeOverlay, LoadingOverlay } from './iframeOverlay';
 	w.updatePreview = function ()
 	{
 		loadingOverlay.show();
-		console.log(techletter);
 		form.querySelector('input[name=techletter],textarea[name=techletter]').value = JSON.stringify(techletter);
 		form.submit();
 	};
