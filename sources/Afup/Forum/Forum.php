@@ -75,13 +75,13 @@ class Forum
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function obtenirPrecedent($id_forum)
+    function obtenirForumPrecedent($id_forum)
     {
         $requete = 'SELECT MAX(id)';
         $requete .= 'FROM';
         $requete .= '  afup_forum ';
         $requete .= 'WHERE';
-        $requete .= '  id <  ' . (int)$id_forum;
+        $requete .= '  id <  ' . (int)$id_forum . ' AND titre like "%Forum%"';
         return $this->_bdd->obtenirUn($requete);
     }
 
