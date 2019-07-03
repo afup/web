@@ -462,7 +462,7 @@ class Talk implements NotifyPropertyInterface
             return null;
         }
 
-        return 'https://legacy.joind.in/talk/view/' . $this->getJoindinId();
+        return '/talks/' . $this->getUrlKey() . '/joindin';
     }
 
     /**

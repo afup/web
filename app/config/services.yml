@@ -103,6 +103,10 @@ services:
     AppBundle\Payment\PayboxFactory:
         autowire: true
 
+    slack_members_legacy_client:
+        class: AppBundle\Slack\LegacyClient
+        arguments: ["%slack_members_legacy_token%"]
+
     AppBundle\Slack\UsersClient:
         autowire: true
         arguments: ["%slack_membre_token%", "%slack_api_url%"]
@@ -123,6 +127,9 @@ services:
         arguments: ["%algolia_app_id%", "%algolia_backend_api_key%"]
 
     AppBundle\Joindin\JoindinComments:
+        arguments: ["@cache.system"]
+
+    AppBundle\Joindin\JoindinTalk:
         arguments: ["@cache.system"]
 
     TwitterAPIExchange:

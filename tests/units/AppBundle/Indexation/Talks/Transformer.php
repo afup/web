@@ -102,7 +102,7 @@ class Transformer extends \atoum
                         'has_slides' => true,
                         'slides_url' => 'http://tapoueh.org/images/confs/PHPTour_2014_PostgreSQL.pdf',
                         'has_joindin' => true,
-                        'joindin_url' => 'https://legacy.joind.in/talk/view/11214',
+                        'joindin_url' => '/talks/1007-utiliser-postgresql-en-2014/joindin',
                         'has_blog_post' => true,
                         'blog_post_url' => 'http://tapoueh.org/confs/2014/06/23-PHPTour-Lyon-2014',
                         'language' => [
