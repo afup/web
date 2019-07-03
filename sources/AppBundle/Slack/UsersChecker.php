@@ -54,6 +54,7 @@ class UsersChecker
                     $userDb = $this->userRepository->loadUserByUsername($email);
                     $userInfo['afup_last_subscription']=$userDb->getLastSubscription();
                     $userInfo['afup_status']=$userDb->getStatus();
+                    $userInfo['user_found']=true;
                     if ($userDb->getLastSubscription() < $today || $userDb->getStatus() !== $userDb::STATUS_ACTIVE) {
                         //Utilisateur inactif ou sans souscription : a supprimer
                         $result[] = $userInfo;
