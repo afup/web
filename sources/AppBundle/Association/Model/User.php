@@ -145,7 +145,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     /**
      * @var int
      */
-    private $slackInviteStatus;
+    private $slackInviteStatus = self::SLACK_INVITE_STATUS_NONE;
 
     /**
      * @return int
