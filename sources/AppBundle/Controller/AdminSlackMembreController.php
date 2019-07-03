@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminSlackMembreController extends Controller
 {
     private $filename;
-    
+
     public function checkMembersAction()
     {
         $result = $this->get(UsersChecker::class)->checkUsersValidity();
@@ -47,7 +47,7 @@ class AdminSlackMembreController extends Controller
             'Content-Transfer-Encoding' => 'binary',
         ]);
     }
-    
+
     public function __destruct()
     {
         if (file_exists($this->filename)) {
