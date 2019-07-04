@@ -122,9 +122,6 @@ services:
     AppBundle\Joindin\JoindinComments:
         arguments: ["@cache.system"]
 
-    AppBundle\Joindin\JoindinTalk:
-        arguments: ["@cache.system"]
-
     TwitterAPIExchange:
         class: TwitterAPIExchange
         arguments: ["%twitter_api_settings%"]
@@ -384,3 +381,7 @@ services:
             - "@ting"
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
+
+    AppBundle\Association\Form\ContactDetailsType:
+        arguments: ['@Afup\Site\Utils\Pays']
+        tags: [form.type]

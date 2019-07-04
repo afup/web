@@ -124,7 +124,7 @@ class HydratorAggregator extends Hydrator
             }
         }
 
-        if ($previousId === $currentId) {
+        if ($previousId === $currentId && $previousId !== null) {
             yield $key => $this->finalizeAggregate($result, $aggregate);
         }
     }
