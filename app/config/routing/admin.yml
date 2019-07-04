@@ -58,3 +58,7 @@ admin_members_reporting:
 admin_techletter:
   resource: "techletter_admin.yml"
   prefix: /techletter
+
+member_contact:
+  path: /member/contact
+  defaults: {_controller: AppBundle:MemberShip:contactDetails}

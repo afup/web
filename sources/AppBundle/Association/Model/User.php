@@ -108,6 +108,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $phone;
 
     /**
+     * @var string
+     */
+    private $mobilephone;
+
+    /**
      * @var int
      */
     private $status = 0;
@@ -133,6 +138,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $company;
 
     /**
+     * @var string
+     */
+    private $nearestOffice;
+
+    /**
      * @var int
      */
     private $slackInviteStatus = self::SLACK_INVITE_STATUS_NONE;
@@ -153,6 +163,44 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobilephone()
+    {
+        return $this->mobilephone;
+    }
+
+    /**
+     * @param string $mobilephone
+     * @return User
+     */
+    public function setMobilephone($mobilephone)
+    {
+        $this->propertyChanged('mobilephone', $this->mobilephone, $mobilephone);
+        $this->mobilephone = $mobilephone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNearestOffice()
+    {
+        return $this->nearestOffice;
+    }
+
+    /**
+     * @param string $nearestOffice
+     * @return User
+     */
+    public function setNearestOffice($nearestOffice)
+    {
+        $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
+        $this->nearestOffice = $nearestOffice;
         return $this;
     }
 
