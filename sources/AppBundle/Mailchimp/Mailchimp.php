@@ -25,7 +25,7 @@ class Mailchimp
             'lists/' . $list . '/members/' . $this->getAddressId($email),
             // Le status pending permet d'être en double opt-in, que Mailchimp envoie
             // un mail de confirmation pour valider l'inscription à la newsletter
-            ['status' => 'pending', 'email_address' => $email]
+            ['status' => 'pending', 'email_address' => $email, 'language' => 'fr']
         );
     }
 
