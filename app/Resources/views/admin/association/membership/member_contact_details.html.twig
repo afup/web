@@ -1,0 +1,134 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <article id="company-membership">
+        <h2>Mes coordonnées</h2>
+        {{ form_start(form) }}
+
+        <fieldset class="f1">
+            <legend>Informations</legend>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.email) }}
+                </div>
+                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="obligatoire">&nbsp;*</span>
+                <span class="element">
+                    {{ form_widget(form.email, {'attr': {'size': '30', 'maxlength': '100'}}) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.address) }}
+                </div>
+                {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="obligatoire">&nbsp;*</span>
+                <span class="element">
+                {{ form_widget(form.address, {'attr': {'rows': '10', 'cols': '42'}}) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.zipcode) }}
+                </div>
+                {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="obligatoire">&nbsp;*</span>
+                <span class="element">
+                {{ form_widget(form.zipcode, {'attr': {'size': '6', 'maxlength': '10'}}) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.city) }}
+                </div>
+                {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="obligatoire">&nbsp;*</span>
+                <span class="element">
+                {{ form_widget(form.city, {'attr': {'size': '30', 'maxlength': '50'}}) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.country) }}
+                </div>
+                {{ form_label(form.country, 'country', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="element">
+                {{ form_widget(form.country) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.phone) }}
+                </div>
+                {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="element">
+                {{ form_widget(form.phone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.mobilephone) }}
+                </div>
+                {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="element">
+                {{ form_widget(form.mobilephone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.nearest_office) }}
+                </div>
+                {{ form_label(form.nearest_office, 'Nearest office', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="element">
+                {{ form_widget(form.nearest_office) }}
+                </span>
+            </div>
+        </fieldset>
+
+        <fieldset class="f2">
+            <legend>Paramètres</legend>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.username) }}
+                </div>
+                {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="obligatoire">&nbsp;*</span>
+                <span class="element">
+                {{ form_widget(form.username, {'attr': {'size': '30', 'maxlength': '30'}}) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <p class="note">
+                    Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
+                </p>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.password.first) }}
+                </div>
+                {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="element">
+                    {{ form_widget(form.password.first, {'attr': {'size': '30'}}) }}
+                </span>
+            </div>
+            <div class="rangee">
+                <div class="flash-error">
+                    {{ form_errors(form.password.second) }}
+                </div>
+                {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
+                <span class="element">
+                    {{ form_widget(form.password.second, {'attr': {'size': '30'}}) }}
+                </span>
+            </div>
+        </fieldset>
+        <fieldset class="f3 boutons">
+            <div class="rangee">
+                {{ form_widget(form.save) }}
+            </div>
+        </fieldset>
+        <p>
+            <span class="obligatoire">*</span>&nbsp; indique un champ obligatoire
+        </p>
+        {{ form_end(form) }}
+    </article>
+{% endblock %}

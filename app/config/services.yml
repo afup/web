@@ -103,6 +103,10 @@ services:
     AppBundle\Payment\PayboxFactory:
         autowire: true
 
+    slack_members_legacy_client:
+        class: AppBundle\Slack\LegacyClient
+        arguments: ["%slack_members_legacy_token%"]
+
     AppBundle\Slack\MessageFactory:
         autowire: true
 
@@ -380,3 +384,7 @@ services:
             - "@ting"
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
+
+    AppBundle\Association\Form\ContactDetailsType:
+        arguments: ['@Afup\Site\Utils\Pays']
+        tags: [form.type]

@@ -24,6 +24,9 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
+    const SLACK_INVITE_STATUS_NONE = 0;
+    const SLACK_INVITE_STATUS_REQUESTED = 1;
+
     /**
      * @var int
      */
@@ -105,6 +108,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $phone;
 
     /**
+     * @var string
+     */
+    private $mobilephone;
+
+    /**
      * @var int
      */
     private $status = 0;
@@ -130,6 +138,16 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $company;
 
     /**
+     * @var string
+     */
+    private $nearestOffice;
+
+    /**
+     * @var int
+     */
+    private $slackInviteStatus = self::SLACK_INVITE_STATUS_NONE;
+
+    /**
      * @return int
      */
     public function getId()
@@ -145,6 +163,44 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobilephone()
+    {
+        return $this->mobilephone;
+    }
+
+    /**
+     * @param string $mobilephone
+     * @return User
+     */
+    public function setMobilephone($mobilephone)
+    {
+        $this->propertyChanged('mobilephone', $this->mobilephone, $mobilephone);
+        $this->mobilephone = $mobilephone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNearestOffice()
+    {
+        return $this->nearestOffice;
+    }
+
+    /**
+     * @param string $nearestOffice
+     * @return User
+     */
+    public function setNearestOffice($nearestOffice)
+    {
+        $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
+        $this->nearestOffice = $nearestOffice;
         return $this;
     }
 
@@ -507,6 +563,35 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     {
         $this->company = $company;
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSlackInviteStatus()
+    {
+        return $this->slackInviteStatus;
+    }
+
+    /**
+     * @param int $slackInviteStatus
+     *
+     * @return User
+     */
+    public function setSlackInviteStatus($slackInviteStatus)
+    {
+        $this->propertyChanged('slackInviteStatus', $this->slackInviteStatus, $slackInviteStatus);
+        $this->slackInviteStatus = $slackInviteStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canRequestSlackInvite()
+    {
+        return false === $this->hasRole('ROLE_MEMBER_EXPIRED') && $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_NONE;
     }
 
     /**

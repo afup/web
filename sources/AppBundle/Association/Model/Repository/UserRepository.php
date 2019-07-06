@@ -113,6 +113,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'app.`niveau_modules`', 'app.`roles`', 'app.`civilite`', 'app.`nom`', 'app.`prenom`', 'app.`email`',
                 'app.`adresse`', 'app.`code_postal`', 'app.`ville`', 'app.`id_pays`', 'app.`telephone_fixe`',
                 'app.`telephone_portable`', 'app.`etat`', 'app.`date_relance`', 'app.`compte_svn`',
+                'app.`slack_invite_status`',
                 'MD5(CONCAT(app.`id`, \'_\', app.`email`, \'_\', app.`login`)) as hash',
                 "MAX(ac.date_fin) AS lastsubcription"
             ]);
@@ -308,9 +309,24 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'telephone_portable',
+                'fieldName' => 'mobilephone',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'nearest_office',
+                'fieldName' => 'nearestOffice',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'status',
                 'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'slack_invite_status',
+                'fieldName' => 'slackInviteStatus',
+                'type' => 'int',
             ])
         ;
 

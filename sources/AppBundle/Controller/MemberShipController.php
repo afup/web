@@ -4,9 +4,12 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Utils;
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;
+use AppBundle\Association\Form\ContactDetailsType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
@@ -14,6 +17,7 @@ use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +25,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class MemberShipController extends SiteBaseController
 {
+    use DbLoggerTrait;
+
     public function becomeMemberAction()
     {
         return $this->render(
@@ -188,6 +194,26 @@ class MemberShipController extends SiteBaseController
         return $this->render(':site/company_membership:member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
     }
 
+    public function slackInviteRequestAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        if (!$user->canRequestSlackInvite()) {
+            throw $this->createAccessDeniedException("Vous n'êtes pas autorité à demander une invitation");
+        }
+
+        $this->get('slack_members_legacy_client')->invite($this->getUser()->getEmail());
+
+        $this->addFlash('success', 'Un email vous a été envoyé pour rejoindre le Slack des membres !');
+
+        $user->setSlackInviteStatus(User::SLACK_INVITE_STATUS_REQUESTED);
+        $this->get('ting')->get(UserRepository::class)->save($user);
+
+        $this->log('Demande invitation slack', $this->getUser());
+
+        return $this->redirect('/pages/administration');
+    }
+
     public function payboxCallbackAction(Request $request)
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
@@ -226,5 +252,58 @@ class MemberShipController extends SiteBaseController
             $logs::log("Ajout de la cotisation " . $payboxResponse->getCmd() . " via Paybox.");
         }
         return new Response();
+    }
+
+    public function contactDetailsAction(Request $request)
+    {
+        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
+        $repo = $this->get('ting')->get(UserRepository::class);
+
+        $user = $repo->get($this->getUserId());
+        $data = [
+            'email' => $user->getEmail(),
+            'address' => $user->getAddress(),
+            'username' => $user->getUsername(),
+            'zipcode' => $user->getZipCode(),
+            'city' => $user->getCity(),
+            'phone' => $user->getPhone(),
+            'mobilephone' => $user->getMobilePhone(),
+            'country' => $user->getCountry(),
+            'nearest_office' => $user->getNearestOffice(),
+        ];
+
+        $userForm = $this->createForm(ContactDetailsType::class, $data);
+        $userForm->handleRequest($request);
+        if ($userForm->isValid()) {
+            $data = $userForm->getData();
+
+            $user->setEmail($data['email']);
+            $user->setAddress($data['address']);
+            $user->setZipCode($data['zipcode']);
+            $user->setCity($data['city']);
+            $user->setUsername($data['username']);
+            $user->setPhone($data['phone']);
+            $user->setMobilePhone($data['mobilephone']);
+            $user->setCountry($data['country']);
+            $user->setNearestOffice($data['nearest_office']);
+            // Save password if not empty
+            if (! empty($data['password'])) {
+                $user->setPassword(md5($data['password'])); /** @TODO We should change that */
+            }
+
+            $repo->save($user);
+
+            $logs::log("Modification des coordonnées de l'utilisateur " . $user->getUsername() . " effectuée avec succès.");
+            $this->addFlash('success', 'Votre compte a été modifié !');
+        }
+
+        return $this->render(':admin/association/membership:member_contact_details.html.twig', ['title' => 'Mes coordonnées', 'form' => $userForm->createView()]);
+    }
+
+    private function getUserId()
+    {
+        global $bdd;
+        $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
+        return $droits->obtenirIdentifiant();
     }
 }
