@@ -18,28 +18,73 @@
         .container {
             margin-bottom: 10px;
         }
+
+        .square a {
+            text-align: right;
+            font-size: 1.1em;
+            font-weight: bold;
+         /*   color: #ed0678;*/
+        }
+
+        /*.square__evidence {
+            background-color: #ed0678;
+            color: white;
+        }
+        .square__evidence a {
+            color: white;
+        }
+        */
+
+        .square__evidence {
+            border: 1px solid #ed0678;
+        }
+
+        .square--link {
+            text-align: right;
+        }
+
+        @media (max-width: 460px) {
+            .square {
+                margin: 10px 0;
+            }
+
+            .square .fa {
+                display: block;
+                width: 100%;
+                text-align: center;
+                margin: 0 0 20px 0;
+            }
+
+            .square .square--link {
+                margin: 20px 0 0 0;
+            }
+        }
+
+
     </style>
 
     <div class="mw1400p center" id="container">
-        <div class="line" id="main">
 
+        <div class="line" id="main">
 
             <h1>Espace membre</h1>
 
+            <h2>Mon compte</h2>
+
             <div class="container">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="square">
                         <i class="fa fa-user"></i> Mes coordonnées : {{ user.label }}
-                        <div style="text-align: right">
-                            <a href="/pages/administration/index.php?page=membre_coordonnees">Modifer</a>
+                        <div class="square--link">
+                            <a class="" href="{{ path('member_contact') }}">Modifer</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="square">
+                <div class="col-md-6 col-sm-12">
+                    <div class="square square__evidence">
                         <i class="fa fa-dollar"></i> Cotisations
-                        <div style="text-align: right">
+                        <div class="square--link">
                             <a href="/pages/administration/index.php?page=membre_cotisation">Voir</a>
                         </div>
                     </div>
@@ -48,18 +93,18 @@
 
 
             <div class="container">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="square">
-                        <i class="fa fa-bullhorn"></i> Veille de l'AFUP : non inscrit/inscrite
-                        <div style="text-align: right">
+                        <i class="fa fa-bullhorn"></i> Veille de l'AFUP : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
+                        <div class="square--link">
                             <a href="{{ path('techletter') }}">S'inscrire</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="square">
                         <i class="fa fa-envelope"></i> Listes de difusion
-                        <div style="text-align: right">
+                        <div class="square--link">
                             <a href="{{ path('my_groups') }}">Consulter</a>
                         </div>
                     </div>
@@ -68,19 +113,19 @@
 
             <div class="container">
 
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="square">
-                        <i class="fa fa-building"></i> Présence prochaine AG
-                        <div style="text-align: right">
+                        <i class="fa fa-comments"></i> Présence prochaine AG
+                        <div class="square--link">
                             <a href="/pages/administration/index.php?page=membre_assemblee_generale">Indiquer sa présence</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="square">
                         <i class="fa fa-map-marker"></i> Antenne la plus proche : Lyon
-                        <div style="text-align: right">
+                        <div class="square--link">
                             <a href="/pages/administration/index.php?page=membre_coordonnees">Modifier</a>
                         </div>
                     </div>
@@ -88,10 +133,10 @@
             </div>
 
             <div class="container">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="square">
                         <i class="fa fa-book"></i> Comptes-rendus d'AG
-                        <div style="text-align: right">
+                        <div class="square--link">
                             <a href="">Voir</a>
                         </div>
                     </div>
@@ -115,7 +160,7 @@
             <div class="badges">
                 <div class="container">
             {% for badge in badges %}
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-sm-12">
                         <img src="/images/badges/{{ badge }}.png" alt="Badge {{ badge }}">
                     </div>
             {% endfor %}
