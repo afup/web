@@ -1,134 +1,138 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends ':site:base.html.twig' %}
 
 {% block content %}
-    <article id="company-membership">
-        <h2>Mes coordonnées</h2>
-        {{ form_start(form) }}
 
-        <fieldset class="f1">
-            <legend>Informations</legend>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.email) }}
-                </div>
-                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="obligatoire">&nbsp;*</span>
-                <span class="element">
-                    {{ form_widget(form.email, {'attr': {'size': '30', 'maxlength': '100'}}) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.address) }}
-                </div>
-                {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="obligatoire">&nbsp;*</span>
-                <span class="element">
-                {{ form_widget(form.address, {'attr': {'rows': '10', 'cols': '42'}}) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.zipcode) }}
-                </div>
-                {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="obligatoire">&nbsp;*</span>
-                <span class="element">
-                {{ form_widget(form.zipcode, {'attr': {'size': '6', 'maxlength': '10'}}) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.city) }}
-                </div>
-                {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="obligatoire">&nbsp;*</span>
-                <span class="element">
-                {{ form_widget(form.city, {'attr': {'size': '30', 'maxlength': '50'}}) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.country) }}
-                </div>
-                {{ form_label(form.country, 'country', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="element">
-                {{ form_widget(form.country) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.phone) }}
-                </div>
-                {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="element">
-                {{ form_widget(form.phone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.mobilephone) }}
-                </div>
-                {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="element">
-                {{ form_widget(form.mobilephone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.nearest_office) }}
-                </div>
-                {{ form_label(form.nearest_office, 'Nearest office', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="element">
-                {{ form_widget(form.nearest_office) }}
-                </span>
-            </div>
-        </fieldset>
+    {% include ':site:secondary_menu.html.twig' with {
+        menu: [
+            {
+                "nom" : "Accueil",
+                "lien": path('member_index'),
+                'is_active': false,
+            },
+            {
+                "nom" : "Coordonnées",
+                "lien": "/admin/member",
+                'is_active': true,
+            },
+            {
+                "nom": "Cotisations",
+                "lien": "/pages/administration/index.php?page=membre_cotisation",
+                "is_active": false,
+            },
+            {
+                "nom": "Veille",
+                "lien": path('techletter'),
+                "is_active": false,
+            },
+            {
+                "nom": "Listes de difusion",
+                "lien": path('my_groups'),
+                "is_active": false,
+            },
+            {
+                "nom": "Présence AG",
+                "lien": "/pages/administration/index.php?page=membre_assemblee_generale",
+                "is_active": false,
+            },
+            {
+                "nom": "Comptes rendus AG",
+                "lien": "",
+                "is_active": false,
+            },
+        ]
+    } only %}
 
-        <fieldset class="f2">
-            <legend>Paramètres</legend>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.username) }}
+    <div class="mw1400p center" id="container">
+        <div class="line" id="main">
+            <h1>Mes coordonées</h1>
+
+            <div class="afup-form">
+            {{ form_start(form) }}
+
+            <fieldset>
+                <legend>Informations</legend>
+                <div>
+                    <div>
+                        {{ form_errors(form.email) }}
+                        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.email, {'attr': {'size': '30', 'maxlength': '100'}}) }}
+                    </div>
+                    <div>
+                        {{ form_errors(form.address) }}
+                        {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.address, {'attr': {'rows': '10', 'cols': '42'}}) }}
+                    </div>
+                    <div>
+                        {{ form_errors(form.zipcode) }}
+                        {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.zipcode, {'attr': {'size': '6', 'maxlength': '10'}}) }}
+                    </div>
+                    <div>
+                        {{ form_errors(form.city) }}
+                        {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.city, {'attr': {'size': '30', 'maxlength': '50'}}) }}
+                    </div>
+                    <div>
+                        {{ form_errors(form.country) }}
+                        {{ form_label(form.country, 'country', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.country) }}
+                    </div>
+                    <div>
+                        {{ form_errors(form.phone) }}
+                        {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.phone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
+                    </div>
+                    <div>
+                        {{ form_errors(form.mobilephone) }}
+                        {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.mobilephone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
+                    </div>
+                    <div>
+                        {{ form_errors(form.nearest_office) }}
+                        {{ form_label(form.nearest_office, 'Nearest office', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.nearest_office) }}
+                    </div>
                 </div>
-                {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="obligatoire">&nbsp;*</span>
-                <span class="element">
-                {{ form_widget(form.username, {'attr': {'size': '30', 'maxlength': '30'}}) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <p class="note">
-                    Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
-                </p>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.password.first) }}
+            </fieldset>
+
+            <fieldset>
+                <legend>Paramètres</legend>
+
+                <div>
+                    <div>
+                        {{ form_errors(form.username) }}
+                        {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.username, {'attr': {'size': '30', 'maxlength': '30'}}) }}
+                    </div>
+                    <div class="rangee">
+                        <p class="note">
+                            Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
+                        </p>
+                    </div>
+                    <div>
+                        {{ form_errors(form.password.first) }}
+                        {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.password.first, {'attr': {'size': '30'}}) }}
+                    </div>
+                    <div>
+                        {{ form_errors(form.password.second) }}
+                        {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
+                        {{ form_widget(form.password.second, {'attr': {'size': '30'}}) }}
+                    </div>
                 </div>
-                {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="element">
-                    {{ form_widget(form.password.first, {'attr': {'size': '30'}}) }}
-                </span>
-            </div>
-            <div class="rangee">
-                <div class="flash-error">
-                    {{ form_errors(form.password.second) }}
-                </div>
-                {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
-                <span class="element">
-                    {{ form_widget(form.password.second, {'attr': {'size': '30'}}) }}
-                </span>
-            </div>
-        </fieldset>
-        <fieldset class="f3 boutons">
-            <div class="rangee">
+            </fieldset>
+
+            <p>
+                <span class="obligatoire">*</span>&nbsp; Indique un champ obligatoire
+            </p>
+
+            <div class="right">
                 {{ form_widget(form.save) }}
             </div>
-        </fieldset>
-        <p>
-            <span class="obligatoire">*</span>&nbsp; indique un champ obligatoire
-        </p>
-        {{ form_end(form) }}
-    </article>
+
+            {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
