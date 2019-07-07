@@ -56,7 +56,7 @@
                 </a>
             </td>
             <td style="text-align: right">
-                <a href="/pages/administration/index.php?page=membre_cotisation&amp;action=envoyer_facture&amp;type_personne={{ constant('AFUP_PERSONNES_MORALES') }}&amp;id_personne={{ cotisation.id_personne }}&amp;id={{ cotisation.id }}" title="Envoyer la cotisation">
+                <a href="{{ path('member_membership_fee_send_mail', {id: cotisation.id}) }}" title="Envoyer la cotisation">
                     <img src="/templates/administration/images/famfamfam/email_go.png" alt="Envoyer la cotisation" />
                 </a>
             </td>

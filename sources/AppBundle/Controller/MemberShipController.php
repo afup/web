@@ -21,6 +21,7 @@ use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -414,5 +415,28 @@ class MemberShipController extends SiteBaseController
         $response->setContentDisposition('attachment', 'facture-' . $numeroFacture . '.pdf');
 
         return $response;
+    }
+
+    public function membershipFeeSendMailAction(Request $request)
+    {
+        $cotisations = $this->getCotisations();
+        $identifiant = $this->getDroits()->obtenirIdentifiant();
+        $id = $request->get('id');
+
+        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
+
+        if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
+            $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
+            throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
+        }
+
+        if ($cotisations->envoyerFacture($id, $this->get(\Afup\Site\Utils\Mail::class))) {
+            $logs::log('Envoi par email de la facture pour la cotisation n°' . $id);
+            $this->addFlash('success', 'La facture a été envoyée par mail');
+        } else {
+            $this->addFlash('error', "La facture n'a pas pu être envoyée par mail");
+        }
+
+        return $this->redirectToRoute('member_membership_fee');
     }
 }
