@@ -1,5 +1,10 @@
 {% extends ':site:base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
+{% endblock %}
+
 {% block content %}
 
     {% include ':site:secondary_menu.html.twig' with {
@@ -127,7 +132,7 @@
             </p>
 
             <div class="right">
-                {{ form_widget(form.save) }}
+                {{ form_widget(form.save, {"attr": {"class": "button"}}) }}
             </div>
 
             {{ form_end(form) }}

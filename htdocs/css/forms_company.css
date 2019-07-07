@@ -86,8 +86,8 @@
 #company-membership-payment input[type=submit],
 #company-membership-payment a.button,
 #company-members form button,
-#company-members button.company--submit,
-.afup-form button
+#company-members button.company--submit/*,
+.afup-form button*/
 {
     text-decoration: none;
     background-color:#50a0dd;

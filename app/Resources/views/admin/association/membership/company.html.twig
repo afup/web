@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all" />
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
 {% endblock %}
 
 {% block content %}
@@ -56,8 +57,10 @@
             </fieldset>
 
             <div class="right">
-            {{ form_widget(form) }}
+            {{ form_widget(form.save, {"attr": { "class": "button"}}) }}
             </div>
+
+            {{ form_widget(form) }}
 
             {{ form_end(form) }}
             </div>

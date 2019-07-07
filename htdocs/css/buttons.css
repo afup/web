@@ -9,6 +9,7 @@ a.button-inverted:hover {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    min-width: auto;
 }
 
 a.button-inverted {
@@ -32,4 +33,10 @@ a.button-inverted {
     background-color: #ed0678;
     border-color: #ed0678;
     font-weight: bold;
+}
+
+.button__medium {
+    font-size: 1rem;
+    padding: 8px;
+    margin: 1px 5px;
 }
