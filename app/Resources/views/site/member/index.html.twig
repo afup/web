@@ -1,46 +1,56 @@
 {% extends ':site:base.html.twig' %}
 
+{% block header %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/buttons.css">
+{% endblock %}
+
 {% block content %}
 
+    {% include ':site:secondary_menu.html.twig' with {
+        menu: [
+            {
+                "nom" : "Accueil",
+                "lien": path('member_index'),
+                'is_active': true,
+            },
+        ]
+    } only %}
     <style>
         .square {
-            border: 1px solid #ccc;
-            padding: 45px;
+            padding: 20px 0;
         }
 
         .square .fa {
-            font-size: 3em;
             margin:  0 20px 0 0;
             display: inline-block;
             vertical-align: middle;
+            float: left;
+            min-width: 60px;
+            font-size: 5em;
+            text-align: center;
         }
 
         .container {
             margin-bottom: 10px;
         }
 
-        .square a {
-            text-align: right;
-            font-size: 1.1em;
+        .square--title {
             font-weight: bold;
-         /*   color: #ed0678;*/
-        }
-
-        /*.square__evidence {
-            background-color: #ed0678;
-            color: white;
-        }
-        .square__evidence a {
-            color: white;
-        }
-        */
-
-        .square__evidence {
-            border: 1px solid #ed0678;
         }
 
         .square--link {
-            text-align: right;
+            text-align: left;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .square .square--link a {
+            font-size: 1.1em;
+            font-weight: bold;
+            min-width: 200px;
+            text-align: center;
+            padding: 8px 20px;
         }
 
         @media (max-width: 460px) {
@@ -74,18 +84,18 @@
             <div class="container">
                 <div class="col-md-6 col-sm-12">
                     <div class="square">
-                        <i class="fa fa-user"></i> Mes coordonnées : {{ user.label }}
+                        <i class="fa fa-user"></i> <span class="square--title">Mes coordonnées</span> : {{ user.label }}
                         <div class="square--link">
-                            <a class="" href="{{ path('member_contact') }}">Modifer</a>
+                            <a class="button-inverted button__medium" href="{{ path('member_contact') }}">Modifer</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-sm-12">
-                    <div class="square square__evidence">
-                        <i class="fa fa-dollar"></i> Cotisations
+                    <div class="square">
+                        <i class="fa fa-dollar"></i> <span class="square--title">Cotisations</span>
                         <div class="square--link">
-                            <a href="/pages/administration/index.php?page=membre_cotisation">Voir</a>
+                            <a class="button-inverted button__medium button--call-to-action" href="/pages/administration/index.php?page=membre_cotisation">Se mettre à jour</a>
                         </div>
                     </div>
                 </div>
@@ -95,49 +105,49 @@
             <div class="container">
                 <div class="col-md-6 col-sm-12">
                     <div class="square">
-                        <i class="fa fa-bullhorn"></i> Veille de l'AFUP : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
+                        <i class="fa fa-bullhorn"></i> <span class="square--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
                         <div class="square--link">
-                            <a href="{{ path('techletter') }}">S'inscrire</a>
+                            <a class="button-inverted button__medium" href="{{ path('techletter') }}">S'inscrire</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <div class="square">
-                        <i class="fa fa-envelope"></i> Listes de difusion
+                        <i class="fa fa-envelope"></i> <span class="square--title">Listes de difusion</span>
                         <div class="square--link">
-                            <a href="{{ path('my_groups') }}">Consulter</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-
-                <div class="col-md-6 col-sm-12">
-                    <div class="square">
-                        <i class="fa fa-comments"></i> Présence prochaine AG
-                        <div class="square--link">
-                            <a href="/pages/administration/index.php?page=membre_assemblee_generale">Indiquer sa présence</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-sm-12">
-                    <div class="square">
-                        <i class="fa fa-map-marker"></i> Antenne la plus proche : Lyon
-                        <div class="square--link">
-                            <a href="/pages/administration/index.php?page=membre_coordonnees">Modifier</a>
+                            <a class="button-inverted button__medium" href="{{ path('my_groups') }}">Consulter</a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="container">
+
                 <div class="col-md-6 col-sm-12">
                     <div class="square">
-                        <i class="fa fa-book"></i> Comptes-rendus d'AG
+                        <i class="fa fa-comments"></i> <span class="square--title">Présence prochaine AG</span>
                         <div class="square--link">
-                            <a href="">Voir</a>
+                            <a class="button-inverted button__medium" href="/pages/administration/index.php?page=membre_assemblee_generale">Indiquer sa présence</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <div class="square">
+                        <i class="fa fa-map-marker"></i> <span class="square--title">Antenne la plus proche</span> : Lyon
+                        <div class="square--link">
+                            <a class="button-inverted button__medium" href="/pages/administration/index.php?page=membre_coordonnees">Modifier</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="col-md-6 col-sm-12">
+                    <div class="square">
+                        <i class="fa fa-book"></i> <span class="square--title">Comptes-rendus d'AG</span>
+                        <div class="square--link">
+                            <a class="button-inverted button__medium" href="">Voir</a>
                         </div>
                     </div>
                 </div>
@@ -145,7 +155,7 @@
 
             {% if is_granted('ROLE_COMPANY_MANAGER') %}
             <h2>
-                Ma société
+                Mon compte société
             </h2>
 
             <div class="container">
@@ -153,7 +163,7 @@
                     <div class="square">
                         <i class="fa fa-building"></i> Coordonnées
                         <div class="square--link">
-                            <a href="{{ path('admin_company') }}">Modifier</a>
+                            <a class="button-inverted button__medium" href="{{ path('admin_company') }}">Modifier</a>
                         </div>
                     </div>
                 </div>
@@ -162,7 +172,7 @@
                     <div class="square">
                         <i class="fa fa-users"></i> Personnes rattachées
                         <div class="square--link">
-                            <a href="{{ path('admin_company_members') }}">Modifier</a>
+                            <a class="button-inverted button__medium" href="{{ path('admin_company_members') }}">Modifier</a>
                         </div>
                     </div>
                 </div>
@@ -194,26 +204,6 @@
                 </div>
             </div>
             {% endif %}
-<!--
-            <div class="badges">
-                <div class="container">
-                    <div class="col-md-6">
-                        <img src="/images/badges/4ans.png">
-                    </div>
-                    <div class="col-md-6">
-                        <img src="/images/badges/3ans.png">
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="col-md-6">
-                        <img src="/images/badges/2ans.png">
-                    </div>
-                    <div class="col-md-6">
-                        <img src="/images/badges/1ans.png">
-                    </div>
-                </div>
-            </div>
--->
 
         </div>
     </div>
