@@ -67,3 +67,7 @@ member_contact:
 member_membership_fee:
   path: /member/membership-fee
   defaults: {_controller: AppBundle:MemberShip:membershipFee}
+
+member_membership_fee_download:
+  path: /member/membership-fee/download
+  defaults: {_controller: AppBundle:MemberShip:membershipFeeDownload}

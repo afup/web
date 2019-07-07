@@ -20,6 +20,7 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -303,19 +304,22 @@ class MemberShipController extends SiteBaseController
 
     private function getUserId()
     {
+        return $this->getDroits()->obtenirIdentifiant();
+    }
+
+    private function getDroits()
+    {
         global $bdd;
-        $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
-        return $droits->obtenirIdentifiant();
+        return Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
     }
 
     public function membershipFeeAction(Request $request)
     {
         global $bdd;
-        $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
-        $cotisations = new Cotisations($bdd, $droits);
         $personnes_physiques = new Personnes_Physiques($bdd);
+        $cotisations = $this->getCotisations();
 
-        $identifiant = $droits->obtenirIdentifiant();
+        $identifiant = $this->getDroits()->obtenirIdentifiant();
 
         $donnees = $personnes_physiques->obtenir($identifiant);
 
@@ -381,5 +385,34 @@ class MemberShipController extends SiteBaseController
                 'message' => $message,
             ]
         );
+    }
+
+    private function getCotisations()
+    {
+        global $bdd;
+        return new Cotisations($bdd, $this->getDroits());
+    }
+
+    public function membershipFeeDownloadAction(Request $request)
+    {
+        $cotisations = $this->getCotisations();
+        $identifiant = $this->getDroits()->obtenirIdentifiant();
+        $id = $request->get('id');
+
+        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
+
+        if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
+            $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
+            throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
+        }
+
+        $tempfile = tempnam(sys_get_temp_dir(), 'membership_fee_download');
+        $numeroFacture = $cotisations->genererFacture($id, $tempfile);
+
+        $response = new BinaryFileResponse($tempfile, 200, [], false);
+        $response->deleteFileAfterSend(true);
+        $response->setContentDisposition('attachment', 'facture-' . $numeroFacture . '.pdf');
+
+        return $response;
     }
 }

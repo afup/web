@@ -51,7 +51,7 @@
             </td>
             <td>{{ cotisation.montant }} &euro;</td>
             <td style="text-align: right">
-                <a href="/pages/administration/index.php?page=membre_cotisation&amp;action=telecharger_facture&amp;type_personne={{ constant('AFUP_PERSONNES_MORALES') }}&amp;id_personne={{ cotisation.id_personne }}&amp;id={{ cotisation.id }}" title="Télécharger la cotisation">
+                <a href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la cotisation">
                     <img src="/templates/administration/images/famfamfam/page_white_acrobat.png" alt="Télécharger la cotisation" />
                 </a>
             </td>
