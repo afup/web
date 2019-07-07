@@ -547,6 +547,14 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         }
     }
 
+    public function hasUpToDateMembershipFee(\DateTimeInterface $now = null)
+    {
+        if (null === $now) {
+            $now = new \DateTime();
+        }
+        return $this->getLastSubscription() > $now;
+    }
+
     /**
      * @return CompanyMember
      */
