@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\SeniorityComputer;
 
@@ -17,6 +18,7 @@ class MemberController extends SiteBaseController
             [
                 'badges' => $this->getBadges($user),
                 'user' => $user,
+                'has_member_subscribed_to_techletter' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
             ]
         );
     }
