@@ -32,7 +32,7 @@
 #company-membership fieldset > div,
 #company-membership-invitation fieldset > div,
 #company-members form fieldset > div,
-.afup-form form fieldset > div
+.afup-form form fieldset .afup-form-container
 {
     padding: 1em;
     background: #eee;

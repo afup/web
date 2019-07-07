@@ -143,6 +143,32 @@
                 </div>
             </div>
 
+            {% if is_granted('ROLE_COMPANY_MANAGER') %}
+            <h2>
+                Ma société
+            </h2>
+
+            <div class="container">
+                <div class="col-md-6 col-sm-12">
+                    <div class="square">
+                        <i class="fa fa-building"></i> Coordonnées
+                        <div class="square--link">
+                            <a href="{{ path('admin_company') }}">Modifier</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <div class="square">
+                        <i class="fa fa-users"></i> Personnes rattachées
+                        <div class="square--link">
+                            <a href="{{ path('admin_company_members') }}">Modifier</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
 
             <h2>
                 Badges
