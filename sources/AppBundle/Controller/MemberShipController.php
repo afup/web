@@ -4,6 +4,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
@@ -305,5 +306,80 @@ class MemberShipController extends SiteBaseController
         global $bdd;
         $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
         return $droits->obtenirIdentifiant();
+    }
+
+    public function membershipFeeAction(Request $request)
+    {
+        global $bdd;
+        $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
+        $cotisations = new Cotisations($bdd, $droits);
+        $personnes_physiques = new Personnes_Physiques($bdd);
+
+        $identifiant = $droits->obtenirIdentifiant();
+
+        $donnees = $personnes_physiques->obtenir($identifiant);
+
+        $cotisation = $personnes_physiques->obtenirDerniereCotisation($identifiant);
+
+        if (!$cotisation) {
+            $message = empty($_GET['hash'])? 'Est-ce vraiment votre première cotisation ?' : '';
+        } else {
+            $endSubscription = $cotisations->finProchaineCotisation($cotisation);
+            $message = sprintf(
+                'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
+        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s',
+                $cotisation['montant'],
+                EURO,
+                date("d/m/Y", $cotisation['date_fin']),
+                $endSubscription->format('d/m/Y')
+            );
+        }
+
+        $cotisation_physique = $cotisations->obtenirListe(0 , $donnees['id']);
+        $cotisation_morale = $cotisations->obtenirListe(1 , $donnees['id_personne_morale']);
+
+        if (is_array($cotisation_morale) && is_array($cotisation_physique)) {
+            $cotisations = array_merge($cotisation_physique, $cotisation_morale);
+        } elseif (is_array($cotisation_morale)) {
+            $cotisations = $cotisation_morale;
+        } elseif (is_array($cotisation_physique)) {
+            $cotisations = $cotisation_physique;
+        } else {
+            $cotisations = array();
+        }
+
+        if ($donnees['id_personne_morale'] > 0) {
+            $id_personne = $donnees['id_personne_morale'];
+            $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
+            $type_personne = AFUP_PERSONNES_MORALES;
+            $libelle = 'Personne morale : <strong>' . $personne_morale->getMembershipFee($id_personne) . ',00 ' . EURO . '</strong>';
+            $montant = $personne_morale->getMembershipFee($id_personne);
+        } else {
+            $id_personne = $identifiant;
+            $type_personne = AFUP_PERSONNES_PHYSIQUES;
+            $libelle = 'Personne physique : <strong>' . AFUP_COTISATION_PERSONNE_PHYSIQUE . ',00 ' . EURO . '</strong>';
+            $montant = AFUP_COTISATION_PERSONNE_PHYSIQUE;
+        }
+
+        $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
+
+        $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
+            $reference,
+            (float) $montant,
+            $donnees['email']
+        );
+
+        return $this->render(
+            ':admin/association/membership:membershipfee.html.twig',
+            [
+                'title' => 'Ma cotisation',
+                'cotisations' => $cotisations,
+                'time' => time(),
+                'montant' => $montant,
+                'libelle' => $libelle,
+                'paybox' => $paybox,
+                'message' => $message,
+            ]
+        );
     }
 }
