@@ -3,6 +3,7 @@
 namespace AppBundle\Association\Model;
 
 use AppBundle\Association\NotifiableInterface;
+use AppBundle\Offices\OfficesCollection;
 use AppBundle\Validator\Constraints as AppAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
@@ -202,6 +203,21 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
         $this->nearestOffice = $nearestOffice;
         return $this;
+    }
+
+    public function getNearestOfficeLabel()
+    {
+        $code = $this->getNearestOffice();
+
+        // FIXME corriger ça dans le formulaire
+        if (null === $code || '-Aucune-' === $code) {
+            return  null;
+        }
+
+        $collection = new OfficesCollection();
+        $office = $collection->findByCode($code);
+
+        return $office['label'];
     }
 
     /**

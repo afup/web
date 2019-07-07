@@ -138,9 +138,14 @@
 
                 <div class="col-md-6 col-sm-12">
                     <div class="square">
-                        <i class="fa fa-map-marker"></i> <span class="square--title">Antenne la plus proche</span> : Lyon
+                        <i class="fa fa-map-marker"></i> <span class="square--title">Antenne la plus proche</span> :
+                        {% if office_label %}
+                            {{ office_label }}
+                        {% else %}
+                            Aucune
+                        {% endif %}
                         <div class="square--link">
-                            <a class="button-inverted button__medium" href="{{ path('member_contact') }}">Modifier</a>
+                            <a class="button-inverted button__medium {% if not office_label %}button--call-to-action{% endif %}" href="{{ path('member_contact') }}">{% if office_label %}Modifier{% else %}Définir{% endif %}</a>
                         </div>
                     </div>
                 </div>

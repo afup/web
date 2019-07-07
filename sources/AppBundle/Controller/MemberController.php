@@ -19,7 +19,8 @@ class MemberController extends SiteBaseController
                 'badges' => $this->getBadges($user),
                 'user' => $user,
                 'has_member_subscribed_to_techletter' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
-                'has_up_to_date_membership_fee' => $this->getUser()->hasUpToDateMembershipFee(),
+                'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
+                'office_label' => $user->getNearestOfficeLabel(),
             ]
         );
     }
