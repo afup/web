@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Logger\DbLoggerTrait;
@@ -20,6 +21,8 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -441,5 +444,88 @@ class MemberShipController extends SiteBaseController
         }
 
         return $this->redirectToRoute('member_membership_fee');
+    }
+
+    public function generalMeetingAction(Request $request)
+    {
+        $login = $this->getUser()->getUsername();
+
+        $title = 'Présence prochaine AG';
+
+        $assemblee_generale = $this->get(LegacyModelFactory::class)->createObject(Assemblee_Generale::class);
+        $timestamp = $assemblee_generale->obternirDerniereDate();
+        $date_assemblee_generale = convertirTimestampEnDate($timestamp);
+        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
+        $personnes_physiques = $this->get(LegacyModelFactory::class)->createObject(Personnes_Physiques::class);
+
+
+        $generalMeetingPlanned = $timestamp > strtotime("-1 day", time());
+
+        if (false === $generalMeetingPlanned) {
+            return $this->render(
+                ':admin/association/membership:generalmeeting_no_meeting.html.twig',
+                [
+                    'title' => $title,
+                    'date_general_meeting' => $date_assemblee_generale,
+                ]
+            );
+        }
+
+        $cotisation = $personnes_physiques->obtenirDerniereCotisation($this->getUser()->getId());
+        $needsMembersheepFeePayment = $timestamp > strtotime("+14 day", $cotisation['date_fin']);
+
+        if ($needsMembersheepFeePayment) {
+            return $this->render(
+                ':admin/association/membership:generalmeeting_membersheepfee.html.twig',
+                [
+                    'title' => $title,
+                    'date_general_meeting' => $date_assemblee_generale,
+                ]
+            );
+        }
+
+        $presents = $assemblee_generale->obtenirPresents($timestamp, ['exclure_login' => $login]);
+
+        list($presence, $id_personne_avec_pouvoir) = $assemblee_generale->obtenirInfos($login, $timestamp);
+
+        $form = $this->createFormBuilder()
+            ->add('presence', ChoiceType::class, ['expanded' => true, 'choices' => ['Oui' => 1, 'Non' => 2, 'Je ne sais pas encore' => 0]])
+            ->add('id_personne_avec_pouvoir', ChoiceType::class, ['choices' => array_flip(array_merge([0 => ''], $presents))])
+            ->add('save', SubmitType::class, ['label' => 'confirmer'])
+            ->setData([
+                'presence' => $presence,
+                'id_personne_avec_pouvoir' => $id_personne_avec_pouvoir,
+            ])
+            ->getForm()
+        ;
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $ok = $assemblee_generale->modifier($login,
+                $timestamp,
+                $data['presence'],
+                $data['id_personne_avec_pouvoir']
+            );
+
+            if ($ok) {
+                $logs::log('Modification de la présence et du pouvoir de la personne physique');
+                $this->addFlash('success', 'La présence et le pouvoir ont été modifiés', 'index.php?page=membre_assemblee_generale');
+
+                return $this->redirectToRoute('member_general_meeting');
+            } else {
+                $this->addFlash('error', 'Une erreur est survenue lors de la modification de la présence et du pouvoir');
+            }
+        }
+
+        return $this->render(
+            ':admin/association/membership:generalmeeting.html.twig',
+            [
+                'title' => $title,
+                'date_general_meeting' => $date_assemblee_generale,
+                'form' => $form->createView(),
+            ]
+        );
     }
 }
