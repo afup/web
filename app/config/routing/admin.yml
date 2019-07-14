@@ -62,3 +62,16 @@ admin_techletter:
 member_contact:
   path: /member/contact
   defaults: {_controller: AppBundle:MemberShip:contactDetails}
+
+
+member_membership_fee:
+  path: /member/membership-fee
+  defaults: {_controller: AppBundle:MemberShip:membershipFee}
+
+member_membership_fee_download:
+  path: /member/membership-fee/download
+  defaults: {_controller: AppBundle:MemberShip:membershipFeeDownload}
+
+member_membership_fee_send_mail:
+  path: /member/membership-fee/send-mail
+  defaults: {_controller: AppBundle:MemberShip:membershipFeeSendMail}

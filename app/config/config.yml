@@ -26,6 +26,7 @@ parameters:
                 membre_cotisation:
                     nom: 'Ma cotisation'
                     niveau: 'ROLE_MEMBER_EXPIRED'
+                    url: '/admin/member/membership-fee'
                 membre_ml:
                     nom: 'Listes de diffusion'
                     niveau: 'ROLE_MEMBER_EXPIRED' ## Some mailing lists are open to any member of the community
