@@ -466,7 +466,6 @@ class MemberShipController extends SiteBaseController
                 ':admin/association/membership:generalmeeting_no_meeting.html.twig',
                 [
                     'title' => $title,
-                    'date_general_meeting' => $date_assemblee_generale,
                 ]
             );
         }
