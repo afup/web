@@ -357,14 +357,17 @@ class MemberShipController extends SiteBaseController
             $id_personne = $donnees['id_personne_morale'];
             $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
             $type_personne = AFUP_PERSONNES_MORALES;
-            $libelle = 'Personne morale : <strong>' . $personne_morale->getMembershipFee($id_personne) . ',00 ' . EURO . '</strong>';
+            $prefixe = 'Personne morale';
             $montant = $personne_morale->getMembershipFee($id_personne);
         } else {
             $id_personne = $identifiant;
             $type_personne = AFUP_PERSONNES_PHYSIQUES;
-            $libelle = 'Personne physique : <strong>' . AFUP_COTISATION_PERSONNE_PHYSIQUE . ',00 ' . EURO . '</strong>';
+            $prefixe = 'Personne physique';
             $montant = AFUP_COTISATION_PERSONNE_PHYSIQUE;
         }
+
+        $formattedMontant = number_format($montant, 2, ',', ' ');
+        $libelle = sprintf("%s : <strong>%s€</strong>", $prefixe, $formattedMontant);
 
         $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
 
