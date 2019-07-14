@@ -4,6 +4,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
@@ -19,6 +20,8 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -302,8 +305,138 @@ class MemberShipController extends SiteBaseController
 
     private function getUserId()
     {
+        return $this->getDroits()->obtenirIdentifiant();
+    }
+
+    private function getDroits()
+    {
         global $bdd;
-        $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
-        return $droits->obtenirIdentifiant();
+        return Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
+    }
+
+    public function membershipFeeAction(Request $request)
+    {
+        global $bdd;
+        $personnes_physiques = new Personnes_Physiques($bdd);
+        $cotisations = $this->getCotisations();
+
+        $identifiant = $this->getDroits()->obtenirIdentifiant();
+
+        $donnees = $personnes_physiques->obtenir($identifiant);
+
+        $cotisation = $personnes_physiques->obtenirDerniereCotisation($identifiant);
+
+        if (!$cotisation) {
+            $message = empty($_GET['hash'])? 'Est-ce vraiment votre première cotisation ?' : '';
+        } else {
+            $endSubscription = $cotisations->finProchaineCotisation($cotisation);
+            $message = sprintf(
+                'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
+        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s',
+                $cotisation['montant'],
+                EURO,
+                date("d/m/Y", $cotisation['date_fin']),
+                $endSubscription->format('d/m/Y')
+            );
+        }
+
+        $cotisation_physique = $cotisations->obtenirListe(0 , $donnees['id']);
+        $cotisation_morale = $cotisations->obtenirListe(1 , $donnees['id_personne_morale']);
+
+        if (is_array($cotisation_morale) && is_array($cotisation_physique)) {
+            $cotisations = array_merge($cotisation_physique, $cotisation_morale);
+        } elseif (is_array($cotisation_morale)) {
+            $cotisations = $cotisation_morale;
+        } elseif (is_array($cotisation_physique)) {
+            $cotisations = $cotisation_physique;
+        } else {
+            $cotisations = array();
+        }
+
+        if ($donnees['id_personne_morale'] > 0) {
+            $id_personne = $donnees['id_personne_morale'];
+            $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
+            $type_personne = AFUP_PERSONNES_MORALES;
+            $libelle = 'Personne morale : <strong>' . $personne_morale->getMembershipFee($id_personne) . ',00 ' . EURO . '</strong>';
+            $montant = $personne_morale->getMembershipFee($id_personne);
+        } else {
+            $id_personne = $identifiant;
+            $type_personne = AFUP_PERSONNES_PHYSIQUES;
+            $libelle = 'Personne physique : <strong>' . AFUP_COTISATION_PERSONNE_PHYSIQUE . ',00 ' . EURO . '</strong>';
+            $montant = AFUP_COTISATION_PERSONNE_PHYSIQUE;
+        }
+
+        $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
+
+        $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
+            $reference,
+            (float) $montant,
+            $donnees['email']
+        );
+
+        return $this->render(
+            ':admin/association/membership:membershipfee.html.twig',
+            [
+                'title' => 'Ma cotisation',
+                'cotisations' => $cotisations,
+                'time' => time(),
+                'montant' => $montant,
+                'libelle' => $libelle,
+                'paybox' => $paybox,
+                'message' => $message,
+            ]
+        );
+    }
+
+    private function getCotisations()
+    {
+        global $bdd;
+        return new Cotisations($bdd, $this->getDroits());
+    }
+
+    public function membershipFeeDownloadAction(Request $request)
+    {
+        $cotisations = $this->getCotisations();
+        $identifiant = $this->getDroits()->obtenirIdentifiant();
+        $id = $request->get('id');
+
+        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
+
+        if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
+            $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
+            throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
+        }
+
+        $tempfile = tempnam(sys_get_temp_dir(), 'membership_fee_download');
+        $numeroFacture = $cotisations->genererFacture($id, $tempfile);
+
+        $response = new BinaryFileResponse($tempfile, 200, [], false);
+        $response->deleteFileAfterSend(true);
+        $response->setContentDisposition('attachment', 'facture-' . $numeroFacture . '.pdf');
+
+        return $response;
+    }
+
+    public function membershipFeeSendMailAction(Request $request)
+    {
+        $cotisations = $this->getCotisations();
+        $identifiant = $this->getDroits()->obtenirIdentifiant();
+        $id = $request->get('id');
+
+        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
+
+        if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
+            $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
+            throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
+        }
+
+        if ($cotisations->envoyerFacture($id, $this->get(\Afup\Site\Utils\Mail::class))) {
+            $logs::log('Envoi par email de la facture pour la cotisation n°' . $id);
+            $this->addFlash('success', 'La facture a été envoyée par mail');
+        } else {
+            $this->addFlash('error', "La facture n'a pas pu être envoyée par mail");
+        }
+
+        return $this->redirectToRoute('member_membership_fee');
     }
 }
