@@ -34,6 +34,7 @@ parameters:
                 membre_assemblee_generale:
                     nom: 'Présence prochaine AG'
                     niveau: 'ROLE_USER'
+                    url: '/admin/member/general-meeting'
                 membres_liste:
                     nom: 'Annuaire'
                     niveau: 'ROLE_ADMIN'
