@@ -251,7 +251,6 @@ LinkEditor.prototype = {
 		this.up();
 
 		updatePreview();
-		// No close form
 		this.resolve(techletter); // Data has been updated so we can resolve the promise
 	},
 
@@ -261,7 +260,6 @@ LinkEditor.prototype = {
 		this.down();
 
 		updatePreview();
-		// No close form
 		this.resolve(techletter); // Data has been updated so we can resolve the promise
 	},
 
@@ -306,7 +304,8 @@ LinkEditor.prototype = {
 	},
 
 	up: function () {
-		let actualIndex = this.getLinkIndex(/*this.fieldset.dataset*/);
+		console.log(this.fieldset.dataset);
+		let actualIndex = this.getLinkIndex();
 		// News
 		if (this.fieldset.dataset.type === 'news') {
 			if (actualIndex === 1) {
@@ -318,19 +317,18 @@ LinkEditor.prototype = {
 			// Other types (array)
 			let data = techletter[this.fieldset.dataset.type];
 			if (actualIndex > -1 && data.length > 1) {
-                const newIndex = (actualIndex > 1) ? actualIndex-1 : 0;
+				const newIndex = (actualIndex > 1) ? actualIndex-1 : 0;
                 if (newIndex < actualIndex) {
                     data = data.slice(0, actualIndex-1).concat(data[actualIndex], data[newIndex], data.slice(newIndex+2));
                 }
             }
 			techletter[this.fieldset.dataset.type] = data;
 		}
-
-
 	},
 
 	down: function () {
-		let actualIndex = this.getLinkIndex(/*this.fieldset.dataset*/);
+		console.log(this.fieldset.dataset);
+		let actualIndex = this.getLinkIndex();
 		if (this.fieldset.dataset.type === 'news') {
 			if (actualIndex === 0) {
 				const tmp = techletter.firstNews;
