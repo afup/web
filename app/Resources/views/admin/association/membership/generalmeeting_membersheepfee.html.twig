@@ -1,0 +1,13 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Ma participation à l'Assemblée Générale du {{ date_general_meeting }}</h2>
+
+    <p class="erreur">
+        La date d'échéance de votre dernière cotisation précède la date de la prochaine assemblée générale.<br>
+        <br>
+        Vous ne pourrez donc pas voter lors de cette assemblée générale.<br>
+        <br>Vous pouvez dès à présent régler votre cotisation via <a href="{{ path('member_membership_fee') }}">"Ma cotisation"</a>
+    </p>
+
+{% endblock %}
