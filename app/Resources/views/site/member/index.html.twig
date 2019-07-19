@@ -95,7 +95,7 @@
                     <div class="square">
                         <i class="fa fa-dollar"></i> <span class="square--title">Cotisations</span>
                         <div class="square--link">
-                            <a class="button-inverted button__medium {% if not has_up_to_date_membership_fee %} button--call-to-action{% endif %}" href="/pages/administration/index.php?page=membre_cotisation">
+                            <a class="button-inverted button__medium {% if not has_up_to_date_membership_fee %} button--call-to-action{% endif %}" href="{{ path('member_membership_fee') }}">
                                 {% if has_up_to_date_membership_fee %}Consulter{% else %}Se mettre à jour{% endif %}
                             </a>
                         </div>

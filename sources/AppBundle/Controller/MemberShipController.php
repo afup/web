@@ -335,7 +335,7 @@ class MemberShipController extends SiteBaseController
             $endSubscription = $cotisations->finProchaineCotisation($cotisation);
             $message = sprintf(
                 'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
-        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s',
+        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
                 $cotisation['montant'],
                 EURO,
                 date("d/m/Y", $cotisation['date_fin']),
@@ -379,6 +379,8 @@ class MemberShipController extends SiteBaseController
             (float) $montant,
             $donnees['email']
         );
+
+        $paybox = str_replace('INPUT TYPE=SUBMIT', 'INPUT TYPE=SUBMIT class="button button--call-to-action"', $paybox);
 
         return $this->render(
             ':admin/association/membership:membershipfee.html.twig',

@@ -2,7 +2,8 @@
 #company-membership-payment form,
 #company-membership-invitation form,
 #company-members form,
-.afup-form form
+.afup-form form,
+.form-reset form
 {
     width: auto;
     background:transparent;
