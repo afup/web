@@ -1,0 +1,53 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Ma participation à l'Assemblée Générale du {{ date_general_meeting }}</h2>
+
+    {{ form_start(form) }}
+
+    <fieldset class="f1">
+        <legend>Je serai présent(e)</legend>
+        {{ form_errors(form.presence) }}
+
+        {% for key, presenceItem in form.presence.children %}
+            <div class="rangee">
+                {{ form_label(presenceItem, null, {"label_attr": {"class": "libelle"}}) }}
+                <span class="element">
+                  {{ form_widget(presenceItem) }}
+                </span>
+            </div>
+
+        {% endfor %}
+
+        <!-- Vilain hack pour Opera -->
+        <div style="clear: both">&nbsp;</div>
+    </fieldset>
+
+    <fieldset class="f2">
+        <legend>Je donne mon pouvoir à</legend>
+        <div class="rangee">
+            <label class="libelle">
+                Nom
+            </label>
+            <span class="element">
+                {{ form_errors(form.id_personne_avec_pouvoir) }}
+                {{ form_widget(form.id_personne_avec_pouvoir) }}
+            </span>
+        </div>
+        <!-- Vilain hack pour Opera -->
+        <div style="clear: both">&nbsp;</div>
+    </fieldset>
+
+    <fieldset class="f3 boutons">
+
+        <div class="rangee">
+            {{ form_widget(form.save) }}
+        </div>
+
+        <!-- Vilain hack pour Opera -->
+        <div style="clear: both">&nbsp;</div>
+    </fieldset>
+
+    {{ form_end(form) }}
+
+{% endblock %}
