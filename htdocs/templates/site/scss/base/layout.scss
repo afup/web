@@ -111,3 +111,9 @@ input, button, select, label {
     padding-top: 90px !important;
   }
 }
+
+@media (max-width: 460px) {
+  .desktop-hidden {
+    display: initial;
+  }
+}

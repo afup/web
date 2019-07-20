@@ -81,6 +81,22 @@ class Page
                 'image' => null,
                 'patterns' => "#/admin/company#",
             ];
+
+
+        } else {
+            $feuillesEnfants[] = [
+                'id' => PHP_INT_MAX - 1,
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Se connecter',
+                'lien' => '/member',
+                'alt' => '',
+                'position' => '999',
+                'date' => null,
+                'etat' => '1',
+                'image' => null,
+                'patterns' => null,
+                'class' => 'desktop-hidden'
+            ];
         }
 
         foreach ($feuillesEnfants as $feuille) {
@@ -114,11 +130,12 @@ class Page
 
             $class = $isCurrent ? " subheader-current " : "";
 
+            if (isset($feuille['class'])) {
+                $class .= ' ' . $feuille['class'];
+            }
+
             $str .= sprintf("<li class='%s'><a href='%s'>%s</a></li>", $class, $feuille['lien'], $feuille['nom']);
         }
-
-        $str .= "<li class='desktop-hidden'><a href='/pages/administration'>Se connecter</a></li>";
-        $str .= "<li class='desktop-hidden'><a href='/association/devenir-membre'>Adhérer</a></li>";
 
         $str .= '<ul>';
 
