@@ -618,6 +618,15 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return false === $this->hasRole('ROLE_MEMBER_EXPIRED') && $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_NONE;
     }
 
+    public function canAccessAdmin()
+    {
+        $roles = $this->getRoles();
+
+        $diff = array_diff($roles, ['ROLE_USER']);
+
+        return count($diff);
+    }
+
     /**
      * @return boolean
      */
