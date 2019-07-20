@@ -1,22 +1,13 @@
-{% extends ':site:base.html.twig' %}
+{% extends ':admin/association/membership:_base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
-{% block content %}
-
+{% block submenu %}
     {% include ':admin/association/membership:_member_menu.html.twig' with {
         current: "generalmeeting"
     } only %}
+{% endblock %}
 
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
+{% block page_title %}Assemblée générale{% endblock %}
 
-            <h1>Assemblée générale</h1>
-
-            <p>A ce jour, aucune nouvelle Assemblée Générale n'est prévue.</p>
-        </div>
-    </div>
-
+{% block page_content %}
+    <p>A ce jour, aucune nouvelle Assemblée Générale n'est prévue.</p>
 {% endblock %}

@@ -1,99 +1,88 @@
-{% extends ':site:base.html.twig' %}
+{% extends ':admin/association/membership:_base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
-{% endblock %}
-
-{% block content %}
-
+{% block submenu %}
     {% include ':admin/association/membership:_member_menu.html.twig' with {
         current: "membershipfee"
     } only %}
+{% endblock %}
 
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
+{% block page_title %}Cotisations{% endblock %}
 
-            <h1>Cotisations</h1>
+{% block page_content %}
+    <h2>Payer ma cotisation</h2>
 
-            <h2>Payer ma cotisation</h2>
+    {% if message %}
+        <p>{{ message|raw }}</p>
+    {% endif %}
 
-            {% if message %}
-                <p>{{ message|raw }}</p>
-            {% endif %}
-
-            <div class="container">
-                <div class="col-md-12 col-sm-12">
-                    <div class="form-reset txtcenter">
-                        <strong>{{ libelle|raw }}</strong><br />
-                        <p>{{ paybox|raw }}</p>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="col-md-12 col-sm-12">
+            <div class="form-reset txtcenter">
+                <strong>{{ libelle|raw }}</strong><br />
+                <p>{{ paybox|raw }}</p>
             </div>
-
-
-            <h2>Historique des cotisations</h2>
-
-            <style>
-                .afup-table {
-                    border-spacing: 2px;
-                    border-collapse: collapse;
-                    background-color: #ffffff;
-                    border: 1px solid #50a0dd;
-                }
-
-                .afup-table th {
-                    background: #50a0dd;
-                    color: #ffffff;
-                    padding:5px;
-                    border-left: 1px solid #ffffff;
-                }
-
-                .afup-table tbody tr:nth-child(2n+1) {
-                    background: #eee;
-                }
-            </style>
-
-            <table class="afup-table">
-                <tr>
-                    <th>Debut</th>
-                    <th>Fin</th>
-                    <th class="txtright">Montant</th>
-                    <th colspan="1">Actions</th>
-                </tr>
-                {% if cotisations %}
-                    {% for cotisation in cotisations %}
-                        <tr>
-                            <td>
-                                {{ cotisation.date_debut|date('d/m/y') }}
-                            </td>
-                            <td>
-                                {{ cotisation.date_fin|date('d/m/y') }}
-                                {% if cotisation.date_debut < time and cotisation.date_fin > time %}
-                                    (toujours valide)
-                                {% endif %}
-                            </td>
-                            <td class="txtright">{{ cotisation.montant }} &euro;</td>
-                            <td style="text-align: right; white-space: nowrap">
-                                <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la cotisation">
-                                    <i class="fa fa-file"></i>
-                                    Télécharger
-                                </a>
-                                <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_send_mail', {id: cotisation.id}) }}" title="Envoyer la cotisation">
-                                    <i class="fa fa-envelope"></i>
-                                    Recevoir par mail
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td><em>Aucune cotisation enregistrée</em></td>
-                    </tr>
-                {% endif %}
-            </table>
-
         </div>
     </div>
 
+
+    <h2>Historique des cotisations</h2>
+
+    <style>
+        .afup-table {
+            border-spacing: 2px;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border: 1px solid #50a0dd;
+        }
+
+        .afup-table th {
+            background: #50a0dd;
+            color: #ffffff;
+            padding:5px;
+            border-left: 1px solid #ffffff;
+        }
+
+        .afup-table tbody tr:nth-child(2n+1) {
+            background: #eee;
+        }
+    </style>
+
+    <table class="afup-table">
+        <tr>
+            <th>Debut</th>
+            <th>Fin</th>
+            <th class="txtright">Montant</th>
+            <th colspan="1">Actions</th>
+        </tr>
+        {% if cotisations %}
+            {% for cotisation in cotisations %}
+                <tr>
+                    <td>
+                        {{ cotisation.date_debut|date('d/m/y') }}
+                    </td>
+                    <td>
+                        {{ cotisation.date_fin|date('d/m/y') }}
+                        {% if cotisation.date_debut < time and cotisation.date_fin > time %}
+                            (toujours valide)
+                        {% endif %}
+                    </td>
+                    <td class="txtright">{{ cotisation.montant }} &euro;</td>
+                    <td style="text-align: right; white-space: nowrap">
+                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la cotisation">
+                            <i class="fa fa-file"></i>
+                            Télécharger
+                        </a>
+                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_send_mail', {id: cotisation.id}) }}" title="Envoyer la cotisation">
+                            <i class="fa fa-envelope"></i>
+                            Recevoir par mail
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td><em>Aucune cotisation enregistrée</em></td>
+            </tr>
+        {% endif %}
+    </table>
 {% endblock %}

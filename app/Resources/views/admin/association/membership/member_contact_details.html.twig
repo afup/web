@@ -1,107 +1,99 @@
-{% extends ':site:base.html.twig' %}
+{% extends ':admin/association/membership:_base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
-{% endblock %}
-
-{% block content %}
-
+{% block submenu %}
     {% include ':admin/association/membership:_member_menu.html.twig' with {
         current: "contact"
     } only %}
+{% endblock %}
 
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
-            <h1>Mes coordonées</h1>
+{% block page_title %}Mes coordonées{% endblock %}
 
-            <div class="afup-form">
-            {{ form_start(form) }}
+{% block page_content %}
 
-            <fieldset>
-                <legend>Informations</legend>
-                <div class="afup-form-container">
-                    <div>
-                        {{ form_errors(form.email) }}
-                        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.email, {'attr': {'size': '30', 'maxlength': '100'}}) }}
-                    </div>
-                    <div>
-                        {{ form_errors(form.address) }}
-                        {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.address, {'attr': {'rows': '10', 'cols': '42'}}) }}
-                    </div>
-                    <div>
-                        {{ form_errors(form.zipcode) }}
-                        {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.zipcode, {'attr': {'size': '6', 'maxlength': '10'}}) }}
-                    </div>
-                    <div>
-                        {{ form_errors(form.city) }}
-                        {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.city, {'attr': {'size': '30', 'maxlength': '50'}}) }}
-                    </div>
-                    <div>
-                        {{ form_errors(form.country) }}
-                        {{ form_label(form.country, 'country', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.country) }}
-                    </div>
-                    <div>
-                        {{ form_errors(form.phone) }}
-                        {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.phone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
-                    </div>
-                    <div>
-                        {{ form_errors(form.mobilephone) }}
-                        {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.mobilephone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
-                    </div>
-                    <div>
-                        {{ form_errors(form.nearest_office) }}
-                        {{ form_label(form.nearest_office, 'Nearest office', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.nearest_office) }}
-                    </div>
+    <div class="afup-form">
+        {{ form_start(form) }}
+
+        <fieldset>
+            <legend>Informations</legend>
+            <div class="afup-form-container">
+                <div>
+                    {{ form_errors(form.email) }}
+                    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.email, {'attr': {'size': '30', 'maxlength': '100'}}) }}
                 </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Paramètres</legend>
-
-                <div class="afup-form-container">
-                    <div>
-                        {{ form_errors(form.username) }}
-                        {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.username, {'attr': {'size': '30', 'maxlength': '30'}}) }}
-                    </div>
-                    <div class="afup-form--row rangee">
-                        <p class="note">
-                            Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
-                        </p>
-                    </div>
-                    <div>
-                        {{ form_errors(form.password.first) }}
-                        {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.password.first, {'attr': {'size': '30'}}) }}
-                    </div>
-                    <div>
-                        {{ form_errors(form.password.second) }}
-                        {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
-                        {{ form_widget(form.password.second, {'attr': {'size': '30'}}) }}
-                    </div>
+                <div>
+                    {{ form_errors(form.address) }}
+                    {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.address, {'attr': {'rows': '10', 'cols': '42'}}) }}
                 </div>
-            </fieldset>
-
-            <p>
-                <span class="obligatoire">*</span>&nbsp; Indique un champ obligatoire
-            </p>
-
-            <div class="right">
-                {{ form_widget(form.save, {"attr": {"class": "button"}}) }}
+                <div>
+                    {{ form_errors(form.zipcode) }}
+                    {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.zipcode, {'attr': {'size': '6', 'maxlength': '10'}}) }}
+                </div>
+                <div>
+                    {{ form_errors(form.city) }}
+                    {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.city, {'attr': {'size': '30', 'maxlength': '50'}}) }}
+                </div>
+                <div>
+                    {{ form_errors(form.country) }}
+                    {{ form_label(form.country, 'country', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.country) }}
+                </div>
+                <div>
+                    {{ form_errors(form.phone) }}
+                    {{ form_label(form.phone, 'Phone', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.phone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
+                </div>
+                <div>
+                    {{ form_errors(form.mobilephone) }}
+                    {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.mobilephone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
+                </div>
+                <div>
+                    {{ form_errors(form.nearest_office) }}
+                    {{ form_label(form.nearest_office, 'Nearest office', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.nearest_office) }}
+                </div>
             </div>
+        </fieldset>
 
-            {{ form_end(form) }}
+        <fieldset>
+            <legend>Paramètres</legend>
+
+            <div class="afup-form-container">
+                <div>
+                    {{ form_errors(form.username) }}
+                    {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.username, {'attr': {'size': '30', 'maxlength': '30'}}) }}
+                </div>
+                <div class="afup-form--row rangee">
+                    <p class="note">
+                        Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
+                    </p>
+                </div>
+                <div>
+                    {{ form_errors(form.password.first) }}
+                    {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.password.first, {'attr': {'size': '30'}}) }}
+                </div>
+                <div>
+                    {{ form_errors(form.password.second) }}
+                    {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
+                    {{ form_widget(form.password.second, {'attr': {'size': '30'}}) }}
+                </div>
             </div>
+        </fieldset>
+
+        <p>
+            <span class="obligatoire">*</span>&nbsp; Indique un champ obligatoire
+        </p>
+
+        <div class="right">
+            {{ form_widget(form.save, {"attr": {"class": "button"}}) }}
         </div>
-    </div>
 
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

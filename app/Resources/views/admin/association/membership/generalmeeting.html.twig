@@ -1,59 +1,51 @@
-{% extends ':site:base.html.twig' %}
+{% extends ':admin/association/membership:_base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
-{% endblock %}
-
-{% block content %}
-
+{% block submenu %}
     {% include ':admin/association/membership:_member_menu.html.twig' with {
         current: "generalmeeting"
     } only %}
+{% endblock %}
 
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
-            <h1>Ma participation à l'Assemblée Générale du {{ date_general_meeting }}</h1>
+{% block page_title %}Ma participation à l'Assemblée Générale du {{ date_general_meeting }}{% endblock %}
 
-            <div class="afup-form">
-                {{ form_start(form) }}
+{% block page_content %}
+    <div class="afup-form">
+        {{ form_start(form) }}
 
-                <fieldset>
-                    <legend>Je serai présent(e)</legend>
-                    <div class="afup-form-container">
-                        {{ form_errors(form.presence) }}
+        <fieldset>
+            <legend>Je serai présent(e)</legend>
+            <div class="afup-form-container">
+                {{ form_errors(form.presence) }}
 
-                        {% for key, presenceItem in form.presence.children %}
-                            <div class="rangee">
-                                {{ form_label(presenceItem, null, {"label_attr": {"class": "libelle"}}) }}
-                                <span class="element">
+                {% for key, presenceItem in form.presence.children %}
+                    <div class="rangee">
+                        {{ form_label(presenceItem, null, {"label_attr": {"class": "libelle"}}) }}
+                        <span class="element">
                                 {{ form_widget(presenceItem) }}
                             </span>
-                            </div>
-
-                        {% endfor %}
                     </div>
-                </fieldset>
 
-                <fieldset class="f2">
-                    <legend>Je donne mon pouvoir à</legend>
-                    <div class="afup-form-container">
-                        <div>
-                            {{ form_errors(form.id_personne_avec_pouvoir) }}
-                            {{ form_label(form.id_personne_avec_pouvoir) }}
-                            {{ form_widget(form.id_personne_avec_pouvoir) }}
-                        </div>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <div class="right">
-                        {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}
-                    </div>
-                </fieldset>
-
-                {{ form_end(form) }}
+                {% endfor %}
             </div>
-        </div>
+        </fieldset>
+
+        <fieldset class="f2">
+            <legend>Je donne mon pouvoir à</legend>
+            <div class="afup-form-container">
+                <div>
+                    {{ form_errors(form.id_personne_avec_pouvoir) }}
+                    {{ form_label(form.id_personne_avec_pouvoir) }}
+                    {{ form_widget(form.id_personne_avec_pouvoir) }}
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <div class="right">
+                {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}
+            </div>
+        </fieldset>
+
+        {{ form_end(form) }}
     </div>
 {% endblock %}
