@@ -491,8 +491,15 @@ class MemberShipController extends SiteBaseController
 
         $form = $this->createFormBuilder()
             ->add('presence', ChoiceType::class, ['expanded' => true, 'choices' => ['Oui' => 1, 'Non' => 2, 'Je ne sais pas encore' => 0]])
-            ->add('id_personne_avec_pouvoir', ChoiceType::class, ['choices' => array_flip(array_merge([0 => ''], $presents))])
-            ->add('save', SubmitType::class, ['label' => 'confirmer'])
+            ->add(
+                'id_personne_avec_pouvoir',
+                ChoiceType::class,
+                [
+                    'choices' => array_flip(array_merge([0 => ''], $presents)),
+                    'label' => 'Je donne mon pouvoir à',
+                ]
+            )
+            ->add('save', SubmitType::class, ['label' => 'Confirmer'])
             ->setData([
                 'presence' => $presence,
                 'id_personne_avec_pouvoir' => $id_personne_avec_pouvoir,

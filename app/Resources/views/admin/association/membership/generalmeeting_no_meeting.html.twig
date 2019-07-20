@@ -1,8 +1,22 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends ':site:base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 
 {% block content %}
-    <h2>Ma participation à la prochaine assemblée générale</h2>
 
-    <p>A ce jour, aucune nouvelle Assemblée Générale n'est prévue.</p>
+    {% include ':admin/association/membership:_member_menu.html.twig' with {
+        current: "generalmeeting"
+    } only %}
+
+    <div class="mw1400p center" id="container">
+        <div class="line" id="main">
+
+            <h1>Assemblée générale</h1>
+
+            <p>A ce jour, aucune nouvelle Assemblée Générale n'est prévue.</p>
+        </div>
+    </div>
 
 {% endblock %}
