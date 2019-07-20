@@ -20,6 +20,19 @@ class Assemblee_Generale
         $this->_bdd = $bdd;
     }
 
+    public function hasGeneralMeetingPlanned(\DateTimeInterface $currentDate = null)
+    {
+        if (null === $currentDate) {
+            $currentDate = new \DateTime();
+        }
+
+        $currentTimestamp = $currentDate->format('U');
+
+        $timestamp = $this->obternirDerniereDate();
+
+        return $timestamp > strtotime("-1 day", $currentTimestamp);
+    }
+
     function obternirDerniereDate()
     {
         $requete = 'SELECT';

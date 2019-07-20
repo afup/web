@@ -460,8 +460,7 @@ class MemberShipController extends SiteBaseController
         $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
         $personnes_physiques = $this->get(LegacyModelFactory::class)->createObject(Personnes_Physiques::class);
 
-
-        $generalMeetingPlanned = $timestamp > strtotime("-1 day", time());
+        $generalMeetingPlanned = $assemblee_generale->hasGeneralMeetingPlanned();
 
         if (false === $generalMeetingPlanned) {
             return $this->render(
