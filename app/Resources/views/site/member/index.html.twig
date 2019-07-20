@@ -123,7 +123,11 @@
             <div class="square">
                 <i class="fa fa-comments"></i> <span class="square--title">Présence prochaine AG</span>
                 <div class="square--link">
-                    <a class="button-inverted button__medium button--call-to-action" href="{{ path('member_general_meeting') }}">Indiquer sa présence</a>
+                    {%  if has_general_meeting_planned %}
+                        <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ path('member_general_meeting') }}">Indiquer sa présence</a>
+                    {% else %}
+                        <a class="button-inverted button__medium" href="{{ path('member_general_meeting') }}">Voir</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
