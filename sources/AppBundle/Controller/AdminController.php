@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
-class AdminController extends Controller
+class AdminController extends SiteBaseController
 {
     public function loginAction(Request $request)
     {

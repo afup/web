@@ -130,3 +130,30 @@
 .afup-form label.required:before {
     content: "* ";
 }
+
+
+.afup-form--miniform {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.afup-form--miniform label,
+.afup-form--miniform input,
+.afup-form--miniform button {
+    display: block;
+    width: 100%;
+    margin: 0.5em 0;
+    line-height: 2em;
+}
+
+.afup-form--miniform label {
+    font-size: 1.3em;
+}
+
+.afup-form--miniform input[type="submit"].button,
+.afup-form--login button[type="submit"].button{
+    margin: 1em 0;
+}
+
+.afup-form--miniform .afup-form-container > div {
+    margin: 1.5em 0;
+}
