@@ -11,18 +11,6 @@ parameters:
         accueil:
             nom: 'Accueil'
             niveau: 'ROLE_MEMBER_EXPIRED'
-        company:
-            nom: "Ma société"
-            niveau: 'ROLE_COMPANY_MANAGER'
-            elements:
-                membre_personne_morale:
-                    nom: 'Coordonnées'
-                    niveau: 'ROLE_COMPANY_MANAGER'
-                    url: '/admin/company'
-                membre_rattaches:
-                    nom: 'Membres rattachés'
-                    niveau: 'ROLE_COMPANY_MANAGER'
-                    url: '/admin/company/members'
         membres:
             nom: 'Membres'
             niveau: 'ROLE_ADMIN'
