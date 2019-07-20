@@ -24,7 +24,6 @@
         <div class="mw1400p center">
             <div id="espace-membre" class="w33 tablet-hidden">
                 {% if app.user %}
-                    <a href="{{ path('member_index') }}" class="header-button header-button__connect">Espace membre</a>
                     {% if app.user.canAccessAdmin %}
                         <a href="/pages/administration" class="header-button header-button__connect">Administration</a>
                     {% endif %}

@@ -2,6 +2,7 @@
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Utils\Configuration;
+use AppBundle\Association\Model\User;
 
 class Page
 {
@@ -59,12 +60,30 @@ class Page
         return $branche->naviguer(5, 2);
     }
 
-    function header($url = null)
+    function header($url = null, User $user = null)
     {
         $branche = new Branche($this->bdd);
         $url = urldecode($url);
         $str = '<ul>';
-        foreach ($branche->feuillesEnfants(Feuille::ID_FEUILLE_HEADER) as $feuille) {
+
+        $feuillesEnfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_HEADER);
+
+        if (null !== $user) {
+            $feuillesEnfants[] = [
+                'id' => PHP_INT_MAX,
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Espace membre',
+                'lien' => '/member',
+                'alt' => '',
+                'position' => '999',
+                'date' => null,
+                'etat' => '1',
+                'image' => null,
+                'patterns' => null,
+            ];
+        }
+
+        foreach ($feuillesEnfants as $feuille) {
             $isCurrent = false;
             foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
                 $pattern = trim($pattern);
