@@ -160,7 +160,24 @@
                         </div>
                     </div>
                 </div>
+
+                {% if user.canRequestSlackInvite or user.slackInviteRequested %}
+                <div class="col-md-6 col-sm-12">
+                    <div class="square">
+                        <i class="fa fa-slack"></i> <span class="square--title">Slack membres AFUP</span>
+                        <div class="square--link">
+                            {% if user.canRequestSlackInvite %}
+                                <a class="button-inverted button__medium button--call-to-action" href="{{ path('member_slack_invite') }}">Recevoir l'invitation</a>
+                            {% elseif user.slackInviteRequested %}
+                                <a class="button-inverted button__medium" href="http://afup-membres.slack.com/" target="afup-slack">Accéder</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
+
+
 
             {% if is_granted('ROLE_COMPANY_MANAGER') %}
             <h2>
