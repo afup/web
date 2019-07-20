@@ -79,7 +79,7 @@ class Page
                 'date' => null,
                 'etat' => '1',
                 'image' => null,
-                'patterns' => null,
+                'patterns' => "#/admin/company#",
             ];
         }
 

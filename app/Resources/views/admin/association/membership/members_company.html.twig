@@ -1,33 +1,14 @@
-{% extends ':site:base.html.twig' %}
+{% extends ':admin/association/membership:_base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all"/>
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
+{% block submenu %}
+    {% include ':admin/association/membership:_company_menu.html.twig' with {
+        current: "members"
+    } only %}
 {% endblock %}
 
-{% block content %}
-    {% include ':site:secondary_menu.html.twig' with {
-        menu: [
-            {
-                "nom" : "Accueil",
-                "lien": path('member_index'),
-                'is_active': false,
-            },
-            {
-                "nom" : "Coordonnées",
-                "lien": path('admin_company'),
-                'is_active': false,
-            },
-            {
-                "nom": "Membres",
-                "lien": path('admin_company_members'),
-                "is_active": true,
-            },
-        ]
-    } only %}
+{% block page_title %}Les membres rattachés à mon entreprise{% endblock %}
 
-
+{% block page_content %}
     <style>
         .afup-table {
             border-spacing: 2px;
@@ -48,136 +29,130 @@
         }
     </style>
 
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
-            <h1>Les membres rattachés à mon entreprise</h1>
-
-            <div class="afup-form">
-                <form method="post">
-                    <fieldset>
-                        <legend>Les membres associés à mon compte</legend>
-                        <div class="afup-form-container">
-                            <table class="afup-table">
-                                <thead>
-                                <tr>
-                                    <th>Prénom</th>
-                                    <th>Nom</th>
-                                    <th title="Cet utilisateur a-t-il le droit de gérer le compte de l'entreprise ?">Gestion</th>
-                                    <th>Email</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                {% for user in users %}
-                                    <tr>
-                                        <td>{{ user.firstName }}</td>
-                                        <td>{{ user.lastName }}</td>
-                                        <td>{{ user.hasRole('ROLE_COMPANY_MANAGER')?'Oui':'Non' }}</td>
-                                        <td>{{ user.email }}</td>
-                                        <td>
-                                            {% if user.id == app.user.id %}
-                                                <button type="submit" class="button button__medium" disabled="disabled" title="Vous ne pouvez pas enlever les droits de gestion à votre compte">
-                                                    Enlever les droits de gestion
-                                                </button>
-                                                <button type="submit" class="button button__medium" disabled="disabled" title="Vous ne pouvez pas supprimer votre propre compte">
-                                                    Supprimer ce compte
-                                                </button>
-                                            {% else %}
-                                                {% if user.hasRole('ROLE_COMPANY_MANAGER') %}
-                                                    <button type="submit" class="button button__medium" name="promote_down" value="{{ user.email }}">Enlever les droits de gestion</button>
-                                                {% else %}
-                                                    <button type="submit" class="button button__medium" name="promote_up" value="{{ user.email }}">Donner les droits de gestion</button>
-                                                {% endif %}
-                                                <button type="submit" class="button button__medium" name="remove" value="{{ user.email }}">Supprimer ce compte</button>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="5">Aucun membre actuellement rattaché</td>
-                                    </tr>
-                                {% endfor %}
-                            </table>
-                        </div>
-                    </fieldset>
-                    <input type="hidden" name="token" value="{{ token }}" />
-                </form>
-            </div>
-
-
-            <div class="afup-form">
-                <form method="post">
-                    <fieldset>
-                        <legend>Invitations en attente</legend>
-                        <div class="afup-form-container">
-                            <table class="afup_tab">
-                                <thead>
-                                <tr>
-                                    <th>Email</th>
-                                    <th>Droits de gestion du compte</th>
-                                    <th>Date d'envoi</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                {% for invitation in invitations %}
-                                    <tr>
-                                        <td>{{ invitation.email }}</td>
-                                        <td>{{ invitation.manager?'Oui':'Non' }}</td>
-                                        <td>{{ invitation.submittedOn|date('d/m/Y H:i:s') }}</td>
-                                        <td>
-                                            <button type="submit" class="button button__medium" name="resend_invitation" value="{{ invitation.email }}"
-                                                    title="Renvoyer le mail d'invitation">Envoyer
-                                                à nouveau
-                                            </button>
-                                            <button type="submit" class="button button__medium" name="delete_invitation" value="{{ invitation.email }}" title="Annuler l'invitation">
-                                                Annuler
-                                            </button>
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="4">Aucune invitation en attente</td>
-                                    </tr>
-                                {% endfor %}
-                            </table>
-                        </div>
-                    </fieldset>
-                    <input type="hidden" name="token" value="{{ token }}" />
-                </form>
-            </div>
-
-
-            <div class="afup-form">
-                <p>
-                    Votre cotisation actuelle vous permet d'avoir {{ company.maxMembers }} membres rattachés.
-                </p>
-                {{ form_start(formInvitation) }}
-                <fieldset>
-                    <legend>Nouvelle invitation</legend>
-                    <div class="afup-form-container">
-                        {{ form_row(formInvitation.email) }}
-                        {{ form_row(formInvitation.manager) }}
-                        {{ form_widget(formInvitation) }}
-                        <div id="company_member_invitation_submit">
-                            {% if canAddUser %}
-                                <button type="submit" class="button">Envoyer l'invitation</button>
-                            {% else %}
-                                <button type="submit" class="button" disabled="disabled">Envoyer l'invitation</button>
-                            {% endif %}
-                        </div>
-                        {% if canAddUser == false %}
-                            <p>
-                                Vous avez actuellement {{ users.count }} membre(s) rattaché(s) et {{ invitations.count }} invitation(s)
-                                en attente. Vous ne pouvez envoyer de nouvelle invitation, votre nombre maximum de membre permis par
-                                votre cotisation étant atteint. Si vous souhaitez rattacher d'avantage de membres, merci de nous
-                                contacter à l'adresse tresorier@afup.org afin d'augmenter le nombre de membres lié à votre cotisation.
-                            </p>
-                        {% endif %}
-                    </div>
-                </fieldset>
-
-                {{ form_end(formInvitation) }}
-            </div>
-
-        </div>
+    <div class="afup-form">
+        <form method="post">
+            <fieldset>
+                <legend>Les membres associés à mon compte</legend>
+                <div class="afup-form-container">
+                    <table class="afup-table">
+                        <thead>
+                        <tr>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th title="Cet utilisateur a-t-il le droit de gérer le compte de l'entreprise ?">Gestion</th>
+                            <th>Email</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.firstName }}</td>
+                                <td>{{ user.lastName }}</td>
+                                <td>{{ user.hasRole('ROLE_COMPANY_MANAGER')?'Oui':'Non' }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    {% if user.id == app.user.id %}
+                                        <button type="submit" class="button button__medium" disabled="disabled" title="Vous ne pouvez pas enlever les droits de gestion à votre compte">
+                                            Enlever les droits de gestion
+                                        </button>
+                                        <button type="submit" class="button button__medium" disabled="disabled" title="Vous ne pouvez pas supprimer votre propre compte">
+                                            Supprimer ce compte
+                                        </button>
+                                    {% else %}
+                                        {% if user.hasRole('ROLE_COMPANY_MANAGER') %}
+                                            <button type="submit" class="button button__medium" name="promote_down" value="{{ user.email }}">Enlever les droits de gestion</button>
+                                        {% else %}
+                                            <button type="submit" class="button button__medium" name="promote_up" value="{{ user.email }}">Donner les droits de gestion</button>
+                                        {% endif %}
+                                        <button type="submit" class="button button__medium" name="remove" value="{{ user.email }}">Supprimer ce compte</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">Aucun membre actuellement rattaché</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </fieldset>
+            <input type="hidden" name="token" value="{{ token }}" />
+        </form>
     </div>
+
+
+    <div class="afup-form">
+        <form method="post">
+            <fieldset>
+                <legend>Invitations en attente</legend>
+                <div class="afup-form-container">
+                    <table class="afup_tab">
+                        <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Droits de gestion du compte</th>
+                            <th>Date d'envoi</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        {% for invitation in invitations %}
+                            <tr>
+                                <td>{{ invitation.email }}</td>
+                                <td>{{ invitation.manager?'Oui':'Non' }}</td>
+                                <td>{{ invitation.submittedOn|date('d/m/Y H:i:s') }}</td>
+                                <td>
+                                    <button type="submit" class="button button__medium" name="resend_invitation" value="{{ invitation.email }}"
+                                            title="Renvoyer le mail d'invitation">Envoyer
+                                        à nouveau
+                                    </button>
+                                    <button type="submit" class="button button__medium" name="delete_invitation" value="{{ invitation.email }}" title="Annuler l'invitation">
+                                        Annuler
+                                    </button>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Aucune invitation en attente</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </fieldset>
+            <input type="hidden" name="token" value="{{ token }}" />
+        </form>
+    </div>
+
+
+    <div class="afup-form">
+        <p>
+            Votre cotisation actuelle vous permet d'avoir {{ company.maxMembers }} membres rattachés.
+        </p>
+        {{ form_start(formInvitation) }}
+        <fieldset>
+            <legend>Nouvelle invitation</legend>
+            <div class="afup-form-container">
+                {{ form_row(formInvitation.email) }}
+                {{ form_row(formInvitation.manager) }}
+                {{ form_widget(formInvitation) }}
+                <div id="company_member_invitation_submit">
+                    {% if canAddUser %}
+                        <button type="submit" class="button">Envoyer l'invitation</button>
+                    {% else %}
+                        <button type="submit" class="button" disabled="disabled">Envoyer l'invitation</button>
+                    {% endif %}
+                </div>
+                {% if canAddUser == false %}
+                    <p>
+                        Vous avez actuellement {{ users.count }} membre(s) rattaché(s) et {{ invitations.count }} invitation(s)
+                        en attente. Vous ne pouvez envoyer de nouvelle invitation, votre nombre maximum de membre permis par
+                        votre cotisation étant atteint. Si vous souhaitez rattacher d'avantage de membres, merci de nous
+                        contacter à l'adresse tresorier@afup.org afin d'augmenter le nombre de membres lié à votre cotisation.
+                    </p>
+                {% endif %}
+            </div>
+        </fieldset>
+
+        {{ form_end(formInvitation) }}
+    </div>
+
 {% endblock %}
