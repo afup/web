@@ -217,6 +217,10 @@ parameters:
                 info_serveur:
                     nom: 'Information serveur'
                     niveau: 'ROLE_ADMIN'
+        retour_site:
+          nom: 'Retour site'
+          url: '/'
+          niveau: 'ROLE_USER'
         se_deconnecter:
             nom: 'Se déconnecter'
             url: '/admin/logout'
