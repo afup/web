@@ -88,7 +88,7 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
             return new RedirectResponse($target_path);
         }
 
-        return new RedirectResponse('/pages/administration/index.php?page=accueil');
+        return new RedirectResponse('/member');
     }
 
     /**
