@@ -11,33 +11,6 @@ parameters:
         accueil:
             nom: 'Accueil'
             niveau: 'ROLE_MEMBER_EXPIRED'
-        membre:
-            nom: 'Mon compte'
-            elements:
-                membre_coordonnees:
-                    nom: 'Mes coordonnées'
-                    niveau: 'ROLE_MEMBER_EXPIRED'
-                    url: '/admin/member/contact'
-                membre_redmine:
-                    nom: 'Déclarer un problème (GitHub)'
-                    niveau: 'ROLE_MEMBER_EXPIRED'
-                    nouvelle_fenetre: true
-                    url: 'https://github.com/afup/web/issues?state=open'
-                membre_cotisation:
-                    nom: 'Ma cotisation'
-                    niveau: 'ROLE_MEMBER_EXPIRED'
-                    url: '/admin/member/membership-fee'
-                membre_ml:
-                    nom: 'Listes de diffusion'
-                    niveau: 'ROLE_MEMBER_EXPIRED' ## Some mailing lists are open to any member of the community
-                    url: '/admin/groups/'
-                membre_assemblee_generale:
-                    nom: 'Présence prochaine AG'
-                    niveau: 'ROLE_USER'
-                    url: '/admin/member/general-meeting'
-                membres_liste:
-                    nom: 'Annuaire'
-                    niveau: 'ROLE_ADMIN'
         company:
             nom: "Ma société"
             niveau: 'ROLE_COMPANY_MANAGER'
@@ -76,6 +49,9 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                 assemblee_generale:
                     nom: 'Assemblée générale'
+                    niveau: 'ROLE_ADMIN'
+                membres_liste:
+                    nom: 'Annuaire'
                     niveau: 'ROLE_ADMIN'
         veille:
             nom: "Veille"
