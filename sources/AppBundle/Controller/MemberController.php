@@ -34,10 +34,11 @@ class MemberController extends SiteBaseController
     private function getBadges(User $user)
     {
         $seniority = $this->get(SeniorityComputer::class)->compute($user);
+        $maxBadgesSeniority = 10;
 
         $badges = [];
 
-        for ($i = $seniority; $i > 0; $i--) {
+        for ($i = min($seniority, $maxBadgesSeniority); $i > 0; $i--) {
             $badges[] = $i . 'ans';
         }
 
