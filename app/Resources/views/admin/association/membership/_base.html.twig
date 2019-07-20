@@ -14,8 +14,22 @@
         <div class="line" id="main">
             <h1>{% block page_title %}{% endblock %}</h1>
 
+            {% for bag in ['notice', 'success', 'error'] %}
+                {% for flash_message in app.session.flashBag.get(bag) %}
+                    <div class="flash flash-{{ bag }}">
+                        {{ flash_message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
             {% block page_content %}
             {% endblock %}
         </div>
     </div>
 {% endblock %}
+
+{% block container_wrapper %}
+    <div class="container wrapper">
+        {{ block("content") }}
+    </div>
+{% endblock%}
