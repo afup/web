@@ -1,0 +1,4 @@
+member_index:
+  path: /
+  defaults: {_controller: AppBundle:Member:index}
+
