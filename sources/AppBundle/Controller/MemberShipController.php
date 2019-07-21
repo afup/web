@@ -17,6 +17,8 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
+use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
@@ -564,5 +566,46 @@ class MemberShipController extends SiteBaseController
         }
 
         return $reports;
+    }
+
+    public function techletterAction()
+    {
+        return $this->render(':site/member:techletter.html.twig', [
+            'subscribed' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($this->getUser()),
+            'feeUpToDate' => ($this->getUser() !== null and $this->getUser()->getLastSubscription() > new \DateTime()),
+            'token' => $this->get('security.csrf.token_manager')->getToken('techletter_subscription'),
+        ]);
+    }
+
+    public function techletterSubscribeAction(Request $request)
+    {
+        $user = $this->getUser();
+        $token = $this->get('security.csrf.token_manager')->getToken('techletter_subscription');
+
+        if (
+            $user === null
+            || $user->getLastSubscription() < new \DateTime()
+            || $request->request->has('_csrf_token') === false
+            || $request->request->get('_csrf_token') !== $token->getValue()
+        ) {
+            throw $this->createAccessDeniedException('You cannot subscribe to the techletter');
+        }
+
+        $this->addFlash('success', "Vous êtes maintenant inscrit à la veille de l'AFUP");
+
+        $this->get('ting')->get(TechletterSubscriptionsRepository::class)->subscribe($user);
+
+        return $this->redirectToRoute('member_techletter');
+    }
+
+    public function techletterUnsubscribeAction(Request $request)
+    {
+        $techletterUnsubscriptionRepository = $this->get('ting')->get(TechletterUnsubscriptionsRepository::class);
+        $techletterUnsubscription = $techletterUnsubscriptionRepository->createFromUser($this->getUser());
+        $techletterUnsubscriptionRepository->save($techletterUnsubscription);
+
+        $this->addFlash('success', "Vous êtes maintenant désincrit à la veille de l'AFUP");
+
+        return $this->redirectToRoute('member_techletter');
     }
 }

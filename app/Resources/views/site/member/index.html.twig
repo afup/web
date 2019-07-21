@@ -97,8 +97,8 @@
             <div class="square">
                 <i class="fa fa-bullhorn"></i> <span class="square--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
                 <div class="square--link">
-                    <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ path('techletter') }}">
-                        {% if has_member_subscribed_to_techletter %}Se désincrire{% else %}S'inscrire{% endif %}
+                    <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ path('member_techletter') }}">
+                        {% if has_member_subscribed_to_techletter %}Consulter{% else %}S'inscrire{% endif %}
                     </a>
                 </div>
             </div>

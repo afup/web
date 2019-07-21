@@ -58,24 +58,6 @@ div.techletter-subscription{
     }
 }
 
-ul.techletter-subscription--check{
-    text-align: left;
-}
-ul.techletter-subscription--check li span{
-    font-size:3em;
-    vertical-align: middle;
-}
-ul.techletter-subscription--check li span.techletter-subscription--check-unchecked{
-    color: #ed0678;
-}
-
-ul.techletter-subscription--check li span.techletter-subscription--check-checked{
-    color: #1ebdff;
-}
-ul.techletter-subscription--check li{
-    list-style-type: none;
-}
-
 form.techletter-subscription--form{
     margin: 0;
     background-color: transparent;

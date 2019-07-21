@@ -83,3 +83,16 @@ member_general_meeting:
 member_general_meeting_reports_download:
   path: /member/general-meeting-report-download/{filename}
   defaults: {_controller: AppBundle:MemberShip:generalMettingDownloadReport}
+
+member_techletter:
+  path: /member/techletter
+  defaults: {_controller: AppBundle:MemberShip:techletter}
+
+member_techletter_unsubscribe:
+  path: /member/techletter-unsubscribe
+  defaults: {_controller: AppBundle:MemberShip:techletterUnsubscribe}
+
+member_techletter_subscribe:
+  path: /member/techletter-subscribe
+  defaults: {_controller: AppBundle:MemberShip:techletterSubscribe}
+  methods: ["POST"]
