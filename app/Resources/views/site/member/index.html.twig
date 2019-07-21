@@ -121,12 +121,12 @@
 
         <div class="col-md-6 col-sm-12">
             <div class="square">
-                <i class="fa fa-comments"></i> <span class="square--title">Présence prochaine AG</span>
+                <i class="fa fa-comments"></i> <span class="square--title">Assemblée générale</span>
                 <div class="square--link">
                     {%  if has_general_meeting_planned %}
                         <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ path('member_general_meeting') }}">Indiquer sa présence</a>
                     {% else %}
-                        <a class="button-inverted button__medium" href="{{ path('member_general_meeting') }}">Voir</a>
+                        <a class="button-inverted button__medium" href="{{ path('member_general_meeting') }}">Comptes-rendus</a>
                     {% endif %}
                 </div>
             </div>
@@ -148,15 +148,6 @@
     </div>
 
     <div class="container">
-        <div class="col-md-6 col-sm-12">
-            <div class="square">
-                <i class="fa fa-book"></i> <span class="square--title">Comptes-rendus d'AG</span>
-                <div class="square--link">
-                    <a class="button-inverted button__medium" href="{{ path('member_general_meeting_reports') }}">Voir</a>
-                </div>
-            </div>
-        </div>
-
         {% if user.canRequestSlackInvite or user.slackInviteRequested %}
         <div class="col-md-6 col-sm-12">
             <div class="square">

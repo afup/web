@@ -464,15 +464,6 @@ class MemberShipController extends SiteBaseController
 
         $generalMeetingPlanned = $assemblee_generale->hasGeneralMeetingPlanned();
 
-        if (false === $generalMeetingPlanned) {
-            return $this->render(
-                ':admin/association/membership:generalmeeting_no_meeting.html.twig',
-                [
-                    'title' => $title,
-                ]
-            );
-        }
-
         $cotisation = $personnes_physiques->obtenirDerniereCotisation($this->getUser()->getId());
         $needsMembersheepFeePayment = $timestamp > strtotime("+14 day", $cotisation['date_fin']);
 
@@ -534,20 +525,11 @@ class MemberShipController extends SiteBaseController
                 'title' => $title,
                 'date_general_meeting' => $date_assemblee_generale,
                 'form' => $form->createView(),
-            ]
-        );
-    }
-
-    public function generalMeetingReportsAction()
-    {
-        return $this->render(
-            ':admin/association/membership:generalmeetingreports.html.twig',
-            [
                 'reports' => $this->prepareGeneralMeetingsReportsList(),
+                'general_meeting_planned' => $generalMeetingPlanned,
             ]
         );
     }
-
 
     public function generalMettingDownloadReportAction($filename)
     {

@@ -6,46 +6,99 @@
     } only %}
 {% endblock %}
 
-{% block page_title %}Ma participation à l'Assemblée Générale du {{ date_general_meeting }}{% endblock %}
+{% block page_title %}Assemblée générale{% endblock %}
 
 {% block page_content %}
-    <div class="afup-form">
-        {{ form_start(form) }}
+    {% if general_meeting_planned %}
+        <h2>Ma participation à l'Assemblée Générale du {{ date_general_meeting }}</h2>
+        <div class="afup-form">
+            {{ form_start(form) }}
 
-        <fieldset>
-            <legend>Je serai présent(e)</legend>
-            <div class="afup-form-container">
-                {{ form_errors(form.presence) }}
+            <fieldset>
+                <legend>Je serai présent(e)</legend>
+                <div class="afup-form-container">
+                    {{ form_errors(form.presence) }}
 
-                {% for key, presenceItem in form.presence.children %}
-                    <div class="rangee">
-                        {{ form_label(presenceItem, null, {"label_attr": {"class": "libelle"}}) }}
-                        <span class="element">
-                                {{ form_widget(presenceItem) }}
-                            </span>
-                    </div>
+                    {% for key, presenceItem in form.presence.children %}
+                        <div class="rangee">
+                            {{ form_label(presenceItem, null, {"label_attr": {"class": "libelle"}}) }}
+                            <span class="element">
+                                    {{ form_widget(presenceItem) }}
+                                </span>
+                        </div>
 
-                {% endfor %}
-            </div>
-        </fieldset>
-
-        <fieldset class="f2">
-            <legend>Je donne mon pouvoir à</legend>
-            <div class="afup-form-container">
-                <div>
-                    {{ form_errors(form.id_personne_avec_pouvoir) }}
-                    {{ form_label(form.id_personne_avec_pouvoir) }}
-                    {{ form_widget(form.id_personne_avec_pouvoir) }}
+                    {% endfor %}
                 </div>
-            </div>
-        </fieldset>
+            </fieldset>
 
-        <fieldset>
-            <div class="right">
-                {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}
-            </div>
-        </fieldset>
+            <fieldset class="f2">
+                <legend>Je donne mon pouvoir à</legend>
+                <div class="afup-form-container">
+                    <div>
+                        {{ form_errors(form.id_personne_avec_pouvoir) }}
+                        {{ form_label(form.id_personne_avec_pouvoir) }}
+                        {{ form_widget(form.id_personne_avec_pouvoir) }}
+                    </div>
+                </div>
+            </fieldset>
 
-        {{ form_end(form) }}
-    </div>
+            <fieldset>
+                <div class="right">
+                    {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}
+                </div>
+            </fieldset>
+
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+
+    <h2>Compte rendus des assemblées générales</h2>
+
+    <style>
+        .afup-table {
+            border-spacing: 2px;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border: 1px solid #50a0dd;
+        }
+
+        .afup-table th {
+            background: #50a0dd;
+            color: #ffffff;
+            padding:5px;
+            border-left: 1px solid #ffffff;
+        }
+
+        .afup-table tbody tr:nth-child(2n+1) {
+            background: #eee;
+        }
+    </style>
+
+    {% if app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
+        Les comptes rendus ne sont accessibles qu'aux membres à jour de cotisation.
+    {% else %}
+        <table class="afup-table">
+            <tr>
+                <th>Date</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+            {% for report in reports %}
+                <tr>
+                    <td>
+                        {{ report.date|date('d/m/Y') }}
+                    </td>
+                    <td>
+                        {{ report.label }}
+                    </td>
+                    <td>
+                        <a class="button button-inverted button__medium" href="{{ path('member_general_meeting_reports_download', {filename: report.filename}) }}">
+                            <i class="fa fa-file"></i>
+                            Télécharger
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 {% endblock %}
