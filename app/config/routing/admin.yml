@@ -79,3 +79,11 @@ member_membership_fee_send_mail:
 member_general_meeting:
   path: /member/general-meeting
   defaults: {_controller: AppBundle:MemberShip:generalMeeting}
+
+member_general_meeting_reports:
+  path: /member/general-meeting-reports
+  defaults: {_controller: AppBundle:MemberShip:generalMeetingReports}
+
+member_general_meeting_reports_download:
+  path: /member/general-meeting-report-download/{filename}
+  defaults: {_controller: AppBundle:MemberShip:generalMettingDownloadReport}

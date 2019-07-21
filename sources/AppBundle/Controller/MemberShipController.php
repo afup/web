@@ -21,6 +21,8 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -534,5 +536,51 @@ class MemberShipController extends SiteBaseController
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    public function generalMeetingReportsAction()
+    {
+        return $this->render(
+            ':admin/association/membership:generalmeetingreports.html.twig',
+            [
+                'reports' => $this->prepareGeneralMeetingsReportsList(),
+            ]
+        );
+    }
+
+
+    public function generalMettingDownloadReportAction($filename)
+    {
+        $reports = $this->prepareGeneralMeetingsReportsList();
+
+        if (!isset($reports[$filename])) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($this->getUser()->hasRole('ROLE_MEMBER_EXPIRED')) {
+            throw $this->createNotFoundException();
+        }
+
+        return new BinaryFileResponse($reports[$filename]['path']);
+    }
+
+    private function prepareGeneralMeetingsReportsList()
+    {
+        $dir = $this->container->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . '/htdocs/uploads/general_meetings_reports';
+
+        $finder = new Finder();
+        $files = $finder->name("*.pdf")->in($dir);
+
+        $reports = [];
+        foreach ($files as $file) {
+            $reports[$file->getFilename()] = [
+                'date' => substr($file->getFilename(), 0, 10),
+                'label' => substr($file->getFilename(), 11, -4),
+                'filename' => $file->getFilename(),
+                'path' => $file->getRealPath(),
+            ];
+        }
+
+        return $reports;
     }
 }
