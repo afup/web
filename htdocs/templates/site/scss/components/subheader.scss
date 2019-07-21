@@ -19,6 +19,15 @@
       &:hover {
         background: rgba(255, 255, 255, .2);
       }
+
+      &.subheader-current,
+      &.subheader-current:hover {
+        background-color: #fff;
+
+        a {
+          color: #50a0dd;
+        }
+      }
     }
 
     a {
@@ -29,15 +38,6 @@
       line-height: 1.25;
       color: #fff;
       text-decoration: none;
-    }
-  }
-
-  .subheader-current {
-    background-color: #fff;
-    pointer-events: none;
-
-    a {
-      color: #50a0dd;
     }
   }
 }
