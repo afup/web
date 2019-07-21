@@ -187,12 +187,16 @@ LinkEditor.prototype = {
 			this.resolve = resolve;
 			this.reject = reject;
 
-
 			// Create fields for the data
 			let model = getModelForType(type);
 
 			this.createForm(model, null);
 			this.form.classList.remove('hidden');
+
+			// On supprime les boutons "remonter" et "descendre" pour les liens
+			this.form.querySelector('button#up').style.display = 'none';
+			this.form.querySelector('button#down').style.display = 'none';
+
 			this.fieldset.dataset.type = type;
 			delete this.fieldset.dataset.link;
 		});
@@ -304,7 +308,6 @@ LinkEditor.prototype = {
 	},
 
 	up: function () {
-		console.log(this.fieldset.dataset);
 		let actualIndex = this.getLinkIndex();
 		// News
 		if (this.fieldset.dataset.type === 'news') {
@@ -317,7 +320,7 @@ LinkEditor.prototype = {
 			// Other types (array)
 			let data = techletter[this.fieldset.dataset.type];
 			if (actualIndex > -1 && data.length > 1) {
-				const newIndex = (actualIndex > 1) ? actualIndex-1 : 0;
+                const newIndex = (actualIndex > 1) ? actualIndex-1 : 0;
                 if (newIndex < actualIndex) {
                     data = data.slice(0, actualIndex-1).concat(data[actualIndex], data[newIndex], data.slice(newIndex+2));
                 }
@@ -327,7 +330,6 @@ LinkEditor.prototype = {
 	},
 
 	down: function () {
-		console.log(this.fieldset.dataset);
 		let actualIndex = this.getLinkIndex();
 		if (this.fieldset.dataset.type === 'news') {
 			if (actualIndex === 0) {
@@ -349,13 +351,15 @@ LinkEditor.prototype = {
 	},
 
 	getLinkIndex: function () {
-		if (this.fieldset.dataset.type === 'news') {
-			return (techletter.firstNews.url === this.fieldset.dataset.link) ? 0 : 1;
-		} else {
-			let data = techletter[this.fieldset.dataset.type];
-			for (let i=0; i<data.length; i++) {
-				if (data[i].url === this.fieldset.dataset.link) {
-					return i;
+		if (this.fieldset.dataset.url !== 'undefined') {
+			if (this.fieldset.dataset.type === 'news') {
+				return (techletter.firstNews.url === this.fieldset.dataset.link) ? 0 : 1;
+			} else {
+				let data = techletter[this.fieldset.dataset.type];
+				for (let i = 0; i < data.length; i++) {
+					if (data[i].url === this.fieldset.dataset.link) {
+						return i;
+					}
 				}
 			}
 		}
