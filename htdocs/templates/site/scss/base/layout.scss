@@ -21,6 +21,10 @@ body {
   padding: 20px;
 }
 
+#container.remove-min-height-from-container-id {
+  min-height: auto;
+}
+
 .m-reset { margin: 0 !important; }
 .p-reset { padding: 0 !important; }
 
