@@ -35,7 +35,7 @@
 #company-members form fieldset > div,
 .afup-form form fieldset .afup-form-container
 {
-    padding: 1em;
+    padding: 1em 15px;
     background: #eee;
     border: 1px solid #ccc;
 }
@@ -46,12 +46,13 @@
 {
     display:block;
     background-color:#50a0dd;
-    padding: 20px 10px;
+    padding: 20px 15px;
     margin: 0;
     color:white;
     width:100%;
     font-size:1.5em;
     border: 1px solid #50a0dd;
+    font-weight: bold;
 }
 #company-membership form label,
 #company-membership-invitation form label,
@@ -155,7 +156,7 @@
 }
 
 .afup-form--miniform .afup-form-container > div {
-    margin: 1.5em 0;
+    margin: 1em 0;
 }
 
 .afup-form--miniform p {
