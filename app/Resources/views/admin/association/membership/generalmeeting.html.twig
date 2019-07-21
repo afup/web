@@ -54,26 +54,6 @@
 
     <h2>Compte rendus des assemblées générales</h2>
 
-    <style>
-        .afup-table {
-            border-spacing: 2px;
-            border-collapse: collapse;
-            background-color: #ffffff;
-            border: 1px solid #50a0dd;
-        }
-
-        .afup-table th {
-            background: #50a0dd;
-            color: #ffffff;
-            padding:5px;
-            border-left: 1px solid #ffffff;
-        }
-
-        .afup-table tbody tr:nth-child(2n+1) {
-            background: #eee;
-        }
-    </style>
-
     {% if app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
         Les comptes rendus ne sont accessibles qu'aux membres à jour de cotisation.
     {% else %}
