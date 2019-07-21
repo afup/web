@@ -75,3 +75,7 @@ member_membership_fee_download:
 member_membership_fee_send_mail:
   path: /member/membership-fee/send-mail
   defaults: {_controller: AppBundle:MemberShip:membershipFeeSendMail}
+
+member_general_meeting:
+  path: /member/general-meeting
+  defaults: {_controller: AppBundle:MemberShip:generalMeeting}

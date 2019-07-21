@@ -346,7 +346,7 @@ class Assemblee_Generale
         $requete .= 'AND afup_presences_assemblee_generale.date = ' . $timestamp . ' ';
         $requete .= 'LIMIT 0, 1';
 
-        $infos = $this->_bdd->obtenirEnregistrement($requete, MYSQL_NUM);
+        $infos = $this->_bdd->obtenirEnregistrement($requete, MYSQLI_NUM);
 
         return $infos;
     }

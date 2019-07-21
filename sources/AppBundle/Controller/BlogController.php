@@ -55,7 +55,8 @@ class BlogController extends EventBaseController
          * @var $talkRepository TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
+        $applyPublicationDateFilters = $request->query->getBoolean('apply-publication-date-filters', true);
+        $talks = $talkRepository->getByEventWithSpeakers($event, $applyPublicationDateFilters);
         $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
 
         $eventPlanning = [];
@@ -120,6 +121,7 @@ class BlogController extends EventBaseController
                 [
                     'planning' => $eventPlanning,
                     'event' => $event,
+                    'planningDisplayable' => false === $applyPublicationDateFilters || $event->isPlanningDisplayable(),
                     'rooms' => $rooms,
                     'hourMin' => $hourMin,
                     'hourMax' => $hourMax,
