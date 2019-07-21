@@ -30,6 +30,11 @@ class Sending implements NotifyPropertyInterface
     private $techletter;
 
     /**
+     * @var string
+     */
+    private $archiveUrl;
+
+    /**
      * @return int
      */
     public function getId()
@@ -102,6 +107,27 @@ class Sending implements NotifyPropertyInterface
     {
         $this->propertyChanged('techletter', $this->techletter, $techletter);
         $this->techletter = $techletter;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArchiveUrl()
+    {
+        return $this->archiveUrl;
+    }
+
+    /**
+     * @param string $archiveUrl
+     *
+     * @return $this
+     */
+    public function setArchiveUrl($archiveUrl)
+    {
+        $this->propertyChanged('archiveUrl', $this->archiveUrl, $archiveUrl);
+        $this->archiveUrl = $archiveUrl;
+
         return $this;
     }
 }

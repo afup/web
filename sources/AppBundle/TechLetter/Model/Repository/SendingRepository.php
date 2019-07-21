@@ -48,6 +48,11 @@ class SendingRepository extends Repository implements MetadataInitializer
                 'type' => 'bool',
                 'serializer' => Boolean::class
             ])
+            ->addField([
+                'columnName' => 'archive_url',
+                'fieldName' => 'archiveUrl',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;
