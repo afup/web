@@ -6,6 +6,7 @@ use Afup\Site\Association\Assemblee_Generale;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\SeniorityComputer;
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\LegacyModelFactory;
 
 class MemberController extends SiteBaseController
@@ -33,15 +34,36 @@ class MemberController extends SiteBaseController
 
     private function getBadges(User $user)
     {
+        $badges = [];
+
+        $badgespath = __DIR__ . '/../../../htdocs/images/badges/';
+
+        foreach ($this->getSpeakerYears() as $year) {
+            $badgename = 'speaker' . $year;
+            if (is_file($badgespath . $badgename . '.png')) {
+                $badges[] = $badgename;
+            }
+        }
+
         $seniority = $this->get(SeniorityComputer::class)->compute($user);
         $maxBadgesSeniority = 10;
-
-        $badges = [];
 
         for ($i = min($seniority, $maxBadgesSeniority); $i > 0; $i--) {
             $badges[] = $i . 'ans';
         }
 
         return $badges;
+    }
+
+    private function getSpeakerYears()
+    {
+        $events = $this->get('ting')->get(EventRepository::class)->getAllEventWithSpeakerEmail($this->getUser()->getEmail());
+
+        $years = [];
+        foreach ($events as $event) {
+            $years[] = $event->getDateStart()->format('Y');
+        }
+
+        return $years;
     }
 }
