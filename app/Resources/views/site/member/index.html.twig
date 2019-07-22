@@ -16,57 +16,6 @@
 
 {% block page_content %}
 
-    <style>
-        .member-index-item {
-            padding: 20px 0;
-        }
-
-        .member-index-item .fa {
-            margin:  0 20px 0 0;
-            display: inline-block;
-            vertical-align: middle;
-            float: left;
-            min-width: 60px;
-            font-size: 5em;
-            text-align: center;
-        }
-
-        .member-index-item--title {
-            font-weight: bold;
-        }
-
-        .member-index-item--link {
-            text-align: left;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .member-index-item .member-index-item--link a {
-            font-size: 1.1em;
-            font-weight: bold;
-            min-width: 200px;
-            text-align: center;
-            padding: 8px 20px;
-        }
-
-        @media (max-width: 460px) {
-            .member-index-item {
-                margin: 10px 0;
-            }
-
-            .member-index-item .fa {
-                display: block;
-                width: 100%;
-                text-align: center;
-                margin: 0 0 20px 0;
-            }
-
-            .member-index-item .member-index-item--link {
-                margin: 20px 0 0 0;
-            }
-        }
-    </style>
-
     <h2>Mon compte</h2>
 
     <div class="container">
@@ -190,28 +139,15 @@
 
 
     {% if badges %}
-    <h2>
-        Badges
-    </h2>
+        <h2>Badges</h2>
 
-    <style>
-        .badges img {
-            max-height: 150px;
-        }
-        .badges .col-md-6 {
-            text-align: center;
-        }
-    </style>
-
-    <div class="badges">
         <div class="container">
-    {% for badge in badges %}
-            <div class="col-md-3 col-sm-12">
-                <img src="/images/badges/{{ badge }}.png" alt="Badge {{ badge }}">
-            </div>
-    {% endfor %}
+        {% for badge in badges %}
+                <div class="col-md-3 col-sm-12 member-badge">
+                    <img src="/images/badges/{{ badge }}.png" alt="Badge {{ badge }}">
+                </div>
+        {% endfor %}
         </div>
-    </div>
     {% endif %}
 
 {% endblock %}
