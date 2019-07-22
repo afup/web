@@ -7,7 +7,6 @@ use AppBundle\Association\Model\User;
 
 class SeniorityComputer
 {
-
     /**
      * @var Cotisations
      */
@@ -41,5 +40,4 @@ class SeniorityComputer
 
         return $totalDiffs->y;
     }
-
 }

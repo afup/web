@@ -23,12 +23,10 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -347,8 +345,8 @@ class MemberShipController extends SiteBaseController
             );
         }
 
-        $cotisation_physique = $cotisations->obtenirListe(0 , $donnees['id']);
-        $cotisation_morale = $cotisations->obtenirListe(1 , $donnees['id_personne_morale']);
+        $cotisation_physique = $cotisations->obtenirListe(0, $donnees['id']);
+        $cotisation_morale = $cotisations->obtenirListe(1, $donnees['id_personne_morale']);
 
         if (is_array($cotisation_morale) && is_array($cotisation_physique)) {
             $cotisations = array_merge($cotisation_physique, $cotisation_morale);
@@ -357,7 +355,7 @@ class MemberShipController extends SiteBaseController
         } elseif (is_array($cotisation_physique)) {
             $cotisations = $cotisation_physique;
         } else {
-            $cotisations = array();
+            $cotisations = [];
         }
 
         if ($donnees['id_personne_morale'] > 0) {

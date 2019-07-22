@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Groups\Model\MailingList;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class GroupsController extends SiteBaseController
