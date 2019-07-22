@@ -17,11 +17,11 @@
 {% block page_content %}
 
     <style>
-        .square {
+        .member-index-item {
             padding: 20px 0;
         }
 
-        .square .fa {
+        .member-index-item .fa {
             margin:  0 20px 0 0;
             display: inline-block;
             vertical-align: middle;
@@ -31,17 +31,17 @@
             text-align: center;
         }
 
-        .square--title {
+        .member-index-item--title {
             font-weight: bold;
         }
 
-        .square--link {
+        .member-index-item--link {
             text-align: left;
             margin-top: 10px;
             font-size: 14px;
         }
 
-        .square .square--link a {
+        .member-index-item .member-index-item--link a {
             font-size: 1.1em;
             font-weight: bold;
             min-width: 200px;
@@ -50,18 +50,18 @@
         }
 
         @media (max-width: 460px) {
-            .square {
+            .member-index-item {
                 margin: 10px 0;
             }
 
-            .square .fa {
+            .member-index-item .fa {
                 display: block;
                 width: 100%;
                 text-align: center;
                 margin: 0 0 20px 0;
             }
 
-            .square .square--link {
+            .member-index-item .member-index-item--link {
                 margin: 20px 0 0 0;
             }
         }
@@ -71,18 +71,18 @@
 
     <div class="container">
         <div class="col-md-6 col-sm-12">
-            <div class="square">
-                <i class="fa fa-user"></i> <span class="square--title">Mes coordonnées</span> : {{ user.label }}
-                <div class="square--link">
+            <div class="member-index-item">
+                <i class="fa fa-user"></i> <span class="member-index-item--title">Mes coordonnées</span> : {{ user.label }}
+                <div class="member-index-item--link">
                     <a class="button-inverted button__medium" href="{{ path('member_contact') }}">Modifier</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6 col-sm-12">
-            <div class="square">
-                <i class="fa fa-dollar"></i> <span class="square--title">Cotisations</span>
-                <div class="square--link">
+            <div class="member-index-item">
+                <i class="fa fa-dollar"></i> <span class="member-index-item--title">Cotisations</span>
+                <div class="member-index-item--link">
                     <a class="button-inverted button__medium {% if not has_up_to_date_membership_fee %} button--call-to-action{% endif %}" href="{{ path('member_membership_fee') }}">
                         {% if has_up_to_date_membership_fee %}Consulter{% else %}Se mettre à jour{% endif %}
                     </a>
@@ -94,9 +94,9 @@
 
     <div class="container">
         <div class="col-md-6 col-sm-12">
-            <div class="square">
-                <i class="fa fa-bullhorn"></i> <span class="square--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
-                <div class="square--link">
+            <div class="member-index-item">
+                <i class="fa fa-bullhorn"></i> <span class="member-index-item--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
+                <div class="member-index-item--link">
                     <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ path('member_techletter') }}">
                         {% if has_member_subscribed_to_techletter %}Consulter{% else %}S'inscrire{% endif %}
                     </a>
@@ -104,9 +104,9 @@
             </div>
         </div>
         <div class="col-md-6 col-sm-12">
-            <div class="square">
-                <i class="fa fa-envelope"></i> <span class="square--title">Listes de diffusion</span>
-                <div class="square--link">
+            <div class="member-index-item">
+                <i class="fa fa-envelope"></i> <span class="member-index-item--title">Listes de diffusion</span>
+                <div class="member-index-item--link">
                     <a class="button-inverted button__medium" href="{{ path('my_groups') }}">Modifier</a>
                 </div>
             </div>
@@ -116,9 +116,9 @@
     <div class="container">
 
         <div class="col-md-6 col-sm-12">
-            <div class="square">
-                <i class="fa fa-comments"></i> <span class="square--title">Assemblée générale</span>
-                <div class="square--link">
+            <div class="member-index-item">
+                <i class="fa fa-comments"></i> <span class="member-index-item--title">Assemblée générale</span>
+                <div class="member-index-item--link">
                     {%  if has_general_meeting_planned %}
                         <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ path('member_general_meeting') }}">Indiquer sa présence</a>
                     {% else %}
@@ -129,14 +129,14 @@
         </div>
 
         <div class="col-md-6 col-sm-12">
-            <div class="square">
-                <i class="fa fa-map-marker"></i> <span class="square--title">Antenne la plus proche</span> :
+            <div class="member-index-item">
+                <i class="fa fa-map-marker"></i> <span class="member-index-item--title">Antenne la plus proche</span> :
                 {% if office_label %}
                     {{ office_label }}
                 {% else %}
                     Aucune
                 {% endif %}
-                <div class="square--link">
+                <div class="member-index-item--link">
                     <a class="button-inverted button__medium {% if not office_label %}button--call-to-action{% endif %}" href="{{ path('member_contact') }}">{% if office_label %}Modifier{% else %}Définir{% endif %}</a>
                 </div>
             </div>
@@ -146,9 +146,9 @@
     <div class="container">
         {% if user.canRequestSlackInvite or user.slackInviteRequested %}
         <div class="col-md-6 col-sm-12">
-            <div class="square">
-                <i class="fa fa-slack"></i> <span class="square--title">Slack membres AFUP</span>
-                <div class="square--link">
+            <div class="member-index-item">
+                <i class="fa fa-slack"></i> <span class="member-index-item--title">Slack membres AFUP</span>
+                <div class="member-index-item--link">
                     {% if user.canRequestSlackInvite %}
                         <a class="button-inverted button__medium button--call-to-action" href="{{ path('member_slack_invite') }}">Recevoir l'invitation</a>
                     {% elseif user.slackInviteRequested %}
@@ -169,18 +169,18 @@
 
     <div class="container">
         <div class="col-md-6 col-sm-12">
-            <div class="square">
+            <div class="member-index-item">
                 <i class="fa fa-building"></i> Coordonnées
-                <div class="square--link">
+                <div class="member-index-item--link">
                     <a class="button-inverted button__medium" href="{{ path('admin_company') }}">Modifier</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6 col-sm-12">
-            <div class="square">
+            <div class="member-index-item">
                 <i class="fa fa-users"></i> Personnes rattachées
-                <div class="square--link">
+                <div class="member-index-item--link">
                     <a class="button-inverted button__medium" href="{{ path('admin_company_members') }}">Modifier</a>
                 </div>
             </div>
