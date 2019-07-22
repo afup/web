@@ -55,7 +55,6 @@ class EventRepository extends Repository implements MetadataInitializer
 
     public function getAllEventWithSpeakerEmail($email)
     {
-        var_dump($email);
         $sql = <<<SQL
 SELECT afup_forum.*
 FROM afup_forum
