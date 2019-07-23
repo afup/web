@@ -46,7 +46,7 @@
                             (toujours valide)
                         {% endif %}
                     </td>
-                    <td class="txtright">{{ cotisation.montant }} &euro;</td>
+                    <td class="txtright">{{ cotisation.montant|number_format(2, ',') }} &euro;</td>
                     <td style="text-align: right; white-space: nowrap">
                         <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la cotisation">
                             <i class="fa fa-file"></i>

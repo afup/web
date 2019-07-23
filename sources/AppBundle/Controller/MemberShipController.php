@@ -338,7 +338,7 @@ class MemberShipController extends SiteBaseController
             $message = sprintf(
                 'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
         Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
-                $cotisation['montant'],
+                number_format($cotisation['montant'], 2, ',', ' '),
                 EURO,
                 date("d/m/Y", $cotisation['date_fin']),
                 $endSubscription->format('d/m/Y')
