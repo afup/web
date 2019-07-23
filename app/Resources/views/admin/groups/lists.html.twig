@@ -40,9 +40,9 @@
                 {% elseif error is not null %}
                     <p class="error">{{ error }}</p>
                 {% elseif subscriptions[list.email] is defined and subscriptions[list.email] %}
-                    <button name="unsubscribe" class="button" value="{{ list.id }}">Me désabonner</button>
+                    <button name="unsubscribe" class="button button-inverted" value="{{ list.id }}">Me désabonner</button>
                 {% else %}
-                    <button name="subscribe" class="button" value="{{ list.id }}">M'abonner</button>
+                    <button name="subscribe" class="button button--call-to-action" value="{{ list.id }}">M'abonner</button>
                 {% endif %}
             {% endfor %}
             <input type="hidden" name="token" value="{{ csrf_token }}" />
