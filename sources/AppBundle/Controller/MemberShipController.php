@@ -489,6 +489,7 @@ class MemberShipController extends SiteBaseController
                 [
                     'choices' => array_flip(array_merge([0 => ''], $presents)),
                     'label' => 'Je donne mon pouvoir à',
+                    'required' => false,
                 ]
             )
             ->add('save', SubmitType::class, ['label' => 'Confirmer'])
