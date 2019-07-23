@@ -589,7 +589,7 @@ class MemberShipController extends SiteBaseController
             throw $this->createAccessDeniedException('You cannot subscribe to the techletter');
         }
 
-        $this->addFlash('success', "Vous êtes maintenant inscrit à la veille de l'AFUP");
+        $this->addFlash('success', "Vous êtes maintenant abonné à la veille de l'AFUP");
 
         $this->get('ting')->get(TechletterSubscriptionsRepository::class)->subscribe($user);
 
@@ -602,7 +602,7 @@ class MemberShipController extends SiteBaseController
         $techletterUnsubscription = $techletterUnsubscriptionRepository->createFromUser($this->getUser());
         $techletterUnsubscriptionRepository->save($techletterUnsubscription);
 
-        $this->addFlash('success', "Vous êtes maintenant désincrit à la veille de l'AFUP");
+        $this->addFlash('success', "Vous êtes maintenant désabonné à la veille de l'AFUP");
 
         return $this->redirectToRoute('member_techletter');
     }

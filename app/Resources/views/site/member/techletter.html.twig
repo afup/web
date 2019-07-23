@@ -34,14 +34,14 @@
             {% if subscribed %}
                 <p>Vous recevez actuellement la veille de l'AFUP deux fois par mois sur l'adresse {{ app.user.email }}.</p>
                 <br />
-                <a href="{{ path('member_techletter_unsubscribe') }}" class="button button-inverted">Me désincrire</a>
+                <a href="{{ path('member_techletter_unsubscribe') }}" class="button button-inverted">Me désabonner</a>
             {% else %}
                 <p>Vous ne recevez actuellement pas la veille de l'AFUP.</p>
                 <br />
 
                 <form class="techletter-subscription--form" method="post" action="{{ path('member_techletter_subscribe') }}">
                     <input type="hidden" name="_csrf_token" value="{{ token }}" />
-                    <button class="button button--call-to-action">M'inscrire</button>
+                    <button class="button button--call-to-action">M'abonner</button>
                 </form>
 
             {% endif %}
