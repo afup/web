@@ -38,10 +38,10 @@
             {% for cotisation in cotisations %}
                 <tr>
                     <td>
-                        {{ cotisation.date_debut|date('d/m/y') }}
+                        {{ cotisation.date_debut|date('d/m/Y') }}
                     </td>
                     <td>
-                        {{ cotisation.date_fin|date('d/m/y') }}
+                        {{ cotisation.date_fin|date('d/m/Y') }}
                         {% if cotisation.date_debut < time and cotisation.date_fin > time %}
                             (toujours valide)
                         {% endif %}
