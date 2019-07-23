@@ -70,7 +70,7 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $request->getSession()->getFlashBag()->add('error', 'Bad credentials');
+        $request->getSession()->getFlashBag()->add('error', "Utilisateur et/ou mot de passe incorrect");
     }
 
     /**
