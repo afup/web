@@ -47,7 +47,7 @@
                 <i class="fa fa-bullhorn"></i> <span class="member-index-item--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
                 <div class="member-index-item--link">
                     <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ path('member_techletter') }}">
-                        {% if has_member_subscribed_to_techletter %}Consulter{% else %}S'inscrire{% endif %}
+                        {% if has_member_subscribed_to_techletter %}Consulter{% else %}Gérer mon abonnement{% endif %}
                     </a>
                 </div>
             </div>
@@ -56,7 +56,7 @@
             <div class="member-index-item">
                 <i class="fa fa-envelope"></i> <span class="member-index-item--title">Listes de diffusion</span>
                 <div class="member-index-item--link">
-                    <a class="button-inverted button__medium" href="{{ path('my_groups') }}">Modifier</a>
+                    <a class="button-inverted button__medium" href="{{ path('my_groups') }}">Gérer mes abonnements</a>
                 </div>
             </div>
         </div>
