@@ -69,7 +69,7 @@
                 <i class="fa fa-comments"></i> <span class="member-index-item--title">Assemblée générale</span>
                 <div class="member-index-item--link">
                     {%  if has_general_meeting_planned %}
-                        <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ path('member_general_meeting') }}">Indiquer sa présence</a>
+                        <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ path('member_general_meeting') }}">Indiquer ma présence</a>
                     {% else %}
                         <a class="button-inverted button__medium" href="{{ path('member_general_meeting') }}">Comptes-rendus</a>
                     {% endif %}
