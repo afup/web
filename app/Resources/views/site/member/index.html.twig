@@ -23,18 +23,26 @@
         <div class="container">
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    <i class="fa fa-user"></i> <span class="member-index-item--title">Mes coordonnées</span> : {{ user.label }}
+                    {% set href = path('member_contact') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <span class="member-index-item--title">Mes coordonnées</span> : {{ user.label }}
                     <div class="member-index-item--link">
-                        <a class="button-inverted button__medium" href="{{ path('member_contact') }}">Modifier</a>
+                        <a class="button-inverted button__medium" href="{{ href }}">Modifier</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    <i class="fa fa-dollar"></i> <span class="member-index-item--title">Cotisations</span>
+                    {% set href = path('member_membership_fee') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-dollar"></i>
+                    </a>
+                    <span class="member-index-item--title">Cotisations</span>
                     <div class="member-index-item--link">
-                        <a class="button-inverted button__medium {% if not has_up_to_date_membership_fee %} button--call-to-action{% endif %}" href="{{ path('member_membership_fee') }}">
+                        <a class="button-inverted button__medium {% if not has_up_to_date_membership_fee %} button--call-to-action{% endif %}" href="{{ href }}">
                             {% if has_up_to_date_membership_fee %}Consulter{% else %}Se mettre à jour{% endif %}
                         </a>
                     </div>
@@ -46,9 +54,13 @@
         <div class="container">
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    <i class="fa fa-bullhorn"></i> <span class="member-index-item--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
+                    {% set href = path('member_techletter') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-bullhorn"></i>
+                    </a>
+                    <span class="member-index-item--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
                     <div class="member-index-item--link">
-                        <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ path('member_techletter') }}">
+                        <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ href }}">
                             {% if has_member_subscribed_to_techletter %}Consulter{% else %}Gérer mon abonnement{% endif %}
                         </a>
                     </div>
@@ -56,9 +68,13 @@
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    <i class="fa fa-envelope"></i> <span class="member-index-item--title">Listes de diffusion</span>
+                    {% set href = path('my_groups') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                    <span class="member-index-item--title">Listes de diffusion</span>
                     <div class="member-index-item--link">
-                        <a class="button-inverted button__medium" href="{{ path('my_groups') }}">Gérer mes abonnements</a>
+                        <a class="button-inverted button__medium" href="{{ href }}">Gérer mes abonnements</a>
                     </div>
                 </div>
             </div>
@@ -68,12 +84,16 @@
 
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    <i class="fa fa-comments"></i> <span class="member-index-item--title">Assemblée générale</span>
+                    {% set href = path('member_general_meeting') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-comments"></i>
+                    </a>
+                    <span class="member-index-item--title">Assemblée générale</span>
                     <div class="member-index-item--link">
                         {%  if has_general_meeting_planned %}
-                            <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ path('member_general_meeting') }}">Indiquer ma présence</a>
+                            <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ href }}">Indiquer ma présence</a>
                         {% else %}
-                            <a class="button-inverted button__medium" href="{{ path('member_general_meeting') }}">Comptes-rendus</a>
+                            <a class="button-inverted button__medium" href="{{ href }}">Comptes-rendus</a>
                         {% endif %}
                     </div>
                 </div>
@@ -81,14 +101,18 @@
 
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    <i class="fa fa-map-marker"></i> <span class="member-index-item--title">Antenne la plus proche</span> :
+                    {% set href = path('member_contact') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-map-marker"></i>
+                    </a>
+                    <span class="member-index-item--title">Antenne la plus proche</span> :
                     {% if office_label %}
                         {{ office_label }}
                     {% else %}
                         Aucune
                     {% endif %}
                     <div class="member-index-item--link">
-                        <a class="button-inverted button__medium {% if not office_label %}button--call-to-action{% endif %}" href="{{ path('member_contact') }}">{% if office_label %}Modifier{% else %}Définir{% endif %}</a>
+                        <a class="button-inverted button__medium {% if not office_label %}button--call-to-action{% endif %}" href="{{ href }}">{% if office_label %}Modifier{% else %}Définir{% endif %}</a>
                     </div>
                 </div>
             </div>
@@ -121,16 +145,24 @@
         <div class="container">
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    <i class="fa fa-building"></i> Coordonnées
+                    {% set href = path('admin_company') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-building"></i>
+                    </a>
+                    <span class="member-index-item--title">Coordonnées</span>
                     <div class="member-index-item--link">
-                        <a class="button-inverted button__medium" href="{{ path('admin_company') }}">Modifier</a>
+                        <a class="button-inverted button__medium" href="{{ href }}">Modifier</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    <i class="fa fa-users"></i> Personnes rattachées
+                    {% set href = path('admin_company_members') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-users"></i>
+                    </a>
+                    <span class="member-index-item--title">Personnes rattachées</span>
                     <div class="member-index-item--link">
                         <a class="button-inverted button__medium" href="{{ path('admin_company_members') }}">Modifier</a>
                     </div>
