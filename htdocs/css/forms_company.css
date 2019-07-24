@@ -75,6 +75,12 @@
     min-width: 45%;
 }
 
+.afup-form form textarea {
+    font-size: 1em;
+    font-family: helvetica, arial, sans-serif;
+}
+
+
 #company-membership form input[type=checkbox] {
     width: auto;
     min-width:0;
