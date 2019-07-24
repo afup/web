@@ -41,6 +41,9 @@
                         <i class="fa fa-dollar"></i>
                     </a>
                     <span class="member-index-item--title">Cotisations</span>
+                    {% if membershipfee_end_date %}
+                        : expire le {{ membershipfee_end_date|date('d/m/Y') }}
+                    {% endif %}
                     <div class="member-index-item--link">
                         <a class="button-inverted button__medium {% if not has_up_to_date_membership_fee %} button--call-to-action{% endif %}" href="{{ href }}">
                             {% if has_up_to_date_membership_fee %}Consulter{% else %}Se mettre à jour{% endif %}

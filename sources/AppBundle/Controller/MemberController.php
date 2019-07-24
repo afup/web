@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Assemblee_Generale;
+use Afup\Site\Association\Personnes_Physiques;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\SeniorityComputer;
@@ -18,6 +19,14 @@ class MemberController extends SiteBaseController
 
         $assemblee_generale = $this->get(LegacyModelFactory::class)->createObject(Assemblee_Generale::class);
 
+        $personnesPhysiques = $this->get(LegacyModelFactory::class)->createObject(Personnes_Physiques::class);
+        $cotisation = $personnesPhysiques->obtenirDerniereCotisation($user->getId());
+
+        $dateFinCotisation = null;
+        if ($cotisation) {
+            $dateFinCotisation = \DateTime::createFromFormat('U', $cotisation['date_fin']);
+        }
+
         return $this->render(
             ':site:member/index.html.twig',
             [
@@ -28,6 +37,7 @@ class MemberController extends SiteBaseController
                 'office_label' => $user->getNearestOfficeLabel(),
                 'has_general_meeting_planned' => $assemblee_generale->hasGeneralMeetingPlanned(),
                 'has_user_rspved_to_next_general_meeting' => $assemblee_generale->hasUserRspvedToLastGeneralMeeting($user),
+                'membershipfee_end_date' => $dateFinCotisation,
             ]
         );
     }
