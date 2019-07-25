@@ -44,25 +44,32 @@ class MemberController extends SiteBaseController
 
     private function getBadges(User $user)
     {
-        $badges = [];
-
-        $badgespath = __DIR__ . '/../../../htdocs/images/badges/';
+        $badgesCodes = [];
 
         foreach ($this->getSpeakerYears() as $year) {
-            $badgename = 'speaker' . $year;
-            if (is_file($badgespath . $badgename . '.png')) {
-                $badges[] = $badgename;
-            }
+            $badgesCodes[] = 'speaker' . $year;
         }
 
         $seniority = $this->get(SeniorityComputer::class)->compute($user);
         $maxBadgesSeniority = 10;
 
         for ($i = min($seniority, $maxBadgesSeniority); $i > 0; $i--) {
-            $badges[] = $i . 'ans';
+            $badgesCodes[] = $i . 'ans';
         }
 
-        return $badges;
+        $badgespath = __DIR__ . '/../../../htdocs/images/badges/';
+
+        $filteredBadges = [];
+
+        foreach ($badgesCodes as $badgesCode) {
+            if (!is_file($badgespath . $badgesCode . '.png')) {
+                continue;
+            }
+
+            $filteredBadges[] = $badgesCode;
+        }
+
+        return $filteredBadges;
     }
 
     private function getSpeakerYears()
@@ -73,6 +80,10 @@ class MemberController extends SiteBaseController
         foreach ($events as $event) {
             $years[] = $event->getDateStart()->format('Y');
         }
+
+        $years = array_unique($years);
+
+        rsort($years);
 
         return $years;
     }
