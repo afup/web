@@ -46,6 +46,31 @@
 
             {% endif %}
         </div>
+
+        <h2>Historique des veilles</h2>
+
+        <table class="afup-table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for techletter in techletter_history %}
+                <tr>
+                    <td>
+                        Veille du {{ techletter.sendingDate|date('d/m/Y') }}
+                    </td>
+                    <td>
+                        <a class="button button-inverted button__medium" target="afup-veille" href="{{ techletter.archiveUrl }}">
+                            Consulter
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
 
 {% endblock %}

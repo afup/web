@@ -23,6 +23,7 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
+use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -573,6 +574,7 @@ class MemberShipController extends SiteBaseController
             'subscribed' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($this->getUser()),
             'feeUpToDate' => ($this->getUser() !== null and $this->getUser()->getLastSubscription() > new \DateTime()),
             'token' => $this->get('security.csrf.token_manager')->getToken('techletter_subscription'),
+            'techletter_history' => $this->get('ting')->get(SendingRepository::class)->getAllPastSent(),
         ]);
     }
 
