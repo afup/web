@@ -81,6 +81,10 @@
     min-width: 45%;
 }
 
+.afup-form form input[type=radio] {
+    min-width: auto;
+}
+
 .afup-form form textarea {
     font-size: 1em;
     font-family: helvetica, arial, sans-serif;
