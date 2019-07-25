@@ -132,6 +132,7 @@ class TechLetterGenerateController extends SiteBaseController
                 ]
             );
 
+            $sending->setArchiveUrl($response['long_archive_url']);
             $sending->setSentToMailchimp(true);
             $sendingRepository->save($sending);
 
