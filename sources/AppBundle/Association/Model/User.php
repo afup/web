@@ -631,7 +631,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $roles = $this->getRoles();
 
         // TODO ça serait mieux d'avoir une liste d'inclusion des roles admin au lieu d'avoir une liste d'exclusion
-        $diff = array_diff($roles, ['ROLE_USER', 'ROLE_COMPANY_MANAGER']);
+        $diff = array_diff($roles, ['ROLE_USER', 'ROLE_COMPANY_MANAGER', 'ROLE_MEMBER_EXPIRED']);
 
         return count($diff);
     }
