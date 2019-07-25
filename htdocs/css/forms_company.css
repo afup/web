@@ -81,6 +81,11 @@
     min-width: 45%;
 }
 
+.afup-form form select {
+    background-color: white;
+}
+
+
 .afup-form form input[type=radio] {
     min-width: auto;
 }
