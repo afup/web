@@ -64,6 +64,12 @@
     font-weight: normal;
     display:inline-table;
 }
+
+.afup-form form label {
+    text-align: right;
+    padding: 0 30px;
+}
+
 #company-membership form input,
 #company-membership form textarea,
 #company-membership form select,
@@ -154,6 +160,11 @@
 
 .afup-form--miniform label {
     font-size: 1.3em;
+}
+
+.afup-form--miniform form label {
+    text-align: left;
+    padding: 0;
 }
 
 .afup-form--miniform input[type="submit"].button,
