@@ -36,56 +36,69 @@ if ($action == 'lister') {
 
   	$formulaire = instancierFormulaire();
 
+  	function prepareDefaultsFromComptaFacId(Facture $comptaFact, $id) {
+		$champsRecup = $comptaFact->obtenir($id);
+
+		$champs['date_devis']          = $champsRecup['date_devis'];
+		$champs['date_facture']          = $champsRecup['date_facture'];
+		$champs['societe']          = $champsRecup['societe'];
+		$champs['numero_devis']          = $champsRecup['numero_devis'];
+		$champs['societe']          = $champsRecup['societe'];
+		$champs['service']          = $champsRecup['service'];
+		$champs['adresse']          = $champsRecup['adresse'];
+		$champs['code_postal']          = $champsRecup['code_postal'];
+		$champs['ville']          = $champsRecup['ville'];
+		$champs['id_pays']          = $champsRecup['id_pays'];
+		$champs['email']          = $champsRecup['email'];
+		$champs['observation']          = $champsRecup['observation'];
+		$champs['ref_clt1']          = $champsRecup['ref_clt1'];
+		$champs['ref_clt2']          = $champsRecup['ref_clt2'];
+		$champs['ref_clt3']          = $champsRecup['ref_clt3'];
+		$champs['nom']          = $champsRecup['nom'];
+		$champs['prenom']          = $champsRecup['prenom'];
+		$champs['tel']          = $champsRecup['tel'];
+		$champs['numero_devis']          = $champsRecup['numero_devis'];
+		$champs['numero_facture']          = $champsRecup['numero_facture'];
+		$champs['devise_facture']          = $champsRecup['devise_facture'];
+
+
+		$champsRecup = $comptaFact->obtenir_details($id);
+
+		$i=1;
+		foreach ($champsRecup as $row)
+		{
+			$champs['id'.$i]          = $row['id'];
+			$champs['ref'.$i]          = $row['ref'];
+			$champs['designation'.$i]          = $row['designation'];
+			$champs['quantite'.$i]          = $row['quantite'];
+			$champs['pu'.$i]          = $row['pu'];
+			$i++;
+		}
+
+		return $champs;
+	}
+
    if ($action == 'modifier')
    {
-        $champsRecup = $comptaFact->obtenir($_GET['id']);
-
-        $champs['date_devis']          = $champsRecup['date_devis'];
-        $champs['date_facture']          = $champsRecup['date_facture'];
-        $champs['societe']          = $champsRecup['societe'];
-        $champs['numero_devis']          = $champsRecup['numero_devis'];
-        $champs['societe']          = $champsRecup['societe'];
-        $champs['service']          = $champsRecup['service'];
-        $champs['adresse']          = $champsRecup['adresse'];
-        $champs['code_postal']          = $champsRecup['code_postal'];
-        $champs['ville']          = $champsRecup['ville'];
-        $champs['id_pays']          = $champsRecup['id_pays'];
-        $champs['email']          = $champsRecup['email'];
-        $champs['observation']          = $champsRecup['observation'];
-        $champs['ref_clt1']          = $champsRecup['ref_clt1'];
-        $champs['ref_clt2']          = $champsRecup['ref_clt2'];
-        $champs['ref_clt3']          = $champsRecup['ref_clt3'];
-        $champs['nom']          = $champsRecup['nom'];
-        $champs['prenom']          = $champsRecup['prenom'];
-        $champs['tel']          = $champsRecup['tel'];
-        $champs['numero_devis']          = $champsRecup['numero_devis'];
-        $champs['numero_facture']          = $champsRecup['numero_facture'];
-        $champs['devise_facture']          = $champsRecup['devise_facture'];
-
-
-       $champsRecup = $comptaFact->obtenir_details($_GET['id']);
-
-       $i=1;
-		foreach ($champsRecup as $row)
-   		{
-        	$champs['id'.$i]          = $row['id'];
-        	$champs['ref'.$i]          = $row['ref'];
-        	$champs['designation'.$i]          = $row['designation'];
-        	$champs['quantite'.$i]          = $row['quantite'];
-        	$champs['pu'.$i]          = $row['pu'];
-        	$i++;
-   		}
-
+		$champs = prepareDefaultsFromComptaFacId($comptaFact, $_GET['id']);
 		$formulaire->setDefaults($champs);
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
 
    }
 	else
 	{
+		if (strlen($_GET['from'])) {
+			$champsDefaults = prepareDefaultsFromComptaFacId($comptaFact, $_GET['from']);
+		} else {
+			$champsDefaults = [];
+		}
+
+		$champsDefaults['date_devis'] = date('d F Y');
+		$champsDefaults['id_pays'] = "FR";
+
 		$champs['numero_devis']          = "";
         $champs['numero_facture']          = "";
-        $formulaire->setDefaults(array('date_devis' => date('d F Y'),
-                                       'id_pays' => 'FR'));
+        $formulaire->setDefaults($champsDefaults);
 
 	}
 //detail devis
@@ -260,6 +273,7 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
     }
 
 
+	$smarty->assign('devis_id', $_GET['id']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
 
