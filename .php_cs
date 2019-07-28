@@ -1,29 +1,28 @@
 <?php
 
-use Symfony\CS;
+$finder = PhpCsFixer\Finder::create()
+    ->name('*.php')
+    ->in(__DIR__ . "/sources/AppBundle")
+;
 
-return
-    CS\Config::create()
-        ->level(CS\FixerInterface::PSR2_LEVEL)
-        ->fixers([
-            'blankline_after_open_tag',
-            'concat_with_spaces',
-            'join_function',
-            'native_function_casing',
-            'no_blank_lines_after_class_opening',
-            'ordered_use',
-            'phpdoc_no_access',
-            'remove_leading_slash_use',
-            'remove_leading_slash_uses',
-            'self_accessor',
-            'short_array_syntax',
-            'spaces_cast',
-            'unused_use',
-            'whitespacy_lines'
-        ])
-        ->finder(
-            CS\Finder::create()
-                ->files()
-                    ->name('*.php')
-                    ->in(__DIR__ . "/sources/AppBundle")
-        );
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@PSR2' => true,
+        'blank_line_after_opening_tag' => true,
+        'concat_space' => ['spacing' => 'one'],
+        'no_alias_functions' => true,
+        'native_function_casing' => true,
+        'no_blank_lines_after_class_opening' => true,
+        'ordered_imports' => true,
+        'phpdoc_no_access' => true,
+        'no_leading_import_slash' => true,
+        'self_accessor' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'cast_spaces' => true,
+        'no_unused_imports' => true,
+        'no_whitespace_in_blank_line' => true,
+        'method_argument_space' => false,
+    ])
+    ->setFinder($finder)
+;
