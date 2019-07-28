@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\Form\LeadType;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Lead;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelEvents;

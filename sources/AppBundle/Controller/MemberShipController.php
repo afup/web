@@ -24,7 +24,6 @@ use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -353,7 +352,7 @@ class MemberShipController extends SiteBaseController
         } elseif (is_array($cotisation_physique)) {
             $cotisations = $cotisation_physique;
         } else {
-            $cotisations = array();
+            $cotisations = [];
         }
 
         if ($donnees['id_personne_morale'] > 0) {
