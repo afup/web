@@ -13,7 +13,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class SendingRepository extends Repository implements MetadataInitializer
 {
-
     public function getAllPastSent()
     {
         $sql = <<<SQL
