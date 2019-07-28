@@ -85,7 +85,7 @@
   "require-dev": {
     "atoum/atoum": "^2.8",
     "atoum/stubs": "^2.5",
-    "friendsofphp/php-cs-fixer": "~1.12"
+    "friendsofphp/php-cs-fixer": "~2"
   },
   "repositories": [
     {
