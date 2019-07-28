@@ -85,13 +85,13 @@ class Transformer extends \atoum
                             'id' => 1,
                             'label' => 'Conférence (40 minutes)',
                         ],
-                        'speakers_label' => 'Dimitri Fontaine',
+                        'speakers_label' => 'Dimitri FONTAINE',
                         'speakers' => [
                             [
                                 'id' => 800,
                                 'first_name' => 'Dimitri',
                                 'last_name' => 'Fontaine',
-                                'label' => 'Dimitri Fontaine',
+                                'label' => 'Dimitri FONTAINE',
                             ]
                         ],
                         'has_video' => true,
