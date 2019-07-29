@@ -3,6 +3,7 @@
 namespace AppBundle\Association\Model;
 
 use AppBundle\Association\NotifiableInterface;
+use AppBundle\Offices\OfficesCollection;
 use AppBundle\Validator\Constraints as AppAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
@@ -202,6 +203,21 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
         $this->nearestOffice = $nearestOffice;
         return $this;
+    }
+
+    public function getNearestOfficeLabel()
+    {
+        $code = $this->getNearestOffice();
+
+        // FIXME corriger ça dans le formulaire
+        if (null === $code || '-Aucune-' === $code) {
+            return  null;
+        }
+
+        $collection = new OfficesCollection();
+        $office = $collection->findByCode($code);
+
+        return $office['label'];
     }
 
     /**
@@ -547,6 +563,14 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         }
     }
 
+    public function hasUpToDateMembershipFee(\DateTimeInterface $now = null)
+    {
+        if (null === $now) {
+            $now = new \DateTime();
+        }
+        return $this->getLastSubscription() > $now;
+    }
+
     /**
      * @return CompanyMember
      */
@@ -592,6 +616,24 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     public function canRequestSlackInvite()
     {
         return false === $this->hasRole('ROLE_MEMBER_EXPIRED') && $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_NONE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function slackInviteRequested()
+    {
+        return $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_REQUESTED;
+    }
+
+    public function canAccessAdmin()
+    {
+        $roles = $this->getRoles();
+
+        // TODO ça serait mieux d'avoir une liste d'inclusion des roles admin au lieu d'avoir une liste d'exclusion
+        $diff = array_diff($roles, ['ROLE_USER', 'ROLE_COMPANY_MANAGER', 'ROLE_MEMBER_EXPIRED']);
+
+        return count($diff);
     }
 
     /**

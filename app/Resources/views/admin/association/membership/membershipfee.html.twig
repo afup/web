@@ -1,66 +1,63 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends ':admin/association/membership:_base.html.twig' %}
 
-{% block content %}
+{% block submenu %}
+    {% include ':admin/association/membership:_member_menu.html.twig' with {
+        current: "membershipfee"
+    } only %}
+{% endblock %}
+
+{% block page_title %}Cotisations{% endblock %}
+
+{% block page_content %}
     <h2>Payer ma cotisation</h2>
 
-    {% if message %}<p class="note">{{ message|raw }}</p>{% endif %}
+    {% if message %}
+        <p>{{ message|raw }}</p>
+    {% endif %}
 
-    <form action="/pages/administration/index.php?page=membre_cotisation" method="post" id="formulaire" onsubmit="return soumettreUneSeuleFois(this);">
-        <fieldset class="f1">
-            <legend>Paiement</legend>
-            <div class="rangee">
-                <label class="libelle">
-                    <span class="obligatoire">*</span>Type de cotisation
-                </label>
-                <span class="element">
-                <input name="type_cotisation" value="{{ montant }}" type="radio" checked="checked" id="type_cotisation" />
-                    <label>{{ libelle|raw }}</label>
-                </span>
+    <div class="container">
+        <div class="col-md-12 col-sm-12">
+            <div class="form-reset txtcenter">
+                <strong>{{ libelle|raw }}</strong><br />
+                <p>{{ paybox|raw }}</p>
             </div>
-            <!-- Vilain hack pour Opera -->
-            <div style="clear: both">&nbsp;</div>
-        </fieldset>
-        <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
-    </form>
+        </div>
+    </div>
 
-    <p>{{ paybox|raw }}</p>
 
-    <table class="afup_tab">
+    <h2>Historique des cotisations</h2>
+
+    <table class="afup-table">
         <tr>
-            <th align="left"></th>
-            <th align="left">Debut</th>
-            <th align="left">Fin</th>
-            <th>Montant</th>
-            <th colspan="2">Facture</th>
+            <th>Debut</th>
+            <th>Fin</th>
+            <th class="txtright">Montant</th>
+            <th colspan="1">Actions</th>
         </tr>
         {% if cotisations %}
             {% for cotisation in cotisations %}
-            <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
-            <td style="text-align: center">
-                {% if cotisation.date_debut < time and cotisation.date_fin > time %}
-                    <img src="/templates/administration/images/famfamfam/status_online.png" alt="Cotisation active" />
-                {% else %}
-                    <img src="/templates/administration/images/famfamfam/status_offline.png" alt="Cotisation inactive" />
-                {% endif %}
-            </td>
-            <td>
-                {{ cotisation.date_debut|date('d/m/y') }}
-            </td>
-            <td>
-                {{ cotisation.date_fin|date('d/m/y') }}
-            </td>
-            <td>{{ cotisation.montant }} &euro;</td>
-            <td style="text-align: right">
-                <a href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la cotisation">
-                    <img src="/templates/administration/images/famfamfam/page_white_acrobat.png" alt="Télécharger la cotisation" />
-                </a>
-            </td>
-            <td style="text-align: right">
-                <a href="{{ path('member_membership_fee_send_mail', {id: cotisation.id}) }}" title="Envoyer la cotisation">
-                    <img src="/templates/administration/images/famfamfam/email_go.png" alt="Envoyer la cotisation" />
-                </a>
-            </td>
-            </tr>
+                <tr>
+                    <td>
+                        {{ cotisation.date_debut|date('d/m/Y') }}
+                    </td>
+                    <td>
+                        {{ cotisation.date_fin|date('d/m/Y') }}
+                        {% if cotisation.date_debut < time and cotisation.date_fin > time %}
+                            (toujours valide)
+                        {% endif %}
+                    </td>
+                    <td class="txtright">{{ cotisation.montant|number_format(2, ',') }} &euro;</td>
+                    <td style="text-align: right; white-space: nowrap">
+                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la cotisation">
+                            <i class="fa fa-file"></i>
+                            Télécharger la facture
+                        </a>
+                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_send_mail', {id: cotisation.id}) }}" title="Envoyer la cotisation">
+                            <i class="fa fa-envelope"></i>
+                            Recevoir par mail
+                        </a>
+                    </td>
+                </tr>
             {% endfor %}
         {% else %}
             <tr>
@@ -68,6 +65,4 @@
             </tr>
         {% endif %}
     </table>
-
-
 {% endblock %}

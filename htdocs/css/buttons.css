@@ -1,4 +1,5 @@
 .button,
+input[type="submit"].button,
 a.button-inverted:hover {
     background-color: #415e96;
     border: 1px solid #415e96;
@@ -8,9 +9,11 @@ a.button-inverted:hover {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+/*    font-size: 16px;*/
+    min-width: auto;
 }
 
+button.button-inverted,
 a.button-inverted {
     background-color: white;
     border: 1px solid #415e96;
@@ -28,8 +31,28 @@ a.button-inverted {
     margin-bottom: -12px;
 }
 
-.button--call-to-action {
+
+
+.button__medium,
+a.button__medium {
+    font-size: 1rem;
+    padding: 8px;
+    margin: 1px 5px;
+}
+
+.button__medium:hover,
+a.button__medium:hover {
+    padding: 8px;
+    margin: 1px 5px;
+}
+
+.button--call-to-action,
+a.button--call-to-action,
+.button--call-to-action:hover,
+a.button--call-to-action:hover,
+input[type="submit"].button--call-to-action {
     background-color: #ed0678;
     border-color: #ed0678;
     font-weight: bold;
+    color: #fff;
 }

@@ -1,0 +1,192 @@
+{% extends ':admin/association/membership:_base.html.twig' %}
+
+{% block submenu %}
+    {% include ':site:secondary_menu.html.twig' with {
+        menu: [
+            {
+                "nom" : "Accueil",
+                "lien": path('member_index'),
+                'is_active': true,
+            },
+        ]
+    } only %}
+{% endblock %}
+
+{% block page_title %}Espace membre{% endblock %}
+
+{% block page_content %}
+
+    <h2>Mon compte</h2>
+
+    <div class="member-index">
+
+        <div class="container">
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_contact') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <span class="member-index-item--title">Mes coordonnées</span> : {{ user.label }}
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" href="{{ href }}">Modifier</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_membership_fee') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-dollar"></i>
+                    </a>
+                    <span class="member-index-item--title">Cotisations</span>
+                    {% if membershipfee_end_date %}
+                        : expire le {{ membershipfee_end_date|date('d/m/Y') }}
+                    {% endif %}
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium {% if not has_up_to_date_membership_fee %} button--call-to-action{% endif %}" href="{{ href }}">
+                            {% if has_up_to_date_membership_fee %}Consulter{% else %}Se mettre à jour{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_techletter') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-bullhorn"></i>
+                    </a>
+                    <span class="member-index-item--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ href }}">
+                            {% if has_member_subscribed_to_techletter %}Consulter{% else %}Gérer mon abonnement{% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('my_groups') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                    <span class="member-index-item--title">Listes de diffusion</span>
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" href="{{ href }}">Gérer mes abonnements</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_general_meeting') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-comments"></i>
+                    </a>
+                    <span class="member-index-item--title">Assemblée générale</span>
+                    <div class="member-index-item--link">
+                        {%  if has_general_meeting_planned %}
+                            <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ href }}">Indiquer ma présence</a>
+                        {% else %}
+                            <a class="button-inverted button__medium" href="{{ href }}">Comptes-rendus</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_contact') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-map-marker"></i>
+                    </a>
+                    <span class="member-index-item--title">Antenne la plus proche</span> :
+                    {% if office_label %}
+                        {{ office_label }}
+                    {% else %}
+                        Aucune
+                    {% endif %}
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium {% if not office_label %}button--call-to-action{% endif %}" href="{{ href }}">{% if office_label %}Modifier{% else %}Définir{% endif %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            {% if user.canRequestSlackInvite or user.slackInviteRequested %}
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    <i class="fa fa-slack"></i> <span class="member-index-item--title">Slack membres AFUP</span>
+                    <div class="member-index-item--link">
+                        {% if user.canRequestSlackInvite %}
+                            <a class="button-inverted button__medium button--call-to-action" href="{{ path('member_slack_invite') }}">Recevoir l'invitation</a>
+                        {% elseif user.slackInviteRequested %}
+                            <a class="button-inverted button__medium" href="http://afup-membres.slack.com/" target="afup-slack">Accéder</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+
+
+        {% if is_granted('ROLE_COMPANY_MANAGER') %}
+        <h2>
+            Mon compte société
+        </h2>
+
+        <div class="container">
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('admin_company') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-building"></i>
+                    </a>
+                    <span class="member-index-item--title">Coordonnées</span>
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" href="{{ href }}">Modifier</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('admin_company_members') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-users"></i>
+                    </a>
+                    <span class="member-index-item--title">Personnes rattachées</span>
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" href="{{ path('admin_company_members') }}">Modifier</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+
+    {% if badges %}
+        <h2>Badges</h2>
+
+        <div class="container">
+        {% for badge in badges %}
+                <div class="col-md-3 col-sm-12 member-badge">
+                    <img src="/images/badges/{{ badge }}.png" alt="Badge {{ badge }}">
+                </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

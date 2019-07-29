@@ -1,7 +1,16 @@
-{% extends ':site:base.html.twig' %}
-{% block inner_content %}
+{% extends ':admin/association/membership:_base.html.twig' %}
+
+{% block page_title %}Adhésion entreprise à l'AFUP{% endblock %}
+
+{% block submenu %}
+    {{ render(controller(
+        'AppBundle\\Controller\\SecondaryMenuController::displayAction',
+        { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') }
+    )) }}
+{% endblock %}
+
+{% block page_content %}
     <article id="company-membership">
-        <h1>Adhésion entreprise à l'AFUP</h1>
         <p>
             Ce formulaire est réservé aux entreprises. Vous êtes un particulier ou un indépendant ?
             Retrouvez le <a href="{{ url('legacy_inscription') }}">formulaire d'adhésion dédié</a>.
@@ -44,6 +53,11 @@
 
 
         </fieldset>
+
+        <div class="right">
+            {{ form_widget(form.save, {attr: { "class": "button button--call-to-action"}}) }}
+        </div>
+
         {{ form_widget(form) }}
         {{ form_end(form) }}
 
