@@ -63,6 +63,7 @@ JOIN afup_conferenciers_sessions ON (afup_conferenciers.conferencier_id = afup_c
 JOIN afup_sessions ON (afup_conferenciers_sessions.session_id = afup_sessions.session_id)
 WHERE (afup_sessions.date_publication IS NULL OR afup_sessions.date_publication < NOW())
 AND afup_conferenciers.email = :email
+AND afup_sessions.plannifie = 1
 GROUP BY afup_forum.id
 ORDER BY afup_forum.date_debut DESC
 SQL;
