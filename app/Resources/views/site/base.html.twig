@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('templates/site/css/styles.css') }}?v={{ asset_md5_start('templates/site/css/styles.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('templates/site/css/global-menu.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('/css/grid.css') }}?v={{ asset_md5_start('css/grid.css') }}" media="all" />
-    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all" />
+    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}?v={{ asset_md5_start('css/forms_company.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('templates/site/css/styles-without-compass.css') }}" media="all">
 {% endblock %}
 
@@ -24,9 +24,12 @@
         <div class="mw1400p center">
             <div id="espace-membre" class="w33 tablet-hidden">
                 {% if app.user %}
-                    <a href="/pages/administration" class="header-button header-button__connect">Espace membre</a>
+                    {% if app.user.canAccessAdmin %}
+                        <a href="/pages/administration" class="header-button header-button__connect">Administration</a>
+                    {% endif %}
+                    <a href="{{ path('admin_logout') }}" class="header-button header-button__connect">Se déconnecter</a>
                 {%  else  %}
-                    <a href="/pages/administration" class="header-button header-button__connect">Se connecter</a>
+                    <a href="{{ path('member_index') }}" class="header-button header-button__connect">Se connecter</a>
                     <a href="{{ path('become_member') }}" class="header-button header-button__become-member">Adhérer</a>
                 {% endif %}
             </div>

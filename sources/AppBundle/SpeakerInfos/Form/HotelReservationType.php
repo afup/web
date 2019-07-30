@@ -77,7 +77,7 @@ class HotelReservationType extends AbstractType
                     'constraints' => [
                         new Choice(['choices' => array_values($choices), 'multiple' => true, 'min' => 1]),
                         new Callback(['callback' => function ($values, ExecutionContextInterface $context) {
-                            if (in_array(HotelReservationType::NIGHT_NONE, $values)
+                            if (in_array(self::NIGHT_NONE, $values)
                             && 1 !== count($values)) {
                                 $context
                                     ->buildViolation('Impossible de choisir à la fois aucune nuité et une nuité')

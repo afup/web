@@ -38,6 +38,10 @@ news:
     resource: "routing/news.yml"
     prefix: /news
 
+member:
+    resource: "routing/member.yml"
+    prefix: /member
+
 techletter:
     resource: "routing/techletter.yml"
     prefix: /techno_watch

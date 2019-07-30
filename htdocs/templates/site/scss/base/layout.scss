@@ -21,6 +21,10 @@ body {
   padding: 20px;
 }
 
+#container.remove-min-height-from-container-id {
+  min-height: auto;
+}
+
 .m-reset { margin: 0 !important; }
 .p-reset { padding: 0 !important; }
 
@@ -109,5 +113,11 @@ input, button, select, label {
 @media (max-width: 460px) {
   .wrapper {
     padding-top: 90px !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .desktop-hidden {
+    display: initial;
   }
 }

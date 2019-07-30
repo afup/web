@@ -17,14 +17,17 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
+use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
+use AppBundle\TechLetter\Model\Repository\SendingRepository;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -335,16 +338,16 @@ class MemberShipController extends SiteBaseController
             $endSubscription = $cotisations->finProchaineCotisation($cotisation);
             $message = sprintf(
                 'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
-        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s',
-                $cotisation['montant'],
+        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
+                number_format($cotisation['montant'], 2, ',', ' '),
                 EURO,
                 date("d/m/Y", $cotisation['date_fin']),
                 $endSubscription->format('d/m/Y')
             );
         }
 
-        $cotisation_physique = $cotisations->obtenirListe(0 , $donnees['id']);
-        $cotisation_morale = $cotisations->obtenirListe(1 , $donnees['id_personne_morale']);
+        $cotisation_physique = $cotisations->obtenirListe(0, $donnees['id']);
+        $cotisation_morale = $cotisations->obtenirListe(1, $donnees['id_personne_morale']);
 
         if (is_array($cotisation_morale) && is_array($cotisation_physique)) {
             $cotisations = array_merge($cotisation_physique, $cotisation_morale);
@@ -353,7 +356,7 @@ class MemberShipController extends SiteBaseController
         } elseif (is_array($cotisation_physique)) {
             $cotisations = $cotisation_physique;
         } else {
-            $cotisations = array();
+            $cotisations = [];
         }
 
         if ($donnees['id_personne_morale'] > 0) {
@@ -379,6 +382,8 @@ class MemberShipController extends SiteBaseController
             (float) $montant,
             $donnees['email']
         );
+
+        $paybox = str_replace('INPUT TYPE=SUBMIT', 'INPUT TYPE=SUBMIT class="button button--call-to-action"', $paybox);
 
         return $this->render(
             ':admin/association/membership:membershipfee.html.twig',
@@ -458,17 +463,7 @@ class MemberShipController extends SiteBaseController
         $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
         $personnes_physiques = $this->get(LegacyModelFactory::class)->createObject(Personnes_Physiques::class);
 
-
-        $generalMeetingPlanned = $timestamp > strtotime("-1 day", time());
-
-        if (false === $generalMeetingPlanned) {
-            return $this->render(
-                ':admin/association/membership:generalmeeting_no_meeting.html.twig',
-                [
-                    'title' => $title,
-                ]
-            );
-        }
+        $generalMeetingPlanned = $assemblee_generale->hasGeneralMeetingPlanned();
 
         $cotisation = $personnes_physiques->obtenirDerniereCotisation($this->getUser()->getId());
         $needsMembersheepFeePayment = $timestamp > strtotime("+14 day", $cotisation['date_fin']);
@@ -489,8 +484,16 @@ class MemberShipController extends SiteBaseController
 
         $form = $this->createFormBuilder()
             ->add('presence', ChoiceType::class, ['expanded' => true, 'choices' => ['Oui' => 1, 'Non' => 2, 'Je ne sais pas encore' => 0]])
-            ->add('id_personne_avec_pouvoir', ChoiceType::class, ['choices' => array_flip(array_merge([0 => ''], $presents))])
-            ->add('save', SubmitType::class, ['label' => 'confirmer'])
+            ->add(
+                'id_personne_avec_pouvoir',
+                ChoiceType::class,
+                [
+                    'choices' => array_flip(array_merge([0 => ''], $presents)),
+                    'label' => 'Je donne mon pouvoir à',
+                    'required' => false,
+                ]
+            )
+            ->add('save', SubmitType::class, ['label' => 'Confirmer'])
             ->setData([
                 'presence' => $presence,
                 'id_personne_avec_pouvoir' => $id_personne_avec_pouvoir,
@@ -524,7 +527,86 @@ class MemberShipController extends SiteBaseController
                 'title' => $title,
                 'date_general_meeting' => $date_assemblee_generale,
                 'form' => $form->createView(),
+                'reports' => $this->prepareGeneralMeetingsReportsList(),
+                'general_meeting_planned' => $generalMeetingPlanned,
             ]
         );
+    }
+
+    public function generalMettingDownloadReportAction($filename)
+    {
+        $reports = $this->prepareGeneralMeetingsReportsList();
+
+        if (!isset($reports[$filename])) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($this->getUser()->hasRole('ROLE_MEMBER_EXPIRED')) {
+            throw $this->createNotFoundException();
+        }
+
+        return new BinaryFileResponse($reports[$filename]['path']);
+    }
+
+    private function prepareGeneralMeetingsReportsList()
+    {
+        $dir = $this->container->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . '/htdocs/uploads/general_meetings_reports';
+
+        $finder = new Finder();
+        $files = $finder->name("*.pdf")->in($dir);
+
+        $reports = [];
+        foreach ($files as $file) {
+            $reports[$file->getFilename()] = [
+                'date' => substr($file->getFilename(), 0, 10),
+                'label' => substr($file->getFilename(), 11, -4),
+                'filename' => $file->getFilename(),
+                'path' => $file->getRealPath(),
+            ];
+        }
+
+        return $reports;
+    }
+
+    public function techletterAction()
+    {
+        return $this->render(':site/member:techletter.html.twig', [
+            'subscribed' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($this->getUser()),
+            'feeUpToDate' => ($this->getUser() !== null and $this->getUser()->getLastSubscription() > new \DateTime()),
+            'token' => $this->get('security.csrf.token_manager')->getToken('techletter_subscription'),
+            'techletter_history' => $this->get('ting')->get(SendingRepository::class)->getAllPastSent(),
+        ]);
+    }
+
+    public function techletterSubscribeAction(Request $request)
+    {
+        $user = $this->getUser();
+        $token = $this->get('security.csrf.token_manager')->getToken('techletter_subscription');
+
+        if (
+            $user === null
+            || $user->getLastSubscription() < new \DateTime()
+            || $request->request->has('_csrf_token') === false
+            || $request->request->get('_csrf_token') !== $token->getValue()
+        ) {
+            throw $this->createAccessDeniedException('You cannot subscribe to the techletter');
+        }
+
+        $this->addFlash('success', "Vous êtes maintenant abonné à la veille de l'AFUP");
+
+        $this->get('ting')->get(TechletterSubscriptionsRepository::class)->subscribe($user);
+
+        return $this->redirectToRoute('member_techletter');
+    }
+
+    public function techletterUnsubscribeAction(Request $request)
+    {
+        $techletterUnsubscriptionRepository = $this->get('ting')->get(TechletterUnsubscriptionsRepository::class);
+        $techletterUnsubscription = $techletterUnsubscriptionRepository->createFromUser($this->getUser());
+        $techletterUnsubscriptionRepository->save($techletterUnsubscription);
+
+        $this->addFlash('success', "Vous êtes maintenant désabonné à la veille de l'AFUP");
+
+        return $this->redirectToRoute('member_techletter');
     }
 }
