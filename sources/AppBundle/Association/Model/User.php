@@ -210,7 +210,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $code = $this->getNearestOffice();
 
         // FIXME corriger ça dans le formulaire
-        if (null === $code || '-Aucune-' === $code) {
+        if (null === $code || '-Aucune-' === $code || 0 === strlen(trim($code))) {
             return  null;
         }
 
