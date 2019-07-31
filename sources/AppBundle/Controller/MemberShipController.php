@@ -565,6 +565,8 @@ class MemberShipController extends SiteBaseController
             ];
         }
 
+        krsort($reports);
+
         return $reports;
     }
 
