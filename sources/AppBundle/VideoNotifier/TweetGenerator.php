@@ -30,7 +30,7 @@ class TweetGenerator
         $twitters = [];
         foreach ($speakers as $speaker) {
             if (!$twitter = $speaker->getCleanedTwitter()) {
-                $twitters[] = $speaker->getLabel();
+                $twitters[] = $speaker->getFirstname() . " " . $speaker->getLastname();
             } else {
                 $twitters[] = "@" . $twitter;
             }
