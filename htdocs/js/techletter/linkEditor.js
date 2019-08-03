@@ -180,8 +180,8 @@ LinkEditor.prototype = {
 			this.createForm(model, details.data);
 			this.form.classList.remove('hidden');
 
-			this.form.querySelector('button#up').style.display = 'block';
-			this.form.querySelector('button#down').style.display = 'block';
+			this.form.querySelector('button#up').classList.remove('hidden');
+			this.form.querySelector('button#down').classList.remove('hidden');
 		});
 	},
 
@@ -197,8 +197,8 @@ LinkEditor.prototype = {
 			this.form.classList.remove('hidden');
 
 			// On supprime les boutons "remonter" et "descendre" pour les liens
-			this.form.querySelector('button#up').style.display = 'none';
-			this.form.querySelector('button#down').style.display = 'none';
+			this.form.querySelector('button#up').classList.add('hidden');
+			this.form.querySelector('button#down').classList.add('hidden');
 
 			this.fieldset.dataset.type = type;
 			delete this.fieldset.dataset.link;
