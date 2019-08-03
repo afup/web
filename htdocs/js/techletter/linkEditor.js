@@ -179,6 +179,9 @@ LinkEditor.prototype = {
 
 			this.createForm(model, details.data);
 			this.form.classList.remove('hidden');
+
+			this.form.querySelector('button#up').style.display = 'block';
+			this.form.querySelector('button#down').style.display = 'block';
 		});
 	},
 
@@ -227,6 +230,7 @@ LinkEditor.prototype = {
 			this.resolve(data);
 			this.form.classList.add('hidden');
 			this.form.reset();
+
 			this.updateLink(data.url);
 		}
 
