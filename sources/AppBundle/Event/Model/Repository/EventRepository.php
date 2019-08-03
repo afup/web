@@ -4,6 +4,7 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -69,6 +70,27 @@ ORDER BY afup_forum.date_debut DESC
 SQL;
         $query = $this->getQuery($sql);
         $query->setParams(['email' => $email]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    public function getAllEventWithTegistrationEmail($email)
+    {
+        $sql = <<<SQL
+SELECT afup_forum.*
+FROM afup_forum
+JOIN afup_inscription_forum ON (afup_forum.id = afup_inscription_forum.id_forum)
+WHERE afup_inscription_forum.email = :email
+AND (afup_inscription_forum.etat = :status_paid OR afup_inscription_forum.etat = :status_guest)
+GROUP BY afup_forum.id
+ORDER BY afup_forum.date_debut DESC
+SQL;
+        $query = $this->getQuery($sql);
+        $query->setParams([
+            'email' => $email,
+            'status_paid' => Ticket::STATUS_PAID,
+            'status_guest' => Ticket::STATUS_GUEST,
+        ]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }

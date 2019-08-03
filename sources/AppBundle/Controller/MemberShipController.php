@@ -333,7 +333,7 @@ class MemberShipController extends SiteBaseController
         $cotisation = $personnes_physiques->obtenirDerniereCotisation($identifiant);
 
         if (!$cotisation) {
-            $message = empty($_GET['hash'])? 'Est-ce vraiment votre première cotisation ?' : '';
+            $message = '';
         } else {
             $endSubscription = $cotisations->finProchaineCotisation($cotisation);
             $message = sprintf(
@@ -564,6 +564,8 @@ class MemberShipController extends SiteBaseController
                 'path' => $file->getRealPath(),
             ];
         }
+
+        krsort($reports);
 
         return $reports;
     }

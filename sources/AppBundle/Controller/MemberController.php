@@ -50,6 +50,10 @@ class MemberController extends SiteBaseController
             $badgesCodes[] = 'speaker' . $year;
         }
 
+        foreach ($this->getEvents() as $eventPath) {
+            $badgesCodes[] = 'jy-etais-' . $eventPath;
+        }
+
         $seniority = $this->get(SeniorityComputer::class)->compute($user);
         $maxBadgesSeniority = 10;
 
@@ -70,6 +74,18 @@ class MemberController extends SiteBaseController
         }
 
         return $filteredBadges;
+    }
+
+    private function getEvents()
+    {
+        $events = $this->get('ting')->get(EventRepository::class)->getAllEventWithTegistrationEmail($this->getUser()->getEmail());
+
+        $eventsPaths = [];
+        foreach ($events as $event) {
+            $eventsPaths[] = $event->getPath();
+        }
+
+        return $eventsPaths;
     }
 
     private function getSpeakerYears()
