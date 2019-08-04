@@ -27,6 +27,8 @@ class BadgesComputer
     {
         $badgesInfos = $this->prepareBadgesInfos($user);
 
+        $badgesInfos = $this->sortBadgesInfos($badgesInfos);
+
         $badgesCodes = $this->mapBadgesCodes($badgesInfos);
 
         $badges = $this->filterExistingBadges($badgesCodes);
@@ -73,6 +75,21 @@ class BadgesComputer
         }
 
         return $badgesCodes;
+    }
+
+    private function sortBadgesInfos(array $badgesInfos)
+    {
+        usort(
+            $badgesInfos,
+            function(array $a, array $b) {
+                if ($a['date'] == $b['date']) {
+                    return 0;
+                }
+                return ($a['date'] < $b['date']) ? 1 : -1;
+            }
+        );
+
+        return $badgesInfos;
     }
 
     private function filterExistingBadges(array $badgesCodes)
