@@ -54,12 +54,12 @@ class BadgesComputer
             ];
         }
 
-        $seniority = $this->seniorityComputer->compute($user);
+        $seniorityInfos = $this->seniorityComputer->computeAndReturnInfos($user);
         $maxBadgesSeniority = 10;
 
-        for ($i = min($seniority, $maxBadgesSeniority); $i > 0; $i--) {
+        for ($i = min($seniorityInfos['years'], $maxBadgesSeniority); $i > 0; $i--) {
             $badgesCodes[] = [
-                'date' => date('Y') . '-01-01',
+                'date' => ($seniorityInfos['first_year'] + $i) . '-01-01',
                 'code' => $i . 'ans',
             ];
         }
