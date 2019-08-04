@@ -6,6 +6,7 @@ use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Association\Personnes_Physiques;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\SeniorityComputer;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\LegacyModelFactory;
@@ -30,7 +31,7 @@ class MemberController extends SiteBaseController
         return $this->render(
             ':site:member/index.html.twig',
             [
-                'badges' => $this->getBadges($user),
+                'badges' => $this->get(BadgesComputer::class)->getBadges($user),
                 'user' => $user,
                 'has_member_subscribed_to_techletter' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
                 'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
@@ -40,67 +41,5 @@ class MemberController extends SiteBaseController
                 'membershipfee_end_date' => $dateFinCotisation,
             ]
         );
-    }
-
-    private function getBadges(User $user)
-    {
-        $badgesCodes = [];
-
-        foreach ($this->getSpeakerYears() as $year) {
-            $badgesCodes[] = 'speaker' . $year;
-        }
-
-        foreach ($this->getEvents() as $eventPath) {
-            $badgesCodes[] = 'jy-etais-' . $eventPath;
-        }
-
-        $seniority = $this->get(SeniorityComputer::class)->compute($user);
-        $maxBadgesSeniority = 10;
-
-        for ($i = min($seniority, $maxBadgesSeniority); $i > 0; $i--) {
-            $badgesCodes[] = $i . 'ans';
-        }
-
-        $badgespath = __DIR__ . '/../../../htdocs/images/badges/';
-
-        $filteredBadges = [];
-
-        foreach ($badgesCodes as $badgesCode) {
-            if (!is_file($badgespath . $badgesCode . '.png')) {
-                continue;
-            }
-
-            $filteredBadges[] = $badgesCode;
-        }
-
-        return $filteredBadges;
-    }
-
-    private function getEvents()
-    {
-        $events = $this->get('ting')->get(EventRepository::class)->getAllEventWithTegistrationEmail($this->getUser()->getEmail());
-
-        $eventsPaths = [];
-        foreach ($events as $event) {
-            $eventsPaths[] = $event->getPath();
-        }
-
-        return $eventsPaths;
-    }
-
-    private function getSpeakerYears()
-    {
-        $events = $this->get('ting')->get(EventRepository::class)->getAllEventWithSpeakerEmail($this->getUser()->getEmail());
-
-        $years = [];
-        foreach ($events as $event) {
-            $years[] = $event->getDateStart()->format('Y');
-        }
-
-        $years = array_unique($years);
-
-        rsort($years);
-
-        return $years;
     }
 }
