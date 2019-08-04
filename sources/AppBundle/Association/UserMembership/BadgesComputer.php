@@ -25,30 +25,51 @@ class BadgesComputer
 
     public function getBadges(User $user)
     {
-        $badgesCodes = $this->prepareBadgesCodes($user);
+        $badgesInfos = $this->prepareBadgesInfos($user);
+
+        $badgesCodes = $this->mapBadgesCodes($badgesInfos);
 
         $badges = $this->filterExistingBadges($badgesCodes);
 
         return $badges;
     }
 
-    private function prepareBadgesCodes(User $user)
+    private function prepareBadgesInfos(User $user)
     {
         $badgesCodes = [];
 
         foreach ($this->getSpeakerYears($user) as $year) {
-            $badgesCodes[] = 'speaker' . $year;
+            $badgesCodes[] = [
+                'date' => $year . '-01-01',
+                'code' => 'speaker' . $year
+            ];
         }
 
-        foreach ($this->getEvents($user) as $eventPath) {
-            $badgesCodes[] = 'jy-etais-' . $eventPath;
+        foreach ($this->getEventsInfos($user) as $eventInfo) {
+            $badgesCodes[] = [
+                'date' => $eventInfo['date']->format('Y-m-d'),
+                'code' => 'jy-etais-' . $eventInfo['path'],
+            ];
         }
 
         $seniority = $this->seniorityComputer->compute($user);
         $maxBadgesSeniority = 10;
 
         for ($i = min($seniority, $maxBadgesSeniority); $i > 0; $i--) {
-            $badgesCodes[] = $i . 'ans';
+            $badgesCodes[] = [
+                'date' => date('Y') . '-01-01',
+                'code' => $i . 'ans',
+            ];
+        }
+
+        return $badgesCodes;
+    }
+
+    private function mapBadgesCodes(array $badgesInfos)
+    {
+        $badgesCodes = [];
+        foreach ($badgesInfos as $badgeInfo) {
+            $badgesCodes[] = $badgeInfo['code'];
         }
 
         return $badgesCodes;
@@ -71,16 +92,19 @@ class BadgesComputer
         return $filteredBadges;
     }
 
-    private function getEvents(User $user)
+    private function getEventsInfos(User $user)
     {
         $events = $this->eventRepository->getAllEventWithTegistrationEmail($user->getEmail());
 
-        $eventsPaths = [];
+        $eventInfos = [];
         foreach ($events as $event) {
-            $eventsPaths[] = $event->getPath();
+            $eventInfos[] = [
+                'path' => $event->getPath(),
+                'date' => $event->getDateStart(),
+            ];
         }
 
-        return $eventsPaths;
+        return $eventInfos;
     }
 
     private function getSpeakerYears(User $user)
