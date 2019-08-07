@@ -3,7 +3,6 @@
 namespace AppBundle\Association\UserMembership;
 
 use AppBundle\Association\Model\User;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 
 class BadgesComputer
