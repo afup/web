@@ -7,8 +7,6 @@ use Afup\Site\Association\Personnes_Physiques;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\BadgesComputer;
-use AppBundle\Association\UserMembership\SeniorityComputer;
-use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\LegacyModelFactory;
 
 class MemberController extends SiteBaseController

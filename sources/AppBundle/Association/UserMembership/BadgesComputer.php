@@ -81,7 +81,7 @@ class BadgesComputer
     {
         usort(
             $badgesInfos,
-            function(array $a, array $b) {
+            function (array $a, array $b) {
                 if ($a['date'] == $b['date']) {
                     return 0;
                 }
