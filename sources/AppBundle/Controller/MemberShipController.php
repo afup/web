@@ -197,7 +197,7 @@ class MemberShipController extends SiteBaseController
             $event = new NewMemberEvent($user);
             $this->get('event_dispatcher')->dispatch($event::NAME, $event);
 
-            return $this->redirect('/pages/administration/');
+            return $this->redirectToRoute('member_index');
         }
 
         return $this->render(':site/company_membership:member_invitation.html.twig', ['company' => $company, 'form' => $userForm->createView()]);
