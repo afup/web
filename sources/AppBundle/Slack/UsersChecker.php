@@ -47,13 +47,13 @@ class UsersChecker
                     'slack_email' => $email,
                     'user_found' => false,
                     'afup_last_subscription' => null,
-                    'afup_status' => null,
+                    'afup_user_id' => null,
                 ];
                 //Vérification de l'utilisateur Slack dans la base du site
                 try {
                     $userDb = $this->userRepository->loadUserByEmaiOrAlternateEmail($email);
                     $userInfo['afup_last_subscription']=$userDb->getLastSubscription();
-                    $userInfo['afup_status']=$userDb->getStatus();
+                    $userInfo['afup_user_id'] = $userDb->getId();
                     $userInfo['user_found']=true;
                     if ($userDb->getLastSubscription() < $today) {
                         //Utilisateur inactif ou sans souscription : a supprimer
