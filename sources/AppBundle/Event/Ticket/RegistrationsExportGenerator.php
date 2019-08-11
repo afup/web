@@ -2,9 +2,9 @@
 
 namespace AppBundle\Event\Ticket;
 
-use Afup\Site\Association\Cotisations;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Association\UserMembership\SeniorityComputer;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
@@ -20,9 +20,9 @@ class RegistrationsExportGenerator
     private $officeFinder;
 
     /**
-     * @var Cotisations
+     * @var SeniorityComputer
      */
-    private $cotisations;
+    private $seniorityComputer;
 
     /**
      * @var InvoiceRepository
@@ -36,15 +36,15 @@ class RegistrationsExportGenerator
 
     /**
      * @param OfficeFinder $officeFinder
-     * @param Cotisations $cotisations
+     * @param SeniorityComputer $seniorityComputer
      * @param TicketRepository $ticketRepository
      * @param InvoiceRepository $invoiceRepository
      * @param UserRepository $userRepository
      */
-    public function __construct(OfficeFinder $officeFinder, Cotisations $cotisations, TicketRepository $ticketRepository, InvoiceRepository $invoiceRepository, UserRepository $userRepository)
+    public function __construct(OfficeFinder $officeFinder, SeniorityComputer $seniorityComputer, TicketRepository $ticketRepository, InvoiceRepository $invoiceRepository, UserRepository $userRepository)
     {
         $this->officeFinder = $officeFinder;
-        $this->cotisations = $cotisations;
+        $this->seniorityComputer = $seniorityComputer;
         $this->ticketRepository = $ticketRepository;
         $this->invoiceRepository = $invoiceRepository;
         $this->userRepository = $userRepository;
@@ -151,26 +151,7 @@ class RegistrationsExportGenerator
      */
     private function comptureSeniority(User $user)
     {
-        $cotis = $this->cotisations->obtenirListe(AFUP_PERSONNES_PHYSIQUES, $user->getId());
-        $now = new \DateTime();
-        $diffs = [];
-
-        foreach ($cotis as $coti) {
-            $from = \DateTimeImmutable::createFromFormat('U', $coti['date_debut']);
-            $to = \DateTimeImmutable::createFromFormat('U', $coti['date_fin']);
-            $to = min($now, $to);
-            $diffs[] = $from->diff($to);
-        }
-
-        $reference = new \DateTimeImmutable();
-        $lastest = clone $reference;
-        foreach ($diffs as $dif) {
-            $lastest = $lastest->add($dif);
-        }
-
-        $totalDiffs = $reference->diff($lastest);
-
-        return $totalDiffs->y;
+        return $this->seniorityComputer->compute($user);
     }
 
     /**

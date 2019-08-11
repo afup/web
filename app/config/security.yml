@@ -19,7 +19,7 @@ security:
 
         legacy_secured_area:
             anonymous: ~
-            pattern: ^(/admin/|/event/\w+/tickets|/association/techletter)
+            pattern: ^(/admin/|/event/\w+/tickets|/association/techletter|/member)
             logout:
                 path:   /admin/logout
                 target: /
@@ -50,6 +50,7 @@ security:
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
         - { path: ^/admin/event/speakers-management, roles: ROLE_FORUM }
         - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check), roles: ROLE_ADMIN}
+        - { path: ^/member, roles: [ROLE_USER, ROLE_MEMBER_EXPIRED]}
         - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check), roles: ROLE_NO_ACCESS}
         - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1" }

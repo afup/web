@@ -3,6 +3,7 @@
 namespace AppBundle\Association\Model;
 
 use AppBundle\Association\NotifiableInterface;
+use AppBundle\Offices\OfficesCollection;
 use AppBundle\Validator\Constraints as AppAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
@@ -108,6 +109,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $phone;
 
     /**
+     * @var string
+     */
+    private $mobilephone;
+
+    /**
      * @var int
      */
     private $status = 0;
@@ -133,6 +139,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $company;
 
     /**
+     * @var string
+     */
+    private $nearestOffice;
+
+    /**
      * @var int
      */
     private $slackInviteStatus = self::SLACK_INVITE_STATUS_NONE;
@@ -154,6 +165,59 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobilephone()
+    {
+        return $this->mobilephone;
+    }
+
+    /**
+     * @param string $mobilephone
+     * @return User
+     */
+    public function setMobilephone($mobilephone)
+    {
+        $this->propertyChanged('mobilephone', $this->mobilephone, $mobilephone);
+        $this->mobilephone = $mobilephone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNearestOffice()
+    {
+        return $this->nearestOffice;
+    }
+
+    /**
+     * @param string $nearestOffice
+     * @return User
+     */
+    public function setNearestOffice($nearestOffice)
+    {
+        $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
+        $this->nearestOffice = $nearestOffice;
+        return $this;
+    }
+
+    public function getNearestOfficeLabel()
+    {
+        $code = $this->getNearestOffice();
+
+        // FIXME corriger ça dans le formulaire
+        if (null === $code || '-Aucune-' === $code || 0 === strlen(trim($code))) {
+            return  null;
+        }
+
+        $collection = new OfficesCollection();
+        $office = $collection->findByCode($code);
+
+        return $office['label'];
     }
 
     /**
@@ -499,6 +563,14 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         }
     }
 
+    public function hasUpToDateMembershipFee(\DateTimeInterface $now = null)
+    {
+        if (null === $now) {
+            $now = new \DateTime();
+        }
+        return $this->getLastSubscription() > $now;
+    }
+
     /**
      * @return CompanyMember
      */
@@ -544,6 +616,24 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     public function canRequestSlackInvite()
     {
         return false === $this->hasRole('ROLE_MEMBER_EXPIRED') && $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_NONE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function slackInviteRequested()
+    {
+        return $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_REQUESTED;
+    }
+
+    public function canAccessAdmin()
+    {
+        $roles = $this->getRoles();
+
+        // TODO ça serait mieux d'avoir une liste d'inclusion des roles admin au lieu d'avoir une liste d'exclusion
+        $diff = array_diff($roles, ['ROLE_USER', 'ROLE_COMPANY_MANAGER', 'ROLE_MEMBER_EXPIRED']);
+
+        return count($diff);
     }
 
     /**

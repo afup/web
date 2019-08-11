@@ -95,6 +95,8 @@ LinkEditor = function (form) {
 	this.form.querySelector('button#refresh').addEventListener('click', this.handleRefresh.bind(this));
 	this.form.querySelector('button#delete').addEventListener('click', this.handleDelete.bind(this));
 	this.form.querySelector('#close').addEventListener('click', this.handleReset.bind(this));
+	this.form.querySelector('button#up').addEventListener('click', this.handleUp.bind(this));
+	this.form.querySelector('button#down').addEventListener('click', this.handleDown.bind(this));
 };
 
 LinkEditor.prototype = {
@@ -177,6 +179,9 @@ LinkEditor.prototype = {
 
 			this.createForm(model, details.data);
 			this.form.classList.remove('hidden');
+
+			this.form.querySelector('button#up').classList.remove('hidden');
+			this.form.querySelector('button#down').classList.remove('hidden');
 		});
 	},
 
@@ -185,12 +190,16 @@ LinkEditor.prototype = {
 			this.resolve = resolve;
 			this.reject = reject;
 
-
 			// Create fields for the data
 			let model = getModelForType(type);
 
 			this.createForm(model, null);
 			this.form.classList.remove('hidden');
+
+			// On supprime les boutons "remonter" et "descendre" pour les liens
+			this.form.querySelector('button#up').classList.add('hidden');
+			this.form.querySelector('button#down').classList.add('hidden');
+
 			this.fieldset.dataset.type = type;
 			delete this.fieldset.dataset.link;
 		});
@@ -221,6 +230,7 @@ LinkEditor.prototype = {
 			this.resolve(data);
 			this.form.classList.add('hidden');
 			this.form.reset();
+
 			this.updateLink(data.url);
 		}
 
@@ -240,6 +250,24 @@ LinkEditor.prototype = {
 		}
 		updatePreview();
 		this.form.classList.add('hidden');
+		this.resolve(techletter); // Data has been updated so we can resolve the promise
+	},
+
+	handleUp: function(event) {
+		event.preventDefault();
+
+		this.up();
+
+		updatePreview();
+		this.resolve(techletter); // Data has been updated so we can resolve the promise
+	},
+
+	handleDown: function(event) {
+		event.preventDefault();
+
+		this.down();
+
+		updatePreview();
 		this.resolve(techletter); // Data has been updated so we can resolve the promise
 	},
 
@@ -281,6 +309,65 @@ LinkEditor.prototype = {
 
 	unlock: function () {
 		this.fieldset.disabled = "";
+	},
+
+	up: function () {
+		let actualIndex = this.getLinkIndex();
+		// News
+		if (this.fieldset.dataset.type === 'news') {
+			if (actualIndex === 1) {
+				const tmp = techletter.firstNews;
+				techletter.firstNews = techletter.secondNews;
+				techletter.secondNews = tmp;
+			}
+		} else {
+			// Other types (array)
+			let data = techletter[this.fieldset.dataset.type];
+			if (actualIndex > -1 && data.length > 1) {
+                const newIndex = (actualIndex > 1) ? actualIndex-1 : 0;
+                if (newIndex < actualIndex) {
+                    data = data.slice(0, actualIndex-1).concat(data[actualIndex], data[newIndex], data.slice(newIndex+2));
+                }
+            }
+			techletter[this.fieldset.dataset.type] = data;
+		}
+	},
+
+	down: function () {
+		let actualIndex = this.getLinkIndex();
+		if (this.fieldset.dataset.type === 'news') {
+			if (actualIndex === 0) {
+				const tmp = techletter.firstNews;
+				techletter.firstNews = techletter.secondNews;
+				techletter.secondNews = tmp;
+			}
+		} else {
+			// Other types (array)
+			let data = techletter[this.fieldset.dataset.type];
+			if (actualIndex > -1 && data.length > 1) {
+				let newIndex = (actualIndex < data.length-1) ? actualIndex+1 : data.length-1;
+				if (actualIndex < newIndex) {
+					data = data.slice(0, actualIndex).concat(data[newIndex], data[actualIndex], data.slice(newIndex+1));
+				}
+			}
+			techletter[this.fieldset.dataset.type] = data;
+		}
+	},
+
+	getLinkIndex: function () {
+		if (this.fieldset.dataset.url !== 'undefined') {
+			if (this.fieldset.dataset.type === 'news') {
+				return (techletter.firstNews.url === this.fieldset.dataset.link) ? 0 : 1;
+			} else {
+				let data = techletter[this.fieldset.dataset.type];
+				for (let i = 0; i < data.length; i++) {
+					if (data[i].url === this.fieldset.dataset.link) {
+						return i;
+					}
+				}
+			}
+		}
+		return -1;
 	}
 };
 export { LinkEditor };

@@ -37,3 +37,33 @@ table th, table td {
 table td {
   color: #555;
 }
+
+
+table.reset-table-style {
+  margin: 0;
+
+  tbody {
+    tr:nth-child(2n+1) {
+      background: none;
+    }
+  }
+
+  td,
+  th {
+    text-align: inherit;
+    color: inherit;
+    border-bottom: none;
+  }
+}
+
+@media (max-width:460px) {
+  table.reset-table-style {
+    thead {
+      display: table-header-group;
+    }
+    td,
+    th {
+      margin: 0;
+    }
+  }
+}

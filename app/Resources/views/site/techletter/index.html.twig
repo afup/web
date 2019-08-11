@@ -13,6 +13,7 @@
 )) }}
 
 <div class="techletter-subscription" id="container">
+
     <div class="techletter-subscription--header">
         <div class="techletter-subscription-capture">
             <img src="{{ asset('images/techletter/sample.png') }}" />
@@ -23,7 +24,7 @@
                 Tous les 15 jours, recevez les infos à ne pas rater, sélectionnées par les experts de l'AFUP.<br />
             </p>
             <p>
-                <a class="banner-button" href="#techletter-inscription">&gt;&gt; Je m'inscris &lt;&lt;</a>
+                <a class="banner-button" href="{{ path('member_techletter') }}">&gt;&gt; Je m'inscris &lt;&lt;</a>
             </p>
         </div>
     </div>
@@ -46,53 +47,13 @@
         </div>
 
         <div class="techletter-subscription-argument">
-            <h3>Inscription</h3>
-            <ul class="techletter-subscription--check" id="techletter-inscription">
-                <li>
-                    {% if loggedIn %}
-                        <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
-                        Être connecté au Back-office de l'AFUP
-                    {% else %}
-                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
-                        Être connecté au <a href="{{ url('admin_login') }}?target={{ path('techletter') }}">Back-office de l'AFUP</a>
-                    {% endif %}
-                </li>
-
-                <li>
-                    {% if feeUpToDate %}
-                        <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
-                        Être membre à jour de cotisation
-                    {% else %}
-                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
-                        Être membre à jour de cotisation. <a href="{{ legacy_router.adminUrl('membre_cotisation') }}">Payer ma cotisation</a>.
-                    {% endif %}
-
-                </li>
-
-                <li>
-                    {% if subscribed %}
-                        {% if not feeUpToDate %}
-                            <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
-                            Vous etes inscrit mais votre cotisation n'est plus à jour. Vous ne recevrez la newsletter que lorsque celle-ci sera à jour.
-                        {% else %}
-                            <span class="techletter-subscription--check-checked glyphicon glyphicon-check"></span>
-                            Félicitations vous &ecirc;tes déjà inscrit!
-                        {% endif %}
-                    {% else %}
-                        <span class="techletter-subscription--check-unchecked glyphicon glyphicon-unchecked"></span>
-                        Vous inscrire en cliquant sur ce bouton:
-                        <form class="techletter-subscription--form" method="post" action="{{ path('techletter_subscribe') }}">
-                            <input type="hidden" name="_csrf_token" value="{{ token }}" />
-                            <button class="banner-button">&gt;&gt; Je m'inscris &lt;&lt;</button>
-                        </form>
-                    {% endif %}
-                </li>
-            </ul>
+            <h3>Prérequis</h3>
+            <p>
+                Pour recevoir cette veille il faut être membre à jour de cotisation et cliquer sur le <a href="{{ path('member_techletter') }}">bouton d'inscription</a>
+                dans l'espace membres.
+            </p>
         </div>
-
     </div>
-
-
 
 </div>
 {% endblock %}

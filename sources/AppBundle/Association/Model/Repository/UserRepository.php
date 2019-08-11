@@ -119,6 +119,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'app.`adresse`', 'app.`code_postal`', 'app.`ville`', 'app.`id_pays`', 'app.`telephone_fixe`',
                 'app.`telephone_portable`', 'app.`etat`', 'app.`date_relance`', 'app.`compte_svn`',
                 'app.`slack_invite_status`',
+                'app.`nearest_office`',
                 'MD5(CONCAT(app.`id`, \'_\', app.`email`, \'_\', app.`login`)) as hash',
                 "MAX(ac.date_fin) AS lastsubcription"
             ]);
@@ -311,6 +312,16 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->addField([
                 'columnName' => 'telephone_fixe',
                 'fieldName' => 'phone',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'telephone_portable',
+                'fieldName' => 'mobilephone',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'nearest_office',
+                'fieldName' => 'nearestOffice',
                 'type' => 'string'
             ])
             ->addField([
