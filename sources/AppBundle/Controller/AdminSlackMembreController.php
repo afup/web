@@ -12,7 +12,7 @@ class AdminSlackMembreController extends Controller
     public function checkMembersAction()
     {
         return $this->render('admin/slackmembers/index.html.twig', [
-            'title' => "Veille de l'AFUP",
+            'title' => "Slack membres",
             'techletters' => [],
             'results' => $this->get(UsersChecker::class)->checkUsersValidity(),
         ]);
