@@ -51,7 +51,7 @@ class UsersChecker
                 ];
                 //Vérification de l'utilisateur Slack dans la base du site
                 try {
-                    $userDb = $this->userRepository->loadUserByUsername($email);
+                    $userDb = $this->userRepository->loadUserByEmaiOrAlternateEmail($email);
                     $userInfo['afup_last_subscription']=$userDb->getLastSubscription();
                     $userInfo['afup_status']=$userDb->getStatus();
                     $userInfo['user_found']=true;

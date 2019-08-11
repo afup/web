@@ -49,6 +49,28 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         return $result->first();
     }
 
+    public function loadUserByEmaiOrAlternateEmail($email)
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser();
+        $queryBuilder
+            ->where('app.`email` = :email')
+            ->orWhere('app.`slack_alternate_email` = :slack_alternate_email')
+        ;
+        $result = $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams([
+                'email' => $email,
+                'slack_alternate_email' => $email,
+            ])
+            ->query($this->getCollection($this->getHydratorForUser()));
+
+        if ($result->count() === 0) {
+            throw new UsernameNotFoundException(sprintf('Could not find the user with email "%s"', $email));
+        }
+
+        return $result->first();
+    }
+
     public function loadUserByHash($hash)
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
