@@ -110,7 +110,7 @@ class BadgesComputer
 
     private function getEventsInfos(User $user)
     {
-        $events = $this->eventRepository->getAllEventWithTegistrationEmail($user->getEmail());
+        $events = $this->eventRepository->getAllPastEventWithTegistrationEmail($user->getEmail());
 
         $eventInfos = [];
         foreach ($events as $event) {
@@ -125,7 +125,7 @@ class BadgesComputer
 
     private function getSpeakerYears(User $user)
     {
-        $events = $this->eventRepository->getAllEventWithSpeakerEmail($user->getEmail());
+        $events = $this->eventRepository->getAllPastEventWithSpeakerEmail($user->getEmail());
 
         $years = [];
         foreach ($events as $event) {
