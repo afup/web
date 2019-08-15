@@ -108,6 +108,13 @@ services:
         class: AppBundle\Slack\LegacyClient
         arguments: ["%slack_members_legacy_token%"]
 
+    AppBundle\Slack\UsersClient:
+        autowire: true
+        arguments: ["%slack_membre_token%", "%slack_api_url%"]
+
+    AppBundle\Slack\UsersChecker:
+        autowire: true
+
     AppBundle\Slack\MessageFactory:
         autowire: true
 

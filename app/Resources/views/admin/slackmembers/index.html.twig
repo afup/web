@@ -1,0 +1,47 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Vérification adhésion des membres inscrits au Slack</h2>
+
+    {% if results %}
+    <table class="afup_tab">
+        <thead>
+        <tr>
+            <th>Nom d'utilisateur Slack</th>
+            <th>Nom affiché dans Slack</th>
+            <th>Adresse courriel dans Slack</th>
+            <th>Utilisateur présent dans la base AFUP</th>
+            <th>Dernière souscription AFUP</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+            <tr>
+                <td>{{ result.slack_username }}</td>
+                <td>{{ result.slack_realname }}</td>
+                <td>{{ result.slack_email }}</td>
+                <td>
+                    {% if result.user_found %}
+                        {% if result.afup_user_id %}
+                            <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ result.afup_user_id }}">oui</a>
+                        {% else %}
+                            oui
+                        {% endif %}
+                    {% else %}
+                        non
+                    {% endif %}
+                </td>
+                <td>
+                    {% if result.afup_last_subscription %}
+                        {{ result.afup_last_subscription|date('Y-m-d H:i:s') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        Aucune incohérence détectée dans les utilisateurs sur slack.
+    {% endif %}
+
+{% endblock %}
