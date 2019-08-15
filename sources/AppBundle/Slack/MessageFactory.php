@@ -136,7 +136,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Vérification état slack membres')
-            ->setTitleLink('https://afup.org//admin/slackmembers/check')
+            ->setTitleLink('https://afup.org/admin/slackmembers/check')
             ->setColor('#FF0000')
             ->addField(
                 (new Field())->setShort(false)->setTitle('Membres à vérifier')->setValue($membersToCheckCount)
@@ -145,7 +145,7 @@ class MessageFactory
 
         $message = new Message();
         $message
-            ->setChannel('test-cfp')
+            ->setChannel('bureau')
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
             ->setUsername('Slack membres')
             ->addAttachment($attachment)
