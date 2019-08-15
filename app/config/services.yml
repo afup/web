@@ -151,8 +151,7 @@ services:
         arguments: ["@app.mailchimp_techletter_api", '@AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository', "%mailchimp_techletter_list%"]
 
     Afup\Site\Utils\Mail:
-        arguments:
-            $logger: "@logger"
+        arguments: ["@logger", "@twig"]
 
     AppBundle\Email\Emails:
         arguments: ["@twig", '@Afup\Site\Utils\Mail']
