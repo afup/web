@@ -4,34 +4,32 @@ namespace Afup\Site\Utils;
 
 
 use Exception;
-use Mandrill;
-use Mandrill_Error;
 use Psr\Log\LoggerInterface;
 
 require_once dirname(__FILE__) . '/Configuration.php';
 
 /**
- * Send emails via Mandrill
+ * Send emails via PHPMailer and SMTP
  */
 class Mail
 {
 
     const TEMPLATE_TRANSAC = 'message-transactionnel-afup-org';
 
-    protected $_apiKey;
-    protected $_mandrill;
-
     private $logger;
+    private $twig;
+    private $configuration;
 
     /**
      * Init the object by getting the Maindrill API key
      * @param $logger LoggerInterface
+     * @param $twig Environnement Twig
      */
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(LoggerInterface $logger, \Twig_Environment $twig)
     {
-        // Get the API key
-        $this->_apiKey = $this->_getConfig()->obtenir('mandrill|key');
         $this->logger = $logger;
+        $this->twig = $twig;
+        $this->configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
     }
 
     /**
@@ -41,78 +39,57 @@ class Mail
      */
     protected function _getConfig()
     {
-        if (!isset($GLOBALS['AFUP_CONF'])) {
-            throw new Exception("Please include configuration.");
-        }
-
-        return $GLOBALS['AFUP_CONF'];
-    }
-
-    /**
-     * Retrieve Mandrill
-     * @return \Mandrill
-     */
-    public function getMandrill()
-    {
-        if (null === $this->_mandrill) {
-            $this->_mandrill = new Mandrill($this->_apiKey);
-        }
-        return $this->_mandrill;
+        return $this->configuration;
     }
 
     /**
      * Send an email
-     * @see https://mandrillapp.com/api/docs/messages.php.html#method=send-template
      *
-     * @param string $template Template identifier
+     * @param string $templateFile HTML content
      * @param array $receiver Receiver's data like ['email' => 'foo@bar.baz', 'name' => 'John Doe']
      * @param array $data Data to put in the email
      * @param array $parameters Some parameters (like bcc, etc.)
-     * @param boolean $async See Mandrill::sendTemplate()
-     * @param string $ipPool See Mandrill::sendTemplate()
-     * @param string $sendAt See Mandrill::sendTemplate()
      * @return bool TRUE on success, FALSE on failure
      */
-    public function send($template, array $receiver, array $data = array(), array $parameters = array(), $async = false, $ipPool = null, $sendAt = null, $forceBcc = true)
+    public function send($templateFile, array $receiver, array $data = [], array $parameters = [])
     {
-        // Receiver
-        if (!isset($parameters['to'])) {
-            $parameters['to'] = array($receiver);
+        $mailer = $this->getMailer();
+
+        if(file_exists($templateFile)) {
+            $content = $this->twig->render($templateFile, $data);
+            $mailer->isHTML(true);
+        } else {
+            $content = $templateFile;
         }
 
-        // Blind copy
-        if (!isset($parameters['bcc_address']) && $forceBcc === true) {
-            $parameters['bcc_address'] = $this->_getConfig()->obtenir('mandrill|bcc');
+        foreach ($receiver as $rec) {
+            $mailer->AddAddress($rec['email'], $rec['name']);
         }
 
-        // Vars in the content
-        $vars = array();
-        foreach (($receiver + $data) as $key => $value) {
-            $vars[] = array(
-                'name' => $key,
-                'content' => $value,
-            );
-        }
-
-        // Send the email using template
-        try {
-            $resp = $this->getMandrill()->messages->sendTemplate(
-                $template,
-                $vars,
-                $parameters,
-                $async,
-                $ipPool,
-                $sendAt
-            );
-        } catch (Mandrill_Error $e) {
-            if ($this->logger !== null) {
-                $this->logger->warning(sprintf('Exception when sending a mail: "%s"', $e->getMessage()));
+        if(array_key_exists('to', $parameters)) {
+            foreach ($parameters['to'] as $rec) {
+                $mailer->AddAddress($rec['email'], $rec['name']);
             }
-            return false;
         }
 
-        $status = $resp[0]['status'];
-        return ($status === 'sent' || $status === 'queued');
+        $otherRecipients = $this->configuration->obtenir('mails|force_destinataire');
+        if ($otherRecipients) {
+            $mailer->AddAddress($otherRecipients);
+        }
+
+
+        if(array_key_exists('forceBcc', $parameters) && $parameters['forceBcc']) {
+            $bcc = $this->configuration->obtenir('mails|bcc');
+            if ($bcc) {
+                $mailer->AddBCC($bcc);
+            }
+        }
+
+        $mailer->From = $parameters['from']['email'];
+        $mailer->FromName = $parameters['from']['name'];
+        $mailer->Subject = $parameters['subject'];
+        $mailer->Body = $content;
+        return $mailer->Send();
     }
 
     /**
@@ -124,9 +101,6 @@ class Mail
      */
     public function sendSimpleMessage($subject, $message, $receivers = null)
     {
-        $data = array(
-            'message' => $message,
-        );
         $parameters = array(
             'subject' => $subject,
             'bcc_address' => false,
@@ -140,7 +114,32 @@ class Mail
             ));
         }
 
-        return $this->send('message', array(), $data, $parameters);
+        return $this->send($message, [], [], $parameters);
+    }
+
+    private function getMailer()
+    {
+        $mailer = new \PHPMailer();
+        $mailer->CharSet = "utf-8";
+        if ($this->configuration->obtenir('mails|serveur_smtp')) {
+            $mailer->IsSMTP();
+            $mailer->Host = $this->configuration->obtenir('mails|serveur_smtp');
+            $mailer->SMTPAuth = false;
+        }
+        if ($this->configuration->obtenir('mails|tls') == true) {
+            $mailer->SMTPAuth = $this->configuration->obtenir('mails|tls');
+            $mailer->SMTPSecure = 'tls';
+        }
+        if ($this->configuration->obtenir('mails|username')) {
+            $mailer->Username = $this->configuration->obtenir('mails|username');
+        }
+        if ($this->configuration->obtenir('mails|password')) {
+            $mailer->Password = $this->configuration->obtenir('mails|password');
+        }
+        if ($this->configuration->obtenir('mails|port')) {
+            $mailer->Port = $this->configuration->obtenir('mails|port');
+        }
+        return $mailer;
     }
 }
 

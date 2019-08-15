@@ -11,7 +11,7 @@ $configuration['mails']['serveur_smtp']='';
 $configuration['mails']['email_expediteur']='bureau@afup.org';
 $configuration['mails']['nom_expediteur']='Bureau AFUP';
 $configuration['mails']['force_destinataire']='';
-$configuration['mails']['bcc']='';
+$configuration['mails']['bcc']='tresorier@afup.org';
 $configuration['mails']['tls']='0';
 $configuration['mails']['port']='';
 $configuration['mails']['username']='';
@@ -58,7 +58,3 @@ $configuration['sympa']['mot_de_passe']='sympa';
 $configuration['sympa']['directory']='http://127.0.0.1/sympa.php';
 $configuration['sympa']['config_url']='http://127.0.0.1/sympa.php';
 $configuration['sympa']['host'] = 'old.afup.org';
-
-$configuration['mandrill']['key'] = '';
-$configuration['mandrill']['bcc'] = 'tresorier@afup.org';
-
