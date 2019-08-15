@@ -54,7 +54,7 @@ class EventRepository extends Repository implements MetadataInitializer
         return $events->first();
     }
 
-    public function getAllEventWithSpeakerEmail($email)
+    public function getAllPastEventWithSpeakerEmail($email)
     {
         $sql = <<<SQL
 SELECT afup_forum.*
@@ -65,6 +65,7 @@ JOIN afup_sessions ON (afup_conferenciers_sessions.session_id = afup_sessions.se
 WHERE (afup_sessions.date_publication IS NULL OR afup_sessions.date_publication < NOW())
 AND afup_conferenciers.email = :email
 AND afup_sessions.plannifie = 1
+AND afup_forum.date_fin < NOW()
 GROUP BY afup_forum.id
 ORDER BY afup_forum.date_debut DESC
 SQL;
@@ -74,7 +75,7 @@ SQL;
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
-    public function getAllEventWithTegistrationEmail($email)
+    public function getAllPastEventWithTegistrationEmail($email)
     {
         $sql = <<<SQL
 SELECT afup_forum.*
@@ -82,6 +83,7 @@ FROM afup_forum
 JOIN afup_inscription_forum ON (afup_forum.id = afup_inscription_forum.id_forum)
 WHERE afup_inscription_forum.email = :email
 AND (afup_inscription_forum.etat = :status_paid OR afup_inscription_forum.etat = :status_guest)
+AND afup_forum.date_fin < NOW()
 GROUP BY afup_forum.id
 ORDER BY afup_forum.date_debut DESC
 SQL;
