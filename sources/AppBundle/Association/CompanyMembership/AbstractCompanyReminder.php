@@ -56,17 +56,22 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
             ->setUserType(UserRepository::USER_TYPE_COMPANY)
         ;
 
-        $status = $this->mail->send('message-transactionnel-afup-org',
+        $parameters = [
+            'subject' => $this->getSubject(),
+            'from' => [
+                'name' => 'AFUP sponsors',
+                'email' => 'sponsors@afup.org'
+            ]
+        ];
+
+        $status = $this->mail->send(
+            Mail::TRANSACTIONAL_TEMPLATE_MAIL,
             ['email' => $user->getEmail()],
             [
                 'content' => $this->getText(),
                 'title' => $this->getSubject(),
             ],
-            ['subject' => $this->getSubject()],
-            false,
-            null,
-            null,
-            false
+            $parameters
         );
         $log->setMailSent($status);
         $this->subscriptionReminderLogRepository->save($log);

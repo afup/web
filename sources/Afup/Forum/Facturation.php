@@ -484,7 +484,8 @@ SQL;
                 array(
                     "type" => "application/pdf",
                     "name" => 'facture-' . $numeroFacture . '.pdf',
-                    "content" => base64_encode(file_get_contents($chemin_facture)),
+                    'encoding' => 'base64',
+                    "path" => $chemin_facture,
                 )
             )
         );

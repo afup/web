@@ -56,27 +56,26 @@ class SponsorshipLeadMail
         ];
 
         $parameters = [
-            'from_name' => 'AFUP sponsors',
-            'from_email' => 'sponsors@afup.org',
+            'from' => [
+                'name' => 'AFUP sponsors',
+                'email' => 'sponsors@afup.org'
+            ],
             'attachments' => [
                 [
                     'type' => 'application/pdf',
                     'name' => $lead->getEvent()->getPath() . '-sponsoring-' . $lead->getLanguage() . '.pdf',
-                    'content' => base64_encode(file_get_contents($filepath . $filename)),
+                    'encoding' => 'base64',
+                    'path' => $filepath . $filename,
                 ]
             ],
             'subject' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()])
         ];
 
         if (!$this->mail->send(
-            Mail::TEMPLATE_TRANSAC,
+            Mail::TRANSACTIONAL_TEMPLATE_MAIL,
             $receiver,
             $data,
-            $parameters,
-            false,
-            null,
-            null,
-            false
+            $parameters
         )) {
             $this->logger->warning(sprintf('Mail not sent for sponsorship lead retrieval: "%s"', $lead->getEmail()));
         }

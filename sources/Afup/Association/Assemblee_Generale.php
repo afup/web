@@ -322,7 +322,7 @@ EOF;
         );
 
         $infos = $this->_bdd->obtenirEnregistrement($requete);
-        
+
         if (false === $infos) {
             return null;
         }

@@ -437,9 +437,16 @@ SQL;
     {
         $mail = new Mail();
         return $mail->send(
-            'confirmation-cr-ation-de-compte',
+            'mail_templates:confirmation_creation_compte.html.twig',
             ['email' => $email, 'name' => sprintf('%s %s', $firstName, $lastName)],
-            ['login' => $login]
+            ['login' => $login],
+            [
+                'subject' => 'Votre compte afup.org',
+                'from' => [
+                    'email' => 'bureau@afup.org',
+                    'name' => 'AFUP'
+                ]
+            ]
         );
     }
 

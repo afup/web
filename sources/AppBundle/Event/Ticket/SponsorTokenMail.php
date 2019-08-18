@@ -79,18 +79,22 @@ class SponsorTokenMail
             ]
         );
 
+        $parameters = [
+            'subject' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()]),
+            'from' => [
+                'email' => 'bonjour@afup.org',
+                'name' => 'AFUP'
+            ]
+        ];
+
         return $this->mail->send(
-            'message-transactionnel-afup-org',
-            ['email' => $sponsorTicket->getContactEmail()],
+            Mail::TRANSACTIONAL_TEMPLATE_MAIL,
+            ['email' => $sponsorTicket->getContactEmail(), 'name' => $sponsorTicket->getCompany()],
             [
                 'content' => $text,
                 'title' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()])
             ],
-            ['subject' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()])],
-            false,
-            null,
-            null,
-            false
+            $parameters
         );
     }
 }
