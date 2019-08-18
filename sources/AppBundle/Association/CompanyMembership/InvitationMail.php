@@ -55,18 +55,22 @@ class InvitationMail
             ]
         );
 
+        $parameters = [
+            'subject' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName()),
+            'from' => [
+                'name' => 'AFUP sponsors',
+                'email' => 'sponsors@afup.org'
+            ],
+        ];
+
         return $this->mail->send(
-            'message-transactionnel-afup-org',
+            Mail::TRANSACTIONAL_TEMPLATE_MAIL,
             ['email' => $invitation->getEmail()],
             [
                 'content' => $text,
                 'title' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName())
             ],
-            ['subject' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName())],
-            false,
-            null,
-            null,
-            false
+            $parameters
         );
     }
 }

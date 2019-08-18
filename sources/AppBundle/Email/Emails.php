@@ -53,18 +53,21 @@ class Emails
 
         $subject = sprintf("[%s] Merci !", $event->getTitle());
 
-        $this->mail->getMandrill()->messages->send([
-            'from_email' => self::EMAIL_BONJOUR_ADDRESS,
-            'from_name' => self::EMAIL_BONJOUR_LABEL,
-            'bcc_address' => self::EMAIL_TRESORIER_ADDRESS,
-            'html' => $content,
-            'subject' => $subject,
-            'to' => [
-                [
-                    'email' => $receiverEmail,
-                    'name' => $receiverLabel,
-                ]
+        $to =  [
+            [
+                'email' => $receiverEmail,
+                'name' => $receiverLabel,
             ]
+        ];
+
+        $this->mail->send($content, $to, [], [
+            'from' => [
+                'email' => self::EMAIL_BONJOUR_ADDRESS,
+                'name' => self::EMAIL_BONJOUR_LABEL,
+            ],
+            'force_bdd' => true,
+            'bcc_address' => self::EMAIL_TRESORIER_ADDRESS,
+            'subject' => $subject,
         ]);
     }
 }

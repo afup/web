@@ -6,15 +6,12 @@ namespace Afup\Site\Utils;
 use Exception;
 use Psr\Log\LoggerInterface;
 
-require_once dirname(__FILE__) . '/Configuration.php';
-
 /**
  * Send emails via PHPMailer and SMTP
  */
 class Mail
 {
-
-    const TEMPLATE_TRANSAC = 'message-transactionnel-afup-org';
+    const TRANSACTIONAL_TEMPLATE_MAIL = ':mail_templates:message-transactionnel.html.twig';
 
     private $logger;
     private $twig;
@@ -22,24 +19,14 @@ class Mail
 
     /**
      * Init the object by getting the Maindrill API key
-     * @param $logger LoggerInterface
-     * @param $twig Environnement Twig
+     * @param LoggerInterface $logger
+     * @param Twig_Environnement $twig
      */
     public function __construct(LoggerInterface $logger, \Twig_Environment $twig)
     {
         $this->logger = $logger;
         $this->twig = $twig;
         $this->configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
-    }
-
-    /**
-     * Retrieve the configuration
-     * @throws Exception
-     * @return Configuration
-     */
-    protected function _getConfig()
-    {
-        return $this->configuration;
     }
 
     /**
@@ -50,16 +37,26 @@ class Mail
      * @param array $data Data to put in the email
      * @param array $parameters Some parameters (like bcc, etc.)
      * @return bool TRUE on success, FALSE on failure
+     * @throws Exception
      */
     public function send($templateFile, array $receiver, array $data = [], array $parameters = [])
     {
         $mailer = $this->getMailer();
 
-        if(file_exists($templateFile)) {
+        // Si on reçoit un template en paraètre, on appelle avec ce template et les données 'data'
+        // pour générer le corps du mail
+        // Sinon on envoie le contenu tel quel
+        if(ends_with('.html.twig', $templateFile)) {
             $content = $this->twig->render($templateFile, $data);
-            $mailer->isHTML(true);
         } else {
             $content = $templateFile;
+        }
+
+        if(!array_key_exists('from', $parameters)) {
+            $parameters['from'] = [
+                'name' => 'AFUP',
+                'email' => 'bonjour@afup.org'
+            ];
         }
 
         foreach ($receiver as $rec) {
@@ -77,17 +74,27 @@ class Mail
             $mailer->AddAddress($otherRecipients);
         }
 
-
+        // Gestion des copies cachées
         if(array_key_exists('forceBcc', $parameters) && $parameters['forceBcc']) {
-            $bcc = $this->configuration->obtenir('mails|bcc');
+            $bcc = (array_key_exists('bcc_address', $parameters))
+                        ? $parameters['bcc_address']
+                        : $this->configuration->obtenir('mails|bcc');
             if ($bcc) {
                 $mailer->AddBCC($bcc);
+            }
+        }
+
+        // Gestion des pièces jointes
+        if(array_key_exists('attachments', $parameters)) {
+            foreach($parameters['attachments'] as $attachment) {
+                $mailer->AddAttachment($attachment['path'], $attachment['name'], $attachment['encoding'], $attachment['type']);
             }
         }
 
         $mailer->From = $parameters['from']['email'];
         $mailer->FromName = $parameters['from']['name'];
         $mailer->Subject = $parameters['subject'];
+        $mailer->isHTML(true);
         $mailer->Body = $content;
         return $mailer->Send();
     }
@@ -101,22 +108,29 @@ class Mail
      */
     public function sendSimpleMessage($subject, $message, $receivers = null)
     {
-        $parameters = array(
+        $parameters = [
             'subject' => $subject,
             'bcc_address' => false,
-        );
-        if (is_array($receivers)) {
+            'forceBcc' => false,
+        ];
+        if ($receivers && is_array($receivers)) {
             $parameters['to'] = $receivers;
         } else {
-            $parameters['to'] = array(array(
+            $parameters['to'] = [
+                [
                 'email' => 'tresorier@afup.org',
-                'name' => 'Trésorier',
-            ));
+                'name' => 'Trésorier']
+            ];
         }
 
         return $this->send($message, [], [], $parameters);
     }
 
+    /**
+     * Génération et configuration de l'objet PHPMailer
+     *
+     * @return \PHPMailer objet mailer configuré
+     */
     private function getMailer()
     {
         $mailer = new \PHPMailer();

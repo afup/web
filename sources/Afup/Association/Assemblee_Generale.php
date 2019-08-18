@@ -323,7 +323,7 @@ class Assemblee_Generale
             $mail = new Mail();
 
             if ($mail->send(
-                'message-transactionnel-afup-org',
+                Mail::TRANSACTIONAL_TEMPLATE_MAIL,
                 ['email' => $personne_physique['email'], 'name' => $personne_physique['nom']],
                 [
                     'content' => $corps . '<p><a href="' . $link. '">' . $link . '</a></p>',

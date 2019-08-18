@@ -129,8 +129,7 @@ SQL;
                 $inscrit,
                 array(
                     'bcc_address' => false // avoid blind copy… spam inside! ;)
-                ),
-                true
+                )
             );
             if ($sent) {
                 $listSent[] = "{$inscrit['prenom']} {$inscrit['nom']} : {$inscrit['email']}";
