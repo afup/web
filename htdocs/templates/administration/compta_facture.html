@@ -50,6 +50,8 @@
 {else}
     {if $action == 'modifier'}
         <h2>Modifier une facture</h2>
+
+        <a href="index.php?page=compta_devis&amp;action=ajouter&from={$facture_id}">Créer un devis depuis cette facture</a>
     {/if}
     {include file="formulaire.html"}
 {/if}
