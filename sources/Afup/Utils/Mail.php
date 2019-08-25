@@ -43,9 +43,8 @@ class Mail
     {
         $mailer = $this->getMailer();
 
-        // Si on reçoit un template en paraètre, on appelle avec ce template et les données 'data'
-        // pour générer le corps du mail
-        // Sinon on envoie le contenu tel quel
+        // Si on reçoit un template en paramètre, on appelle Twig avec ce template et les données 'data'
+        // pour générer le corps du mail sinon on envoie le contenu tel quel
         if(ends_with('.html.twig', $templateFile)) {
             $content = $this->twig->render($templateFile, $data);
         } else {
