@@ -276,5 +276,3 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
     $smarty->assign('devis_id', $_GET['id']);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
-
-?>
