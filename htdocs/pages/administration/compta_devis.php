@@ -39,27 +39,27 @@ if ($action == 'lister') {
     function prepareDefaultsFromComptaFacId(Facture $comptaFact, $id) {
         $champsRecup = $comptaFact->obtenir($id);
 
-        $champs['date_devis']          = $champsRecup['date_devis'];
-        $champs['date_facture']          = $champsRecup['date_facture'];
-        $champs['societe']          = $champsRecup['societe'];
-        $champs['numero_devis']          = $champsRecup['numero_devis'];
-        $champs['societe']          = $champsRecup['societe'];
-        $champs['service']          = $champsRecup['service'];
-        $champs['adresse']          = $champsRecup['adresse'];
-        $champs['code_postal']          = $champsRecup['code_postal'];
-        $champs['ville']          = $champsRecup['ville'];
-        $champs['id_pays']          = $champsRecup['id_pays'];
-        $champs['email']          = $champsRecup['email'];
-        $champs['observation']          = $champsRecup['observation'];
-        $champs['ref_clt1']          = $champsRecup['ref_clt1'];
-        $champs['ref_clt2']          = $champsRecup['ref_clt2'];
-        $champs['ref_clt3']          = $champsRecup['ref_clt3'];
-        $champs['nom']          = $champsRecup['nom'];
-        $champs['prenom']          = $champsRecup['prenom'];
-        $champs['tel']          = $champsRecup['tel'];
-        $champs['numero_devis']          = $champsRecup['numero_devis'];
-        $champs['numero_facture']          = $champsRecup['numero_facture'];
-        $champs['devise_facture']          = $champsRecup['devise_facture'];
+        $champs['date_devis'] = $champsRecup['date_devis'];
+        $champs['date_facture'] = $champsRecup['date_facture'];
+        $champs['societe'] = $champsRecup['societe'];
+        $champs['numero_devis'] = $champsRecup['numero_devis'];
+        $champs['societe'] = $champsRecup['societe'];
+        $champs['service'] = $champsRecup['service'];
+        $champs['adresse'] = $champsRecup['adresse'];
+        $champs['code_postal'] = $champsRecup['code_postal'];
+        $champs['ville'] = $champsRecup['ville'];
+        $champs['id_pays'] = $champsRecup['id_pays'];
+        $champs['email'] = $champsRecup['email'];
+        $champs['observation'] = $champsRecup['observation'];
+        $champs['ref_clt1'] = $champsRecup['ref_clt1'];
+        $champs['ref_clt2'] = $champsRecup['ref_clt2'];
+        $champs['ref_clt3'] = $champsRecup['ref_clt3'];
+        $champs['nom'] = $champsRecup['nom'];
+        $champs['prenom'] = $champsRecup['prenom'];
+        $champs['tel'] = $champsRecup['tel'];
+        $champs['numero_devis'] = $champsRecup['numero_devis'];
+        $champs['numero_facture'] = $champsRecup['numero_facture'];
+        $champs['devise_facture'] = $champsRecup['devise_facture'];
 
 
         $champsRecup = $comptaFact->obtenir_details($id);
