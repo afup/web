@@ -440,7 +440,7 @@ SQL;
 
     /**
      * Envoi par mail d'une facture au format PDF
-     *
+     *afficherMessage
      * @param string|array $reference Invoicing reference as string, or the invoice itself
      * @access public
      * @return bool Succès de l'envoi
@@ -468,8 +468,6 @@ SQL;
             $parameters['bcc_address'] = null;
         }
 
-        $parameters['subject'] = "Facture événement AFUP";
-
         $data = array(
             'raison_sociale' => $configuration->obtenir('afup|raison_sociale'),
             'adresse' => $configuration->obtenir('afup|adresse'),
@@ -480,6 +478,11 @@ SQL;
         $numeroFacture = $this->genererFacture($reference, $chemin_facture);
 
         $parameters += array(
+            'subject' => "Facture événement AFUP",
+            'from' => [
+                'email' => 'bureau@afup.org',
+                'name' => 'AFUP'
+            ],
             "attachments" => array(
                 array(
                     "type" => "application/pdf",
@@ -492,7 +495,7 @@ SQL;
 
         @unlink($chemin_facture);
 
-        $ok = $mail->send('facture-forum', $receiver, $data, $parameters);
+        $ok = $mail->send('mail_templates:facture-forum.html.twig', $receiver, $data, $parameters);
 
         if ($ok && $facturer) {
             $this->estFacture($reference);
