@@ -80,6 +80,12 @@
                             </li>
                         {% endif %}
 
+                        {% if talk.hasInterviewUrl %}
+                            <li>
+                                <a class="talk-info-link" href="{{ talk.getInterviewUrl }}"><i class="fa fa-newspaper-o"></i> Interview</a>
+                            </li>
+                        {% endif %}
+
                         {% if talk.hasJoindinId %}
                             <li>
                                 <a class="talk-info-link" href="{{ talk.getJoindinUrl }}"><i class="fa fa-comments"></i> Fiche joind.in</a>
