@@ -130,6 +130,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
         FROM afup_site_article
         WHERE afup_site_article.id_site_rubrique = :rubricId
         AND etat = 1
+        AND afup_site_article.date <= UNIX_TIMESTAMP(NOW())
         %s %s %s
         ORDER BY date DESC
         ', $yearSqlFilter, $themeSqlFilter, $eventSqlFilter);
