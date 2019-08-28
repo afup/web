@@ -114,6 +114,11 @@ class Talk implements NotifyPropertyInterface
     /**
      * @var string|null
      */
+    private $interviewUrl;
+
+    /**
+     * @var string|null
+     */
     private $joindinId;
 
     /**
@@ -496,6 +501,39 @@ class Talk implements NotifyPropertyInterface
     public function hasBlogPostUrl()
     {
         return null !== $this->getBlogPostUrl();
+    }
+
+    /**
+     * @return int
+     */
+    public function getInterviewUrl()
+    {
+        if (0 === strlen($this->interviewUrl)) {
+            return null;
+        }
+
+        return $this->interviewUrl;
+    }
+
+    /**
+     * @param int $interviewUrl
+     *
+     * @return Talk
+     */
+    public function setInterviewUrl($interviewUrl)
+    {
+        $this->propertyChanged('interviewUrl', $this->interviewUrl, $interviewUrl);
+        $this->interviewUrl = $interviewUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasInterviewUrl()
+    {
+        return null !== $this->getInterviewUrl();
     }
 
     /**

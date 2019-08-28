@@ -325,6 +325,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'interview_url',
+                'fieldName' => 'interviewUrl',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'joindin',
                 'fieldName' => 'joindinId',
                 'type' => 'string'
