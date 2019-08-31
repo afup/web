@@ -169,7 +169,7 @@ class Article
             'contenu' => $this->contenu,
             'type_contenu' => $this->type_contenu,
             'position' => $this->position,
-            'date' => date('Y-m-d', $this->date),
+            'date' => date('Y-m-d H:i:s', $this->date),
             'theme' => $this->theme,
             'id_forum' => $this->id_forum,
             'etat' => $this->etat,
