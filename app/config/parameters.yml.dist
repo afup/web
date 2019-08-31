@@ -52,3 +52,8 @@ parameters:
     google_analytics_id: "UA-192127-3"
 
     techletter_test_email_address: "pole-veille@afup.org"
+
+    slack_members_legacy_token: "aaaa-90909097"
+
+    slack_api_url: "https://slack.com/api"
+    slack_membre_token: ""

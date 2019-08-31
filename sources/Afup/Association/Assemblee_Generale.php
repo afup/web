@@ -3,6 +3,7 @@
 // Voir la classe Afup\Site\Association\Assemblee_Generale
 namespace Afup\Site\Association;
 use Afup\Site\Utils\Mail;
+use AppBundle\Association\Model\User;
 
 define('AFUP_ASSEMBLEE_GENERALE_PRESENCE_INDETERMINE', 0);
 define('AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI', 1);
@@ -18,6 +19,28 @@ class Assemblee_Generale
     function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
+    }
+
+    public function hasGeneralMeetingPlanned(\DateTimeInterface $currentDate = null)
+    {
+        if (null === $currentDate) {
+            $currentDate = new \DateTime();
+        }
+
+        $currentTimestamp = $currentDate->format('U');
+
+        $timestamp = $this->obternirDerniereDate();
+
+        return $timestamp > strtotime("-1 day", $currentTimestamp);
+    }
+
+    public function hasUserRspvedToLastGeneralMeeting(User $user)
+    {
+        $timestamp = $this->obternirDerniereDate();
+
+        $infos = $this->obtenirToutesInfos($user->getUsername(), $timestamp);
+
+        return isset($infos['date_modification']) && $infos['date_modification'] > 0;
     }
 
     function obternirDerniereDate()
@@ -346,7 +369,25 @@ class Assemblee_Generale
         $requete .= 'AND afup_presences_assemblee_generale.date = ' . $timestamp . ' ';
         $requete .= 'LIMIT 0, 1';
 
-        $infos = $this->_bdd->obtenirEnregistrement($requete, MYSQL_NUM);
+        $infos = $this->_bdd->obtenirEnregistrement($requete, MYSQLI_NUM);
+
+        return $infos;
+    }
+
+    function obtenirToutesInfos($login, $timestamp)
+    {
+        $requete = 'SELECT';
+        $requete .= '  afup_presences_assemblee_generale.* ';
+        $requete .= 'FROM';
+        $requete .= '  afup_presences_assemblee_generale, ';
+        $requete .= '  afup_personnes_physiques ';
+        $requete .= 'WHERE';
+        $requete .= '  afup_presences_assemblee_generale.id_personne_physique = afup_personnes_physiques.id ';
+        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';
+        $requete .= 'AND afup_presences_assemblee_generale.date = ' . $timestamp . ' ';
+        $requete .= 'LIMIT 0, 1';
+
+        $infos = $this->_bdd->obtenirEnregistrement($requete, MYSQLI_ASSOC);
 
         return $infos;
     }

@@ -12,7 +12,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
     <script src="/js/meetups/list.js"></script>
 {% endblock %}
@@ -24,15 +23,14 @@
 {% endblock %}
 
 {% block content %}
+    {{ render(controller(
+        'AppBundle\\Controller\\SecondaryMenuController::displayAction',
+        { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') }
+    )) }}
+
     <div class="mw1400p center" id="container">
         <div class="line" id="main">
             <h1>Antennes</h1>
-
-            {{ render(controller(
-                'AppBundle\\Controller\\SecondaryMenuController::displayAction',
-                { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') }
-            )) }}
-
             <p>Retrouvez ici toutes les meetups des antennes de l'AFUP.</p>
 
             {% if source == 'aperophp.net' %}

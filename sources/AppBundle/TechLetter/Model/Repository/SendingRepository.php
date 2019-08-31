@@ -5,6 +5,7 @@ namespace AppBundle\TechLetter\Model\Repository;
 
 use AppBundle\TechLetter\Model\Sending;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -12,6 +13,20 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class SendingRepository extends Repository implements MetadataInitializer
 {
+    public function getAllPastSent()
+    {
+        $sql = <<<SQL
+SELECT afup_techletter.*
+FROM afup_techletter
+WHERE afup_techletter.sent_to_mailchimp = 1
+AND afup_techletter.sending_date < NOW()
+ORDER BY afup_techletter.sending_date DESC
+SQL;
+        $query = $this->getQuery($sql);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
     /**
      * @inheritDoc
      */
@@ -47,6 +62,11 @@ class SendingRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'sentToMailchimp',
                 'type' => 'bool',
                 'serializer' => Boolean::class
+            ])
+            ->addField([
+                'columnName' => 'archive_url',
+                'fieldName' => 'archiveUrl',
+                'type' => 'string'
             ])
         ;
 

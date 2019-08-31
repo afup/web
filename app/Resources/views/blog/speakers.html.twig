@@ -11,9 +11,9 @@
         </h3>
         {% if row.speaker.twitter %}
             <a class="twitter-follow-button"
-               href="https://twitter.com/{{ row.speaker.twitter }}"
+               href="https://twitter.com/{{ row.speaker.getCleanedTwitter }}"
                data-size="large">
-                Follow @{{ row.speaker.twitter }}
+                Follow @{{ row.speaker.getCleanedTwitter }}
             </a>
         {% endif %}
         <div class="article-body conferencier">

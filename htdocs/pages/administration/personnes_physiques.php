@@ -128,6 +128,9 @@ if ($action == 'lister') {
     }
 
     $formulaire->addElement('text' , 'email' , 'Email' , array('size' => 30, 'maxlength' => 100));
+    if ($action == 'modifier') {
+        $formulaire->addElement('text' , 'slack_alternate_email' , 'Email pour comparatif slack' , array('size' => 30, 'maxlength' => 100));
+    }
     $formulaire->addElement('textarea', 'adresse' , 'Adresse' , array('cols' => 42, 'rows' => 10));
     $formulaire->addElement('text' , 'code_postal' , 'Code postal' , array('size' => 6, 'maxlength' => 10));
     $formulaire->addElement('text' , 'ville' , 'Ville' , array('size' => 30, 'maxlength' => 50));
@@ -236,7 +239,9 @@ if ($action == 'lister') {
                 $formulaire->exportValue('telephone_portable'),
                 $formulaire->exportValue('etat'),
                 $formulaire->exportValue('compte_svn'),
-                $formulaire->exportValue('roles'));
+                $formulaire->exportValue('roles'),
+                $formulaire->exportValue('slack_alternate_email')
+            );
         }
 
         if ($ok) {

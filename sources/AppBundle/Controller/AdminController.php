@@ -4,12 +4,11 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Personnes_Physiques;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
-class AdminController extends Controller
+class AdminController extends SiteBaseController
 {
     public function loginAction(Request $request)
     {

@@ -82,6 +82,7 @@ class Articles
         $requete .= ' AND id_parent <> 52 '; // On affiche pas les articles des forums
         $requete .= ' AND afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ASSOCIATION . ' '; // On affiche pas les articles de la page assocition
         $requete .= ' AND afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ANTENNES . ' '; // On affiche pas les articles de la page antennes
+        $requete .= ' AND afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_NOS_ACTIONS . ' '; // On affiche pas les articles de la page actions
         $requete .= ' ORDER BY date DESC';
         $requete .= ' LIMIT 0, ' . (int)$rowcount;
 

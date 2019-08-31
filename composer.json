@@ -30,7 +30,7 @@
     "mandrill/mandrill": "^1.0",
     "phpoffice/phpspreadsheet": "^1.6",
     "phpmailer/phpmailer": "5.2.9",
-    "znk3r/html_quickform": "4.0.1",
+    "znk3r/html_quickform": "4.0.2",
     "friendsofpear/pear_exception": "0.0.*",
     "znk3r/html_common": "*",
     "pear/pear": "^1.10"
@@ -85,7 +85,7 @@
   "require-dev": {
     "atoum/atoum": "^2.8",
     "atoum/stubs": "^2.5",
-    "friendsofphp/php-cs-fixer": "~1.12"
+    "friendsofphp/php-cs-fixer": "~2"
   },
   "repositories": [
     {
@@ -108,9 +108,9 @@
       "type": "package",
       "package": {
         "name": "znk3r/html_quickform",
-        "version": "4.0.1",
+        "version": "4.0.2",
         "dist": {
-          "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.1.zip",
+          "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip",
           "type": "zip"
         },
         "autoload": {

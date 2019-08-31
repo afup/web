@@ -57,12 +57,12 @@
                 </div>
                 <div class="container talk-date-container">
                     <div class="col-md-12">
-                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>, ayant eut lieu les {{ event.dateStart|date('d/m/Y') }} et {{ event.dateEnd|date('d/m/Y') }}.
+                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>, ayant eut lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et {{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM YYYY') }}.
                     </div>
 
                 </div>
 
-                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId %}
+                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId or talk.getVideoHasEnSubtitles or talk.getVideoHasFrSubtitles %}
                 <div class="container">
                     <div class="col-md-12">
                         <h2>Informations complémentaires</h2>
@@ -80,10 +80,26 @@
                             </li>
                         {% endif %}
 
+                        {% if talk.hasInterviewUrl %}
+                            <li>
+                                <a class="talk-info-link" href="{{ talk.getInterviewUrl }}"><i class="fa fa-newspaper-o"></i> Interview</a>
+                            </li>
+                        {% endif %}
+
                         {% if talk.hasJoindinId %}
                             <li>
                                 <a class="talk-info-link" href="{{ talk.getJoindinUrl }}"><i class="fa fa-comments"></i> Fiche joind.in</a>
                             </li>
+                        {% endif %}
+
+                        <li><i class="fa fa-headphones"></i> Audio : {{ talk.getLanguageLabel|lower }}</li>
+
+                        {% if talk.getVideoHasEnSubtitles %}
+                            <li><i class="fa fa-cc"></i> Sous titres : anglais</li>
+                        {% endif %}
+
+                        {% if talk.getVideoHasFrSubtitles %}
+                            <li><i class="fa fa-cc"></i> Sous titres : français</li>
                         {% endif %}
                         </ul>
                     </div>

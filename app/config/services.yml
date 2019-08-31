@@ -42,6 +42,7 @@ services:
             - { name: kernel.event_listener, event: kernel.request, priority: 100 }
 
     AppBundle\Listener\LegacySiteListener:
+        arguments: ["@security.token_storage"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, priority: 100 }
 
@@ -103,6 +104,17 @@ services:
     AppBundle\Payment\PayboxFactory:
         autowire: true
 
+    slack_members_legacy_client:
+        class: AppBundle\Slack\LegacyClient
+        arguments: ["%slack_members_legacy_token%"]
+
+    AppBundle\Slack\UsersClient:
+        autowire: true
+        arguments: ["%slack_membre_token%", "%slack_api_url%"]
+
+    AppBundle\Slack\UsersChecker:
+        autowire: true
+
     AppBundle\Slack\MessageFactory:
         autowire: true
 
@@ -116,6 +128,9 @@ services:
         arguments: ["%algolia_app_id%", "%algolia_backend_api_key%"]
 
     AppBundle\Joindin\JoindinComments:
+        arguments: ["@cache.system"]
+
+    AppBundle\Joindin\JoindinTalk:
         arguments: ["@cache.system"]
 
     TwitterAPIExchange:
@@ -357,8 +372,14 @@ services:
     Ivory\HttpAdapter\CurlHttpAdapter:
         public: false
 
+    AppBundle\Association\UserMembership\SeniorityComputer:
+        arguments: ['@Afup\Site\Association\Cotisations']
+
+    AppBundle\Association\UserMembership\BadgesComputer:
+        arguments: ['@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\EventRepository']
+
     AppBundle\Event\Ticket\RegistrationsExportGenerator:
-        arguments: ['@AppBundle\Offices\OfficeFinder', '@Afup\Site\Association\Cotisations', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
+        arguments: ['@AppBundle\Offices\OfficeFinder', '@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
 
     AppBundle\Event\Talk\ExportGenerator:
         arguments: ['@AppBundle\Event\Model\Repository\TalkRepository']
@@ -377,3 +398,7 @@ services:
             - "@ting"
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
+
+    AppBundle\Association\Form\ContactDetailsType:
+        arguments: ['@Afup\Site\Utils\Pays']
+        tags: [form.type]

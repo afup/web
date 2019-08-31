@@ -22,6 +22,11 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     const USER_TYPE_COMPANY = 1;
     const USER_TYPE_ALL = 2;
 
+    /**
+     * @param string $username
+     * @return User|UserInterface
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
     public function loadUserByUsername($username)
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
@@ -39,6 +44,28 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
 
         if ($result->count() === 0) {
             throw new UsernameNotFoundException(sprintf('Could not find the user with login "%s"', $username));
+        }
+
+        return $result->first();
+    }
+
+    public function loadUserByEmaiOrAlternateEmail($email)
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser();
+        $queryBuilder
+            ->where('app.`email` = :email')
+            ->orWhere('app.`slack_alternate_email` = :slack_alternate_email')
+        ;
+        $result = $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams([
+                'email' => $email,
+                'slack_alternate_email' => $email,
+            ])
+            ->query($this->getCollection($this->getHydratorForUser()));
+
+        if ($result->count() === 0) {
+            throw new UsernameNotFoundException(sprintf('Could not find the user with email "%s"', $email));
         }
 
         return $result->first();
@@ -113,6 +140,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'app.`niveau_modules`', 'app.`roles`', 'app.`civilite`', 'app.`nom`', 'app.`prenom`', 'app.`email`',
                 'app.`adresse`', 'app.`code_postal`', 'app.`ville`', 'app.`id_pays`', 'app.`telephone_fixe`',
                 'app.`telephone_portable`', 'app.`etat`', 'app.`date_relance`', 'app.`compte_svn`',
+                'app.`slack_invite_status`',
+                'app.`nearest_office`',
                 'MD5(CONCAT(app.`id`, \'_\', app.`email`, \'_\', app.`login`)) as hash',
                 "MAX(ac.date_fin) AS lastsubcription"
             ]);
@@ -308,9 +337,24 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'telephone_portable',
+                'fieldName' => 'mobilephone',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'nearest_office',
+                'fieldName' => 'nearestOffice',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'status',
                 'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'slack_invite_status',
+                'fieldName' => 'slackInviteStatus',
+                'type' => 'int',
             ])
         ;
 

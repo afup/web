@@ -11,42 +11,6 @@ parameters:
         accueil:
             nom: 'Accueil'
             niveau: 'ROLE_MEMBER_EXPIRED'
-        membre:
-            nom: 'Mon compte'
-            elements:
-                membre_coordonnees:
-                    nom: 'Mes coordonnées'
-                    niveau: 'ROLE_MEMBER_EXPIRED'
-                membre_redmine:
-                    nom: 'Déclarer un problème (GitHub)'
-                    niveau: 'ROLE_MEMBER_EXPIRED'
-                    nouvelle_fenetre: true
-                    url: 'https://github.com/afup/web/issues?state=open'
-                membre_cotisation:
-                    nom: 'Ma cotisation'
-                    niveau: 'ROLE_MEMBER_EXPIRED'
-                membre_ml:
-                    nom: 'Listes de diffusion'
-                    niveau: 'ROLE_MEMBER_EXPIRED' ## Some mailing lists are open to any member of the community
-                    url: '/admin/groups/'
-                membre_assemblee_generale:
-                    nom: 'Présence prochaine AG'
-                    niveau: 'ROLE_USER'
-                membres_liste:
-                    nom: 'Annuaire'
-                    niveau: 'ROLE_ADMIN'
-        company:
-            nom: "Ma société"
-            niveau: 'ROLE_COMPANY_MANAGER'
-            elements:
-                membre_personne_morale:
-                    nom: 'Coordonnées'
-                    niveau: 'ROLE_COMPANY_MANAGER'
-                    url: '/admin/company'
-                membre_rattaches:
-                    nom: 'Membres rattachés'
-                    niveau: 'ROLE_COMPANY_MANAGER'
-                    url: '/admin/company/members'
         membres:
             nom: 'Membres'
             niveau: 'ROLE_ADMIN'
@@ -73,6 +37,9 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                 assemblee_generale:
                     nom: 'Assemblée générale'
+                    niveau: 'ROLE_ADMIN'
+                membres_liste:
+                    nom: 'Annuaire'
                     niveau: 'ROLE_ADMIN'
         veille:
             nom: "Veille"
@@ -145,7 +112,7 @@ parameters:
                     url: '/admin/event/special_price'
                 admin_event_speakers_management:
                     nom: 'Gestion documentaire des speakers'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_FORUM'
                     url: '/admin/event/speakers-management'
                 forum_facturation:
                     nom: 'Factures'
@@ -238,6 +205,10 @@ parameters:
                 info_serveur:
                     nom: 'Information serveur'
                     niveau: 'ROLE_ADMIN'
+        retour_site:
+          nom: 'Retour site'
+          url: '/'
+          niveau: 'ROLE_USER'
         se_deconnecter:
             nom: 'Se déconnecter'
             url: '/admin/logout'

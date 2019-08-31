@@ -1,56 +1,6 @@
+<link rel="stylesheet" href="/css/buttons.css">
+
 <h2>Bienvenue dans l'administration de l'AFUP</h2>
 
-<p>
-    Vous pouvez gérer ici votre cotisation et vos abonnements à nos mailing lists. N'hésitez pas à forker l'application sur <a href="https://github.com/afup/web">github</a>.
-</p>
-<p><em>Fait avec ❤ par la team AFUP.</em></p>
 
-<br /><br />
-
-<fieldset id="accueil">
-    <img src="{$membre.gravatar}" />
-
-    <legend>Vos Informations</legend>
-    <div class="rangee">
-        <label class="libelle">Email :</label>
-        <span class="element">{$membre.email}</span>
-    </div>
-    <div class="rangee">
-        <label class="libelle">Adresse :</label>
-        <span class="element">{$membre.adresse}</span>
-    </div>
-    <div class="rangee">
-        <label class="libelle">Code postal :</label>
-        <span class="element">{$membre.code_postal}</span>
-    </div>
-    <div class="rangee">
-        <label class="libelle">Ville :</label>
-        <span class="element">{$membre.ville}</span>
-    </div>
-    <div class="rangee">
-        <label class="libelle">Pays :</label>
-        <span class="element">{if $membre.id_pays}{$pays[$membre.id_pays]}{/if}</span>
-    </div>
-    <div class="rangee">
-        <label class="libelle"> Tél. fixe :</label>
-        <span class="element">{$membre.telephone_fixe}</span>
-    </div>
-    <div class="rangee">
-        <label class="libelle"> Tél. portable :</label>
-        <span class="element">{$membre.telephone_portable}</span>
-    </div>
-    <div class="rangee">
-        <label class="libelle"> Antenne la plus proche :</label>
-        <span class="element">
-            {if $nearest_office.label}
-                {$nearest_office.label}
-            {else}
-                Non définie
-            {/if}
-        </span>
-    </div>
-    <br /><br />
-
-    <div align="right"><em><a href="index.php?page=membre_coordonnees">Modifier mes coordonn&eacute;es</a></em></div>
-</fieldset>
-
+Vous êtes connecté en tant que {$user_label}.

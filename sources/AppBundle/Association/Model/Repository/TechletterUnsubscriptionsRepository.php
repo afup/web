@@ -3,6 +3,7 @@
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\TechletterUnsubscription;
+use AppBundle\Association\Model\User;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -22,6 +23,19 @@ class TechletterUnsubscriptionsRepository extends Repository implements Metadata
             ->setEmail($data['email'])
             ->setReason($data['reason'])
             ->setMailchimpId($data['id'])
+            ->setUnsubscriptionDate(new \DateTime())
+        ;
+
+        return $techletterUnsubscription;
+    }
+
+    public function createFromUser(User $user)
+    {
+        $techletterUnsubscription = new TechletterUnsubscription();
+        $techletterUnsubscription
+            ->setEmail($user->getEmail())
+            ->setReason("MANUAL")
+            ->setMailchimpId(null)
             ->setUnsubscriptionDate(new \DateTime())
         ;
 

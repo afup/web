@@ -1,0 +1,164 @@
+header {
+  position: relative;
+  background-color: #36a7df;
+  padding: 15px 0;
+
+  #logo {
+    display: block;
+    padding: 0 20px;
+    max-width: 60%;
+
+    img {
+      width: 700px;
+      max-width: 100%;
+    }
+
+    .mobile {
+      display: none;
+    }
+  }
+
+  #espace-membre {
+    float: right;
+    font-family: "Podkova", serif;
+    font-weight: bold;
+    color: #fff;
+    padding: 20px 30px 0 0;
+    text-align: right;
+
+    p {
+      font-size: 1.07em;
+      line-height: 1.25;
+      text-align: right;
+      font-weight: bold;
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin: 0;
+      list-style: none;
+      *zoom: 1;
+
+      &:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      li {
+        float: right;
+        padding: 0 2px;
+        font-weight: 400;
+
+        &:before {
+          content: "| ";
+        }
+
+        &:last-child:before {
+          content: "";
+        }
+
+        a {
+          font-size: 1.07em;
+          line-height: 1.25;
+          text-align: right;
+          color: #fff;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+.header-button {
+  border-radius: 5px;
+  font-family: Roboto, Helvetica, sans-serif;
+  font-weight: normal;
+  margin: 0 10px 0 0;
+  padding: 8px;
+  text-decoration: none;
+}
+
+.header-button__connect {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+.header-button__become-member {
+  color:#fff;
+  background-color: #ed0678;
+  border: 1px solid #ed0678;
+}
+
+@media (max-width: 768px) {
+  header {
+    position: fixed;
+    top: 30px;
+    width: 100%;
+    z-index: 10;
+
+    #logo {
+      width: 350px;
+      max-width: unset;
+    }
+  }
+
+  html header #espace-membre {
+    padding: 10px 30px 0 0;
+    float:right;
+    background: none;
+
+    ul li {
+      margin: 0;
+      float: none;
+      text-align: right;
+
+      &:before {
+        content: "";
+      }
+    }
+  }
+}
+
+@media (max-width: 460px) {
+  header {
+    padding: 10px 0;
+    top: 0;
+
+    #logo {
+      width: 230px;
+
+      img {
+        display: none;
+      }
+
+      .mobile {
+        width: 180px;
+        display: inline-block;
+      }
+    }
+  }
+
+  html header #espace-membre {
+    position: static;
+    padding: 10px 10px 0 0;
+
+    ul li {
+      float: none;
+      text-align: right;
+
+      &:before {
+        content: "";
+      }
+    }
+  }
+
+  html header #logo img {
+    width: 220%;
+  }
+}

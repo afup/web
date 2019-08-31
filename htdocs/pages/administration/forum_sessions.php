@@ -325,6 +325,7 @@ if ($action == 'lister') {
         $formulaire->addElement('text'    , 'youtube_id'          , 'Id de la conférence sur youtube' , array('size' => 40, 'maxlength' => 30));
         $formulaire->addElement('text'    , 'slides_url'          , 'URL où trouver les slides' , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('text'    , 'blog_post_url'          , 'URL de la version  article de blog de la conférence' , array('size' => 80, 'maxlength' => 255));
+        $formulaire->addElement('text'    , 'interview_url'          , "URL de l'interview" , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('select', 'language_code', 'Langue', Talk::getLanguageLabelsByKey());
 
         $formulaire->addElement('checkbox'    , 'video_has_fr_subtitles'          , "Sous titres FR présents");
@@ -397,6 +398,7 @@ if ($action == 'lister') {
                                                 $valeurs['youtube_id'],
                                                 $valeurs['slides_url'],
                                                 $valeurs['blog_post_url'],
+                                                $valeurs['interview_url'],
                                                 $valeurs['language_code'],
                                                 $valeurs['skill'],
                                                 $valeurs['needs_mentoring'],

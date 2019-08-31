@@ -868,21 +868,10 @@ div.photo-container{
     display: inline-block;
 }
 
-.navbar-right #logo{
-    background: transparent url('/templates/site/img/logo-afup.svg') no-repeat left;
-    display:block;
-    width: 440px;
-    height:70px;
-}
-@media(max-width: 1024px) {
-    .navbar-right #logo {
-        width:200px;
-    }
-}
-@media(max-width: 767px) {
-    .navbar-right #logo {
-        display:none;
-    }
+.navbar-right #logo {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    float: right;
 }
 
 /*********
@@ -994,11 +983,13 @@ div.photo-container{
 @media (max-width: 768px) {
     header {
         height: 80px !important;
-        overflow:hidden;
+        overflow: hidden;
+        padding: 0;
     }
     [class^="nav-button"] {
         top:30px;
-        right:30px
+        right:30px;
+        display: none;
     }
     .navbar-nav{
         margin: 0 0.8em;
