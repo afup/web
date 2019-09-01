@@ -14,21 +14,15 @@ class Emails
     const EMAIL_TRESORIER_ADDRESS = 'tresorier@afup.org';
 
     /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
      * @var Mail
      */
     private $mail;
 
     /**
-     * @param \Twig_Environment $twig
+     * @param Mail $mail Mailer
      */
-    public function __construct(\Twig_Environment $twig, Mail $mail)
+    public function __construct(Mail $mail)
     {
-        $this->twig = $twig;
         $this->mail = $mail;
     }
 
@@ -49,8 +43,6 @@ class Emails
             throw new \Exception("Contenu du mail d'inscription non trouvé pour le forum " . $event->getTitle());
         }
 
-        $content = $this->twig->render(':admin/event:mail_inscription.html.twig', ['content' => $mailContent, 'logo_url' => $event->getLogoUrl()]);
-
         $subject = sprintf("[%s] Merci !", $event->getTitle());
 
         $to =  [
@@ -60,7 +52,7 @@ class Emails
             ]
         ];
 
-        $this->mail->send($content, $to, [], [
+        $this->mail->send(':admin/event:mail_inscription.html.twig', $to, ['content' => $mailContent, 'logo_url' => $event->getLogoUrl()], [
             'from' => [
                 'email' => self::EMAIL_BONJOUR_ADDRESS,
                 'name' => self::EMAIL_BONJOUR_LABEL,

@@ -13,6 +13,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SubscriptionReminderCommand extends ContainerAwareCommand
 {
+    private $mailer;
+
+    public function __construct(Mail $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     /**
      * @inheritDoc
      */
@@ -30,9 +37,9 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $factory = new Association\UserMembership\UserReminderFactory((new Mail()), $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class));
+        $factory = new Association\UserMembership\UserReminderFactory($this->mailer, $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class));
         $companyFactory = new Association\CompanyMembership\CompanyReminderFactory(
-            (new Mail()),
+            $this->mailer,
             $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class)
         );
 

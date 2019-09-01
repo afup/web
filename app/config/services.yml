@@ -154,7 +154,7 @@ services:
         arguments: ["@logger", "@twig"]
 
     AppBundle\Email\Emails:
-        arguments: ["@twig", '@Afup\Site\Utils\Mail']
+        arguments: ['@Afup\Site\Utils\Mail']
 
     AppBundle\Association\CompanyMembership\InvitationMail:
         autowire: true

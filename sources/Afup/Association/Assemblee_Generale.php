@@ -320,7 +320,7 @@ class Assemblee_Generale
             $hash = md5($personne_physique['id'] . '_' . $personne_physique['email'] . '_' . $personne_physique['login']);
             $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash=' . $hash;
 
-            $mail = new Mail();
+            $mail = new Mail(null, null);
 
             if ($mail->send(
                 Mail::TRANSACTIONAL_TEMPLATE_MAIL,

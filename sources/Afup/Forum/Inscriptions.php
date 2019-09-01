@@ -90,9 +90,6 @@ SQL;
      */
     public function envoyerEmailConvocation($id_forum, $template)
     {
-        require_once dirname(__FILE__) . '/../Utils/Configuration.php';
-        $configuration = $GLOBALS['AFUP_CONF'];
-
         // Get all visitors with "good" state (good to receive the email)
         // No speakers.
         $requete = <<<SQL
@@ -113,7 +110,7 @@ SQL;
         $inscrits = $this->_bdd->obtenirTous($requete);
 
 
-        $mailer = new Mail();
+        $mailer = new Mail(null, null);
 
         $listSent = array();
 

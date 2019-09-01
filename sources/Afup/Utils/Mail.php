@@ -16,6 +16,7 @@ class Mail
     private $logger;
     private $twig;
     private $configuration;
+    private $templateDirPath;
 
     /**
      * Init the object by getting the Maindrill API key
@@ -27,6 +28,7 @@ class Mail
         $this->logger = $logger;
         $this->twig = $twig;
         $this->configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
+        $this->templateDirPath = dirname(__FILE__) . '/../../../app/config/Resources/views/';
     }
 
     /**
@@ -44,14 +46,20 @@ class Mail
         $mailer = $this->getMailer();
 
         // Si on reçoit un template en paramètre, on appelle Twig avec ce template et les données 'data'
+        // Dans le cas où Twig ne peut être utilisé, on appelle alors la méthode renderTemplateFile qui joue le rôle de Twig
         // pour générer le corps du mail sinon on envoie le contenu tel quel
-        if(ends_with('.html.twig', $templateFile)) {
-            $content = $this->twig->render($templateFile, $data);
+        // TODO; A revoir lors du passage du site en full Symfony
+        if (ends_with('.html.twig', $templateFile)) {
+            if ($this->twig !== null) {
+                $content = $this->twig->render($templateFile, $data);
+            } else {
+                $content = $this->renderTemplateFile($templateFile, $data);
+            }
         } else {
             $content = $templateFile;
         }
 
-        if(!array_key_exists('from', $parameters)) {
+        if (!array_key_exists('from', $parameters)) {
             $parameters['from'] = [
                 'name' => 'AFUP',
                 'email' => 'bonjour@afup.org'
@@ -62,7 +70,7 @@ class Mail
             $mailer->AddAddress($rec['email'], $rec['name']);
         }
 
-        if(array_key_exists('to', $parameters)) {
+        if (array_key_exists('to', $parameters)) {
             foreach ($parameters['to'] as $rec) {
                 $mailer->AddAddress($rec['email'], $rec['name']);
             }
@@ -74,7 +82,7 @@ class Mail
         }
 
         // Gestion des copies cachées
-        if(array_key_exists('forceBcc', $parameters) && $parameters['forceBcc']) {
+        if (array_key_exists('forceBcc', $parameters) && $parameters['forceBcc']) {
             $bcc = (array_key_exists('bcc_address', $parameters))
                         ? $parameters['bcc_address']
                         : $this->configuration->obtenir('mails|bcc');
@@ -84,7 +92,7 @@ class Mail
         }
 
         // Gestion des pièces jointes
-        if(array_key_exists('attachments', $parameters)) {
+        if (array_key_exists('attachments', $parameters)) {
             foreach($parameters['attachments'] as $attachment) {
                 $mailer->AddAttachment($attachment['path'], $attachment['name'], $attachment['encoding'], $attachment['type']);
             }
@@ -153,6 +161,36 @@ class Mail
             $mailer->Port = $this->configuration->obtenir('mails|port');
         }
         return $mailer;
+    }
+
+    /**
+     * Méthode permettant de récupérer le template et d'en modifier le contenu
+     * A utiliser uniquement si le contexte Twig ne peut être utilisé
+     * (cas des anciennes pages non basculées sur Symfony)
+     *
+     * @param string $templateName nom du template <repertoire>:<nom du fichier twig>
+     * @param array $data contient les données à remplacer (clé => valeur)
+     * @return string contenu modifié ou vide si erreur
+     */
+    private function renderTemplateFile($templateName, $data)
+    {
+        $content = '';
+
+        list($templateDir, $templateFile) = explode(':', $templateName);
+        $template = sprintf("%s%s/%s", $this->templateDirPath, $templateDir, $templateFile);
+
+        // Chargement du template si le fichier existe
+        if (file_exists($template)) {
+            $content = file_get_contents($template);
+            if (!empty($content)) {
+                foreach ($data as $field => $value) {
+                    // On remplace les clés entre {{ }} par leurs valeurs respectives
+                    $content = preg_replace("/\{\{\s+$field\s+\}\}/", $value, $content);
+                }
+            }
+        }
+
+        return $content;
     }
 }
 

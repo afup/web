@@ -23,7 +23,7 @@ if (isset($_GET['prix'])) {
 }
 
 
-$mail = new Mail();
+$mail = new Mail(null, null);
 $mail->sendSimpleMessage('Lien paiement stand AFUP', 'https://afup.org/pages/event-payment/index.php?prix=' . $prix . '&ref=' . $_GET['ref'] .  '&forum=' . $_GET['forum'], [['email' => $_GET['email'], 'name' => $_GET['email']]]);
 
 echo 'mail envoyé sur ' . $_GET['email'];
