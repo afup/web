@@ -435,7 +435,7 @@ SQL;
 
     public function sendWelcomeMailWithData($firstName, $lastName, $login, $email)
     {
-        //$mail = new Mail();
+        $mail = new Mail(null, null);
         return $mail->send(
             'mail_templates:confirmation_creation_compte.html.twig',
             ['email' => $email, 'name' => sprintf('%s %s', $firstName, $lastName)],

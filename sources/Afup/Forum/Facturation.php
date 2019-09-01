@@ -456,7 +456,7 @@ SQL;
             $personne = $this->obtenir($reference, 'email, nom, prenom');
         }
 
-        $mail = new Mail();
+        $mail = new Mail(null, null);
         $receiver = array(
             'email' => $personne['email'],
             'name' => sprintf('%s %s', $personne['prenom'], $personne['nom'])

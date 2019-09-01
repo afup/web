@@ -27,6 +27,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CFPController extends EventBaseController
 {
+    private $mailer;
+
+    public function __construct(Mail $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     public function indexAction($eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
@@ -164,8 +171,7 @@ class CFPController extends EventBaseController
                         ]
                     );
 
-                    $mail = new Mail();
-                    $mail->sendSimpleMessage('CFP Afup', $text, [['email' => $invitation->getEmail()]]);
+                    $this->mail->sendSimpleMessage('CFP Afup', $text, [['email' => $invitation->getEmail()]]);
                 });
 
                 $this->addFlash('success', $this->get('translator')->trans('Invitation envoyée !'));
