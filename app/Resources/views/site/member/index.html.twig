@@ -171,6 +171,20 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('admin_company_public_profile') %}
+                    <a href="">
+                        <i class="fa fa-address-card"></i>
+                    </a>
+                    <span class="member-index-item--title">Profil public</span>
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" href="{{ href }}">Modifier</a>
+                    </div>
+
+                </div>
+            </div>
         </div>
         {% endif %}
 
