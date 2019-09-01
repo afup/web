@@ -62,7 +62,7 @@
 
                 </div>
 
-                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId %}
+                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId or talk.getVideoHasEnSubtitles or talk.getVideoHasFrSubtitles %}
                 <div class="container">
                     <div class="col-md-12">
                         <h2>Informations complémentaires</h2>
@@ -77,6 +77,12 @@
                         {% if talk.hasBlogPostUrl %}
                             <li>
                                 <a class="talk-info-link" href="{{ talk.getBlogPostUrl }}"><i class="fa fa-rss"></i> Transcript</a>
+                            </li>
+                        {% endif %}
+
+                        {% if talk.hasInterviewUrl %}
+                            <li>
+                                <a class="talk-info-link" href="{{ talk.getInterviewUrl }}"><i class="fa fa-newspaper-o"></i> Interview</a>
                             </li>
                         {% endif %}
 

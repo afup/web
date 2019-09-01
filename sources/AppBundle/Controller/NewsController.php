@@ -18,6 +18,10 @@ class NewsController extends SiteBaseController
             throw $this->createNotFoundException();
         }
 
+        if (!($article->getPublishedAt() <= new \DateTime())) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->render(
             ':site:news/display.html.twig',
             [

@@ -79,6 +79,7 @@ class Articles
         $requete .= ' INNER JOIN';
         $requete .= '  afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id';
         $requete .= ' WHERE afup_site_article.etat = 1 ';
+        $requete .= ' AND afup_site_article.date <= UNIX_TIMESTAMP(NOW()) ';
         $requete .= ' AND id_parent <> 52 '; // On affiche pas les articles des forums
         $requete .= ' AND afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ASSOCIATION . ' '; // On affiche pas les articles de la page assocition
         $requete .= ' AND afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ANTENNES . ' '; // On affiche pas les articles de la page antennes

@@ -57,6 +57,8 @@ if ($action == 'lister') {
    {
         $champsRecup = $comptaFact->obtenir($_GET['id']);
 
+        $factureId = $champsRecup['id'];
+
         $champs['date_facture']          = $champsRecup['date_facture'];
         $champs['societe']          = $champsRecup['societe'];
         $champs['service']          = $champsRecup['service'];
@@ -97,6 +99,8 @@ if ($action == 'lister') {
 		$formulaire->setDefaults($champs);
 		//$formulaire->setDefaults($champsRecup);
 		$formulaire->addElement('hidden', 'id', $_GET['id']);
+
+		$smarty->assign('facture_id', $factureId);
    }
 
 //detail devis

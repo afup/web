@@ -675,6 +675,7 @@ class AppelConferencier
         $youtubeId = null,
         $slidesUrl = null,
         $blogPostUrl = null,
+        $interviewUrl = null,
         $languageCode = null,
         $skill = null,
         $needs_mentoring = null,
@@ -700,6 +701,9 @@ class AppelConferencier
         }
         if ($blogPostUrl !== null) {
             $requete .= ' blog_post_url = ' . $this->_bdd->echapper($blogPostUrl) . ', ';
+        }
+        if ($interviewUrl !== null) {
+            $requete .= ' interview_url = ' . $this->_bdd->echapper($interviewUrl) . ', ';
         }
         if ($languageCode !== null) {
             $requete .= ' language_code = ' . $this->_bdd->echapper($languageCode) . ', ';
