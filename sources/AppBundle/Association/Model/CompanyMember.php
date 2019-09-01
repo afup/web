@@ -403,7 +403,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function getPublicProfileEnabled()
     {
-        return (bool)$this->publicProfileEnabled;
+        return (bool) $this->publicProfileEnabled;
     }
 
     /**
