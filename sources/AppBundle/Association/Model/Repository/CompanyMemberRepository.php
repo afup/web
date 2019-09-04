@@ -91,6 +91,46 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'maxMembers',
                 'type' => 'int'
             ])
+            ->addField([
+                'columnName' => 'public_profile_enabled',
+                'fieldName' => 'publicProfileEnabled',
+                'type' => 'boolean',
+            ])
+            ->addField([
+                'columnName' => 'description',
+                'fieldName' => 'description',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'logo_url',
+                'fieldName' => 'logoUrl',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'website_url',
+                'fieldName' => 'websiteUrl',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'contact_page_url',
+                'fieldName' => 'contactPageUrl',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'careers_page_url',
+                'fieldName' => 'careersPageUrl',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'twitter_handle',
+                'fieldName' => 'twitterHandle',
+                'type' => 'string',
+            ])
+            ->addField(([
+                'columnName' => 'related_afup_offices',
+                'fieldName' => 'relatedAfupOffices',
+                'type' => 'string',
+            ]))
         ;
 
         return $metadata;

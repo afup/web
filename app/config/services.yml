@@ -36,6 +36,11 @@ services:
         tags:
             -  { name: twig.extension }
 
+    AppBundle\Association\Form\HelpMessageExtension:
+        class: AppBundle\Association\Form\HelpMessageExtension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
     AppBundle\Listener\LocaleListener:
         arguments: [ "%kernel.default_locale%" ]
         tags:
