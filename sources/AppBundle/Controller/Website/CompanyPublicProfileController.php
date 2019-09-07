@@ -45,7 +45,7 @@ class CompanyPublicProfileController extends SiteBaseController
             $offices[] = $office;
         }
 
-        usort($offices, function($a, $b) {
+        usort($offices, function ($a, $b) {
             $a = $a['label'];
             $b = $b['label'];
 
