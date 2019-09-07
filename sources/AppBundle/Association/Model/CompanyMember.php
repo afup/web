@@ -5,6 +5,7 @@ namespace AppBundle\Association\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CompanyMember implements NotifyPropertyInterface
@@ -584,7 +585,9 @@ class CompanyMember implements NotifyPropertyInterface
             return [];
         }
 
-        return explode(',', $relatedAfupOffices);
+        $relatedAfupOffices = explode(',', $relatedAfupOffices);
+
+        return $relatedAfupOffices;
     }
 
     /**
@@ -603,5 +606,15 @@ class CompanyMember implements NotifyPropertyInterface
         }
 
         return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getCompanyName());
     }
 }

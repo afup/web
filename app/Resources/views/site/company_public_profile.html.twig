@@ -1,0 +1,78 @@
+{% extends ':admin/association/membership:_base.html.twig' %}
+
+{% block submenu %}
+    {% include ':site:_members_menu.html.twig' with {
+        current: "compagnies"
+    } only %}
+{% endblock %}
+
+{% block page_title %}{{ company_member.companyName }}{% endblock %}
+
+{% block page_content %}
+
+    <h2>L'entreprise</h2>
+    <div class="container">
+        <div class="col-md-4">
+            <img src="{{ company_member.getLogoUrl }}" />
+        </div>
+        <div class="col-md-8">
+            {{ company_member.description|nl2br }}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col-md-8">
+            <div class="txtcenter">
+                {% if company_member.websiteUrl %}
+                    <a class="button-inverted {% if not company_member.careersPageUrl and not company_member.contactPageUrl %}button--call-to-action{% endif %}"
+                       href="{{ company_member.websiteUrl }}">Site web</a>
+                {% endif %}
+
+                {% if company_member.careersPageUrl %}
+                    <a class="button-inverted button--call-to-action"
+                       href="{{ company_member.careersPageUrl }}">Page de recrutement</a>
+                {% endif %}
+
+                {% if company_member.contactPageUrl %}
+                <a class="button-inverted {% if not company_member.careersPageUrl %}button--call-to-action{% endif %}"
+                   href="{{ company_member.contactPageUrl }}">Page de contact</a>
+                {% endif %}
+            </div>
+
+            <h2>Présente dans les antennes</h2>
+            <div class="container">
+                {% for local_office in offices %}
+                    <div class="col-md-3 col-sm-12 member-badge">
+                        <img src="{{ local_office.logo_url }}" /><br />
+                        {{ local_office.label }}
+                    </div>
+                {% else %}
+                    <div class="col-md-12">
+                        {{ company_member.companyName }} n'a pas renseigné d'antenne à proximité.
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            {% if badges|length > 0 %}
+            <h2>Badges</h2>
+
+            <div class="container">
+                {% for badge in badges %}
+                <div class="col-md-3 col-sm-12 member-badge">
+                    <img src="/images/badges/{{ badge }}.png" alt="Badge {{badge }}">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+        {% if company_member.twitterHandle %}
+        <div class="col-md-4">
+            <a class="twitter-timeline" data-lang="fr" data-chrome="noheader,nofooter,noborders" data-height="800" data-dnt="true" data-theme="light" href="https://twitter.com/{{ company_member.twitterHandle }}">{{ company_member.twitterHandle }}</a>
+            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
