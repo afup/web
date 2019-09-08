@@ -19,11 +19,13 @@ class Mail
     private $templateDirPath;
 
     /**
-     * Init the object by getting the Maindrill API key
-     * @param LoggerInterface $logger
-     * @param Twig_Environnement $twig
+     * Init the object by getting LoggerInterface and TwigEnvironment
+     * However getting null for old code for all parameters
+     *
+     * @param LoggerInterface|null $logger
+     * @param Twig_Environnement|null $twig
      */
-    public function __construct(LoggerInterface $logger, \Twig_Environment $twig)
+    public function __construct($logger, $twig)
     {
         $this->logger = $logger;
         $this->twig = $twig;
@@ -44,6 +46,7 @@ class Mail
     public function send($templateFile, array $receiver, array $data = [], array $parameters = [])
     {
         $mailer = $this->getMailer();
+        $isHtml = true;
 
         // Si on reçoit un template en paramètre, on appelle Twig avec ce template et les données 'data'
         // Dans le cas où Twig ne peut être utilisé, on appelle alors la méthode renderTemplateFile qui joue le rôle de Twig
@@ -86,9 +89,17 @@ class Mail
             $bcc = (array_key_exists('bcc_address', $parameters))
                         ? $parameters['bcc_address']
                         : $this->configuration->obtenir('mails|bcc');
-            if ($bcc) {
+            if (is_array($bcc)) {
+                foreach($bcc as $bcc_email) {
+                    $mailer->AddBCC($bcc_email);
+                }
+            } else {
                 $mailer->AddBCC($bcc);
             }
+        }
+
+        if (array_key_exists('html', $parameters)) {
+            $isHtml = $parameters['html'];
         }
 
         // Gestion des pièces jointes
@@ -101,7 +112,7 @@ class Mail
         $mailer->From = $parameters['from']['email'];
         $mailer->FromName = $parameters['from']['name'];
         $mailer->Subject = $parameters['subject'];
-        $mailer->isHTML(true);
+        $mailer->isHTML($isHtml);
         $mailer->Body = $content;
         return $mailer->Send();
     }

@@ -69,59 +69,29 @@ class Mailing
     {
         $configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
 
-        $optionsDefault = array(
-            'html' => FALSE,
-            'bcc' => array(),
-            'file' => array()); // chaque item doit contenir : (pathFichier, nom fichier)
+        $paramsDefault = array(
+            'html' => false,
+            'bcc_address' => array(),
+            'attachments' => array()); // chaque item doit contenir : (pathFichier, nom fichier)
 
-        $options = array_merge($optionsDefault, $options);
+        $parameters = array_merge($paramsDefault, $options);
 
-        $mail = new \PHPMailer();
-        $mail->CharSet = "utf-8";
-        $mail->IsHTML($options['html']);
-        if ($configuration->obtenir('mails|serveur_smtp')) {
-            $mail->IsSMTP();
-            $mail->Host = $configuration->obtenir('mails|serveur_smtp');
-            $mail->SMTPAuth = false;
-        }
-        if ($configuration->obtenir('mails|tls') == true) {
-            $mail->SMTPAuth = $configuration->obtenir('mails|tls');
-            $mail->SMTPSecure = 'tls';
-        }
-        if ($configuration->obtenir('mails|username')) {
-            $mail->Username = $configuration->obtenir('mails|username');
-        }
-        if ($configuration->obtenir('mails|password')) {
-            $mail->Password = $configuration->obtenir('mails|password');
-        }
-        if ($configuration->obtenir('mails|port')) {
-            $mail->Port = $configuration->obtenir('mails|port');
-        }
-        if ($configuration->obtenir('mails|force_destinataire')) {
-            $to = $configuration->obtenir('mails|force_destinataire');
-        }
+        $mail = new Mail(null, null);
 
-        $bcc = $configuration->obtenir('mails|bcc');
-        if ($bcc) {
-            $mail->AddBCC($bcc);
-        }
-        foreach ($options['bcc'] as $valeurBcc) {
-            $mail->AddBCC($valeurBcc);
-        }
-        foreach ($options['file'] as $filePath) {
-            $mail->AddAttachment($filePath[0], $filePath[1]);
-            // TODO : deboguer la méthode
-        }
+        $parameters['from'] = [
+            'email' => is_array($from) ? $from[0] : $from,
+            'name' => (is_array($from) and isset($from[1])) ? $from[1] : '',
+        ];
+        $parameters['subject'] = $subject;
+        $toArray = [
+                [
+                'name' => (is_array($to) and isset($to[1])) ? $to[1] : '',
+                'email' => is_array($to) ? $to[0] : $to,
+            ]
+        ];
 
-        $from_email = is_array($from) ? $from[0] : $from;
-        $from_name = (is_array($from) and isset($from[1])) ? $from[1] : '';
-        $to_email = is_array($to) ? $to[0] : $to;
-        $to_name = (is_array($to) and isset($to[1])) ? $to[1] : '';
-        $mail->AddAddress($to_email, $to_name);
-        $mail->From = $from_email;
-        $mail->FromName = $from_name;
-        $mail->Subject = $subject;
-        $mail->Body = str_replace('$EMAIL$', $to_email, $body);
-        return $mail->Send();
+        $body = str_replace('$EMAIL$', $toArray[0]['email'], $body);
+
+        return $mail->send($body, $toArray, [], $parameters);
     }
 }

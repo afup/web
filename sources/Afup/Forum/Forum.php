@@ -321,28 +321,31 @@ class Forum
 
 
         $succes = false;
-        require_once 'phpmailer/class.phpmailer.php';
         foreach ($personnes_physiques as $personne_physique) {
             $hash = md5($personne_physique['id'] . '_' . $personne_physique['email'] . '_' . $personne_physique['login']);
             $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash=' . $hash;
             $link .= '&action=forum_planning_vote';
-            var_dump($corps . $link);
-            die();
-            $mail = new \PHPMailer;
-            if ($GLOBALS['conf']->obtenir('mails|serveur_smtp')) {
-                $mail->IsSMTP();
-                $mail->Host = $GLOBALS['conf']->obtenir('mails|serveur_smtp');
-                $mail->SMTPAuth = false;
-            }
-            $personne_physique['email'] = 'xgorse@elao.com';
-            $mail->AddAddress($personne_physique['email'], $personne_physique['nom']);
-            $mail->From = $GLOBALS['conf']->obtenir('mails|email_expediteur');
-            $mail->FromName = $GLOBALS['conf']->obtenir('mails|nom_expediteur');
-            $mail->BCC = $GLOBALS['conf']->obtenir('mails|email_expediteur');
-            $mail->Subject = $sujet;
-            $mail->Body = $corps . $link;
 
-            // $mail->Send();
+            $mail = new Mail(null, null);
+
+            $parameters = array(
+                'subject' => $sujet,
+                'forceBcc' => true,
+                'from' => array(
+                    'name' => $GLOBALS['conf']->obtenir('mails|nom_expediteur'),
+                    'email' => $GLOBALS['conf']->obtenir('mails|email_expediteur'),
+                )
+            );
+
+            $personne_physique['email'] = 'xgorse@elao.com';
+            $toArray = array(
+                array(
+                    'name' => $personne_physique['nom'],
+                    'email' => $personne_physique['email'],
+                )
+            );
+
+            $mail->send($corps . $link, $toArray, [], $parameters);
             $succes += 1;
         }
 
