@@ -581,7 +581,14 @@ class Facture
             array($personne['email'], $personne['nom']),
             $sujet,
             $corps,
-            array('file' => array($chemin_facture, 'facture-' . $reference . '.pdf'))
+            array('attachments' =>
+                array(
+                    'path' => $chemin_facture,
+                    'name' => 'facture-' . $reference . '.pdf',
+                    'encoding' => 'base64',
+                    'type' => 'application/pdf'
+                )
+            )
         );
 
         @unlink($chemin_facture);
