@@ -2,6 +2,7 @@
 
 namespace AppBundle\Association\UserMembership;
 
+use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\EventRepository;
 
@@ -33,6 +34,36 @@ class BadgesComputer
         $badges = $this->filterExistingBadges($badgesCodes);
 
         return $badges;
+    }
+
+    public function getCompanyBadges(CompanyMember $companyMember)
+    {
+        $badgesInfos = $this->prepareCompanyBadgesInfos($companyMember);
+
+        $badgesInfos = $this->sortBadgesInfos($badgesInfos);
+
+        $badgesCodes = $this->mapBadgesCodes($badgesInfos);
+
+        $badges = $this->filterExistingBadges($badgesCodes);
+
+        return $badges;
+    }
+
+    private function prepareCompanyBadgesInfos(CompanyMember $companyMember)
+    {
+        $seniorityInfos = $this->seniorityComputer->computeCompanyAndReturnInfos($companyMember);
+        $maxBadgesSeniority = 10;
+
+        $badgesCodes = [];
+
+        for ($i = min($seniorityInfos['years'], $maxBadgesSeniority); $i > 0; $i--) {
+            $badgesCodes[] = [
+                'date' => ($seniorityInfos['first_year'] + $i) . '-01-01',
+                'code' => $i . 'ans',
+            ];
+        }
+
+        return $badgesCodes;
     }
 
     private function prepareBadgesInfos(User $user)

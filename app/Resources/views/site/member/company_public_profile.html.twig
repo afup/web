@@ -17,10 +17,10 @@
             <div class="afup-form-container">
                 {{ form_row(form.enabled) }}
                 {# a modifier lors de l'ajout de la page publique #}
-                {% if false and company_member.publicProfileEnabled %}
+                {% if company_member.publicProfileEnabled %}
                 <div>
                     <label></label>
-                    <a href="">Voir mon profil public</a>
+                    <a href="{{ path('admin_company_public_profile_test', {id: company_member.id, slug: company_member.slug}) }}">Voir mon profil public</a>
                 </div>
                 {% endif %}
                 {{ form_row(form.description) }}
