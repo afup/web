@@ -95,6 +95,46 @@ class CompanyMember implements NotifyPropertyInterface
     private $invitations;
 
     /**
+     * @var bool
+     */
+    private $publicProfileEnabled = false;
+
+    /**
+     * @var string|null
+     */
+    private $description;
+
+    /**
+     * @var string|null
+     */
+    private $logoUrl;
+
+    /**
+     * @var string|null
+     */
+    private $websiteUrl;
+
+    /**
+     * @var string|null
+     */
+    private $contactPageUrl;
+
+    /**
+     * @var string|null
+     */
+    private $careersPageUrl;
+
+    /**
+     * @var string|null
+     */
+    private $twitterHandle;
+
+    /**
+     * @var string|null
+     */
+    private $relatedAfupOffices;
+
+    /**
      * @return int
      */
     public function getId()
@@ -355,6 +395,213 @@ class CompanyMember implements NotifyPropertyInterface
     {
         $this->propertyChanged('maxMembers', $this->maxMembers, $maxMembers);
         $this->maxMembers = $maxMembers;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPublicProfileEnabled()
+    {
+        return (bool) $this->publicProfileEnabled;
+    }
+
+    /**
+     * @param bool $publicProfileEnabled
+     *
+     * @return CompanyMember
+     */
+    public function setPublicProfileEnabled($publicProfileEnabled)
+    {
+        $this->propertyChanged('publicProfileEnabled', $this->publicProfileEnabled, $publicProfileEnabled);
+        $this->publicProfileEnabled = $publicProfileEnabled;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     *
+     * @return $this
+     */
+    public function setDescription($description = null)
+    {
+        $this->propertyChanged('description', $this->description, $description);
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasLogoUrl()
+    {
+        return null !== $this->getLogoUrl();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLogoUrl()
+    {
+        return $this->logoUrl;
+    }
+
+    /**
+     * @param string|null $logoUrl
+     *
+     * @return $this
+     */
+    public function setLogoUrl($logoUrl)
+    {
+        $this->propertyChanged('logoUrl', $this->logoUrl, $logoUrl);
+        $this->logoUrl = $logoUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWebsiteUrl()
+    {
+        return $this->websiteUrl;
+    }
+
+    /**
+     * @param string|null $websiteUrl
+     *
+     * @return CompanyMember
+     */
+    public function setWebsiteUrl($websiteUrl)
+    {
+        $this->propertyChanged('websiteUrl', $this->websiteUrl, $websiteUrl);
+        $this->websiteUrl = $websiteUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getContactPageUrl()
+    {
+        return $this->contactPageUrl;
+    }
+
+    /**
+     * @param string|null $contactPageUrl
+     *
+     * @return $this
+     */
+    public function setContactPageUrl($contactPageUrl)
+    {
+        $this->propertyChanged('contactPageUrl', $this->contactPageUrl, $contactPageUrl);
+        $this->contactPageUrl = $contactPageUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCareersPageUrl()
+    {
+        return $this->careersPageUrl;
+    }
+
+    /**
+     * @param string|null $careersPageUrl
+     *
+     * @return $this
+     */
+    public function setCareersPageUrl($careersPageUrl)
+    {
+        $this->propertyChanged('careersPageUrl', $this->careersPageUrl, $careersPageUrl);
+        $this->careersPageUrl = $careersPageUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTwitterHandle()
+    {
+        return $this->twitterHandle;
+    }
+
+    /**
+     * @param string|null $twitterHandle
+     *
+     * @return $this
+     */
+    public function setTwitterHandle($twitterHandle)
+    {
+        $this->propertyChanged('twitterHandle', $this->twitterHandle, $twitterHandle);
+        $this->twitterHandle = $twitterHandle;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRelatedAfupOffices()
+    {
+        return $this->relatedAfupOffices;
+    }
+
+    /**
+     * @param string|null $relatedAfupOffices
+     *
+     * @return $this
+     */
+    public function setRelatedAfupOffices($relatedAfupOffices)
+    {
+        $this->propertyChanged('relatedAfupOffices', $this->relatedAfupOffices, $relatedAfupOffices);
+        $this->relatedAfupOffices = $relatedAfupOffices;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormattedRelatedAfupOffices()
+    {
+        $relatedAfupOffices = $this->getRelatedAfupOffices();
+        if (null === $relatedAfupOffices) {
+            return [];
+        }
+
+        return explode(',', $relatedAfupOffices);
+    }
+
+    /**
+     * @param array $relatedAfupOffices
+     *
+     * @return $this
+     */
+    public function setFormattedRelatedAfupOffices(array $relatedAfupOffices)
+    {
+        if (count($relatedAfupOffices)) {
+            sort($relatedAfupOffices);
+
+            $this->setRelatedAfupOffices(implode(',', $relatedAfupOffices));
+        } else {
+            $this->setRelatedAfupOffices(null);
+        }
+
         return $this;
     }
 }

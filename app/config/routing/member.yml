@@ -46,3 +46,7 @@ admin_company:
 admin_company_members:
   path: /company/members/{id}
   defaults: {_controller: AppBundle:AdminMemberShip:members, id: ~}
+
+admin_company_public_profile:
+  path: /company/public_profile
+  defaults: {_controller: AppBundle:Website\Member\CompanyPublicProfile:index }
