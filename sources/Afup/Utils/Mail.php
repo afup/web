@@ -40,7 +40,7 @@ class Mail
      * @param array $receiver Receiver's data like ['email' => 'foo@bar.baz', 'name' => 'John Doe']
      * @param array $data Data to put in the email
      * @param array $parameters Some parameters (like bcc, etc.)
-     * @return bool TRUE on success, FALSE on failure
+     * @return boolean true on success, false on failure
      * @throws Exception
      */
     public function send($templateFile, array $receiver, array $data = [], array $parameters = [])
@@ -51,7 +51,7 @@ class Mail
         // Si on reçoit un template en paramètre, on appelle Twig avec ce template et les données 'data'
         // Dans le cas où Twig ne peut être utilisé, on appelle alors la méthode renderTemplateFile qui joue le rôle de Twig
         // pour générer le corps du mail sinon on envoie le contenu tel quel
-        // TODO; A revoir lors du passage du site en full Symfony
+        // TODO A revoir lors du passage du site en full Symfony
         if (ends_with('.html.twig', $templateFile)) {
             if ($this->twig !== null) {
                 $content = $this->twig->render($templateFile, $data);
@@ -151,27 +151,46 @@ class Mail
      */
     private function getMailer()
     {
+        $confMailer = $this->getConfigMailer();
+
         $mailer = new \PHPMailer();
         $mailer->CharSet = "utf-8";
-        if ($this->configuration->obtenir('mails|serveur_smtp')) {
+        if (array_key_exists('smtp_server', $confMailer)) {
             $mailer->IsSMTP();
-            $mailer->Host = $this->configuration->obtenir('mails|serveur_smtp');
+            $mailer->Host = $confMailer['smtp_server'];
             $mailer->SMTPAuth = false;
         }
-        if ($this->configuration->obtenir('mails|tls') == true) {
-            $mailer->SMTPAuth = $this->configuration->obtenir('mails|tls');
+        if (array_key_exists('tls', $confMailer) && $confMailer['tls'] !== '0') {
+            $mailer->SMTPAuth = $confMailer['tls'];
             $mailer->SMTPSecure = 'tls';
         }
-        if ($this->configuration->obtenir('mails|username')) {
-            $mailer->Username = $this->configuration->obtenir('mails|username');
+        if (array_key_exists('username', $confMailer)) {
+            $mailer->Username = $confMailer['username'];
         }
-        if ($this->configuration->obtenir('mails|password')) {
-            $mailer->Password = $this->configuration->obtenir('mails|password');
+        if (array_key_exists('password', $confMailer)) {
+            $mailer->Password = $confMailer['password'];
         }
-        if ($this->configuration->obtenir('mails|port')) {
-            $mailer->Port = $this->configuration->obtenir('mails|port');
+        if (array_key_exists('port', $confMailer)) {
+            $mailer->Port = $confMailer['port'];
         }
         return $mailer;
+    }
+
+    /**
+     * Retourne la configuration du Mailer
+     *
+     * @return array configuration mailer (smtp_server, username, password, port, tls)
+     */
+    private function getConfigMailer()
+    {
+        $config = [
+            'smtp_server' => $this->configuration->obtenir('mails|serveur_smtp'),
+            'tls' => $this->configuration->obtenir('mails|tls'),
+            'username' => $this->configuration->obtenir('mails|username'),
+            'password' => $this->configuration->obtenir('mails|password'),
+            'port' => $this->configuration->obtenir('mails|port'),
+        ];
+        return $config;
     }
 
     /**
