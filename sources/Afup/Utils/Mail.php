@@ -41,80 +41,89 @@ class Mail
      * @param array $data Data to put in the email
      * @param array $parameters Some parameters (like bcc, etc.)
      * @return boolean true on success, false on failure
-     * @throws Exception
      */
     public function send($templateFile, array $receiver, array $data = [], array $parameters = [])
     {
-        $mailer = $this->getMailer();
         $isHtml = true;
 
-        // Si on reçoit un template en paramètre, on appelle Twig avec ce template et les données 'data'
-        // Dans le cas où Twig ne peut être utilisé, on appelle alors la méthode renderTemplateFile qui joue le rôle de Twig
-        // pour générer le corps du mail sinon on envoie le contenu tel quel
-        // TODO A revoir lors du passage du site en full Symfony
-        if (ends_with('.html.twig', $templateFile)) {
-            if ($this->twig !== null) {
-                $content = $this->twig->render($templateFile, $data);
-            } else {
-                $content = $this->renderTemplateFile($templateFile, $data);
-            }
-        } else {
-            $content = $templateFile;
-        }
+        try {
+            $mailer = $this->getMailer();
 
-        if (!array_key_exists('from', $parameters)) {
-            $parameters['from'] = [
-                'name' => 'AFUP',
-                'email' => 'bonjour@afup.org'
-            ];
-        }
-
-        foreach ($receiver as $rec) {
-            $mailer->AddAddress($rec['email'], $rec['name']);
-        }
-
-        if (array_key_exists('to', $parameters)) {
-            foreach ($parameters['to'] as $rec) {
-                $mailer->AddAddress($rec['email'], $rec['name']);
-            }
-        }
-
-        $otherRecipients = $this->configuration->obtenir('mails|force_destinataire');
-        if ($otherRecipients) {
-            $mailer->AddAddress($otherRecipients);
-        }
-
-        // Gestion des copies cachées
-        if (array_key_exists('forceBcc', $parameters) && $parameters['forceBcc']) {
-            $bcc = (array_key_exists('bcc_address', $parameters))
-                        ? $parameters['bcc_address']
-                        : $this->configuration->obtenir('mails|bcc');
-            if (is_array($bcc)) {
-                foreach($bcc as $bcc_email) {
-                    $mailer->AddBCC($bcc_email);
+            // Si on reçoit un template en paramètre, on appelle Twig avec ce template et les données 'data'
+            // Dans le cas où Twig ne peut être utilisé, on appelle alors la méthode renderTemplateFile qui joue le rôle de Twig
+            // pour générer le corps du mail sinon on envoie le contenu tel quel
+            // TODO A revoir lors du passage du site en full Symfony
+            if (ends_with('.html.twig', $templateFile)) {
+                if ($this->twig !== null) {
+                    $content = $this->twig->render($templateFile, $data);
+                } else {
+                    $content = $this->renderTemplateFile($templateFile, $data);
                 }
             } else {
-                $mailer->AddBCC($bcc);
+                $content = $templateFile;
+            }
+
+            if (!array_key_exists('from', $parameters)) {
+                $parameters['from'] = [
+                    'name' => 'AFUP',
+                    'email' => 'bonjour@afup.org'
+                ];
+            }
+
+            foreach ($receiver as $rec) {
+                $mailer->AddAddress($rec['email'], $rec['name']);
+            }
+
+            if (array_key_exists('to', $parameters)) {
+                foreach ($parameters['to'] as $rec) {
+                    $mailer->AddAddress($rec['email'], $rec['name']);
+                }
+            }
+
+            $otherRecipients = $this->configuration->obtenir('mails|force_destinataire');
+            if ($otherRecipients) {
+                $mailer->AddAddress($otherRecipients);
+            }
+
+            // Gestion des copies cachées
+            if (array_key_exists('forceBcc', $parameters) && $parameters['forceBcc']) {
+                $bcc = (array_key_exists('bcc_address', $parameters))
+                            ? $parameters['bcc_address']
+                            : $this->configuration->obtenir('mails|bcc');
+                if (is_array($bcc)) {
+                    foreach($bcc as $bcc_email) {
+                        $mailer->AddBCC($bcc_email);
+                    }
+                } else {
+                    $mailer->AddBCC($bcc);
+                }
+            }
+
+            if (array_key_exists('html', $parameters)) {
+                $isHtml = $parameters['html'];
+            }
+
+            // Gestion des pièces jointes
+            if (array_key_exists('attachments', $parameters)) {
+                foreach($parameters['attachments'] as $attachment) {
+                    $mailer->AddAttachment($attachment['path'], $attachment['name'], $attachment['encoding'], $attachment['type']);
+                }
+            }
+
+            $mailer->From = $parameters['from']['email'];
+            $mailer->FromName = $parameters['from']['name'];
+            $mailer->Subject = $parameters['subject'];
+            $mailer->isHTML($isHtml);
+            $mailer->Body = $content;
+            $mailer->Send();
+            return true;
+        } catch(\Exception $e) {
+            if($this->logger !== null) {
+                $this->logger->critical("Mail not send: " . $e->getMessage());
             }
         }
 
-        if (array_key_exists('html', $parameters)) {
-            $isHtml = $parameters['html'];
-        }
-
-        // Gestion des pièces jointes
-        if (array_key_exists('attachments', $parameters)) {
-            foreach($parameters['attachments'] as $attachment) {
-                $mailer->AddAttachment($attachment['path'], $attachment['name'], $attachment['encoding'], $attachment['type']);
-            }
-        }
-
-        $mailer->From = $parameters['from']['email'];
-        $mailer->FromName = $parameters['from']['name'];
-        $mailer->Subject = $parameters['subject'];
-        $mailer->isHTML($isHtml);
-        $mailer->Body = $content;
-        return $mailer->Send();
+        return false;
     }
 
     /**
@@ -153,7 +162,8 @@ class Mail
     {
         $confMailer = $this->getConfigMailer();
 
-        $mailer = new \PHPMailer();
+        // Exceptions gérées
+        $mailer = new \PHPMailer(true);
         $mailer->CharSet = "utf-8";
         if (array_key_exists('smtp_server', $confMailer)) {
             $mailer->IsSMTP();
