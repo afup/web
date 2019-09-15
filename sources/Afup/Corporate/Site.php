@@ -92,10 +92,8 @@ class Site
             if ($article_spip['statut'] == "publie") {
                 $article = new Article($article_spip['id_article'], $this->bdd);
                 $article->id_site_rubrique = $article_spip['id_rubrique'];
-                $article->surtitre = Site::transformer_spip_en_html(($article_spip['surtitre']));
                 $article->titre = ($article_spip['titre']);
                 $article->raccourci = Site::raccourcir($article_spip['titre']);
-                $article->descriptif = Site::transformer_spip_en_html(($article_spip['descriptif']));
                 $article->chapeau = Site::transformer_spip_en_html(($article_spip['chapo']));
                 $article->contenu = Site::transformer_spip_en_html(($article_spip['texte']));
                 $article->position = 0;

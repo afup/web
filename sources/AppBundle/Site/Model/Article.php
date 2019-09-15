@@ -35,11 +35,6 @@ class Article implements NotifyPropertyInterface
      */
     private $leadParagraph;
 
-    /**
-     * @var string
-     */
-    private $description;
-
     /***
      * @var string
      */
@@ -172,34 +167,6 @@ class Article implements NotifyPropertyInterface
     /**
      * @return string
      */
-    public function getDescription()
-    {
-        $description = $this->description;
-
-        if ($this->isContentTypeMarkdown()) {
-            $parseDown = new \Parsedown();
-            $description = $parseDown->parse($description);
-        }
-
-        return $description;
-    }
-
-    /**
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->propertyChanged('description', $this->description, $description);
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getContent()
     {
         $content = $this->content;
@@ -282,11 +249,6 @@ class Article implements NotifyPropertyInterface
     {
         if (strlen($leadParagraph = $this->getLeadParagraph())) {
             return strip_tags($leadParagraph);
-        }
-
-
-        if (strlen($description = $this->getDescription())) {
-            return $description;
         }
 
         return  substr(strip_tags($this->getContent()), 0, 200);
