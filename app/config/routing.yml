@@ -46,6 +46,9 @@ techletter:
     resource: "routing/techletter.yml"
     prefix: /techno_watch
 
+admin_company_public_profile_test:
+    path: /profile/company/{id}-{slug}
+    defaults: {_controller: AppBundle:Website\CompanyPublicProfile:index }
 presta_sitemap:
     resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
 

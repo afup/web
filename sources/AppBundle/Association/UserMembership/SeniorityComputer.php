@@ -3,6 +3,7 @@
 namespace AppBundle\Association\UserMembership;
 
 use Afup\Site\Association\Cotisations;
+use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 
 class SeniorityComputer
@@ -17,6 +18,22 @@ class SeniorityComputer
         $this->cotisations = $cotisations;
     }
 
+    public function computeCompany(CompanyMember $companyMember)
+    {
+        $cotis = $this->cotisations->obtenirListe(AFUP_PERSONNES_MORALES, $companyMember->getId());
+
+        $infos = $this->computeFromCotisationsAndReturnInfos($cotis);
+
+        return $infos['years'];
+    }
+
+    public function computeCompanyAndReturnInfos(CompanyMember $companyMember)
+    {
+        $cotis = $this->cotisations->obtenirListe(AFUP_PERSONNES_MORALES, $companyMember->getId());
+
+        return $this->computeFromCotisationsAndReturnInfos($cotis);
+    }
+
     public function compute(User $user)
     {
         $infos = $this->computeAndReturnInfos($user);
@@ -27,11 +44,17 @@ class SeniorityComputer
     public function computeAndReturnInfos(User $user)
     {
         $cotis = $this->cotisations->obtenirListe(AFUP_PERSONNES_PHYSIQUES, $user->getId());
+
+        return $this->computeFromCotisationsAndReturnInfos($cotis);
+    }
+
+    private function computeFromCotisationsAndReturnInfos(array $cotisations)
+    {
         $now = new \DateTime();
         $diffs = [];
 
         $years = [];
-        foreach ($cotis as $coti) {
+        foreach ($cotisations as $coti) {
             $from = \DateTimeImmutable::createFromFormat('U', $coti['date_debut']);
             $to = \DateTimeImmutable::createFromFormat('U', $coti['date_fin']);
             $to = min($now, $to);
@@ -47,9 +70,15 @@ class SeniorityComputer
 
         $totalDiffs = $reference->diff($lastest);
 
+        $firstYear = null;
+
+        if (count($years)) {
+            $firstYear = min($years);
+        }
+
         return [
             'years' => $totalDiffs->y,
-            'first_year' => min($years),
+            'first_year' => $firstYear,
         ];
     }
 }
