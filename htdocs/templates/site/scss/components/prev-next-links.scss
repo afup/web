@@ -1,0 +1,49 @@
+.prev-next-links {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.prev-next-link {
+  width: 100%;
+  display: block;
+
+  margin: 50px 0  50px 0;
+  padding: 2em;
+
+  /*margin: 10px auto;
+  padding: 1em;*/
+  text-decoration: none;
+  outline: none;
+  text-align: center;
+  border: 1px solid #ddd;
+  color: #333;
+
+  &__prev, &__next {
+    font-size: .8em;
+    margin: 10px 0;
+  }
+
+  &:hover {
+    border: 1px solid #333;
+    background-color: #333;
+    color: #fff;
+  }
+
+  &__title {
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+
+  .fa {
+    margin: 0 8px;
+  }
+}
+
+
+.related-infos {
+  margin: 50px 0 0;
+  padding: 20px 0;
+}

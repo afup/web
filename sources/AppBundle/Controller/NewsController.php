@@ -12,7 +12,9 @@ class NewsController extends SiteBaseController
 
     public function displayAction($code)
     {
-        $article = $this->getArticleRepository()->findNewsBySlug($code);
+        $articleRepository = $this->getArticleRepository();
+
+        $article = $articleRepository->findNewsBySlug($code);
 
         if (null === $article) {
             throw $this->createNotFoundException();
@@ -26,6 +28,8 @@ class NewsController extends SiteBaseController
             ':site:news/display.html.twig',
             [
                 'article' => $article,
+                'previous' => $articleRepository->findPrevious($article),
+                'next' => $articleRepository->findNext($article),
             ]
         );
     }

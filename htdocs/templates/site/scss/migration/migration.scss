@@ -1,0 +1,35 @@
+.migrated-page {
+  h1,
+  h4 {
+    font-family: "Roboto Condensed";
+  }
+
+  h4,
+  blockquote {
+    margin: 20px 0;
+  }
+
+  h1 {
+    font-size: 2.1em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+  blockquote {
+    font-family: helvetica,arial,sans-serif;
+    font-size: 1em;
+    line-height: 1.7em;
+  }
+
+  p {
+    line-height: 1.7em;
+  }
+
+  #main {
+    font-size: 1.4em;
+    line-height: 1.7em;
+  }
+
+}
