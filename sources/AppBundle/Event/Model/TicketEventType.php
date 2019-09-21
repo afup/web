@@ -45,6 +45,11 @@ class TicketEventType implements NotifyPropertyInterface
     private $ticketType;
 
     /**
+     * @var int
+     */
+    private $maxTickets;
+
+    /**
      * @return int
      */
     public function getTicketTypeId()
@@ -173,6 +178,27 @@ class TicketEventType implements NotifyPropertyInterface
     public function setTicketType(TicketType $ticketType)
     {
         $this->ticketType = $ticketType;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxTickets()
+    {
+        return $this->maxTickets;
+    }
+
+    /**
+     * @param int $maxTickets
+     *
+     * @return $this
+     */
+    public function setMaxTickets($maxTickets)
+    {
+        $this->propertyChanged('maxTickets', $this->maxTickets, $maxTickets);
+        $this->maxTickets = $maxTickets;
+
         return $this;
     }
 }
