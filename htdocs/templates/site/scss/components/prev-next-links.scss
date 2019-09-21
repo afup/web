@@ -47,3 +47,10 @@
   margin: 50px 0 0;
   padding: 20px 0;
 }
+
+
+@media (max-width: 460px) {
+  .prev-next-links {
+    display: block;
+  }
+}
