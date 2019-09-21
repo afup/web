@@ -314,7 +314,7 @@ class Article implements NotifyPropertyInterface
             return null;
         }
 
-         return \Afup\Site\Corporate\Article::getThemeLabel($this->getTheme());
+        return \Afup\Site\Corporate\Article::getThemeLabel($this->getTheme());
     }
 
     /**
