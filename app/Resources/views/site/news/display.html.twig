@@ -16,6 +16,13 @@
 {% block body_css %}migrated-page{% endblock %}
 
 {% block content %}
+
+    {% if header_image %}
+    <div class="article-header">
+        <img src="{{ header_image }}">
+    </div>
+    {% endif %}
+
     <div class="mw1400p center" id="container">
         <div class="line" id="main">
             <div class="container">

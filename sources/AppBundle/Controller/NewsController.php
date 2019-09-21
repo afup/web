@@ -26,10 +26,13 @@ class NewsController extends SiteBaseController
             throw $this->createNotFoundException();
         }
 
+        $this->getHeaderImageUrl($article);
+
         return $this->render(
             ':site:news/display.html.twig',
             [
                 'article' => $article,
+                'header_image' => $this->getHeaderImageUrl($article),
                 'previous' => $articleRepository->findPrevious($article),
                 'next' => $articleRepository->findNext($article),
                 'related_event' => $this->getRelatedEvent($article),
@@ -44,6 +47,23 @@ class NewsController extends SiteBaseController
         }
 
         return $this->get('ting')->get(EventRepository::class)->get($eventId);
+    }
+
+    private function getHeaderImageUrl(Article $article)
+    {
+        if (null === ($theme = $article->getTheme())) {
+            return null;
+        }
+
+        $image = '/images/news/' . $theme . '.png';
+
+        $url = $this->container->getParameter('kernel.project_dir') . '/htdocs' . $image ;
+
+        if (false === is_file($url)) {
+            return null;
+        }
+
+        return $image;
     }
 
     public function listAction(Request $request)
