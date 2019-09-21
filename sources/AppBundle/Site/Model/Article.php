@@ -19,7 +19,6 @@ class Article implements NotifyPropertyInterface
      */
     private $rubricId;
 
-
     /**
      * @var string
      */
@@ -49,6 +48,16 @@ class Article implements NotifyPropertyInterface
      * @var string
      */
     private $contentType;
+
+    /**
+     * @var int
+     */
+    private $theme;
+
+    /**
+     * @var int
+     */
+    private $eventId;
 
     /**
      * @var \DateTime
@@ -271,6 +280,60 @@ class Article implements NotifyPropertyInterface
     {
         $this->propertyChanged('publishedAt', $this->publishedAt, $publishedAt);
         $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param int $theme
+     *
+     * @return $this
+     */
+    public function setTheme($theme)
+    {
+        $this->propertyChanged('theme', $this->theme, $theme);
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThemeLabel()
+    {
+        if (null === ($theme = $this->getTheme())) {
+            return null;
+        }
+
+         return \Afup\Site\Corporate\Article::getThemeLabel($this->getTheme());
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getEventId()
+    {
+        return $this->eventId;
+    }
+
+    /**
+     * @param int $eventId
+     *
+     * @return $this
+     */
+    public function setEventId($eventId)
+    {
+        $this->propertyChanged('eventId', $this->eventId, $eventId);
+        $this->eventId = $eventId;
 
         return $this;
     }

@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Form\NewsFiltersType;
+use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,8 +32,18 @@ class NewsController extends SiteBaseController
                 'article' => $article,
                 'previous' => $articleRepository->findPrevious($article),
                 'next' => $articleRepository->findNext($article),
+                'related_event' => $this->getRelatedEvent($article),
             ]
         );
+    }
+
+    private function getRelatedEvent(Article $article)
+    {
+        if (null === ($eventId = $article->getEventId())) {
+            return null;
+        }
+
+        return $this->get('ting')->get(EventRepository::class)->get($eventId);
     }
 
     public function listAction(Request $request)

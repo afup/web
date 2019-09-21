@@ -274,6 +274,16 @@ class ArticleRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'theme',
+                'fieldName' => 'theme',
+                'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'id_forum',
+                'fieldName' => 'eventId',
+                'type' => 'int'
+            ])
+            ->addField([
                 'columnName' => 'date',
                 'fieldName' => 'publishedAt',
                 'type' => 'datetime',

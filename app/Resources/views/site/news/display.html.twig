@@ -35,6 +35,17 @@
 
                     <hr />
 
+                    <p>
+                        {% if article.themeLabel %}
+                        Thème : <a href="{{ path('news_list', { news_filters : { theme : [article.theme]} }) }}">{{ article.themeLabel }}</a> /
+                        {% endif %}
+                        {% if related_event %}
+                        Cycle de conférences : <a href="{{ path('news_list', { news_filters : { event : [related_event.id]} }) }}">{{ related_event.title }}</a> /
+                        {% endif %}
+                        {% set year = article.publishedAt|date('Y') %}
+                        Année : <a href="{{ path('news_list', { news_filters : { year : [year]} }) }}">{{ year }}</a>
+                    </p>
+
                     {% if previous or next %}
                     <div class="prev-next-links">
                         {% if previous %}
