@@ -24,9 +24,14 @@ class IndexMeetupsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $meetupClient = \DMS\Service\Meetup\MeetupKeyAuthClient::factory(['key' => $this->getContainer()->getParameter('meetup_api_key')]);
+        $container = $this->getContainer();
 
-        $runner = new Runner($this->getContainer()->get(\AlgoliaSearch\Client::class), $meetupClient);
+        $meetupClient = \DMS\Service\Meetup\MeetupOAuthClient::factory([
+            'consumer_key' => $container->getParameter('meetup_api_consumer_key'),
+            'consumer_secret' => $container->getParameter('meetup_api_consumer_secret'),
+        ]);
+
+        $runner = new Runner($container->get(\AlgoliaSearch\Client::class), $meetupClient);
         $runner->run();
     }
 }
