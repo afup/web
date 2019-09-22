@@ -8,7 +8,11 @@
   width: 100%;
   display: block;
 
-  margin: 50px 0  50px 0;
+  @media (max-width: 768px) {
+    margin: 10px 0;
+    padding: 1em;
+  }
+  margin: 50px 0;
   padding: 2em;
   text-decoration: none;
   outline: none;
