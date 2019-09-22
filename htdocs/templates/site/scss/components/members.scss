@@ -1,0 +1,17 @@
+.company-list {
+  tbody,
+  tr td {
+    border: 0;
+  }
+
+  tbody {
+    tr {
+      td {
+        background-color: white;
+        font-size: 1.75em;
+        text-align: center;
+        vertical-align: middle;
+      }
+    }
+  }
+}
