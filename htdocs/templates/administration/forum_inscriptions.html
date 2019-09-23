@@ -15,6 +15,7 @@
     <th>Nb Confirme</th>
     <th>Nb payants</th>
     <th>Montant</th>
+    <th>Places restantes</th>
     </tr>
     {foreach from=$forum_tarifs item=forum_tarif key=forum_tarif_key}
     {assign var=inscrits value=`$statistiques.types_inscriptions.inscrits[$forum_tarif_key]`}
@@ -35,6 +36,7 @@
       <td align="right" width="80">{$confirmes}</td>
       <td align="right" width="80">{$payants}</td>
       <td align="right" width="80"> {$montant}</td>
+      <td align="right" width="80"> {$forum_tarifs_restantes[$forum_tarif_key]}</td>
 
     </tr>
     {/if}
@@ -47,6 +49,7 @@
     <th align="right">{$confirmes_total}</th>
     <th align="right">{$payants_total}</th>
     <th align="right">{$montant_total}</th>
+    <th align="right"></th>
     </tr>
     </table>
     <br/>
