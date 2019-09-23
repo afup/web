@@ -107,8 +107,13 @@ class TicketRepository extends Repository implements MetadataInitializer
             FROM afup_inscription_forum aif
             JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
             WHERE aif.id_forum = :event AND aft.public = 1 AND FIND_IN_SET(:day, aft.day) > 0
+            AND aif.etat <> :state_cancelled
         ')
-            ->setParams(['event' => $event->getId(), 'day' => $day])
+            ->setParams([
+                'event' => $event->getId(),
+                'day' => $day,
+                'state_cancelled' => Ticket::STATUS_CANCELLED,
+            ])
             ->query($this->getCollection(new HydratorArray()))
         ;
         if ($tickets === null) {
