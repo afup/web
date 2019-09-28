@@ -7,11 +7,18 @@
 .prev-next-link {
   width: 100%;
   display: block;
-  margin: 50px 0;
+  margin: 50px 10px;
   padding: 2em;
   @media (max-width: 768px) {
     margin: 10px 0;
     padding: 1em;
+  }
+
+  &:first-child {
+    margin-left: 0;
+  }
+  &:last-child {
+    margin-right: 0;
   }
 
   text-decoration: none;
