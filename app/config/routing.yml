@@ -46,6 +46,10 @@ techletter:
     resource: "routing/techletter.yml"
     prefix: /techno_watch
 
+admin_company_public_profile_logo:
+    path: /profile/company/{id}-{slug}/logo
+    defaults: {_controller: AppBundle:Website\CompanyPublicProfile:logo }
+
 admin_company_public_profile_test:
     path: /profile/company/{id}-{slug}
     defaults: {_controller: AppBundle:Website\CompanyPublicProfile:index }

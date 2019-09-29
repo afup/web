@@ -13,7 +13,7 @@
     <h2>L'entreprise</h2>
     <div class="container">
         <div class="col-md-4">
-            <img src="{{ company_member.getLogoUrl }}" />
+            <img src="{{ path('admin_company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}" />
         </div>
         <div class="col-md-8">
             {{ company_member.description|nl2br }}
@@ -67,9 +67,16 @@
             {% endif %}
 
         </div>
-        {% if company_member.twitterHandle %}
+        {% if company_member.cleanedTwitterHandle %}
         <div class="col-md-4">
-            <a class="twitter-timeline" data-lang="fr" data-chrome="noheader,nofooter,noborders" data-height="800" data-dnt="true" data-theme="light" href="https://twitter.com/{{ company_member.twitterHandle }}">{{ company_member.twitterHandle }}</a>
+            <a class="twitter-timeline button-inverted button--call-to-action"
+               data-lang="fr"
+               data-chrome="noheader,nofooter,noborders"
+               data-height="800"
+               data-dnt="true"
+               data-theme="light"
+               href="https://twitter.com/{{ company_member.cleanedTwitterHandle }}"
+            ><i class="fa fa-twitter"></i> Voir @{{ company_member.cleanedTwitterHandle }}</a>
             <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
         {% endif %}
