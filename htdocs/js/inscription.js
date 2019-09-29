@@ -25,7 +25,6 @@ $(document).ready(function(){
         }
 
         for (var i = 1; i < (nbInscriptions + 1); i++) {
-            updateFieldsetSummary($('fieldset.f' + i));
             $('fieldset.f' + i).show();
             $('fieldset.f' + i).find('input[data-required=true]').attr('required', true);
 			if (typeof $('input[name="purchase[tickets][' + i +'][ticketType]"]:checked').val() === "undefined") {
@@ -34,7 +33,11 @@ $(document).ready(function(){
 			if (typeof $('input[name="purchase[tickets][' + i +'][pmr]"]:checked').val() === "undefined") {
 			    $('fieldset.f' + i).find('div.pmr input[type=radio]:eq(1)').attr('checked', true);
 			}
+
+            updateFieldsetSummary($('fieldset.f' + i));
         }
+
+        updateFieldsetSummary($('.fieldset-facturation'));
 
         if (nbInscriptions === nbMaxPersonnes) {
             $('a.add_inscription').attr('disabled', 'true');
@@ -155,13 +158,15 @@ $(document).ready(function(){
 
 		$(fieldset).find('legend span.fieldset--legend--title').html(' - ' + firstname + ' ' + lastname);
 
-		if (fieldset.hasClass('f6') === true) {
+		if (fieldset.hasClass('fieldset-facturation') === true) {
 			var paymentId = fieldset.find('input[type=radio]:checked').attr('id');
 			var paymentId = fieldset.find('input[type=radio]:checked').attr('id');
 			$(fieldset).find('legend span.fieldset--legend--price').html($('label[for=' + paymentId + ']').html());
 		} else {
 			var price = fieldset.find('ul.tickets--type-list input[type=radio]:checked').data('price');
-			$(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
+			if (typeof price !== 'undefined') {
+                $(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
+            }
 		}
     }
 
@@ -270,9 +275,13 @@ $(document).ready(function(){
         updateSummary();
     });
 
-    $('input[name$="[lastname]"],input[name$="[firstname]"],ul.tickets--type-list input[type=radio], fieldset.f6 input[type=radio]').on('change', function(){
+    $('.tickets--fieldset input[name$="[lastname]"],.tickets--fieldset input[name$="[firstname]"],.tickets--fieldset ul.tickets--type-list input[type=radio]').on('change', function(){
         var fieldset = $(this).parents('fieldset').first();
         updateFieldsetSummary(fieldset);
+    });
+
+    $('.fieldset-facturation input[name$="[lastname]"],.fieldset-facturation input[name$="[firstname]"],.fieldset-facturation input[type=radio]').on('change', function() {
+        updateFieldsetSummary($('.fieldset-facturation'));
     });
 
     $('#tickets--other-payments').click(function(event){

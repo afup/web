@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Form\NewsFiltersType;
+use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,7 +14,9 @@ class NewsController extends SiteBaseController
 
     public function displayAction($code)
     {
-        $article = $this->getArticleRepository()->findNewsBySlug($code);
+        $articleRepository = $this->getArticleRepository();
+
+        $article = $articleRepository->findNewsBySlug($code);
 
         if (null === $article) {
             throw $this->createNotFoundException();
@@ -22,12 +26,44 @@ class NewsController extends SiteBaseController
             throw $this->createNotFoundException();
         }
 
+        $this->getHeaderImageUrl($article);
+
         return $this->render(
             ':site:news/display.html.twig',
             [
                 'article' => $article,
+                'header_image' => $this->getHeaderImageUrl($article),
+                'previous' => $articleRepository->findPrevious($article),
+                'next' => $articleRepository->findNext($article),
+                'related_event' => $this->getRelatedEvent($article),
             ]
         );
+    }
+
+    private function getRelatedEvent(Article $article)
+    {
+        if (null === ($eventId = $article->getEventId())) {
+            return null;
+        }
+
+        return $this->get('ting')->get(EventRepository::class)->get($eventId);
+    }
+
+    private function getHeaderImageUrl(Article $article)
+    {
+        if (null === ($theme = $article->getTheme())) {
+            return null;
+        }
+
+        $image = '/images/news/' . $theme . '.png';
+
+        $url = $this->container->getParameter('kernel.project_dir') . '/htdocs' . $image ;
+
+        if (false === is_file($url)) {
+            return null;
+        }
+
+        return $image;
     }
 
     public function listAction(Request $request)
