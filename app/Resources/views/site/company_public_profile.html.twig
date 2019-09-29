@@ -13,7 +13,7 @@
     <h2>L'entreprise</h2>
     <div class="container">
         <div class="col-md-4">
-            <img src="{{ company_member.getLogoUrl }}" />
+            <img src="{{ path('admin_company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}" />
         </div>
         <div class="col-md-8">
             {{ company_member.description|nl2br }}

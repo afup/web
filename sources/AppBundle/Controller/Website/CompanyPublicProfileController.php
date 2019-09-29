@@ -7,10 +7,31 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Controller\SiteBaseController;
 use AppBundle\Offices\OfficesCollection;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CompanyPublicProfileController extends SiteBaseController
 {
     public function indexAction($id, $slug)
+    {
+        $companyMember = $this->checkAndGetCompanyMember($id, $slug);
+
+        return $this->render(
+            ':site:company_public_profile.html.twig',
+            [
+                'company_member' => $companyMember,
+                'offices' => $this->getRelatedAfupOffices($companyMember),
+                'badges' => $this->get(BadgesComputer::class)->getCompanyBadges($companyMember),
+            ]
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param string $slug
+     *
+     * @return CompanyMember
+     */
+    private function checkAndGetCompanyMember($id, $slug)
     {
         /**
          * @var $companyRepository CompanyMemberRepository
@@ -22,14 +43,22 @@ class CompanyPublicProfileController extends SiteBaseController
             throw $this->createNotFoundException("Company member not found");
         }
 
-        return $this->render(
-            ':site:company_public_profile.html.twig',
-            [
-                'company_member' => $companyMember,
-                'offices' => $this->getRelatedAfupOffices($companyMember),
-                'badges' => $this->get(BadgesComputer::class)->getCompanyBadges($companyMember),
-            ]
-        );
+        return $companyMember;
+    }
+
+    public function logoAction($id, $slug)
+    {
+        $companyMember = $this->checkAndGetCompanyMember($id, $slug);
+
+        $dir = $this->getParameter('kernel.project_dir') . '/htdocs/uploads/members_logo';
+
+        $filepath = $dir . DIRECTORY_SEPARATOR . $companyMember->getLogoUrl();
+
+        if (false === is_file($filepath)) {
+            throw $this->createNotFoundException();
+        }
+
+        return new BinaryFileResponse($filepath);
     }
 
     private function getRelatedAfupOffices(CompanyMember $companyMember)
