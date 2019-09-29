@@ -123,6 +123,7 @@ class CompanyPublicProfile extends AbstractType
                 [
                     'label' => "Compte twitter",
                     'required' => false,
+                    'help' => 'Exemple "@afup"',
                 ]
             )
             ->add('related_afup_offices',
