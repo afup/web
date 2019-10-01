@@ -25,17 +25,26 @@
             <div class="txtcenter">
                 {% if company_member.websiteUrl %}
                     <a class="button-inverted {% if not company_member.careersPageUrl and not company_member.contactPageUrl %}button--call-to-action{% endif %}"
-                       href="{{ company_member.websiteUrl }}">Site web</a>
+                       href="{{ company_member.websiteUrl }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                    >Site web</a>
                 {% endif %}
 
                 {% if company_member.careersPageUrl %}
                     <a class="button-inverted button--call-to-action"
-                       href="{{ company_member.careersPageUrl }}">Page de recrutement</a>
+                       href="{{ company_member.careersPageUrl }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                    >Page de recrutement</a>
                 {% endif %}
 
                 {% if company_member.contactPageUrl %}
                 <a class="button-inverted {% if not company_member.careersPageUrl %}button--call-to-action{% endif %}"
-                   href="{{ company_member.contactPageUrl }}">Page de contact</a>
+                   href="{{ company_member.contactPageUrl }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                >Page de contact</a>
                 {% endif %}
             </div>
 
