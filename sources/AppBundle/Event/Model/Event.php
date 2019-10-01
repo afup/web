@@ -624,4 +624,9 @@ class Event implements NotifyPropertyInterface
 
         return $this;
     }
+
+    public function isAfupDay()
+    {
+        return substr($this->getTitle(), 0, 8) == 'AFUP Day';
+    }
 }
