@@ -162,6 +162,8 @@ if ($action == 'envoyer_convocation') {
     afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login", 'index.php?page=personnes_physiques&action=ajouter');
 } else {
 
+    $ticketRepository = $this->get('ting')->get(\AppBundle\Event\Model\Repository\TicketRepository::class);
+
     $pays = new Pays($bdd);
 
     $formulaire = instancierFormulaire();
@@ -200,6 +202,10 @@ if ($action == 'envoyer_convocation') {
         $champs['ville_facturation']       = $champs2['ville'];
         $champs['id_pays_facturation']     = $champs2['id_pays'];
         $champs['email_facturation']       = $champs2['email'];
+
+        /** @var \AppBundle\Event\Model\Ticket $ticket */
+        $ticket = $ticketRepository->get($_GET['id']);
+        $champs['commentaires'] = $ticket->getComments();
 
         $formulaire->setDefaults($champs);
 
@@ -372,6 +378,11 @@ if ($action == 'envoyer_convocation') {
         												   $valeurs['etat'],
         												   $valeurs['facturation'],
                                                            $valeurs['mobilite_reduite']);
+
+            /** @var \AppBundle\Event\Model\Ticket $ticket */
+            $ticket = $ticketRepository->get($_GET['id']);
+            $ticket->setComments($valeurs['commentaires']);
+            $ticketRepository->save($ticket);
         }
 
 		$ok &= $forum_facturation->gererFacturation($valeurs['reference'],
