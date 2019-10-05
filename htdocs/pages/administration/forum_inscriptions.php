@@ -205,7 +205,9 @@ if ($action == 'envoyer_convocation') {
 
         /** @var \AppBundle\Event\Model\Ticket $ticket */
         $ticket = $ticketRepository->get($_GET['id']);
-        $champs['commentaires'] = $ticket->getComments();
+        if (null !== $ticket) {
+            $champs['commentaires'] = $ticket->getComments();
+        }
 
         $formulaire->setDefaults($champs);
 
@@ -381,8 +383,10 @@ if ($action == 'envoyer_convocation') {
 
             /** @var \AppBundle\Event\Model\Ticket $ticket */
             $ticket = $ticketRepository->get($_GET['id']);
-            $ticket->setComments($valeurs['commentaires']);
-            $ticketRepository->save($ticket);
+            if (null !== $ticket) {
+                $ticket->setComments($valeurs['commentaires']);
+                $ticketRepository->save($ticket);
+            }
         }
 
 		$ok &= $forum_facturation->gererFacturation($valeurs['reference'],
