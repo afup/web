@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
@@ -20,7 +21,6 @@ class CfpNotificationCommand extends ContainerAwareCommand
         $this
             ->setName('cfp-stats-notification')
             ->addOption('display-diff', null, InputOption::VALUE_NONE)
-            ->addOption('event-path', null, InputOption::VALUE_REQUIRED)
 
         ;
     }
@@ -31,17 +31,7 @@ class CfpNotificationCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $ting = $this->getContainer()->get('ting');
-        $eventReposotory = $this->getContainer()->get('ting')->get(EventRepository::class);
-
-        $event = $this->getEventFilter($input);
-
-        if (null === $event) {
-            $event = $eventReposotory->getNextEvent();
-        }
-
-        if (null === $event) {
-            return;
-        }
+        $eventRepository = $this->getContainer()->get('ting')->get(EventRepository::class);
 
         $since = null;
 
@@ -52,39 +42,21 @@ class CfpNotificationCommand extends ContainerAwareCommand
 
         $currentDate = new \DateTime();
 
-        $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForCfpStats(
-            $event,
-            $ting->get(TalkRepository::class),
-            $ting->get(TalkToSpeakersRepository::class),
-            $currentDate,
-            $since
-        );
+        /** @var Event $event */
+        foreach ($eventRepository->getNextEvents() as $event) {
+            if ($currentDate > $event->getDateEndCallForPapers()) {
+                continue;
+            }
 
-        $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
-    }
+            $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForCfpStats(
+                $event,
+                $ting->get(TalkRepository::class),
+                $ting->get(TalkToSpeakersRepository::class),
+                $currentDate,
+                $since
+            );
 
-    /**
-     * @param InputInterface $input
-     *
-     * @return null
-     */
-    protected function getEventFilter(InputInterface $input)
-    {
-        if (null === ($eventPath = $input->getOption('event-path'))) {
-            return null;
+            $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
         }
-
-        $event = $this
-            ->getContainer()
-            ->get('ting')
-            ->get(EventRepository::class)
-            ->getByPath($eventPath)
-        ;
-
-        if (null === $event) {
-            throw new \InvalidArgumentException("L'événement sur lequel filter n'a pas été trouvé");
-        }
-
-        return $event;
     }
 }
