@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints\Url;
 
 class CompanyPublicProfile extends AbstractType
 {
-    const DESCRIPTION_MAX_LENGTH = 500;
+    const DESCRIPTION_MAX_LENGTH = 2000;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
