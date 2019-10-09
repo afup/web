@@ -70,7 +70,7 @@
     </div>
     <div class="clear"> </div>
     <div id="cfp-body">
-        {{ event.cfp[app.request.locale]|raw }}
+        {{ event.cfp[app.request.locale]|markdown }}
         {% if (event.getVoteEnabled) %}
             <p>{{ 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.'| trans }}</p>
         {% else %}
