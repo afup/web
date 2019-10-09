@@ -31,7 +31,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getNextEvents()
     {
         $query = $this
-            ->getQuery('SELECT id, path, titre, date_debut, date_fin, date_fin_appel_conferencier FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut LIMIT 1')
+            ->getQuery('SELECT id, path, titre, date_debut, date_fin, date_fin_appel_conferencier FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
         ;
 
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
