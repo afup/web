@@ -8,14 +8,27 @@
 
 {% block page_title %}{{ company_member.companyName }}{% endblock %}
 
+{% block title %}AFUP - Profil entreprise - {{ company_member.companyName }}{% endblock %}
+
 {% block body_css %}migrated-page{% endblock %}
+
+{% set logo_url = path('admin_company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
+
+{% block metas %}
+    {{ parent() }}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@afup" />
+    <meta name="twitter:title" content="AFUP - Profil entreprise - {{ company_member.companyName }}" />
+    <meta name="twitter:description" content="{{ company_member.description|truncate(200) }}" />
+    <meta name="twitter:image" content="{{ app.request.getSchemeAndHttpHost() }}{{ logo_url }}" />
+{% endblock %}
 
 {% block page_content %}
 
     <h2>L'entreprise</h2>
     <div class="container">
         <div class="col-md-4">
-            <img src="{{ path('admin_company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}" />
+            <img src="{{ logo_url }}" />
         </div>
         <div class="col-md-8">
             {{ company_member.description|nl2br }}
