@@ -22,7 +22,6 @@ class PricesController extends Controller
             'event' => $event,
             'title' => 'Liste des prix',
         ]);
-
     }
 
     private function getEvent(EventRepository $eventRepository, Request $request)
