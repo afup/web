@@ -34,6 +34,10 @@ admin_event_special_price:
   path: /special_price
   defaults: {_controller: AppBundle:AdminEvent:specialPrice}
 
+admin_event_prices:
+  path: /prices
+  defaults: {_controller: AppBundle:Admin/Event/Prices:index }
+
 admin_event_speaker_infos:
   path: /speaker-infos
   defaults: {_controller: AppBundle:AdminEvent:speakerInfos}

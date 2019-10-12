@@ -36,15 +36,21 @@ class TicketTypeAvailability
             return PHP_INT_MAX;
         }
 
+        $seats = $event->getSeats();
+
+        if (null !== ($maxTickets = $ticketEventType->getMaxTickets())) {
+            $seats = $maxTickets;
+        }
+
         if (count($ticketEventType->getTicketType()->getDays()) === 2) {
             // Two days ticket
-            $stock = $event->getSeats() - max(
+            $stock = $seats - max(
                 $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDays()[0], $event),
                 $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDays()[1], $event)
                 )
             ;
         } else {
-            $stock = $event->getSeats() - $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDay(), $event);
+            $stock = $seats - $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDay(), $event);
         }
 
         if ($stock < 0) {
