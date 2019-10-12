@@ -110,6 +110,7 @@ class Mail
                 }
             }
 
+
             $mailer->From = $parameters['from']['email'];
             $mailer->FromName = $parameters['from']['name'];
             $mailer->Subject = $parameters['subject'];
