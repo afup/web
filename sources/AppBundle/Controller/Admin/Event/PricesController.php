@@ -4,9 +4,7 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
-use AppBundle\Event\Model\TicketEventType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class PricesController extends Controller
