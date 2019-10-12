@@ -15,6 +15,7 @@
             <th>Limité membres ?</th>
             <th>Limité CFP ?</th>
             <th>Jours</th>
+            <th title="Une fois ce nombre de places publiques vendus, on ne vends plus des billets de ce type">Maximum</th>
         </thead>
         <tbody>
         {% for ticket_event_type in ticket_event_types %}
@@ -62,6 +63,13 @@
                 <td>
                     {% if ticket_event_type.ticketType %}
                         {{ ticket_event_type.ticketType.day }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if ticket_event_type.maxTickets %}
+                        {{ ticket_event_type.maxTickets }}
+                    {% else %}
+                        n/a
                     {% endif %}
                 </td>
             </tr>
