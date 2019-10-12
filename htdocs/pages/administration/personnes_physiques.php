@@ -101,6 +101,11 @@ if ($action == 'lister') {
         }
     } else {
         $champs = $personnes_physiques->obtenir($_GET['id']);
+
+        if (0 === strlen($champs['roles'])) {
+            $champs['roles'] = json_encode(array());
+        }
+
         unset($champs['mot_de_passe']);
 
         $formulaire->setDefaults($champs);

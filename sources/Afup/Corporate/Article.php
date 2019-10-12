@@ -9,10 +9,8 @@ class Article
     public $id;
     public $id_site_rubrique;
     public $id_personne_physique;
-    public $surtitre;
     public $titre;
     public $raccourci;
-    public $descriptif;
     public $chapeau;
     public $contenu;
     public $type_contenu;
@@ -117,9 +115,6 @@ class Article
             case !empty($this->chapeau):
                 $teaser = $this->chapeau;
                 break;
-            case !empty($this->descriptif):
-                $teaser = $this->descriptif;
-                break;
             default:
                 $teaser = substr(strip_tags($this->contenu), 0, 200);
         }
@@ -133,17 +128,13 @@ class Article
         }
 
         $corps = "";
-        if (!empty($this->surtitre)) {
-            $corps .= '<p class="surtitre">' . $this->surtitre . '</p>';
-        }
         if (!empty($this->soustitre)) {
             $corps .= '<h2>' . $this->soustitre . '</h2>';
         }
         if (!empty($this->chapeau)) {
             $corps .= '<blockquote>' . $this->chapeau . '</blockquote>';
-        } else {
-            $corps .= '<blockquote>' . $this->descriptif . '</blockquote>';
         }
+
         if (!empty($this->contenu)) {
             $corps .= $this->contenu;
         }
@@ -172,10 +163,8 @@ class Article
             'id' => $this->id,
             'id_site_rubrique' => $this->id_site_rubrique,
             'id_personne_physique' => $this->id_personne_physique,
-            'surtitre' => $this->surtitre,
             'titre' => $this->titre,
             'raccourci' => $this->raccourci,
-            'descriptif' => $this->descriptif,
             'chapeau' => $this->chapeau,
             'contenu' => $this->contenu,
             'type_contenu' => $this->type_contenu,
@@ -223,10 +212,8 @@ class Article
         $this->id = $article['id'];
         $this->id_site_rubrique = $article['id_site_rubrique'];
         $this->id_personne_physique = $article['id_personne_physique'];
-        $this->surtitre = $article['surtitre'];
         $this->titre = $article['titre'];
         $this->raccourci = $article['raccourci'];
-        $this->descriptif = $article['descriptif'];
         $this->chapeau = $article['chapeau'];
         $this->contenu = $article['contenu'];
         $this->type_contenu = $article['type_contenu'];
@@ -244,10 +231,8 @@ class Article
         			SET
         			id_site_rubrique      = ' . $this->bdd->echapper($this->id_site_rubrique) . ',
         			id_personne_physique  = ' . $this->bdd->echapper($this->id_personne_physique) . ',
-        			surtitre              = ' . $this->bdd->echapper($this->surtitre) . ',
         			titre                 = ' . $this->bdd->echapper($this->titre) . ',
         			raccourci             = ' . $this->bdd->echapper($this->raccourci) . ',
-        			descriptif            = ' . $this->bdd->echapper($this->descriptif) . ',
         			chapeau               = ' . $this->bdd->echapper($this->chapeau) . ',
         			contenu               = ' . $this->bdd->echapper($this->contenu) . ',
         			type_contenu               = ' . $this->bdd->echapper($this->type_contenu) . ',
@@ -268,10 +253,8 @@ class Article
         			SET
         			id_site_rubrique      = ' . $this->bdd->echapper($this->id_site_rubrique) . ',
         			id_personne_physique  = ' . $this->bdd->echapper($this->id_personne_physique) . ',
-        			surtitre              = ' . $this->bdd->echapper($this->surtitre) . ',
         			titre                 = ' . $this->bdd->echapper($this->titre) . ',
         			raccourci             = ' . $this->bdd->echapper($this->raccourci) . ',
-        			descriptif            = ' . $this->bdd->echapper($this->descriptif) . ',
         			chapeau               = ' . $this->bdd->echapper($this->chapeau) . ',
         			contenu               = ' . $this->bdd->echapper($this->contenu) . ',
         			type_contenu               = ' . $this->bdd->echapper($this->type_contenu) . ',

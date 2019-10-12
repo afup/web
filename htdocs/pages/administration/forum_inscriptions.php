@@ -6,6 +6,7 @@ use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Facturation;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Logs;
+use AppBundle\Event\Ticket\TicketTypeAvailability;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -22,16 +23,19 @@ $smarty->assign('action', $action);
 
 $eventRepository = $this->get(\AppBundle\Event\Model\Repository\EventRepository::class);
 $ticketEventTypeRepository = $this->get(\AppBundle\Event\Model\Repository\TicketEventTypeRepository::class);
+$ticketTypeAvailability = $this->get(TicketTypeAvailability::class);
 
 function updateGlobalsForTarif(
     \AppBundle\Event\Model\Repository\EventRepository $eventRepository,
     \AppBundle\Event\Model\Repository\TicketEventTypeRepository $ticketEventTypeRepository,
+    TicketTypeAvailability $ticketTypeAvailability,
     $forumId,
     &$membersTickets = []
 ) {
     global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
     $event = $eventRepository->get($forumId);
     $ticketTypes = $ticketEventTypeRepository->getTicketsByEvent($event, false);
+    $AFUP_Tarifs_Forum_Restantes = [];
 
     foreach ($ticketTypes as $ticketType) {
         /**
@@ -39,11 +43,14 @@ function updateGlobalsForTarif(
          */
         $AFUP_Tarifs_Forum[$ticketType->getTicketTypeId()] = $ticketType->getPrice();
         $AFUP_Tarifs_Forum_Lib[$ticketType->getTicketTypeId()] = $ticketType->getTicketType()->getPrettyName();
+        $AFUP_Tarifs_Forum_Restantes[$ticketType->getTicketTypeId()] = $ticketTypeAvailability->getStock($ticketType, $event);
 
         if ($ticketType->getTicketType()->getIsRestrictedToMembers()) {
             $membersTickets[] = $ticketType->getTicketTypeId();
         }
     }
+
+    return ['restantes' => $AFUP_Tarifs_Forum_Restantes];
 }
 
 
@@ -103,10 +110,12 @@ if ($action == 'envoyer_convocation') {
     $smarty->assign('id_forum', $_GET['id_forum']);
     $memberTickets = [];
 
-    updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $_GET['id_forum'], $memberTickets);
+    $retour = updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $ticketTypeAvailability, $_GET['id_forum'], $memberTickets);
+    $restantes = $retour['restantes'];
 
     $smarty->assign('forum_tarifs_members', $memberTickets);
     $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
+    $smarty->assign('forum_tarifs_restantes', $restantes);
     $smarty->assign('forum_tarifs',$AFUP_Tarifs_Forum);
     $smarty->assign('statistiques', $forum_inscriptions->obtenirStatistiques($_GET['id_forum']));
 
@@ -153,6 +162,8 @@ if ($action == 'envoyer_convocation') {
     afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login", 'index.php?page=personnes_physiques&action=ajouter');
 } else {
 
+    $ticketRepository = $this->get('ting')->get(\AppBundle\Event\Model\Repository\TicketRepository::class);
+
     $pays = new Pays($bdd);
 
     $formulaire = instancierFormulaire();
@@ -192,13 +203,19 @@ if ($action == 'envoyer_convocation') {
         $champs['id_pays_facturation']     = $champs2['id_pays'];
         $champs['email_facturation']       = $champs2['email'];
 
+        /** @var \AppBundle\Event\Model\Ticket $ticket */
+        $ticket = $ticketRepository->get($_GET['id']);
+        if (null !== $ticket) {
+            $champs['commentaires'] = $ticket->getComments();
+        }
+
         $formulaire->setDefaults($champs);
 
     	if (isset($champs) && isset($champs['id_forum'])) {
     	    $_GET['id_forum'] = $champs['id_forum'];
     	}
     }
-    updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $_GET['id_forum']);
+    updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $ticketTypeAvailability, $_GET['id_forum']);
 
 	$formulaire->addElement('hidden', 'old_reference', (isset($champs) ? $champs['reference'] : ''));
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
@@ -363,6 +380,13 @@ if ($action == 'envoyer_convocation') {
         												   $valeurs['etat'],
         												   $valeurs['facturation'],
                                                            $valeurs['mobilite_reduite']);
+
+            /** @var \AppBundle\Event\Model\Ticket $ticket */
+            $ticket = $ticketRepository->get($_GET['id']);
+            if (null !== $ticket) {
+                $ticket->setComments($valeurs['commentaires']);
+                $ticketRepository->save($ticket);
+            }
         }
 
 		$ok &= $forum_facturation->gererFacturation($valeurs['reference'],

@@ -14,18 +14,29 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class EventRepository extends Repository implements MetadataInitializer
 {
     /**
+     * @deprecated il y aura surement des soucis liés à l'AFUP Day en utilisant cette méthode
+     *
      * @return Event|null
      */
     public function getNextEvent()
     {
-        $query = $this
-            ->getQuery('SELECT id, path, titre, date_debut, date_fin, date_fin_appel_conferencier FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut LIMIT 1')
-        ;
-        $events = $query->query($this->getCollection(new HydratorSingleObject()));
+        $events = $this->getNextEvents();
+
         if ($events->count() === 0) {
             return null;
         }
         return $events->first();
+    }
+
+    public function getNextEvents()
+    {
+        $query = $this
+            ->getQuery('SELECT id, path, titre, date_debut, date_fin, date_fin_appel_conferencier FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
+        ;
+
+        $events = $query->query($this->getCollection(new HydratorSingleObject()));
+
+        return $events;
     }
 
     public function getNextEventForGithubUser(GithubUser $githubUser)

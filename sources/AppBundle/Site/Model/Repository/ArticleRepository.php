@@ -85,7 +85,49 @@ class ArticleRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
-    private function getSqlPublishedNews(array $filters)
+    public function findPrevious(Article $article)
+    {
+        if (null === ($publishedAt = $article->getPublishedAt())) {
+            return null;
+        }
+
+        $filters = [
+            'before_date' => $publishedAt->getTimestamp(),
+        ];
+
+        list($sql, $params) = $this->getSqlPublishedNews($filters, 'DESC');
+
+        $sql .= ' LIMIT 1';
+
+        $query = $this->getPreparedQuery($sql)->setParams($params);
+
+        $collection = $query->query($this->getCollection(new HydratorSingleObject()));
+
+        return $collection->first();
+    }
+
+    public function findNext(Article $article)
+    {
+        if (null === ($publishedAt = $article->getPublishedAt())) {
+            return null;
+        }
+
+        $filters = [
+            'after_date' => $publishedAt->getTimestamp(),
+        ];
+
+        list($sql, $params) = $this->getSqlPublishedNews($filters, 'ASC');
+
+        $sql .= ' LIMIT 1';
+
+        $query = $this->getPreparedQuery($sql)->setParams($params);
+
+        $collection = $query->query($this->getCollection(new HydratorSingleObject()));
+
+        return $collection->first();
+    }
+
+    private function getSqlPublishedNews(array $filters, $order = 'DESC')
     {
         $yearParams = [];
         $themeParams = [];
@@ -93,6 +135,8 @@ class ArticleRepository extends Repository implements MetadataInitializer
         $yearSqlFilter = '';
         $themeSqlFilter = '';
         $eventSqlFilter = '';
+        $afterDateFilter = '';
+        $beforeDateFilter = '';
         if (isset($filters['year']) && count($filters['year'])) {
             $cpt = 1;
             $yearPreaparedParams = [];
@@ -126,14 +170,24 @@ class ArticleRepository extends Repository implements MetadataInitializer
             $eventSqlFilter = sprintf('AND id_forum IN (%s)', implode(',', $eventPreparedParams));
         }
 
+        if (isset($filters['after_date'])) {
+            $afterDateFilter = 'AND afup_site_article.date > :date_after';
+            $eventParams['date_after'] = $filters['after_date'];
+        }
+
+        if (isset($filters['before_date'])) {
+            $beforeDateFilter = 'AND afup_site_article.date < :date_before';
+            $eventParams['date_before'] = $filters['before_date'];
+        }
+
         $sql  = sprintf('SELECT afup_site_article.*
         FROM afup_site_article
         WHERE afup_site_article.id_site_rubrique = :rubricId
         AND etat = 1
         AND afup_site_article.date <= UNIX_TIMESTAMP(NOW())
-        %s %s %s
-        ORDER BY date DESC
-        ', $yearSqlFilter, $themeSqlFilter, $eventSqlFilter);
+        %s %s %s %s %s
+        ORDER BY date %s
+        ', $yearSqlFilter, $themeSqlFilter, $eventSqlFilter, $afterDateFilter, $beforeDateFilter, $order);
 
         $params = [
             'rubricId' => Rubrique::ID_RUBRIQUE_ACTUALITES,
@@ -205,11 +259,6 @@ class ArticleRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
-                'columnName' => 'descriptif',
-                'fieldName' => 'description',
-                'type' => 'string'
-            ])
-            ->addField([
                 'columnName' => 'contenu',
                 'fieldName' => 'content',
                 'type' => 'string'
@@ -218,6 +267,16 @@ class ArticleRepository extends Repository implements MetadataInitializer
                 'columnName' => 'type_contenu',
                 'fieldName' => 'contentType',
                 'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'theme',
+                'fieldName' => 'theme',
+                'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'id_forum',
+                'fieldName' => 'eventId',
+                'type' => 'int'
             ])
             ->addField([
                 'columnName' => 'date',

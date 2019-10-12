@@ -407,3 +407,8 @@ services:
     AppBundle\Association\Form\ContactDetailsType:
         arguments: ['@Afup\Site\Utils\Pays']
         tags: [form.type]
+
+    Twig_Extensions_Extension_Text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }

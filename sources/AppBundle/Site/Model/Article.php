@@ -19,7 +19,6 @@ class Article implements NotifyPropertyInterface
      */
     private $rubricId;
 
-
     /**
      * @var string
      */
@@ -35,11 +34,6 @@ class Article implements NotifyPropertyInterface
      */
     private $leadParagraph;
 
-    /**
-     * @var string
-     */
-    private $description;
-
     /***
      * @var string
      */
@@ -49,6 +43,16 @@ class Article implements NotifyPropertyInterface
      * @var string
      */
     private $contentType;
+
+    /**
+     * @var int
+     */
+    private $theme;
+
+    /**
+     * @var int
+     */
+    private $eventId;
 
     /**
      * @var \DateTime
@@ -172,34 +176,6 @@ class Article implements NotifyPropertyInterface
     /**
      * @return string
      */
-    public function getDescription()
-    {
-        $description = $this->description;
-
-        if ($this->isContentTypeMarkdown()) {
-            $parseDown = new \Parsedown();
-            $description = $parseDown->parse($description);
-        }
-
-        return $description;
-    }
-
-    /**
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->propertyChanged('description', $this->description, $description);
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getContent()
     {
         $content = $this->content;
@@ -276,17 +252,66 @@ class Article implements NotifyPropertyInterface
     }
 
     /**
+     * @return int|null
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param int $theme
+     *
+     * @return $this
+     */
+    public function setTheme($theme)
+    {
+        $this->propertyChanged('theme', $this->theme, $theme);
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThemeLabel()
+    {
+        if (null === ($theme = $this->getTheme())) {
+            return null;
+        }
+
+        return \Afup\Site\Corporate\Article::getThemeLabel($this->getTheme());
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getEventId()
+    {
+        return $this->eventId;
+    }
+
+    /**
+     * @param int $eventId
+     *
+     * @return $this
+     */
+    public function setEventId($eventId)
+    {
+        $this->propertyChanged('eventId', $this->eventId, $eventId);
+        $this->eventId = $eventId;
+
+        return $this;
+    }
+
+    /**
      * @return bool|string
      */
     public function getTeaser()
     {
         if (strlen($leadParagraph = $this->getLeadParagraph())) {
             return strip_tags($leadParagraph);
-        }
-
-
-        if (strlen($description = $this->getDescription())) {
-            return $description;
         }
 
         return  substr(strip_tags($this->getContent()), 0, 200);

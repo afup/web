@@ -79,6 +79,23 @@ class Personnes_Morales
         return (int)current($actifs[0]);
     }
 
+    public function obtenirMembresMaximum($id, $default = 3)
+    {
+        $requete = "SELECT max_members FROM afup_personnes_morales";
+        $requete .= " where afup_personnes_morales.id = " . (int)$id;
+        $row = $this->_bdd->obtenirTous($requete);
+
+        if (!isset($row[0])) {
+            return $default;
+        }
+
+        if (!is_numeric($row[0]['max_members'])) {
+            return $default;
+        }
+
+        return $row[0]['max_members'];
+    }
+
     /**
      * Renvoit les informations concernant une personne morale
      *
@@ -218,7 +235,7 @@ class Personnes_Morales
 
     public function getMembershipFee($id)
     {
-        $membersCount = $this->obtenirActifs($id);
+        $membersCount = $this->obtenirMembresMaximum($id);
 
         return ceil($membersCount / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE;
     }

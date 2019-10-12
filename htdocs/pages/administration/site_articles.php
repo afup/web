@@ -94,9 +94,7 @@ if ($action == 'lister') {
         $abstractClass = 'tinymce';
     }
 
-    $formulaire->addElement('textarea', 'surtitre'                 , 'Surtitre'        , array('cols' => 42, 'rows'      => 5, 'class' => $abstractClass));
     $formulaire->addElement('text'    , 'titre'                    , 'Titre'           , array('size' => 60, 'maxlength' => 255));
-    $formulaire->addElement('textarea', 'descriptif'               , 'Descriptif'      , array('cols' => 42, 'rows'      => 10, 'class' => $abstractClass));
     $formulaire->addElement('textarea', 'chapeau'                  , 'Chapeau'         , array('cols' => 42, 'rows'      => 10, 'class' => $abstractClass));
     $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , array('cols' => 42, 'rows'      => 20, 'class'=> $abstractClass));
     $formulaire->addElement('hidden', 'type_contenu');
@@ -121,10 +119,8 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $article->id_site_rubrique = $formulaire->exportValue('id_site_rubrique');
         $article->id_personne_physique = $formulaire->exportValue('id_personne_physique');
-        $article->surtitre = $formulaire->exportValue('surtitre');
         $article->titre = $formulaire->exportValue('titre');
         $article->raccourci = $formulaire->exportValue('raccourci');
-        $article->descriptif = $formulaire->exportValue('descriptif');
         $article->chapeau = $formulaire->exportValue('chapeau');
         $article->contenu = $formulaire->exportValue('contenu');
         $article->type_contenu = $formulaire->exportValue('type_contenu');
