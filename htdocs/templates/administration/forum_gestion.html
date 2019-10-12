@@ -65,11 +65,14 @@
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     {literal}
     <script>
-        var simplemde = new SimpleMDE({
-            element: document.querySelector('.simplemde'),
-            spellChecker: false,
-            hideIcons: ['side-by-side', 'fullscreen']
-        });
+        var simpleMdeList = document.getElementsByClassName('simplemde');
+        for (var i = 0; i < simpleMdeList.length; i++) {
+            var simplemde = new SimpleMDE({
+                element:simpleMdeList[i],
+                spellChecker: false,
+                hideIcons: ['side-by-side', 'fullscreen']
+            });
+        }
     </script>
     {/literal}
 
