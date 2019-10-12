@@ -298,60 +298,6 @@ class Forum
         return $planning;
     }
 
-    function envoyeMailVotePlanning()
-    {
-
-        $sujet = 'Consultation des membres Forum PHP 2009';
-
-        $corps = "Bonjour, \n";
-        $corps .= "La liste des sessions du forum PHP a été mise en ligne la semaine dernière. Il nous reste à finaliser la programmation de ces sessions (horaires et salles). \n";
-        $corps .= "Merci de venir noter chacune de ces sessions sur le site de l'AFUP (cf. lien ci-dessous) ; cela nous permettra d'évaluer les audiences attendues et d'adapter au mieux notre programmation. \n\n";
-        $corps .= "Le vote est anonyme, non modifiable et le résultat restera secret  \n";
-        $corps .= "    \n";
-
-        $requete = 'SELECT';
-        $requete .= '  afup_personnes_physiques.id, ';
-        $requete .= '  afup_personnes_physiques.email, ';
-        $requete .= '  afup_personnes_physiques.login, ';
-        $requete .= '  CONCAT(afup_personnes_physiques.nom, \' \', afup_personnes_physiques.prenom) as nom ';
-        $requete .= 'FROM';
-        $requete .= '  afup_personnes_physiques ';
-        $requete .= 'WHERE etat=1 limit 1';
-        $personnes_physiques = $this->_bdd->obtenirTous($requete);
-
-
-        $succes = false;
-        foreach ($personnes_physiques as $personne_physique) {
-            $hash = md5($personne_physique['id'] . '_' . $personne_physique['email'] . '_' . $personne_physique['login']);
-            $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash=' . $hash;
-            $link .= '&action=forum_planning_vote';
-
-            $mail = new Mail(null, null);
-
-            $parameters = array(
-                'subject' => $sujet,
-                'forceBcc' => true,
-                'from' => array(
-                    'name' => $GLOBALS['conf']->obtenir('mails|nom_expediteur'),
-                    'email' => $GLOBALS['conf']->obtenir('mails|email_expediteur'),
-                )
-            );
-
-            $personne_physique['email'] = 'xgorse@elao.com';
-            $toArray = array(
-                array(
-                    'name' => $personne_physique['nom'],
-                    'email' => $personne_physique['email'],
-                )
-            );
-
-            $mail->send($corps . $link, $toArray, [], $parameters);
-            $succes += 1;
-        }
-
-        return $succes;
-    }
-
     /**
      * Compte en nombre de demi-heures.
      *

@@ -583,10 +583,12 @@ class Facture
             $corps,
             array('attachments' =>
                 array(
-                    'path' => $chemin_facture,
-                    'name' => 'facture-' . $reference . '.pdf',
-                    'encoding' => 'base64',
-                    'type' => 'application/pdf'
+                    array(
+                        'path' => $chemin_facture,
+                        'name' => 'facture-' . $reference . '.pdf',
+                        'encoding' => 'base64',
+                        'type' => 'application/pdf'
+                    )
                 )
             )
         );
