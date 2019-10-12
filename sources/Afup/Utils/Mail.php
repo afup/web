@@ -53,7 +53,7 @@ class Mail
             // Dans le cas où Twig ne peut être utilisé, on appelle alors la méthode renderTemplateFile qui joue le rôle de Twig
             // pour générer le corps du mail sinon on envoie le contenu tel quel
             // TODO A revoir lors du passage du site en full Symfony
-            if (ends_with('.html.twig', $templateFile)) {
+            if (ends_with($templateFile, '.html.twig')) {
                 if ($this->twig !== null) {
                     $content = $this->twig->render($templateFile, $data);
                 } else {
@@ -62,7 +62,7 @@ class Mail
             } else {
                 $content = $templateFile;
             }
-
+            
             if (!array_key_exists('from', $parameters)) {
                 $parameters['from'] = [
                     'name' => 'AFUP',
@@ -109,7 +109,6 @@ class Mail
                     $mailer->AddAttachment($attachment['path'], $attachment['name'], $attachment['encoding'], $attachment['type']);
                 }
             }
-
 
             $mailer->From = $parameters['from']['email'];
             $mailer->FromName = $parameters['from']['name'];
