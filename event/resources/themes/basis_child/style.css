@@ -131,6 +131,14 @@ article.conferenciers .article-body.conferencier {
     font-size: 150%;
 }
 
+.session .banner-button-container {
+    margin: 20px 0;
+}
+
+.session .banner-button-container .banner-button.basis-primary-background {
+    font-size: 80%;
+}
+
 /** Home Page Sticker **/
 .forum-php-2015-sticker {
     background-color: #ed0678;
