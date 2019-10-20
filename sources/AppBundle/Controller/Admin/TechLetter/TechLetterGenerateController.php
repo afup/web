@@ -231,13 +231,19 @@ class TechLetterGenerateController extends SiteBaseController
         ;
 
         $mailer = $this->get(\Afup\Site\Utils\Mail::class);
-        $mailer->sendSimpleMessage(
-            $subject,
-            $mailContent,
+        $ok = $mailer->send(
+            ':admin/techletter:mail_template.html.twig',
             [
                 [
                     'email' => $this->getParameter('techletter_test_email_address'),
-                ]
+                ],
+            ],
+            [
+                'tech_letter' => $techLetter,
+                'preview' => false
+            ],
+            [
+                'subject' => $subject,
             ]
         );
 
