@@ -77,6 +77,16 @@ if ($action == 'lister') {
         if ($votant) {
             $session['nb_vote'] = $forum_appel->nbVoteSession($session['session_id']);
         }
+
+        $session['joindin_url'] = null;
+
+        if (isset($session['joindin']) && $session['joindin'] > 0) {
+            $talk = new Talk();
+            $talk->setTitle($session['titre']);
+            $talk->setId($session['session_id']);
+            $talk->setJoindinId($session['joindin']);
+            $session['joindin_url'] = $talk->getJoindinUrl();
+        }
     }
     $smarty->assign('sessions', $listeSessions);
     $smarty->assign('votant', $votant);

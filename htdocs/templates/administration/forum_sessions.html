@@ -100,7 +100,12 @@
             </td>
             <td>
                 <i class="list-icon fa fa-universal-access {if not $session.needs_mentoring}list-icon-invisible{/if}" title="Le speaker a demandé un accompagnement"></i>
-                <i class="list-icon fa fa-comments {if not $session.joindin}list-icon-invisible{/if}" title="L'id joindIn est renseigné"></i>
+
+                {if $session.joindin_url }
+                    <a href="{$session.joindin_url}"><i class="list-icon fa fa-comments" title="L'id joindIn est renseigné"></i></a>
+                {else}
+                    <i class="list-icon"></i>
+                {/if}
                 <i class="list-icon fa fa-youtube-play {if not $session.youtube_id}list-icon-invisible{/if}" title="La session a une vidéo"></i>
                 <i class="list-icon fa fa-slideshare {if not $session.slides_url}list-icon-invisible{/if}" title="La session a des slides"></i>
                 <i class="list-icon fa fa-rss {if not $session.blog_post_url}list-icon-invisible{/if}" title="La session a un transcript"></i>
