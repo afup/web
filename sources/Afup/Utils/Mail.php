@@ -71,7 +71,8 @@ class Mail
             }
 
             foreach ($receiver as $rec) {
-                $mailer->AddAddress($rec['email'], $rec['name']);
+                $name = (array_key_exists('name', $rec)) ? $rec['name']: '';
+                $mailer->AddAddress($rec['email'], $name);
             }
 
             if (array_key_exists('to', $parameters)) {
