@@ -433,13 +433,19 @@ SQL;
         return false;
     }
 
-    public function sendWelcomeMailWithData($firstName, $lastName, $login, $email)
+    public function sendWelcomeMailWithData($firstName, $lastName, $login, $email, \Twig_Environment $twig)
     {
-        $mail = new Mail(null, null);
+        $mail = new Mail(null, $twig);
         return $mail->send(
             'mail_templates:confirmation_creation_compte.html.twig',
-            ['email' => $email, 'name' => sprintf('%s %s', $firstName, $lastName)],
-            ['login' => $login],
+            [
+                ['email' => $email, 'name' => sprintf('%s %s', $firstName, $lastName)],
+            ],
+            [
+                'login' => $login,
+                'adresse' => 'bonjour@afup.org',
+                'ville' => '',
+            ],
             [
                 'subject' => 'Votre compte afup.org',
                 'from' => [
