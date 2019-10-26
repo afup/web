@@ -60,10 +60,13 @@ abstract class AbstractUserReminder implements MembershipReminderInterface
 
         $status = $this->mail->send(
             Mail::TRANSACTIONAL_TEMPLATE_MAIL,
-            ['email' => $user->getEmail()],
+            [
+                ['email' => $user->getEmail()],
+            ],
             [
                 'content' => $this->getText(),
-                'title' => $this->getSubject()
+                'title' => $this->getSubject(),
+                'adresse' => 'bureau@afup.org',
             ],
             $parameters
         );
