@@ -112,6 +112,17 @@ class Facture
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
+    public function obtenirParNumeroFacture($numerofacture)
+    {
+        $requete = 'SELECT';
+        $requete .= '  * ';
+        $requete .= 'FROM';
+        $requete .= '  afup_compta_facture ';
+        $requete .= 'WHERE numero_facture = ' . $this->_bdd->echapper($numerofacture);
+
+        return $this->_bdd->obtenirEnregistrement($requete);
+    }
+
     function obtenir_details($id)
     {
         $requete = 'SELECT';
@@ -561,7 +572,7 @@ class Facture
 
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        $personne = $this->obtenir($reference, 'email, nom, prenom');
+        $personne = $this->obtenirParNumeroFacture($reference, 'email, nom, prenom');
 
         $sujet = "Facture AFUP\n";
 
@@ -581,7 +592,7 @@ class Facture
             array($personne['email'], $personne['nom']),
             $sujet,
             $corps,
-            array('file' => array($chemin_facture, 'facture-' . $reference . '.pdf'))
+            array('file' => array(array($chemin_facture, 'facture-' . $reference . '.pdf')))
         );
 
         @unlink($chemin_facture);
