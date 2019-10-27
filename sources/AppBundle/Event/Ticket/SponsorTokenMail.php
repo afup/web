@@ -89,10 +89,13 @@ class SponsorTokenMail
 
         return $this->mail->send(
             Mail::TRANSACTIONAL_TEMPLATE_MAIL,
-            ['email' => $sponsorTicket->getContactEmail(), 'name' => $sponsorTicket->getCompany()],
+            [
+                ['email' => $sponsorTicket->getContactEmail(), 'name' => $sponsorTicket->getCompany()]
+            ],
             [
                 'content' => $text,
-                'title' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()])
+                'title' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()]),
+                'adresse' => 'bonjour@afup.org',
             ],
             $parameters
         );

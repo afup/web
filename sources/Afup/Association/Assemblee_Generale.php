@@ -324,10 +324,13 @@ class Assemblee_Generale
 
             if ($mail->send(
                 Mail::TRANSACTIONAL_TEMPLATE_MAIL,
-                ['email' => $personne_physique['email'], 'name' => $personne_physique['nom']],
+                [
+                    ['email' => $personne_physique['email'], 'name' => $personne_physique['nom']],
+                ],
                 [
                     'content' => $corps . '<p><a href="' . $link. '">' . $link . '</a></p>',
-                    'title' => 'Assemblée Générale'
+                    'title' => 'Assemblée Générale',
+                    'adresse' => 'bonjour@afup.org',
                 ],
                 ['subject' => $sujet]
             )) {

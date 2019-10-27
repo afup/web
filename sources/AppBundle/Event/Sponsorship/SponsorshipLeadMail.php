@@ -44,15 +44,18 @@ class SponsorshipLeadMail
     public function sendSponsorshipFile(Lead $lead)
     {
         $receiver = [
-            'email' => $lead->getEmail(),
-            'name'  => $lead->getLabel(),
+            [
+                'email' => $lead->getEmail(),
+                'name'  => $lead->getLabel(),
+            ]
         ];
         $filename = $lead->getEvent()->getPath() . '-sponsoring-' . $lead->getLanguage() . '.pdf';
         $filepath = $this->sponsorshipFileDir;
 
         $data = [
             'content' => $this->translator->trans('mail.sponsoringfile.text', ['%eventName%' => $lead->getEvent()->getTitle()]),
-            'title' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()])
+            'title' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()]),
+            'adresse' => 'bonjour@afup.org',
         ];
 
         $parameters = [

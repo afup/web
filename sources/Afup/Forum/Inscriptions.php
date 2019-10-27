@@ -120,8 +120,10 @@ SQL;
             $sent = $mailer->send(
                 $template,
                 array(
-                    'name' => $inscrit['prenom'] . " " . $inscrit['nom'],
-                    'email' => $inscrit['email'],
+                    array(
+                        'name' => $inscrit['prenom'] . " " . $inscrit['nom'],
+                        'email' => $inscrit['email'],
+                    )
                 ),
                 $inscrit,
                 array(
