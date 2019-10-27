@@ -65,10 +65,13 @@ class InvitationMail
 
         return $this->mail->send(
             Mail::TRANSACTIONAL_TEMPLATE_MAIL,
-            ['email' => $invitation->getEmail()],
+            [
+                ['email' => $invitation->getEmail()]
+            ],
             [
                 'content' => $text,
-                'title' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName())
+                'title' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName()),
+                'adresse' => 'bonjour@afup.org',
             ],
             $parameters
         );

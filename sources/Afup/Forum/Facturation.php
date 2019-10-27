@@ -458,8 +458,10 @@ SQL;
 
         $mail = new Mail(null, null);
         $receiver = array(
-            'email' => $personne['email'],
-            'name' => sprintf('%s %s', $personne['prenom'], $personne['nom'])
+            array(
+                'email' => $personne['email'],
+                'name' => sprintf('%s %s', $personne['prenom'], $personne['nom'])
+            )
         );
         $parameters = array();
 

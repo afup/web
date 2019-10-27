@@ -414,9 +414,11 @@ class Cotisations
         $numeroFacture = $this->genererFacture($id_cotisation, $chemin_facture);
 
 
-        $receiver = array(
-            'email' => $contactPhysique['email'],
-            'name' => sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom'])
+        $receiver = array (
+                array(
+                'email' => $contactPhysique['email'],
+                'name' => sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom'])
+            )
         );
         $subject = 'Facture AFUP';
         $parameters = [
@@ -433,7 +435,8 @@ class Cotisations
 
         $ok = $mail->send(Mail::TRANSACTIONAL_TEMPLATE_MAIL, $receiver, [
             'content' => $corps,
-            'title' => $subject
+            'title' => $subject,
+            'adresse' => 'bonjour@afup.org',
         ], $parameters);
         @unlink($chemin_facture);
 
