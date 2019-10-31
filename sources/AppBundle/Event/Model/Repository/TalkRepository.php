@@ -341,6 +341,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'tweets',
+                'fieldName' => 'tweets',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'markdown',
                 'fieldName' => 'useMarkdown',
                 'type' => 'bool',
