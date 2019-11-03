@@ -109,6 +109,22 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     }
 
     /**
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface|User[]
+     *
+     * @throws \CCMBenchmark\Ting\Exception
+     */
+    public function loadAll()
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser();
+
+
+        return $this
+            ->getQuery($queryBuilder->getStatement())
+            ->query($this->getCollection($this->getHydratorForUser()))
+        ;
+    }
+
+    /**
      * @return SelectInterface
      */
     private function getQueryBuilderWithSubscriptions()
