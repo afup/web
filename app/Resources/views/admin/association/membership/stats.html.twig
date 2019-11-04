@@ -8,21 +8,25 @@
         <table class="afup_tab">
             <thead>
                 <tr>
-                    <th>Personnes physiques*</th>
-                    <th>Personnes morales*</th>
+                    <th>Personnes physiques totales*</th>
                     <th>Personnes physiques rattachées à une personne morale*</th>
+                    <th>Personnes physiques non rattachées à une personne morale*</th>
+                    <th>Personnes morales*</th>
                 </tr>
             </thead>
             <tbody>
             <tr>
                 <td>
+                    {{ usersCount }}
+                </td>
+                <td>
+                    {{ usersCountWithCompanies }}
+                </td>
+                <td>
                     {{ usersCountWithoutCompanies }}
                 </td>
                 <td>
                     {{ companiesCount }}
-                </td>
-                <td>
-                    {{ usersCountWithCompanies }}
                 </td>
             </tr>
             </tbody>

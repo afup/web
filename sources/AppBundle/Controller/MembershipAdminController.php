@@ -20,8 +20,9 @@ class MembershipAdminController extends Controller
 
         $companies = [];
 
-        $companiesCount = $usersCountWithoutCompanies = $usersCountWithCompanies = 0;
+        $companiesCount = $usersCountWithoutCompanies = $usersCountWithCompanies = $usersCount = 0;
         foreach ($users as $user) {
+            $usersCount++;
             if ($user->isMemberForCompany()) {
                 $usersCountWithCompanies++;
 
@@ -41,6 +42,7 @@ class MembershipAdminController extends Controller
         // puis on fait une requete pour les nouvelles cotisations par jour & les périmées par jour
 
         return $this->render('admin/association/membership/stats.html.twig', [
+            'usersCount' => $usersCount,
             'usersCountWithoutCompanies' => $usersCountWithoutCompanies,
             'companiesCount' => $companiesCount,
             'usersCountWithCompanies' => $usersCountWithCompanies,
