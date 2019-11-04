@@ -23,7 +23,8 @@
                     <td>
                         {% if company_member %}
                         <a href="{{ path('admin_company_public_profile', { id: company_member.id, slug: company_member.slug}) }}">
-                            <img src="{{ company_member.logoUrl }}" />
+                            {% set logo_url = path('admin_company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
+                            <img src="{{ logo_url }}" />
                         </a>
                         {% endif %}
                     </td>
