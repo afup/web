@@ -20,17 +20,17 @@ class MembershipAdminController extends Controller
 
         $companies = [];
 
-        $validCompanies = $validUsers = $companiesUsers = 0;
+        $companiesCount = $usersCountWithoutCompanies = $usersCountWithCompanies = 0;
         foreach ($users as $user) {
             if ($user->isMemberForCompany()) {
-                $companiesUsers++;
+                $usersCountWithCompanies++;
 
                 if (isset($companies[$user->getCompanyId()]) === false) {
                     $companies[$user->getCompanyId()] = true;
-                    $validCompanies++;
+                    $companiesCount++;
                 }
             } else {
-                $validUsers++;
+                $usersCountWithoutCompanies++;
             }
         }
 
@@ -41,9 +41,9 @@ class MembershipAdminController extends Controller
         // puis on fait une requete pour les nouvelles cotisations par jour & les périmées par jour
 
         return $this->render('admin/association/membership/stats.html.twig', [
-            'validUsers' => $validUsers,
-            'validCompanies' => $validCompanies,
-            'companiesUsers' => $companiesUsers,
+            'usersCountWithoutCompanies' => $usersCountWithoutCompanies,
+            'companiesCount' => $companiesCount,
+            'usersCountWithCompanies' => $usersCountWithCompanies,
             'title' => 'Reporting membres [WIP]'
         ]);
     }
