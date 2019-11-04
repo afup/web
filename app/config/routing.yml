@@ -50,9 +50,14 @@ admin_company_public_profile_logo:
     path: /profile/company/{id}-{slug}/logo
     defaults: {_controller: AppBundle:Website\CompanyPublicProfile:logo }
 
-admin_company_public_profile_test:
+admin_company_public_profile:
     path: /profile/company/{id}-{slug}
     defaults: {_controller: AppBundle:Website\CompanyPublicProfile:index }
+
+admin_company_public_profile_list:
+    path: /profile/company
+    defaults: {_controller: AppBundle:Website\CompanyPublicProfileList:index }
+
 presta_sitemap:
     resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
 

@@ -24,7 +24,7 @@
                 {% if company_member.publicProfileEnabled %}
                 <div>
                     <label></label>
-                    <a href="{{ path('admin_company_public_profile_test', {id: company_member.id, slug: company_member.slug}) }}">Voir mon profil public</a>
+                    <a href="{{ path('admin_company_public_profile', {id: company_member.id, slug: company_member.slug}) }}">Voir mon profil public</a>
                 </div>
                 {% endif %}
                 {{ form_row(form.description) }}
