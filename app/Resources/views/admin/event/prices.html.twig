@@ -1,0 +1,79 @@
+{% extends ':admin:base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Liste des prix pour le {{ event.title }}</h2>
+    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+
+    <table class="afup_tab">
+        <thead>
+            <th>Type - libellé</th>
+            <th>Type - libellé technique</th>
+            <th>Prix</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Description</th>
+            <th>Limité membres ?</th>
+            <th>Limité CFP ?</th>
+            <th>Jours</th>
+            <th title="Une fois ce nombre de places publiques vendus, on ne vends plus des billets de ce type">Maximum</th>
+        </thead>
+        <tbody>
+        {% for ticket_event_type in ticket_event_types %}
+            <tr>
+                <td>
+                {% if ticket_event_type.ticketType %}
+                    {{ ticket_event_type.ticketType.prettyName }}
+                {% endif %}
+                </td>
+                <td>
+                {% if ticket_event_type.ticketType %}
+                    {{ ticket_event_type.ticketType.technicalName }}
+                {% endif %}
+                </td>
+                <td>{{ ticket_event_type.price }}&nbsp;€</td>
+                <td>
+                    {% if ticket_event_type.dateStart %}
+                        {{ ticket_event_type.dateStart|date('Y-m-d H:i:s') }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if ticket_event_type.dateEnd %}
+                        {{ ticket_event_type.dateEnd|date('Y-m-d H:i:s') }}
+                    {% endif %}
+                </td>
+                <td>{{ ticket_event_type.description }}</td>
+                <td>
+                    {% if ticket_event_type.ticketType %}
+                        {% if ticket_event_type.ticketType.isRestrictedToMembers %}
+                            oui
+                        {% else %}
+                            non
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if ticket_event_type.ticketType %}
+                        {% if ticket_event_type.ticketType.isRestrictedToCfpSubmitter %}
+                            oui
+                        {% else %}
+                            non
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if ticket_event_type.ticketType %}
+                        {{ ticket_event_type.ticketType.day }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if ticket_event_type.maxTickets %}
+                        {{ ticket_event_type.maxTickets }}
+                    {% else %}
+                        n/a
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

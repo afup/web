@@ -571,6 +571,21 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->getLastSubscription() > $now;
     }
 
+    public function getDaysBeforeMembershipExpiration(\DateTimeInterface $now = null)
+    {
+        if (null === $now) {
+            $now = new \DateTime();
+        }
+
+        $lastSubscription = $this->getLastSubscription();
+
+        if (null === $lastSubscription) {
+            return null;
+        }
+
+        return $this->getLastSubscription()->diff($now)->days;
+    }
+
     /**
      * @return CompanyMember
      */

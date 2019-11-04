@@ -26,7 +26,11 @@
                         {{ invoice['invoices'].amount }}
                     </td>
                     <td>
-                        {{ invoice['invoices'].invoiceDate|date('d/m/Y') }}
+                        {% if invoice['invoices'].invoiceDate %}
+                            {{ invoice['invoices'].invoiceDate|date('d/m/Y') }}
+                        {% else %}
+                            n/a
+                        {% endif %}
                     </td>
                     <td>
                     {% for ticket in invoice['.aggregation']['inscriptions'] %}

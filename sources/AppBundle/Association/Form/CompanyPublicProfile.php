@@ -22,6 +22,8 @@ use Symfony\Component\Validator\Constraints\Url;
 
 class CompanyPublicProfile extends AbstractType
 {
+    const DESCRIPTION_MAX_LENGTH = 2000;
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $officesCollection = new OfficesCollection();
@@ -69,10 +71,10 @@ class CompanyPublicProfile extends AbstractType
                     'label' => "Description",
                     'required' => true,
                     'attr' => ['rows' => 5],
-                    'help' => "Maximum 550 caractères",
+                    'help' => sprintf("Maximum %s caractères", self::DESCRIPTION_MAX_LENGTH),
                     'constraints' => [
                         new NotNull(),
-                        new Length(['max' => '500']),
+                        new Length(['max' => self::DESCRIPTION_MAX_LENGTH]),
                     ]
                 ]
             )
@@ -123,6 +125,7 @@ class CompanyPublicProfile extends AbstractType
                 [
                     'label' => "Compte twitter",
                     'required' => false,
+                    'help' => 'Exemple "@afup"',
                 ]
             )
             ->add('related_afup_offices',

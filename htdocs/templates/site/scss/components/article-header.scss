@@ -1,0 +1,11 @@
+.article-header {
+  max-width: 100%;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+@media (max-width: 460px) {
+  .article-header {
+    display: none;
+  }
+}

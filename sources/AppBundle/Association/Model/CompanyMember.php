@@ -542,6 +542,22 @@ class CompanyMember implements NotifyPropertyInterface
     }
 
     /**
+     * @return bool|string
+     */
+    public function getCleanedTwitterHandle()
+    {
+        $twitter = $this->getTwitterHandle();
+        $twitter = trim($twitter, '@');
+        $twitter = preg_replace('!^https?://twitter.com/!', '', $twitter);
+
+        if (0 === strlen(trim($twitter))) {
+            return null;
+        }
+
+        return $twitter;
+    }
+
+    /**
      * @param string|null $twitterHandle
      *
      * @return $this

@@ -38,6 +38,13 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+                {% if display_joindin_links and talk.talk.getJoindinUrl %}
+                <div>
+                    <div class="banner-button-container">
+                        <a href="https://afup.org{{ talk.talk.getJoindinUrl }}" class="banner-button basis-primary-background">Commenter sur joind.in</a>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     {% endfor %}

@@ -57,7 +57,7 @@ class CompanyPublicProfileController extends SiteBaseController
                     $filename
                 );
 
-                $companyMember->setLogoUrl($this->prepareLogoPath() . $filename);
+                $companyMember->setLogoUrl($filename);
             }
 
             $companyMember
@@ -94,10 +94,5 @@ class CompanyPublicProfileController extends SiteBaseController
         }
 
         return $dir;
-    }
-
-    private function prepareLogoPath()
-    {
-        return '/uploads/members_logo/';
     }
 }

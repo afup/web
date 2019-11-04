@@ -11,6 +11,8 @@ use AppBundle\LegacyModelFactory;
 
 class MemberController extends SiteBaseController
 {
+    const DAYS_BEFORE_CALL_TO_UPDATE = 15;
+
     public function indexAction()
     {
         /** @var User $user */
@@ -26,12 +28,15 @@ class MemberController extends SiteBaseController
             $dateFinCotisation = \DateTime::createFromFormat('U', $cotisation['date_fin']);
         }
 
+        $daysBeforeMembershipExpiration = $user->getDaysBeforeMembershipExpiration();
+
         return $this->render(
             ':site:member/index.html.twig',
             [
                 'badges' => $this->get(BadgesComputer::class)->getBadges($user),
                 'user' => $user,
                 'has_member_subscribed_to_techletter' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
+                'membership_fee_call_to_update' => null === $daysBeforeMembershipExpiration || $daysBeforeMembershipExpiration < self::DAYS_BEFORE_CALL_TO_UPDATE,
                 'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
                 'office_label' => $user->getNearestOfficeLabel(),
                 'has_general_meeting_planned' => $assemblee_generale->hasGeneralMeetingPlanned(),

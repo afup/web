@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use Afup\Site\Forum\Inscriptions;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -20,7 +21,6 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
         $this
             ->setName('ticket-stats-notification')
             ->addOption('display-diff', null, InputOption::VALUE_NONE)
-            ->addOption('event-path', null, InputOption::VALUE_REQUIRED)
         ;
     }
 
@@ -33,16 +33,6 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
         $eventReposotory = $this->getContainer()->get('ting')->get(EventRepository::class);
         $ticketRepository = $this->getContainer()->get('ting')->get(TicketTypeRepository::class);
 
-        $event = $this->getEventFilter($input);
-
-        if (null === $event) {
-            $event = $eventReposotory->getNextEvent();
-        }
-
-        if (null === $event) {
-            return;
-        }
-
         $date = null;
 
         if ($input->getOption('display-diff')) {
@@ -50,38 +40,16 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
             $date->modify('- 1 day');
         }
 
-        $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForTicketStats(
-            $event,
-            $forum_inscriptions,
-            $ticketRepository,
-            $date
-        );
+        /** @var Event $event */
+        foreach ($eventReposotory->getNextEvents() as $event) {
+            $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForTicketStats(
+                $event,
+                $forum_inscriptions,
+                $ticketRepository,
+                $date
+            );
 
-        $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
-    }
-
-    /**
-     * @param InputInterface $input
-     *
-     * @return null
-     */
-    protected function getEventFilter(InputInterface $input)
-    {
-        if (null === ($eventPath = $input->getOption('event-path'))) {
-            return null;
+            $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
         }
-
-        $event = $this
-            ->getContainer()
-            ->get('ting')
-            ->get(EventRepository::class)
-            ->getByPath($eventPath)
-        ;
-
-        if (null === $event) {
-            throw new \InvalidArgumentException("L'événement sur lequel filter n'a pas été trouvé");
-        }
-
-        return $event;
     }
 }

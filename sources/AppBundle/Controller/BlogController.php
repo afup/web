@@ -29,6 +29,7 @@ class BlogController extends EventBaseController
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
         $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
+        $now = new \DateTime();
 
         return $this->render(
             ':blog:program.html.twig',
@@ -37,6 +38,7 @@ class BlogController extends EventBaseController
                 'event' => $event,
                 'jsonld' => $jsonld,
                 'speakersPagePrefix' => $request->query->get('speakers-page-prefix', '/' . $event->getPath() . '/speakers/'),
+                'display_joindin_links' => $now >= $event->getDateStart() && $now <= \DateTimeImmutable::createFromMutable($event->getDateEnd())->modify('+10 days'),
             ]
         );
     }
