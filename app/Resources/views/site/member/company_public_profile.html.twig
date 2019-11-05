@@ -24,7 +24,7 @@
                 {% if company_member.publicProfileEnabled %}
                 <div>
                     <label></label>
-                    <a href="{{ path('admin_company_public_profile', {id: company_member.id, slug: company_member.slug}) }}">Voir mon profil public</a>
+                    <a href="{{ path('company_public_profile', {id: company_member.id, slug: company_member.slug}) }}">Voir mon profil public</a>
                 </div>
                 {% endif %}
                 {{ form_row(form.description) }}
@@ -32,7 +32,7 @@
                 {% if company_member.logoUrl %}
                     <div>
                         <label></label>
-                        <img src="{{ path('admin_company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}" style="max-width: 200px" />
+                        <img src="{{ path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}" style="max-width: 200px" />
                     </div>
                 {% endif %}
                 {{ form_row(form.website_url) }}

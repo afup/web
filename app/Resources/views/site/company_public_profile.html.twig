@@ -12,7 +12,7 @@
 
 {% block body_css %}migrated-page{% endblock %}
 
-{% set logo_url = path('admin_company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
+{% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
 
 {% block metas %}
     {{ parent() }}
