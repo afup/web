@@ -6,31 +6,48 @@
     <article id="members-stats">
         <h2>Statistiques concernant les membres</h2>
         <table class="afup_tab">
+            <tbody>
+                <tr>
+                    <th colspan="2">Personnes physiques totales*</th>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        {{ usersCount }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Personnes physiques non rattachées à une personne morale*</th>
+                    <th>Personnes physiques rattachées à une personne morale*</th>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <b>{{ usersCountWithoutCompanies }}</b>
+                    </td>
+                    <td style="text-align: center">
+                        {{ usersCountWithCompanies }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br />
+
+        <table class="afup_tab">
             <thead>
                 <tr>
-                    <th>Personnes physiques totales*</th>
-                    <th>Personnes physiques rattachées à une personne morale*</th>
-                    <th>Personnes physiques non rattachées à une personne morale*</th>
                     <th>Personnes morales*</th>
                 </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    {{ usersCount }}
-                </td>
-                <td>
-                    {{ usersCountWithCompanies }}
-                </td>
-                <td>
-                    {{ usersCountWithoutCompanies }}
-                </td>
-                <td>
-                    {{ companiesCount }}
-                </td>
-            </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <b>{{ companiesCount }}</b>
+                    </td>
+                </tr>
             </tbody>
         </table>
+
+
         <p><em>* Membres avec des cotisations en cours de validité uniquement</em></p>
     </article>
 {% endblock %}
