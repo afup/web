@@ -153,6 +153,34 @@
             </div>
         </div>
 
+
+
+        {% if talk.getTweetsHasArray|length > 0 %}
+        <div class="container">
+            <div class="col-md-12">
+                <div class="container comments-title-container">
+                    <div class="col-md-12">
+                        <h2>Tweets</h2>
+                    </div>
+                </div>
+
+                {% for tweets_batchs in talk.getTweetsHasArray|batch(4) %}
+                    <div class="container">
+                        {% for tweet in tweets_batchs %}
+                            <div class="col-md-3">
+                                <blockquote class="twitter-tweet">
+                                    <a href="{{ tweet }}?ref_src=twsrc%5Etfw">{{ tweet}}</a>
+                                </blockquote>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        {% endif %}
+
         {% if comments|length > 0 %}
             {% include ':common:star.html.twig' %}
             <div class="container">

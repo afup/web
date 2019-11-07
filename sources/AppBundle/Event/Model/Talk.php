@@ -127,6 +127,11 @@ class Talk implements NotifyPropertyInterface
     private $languageCode;
 
     /**
+     * @var string|null
+     */
+    private $tweets;
+
+    /**
      * @var bool
      */
     private $useMarkdown = true;
@@ -708,5 +713,44 @@ class Talk implements NotifyPropertyInterface
         $this->videoHasFrSubtitles = $videoHasFrSubtitles;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTweets()
+    {
+        return $this->tweets;
+    }
+
+    /**
+     * @param string|null $tweets
+     *
+     * @return $this
+     */
+    public function setTweets($tweets)
+    {
+        $this->tweets = $tweets;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTweetsHasArray()
+    {
+        $explodedTweets = explode(PHP_EOL, $this->getTweets());
+        $returnedTweets = [];
+        foreach ($explodedTweets as $explodedTweet) {
+            $explodedTweet = trim($explodedTweet);
+            if (0 === strlen($explodedTweet)) {
+                continue;
+            }
+
+            $returnedTweets[] = $explodedTweet;
+        }
+
+        return $returnedTweets;
     }
 }

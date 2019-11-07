@@ -11,6 +11,13 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class CompanyMemberRepository extends Repository implements MetadataInitializer
 {
+    public function findDisplayableCompanies()
+    {
+        return $this->getBy([
+            'publicProfileEnabled' => true,
+        ]);
+    }
+
     /**
      * @inheritDoc
      */

@@ -341,6 +341,7 @@ if ($action == 'lister') {
         $formulaire->addElement('checkbox'    , 'video_has_fr_subtitles'          , "Sous titres FR présents");
         $formulaire->addElement('checkbox'    , 'video_has_en_subtitles'          , "Sous titres EN présents");
         $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
+        $formulaire->addElement('textarea'    , 'tweets'          , "Tweets", ['style' => "width:100%;min-height:100px"]);
     }
 
 
@@ -415,7 +416,8 @@ if ($action == 'lister') {
                                                 $valeurs['use_markdown'],
                                                 $valeurs['video_has_fr_subtitles'],
                                                 $valeurs['video_has_en_subtitles'],
-                                                $valeurs['date_publication']['Y'].'-'.$valeurs['date_publication']['M'].'-'.$valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s']
+                                                $valeurs['date_publication']['Y'].'-'.$valeurs['date_publication']['M'].'-'.$valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s'],
+                                                $valeurs['tweets']
             );
             $forum_appel->delierSession($session_id);
         }

@@ -21,7 +21,7 @@ Elle prendra effet dans 2 semaines, au terme de l’adhésion actuelle. </p>
 
 <p>La cotisation annuelle à l’association pour les entreprises est au tarif de ' . $this->membershipFee . ' euros pour 3 salarié·e·s.
 Pour prolonger votre adhésion, rendez-vous dans 
-le <a href="https://afup.org/pages/administration/index.php?page=membre_cotisation">back-office du site de l’AFUP</a>
+le <a href="https://afup.org/member/">back-office du site de l’AFUP</a>
  et cliquez sur “Ma Cotisation”. Un souci, une question ? Contactez-nous ! <a href="mailto:bonjour@afup.org">bonjour@afup.org</a></p>
 
 <p>À bientôt !<br />
