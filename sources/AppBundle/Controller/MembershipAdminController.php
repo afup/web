@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Afup\Site\Association\Personnes_Morales;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,6 +36,8 @@ class MembershipAdminController extends Controller
             }
         }
 
+        $personnes_morales = new Personnes_Morales($GLOBALS['bdd']);
+
         // @todo Evolution nombre de personnes physiques en cours d'adhésion
 
         // Evolution sur 1 an:
@@ -44,7 +47,8 @@ class MembershipAdminController extends Controller
         return $this->render('admin/association/membership/stats.html.twig', [
             'usersCount' => $usersCount,
             'usersCountWithoutCompanies' => $usersCountWithoutCompanies,
-            'companiesCount' => $companiesCount,
+            'companiesCountWithLinkedUsers' => $companiesCount,
+            'companiesCount' => $personnes_morales->obtenirNombrePersonnesMorales('1'),
             'usersCountWithCompanies' => $usersCountWithCompanies,
             'title' => 'Reporting membres [WIP]'
         ]);
