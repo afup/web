@@ -136,6 +136,11 @@ class CompanyMember implements NotifyPropertyInterface
     private $relatedAfupOffices;
 
     /**
+     * @var string|null
+     */
+    private $membershipReason;
+
+    /**
      * @return int
      */
     public function getId()
@@ -632,5 +637,26 @@ class CompanyMember implements NotifyPropertyInterface
     {
         $slugify = new Slugify();
         return $slugify->slugify($this->getCompanyName());
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMembershipReason()
+    {
+        return $this->membershipReason;
+    }
+
+    /**
+     * @param string|null $membershipReason
+     *
+     * @return $this
+     */
+    public function setMembershipReason($membershipReason)
+    {
+        $this->propertyChanged('membershipReason', $this->membershipReason, $membershipReason);
+        $this->membershipReason = $membershipReason;
+
+        return $this;
     }
 }

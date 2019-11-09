@@ -138,6 +138,11 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'relatedAfupOffices',
                 'type' => 'string',
             ]))
+            ->addField(([
+                'columnName' => 'membership_reason',
+                'fieldName' => 'membershipReason',
+                'type' => 'string',
+            ]))
         ;
 
         return $metadata;
