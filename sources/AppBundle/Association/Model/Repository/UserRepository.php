@@ -201,7 +201,6 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $queryBuilder = $this->getQueryBuilderWithSubscriptions();
         $queryBuilder
             ->where('app.`etat` = :status')
-            ->having('MAX(ac.`date_fin`) > :start ')
         ;
 
         $this->addUserTypeCondition($queryBuilder, $userType);
