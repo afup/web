@@ -54,8 +54,8 @@ if ($action == 'lister') {
     $filename = tempnam(sys_get_temp_dir(), 'export_personnes_physiques_');
     $file = new \SplFileObject($filename, 'w');
     $isActive = isset($_GET['is_active']) ? '1' : null;
-    $aJourCotisation = isset($_GET['a_jour_cotisation']) ? true : null;
-    foreach ($personnes_physiques->obtenirListe('*', 'nom, prenom', false, false, false, false, $isActive, $aJourCotisation) as $row) {
+    $isCompoanyManager = isset($_GET['is_company_manager']) ? true : null;
+    foreach ($personnes_physiques->obtenirListe('*', 'nom, prenom', false, false, false, false, $isActive, $isCompoanyManager) as $row) {
         $file->fputcsv([
             $row['email'],
             $row['nom'],

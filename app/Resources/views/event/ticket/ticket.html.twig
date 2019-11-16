@@ -122,13 +122,19 @@
                                         {{ form_label(type) }}
                                         <span class="tickets--type-price">{{ type.vars.attr['data-price'] }}€</span><br />
                                         <span class="tickets--type-details">
-                                            <span class="tickets--type-dateEnd">Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}</span>
+                                            <span class="tickets--type-dateEnd">
+                                                Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}
+                                                {% if type.vars.attr['data-max-tickets'] > 0 %}
+                                                    (ou jusqu’à écoulement des {{ type.vars.attr['data-max-tickets'] }} billets à ce tarif).
+                                                {% endif %}
+                                            </span>
                                             {% if type.vars.attr['data-members-only'] %} - <span class="tickets--type-members">Réservé aux membres AFUP</span>{% endif %}<br />
                                             {% if type.vars.attr['data-stock'] <= 0 %}
                                                 <span class="tickets--type-stock">Plus aucun billet disponible</span><br />
                                             {% elseif type.vars.attr['data-stock'] < 10 %}
                                                 <span class="tickets--type-stock tickets--type-stock-close-to-sold-out">Peu de billets disponibles</span><br />
                                             {% endif %}
+
                                         </span>
                                     </div>
                                 </li>

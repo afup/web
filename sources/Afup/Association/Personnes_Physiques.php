@@ -45,7 +45,7 @@ class Personnes_Physiques
                           $associatif = false,
                           $id_personne_physique = false,
                           $is_active = NULL,
-                          $a_jour_de_cotisation = null
+                          $isCompanyManager = null
     )
     {
         $requete = 'SELECT';
@@ -93,29 +93,8 @@ SQL;
             $requete .= 'AND etat = ' . $is_active . ' ';
         }
 
-        if ($a_jour_de_cotisation) {
-            $requete .= strtr(
-               " AND
-               (
-                  id IN (
-                    SELECT id_personne
-                    FROM afup_cotisations
-                    WHERE NOW() BETWEEN FROM_UNIXTIME(date_debut) AND FROM_UNIXTIME(date_fin)
-                    AND type_personne = :id_personne_physiques:
-                  )
-                  OR id_personne_morale IN (
-                    SELECT id_personne
-                    FROM afup_cotisations
-                    WHERE NOW() BETWEEN FROM_UNIXTIME(date_debut) AND FROM_UNIXTIME(date_fin)
-                    AND type_personne = :id_personne_morale:
-                  )
-               )
-               ",
-               [
-                   ':id_personne_physiques:' => AFUP_PERSONNES_PHYSIQUES,
-                   ':id_personne_morale:' => AFUP_PERSONNES_MORALES,
-               ]
-            );
+        if ($isCompanyManager) {
+            $requete .= " AND roles LIKE '%ROLE_COMPANY_MANAGER%' ";
         }
 
         $requete .= 'ORDER BY ' . $ordre;

@@ -1,9 +1,10 @@
 <?php
 
-
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\CompanyMember;
+use Aura\SqlQuery\Common\SelectInterface;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -11,6 +12,55 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class CompanyMemberRepository extends Repository implements MetadataInitializer
 {
+    public function findDisplayableCompanies()
+    {
+        return $this->getBy([
+            'publicProfileEnabled' => true,
+        ]);
+    }
+
+    public function loadAll()
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember();
+
+        return $this
+            ->getQuery($queryBuilder->getStatement())
+            ->query($this->getCollection($this->getHydratorForCompanyMember()))
+            ;
+    }
+
+    private function getHydratorForCompanyMember()
+    {
+        return (new HydratorSingleObject())
+            ->mapAliasTo('lastsubcription', 'apm', 'setLastSubscription')
+        ;
+    }
+
+    private function getQueryBuilderWithCompleteCompanyMember()
+    {
+        return $this
+            ->getQueryBuilderWithSubscriptions()
+            ->cols([
+                'apm.*',
+                "MAX(ac.date_fin) AS lastsubcription"
+            ]);
+    }
+
+    private function getQueryBuilderWithSubscriptions()
+    {
+        /**
+         * @var $queryBuilder SelectInterface
+         */
+        $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $queryBuilder
+            ->from('afup_personnes_morales apm')
+            ->join('LEFT', 'afup_cotisations ac', 'ac.type_personne = 1 AND ac.id_personne = apm.id')
+            ->groupBy(['apm.`id`'])
+        ;
+
+        return $queryBuilder;
+    }
+
     /**
      * @inheritDoc
      */

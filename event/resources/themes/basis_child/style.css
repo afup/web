@@ -225,10 +225,6 @@ article.conferenciers .article-body.conferencier {
 .footer-widgets-left {
     width: 100%;
 }
-footer .widget_nav_menu {
-    float: left;
-    width: 20%;
-}
 footer .widget_nav_menu a{
     color:#859093;
     text-decoration:none;
@@ -236,6 +232,10 @@ footer .widget_nav_menu a{
 }
 
 @media screen and (min-width: 800px) {
+    footer .widget_nav_menu {
+        float: left;
+        width: 20%;
+    }
     div.post-header-fullwidth, .entry, .pagination{
         float:none;
         width: auto;
