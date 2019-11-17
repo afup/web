@@ -136,6 +136,11 @@ class CompanyMember implements NotifyPropertyInterface
     private $relatedAfupOffices;
 
     /**
+     * @var string|null
+     */
+    private $membershipReason;
+
+    /**
      * @var \Datetime
      */
     private $lastSubscription;
@@ -660,5 +665,26 @@ class CompanyMember implements NotifyPropertyInterface
             $now = new \DateTime();
         }
         return $this->getLastSubscription() > $now;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMembershipReason()
+    {
+        return $this->membershipReason;
+    }
+
+    /**
+     * @param string|null $membershipReason
+     *
+     * @return $this
+     */
+    public function setMembershipReason($membershipReason)
+    {
+        $this->propertyChanged('membershipReason', $this->membershipReason, $membershipReason);
+        $this->membershipReason = $membershipReason;
+
+        return $this;
     }
 }

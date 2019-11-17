@@ -189,3 +189,9 @@
 .afup-form--miniform p {
     font-size: 1.3em;
 }
+
+.afup-form-container .form-help {
+    text-indent: 0;
+    display: inline-block;
+    max-width: 45%;
+}

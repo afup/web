@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints\Url;
 class CompanyPublicProfile extends AbstractType
 {
     const DESCRIPTION_MAX_LENGTH = 2000;
+    const MEMBERSHIP_REASON_MAX_LENGTH = 150;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -143,6 +144,17 @@ class CompanyPublicProfile extends AbstractType
                     ]
                 ]
             )
+            ->add(
+                'membership_reason',
+                TextType::class,
+                [
+                    'label' => "Pourquoi êtes-vous membre ?",
+                    'help' => sprintf($this->getMembershipReasonHelp(), self::MEMBERSHIP_REASON_MAX_LENGTH),
+                    'required' => false,
+                    'constraints' => [
+                        new Length(['max' => self::MEMBERSHIP_REASON_MAX_LENGTH]),
+                    ],
+                ])
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
         ;
     }
@@ -152,5 +164,13 @@ class CompanyPublicProfile extends AbstractType
         $resolver->setDefaults([
             'logo_required' => true,
         ]);
+    }
+
+    private function getMembershipReasonHelp()
+    {
+        return <<<EOF
+Décrivez en moins de %s caractères pourquoi vous êtes membre AFUP.
+Votre réponse sera utilisée sur votre profil public ainsi que sur les différentes communications de l'association.
+EOF;
     }
 }
