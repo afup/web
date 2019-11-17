@@ -19,6 +19,19 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
         ]);
     }
 
+    public function findById($id)
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember();
+        $queryBuilder->where('apm.id = :id');
+
+        return $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams(['id' => $id])
+            ->query($this->getCollection($this->getHydratorForCompanyMember()))
+            ->first()
+        ;
+    }
+
     public function loadAll()
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember();
