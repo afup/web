@@ -141,6 +141,11 @@ class CompanyMember implements NotifyPropertyInterface
     private $membershipReason;
 
     /**
+     * @var \Datetime
+     */
+    private $lastSubscription;
+
+    /**
      * @return int
      */
     public function getId()
@@ -637,6 +642,29 @@ class CompanyMember implements NotifyPropertyInterface
     {
         $slugify = new Slugify();
         return $slugify->slugify($this->getCompanyName());
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getLastSubscription()
+    {
+        return $this->lastSubscription;
+    }
+
+    public function setLastSubscription($sub)
+    {
+        if ($sub !== null) {
+            $this->lastSubscription = \DateTimeImmutable::createFromFormat('U', $sub);
+        }
+    }
+
+    public function hasUpToDateMembershipFee(\DateTimeInterface $now = null)
+    {
+        if (null === $now) {
+            $now = new \DateTime();
+        }
+        return $this->getLastSubscription() > $now;
     }
 
     /**

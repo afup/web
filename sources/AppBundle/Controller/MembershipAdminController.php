@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Afup\Site\Association\Personnes_Morales;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,19 +21,22 @@ class MembershipAdminController extends Controller
 
         $companies = [];
 
-        $validCompanies = $validUsers = $companiesUsers = 0;
+        $companiesCount = $usersCountWithoutCompanies = $usersCountWithCompanies = $usersCount = 0;
         foreach ($users as $user) {
+            $usersCount++;
             if ($user->isMemberForCompany()) {
-                $companiesUsers++;
+                $usersCountWithCompanies++;
 
                 if (isset($companies[$user->getCompanyId()]) === false) {
                     $companies[$user->getCompanyId()] = true;
-                    $validCompanies++;
+                    $companiesCount++;
                 }
             } else {
-                $validUsers++;
+                $usersCountWithoutCompanies++;
             }
         }
+
+        $personnes_morales = new Personnes_Morales($GLOBALS['bdd']);
 
         // @todo Evolution nombre de personnes physiques en cours d'adhésion
 
@@ -41,9 +45,11 @@ class MembershipAdminController extends Controller
         // puis on fait une requete pour les nouvelles cotisations par jour & les périmées par jour
 
         return $this->render('admin/association/membership/stats.html.twig', [
-            'validUsers' => $validUsers,
-            'validCompanies' => $validCompanies,
-            'companiesUsers' => $companiesUsers,
+            'usersCount' => $usersCount,
+            'usersCountWithoutCompanies' => $usersCountWithoutCompanies,
+            'companiesCountWithLinkedUsers' => $companiesCount,
+            'companiesCount' => $personnes_morales->obtenirNombrePersonnesMorales('1'),
+            'usersCountWithCompanies' => $usersCountWithCompanies,
             'title' => 'Reporting membres [WIP]'
         ]);
     }
