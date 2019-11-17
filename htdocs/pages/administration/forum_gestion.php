@@ -63,6 +63,7 @@ if ($action == 'lister') {
             $champs['sponsor_management_fr'] = $text['sponsor_management_fr'];
             $champs['sponsor_management_en'] = $text['sponsor_management_en'];
             $champs['mail_inscription_content'] = $text['mail_inscription_content'];
+            $champs['become_sponsor_description'] = $text['become_sponsor_description'];
         }
 
         $formulaire->setDefaults($champs);
@@ -101,6 +102,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'sponsor_management_fr'             , 'Infos sponsors (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
     $formulaire->addElement('textarea', 'sponsor_management_en'             , 'Infos sponsors (en)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
     $formulaire->addElement('textarea', 'mail_inscription_content'          , 'Contenu mail inscription'                      , ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+    $formulaire->addElement('textarea', 'become_sponsor_description'        , "Contenu page devenir sponsor"                  , ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
     $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
     $formulaire->addElement('checkbox', 'accomodation_enabled', "Activer les nuits d'hôtel");
 
@@ -137,6 +139,7 @@ if ($action == 'lister') {
                     'sponsor_management_fr' => $formulaire->exportValue('sponsor_management_fr'),
                     'sponsor_management_en' => $formulaire->exportValue('sponsor_management_en'),
                     'mail_inscription_content' => $formulaire->exportValue('mail_inscription_content'),
+                    'become_sponsor_description' => $formulaire->exportValue('become_sponsor_description'),
                 ],
                 $formulaire->exportValue('trello_list_id'),
                 $formulaire->exportValue('logo_url'),
@@ -172,6 +175,7 @@ if ($action == 'lister') {
                     'sponsor_management_fr' => $formulaire->exportValue('sponsor_management_fr'),
                     'sponsor_management_en' => $formulaire->exportValue('sponsor_management_en'),
                     'mail_inscription_content' => $formulaire->exportValue('mail_inscription_content'),
+                    'become_sponsor_description' => $formulaire->exportValue('become_sponsor_description'),
                 ],
                 $formulaire->exportValue('trello_list_id'),
                 $formulaire->exportValue('logo_url'),
