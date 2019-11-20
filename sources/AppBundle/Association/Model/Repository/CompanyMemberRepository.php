@@ -14,9 +14,35 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
 {
     public function findDisplayableCompanies()
     {
-        return $this->getBy([
-            'publicProfileEnabled' => true,
-        ]);
+        $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember();
+        $queryBuilder->where('apm.public_profile_enabled = 1');
+
+        $companiesCollection = $this
+            ->getQuery($queryBuilder->getStatement())
+            ->query($this->getCollection($this->getHydratorForCompanyMember()))
+        ;
+
+        $companies = iterator_to_array($companiesCollection->getIterator());
+
+        return array_filter(
+            $companies,
+            function (CompanyMember $companyMember) {
+                return true === $companyMember->hasUpToDateMembershipFee();
+            }
+        );
+    }
+
+    public function findById($id)
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember();
+        $queryBuilder->where('apm.id = :id');
+
+        return $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams(['id' => $id])
+            ->query($this->getCollection($this->getHydratorForCompanyMember()))
+            ->first()
+        ;
     }
 
     public function loadAll()
@@ -26,7 +52,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
         return $this
             ->getQuery($queryBuilder->getStatement())
             ->query($this->getCollection($this->getHydratorForCompanyMember()))
-            ;
+        ;
     }
 
     private function getHydratorForCompanyMember()

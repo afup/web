@@ -37,9 +37,13 @@ class CompanyPublicProfileController extends SiteBaseController
          * @var $companyRepository CompanyMemberRepository
          */
         $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
-        $companyMember = $companyRepository->get($id);
+        $companyMember = $companyRepository->findById($id);
 
-        if ($companyMember === null || $companyMember->getSlug() != $slug || false === $companyMember->getPublicProfileEnabled()) {
+        if ($companyMember === null
+            || $companyMember->getSlug() != $slug
+            || false === $companyMember->getPublicProfileEnabled()
+            || false === $companyMember->hasUpToDateMembershipFee()
+        ) {
             throw $this->createNotFoundException("Company member not found");
         }
 
