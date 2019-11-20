@@ -393,6 +393,18 @@ class Event implements NotifyPropertyInterface
         return $cfp[$key];
     }
 
+    public function getBecomeSponsorText()
+    {
+        $cfp = $this->getCFP();
+        $key = 'become_sponsor_description';
+
+        if (!isset($cfp[$key])) {
+            return null;
+        }
+
+        return $cfp[$key];
+    }
+
     /**
      * @return string
      */
