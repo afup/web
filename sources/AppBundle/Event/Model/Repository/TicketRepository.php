@@ -5,6 +5,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketType;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\HydratorArray;
@@ -102,20 +103,35 @@ class TicketRepository extends Repository implements MetadataInitializer
 
     public function getPublicSoldTicketsByDay($day, Event $event)
     {
-        $tickets = $this->getPreparedQuery('
+        return $this->getPublicSoldTicketsByDayOfType($day, $event);
+    }
+
+    public function getPublicSoldTicketsByDayOfType($day, Event $event, TicketType $ticketType = null)
+    {
+        $sql = '
             SELECT COUNT(aif.id) AS sold_tickets
             FROM afup_inscription_forum aif
             JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
             WHERE aif.id_forum = :event AND aft.public = 1 AND FIND_IN_SET(:day, aft.day) > 0
             AND aif.etat <> :state_cancelled
-        ')
-            ->setParams([
-                'event' => $event->getId(),
-                'day' => $day,
-                'state_cancelled' => Ticket::STATUS_CANCELLED,
-            ])
+        ';
+
+        $params = [
+            'event' => $event->getId(),
+            'day' => $day,
+            'state_cancelled' => Ticket::STATUS_CANCELLED,
+        ];
+
+        if (null !== $ticketType) {
+            $sql .= ' AND aif.type_inscription = :ticket_type_id';
+            $params['ticket_type_id'] = $ticketType->getId();
+        }
+
+        $tickets = $this->getPreparedQuery($sql)
+            ->setParams($params)
             ->query($this->getCollection(new HydratorArray()))
         ;
+
         if ($tickets === null) {
             return 0;
         }
