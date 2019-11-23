@@ -215,6 +215,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\EventRepository]
 
+    AppBundle\Event\Model\Repository\UserBadgeRepository:
+        class: AppBundle\Event\Model\Repository\UserBadgeRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\UserBadgeRepository]
+
     AppBundle\Event\Model\Repository\SponsorTicketRepository:
         class: AppBundle\Event\Model\Repository\SponsorTicketRepository
         factory: ["@ting", get]
@@ -381,7 +386,7 @@ services:
         arguments: ['@Afup\Site\Association\Cotisations']
 
     AppBundle\Association\UserMembership\BadgesComputer:
-        arguments: ['@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\EventRepository']
+        arguments: ['@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\EventRepository', '@AppBundle\Event\Model\Repository\UserBadgeRepository']
 
     AppBundle\Event\Ticket\RegistrationsExportGenerator:
         arguments: ['@AppBundle\Offices\OfficeFinder', '@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']

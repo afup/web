@@ -5,6 +5,7 @@ namespace AppBundle\Association\UserMembership;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Model\Repository\UserBadgeRepository;
 
 class BadgesComputer
 {
@@ -12,15 +13,22 @@ class BadgesComputer
      * @var SeniorityComputer
      */
     private $seniorityComputer;
+
     /**
      * @var EventRepository
      */
     private $eventRepository;
 
-    public function __construct(SeniorityComputer $seniorityComputer, EventRepository $eventRepository)
+    /**
+     * @var UserBadgeRepository
+     */
+    private $userBadgeRepository;
+
+    public function __construct(SeniorityComputer $seniorityComputer, EventRepository $eventRepository, UserBadgeRepository $userBadgeRepository)
     {
         $this->seniorityComputer = $seniorityComputer;
         $this->eventRepository = $eventRepository;
+        $this->userBadgeRepository = $userBadgeRepository;
     }
 
     public function getBadges(User $user)
@@ -29,11 +37,23 @@ class BadgesComputer
 
         $badgesInfos = $this->sortBadgesInfos($badgesInfos);
 
-        $badgesCodes = $this->mapBadgesCodes($badgesInfos);
+        return $this->filterExistingBadges($badgesInfos);
+    }
 
-        $badges = $this->filterExistingBadges($badgesCodes);
+    private function getSpecificBadges(User $user)
+    {
+        $specific = [];
 
-        return $badges;
+        $userBadges = $this->userBadgeRepository->findByUserId($user->getId());
+
+        foreach ($userBadges as $userBadge) {
+            $specific[] = [
+                'date' => $userBadge->getIssuedAt()->format('Y-m-d'),
+                'url' => $userBadge->getBadge()->getUrl(),
+            ];
+        }
+
+        return $specific;
     }
 
     public function getCompanyBadges(CompanyMember $companyMember)
@@ -94,6 +114,8 @@ class BadgesComputer
             ];
         }
 
+        $badgesCodes = array_merge($badgesCodes, $this->getSpecificBadges($user));
+
         return $badgesCodes;
     }
 
@@ -122,18 +144,22 @@ class BadgesComputer
         return $badgesInfos;
     }
 
-    private function filterExistingBadges(array $badgesCodes)
+    private function filterExistingBadges(array $badgesInfos)
     {
         $badgespath = __DIR__ . '/../../../../htdocs/images/badges/';
 
         $filteredBadges = [];
 
-        foreach ($badgesCodes as $badgesCode) {
-            if (!is_file($badgespath . $badgesCode . '.png')) {
-                continue;
-            }
+        foreach ($badgesInfos as $badgeInfos) {
+            if (isset($badgeInfos['url'])) {
+                $filteredBadges[] = $badgeInfos;
+            } else {
+                if (!is_file($badgespath . $badgeInfos['code'] . '.png')) {
+                    continue;
+                }
 
-            $filteredBadges[] = $badgesCode;
+                $filteredBadges[] = $badgeInfos;
+            }
         }
 
         return $filteredBadges;
