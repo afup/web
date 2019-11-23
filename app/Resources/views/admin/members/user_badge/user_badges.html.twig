@@ -1,0 +1,20 @@
+{% if user_badges|length %}
+<fieldset>
+    <legend>Badges</legend>
+    <br />
+    <table class="afup_tab">
+        <thead>
+            <th>Nom</th>
+            <th>Date</th>
+        </thead>
+        <tbody>
+        {% for user_badge in user_badges %}
+        <tr>
+            <td>{{ user_badge.badge.label }}</td>
+            <td>{{ user_badge.issuedAt|date('d/m/Y') }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</fieldset>
+{% endif %}
