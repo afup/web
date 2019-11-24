@@ -33,6 +33,7 @@ class CompanyPublicProfileController extends SiteBaseController
             'careers_page_url' => $companyMember->getCareersPageUrl(),
             'twitter_handle' => $companyMember->getTwitterHandle(),
             'related_afup_offices' => $companyMember->getFormattedRelatedAfupOffices(),
+            'membership_reason' => $companyMember->getMembershipReason(),
         ];
 
         $formOptions = [
@@ -68,6 +69,7 @@ class CompanyPublicProfileController extends SiteBaseController
                 ->setCareersPageUrl($data['careers_page_url'])
                 ->setTwitterHandle($data['twitter_handle'])
                 ->setFormattedRelatedAfupOffices($data['related_afup_offices'])
+                ->setMembershipReason($data['membership_reason'])
             ;
 
             $companyRepository->save($companyMember);

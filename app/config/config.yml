@@ -25,11 +25,8 @@ parameters:
                     nom: 'Relances cotisations'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/association/relances/1'
-                statistiques:
-                    nom: 'Statistiques'
-                    niveau: 'ROLE_ADMIN'
                 reporting:
-                    nom: 'Reporting [WIP]'
+                    nom: 'Reporting'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/members/reporting'
                 mailing:

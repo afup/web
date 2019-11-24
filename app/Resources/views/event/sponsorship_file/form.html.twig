@@ -13,30 +13,7 @@
     <div class="col-md-8">
         <h2>{{ 'Devenir sponsor'|trans }}</h2>
         <div class="sponsor--become-talk">
-            <h3>{{ 'Notre événement'|trans }}</h3>
-            <p>
-                {{ "Depuis 15 ans, l'AFUP organise le Forum PHP, événement majeur en Europe autour du PHP. Il se déroulera cette
-                année les 24 et 25 octobre au Marriott Paris - Rive Gauche, situé dans le quartier de Denfert-Rochereau."|trans }}<br />
-                {{ "40 conférences et ateliers pratiques sont proposées à nos participants, dans un cadre exceptionnel.
-                2 tracks de conférences et un cycle d'ateliers ont lieu simultanément, permettant aux participants
-                de découvrir de nouvelles techniques en profondeur."|trans }}
-            </p>
-            <h3>{{ "Notre public"|trans }}</h3>
-            <p>
-                {{ "Plus de 600 développeur·se·s, décideur·se·s, expert·e·s ou novices en PHP rejoindront cette année l'AFUP
-                pour cet événement exceptionnel. Comme lors de chaque édition, des conférencier·ère·s nationaux et
-                internationaux viendront présenter des conférences qui font référence."|trans }}<br />
-                {{ "De la startup au groupe du CAC 40, toutes les sociétés sont représentées lors de cet événement unique."|trans }}
-            </p>
-            <h3>{{ "Nos offres"|trans }}</h3>
-            <p>
-                {{ "Que vous ayez une offre à promouvoir, un produit à présenter ou que vous souhaitiez soutenir l'open source,
-                nous aurons une offre à vous proposer."|trans }}<br />
-                {{ "Avec ou sans stand lors de l'événement, nos différents niveaux de sponsoring vous permettent de trouver
-                une offre qui correspond à vos attentes de visibilité tout en respectant votre budget."|trans }}<br />
-                {{ "Pour les sponsors, cet événement est l'occasion unique à Paris de rencontrer autant de développeur·se·s
-                web dans un cadre convivial."|trans }}
-            </p>
+            {{ event.getBecomeSponsorText|markdown }}
         </div>
 
     </div>

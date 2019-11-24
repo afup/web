@@ -15,7 +15,7 @@ class CompanyPublicProfileListController extends SiteBaseController
          */
         $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
 
-        $displayableCompanies = iterator_to_array($companyRepository->findDisplayableCompanies());
+        $displayableCompanies = $companyRepository->findDisplayableCompanies();
 
         usort($displayableCompanies, function (CompanyMember $companyMemberA, CompanyMember $companyMemberB) {
             $a = $companyMemberA->getCompanyName();
