@@ -215,6 +215,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\EventRepository]
 
+    AppBundle\Event\Model\Repository\BadgeRepository:
+        class: AppBundle\Event\Model\Repository\BadgeRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\BadgeRepository]
+
     AppBundle\Event\Model\Repository\UserBadgeRepository:
         class: AppBundle\Event\Model\Repository\UserBadgeRepository
         factory: ["@ting", get]
@@ -401,6 +406,13 @@ services:
         arguments: ["@translator"]
         tags:
           - {name: form.type}
+
+    AppBundle\Association\Form\UserBadgeType:
+        arguments:
+            - '@AppBundle\Event\Model\Repository\BadgeRepository'
+            - '@AppBundle\Event\Model\Repository\UserBadgeRepository'
+        tags:
+            - {name: form.type}
 
     AppBundle\Subscriber\TalksSitemapSubscriber:
         arguments:

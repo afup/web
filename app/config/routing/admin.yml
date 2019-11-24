@@ -55,6 +55,10 @@ admin_members_badges_new:
   path: /members/badges/new
   defaults: {_controller: AppBundle:Admin\Members\Badges:new}
 
+admin_members_user_badge_new:
+  path: /members/user_badge/new
+  defaults: {_controller: AppBundle:Admin\Members\UserBadge:new}
+
 admin_techletter:
   resource: "techletter_admin.yml"
   prefix: /techletter
