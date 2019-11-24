@@ -205,8 +205,8 @@
         <div class="container">
         {% for badge in badges %}
                 <div class="col-md-3 col-sm-12 member-badge">
-                    {% if badge.url is defined %}
-                        <img src="{{ badge.url }}" alt="Badge">
+                    {% if badge.id is defined %}
+                        <img src="{{ path('badge_image', {id: badge.id })}}" alt="Badge">
                     {% else %}
                         <img src="/images/badges/{{ badge.code }}.png" alt="Badge {{ badge.code }}">
                     {% endif %}

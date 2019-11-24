@@ -1,0 +1,28 @@
+{% extends ':admin:base_with_header.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all"/>
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
+{% endblock %}
+{% block content %}
+
+    <h2>Nouveau badge</h2>
+
+    <div class="afup-form">
+        {{ form_start(form) }}
+        <fieldset>
+            <legend>Badge</legend>
+            <div class="afup-form-container">
+                {{ form_row(form.label) }}
+                {{ form_row(form.image) }}
+            </div>
+        </fieldset>
+
+        <div style="text-align: right">
+            {{ form_widget(form.save, {"attr": { "class": "button button--call-to-action"}}) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}

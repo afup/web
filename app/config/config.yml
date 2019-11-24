@@ -29,6 +29,10 @@ parameters:
                     nom: 'Reporting'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/members/reporting'
+                badges:
+                    nom: 'Badges'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/badges'
                 mailing:
                     nom: 'Mailing'
                     niveau: 'ROLE_ADMIN'

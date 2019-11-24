@@ -1,0 +1,29 @@
+{% extends ':admin:base_with_header.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all"/>
+{% endblock %}
+{% block content %}
+    <h2>Badges</h2>
+
+    <a href="{{ path('admin_members_badges_new') }}">Nouveau badge</a><br />
+    <br />
+
+    <table class="afup_tab">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Logo</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for badge in badges %}
+            <tr>
+                <td>{{ badge.label }}</td>
+                <td>
+                    <img src="{{ path('badge_image', {id: badge.id })}}" style="max-height: 150px">
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

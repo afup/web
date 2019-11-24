@@ -49,7 +49,7 @@ class BadgesComputer
         foreach ($userBadges as $userBadge) {
             $specific[] = [
                 'date' => $userBadge->getIssuedAt()->format('Y-m-d'),
-                'url' => $userBadge->getBadge()->getUrl(),
+                'id' => $userBadge->getBadge()->getId(),
             ];
         }
 
@@ -151,7 +151,7 @@ class BadgesComputer
         $filteredBadges = [];
 
         foreach ($badgesInfos as $badgeInfos) {
-            if (isset($badgeInfos['url'])) {
+            if (isset($badgeInfos['id'])) {
                 $filteredBadges[] = $badgeInfos;
             } else {
                 if (!is_file($badgespath . $badgeInfos['code'] . '.png')) {
