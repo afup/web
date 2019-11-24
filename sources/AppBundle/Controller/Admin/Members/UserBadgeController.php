@@ -31,4 +31,13 @@ class UserBadgeController extends Controller
 
         return $this->redirect($request->headers->get('referer'));
     }
+
+    public function deleteAction(Request $request, $userId, $badgeId)
+    {
+        $userBadgeRepository = $this->get('ting')->get(UserBadgeRepository::class);
+        $userBadge = $userBadgeRepository->getOneBy(['badgeId' => $badgeId, 'userId' => $userId]);
+        $userBadgeRepository->delete($userBadge);
+
+        return $this->redirect($request->headers->get('referer'));
+    }
 }

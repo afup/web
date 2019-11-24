@@ -6,12 +6,16 @@
         <thead>
             <th>Nom</th>
             <th>Date</th>
+            <th>Actions</th>
         </thead>
         <tbody>
         {% for user_badge in user_badges %}
         <tr>
             <td>{{ user_badge.badge.label }}</td>
             <td>{{ user_badge.issuedAt|date('d/m/Y') }}</td>
+            <td>
+                <a href="{{ path('admin_members_user_badge_delete', {userId: user_badge.userId, badgeId: user_badge.badgeId}) }}">Supprimer</a>
+            </td>
         </tr>
         {% endfor %}
         </tbody>
