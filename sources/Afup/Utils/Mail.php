@@ -30,7 +30,7 @@ class Mail
         $this->logger = $logger;
         $this->twig = $twig;
         $this->configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
-        $this->templateDirPath = dirname(__FILE__) . '/../../../app/config/Resources/views/';
+        $this->templateDirPath = dirname(__FILE__) . '/../../../app/Resources/views/';
     }
 
     /**
@@ -62,7 +62,7 @@ class Mail
             } else {
                 $content = $templateFile;
             }
-            
+
             if (!array_key_exists('from', $parameters)) {
                 $parameters['from'] = [
                     'name' => 'AFUP',

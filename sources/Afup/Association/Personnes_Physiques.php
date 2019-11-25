@@ -426,7 +426,7 @@ SQL;
         return false;
     }
 
-    public function sendWelcomeMailWithData($firstName, $lastName, $login, $email, \Twig_Environment $twig)
+    public function sendWelcomeMailWithData($firstName, $lastName, $login, $email, $twig)
     {
         $mail = new Mail(null, $twig);
         return $mail->send(
