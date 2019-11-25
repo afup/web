@@ -184,7 +184,7 @@ class LegacyController extends Controller
                         $formulaire->exportValue('nom'),
                         $formulaire->exportValue('login'),
                         $formulaire->exportValue('email'),
-                        $this->get('twig')
+                    null
                     );
 
                     $this->addFlash('notice', 'Merci pour votre inscription. Il ne reste plus qu\'à régler votre cotisation.');
