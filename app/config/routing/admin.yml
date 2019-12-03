@@ -47,6 +47,22 @@ admin_members_reporting:
   path: /members/reporting
   defaults: {_controller: AppBundle:MembershipAdmin:reporting}
 
+admin_members_badges_index:
+  path: /members/badges
+  defaults: {_controller: AppBundle:Admin\Members\Badges:index}
+
+admin_members_badges_new:
+  path: /members/badges/new
+  defaults: {_controller: AppBundle:Admin\Members\Badges:new}
+
+admin_members_user_badge_new:
+  path: /members/user_badge/new
+  defaults: {_controller: AppBundle:Admin\Members\UserBadge:new}
+
+admin_members_user_badge_delete:
+  path: /members/user_badge/{userId}/{badgeId}/delete
+  defaults: {_controller: AppBundle:Admin\Members\UserBadge:delete}
+
 admin_techletter:
   resource: "techletter_admin.yml"
   prefix: /techletter
