@@ -13,14 +13,24 @@
             <tr>
                 <th>Nom</th>
                 <th>Logo</th>
+                <th>Membres</th>
             </tr>
         </thead>
         <tbody>
-        {% for badge in badges %}
+        {% for info in infos %}
             <tr>
-                <td>{{ badge.label }}</td>
+                <td>{{ info.badge.label }}</td>
                 <td>
-                    <img src="{{ path('badge_image', {id: badge.id })}}" style="max-height: 150px">
+                    <img src="{{ path('badge_image', {id: info.badge.id })}}" style="max-height: 150px">
+                </td>
+                <td>
+                    {% for user in info.users %}
+                        {{ user.getLabel }}
+                        <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ user.id }}">
+                            <img src="/templates/administration/images/famfamfam/application_form_edit.png" />
+                        </a>
+                        <br />
+                    {% endfor %}
                 </td>
             </tr>
         {% endfor %}

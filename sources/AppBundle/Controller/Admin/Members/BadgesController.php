@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Form\BadgeType;
+use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Badge;
 use AppBundle\Event\Model\Repository\BadgeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -12,9 +13,18 @@ class BadgesController extends Controller
 {
     public function indexAction(Request $request)
     {
+        $infos = [];
+
+        foreach ($this->get('ting')->get(BadgeRepository::class)->getAll() as $badge) {
+            $infos[] = [
+                'badge' => $badge,
+                'users' => $this->get('ting')->get(UserRepository::class)->loadByBadge($badge)
+            ];
+        }
+
         return $this->render('admin/members/badges/index.html.twig', [
             'title' => 'Badges',
-            'badges' => $this->get('ting')->get(BadgeRepository::class)->getAll(),
+            'infos' => $infos,
         ]);
     }
 
