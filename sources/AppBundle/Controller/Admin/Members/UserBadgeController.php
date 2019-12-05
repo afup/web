@@ -11,10 +11,12 @@ class UserBadgeController extends Controller
 {
     public function newAction(Request $request)
     {
+        $user = $this->get('ting')->get(\AppBundle\Association\Model\Repository\UserRepository::class)->get($request->get('user_id'));
+
         $userBadgeForm = $this->createForm(
             \AppBundle\Association\Form\UserBadgeType::class,
             [],
-            ['user' => $this->getUser()]
+            ['user' => $user]
         );
 
         $userBadgeForm->handleRequest($request);

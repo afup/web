@@ -264,6 +264,8 @@ if ($action == 'lister') {
 
     $userBadges = [];
 
+    $user = $this->get('ting')->get(\AppBundle\Association\Model\Repository\UserRepository::class)->get($_GET['id']);
+
     if ($action != 'ajouter') {
         $userBadgesRepository = $this->get('ting')->get(\AppBundle\Event\Model\Repository\UserBadgeRepository::class);
         $userBadges = iterator_to_array($userBadgesRepository->findByUserId($_GET['id']));
@@ -273,12 +275,13 @@ if ($action == 'lister') {
         \AppBundle\Association\Form\UserBadgeType::class,
         [],
         [
-            'user' => $this->getUser(),
-            'action' => $this->generateUrl('admin_members_user_badge_new'),
+            'user' => $user,
+            'action' => $this->generateUrl('admin_members_user_badge_new', ['user_id' => $user->getId()]),
         ]
     );
 
     $smarty->assign('user_badges_content', $this->get('twig')->render('::admin/members/user_badge/user_badges.html.twig', [
+        'user' => $user,
         'user_badges' => $userBadges,
         'user_badge_form' => $userBadgeForm->createView(),
     ]));
