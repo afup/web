@@ -5,6 +5,7 @@ namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
+use AppBundle\Event\Model\Badge;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -120,6 +121,20 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
 
         return $this
             ->getQuery($queryBuilder->getStatement())
+            ->query($this->getCollection($this->getHydratorForUser()))
+        ;
+    }
+
+    public function loadByBadge(Badge $badge)
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser();
+
+        $queryBuilder->join('INNER', 'afup_personnes_physiques_badge', 'app.id = afup_personnes_physiques_badge.afup_personne_physique_id');
+        $queryBuilder->where('afup_personnes_physiques_badge.badge_id = :badge_id');
+
+        return $this
+            ->getPreparedQuery($queryBuilder->getStatement())
+            ->setParams(['badge_id' => $badge->getId()])
             ->query($this->getCollection($this->getHydratorForUser()))
         ;
     }

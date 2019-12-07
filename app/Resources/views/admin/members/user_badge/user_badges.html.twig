@@ -1,0 +1,53 @@
+{% if user_badges|length %}
+<fieldset>
+    <legend>Badges</legend>
+    <br />
+    <table class="afup_tab">
+        <thead>
+            <th>Nom</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+        {% for user_badge in user_badges %}
+        <tr>
+            <td>{{ user_badge.badge.label }}</td>
+            <td>{{ user_badge.issuedAt|date('d/m/Y') }}</td>
+            <td>
+                <a href="{{ path('admin_members_user_badge_delete', {userId: user_badge.userId, badgeId: user_badge.badgeId}) }}">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</fieldset>
+{% endif %}
+
+<div class="afup-form">
+    {{ form_start(user_badge_form) }}
+    <fieldset>
+        <legend>Associer un nouveau badge</legend>
+        <div class="rangee">
+            {{ form_errors(user_badge_form.badge) }}
+            {{ form_label(user_badge_form.badge, null, {label_attr: {class: "libelle"}}) }}
+            <span class="element">
+                {{ form_widget(user_badge_form.badge) }}
+            </span>
+        </div>
+
+        <div class="rangee">
+            {{ form_errors(user_badge_form.date) }}
+            {{ form_label(user_badge_form.date, null, {label_attr: {class: "libelle"}}) }}
+            <span class="element">
+                {{ form_widget(user_badge_form.date) }}
+            </span>
+        </div>
+    </fieldset>
+    <fieldset class="boutons">
+        <div class="rangee">
+            {{ form_widget(user_badge_form.save) }}
+        </div>
+    </fieldset>
+
+    {{ form_end(user_badge_form) }}
+</div>
