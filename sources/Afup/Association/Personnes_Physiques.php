@@ -45,7 +45,8 @@ class Personnes_Physiques
                           $associatif = false,
                           $id_personne_physique = false,
                           $is_active = NULL,
-                          $isCompanyManager = null
+                          $isCompanyManager = null,
+                          $needsUptoDateMembership = null
     )
     {
         $requete = 'SELECT';
@@ -95,6 +96,10 @@ SQL;
 
         if ($isCompanyManager) {
             $requete .= " AND roles LIKE '%ROLE_COMPANY_MANAGER%' ";
+        }
+
+        if ($needsUptoDateMembership) {
+            $requete .= "AND needs_up_to_date_membership = 1 ";
         }
 
         $requete .= 'ORDER BY ' . $ordre;
