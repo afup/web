@@ -56,7 +56,7 @@ function paybox_link($description)
         $html = sprintf('<a href="%2$s" class="js-paybox-link">%1$s</a>', $description, $url);
 
         $urlTelecolectes = strtr("https://admin.paybox.com/cgi/Remises.cgi?SelDateFrom={date}&SelDateTo={date}&Ok=Ok", ['{date}' => $date]);
-        $html .= sprintf('<br /><br /><a href="%2$s" class="js-paybox-link">%1$s</a>', "(Voir les télécolectes du jour)", $urlTelecolectes);
+        $html .= sprintf('<br /><br /><a href="%2$s" class="js-paybox-link">%1$s</a>', "(Voir les télécollectes du jour)", $urlTelecolectes);
 
         return $html;
     }
