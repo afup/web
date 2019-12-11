@@ -45,7 +45,8 @@ class Personnes_Physiques
                           $associatif = false,
                           $id_personne_physique = false,
                           $is_active = NULL,
-                          $isCompanyManager = null
+                          $isCompanyManager = null,
+                          $needsUptoDateMembership = null
     )
     {
         $requete = 'SELECT';
@@ -95,6 +96,10 @@ SQL;
 
         if ($isCompanyManager) {
             $requete .= " AND roles LIKE '%ROLE_COMPANY_MANAGER%' ";
+        }
+
+        if ($needsUptoDateMembership) {
+            $requete .= "AND needs_up_to_date_membership = 1 ";
         }
 
         $requete .= 'ORDER BY ' . $ordre;
@@ -236,7 +241,7 @@ SQL;
      * @return bool Succès de la modification
      */
     function modifier($id, $id_personne_morale, $login, $mot_de_passe, $niveau, $niveau_modules, $civilite, $nom, $prenom,
-                      $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn, $roles, $slackAlternateEmail)
+                      $email, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $compte_svn, $roles, $slackAlternateEmail, $needsUpToDateMembership)
     {
         $erreur = $this->loginExists($id, $login);
         $erreur = $erreur || !$this->_companyExists($id_personne_morale);
@@ -267,6 +272,7 @@ SQL;
             $requete .= '  telephone_portable=' . $this->_bdd->echapper($telephone_portable) . ',';
             $requete .= '  etat=' . $this->_bdd->echapper($etat) . ',';
             $requete .= '  slack_alternate_email=' . $this->_bdd->echapper($slackAlternateEmail) . ',';
+            $requete .= '  needs_up_to_date_membership=' . $this->_bdd->echapper($needsUpToDateMembership) . ',';
             if ($roles !== null) {
                 if (@json_decode($roles) === null) {
                     return false;

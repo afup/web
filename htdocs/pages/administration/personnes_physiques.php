@@ -34,8 +34,15 @@ if ($action == 'lister') {
     if (isset($_GET['filtre'])) {
         $list_filtre = $_GET['filtre'];
     }
+
+    $needsUpToDateMembership = null;
+    if (isset($_GET['needs_up_to_date_membership'])) {
+        $needsUpToDateMembership = true;
+    }
+
     // Mise en place de la liste dans le scope de smarty
-    $smarty->assign('personnes', $personnes_physiques->obtenirListe($list_champs, $list_ordre, $list_filtre));
+    $smarty->assign('personnes', $personnes_physiques->obtenirListe($list_champs, $list_ordre, $list_filtre, false, false, false, null, null, $needsUpToDateMembership));
+    $smarty->assign('needs_up_to_date_membersip_checkbox', $needsUpToDateMembership ? '1': '0');
 } elseif ($action == 'supprimer') {
     if ($personnes_physiques->supprimer($_GET['id'])) {
         Logs::log('Suppression de la personne physique ' . $_GET['id']);
@@ -170,6 +177,9 @@ if ($action == 'lister') {
     $formulaire->addElement('password', 'mot_de_passe' , 'Mot de passe' , array('size' => 30, 'maxlength' => 30));
     $formulaire->addElement('password', 'confirmation_mot_de_passe', '' , array('size' => 30, 'maxlength' => 30));
     $formulaire->addElement('textarea', 'roles', 'Roles',  array('cols' => 42, 'rows' => 5));
+    if ($action == 'modifier') {
+        $formulaire->addElement('checkbox', 'needs_up_to_date_membership', "Nécéssite une cotisation à jour");
+    }
 
     $formulaire->addElement('header' , 'boutons' , '');
     $formulaire->addElement('submit' , 'soumettre' , ucfirst($action));
@@ -245,7 +255,8 @@ if ($action == 'lister') {
                 $formulaire->exportValue('etat'),
                 $formulaire->exportValue('compte_svn'),
                 $formulaire->exportValue('roles'),
-                $formulaire->exportValue('slack_alternate_email')
+                $formulaire->exportValue('slack_alternate_email'),
+                $formulaire->exportValue('needs_up_to_date_membership')
             );
         }
 

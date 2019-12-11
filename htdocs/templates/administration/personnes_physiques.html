@@ -13,13 +13,24 @@
       <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
       <input type="hidden" name="sens" value="{$smarty.get.sens}" />
         <tr>
-            <td width="50" nowrap>Filtre : </td>
-            <td width="120" nowrap><input type="text" name="filtre" class="js-filtre" value="{$smarty.get.filtre|stripslashes}"></td>
+            <td colspan="3">Filtres :</td>
+        </tr>
+          <tr>
+              <td width="70" nowrap></td>
+              <td width="120" nowrap>
+                  <input type="checkbox" name="needs_up_to_date_membership" id="filtre_needs_up_to_date_membership" {if $needs_up_to_date_membersip_checkbox}checked="checked"{/if}/>
+                  <label for="filtre_needs_up_to_date_membership">Afficher seulement les membres nécéssitant d'avoir une cotisation à jour</label>
+              </td>
+          </tr>
+        <tr>
+            <td width="70" nowrap>Recherche : </td>
+            <td width="120" nowrap><input type="text" name="filtre" class="js-filtre" value="{$smarty.get.filtre|stripslashes}" style="width: 100%"></td>
             <td><input type="submit" value="OK" name="submit_filtre"></td>
             {if $smarty.get.filtre != ''}
             <td><button type="button" onclick="$('.js-filtre').val(''); $('.js-form-search').submit();">Annuler la recherche</button></td>
             {/if}
         </tr>
+
       </form>
     </table>
     <br/>
