@@ -590,28 +590,35 @@ elseif ($action == 'supprimer') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 } elseif ($action == 'ventiler') {
     $idCompta = (int)$_GET['id'];
-    $montant = (float) $_GET['montant'];
     $ligneCompta = $compta->obtenir($idCompta);
-    $compta->ajouter($ligneCompta['idoperation'],
-                     $ligneCompta['idcompte'],
-                     26, // A déterminer
-                     $ligneCompta['date_ecriture'],
-                     $ligneCompta['nom_frs'],
-                     $montant,
-                     $ligneCompta['description'],
-                     $ligneCompta['numero'],
-                     $ligneCompta['idmode_regl'],
-                     $ligneCompta['date_regl'],
-                     $ligneCompta['obs_regl'],
-                     8, // A déterminer
-                     $ligneCompta['numero_operation']);
+    $montantTotal = 0;
+
+    foreach (explode(';', $_GET['montant']) as $montant) {
+        $montant = (float) $montant;
+        $compta->ajouter($ligneCompta['idoperation'],
+            $ligneCompta['idcompte'],
+            26, // A déterminer
+            $ligneCompta['date_ecriture'],
+            $ligneCompta['nom_frs'],
+            $montant,
+            $ligneCompta['description'],
+            $ligneCompta['numero'],
+            $ligneCompta['idmode_regl'],
+            $ligneCompta['date_regl'],
+            $ligneCompta['obs_regl'],
+            8, // A déterminer
+            $ligneCompta['numero_operation']
+        );
+        $montantTotal += $montant;
+    }
+
     $compta->modifier($ligneCompta['id'],
                       $ligneCompta['idoperation'],
                       $ligneCompta['idcompte'],
                       $ligneCompta['idcategorie'],
                       $ligneCompta['date_ecriture'],
                       $ligneCompta['nom_frs'],
-                      $ligneCompta['montant'] - $montant,
+                      $ligneCompta['montant'] - $montantTotal,
                       $ligneCompta['description'],
                       $ligneCompta['numero'],
                       $ligneCompta['idmode_regl'],
@@ -619,5 +626,5 @@ elseif ($action == 'supprimer') {
                       $ligneCompta['obs_regl'],
                       $ligneCompta['idevenement'],
                       $ligneCompta['numero_operation']);
-    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal&action=modifier&id=' . $compta->lastId);
+    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal#journal-ligne-' . $compta->lastId);
 }
