@@ -57,7 +57,7 @@
             <th>&nbsp;</th>
        </tr>
     {foreach from=$journal item=ecriture}
-         <tr class="{cycle values="odd,even"}">
+         <tr class="{cycle values="odd,even"}" id="journal-ligne-{$ecriture.idtmp}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td nowrap="nowrap"><a name="L{$ecriture.idtmp}"></a>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$ecriture.nom_compte}</td>
