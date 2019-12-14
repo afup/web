@@ -626,5 +626,5 @@ elseif ($action == 'supprimer') {
                       $ligneCompta['obs_regl'],
                       $ligneCompta['idevenement'],
                       $ligneCompta['numero_operation']);
-    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal&action=modifier&id=' . $compta->lastId);
+    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal');
 }
