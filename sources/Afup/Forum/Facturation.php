@@ -67,9 +67,10 @@ class Facturation
         $requete .= 'WHERE etat IN ( ' . AFUP_FORUM_ETAT_REGLE . ', ' . AFUP_FORUM_ETAT_ATTENTE_REGLEMENT . ', ' . AFUP_FORUM_ETAT_CONFIRME . ') ';
         $requete .= '  AND id_forum =' . $id_forum . ' ';
         if ($filtre) {
-            $requete .= '  AND societe LIKE \'%' . $filtre . '%\') ';
+            $requete .= '  AND (societe LIKE \'%' . $filtre . '%\' OR reference LIKE \'%' . $filtre . '%\' ) ';
         }
         $requete .= 'ORDER BY ' . $ordre;
+
         if ($associatif) {
             return $this->_bdd->obtenirAssociatif($requete);
         } else {
