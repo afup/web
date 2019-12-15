@@ -243,6 +243,12 @@ if ($action == 'envoyer_convocation') {
 
 	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
+
+    if ($action != 'ajouter') {
+        $formulaire->addElement('static', 'html', '', '<a href="/pages/administration/index.php?' . http_build_query(array('page' => 'forum_facturation', 'id_forum' => $_GET['id_forum'], 'filtre' => $champs['reference'])). '">Rechercher la facture</a>');
+    }
+
+
 	$formulaire->addElement('text'  , 'reference'   , 'Référence'   , array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'autorisation', 'Autorisation', array('size' => 50, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'transaction' , 'Transaction' , array('size' => 50, 'maxlength' => 100));
