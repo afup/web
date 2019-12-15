@@ -24,7 +24,7 @@ class Mail
      *
      * @param LoggerInterface|null $logger
      * @param Twig_Environnement|null $twig
-     */
+     */*
     public function __construct($logger, $twig)
     {
         $this->logger = $logger;
