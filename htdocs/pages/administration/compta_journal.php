@@ -51,8 +51,14 @@ function paybox_link($description)
     $matches = array();
     if (preg_match('`CB\s+AFUP\s+([0-9]{2})([0-9]{2})([0-9]{2})-CB\s+AFUP`', $description, $matches)) {
         $date = $matches[1] . "/" . $matches[2] . "/" . (2000 + (int) $matches[3]);
+
         $url  = sprintf('https://admin.paybox.com/cgi/CBDCum.cgi?lg=FR&amp;SelDate=%1$s&amp;SelDateAu=%1$s', $date);
-        return sprintf('<a href="%2$s" class="js-paybox-link">%1$s</a>', $description, $url);
+        $html = sprintf('<a href="%2$s" class="js-paybox-link">%1$s</a>', $description, $url);
+
+        $urlTelecolectes = strtr("https://admin.paybox.com/cgi/Remises.cgi?SelDateFrom={date}&SelDateTo={date}&Ok=Ok", ['{date}' => $date]);
+        $html .= sprintf('<br /><br /><a href="%2$s" class="js-paybox-link">%1$s</a>', "(Voir les télécollectes du jour)", $urlTelecolectes);
+
+        return $html;
     }
     return $description;
 }
@@ -584,28 +590,35 @@ elseif ($action == 'supprimer') {
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 } elseif ($action == 'ventiler') {
     $idCompta = (int)$_GET['id'];
-    $montant = (float) $_GET['montant'];
     $ligneCompta = $compta->obtenir($idCompta);
-    $compta->ajouter($ligneCompta['idoperation'],
-                     $ligneCompta['idcompte'],
-                     26, // A déterminer
-                     $ligneCompta['date_ecriture'],
-                     $ligneCompta['nom_frs'],
-                     $montant,
-                     $ligneCompta['description'],
-                     $ligneCompta['numero'],
-                     $ligneCompta['idmode_regl'],
-                     $ligneCompta['date_regl'],
-                     $ligneCompta['obs_regl'],
-                     8, // A déterminer
-                     $ligneCompta['numero_operation']);
+    $montantTotal = 0;
+
+    foreach (explode(';', $_GET['montant']) as $montant) {
+        $montant = (float) $montant;
+        $compta->ajouter($ligneCompta['idoperation'],
+            $ligneCompta['idcompte'],
+            26, // A déterminer
+            $ligneCompta['date_ecriture'],
+            $ligneCompta['nom_frs'],
+            $montant,
+            $ligneCompta['description'],
+            $ligneCompta['numero'],
+            $ligneCompta['idmode_regl'],
+            $ligneCompta['date_regl'],
+            $ligneCompta['obs_regl'],
+            8, // A déterminer
+            $ligneCompta['numero_operation']
+        );
+        $montantTotal += $montant;
+    }
+
     $compta->modifier($ligneCompta['id'],
                       $ligneCompta['idoperation'],
                       $ligneCompta['idcompte'],
                       $ligneCompta['idcategorie'],
                       $ligneCompta['date_ecriture'],
                       $ligneCompta['nom_frs'],
-                      $ligneCompta['montant'] - $montant,
+                      $ligneCompta['montant'] - $montantTotal,
                       $ligneCompta['description'],
                       $ligneCompta['numero'],
                       $ligneCompta['idmode_regl'],
@@ -613,5 +626,5 @@ elseif ($action == 'supprimer') {
                       $ligneCompta['obs_regl'],
                       $ligneCompta['idevenement'],
                       $ligneCompta['numero_operation']);
-    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal&action=modifier&id=' . $compta->lastId);
+    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal#journal-ligne-' . $compta->lastId);
 }
