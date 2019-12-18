@@ -3,8 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Indexation\Talks\Runner;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminTalkController extends Controller
@@ -24,6 +26,16 @@ class AdminTalkController extends Controller
         $response = new BinaryFileResponse($file, BinaryFileResponse::HTTP_OK, $headers);
         $response->deleteFileAfterSend(true);
         return $response;
+    }
+
+    public function updateIndexationAction(Request $request)
+    {
+        $runner = new Runner($this->get(\AlgoliaSearch\Client::class), $this->get('ting'));
+        $runner->run();
+
+        $this->addFlash('notice', 'Indexation effectuée');
+
+        return new RedirectResponse($request->headers->get('referer', '/pages/administration/index.php?page=forum_sessions'));
     }
 
     private function getEvent(EventRepository $eventRepository, Request $request)
