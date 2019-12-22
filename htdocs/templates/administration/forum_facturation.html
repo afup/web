@@ -12,7 +12,7 @@
       <input type="hidden" name="page" value="forum_facturation" />
       <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
       <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-      <input type="hidden" name="forum_id" value="{$id_forum}" />
+      <input type="hidden" name="id_forum" value="{$id_forum}" />
         <tr>
             <td width="50" nowrap>Filtre : </td>
             <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
@@ -24,6 +24,7 @@
     <table class="afup_tab">
         <tr>
             <th align="left"><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_facture'}desc{else}asc{/if}">Date facture</a></th>
+            <th align="left"><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'reference'}desc{else}asc{/if}">Référence</a></th>
             <th align="left"><a href="index.php?page=forum_facturation&amp;tri=societe&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'societe'}desc{else}asc{/if}">Société / <em style="color:#ddd">personne physique</em></a></th>
             <th align="left"><a href="index.php?page=forum_facturation&amp;tri=montant&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'montant'}desc{else}asc{/if}">Montant</a></th>
             <th><a href="index.php?page=forum_facturation&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
@@ -33,6 +34,7 @@
     {foreach from=$facturations item=facturation}
         <tr class="{cycle values="odd,even"}">
             <td nowrap="nowrap">{$facturation.date_facture|date_format:"%d/%m/%Y"}</td>
+            <td>{$facturation.reference}</td>
             <td><strong>{if $facturation.societe}{$facturation.societe}{else}<em style="color:#999">{$facturation.nom} {$facturation.prenom}</em>{/if}</strong></td>
             <td>{$facturation.montant} &euro;</td>
             <td style="text-align: center">{if $facturation.etat == 4}<span class="regle" title="{$facturation.reference}" alt="{$facturation.date_reglement|date_format:"%d/%m/%Y"}">Reglée<br/><em style="color:#999">{$facturation.date_reglement|date_format:"%d/%m/%Y"}</em></span>{elseif $facturation.etat == 6}En attente règlement{elseif $facturation.etat == 7}Confirmée{else}--{/if}</td>

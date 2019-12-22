@@ -13,6 +13,7 @@
            <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
             <th>Ville</th>
             <th>Numero facture</th>
+            <th>Référence client</th>
             <th>Etat paiement</th>
             <th>Prix</th>
             <th>&nbsp;</th>
@@ -24,6 +25,7 @@
              <td>{$ecriture.societe}</td>
              <td  width="250">{$ecriture.ville}</td>
             <td  align='right'>{$ecriture.numero_facture}</td>
+            <td>{$ecriture.ref_clt1}</td>
             {if $ecriture.etat_paiement == 2}
 			<td style="text-align: center;color:#999999">Annulé</td>
             {elseif $ecriture.etat_paiement == 1}
