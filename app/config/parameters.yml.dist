@@ -41,7 +41,7 @@ parameters:
     google_maps_api_key: ""
 
     meetup_api_consumer_key: ""
-    meetup_api_consumer_secret: "
+    meetup_api_consumer_secret: ""
 
     google_groups_api_key: ""
 
