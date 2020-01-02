@@ -302,6 +302,30 @@ EOF;
         return $infos;
     }
 
+    public function obtenirDescription($timestamp)
+    {
+        $requete = <<<EOF
+SELECT description
+FROM afup_assemblee_generale
+WHERE `date` = {timestamp}
+EOF;
+
+        $requete = strtr(
+            $requete,
+            [
+                '{timestamp}' => $timestamp,
+            ]
+        );
+
+        $infos = $this->_bdd->obtenirEnregistrement($requete);
+        
+        if (false === $infos) {
+            return null;
+        }
+
+        return $infos['description'];
+    }
+
     public function btenirListeAssembleesGenerales()
     {
         $requete = <<<EOF

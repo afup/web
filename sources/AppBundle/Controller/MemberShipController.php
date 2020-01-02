@@ -482,6 +482,8 @@ class MemberShipController extends SiteBaseController
 
         list($presence, $id_personne_avec_pouvoir) = $assemblee_generale->obtenirInfos($login, $timestamp);
 
+        $lastGeneralMeetingDescription = $assemblee_generale->obtenirDescription($timestamp);
+
         $form = $this->createFormBuilder()
             ->add('presence', ChoiceType::class, ['expanded' => true, 'choices' => ['Oui' => 1, 'Non' => 2, 'Je ne sais pas encore' => 0]])
             ->add(
@@ -539,6 +541,7 @@ class MemberShipController extends SiteBaseController
                 'form' => $form->createView(),
                 'reports' => $this->prepareGeneralMeetingsReportsList(),
                 'general_meeting_planned' => $generalMeetingPlanned,
+                'last_general_meeting_description' => $lastGeneralMeetingDescription,
             ]
         );
     }
