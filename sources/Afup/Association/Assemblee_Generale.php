@@ -239,6 +239,27 @@ class Assemblee_Generale
         return $this->_bdd->executer($requete);
     }
 
+    public function ajouter($idPersonnePhysique, $timestamp, $presence, $id_personne_avec_pouvoir)
+    {
+        $requete = <<<EOF
+INSERT INTO afup_presences_assemblee_generale (id_personne_physique, `date`, presence, id_personne_avec_pouvoir, date_modification) 
+VALUES ({id_personne_physique}, {date}, {presence}, {id_personne_avec_pouvoir}, {date_modification})
+EOF;
+
+        $requete = strtr(
+            $requete,
+            [
+                '{id_personne_physique}' => $this->_bdd->echapper($idPersonnePhysique),
+                '{date}' => $this->_bdd->echapper($timestamp),
+                '{presence}' => $this->_bdd->echapper($presence),
+                '{id_personne_avec_pouvoir}' => $this->_bdd->echapper((int) $id_personne_avec_pouvoir),
+                '{date_modification}' => time(),
+            ]
+        );
+
+        return $this->_bdd->executer($requete);
+    }
+
     function modifier($login, $timestamp, $presence, $id_personne_avec_pouvoir)
     {
         $requete = 'UPDATE ';

@@ -505,11 +505,21 @@ class MemberShipController extends SiteBaseController
 
         if ($form->isValid()) {
             $data = $form->getData();
-            $ok = $assemblee_generale->modifier($login,
-                $timestamp,
-                $data['presence'],
-                $data['id_personne_avec_pouvoir']
-            );
+            if (null !== $presence) {
+                $ok = $assemblee_generale->modifier(
+                    $login,
+                    $timestamp,
+                    $data['presence'],
+                    $data['id_personne_avec_pouvoir']
+                );
+            } else {
+                $ok = $assemblee_generale->ajouter(
+                    $this->getUser()->getId(),
+                    $timestamp,
+                    $data['presence'],
+                    $data['id_personne_avec_pouvoir']
+                );
+            }
 
             if ($ok) {
                 $logs::log('Modification de la présence et du pouvoir de la personne physique');
