@@ -1,20 +1,27 @@
 {if $action == 'lister'}
-    <h2>Liste des présences de l'assemblée générale</h2>
+    <h2>Assemblée générale</h2>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=preparer" title="Préparer une assemblée générale">Préparer une assemblée générale</a><br />
-   	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=listing" title="Imprimer la feuille d'émargement">Imprimer la feuille d'émargement</a><br />
+
+
+    <h3>Dernière assemblée générale ({$timestamp|date_format:"%d/%m/%Y"})</h3>
+
     <br/>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Membres à jour de cotisation : {$convocations}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Présences et pouvoirs : {$presences}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Présences : {$presencesSeulement}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Quorum : <span class="{if $quorum > 0}OK{else}KO{/if}">{$quorum}</span><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=listing" title="Imprimer la feuille d'émargement">Imprimer la feuille d'émargement</a><br />
     <br/>
+
+    <h3>Liste des présences</h3>
+
     <table>
       <form method="GET" name="filtre">
       <input type="hidden" name="page" value="assemblee_generale" />
       <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
       <input type="hidden" name="sens" value="{$smarty.get.sens}" />
         <tr>
-            <td width="150" nowrap="nowrap">Date : </td>
+            <td width="60" nowrap="nowrap">Date : </td>
             <td width="120" nowrap="nowrap">
                 <select name="date">
                     {foreach from=$assemblees_generales item=assemblee_generale}
@@ -34,7 +41,7 @@
         </tr>
       </form>
     </table>
-    <br/>
+
     <table class="afup_tab tab--filterable">
         <tr>
             <!-- th width="20px">&nbsp;</th -->

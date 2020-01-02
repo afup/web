@@ -70,6 +70,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('personnes', $personnes_physiques);
     $smarty->assign('assemblees_generales', $assembleesGenerales);
     $smarty->assign('list_date_assemblee_generale', $list_date_assemblee_generale);
+    $smarty->assign('timestamp', $timestamp);
 
 } elseif ($action == 'preparer') {
     $formulaire = instancierFormulaire();
