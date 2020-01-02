@@ -1,7 +1,6 @@
 {if $action == 'lister'}
     <h2>Liste des présences de l'assemblée générale</h2>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=preparer" title="Préparer une assemblée générale">Préparer une assemblée générale</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=envoyer" title="Envoyer les convocations pour une assemblée générale">Envoyer les convocations pour une assemblée générale</a><br />
    	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=listing" title="Imprimer la feuille d'émargement">Imprimer la feuille d'émargement</a><br />
     <br/>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Membres à jour de cotisation : {$convocations}<br />
@@ -86,8 +85,6 @@
 {else}
     {if $action == 'preparer'}
         <h2>Préparer une assemblée générale</h2>
-    {else}
-        <h2>Envoyer les convocations pour une assemblée générale</h2>
     {/if}
     {include file="formulaire.html"}
 {/if}

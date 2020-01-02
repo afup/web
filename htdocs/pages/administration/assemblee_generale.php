@@ -65,39 +65,6 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('quorum', $quorum);
     $smarty->assign('personnes', $personnes_physiques);
 
-} elseif ($action == 'envoyer') {
-    $formulaire = instancierFormulaire();
-    $timestamp = $assemblee_generale->obternirDerniereDate();
-    $sujet = $assemblee_generale->preparerSujetDuMessage($timestamp);
-    $corps = $assemblee_generale->preparerCorpsDuMessage($timestamp);
-    $formulaire->setDefaults(array('sujet' => $sujet,
-                                   'corps' => $corps));
-
-    $formulaire->addElement('header'  , ''     , 'Message pour la convocation du ' . date('d/m/Y', $timestamp));
-    $formulaire->addElement('text'    , 'sujet', 'Sujet');
-    $formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 42, 'rows' => 10, 'class' => 'tinymce'));
-
-    $formulaire->addElement('header'  , 'boutons'            , '');
-    $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
-
-    $formulaire->addRule('sujet'      , 'Sujet manquant'     , 'required');
-    $formulaire->addRule('corps'      , 'Corps manquant'   , 'required');
-
-    if ($formulaire->validate()) {
-        $ok = $assemblee_generale->envoyerConvocations($timestamp,
-                                                       $formulaire->exportValue('sujet'),
-                                                       $formulaire->exportValue('corps'));
-
-        if ($ok) {
-            Logs::log('Envoi des emails de convocations aux personnes physiques pour l\'assemblée générale');
-            afficherMessage('L\'envoi des emails de convocations aux personnes physiques pour l\'assemblée générale a été effectué', 'index.php?page=assemblee_generale&action=lister');
-        } else {
-            $smarty->assign('erreur', 'Une erreur est survenue lors de l\'envoi des emails aux personnes physiques pour l\'assemblée générale');
-        }
-    }
-
-    $smarty->assign('formulaire', genererFormulaire($formulaire));
-
 } elseif ($action == 'preparer') {
     $formulaire = instancierFormulaire();
     $formulaire->setDefaults(array('date' => date("d/m/Y", time())));
