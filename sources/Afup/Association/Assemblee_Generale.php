@@ -188,7 +188,7 @@ class Assemblee_Generale
         return $ecart;
     }
 
-    function preparer($date)
+    function preparer($date, $description)
     {
         $requete = 'SELECT';
         $requete .= '  id ';
@@ -196,6 +196,8 @@ class Assemblee_Generale
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'WHERE etat=1';
         $personnes_physiques = $this->_bdd->obtenirTous($requete);
+
+        $timestamp = mktime(0, 0, 0, $date['m'], $date['d'], $date['Y']);
 
         $succes = false;
         if (is_array($personnes_physiques)) {
@@ -208,20 +210,39 @@ class Assemblee_Generale
                 $requete .= 'WHERE';
                 $requete .= '  id_personne_physique = ' . $personne_physique['id'] . ' ';
                 $requete .= 'AND';
-                $requete .= '  date = ' . mktime(0, 0, 0, $date['m'], $date['d'], $date['Y']);
+                $requete .= '  date = ' . $timestamp;
                 $preparation = $this->_bdd->obtenirUn($requete);
                 if (!$preparation) {
                     $requete = 'INSERT INTO ';
                     $requete .= '  afup_presences_assemblee_generale (id_personne_physique, date) ';
                     $requete .= 'VALUES (';
                     $requete .= $personne_physique['id'] . ',';
-                    $requete .= mktime(0, 0, 0, $date['m'], $date['d'], $date['Y']) . ')';
+                    $requete .= $timestamp . ')';
                     $succes += $this->_bdd->executer($requete);
                 }
             }
         }
-        return $succes;
 
+        if (!$succes) {
+            return $succes;
+        }
+
+        $requete = <<<EOF
+REPLACE INTO afup_assemblee_generale (`date`, `description`)
+VALUES ({date}, {description})
+EOF;
+
+        $requete = strtr(
+            $requete,
+            [
+                '{date}' => $timestamp,
+                '{description}' => $this->_bdd->echapper($description)
+            ]
+        );
+
+        $succes += $this->_bdd->executer($requete);
+
+        return $succes;
     }
 
     function marquerConsultation($login, $timestamp)

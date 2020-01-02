@@ -104,4 +104,20 @@
         <h2>Préparer une assemblée générale</h2>
     {/if}
     {include file="formulaire.html"}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    {literal}
+    <script>
+        var simpleMdeList = document.getElementsByClassName('simplemde');
+        for (var i = 0; i < simpleMdeList.length; i++) {
+            var simplemde = new SimpleMDE({
+                element:simpleMdeList[i],
+                spellChecker: false,
+                hideIcons: ['side-by-side', 'fullscreen']
+            });
+        }
+    </script>
+    {/literal}
 {/if}
+

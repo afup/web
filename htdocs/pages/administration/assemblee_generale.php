@@ -81,12 +81,13 @@ if ($action == 'lister' || $action== 'listing' ) {
 	$formulaire->addElement('date'    , 'date', 'date de l\'AG', $options);
 
     $formulaire->addElement('header'  , 'boutons'            , '');
+    $formulaire->addElement('textarea', 'description', 'Description', ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
     $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
 
     $formulaire->addRule('date'       , 'Date manquante'     , 'required');
 
     if ($formulaire->validate()) {
-        $ok = $assemblee_generale->preparer($formulaire->exportValue('date'));
+        $ok = $assemblee_generale->preparer($formulaire->exportValue('date'), $formulaire->exportValue('description'));
 
         if ($ok !== false) {
             Logs::log('Ajout de la préparation des personnes physiques à l\'assemblée générale');
