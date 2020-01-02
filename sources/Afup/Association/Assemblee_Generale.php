@@ -120,41 +120,6 @@ class Assemblee_Generale
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function obtenirNombrePersonnesAJourDeCotisation($timestamp)
-    {
-        // On autorise un battement de 14 jours
-        $timestamp -= 14 * 86400;
-        // Personne physique seule
-        $requete = 'SELECT';
-        $requete .= '  COUNT(*) ';
-        $requete .= 'FROM';
-        $requete .= '  afup_cotisations ac ';
-        $requete .= 'INNER JOIN';
-        $requete .= '  afup_personnes_physiques app ON app.id = ac.id_personne ';
-        $requete .= 'WHERE';
-        $requete .= '  date_fin >= ' . $timestamp . ' ';
-        $requete .= 'AND ';
-        $requete .= '  type_personne = 0 ';
-        $requete .= 'AND ';
-        $requete .= '  etat = 1 ';
-        $physiques = $this->_bdd->obtenirUn($requete);
-        // Personne morale
-        $requete = 'SELECT';
-        $requete .= '  COUNT(*) ';
-        $requete .= 'FROM';
-        $requete .= '  afup_cotisations ac ';
-        $requete .= 'INNER JOIN';
-        $requete .= '  afup_personnes_physiques app ON app.id_personne_morale = ac.id_personne ';
-        $requete .= 'WHERE';
-        $requete .= '  date_fin >= ' . $timestamp . ' ';
-        $requete .= 'AND ';
-        $requete .= '  type_personne = 1 ';
-        $requete .= 'AND ';
-        $requete .= '  etat = 1 ';
-        $morales = $this->_bdd->obtenirUn($requete);
-        return $physiques + $morales;
-    }
-
     function obtenirListePersonnesAJourDeCotisation($timestamp)
     {
         // On autorise un battement de 14 jours
@@ -216,9 +181,9 @@ class Assemblee_Generale
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function obtenirEcartQuorum($timestamp)
+    function obtenirEcartQuorum($timestamp, $nombrePersonnesAJourDeCotisation)
     {
-        $quorum = ceil($this->obtenirNombrePersonnesAJourDeCotisation($timestamp) / 3);
+        $quorum = ceil($nombrePersonnesAJourDeCotisation / 3);
         $ecart = $this->obtenirNombrePresencesEtPouvoirs($timestamp) - $quorum;
         return $ecart;
     }

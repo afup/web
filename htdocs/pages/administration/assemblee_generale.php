@@ -3,6 +3,7 @@
 // Impossible to access the file itself
 use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Utils\Logs;
+use AppBundle\Association\Model\Repository\UserRepository;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -42,10 +43,11 @@ if ($action == 'lister' || $action== 'listing' ) {
     }
 
     // Mise en place de la liste dans le scope de smarty
-	$convocations = $assemblee_generale->obtenirNombrePersonnesAJourDeCotisation($timestamp);
+    $convocations = count($this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->getActiveMembers(UserRepository::USER_TYPE_ALL));
+
 	$presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
 	$presencesSeulement = $assemblee_generale->obtenirNombrePresences($timestamp);
-	$quorum = $assemblee_generale->obtenirEcartQuorum($timestamp);
+	$quorum = $assemblee_generale->obtenirEcartQuorum($timestamp, $convocations);
     $liste_personnes = $assemblee_generale->obtenirListe($list_date_assemblee_generale, $list_ordre, $list_associatif);
     $liste_personnes_a_jour = $assemblee_generale->obtenirListePersonnesAJourDeCotisation($timestamp);
 	$personnes_physiques = array();

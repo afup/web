@@ -5,6 +5,7 @@ namespace AppBundle\Slack;
 
 use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Forum\Inscriptions;
+use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
@@ -154,9 +155,11 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForGeneralMeeting(Assemblee_Generale $assembleeGenerale)
+    public function createMessageForGeneralMeeting(Assemblee_Generale $assembleeGenerale, UserRepository $userRepository)
     {
         $timestamp = $assembleeGenerale->obternirDerniereDate();
+
+        $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL));
 
         $message = new Message();
         $message
@@ -169,7 +172,7 @@ class MessageFactory
         $attachment
             ->setTitleLink('https://afup.org/pages/administration/index.php?page=assemblee_generale')
             ->addField(
-                (new Field())->setShort(true)->setTitle('Membres à jour de cotisation')->setValue($assembleeGenerale->obtenirNombrePersonnesAJourDeCotisation($timestamp))
+                (new Field())->setShort(true)->setTitle('Membres à jour de cotisation')->setValue($nombrePersonnesAJourDeCotisation)
             )
             ->addField(
                 (new Field())->setShort(true)->setTitle('Présences et pouvoirs')->setValue($assembleeGenerale->obtenirNombrePresencesEtPouvoirs($timestamp))
@@ -178,7 +181,7 @@ class MessageFactory
                 (new Field())->setShort(true)->setTitle('Présences')->setValue($assembleeGenerale->obtenirNombrePresences($timestamp))
             )
             ->addField(
-                (new Field())->setShort(true)->setTitle('Quorum')->setValue($assembleeGenerale->obtenirEcartQuorum($timestamp))
+                (new Field())->setShort(true)->setTitle('Quorum')->setValue($assembleeGenerale->obtenirEcartQuorum($timestamp, $nombrePersonnesAJourDeCotisation))
             )
         ;
         $message->addAttachment($attachment);
