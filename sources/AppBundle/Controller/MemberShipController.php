@@ -488,7 +488,7 @@ class MemberShipController extends SiteBaseController
                 'id_personne_avec_pouvoir',
                 ChoiceType::class,
                 [
-                    'choices' => array_flip(array_merge([0 => ''], $presents)),
+                    'choices' => array_flip([0 => ''] + $presents),
                     'label' => 'Je donne mon pouvoir à',
                     'required' => false,
                 ]
