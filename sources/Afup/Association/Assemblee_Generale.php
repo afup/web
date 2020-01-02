@@ -275,6 +275,17 @@ class Assemblee_Generale
         return $infos;
     }
 
+    public function btenirListeAssembleesGenerales()
+    {
+        $requete = <<<EOF
+SELECT DISTINCT afup_presences_assemblee_generale.date
+FROM afup_presences_assemblee_generale
+ORDER BY afup_presences_assemblee_generale.date DESC
+EOF;
+
+        return $this->_bdd->obtenirTous($requete);
+    }
+
     function obtenirToutesInfos($login, $timestamp)
     {
         $requete = 'SELECT';

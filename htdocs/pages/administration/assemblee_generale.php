@@ -42,6 +42,8 @@ if ($action == 'lister' || $action== 'listing' ) {
     	$list_ordre="nom";
     }
 
+    $assembleesGenerales = $assemblee_generale->btenirListeAssembleesGenerales();
+
     // Mise en place de la liste dans le scope de smarty
     $convocations = count($this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->getActiveMembers(UserRepository::USER_TYPE_ALL));
 
@@ -66,6 +68,8 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('presencesSeulement', $presencesSeulement);
     $smarty->assign('quorum', $quorum);
     $smarty->assign('personnes', $personnes_physiques);
+    $smarty->assign('assemblees_generales', $assembleesGenerales);
+    $smarty->assign('list_date_assemblee_generale', $list_date_assemblee_generale);
 
 } elseif ($action == 'preparer') {
     $formulaire = instancierFormulaire();
