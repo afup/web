@@ -60,6 +60,7 @@
                 <a id="modifier_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$personne.id}" title="Modifier la fiche de {$personne.prenom} {$personne.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a id="supprimer_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=supprimer&amp;id={$personne.id}" title="Supprimer la fiche de {$personne.prenom} {$personne.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.prenom} {$personne.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
                 <a id="envoi_mdp_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=envoi_mdp&amp;id={$personne.id}" title="Renvoyer un nouveau mot de passe &agrave; {$personne.prenom} {$personne.nom}" onclick="return confirm('Etes-vous sûr de vouloir renvoyer un nouveau mot de passe à {$personne.prenom} {$personne.nom} ?');"><img src="{$chemin_template}images/famfamfam/email_link.png" alt="MDP" /></a>
+                <a href="/member/?hash={$personne.hash}" title="Se connecter en tant que {$personne.nom} {$personne.prenom}"><img src="{$chemin_template}images/famfamfam/group_link.png" alt="Se connecter en tant que" /></a>
             </td>
         </tr>
     {foreachelse}
