@@ -245,21 +245,6 @@ EOF;
         return $succes;
     }
 
-    function marquerConsultation($login, $timestamp)
-    {
-        $requete = 'UPDATE ';
-        $requete .= '  afup_presences_assemblee_generale, ';
-        $requete .= '  afup_personnes_physiques ';
-        $requete .= 'SET';
-        $requete .= '  afup_presences_assemblee_generale.date_consultation = ' . time() . ' ';
-        $requete .= 'WHERE';
-        $requete .= '  afup_presences_assemblee_generale.id_personne_physique = afup_personnes_physiques.id ';
-        $requete .= 'AND afup_personnes_physiques.login = ' . $this->_bdd->echapper($login) . ' ';
-        $requete .= 'AND afup_presences_assemblee_generale.date_consultation = \'0\'';
-
-        return $this->_bdd->executer($requete);
-    }
-
     public function ajouter($idPersonnePhysique, $timestamp, $presence, $id_personne_avec_pouvoir)
     {
         $requete = <<<EOF
