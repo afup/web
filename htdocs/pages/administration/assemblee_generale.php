@@ -42,7 +42,7 @@ if ($action == 'lister' || $action== 'listing' ) {
     	$list_ordre="nom";
     }
 
-    $assembleesGenerales = $assemblee_generale->btenirListeAssembleesGenerales();
+    $assembleesGenerales = $assemblee_generale->obtenirListeAssembleesGenerales();
 
     // Mise en place de la liste dans le scope de smarty
     $convocations = count($this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->getActiveMembers(UserRepository::USER_TYPE_ALL));

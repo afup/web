@@ -326,7 +326,7 @@ EOF;
         return $infos['description'];
     }
 
-    public function btenirListeAssembleesGenerales()
+    public function obtenirListeAssembleesGenerales()
     {
         $requete = <<<EOF
 SELECT DISTINCT afup_presences_assemblee_generale.date
