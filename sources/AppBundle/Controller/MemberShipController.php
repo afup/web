@@ -482,13 +482,15 @@ class MemberShipController extends SiteBaseController
 
         list($presence, $id_personne_avec_pouvoir) = $assemblee_generale->obtenirInfos($login, $timestamp);
 
+        $lastGeneralMeetingDescription = $assemblee_generale->obtenirDescription($timestamp);
+
         $form = $this->createFormBuilder()
             ->add('presence', ChoiceType::class, ['expanded' => true, 'choices' => ['Oui' => 1, 'Non' => 2, 'Je ne sais pas encore' => 0]])
             ->add(
                 'id_personne_avec_pouvoir',
                 ChoiceType::class,
                 [
-                    'choices' => array_flip(array_merge([0 => ''], $presents)),
+                    'choices' => array_flip([0 => ''] + $presents),
                     'label' => 'Je donne mon pouvoir à',
                     'required' => false,
                 ]
@@ -505,11 +507,21 @@ class MemberShipController extends SiteBaseController
 
         if ($form->isValid()) {
             $data = $form->getData();
-            $ok = $assemblee_generale->modifier($login,
-                $timestamp,
-                $data['presence'],
-                $data['id_personne_avec_pouvoir']
-            );
+            if (null !== $presence) {
+                $ok = $assemblee_generale->modifier(
+                    $login,
+                    $timestamp,
+                    $data['presence'],
+                    $data['id_personne_avec_pouvoir']
+                );
+            } else {
+                $ok = $assemblee_generale->ajouter(
+                    $this->getUser()->getId(),
+                    $timestamp,
+                    $data['presence'],
+                    $data['id_personne_avec_pouvoir']
+                );
+            }
 
             if ($ok) {
                 $logs::log('Modification de la présence et du pouvoir de la personne physique');
@@ -529,6 +541,7 @@ class MemberShipController extends SiteBaseController
                 'form' => $form->createView(),
                 'reports' => $this->prepareGeneralMeetingsReportsList(),
                 'general_meeting_planned' => $generalMeetingPlanned,
+                'last_general_meeting_description' => $lastGeneralMeetingDescription,
             ]
         );
     }

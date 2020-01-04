@@ -51,6 +51,7 @@ class Personnes_Physiques
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
+        $requete .= ", MD5(CONCAT(afup_personnes_physiques.id, '_', afup_personnes_physiques.email, '_', afup_personnes_physiques.login)) as hash ";
         $requete .= 'FROM';
         $requete .= '  afup_personnes_physiques ';
         $requete .= 'WHERE 1 = 1 ';
