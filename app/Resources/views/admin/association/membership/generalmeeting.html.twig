@@ -62,7 +62,7 @@
             Ces personnes vous ont donné leur pouvoir :
             <ul>
             {% for persone_avec_pouvoir in persones_avec_pouvoir %}
-                <li>{{ persone_avec_pouvoir.personnes_avec_pouvoir_nom }} {{ persone_avec_pouvoir.personnes_avec_pouvoir_prenom }}</li>
+                <li>{{ persone_avec_pouvoir.nom }} {{ persone_avec_pouvoir.prenom }}</li>
             {% endfor %}
             </ul>
         {% endif %}
