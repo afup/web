@@ -54,9 +54,7 @@ class Assemblee_Generale
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function obtenirListe($date,
-                          $ordre = 'nom')
-    {
+    function obtenirListe($date, $ordre = 'nom', $idPersonneAvecPouvoir = null) {
         $timestamp = convertirDateEnTimestamp($date);
 
         $requete = 'SELECT';
@@ -80,8 +78,14 @@ class Assemblee_Generale
         $requete .= 'WHERE';
         $requete .= '  afup_presences_assemblee_generale.date = \'' . $timestamp . '\' ';
         $requete .= 'AND afup_presences_assemblee_generale.id_personne_physique = afup_personnes_physiques.id ';
+
+        if (null !== $idPersonneAvecPouvoir) {
+            $requete .= ' AND id_personne_avec_pouvoir = ' . $this->_bdd->echapper($idPersonneAvecPouvoir) . ' ';
+        }
+
         $requete .= 'ORDER BY';
         $requete .= '  ' . $ordre . ' ';
+
         return $this->_bdd->obtenirTous($requete);
     }
 

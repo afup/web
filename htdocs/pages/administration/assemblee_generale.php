@@ -50,7 +50,7 @@ if ($action == 'lister' || $action== 'listing' ) {
 	$presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
 	$presencesSeulement = $assemblee_generale->obtenirNombrePresences($timestamp);
 	$quorum = $assemblee_generale->obtenirEcartQuorum($timestamp, $convocations);
-    $liste_personnes = $assemblee_generale->obtenirListe($list_date_assemblee_generale, $list_ordre, $list_associatif);
+    $liste_personnes = $assemblee_generale->obtenirListe($list_date_assemblee_generale);
     $liste_personnes_a_jour = $assemblee_generale->obtenirListePersonnesAJourDeCotisation($timestamp);
 	$personnes_physiques = array();
     foreach ($liste_personnes as $liste_id => $personne) {

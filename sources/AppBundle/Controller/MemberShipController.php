@@ -533,6 +533,8 @@ class MemberShipController extends SiteBaseController
             }
         }
 
+        $listePersonnesAvecPouvoir = $assemblee_generale->obtenirListe($date_assemblee_generale, 'nom', $this->getUser()->getId());
+
         return $this->render(
             ':admin/association/membership:generalmeeting.html.twig',
             [
@@ -542,6 +544,7 @@ class MemberShipController extends SiteBaseController
                 'reports' => $this->prepareGeneralMeetingsReportsList(),
                 'general_meeting_planned' => $generalMeetingPlanned,
                 'last_general_meeting_description' => $lastGeneralMeetingDescription,
+                'persones_avec_pouvoir' => $listePersonnesAvecPouvoir,
             ]
         );
     }
