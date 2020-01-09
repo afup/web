@@ -11,7 +11,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class GeneralMeetingResponseRepository extends Repository implements MetadataInitializer
 {
-
     public function getByUser(User $user)
     {
         return $this->getBy([
