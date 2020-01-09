@@ -201,6 +201,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository]
 
+    AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository:
+        class: AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository]
+
     AppBundle\Security\ActionThrottling\ActionThrottling:
         autowire: true
 
