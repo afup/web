@@ -3,6 +3,7 @@
 namespace AppBundle\Association\UserMembership;
 
 use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\UserBadgeRepository;
@@ -24,11 +25,17 @@ class BadgesComputer
      */
     private $userBadgeRepository;
 
-    public function __construct(SeniorityComputer $seniorityComputer, EventRepository $eventRepository, UserBadgeRepository $userBadgeRepository)
+    /**
+     * @var GeneralMeetingResponseRepository
+     */
+    private $generalMeetingResponseRepository;
+
+    public function __construct(SeniorityComputer $seniorityComputer, EventRepository $eventRepository, UserBadgeRepository $userBadgeRepository, GeneralMeetingResponseRepository $generalMeetingResponseRepository)
     {
         $this->seniorityComputer = $seniorityComputer;
         $this->eventRepository = $eventRepository;
         $this->userBadgeRepository = $userBadgeRepository;
+        $this->generalMeetingResponseRepository = $generalMeetingResponseRepository;
     }
 
     public function getBadges(User $user)
@@ -101,6 +108,13 @@ class BadgesComputer
             $badgesCodes[] = [
                 'date' => $eventInfo['date']->format('Y-m-d'),
                 'code' => 'jy-etais-' . $eventInfo['path'],
+            ];
+        }
+
+        foreach ($this->getGeneralMeetingYears($user) as $date) {
+            $badgesCodes[] = [
+                'date' => $date->format('Y-m-d'),
+                'code' => 'ag-' . $date->format('Y'),
             ];
         }
 
@@ -194,5 +208,28 @@ class BadgesComputer
         rsort($years);
 
         return $years;
+    }
+
+    private function getGeneralMeetingYears(User $user)
+    {
+        $responses = $this->generalMeetingResponseRepository->getByUser($user);
+        $currentTimestamp = (new \DateTime())->format('U');
+
+        $dates = [];
+        foreach ($responses as $response) {
+            if (false === $response->isPresent()) {
+                continue;
+            }
+
+            $date = $response->getDate();
+
+            if ($date->format('U') > $currentTimestamp) {
+                continue;
+            }
+
+            $dates[] = $date;
+        }
+
+        return $dates;
     }
 }
