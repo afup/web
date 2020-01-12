@@ -18,7 +18,6 @@ class LeadType extends AbstractType
         $builder
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
-            ->add('position', TextType::class)
             ->add('phone', TextType::class)
             ->add('company', TextType::class)
             ->add('website', UrlType::class, ['required' => false])
