@@ -21,12 +21,6 @@ class Lead implements \JsonSerializable
     /**
      * @var string
      * @Assert\NotBlank()
-     */
-    private $position;
-
-    /**
-     * @var string
-     * @Assert\NotBlank()
      * @Assert\Email()
      */
     private $email;
@@ -135,24 +129,6 @@ class Lead implements \JsonSerializable
     /**
      * @return string
      */
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
-     * @param string $position
-     * @return Lead
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getPhone()
     {
         return $this->phone;
@@ -240,7 +216,6 @@ class Lead implements \JsonSerializable
             'lastname' => $this->lastname,
             'phone' => $this->phone,
             'website' => $this->website,
-            'position' => $this->position,
             'company' => $this->company,
             'language' => $this->language,
             'email' => $this->email
