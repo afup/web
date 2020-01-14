@@ -9,6 +9,9 @@ use Afup\Site\Utils\PDF_Facture;
 
 class Facture
 {
+    private $cipher  = 'aes-256-gcm';
+    private $key = 'PaiementFactureAFUP_AFUP';
+
     /**
      * @var \Afup\Site\Utils\Base_De_Donnees
      */
@@ -598,5 +601,19 @@ class Facture
         @unlink($chemin_facture);
 
         return $ok;
+    }
+
+    public function encryptLink($data)
+    {
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->cipher));
+
+        return base64_encode(openssl_encrypt($data, $this->cipher, $this->key, 0, $iv) . '::' . $iv);
+    }
+
+    public function decryptLink($data)
+    {
+        list($encrypted_data, $iv) = explode('::', base64_decode($data));
+
+        return openssl_decrypt($encrypted_data, $this->cipher, $this->key, 0, $iv);
     }
 }

@@ -29,7 +29,7 @@ $comptaFact = new Facture($bdd);
 if ($action == 'lister') {
 	$ecritures = $comptaFact->obtenirFacture();
   foreach ($ecritures as &$e) {
-    $e['link'] = urlencode(base64_encode(mcrypt_cbc(MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', $e['id'], MCRYPT_ENCRYPT, '@PaiFact')));;
+    $e['link'] = urlencode($comptaFact->encryptLink($e['id']));
   }
 	$smarty->assign('ecritures', $ecritures);
 } elseif ($action == 'telecharger_facture') {

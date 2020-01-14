@@ -5,7 +5,7 @@ require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
 
 $comptaFact = new Facture($bdd);
 
-$ref = trim(mcrypt_cbc (MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', base64_decode(str_replace(' ', '+', urldecode($_GET['ref']))), MCRYPT_DECRYPT, '@PaiFact'));
+$ref = $comptaFact->decryptLink(str_replace(' ', '+', urldecode($_GET['ref'])));
 
 $facture = $comptaFact->obtenir($ref);
 if ($facture) {
