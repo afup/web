@@ -49,3 +49,14 @@ Config par défaut:
 - host: localhost
 - port: 3606
 - database: web
+
+# Paiements avec Paybox
+
+Il est possible de tester les paiements Paybox en environnement de développement.
+Pour cela, les identifiant, site et rang [de test](www1.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier de configuration par défaut.
+
+Ensuite pour le paiement il faut utiliser ces informations [de carte](http://www1.paybox.com/espace-integrateur-documentation/cartes-de-tests/) (celle _"Carte participant au programme 3-D Secure (enrôlée)"_) : 
+* Numéro de carte : `4012 0010 3714 1112`
+* Validité : `12/20`
+* CVV : `123`
+ 
