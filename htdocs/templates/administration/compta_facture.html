@@ -1,12 +1,15 @@
 {if $action == 'lister'}
-     <h2>Liste facture </h2>
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=ajouter" title="ajouter un devis">Ajouter un devis</a><br />
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Ajouter une facture (obligation de passer par la saisie d'un devis)<br />
-<br>
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis" title="ajouter un devis">Liste des devis</a><br />
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_facture" title="ajouter un devis">Liste des factures</a><br />
-<br/>
-    <table class="afup_tab">
+    <h2>Factures</h2>
+
+    <div class="ui message">
+        <div class="header">
+            Il n'est pas possible de créer directement une facture
+        </div>
+        <p>Il faut obligatoirement passer par la saisie d'un devis.</p>
+    </div>
+
+    <table class="ui table striped compact celled">
+        <thead>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
            <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
@@ -18,6 +21,8 @@
             <th>Prix</th>
             <th>&nbsp;</th>
        </tr>
+        </thead>
+        <tbody>
     {foreach from=$ecritures item=ecriture}
          <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
@@ -46,6 +51,7 @@
             <td><em>Aucune ecriture actuellement</em></td>
         </tr>
     {/foreach}
+        </tbody>
      </table>
 
 

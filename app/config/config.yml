@@ -165,7 +165,10 @@ parameters:
             icon: "money bill alternate"
             elements:
                 compta_devis:
-                    nom: 'Devis - Facture'
+                    nom: 'Devis'
+                    niveau: 'ROLE_ADMIN'
+                compta_facture:
+                    nom: 'Factures'
                     niveau: 'ROLE_ADMIN'
                 compta_journal:
                     nom: 'Journal'
