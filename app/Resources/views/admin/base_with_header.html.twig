@@ -66,6 +66,25 @@
                 </div>
 
                 <div class="content">
+                    {% for bag in ['notice', 'success', 'error'] %}
+                        {% for flash_message in app.session.flashBag.get(bag)%}
+                            {% if bag == 'error'%}
+                                {% set messageclass = 'nagative' %}
+                            {% elseif bag == 'success' %}
+                                {% set messageclass = 'success' %}
+                            {% else %}
+                                {% set messageclass = 'info' %}
+                            {% endif %}
+                            {% if flash_message|length > 0 %}
+                            <div class="ui message {{ messageclass }}">
+                                <div class="header">
+                                    {{ flash_message }}
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+
                     {% block content %}
                         {{ content|raw }}
                     {% endblock %}
