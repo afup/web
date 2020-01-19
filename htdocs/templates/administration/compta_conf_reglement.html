@@ -1,34 +1,48 @@
 {if $action == 'lister' }
-    <h2>Liste des modes de reglement </h2>
+    <h2>Configuration</h2>
 
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_evenement" title="Liste des evenements">Liste des evenements</a><br />
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_categorie" title="Liste des catégories">Liste des catégories</a><br />
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_operation" title="Liste des opérations">Liste des opérations</a><br />
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_reglement" title="Liste des modes de réglements">Liste des modes de réglements</a><br />
-   <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_compte" title="Liste des comptes">Liste des comptes</a><br />
-<br>
-  <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_conf_reglement&amp;action=ajouter" title="ajouter un reglement">Ajouter un reglement</a><br />
+    <div class="ui top attached tabular menu">
+        <a class="item" href="index.php?page=compta_conf_evenement">Événements</a>
+        <a class="item" href="index.php?page=compta_conf_categorie">Catégories</a>
+        <a class="item" href="index.php?page=compta_conf_operation">Opérations</a><br />
+        <a class="active item" href="index.php?page=compta_conf_reglement">Modes de réglements</a><br />
+        <a class="item" href="index.php?page=compta_conf_compte">Comptes</a><br />
+    </div>
 
-    <br/>
-    <table class="afup_tab">
-        <tr>
-           <th>Mode reglement</a></th>
-            <th>&nbsp;</th>
-       </tr>
-    {foreach from=$data item=ecriture}
-         <tr class="{cycle values="odd,even"}">
-            <td>{$ecriture.reglement}</td>
-            <td style="text-align: right">
-                <a href="index.php?page=compta_conf_reglement&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-               </td>
-        </tr>
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
-     </table>
 
+    <div class="ui bottom attached segment">
+        <div class="ui menu">
+            <a href="index.php?page=compta_conf_reglement&amp;action=ajouter" class="item">
+                <div data-tooltip="Ajouter un reglement" data-position="bottom left">
+                    <i class="icon plus square"></i>
+                    Ajouter
+                </div>
+            </a>
+        </div>
+
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th>Mode reglement</a></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach from=$data item=ecriture}
+            <tr>
+                <td>{$ecriture.reglement}</td>
+                <td style="text-align: right">
+                    <a href="index.php?page=compta_conf_reglement&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                </td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td><em>Aucune ecriture actuellement</em></td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
 
 {else}
     {if $action == 'ajouter'}
