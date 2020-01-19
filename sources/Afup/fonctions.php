@@ -27,7 +27,7 @@ function instancierFormulaire($url = null, $nom = 'formulaire') {
     if (is_null($url)) {
         $url = $_SERVER['REQUEST_URI'];
     }
-    $formulaire = new HTML_QuickForm($nom, 'post', $url);
+    $formulaire = new \AppBundle\Association\Form\HTML_QuickForm($nom, 'post', $url);
     $formulaire->removeAttribute('name');
     return $formulaire;
 }
@@ -38,7 +38,15 @@ function instancierFormulaire($url = null, $nom = 'formulaire') {
  * @param   object  $formulaire     Formulaire à traiter
  * @return  array
  */
-function genererFormulaire(&$formulaire) {
+function genererFormulaire(HTML_QuickForm &$formulaire) {
+    foreach ($formulaire->getElements() as $el) {
+        $attrs = $el->getAttributes();
+        if ($el instanceof HTML_QuickForm_submit) {
+            $attrs['class'] = 'ui primary button';
+        }
+        $el->setAttributes($attrs);
+    }
+
     $renderer = new HTML_QuickForm_Renderer_Array(true, true);
     $formulaire->accept($renderer);
     $resultat = $renderer->toArray();

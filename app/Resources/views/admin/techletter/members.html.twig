@@ -5,11 +5,11 @@
 
     <p>Nombre d'abonnés : {{ subscribers|length }}</p>
 
-    <table class="afup_tab">
+    <table class="ui table striped compact celled">
         <tbody>
         <tr>
-            <th align="left">Nom</th>
-            <th align="left">Date d'enregistrement</th>
+            <th>Nom</th>
+            <th>Date d'enregistrement</th>
         </tr>
         {% for subscription in subscribers %}
             <tr class="{% if loop.index is even %}even{% endif %}">

@@ -1,8 +1,8 @@
 {% if user_badges|length %}
-<fieldset>
-    <legend>Badges</legend>
-    <br />
-    <table class="afup_tab">
+<div class="ui segment">
+    <h2 class="ui right floated header">Badges</h2>
+    <div class="ui clearing divider"></div>
+    <table class="ui table striped compact celled">
         <thead>
             <th>Nom</th>
             <th>Date</th>
@@ -10,44 +10,54 @@
         </thead>
         <tbody>
         {% for user_badge in user_badges %}
-        <tr>
-            <td>{{ user_badge.badge.label }}</td>
-            <td>{{ user_badge.issuedAt|date('d/m/Y') }}</td>
-            <td>
-                <a href="{{ path('admin_members_user_badge_delete', {userId: user_badge.userId, badgeId: user_badge.badgeId}) }}">Supprimer</a>
-            </td>
-        </tr>
+            <tr>
+                <td>{{ user_badge.badge.label }}</td>
+                <td>{{ user_badge.issuedAt|date('d/m/Y') }}</td>
+                <td>
+                    <a href="{{ path('admin_members_user_badge_delete', {userId: user_badge.userId, badgeId: user_badge.badgeId}) }}">Supprimer</a>
+                </td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
-</fieldset>
+</div>
 {% endif %}
 
-<div class="afup-form">
+<div class="ui segment">
     {{ form_start(user_badge_form) }}
-    <fieldset>
-        <legend>Associer un nouveau badge</legend>
-        <div class="rangee">
-            {{ form_errors(user_badge_form.badge) }}
-            {{ form_label(user_badge_form.badge, null, {label_attr: {class: "libelle"}}) }}
-            <span class="element">
-                {{ form_widget(user_badge_form.badge) }}
-            </span>
-        </div>
+    <h2 class="ui right floated header">Associer un nouveau badge</h2>
+    <div class="ui clearing divider"></div>
 
-        <div class="rangee">
-            {{ form_errors(user_badge_form.date) }}
+    <div class="ui form">
+        <div class="inline fields ui grid">
+            {{ form_label(user_badge_form.badge, null, {label_attr: {class: "three wide column"}}) }}
+            <div class="field seven wide column">
+                {{ form_errors(user_badge_form.badge) }}
+                {{ form_widget(user_badge_form.badge) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="ui form">
+        <div class="inline fields ui grid">
             {{ form_label(user_badge_form.date, null, {label_attr: {class: "libelle"}}) }}
-            <span class="element">
+            <div class="field seven wide column">
+                {{ form_errors(user_badge_form.date) }}
                 {{ form_widget(user_badge_form.date) }}
-            </span>
+            </div>
         </div>
-    </fieldset>
-    <fieldset class="boutons">
-        <div class="rangee">
-            {{ form_widget(user_badge_form.save) }}
+    </div>
+
+    <div class="ui form">
+        <div class="inline fields ui grid">
+            <div class="three wide column"></div>
+            <div class="field seven wide column">
+                {{ form_widget(user_badge_form.save, {attr: {class: "ui primary button"}}) }}
+            </div>
         </div>
-    </fieldset>
+    </div>
 
     {{ form_end(user_badge_form) }}
 </div>
+
+

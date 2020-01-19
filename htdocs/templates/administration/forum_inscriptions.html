@@ -7,7 +7,7 @@
     {/foreach}
     </select></h2>
     </form>
-    <table class="afup_tab">
+<table class="ui table striped compact celled">
     <tr>
     <th>Type</th>
     <th>Tarif</th>
@@ -53,7 +53,7 @@
     </tr>
     </table>
     <br/>
-    <table class="afup_tab">
+    <table class="ui table striped compact celled">
         <tr><th>-</th><th>Inscrits</th><th>Confirmés</th><th>En attente de règlement</th></tr>
         <tr>
             <th>Jour 1</th>
@@ -96,8 +96,8 @@
         </tr>
       </form>
     </table>
-    <br/>
-    <table class="afup_tab">
+
+    <table class="ui table striped compact celled">
         <tr class="{cycle values="odd,even"}">
             <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.date'}desc{else}asc{/if}">Date</a></th>
             <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.nom'}desc{else}asc{/if}">Nom Prénom</a></th>

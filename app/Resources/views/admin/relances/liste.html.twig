@@ -2,15 +2,17 @@
 
 {% block content %}
     <h2>Relance des cotisations</h2>
-    <table class="afup_tab">
+    <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th align="left">Nom</th>
+                <th align="left">Société</th>
+                <th align="left">Statut mail</th>
+                <th align="left">Type relance</th>
+                <th align="left" title="Date relance">Date. rel.</th>
+            </tr>
+        </thead>
         <tbody>
-        <tr>
-            <th align="left">Nom</th>
-            <th align="left">Société</th>
-            <th align="left">Statut mail</th>
-            <th align="left">Type relance</th>
-            <th align="left" title="Date relance">Date. rel.</th>
-        </tr>
         {% for log in logs %}
             <tr class="{% if loop.index is even %}even{% endif %}">
                 <td>{{ log.app.firstname }} {{ log.app.lastname }}</td>

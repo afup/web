@@ -1,74 +1,104 @@
 {if $action == 'lister'}
-    <h2>Liste des personnes physiques</h2>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=personnes_physiques&amp;action=ajouter" title="Ajouter une personne physique">Ajouter une personne physique</a><br />
-    <br/>
-    <a href="index.php?page=personnes_physiques&amp;action=export" title="Export en CSV">Export de toutes les personnes physiques en CSV</a><br />
-    <a href="index.php?page=personnes_physiques&amp;action=export&amp;is_active=1" title="Export en CSV">Export des personnes physiques actives en CSV</a><br />
-    <a href="index.php?page=personnes_physiques&amp;action=export&amp;is_active=1&is_company_manager=1" title="Export en CSV">Export des personnes physiques actives et company managers</a><br />
-    <a href="/admin/slackmembers/check">Vérification cohérences Slack membres</a><br />
-    <br />
-    <table>
-      <form method="GET" name="filtre" class="js-form-search">
-      <input type="hidden" name="page" value="personnes_physiques" />
-      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-        <tr>
-            <td colspan="3">Filtres :</td>
-        </tr>
-          <tr>
-              <td width="70" nowrap></td>
-              <td width="120" nowrap>
-                  <input type="checkbox" name="needs_up_to_date_membership" id="filtre_needs_up_to_date_membership" {if $needs_up_to_date_membersip_checkbox}checked="checked"{/if}/>
-                  <label for="filtre_needs_up_to_date_membership">Afficher seulement les membres nécéssitant d'avoir une cotisation à jour</label>
-              </td>
-          </tr>
-        <tr>
-            <td width="70" nowrap>Recherche : </td>
-            <td width="120" nowrap><input type="text" name="filtre" class="js-filtre" value="{$smarty.get.filtre|stripslashes}" style="width: 100%"></td>
-            <td><input type="submit" value="OK" name="submit_filtre"></td>
-            {if $smarty.get.filtre != ''}
-            <td><button type="button" onclick="$('.js-filtre').val(''); $('.js-form-search').submit();">Annuler la recherche</button></td>
-            {/if}
-        </tr>
+    <h1>Personnes physiques</h1>
 
-      </form>
-    </table>
-    <br/>
-    <table class="afup_tab">
+    <div class="ui menu">
+        <a href="index.php?page=personnes_physiques&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter une personne physique" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <div class="ui simple dropdown item" tabindex="0">
+            <i class="icon download"></i>
+            <span class="text">Exports</span>
+            <i class="dropdown icon"></i>
+            <div class="menu hidden" tabindex="-1">
+                <a class="item" href="index.php?page=personnes_physiques&amp;action=export">Toutes les personnes physiques en CSV</a>
+                <a class="item" href="index.php?page=personnes_physiques&amp;action=export&amp;is_active=1" title="Export en CSV">Export des personnes physiques actives en CSV</a>
+                <a class="item" href="index.php?page=personnes_physiques&amp;action=export&amp;is_active=1&is_company_manager=1" title="Export en CSV">Export des personnes physiques actives et company managers en CSV</a>
+            </div>
+        </div>
+        <a class="item" href="/admin/slackmembers/check">
+            <i class="icon slack"></i>
+            Vérification slack membres
+        </a>
+    </div>
+
+    <form method="GET" name="filtre" class="js-form-search">
+        <input type="hidden" name="page" value="personnes_physiques" />
+        <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+        <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Recherche</label>
+                    <input type="text" name="filtre" class="js-filtre" value="{$smarty.get.filtre|stripslashes}">
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" tabindex="0" class="hidden" name="needs_up_to_date_membership" {if $needs_up_to_date_membersip_checkbox}checked="checked"{/if}>
+                        <label>Afficher seulement les membres nécéssitant d'avoir une cotisation à jour</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <input type="submit" value="Filtrer" class="ui button" />
+                </div>
+                {if $smarty.get.filtre != ''}
+                <div class="field">
+                    <button  class="ui button" type="button" onclick="$('.js-filtre').val(''); $('.js-form-search').submit();">Annuler la recherche</button>
+                </div>
+                {/if}
+            </div>
+        </div>
+    </form>
+
+    <table class="ui table striped compact celled">
+        <thead>
         <tr>
             <th align="left"><a href="index.php?page=personnes_physiques&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
             <th align="left"><a href="index.php?page=personnes_physiques&amp;tri=prenom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'prenom'}desc{else}asc{/if}">Prénom</a></th>
             <th align="left">Login</th>
-            <th><a href="index.php?page=personnes_physiques&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+            <th style="text-align: center"><a href="index.php?page=personnes_physiques&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
             <th>Antenne</th>
             <th>&nbsp;</th>
         </tr>
-    {foreach from=$personnes item=personne}
-        <tr class="{cycle values="odd,even"} {if $personne.etat == 1}actif{elseif $personne.etat == -1}non_finalise{else}inactif{/if}">
-            <td>{$personne.nom}</td>
-            <td>{$personne.prenom}</td>
-            <td>{$personne.login}</td>
-            <td style="text-align: center">{if $personne.etat == 1}Actif{elseif $personne.etat == -1}Non finalisé{else}Inactif{/if}</td>
-            <td>{$personne.nearest_office}</td>
+        </thead>
+        {foreach from=$personnes item=personne}
+        <tr>
+            <td class="{if $personne.etat == 1}actif{elseif $personne.etat == -1}disabled{else}disabled{/if}">{$personne.nom}</td>
+            <td class="{if $personne.etat == 1}actif{elseif $personne.etat == -1}disabled{else}disabled{/if}">{$personne.prenom}</td>
+            <td class="{if $personne.etat == 1}actif{elseif $personne.etat == -1}disabled{else}disabled{/if}">{$personne.login}</td>
+            <td style="text-align: center">
+                {if $personne.etat == 1}
+                <div class="ui label green">Actif</div>
+                {elseif $personne.etat == -1}
+                finalisé
+                {else}
+                <div class="ui label red">Inactif</div>
+                {/if}
+            </td>
+            <td class="{if $personne.etat == 1}actif{elseif $personne.etat == -1}disabled{else}disabled{/if}">{$personne.nearest_office}</td>
             <td style="text-align: right">
                 {if empty($personne.id_personne_morale)}
-                    <a id="cotisations_{$personne.id}" href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_PHYSIQUES}&amp;id_personne={$personne.id}" title="Gérer les cotisations de {$personne.prenom} {$personne.nom}"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
+                <a id="cotisations_{$personne.id}" href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_PHYSIQUES}&amp;id_personne={$personne.id}" data-position="left center" data-tooltip="Gérer les cotisations de {$personne.prenom} {$personne.nom}"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
                 {else}
-                <a id="modifier_moral_{$personne.id}" href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$personne.id_personne_morale}" title="Accéder à la fiche de la personne morale"><img src="{$chemin_template}images/famfamfam/building.png" alt="Fiche de la personne morale" /></a>
-                <a id="cotisations_{$personne.id}" href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$personne.id_personne_morale}" title="Gérer les cotisations de la personne morale"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
+                <a id="modifier_moral_{$personne.id}" href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$personne.id_personne_morale}" data-position="left center" data-tooltip="Accéder à la fiche de la personne morale"><img src="{$chemin_template}images/famfamfam/building.png" alt="Fiche de la personne morale" /></a>
+                <a id="cotisations_{$personne.id}" href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$personne.id_personne_morale}" data-position="left center" data-tooltip="Gérer les cotisations de la personne morale"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
                 {/if}
-                <a id="modifier_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$personne.id}" title="Modifier la fiche de {$personne.prenom} {$personne.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                <a id="supprimer_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=supprimer&amp;id={$personne.id}" title="Supprimer la fiche de {$personne.prenom} {$personne.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.prenom} {$personne.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
-                <a id="envoi_mdp_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=envoi_mdp&amp;id={$personne.id}" title="Renvoyer un nouveau mot de passe &agrave; {$personne.prenom} {$personne.nom}" onclick="return confirm('Etes-vous sûr de vouloir renvoyer un nouveau mot de passe à {$personne.prenom} {$personne.nom} ?');"><img src="{$chemin_template}images/famfamfam/email_link.png" alt="MDP" /></a>
-                <a href="/member/?hash={$personne.hash}" title="Se connecter en tant que {$personne.nom} {$personne.prenom}"><img src="{$chemin_template}images/famfamfam/group_link.png" alt="Se connecter en tant que" /></a>
+                <a id="modifier_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$personne.id}" data-position="left center" data-tooltip="Modifier la fiche de {$personne.prenom} {$personne.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a id="supprimer_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=supprimer&amp;id={$personne.id}" data-position="left center" data-tooltip="Supprimer la fiche de {$personne.prenom} {$personne.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.prenom} {$personne.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
+                <a id="envoi_mdp_{$personne.id}" href="index.php?page=personnes_physiques&amp;action=envoi_mdp&amp;id={$personne.id}" data-position="left center" data-tooltip="Renvoyer un nouveau mot de passe &agrave; {$personne.prenom} {$personne.nom}" onclick="return confirm('Etes-vous sûr de vouloir renvoyer un nouveau mot de passe à {$personne.prenom} {$personne.nom} ?');"><img src="{$chemin_template}images/famfamfam/email_link.png" alt="MDP" /></a>
+                <a href="/member/?hash={$personne.hash}" data-position="left center" data-tooltip="Se connecter en tant que {$personne.nom} {$personne.prenom}"><img src="{$chemin_template}images/famfamfam/group_link.png" alt="Se connecter en tant que" /></a>
             </td>
         </tr>
-    {foreachelse}
+        {foreachelse}
         <tr>
             <td><em>Aucune personne physique</em></td>
         </tr>
-    {/foreach}
+        {/foreach}
+        </tbody>
     </table>
+
 {else}
     {if $action == 'ajouter'}
         <h2>Ajouter une personne physique</h2>

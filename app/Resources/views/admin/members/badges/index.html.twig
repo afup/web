@@ -5,10 +5,16 @@
 {% block content %}
     <h2>Badges</h2>
 
-    <a href="{{ path('admin_members_badges_new') }}">Nouveau badge</a><br />
-    <br />
+    <div class="ui menu">
+        <a href="{{ path('admin_members_badges_new') }}" class="item">
+            <div data-tooltip="Ajouter un badge" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
 
-    <table class="afup_tab">
+    <table class="ui table striped compact celled">
         <thead>
             <tr>
                 <th>Nom</th>

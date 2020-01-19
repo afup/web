@@ -2,15 +2,10 @@
 
 {% block content %}
     <h2>Gestion documentaire des speakers du {{ event.title }}</h2>
+
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
-    <style>
-        .speaker-management--no-response {
-            background-color: red;
-        }
-    </style>
-
-    <table class="afup_tab tab--filterable TF">
+    <table class="ui table striped compact celled tab--filterable TF">
         <thead>
             <tr>
                 <th>Speaker</th>
@@ -28,7 +23,7 @@
         {% for speaker in speakers %}
             <tr>
                 <td>{{ speaker.speaker.label }}</td>
-                <td class="{% if speaker.speaker.willAttendSpeakersDiner is null %}speaker-management--no-response{% endif %}">
+                <td class="{% if speaker.speaker.willAttendSpeakersDiner is null %}error{% endif %}">
                     {% if speaker.speaker.willAttendSpeakersDiner is null %}
                         N/A
                     {% elseif speaker.speaker.willAttendSpeakersDiner  %}
@@ -37,7 +32,7 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasSpecialDiet is null %}speaker-management--no-response{% endif %}">
+                <td class="{% if speaker.speaker.hasSpecialDiet is null %}error{% endif %}">
                     {% if speaker.speaker.hasSpecialDiet is null %}
                         N/A
                     {% elseif speaker.speaker.hasSpecialDiet %}
@@ -46,14 +41,14 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasSpecialDiet and speaker.speaker.specialDietDescription is null %}speaker-management--no-response{% endif %}">
+                <td class="{% if speaker.speaker.hasSpecialDiet and speaker.speaker.specialDietDescription is null %}error{% endif %}">
                     {% if speaker.speaker.specialDietDescription %}
                         {{ speaker.speaker.specialDietDescription }}
                     {% else %}
                         N/A
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightBefore is null %}speaker-management--no-response{% endif %}">
+                <td class="{% if speaker.speaker.hasHotelNightBefore is null %}error{% endif %}">
                     {% if speaker.speaker.hasHotelNightBefore is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightBefore %}
@@ -62,7 +57,7 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightBetween is null %}speaker-management--no-response{% endif %}">
+                <td class="{% if speaker.speaker.hasHotelNightBetween is null %}error{% endif %}">
                     {% if speaker.speaker.hasHotelNightBetween is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightBetween %}
@@ -71,7 +66,7 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightAfter is null %}speaker-management--no-response{% endif %}">
+                <td class="{% if speaker.speaker.hasHotelNightAfter is null %}error{% endif %}">
                     {% if speaker.speaker.hasHotelNightAfter is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightAfter %}
@@ -80,7 +75,7 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasNoHotelNight is null %}speaker-management--no-response{% endif %}">
+                <td class="{% if speaker.speaker.hasNoHotelNight is null %}error{% endif %}">
                     {% if speaker.speaker.hasNoHotelNight is null %}
                         N/A
                     {% elseif speaker.speaker.hasNoHotelNight %}

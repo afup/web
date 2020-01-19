@@ -1,38 +1,92 @@
-{% extends 'admin/base.html.twig' %}
-{% block body %}
-    <div id="header">
-        <h1>
-            <img src="{{ asset('templates/administration/images/logo_afup.png') }}" />
-            {{ title }} − Administration AFUP
-        </h1>
-    </div>
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Administration AFUP</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+        <style>
+            .toc {
+                position: fixed;
+                z-index: 1;
+                background-color: #1b1c1d;
+                width: 250px;
+                -webkit-box-flex: 0;
+            }
 
-    {% if app.user %}
-        {{ render(controller('AppBundle:Admin:getMenu')) }}
-        {% if app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
-            <p class="note error">
-                Votre cotisation a expiré. Les fonctionnalités réservées aux membres ne vous sont pas accessibles.
-            </p>
-        {% endif %}
-    {% endif %}
+            .article {
+                margin-left: 250px;
+                flex: 1 1 auto;
+                min-width: 0;
+            }
 
-    <div class="col1">
-        {% for type, messages in app.session.flashbag.all() %}
-            {% for message in messages %}
-                <div class="flash-{{type}}">{{message|raw}}</div>
-            {% endfor %}
-        {% endfor %}
-        {% block content %}
-            {{ content|raw }}
-        {% endblock %}
-    </div>
-
-    <div id="footer">
-        &copy; AFUP | Icônes <a href="http://www.famfamfam.com/lab/icons/silk/">FamFamFam</a>
-    </div>
+            .content {
+                padding: 20px;
+            }
 
 
-    <!-- Dropzone -->
-    <script type="text/javascript" src="{{ asset('javascript/dropzone/dropzone.min.js') }}"></script>
-    <script src="/js_dist/admin.js"></script>
-{% endblock %}
+            .full-height > .toc .menu {
+                border-radius: 0;
+                border-width: 0 1px 0 0;
+                box-shadow: none;
+                margin: 0;
+                width: inherit;
+                overflow: hidden;
+                will-change: transform;
+                max-height: 100vh;
+                overflow: auto;
+            }
+        </style>
+
+    </head>
+
+
+    {% block body %}
+        <body id="{{ page|default('') }}" class="{{ class|default('') }}">
+            <div class="full-height">
+                <div class="toc">
+                    <div class="ui vertical inverted menu">
+                        <div class="item logo">
+                            <img src="/templates/administration/images/logo_afup.png" style="max-width: 100%"/>
+                        </div>
+                        {{ render(controller('AppBundle:Admin:getMenu')) }}
+                    </div>
+                </div>
+            </div>
+            <div class="article">
+                <div class="ui menu asd borderless">
+                    <div class="right menu">
+                        <div class="item">
+                            <a class="ui button" href="/">Retour site</a>
+                        </div>
+                        <div class="item">
+                            <a class="ui primary button" href="/admin/logout">Se déconnecter</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    {% block content %}
+                        {{ content|raw }}
+                    {% endblock %}
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+            <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+            <script src="/js_dist/admin.js"></script>
+
+            <script>
+                $(document).ready(function() {
+                    $('.ui.dropdown').dropdown({action: "select"});
+                    $('.ui.checkbox').checkbox();
+                });
+            </script>
+        </body>
+    {% endblock %}
+
+</html>

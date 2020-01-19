@@ -1,26 +1,38 @@
 {if $action == 'lister'}
     <h2>Liste des rubriques</h2>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=site_rubriques&amp;action=ajouter" title="Ajouter une rubrique">Ajouter une rubrique</a><br />
-    <br/>
-    <table>
-      <form method="GET" name="filtre">
-      <input type="hidden" name="page" value="site_rubriques" />
-      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-        <tr>
-            <td width="50" nowrap>Filtre : </td>
-            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
-            <td><input type="submit" value="OK" name="submit_filtre"></td>
-        </tr>
-      </form>
-    </table>
-    <br/>
-    <table class="afup_tab">
+
+    <div class="ui menu">
+        <a href="index.php?page=site_rubriques&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter une rubrique" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <form method="GET" name="filtre">
+        <input type="hidden" name="page" value="site_rubriques" />
+        <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+        <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Recherche</label>
+                    <input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}">
+                </div>
+                <div class="field">
+                    <input type="submit" value="Filtrer" class="ui button" name="submit_filtre" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="ui table striped compact celled">
         <tr>
             <th style="text-align: left"><a href="index.php?page=site_rubriques&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a></th>
             <th style="text-align: left"><a href="index.php?page=site_rubriques&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
             <th style="text-align: left"><a href="index.php?page=site_rubriques&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
-            <th width="40"></th>
+            <th>Actions</th>
         </tr>
     {foreach from=$rubriques item=rubrique}
         <tr class="{cycle values="odd,even"}">

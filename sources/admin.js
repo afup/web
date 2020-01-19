@@ -10,7 +10,9 @@ var tf = new TableFilter(document.querySelector('.tab--filterable'), {
 	col_7: 'select',
 	col_8: 'none',
 	col_9: 'none',
-	theme: 'transparent',
+	themes: [{
+		name: 'transparent'
+	}],
 	alternate_rows: true,
 	rows_counter: true,
 	btn_reset: true,

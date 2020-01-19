@@ -1,23 +1,35 @@
 {if $action == 'lister'}
     <h2>Liste des forums</h2>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=forum_gestion&amp;action=ajouter" title="Ajouter un forum">Ajouter un forum</a><br />
-    <br/>
-    <p style="color:#f00">
-        On ne peut pas supprimer de forum pour lequel des éléments ont été associés.
-    </p>
-    <table class="afup_tab">
-        <tr>
-            <th align="left">Forum</th>
-            <th align="left">Informations</th>
-            <th align="left">Coupons</th>
-            <th align="left"></th>
-        </tr>
+
+    <div class="ui menu">
+        <a href="index.php?page=forum_gestion&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter un forum" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <div class="ui message">
+        <p>On ne peut pas supprimer de forum pour lequel des éléments ont été associés.</p>
+    </div>
+
+    <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th align="left">Forum</th>
+                <th align="left">Informations</th>
+                <th align="left">Coupons</th>
+                <th align="left"></th>
+            </tr>
+        </thead>
+        <tbody>
     {foreach from=$evenements item=evenement}
         <tr>
-            <td style="border-top: 1px solid #6874A7">
+            <td>
                 <strong>{$evenement.titre}</strong><br/><br/>
             </td>
-            <td style="border-top: 1px solid #6874A7">
+            <td>
                 Chemin sur le site : {$evenement.path}<br/>
                 Nombre places : {$evenement.nb_places}<br/>
                 Année : {$evenement.annee}<br/>
@@ -27,7 +39,7 @@
                 Fin prévente : {$evenement.date_fin_prevente|date_format:"%d/%m/%Y %H:%M:%S"}<br/>
                 Fin vente : {$evenement.date_fin_vente|date_format:"%d/%m/%Y %H:%M:%S"}<br/>
             </td>
-            <td style="border-top: 1px solid #6874A7">
+            <td>
                 <div style="width:300px">
                 {foreach from=$evenement.coupons key=idCoupon item=coupon}
                 <span class="coupon" style="float:left;" title="{$coupon}" id="coupon_{$idCoupon}">{$coupon}&nbsp;</span>
@@ -43,6 +55,7 @@
             </td>
         </tr>
     {foreachelse}
+        </tbody>
         <tr>
             <td colspan="4"><em>Aucun inscrit</em></td>
         </tr>

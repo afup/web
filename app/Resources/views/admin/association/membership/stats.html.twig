@@ -5,25 +5,34 @@
 {% block content %}
     <article id="members-stats">
         <h2>Statistiques concernant les membres</h2>
-        <table class="afup_tab">
+        <table class="ui table striped compact celled">
+            <thead>
+                <tr>
+                    <th class="center aligned">Personnes physiques totales*</th>
+                </tr>
+            </thead>
             <tbody>
                 <tr>
-                    <th colspan="2">Personnes physiques totales*</th>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center">
+                    <td class="center aligned">
                         {{ usersCount }}
                     </td>
                 </tr>
+            </tbody>
+        </table>
+
+        <table class="ui table striped compact celled">
+            <thead>
                 <tr>
-                    <th>Personnes physiques non rattachées à une personne morale*</th>
-                    <th>Personnes physiques rattachées à une personne morale*</th>
+                    <th class="center aligned">Personnes physiques non rattachées à une personne morale*</th>
+                    <th class="center aligned">Personnes physiques rattachées à une personne morale*</th>
                 </tr>
+            </thead>
+            <tbody>
                 <tr>
-                    <td style="text-align: center">
+                    <td class="center aligned">
                         <b>{{ usersCountWithoutCompanies }}</b>
                     </td>
-                    <td style="text-align: center">
+                    <td class="center aligned">
                         {{ usersCountWithCompanies }}
                     </td>
                 </tr>
@@ -32,19 +41,19 @@
 
         <br />
 
-        <table class="afup_tab">
+        <table class="ui table striped compact celled">
             <thead>
                 <tr>
-                    <th>Personnes morales avec membre lié*</th>
-                    <th>Personnes morales*</th>
+                    <th class="center aligned">Personnes morales avec membre lié*</th>
+                    <th class="center aligned">Personnes morales*</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td style="text-align: center">
+                    <td class="center aligned">
                         {{ companiesCountWithLinkedUsers }}
                     </td>
-                    <td style="text-align: center">
+                    <td class="center aligned">
                         <b>{{ companiesCount }}</b>
                     </td>
                 </tr>

@@ -14,6 +14,7 @@ parameters:
         membres:
             nom: 'Membres'
             niveau: 'ROLE_ADMIN'
+            icon: 'user'
             elements:
                 personnes_physiques:
                     nom: 'Personnes physiques'
@@ -45,6 +46,7 @@ parameters:
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
+            icon: 'bullhorn'
             elements:
                 veille_ generer_campagne:
                     nom: "Liste des campagnes"
@@ -61,6 +63,7 @@ parameters:
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'
+            icon: "paint brush"
             elements:
                 site_feuilles:
                     nom: 'Feuilles'
@@ -84,6 +87,7 @@ parameters:
         forum:
             nom: 'Forum'
             niveau: 'ROLE_FORUM'
+            icon: "globe"
             elements:
                 forum_gestion:
                     nom: 'Gestion forum'
@@ -158,6 +162,7 @@ parameters:
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
+            icon: "money bill alternate"
             elements:
                 compta_devis:
                     nom: 'Devis - Facture'
@@ -186,6 +191,7 @@ parameters:
         planete:
             nom: 'Planète PHP FR'
             niveau: 'ROLE_ADMIN'
+            icon: "rss"
             elements:
                 planete_flux:
                     nom: 'Flux'
@@ -197,6 +203,7 @@ parameters:
         divers:
             nom: 'Divers'
             niveau: 'ROLE_ADMIN'
+            icon: "tag"
             elements:
                 configuration:
                     nom: 'Configuration'
@@ -210,14 +217,6 @@ parameters:
                 info_serveur:
                     nom: 'Information serveur'
                     niveau: 'ROLE_ADMIN'
-        retour_site:
-          nom: 'Retour site'
-          url: '/'
-          niveau: 'ROLE_USER'
-        se_deconnecter:
-            nom: 'Se déconnecter'
-            url: '/admin/logout'
-            niveau: 'ROLE_USER'
         connexion:
             nom: 'Connexion'
             masquee: true
