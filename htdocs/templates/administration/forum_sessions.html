@@ -1,13 +1,20 @@
 {if $action == 'lister'}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <h2>Sessions</h2>
+
     <form method="GET" name="forum">
-    <input type="hidden" name="page" value="forum_sessions" />
-    <input type="hidden" name="type" value="{$list_type}" />
-    <h2>Liste des sessions pour <select name="id_forum" onchange="this.form.submit(); return false;">
-    {foreach from=$forums item=forum}
-    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
-    {/foreach}
-    </select></h2>
+        <input type="hidden" name="page" value="forum_sessions" />
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Forum</label>
+                    <select name="id_forum" onchange="this.form.submit(); return false;">
+                        {foreach from=$forums item=forum}
+                        <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+        </div>
     </form>
 
     <div class="ui menu">
@@ -145,6 +152,8 @@
     {/foreach}
         </tbody>
     </table>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 {else}
     {if $action == 'ajouter'}
         <h2>Ajouter une session pour le {$forum_name}</h2>
