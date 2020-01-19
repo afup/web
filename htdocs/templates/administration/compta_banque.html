@@ -1,51 +1,42 @@
 {if $action == 'lister'}
     <h2>Journal de banque</h2>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=2&amp;action=lister" title="journal compte espece">
-        Journal banque : compte espece
-    </a>
-    (<a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=2&amp;action=exporter" title="journal compte courant">
-        export XLSX
-    </a>)<br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=4&amp;action=lister" title="journal compte paypal">
-        Journal banque : compte paypal
-    </a>
-    (<a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=4&amp;action=exporter" title="journal compte courant">
-        export XLSX
-    </a>)<br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=1&amp;action=lister" title="journal compte courant">
-        Journal banque : compte courant
-    </a>
-    (<a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=1&amp;action=exporter" title="journal compte courant">
-        export XLSX
-    </a>)<br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=3&amp;action=lister" title="journal compte livret A">
-        Journal banque : compte livret A
-    </a>
-    (<a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte=3&amp;action=exporter" title="journal compte courant">
-        export XLSX
-    </a>)<br />
-    <br/>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;action=download_attachments">Télécharger tous les justificatifs triés par mois.</a>
-    <br/>
-    <br/>
-    <table>
-    <form method="GET" name="forum">
-      <input type="hidden" name="compte" value="{$smarty.get.compte}" />
-      <input type="hidden" name="page" value="compta_banque" />
-     <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
-    {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
-    {/foreach}
-    </select></h2>
-    </form>
-    </table>
-    <br/>
-    <table class="afup_tab">
+
+    <div class="ui top attached tabular menu">
+        {foreach from=$listeComptes item=compte key=id}
+        <a class="{if $id == $compte_id }active{/if} item" href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte={$id}&amp;action=lister">
+            {$compte}
+        </a>
+        {/foreach}
+    </div>
+
+    <div class="ui bottom attached segment">
+
+        <table>
+            <form method="GET" name="forum">
+                <input type="hidden" name="compte" value="{$smarty.get.compte}" />
+                <input type="hidden" name="page" value="compta_banque" />
+                <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
+                    {foreach from=$listPeriode item=periode}
+                    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+                    {/foreach}
+                </select></h2>
+            </form>
+        </table>
+
+        <div class="ui menu">
+            <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte={$compte_id}&amp;action=exporter" class="item">
+                <i class="icon file excel"></i>
+                Export XLSX
+            </a>
+            <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte={$compte_id}&amp;action=download_attachments" class="item">
+                <i class="icon file zip"></i>
+                Télécharger les justificatifs triés par mois
+            </a>
+        </div>
+
+
+    <table class="ui table striped compact celled">
+        <thead>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
 
@@ -56,6 +47,8 @@
             <th>Recette</th>
             <th>&nbsp;</th>
        </tr>
+        </thead>
+        <tbody>
 	{assign var=compteurLigne value=1}
     {foreach from=$journal item=ecriture}
         <tr class="{cycle values="odd,even"}">
@@ -100,6 +93,7 @@
         </tr>
     {/foreach}
 
+
     <tr>
 	<th colspan='3' align='right'>Total</td>
 	<th align='center'>{$total.debit|number_format:2:',':' '}</th>
@@ -111,6 +105,9 @@
         <th colspan='2'  align='center'>{$total.dif|number_format:2:',':' '}</th>
         <th>&nbsp;</th>
     </tr>
+        </tbody>
     </table>
+
+    </div>
 {else}
 {/if}
