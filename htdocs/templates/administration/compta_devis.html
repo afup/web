@@ -60,7 +60,11 @@
     {else}
         <h2>Modifier un devis</h2>
 
-        <a href="index.php?page=compta_devis&amp;action=ajouter&from={$devis_id}" title="ajouter un devis">Dupliquer le devis</a>
+        <div class="ui menu">
+            <a href="index.php?page=compta_devis&amp;action=ajouter&from={$devis_id}" class="item">
+                Dupliquer le devis
+            </a>
+        </div>
     {/if}
     {include file="formulaire.html"}
 {/if}
