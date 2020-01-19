@@ -1,12 +1,23 @@
 {if $action == 'lister'}
-    <form method="GET" name="forum">
-    <input type="hidden" name="page" value="forum_conferenciers" />
-    <h2>Liste des conférenciers pour <select name="id_forum" onchange="this.form.submit(); return false;">
-    {foreach from=$forums item=forum}
-    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
-    {/foreach}
-    </select></h2>
-    </form>
+    <h2>Speakers</h2>
+
+    <div class="ui violet segment">
+        <form method="GET" name="forum">
+            <input type="hidden" name="page" value="forum_conferenciers" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Forum</label>
+                        <select name="id_forum" onchange="this.form.submit(); return false;">
+                            {foreach from=$forums item=forum}
+                            <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <div class="ui menu">
         <a href="index.php?page=forum_conferenciers&amp;action=ajouter&amp;id_forum={$id_forum}" class="item">
@@ -24,6 +35,8 @@
         </a>
     </div>
 
+<div class="ui segment">
+
     <table>
       <form method="GET" name="filtre">
       <input type="hidden" name="page" value="forum_conferenciers" />
@@ -37,9 +50,16 @@
         </tr>
       </form>
     </table>
-    <br/>
-    <p style="color:#f00">Il y a {$nb_conferenciers} conférencier(s) pour ce forum</p>
-    <br/>
+
+    <div class="ui mini horizontal statistic">
+        <div class="value">
+            {$nb_conferenciers}
+        </div>
+        <div class="label">
+            speakers
+        </div>
+    </div>
+
     <table class="ui table striped compact celled">
         <thead>
             <tr>
@@ -55,7 +75,7 @@
                     <td><strong>{$conferencier.nom} {$conferencier.prenom}</strong></td>
                     <td>{$conferencier.societe}</td>
                     <td>
-                        <ul style="color:#666">
+                        <ul class="ui list">
                         {foreach from=$conferencier.sessions item=session}
                             <li>{$session.titre}</li>
                         {/foreach}
@@ -73,6 +93,7 @@
             {/foreach}
         </tbody>
     </table>
+</div>
 {else}
     {if $action == 'ajouter'}
         <h2>Ajouter un conférencier pour le {$forum_name}</h2>
