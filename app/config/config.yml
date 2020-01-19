@@ -124,7 +124,7 @@ parameters:
                     niveau: 'ROLE_FORUM'
                     url: '/admin/event/speakers-management'
                 forum_facturation:
-                    nom: 'Factures'
+                    nom: "Factures d'événément"
                     niveau: 'ROLE_ADMIN'
                 forum_sessions:
                     nom: 'Sessions'

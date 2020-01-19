@@ -1,11 +1,20 @@
 {if $action == 'lister'}
+    <h2>Factures d'événément</h2>
+
     <form method="GET" name="forum">
-    <input type="hidden" name="page" value="forum_facturation" />
-    <h2>Liste des factures pour <select name="id_forum" onchange="this.form.submit(); return false;">
-    {foreach from=$forums item=forum}
-    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
-    {/foreach}
-    </select></h2>
+        <input type="hidden" name="page" value="forum_facturation" />
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Forum</label>
+                    <select name="id_forum" onchange="this.form.submit(); return false;">
+                        {foreach from=$forums item=forum}
+                        <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+        </div>
     </form>
 
     <form method="GET" name="filtre">
