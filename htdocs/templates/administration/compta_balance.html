@@ -10,7 +10,7 @@
 </form>
 
 {if $action == 'lister'}
-    <table class="afup_tab">
+    <table class="ui table striped compact celled">
         <tr>
             <th>Evenement</th>
             <th>Dépense</th>
@@ -32,7 +32,7 @@
 {if ($smarty.get.details==$ecriture.idevenement) }
 	<tr class="{cycle values="odd,even"}">
 		<td>
-    <table class="afup_tab_inside">
+    <table class="ui table striped compact celled">
         <tr>
             <th>Date ecriture</th>
             <th>categorie</th>
@@ -99,7 +99,7 @@
 
     <br/>
 
-    <table class="afup_tab_inside">
+    <table class="ui table striped compact celled">
         <tr>
             <th>Date ecriture</th>
             <th>categorie</th>
