@@ -1,16 +1,20 @@
-<!-- Pagination -->
-<div class="pagination">
-    <div class="page_precedente">    
-    {if $numero_page > 1}
-        <a href="{$url}&amp;numero_page={math equation="x - 1" x=$numero_page}" style="float: left">&laquo; Page précédente</a>
-    {/if}
-    </div>
+<div class="ui center aligned clearing segment">
 
-    <div class="page_suivante">    
     {if ($numero_page < $nombre_pages)}
-        <a href="{$url}&amp;numero_page={math equation="x + 1" x=$numero_page}" style="float: right">Page suivante &raquo;</a>
-    {/if}
+    <div class="ui right floated segment">
+        <a href="{$url}&amp;numero_page={math equation="x + 1" x=$numero_page}" class="ui right labeled icon button">
+            <i class="right chevron icon"></i>
+            Page suivante
+        </a>
     </div>
-    
-    <div class="informations">{$numero_page}/{$nombre_pages}</div>
+    {/if}
+    {$numero_page}/{$nombre_pages}
+    {if $numero_page > 1}
+    <div class="ui left floated segment">
+        <a href="{$url}&amp;numero_page={math equation="x - 1" x=$numero_page}" class="ui labeled icon button">
+        <i class="left chevron icon"></i>
+        Page précédente
+        </a>
+    </div>
+    {/if}
 </div>
