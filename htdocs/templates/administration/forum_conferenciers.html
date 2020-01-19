@@ -8,14 +8,22 @@
     </select></h2>
     </form>
 
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?page=forum_conferenciers&amp;action=ajouter&amp;id_forum={$id_forum}" title="Ajouter une session">Ajouter un conférencier</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?page=forum_conferenciers&amp;action=inscrire_forum&amp;id_forum={$id_forum}" title="Ajouter une session">Créer les insciptions conférencier pour le forum</a><br />
+    <div class="ui menu">
+        <a href="index.php?page=forum_conferenciers&amp;action=ajouter&amp;id_forum={$id_forum}" class="item">
+            <div data-tooltip="Ajouter un conférencier" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <a href="index.php?page=forum_conferenciers&amp;action=inscrire_forum&amp;id_forum={$id_forum}" class="item">
+            Créer les insciptions conférencier pour le forum
+        </a>
+        <a href="/admin/speaker/export?id={$id_forum}" class="item">
+            <i class="icon file"></i>
+            Exporter les speakers
+        </a>
+    </div>
 
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="/admin/speaker/export?id={$id_forum}">Exporter les speakers</a><br />
-    <br/>
     <table>
       <form method="GET" name="filtre">
       <input type="hidden" name="page" value="forum_conferenciers" />
@@ -32,34 +40,38 @@
     <br/>
     <p style="color:#f00">Il y a {$nb_conferenciers} conférencier(s) pour ce forum</p>
     <br/>
-    <table class="afup_tab">
-        <tr>
-            <th align="left"><a href="index.php?page=forum_conferenciers&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom Prénom</a></th>
-            <th align="left"><a href="index.php?page=forum_conferenciers&amp;tri=societe&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'f.societe'}desc{else}asc{/if}">Société</a></th>
-            <th>Session(s)</th>
-            <th>&nbsp;</th>
-        </tr>
-    {foreach from=$conferenciers item=conferencier}
-        <tr class="{cycle values="odd,even"}">
-            <td><strong>{$conferencier.nom} {$conferencier.prenom}</strong></td>
-            <td>{$conferencier.societe}</td>
-            <td>
-                <ul style="color:#666">
-                {foreach from=$conferencier.sessions item=session}
-                    <li>{$session.titre}</li>
-                {/foreach}
-                </ul>
-            </td>
-            <td style="text-align: right" nowrap="nowrap">
-                <a href="index.php?page=forum_conferenciers&amp;action=modifier&amp;id={$conferencier.conferencier_id}&amp;id_forum={$forum.id}" title="Modifier la fiche de {$conferencier.nom} {$conferencier.prenom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                <a href="index.php?page=forum_conferenciers&amp;action=supprimer&amp;id={$conferencier.conferencier_id}" title="Supprimer la fiche de {$conferencier.nom} {$conferencier.prenom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$conferencier.nom} {$conferencier.prenom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
-            </td>
-        </tr>
-    {foreachelse}
-        <tr>
-            <td><em>Aucun conférencier</em></td>
-        </tr>
-    {/foreach}
+    <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th align="left"><a href="index.php?page=forum_conferenciers&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom Prénom</a></th>
+                <th align="left"><a href="index.php?page=forum_conferenciers&amp;tri=societe&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'f.societe'}desc{else}asc{/if}">Société</a></th>
+                <th>Session(s)</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$conferenciers item=conferencier}
+                <tr class="{cycle values="odd,even"}">
+                    <td><strong>{$conferencier.nom} {$conferencier.prenom}</strong></td>
+                    <td>{$conferencier.societe}</td>
+                    <td>
+                        <ul style="color:#666">
+                        {foreach from=$conferencier.sessions item=session}
+                            <li>{$session.titre}</li>
+                        {/foreach}
+                        </ul>
+                    </td>
+                    <td style="text-align: right" nowrap="nowrap">
+                        <a href="index.php?page=forum_conferenciers&amp;action=modifier&amp;id={$conferencier.conferencier_id}&amp;id_forum={$forum.id}" title="Modifier la fiche de {$conferencier.nom} {$conferencier.prenom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                        <a href="index.php?page=forum_conferenciers&amp;action=supprimer&amp;id={$conferencier.conferencier_id}" title="Supprimer la fiche de {$conferencier.nom} {$conferencier.prenom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$conferencier.nom} {$conferencier.prenom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
+                    </td>
+                </tr>
+            {foreachelse}
+                <tr>
+                    <td><em>Aucun conférencier</em></td>
+                </tr>
+            {/foreach}
+        </tbody>
     </table>
 {else}
     {if $action == 'ajouter'}
