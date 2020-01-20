@@ -43,71 +43,84 @@
 
     </div>
 
-<table class="ui table striped compact celled">
-    <tr>
-    <th>Type</th>
-    <th>Tarif</th>
-    <th>Nb inscrits</th>
-    <th>Nb Confirme</th>
-    <th>Nb payants</th>
-    <th>Montant</th>
-    <th>Places restantes</th>
-    </tr>
-    {foreach from=$forum_tarifs item=forum_tarif key=forum_tarif_key}
-    {assign var=inscrits value=`$statistiques.types_inscriptions.inscrits[$forum_tarif_key]`}
-    {assign var=confirmes value=`$statistiques.types_inscriptions.confirmes[$forum_tarif_key]`}
-    {assign var=payants value=`$statistiques.types_inscriptions.payants[$forum_tarif_key]`}
-    {assign var=montant value=`$statistiques.types_inscriptions.payants[$forum_tarif_key]*$forum_tarif`}
-    {assign var=inscrits_total value=`$inscrits_total+$inscrits`}
-    {assign var=confirmes_total value=`$confirmes_total+$confirmes`}
-    {assign var=payants_total value=`$payants_total+$payants`}
-    {assign var=montant_total value=`$montant_total+$montant`}
-    {if $inscrits != ''}
-    <tr class="{cycle values="odd,even"}">
-      <th style="text-align: left" width="250">
-        {$forum_tarifs_lib[$forum_tarif_key]}
-      </th>
-      <td align="right" width="80">{$forum_tarif} €</td>
-      <td align="right" width="80">{$inscrits}</td>
-      <td align="right" width="80">{$confirmes}</td>
-      <td align="right" width="80">{$payants}</td>
-      <td align="right" width="80"> {$montant}</td>
-      <td align="right" width="80"> {$forum_tarifs_restantes[$forum_tarif_key]}</td>
+    <div class="ui segment">
+        <table class="ui table striped compact celled">
+            <thead>
+                <tr>
+                <th>Type</th>
+                <th>Tarif</th>
+                <th>Nb inscrits</th>
+                <th>Nb Confirme</th>
+                <th>Nb payants</th>
+                <th>Montant</th>
+                <th>Places restantes</th>
+                </tr>
+            </thead>
+            <tbody>
+            {foreach from=$forum_tarifs item=forum_tarif key=forum_tarif_key}
+            {assign var=inscrits value=`$statistiques.types_inscriptions.inscrits[$forum_tarif_key]`}
+            {assign var=confirmes value=`$statistiques.types_inscriptions.confirmes[$forum_tarif_key]`}
+            {assign var=payants value=`$statistiques.types_inscriptions.payants[$forum_tarif_key]`}
+            {assign var=montant value=`$statistiques.types_inscriptions.payants[$forum_tarif_key]*$forum_tarif`}
+            {assign var=inscrits_total value=`$inscrits_total+$inscrits`}
+            {assign var=confirmes_total value=`$confirmes_total+$confirmes`}
+            {assign var=payants_total value=`$payants_total+$payants`}
+            {assign var=montant_total value=`$montant_total+$montant`}
+            {if $inscrits != ''}
+            <tr class="{cycle values="odd,even"}">
+              <th style="text-align: left" width="250">
+                {$forum_tarifs_lib[$forum_tarif_key]}
+              </th>
+              <td align="right" width="80">{$forum_tarif} €</td>
+              <td align="right" width="80">{$inscrits}</td>
+              <td align="right" width="80">{$confirmes}</td>
+              <td align="right" width="80">{$payants}</td>
+              <td align="right" width="80"> {$montant}</td>
+              <td align="right" width="80"> {$forum_tarifs_restantes[$forum_tarif_key]}</td>
 
-    </tr>
-    {/if}
+            </tr>
+            {/if}
 
-    {/foreach}
-        <tr>
-    <th>-</th>
-    <th>-</th>
-    <th align="right">{$inscrits_total}</th>
-    <th align="right">{$confirmes_total}</th>
-    <th align="right">{$payants_total}</th>
-    <th align="right">{$montant_total}</th>
-    <th align="right"></th>
-    </tr>
-    </table>
-    <br/>
-    <table class="ui table striped compact celled">
-        <tr><th>-</th><th>Inscrits</th><th>Confirmés</th><th>En attente de règlement</th></tr>
-        <tr>
-            <th>Jour 1</th>
-            <td>{$statistiques.premier_jour.inscrits}</td>
-            <td>{$statistiques.premier_jour.confirmes}</td>
-            <td>{if $statistiques.premier_jour.en_attente_de_reglement == ''}0{else}{$statistiques.premier_jour.en_attente_de_reglement}{/if}</td>
-        </tr>
-        <tr>
-            <th>Jour 2</th>
-            <td>{$statistiques.second_jour.inscrits}</td>
-            <td>{$statistiques.second_jour.confirmes}</td>
-            <td>{if $statistiques.second_jour.en_attente_de_reglement == ''}0{else}{$statistiques.second_jour.en_attente_de_reglement}{/if}</td>
-        </tr>
-    </table>
+            {/foreach}
+                <tr>
+            <th>-</th>
+            <th>-</th>
+            <th align="right">{$inscrits_total}</th>
+            <th align="right">{$confirmes_total}</th>
+            <th align="right">{$payants_total}</th>
+            <th align="right">{$montant_total}</th>
+            <th align="right"></th>
+            </tr>
+            </tbody>
+            </table>
 
-    <br/>
+            <table class="ui table striped compact celled">
+                <thead>
+                    <tr>
+                        <th>-</th>
+                        <th>Inscrits</th>
+                        <th>Confirmés</th>
+                        <th>En attente de règlement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Jour 1</th>
+                        <td>{$statistiques.premier_jour.inscrits}</td>
+                        <td>{$statistiques.premier_jour.confirmes}</td>
+                        <td>{if $statistiques.premier_jour.en_attente_de_reglement == ''}0{else}{$statistiques.premier_jour.en_attente_de_reglement}{/if}</td>
+                    </tr>
+                    <tr>
+                        <th>Jour 2</th>
+                        <td>{$statistiques.second_jour.inscrits}</td>
+                        <td>{$statistiques.second_jour.confirmes}</td>
+                        <td>{if $statistiques.second_jour.en_attente_de_reglement == ''}0{else}{$statistiques.second_jour.en_attente_de_reglement}{/if}</td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
 
-
+    <div class="ui segment">
     <table>
       <form method="GET" name="filtre">
       <input type="hidden" name="page" value="forum_inscriptions" />
@@ -123,6 +136,7 @@
     </table>
 
     <table class="ui table striped compact celled">
+        <thead>
         <tr class="{cycle values="odd,even"}">
             <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.date'}desc{else}asc{/if}">Date</a></th>
             <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.nom'}desc{else}asc{/if}">Nom Prénom</a></th>
@@ -136,7 +150,10 @@
             <th>J1</th>
             <th>J2</th>
             <th title="Applicable uniquement aux tarifs afup">Statut cotisation</th>
+            <th></th>
         </tr>
+    </thead>
+    <tbody>
     {foreach from=$inscriptions item=inscription}
         <tr class="{cycle values="odd,even"}"{if $inscription.etat == 1} style="color:#999;font-style:italic"{/if}>
             <td nowrap="nowrap">{$inscription.date|date_format:"%d/%m/%Y %H:%M:%S"}</td>
@@ -199,7 +216,9 @@
             <td><em>Aucune inscription</em></td>
         </tr>
     {/foreach}
+    </tbody>
     </table>
+    </div>
 {elseif $action == 'generer_mail_inscription_afup'}
     <textarea rows="37" cols="100">Bonjour,
 
