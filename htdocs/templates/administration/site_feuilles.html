@@ -22,9 +22,9 @@
         <tr>
             <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a></th>
             <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
-            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
-            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=pos&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pos'}desc{else}asc{/if}">Pos.</a></th>
-            <th width="40">Actions</th>
+            <th class="center aligned"><a href="index.php?page=site_feuilles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
+            <th class="right aligned"><a href="index.php?page=site_feuilles&amp;tri=pos&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pos'}desc{else}asc{/if}">Position</a></th>
+            <th class="right aligned">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -37,9 +37,17 @@
               <br/><img src="../../templates/site/images/{$feuille.image}" />
               {/if}
             </td>
-            <td>{if $feuille.etat == 1}En ligne{elseif $feuille.etat == -1}Hors ligne{else}En attente{/if}</td>
-            <td>{$feuille.position}</td>
-            <td class="single line">
+            <td class="center aligned">
+                {if $feuille.etat == 1}
+                    <a class="ui orange label">En ligne</a>
+                {elseif $feuille.etat == -1}
+                    <a class="ui grey label">Hors ligne</a>
+                {else}
+                    <a class="ui violet label">En attente</a>
+                {/if}
+            </td>
+            <td class="right aligned">{$feuille.position}</td>
+            <td class="single line right aligned">
                 <a id="modifier_{$feuille.id}"
                    href="index.php?page=site_feuilles&amp;action=modifier&amp;id={$feuille.id}"
                    data-position="left center"
