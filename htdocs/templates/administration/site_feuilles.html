@@ -39,9 +39,25 @@
             </td>
             <td>{if $feuille.etat == 1}En ligne{elseif $feuille.etat == -1}Hors ligne{else}En attente{/if}</td>
             <td>{$feuille.position}</td>
-            <td style="text-align: right">
-                <a id="modifier_{$feuille.id}" href="index.php?page=site_feuilles&amp;action=modifier&amp;id={$feuille.id}" title="Modifier la feuille {$feuille.nom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                <a id="supprimer_{$feuille.id}" href="index.php?page=site_feuilles&amp;action=supprimer&amp;id={$feuille.id}" title="Supprimer la feuille {$feuille.nom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la feuille {$feuille.nom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
+            <td class="single line">
+                <a id="modifier_{$feuille.id}"
+                   href="index.php?page=site_feuilles&amp;action=modifier&amp;id={$feuille.id}"
+                   data-position="left center"
+                   data-tooltip="Modifier la feuille {$feuille.nom}"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alernate icon"></i>
+                </a>
+
+                <a id="supprimer_{$feuille.id}"
+                   href="index.php?page=site_feuilles&amp;action=supprimer&amp;id={$feuille.id}"
+                   data-position="left center"
+                   data-tooltip="Supprimer la feuille {$feuille.nom}"
+                   class="compact ui red icon button"
+                   onclick="return confirm('Etes-vous sûr de vouloir supprimer la feuille {$feuille.nom} ?');"
+                >
+                    <i class="trash icon"></i>
+                </a>
             </td>
         </tr>
     {foreachelse}
