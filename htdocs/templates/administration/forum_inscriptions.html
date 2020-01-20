@@ -1,12 +1,25 @@
 {if $action == 'lister'}
-    <form method="GET" name="forum">
-    <input type="hidden" name="page" value="forum_inscriptions" />
-    <h2>Liste des inscriptions pour <select name="id_forum" onchange="this.form.submit(); return false;">
-    {foreach from=$forums item=forum}
-    <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
-    {/foreach}
-    </select></h2>
-    </form>
+
+    <h2>Inscriptions</h2>
+
+    <div class="ui violet segment">
+        <form method="GET" name="forum">
+            <input type="hidden" name="page" value="forum_inscriptions" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Forum</label>
+                        <select name="id_forum" onchange="this.form.submit(); return false;">
+                            {foreach from=$forums item=forum}
+                            <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
 <table class="ui table striped compact celled">
     <tr>
     <th>Type</th>
