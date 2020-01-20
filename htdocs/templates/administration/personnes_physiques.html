@@ -24,6 +24,7 @@
         </a>
     </div>
 
+    <div class="ui segment">
     <form method="GET" name="filtre" class="js-form-search">
         <input type="hidden" name="page" value="personnes_physiques" />
         <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
@@ -98,6 +99,7 @@
         {/foreach}
         </tbody>
     </table>
+    </div>
 
 {else}
     {if $action == 'ajouter'}
