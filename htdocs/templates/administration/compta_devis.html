@@ -19,7 +19,7 @@
             <th>Ville</th>
             <th>Ref client</th>
             <th>Numero devis</th>
-            <th>Prix</th>
+            <th class="right aligned">Prix</th>
             <th>&nbsp;</th>
        </tr>
         </thead>
@@ -30,10 +30,10 @@
             <td nowrap="nowrap">{$ecriture.date_devis|date_format:"%d/%m/%Y"}</td>
              <td>{$ecriture.societe}</td>
              <td  width="250">{$ecriture.ville}</td>
-			<td  align='right' width='100'>{$ecriture.ref_clt1}</td>
-			<td  align='right' width='100'>{$ecriture.numero_devis}</td>
-            <td  align='right' width='100'>{$ecriture.prix}</td>
-            <td style="text-align: left">
+			<td>{$ecriture.ref_clt1}</td>
+			<td>{$ecriture.numero_devis}</td>
+            <td class="right aligned">{$ecriture.prix}</td>
+            <td class="right aligned">
 {if $ecriture.numero_facture == ''}
                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier le devis {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier le devis" /></a>
 {else}
