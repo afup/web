@@ -94,11 +94,11 @@ parameters:
                     url: '/admin/event/room'
                 forum_suivi:
                     nom: 'Suivi'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_FORUM'
                     url: '/admin/event/stats'
                 forum_inscriptions:
                     nom: 'Inscriptions'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_FORUM'
                 forum_pending_bankwires:
                     nom: 'Inscriptions - virements en attente'
                     niveau: 'ROLE_ADMIN'
@@ -113,7 +113,7 @@ parameters:
                     url: '/admin/event/special_price'
                 admin_event_prices:
                     nom: 'Inscriptions - liste des prix'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_FORUM'
                     url: '/admin/event/prices'
                 admin_event_speakers_management:
                     nom: 'Gestion documentaire des speakers'
