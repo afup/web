@@ -36,9 +36,6 @@ parameters:
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
-                membres_liste:
-                    nom: 'Annuaire'
-                    niveau: 'ROLE_ADMIN'
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
