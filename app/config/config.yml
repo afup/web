@@ -33,9 +33,6 @@ parameters:
                     nom: 'Badges'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/members/badges'
-                mailing:
-                    nom: 'Mailing'
-                    niveau: 'ROLE_ADMIN'
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
