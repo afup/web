@@ -53,9 +53,31 @@
                 </td>
                 <td style="text-align: center">{$personne.actifs}</td>
                 <td style="text-align: right">
-                    <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$personne.id}" title="Gérer les cotisations de {$personne.raison_sociale}"><img src="{$chemin_template}images/famfamfam/money.png" alt="Gérer les cotisations" /></a>
-                    <a href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$personne.id}" title="Modifier la fiche de {$personne.raison_sociale}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                    <a href="index.php?page=personnes_morales&amp;action=supprimer&amp;id={$personne.id}" title="Supprimer la fiche de {$personne.raison_sociale}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.raison_sociale} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
+                    <a href="index.php?page=cotisations&amp;type_personne={$smarty.const.AFUP_PERSONNES_MORALES}&amp;id_personne={$personne.id}"
+                       data-position="left center"
+                       data-tooltip="Gérer les cotisations de {$personne.raison_sociale}"
+                       class="compact ui green icon button"
+                    >
+                        <i class="money bill alernate icon"></i>
+                    </a>
+
+                    <a href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$personne.id}"
+                       data-position="left center"
+                       data-tooltip="Modifier la fiche de {$personne.raison_sociale}"
+                       class="compact ui icon button"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
+
+                    <a href="index.php?page=personnes_morales&amp;action=supprimer&amp;id={$personne.id}"
+                       data-position="left center"
+                       data-tooltip="Supprimer la fiche de {$personne.raison_sociale}"
+                       class="compact ui red icon button"
+                       onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.raison_sociale} ?');"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
+
                 </td>
             </tr>
         {foreachelse}
