@@ -63,7 +63,7 @@
         <h2>{{ 'Billetterie'|trans }}: {{ event.title }}</h2>
 
         {% if allTicketsSold and event.getWaitingListUrl %}
-        L'ensemble des billets ont été venudus. Dans vous invitons à vous inscrire sur la <a href="{{ event.getWaitingListUrl }}">liste d'attente</a> dans le cas où des places viendraient à s'ouvrir.
+            Tous les billets ont été vendus. Nous vous invitons à vous inscrire sur  <a href="{{ event.getWaitingListUrl }}">liste d'attente</a> pour le cas où des places viendraient à se libérer.
         {% else %}
 
         {% if hasMembersTickets %}
