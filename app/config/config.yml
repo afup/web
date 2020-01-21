@@ -142,13 +142,6 @@ parameters:
                     nom: 'Export anonymisé'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/export'
-        annuaire:
-            nom: 'Annuaire pro'
-            niveau: 'ROLE_ANNUAIRE'
-            elements:
-                annuairepro_membres:
-                    nom: 'Membres'
-                    niveau: 'ROLE_ANNUAIRE'
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
