@@ -111,6 +111,11 @@ class Event implements NotifyPropertyInterface
     private $accomodationEnabled;
 
     /**
+     * @var string
+     */
+    private $waitingListUrl;
+
+    /**
      * @return int
      */
     public function getId()
@@ -640,5 +645,27 @@ class Event implements NotifyPropertyInterface
     public function isAfupDay()
     {
         return substr($this->getTitle(), 0, 8) == 'AFUP Day';
+    }
+
+    /**
+     * @return string
+     */
+    public function getWaitingListUrl()
+    {
+        return $this->waitingListUrl;
+    }
+
+    /**
+     * @param string $waitingListUrl
+     *
+     * @return $this
+     */
+    public function setWaitingListUrl($waitingListUrl)
+    {
+
+        $this->propertyChanged('waitingListUrl', $this->waitingListUrl, $waitingListUrl);
+        $this->waitingListUrl = $waitingListUrl;
+
+        return $this;
     }
 }
