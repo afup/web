@@ -95,6 +95,7 @@
             </div>
 
             {% set currentDate = 'now'|date('Y-m-d') %}
+            {% set allTicketsSold = true %}
 
             {% for key,ticket in ticketForm.tickets %}
                 <fieldset class="f{{ key+1 }} tickets--fieldset">
@@ -132,7 +133,10 @@
                                             {% if type.vars.attr['data-stock'] <= 0 %}
                                                 <span class="tickets--type-stock">Plus aucun billet disponible</span><br />
                                             {% elseif type.vars.attr['data-stock'] < 10 %}
+                                                {% set allTicketsSold = false %}
                                                 <span class="tickets--type-stock tickets--type-stock-close-to-sold-out">Peu de billets disponibles</span><br />
+                                            {% else %}
+                                                {% set allTicketsSold = false %}
                                             {% endif %}
 
                                         </span>
@@ -141,7 +145,11 @@
                             {% endfor %}
                         </ul>
 
-                        <p class="tickets--type-stock-limit"><em>{{ 'Dans la limite des stocks disponibles.'|trans }}</em></p>
+                        {% if allTicketsSold and event.getWaitingListUrl %}
+                            L'ensemble des billets ont été venudus. Dans vous invitons à vous inscrire sur la <a href="{{ event.getWaitingListUrl }}">liste d'attente</a> dans le cas où des places viendraient à s'ouvrir.
+                        {% else %}
+                            <p class="tickets--type-stock-limit"><em>{{ 'Dans la limite des stocks disponibles.'|trans }}</em></p>
+                        {% endif %}
 
                         <p>{{ 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :'|trans }}</p>
                         <div class="tickets--pmr">
