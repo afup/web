@@ -8,7 +8,7 @@
                     {% endif %}
                     {{ page.nom }}
                 </div>
-                <div class="menu content">
+                <div class="content">
                     {% for clef2, element in page.elements %}
                         {% if element.niveau is not defined or is_granted(element.niveau) %}
                             <a href="{% if element.url is defined %}{{ element.url }}{% else %}/pages/administration/index.php?page={{ clef2 }}{% endif %}"
