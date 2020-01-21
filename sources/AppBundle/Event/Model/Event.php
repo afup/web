@@ -662,7 +662,6 @@ class Event implements NotifyPropertyInterface
      */
     public function setWaitingListUrl($waitingListUrl)
     {
-
         $this->propertyChanged('waitingListUrl', $this->waitingListUrl, $waitingListUrl);
         $this->waitingListUrl = $waitingListUrl;
 
