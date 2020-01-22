@@ -36,9 +36,6 @@ parameters:
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
-                membres_liste:
-                    nom: 'Annuaire'
-                    niveau: 'ROLE_ADMIN'
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
@@ -145,13 +142,6 @@ parameters:
                     nom: 'Export anonymisé'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/export'
-        annuaire:
-            nom: 'Annuaire pro'
-            niveau: 'ROLE_ANNUAIRE'
-            elements:
-                annuairepro_membres:
-                    nom: 'Membres'
-                    niveau: 'ROLE_ANNUAIRE'
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
