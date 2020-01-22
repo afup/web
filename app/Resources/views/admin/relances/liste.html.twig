@@ -24,15 +24,24 @@
         {% endfor %}
         </tbody>
     </table>
-    <br/>
-    <div class="pagination">
-        {% if page > 1 %}
-            <div class="page_precedente"><a href="{{ url('admin_relances', {page: page-1}) }}">Page
-                    précédente</a></div>
-        {% endif %}
+
+    <div class="ui center aligned clearing segment">
         {% if logs.count > limit %}
-            <div class="page_suivante"><a href="{{ url('admin_relances', {page: page+1}) }}">Page
-                    suivante</a></div>
+            <div class="ui right floated segment">
+                <a href="{{ url('admin_relances', { page: page + 1 }) }}" class="ui right labeled icon button">
+                    <i class="right chevron icon"></i>
+                    Page suivante
+
+                </a>
+            </div>
+        {% endif %}
+        {% if page > 1 %}
+            <div class="ui left floated segment">
+                <a href="{{ url('admin_relances', { page: page - 1 }) }}" class="ui labeled icon button">
+                    <i class="left chevron icon"></i>
+                    Page précédente
+                </a>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
