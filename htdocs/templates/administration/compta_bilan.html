@@ -1,22 +1,31 @@
 <h2>Bilan</h2>
 
+<div class="ui green segment">
     <form method="GET" name="evnt">
         <input type="hidden" name="page" value="compta_bilan" />
-        <h3>Bilan <select name="id_periode" onchange="this.form.submit(); return false;">
-        {foreach from=$listPeriode item=periode}
-        <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
-        {/foreach}
-        </select></h3>
-    </form>
-
-    <div class="ui menu">
-        <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_bilan&amp;action=bilanpdf&amp;details={$debits.id}" class="item">
-            <div data-tooltip="Imprimer PDF" data-position="bottom left">
-                <i class="icon file pdf"></i>
-                Imprimer PDF
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Année comptable</label>
+                    <select name="id_periode" onchange="this.form.submit(); return false;">
+                        {foreach from=$listPeriode item=periode}
+                        <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+                        {/foreach}
+                    </select>
+                </div>
             </div>
-        </a>
-    </div>
+        </div>
+    </form>
+</div>
+
+<div class="ui menu">
+    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_bilan&amp;action=bilanpdf&amp;details={$debits.id}" class="item">
+        <div data-tooltip="Imprimer PDF" data-position="bottom left">
+            <i class="icon file pdf"></i>
+            Imprimer PDF
+        </div>
+    </a>
+</div>
 
 {if $action == 'lister'}
 <table class="ui table striped compact celled">
