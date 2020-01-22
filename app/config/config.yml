@@ -50,19 +50,19 @@ parameters:
             icon: 'bullhorn'
             elements:
                 veille_ generer_campagne:
-                    nom: "Liste des campagnes"
+                    nom: "Campagnes"
                     niveau: "ROLE_VEILLE"
                     url: '/admin/techletter'
                     extra_routes:
                         - admin_techletter_index
                 techletter:
-                    nom: 'Abonnés à la techletter'
+                    nom: 'Abonnés'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/techletter/members'
                     extra_routes:
                         - admin_techletter_members
                 history:
-                    nom: 'Historique de la techletter'
+                    nom: 'Historique'
                     niveau: 'ROLE_VEILLE'
                     url: '/admin/techletter/history'
                     extra_routes:
