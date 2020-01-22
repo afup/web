@@ -31,17 +31,24 @@
     </li>
 </ul>
 
-  <table>
-    <form method="GET" name="forum">
-      <input type="hidden" name="page" value="compta_journal" />
-     <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
-    {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
-    {/foreach}
-    </select></h2>
-    </form>
-    </table>
-    <br/>
+    <div class="ui green segment">
+        <form method="GET" name="forum">
+            <input type="hidden" name="page" value="compta_journal" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Année comptable</label>
+                        <select name="id_periode" onchange="this.form.submit(); return false;">
+                            {foreach from=$listPeriode item=periode}
+                            <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <table class="ui table striped compact celled tab--filterable">
         <tr>
             <!-- th width="20px">&nbsp;</th -->

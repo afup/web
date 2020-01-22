@@ -11,17 +11,25 @@
 
     <div class="ui bottom attached segment">
 
-        <table>
+
+        <div class="ui green segment">
             <form method="GET" name="forum">
                 <input type="hidden" name="compte" value="{$smarty.get.compte}" />
                 <input type="hidden" name="page" value="compta_banque" />
-                <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
-                    {foreach from=$listPeriode item=periode}
-                    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
-                    {/foreach}
-                </select></h2>
+                <div class="ui form">
+                    <div class="inline fields">
+                        <div class="field">
+                            <label>Année comptable</label>
+                            <select name="id_periode" onchange="this.form.submit(); return false;">
+                                {foreach from=$listPeriode item=periode}
+                                <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </form>
-        </table>
+        </div>
 
         <div class="ui menu">
             <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte={$compte_id}&amp;action=exporter" class="item">

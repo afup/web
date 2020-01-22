@@ -1,13 +1,22 @@
 <h2>Balance comptable</h2>
 
-<form method="GET" name="forum">
-    <input type="hidden" name="page" value="compta_balance" />
-    <h3>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
-    {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
-    {/foreach}
-    </select></h3>
-</form>
+<div class="ui green segment">
+    <form method="GET" name="forum">
+        <input type="hidden" name="page" value="compta_balance" />
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Année comptable</label>
+                    <select name="id_periode" onchange="this.form.submit(); return false;">
+                        {foreach from=$listPeriode item=periode}
+                        <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 {if $action == 'lister'}
     <table class="ui table striped compact celled">
