@@ -74,7 +74,10 @@ class AdminController extends SiteBaseController
     {
         $pages = $this->getParameter('app.pages_backoffice');
 
-        $page = $this->get('request_stack')->getMasterRequest()->query->get('page');
+        $masterRequest = $this->get('request_stack')->getMasterRequest();
+
+        $page = $masterRequest->query->get('page');
+        $route = $masterRequest->get('_route');
 
         $currentGroupKey = null;
         $currentElementKey = null;
@@ -82,7 +85,9 @@ class AdminController extends SiteBaseController
         foreach ($pages as $groupKey => $group) {
             if (isset($group['elements'])) {
                 foreach ($group['elements'] as $elementKey => $element) {
-                    if ($elementKey == $page) {
+                    if ($elementKey == $page
+                        || (isset($element['extra_routes']) && in_array($route, $element['extra_routes']))
+                    ) {
                         $currentGroupKey = $groupKey;
                         $currentElementKey = $elementKey;
                     }
