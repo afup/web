@@ -11,6 +11,7 @@
                 z-index: 1;
                 background-color: #1b1c1d;
                 width: 250px;
+                height: 100%;
                 -webkit-box-flex: 0;
             }
 
@@ -45,7 +46,7 @@
         <body id="{{ page|default('') }}" class="{{ class|default('') }}">
             <div class="full-height">
                 <div class="toc">
-                    <div class="ui vertical inverted menu">
+                    <div class="ui vertical inverted menu accordion">
                         <div class="item logo">
                             <img src="/templates/administration/images/logo_afup.png" style="max-width: 100%"/>
                         </div>
@@ -104,6 +105,9 @@
                 $(document).ready(function() {
                     $('.ui.dropdown').dropdown({action: "select"});
                     $('.ui.checkbox').checkbox();
+                    $('.ui.accordion')
+                        .accordion()
+                    ;
                 });
             </script>
             {% endblock %}

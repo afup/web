@@ -2,13 +2,13 @@
     {% if page.elements is defined %}
         {% if page.niveau is not defined or is_granted(page.niveau) %}
             <div class="item">
-                <div class="header">
+                <div class="header {% if clef == current_group_key %}active{% endif %} title">
                     {% if page.icon is defined %}
                         <i class="icon {{ page.icon }}"></i>
                     {% endif %}
                     {{ page.nom }}
                 </div>
-                <div class="menu">
+                <div class="{% if clef == current_group_key %}active{% endif %} content">
                     {% for clef2, element in page.elements %}
                         {% if element.niveau is not defined or is_granted(element.niveau) %}
                             <a href="{% if element.url is defined %}{{ element.url }}{% else %}/pages/administration/index.php?page={{ clef2 }}{% endif %}"
