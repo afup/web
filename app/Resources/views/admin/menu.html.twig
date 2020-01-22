@@ -12,7 +12,7 @@
                     {% for clef2, element in page.elements %}
                         {% if element.niveau is not defined or is_granted(element.niveau) %}
                             <a href="{% if element.url is defined %}{{ element.url }}{% else %}/pages/administration/index.php?page={{ clef2 }}{% endif %}"
-                               class="item"
+                               class="item {% if clef2 == current_element_key %}active{% endif %}"
                                {% if element.nouvelle_fenetre is defined and element.nouvelle_fenetre == true %}target="_blank"{% endif %}>{{ element.nom }}{% if element.nouvelle_fenetre is defined and element.nouvelle_fenetre == true %}
                                     <i class="glyphicon glyphicon-new-window"></i>{% endif %}</a>
                         {% endif %}

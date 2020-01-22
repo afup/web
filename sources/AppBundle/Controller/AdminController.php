@@ -74,6 +74,29 @@ class AdminController extends SiteBaseController
     {
         $pages = $this->getParameter('app.pages_backoffice');
 
-        return $this->render(':admin:menu.html.twig', ['pages' => $pages]);
+        $page = $this->get('request_stack')->getMasterRequest()->query->get('page');
+
+        $currentGroupKey = null;
+        $currentElementKey = null;
+
+        foreach ($pages as $groupKey => $group) {
+            if (isset($group['elements'])) {
+                foreach ($group['elements'] as $elementKey => $element) {
+                    if ($elementKey == $page) {
+                        $currentGroupKey = $groupKey;
+                        $currentElementKey = $elementKey;
+                    }
+                }
+            }
+        }
+
+        return $this->render(
+            ':admin:menu.html.twig',
+            [
+                'pages' => $pages,
+                'current_group_key' => $currentGroupKey,
+                'current_element_key' => $currentElementKey,
+            ]
+        );
     }
 }
