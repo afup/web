@@ -29,16 +29,16 @@
             <tr>
                 <th>Date de début</th>
                 <th>Date de fin</th>
-                <th>Montant</th>
+                <th class="right aligned">Montant</th>
                 <th>Description</th>
-                <th>Actions</th>
+                <th class="right aligned">Actions</th>
             </tr>
         </thead>
         {foreach from=$cotisations item=cotisation}
             <tr>
                 <td>{$cotisation.date_debut|date_format:'%d/%m/%y'}</td>
                 <td>{$cotisation.date_fin|date_format:'%d/%m/%y'}</td>
-                <td>{$cotisation.montant} &euro;</td>
+                <td class="right aligned">{$cotisation.montant} &euro;</td>
                 <td>
                     {if $cotisation.type_reglement == $smarty.const.AFUP_COTISATIONS_REGLEMENT_ESPECES}
                         en espèces
@@ -50,11 +50,40 @@
                         en ligne
                     {/if}
                 </td>
-                <td style="text-align: right">
-                    <a href="index.php?page=cotisations&amp;action=envoyer_facture&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}" title="Envoyer la facture par mail"><img src="{$chemin_template}images/famfamfam/email_go.png" alt="Envoi de la facture par mail" /></a>
-                    <a href="index.php?page=cotisations&amp;action=telecharger_facture&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}" title="Télécharger la facture"><img src="{$chemin_template}images/famfamfam/page_white_acrobat.png" alt="Téléchargement de la facture" /></a>
-                    <a href="index.php?page=cotisations&amp;action=modifier&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}" title="Modifier la cotisation"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                    <a href="index.php?page=cotisations&amp;action=supprimer&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}" title="Supprimer la cotisation" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette cotisation ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
+                <td class="right aligned">
+                    <a href="index.php?page=cotisations&amp;action=envoyer_facture&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}"
+                       data-position="left center"
+                       data-tooltip="Envoyer la facture par mail"
+                       class="compact ui icon button"
+                    >
+                        <i class="paper plane icon"></i>
+                    </a>
+
+
+                    <a href="index.php?page=cotisations&amp;action=telecharger_facture&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}"
+                       data-position="left center"
+                       data-tooltip="Télécharger la facture"
+                       class="compact ui icon button"
+                    >
+                        <i class="file pdf icon"></i>
+                    </a>
+
+                    <a href="index.php?page=cotisations&amp;action=modifier&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}"
+                       data-position="left center"
+                       data-tooltip="Modifier la cotisation"
+                       class="compact ui icon button"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
+
+                    <a href="index.php?page=cotisations&amp;action=supprimer&amp;type_personne={$type_personne}&amp;id_personne={$id_personne}&amp;id={$cotisation.id}"
+                       data-position="left center"
+                       data-tooltip="Supprimer la cotisation"
+                       class="compact ui red icon button"
+                       onclick="return confirm('Etes-vous sûr de vouloir supprimer cette cotisation ?');"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
                 </td>
             </tr>
         {foreachelse}
