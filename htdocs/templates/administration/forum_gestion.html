@@ -47,10 +47,23 @@
                 </div>
             </td>
             <td style="text-align: right" nowrap="nowrap">
-                <a href="index.php?page=forum_gestion&amp;action=modifier&amp;id={$evenement.id}" title="Modifier le forum {$evenement.titre}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="index.php?page=forum_gestion&amp;action=modifier&amp;id={$evenement.id}"
+                   data-tooltip="Modifier le forum {$evenement.titre}"
+                   data-position="left center"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alernate icon"></i>
+                </a>
 
                 {if $evenement.supprimable}
-                <a href="index.php?page=forum_gestion&amp;action=supprimer_forum&amp;id={$evenement.id}" title="Supprimer le forum {$evenement.titre}"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce forum?');"/></a>
+                    <a href="index.php?page=forum_gestion&amp;action=supprimer_forum&amp;id={$evenement.id}"
+                       data-position="left center"
+                       data-tooltip="Supprimer le forum {$evenement.titre}"
+                       class="compact ui red icon button"
+                       onclick="return confirm('Etes-vous sûr de vouloir supprimer ce forum?');"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
                 {/if}
             </td>
         </tr>
