@@ -31,7 +31,13 @@
                     <tr>
                         <td>{$ecriture.nom_compte}</td>
                         <td style="text-align: right">
-                            <a href="index.php?page=compta_conf_compte&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                            <a href="index.php?page=compta_conf_compte&amp;action=modifier&amp;id={$ecriture.id}"
+                               data-position="left center"
+                               data-tooltip="Modifier la ligne {$ecriture.description}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
                         </td>
                     </tr>
                 {foreachelse}
