@@ -204,6 +204,11 @@ parameters:
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'
+                    extra_pages:
+                        - compta_conf_categorie
+                        - compta_conf_operation
+                        - compta_conf_reglement
+                        - compta_conf_compte
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'

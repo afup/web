@@ -87,6 +87,7 @@ class AdminController extends SiteBaseController
                 foreach ($group['elements'] as $elementKey => $element) {
                     if ($elementKey == $page
                         || (isset($element['extra_routes']) && in_array($route, $element['extra_routes']))
+                        || (isset($element['extra_pages']) && in_array($page, $element['extra_pages']))
                     ) {
                         $currentGroupKey = $groupKey;
                         $currentElementKey = $elementKey;
