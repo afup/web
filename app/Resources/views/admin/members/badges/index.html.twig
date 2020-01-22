@@ -29,14 +29,20 @@
                 <td>
                     <img src="{{ path('badge_image', {id: info.badge.id })}}" style="max-height: 150px">
                 </td>
-                <td>
+                <td class="top aligned content">
+                    <div class="ui list">
                     {% for user in info.users %}
-                        {{ user.getLabel }}
-                        <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ user.id }}">
-                            <img src="/templates/administration/images/famfamfam/application_form_edit.png" />
-                        </a>
+                        <div class="item">
+                            {{ user.getLabel }}
+                            <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ user.id }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
+                        </div>
                         <br />
                     {% endfor %}
+                    </div>
                 </td>
             </tr>
         {% endfor %}
