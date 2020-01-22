@@ -32,10 +32,15 @@ parameters:
                     nom: 'Reporting'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/members/reporting'
+                    extra_routes:
+                        - admin_members_reporting
                 badges:
                     nom: 'Badges'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/members/badges'
+                    extra_routes:
+                        - admin_members_badges_index
+                        - admin_members_badges_new
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
@@ -51,14 +56,20 @@ parameters:
                     nom: "Liste des campagnes"
                     niveau: "ROLE_VEILLE"
                     url: '/admin/techletter'
+                    extra_routes:
+                        - admin_techletter_index
                 techletter:
                     nom: 'Abonnés à la techletter'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/techletter/members'
+                    extra_routes:
+                        - admin_techletter_members
                 history:
                     nom: 'Historique de la techletter'
                     niveau: 'ROLE_VEILLE'
                     url: '/admin/techletter/history'
+                    extra_routes:
+                        - admin_techletter_history
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'
@@ -95,10 +106,14 @@ parameters:
                     nom: 'Gestion des salles'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/room'
+                    extra_routes:
+                        - admin_event_room
                 forum_suivi:
                     nom: 'Suivi'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/event/stats'
+                    extra_routes:
+                        - admin_event_stats
                 forum_inscriptions:
                     nom: 'Inscriptions'
                     niveau: 'ROLE_FORUM'
@@ -106,22 +121,32 @@ parameters:
                     nom: 'Inscriptions - virements en attente'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/bankwires'
+                    extra_routes:
+                        - admin_event_pending_bankwires
                 admin_event_sponsor_ticket:
                     nom: 'Inscriptions sponsors'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/sponsor'
+                    extra_routes:
+                        - admin_event_sponsor_ticket
                 admin_event_special_price:
                     nom: 'Inscriptions - prix custom'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/special_price'
+                    extra_routes:
+                        - admin_event_special_price
                 admin_event_prices:
                     nom: 'Inscriptions - liste des prix'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/event/prices'
+                    extra_routes:
+                        - admin_event_prices
                 admin_event_speakers_management:
                     nom: 'Gestion documentaire des speakers'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/event/speakers-management'
+                    extra_routes:
+                        - admin_event_speakers_management
                 forum_facturation:
                     nom: "Factures d'événément"
                     niveau: 'ROLE_ADMIN'
@@ -132,6 +157,8 @@ parameters:
                     nom: 'Sessions - votes visiteurs'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/vote/'
+                    extra_routes:
+                        - admin_vote
                 forum_sessions_notees:
                     nom: 'Vote des sessions'
                     niveau: 'ROLE_FORUM'
