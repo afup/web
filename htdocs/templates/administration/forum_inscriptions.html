@@ -159,12 +159,24 @@
             <td nowrap="nowrap">{$inscription.date|date_format:"%d/%m/%Y %H:%M:%S"}</td>
             <td>
                 <strong>{$inscription.prenom} {$inscription.nom}</strong>
-                <a href="index.php?page=personnes_physiques&amp;filtre={$inscription.nom} {$inscription.email}" title="Rechercher dans les membres" target="_blank"><img src="{$chemin_template}images/famfamfam/magnifier.png" alt="Rechercher" /></a>
+                <a href="index.php?page=personnes_physiques&amp;filtre={$inscription.nom} {$inscription.email}"
+                   data-position="left center"
+                   data-tooltip="Rechercher dans les membres"
+                   class="compact ui icon button"
+                >
+                    <i class="search icon"></i>
+                </a>
             </td>
             <td>
                 {$inscription.societe}
                 {if $inscription.societe}
-                <a href="index.php?page=personnes_morales&filtre={$inscription.societe}" title="Rechercher dans les personnes morales" target="_blank"><img src="{$chemin_template}images/famfamfam/magnifier.png" alt="Rechercher la personne morale" /></a>
+                <a href="index.php?page=personnes_morales&filtre={$inscription.societe}"
+                   data-position="left center"
+                   data-tooltip="Rechercher dans les personnes morales"
+                   class="compact ui icon button"
+                >
+                    <i class="search icon"></i>
+                </a>
                 {/if}
             </td>
 			<td>{$forum_tarifs_lib[$inscription.type_inscription]}</td>
@@ -177,8 +189,22 @@
                 <a href="index.php?page=forum_inscriptions&amp;action=generer_mail_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/email_edit.png" alt="Générer un mail pour demander la confirmation d'adhésion à l'AFUP" /></a>
                 <a href="index.php?page=forum_inscriptions&amp;action=generer_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/group_add.png" alt="Transformer en adhésion AFUP" /></a>
                 {/if}
-                <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}" title="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                <a href="index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={$inscription.id}" title="Supprimer la fiche de {$inscription.nom} {$inscription.prenom}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$inscription.nom} {$inscription.prenom} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
+                <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}"
+                   data-position="left center"
+                   data-tooltip="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alernate icon"></i>
+                </a>
+
+                <a href="index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={$inscription.id}"
+                   data-position="left center"
+                   data-tooltip="Supprimer la fiche de {$inscription.nom} {$inscription.prenom}"
+                   class="compact ui red icon button"
+                   onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$inscription.nom} {$inscription.prenom} ?');"
+                >
+                    <i class="trash icon"></i>
+                </a>
             </td>
             <td align="center">{if $inscription.presence_day1}&#x1F636;{/if}</td>
             <td align="center">{if $inscription.presence_day2}&#x1F636;{/if}</td>
