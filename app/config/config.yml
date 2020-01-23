@@ -55,6 +55,7 @@ parameters:
                     url: '/admin/techletter'
                     extra_routes:
                         - admin_techletter_index
+                        - admin_techletter_generate
                 techletter:
                     nom: 'Abonnés'
                     niveau: 'ROLE_ADMIN'
