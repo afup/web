@@ -32,11 +32,21 @@
         </tbody>
     </table>
 
-    {{ form_start(form, {attr: {class: 'afup--form'}}) }}
-        <fieldset>
-            <legend>Nouvelle techletter</legend>
-            {{ form_row(form.sendingDate) }}
-            {{ form_row(form.save) }}
-        </fieldset>
-    {{ form_end(form)}}
+    <div class="ui segment">
+        <h2 class="ui right floated header">Nouvelle campagne</h2>
+        {{ form_start(form) }}
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    {{ form_label(form.sendingDate) }}
+                    {{ form_widget(form.sendingDate, {"attr": { "class": "inline fields"} }) }}
+                    {{ form_errors(form.sendingDate) }}
+
+                    {{ form_row(form.save, { attr: { class : "ui blue button" }}) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
 {% endblock %}
