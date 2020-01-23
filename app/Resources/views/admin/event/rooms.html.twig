@@ -2,36 +2,56 @@
 
 {% block content %}
     <h2>Liste des salles pour {{ event.title }}</h2>
+
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
-    <table class="afup_tab">
-        <tr>
-            <th>Salle</th>
-            <th>¤</th>
-        </tr>
-        {% for form in editForms %}
-            <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
-                <td>
-                    {{ form_start(form, {attr: {id: 'form_edit_' ~ loop.index0}}) }}
-                    {{ form_errors(form) }}
-                    {{ form_widget(form.name) }}
-                    {{ form_end(form) }}
-                </td>
-                <td>
-                    <input type="submit" name="edit" form="form_edit_{{ loop.index0 }}" value="Sauvegarder"/>
-                    <input type="submit" name="delete" form="form_edit_{{ loop.index0 }}" value="Supprimer"/>
-                </td>
-            </tr>
-        {% endfor %}
-        <tr>
-            <td>
-                {{ form_start(addForm, {attr: {id: 'form_add'}}) }}
-                {{ form_errors(addForm) }}
-                {{ form_widget(addForm.name) }}
-                {{ form_end(addForm) }}
-            </td>
-            <td>
-                <input type="submit" name="add" form="form_add" value="Ajouter"/>
-            </td>
-        </tr>
-    </table>
+
+    <div class="ui form">
+        <table class="ui table striped compact celled">
+            <thead>
+                <tr>
+                    <th>Salle</th>
+                    <th class="right aligned">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in editForms %}
+                    <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
+                        <td>
+                            <div class="ui input">
+                                {{ form_start(form, {attr: {id: 'form_edit_' ~ loop.index0}}) }}
+                                {{ form_errors(form) }}
+                                {{ form_widget(form.name) }}
+                                {{ form_end(form) }}
+                            </div>
+                        </td>
+                        <td class="right aligned">
+                            <input type="submit" name="edit" form="form_edit_{{ loop.index0 }}" value="Sauvegarder"
+                               class="compact ui button"
+                            />
+                            <input type="submit" name="delete" form="form_edit_{{ loop.index0 }}" value="Supprimer"
+                                   class="compact ui red button"
+                            />
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>
+                        <div class="ui input">
+                            {{ form_start(addForm, {attr: {id: 'form_add'}}) }}
+                            {{ form_errors(addForm) }}
+                            {{ form_widget(addForm.name) }}
+                            {{ form_end(addForm) }}
+                        </div>
+                    </th>
+                    <th class="right aligned">
+                        <input type="submit" name="add" form="form_add" value="Ajouter"
+                               class="compact ui blue button"
+                        />
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 {% endblock %}
