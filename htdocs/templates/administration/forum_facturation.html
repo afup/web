@@ -65,14 +65,45 @@
                         {if $facturation.facturation == 0}A facturer{elseif $facturation.facturation == 1}Facturée{elseif $facturation.facturation == 2}Reçue{else}--{/if}
                     </td>
                     <td style="text-align: right" nowrap="nowrap">
-                        <a href="index.php?page=forum_facturation&amp;action=telecharger_devis&amp;ref={$facturation.reference}" title="Télécharger le devis"><img src="{$chemin_template}images/famfamfam/report.png" alt="Téléchargement du devis" /></a>
+                        <a href="index.php?page=forum_facturation&amp;action=telecharger_devis&amp;ref={$facturation.reference}"
+                           data-position="left center"
+                           data-tooltip="Télécharger le devis"
+                           class="compact ui icon button"
+                        >
+                            <i class="warehouse icon"></i>
+                        </a>
         {if $facturation.facturation == 0}
-                        <a href="index.php?page=forum_facturation&amp;action=facturer_facture&amp;ref={$facturation.reference}" title="Passer à l'état facturée"><img src="{$chemin_template}images/famfamfam/cart_go.png" alt="Envoi de la facture par mail" /></a>
+                        <a href="index.php?page=forum_facturation&amp;action=facturer_facture&amp;ref={$facturation.reference}"
+                           title="Passer à l'état facturée"
+                        >
+                            <img src="{$chemin_template}images/famfamfam/cart_go.png" alt="Envoi de la facture par mail" />
+                        </a>
         {/if}
         {if $facturation.facturation == 1}
-                        <a href="index.php?page=forum_facturation&amp;action=envoyer_facture&amp;ref={$facturation.reference}" title="Envoyer la facture par mail"><img src="{$chemin_template}images/famfamfam/email_go.png" alt="Envoi de la facture par mail" /></a>
-                        <a href="index.php?page=forum_facturation&amp;action=telecharger_facture&amp;ref={$facturation.reference}" title="Télécharger la facture"><img src="{$chemin_template}images/famfamfam/page_white_acrobat.png" alt="Téléchargement de la facture" /></a>
-                        <a href="index.php?page=forum_facturation&amp;action=supprimer_facture&amp;ref={$facturation.reference}" title="Supprimer la facture" onclick="return confirm('Etes-vous certain de vouloir supprimer la facture de {$facturation.societe} ?');" ><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer la facture" /></a>
+                        <a href="index.php?page=forum_facturation&amp;action=envoyer_facture&amp;ref={$facturation.reference}"
+                           data-position="left center"
+                           data-tooltip="Envoyer la facture par mail"
+                           class="compact ui icon button"
+                        >
+                            <i class="paper plane icon"></i>
+                        </a>
+
+                        <a href="index.php?page=forum_facturation&amp;action=telecharger_facture&amp;ref={$facturation.reference}"
+                           data-position="left center"
+                           data-tooltip="Télécharger la facture"
+                           class="compact ui icon button"
+                        >
+                            <i class="file pdf icon"></i>
+                        </a>
+
+                        <a href="index.php?page=forum_facturation&amp;action=supprimer_facture&amp;ref={$facturation.reference}"
+                           data-position="left center"
+                           data-tooltip="Supprimer la facture"
+                           class="compact ui red icon button"
+                           onclick="return confirm('Etes-vous certain de vouloir supprimer la facture de {$facturation.societe} ?');"
+                        >
+                            <i class="trash icon"></i>
+                        </a>
         {/if}
                     </td>
                 </tr>
