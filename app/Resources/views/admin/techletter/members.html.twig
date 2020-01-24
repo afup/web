@@ -15,11 +15,13 @@
     </div>
 
     <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Date d'enregistrement</th>
+            </tr>
+        </thead>
         <tbody>
-        <tr>
-            <th>Nom</th>
-            <th>Date d'enregistrement</th>
-        </tr>
         {% for subscription in subscribers %}
             <tr class="{% if loop.index is even %}even{% endif %}">
                 <td>{{ subscription.user.label }}</td>
