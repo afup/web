@@ -151,9 +151,6 @@ parameters:
                     url: '/admin/vote/'
                     extra_routes:
                         - admin_vote
-                forum_sessions_notees:
-                    nom: 'Vote des sessions'
-                    niveau: 'ROLE_FORUM'
                 forum_conferenciers:
                     nom: 'Speakers'
                     niveau: 'ROLE_FORUM'
