@@ -8,12 +8,10 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('afficher', 'telecharger_joindin', 'telecharger_xmliphone'));
+$action = verifierAction(array('afficher', 'telecharger_joindin'));
 $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
-
-
 
 
 if ($action == 'afficher') {
@@ -28,15 +26,4 @@ if ($action == 'afficher') {
     header('Content-disposition: attachment; filename=joind_in_forum_php.csv');
     echo $csv;
     exit;
-} elseif ($action == 'telecharger_xmliphone') {
-    $forum    = new Forum($bdd);
-    $forum_id = $forum->obtenirDernier();
-
-    $xml = $forum->obtenirXmlPourAppliIphone($forum_id);
-
-    header('Content-type: text/xml');
-    header('Content-disposition: attachment; filename=appli_iphone_forum_php.xml');
-    echo $xml;
-    exit;
 }
-?>

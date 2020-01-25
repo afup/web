@@ -634,61 +634,6 @@ CODE_HTML;
         return $csv;
     }
 
-    function obtenirXmlPourAppliIphone($id_forum)
-    {
-        $id_forum = $this->_bdd->echapper($id_forum);
-
-        // Récupération des données
-        $requete = "SELECT
-                        afup_sessions.session_id, afup_sessions.titre, afup_sessions.abstract, afup_sessions.genre,
-                        afup_sessions.journee, afup_forum_planning.debut, afup_forum_planning.fin, afup_forum_planning.keynote
-                    FROM
-                        afup_sessions
-                    INNER JOIN
-                        afup_forum_planning ON afup_forum_planning.id_session = afup_sessions.session_id
-                    WHERE
-                        afup_sessions.id_forum = $id_forum
-                        AND afup_sessions.plannifie = 1
-                    ORDER BY
-                        afup_forum_planning.debut;";
-        $donnees = $this->_bdd->obtenirTous($requete);
-
-        $requeteSpeaker = "SELECT
-                               afup_conferenciers.*
-                           FROM
-                               afup_conferenciers_sessions AS afup_conferenciers_sessions
-                           INNER JOIN
-                               afup_conferenciers ON afup_conferenciers.conferencier_id = afup_conferenciers_sessions.conferencier_id
-                           WHERE
-                               afup_conferenciers_sessions.session_id = ";
-        // Génération des données XML
-        $xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data></data>";
-        $xml = new \SimpleXMLElement($xmlstr);
-        $sessions = $xml->addChild('sessions');
-        $bios = $xml->addChild('bios');
-        $dejaConferencier = array();
-        foreach ($donnees as $d) {
-            $session = $sessions->addChild('session');
-            $session->addAttribute('title', $d['titre']);
-            $session->addAttribute('starts', date(DATE_ISO8601, $d['debut']));
-            $session->addAttribute('ends', date(DATE_ISO8601, $d['fin']));
-            $listeSpeaker = $this->_bdd->obtenirTous($requeteSpeaker . $d['session_id']);
-            foreach ($listeSpeaker as $s) {
-                $speaker = $session->addChild('speaker');
-                $speaker->addAttribute('id', $s['conferencier_id']);
-                $speaker->addAttribute('org', $s['societe']);
-                if (!in_array($s['conferencier_id'], $dejaConferencier)) {
-                    $bio = $bios->addChild('bio', str_replace('"', '\"', htmlspecialchars($s['biographie'])));
-                    $bio->addAttribute('id', $s['conferencier_id']);
-                    $bio->addAttribute('name', $s['prenom'] . ' ' . $s['nom']);
-                    $dejaConferencier[] = $s['conferencier_id'];
-                }
-            }
-            $sujet = $session->addChild('abstract', str_replace('"', '\"', htmlspecialchars($d['abstract'])));
-        }
-        return $xml->asXml();
-    }
-
     function ajouter(
         $titre,
         $nb_places,
