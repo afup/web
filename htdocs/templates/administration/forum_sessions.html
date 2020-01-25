@@ -119,6 +119,19 @@
             </td>
             {/if}
             <td>{$session.note|string_format:"%.1f"} / 5 ({$session.nb_vote_visiteur} vote{if $session.nb_vote_visiteur > 1}s{/if})</td>
+            <td>
+                <i class="list-icon fa fa-universal-access {if not $session.needs_mentoring}list-icon-invisible{/if}" title="Le speaker a demandé un accompagnement"></i>
+
+                {if $session.joindin_url }
+                <a href="{$session.joindin_url}"><i class="list-icon fa fa-comments" title="L'id joindIn est renseigné"></i></a>
+                {else}
+                <i class="list-icon"></i>
+                {/if}
+                <i class="list-icon fa fa-youtube-play {if not $session.youtube_id}list-icon-invisible{/if}" title="La session a une vidéo"></i>
+                <i class="list-icon fa fa-slideshare {if not $session.slides_url}list-icon-invisible{/if}" title="La session a des slides"></i>
+                <i class="list-icon fa fa-rss {if not $session.blog_post_url}list-icon-invisible{/if}" title="La session a un transcript"></i>
+                <i class="list-icon fa fa-newspaper-o {if not $session.interview_url}list-icon-invisible{/if}" title="La session a une interview"></i>
+            </td>
             <td style="text-align: right" nowrap="nowrap">
                 <a href="index.php?page=forum_sessions&amp;action=modifier&amp;id={$session.session_id}"
                    data-position="left center"
@@ -135,19 +148,6 @@
                 >
                     <i class="trash icon"></i>
                 </a>
-            </td>
-            <td>
-                <i class="list-icon fa fa-universal-access {if not $session.needs_mentoring}list-icon-invisible{/if}" title="Le speaker a demandé un accompagnement"></i>
-
-                {if $session.joindin_url }
-                    <a href="{$session.joindin_url}"><i class="list-icon fa fa-comments" title="L'id joindIn est renseigné"></i></a>
-                {else}
-                    <i class="list-icon"></i>
-                {/if}
-                <i class="list-icon fa fa-youtube-play {if not $session.youtube_id}list-icon-invisible{/if}" title="La session a une vidéo"></i>
-                <i class="list-icon fa fa-slideshare {if not $session.slides_url}list-icon-invisible{/if}" title="La session a des slides"></i>
-                <i class="list-icon fa fa-rss {if not $session.blog_post_url}list-icon-invisible{/if}" title="La session a un transcript"></i>
-                <i class="list-icon fa fa-newspaper-o {if not $session.interview_url}list-icon-invisible{/if}" title="La session a une interview"></i>
             </td>
         </tr>
     {foreachelse}
