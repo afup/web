@@ -3,14 +3,17 @@
 {% block content %}
     <h2>Liste des tokens sponsors pour {{ event.title }}</h2>
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
-    <table class="afup_tab">
-        <tr>
-            <th>Société</th>
-            <th>Token</th>
-            <th>Invitations totales</th>
-            <th>Invitations utilisées</th>
-            <th> </th>
-        </tr>
+    <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th>Société</th>
+                <th>Token</th>
+                <th class="right aligned">Invitations totales</th>
+                <th class="right aligned">Invitations utilisées</th>
+                <th colspan="3" class="right aligned">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
         {% set totalInvitations = 0 %}
         {% set totalUsedInvitations = 0 %}
         {% for token in tokens %}
@@ -19,31 +22,51 @@
                 {% set totalUsedInvitations = totalUsedInvitations + token.usedInvitations %}
                 <td>{{ token.company }}</td>
                 <td>{{ token.token }}</td>
-                <td>{{ token.maxInvitations }}</td>
-                <td>{{ token.usedInvitations }}</td>
-                <td>
+                <td class="right aligned">{{ token.maxInvitations }}</td>
+                <td class="right aligned">{{ token.usedInvitations }}</td>
+                <td class="right aligned">
                     <form class="sponsor--token-admin-view" method="post" action="{{ url('sponsor_ticket_home', {eventSlug: event.path}) }}">
                         <input type="hidden" name="sponsor_token" value="{{ token.token }}" />
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('sponsor_ticket') }}" />
-                        <input type="submit" name="see" value="Voir les invitations" />
+                        <input type="submit"
+                               name="see"
+                               value="Voir les invitations"
+                               class="compact ui icon button"
+                        />
                     </form>
+                </td>
+                <td class="right aligned">
                     <form class="sponsor--token-admin-view" method="post" action="{{ url('admin_event_sponsor_mail', {id: event.id}) }}">
                         <input type="hidden" name="sponsor_token_id" value="{{ token.id }}" />
-                        <input type="submit" name="resend" value="Renvoyer le mail" />
-
-                        <a class="button sponsor--token-admin-edit" href="{{ url('admin_event_sponsor_ticket', {id: event.id, ticket: token.id}) }}">Editer</a>
+                        <input type="submit"
+                               name="resend"
+                               value="Renvoyer le mail"
+                               class="compact ui icon button"
+                        />
                     </form>
+                </td>
+                <td class="single line right aligned">
+                    <a class="button sponsor--token-admin-edit compact ui icon button"
+                       href="{{ url('admin_event_sponsor_ticket', {id: event.id, ticket: token.id}) }}"
+                       data-position="left center"
+                       data-tooltip="Editer"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
                 </td>
             </tr>
         {% else %}
             <tr><td colspan="5">Aucune invitation créée</td></tr>
         {% endfor %}
-        <tr class="even">
-            <th colspan="2"><strong>Total</strong></th>
-            <th>{{ totalInvitations }}</th>
-            <th>{{ totalUsedInvitations }}</th>
-            <th>¤</th>
-        </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="2"><strong>Total</strong></th>
+                <th class="right aligned">{{ totalInvitations }}</th>
+                <th class="right aligned">{{ totalUsedInvitations }}</th>
+                <th>¤</th>
+            </tr>
+        </tfoot>
     </table>
     <p>
         Lorsque la fermeture de la billetterie approche, ce bouton permet d'envoyer des mails de rappel pour inciter les sponsors à enregistrer leurs places.<br/>
