@@ -123,9 +123,6 @@ parameters:
                     nom: 'Sessions - votes visiteurs'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/vote/'
-                forum_sessions_notees:
-                    nom: 'Vote des sessions'
-                    niveau: 'ROLE_FORUM'
                 forum_conferenciers:
                     nom: 'Conférenciers'
                     niveau: 'ROLE_FORUM'
