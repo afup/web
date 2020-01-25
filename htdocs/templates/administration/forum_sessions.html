@@ -48,7 +48,6 @@
             <th align="left"><a href="index.php?page=forum_sessions&amp;tri=s.titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 's.titre'}desc{else}asc{/if}">Titre</a></th>
             <th><a href="index.php?page=forum_sessions&amp;tri=i.etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.etat'}desc{else}asc{/if}">Etat</a></th>
             <th>Conf&eacute;rencier(s)</th>
-            <th>Commenté par</th>
             {if $votant}
             <th>Nb votants</th>
             {/if}
@@ -63,13 +62,6 @@
             	<strong>{$session.titre}</strong>
             	<br />
             	<a href="index.php?page=forum_sessions&amp;action=commenter&amp;id={$session.session_id}&amp;id_forum={$id_forum}" title="Commenter la session {$session.titre}">
-            		{if $session.commentaires_nombre == 0}
-            			Lancer la discussion
-            		{elseif $session.commentaires_nombre == 1}
-            			1 commentaire
-            		{else}
-	            		{$session.commentaires_nombre} commentaires
-	            	{/if}
             	</a>
             </td>
             <td style="text-align: center">{if $session.etat == 0}Créé{elseif $session.etat == 1}Annulé{else}--{/if}</td>
@@ -80,13 +72,6 @@
                 {/foreach}
                 </ul>
             </td>
-            <td style="{if $session.jai_commente == true};background-color:#73f084{else};background-color:#FBD61A{/if}">
-                <ul style="color:#666">
-                {foreach from=$session.commentaires item=commentaire}
-                    <li>{$commentaire.nom} {$commentaire.prenom}</li>
-                {/foreach}
-                </ul>
-            </td>
             {if $votant}
             <td style="text-align: center{if $session.jai_vote == true};background-color:#73f084{else};background-color:#FBD61A{/if}">
                 {$session.nb_vote}&nbsp;/&nbsp;{$nb_votant}
@@ -94,9 +79,7 @@
             {/if}
             <td>{$session.note|string_format:"%.1f"} / 5 ({$session.nb_vote_visiteur} vote{if $session.nb_vote_visiteur > 1}s{/if})</td>
             <td style="text-align: right" nowrap="nowrap">
-                <a href="index.php?page=forum_sessions&amp;action=voter&amp;id={$session.session_id}&amp;id_forum={$id_forum}" title="Commenter la session {$session.titre}"><img src="{$chemin_template}images/famfamfam/thumb_up.png" alt="Voter" /></a>
-                <a href="index.php?page=forum_sessions&amp;action=commenter&amp;id={$session.session_id}&amp;id_forum={$id_forum}" title="Commenter la session {$session.titre}"><img src="{$chemin_template}images/famfamfam/comments.png" alt="Commenter" /></a>
-                <a href="index.php?page=forum_sessions&amp;action=modifier&amp;id={$session.session_id}" title="Modifier la session {$session.titre}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="index.php?page=forum_sessions&amp;action=gimodifier&amp;id={$session.session_id}" title="Modifier la session {$session.titre}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
                 <a href="index.php?page=forum_sessions&amp;action=supprimer&amp;id={$session.session_id}" title="Supprimer la session {$session.titre}" onclick="return confirm('Etes-vous sûr de vouloir supprimer la session {$session.titre} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
             </td>
             <td>
