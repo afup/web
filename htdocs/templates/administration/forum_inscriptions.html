@@ -44,16 +44,16 @@
     </div>
 
     <div class="ui segment">
-        <table class="ui table striped compact celled">
+        <table class="ui table striped very compact celled">
             <thead>
                 <tr>
                 <th>Type</th>
-                <th>Tarif</th>
-                <th>Nb inscrits</th>
-                <th>Nb Confirme</th>
-                <th>Nb payants</th>
-                <th>Montant</th>
-                <th>Places restantes</th>
+                <th class="right aligned">Tarif</th>
+                <th class="right aligned">Nb inscrits</th>
+                <th class="right aligned">Nb Confirme</th>
+                <th class="right aligned">Nb payants</th>
+                <th class="right aligned">Montant</th>
+                <th class="right aligned">Places restantes</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,54 +67,57 @@
             {assign var=payants_total value=`$payants_total+$payants`}
             {assign var=montant_total value=`$montant_total+$montant`}
             {if $inscrits != ''}
-            <tr class="{cycle values="odd,even"}">
-              <th style="text-align: left" width="250">
+            <tr>
+              <td>
                 {$forum_tarifs_lib[$forum_tarif_key]}
-              </th>
-              <td align="right" width="80">{$forum_tarif} €</td>
-              <td align="right" width="80">{$inscrits}</td>
-              <td align="right" width="80">{$confirmes}</td>
-              <td align="right" width="80">{$payants}</td>
-              <td align="right" width="80"> {$montant}</td>
-              <td align="right" width="80"> {$forum_tarifs_restantes[$forum_tarif_key]}</td>
+              </td>
+              <td class="right aligned">{$forum_tarif} €</td>
+              <td class="right aligned">{$inscrits}</td>
+              <td class="right aligned">{$confirmes}</td>
+              <td class="right aligned">{$payants}</td>
+              <td class="right aligned"> {$montant}</td>
+              <td class="right aligned"> {$forum_tarifs_restantes[$forum_tarif_key]}</td>
 
             </tr>
             {/if}
 
             {/foreach}
                 <tr>
-            <th>-</th>
-            <th>-</th>
-            <th align="right">{$inscrits_total}</th>
-            <th align="right">{$confirmes_total}</th>
-            <th align="right">{$payants_total}</th>
-            <th align="right">{$montant_total}</th>
-            <th align="right"></th>
-            </tr>
             </tbody>
+            <tfoot>
+                <th></th>
+                <th></th>
+                <th class="right aligned">{$inscrits_total}</th>
+                <th class="right aligned">{$confirmes_total}</th>
+                <th class="right aligned">{$payants_total}</th>
+                <th class="right aligned">{$montant_total}</th>
+                <th></th>
+            </tfoot>
+            </tr>
+
             </table>
 
-            <table class="ui table striped compact celled">
+            <table class="ui table striped very compact celled">
                 <thead>
                     <tr>
-                        <th>-</th>
-                        <th>Inscrits</th>
-                        <th>Confirmés</th>
-                        <th>En attente de règlement</th>
+                        <th></th>
+                        <th class="right aligned">Inscrits</th>
+                        <th class="right aligned">Confirmés</th>
+                        <th class="right aligned">En attente de règlement</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th>Jour 1</th>
-                        <td>{$statistiques.premier_jour.inscrits}</td>
-                        <td>{$statistiques.premier_jour.confirmes}</td>
-                        <td>{if $statistiques.premier_jour.en_attente_de_reglement == ''}0{else}{$statistiques.premier_jour.en_attente_de_reglement}{/if}</td>
+                        <td>Jour 1</td>
+                        <td class="right aligned">{$statistiques.premier_jour.inscrits}</td>
+                        <td class="right aligned">{$statistiques.premier_jour.confirmes}</td>
+                        <td class="right aligned">{if $statistiques.premier_jour.en_attente_de_reglement == ''}0{else}{$statistiques.premier_jour.en_attente_de_reglement}{/if}</td>
                     </tr>
                     <tr>
-                        <th>Jour 2</th>
-                        <td>{$statistiques.second_jour.inscrits}</td>
-                        <td>{$statistiques.second_jour.confirmes}</td>
-                        <td>{if $statistiques.second_jour.en_attente_de_reglement == ''}0{else}{$statistiques.second_jour.en_attente_de_reglement}{/if}</td>
+                        <td>Jour 2</td>
+                        <td class="right aligned">{$statistiques.second_jour.inscrits}</td>
+                        <td class="right aligned">{$statistiques.second_jour.confirmes}</td>
+                        <td class="right aligned">{if $statistiques.second_jour.en_attente_de_reglement == ''}0{else}{$statistiques.second_jour.en_attente_de_reglement}{/if}</td>
                     </tr>
                 </tbody>
             </table>
