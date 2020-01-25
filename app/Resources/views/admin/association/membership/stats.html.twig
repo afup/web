@@ -5,62 +5,68 @@
 {% block content %}
     <article id="members-stats">
         <h2>Statistiques concernant les membres</h2>
-        <table class="ui table striped compact celled">
-            <thead>
-                <tr>
-                    <th class="center aligned">Personnes physiques totales*</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="center aligned">
+
+        <div class="ui segment grid">
+            <div class="sixteen wide column center aligned">
+                <div class="ui statistic">
+                    <div class="value">
                         {{ usersCount }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="label">
+                        Personnes physiques totales*
+                    </div>
+                </div>
+            </div>
 
-        <table class="ui table striped compact celled">
-            <thead>
-                <tr>
-                    <th class="center aligned">Personnes physiques non rattachées à une personne morale*</th>
-                    <th class="center aligned">Personnes physiques rattachées à une personne morale*</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="center aligned">
-                        <b>{{ usersCountWithoutCompanies }}</b>
-                    </td>
-                    <td class="center aligned">
+            <div class="eight wide column center aligned">
+                <div class="ui mini statistic">
+                    <div class="value">
+                        {{ usersCountWithoutCompanies }}
+                    </div>
+                    <div class="label">
+                        Personnes physiques non rattachées à une personne morale*
+                    </div>
+                </div>
+            </div>
+
+            <div class="eight wide column center aligned">
+                <div class="ui mini statistic">
+                    <div class="value">
                         {{ usersCountWithCompanies }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="label">
+                        Personnes physiques rattachées à une personne morale*
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <br />
+        <div class="ui segment grid">
+            <div class="sixteen wide column center aligned">
+                <div class="ui statistic">
+                    <div class="value">
+                        {{ companiesCount }}
+                    </div>
+                    <div class="label">
+                        Personnes morales*
+                    </div>
+                </div>
+            </div>
 
-        <table class="ui table striped compact celled">
-            <thead>
-                <tr>
-                    <th class="center aligned">Personnes morales avec membre lié*</th>
-                    <th class="center aligned">Personnes morales*</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="center aligned">
+            <div class="sixteen wide column center aligned">
+                <div class="ui mini statistic">
+                    <div class="value">
                         {{ companiesCountWithLinkedUsers }}
-                    </td>
-                    <td class="center aligned">
-                        <b>{{ companiesCount }}</b>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="label">
+                        Personnes morales avec membre lié*
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
-        <p><em>* Membres avec des cotisations en cours de validité uniquement</em></p>
+        <div class="ui segment">
+            <p><em>* Membres avec des cotisations en cours de validité uniquement</em></p>
+        </div>
     </article>
 {% endblock %}
