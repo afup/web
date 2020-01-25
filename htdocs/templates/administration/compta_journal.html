@@ -1,35 +1,19 @@
 {if $action == 'lister' || $action == 'debit' || $action == 'credit' }
 
-<!-- Required for paybox popups -->
-<meta name="referrer" content="no-referrer" />
+    <h2>Journalgit</h2>
 
-    <h2>Liste journal {$action} </h2>
-
-<ul>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=importer" title="importer un fichier csv">Importer un fichier
-            CSV</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}"
-           title="ajouter une écriture">Journal Dépenses/Recettes</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}"
-           title="ajouter une écriture">Journal des dépenses</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}"
-           title="ajouter une écriture">Journal des recettes</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=export&id_periode={$smarty.get.id_periode}"
-           title="exporter en CSV">Exporter la période en CSV</a>
-    </li>
-</ul>
+    <div class="ui menu">
+        <a href="index.php?page=compta_journal&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter une écriture" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <a href="index.php?page=compta_journal&amp;action=importer" class="item">
+            <i class="icon upload"></i>
+            Importer un fichier CSV
+        </a>
+    </div>
 
     <div class="ui green segment">
         <form method="GET" name="forum">
@@ -49,6 +33,20 @@
         </form>
     </div>
 
+    <div class="ui menu">
+        <a href="index.php?page=compta_journal&amp;action=export&id_periode={$smarty.get.id_periode}" class="item">
+            <i class="icon file"></i>
+            Exporter la période en CSV
+        </a>
+    </div>
+
+    <div class="ui top attached tabular menu">
+        <a class="item {if $action == 'lister'}active{/if}" href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}">Dépenses/Recettes</a>
+        <a class="item {if $action == 'debit'}active{/if}" href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}">Dépenses</a>
+        <a class="item {if $action == 'credit'}active{/if}" href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}">Recettes</a><br />
+    </div>
+
+    <div class="ui bottom attached segment">
     <table class="ui table striped compact celled tab--filterable">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
@@ -154,7 +152,7 @@
         </tr>
     {/foreach}
      </table>
-
+    </div>
 
     <div class="js-dz-preview-template" style="display:none;">
         <div class="dz-preview"></div>
@@ -331,6 +329,9 @@
         })(jQuery);
     </script>
     {/literal}
+
+    <!-- Required for paybox popups -->
+    <meta name="referrer" content="no-referrer" />
 
 {else}
     {if $action == 'importer'}
