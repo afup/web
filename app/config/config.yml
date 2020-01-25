@@ -134,17 +134,11 @@ parameters:
                     extra_routes:
                         - admin_event_special_price
                 admin_event_prices:
-                    nom: 'Inscriptions - liste des prix'
+                    nom: 'Tarifications'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/event/prices'
                     extra_routes:
                         - admin_event_prices
-                admin_event_speakers_management:
-                    nom: 'Gestion documentaire des speakers'
-                    niveau: 'ROLE_FORUM'
-                    url: '/admin/event/speakers-management'
-                    extra_routes:
-                        - admin_event_speakers_management
                 forum_facturation:
                     nom: "Factures d'événément"
                     niveau: 'ROLE_ADMIN'
@@ -161,8 +155,14 @@ parameters:
                     nom: 'Vote des sessions'
                     niveau: 'ROLE_FORUM'
                 forum_conferenciers:
-                    nom: 'Conférenciers'
+                    nom: 'Speakers'
                     niveau: 'ROLE_FORUM'
+                admin_event_speakers_management:
+                    nom: 'Venue speakers'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/speakers-management'
+                    extra_routes:
+                        - admin_event_speakers_management
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
