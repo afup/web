@@ -38,7 +38,7 @@
             <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=nom_rubrique&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Rubrique</a></th>
             <th>Thème</th>
             <th>Forum</th>
-            <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}" >Etat</a></th>
+            <th class="center aligned"><a href="index.php?page=site_articles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}" >Etat</a></th>
             <th class="right aligned">Actions</th>
         </tr>
         </thead>
@@ -50,7 +50,7 @@
             <td>{$article.nom_rubrique}</td>
             <td>{$article.theme_label}</td>
             <td>{$article.forum_label}</td>
-            <td>
+            <td class="center aligned">
                 {if $article.etat == 1}
                     <a class="ui orange label">En ligne</a>
                 {elseif $article.etat == -1}
