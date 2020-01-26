@@ -10,40 +10,62 @@
 
     <table class="ui table striped compact celled">
         <thead>
-        <tr>
-            <!-- th width="20px">&nbsp;</th -->
-           <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
-           <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
-            <th>Ville</th>
-            <th>Numero facture</th>
-            <th>Référence client</th>
-            <th>Etat paiement</th>
-            <th>Prix</th>
-            <th>&nbsp;</th>
-       </tr>
+            <tr>
+                <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+                <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
+                <th>Ville</th>
+                <th class="right aligned">Numero facture</th>
+                <th>Référence client</th>
+                <th class="center aligned">Etat paiement</th>
+                <th class="right aligned">Prix</th>
+                <th>Actions</th>
+           </tr>
         </thead>
         <tbody>
     {foreach from=$ecritures item=ecriture}
-         <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
+         <tr>
             <td nowrap="nowrap">{$ecriture.date_facture|date_format:"%d/%m/%Y"}</td>
              <td>{$ecriture.societe}</td>
-             <td  width="250">{$ecriture.ville}</td>
-            <td  align='right'>{$ecriture.numero_facture}</td>
+             <td>{$ecriture.ville}</td>
+            <td class="right aligned">{$ecriture.numero_facture}</td>
             <td>{$ecriture.ref_clt1}</td>
             {if $ecriture.etat_paiement == 2}
-			<td style="text-align: center;color:#999999">Annulé</td>
+                <td class="center aligned" style="color:#999999">Annulé</td>
             {elseif $ecriture.etat_paiement == 1}
-            <td style="text-align: center;background-color:#73f084">Payé</td>
+                <td class="center aligned" style="background-color:#73f084">Payé</td>
             {else}
-            <td style="text-align: center;background-color:#FBD61A">En attente de paiement</td>
+                <td class="center aligned" style="background-color:#FBD61A">En attente de paiement</td>
             {/if}
-            <td style="text-align: right">{$ecriture.prix}</td>
-            <td style="text-align: right">
-               <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                <a href="index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={$ecriture.numero_facture}" title="Télécharger la facture"><img src="{$chemin_template}images/famfamfam/page_white_acrobat.png" alt="Téléchargement de la facture" /></a>
-                <a href="index.php?page=compta_facture&amp;action=envoyer_facture&amp;ref={$ecriture.numero_facture}" title="Envoyer la facture par mail"><img src="{$chemin_template}images/famfamfam/email_go.png" alt="Envoi de la facture par mail" /></a>
-                <a href="/pages/paiement/index.php?&amp;ref={$ecriture.link}" title="Récuperer le lien de paiement en ligne"><img src="{$chemin_template}images/famfamfam/basket.png" alt="Récuperer le lien de paiement en ligne" /></a>
+            <td class="right aligned">{$ecriture.prix}</td>
+            <td class="single line right aligned">
+               <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}"
+                  data-position="left center"
+                  data-tooltip="Modifier la ligne {$ecriture.description}"
+                  class="compact ui icon button"
+               >
+                   <i class="pencil alernate icon"></i>
+               </a>
+                <a href="index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={$ecriture.numero_facture}"
+                   data-position="left center"
+                   data-tooltip="Télécharger la facture"
+                   class="compact ui icon button"
+                >
+                    <i class="file pdf icon"></i>
+                </a>
+                <a href="index.php?page=compta_facture&amp;action=envoyer_facture&amp;ref={$ecriture.numero_facture}"
+                   data-position="left center"
+                   data-tooltip="Envoyer la facture par mail"
+                   class="compact ui icon button"
+                >
+                    <i class="paper plane icon"></i>
+                </a>
+                <a href="/pages/paiement/index.php?&amp;ref={$ecriture.link}"
+                   data-position="left center"
+                   data-tooltip="Récuperer le lien de paiement en ligne"
+                   class="compact ui icon button"
+                >
+                    <i class="shopping cart icon"></i>
+                </a>
            </td>
         </tr>
     {foreachelse}
