@@ -409,44 +409,6 @@ class AdminEventController extends Controller
         ]);
     }
 
-    public function exportAnonymousDataAction(Request $request)
-    {
-        if ($request->getMethod() === Request::METHOD_POST) {
-            if ($this->isCsrfTokenValid('event_anonymous_export', $request->request->get('token')) === false) {
-                $this->addFlash('error', 'Token invalide');
-            } else {
-                $data = $this->get(\AppBundle\Event\AnonymousExport::class)->exportData();
-
-                $response = new StreamedResponse(function () use ($data) {
-                    $handle = fopen('php://output', 'w+');
-                    // Nom des colonnes du CSV
-                    fputcsv($handle, ['Label',
-                        'Event'
-                    ], ';');
-
-                    //Champs
-                    foreach ($data as $row) {
-                        fputcsv($handle, [$row['label'],
-                            $row['event']
-                        ], ';');
-                    }
-
-                    fclose($handle);
-                });
-
-                $response->setStatusCode(200);
-                $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-                $response->headers->set('Content-Disposition', 'attachment; filename="inscriptions.csv"');
-
-                return $response;
-            }
-        }
-        return $this->render(':admin/event:export_anonymous.html.twig', [
-            'title' => 'Export anonymisé des données d\'inscriptions',
-            'token' => $this->get('security.csrf.token_manager')->getToken('event_anonymous_export')
-        ]);
-    }
-
     /**
      * @param Request $request
      * @return Response

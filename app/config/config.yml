@@ -135,10 +135,6 @@ parameters:
                 forum_partenaire:
                     nom: 'Sponsors/Partenaires'
                     niveau: 'ROLE_ADMIN'
-                forum_anonymous_export:
-                    nom: 'Export anonymisé'
-                    niveau: 'ROLE_ADMIN'
-                    url: '/admin/event/export'
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
