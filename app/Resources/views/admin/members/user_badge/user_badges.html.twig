@@ -40,10 +40,10 @@
 
     <div class="ui form">
         <div class="inline fields ui grid">
-            {{ form_label(user_badge_form.date, null, {label_attr: {class: "libelle"}}) }}
+            {{ form_label(user_badge_form.date, null, {label_attr: {class: "three wide column"}}) }}
             <div class="field seven wide column">
                 {{ form_errors(user_badge_form.date) }}
-                {{ form_widget(user_badge_form.date) }}
+                {{ form_widget(user_badge_form.date, {"attr": { "class": "inline fields"} }) }}
             </div>
         </div>
     </div>
