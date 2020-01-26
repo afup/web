@@ -78,7 +78,7 @@ if ($action == 'lister') {
     $formulaire->addElement('header', ''                     , 'Gestion de forum');
     $formulaire->addElement('text'  , 'titre'                , 'Titre du forum'                     , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'path'                 , 'Chemin du template'                 , array('size' => 30, 'maxlength' => 100));
-    $formulaire->addElement('static', 'path_help'            , '', '<i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>');
+    $formulaire->addElement('static', 'info'            , '', '<i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>');
     $formulaire->addElement('text'  , 'trello_list_id'       , 'Liste trello pour les leads'        , array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text'  , 'logo_url'             , "URL du logo de l'événement"         , array('size' => 30, 'maxlength' => 255));
     $formulaire->addElement('text'  , 'nb_places'            , 'Nombre de places'                   , array('size' => 30, 'maxlength' => 100));
