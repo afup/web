@@ -266,7 +266,7 @@ if ($action == 'inscrire_forum') {
     $formulaire->addElement('header', null, 'Sessions');
     foreach ($sessions as $session) {
         $url = 'index.php?page=forum_sessions&action=modifier&id=' . $session['session_id'] . '&id_forum=' . $_GET['id_forum'];
-        $formulaire->addElement('static', null, '<a href="' . $url . '">' . $session['titre'] . '</a>');
+        $formulaire->addElement('static', 'info', '<a href="' . $url . '">' . $session['titre'] . '</a>');
     }
 
 
