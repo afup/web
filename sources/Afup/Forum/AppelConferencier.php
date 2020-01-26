@@ -299,7 +299,7 @@ class AppelConferencier
         $requete .= '  afup_conferenciers c ';
         $requete .= ' WHERE c.id_forum = ' . $this->_bdd->echapper($id_forum);
         if ($filtre) {
-            $requete .= '  c.nom LIKE \'%' . $filtre . '%\' ';
+            $requete .=  sprintf('  AND CONCAT(c.nom, c.prenom, c.societe) LIKE %s ', $this->_bdd->echapper('%' . $filtre . '%'));
         }
         $requete .= ' ORDER BY ' . $ordre;
 
