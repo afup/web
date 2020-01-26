@@ -59,36 +59,7 @@ $forum = new Forum($bdd);
 $forum_inscriptions = new Inscriptions($bdd);
 $forum_facturation = new Facturation($bdd);
 
-if ($action == 'envoyer_convocation') {
-    $current = $forum->obtenir($_GET['id_forum'], 'titre');
-
-	$formulaire = instancierFormulaire();
-    $formulaire->setDefaults(array('template' => 'convocation-???'));
-
-	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
-	$formulaire->addElement('hidden', 'action', 'envoyer_convocation');
-	$formulaire->addElement('header', null, 'Convocation (seulement à ceux qui doivent la recevoir, aucun conférencier)');
-    $formulaire->addElement('text', 'template', 'Template Mandrill', array('size' => 255));
-	$formulaire->addElement('header', 'boutons' , '');
-	$formulaire->addElement('submit', 'soumettre', 'Envoyer la convoc Saperlipopette !');
-
-	$formulaire->addRule('template', 'Template manquant', 'required');
-
-    if ($formulaire->validate()) {
-		$valeurs = $formulaire->exportValues();
-		$resultat = $forum_inscriptions->envoyerEmailConvocation($valeurs['id_forum'], $valeurs['template']);
-		if ($resultat) {
-			Logs::log("Envoi de la convocation pour le {$current['titre']}");
-			afficherMessage('La convocation a été envoyée', 'index.php?page=forum_inscriptions&action=lister');
-		} else {
-			Logs::log("Echec de l'envoi de la convocation pour le {$current['titre']}");
-			afficherMessage('L\'envoi de la convocation a échouée', 'index.php?page=forum_inscriptions&action=lister', true);
-		}
-    }
-    $smarty->assign('forum_name', $current['titre']);
-    $smarty->assign('formulaire', genererFormulaire($formulaire));
-
-} elseif ($action == 'lister') {
+if ($action == 'lister') {
     $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, i.mobilite_reduite, f.type_reglement, i.presence_day1, i.presence_day2';
     $list_ordre = 'date desc';
     $list_sens = 'desc';

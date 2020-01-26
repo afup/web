@@ -27,9 +27,6 @@
                 Ajouter
             </div>
         </a>
-        <a class="item" href="index.php?page=forum_inscriptions&amp;action=envoyer_convocation&amp;id_forum={$id_forum}">
-            Envoyer convocation
-        </a>
         <div class="ui simple dropdown item" tabindex="0">
             <i class="icon download"></i>
             <span class="text">Exports</span>
@@ -273,15 +270,6 @@ Cette validation s'effectuera par l'envoi d'un mail en réponse à celui-ci port
 
 Cordialement,
 </textarea>
-{else}
-    {if $action == 'envoyer_convocation'}
-        <h2>Envoyer la convocation pour le {$forum_name}</h2>
-    {elseif $action == 'ajouter'}
-        <h2>Ajouter une inscription pour le {$forum_name}</h2>
-    {else}
-        <h2>Modifier une inscription pour le {$forum_name}</h2>
-    {/if}
-    {include file="formulaire.html"}
 {/if}
 
 
