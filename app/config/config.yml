@@ -116,19 +116,19 @@ parameters:
                     nom: 'Inscriptions'
                     niveau: 'ROLE_FORUM'
                 forum_pending_bankwires:
-                    nom: 'Inscriptions - virements en attente'
+                    nom: 'Virements en attente'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/bankwires'
                     extra_routes:
                         - admin_event_pending_bankwires
                 admin_event_sponsor_ticket:
-                    nom: 'Inscriptions sponsors'
+                    nom: 'Tokens sponsors'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/sponsor'
                     extra_routes:
                         - admin_event_sponsor_ticket
                 admin_event_special_price:
-                    nom: 'Inscriptions - prix custom'
+                    nom: 'Tokens visiteurs'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/special_price'
                     extra_routes:
@@ -146,7 +146,7 @@ parameters:
                     nom: 'Sessions'
                     niveau: 'ROLE_FORUM'
                 forum_vote_github:
-                    nom: 'Sessions - votes visiteurs'
+                    nom: 'Votes visiteurs'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/vote/'
                     extra_routes:
