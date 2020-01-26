@@ -50,8 +50,21 @@
     </script>
 
 
+    {% set allTicketsSold = true %}
+    {% for key,ticket in ticketForm.tickets %}
+        {% for type in ticket.ticketEventType %}
+            {% if type.vars.attr['data-stock'] > 0 %}
+                {% set allTicketsSold = false %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
     <div class="col-md-8">
         <h2>{{ 'Billetterie'|trans }}: {{ event.title }}</h2>
+
+        {% if allTicketsSold and event.getWaitingListUrl %}
+            Tous les billets ont été vendus. Nous vous invitons à vous inscrire sur  <a href="{{ event.getWaitingListUrl }}">liste d'attente</a> pour le cas où des places viendraient à se libérer.
+        {% else %}
 
         {% if hasMembersTickets %}
         <div class="tickets--members-detail">
@@ -133,6 +146,7 @@
                                                 <span class="tickets--type-stock">Plus aucun billet disponible</span><br />
                                             {% elseif type.vars.attr['data-stock'] < 10 %}
                                                 <span class="tickets--type-stock tickets--type-stock-close-to-sold-out">Peu de billets disponibles</span><br />
+                                            {% else %}
                                             {% endif %}
 
                                         </span>
@@ -251,5 +265,6 @@
         </fieldset>
 
         {{ form_end(ticketForm) }}
+        {% endif %}
     </div>
 {% endblock %}
