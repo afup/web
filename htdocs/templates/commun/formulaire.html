@@ -38,6 +38,10 @@
                 <div class="field seven wide column">
                     {$element.html}
                 </div>
+            {elseif $element.type == 'static' && ($element.name == 'label')}
+                <label class="ten wide column">
+                    {$element.html}
+                </label>
             {elseif $element.type == 'static' && ($element.name == 'raccourci')}
                 <p class="raccourci">{$element.html|nl2br}</p>
             {elseif $element.type == 'group'}
