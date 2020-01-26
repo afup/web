@@ -303,8 +303,7 @@ SQL;
         WHERE 1=1 
           AND i.id_forum =' . $id_forum . ' ';
         if ($filtre) {
-            $requete .= 'i.nom LIKE \'%' . $filtre . '%\' 
-            OR f.societe LIKE \'%' . $filtre . '%\' ';
+            $requete .= sprintf('AND CONCAT(i.nom, i.prenom) LIKE %1$s OR f.societe LIKE %1$s ', $this->_bdd->echapper('%' . $filtre . '%'));
         }
         $requete .= 'ORDER BY ' . $ordre;
 

@@ -95,6 +95,7 @@ if ($action == 'lister') {
     $formulaire->addElement('date'  , 'date_fin_saisie_repas_speakers'       , 'Date de fin saisie repas confférenciers'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
     $formulaire->addElement('date'  , 'date_fin_saisie_nuites_hotel'       , 'Date de fin saisie nuités hotel'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
     $formulaire->addElement('date'  , 'date_annonce_planning'       , 'Date annonce planning'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
+    $formulaire->addElement('text'  , 'waiting_list_url'        , "URL de la liste d'attente"                    , array('size' => 30, 'maxlength' => 255));
 	$formulaire->addElement('textarea', 'cfp_fr'             , 'CFP (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 	$formulaire->addElement('textarea', 'cfp_en'             , 'CFP (en)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
     $formulaire->addElement('textarea', 'speaker_management_fr'             , 'Infos speakers (fr)'                           , ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
@@ -147,7 +148,9 @@ if ($action == 'lister') {
                 $formulaire->exportValue('place_address'),
                 $formulaire->exportValue('vote_enabled'),
                 $formulaire->exportValue('speakers_diner_enabled'),
-                $formulaire->exportValue('accomodation_enabled')
+                $formulaire->exportValue('accomodation_enabled'),
+                $formulaire->exportValue('waiting_list_url')
+
             );
             $id_forum = $forums->obtenirDernier();
         } else {
@@ -183,7 +186,8 @@ if ($action == 'lister') {
                 $formulaire->exportValue('place_address'),
                 $formulaire->exportValue('vote_enabled'),
                 $formulaire->exportValue('speakers_diner_enabled'),
-                $formulaire->exportValue('accomodation_enabled')
+                $formulaire->exportValue('accomodation_enabled'),
+                $formulaire->exportValue('waiting_list_url')
             );
         }
 

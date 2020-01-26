@@ -298,6 +298,11 @@ SQL;
                 'fieldName' => 'accomodationEnabled',
                 'type' => 'boolean'
             ])
+            ->addField([
+                'columnName' => 'waiting_list_url',
+                'fieldName' => 'waitingListUrl',
+                'type' => 'string',
+            ])
         ;
 
         return $metadata;
