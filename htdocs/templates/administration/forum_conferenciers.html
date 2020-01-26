@@ -37,19 +37,24 @@
 
 <div class="ui segment">
 
-    <table>
-      <form method="GET" name="filtre">
-      <input type="hidden" name="page" value="forum_conferenciers" />
-      <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-      <input type="hidden" name="sens" value="{$smarty.get.sens}" />
-      <input type="hidden" name="forum_id" value="{$id_forum}" />
-        <tr>
-            <td width="50" nowrap>Filtre : </td>
-            <td width="120" nowrap><input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}"></td>
-            <td><input type="submit" value="OK" name="submit_filtre"></td>
-        </tr>
-      </form>
-    </table>
+    <form method="GET" name="filtre">
+    <input type="hidden" name="page" value="forum_conferenciers" />
+    <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+    <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+    <input type="hidden" name="forum_id" value="{$id_forum}" />
+
+      <div class="ui form">
+          <div class="inline fields">
+              <div class="field">
+                  <label>Recherche</label>
+                  <input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}">
+              </div>
+              <div class="field">
+                  <input type="submit" value="Filtrer" name="submit_filtre" class="ui button">
+              </div>
+          </div>
+      </div>
+    </form>
 
     <div class="ui mini horizontal statistic">
         <div class="value">
