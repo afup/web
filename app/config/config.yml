@@ -129,9 +129,6 @@ parameters:
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
-                forum_joind_in:
-                    nom: 'Export sites externes'
-                    niveau: 'ROLE_ADMIN'
                 forum_partenaire:
                     nom: 'Sponsors/Partenaires'
                     niveau: 'ROLE_ADMIN'
