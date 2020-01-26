@@ -8,17 +8,20 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('afficher', 'telecharger_joindin'));
+$action = verifierAction(array('telecharger_joindin'));
 $tris_valides = array();
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
 
-if ($action == 'afficher') {
-    // Ne rien faire. L'écran affiche simplement un lien.
-} elseif ($action == 'telecharger_joindin') {
+if ($action == 'telecharger_joindin') {
     $forum    = new Forum($bdd);
-    $forum_id = $forum->obtenirDernier();
+
+    if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
+        $forum_id = $forum->obtenirDernier();
+    } else {
+        $forum_id = $_GET['id_forum'];
+    }
 
     $csv = $forum->obtenirCsvJoindIn($forum_id);
 
