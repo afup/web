@@ -4,7 +4,7 @@
     <h2>Liste des prix custom pour le {{ event.title }}</h2>
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
-    <table class="afup_tab">
+    <table class="ui table striped compact celled">
         <thead>
             <th>Description</th>
             <th>Date de création</th>
@@ -37,7 +37,7 @@
     <h2>Nouveau token</h2>
     {{ form_start(form) }}
 
-        <table class="afup_tab">
+        <table class="ui table striped compact celled">
             <thead>
                 <th>{{ form_label(form.price) }}</th>
                 <th>{{ form_label(form.dateStart) }}</th>
