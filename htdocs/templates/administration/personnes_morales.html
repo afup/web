@@ -72,8 +72,8 @@
                     <a href="index.php?page=personnes_morales&amp;action=supprimer&amp;id={$personne.id}"
                        data-position="left center"
                        data-tooltip="Supprimer la fiche de {$personne.raison_sociale}"
-                       class="compact ui red icon button"
-                       onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.raison_sociale} ?');"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {$personne.raison_sociale} ?"
                     >
                         <i class="trash icon"></i>
                     </a>

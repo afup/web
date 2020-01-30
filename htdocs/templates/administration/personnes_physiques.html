@@ -121,8 +121,8 @@
                    href="index.php?page=personnes_physiques&amp;action=supprimer&amp;id={$personne.id}"
                    data-position="left center"
                    data-tooltip="Supprimer la fiche de {$personne.prenom} {$personne.nom}"
-                   class="compact ui red icon button"
-                   onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$personne.prenom} {$personne.nom} ?');"
+                   class="compact ui red icon button confirmable"
+                   data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {$personne.prenom} {$personne.nom} ?"
                 >
                     <i class="trash icon"></i>
                 </a>
@@ -131,8 +131,8 @@
                    href="index.php?page=personnes_physiques&amp;action=envoi_mdp&amp;id={$personne.id}"
                    data-position="left center"
                    data-tooltip="Renvoyer un nouveau mot de passe &agrave; {$personne.prenom} {$personne.nom}"
-                   class="compact ui icon button"
-                   onclick="return confirm('Etes-vous sûr de vouloir renvoyer un nouveau mot de passe à {$personne.prenom} {$personne.nom} ?');"
+                   class="compact ui icon button confirmable"
+                   data-confirmable-label="Etes-vous sûr de vouloir renvoyer un nouveau mot de passe à {$personne.prenom} {$personne.nom} ?"
                 >
                     <i class="paper plane icon"></i>
                 </a>

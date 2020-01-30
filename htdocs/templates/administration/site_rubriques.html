@@ -65,8 +65,8 @@
                        href="index.php?page=site_rubriques&amp;action=supprimer&amp;id={$rubrique.id}"
                        data-position="left center"
                        data-tooltip="Supprimer l'rubrique {$rubrique.nom}"
-                       class="compact ui red icon button"
-                       onclick="return confirm('Etes-vous sûr de vouloir supprimer l'rubrique {$rubrique.nom} ?');"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer la rubrique {$rubrique.nom} ?"
                     >
                         <i class="trash icon"></i>
                     </a>

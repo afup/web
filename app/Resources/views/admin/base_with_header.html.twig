@@ -116,6 +116,12 @@
                         .accordion()
                     ;
                 });
+
+                $(document).ready(function () {
+                    $(document).on('click', '.confirmable', function () {
+                        return confirm($(this).data('confirmable-label'));
+                    });
+                });
             </script>
             {% endblock %}
         </body>

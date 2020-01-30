@@ -61,8 +61,8 @@
                    href="index.php?page=site_feuilles&amp;action=supprimer&amp;id={$feuille.id}"
                    data-position="left center"
                    data-tooltip="Supprimer la feuille {$feuille.nom}"
-                   class="compact ui red icon button"
-                   onclick="return confirm('Etes-vous sûr de vouloir supprimer la feuille {$feuille.nom} ?');"
+                   class="compact ui red icon button confirmable"
+                   data-confirmable-label="Etes-vous sûr de vouloir supprimer la feuille {$feuille.nom} ?"
                 >
                     <i class="trash icon"></i>
                 </a>

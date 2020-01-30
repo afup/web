@@ -72,8 +72,8 @@
                        href="index.php?page=site_articles&amp;action=supprimer&amp;id={$article.id}"
                        data-position="left center"
                        data-tooltip="Supprimer l'article {$article.titre}"
-                       class="compact ui red icon button"
-                       onclick="return confirm('Etes-vous sûr de vouloir supprimer l'article {$article.titre} ?');"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer l'article {$article.titre} ?"
                     >
                         <i class="trash icon"></i>
                     </a>

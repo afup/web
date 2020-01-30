@@ -83,8 +83,8 @@
                     <a href="index.php?page=planete_flux&amp;action=supprimer&amp;id={$flux_simple.id}"
                        data-position="left center"
                        data-tooltip="Supprimer la fiche de {$flux_simple.nom}"
-                       class="compact ui red icon button"
-                       onclick="return confirm('Etes-vous sûr de vouloir supprimer le flux de {$flux_simple.nom} ?');"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer le flux de {$flux_simple.nom} ?"
                     >
                         <i class="trash icon"></i>
                     </a>

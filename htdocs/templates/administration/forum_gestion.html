@@ -52,8 +52,8 @@
                     <a href="index.php?page=forum_gestion&amp;action=supprimer_forum&amp;id={$evenement.id}"
                        data-position="left center"
                        data-tooltip="Supprimer le forum {$evenement.titre}"
-                       class="compact ui red icon button"
-                       onclick="return confirm('Etes-vous sûr de vouloir supprimer ce forum?');"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer ce forum ?"
                     >
                         <i class="trash icon"></i>
                     </a>
