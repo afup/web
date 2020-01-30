@@ -270,6 +270,13 @@ Cette validation s'effectuera par l'envoi d'un mail en réponse à celui-ci port
 
 Cordialement,
 </textarea>
+{else}
+    {if $action == 'ajouter'}
+    <h2>Ajouter une inscription pour le {$forum_name}</h2>
+    {else}
+    <h2>Modifier une inscription pour le {$forum_name}</h2>
+    {/if}
+    {include file="formulaire.html"}
 {/if}
 
 
