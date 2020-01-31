@@ -19,6 +19,8 @@ parameters:
                 personnes_physiques:
                     nom: 'Personnes physiques'
                     niveau: 'ROLE_ADMIN'
+                    extra_routes:
+                        - admin_slack_members_check
                 personnes_morales:
                     nom: 'Personnes morales'
                     niveau: 'ROLE_ADMIN'
