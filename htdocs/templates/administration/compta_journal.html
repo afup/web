@@ -132,19 +132,43 @@
                           ><img src="{$chemin_template}images/famfamfam/arrow_down.png" class="dz-message"/></form>
                 </div>
             </td>
-            <td style="text-align: right">
-                <a class="js-edit-comment" style="cursor:pointer;"
+            <td style="text-align: right" class="single line">
+                <a class="js-edit-comment compact ui icon button"
+                   style="cursor:pointer;"
+                   data-position="left center"
+                   data-tooltip="Editer le commentaire"
                    data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=comment&amp;id={$ecriture.idtmp}"
-                   data-comment="{$ecriture.comment}"><img src="{$chemin_template}images/famfamfam/comment_{if $ecriture.comment}edit{else}add{/if}.png"
-                         data-img-src-edit="{$chemin_template}images/famfamfam/comment_edit.png"
-                         data-img-src-add="{$chemin_template}images/famfamfam/comment_add.png"
-                         alt="Editer le commentaire" /></a>
+                   data-comment="{$ecriture.comment}">
+                        <i class="comment {if $ecriture.comment}{else}outline{/if} icon"></i>
+                </a>
 
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                <a href="#" title="Ventiler la fiche de {$ecriture.description} " onclick="javascript:ventiler({$ecriture.idtmp}, {$ecriture.montant});return false;"><img src="{$chemin_template}images/famfamfam/arrow_divide.png" alt="Ventiler" /></a>
-                <a href="index.php?page=compta_journal&amp;action=supprimer&amp;id={$ecriture.idtmp}" title="Supprimer la fiche de {$ecriture.description} " onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$ecriture.description} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
-                <!--<a href="#" title="" onclick=""><img src="{$chemin_template}images/famfamfam/delete.png" alt="" /></a>-->
-               </td>
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}"
+                   data-position="left center"
+                   data-tooltip="Modifier la ligne {$ecriture.description}"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alternate icon"></i>
+                </a>
+
+                <a href="#"
+                   data-position="left center"
+                   data-tooltip="Ventiler la fiche de {$ecriture.description}"
+                   class="compact ui icon button"
+                   onclick="javascript:ventiler({$ecriture.idtmp}, {$ecriture.montant});return false;"
+                >
+                    <i class="calculator icon"></i>
+                </a>
+
+                <a href="index.php?page=compta_journal&amp;action=supprimer&amp;id={$ecriture.idtmp}"
+                   data-position="left center"
+                   data-tooltip="Supprimer la fiche de {$ecriture.description} "
+                   class="compact ui red icon button confirmable"
+                   data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {$ecriture.description} ?"
+                >
+                    <i class="trash icon"></i>
+                </a>
+
+            </td>
         </tr>
     {foreachelse}
         <tr>
