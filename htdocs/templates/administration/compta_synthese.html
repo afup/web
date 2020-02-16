@@ -1,17 +1,24 @@
 {if $action == 'lister'}
     <h2>Synthese des évènements</h2>
 
-    <form method="GET" name="evnt">
-        <input type="hidden" name="page" value="compta_synthese" />
-        <input type="hidden" name="action" value="lister" />
-        <h3>Sélectionner un évènement
-        <select name="idevnt" onchange="this.form.submit(); return false;">
-        {foreach from=$listEvenement item=listsEvenement }
-        <option value="{$listsEvenement.id}" {if $idevnt == $listsEvenement.id} selected{/if}> {$listsEvenement.evenement}</option>
-        {/foreach}
-        </select>
-        </h3>
-    </form>
+    <div class="ui segment">
+        <form method="GET" name="evnt">
+            <input type="hidden" name="page" value="compta_synthese" />
+            <input type="hidden" name="action" value="lister" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Événement</label>
+                        <select name="idevnt" onchange="this.form.submit(); return false;">
+                            {foreach from=$listEvenement item=listsEvenement }
+                            <option value="{$listsEvenement.id}" {if $idevnt == $listsEvenement.id} selected{/if}> {$listsEvenement.evenement}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <table class="ui table striped compact celled">
         <tr>
