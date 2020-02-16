@@ -57,11 +57,13 @@ class LegacyController extends Controller
 
         // Récupération du contenu de la page généré par smarty
         $content = $smarty->fetch($_GET['page'] . '.html');
+        $js = $smarty->fetch($_GET['page'] . '.js.html');
 
         return $this->render('admin/base_with_header.html.twig', [
             'title' => obtenirTitre($pages, $_GET['page']),
             'page' => $_GET['page'],
-            'content' => $content
+            'content' => $content,
+            'js' => $js,
         ]);
     }
 
