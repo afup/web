@@ -33,17 +33,41 @@
 			<td>{$ecriture.ref_clt1}</td>
 			<td>{$ecriture.numero_devis}</td>
             <td class="right aligned">{$ecriture.prix}</td>
-            <td class="right aligned">
+            <td class="right aligned single line">
 {if $ecriture.numero_facture == ''}
-               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier le devis {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier le devis" /></a>
+               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}"
+                  data-position="left center"
+                  data-tooltip="Modifier le devis {$ecriture.description}"
+                  class="compact ui icon button"
+               >
+                   <i class="pencil alernate icon"></i>
+               </a>
 {else}
-               <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la facture {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier la facture" /></a>
+               <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}"
+                  data-position="left center"
+                  data-tooltip="Modifier la facture {$ecriture.description}"
+                  class="compact ui icon button"
+               >
+                   <i class="pencil alernate icon"></i>
+               </a>
 {/if}
-                <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.numero_devis}" title="Télécharger le devis"><img src="{$chemin_template}images/famfamfam/report.png" alt="Téléchargement du devis" /></a>
+                <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.numero_devis}"
+                   data-position="left center"
+                   data-tooltip="Télécharger le devis"
+                   class="compact ui icon button"
+                >
+                    <i class="file pdf icon"></i>
+                </a>
 {if $ecriture.numero_facture == ''}
-               <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}" title="Transférer la ligne {$ecriture.description} en facture"><img src="{$chemin_template}images/famfamfam/cart_go.png" alt="Transfert en facture" /></a>
+               <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}"
+                  data-position="left center"
+                  data-tooltip="Transférer la ligne {$ecriture.description} en facture"
+                  class="compact ui icon button"
+               >
+                   <i class="cart icon"></i>
+               </a>
 {/if}
-               </td>
+           </td>
         </tr>
     {foreachelse}
         <tr>
