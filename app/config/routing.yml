@@ -62,6 +62,10 @@ company_public_profile_list:
     path: /profile/company
     defaults: {_controller: AppBundle:Website\CompanyPublicProfileList:index }
 
+feed_rss:
+    path: /rss.xml
+    defaults: { _controller: AppBundle\Controller\RssFeedController }
+
 presta_sitemap:
     resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
 

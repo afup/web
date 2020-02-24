@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>{{feed.title|raw}}</title>
+        <description>{{feed.title|raw}}</description>
+        <link>{{feed.link}}</link>
+        <language>FR-fr</language>
+        <pubDate>{{feed.date}}</pubDate>
+        <lastBuildDate>{{feed.lastBuildDate}}</lastBuildDate>
+        <generator>AFUP internal framework professionnal edition 'alamano'</generator>
+        <image>
+            <url>https://afup.org/templates/site/images/logo_afup.png</url>
+            <title>{{feed.title|raw}}</title>
+            <link>{{feed.link|raw}}</link>
+        </image>
+        <managingEditor>{{feed.email}} ({{feed.author}})</managingEditor>
+
+        {% for billet in billets %}
+        <item>
+            <title><![CDATA[{{billet.titre|raw }}]]></title>
+            <link>{{url('news_display', {'code': billet.url}) }}</link>
+            <description><![CDATA[{{billet.contenu}}]]></description>
+            <pubDate>{{billet.maj}}</pubDate>
+            <guid>{{url('news_display', {'code': billet.url})}}</guid>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
