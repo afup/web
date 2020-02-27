@@ -23,6 +23,30 @@ class PDF_AG extends \FPDF
 
         $this->Ln();
 
+        usort(
+            $personnesPhysiques,
+            function($a, $b) {
+                $triA = $a['nom'] . ' ' . $a['prenom'];
+                if (strlen($a['personnes_avec_pouvoir_nom'])) {
+                    $triA = $a['personnes_avec_pouvoir_nom'] . ' ' . $a['personnes_avec_pouvoir_prenom'];
+                }
+
+                $triB = $b['nom'] . ' ' . $b['prenom'];
+                if (strlen($b['personnes_avec_pouvoir_nom'])) {
+                    $triB = $b['personnes_avec_pouvoir_nom'] . ' ' . $b['personnes_avec_pouvoir_prenom'];
+                }
+
+                if ($triA == $triB) {
+                    if ($a['presence'] == $b['presence']) {
+                        return 0;
+                    }
+                    return ($a['presence'] < $b['presence']) ? -1 : 1;
+                }
+
+                return ($triA < $triB) ? -1 : 1;
+            }
+        );
+
         foreach ($personnesPhysiques as $personne) {
 
             $this->SetFont('Arial', '', 12);
