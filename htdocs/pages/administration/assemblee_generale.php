@@ -17,7 +17,7 @@ $smarty->assign('action', $action);
 
 $assemblee_generale = new Assemblee_Generale($bdd);
 
-if ($action == 'lister' || $action== 'listing' ) {
+if ($action == 'lister' || $action == 'listing') {
 
     // Valeurs par défaut des paramètres de tri
     $timestamp = $assemblee_generale->obternirDerniereDate();
@@ -32,27 +32,30 @@ if ($action == 'lister' || $action== 'listing' ) {
         $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
     }
     if (isset($_GET['date'])) {
-	    	$list_date_assemblee_generale = $_GET['date'];
+        $list_date_assemblee_generale = $_GET['date'];
     } else {
-	    	$_GET['date'] = $list_date_assemblee_generale;
+        $_GET['date'] = $list_date_assemblee_generale;
     }
 
-    if ($action == "listing")
-    {
-    	$list_ordre="nom";
+    if ($action == "listing") {
+        $list_ordre = "nom";
     }
 
     $assembleesGenerales = $assemblee_generale->obtenirListeAssembleesGenerales();
 
     // Mise en place de la liste dans le scope de smarty
-    $convocations = count($this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->getActiveMembers(UserRepository::USER_TYPE_ALL));
+    $convocations = count(
+        $this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->getActiveMembers(
+            UserRepository::USER_TYPE_ALL
+        )
+    );
 
-	$presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
-	$presencesSeulement = $assemblee_generale->obtenirNombrePresences($timestamp);
-	$quorum = $assemblee_generale->obtenirEcartQuorum($timestamp, $convocations);
+    $presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
+    $presencesSeulement = $assemblee_generale->obtenirNombrePresences($timestamp);
+    $quorum = $assemblee_generale->obtenirEcartQuorum($timestamp, $convocations);
     $liste_personnes = $assemblee_generale->obtenirListe($list_date_assemblee_generale);
     $liste_personnes_a_jour = $assemblee_generale->obtenirListePersonnesAJourDeCotisation($timestamp);
-	$personnes_physiques = array();
+    $personnes_physiques = array();
     foreach ($liste_personnes as $liste_id => $personne) {
         $personnes_physiques[$liste_id] = $personne;
         $hash = md5($personne['id'] . '_' . $personne['email'] . '_' . $personne['login']);
@@ -71,7 +74,13 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('assemblees_generales', $assembleesGenerales);
     $smarty->assign('list_date_assemblee_generale', $list_date_assemblee_generale);
     $smarty->assign('timestamp', $timestamp);
+}
 
+if ($action == 'listing') {
+    $pdf = new \Afup\Site\Utils\PDF_AG();
+    $pdf->setFooterTitle('Assemblée générale ' . $list_date_assemblee_generale);
+    $pdf->prepareContent($personnes_physiques);
+    $pdf->Output('assemblee_generale.pdf', 'D');
 } elseif ($action == 'preparer') {
     $formulaire = instancierFormulaire();
     $formulaire->setDefaults(array('date' => date("d/m/Y", time())));
