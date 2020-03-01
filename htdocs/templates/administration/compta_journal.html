@@ -123,13 +123,19 @@
                     href="index.php?page=compta_journal&amp;action=download_attachment&amp;id={$ecriture.idtmp}"
                     title="Télécharger le justificatif"
                 >
-                    <img src="{$chemin_template}images/famfamfam/attach.png" alt="Attach" />
+                    <i class="paperclip icon"></i>
                 </a>
-                <div class="js-attachment-form-container" {if !$ecriture.attachment_required}style="display:none;"{/if}>
+                <div class="js-attachment-form-container"
+                     style="{if !$ecriture.attachment_required}display:none;"{/if}"
+                     data-position="left center"
+                     data-tooltip="Cliquez ou déposez un fichier dans la zone pour ajouter un justificatif"
+                >
                     <form action="index.php?page=compta_journal&amp;action=upload_attachment&amp;id={$ecriture.idtmp}"
-                          class="js-dropzone dz-journal-form"
-                          style="display:none;"
-                          ><img src="{$chemin_template}images/famfamfam/arrow_down.png" class="dz-message"/></form>
+                          class="js-dropzone dz-journal-form ui center aligned tertiary blue segment"
+                          style="display:none;cursor: pointer"
+                      >
+                        <i class="upload icon dz-message"></i>
+                    </form>
                 </div>
             </td>
             <td style="text-align: right" class="single line">
