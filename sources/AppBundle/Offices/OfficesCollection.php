@@ -111,6 +111,7 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-lyon-php',
                 'meetup_id' => '19630036',
                 'logo_url' => '/images/offices/lyon.svg',
+                'youtube' => 'https://www.youtube.com/channel/UCSHpe_EYwK0ZhitIJPGSjlQ',
                 'twitter' => 'AFUP_Lyon',
                 'blog_url' => 'http://lyon.afup.org',
                 'map' => [
