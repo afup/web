@@ -42,6 +42,12 @@
                     </div>
                 </div>
                 <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" tabindex="0" class="hidden" name="also_display_active" {if $also_display_active}checked="checked"{/if}>
+                        <label>Afficher aussi les membres inactifs</label>
+                    </div>
+                </div>
+                <div class="field">
                     <input type="submit" value="Filtrer" class="ui button" />
                 </div>
                 {if $smarty.get.filtre != ''}
