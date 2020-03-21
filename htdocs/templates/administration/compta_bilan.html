@@ -33,19 +33,29 @@
                         <thead>
                             <tr>
                                 <th>Evenement</th>
-                                <th></th>
                                 <th class="right aligned">Montant</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {foreach from=$debit item=debits}
                                 <tr>
                                     <td>{$debits.evenement}</td>
-                                    <td>
-                                       <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_side_expand.png" alt="details" /></a>
-                                       <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/book_go.png" alt="details autre page" /></a>
+                                    <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
+                                    <td class="right aligned">
+                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                           data-tooltip="Déplier les écritures de débit/crédit pour {$debits.evenement}"
+                                           data-position="left center"
+                                           class="compact ui icon button">
+                                            <i class="expand icon"></i>
+                                        </a>
+                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                           data-tooltip="Voir le détail des écritures de débit/crédit pour {$debits.evenement}"
+                                           data-position="left center"
+                                           class="compact ui icon button">
+                                            <i class="eye icon"></i>
+                                        </a>
                                     </td>
-                                     <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
                                 </tr>
                                 {if ($smarty.get.details==$debits.id) }
                                     <tr>
@@ -106,11 +116,23 @@
                             {foreach from=$credit item=credits}
                                 <tr>
                                     <td>{$credits.evenement}</td>
-                                    <td>
-                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_side_expand.png" alt="details" /></a>
-                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/book_go.png" alt="details autre page" /></a>
-                                    </td>
                                     <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
+                                    <td class="right aligned">
+                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                           data-tooltip="Déplier les écritures de crédit/crédit pour {$debits.evenement}"
+                                           data-position="left center"
+                                           class="compact ui icon button"
+                                        >
+                                            <i class="expand icon"></i>
+                                        </a>
+                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                           data-tooltip="Voir le détail des écritures de débit/crédit pour {$debits.evenement}"
+                                           data-position="left center"
+                                           class="compact ui icon button"
+                                        >
+                                            <i class="eye icon"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 {if ($smarty.get.details==$credits.id) }
                                     <tr>
