@@ -18,15 +18,6 @@
     </form>
 </div>
 
-<div class="ui menu">
-    <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_bilan&amp;action=bilanpdf&amp;details={$debits.id}" class="item">
-        <div data-tooltip="Imprimer PDF" data-position="bottom left">
-            <i class="icon file pdf"></i>
-            Imprimer PDF
-        </div>
-    </a>
-</div>
-
 {if $action == 'lister'}
     <table class="ui table striped very compact celled">
             <thead>
@@ -53,7 +44,6 @@
                                     <td>
                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_side_expand.png" alt="details" /></a>
                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/book_go.png" alt="details autre page" /></a>
-                                       <a href="index.php?page=compta_bilan&amp;action=pdf&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/page_white_acrobat.png" alt="PDF" /></a>
                                     </td>
                                      <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
                                 </tr>
@@ -118,7 +108,6 @@
                                     <td>
                                         <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_side_expand.png" alt="details" /></a>
                                         <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/book_go.png" alt="details autre page" /></a>
-                                        <a href="index.php?page=compta_bilan&amp;action=pdf&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/page_white_acrobat.png" alt="PDF" /></a>
                                     </td>
                                     <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
                                 </tr>

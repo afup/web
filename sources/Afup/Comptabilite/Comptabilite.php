@@ -770,56 +770,6 @@ SQL;
         return $tableau;
     }
 
-
-    function genererBilanPDF($periode_debut, $periode_fin)
-    {
-
-        // Construction du PDF
-
-        $pdf = new PDF('L', 'mm', 'A4');
-        //       $pdf = new AFUP_PDF_Compta();
-        //       $pdf->AddPage();
-        $pdf->AliasNbPages();
-
-
-        $pdf->AddPage();
-
-        $pdf->SetFont('Times', 'B', 18);
-        $pdf->Cell(0, 5, "Bilan ", 0, 0, 'C');
-
-
-        $debit = $this->obtenirBilan(1, $periode_debut = '', $periode_fin = '');
-        $credit = $this->obtenirBilan(2, $periode_debut = '', $periode_fin = '');
-
-
-        $header[] = array("Categorie", "Description", "Montant");
-
-        $depense = 0;
-//while( $row=$qid->fetch(PDO::FETCH_OBJ) )
-        foreach ($debit as $debits) {
-
-            $data[] = array($debits->evenement,
-                $debits->description,
-                $debits->montant
-            );
-            $depense += $debits->montant;
-        }
-
-        $data[] = array('', 'Total Dépenses', $depense);
-
-        $pdf->Ln(10);
-//$pdf->$this->tableau(1,$header,$data);
-
-
-        if (is_null($chemin)) {
-            $pdf->Output('bilan.pdf', 'D');
-        } else {
-            $pdf->Output($chemin, 'F');
-        }
-
-    }
-
-
     function supprimerEcriture($id)
     {
         $requete = 'DELETE FROM compta WHERE id=' . $id;
