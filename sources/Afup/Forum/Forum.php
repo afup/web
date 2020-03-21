@@ -446,7 +446,7 @@ class Forum
                 $journee_aff = date('d/m/Y', strtotime($journee));
                 $sTable .= <<<CODE_HTML
 <div class="ui segment">
-<h2 class="ui right floated header">Jour {$j} : {$journee_aff}</h2>
+<h2 class="ui header">Jour {$j} : {$journee_aff}</h2>
         <div class="ui clearing divider"></div>
             <table summary="Agenda du forum" class="ui table striped compact celled">
               <thead>
