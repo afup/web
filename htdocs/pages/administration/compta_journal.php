@@ -64,6 +64,12 @@ function paybox_link($description)
 }
 $smarty->register_modifier('paybox_link', 'paybox_link');
 
+if ($action == 'lister' || $action == 'debit' || $action == 'credit' || $action == 'export') {
+    $alsoDisplayClassifed = isset($_GET['also_display_classifed_entries']) && $_GET['also_display_classifed_entries'];
+
+    $smarty->assign('also_display_classifed_entries', $alsoDisplayClassifed);
+}
+
 if ($action == 'lister' || $action == 'debit' || $action == 'credit') {
     // Categories
     $categories    = $compta->obtenirListCategories();
@@ -83,15 +89,15 @@ if ($action == 'lister' || $action == 'debit' || $action == 'credit') {
 
 if ($action == 'lister') {
     // Accounting lines for the selected period
-    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin);
+    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin, !$alsoDisplayClassifed);
     $smarty->assign('journal', $journal);
 }
 elseif ($action == 'debit') {
-	$journal = $compta->obtenirJournal(1,$periode_debut,$periode_fin);
+	$journal = $compta->obtenirJournal(1,$periode_debut,$periode_fin, !$alsoDisplayClassifed);
 	$smarty->assign('journal', $journal);
 }
 elseif ($action == 'credit') {
-	$journal = $compta->obtenirJournal(2,$periode_debut,$periode_fin);
+	$journal = $compta->obtenirJournal(2,$periode_debut,$periode_fin, !$alsoDisplayClassifed);
 	$smarty->assign('journal', $journal);
 
 } elseif ($action == 'ajouter' || $action == 'modifier') {
@@ -258,7 +264,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
  * This is really useful when you need to filter by columns using Excel.
  */
 elseif ($action === 'export') {
-    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin);
+    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin, !$alsoDisplayClassifed);
 
     // Pointer to output
     $fp = fopen('php://output', 'w');

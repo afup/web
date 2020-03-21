@@ -33,21 +33,42 @@
         </form>
     </div>
 
+    <div class="ui segment">
+        <form method="GET" name="filtre" class="js-form-search">
+            <input type="hidden" name="page" value="compta_journal" />
+            <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
+            <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" name="also_display_classifed_entries" {if $also_display_classifed_entries}checked="checked"{/if}>
+                            <label>Afficher aussi les entrées déjà pointées</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <div class="ui menu">
-        <a href="index.php?page=compta_journal&amp;action=export&id_periode={$smarty.get.id_periode}" class="item">
+        <a href="index.php?page=compta_journal&amp;action=export&id_periode={$smarty.get.id_periode}&also_display_classifed_entries={$also_display_classifed_entries}" class="item">
             <i class="icon file"></i>
             Exporter la période en CSV
         </a>
     </div>
 
     <div class="ui top attached tabular menu">
-        <a class="item {if $action == 'lister'}active{/if}" href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}">Dépenses/Recettes</a>
-        <a class="item {if $action == 'debit'}active{/if}" href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}">Dépenses</a>
-        <a class="item {if $action == 'credit'}active{/if}" href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}">Recettes</a><br />
+        <a class="item {if $action == 'lister'}active{/if}" href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}&also_display_classifed_entries={$also_display_classifed_entries}">Dépenses/Recettes</a>
+        <a class="item {if $action == 'debit'}active{/if}" href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}&also_display_classifed_entries={$also_display_classifed_entries}">Dépenses</a>
+        <a class="item {if $action == 'credit'}active{/if}" href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}&also_display_classifed_entries={$also_display_classifed_entries}">Recettes</a><br />
     </div>
 
     <div class="ui bottom attached segment">
-    <table class="ui table striped compact celled tab--filterable">
+        <table class="ui table striped compact celled tab--filterable">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
            <th><a href="index.php?page=compta_journal&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>

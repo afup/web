@@ -144,7 +144,8 @@ class Comptabilite
 
     function obtenirJournal($debitCredit = '',
                             $periode_debut = '',
-                            $periode_fin = ''
+                            $periode_fin = '',
+                            $onlyUnclasifedEntries = true
     )
     {
 
@@ -177,6 +178,15 @@ class Comptabilite
         $requete .= ' compta.date_ecriture >= \'' . $periode_debut . '\' ';
         $requete .= 'AND compta.date_ecriture <= \'' . $periode_fin . '\'  ';
         $requete .= $filtre;
+        if (true === $onlyUnclasifedEntries) {
+            $requete .= ' AND (
+                  compta_evenement.evenement = "A déterminer"
+                OR
+                  compta_categorie.categorie = "A déterminer"
+                OR
+                  compta_reglement.reglement = "A déterminer"
+            ) ';
+        }
         $requete .= 'ORDER BY ';
         $requete .= 'compta.date_ecriture, numero_operation';
 
