@@ -53,6 +53,7 @@
         </div>
     </form>
 
+    {if $personnes}
     <table class="ui table striped compact celled">
         <thead>
         <tr>
@@ -145,13 +146,17 @@
                 </a>
             </td>
         </tr>
-        {foreachelse}
-        <tr>
-            <td><em>Aucune personne physique</em></td>
-        </tr>
         {/foreach}
         </tbody>
     </table>
+    {else}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune personne physique
+            </div>
+        </div>
+    {/if}
     </div>
 
 {else}
