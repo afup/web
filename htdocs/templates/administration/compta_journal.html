@@ -200,21 +200,23 @@
         </tr>
     {/foreach}
      </table>
+    {else}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune ecriture
+            </div>
+            <div class="inline">
+                {if $also_display_classifed_entries }
+                {else}
+                <a class="ui button" href="index.php?page=compta_journal&amp;action={$action}&id_periode={$smarty.get.id_periode}&also_display_classifed_entries=1">Afficher aussi les entrées pointées</a>
+                {/if}
+
+            </div>
+        </div>
     {/if}
 
-    <div class="ui placeholder segment">
-        <div class="ui icon header">
-            <i class="meh outline icon"></i>
-            Aucune ecriture
-        </div>
-        <div class="inline">
-            {if $also_display_classifed_entries }
-            {else}
-                <a class="ui button" href="index.php?page=compta_journal&amp;action={$action}&id_periode={$smarty.get.id_periode}&also_display_classifed_entries=1">Afficher aussi les entrées pointées</a>
-            {/if}
 
-        </div>
-    </div>
     </div>
 
     <div class="js-dz-preview-template" style="display:none;">
