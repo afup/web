@@ -36,8 +36,6 @@
     <div class="ui segment">
         <form method="GET" name="filtre" class="js-form-search">
             <input type="hidden" name="page" value="compta_journal" />
-            <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-            <input type="hidden" name="sens" value="{$smarty.get.sens}" />
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
@@ -71,11 +69,10 @@
         {if $journal}
         <table class="ui table striped compact celled tab--filterable">
         <tr>
-            <!-- th width="20px">&nbsp;</th -->
-           <th><a href="index.php?page=compta_journal&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+            <th>Date</th>
             <th>Compte</th>
-           <th><a href="index.php?page=compta_journal&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Evenement</a></th>
-           <th><a href="index.php?page=compta_journal&amp;tri=categorie&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Catégorie</a></th>
+            <th>Evenement</th>
+            <th>Catégorie</th>
             <th>Description</th>
             <th class="right aligned">Debit</th>
             <th class="right aligned">Crédit</th>
@@ -85,7 +82,6 @@
        </tr>
     {foreach from=$journal item=ecriture}
          <tr class="{cycle values="odd,even"}" id="journal-ligne-{$ecriture.idtmp}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td nowrap="nowrap"><a name="L{$ecriture.idtmp}"></a>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$ecriture.nom_compte}</td>
             <td>
