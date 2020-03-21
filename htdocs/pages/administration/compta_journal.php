@@ -64,12 +64,7 @@ function paybox_link($description)
 }
 $smarty->register_modifier('paybox_link', 'paybox_link');
 
-if ($action == 'lister') {
-
-    // Accounting lines for the selected period
-    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin);
-    $smarty->assign('journal', $journal);
-
+if ($action == 'lister' || $action == 'debit' || $action == 'credit') {
     // Categories
     $categories    = $compta->obtenirListCategories();
     $categories[0] = "-- À déterminer --";
@@ -84,7 +79,12 @@ if ($action == 'lister') {
     $paymentMethods    = $compta->obtenirListReglements();
     $paymentMethods[0] = "-- À déterminer --";
     $smarty->assign('payment_methods', $paymentMethods);
+}
 
+if ($action == 'lister') {
+    // Accounting lines for the selected period
+    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin);
+    $smarty->assign('journal', $journal);
 }
 elseif ($action == 'debit') {
 	$journal = $compta->obtenirJournal(1,$periode_debut,$periode_fin);
