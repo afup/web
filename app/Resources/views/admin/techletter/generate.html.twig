@@ -32,36 +32,23 @@
 
     <iframe src="" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
 
-	<form id="link-editor" class="hidden ui form" data-refresh="{{ url('admin_techletter_retrieve') }}">
-		<a href="#" id="close">X</a>
-		<fieldset id="update-link">
+	<form id="link-editor" class="hidden ui form active modal" data-refresh="{{ url('admin_techletter_retrieve') }}">
+		<a href="#" id="close"> <i class="close icon"></i></a>
+
+		<fieldset class="ui content segment" id="update-link">
 		</fieldset>
 
-		<div class="ui grid">
-			<div class="seven wide column center aligned">
-				<button id="up" title="Remonter ce lien" class="ui button">Remonter ce lien</button>
-			</div>
-			<div class="seven wide column center aligned">
-				<button id="down" title="Descendre ce lien" class="ui button">Descendre ce lien</button>
-			</div>
+		<div class="actions">
+			<button id="up" title="Remonter ce lien" class="ui button">Remonter</button>
+			<button id="down" title="Descendre ce lien" class="ui button">Descendre</button>
+			<button id="delete" class="ui button">Supprimer</button>
+			<button id="refresh" title="Écraser la saisie actuelle par les informations récupérées depuis l'url indiquée" class="ui button">
+				Actualiser depuis l'url
+			</button>
 		</div>
-		<div class="ui grid">
-			<div class="seven wide column center aligned">
-				<button id="delete" class="ui button">Supprimer ce lien</button>
-			</div>
-			<div class="seven wide column center aligned">
-				<button id="refresh" title="Écraser la saisie actuelle par les informations récupérées depuis l'url indiquée" class="ui button">
-					Actualiser depuis l'url saisie
-				</button>
-			</div>
-		</div>
-		<div class="ui grid">
-			<div class="seven wide column center aligned">
-				<input type="reset" value="Fermer" class="ui button"/>
-			</div>
-			<div class="seven wide column center aligned">
-				<input type="submit" value="Sauvegarder et mettre à jour" class="ui button primary" />
-			</div>
+		<div class="actions">
+			<input type="reset" value="Fermer" class="ui button"/>
+			<input type="submit" value="Sauvegarder et mettre à jour" class="ui button primary" />
 		</div>
 	</form>
 
