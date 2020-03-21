@@ -32,19 +32,37 @@
 
     <iframe src="" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
 
-	<form id="link-editor" class="hidden" data-refresh="{{ url('admin_techletter_retrieve') }}">
+	<form id="link-editor" class="hidden ui form" data-refresh="{{ url('admin_techletter_retrieve') }}">
 		<a href="#" id="close">X</a>
 		<fieldset id="update-link">
-
 		</fieldset>
-		<button id="refresh" title="Écraser la saisie actuelle par les informations récupérées depuis l'url indiquée">
-			Actualiser depuis l'url saisie
-		</button>
-		<button id="up" title="Remonter ce lien">Remonter ce lien</button>
-		<button id="down" title="Descendre ce lien">Descendre ce lien</button>
-		<button id="delete">Supprimer ce lien</button>
-		<input type="reset" value="Fermer" />
-		<input type="submit" value="Sauvegarder et mettre à jour" />
+
+		<div class="ui grid">
+			<div class="seven wide column center aligned">
+				<button id="up" title="Remonter ce lien" class="ui button">Remonter ce lien</button>
+			</div>
+			<div class="seven wide column center aligned">
+				<button id="down" title="Descendre ce lien" class="ui button">Descendre ce lien</button>
+			</div>
+		</div>
+		<div class="ui grid">
+			<div class="seven wide column center aligned">
+				<button id="delete" class="ui button">Supprimer ce lien</button>
+			</div>
+			<div class="seven wide column center aligned">
+				<button id="refresh" title="Écraser la saisie actuelle par les informations récupérées depuis l'url indiquée" class="ui button">
+					Actualiser depuis l'url saisie
+				</button>
+			</div>
+		</div>
+		<div class="ui grid">
+			<div class="seven wide column center aligned">
+				<input type="reset" value="Fermer" class="ui button"/>
+			</div>
+			<div class="seven wide column center aligned">
+				<input type="submit" value="Sauvegarder et mettre à jour" class="ui button primary" />
+			</div>
+		</div>
 	</form>
 
 	<form method="post" action="{{ url('admin_techletter_preview') }}" target="preview-techletter" id="form-update">
