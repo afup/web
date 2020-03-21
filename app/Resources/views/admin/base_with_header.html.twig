@@ -124,6 +124,15 @@
                         return confirm($(this).data('confirmable-label'));
                     });
                 });
+
+                var simpleMdeList = document.getElementsByClassName('simplemde');
+                for (var i = 0; i < simpleMdeList.length; i++) {
+                    var simplemde = new SimpleMDE({
+                        element:simpleMdeList[i],
+                        spellChecker: false,
+                        hideIcons: ['side-by-side', 'fullscreen']
+                    });
+                }
             </script>
 
             {% if js is defined %}
