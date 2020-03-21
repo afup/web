@@ -636,6 +636,7 @@ SQL;
         $requete .= ' IF( compta.idoperation =2, compta.montant, "" )  AS credit, ';
         $requete .= ' compta.date_ecriture, compta.description, ';
         $requete .= ' montant, ';
+        $requete .= ' compta.id as compta_id, ';
         $requete .= ' compta_evenement.id, compta_evenement.evenement   ';
         $requete .= 'FROM  ';
         $requete .= ' compta,  ';
