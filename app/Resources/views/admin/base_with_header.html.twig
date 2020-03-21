@@ -37,10 +37,65 @@
                 max-height: 100vh;
                 overflow: auto;
             }
+
+
+            /**
+            Techletter
+            **/
+            #preview-techletter{
+                width: 50%;
+                float:left;
+                border: 1px grey solid;
+                box-sizing: content-box;
+            }
+            form#link-editor {
+                width: 600px !important;
+                margin-left: calc(50% + 1em);
+                padding: 1em;
+                box-sizing: content-box;
+                position: fixed;
+                top: 50%;
+                left:0;
+                transform: translate(0, -50%);
+                background: #b4cbde;
+            }
+            form#link-editor.hidden{
+                display: none;
+            }
+
+            form#link-editor button.hidden {
+                display: none;
+            }
+
+            form#link-editor label {
+                display: inline-block;
+                width: 15%;
+            }
+            form#link-editor input, form#link-editor textarea{
+                width: 85%;
+                border: 1px grey solid;
+            }
+            form#link-editor input[type=submit], form#link-editor input[type=reset], form#link-editor button{
+                width: 33%;
+                color: #000;
+                background-color: #fff;
+                border: 1px solid #fff;
+                margin: .1em 0;
+            }
+            form#link-editor input[type=submit]{
+                color: #fff;
+                background-color: #ed0678;
+                border: 1px solid #ed0678;
+            }
+            form#link-editor #close{
+                display: block;
+                float: right;
+            }
+
         </style>
 
     </head>
-
+l
 
     {% block body %}
         <body id="{{ page|default('') }}" class="{{ class|default('') }}">
@@ -79,7 +134,7 @@
                             {% if flash_message|length > 0 %}
                             <div class="ui message {{ messageclass }}">
                                 <div class="header">
-                                    {{ flash_message }}
+                                    {{ flash_message|raw }}
                                 </div>
                             </div>
                             {% endif %}

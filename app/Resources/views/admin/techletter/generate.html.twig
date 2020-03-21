@@ -6,6 +6,30 @@
 	<link rel="stylesheet" href="{{ asset('assets/techletter/notyf.min.css') }}" />
 	<script src="{{ asset('assets/techletter/notyf.min.js') }}"></script>
 
+	<div class="ui menu asd borderless">
+		<div class="right menu">
+			<div class="item">
+				<form class="afup--form" action="{{ path('admin_techletter_send_test') }}" method="get">
+					<input type="hidden" name="techletterId" value="{{ sending.id }}" />
+					<input type="submit" class="ui button" value="Envoyer une newsletter de test au Pôle" />
+				</form>
+			</div>
+			<div class="item">
+				<form method="post" class="afup--form">
+					<input
+							class="ui button primary"
+							type="submit"
+							name="sendToMailchimp"
+							value="Verrouiller et envoyer à Mailchimp"
+							onclick="return confirm('Etes-vous sur que cette NL est prete ?');"
+					/>
+
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('sendToMailchimp') }}" />
+				</form>
+			</div>
+		</div>
+	</div>
+
     <iframe src="" id="preview-techletter" name="preview-techletter" frameborder="0"></iframe>
 
 	<form id="link-editor" class="hidden" data-refresh="{{ url('admin_techletter_retrieve') }}">
@@ -27,29 +51,6 @@
 		<input type="hidden" name="techletterId" value="{{ sending.id }}" />
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterPreview') }}" />
 		<input name="techletter" id="textarea" type="hidden" value="" />
-	</form>
-
-	<form class="afup--form" action="{{ path('admin_techletter_send_test') }}" method="get">
-		<fieldset>
-			<legend>Envoi de test</legend>
-			<input type="hidden" name="techletterId" value="{{ sending.id }}" />
-			<input type="submit" value="Envoyer une newsletter de test au Pôle" />
-		</fieldset>
-	</form>
-
-	<form method="post" class="afup--form">
-		<fieldset>
-			<legend>Synchronisation vers Mailchimp</legend>
-
-			<input
-					type="submit"
-					name="sendToMailchimp"
-					value="Verrouiller et envoyer à Mailchimp"
-					onclick="return confirm('Etes-vous sur que cette NL est prete ?');"
-			/>
-
-			<input type="hidden" name="_csrf_token" value="{{ csrf_token('sendToMailchimp') }}" />
-		</fieldset>
 	</form>
 
     <script>
