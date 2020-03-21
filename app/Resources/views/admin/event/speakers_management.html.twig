@@ -23,7 +23,7 @@
         {% for speaker in speakers %}
             <tr>
                 <td>{{ speaker.speaker.label }}</td>
-                <td class="{% if speaker.speaker.willAttendSpeakersDiner is null %}error{% endif %}">
+                <td {% if speaker.speaker.willAttendSpeakersDiner is null %}style="background-color:#db2828"{% endif %}>
                     {% if speaker.speaker.willAttendSpeakersDiner is null %}
                         N/A
                     {% elseif speaker.speaker.willAttendSpeakersDiner  %}
@@ -32,7 +32,7 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasSpecialDiet is null %}error{% endif %}">
+                <td {% if speaker.speaker.hasSpecialDiet is null %}style="background-color:#db2828"{% endif %}>
                     {% if speaker.speaker.hasSpecialDiet is null %}
                         N/A
                     {% elseif speaker.speaker.hasSpecialDiet %}
@@ -41,14 +41,14 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasSpecialDiet and speaker.speaker.specialDietDescription is null %}error{% endif %}">
+                <td {% if speaker.speaker.hasSpecialDiet and speaker.speaker.specialDietDescription is null %}style="background-color:#db2828"{% endif %}>
                     {% if speaker.speaker.specialDietDescription %}
                         {{ speaker.speaker.specialDietDescription }}
                     {% else %}
                         N/A
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightBefore is null %}error{% endif %}">
+                <td {% if speaker.speaker.hasHotelNightBefore is null %}style="background-color:#db2828"{% endif %}>
                     {% if speaker.speaker.hasHotelNightBefore is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightBefore %}
@@ -57,7 +57,7 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightBetween is null %}error{% endif %}">
+                <td {% if speaker.speaker.hasHotelNightBetween is null %}style="background-color:#db2828"{% endif %}>
                     {% if speaker.speaker.hasHotelNightBetween is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightBetween %}
@@ -66,7 +66,7 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightAfter is null %}error{% endif %}">
+                <td {% if speaker.speaker.hasHotelNightAfter is null %}style="background-color:#db2828"{% endif %}>
                     {% if speaker.speaker.hasHotelNightAfter is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightAfter %}
@@ -75,7 +75,7 @@
                         non
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasNoHotelNight is null %}error{% endif %}">
+                <td {% if speaker.speaker.hasNoHotelNight is null %}style="background-color:#db2828"{% endif %}>
                     {% if speaker.speaker.hasNoHotelNight is null %}
                         N/A
                     {% elseif speaker.speaker.hasNoHotelNight %}
