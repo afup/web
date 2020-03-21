@@ -68,18 +68,21 @@
     <div class="ui bottom attached segment">
         {if $journal}
         <table class="ui table striped compact celled tab--filterable">
-        <tr>
-            <th>Date</th>
-            <th>Compte</th>
-            <th>Evenement</th>
-            <th>Catégorie</th>
-            <th>Description</th>
-            <th class="right aligned">Debit</th>
-            <th class="right aligned">Crédit</th>
-            <th>Reglement</th>
-            <th>Justif ?</th>
-            <th>&nbsp;</th>
-       </tr>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Compte</th>
+                    <th>Evenement</th>
+                    <th>Catégorie</th>
+                    <th>Description</th>
+                    <th class="right aligned">Debit</th>
+                    <th class="right aligned">Crédit</th>
+                    <th>Reglement</th>
+                    <th>Justif ?</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
     {foreach from=$journal item=ecriture}
          <tr class="{cycle values="odd,even"}" id="journal-ligne-{$ecriture.idtmp}">
             <td nowrap="nowrap"><a name="L{$ecriture.idtmp}"></a>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
@@ -195,6 +198,7 @@
             </td>
         </tr>
     {/foreach}
+        </tbody>
      </table>
     {else}
         <div class="ui placeholder segment">
