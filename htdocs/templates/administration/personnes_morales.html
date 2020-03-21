@@ -28,6 +28,7 @@
             </div>
         </form>
 
+        {if $personnes}
         <table class="ui table striped compact celled">
             <thead>
                 <tr>
@@ -80,12 +81,16 @@
 
                 </td>
             </tr>
-        {foreachelse}
-            <tr>
-                <td><em>Aucune personne morale</em></td>
-            </tr>
         {/foreach}
         </table>
+        {else}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune personne morale
+            </div>
+        </div>
+        {/if}
     </div>
 {else}
     {if $action == 'ajouter'}
