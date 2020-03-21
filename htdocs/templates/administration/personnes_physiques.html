@@ -43,7 +43,7 @@
                 </div>
                 <div class="field">
                     <div class="ui checkbox">
-                        <input type="checkbox" tabindex="0" class="hidden" name="also_display_active" {if $also_display_active}checked="checked"{/if}>
+                        <input type="checkbox" tabindex="0" class="hidden" name="also_display_inactive" {if $also_display_inactive}checked="checked"{/if}>
                         <label>Afficher aussi les membres inactifs</label>
                     </div>
                 </div>
@@ -160,6 +160,12 @@
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
                 Aucune personne physique
+            </div>
+            <div class="inline">
+                {if $also_display_active }
+                {else}
+                <a class="ui button" href="index.php?page=personnes_physiques&amp;action={$action}&tri={$smarty.get.tri}&sens={$smarty.get.sens}&filtre={$smarty.get.filtre|stripslashes}{if $needs_up_to_date_membersip_checkbox}&needs_up_to_date_membership=on{/if}&also_display_inactive=on">Afficher aussi les personnes physiques inactives</a>
+                {/if}
             </div>
         </div>
     {/if}

@@ -41,14 +41,14 @@ if ($action == 'lister') {
     }
 
     $onlyDisplayActive = true;
-    if (isset($_GET['also_display_active'])) {
+    if (isset($_GET['also_display_inactive'])) {
         $onlyDisplayActive = null;
     }
 
     // Mise en place de la liste dans le scope de smarty
     $smarty->assign('personnes', $personnes_physiques->obtenirListe($list_champs, $list_ordre, $list_filtre, false, false, false, $onlyDisplayActive, null, $needsUpToDateMembership));
     $smarty->assign('needs_up_to_date_membersip_checkbox', $needsUpToDateMembership ? '1': '0');
-    $smarty->assign('also_display_active', null === $onlyDisplayActive);
+    $smarty->assign('also_display_inactive', null === $onlyDisplayActive);
 } elseif ($action == 'supprimer') {
     if ($personnes_physiques->supprimer($_GET['id'])) {
         Logs::log('Suppression de la personne physique ' . $_GET['id']);
