@@ -194,7 +194,12 @@
                     {/if}
                 </td>
                 <td class="right aligned">
-                    <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                    <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}"
+                       data-tooltip="Modifier la ligne {$detail.description}"
+                       data-position="left center"
+                       class="compact ui icon button">
+                        <i class="pencil alernate icon"></i>
+                    </a>
                 </td>
             </tr>
             {foreach from=$sousTotal item=txt}
