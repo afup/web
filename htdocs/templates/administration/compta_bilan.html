@@ -192,9 +192,16 @@
     </table>
 
 {elseif $action == 'view'}
-<br />
-  <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_bilan&amp;action=lister&id_periode={$smarty.get.id_periode}" title="retour bilan">Retour au bilan</a><br />
-<br />
+
+    <div class="ui menu">
+        <a href="index.php?page=compta_bilan&amp;action=lister&id_periode={$smarty.get.id_periode}" class="item">
+            <div data-tooltip="Retour du bilan" data-position="bottom left">
+                <i class="icon backward"></i>
+                Retour au bilan
+            </div>
+        </a>
+    </div>
+
     <table class="ui table striped compact celled">
         <thead>
             <tr>
