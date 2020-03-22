@@ -8,7 +8,7 @@
             <tr>
                 <th>ID</th>
                 <th>Date d'envoi planifiée</th>
-                <th>Envoyée à mailchimp ?</th>
+                <th class="center aligned">Envoyée à mailchimp ?</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +24,13 @@
                             </a>
                         {% endif %}
                     </td>
-                    <td>{% if techletter.sentToMailchimp %}Oui{% else %}Non{% endif %}</td>
+                    <td class="center aligned">
+                        {% if techletter.sentToMailchimp %}
+                            <span class="ui green label">oui</span>
+                        {% else %}
+                            <span class="ui red label">non</span>
+                        {% endif %}
+                    </td>
                 </tr>
             {% else %}
                 <tr><td colspan="3">Aucune donnée</td></tr>
