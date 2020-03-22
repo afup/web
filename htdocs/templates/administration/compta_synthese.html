@@ -21,62 +21,101 @@
     </div>
 
     <table class="ui table striped compact celled">
-        <tr>
-            <th valign="top"  align="center">Débit</th>
-            <th valign="top"  align="center">Crédit</th>
-        </tr>
-
-        <tr class="top aligned">
+        <thead>
+            <tr>
+                <th class="center aligned">Débit</th>
+                <th class="center aligned">Crédit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="top aligned">
+                <td>
+                    <table class="ui table striped compact celled">
+                        <thead>
+                            <tr>
+                                <th>Catégorie</th>
+                                <th>Description</th>
+                                <th class="right aligned">Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {foreach from=$debit item=debits}
+                            <tr >
+                                <td>{$debits.categorie}</td>
+                                <td>{$debits.description}</td>
+                                 <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
+                            </tr>
+                        {foreachelse}
+                            <tr>
+                                <td><em>Aucune ecriture actuellement</em></td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+            </td>
             <td>
                 <table class="ui table striped compact celled">
+                    <thead>
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Description</th>
+                            <th class="right aligned">Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$credit item=credits}
                     <tr>
-                        <th>Catégorie</th>
-                        <th>Description</th>
-                        <th class="right aligned">Montant</th>
+                        <td>{$credits.categorie}</td>
+                        <td>{$credits.description}</td>
+                        <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
                     </tr>
-                {foreach from=$debit item=debits}
-                    <tr >
-                        <td>{$debits.categorie}</td>
-                        <td>{$debits.description}</td>
-                         <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
-                    </tr>
-                {foreachelse}
+                    {foreachelse}
                     <tr>
                         <td><em>Aucune ecriture actuellement</em></td>
                     </tr>
-                {/foreach}
+                    {/foreach}
+                    </tbody>
                 </table>
-        </td>
-        <td>
-            <table class="ui table striped compact celled">
-                <tr>
-                    <th>Catégorie</th>
-                    <th>Description</th>
-                    <th class="right aligned">Montant</th>
-                </tr>
-                {foreach from=$credit item=credits}
-                <tr>
-                    <td>{$credits.categorie}</td>
-                    <td>{$credits.description}</td>
-                    <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
-                </tr>
-                {foreachelse}
-                <tr>
-                    <td><em>Aucune ecriture actuellement</em></td>
-                </tr>
-                {/foreach}
-            </table>
-        </td>
-    </tr>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th class="center aligned">
+                <div class="ui tiny horizontal statistic">
+                    <div class="value">
+                        {$totalDepense|number_format:2:',':' '}
+                    </div>
+                    <div class="label">
+                        Total dépenses
+                    </div>
+                </div>
+            </th>
+            <th class="center aligned">
+                <div class="ui tiny horizontal statistic">
+                    <div class="value">
+                        {$totalRecette|number_format:2:',':' '}
+                    </div>
+                    <div class="label">
+                        Total recettes
+                    </div>
+                </div>
+            </th>
+        </tr>
 
-	<tr>
-        <th align='center'>Total dépenses : {$totalDepense|number_format:2:',':' '}</th>
-        <th align='center'>Total recettes : {$totalRecette|number_format:2:',':' '}</th>
-	</tr>
-
-	<tr>
-        <th colspan='2' align='center'>Différence : {$difMontant|number_format:2:',':' '}</th>
-    </tr>
+        <tr>
+            <th colspan="2" class="center aligned">
+                <div class="ui mini horizontal statistic">
+                    <div class="value">
+                        {$difMontant|number_format:2:',':' '}
+                    </div>
+                    <div class="label">
+                        Différence
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </tfoot>
 </table>
 {else}
     {if $action == 'ajouter'}
