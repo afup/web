@@ -179,14 +179,34 @@
                     </table>
                 </td>
             </tr>
-            <tr>
-                <td class="center aligned">{$totalDepense|number_format:2:',':' '}</td>
-                <td class="center aligned">{$totalRecette|number_format:2:',':' '}</td>
-            </tr>
-            <tr>
-                <td colspan="2"  class="center aligned">{$difMontant|number_format:2:',':' '}</td>
-            </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <th class="center aligned">
+                    <div class="ui mini horizontal statistic">
+                        <div class="value">
+                            {$totalDepense|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </th>
+                <th class="center aligned">
+                    <div class="ui mini horizontal statistic">
+                        <div class="value">
+                            {$totalRecette|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="2" class="center aligned">
+                    <div class="ui tiny horizontal statistic">
+                        <div class="value">
+                            {$difMontant|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </tfoot>
     </table>
 
 {elseif $action == 'view'}
@@ -267,11 +287,29 @@
                 </td>
             </tr>
             <tr>
-                <td class="center aligned">{$sousTotalDebit|number_format:2:',':' '}</td>
-                <td class="center aligned">{$sousTotalCredit|number_format:2:',':' '}</td>
+                <td class="center aligned">
+                    <div class="ui mini horizontal statistic">
+                        <div class="value">
+                            {$sousTotalDebit|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </td>
+                <td class="center aligned">
+                    <div class="ui mini horizontal statistic">
+                        <div class="value">
+                            {$sousTotalCredit|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </td>
             </tr>
             <tr>
-                <td colspan="2"  class="center aligned">{$difMontant|number_format:2:',':' '}</td>
+                <td colspan="2" class="center aligned">
+                    <div class="ui tiny horizontal statistic">
+                        <div class="value">
+                            {$difMontant|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>
