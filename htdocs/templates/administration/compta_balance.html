@@ -34,9 +34,21 @@
                     <td>{$ecriture.evenement}</td>
                     <td class="right aligned">{$ecriture.debit|number_format:2:',':' '}</td>
                     <td class="right aligned">{$ecriture.credit|number_format:2:',':' '}</td>
-                    <td>
-                        <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/famfamfam/application_side_expand.png" alt="raccourci" /></a>
-                        <a href="index.php?page=compta_balance&amp;action=view&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}" title="Détails de la ligne {$ecriture.evenement}"><img src="{$chemin_template}images/famfamfam/book_go.png" alt="Visualiser sur une autre page" /></a>
+                    <td class="right aligned single line">
+                        <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}"
+                           data-tooltip="Voir sur la page courante"
+                           data-position="left center"
+                           class="compact ui icon button"
+                        >
+                            <i class="expand icon"></i>
+                        </a>
+                        <a href="index.php?page=compta_balance&amp;action=view&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}"
+                           data-tooltip="Visualiser sur une autre page"
+                           data-position="left center"
+                           class="compact ui icon button"
+                        >
+                            <i class="eye icon"></i>
+                        </a>
                     </td>
                 </tr>
                 {if ($smarty.get.details==$ecriture.idevenement) }
@@ -63,7 +75,13 @@
                                     <td class="right aligned">{if $detail.debit}{$detail.debit|number_format:2:',':' '}{else}0,00{/if}</td>
                                     <td class="right aligned">{if $detail.credit}{$detail.credit|number_format:2:',':' '}{else}0,00{/if}</td>
                                     <td class="right aligned">
-                                        <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                                        <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}"
+                                           data-tooltip="Modifier la ligne {$detail.description}"
+                                           data-position="left center"
+                                           class="compact ui icon button"
+                                        >
+                                            <i class="pencil alernate icon"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 {foreach from=$sousTotal item=txt}
