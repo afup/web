@@ -22,8 +22,8 @@
     <table class="ui table striped very compact celled">
             <thead>
                 <tr>
-                    <th class="center aligned">Débit</th>
-                    <th class="center aligned">Crédit</th>
+                    <th class="center aligned" width="50%">Débit</th>
+                    <th class="center aligned" width="50%">Crédit</th>
                 </tr>
             </thead>
         <tbody>
@@ -42,7 +42,7 @@
                                 <tr>
                                     <td>{$debits.evenement}</td>
                                     <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
-                                    <td class="right aligned">
+                                    <td class="right aligned single line">
                                         <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}"
                                            data-tooltip="Déplier les écritures de débit/crédit pour {$debits.evenement}"
                                            data-position="left center"
@@ -59,7 +59,7 @@
                                 </tr>
                                 {if ($smarty.get.details==$debits.id) }
                                     <tr>
-                                        <td colspan='2'>
+                                        <td colspan="3">
                                             <table class="ui table striped compact celled">
                                                 <thead>
                                                     <tr>
@@ -92,7 +92,6 @@
                                                 </tbody>
                                             </table>
                                         </td>
-                                        <td></td>
                                     </tr>
                                 {/if}
                             {foreachelse}
@@ -117,7 +116,7 @@
                                 <tr>
                                     <td>{$credits.evenement}</td>
                                     <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
-                                    <td class="right aligned">
+                                    <td class="right aligned single line">
                                         <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}"
                                            data-tooltip="Déplier les écritures de crédit/crédit pour {$debits.evenement}"
                                            data-position="left center"
@@ -136,7 +135,7 @@
                                 </tr>
                                 {if ($smarty.get.details==$credits.id) }
                                     <tr>
-                                        <td colspan='2'>
+                                        <td colspan='3'>
                                             <table class="ui table striped very compact celled">
                                                 <thead>
                                                     <tr>
@@ -169,7 +168,6 @@
                                                 </tbody>
                                             </table>
                                         </td>
-                                        <td></td>
                                     </tr>
                                 {/if}
                             {foreachelse}
