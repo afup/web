@@ -20,6 +20,21 @@
 {% block content %}
     <h2>Liste des tokens sponsors pour {{ event.title }}</h2>
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+
+    <div class="ui menu">
+        <a href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}"
+           class="item confirmable"
+           data-confirmable-label="Souhaitez-vous vraiment envoyer des mails relance à tous les sponsors ayant encore des places ?"
+        >
+            <div data-position="bottom left"
+                 data-tooltip="Lorsque la fermeture de la billetterie approche, ce bouton permet d'envoyer des mails de rappel pour inciter les sponsors à enregistrer leurs places"
+             >
+                <i class="icon mail"></i>
+                Envoyer le mail de rappel
+            </div>
+        </a>
+    </div>
+
     <table class="ui table striped compact celled">
         <thead>
             <tr>
@@ -85,10 +100,6 @@
             </tr>
         </tfoot>
     </table>
-    <p>
-        Lorsque la fermeture de la billetterie approche, ce bouton permet d'envoyer des mails de rappel pour inciter les sponsors à enregistrer leurs places.<br/>
-        <a class="button sponsor--token-admin-edit" href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}" onclick="return confirm('Souhaitez-vous vraiment envoyer des mails relance à tous les sponsors ayant encore des places ?');">Envoyer le mail de rappel</a>
-    </p>
 
     <div class="ui segment">
         {% if edit == true %}
