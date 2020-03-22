@@ -104,18 +104,40 @@
                     <td><em>Aucune ecriture actuellement</em></td>
                 </tr>
             {/foreach}
-                <tr>
-                    <td class="right aligned">Total</td>
-                    <td class="right aligned">{$totalDepense|number_format:2:',':' '}</td>
-                    <td class="right aligned">{$totalRecette|number_format:2:',':' '}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="right aligned">Solde</td>
-                    <td colspan="2" class="center aligned">{$difMontant}</td>
-	                <td></td>
-                </tr>
         </tbody>
+        <tfoot>
+                <tr>
+                    <th colspan="2" class="right aligned">
+                        <div class="ui mini horizontal statistic">
+                            <div class="value">
+                                {$totalDepense|number_format:2:',':' '}
+                            </div>
+                        </div>
+                    </th>
+                    <th class="right aligned">
+                        <div class="ui mini horizontal statistic">
+                            <div class="value">
+                                {$totalRecette|number_format:2:',':' '}
+                            </div>
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th colspan="2" class="center aligned">
+                        <div class="ui tiny horizontal statistic">
+                            <div class="value">
+                                {$difMontant}
+                            </div>
+                            <div class="label">
+                                solde
+                            </div>
+                        </div>
+                    </th>
+	                <th></th>
+                </tr>
+        </tfoot>
     </table>
 {elseif $action == 'view'}
 <br />    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_balance&amp;action=lister&id_periode={$smarty.get.id_periode}" title="retour balance">Retour balance</a><br />
