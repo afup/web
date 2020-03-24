@@ -28,14 +28,16 @@
              <td>{$ecriture.societe}</td>
              <td>{$ecriture.ville}</td>
             <td class="right aligned">{$ecriture.numero_facture}</td>
-            <td>{$ecriture.ref_clt1}</td>
+             <td>{$ecriture.ref_clt1}</td>
+             <td class="center aligned">
             {if $ecriture.etat_paiement == 2}
-                <td class="center aligned" style="color:#999999">Annulé</td>
+                <span class="ui label">Annulé</span>
             {elseif $ecriture.etat_paiement == 1}
-                <td class="center aligned" style="background-color:#73f084">Payé</td>
+                 <span class="ui green label">Payé</span>
             {else}
-                <td class="center aligned" style="background-color:#FBD61A">En attente de paiement</td>
+                 <span class="ui yellow label">En attente</span>
             {/if}
+             </td>
             <td class="right aligned">{$ecriture.prix}</td>
             <td class="single line right aligned">
                <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}"
