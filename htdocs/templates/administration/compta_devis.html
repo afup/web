@@ -20,6 +20,7 @@
             <th>Ref client</th>
             <th>Numero devis</th>
             <th class="right aligned">Prix</th>
+            <th class="center aligned">Facturé ?</th>
             <th>&nbsp;</th>
        </tr>
         </thead>
@@ -33,6 +34,13 @@
 			<td>{$ecriture.ref_clt1}</td>
 			<td>{$ecriture.numero_devis}</td>
             <td class="right aligned">{$ecriture.prix|number_format:2:',':' '}</td>
+            <td class="center aligned">
+                {if $ecriture.numero_facture == ''}
+                    <span class="ui red label">non</span>
+                {else}
+                    <span class="ui green label">oui</span>
+                {/if}
+            </td>
             <td class="right aligned single line">
 {if $ecriture.numero_facture == ''}
                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}"
