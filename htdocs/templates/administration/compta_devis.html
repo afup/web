@@ -32,7 +32,7 @@
              <td  width="250">{$ecriture.ville}</td>
 			<td>{$ecriture.ref_clt1}</td>
 			<td>{$ecriture.numero_devis}</td>
-            <td class="right aligned">{$ecriture.prix}</td>
+            <td class="right aligned">{$ecriture.prix|number_format:2:',':' '}</td>
             <td class="right aligned single line">
 {if $ecriture.numero_facture == ''}
                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}"
