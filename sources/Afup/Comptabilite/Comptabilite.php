@@ -186,7 +186,7 @@ class Comptabilite
                 OR
                   compta_reglement.reglement = "A déterminer"
                 OR
-                  compta.attachment_required = 1 AND compta.attachment_filename IS NULL
+                  (compta.attachment_required = 1 AND compta.attachment_filename IS NULL)
             ) ';
         }
         $requete .= 'ORDER BY ';
