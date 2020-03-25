@@ -185,6 +185,8 @@ class Comptabilite
                   compta_categorie.categorie = "A déterminer"
                 OR
                   compta_reglement.reglement = "A déterminer"
+                OR
+                  compta.attachment_required = 1 AND compta.attachment_filename IS NULL
             ) ';
         }
         $requete .= 'ORDER BY ';
