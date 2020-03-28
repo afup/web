@@ -90,18 +90,18 @@
             </div>
         </form>
 
-        <table class="ui table striped compact celled tab--filterable">
+        <table class="ui table striped compact celled afup-tab-filterable">
             <thead>
             <tr>
-                <th align="left">
+                <th data-tf-filter-type="input" align="left">
                     <a href="index.php?page=assemblee_generale&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom Prénom</a>
                 </th>
-                <th><a href="index.php?page=assemblee_generale">Email</a></th>
-                <th><a href="index.php?page=assemblee_generale">A jour</a></th>
-                <th>Antenne</th>
+                <th data-tf-filter-type="input"><a href="index.php?page=assemblee_generale">Email</a></th>
+                <th data-tf-filter-type="select"><a href="index.php?page=assemblee_generale">A jour</a></th>
+                <th data-tf-filter-type="select">Antenne</th>
                 <th><a href="index.php?page=assemblee_generale&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Consultation</a></th>
-                <th><a href="index.php?page=assemblee_generale&amp;tri=presence&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'presence'}desc{else}asc{/if}">Présence</a></th>
-                <th><a href="index.php?page=assemblee_generale&amp;tri=personnes_avec_pouvoir_nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'personnes_avec_pouvoir_nom'}desc{else}asc{/if}">Pouvoir</a></th>
+                <th data-tf-filter-type="select"><a href="index.php?page=assemblee_generale&amp;tri=presence&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'presence'}desc{else}asc{/if}">Présence</a></th>
+                <th data-tf-filter-type="input"><a href="index.php?page=assemblee_generale&amp;tri=personnes_avec_pouvoir_nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'personnes_avec_pouvoir_nom'}desc{else}asc{/if}">Pouvoir</a></th>
             </tr>
             </thead>
             <tbody>
