@@ -158,23 +158,38 @@ class VoteController extends EventBaseController
         return new JsonResponse(['errors' => []]);
     }
 
-    public function adminAction($eventSlug)
+    public function adminAction(Request $request)
     {
-        if ($eventSlug === "") {
-            return $this->redirectToRoute('admin_vote', [
-                'eventSlug' => $this->get('ting')->get(EventRepository::class)->getNextEvent()->getPath()
-            ]);
-        }
-        $event = $this->checkEventSlug($eventSlug);
+        /**
+         * @var $eventRepository EventRepository
+         */
+        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $event = $this->getEvent($eventRepository, $request);
+
         if ($event === null) {
-            throw $this->createNotFoundException(sprintf('Could not found event with slug %s', $eventSlug));
+            throw $this->createNotFoundException(sprintf('Could not found event'));
         }
 
         $votes = $this->get('ting')->get(VoteRepository::class)->getVotesByEvent($event->getId());
 
         return $this->render('admin/vote/liste.html.twig', [
             'votes' => $votes,
-            'title' => 'Votes'
+            'title' => 'Votes',
+            'event' => $event,
         ]);
+    }
+
+    private function getEvent(EventRepository $eventRepository, Request $request)
+    {
+        $event = null;
+        if ($request->query->has('id') === false) {
+            $event = $eventRepository->getNextEvent();
+            $event = $eventRepository->get($event->getId());
+        } else {
+            $id = $request->query->getInt('id');
+            $event = $eventRepository->get($id);
+        }
+
+        return $event;
     }
 }

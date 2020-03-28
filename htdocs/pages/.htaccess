@@ -297,3 +297,7 @@ RewriteRule ^(.*)$  "/p/645-mentions-legales?"  [L,R=302]
 RewriteCond %{QUERY_STRING}  ^route=divers/22$
 RewriteRule ^site/$  "/?"  [L,R=302]
 
+RewriteCond %{QUERY_STRING} page=membre_assemblee_generale
+RewriteRule administration/index.php$  "/member/general-meeting"  [L,QSD,R=302]
+
+

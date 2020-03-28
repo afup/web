@@ -30,12 +30,12 @@ if ($action == 'lister') {
     $list_sens       = 'desc';
     $list_filtre     = false;
 
-    if (isset($_GET['sens']) && in_array($_GET['sens'], array_keys($sens_valides))) {
+    if (isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
         $list_sens = $_GET['sens'];
     } else {
         $_GET['sens'] = $list_sens;
     }
-    if (isset($_GET['tri']) && in_array($_GET['tri'], array_keys($tris_valides))) {
+    if (isset($_GET['tri']) && in_array($_GET['tri'], $tris_valides)) {
         $list_ordre = $_GET['tri'];
     } else {
         $_GET['tri'] = $list_ordre;
@@ -45,9 +45,8 @@ if ($action == 'lister') {
     } else {
         $_GET['filtre'] = $list_filtre;
     }
-
     // Mise en place de la liste dans le scope de smarty
-    $smarty->assign('rubriques', $rubriques->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre));
+    $smarty->assign('rubriques', $rubriques->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre, $list_filtre));
 
 } elseif ($action == 'supprimer') {
     $rubrique = new Rubrique($_GET['id']);

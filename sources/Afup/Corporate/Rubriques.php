@@ -43,13 +43,20 @@ class Rubriques
 
     function obtenirListe($champs = '*',
                           $ordre = 'titre',
-                          $associatif = false)
-    {
+                          $filtre = null,
+                          $associatif = false
+    ) {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
         $requete .= '  afup_site_rubrique ';
+
+        if (strlen(trim($filtre)) > 0) {
+            $requete .= sprintf(' WHERE afup_site_rubrique.nom LIKE %s ', $this->bdd->echapper('%' . $filtre . '%'));
+        }
+
         $requete .= 'ORDER BY ' . $ordre;
+
         if ($associatif) {
             return $this->bdd->obtenirAssociatif($requete);
         } else {

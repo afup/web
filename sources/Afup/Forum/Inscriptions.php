@@ -82,70 +82,6 @@ SQL;
         return $registrations;
     }
 
-    /**
-     * Send the "convocation" email to every people attending to the specified event.
-     * @param int $id_forum Forum's ID
-     * @param string $template Mandrill template's identifier
-     * @return bool Always TRUE (due to legacy code)
-     */
-    public function envoyerEmailConvocation($id_forum, $template)
-    {
-        // Get all visitors with "good" state (good to receive the email)
-        // No speakers.
-        $requete = <<<SQL
-SELECT
-  i.*, f.societe, md5(CONCAT(i.id, i.reference)) as md5key, af.path
-FROM
-  afup_inscription_forum i
-LEFT JOIN
-  afup_facturation_forum f ON i.reference = f.reference
-INNER JOIN
-  afup_forum af ON i.id_forum = af.id
-WHERE  i.id_forum = $id_forum
-AND i.type_inscription <> 12
-AND i.etat IN (0, 4, 5, 6, 7, 8)
-ORDER BY i.date
-;
-SQL;
-        $inscrits = $this->_bdd->obtenirTous($requete);
-
-
-        $mailer = new Mail(null, null);
-
-        $listSent = array();
-
-        // Send to each visitor
-        $total = count($inscrits);
-        foreach ($inscrits as $nb => $inscrit) {
-            $sent = $mailer->send(
-                $template,
-                array(
-                    array(
-                        'name' => $inscrit['prenom'] . " " . $inscrit['nom'],
-                        'email' => $inscrit['email'],
-                    )
-                ),
-                $inscrit,
-                array(
-                    'bcc_address' => false // avoid blind copy… spam inside! ;)
-                )
-            );
-            if ($sent) {
-                $listSent[] = "{$inscrit['prenom']} {$inscrit['nom']} : {$inscrit['email']}";
-            }
-        }
-
-        // Send confirmation
-        $count = count($listSent);
-        $msg = "<p>Voici la liste des convocations envoyées ($count/$total, template $template) :</p>";
-        $msg .= "<ol>";
-        $msg .= "<li>" . implode("</li>\n<li>", $listSent) . "</li>";
-        $msg .= "</ol>";
-        $mailer->sendSimpleMessage("Liste des convocations envoyées", $msg);
-
-        return true;
-    }
-
     function obtenirSuivi($id_forum)
     {
         $forum = new Forum($this->_bdd);
@@ -301,8 +237,7 @@ SQL;
         WHERE 1=1 
           AND i.id_forum =' . $id_forum . ' ';
         if ($filtre) {
-            $requete .= 'i.nom LIKE \'%' . $filtre . '%\' 
-            OR f.societe LIKE \'%' . $filtre . '%\' ';
+            $requete .= sprintf('AND CONCAT(i.nom, i.prenom) LIKE %1$s OR f.societe LIKE %1$s ', $this->_bdd->echapper('%' . $filtre . '%'));
         }
         $requete .= 'ORDER BY ' . $ordre;
 

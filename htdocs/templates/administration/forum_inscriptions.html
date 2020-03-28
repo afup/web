@@ -74,8 +74,6 @@
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
     <a href="index.php?page=forum_inscriptions&amp;action=ajouter&amp;id_forum={$id_forum}" title="Ajouter une inscription">Ajouter une inscription</a><br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
-    <a href="index.php?page=forum_inscriptions&amp;action=envoyer_convocation&amp;id_forum={$id_forum}" title="Ajouter une inscription">Envoyer convocation</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
     <a href="index.php?page=forum_badge&amp;action=export&amp;id_forum={$id_forum}" title="Exporter les inscriptions">Exporter les inscriptions</a><br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />
     <a href="/admin/event/badges?id={$id_forum}" title="Exporter les inscriptions pour les badges">Exporter les inscriptions pour les badges</a> <i>(prends environ une minute)</i><br />
@@ -196,12 +194,10 @@ Cette validation s'effectuera par l'envoi d'un mail en réponse à celui-ci port
 Cordialement,
 </textarea>
 {else}
-    {if $action == 'envoyer_convocation'}
-        <h2>Envoyer la convocation pour le {$forum_name}</h2>
-    {elseif $action == 'ajouter'}
-        <h2>Ajouter une inscription pour le {$forum_name}</h2>
+    {if $action == 'ajouter'}
+    <h2>Ajouter une inscription pour le {$forum_name}</h2>
     {else}
-        <h2>Modifier une inscription pour le {$forum_name}</h2>
+    <h2>Modifier une inscription pour le {$forum_name}</h2>
     {/if}
     {include file="formulaire.html"}
 {/if}

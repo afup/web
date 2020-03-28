@@ -56,6 +56,21 @@
 
             {{ form_end(form) }}
         </div>
+
+        {% if persones_avec_pouvoir %}
+            <h2>Vos pouvoirs</h2>
+            Ces personnes vous ont donné leur pouvoir :
+            <ul>
+            {% for persone_avec_pouvoir in persones_avec_pouvoir %}
+                <li>{{ persone_avec_pouvoir.nom }} {{ persone_avec_pouvoir.prenom }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if last_general_meeting_description %}
+            {{ last_general_meeting_description|markdown }}
+        {% endif %}
+
     {% endif %}
 
     <h2>Comptes rendus des assemblées générales</h2>

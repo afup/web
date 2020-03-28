@@ -33,14 +33,8 @@ parameters:
                     nom: 'Badges'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/members/badges'
-                mailing:
-                    nom: 'Mailing'
-                    niveau: 'ROLE_ADMIN'
                 assemblee_generale:
                     nom: 'Assemblée générale'
-                    niveau: 'ROLE_ADMIN'
-                membres_liste:
-                    nom: 'Annuaire'
                     niveau: 'ROLE_ADMIN'
         veille:
             nom: "Veille"
@@ -94,11 +88,11 @@ parameters:
                     url: '/admin/event/room'
                 forum_suivi:
                     nom: 'Suivi'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_FORUM'
                     url: '/admin/event/stats'
                 forum_inscriptions:
                     nom: 'Inscriptions'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_FORUM'
                 forum_pending_bankwires:
                     nom: 'Inscriptions - virements en attente'
                     niveau: 'ROLE_ADMIN'
@@ -113,7 +107,7 @@ parameters:
                     url: '/admin/event/special_price'
                 admin_event_prices:
                     nom: 'Inscriptions - liste des prix'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_FORUM'
                     url: '/admin/event/prices'
                 admin_event_speakers_management:
                     nom: 'Gestion documentaire des speakers'
@@ -129,32 +123,15 @@ parameters:
                     nom: 'Sessions - votes visiteurs'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/vote/'
-                forum_sessions_notees:
-                    nom: 'Vote des sessions'
-                    niveau: 'ROLE_FORUM'
                 forum_conferenciers:
                     nom: 'Conférenciers'
                     niveau: 'ROLE_FORUM'
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
-                forum_joind_in:
-                    nom: 'Export sites externes'
-                    niveau: 'ROLE_ADMIN'
                 forum_partenaire:
                     nom: 'Sponsors/Partenaires'
                     niveau: 'ROLE_ADMIN'
-                forum_anonymous_export:
-                    nom: 'Export anonymisé'
-                    niveau: 'ROLE_ADMIN'
-                    url: '/admin/event/export'
-        annuaire:
-            nom: 'Annuaire pro'
-            niveau: 'ROLE_ANNUAIRE'
-            elements:
-                annuairepro_membres:
-                    nom: 'Membres'
-                    niveau: 'ROLE_ANNUAIRE'
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'

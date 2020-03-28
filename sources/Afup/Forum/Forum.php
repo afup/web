@@ -583,61 +583,6 @@ CODE_HTML;
         return $csv;
     }
 
-    function obtenirXmlPourAppliIphone($id_forum)
-    {
-        $id_forum = $this->_bdd->echapper($id_forum);
-
-        // Récupération des données
-        $requete = "SELECT
-                        afup_sessions.session_id, afup_sessions.titre, afup_sessions.abstract, afup_sessions.genre,
-                        afup_sessions.journee, afup_forum_planning.debut, afup_forum_planning.fin, afup_forum_planning.keynote
-                    FROM
-                        afup_sessions
-                    INNER JOIN
-                        afup_forum_planning ON afup_forum_planning.id_session = afup_sessions.session_id
-                    WHERE
-                        afup_sessions.id_forum = $id_forum
-                        AND afup_sessions.plannifie = 1
-                    ORDER BY
-                        afup_forum_planning.debut;";
-        $donnees = $this->_bdd->obtenirTous($requete);
-
-        $requeteSpeaker = "SELECT
-                               afup_conferenciers.*
-                           FROM
-                               afup_conferenciers_sessions AS afup_conferenciers_sessions
-                           INNER JOIN
-                               afup_conferenciers ON afup_conferenciers.conferencier_id = afup_conferenciers_sessions.conferencier_id
-                           WHERE
-                               afup_conferenciers_sessions.session_id = ";
-        // Génération des données XML
-        $xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data></data>";
-        $xml = new \SimpleXMLElement($xmlstr);
-        $sessions = $xml->addChild('sessions');
-        $bios = $xml->addChild('bios');
-        $dejaConferencier = array();
-        foreach ($donnees as $d) {
-            $session = $sessions->addChild('session');
-            $session->addAttribute('title', $d['titre']);
-            $session->addAttribute('starts', date(DATE_ISO8601, $d['debut']));
-            $session->addAttribute('ends', date(DATE_ISO8601, $d['fin']));
-            $listeSpeaker = $this->_bdd->obtenirTous($requeteSpeaker . $d['session_id']);
-            foreach ($listeSpeaker as $s) {
-                $speaker = $session->addChild('speaker');
-                $speaker->addAttribute('id', $s['conferencier_id']);
-                $speaker->addAttribute('org', $s['societe']);
-                if (!in_array($s['conferencier_id'], $dejaConferencier)) {
-                    $bio = $bios->addChild('bio', str_replace('"', '\"', htmlspecialchars($s['biographie'])));
-                    $bio->addAttribute('id', $s['conferencier_id']);
-                    $bio->addAttribute('name', $s['prenom'] . ' ' . $s['nom']);
-                    $dejaConferencier[] = $s['conferencier_id'];
-                }
-            }
-            $sujet = $session->addChild('abstract', str_replace('"', '\"', htmlspecialchars($d['abstract'])));
-        }
-        return $xml->asXml();
-    }
-
     function ajouter(
         $titre,
         $nb_places,
@@ -659,12 +604,13 @@ CODE_HTML;
         $placeAddress,
         $voteEnabled = true,
         $speakersDinerEnabled = true,
-        $accomodationEnabled = true
+        $accomodationEnabled = true,
+        $waitingListUrl = null
     ) {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum (id, titre, nb_places, date_debut, date_fin, annee, date_fin_appel_projet,';
         $requete .= '  date_fin_appel_conferencier, date_fin_vote, date_fin_prevente, date_fin_vente, date_fin_saisie_repas_speakers, date_fin_saisie_nuites_hotel, date_annonce_planning, path, `text`, `trello_list_id`,
-        `logo_url`, `place_name`, `vote_enabled`, `speakers_diner_enabled`, `accomodation_enabled`, `place_address`) ';
+        `logo_url`, `place_name`, `vote_enabled`, `speakers_diner_enabled`, `accomodation_enabled`, `waiting_list_url`, `place_address`) ';
         $requete .= 'VALUES (null,';
         $requete .= $this->_bdd->echapper($titre) . ',';
         $requete .= (int)$nb_places . ',';
@@ -687,6 +633,7 @@ CODE_HTML;
         $requete .= $this->_bdd->echapper($voteEnabled ? 1 : 0) . ',';
         $requete .= $this->_bdd->echapper($speakersDinerEnabled ? 1 : 0) . ',';
         $requete .= $this->_bdd->echapper($accomodationEnabled ? 1 : 0) . ',';
+        $requete .= $this->_bdd->echapper($waitingListUrl) . ',';
         $requete .= $this->_bdd->echapper($placeAddress);
 
         $requete .= ')';
@@ -716,7 +663,8 @@ CODE_HTML;
         $placeAddress = null,
         $voteEnabled = true,
         $speakersDinerEnabled = true,
-        $accomodationEnabled = true
+        $accomodationEnabled = true,
+        $waitingListUrl = null
     ) {
         $requete = 'UPDATE ';
         $requete .= '  afup_forum ';
@@ -742,6 +690,7 @@ CODE_HTML;
         $requete .= ' `vote_enabled` = ' . $this->_bdd->echapper($voteEnabled ? 1 : 0) . ', ';
         $requete .= ' `speakers_diner_enabled` = ' . $this->_bdd->echapper($speakersDinerEnabled ? 1 : 0) . ', ';
         $requete .= ' `accomodation_enabled` = ' . $this->_bdd->echapper($accomodationEnabled ? 1 : 0) . ', ';
+        $requete .= ' `waiting_list_url` = ' . $this->_bdd->echapper($waitingListUrl) . ',';
         $requete .= ' `place_address` = ' . $this->_bdd->echapper($placeAddress) . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;

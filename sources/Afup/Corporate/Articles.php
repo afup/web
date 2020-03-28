@@ -31,11 +31,12 @@ class Articles
         $requete .= '  afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id ';
         $requete .= 'WHERE 1 = 1 ';
         if ($filtre) {
-            $requete .= 'AND (titre LIKE \'%' . $filtre . '%\' ';
-            $requete .= 'OR contenu LIKE \'%' . $filtre . '%\') ';
+            $escapedFiltre = $this->bdd->echapper('%' .  $filtre . '%');
+            $requete .= sprintf(' AND (afup_site_article.titre LIKE %s OR afup_site_article.contenu LIKE %s) ', $escapedFiltre, $escapedFiltre);
         }
-        $requete .= 'ORDER BY ' . $ordre;
-        if ($associatif) {
+        $requete .= ' ORDER BY ' . $ordre;
+
+        if ($agssociatif) {
             return $this->bdd->obtenirAssociatif($requete);
         } else {
             return $this->bdd->obtenirTous($requete);

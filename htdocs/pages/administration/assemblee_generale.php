@@ -3,6 +3,7 @@
 // Impossible to access the file itself
 use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Utils\Logs;
+use AppBundle\Association\Model\Repository\UserRepository;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -16,7 +17,7 @@ $smarty->assign('action', $action);
 
 $assemblee_generale = new Assemblee_Generale($bdd);
 
-if ($action == 'lister' || $action== 'listing' ) {
+if ($action == 'lister' || $action == 'listing') {
 
     // Valeurs par défaut des paramètres de tri
     $timestamp = $assemblee_generale->obternirDerniereDate();
@@ -31,24 +32,30 @@ if ($action == 'lister' || $action== 'listing' ) {
         $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
     }
     if (isset($_GET['date'])) {
-	    	$list_date_assemblee_generale = $_GET['date'];
+        $list_date_assemblee_generale = $_GET['date'];
     } else {
-	    	$_GET['date'] = $list_date_assemblee_generale;
+        $_GET['date'] = $list_date_assemblee_generale;
     }
 
-    if ($action == "listing")
-    {
-    	$list_ordre="nom";
+    if ($action == "listing") {
+        $list_ordre = "nom";
     }
+
+    $assembleesGenerales = $assemblee_generale->obtenirListeAssembleesGenerales();
 
     // Mise en place de la liste dans le scope de smarty
-	$convocations = $assemblee_generale->obtenirNombrePersonnesAJourDeCotisation($timestamp);
-	$presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
-	$presencesSeulement = $assemblee_generale->obtenirNombrePresences($timestamp);
-	$quorum = $assemblee_generale->obtenirEcartQuorum($timestamp);
-    $liste_personnes = $assemblee_generale->obtenirListe($list_date_assemblee_generale, $list_ordre, $list_associatif);
+    $convocations = count(
+        $this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->getActiveMembers(
+            UserRepository::USER_TYPE_ALL
+        )
+    );
+
+    $presences = $assemblee_generale->obtenirNombrePresencesEtPouvoirs($timestamp);
+    $presencesSeulement = $assemblee_generale->obtenirNombrePresences($timestamp);
+    $quorum = $assemblee_generale->obtenirEcartQuorum($timestamp, $convocations);
+    $liste_personnes = $assemblee_generale->obtenirListe($list_date_assemblee_generale);
     $liste_personnes_a_jour = $assemblee_generale->obtenirListePersonnesAJourDeCotisation($timestamp);
-	$personnes_physiques = array();
+    $personnes_physiques = array();
     foreach ($liste_personnes as $liste_id => $personne) {
         $personnes_physiques[$liste_id] = $personne;
         $hash = md5($personne['id'] . '_' . $personne['email'] . '_' . $personne['login']);
@@ -64,40 +71,16 @@ if ($action == 'lister' || $action== 'listing' ) {
     $smarty->assign('presencesSeulement', $presencesSeulement);
     $smarty->assign('quorum', $quorum);
     $smarty->assign('personnes', $personnes_physiques);
+    $smarty->assign('assemblees_generales', $assembleesGenerales);
+    $smarty->assign('list_date_assemblee_generale', $list_date_assemblee_generale);
+    $smarty->assign('timestamp', $timestamp);
+}
 
-} elseif ($action == 'envoyer') {
-    $formulaire = instancierFormulaire();
-    $timestamp = $assemblee_generale->obternirDerniereDate();
-    $sujet = $assemblee_generale->preparerSujetDuMessage($timestamp);
-    $corps = $assemblee_generale->preparerCorpsDuMessage($timestamp);
-    $formulaire->setDefaults(array('sujet' => $sujet,
-                                   'corps' => $corps));
-
-    $formulaire->addElement('header'  , ''     , 'Message pour la convocation du ' . date('d/m/Y', $timestamp));
-    $formulaire->addElement('text'    , 'sujet', 'Sujet');
-    $formulaire->addElement('textarea', 'corps', 'Corps', array('cols' => 42, 'rows' => 10, 'class' => 'tinymce'));
-
-    $formulaire->addElement('header'  , 'boutons'            , '');
-    $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
-
-    $formulaire->addRule('sujet'      , 'Sujet manquant'     , 'required');
-    $formulaire->addRule('corps'      , 'Corps manquant'   , 'required');
-
-    if ($formulaire->validate()) {
-        $ok = $assemblee_generale->envoyerConvocations($timestamp,
-                                                       $formulaire->exportValue('sujet'),
-                                                       $formulaire->exportValue('corps'));
-
-        if ($ok) {
-            Logs::log('Envoi des emails de convocations aux personnes physiques pour l\'assemblée générale');
-            afficherMessage('L\'envoi des emails de convocations aux personnes physiques pour l\'assemblée générale a été effectué', 'index.php?page=assemblee_generale&action=lister');
-        } else {
-            $smarty->assign('erreur', 'Une erreur est survenue lors de l\'envoi des emails aux personnes physiques pour l\'assemblée générale');
-        }
-    }
-
-    $smarty->assign('formulaire', genererFormulaire($formulaire));
-
+if ($action == 'listing') {
+    $pdf = new \Afup\Site\Utils\PDF_AG();
+    $pdf->setFooterTitle('Assemblée générale ' . $list_date_assemblee_generale);
+    $pdf->prepareContent($personnes_physiques);
+    $pdf->Output('assemblee_generale.pdf', 'D');
 } elseif ($action == 'preparer') {
     $formulaire = instancierFormulaire();
     $formulaire->setDefaults(array('date' => date("d/m/Y", time())));
@@ -107,12 +90,13 @@ if ($action == 'lister' || $action== 'listing' ) {
 	$formulaire->addElement('date'    , 'date', 'date de l\'AG', $options);
 
     $formulaire->addElement('header'  , 'boutons'            , '');
+    $formulaire->addElement('textarea', 'description', 'Description', ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
     $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
 
     $formulaire->addRule('date'       , 'Date manquante'     , 'required');
 
     if ($formulaire->validate()) {
-        $ok = $assemblee_generale->preparer($formulaire->exportValue('date'));
+        $ok = $assemblee_generale->preparer($formulaire->exportValue('date'), $formulaire->exportValue('description'));
 
         if ($ok !== false) {
             Logs::log('Ajout de la préparation des personnes physiques à l\'assemblée générale');

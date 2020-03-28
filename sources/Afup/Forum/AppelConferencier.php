@@ -299,7 +299,7 @@ class AppelConferencier
         $requete .= '  afup_conferenciers c ';
         $requete .= ' WHERE c.id_forum = ' . $this->_bdd->echapper($id_forum);
         if ($filtre) {
-            $requete .= '  c.nom LIKE \'%' . $filtre . '%\' ';
+            $requete .=  sprintf('  AND CONCAT(c.nom, c.prenom, c.societe) LIKE %s ', $this->_bdd->echapper('%' . $filtre . '%'));
         }
         $requete .= ' ORDER BY ' . $ordre;
 
@@ -471,25 +471,6 @@ class AppelConferencier
         $requete .= ' AND se.plannifie = 1';
         $requete .= ' ORDER BY ';
         $requete .= '  pl.debut, sa.nom ,se.titre';
-
-        return $this->_bdd->obtenirTous($requete);
-    }
-
-    function obtenirListeSessionsNotees($id_forum = null)
-    {
-        $requete = ' SELECT ';
-        $requete .= " ( SELECT CONCAT(c.prenom, ' ', c.nom,' - ', c.societe)  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1) as conf1 ,
-                      ( SELECT CONCAT(c.prenom, ' ', c.nom,' - ', c.societe)  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1,1) as conf2 , ";
-        $requete .= '  SUM(no.note) as note, ';
-        $requete .= '  s.* ';
-        $requete .= ' FROM ';
-        $requete .= '  afup_sessions s ';
-        $requete .= ' INNER JOIN afup_sessions_note no ';
-        $requete .= '  ON s.session_id = no.session_id ';
-        $requete .= ' WHERE s.id_forum = ' . $this->_bdd->echapper($id_forum);
-        $requete .= ' GROUP BY no.session_id ';
-        $requete .= ' ORDER BY note DESC';
-
 
         return $this->_bdd->obtenirTous($requete);
     }

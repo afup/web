@@ -1,9 +1,0 @@
-{% extends ':admin:base_with_header.html.twig' %}
-
-{% block content %}
-    <h2>Export anonymisé</h2>
-    <form method="post">
-        <input type="hidden" name="token" value="{{ token }}" />
-        <button type="submit" name="export">Exporter les données</button>
-    </form>
-{% endblock %}

@@ -1,27 +1,47 @@
 {if $action == 'lister'}
-    <h2>Liste des présences de l'assemblée générale</h2>
+    <h2>Assemblée générale</h2>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=preparer" title="Préparer une assemblée générale">Préparer une assemblée générale</a><br />
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=envoyer" title="Envoyer les convocations pour une assemblée générale">Envoyer les convocations pour une assemblée générale</a><br />
-   	<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=listing" title="Imprimer la feuille d'émargement">Imprimer la feuille d'émargement</a><br />
+
+
+    <h3>Dernière assemblée générale ({$timestamp|date_format:"%d/%m/%Y"})</h3>
+
     <br/>
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Membres à jour de cotisation : {$convocations}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Présences et pouvoirs : {$presences}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Présences : {$presencesSeulement}<br />
     <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Quorum : <span class="{if $quorum > 0}OK{else}KO{/if}">{$quorum}</span><br />
+    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=assemblee_generale&amp;action=listing" title="Imprimer la feuille d'émargement">Imprimer la feuille d'émargement</a><br />
     <br/>
+
+    <h3>Liste des présences</h3>
+
     <table>
       <form method="GET" name="filtre">
       <input type="hidden" name="page" value="assemblee_generale" />
       <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
       <input type="hidden" name="sens" value="{$smarty.get.sens}" />
         <tr>
-            <td width="150" nowrap="nowrap">Date (JJ/MM/AAAA) : </td>
-            <td width="120" nowrap="nowrap"><input type="text" name="date" value="{$smarty.get.date|stripslashes}"></td>
+            <td width="60" nowrap="nowrap">Date : </td>
+            <td width="120" nowrap="nowrap">
+                <select name="date">
+                    {foreach from=$assemblees_generales item=assemblee_generale}
+                        <option
+                            value="{$assemblee_generale.date|date_format:'%d/%m/%Y'}"
+                            {$list_date_assemblee_generale}
+                            {if $assemblee_generale.date|date_format:'%d/%m/%Y' == $list_date_assemblee_generale }
+                                selected="selected"
+                            {/if}
+                        >
+                            {$assemblee_generale.date|date_format:"%d/%m/%Y"}
+                        </option>
+                    {/foreach}
+                </select>
+            </td>
             <td><input type="submit" value="OK" name="submit_date"></td>
         </tr>
       </form>
     </table>
-    <br/>
+
     <table class="afup_tab tab--filterable">
         <tr>
             <!-- th width="20px">&nbsp;</th -->
@@ -32,7 +52,6 @@
             <th><a href="index.php?page=assemblee_generale&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Consultation</a></th>
             <th><a href="index.php?page=assemblee_generale&amp;tri=presence&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'presence'}desc{else}asc{/if}">Présence</a></th>
             <th><a href="index.php?page=assemblee_generale&amp;tri=personnes_avec_pouvoir_nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'personnes_avec_pouvoir_nom'}desc{else}asc{/if}">Pouvoir</a></th>
-            <th>&nbsp;</th>
         </tr>
     {foreach from=$personnes item=personne}
         <tr {if $personne.ajour == false }style="text-decoration: line-through;color:#999999"{/if}>
@@ -44,9 +63,6 @@
             <td>{$personne.date_consultation|convertirTimestampEnDate}</td>
             <td style="text-align: center">{if $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI}Présent{elseif $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON}Absent{else}??{/if}</td>
             <td>{$personne.personnes_avec_pouvoir_nom} {$personne.personnes_avec_pouvoir_prenom}</td>
-            <td style="text-align: right">
-                <a href="index.php?hash={$personne.hash}&page=membre_assemblee_generale" title="Gérer la présence et le pouvoir de {$personne.nom} {$personne.prenom}"><img src="{$chemin_template}images/famfamfam/group_link.png" alt="Gérer la présence et le pouvoir" /></a>
-            </td>
         </tr>
     {foreachelse}
         <tr>
@@ -55,40 +71,25 @@
     {/foreach}
     </table>
 
-    <script src="/js_dist/admin.js"></script>
-{elseif $action == 'listing'}
-     Liste des présences de l'assemblée générale le {$smarty.get.date|stripslashes}<br />
-    <br />
-
-
-<table class="afup_tab" border="1" size="7">
-    <tr class="{cycle values="odd,even"}">
-        <th align="left">Nom Prénom</th>
-        <th align="left">Consultation</th>
-        <th align="left">Présence</th>
-        <th align="left">Pouvoir</th>
-        <th align="left" style="width: 30%;">Emargement</th>
-    </tr>
-    {foreach from=$personnes item=personne}
-        <tr>
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$personne.nom} {$personne.prenom}</td>
-            <td>{$personne.date_consultation|convertirTimestampEnDate}</td>
-            <td style="text-align: center">{if $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI}Présent{elseif $personne.presence == AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON}Absent{else}??{/if}</td>
-            <td>{$personne.personnes_avec_pouvoir_nom} {$personne.personnes_avec_pouvoir_prenom}</td>
-			<td></td>
-        </tr>
-    {foreachelse}
-    <tr>
-        <td><em>Aucune inscription</em></td>
-    </tr>
-{/foreach}
-</table>
 {else}
     {if $action == 'preparer'}
         <h2>Préparer une assemblée générale</h2>
-    {else}
-        <h2>Envoyer les convocations pour une assemblée générale</h2>
     {/if}
     {include file="formulaire.html"}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    {literal}
+    <script>
+        var simpleMdeList = document.getElementsByClassName('simplemde');
+        for (var i = 0; i < simpleMdeList.length; i++) {
+            var simplemde = new SimpleMDE({
+                element:simpleMdeList[i],
+                spellChecker: false,
+                hideIcons: ['side-by-side', 'fullscreen']
+            });
+        }
+    </script>
+    {/literal}
 {/if}
+

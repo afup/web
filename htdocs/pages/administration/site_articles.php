@@ -35,12 +35,12 @@ if ($action == 'lister') {
     $list_sens       = 'desc';
     $list_filtre     = false;
 
-    if (isset($_GET['sens']) && in_array($_GET['sens'], array_keys($sens_valides))) {
+    if (isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
         $list_sens = $_GET['sens'];
     } else {
         $_GET['sens'] = $list_sens;
     }
-    if (isset($_GET['tri']) && in_array($_GET['tri'], array_keys($tris_valides))) {
+    if (isset($_GET['tri']) && in_array($_GET['tri'], $tris_valides)) {
         $list_ordre = $_GET['tri'];
     } else {
         $_GET['tri'] = $list_ordre;
@@ -101,7 +101,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('header'  , ''                         , 'M&eacute;ta-donn&eacute;es');
     $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'      , array('size' => 60, 'maxlength' => 255));
-    $formulaire->addElement('select'  , 'id_site_rubrique'         , 'Rubrique'       , array(null => '' ) + $rubriques->obtenirListe('id, nom', 'nom', true));
+    $formulaire->addElement('select'  , 'id_site_rubrique'         , 'Rubrique'       , array(null => '' ) + $rubriques->obtenirListe('id, nom', 'nom', null, true));
     $formulaire->addElement('select'  , 'id_personne_physique'     , 'Auteur'         , array(null => '' ) + $personnes_physiques->obtenirListe('id, CONCAT(prenom, " ", nom) as nom', 'nom', false, false, true));
     $formulaire->addElement('date'    , 'date'                     , 'Date'           , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 1));
     $formulaire->addElement('select'  , 'position'                 , 'Position'       , $article->positionable());
