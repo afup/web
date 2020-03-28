@@ -1,5 +1,5 @@
 {if $action == 'lister'}
-    <h2>Sessions</h2>
+    <h2>Conférences</h2>
 
     <div class="ui violet segment">
         <form method="GET" name="forum">
@@ -21,7 +21,7 @@
 
     <div class="ui menu">
         <a href="index.php?page=forum_sessions&amp;action=ajouter&amp;id_forum={$id_forum}" class="item">
-            <div data-tooltip="Ajouter une session" data-position="bottom left">
+            <div data-tooltip="Ajouter une conférence" data-position="bottom left">
                 <i class="icon plus square"></i>
                 Ajouter
             </div>
@@ -29,18 +29,18 @@
         <a href="/admin/talk/export?id={$id_forum}" class="item">
             <div data-tooltip="Exporter les inscriptions pour les badges" data-position="bottom left">
                 <i class="icon file"></i>
-                Exporter les sessions
+                Exporter les conférences
             </div>
         </a>
         <a href="index.php?page=forum_joind_in&amp;action=telecharger_joindin&id_forum={$id_forum}"
            class="item"
         >
-          Télécharger un fichier CSV des sessions pour joind.in (http://joind.in)
+          Télécharger un fichier CSV des conférences pour joind.in (http://joind.in)
         </a>
         <a href="/admin/talk/update_indexation" class="item">
             <div data-tooltip="Met à jour algolia, permet d'avoir la liste des talks publique à jour" data-position="bottom left">
                 <i class="icon algolia"></i>
-                Indexer tous les talks
+                Indexer toutes les conférences
             </div>
         </a>
     </div>
@@ -60,13 +60,13 @@
                 <div class="field">
                     <div class="ui checkbox">
                         <input type="checkbox" name="filtre_needs_mentoring" id="filtre_needs_mentoring" value="1" {if $smarty.get.filtre_needs_mentoring} checked="checked" {/if}>
-                        <label for="filtre_needs_mentoring">Afficher seulement les sessions dont le speaker a demandé un accompagnement</label>
+                        <label for="filtre_needs_mentoring">Afficher seulement les conférences dont le speaker a demandé un accompagnement</label>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui checkbox">
                         <input type="checkbox" name="filtre_planned" id="filtre_planned" value="1" {if $smarty.get.filtre_planned} checked="checked" {/if}>
-                        <label for="filtre_planned">Afficher seulement les sessions plannifiées</label>
+                        <label for="filtre_planned">Afficher seulement les conférences plannifiées</label>
                     </div>
                 </div>
                 <div class="field">
@@ -81,7 +81,7 @@
             {$sessions|@count}
         </div>
         <div class="label">
-            session(s)
+            conférence(s)
         </div>
     </div>
 
@@ -132,22 +132,22 @@
                 {else}
                 <i class="list-icon"></i>
                 {/if}
-                <i class="list-icon fa fa-youtube-play {if not $session.youtube_id}list-icon-invisible{/if}" title="La session a une vidéo"></i>
-                <i class="list-icon fa fa-slideshare {if not $session.slides_url}list-icon-invisible{/if}" title="La session a des slides"></i>
-                <i class="list-icon fa fa-rss {if not $session.blog_post_url}list-icon-invisible{/if}" title="La session a un transcript"></i>
-                <i class="list-icon fa fa-newspaper-o {if not $session.interview_url}list-icon-invisible{/if}" title="La session a une interview"></i>
+                <i class="list-icon fa fa-youtube-play {if not $session.youtube_id}list-icon-invisible{/if}" title="La conférence a une vidéo"></i>
+                <i class="list-icon fa fa-slideshare {if not $session.slides_url}list-icon-invisible{/if}" title="La conférence a des slides"></i>
+                <i class="list-icon fa fa-rss {if not $session.blog_post_url}list-icon-invisible{/if}" title="La conférence a un transcript"></i>
+                <i class="list-icon fa fa-newspaper-o {if not $session.interview_url}list-icon-invisible{/if}" title="La conférence a une interview"></i>
             </td>
             <td style="text-align: right" nowrap="nowrap">
                 <a href="index.php?page=forum_sessions&amp;action=modifier&amp;id={$session.session_id}"
                    data-position="left center"
-                   data-tooltip="Modifier la session {$session.titre}"
+                   data-tooltip="Modifier la conférence {$session.titre}"
                    class="compact ui icon button"
                 >
                     <i class="pencil alernate icon"></i>
                 </a>
                 <a href="index.php?page=forum_sessions&amp;action=supprimer&amp;id={$session.session_id}"
                    data-position="left center"
-                   data-tooltip="Supprimer la session {$session.titre}"
+                   data-tooltip="Supprimer la conféence {$session.titre}"
                    class="compact ui red icon button confirmable"
                    data-confirmable-label="Etes-vous sûr de vouloir supprimer la session {$session.titre} ?"
                 >
@@ -157,7 +157,7 @@
         </tr>
     {foreachelse}
         <tr>
-            <td><em>Aucune session</em></td>
+            <td><em>Aucune conférence</em></td>
         </tr>
     {/foreach}
         </tbody>
@@ -166,9 +166,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 {else}
     {if $action == 'ajouter'}
-        <h2>Ajouter une session pour le {$forum_name}</h2>
+        <h2>Ajouter une conférence pour le {$forum_name}</h2>
     {else}
-        <h2>Modifier une session pour le {$forum_name}</h2>
+        <h2>Modifier une conférence pour le {$forum_name}</h2>
 
         <div class="ui menu">
             <a href="/talks/{$talk->getUrlKey()}" class="item">

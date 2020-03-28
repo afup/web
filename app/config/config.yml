@@ -145,7 +145,7 @@ parameters:
                     nom: "Factures d'événément"
                     niveau: 'ROLE_ADMIN'
                 forum_sessions:
-                    nom: 'Sessions'
+                    nom: 'Conférences'
                     niveau: 'ROLE_FORUM'
                 forum_vote_github:
                     nom: 'Votes visiteurs'
