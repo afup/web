@@ -67,17 +67,17 @@
 
     <div class="ui bottom attached segment">
         {if $journal}
-        <table class="ui table striped compact celled tab--filterable">
+        <table class="ui table striped compact celled afup-tab-filterable">
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Compte</th>
-                    <th>Evenement</th>
-                    <th>Catégorie</th>
-                    <th>Description</th>
-                    <th class="right aligned">Debit</th>
-                    <th class="right aligned">Crédit</th>
-                    <th>Reglement</th>
+                    <th data-tf-filter-type="select">Compte</th>
+                    <th data-tf-filter-type="select">Evenement</th>
+                    <th data-tf-filter-type="select">Catégorie</th>
+                    <th data-tf-filter-type="input">Description</th>
+                    <th data-tf-filter-type="input" class="right aligned">Debit</th>
+                    <th data-tf-filter-type="input" class="right aligned">Crédit</th>
+                    <th data-tf-filter-type="select">Reglement</th>
                     <th>Justif ?</th>
                     <th>&nbsp;</th>
                 </tr>

@@ -1,5 +1,8 @@
 var TableFilter = require('tablefilter');
 
+window.TableFilter = TableFilter;
+
+/* Deprécié, utiliser fup-tab-filterable */
 var tf = new TableFilter(document.querySelector('.tab--filterable'), {
 	base_path: '/js_dist/tablefilter/',
 	filters_row_index: 1,
