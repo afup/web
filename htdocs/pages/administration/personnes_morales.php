@@ -83,7 +83,7 @@ if ($action == 'lister') {
 		    '<a href="index.php?page=personnes_physiques&action=modifier&id=' . $personne_physique['id'] . '" title="Voir la fiche de la personne physique">Voir la fiche</a>');
         }
     }
-    $formulaire->addElement('header'  , ''                   , 'Paramétres');
+    $formulaire->addElement('header'  , ''                   , 'Paramètres');
     $formulaire->addElement('select'  , 'etat'               , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',
                                                                                    AFUP_DROITS_ETAT_INACTIF => 'Inactif'));
     $formulaire->addElement('select'  , 'max_members'        , 'Membres maximums', array_combine($maxMembers = range(3, 18, 3), $maxMembers));
