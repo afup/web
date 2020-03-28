@@ -10,17 +10,17 @@
         </a>
     </div>
 
-    <table class="ui table striped compact celled tab--filterable">
+    <table class="ui table striped compact celled afup-tab-filterable">
         <thead>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
-           <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
-           <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
-            <th>Ville</th>
-            <th>Ref client</th>
-            <th>Numero devis</th>
-            <th class="right aligned">Prix</th>
-            <th class="center aligned">Facturé ?</th>
+            <th data-tf-filter-type="input"><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+            <th data-tf-filter-type="input"><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
+            <th data-tf-filter-type="input">Ville</th>
+            <th data-tf-filter-type="input">Ref client</th>
+            <th data-tf-filter-type="input">Numero devis</th>
+            <th data-tf-filter-type="input"class="right aligned">Prix</th>
+            <th data-tf-filter-type="select" class="center aligned">Facturé ?</th>
             <th>&nbsp;</th>
        </tr>
         </thead>
