@@ -22,6 +22,12 @@
                         <input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}">
                     </div>
                     <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" name="also_display_inactive" {if $also_display_inactive}checked="checked"{/if}>
+                            <label>Afficher aussi les membres inactifs</label>
+                        </div>
+                    </div>
+                    <div class="field">
                         <input type="submit" value="Filtrer" class="ui button" name="submit_filtre" />
                     </div>
                 </div>

@@ -33,7 +33,13 @@ if ($action == 'lister') {
         $list_filtre = $_GET['filtre'];
     }
 
-    $smarty->assign('personnes', $personnes_morales->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre));
+    $onlyDisplayActive = true;
+    if (isset($_GET['also_display_inactive'])) {
+        $onlyDisplayActive = null;
+    }
+
+    $smarty->assign('personnes', $personnes_morales->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre, $onlyDisplayActive));
+    $smarty->assign('also_display_inactive', null === $onlyDisplayActive);
 } elseif ($action == 'supprimer') {
     if ($personnes_morales->supprimer($_GET['id'])) {
         Logs::log('Suppression de la personne morale ' . $_GET['id']);
