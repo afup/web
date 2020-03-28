@@ -367,6 +367,14 @@ class Comptabilite
 
     }
 
+    public function obtenirListCategoriesSansEvenementVide($filtre = '', $where = '')
+    {
+        $categories = $this->obtenirListCategories($filtre, $where);
+        unset($categories[0]);
+
+        return $categories;
+    }
+
     function obtenirListEvenements($filtre = '', $where = '')
     {
         $requete = 'SELECT ';

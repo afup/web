@@ -102,11 +102,13 @@
             </td>
              <td>
                 {if $ecriture.categorie=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}" style="min-width:130px">
-                    {foreach from=$categories item=cat_name key=cat_id}
-                    <option value="{$cat_id}">{$cat_name}</option>
-                    {/foreach}
-                </select>
+                 <div class="ui form">
+                    <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}" style="min-width:130px">
+                        {foreach from=$categories item=cat_name key=cat_id}
+                        <option value="{$cat_id}" {if $cat_name == "A déterminer"}selected="selected"{/if}>{$cat_name}</option>
+                        {/foreach}
+                    </select>
+                 </div>
                 {else}
                     {$ecriture.categorie}
                 {/if}
