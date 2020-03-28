@@ -85,6 +85,7 @@
         </div>
     </div>
 
+    {if $sessions}
     <table class="ui table striped compact celled">
         <thead>
         <tr>
@@ -155,13 +156,17 @@
                 </a>
             </td>
         </tr>
-    {foreachelse}
-        <tr>
-            <td><em>Aucune conférence</em></td>
-        </tr>
-    {/foreach}
+        {/foreach}
         </tbody>
     </table>
+    {else}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune conférence
+            </div>
+        </div>
+    {/if}
 </div>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 {else}
