@@ -393,6 +393,14 @@ class Comptabilite
         }
     }
 
+    public function obtenirListEvenementsSansEvenementVide($filtre = '', $where = '')
+    {
+        $events = $this->obtenirListEvenements($filtre, $where);
+        unset($events[0]);
+
+        return $events;
+    }
+
     function obtenirListReglements($filtre = '', $where = '')
     {
         $requete = 'SELECT ';

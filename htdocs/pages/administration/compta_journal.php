@@ -76,10 +76,7 @@ if ($action == 'lister' || $action == 'debit' || $action == 'credit') {
     $categories[0] = "-- À déterminer --";
     $smarty->assign('categories', $categories);
 
-    // Events
-    $events    = $compta->obtenirListEvenements();
-    $events[0] = "-- À déterminer --";
-    $smarty->assign('events', $events);
+    $smarty->assign('events', $compta->obtenirListEvenementsSansEvenementVide());
 
     // Payment methods
     $paymentMethods    = $compta->obtenirListReglements();

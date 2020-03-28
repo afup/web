@@ -89,11 +89,13 @@
             <td>{$ecriture.nom_compte}</td>
             <td>
             {if $ecriture.evenement=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}" style="width: 130px">
-                    {foreach from=$events item=event_name key=event_id}
-                    <option value="{$event_id}">{$event_name}</option>
-                    {/foreach}
-                </select>
+                <div class="ui form">
+                    <select class=" js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}">
+                        {foreach from=$events item=event_name key=event_id}
+                        <option value="{$event_id}" {if $event_name == "A déterminer"}selected="selected"{/if}>{$event_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
             {else}
                 {$ecriture.evenement}
             {/if}
