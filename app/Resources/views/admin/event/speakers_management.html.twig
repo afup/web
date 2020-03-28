@@ -5,17 +5,17 @@
 
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
-    <table class="ui table striped compact celled tab--filterable TF">
+    <table class="ui table striped compact celled afup-tab-filterable">
         <thead>
             <tr>
-                <th>Speaker</th>
-                <th class="center aligned">Venue au restaurant ?</th>
-                <th class="center aligned">A un régime spécifique ?</th>
+                <th data-tf-filter-type="input">Speaker</th>
+                <th data-tf-filter-type="select"class="center aligned">Venue au restaurant ?</th>
+                <th data-tf-filter-type="select" class="center aligned">A un régime spécifique ?</th>
                 <th class="center aligned">Précisions régime</th>
-                <th class="center aligned">Nuit d'hotel la veille ?</th>
-                <th class="center aligned">Nuit d'hotel entre les deux jours ?</th>
-                <th class="center aligned">Nuit d'hotel après l'événement ?</th>
-                <th class="center aligned">Pas de nuit d'hotel ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel la veille ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel entre les deux jours ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel après l'événement ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Pas de nuit d'hotel ?</th>
                 <th></th>
             </tr>
         </thead>
