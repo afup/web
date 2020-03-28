@@ -7,9 +7,9 @@
             <tr>
                 <th>Nom</th>
                 <th>Société</th>
-                <th>Statut mail</th>
+                <th class="center aligned">Statut mail</th>
                 <th>Type relance</th>
-                <th title="">Date relance</th>
+                <th>Date relance</th>
                 <th class="right aligned">Actions</th>
             </tr>
         </thead>
@@ -18,7 +18,13 @@
             <tr class="{% if loop.index is even %}even{% endif %}">
                 <td>{{ log.app.firstname }} {{ log.app.lastname }}</td>
                 <td>{% if log.apm is not null %}{{ log.apm.companyName }}{% else %}¤{% endif %}</td>
-                <td>{% if log.asrl.mailSent %}Ok{% else %}Erreur{% endif %}</td>
+                <td class="center aligned">
+                    {% if log.asrl.mailSent %}
+                        <span class="ui green label">Ok</span>
+                    {% else %}
+                        <span class="ui red label">Erreur</span>
+                    {% endif %}
+                </td>
                 <td>{{ log.asrl.reminderKey }}</td>
                 <td>{{ log.asrl.reminderDate|date('d/m/Y') }}</td>
                 <td class="right aligned">
