@@ -95,6 +95,12 @@
                 <i class="meh outline icon"></i>
                 Aucune personne morale
             </div>
+            <div class="inline">
+                {if $also_display_active }
+                {else}
+                <a class="ui button" href="index.php?page=personnes_morales&amp;action={$action}&tri={$smarty.get.tri}&sens={$smarty.get.sens}&filtre={$smarty.get.filtre|stripslashes}{if $needs_up_to_date_membersip_checkbox}&needs_up_to_date_membership=on{/if}&also_display_inactive=on">Afficher aussi les personnes morales inactives</a>
+                {/if}
+            </div>
         </div>
         {/if}
     </div>
