@@ -169,7 +169,7 @@
                 <a class="js-edit-comment compact ui icon button"
                    style="cursor:pointer;"
                    data-position="left center"
-                   data-tooltip="Editer le commentaire"
+                   data-tooltip='Editer le commentaire{if $ecriture.comment} ("{$ecriture.comment}"){/if}'
                    data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=comment&amp;id={$ecriture.idtmp}"
                    data-comment="{$ecriture.comment}">
                         <i class="comment {if $ecriture.comment}{else}outline{/if} icon"></i>
