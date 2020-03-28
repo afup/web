@@ -77,11 +77,7 @@ if ($action == 'lister' || $action == 'debit' || $action == 'credit') {
     $smarty->assign('categories', $categories);
 
     $smarty->assign('events', $compta->obtenirListEvenementsSansEvenementVide());
-
-    // Payment methods
-    $paymentMethods    = $compta->obtenirListReglements();
-    $paymentMethods[0] = "-- À déterminer --";
-    $smarty->assign('payment_methods', $paymentMethods);
+    $smarty->assign('payment_methods', $compta->obtenirListReglementsSansEvenementVide());
 }
 
 if ($action == 'lister') {

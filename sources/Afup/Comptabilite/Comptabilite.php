@@ -427,6 +427,14 @@ class Comptabilite
         }
     }
 
+    public function obtenirListReglementsSansEvenementVide($filtre = '', $where = '')
+    {
+        $reglements = $this->obtenirListReglements($filtre, $where);
+        unset($reglements[0]);
+
+        return $reglements;
+    }
+
     function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $montant, $description,
                      $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $numero_operation = null)
     {

@@ -90,7 +90,7 @@
             <td>
             {if $ecriture.evenement=='A déterminer'}
                 <div class="ui form">
-                    <select class=" js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}">
+                    <select class=" js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}" style="min-width:130px">
                         {foreach from=$events item=event_name key=event_id}
                         <option value="{$event_id}" {if $event_name == "A déterminer"}selected="selected"{/if}>{$event_name}</option>
                         {/foreach}
@@ -102,7 +102,7 @@
             </td>
              <td>
                 {if $ecriture.categorie=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}" style="width: 130px">
+                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}" style="min-width:130px">
                     {foreach from=$categories item=cat_name key=cat_id}
                     <option value="{$cat_id}">{$cat_name}</option>
                     {/foreach}
@@ -124,11 +124,13 @@
 
             <td>
             {if $ecriture.reglement=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=reglement&amp;id={$ecriture.idtmp}">
-                    {foreach from=$payment_methods item=method_name key=method_id}
-                    <option value="{$method_id}">{$method_name}</option>
-                    {/foreach}
-                </select>
+                <div class="ui form">
+                    <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=reglement&amp;id={$ecriture.idtmp}" style="min-width:130px">
+                        {foreach from=$payment_methods item=method_name key=method_id}
+                        <option value="{$method_id}" {if $method_name == "A déterminer"}selected="selected"{/if}>{$method_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
             {else}
                 {$ecriture.reglement}
             {/if}
