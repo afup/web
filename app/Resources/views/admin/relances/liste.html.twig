@@ -10,6 +10,7 @@
                 <th>Statut mail</th>
                 <th>Type relance</th>
                 <th title="">Date relance</th>
+                <th class="right aligned">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,20 @@
                 <td>{% if log.asrl.mailSent %}Ok{% else %}Erreur{% endif %}</td>
                 <td>{{ log.asrl.reminderKey }}</td>
                 <td>{{ log.asrl.reminderDate|date('d/m/Y') }}</td>
+                <td class="right aligned">
+                    <a data-position="left center"
+                       class="compact ui green icon button"
+                       {% if log.apm is not null %}
+                           href="/pages/administration/index.php?page=cotisations&amp;type_personne=1&amp;id_personne={{ log.apm.id }}"
+                           data-tooltip="Gérer les cotisations de {{ log.apm.companyName }}"
+                        {% else %}
+                           href="/pages/administration/index.php?page=cotisations&amp;type_personne=0&amp;id_personne={{ log.app.id }}"
+                           data-tooltip="Gérer les cotisations de {{ log.app.firstname }} {{ log.app.lastname }}"
+                        {% endif %}
+                    >
+                        <i class="money bill alternate icon"></i>
+                    </a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
