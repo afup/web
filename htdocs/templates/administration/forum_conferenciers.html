@@ -65,6 +65,7 @@
         </div>
     </div>
 
+    {if $conferenciers}
     <table class="ui table striped compact celled">
         <thead>
             <tr>
@@ -111,13 +112,17 @@
                         </a>
                     </td>
                 </tr>
-            {foreachelse}
-                <tr>
-                    <td><em>Aucun conférencier</em></td>
-                </tr>
             {/foreach}
         </tbody>
     </table>
+    {else}
+    <div class="ui placeholder segment">
+        <div class="ui icon header">
+            <i class="meh outline icon"></i>
+            Aucun speaker
+        </div>
+    </div>
+    {/if}
 </div>
 {else}
     {if $action == 'ajouter'}
