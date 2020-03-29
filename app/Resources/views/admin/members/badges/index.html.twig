@@ -33,14 +33,13 @@
                     <div class="ui list">
                     {% for user in info.users %}
                         <div class="item">
-                            {{ user.getLabel }}
-                            <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ user.id }}"
-                               class="compact ui icon button"
-                            >
-                                <i class="pencil alernate icon"></i>
-                            </a>
+                            <i class="user icon"></i>
+                            <div class="content">
+                                <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ user.id }}">
+                                {{ user.getLabel }}
+                                </a>
+                            </div>
                         </div>
-                        <br />
                     {% endfor %}
                     </div>
                 </td>
