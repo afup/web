@@ -206,6 +206,15 @@
                     <i class="money bill icon"></i>
                     Voir les cotisations
                 </a>
+                {if $infos_personne_physique.etat == 1}
+                <a href="?page=personnes_physiques&action=envoi_bienvenue&id={$infos_personne_physique.id}"
+                   class="item confirmable"
+                   data-confirmable-label="Souhaitez-vous vraiment envoyer un mail de bienvenue ?"
+                >
+                    <i class="mail icon"></i>
+                    Envoyer un mail de bienvenue
+                </a>
+                {/if}
             {/if}
         </div>
     {/if}

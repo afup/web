@@ -127,9 +127,6 @@ if ($action == 'lister') {
     }
 
     $formulaire->addElement('header' , '' , 'Informations');
-    if(isset($champs['etat']) && AFUP_DROITS_ETAT_ACTIF == $champs['etat']) {
-        $formulaire->addElement('static', 'note' , '    ' , '<a href="?page=personnes_physiques&action=envoi_bienvenue&id='.$_GET['id'].'">Envoyer un mail de bienvenue</a>');
-    }
     $formulaire->addElement('select' , 'id_personne_morale' , 'Personne morale', array(null => '') + $personnes_morales->obtenirListe('id, raison_sociale', 'raison_sociale', true));
     $formulaire->addElement('select' , 'civilite' , 'Civilité' , array('M.', 'Mme', 'Mlle'));
 
