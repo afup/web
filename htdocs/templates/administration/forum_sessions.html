@@ -156,11 +156,18 @@
             <td class="single line">{$session.date_soumission}</td>
             <td>{$session.titre}</td>
             <td>
-                <ul>
+                <div class="ui list">
                 {foreach from=$session.conferencier item=conferencier}
-                    <li>{$conferencier.nom} {$conferencier.prenom}</li>
+                    <div class="item">
+                        <i class="microphone icon"></i>
+                        <div class="content">
+                            <a href="index.php?page=forum_conferenciers&action=modifier&id={$conferencier.conferencier_id}">
+                                {$conferencier.nom} {$conferencier.prenom}
+                            </a>
+                        </div>
+                    </div>
                 {/foreach}
-                </ul>
+                </div>
             </td>
             {if $votant}
             <td style="text-align: center{if $session.jai_vote == true};background-color:#73f084{else};background-color:#FBD61A{/if}">
