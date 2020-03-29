@@ -26,7 +26,13 @@
                 <td>{{ row.special_price.price }}</td>
                 <td>{{ row.special_price.dateStart|date('d/m/Y') }}</td>
                 <td>{{ row.special_price.dateEnd|date('d/m/Y') }}</td>
-                <td>{% if row['.aggregation']['inscription']|length > 0 %}oui{% else %}non{% endif %}</td>
+                <td>
+                    {% if row['.aggregation']['inscription']|length > 0 %}
+                        <span class="ui green label">oui</span>
+                    {% else %}
+                        <span class="ui red label">non</span>
+                    {% endif %}
+                </td>
                 <td><a href="{{ path('ticket', {'eventSlug' : event.path, 'token': row.special_price.token  }) }}">Lien</a></td>
 
             </tr>
