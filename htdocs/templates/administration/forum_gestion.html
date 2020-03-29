@@ -1,5 +1,5 @@
 {if $action == 'lister'}
-    <h2>Liste des forums</h2>
+    <h2>Liste des événements</h2>
 
     <div class="ui menu">
         <a href="index.php?page=forum_gestion&amp;action=ajouter" class="item">
@@ -11,13 +11,13 @@
     </div>
 
     <div class="ui message">
-        <p>On ne peut pas supprimer de forum pour lequel des éléments ont été associés.</p>
+        <p>On ne peut pas supprimer d'événement pour lequel des éléments ont été associés.</p>
     </div>
 
     <table class="ui table striped compact celled">
         <thead>
             <tr>
-                <th>Forum</th>
+                <th>Événement</th>
                 <th>Chemin</th>
                 <th class="right aligned">Places</th>
                 <th>Informations</th>
@@ -69,9 +69,9 @@
     </table>
 {else}
     {if $action == 'ajouter'}
-        <h2>Ajouter un forum</h2>
+        <h2>Ajouter un événément</h2>
     {else}
-        <h2>Modifier un forum</h2>
+        <h2>Modifier un événément</h2>
     {/if}
 
     {if $action != 'ajouter'}

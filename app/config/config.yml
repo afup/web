@@ -95,12 +95,12 @@ parameters:
                     nom: 'Liste des antennes'
                     niveau: 'ROLE_ANTENNE'
         forum:
-            nom: 'Forum'
+            nom: 'Événements'
             niveau: 'ROLE_FORUM'
             icon: "globe"
             elements:
                 forum_gestion:
-                    nom: 'Gestion forum'
+                    nom: 'Gestion événéments'
                     niveau: 'ROLE_ADMIN'
                 forum_salle:
                     nom: 'Gestion des salles'
