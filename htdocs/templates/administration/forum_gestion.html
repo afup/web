@@ -14,13 +14,16 @@
         <p>On ne peut pas supprimer d'événement pour lequel des éléments ont été associés.</p>
     </div>
 
-    <table class="ui table striped compact celled">
+    <table class="ui table striped celled">
         <thead>
             <tr>
                 <th>Événement</th>
                 <th>Chemin</th>
                 <th class="right aligned">Places</th>
-                <th>Informations</th>
+                <th>Date début</th>
+                <th>Date Fin</th>
+                <th>Fin CFP</th>
+                <th>Fin vente</th>
                 <th></th>
             </tr>
         </thead>
@@ -28,15 +31,14 @@
     {foreach from=$evenements item=evenement}
         <tr>
             <td>
-                <strong>{$evenement.titre}</strong><br/><br/>
+                <strong>{$evenement.titre}</strong>
             </td>
             <td>{$evenement.path}</td>
             <td class="right aligned"git >{$evenement.nb_places}</td>
-            <td>
-                Du {$evenement.date_debut|date_format:"%d/%m/%Y"} au {$evenement.date_fin|date_format:"%d/%m/%Y"}<br/>
-                Fin appel conférencier : {$evenement.date_fin_appel_conferencier|date_format:"%d/%m/%Y %H:%M:%S"}<br/>
-                Fin vente : {$evenement.date_fin_vente|date_format:"%d/%m/%Y %H:%M:%S"}<br/>
-            </td>
+            <td>{$evenement.date_debut|date_format:"%d/%m/%Y"}</td>
+            <td>{$evenement.date_fin|date_format:"%d/%m/%Y"}</td>
+            <td>{$evenement.date_fin_appel_conferencier|date_format:"%d/%m/%Y %H:%M:%S"}</td>
+            <td>{$evenement.date_fin_vente|date_format:"%d/%m/%Y %H:%M:%S"}</td>
             <td style="text-align: right" nowrap="nowrap">
                 <a href="index.php?page=forum_gestion&amp;action=modifier&amp;id={$evenement.id}"
                    data-tooltip="Modifier le forum {$evenement.titre}"
