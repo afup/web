@@ -96,7 +96,18 @@
             {if $votant}
             <th>Nb votants</th>
             {/if}
-            <th>Note visiteurs</th>
+            <th class="right aligned"
+                data-position="bottom center"
+                data-tooltip="Moyenne notes visiteurs (sur 5)"
+            >
+                Moy. notes
+            </th>
+            <th class="right aligned"
+                data-position="bottom center"
+                data-tooltip="Nombre notes visiteurs"
+            >
+                Nb. notes
+            </th>
             <th>
                 <div class="ui small basic icon buttons">
                     <span class="ui button"
@@ -163,7 +174,16 @@
                 {$session.nb_vote}&nbsp;/&nbsp;{$nb_votant}
             </td>
             {/if}
-            <td>{$session.note|string_format:"%.1f"} / 5 ({$session.nb_vote_visiteur} vote{if $session.nb_vote_visiteur > 1}s{/if})</td>
+            <td class="right aligned">
+                {if $session.nb_vote_visiteur}
+                    {$session.note|string_format:"%.1f"}
+                {else}
+                    n/a
+                {/if}
+            </td>
+            <td class="right aligned">
+                {$session.nb_vote_visiteur}
+            </td>
             <td>
                 <div class="ui small basic icon buttons">
                     <a class="ui button {if not $session.needs_mentoring}disabled{/if}"
