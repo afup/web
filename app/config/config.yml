@@ -180,10 +180,10 @@ parameters:
                     nom: 'Journal'
                     niveau: 'ROLE_ADMIN'
                 compta_banque:
-                    nom: 'Compte Banques'
+                    nom: 'Compte banques'
                     niveau: 'ROLE_ADMIN'
                 compta_synthese:
-                    nom: 'Synthese Evenement'
+                    nom: 'Synthese événement'
                     niveau: 'ROLE_ADMIN'
                 compta_balance:
                     nom: 'Balance comptable'
