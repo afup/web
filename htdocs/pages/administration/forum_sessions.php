@@ -185,12 +185,7 @@ if ($action == 'lister') {
 
 	if ($action != 'ajouter') {
         $conferenciers = $forum_appel->obtenirConferenciersPourSession($id);
-		$formulaire->addElement('header'  , ''                   , 'Conférenciers associés');
-		foreach ($conferenciers as $conferencier) {
-            $nom = $conferencier['nom'] . ' ' . $conferencier['prenom'][0];
-            $formulaire->addElement('static', 'info', $nom . '.',
-		    '<a href="index.php?page=forum_conferenciers&action=modifier&id=' . $conferencier['conferencier_id'] . '" title="Voir la fiche du conférencier">Voir la fiche</a>');
-        }
+		$smarty->assign('session_conferenciers', $conferenciers);
     }
 
     $formulaire->addElement('header', null, 'Commentaires');
