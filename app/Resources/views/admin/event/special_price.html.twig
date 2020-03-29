@@ -4,6 +4,7 @@
     <h2>Tokens visiteurs</h2>
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
+    {% if special_prices|length > 0 %}
     <table class="ui table striped compact celled">
         <thead>
             <th>Description</th>
@@ -39,6 +40,14 @@
         {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucun token créé
+            </div>
+        </div>
+    {% endif %}
 
     <div class="ui segment">
         <h2 class="ui header">Nouveau token</h2>
