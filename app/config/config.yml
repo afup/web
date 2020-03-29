@@ -165,9 +165,6 @@ parameters:
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
-                forum_partenaire:
-                    nom: 'Sponsors/Partenaires'
-                    niveau: 'ROLE_ADMIN'
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
@@ -230,6 +227,9 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                 logs:
                     nom: 'Logs'
+                    niveau: 'ROLE_ADMIN'
+                forum_partenaire:
+                    nom: 'Sponsors/Partenaires'
                     niveau: 'ROLE_ADMIN'
         connexion:
             nom: 'Connexion'
