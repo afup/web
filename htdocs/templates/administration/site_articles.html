@@ -29,15 +29,23 @@
             </div>
       </form>
 
-        <table class="ui table striped compact celled">
+        <table class="ui table striped compact celled afup-tab-filterable">
             <thead>
             <tr>
-                <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a></th>
-                <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Titre</a></th>
-                <th style="text-align: left"><a href="index.php?page=site_articles&amp;tri=nom_rubrique&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Rubrique</a></th>
-                <th>Thème</th>
-                <th>Forum</th>
-                <th class="center aligned"><a href="index.php?page=site_articles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}" >Etat</a></th>
+                <th>
+                    <a href="index.php?page=site_articles&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a>
+                </th>
+                <th data-tf-filter-type="input">
+                    <a href="index.php?page=site_articles&amp;tri=titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Titre</a>
+                </th>
+                <th data-tf-filter-type="select">
+                    <a href="index.php?page=site_articles&amp;tri=nom_rubrique&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Rubrique</a>
+                </th>
+                <th data-tf-filter-type="select">Thème</th>
+                <th data-tf-filter-type="select">Forum</th>
+                <th class="center aligned" data-tf-filter-type="select">
+                    <a href="index.php?page=site_articles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}" >Etat</a>
+                </th>
                 <th class="right aligned">Actions</th>
             </tr>
             </thead>
