@@ -184,9 +184,6 @@ parameters:
                 logs:
                     nom: 'Logs'
                     niveau: 'ROLE_ADMIN'
-                info_serveur:
-                    nom: 'Information serveur'
-                    niveau: 'ROLE_ADMIN'
         retour_site:
           nom: 'Retour site'
           url: '/'
