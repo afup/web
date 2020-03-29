@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    <h2>Votes des visiteurs</h2>
+
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
     {% if votes|length > 0 %}
