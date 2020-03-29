@@ -141,6 +141,7 @@
           </div>
       </form>
 
+    {if $inscriptions}
     <table class="ui table striped compact celled">
         <thead>
         <tr class="{cycle values="odd,even"}">
@@ -250,13 +251,17 @@
                     <td></td>
                 {/if}
         </tr>
-    {foreachelse}
-        <tr>
-            <td><em>Aucune inscription</em></td>
-        </tr>
     {/foreach}
     </tbody>
     </table>
+    {else}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune inscription
+            </div>
+        </div>
+    {/if}
     </div>
 {elseif $action == 'generer_mail_inscription_afup'}
     <textarea rows="37" cols="100">Bonjour,
