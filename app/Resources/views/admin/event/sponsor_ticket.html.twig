@@ -35,6 +35,7 @@
         </a>
     </div>
 
+    {% if tokens|length > 0 %}
     <table class="ui table striped compact celled">
         <thead>
             <tr>
@@ -87,9 +88,7 @@
                     </a>
                 </td>
             </tr>
-        {% else %}
-            <tr><td colspan="5">Aucune invitation créée</td></tr>
-        {% endfor %}
+        git{% endfor %}
         </tbody>
         <tfoot>
             <tr>
@@ -100,6 +99,14 @@
             </tr>
         </tfoot>
     </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune invitation créée
+            </div>
+        </div>
+    {% endif %}
 
     <div class="ui segment">
         {% if edit == true %}
