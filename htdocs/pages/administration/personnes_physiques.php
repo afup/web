@@ -131,10 +131,6 @@ if ($action == 'lister') {
         $formulaire->addElement('static', 'note' , '    ' , '<a href="?page=personnes_physiques&action=envoi_bienvenue&id='.$_GET['id'].'">Envoyer un mail de bienvenue</a>');
     }
     $formulaire->addElement('select' , 'id_personne_morale' , 'Personne morale', array(null => '') + $personnes_morales->obtenirListe('id, raison_sociale', 'raison_sociale', true));
-    if ($action == 'modifier') {
-        $formulaire->addElement('static', 'note' , '    ' , '<a href="#" onclick="voirPersonneMorale(); return false;" title="Voir la personne morale">Voir la personne morale</a>');
-    }
-
     $formulaire->addElement('select' , 'civilite' , 'Civilité' , array('M.', 'Mme', 'Mlle'));
 
     if ($action == 'ajouter') {
@@ -305,4 +301,7 @@ if ($action == 'lister') {
         'user_badge_form' => $userBadgeForm->createView(),
     ]));
     $smarty->assign('formulaire', genererFormulaire($formulaire));
+    if ($action == 'modifier') {
+        $smarty->assign('infos_personne_physique', $champs);
+    }
 }
