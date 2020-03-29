@@ -189,56 +189,56 @@
                     <a class="ui button {if not $session.needs_mentoring}disabled{/if}"
                        {if $session.needs_mentoring}
                        href="index.php?page=forum_sessions&amp;action=modifier&amp;id={$session.session_id}"
-                       data-position="left center"
+                       data-position="top center"
                        data-tooltip="Le speaker a demandé un accompagnement"
                        {/if}
                     >
-                        <i class="universal access icon {if $session.needs_mentoring}blue{/if}"></i>
+                        <i class="icon {if $session.needs_mentoring}universal access{/if}"></i>
                     </a>
                     <a class="ui button {if not $session.joindin_url}disabled{/if}"
                        {if $session.joindin_url}
                        href="{$session.joindin_url}"
-                       data-position="left center"
+                       data-position="top center"
                        data-tooltip="L'id joindIn est renseigné"
                        {/if}
                     >
-                    <i class="comment icon {if $session.joindin_url}blue{/if}"></i>
+                    <i class="icon {if $session.joindin_url}comment{/if}"></i>
                     </a>
                     <a class="ui button {if not $session.youtube_id}disabled{/if}"
                        {if $session.youtube_id}
                        href="https://www.youtube.com/watch?v={$session.youtube_id}"
-                       data-position="left center"
+                       data-position="top center"
                        data-tooltip="La conférence a une vidéo"
                        {/if}
                     >
-                        <i class="youtube icon {if $session.youtube_id}blue{/if}"></i>
+                        <i class="icon {if $session.youtube_id}youtube{/if}"></i>
                     </a>
                     <a class="ui button {if not $session.slides_url}disabled{/if}"
                        {if $session.slides_url}
                        href="{$session.slides_url}"
-                       data-position="left center"
+                       data-position="top center"
                        data-tooltip="La conférence a des slides"
                        {/if}
                     >
-                    <i class="slideshare icon {if $session.slides_url}blue{/if}"></i>
+                    <i class="icon {if $session.slides_url}slideshare{/if}"></i>
                     </a>
                     <a class="ui button {if not $session.interview_url}disabled{/if}"
                        {if $session.interview_url}
                        href="{$session.interview_url}"
-                       data-position="left center"
+                       data-position="top center"
                        data-tooltip="La conférence a une interview"
                        {/if}
                     >
-                    <i class="newspaper icon {if $session.interview_url}blue{/if}"></i>
+                    <i class="icon {if $session.interview_url}newspaper{/if}"></i>
                     </a>
                     <a class="ui button {if not $session.blog_post_url}disabled{/if}"
                        {if $session.blog_post_url}
                        href="{$session.blog_post_url}"
-                       data-position="left center"
+                       data-position="top center"
                        data-tooltip="La conférence a un transcript"
                        {/if}
                     >
-                    <i class="rss icon {if $session.blog_post_url}blue{/if}"></i>
+                    <i class="icon {if $session.blog_post_url}rss{/if}"></i>
                     </a>
                 </div>
             </td>
