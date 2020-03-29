@@ -81,13 +81,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , array('size' => 20, 'maxlength' => 20));
     $formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , array('size' => 20, 'maxlength' => 20));
     if($action != 'ajouter') {
-        $formulaire->addElement('header'  , ''                   , 'Personnes physiques associées');
-        foreach ($personnes_physiques_liste as $personne_physique) {
-            $nom = $personne_physique['nom'] . ' ' . $personne_physique['prenom'];
-            empty($personne_physique['etat']) and $nom = "<del>$nom</del>";
-            $formulaire->addElement('static', 'info', $nom,
-		    '<a href="index.php?page=personnes_physiques&action=modifier&id=' . $personne_physique['id'] . '" title="Voir la fiche de la personne physique">Voir la fiche</a>');
-        }
+        $smarty->assign('personnes_physiques_associees', $personnes_physiques_liste);
     }
     $formulaire->addElement('header'  , ''                   , 'Paramètres');
     $formulaire->addElement('select'  , 'etat'               , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',
