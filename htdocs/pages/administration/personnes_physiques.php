@@ -45,7 +45,9 @@ if ($action == 'lister') {
         $onlyDisplayActive = null;
     }
 
+    $officesCollection = new \AppBundle\Offices\OfficesCollection();
     // Mise en place de la liste dans le scope de smarty
+    $smarty->assign('antennes', $officesCollection->getAll());
     $smarty->assign('personnes', $personnes_physiques->obtenirListe($list_champs, $list_ordre, $list_filtre, false, false, false, $onlyDisplayActive, null, $needsUpToDateMembership));
     $smarty->assign('needs_up_to_date_membersip_checkbox', $needsUpToDateMembership ? '1': '0');
     $smarty->assign('also_display_inactive', null === $onlyDisplayActive);

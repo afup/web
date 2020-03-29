@@ -85,7 +85,14 @@
                 <div class="ui label red">Inactif</div>
                 {/if}
             </td>
-            <td class="{if $personne.etat == 1}actif{elseif $personne.etat == -1}disabled{else}disabled{/if}">{$personne.nearest_office}</td>
+            <td class="{if $personne.etat == 1}actif{elseif $personne.etat == -1}disabled{else}disabled{/if}">
+                {if $antennes[$personne.nearest_office] }
+                    <span class="ui image label">
+                        <img src="{$antennes[$personne.nearest_office].logo_url}">
+                        {$antennes[$personne.nearest_office].label}
+                    </span>
+                {/if}
+            </td>
             <td style="text-align: right">
                 {if empty($personne.id_personne_morale)}
                     <a id="cotisations_{$personne.id}"
