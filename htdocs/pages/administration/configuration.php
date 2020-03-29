@@ -21,7 +21,7 @@ unset($defaults['paybox|site']);
 unset($defaults['paybox|rang']);
 $formulaire->setDefaults($defaults);
 
-$formulaire->addElement('header', ''                , 'Base de donnes');
+$formulaire->addElement('header', ''                , 'Base de données');
 $formulaire->addElement('text'  , 'bdd|hote'        , 'Hote'           , array('size' => 30));
 $formulaire->addElement('text'  , 'bdd|base'        , 'Base'           , array('size' => 30));
 $formulaire->addElement('text'  , 'bdd|utilisateur' , 'Utilisateur'    , array('size' => 30));
