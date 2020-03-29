@@ -80,11 +80,18 @@
                     <td><strong>{$conferencier.nom} {$conferencier.prenom}</strong></td>
                     <td>{$conferencier.societe}</td>
                     <td>
-                        <ul class="ui list">
-                        {foreach from=$conferencier.sessions item=session}
-                            <li>{$session.titre}</li>
-                        {/foreach}
-                        </ul>
+                        <divl class="ui list">
+                            {foreach from=$conferencier.sessions item=session}
+                            <div class="item">
+                                <i class="book icon"></i>
+                                <div class="content">
+                                    <a href="index.php?page=forum_sessions&action=modifier&id={$session.session_id}&id_forum={$forum.id}">
+                                        {$session.titre}
+                                    </a>
+                                </div>
+                            </div>
+                            {/foreach}
+                        </divl>
                     </td>
                     <td style="text-align: right" nowrap="nowrap">
                         <a href="index.php?page=forum_conferenciers&amp;action=modifier&amp;id={$conferencier.conferencier_id}&amp;id_forum={$forum.id}"
