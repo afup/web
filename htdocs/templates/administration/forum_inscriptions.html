@@ -153,7 +153,6 @@
             <th align="left">Règ.</th>
             <th>&nbsp;</th>
             <th title="Applicable uniquement aux tarifs afup">Statut cotisation</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -250,9 +249,6 @@
                 {else}
                     <td></td>
                 {/if}
-        <td>
-            <a target="_blank" onclick="javascript:var prix=prompt('prix ?', '25'); if (prix) this.href='/pages/event-payment/elephpant.php?ref=elephpant-{$inscription.id}&forum={$id_forum}&email={$inscription.email}&prix=' + prix;">PAY</a>
-        </td>
         </tr>
     {foreachelse}
         <tr>
