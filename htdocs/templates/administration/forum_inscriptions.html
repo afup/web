@@ -152,8 +152,8 @@
             <th align="left">Mobilité réduite</th>
             <th><a href="index.php?page=forum_inscriptions&amp;tri=i.etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.etat'}desc{else}asc{/if}">Etat</a></th>
             <th align="left">Règ.</th>
-            <th>&nbsp;</th>
             <th title="Applicable uniquement aux tarifs afup">Statut cotisation</th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
@@ -204,28 +204,6 @@
                 {/if}
             </td>
             <td>{if $inscription.type_reglement == 0}CB{elseif $inscription.type_reglement == 1}CHQ{elseif $inscription.type_reglement == 2}VIR{/if}</td>
-            <td style="text-align: right" nowrap="nowrap">
-                {if $inscription.type_inscription == AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION && $inscription.etat != 1}
-                <a href="index.php?page=forum_inscriptions&amp;action=generer_mail_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/email_edit.png" alt="Générer un mail pour demander la confirmation d'adhésion à l'AFUP" /></a>
-                <a href="index.php?page=forum_inscriptions&amp;action=generer_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/group_add.png" alt="Transformer en adhésion AFUP" /></a>
-                {/if}
-                <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}"
-                   data-position="left center"
-                   data-tooltip="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"
-                   class="compact ui icon button"
-                >
-                    <i class="pencil alernate icon"></i>
-                </a>
-
-                <a href="index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={$inscription.id}"
-                   data-position="left center"
-                   data-tooltip="Supprimer la fiche de {$inscription.nom} {$inscription.prenom}"
-                   class="compact ui red icon button confirmable"
-                   data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {$inscription.nom} {$inscription.prenom} ?"
-                >
-                    <i class="trash icon"></i>
-                </a>
-            </td>
                 {if $inscription.type_inscription|in_array:$forum_tarifs_members}
                     {if $inscription.lastsubscription == null}
                         <td>
@@ -261,6 +239,28 @@
                         <span class="ui label">n/a</span>
                     </td>
                 {/if}
+            <td style="text-align: right" nowrap="nowrap">
+                {if $inscription.type_inscription == AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION && $inscription.etat != 1}
+                <a href="index.php?page=forum_inscriptions&amp;action=generer_mail_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/email_edit.png" alt="Générer un mail pour demander la confirmation d'adhésion à l'AFUP" /></a>
+                <a href="index.php?page=forum_inscriptions&amp;action=generer_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/group_add.png" alt="Transformer en adhésion AFUP" /></a>
+                {/if}
+                <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}"
+                   data-position="left center"
+                   data-tooltip="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alernate icon"></i>
+                </a>
+
+                <a href="index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={$inscription.id}"
+                   data-position="left center"
+                   data-tooltip="Supprimer la fiche de {$inscription.nom} {$inscription.prenom}"
+                   class="compact ui red icon button confirmable"
+                   data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {$inscription.nom} {$inscription.prenom} ?"
+                >
+                    <i class="trash icon"></i>
+                </a>
+            </td>
         </tr>
     {/foreach}
     </tbody>
