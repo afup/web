@@ -103,7 +103,7 @@ parameters:
                     nom: 'Gestion événéments'
                     niveau: 'ROLE_ADMIN'
                 forum_salle:
-                    nom: 'Gestion des salles'
+                    nom: 'Salles'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/room'
                     extra_routes:
