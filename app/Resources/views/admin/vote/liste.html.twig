@@ -4,6 +4,7 @@
 
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
+    {% if votes|length > 0 %}
     <table class="ui table striped very compact celled">
         <thead>
                 <tr>
@@ -24,4 +25,12 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune vote
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
