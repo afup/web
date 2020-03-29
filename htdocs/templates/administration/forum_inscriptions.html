@@ -228,27 +228,38 @@
             </td>
                 {if $inscription.type_inscription|in_array:$forum_tarifs_members}
                     {if $inscription.lastsubscription == null}
-                        <td class="inscriptions--cotisation-notfound">Pas trouvée
-                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
-                            <img src="{$chemin_template}images/famfamfam/email_edit.png" title="Copier le contenu de l'email" class="btn-email" data-name="{$inscription.prenom} {$inscription.nom}" data-ins="{$inscription.id}" />
+                        <td>
+                            <span class="ui blue label">
+                                Non trouvée
+                            </span>
                         </td>
                     {elseif $inscription.lastsubscription < $now}
-                        <td class="inscriptions--cotisation-expired">
-                            A expiré le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
-                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
-                            <img src="{$chemin_template}images/famfamfam/email_edit.png" title="Copier le contenu de l'email" class="btn-email" data-name="{$inscription.prenom} {$inscription.nom}" data-ins="{$inscription.id}" />
+                        <td class="single line">
+                            <span class="ui red label">
+                                A expiré le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
+                            </span>
+                            <a class="compact ui tiny icon button" href="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}">
+                                URL Paiment
+                            </a>
                         </td>
                     {elseif $inscription.lastsubscription < $finForum}
-                        <td class="inscriptions--cotisation-expiring">
-                            Expire le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
-                            <img src="{$chemin_template}images/famfamfam/basket.png" title="Copier l'URL pour le paiement" class="copy-link" data-clipboard-text="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}" />
-                            <img src="{$chemin_template}images/famfamfam/email_edit.png" title="Copier le contenu de l'email" class="btn-email" data-name="{$inscription.prenom} {$inscription.nom}" data-ins="{$inscription.id}" />
+                        <td class="single line">
+                            <span class="ui orange label">
+                                Expire le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
+                            </span>
+                            <a class="compact ui tiny icon button" href="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}">
+                                URL Paiment
+                            </a>
                         </td>
                     {else}
-                        <td class="inscriptions--cotisation-ok">OK</td>
+                        <td>
+                            <span class="ui green label">OK</span>
+                        </td>
                     {/if}
                 {else}
-                    <td></td>
+                    <td>
+                        <span class="ui label">n/a</span>
+                    </td>
                 {/if}
         </tr>
     {/foreach}
