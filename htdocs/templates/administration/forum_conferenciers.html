@@ -124,17 +124,16 @@
         <h2>Ajouter un conférencier pour le {$forum_name}</h2>
     {else}
         <h2>Modifier un conférencier pour le {$forum_name}</h2>
+    {/if}
+    {include file="formulaire.html"}
 
+    {if $action == 'modifier'}
         <div class="ui segment">
             <h2 class="ui header">Gravatar (si besoin)</h2>
             <div class="ui clearing divider"></div>
             <img src="{$gravatar}" /><br/>
             <a href="index.php?page=forum_conferenciers&amp;action=associer_gravatar&amp;id={$id_conferencier}&amp;id_forum={$id_forum}">Associer à ce conférencier</a>
         </div>
-    {/if}
-    {include file="formulaire.html"}
-
-    {if $action == 'modifier'}
         <div class="ui segment">
             <h2 class="ui header">Conférences</h2>
             <div class="ui clearing divider"></div>
