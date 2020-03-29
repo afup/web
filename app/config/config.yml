@@ -231,9 +231,6 @@ parameters:
                 logs:
                     nom: 'Logs'
                     niveau: 'ROLE_ADMIN'
-                info_serveur:
-                    nom: 'Information serveur'
-                    niveau: 'ROLE_ADMIN'
         connexion:
             nom: 'Connexion'
             masquee: true
