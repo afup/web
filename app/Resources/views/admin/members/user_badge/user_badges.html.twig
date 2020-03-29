@@ -6,15 +6,22 @@
         <thead>
             <th>Nom</th>
             <th>Date</th>
-            <th>Actions</th>
+            <th class="right aligned">Actions</th>
         </thead>
         <tbody>
         {% for user_badge in user_badges %}
             <tr>
                 <td>{{ user_badge.badge.label }}</td>
                 <td>{{ user_badge.issuedAt|date('d/m/Y') }}</td>
-                <td>
-                    <a href="{{ path('admin_members_user_badge_delete', {userId: user_badge.userId, badgeId: user_badge.badgeId}) }}">Supprimer</a>
+                <td class="right aligned">
+                    <a href="{{ path('admin_members_user_badge_delete', {userId: user_badge.userId, badgeId: user_badge.badgeId}) }}"
+                       data-position="left center"
+                       data-tooltip="Supprimer l'association avec le badge {{ user_badge.badge.label }}"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer l'association avec le badge {{ user_badge.badge.label }} ?"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
                 </td>
             </tr>
         {% endfor %}
