@@ -5,6 +5,7 @@
 
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
+    {% if pendingBankwires|length > 0 %}
     <form method="post" style="width:auto;">
         <table class="ui table striped compact celled">
             <thead>
@@ -50,4 +51,12 @@
         </table>
         <input type="hidden" name="token" value="{{ token }}" />
     </form>
+    {% else %}
+    <div class="ui placeholder segment">
+        <div class="ui icon header">
+            <i class="meh outline icon"></i>
+            Aucune virement en attente.
+        </div>
+    </div>
+    {% endif  %}
 {% endblock %}
