@@ -5,6 +5,7 @@ use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Utils\Logs;
 use AppBundle\Association\Model\Repository\UserRepository;
 
+/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;

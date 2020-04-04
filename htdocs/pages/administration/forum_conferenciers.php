@@ -12,6 +12,7 @@ use Afup\Site\Utils\Utils;
  * @var $this \AppBundle\Controller\LegacyController
  */
 
+/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
