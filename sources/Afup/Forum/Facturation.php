@@ -1,9 +1,12 @@
 <?php
 namespace Afup\Site\Forum;
-use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
+use AppBundle\Email\Mailer\Attachment;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Email\Mailer\Message;
 
 class Facturation
 {
@@ -440,7 +443,7 @@ SQL;
 
     /**
      * Envoi par mail d'une facture au format PDF
-     *afficherMessage
+     *
      * @param string|array $reference Invoicing reference as string, or the invoice itself
      * @access public
      * @return bool Succès de l'envoi
@@ -456,48 +459,31 @@ SQL;
             $personne = $this->obtenir($reference, 'email, nom, prenom');
         }
 
-        $mail = new Mail(null, null);
-        $receiver = array(
-            array(
-                'email' => $personne['email'],
-                'name' => sprintf('%s %s', $personne['prenom'], $personne['nom'])
-            )
+        $cheminFacture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
+        $numeroFacture = $this->genererFacture($reference, $cheminFacture);
+
+        $message = new Message(
+            'Facture événement AFUP',
+            MailUserFactory::bureau(),
+            new MailUser($personne['email'], sprintf('%s %s', $personne['prenom'], $personne['nom']))
         );
-        $parameters = array();
-
-        if (!$copyTresorier) {
-            // Bypass copy tresorier@afup.org
-            $parameters['bcc_address'] = null;
-        }
-
-        $data = array(
+        $mailer = Mail::createMailer();
+        $mailer->renderTemplate($message,'mail_templates:facture-forum.html.twig', [
             'raison_sociale' => $configuration->obtenir('afup|raison_sociale'),
             'adresse' => $configuration->obtenir('afup|adresse'),
-            'ville' => $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville'),
-        );
-
-        $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
-        $numeroFacture = $this->genererFacture($reference, $chemin_facture);
-
-        $parameters += array(
-            'subject' => "Facture événement AFUP",
-            'from' => [
-                'email' => 'bureau@afup.org',
-                'name' => 'AFUP'
-            ],
-            "attachments" => array(
-                array(
-                    "type" => "application/pdf",
-                    "name" => 'facture-' . $numeroFacture . '.pdf',
-                    'encoding' => 'base64',
-                    "path" => $chemin_facture,
-                )
-            )
-        );
-
-        @unlink($chemin_facture);
-
-        $ok = $mail->send('mail_templates:facture-forum.html.twig', $receiver, $data, $parameters);
+            'ville' => $configuration->obtenir('afup|code_postal').' '.$configuration->obtenir('afup|ville'),
+        ]);
+        $message->addAttachment(new Attachment(
+            $cheminFacture,
+            'facture-'.$numeroFacture.'.pdf',
+            'base64',
+            'application/pdf'
+        ));
+        if ($copyTresorier) {
+            $message->addBcc(MailUserFactory::tresorier());
+        }
+        $ok = $mailer->send($message);
+        @unlink($cheminFacture);
 
         if ($ok && $facturer) {
             $this->estFacture($reference);

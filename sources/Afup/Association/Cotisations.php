@@ -4,12 +4,15 @@ namespace Afup\Site\Association;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
-use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
+use AppBundle\Email\Mailer\Attachment;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Email\Mailer\Message;
 use DateInterval;
 use DateTime;
-
 
 define('AFUP_COTISATIONS_REGLEMENT_ESPECES', 0);
 define('AFUP_COTISATIONS_REGLEMENT_CHEQUE', 1);
@@ -232,11 +235,8 @@ class Cotisations
         $corps .= "Autorisation : " . $autorisation . "\n";
         $corps .= "Transaction : " . $transaction . "\n\n";
 
-        $ok = Mailing::envoyerMail(
-            $GLOBALS['conf']->obtenir('mails|email_expediteur'),
-            array('tresorier@afup.org'),
-            $sujet,
-            $corps);
+        $expediteur = $GLOBALS['conf']->obtenir('mails|email_expediteur');
+        $ok = Mailing::envoyerMail(new Message($sujet, new MailUser($expediteur), MailUserFactory::tresorier()), $corps);
 
         if (false === $ok) {
             return false;
@@ -388,9 +388,8 @@ class Cotisations
      * @access public
      * @return bool Succès de l'envoi
      */
-    public function envoyerFacture($id_cotisation, Mail $mail)
+    public function envoyerFacture($id_cotisation, Mailer $mailer)
     {
-
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
@@ -410,35 +409,21 @@ class Cotisations
         $corps .= $configuration->obtenir('afup|adresse') . "<br />";
         $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "<br />";
 
-        $chemin_facture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
-        $numeroFacture = $this->genererFacture($id_cotisation, $chemin_facture);
+        $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
+        $numeroFacture = $this->genererFacture($id_cotisation, $cheminFacture);
 
-
-        $receiver = array (
-                array(
-                'email' => $contactPhysique['email'],
-                'name' => sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom'])
-            )
-        );
-        $subject = 'Facture AFUP';
-        $parameters = [
-            'subject' => $subject,
-            "attachments" => [
-                [
-                    'type' => "application/pdf",
-                    'name' => 'facture-' . $numeroFacture . '.pdf',
-                    'encoding' => 'base64',
-                    'path' => $chemin_facture,
-                ]
-            ]
-        ];
-
-        $ok = $mail->send(Mail::TRANSACTIONAL_TEMPLATE_MAIL, $receiver, [
-            'content' => $corps,
-            'title' => $subject,
-            'adresse' => 'bonjour@afup.org',
-        ], $parameters);
-        @unlink($chemin_facture);
+        $message = new Message('Facture AFUP', null, new MailUser(
+            $contactPhysique['email'],
+            sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom'])
+        ));
+        $message->addAttachment(new Attachment(
+                $cheminFacture,
+                'facture-'.$numeroFacture.'.pdf',
+                'base64',
+                'application/pdf'
+            ));
+        $ok = $mailer->sendTransactional($message, $corps);
+        @unlink($cheminFacture);
 
         return $ok;
     }
@@ -597,12 +582,11 @@ Cordialement,
 Le trésorier
 TXT;
 
-
-        $ok = Mailing::envoyerMail(
-            $GLOBALS['conf']->obtenir('mails|email_expediteur'),
-            array($infos['email'], $infos['nom'] . " " . $infos['prenom']),
+        $ok = Mailing::envoyerMail(new Message(
             $sujet,
-            $corps);
+            new MailUser($GLOBALS['conf']->obtenir('mails|email_expediteur')),
+            new MailUser($infos['email'], $infos['nom'].' '.$infos['prenom'])
+        ), $corps);
 
         if (false === $ok) {
             return false;

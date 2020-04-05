@@ -3,25 +3,25 @@
 
 namespace AppBundle\Association\CompanyMembership;
 
-use Afup\Site\Utils\Mail;
 use AppBundle\Association\MembershipReminderInterface;
 use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
+use AppBundle\Email\Mailer\Mailer;
 
 class CompanyReminderFactory
 {
     /**
-     * @var Mail
+     * @var Mailer
      */
-    private $mail;
+    private $mailer;
 
     /**
      * @var SubscriptionReminderLogRepository
      */
     private $subscriptionReminderLogRepository;
 
-    public function __construct(Mail $mail, SubscriptionReminderLogRepository $subscriptionReminderLogRepository)
+    public function __construct(Mailer $mailer, SubscriptionReminderLogRepository $subscriptionReminderLogRepository)
     {
-        $this->mail = $mail;
+        $this->mailer = $mailer;
         $this->subscriptionReminderLogRepository = $subscriptionReminderLogRepository;
     }
 
@@ -32,7 +32,7 @@ class CompanyReminderFactory
     public function getReminder($class)
     {
         $instance = new $class(
-            $this->mail,
+            $this->mailer,
             AFUP_COTISATION_PERSONNE_MORALE,
             AFUP_PERSONNE_MORALE_SEUIL,
             $this->subscriptionReminderLogRepository

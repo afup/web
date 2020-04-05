@@ -29,7 +29,7 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $mailer = $this->getContainer()->get(\Afup\Site\Utils\Mail::class);
+        $mailer = $this->getContainer()->get(\AppBundle\Email\Mailer\Mailer::class);
         $factory = new Association\UserMembership\UserReminderFactory($mailer, $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class));
         $companyFactory = new Association\CompanyMembership\CompanyReminderFactory(
             $mailer,

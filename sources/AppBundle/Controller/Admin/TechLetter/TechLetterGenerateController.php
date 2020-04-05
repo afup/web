@@ -4,42 +4,73 @@ namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Controller\SiteBaseController;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\Message;
 use AppBundle\TechLetter\DataExtractor;
 use AppBundle\TechLetter\Form\SendingType;
 use AppBundle\TechLetter\Model as Techletter;
+use AppBundle\TechLetter\Model\Repository\SendingRepository;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TechLetterGenerateController extends SiteBaseController
 {
+    /** @var SendingRepository */
+    private $sendingRepository;
+    /** @var FormFactoryInterface */
+    private $formFactory;
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+    /** @var TechletterSubscriptionsRepository */
+    private $techletterSubscriptionsRepository;
+    /** @var Mailer */
+    private $mailer;
+
+    public function __construct(
+        SendingRepository $sendingRepository,
+        TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        FormFactoryInterface $formFactory,
+        UrlGeneratorInterface $urlGenerator,
+        Mailer $mailer
+    ) {
+        $this->sendingRepository = $sendingRepository;
+        $this->formFactory = $formFactory;
+        $this->urlGenerator = $urlGenerator;
+        $this->techletterSubscriptionsRepository = $techletterSubscriptionsRepository;
+        $this->mailer = $mailer;
+    }
+
     public function indexAction(Request $request)
     {
-        $repository = $this->get(\AppBundle\TechLetter\Model\Repository\SendingRepository::class);
-        $techLetters = $repository->getAll();
-        $form = $this->createForm(SendingType::class);
+        $techLetters = $this->sendingRepository->getAll();
+        $form = $this->formFactory->create(SendingType::class);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $techletter = $form->getData();
-            $repository->save($techletter);
+            $this->sendingRepository->save($techletter);
 
-            return $this->redirectToRoute('admin_techletter_generate', ['techletterId' => $techletter->getId()]);
+            return new RedirectResponse($this->urlGenerator->generate('admin_techletter_generate', [
+                'techletterId' => $techletter->getId(),
+            ]));
         }
 
         return $this->render('admin/techletter/index.html.twig', [
             'title' => "Veille de l'AFUP",
             'techletters' => $techLetters,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
-    public function historyAction(Request $request)
+    public function historyAction()
     {
-        $sendingRepository = $this->get('ting')->get(Techletter\Repository\SendingRepository::class)->getAll();
-
         $history = [];
-        foreach ($sendingRepository as $sending) {
+        foreach ($this->sendingRepository->getAll() as $sending) {
             $defaultColumns = [
                 'date' => $sending->getSendingDate(),
             ];
@@ -89,11 +120,10 @@ class TechLetterGenerateController extends SiteBaseController
 
     public function generateAction($techletterId, Request $request)
     {
-        $sendingRepository = $this->get(\AppBundle\TechLetter\Model\Repository\SendingRepository::class);
         /**
          * @var $sending Techletter\Sending
          */
-        $sending = $sendingRepository->get($techletterId);
+        $sending = $this->sendingRepository->get($techletterId);
         if ($sending === null) {
             throw $this->createNotFoundException('Could not find this techletter');
         }
@@ -134,7 +164,7 @@ class TechLetterGenerateController extends SiteBaseController
 
             $sending->setArchiveUrl($response['long_archive_url']);
             $sending->setSentToMailchimp(true);
-            $sendingRepository->save($sending);
+            $this->sendingRepository->save($sending);
 
             $message = "La campagne a été générée. Il faut maintenant <a href='https://us8.admin.mailchimp.com/campaigns/edit?id=" . $response['web_id'] . "' target='_blank'>se connecter sur Mailchimp</a> pour la valider/en planifier l'envoi";
             $this->addFlash('notice', $message);
@@ -168,11 +198,10 @@ class TechLetterGenerateController extends SiteBaseController
     public function previewAction(Request $request)
     {
         $sendingId = $request->request->getInt('techletterId');
-        $repository = $this->get(\AppBundle\TechLetter\Model\Repository\SendingRepository::class);
         /**
          * @var $sending Techletter\Sending
          */
-        $sending = $repository->get($sendingId);
+        $sending = $this->sendingRepository->get($sendingId);
 
         if ($sending === null) {
             throw $this->createNotFoundException('Could not find this techletter');
@@ -189,7 +218,7 @@ class TechLetterGenerateController extends SiteBaseController
         if ($techletter instanceof Techletter\TechLetter) {
             // @todo could be better elsewhere
             $sending->setTechletter(json_encode($techletter->jsonSerialize()));
-            $repository->save($sending);
+            $this->sendingRepository->save($sending);
         }
 
         return $this->render('admin/techletter/mail_template.html.twig', [
@@ -201,11 +230,10 @@ class TechLetterGenerateController extends SiteBaseController
     public function sendTestAction(Request $request)
     {
         $sendingId = $request->query->getInt('techletterId');
-        $repository = $this->get(\AppBundle\TechLetter\Model\Repository\SendingRepository::class);
         /**
          * @var $sending Techletter\Sending
          */
-        $sending = $repository->get($sendingId);
+        $sending = $this->sendingRepository->get($sendingId);
 
         if ($sending === null) {
             throw $this->createNotFoundException('Could not find this techletter');
@@ -219,33 +247,12 @@ class TechLetterGenerateController extends SiteBaseController
 
         $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
 
-        $mailContent = $this
-            ->render(
-                ':admin/techletter:mail_template.html.twig',
-                [
-                    'tech_letter' => $techLetter,
-                    'preview' => false
-                ]
-            )
-            ->getContent()
-        ;
-
-        $mailer = $this->get(\Afup\Site\Utils\Mail::class);
-        $ok = $mailer->send(
-            ':admin/techletter:mail_template.html.twig',
-            [
-                [
-                    'email' => $this->getParameter('techletter_test_email_address'),
-                ],
-            ],
-            [
-                'tech_letter' => $techLetter,
-                'preview' => false
-            ],
-            [
-                'subject' => $subject,
-            ]
-        );
+        $message = new Message($subject, null, new MailUser($this->getParameter('techletter_test_email_address')));
+        $this->mailer->renderTemplate($message,':admin/techletter:mail_template.html.twig', [
+            'tech_letter' => $techLetter,
+            'preview' => false,
+        ]);
+        $this->mailer->send($message);
 
         $this->addFlash('notice', 'Le mail de test à été envoyé');
 
@@ -254,7 +261,7 @@ class TechLetterGenerateController extends SiteBaseController
 
     public function membersAction()
     {
-        $subscribers = $this->get('ting')->get(TechletterSubscriptionsRepository::class)->getAllSubscriptionsWithUser();
+        $subscribers = $this->techletterSubscriptionsRepository->getAllSubscriptionsWithUser();
         return $this->render('admin/techletter/members.html.twig', [
             'subscribers' => $subscribers,
             'title' => 'Liste des abonnés à la techletter'

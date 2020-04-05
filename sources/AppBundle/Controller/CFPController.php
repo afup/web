@@ -3,8 +3,9 @@
 
 namespace AppBundle\Controller;
 
-use Afup\Site\Utils\Mail;
 use AppBundle\CFP\PhotoStorage;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Form\TalkInvitationType;
 use AppBundle\Event\Form\TalkType;
@@ -29,7 +30,7 @@ class CFPController extends EventBaseController
 {
     private $mailer;
 
-    public function __construct(Mail $mailer)
+    public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
     }
@@ -171,7 +172,7 @@ class CFPController extends EventBaseController
                         ]
                     );
 
-                    $this->mail->sendSimpleMessage('CFP Afup', $text, [['email' => $invitation->getEmail()]]);
+                    $this->mailer->sendSimpleMessage('CFP Afup', $text, new MailUser($invitation->getEmail()));
                 });
 
                 $this->addFlash('success', $this->get('translator')->trans('Invitation envoyée !'));

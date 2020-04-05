@@ -4,6 +4,8 @@ namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mailing;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Talk;
 use Symfony\Component\Translation\Translator;
 
@@ -822,11 +824,11 @@ class AppelConferencier
 
         $ok = false;
         foreach ($conferenciers as $personne) {
-            $ok = Mailing::envoyerMail(
-                $configuration->obtenir('mails|email_expediteur'),
-                array($personne['email'], $personne['nom'] . ' ' . $personne['prenom']),
-                $translator->trans('Votre proposition pour:') . $personne['titre'] . "\n",
-                $corps);
+            $ok = Mailing::envoyerMail(new Message(
+                $translator->trans('Votre proposition pour:').$personne['titre']."\n",
+                new MailUser($configuration->obtenir('mails|email_expediteur')),
+                new MailUser($personne['email'], $personne['nom'].' '.$personne['prenom'])
+            ), $corps);
         }
         return $ok;
     }
@@ -892,13 +894,11 @@ class AppelConferencier
         $corps .= $configuration->obtenir('afup|adresse') . "\n";
         $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "\n";
 
-        $ok = Mailing::envoyerMail(
-            $configuration->obtenir('mails|email_expediteur'),
-            array($resultat['email'], $resultat['nom'] . ' ' . $resultat['prenom']),
+        return Mailing::envoyerMail(new Message(
             $sujet,
-            $corps);
-
-        return $ok;
+            new MailUser($configuration->obtenir('mails|email_expediteur')),
+            new MailUser($resultat['email'], $resultat['nom'].' '.$resultat['prenom'])
+        ), $corps);
     }
 
     function aVote($id_user, $id_session)

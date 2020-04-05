@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use Afup\Site\Forum\Facturation;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Email\Emails;
+use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Form\SponsorTicketType;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
@@ -111,10 +113,8 @@ class TicketController extends EventBaseController
             }
 
             $sponsorTicketHelper->addTicketToSponsor($sponsorTicket, $ticket);
-            $mailer = $this->get(\Afup\Site\Utils\Mail::class);
-            $logger = $this->get('logger');
-            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                $this->get(\AppBundle\Email\Emails::class)->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
+            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket) {
+                $this->get(Emails::class)->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
                 return 1;
             });
 
@@ -323,8 +323,6 @@ class TicketController extends EventBaseController
             $forumFacturation->envoyerFacture($invoice->getReference());
         }
 
-        $mailer = $this->get(\Afup\Site\Utils\Mail::class);
-        $logger = $this->get('logger');
         foreach ($tickets as $ticket) {
             /**
              * @var $ticket Ticket
@@ -336,8 +334,8 @@ class TicketController extends EventBaseController
             $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->save($ticket);
 
             if ($paymentStatus === Ticket::STATUS_PAID) {
-                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                    $this->get(\AppBundle\Email\Emails::class)->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
+                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket) {
+                    $this->get(Emails::class)->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
                     return 1;
                 });
             }

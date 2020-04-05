@@ -2,7 +2,10 @@
 
 namespace AppBundle\Event\Ticket;
 
-use Afup\Site\Utils\Mail;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\SponsorTicket;
@@ -13,9 +16,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 class SponsorTokenMail
 {
     /**
-     * @var Mail
+     * @var Mailer
      */
-    private $mail;
+    private $mailer;
 
     /**
      * @var TranslatorInterface
@@ -32,9 +35,9 @@ class SponsorTokenMail
      */
     private $eventRepository;
 
-    public function __construct(Mail $mail, TranslatorInterface $translator, RouterInterface $router, EventRepository $eventRepository)
+    public function __construct(Mailer $mail, TranslatorInterface $translator, RouterInterface $router, EventRepository $eventRepository)
     {
-        $this->mail = $mail;
+        $this->mailer = $mail;
         $this->translator = $translator;
         $this->router = $router;
         $this->eventRepository = $eventRepository;
@@ -53,7 +56,6 @@ class SponsorTokenMail
          * @var $event Event
          */
         $event = $this->eventRepository->get($sponsorTicket->getIdForum());
-
 
         $textLabel = 'mail.sponsorTicket.text';
         $subjectLabel = "mail.sponsorTicket.subject";
@@ -79,25 +81,10 @@ class SponsorTokenMail
             ]
         );
 
-        $parameters = [
-            'subject' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()]),
-            'from' => [
-                'email' => 'bonjour@afup.org',
-                'name' => 'AFUP'
-            ]
-        ];
-
-        return $this->mail->send(
-            Mail::TRANSACTIONAL_TEMPLATE_MAIL,
-            [
-                ['email' => $sponsorTicket->getContactEmail(), 'name' => $sponsorTicket->getCompany()]
-            ],
-            [
-                'content' => $text,
-                'title' => $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()]),
-                'adresse' => 'bonjour@afup.org',
-            ],
-            $parameters
-        );
+        return $this->mailer->sendTransactional(new Message(
+            $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()]),
+            MailUserFactory::afup(),
+            new MailUser($sponsorTicket->getContactEmail(), $sponsorTicket->getCompany())
+        ), $text);
     }
 }

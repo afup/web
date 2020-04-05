@@ -2,7 +2,11 @@
 
 namespace AppBundle\Event\Sponsorship;
 
-use Afup\Site\Utils\Mail;
+use AppBundle\Email\Mailer\Attachment;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Lead;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -10,9 +14,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 class SponsorshipLeadMail
 {
     /**
-     * @var Mail
+     * @var Mailer
      */
-    private $mail;
+    private $mailer;
 
     /**
      * @var TranslatorInterface
@@ -30,12 +34,12 @@ class SponsorshipLeadMail
     private $sponsorshipFileDir;
 
     public function __construct(
-        Mail $mail,
+        Mailer $mailer,
         TranslatorInterface $translator,
         LoggerInterface $logger,
         $sponsorshipFileDir
     ) {
-        $this->mail = $mail;
+        $this->mailer = $mailer;
         $this->translator = $translator;
         $this->logger = $logger;
         $this->sponsorshipFileDir = $sponsorshipFileDir;
@@ -43,43 +47,21 @@ class SponsorshipLeadMail
 
     public function sendSponsorshipFile(Lead $lead)
     {
-        $receiver = [
-            [
-                'email' => $lead->getEmail(),
-                'name'  => $lead->getLabel(),
-            ]
-        ];
         $filename = $lead->getEvent()->getPath() . '-sponsoring-' . $lead->getLanguage() . '.pdf';
         $filepath = $this->sponsorshipFileDir;
+        $subject = $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()]);
+        $message = new Message($subject, MailUserFactory::sponsors(), new MailUser($lead->getEmail(), $lead->getLabel()));
 
-        $data = [
-            'content' => $this->translator->trans('mail.sponsoringfile.text', ['%eventName%' => $lead->getEvent()->getTitle()]),
-            'title' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()]),
-            'adresse' => 'bonjour@afup.org',
-        ];
+        $message->addAttachment(new Attachment(
+            $filepath . $filename,
+            $lead->getEvent()->getPath() . '-sponsoring-' . $lead->getLanguage() . '.pdf',
+            'base64',
+            'application/pdf'
+        ));
 
-        $parameters = [
-            'from' => [
-                'name' => 'AFUP sponsors',
-                'email' => 'sponsors@afup.org'
-            ],
-            'attachments' => [
-                [
-                    'type' => 'application/pdf',
-                    'name' => $lead->getEvent()->getPath() . '-sponsoring-' . $lead->getLanguage() . '.pdf',
-                    'encoding' => 'base64',
-                    'path' => $filepath . $filename,
-                ]
-            ],
-            'subject' => $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()])
-        ];
+        $content = $this->translator->trans('mail.sponsoringfile.text', ['%eventName%' => $lead->getEvent()->getTitle()]);
 
-        if (!$this->mail->send(
-            Mail::TRANSACTIONAL_TEMPLATE_MAIL,
-            $receiver,
-            $data,
-            $parameters
-        )) {
+        if (!$this->mailer->sendTransactional($message, $content)) {
             $this->logger->warning(sprintf('Mail not sent for sponsorship lead retrieval: "%s"', $lead->getEmail()));
         }
     }

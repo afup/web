@@ -6,6 +6,8 @@ namespace AppBundle\Controller;
 use Afup\Site\Forum\Facturation;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Email\Emails;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Form\SponsorTokenType;
@@ -493,8 +495,6 @@ class AdminEventController extends Controller
 
         $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
 
-        $mailer = $this->get(\Afup\Site\Utils\Mail::class);
-        $logger = $this->get('logger');
         foreach ($tickets as $ticket) {
             /**
              * @var $ticket Ticket
@@ -505,8 +505,8 @@ class AdminEventController extends Controller
             ;
             $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->save($ticket);
 
-            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket, $mailer, $logger) {
-                $this->get(\AppBundle\Email\Emails::class)->sendInscription($event, $ticket->getEmail(), $ticket->getLabel());
+            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket) {
+                $this->get(Emails::class)->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
                 return 1;
             });
         }
@@ -589,7 +589,7 @@ class AdminEventController extends Controller
         $eventRepository = $ting->get(EventRepository::class);
         $event = $this->getEvent($eventRepository, $request);
 
-        $this->get(\AppBundle\Email\Emails::class)->sendInscription($event, Emails::EMAIL_BUREAU_ADDRESS, Emails::EMAIL_BUREAU_LABEL);
+        $this->get(Emails::class)->sendInscription($event, MailUserFactory::bureau());
         $this->addFlash('notice', 'Mail de test envoyé');
 
         $url = $this->get(\AppBundle\Routing\LegacyRouter::class)->getAdminUrl('forum_gestion', ['action' => 'modifier', 'id' => $event->getId()]);

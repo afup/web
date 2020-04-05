@@ -3,6 +3,8 @@ namespace Afup\Site\Utils;
 
 
 
+use AppBundle\Email\Mailer\Message;
+
 class Mailing
 {
     /**
@@ -65,33 +67,12 @@ class Mailing
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    static function envoyerMail($from, $to, $subject, $body, Array $options = array())
+    public static function envoyerMail(Message $message, $body)
     {
-        $configuration = new Configuration(dirname(__FILE__) . '/../../../configs/application/config.php');
+        $recipients = $message->getRecipients();
+        $recipient = reset($recipients);
+        $message->setContent(str_replace('$EMAIL$', $recipient->getEmail(), $body));
 
-        $paramsDefault = array(
-            'html' => false,
-            'bcc_address' => array(),
-            'attachments' => array()); // chaque item doit contenir : (pathFichier, nom fichier)
-
-        $parameters = array_merge($paramsDefault, $options);
-
-        $mail = new Mail(null, null);
-
-        $parameters['from'] = [
-            'email' => is_array($from) ? $from[0] : $from,
-            'name' => (is_array($from) and isset($from[1])) ? $from[1] : '',
-        ];
-        $parameters['subject'] = $subject;
-        $toArray = [
-                [
-                'name' => (is_array($to) and isset($to[1])) ? $to[1] : '',
-                'email' => is_array($to) ? $to[0] : $to,
-            ]
-        ];
-
-        $body = str_replace('$EMAIL$', $toArray[0]['email'], $body);
-
-        return $mail->send($body, $toArray, [], $parameters);
+        return Mail::createMailer()->send($message);
     }
 }

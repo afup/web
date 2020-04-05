@@ -2,64 +2,37 @@
 
 namespace AppBundle\Email;
 
-use Afup\Site\Utils\Mail;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Event;
+use InvalidArgumentException;
 
 class Emails
 {
-    const EMAIL_BUREAU_ADDRESS = 'bureau@afup.org';
-    const EMAIL_BUREAU_LABEL = 'Bureau AFUP';
-    const EMAIL_BONJOUR_ADDRESS = 'bonjour@afup.org';
-    const EMAIL_BONJOUR_LABEL = 'AFUP';
-    const EMAIL_TRESORIER_ADDRESS = 'tresorier@afup.org';
+    /** @var Mailer */
+    private $mailer;
 
-    /**
-     * @var Mail
-     */
-    private $mail;
-
-    /**
-     * @param Mail $mail Mailer
-     */
-    public function __construct(Mail $mail)
+    public function __construct(Mailer $mailer)
     {
-        $this->mail = $mail;
+        $this->mailer = $mailer;
     }
 
-    /**
-     * @param Event $event
-     * @param string $receiverEmail
-     * @param string $receiverLabel
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
-     */
-    public function sendInscription(Event $event, $receiverEmail, $receiverLabel)
+    public function sendInscription(Event $event, MailUser $recipient)
     {
         $mailContent = $event->getMailInscriptionContent();
 
-        if (0 === strlen(trim($mailContent))) {
-            throw new \Exception("Contenu du mail d'inscription non trouvé pour le forum " . $event->getTitle());
+        if ('' === trim($mailContent)) {
+            throw new InvalidArgumentException("Contenu du mail d'inscription non trouvé pour le forum " . $event->getTitle());
         }
 
-        $subject = sprintf("[%s] Merci !", $event->getTitle());
-
-        $to =  [
-            [
-                'email' => $receiverEmail,
-                'name' => $receiverLabel,
-            ]
-        ];
-
-        $this->mail->send(':admin/event:mail_inscription.html.twig', $to, ['content' => $mailContent, 'logo_url' => $event->getLogoUrl()], [
-            'from' => [
-                'email' => self::EMAIL_BONJOUR_ADDRESS,
-                'name' => self::EMAIL_BONJOUR_LABEL,
-            ],
-            'force_bdd' => true,
-            'bcc_address' => self::EMAIL_TRESORIER_ADDRESS,
-            'subject' => $subject,
+        $message = new Message(sprintf('[%s] Merci !', $event->getTitle()), MailUserFactory::afup(), $recipient);
+        $message->addBcc(MailUserFactory::tresorier());
+        $this->mailer->renderTemplate($message, ':admin/event:mail_inscription.html.twig', [
+            'content' => $mailContent,
+            'logo_url' => $event->getLogoUrl(),
         ]);
+        $this->mailer->send($message);
     }
 }

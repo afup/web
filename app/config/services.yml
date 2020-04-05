@@ -165,11 +165,19 @@ services:
         class: AppBundle\TechLetter\MailchimpSynchronizer
         arguments: ["@app.mailchimp_techletter_api", '@AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository', "%mailchimp_techletter_list%"]
 
-    Afup\Site\Utils\Mail:
-        arguments: ["@logger", "@twig"]
+    Afup\Site\Utils\Configuration:
+      arguments: ['%kernel.project_dir%/configs/application/config.php']
+
+    AppBundle\Email\Mailer\Mailer:
+        autowire: true
+
+    AppBundle\Email\Mailer\Adapter\MailerAdapter:
+      class: AppBundle\Email\Mailer\Adapter\PhpMailerAdapter
+      factory: [AppBundle\Email\Mailer\Adapter\PhpMailerAdapter, createFromConfiguration]
+      arguments: ['@Afup\Site\Utils\Configuration']
 
     AppBundle\Email\Emails:
-        arguments: ['@Afup\Site\Utils\Mail']
+        arguments: ['@AppBundle\Email\Mailer\Mailer']
 
     AppBundle\Association\CompanyMembership\InvitationMail:
         autowire: true
@@ -335,7 +343,7 @@ services:
         autowire: true
 
     AppBundle\Event\Sponsorship\SponsorshipLeadMail:
-        arguments: ['@Afup\Site\Utils\Mail', "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
+        arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
 
     Trello\Client:
         calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const:Trello\Client::AUTH_URL_CLIENT_ID]]]

@@ -13,9 +13,6 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
-/**
- * @var $this \AppBundle\Controller\LegacyController
- */
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer','envoyer_convocation', 'generer_mail_inscription_afup', 'generer_inscription_afup'));
 $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');

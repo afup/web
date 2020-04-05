@@ -85,7 +85,7 @@ if ($action == 'lister') {
 } elseif ($action == 'envoi_bienvenue') {
     $password = $personnes_physiques->generatePassword($_GET['id']);
     $data = $personnes_physiques->obtenir($_GET['id'], 'prenom, nom, email, login');
-    if ($personnes_physiques->sendWelcomeMailWithData($data['prenom'], $data['nom'], $data['login'], $data['email'], null)) {
+    if ($personnes_physiques->sendWelcomeMailWithData($data['prenom'], $data['nom'], $data['login'], $data['email'])) {
         Logs::log('Envoi d\'un message de bienvenue à la personne physique ' . $_GET['id']);
         afficherMessage('Un mail de bienvenue a été envoyé à la personne physique', 'index.php?page=personnes_physiques&action=lister');
     } else {

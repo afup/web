@@ -3,25 +3,25 @@
 
 namespace AppBundle\Association\UserMembership;
 
-use Afup\Site\Utils\Mail;
 use AppBundle\Association\MembershipReminderInterface;
 use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
+use AppBundle\Email\Mailer\Mailer;
 
 class UserReminderFactory
 {
     /**
-     * @var Mail
+     * @var Mailer
      */
-    private $mail;
+    private $mailer;
 
     /**
      * @var SubscriptionReminderLogRepository
      */
     private $subscriptionReminderLogRepository;
 
-    public function __construct(Mail $mail, SubscriptionReminderLogRepository $subscriptionReminderLogRepository)
+    public function __construct(Mailer $mailer, SubscriptionReminderLogRepository $subscriptionReminderLogRepository)
     {
-        $this->mail = $mail;
+        $this->mailer = $mailer;
         $this->subscriptionReminderLogRepository = $subscriptionReminderLogRepository;
     }
 
@@ -31,7 +31,7 @@ class UserReminderFactory
      */
     public function getReminder($class)
     {
-        $instance = new $class($this->mail, AFUP_COTISATION_PERSONNE_PHYSIQUE, $this->subscriptionReminderLogRepository);
+        $instance = new $class($this->mailer, AFUP_COTISATION_PERSONNE_PHYSIQUE, $this->subscriptionReminderLogRepository);
         if (!$instance instanceof AbstractUserReminder) {
             throw new \RuntimeException(sprintf('The class %s is not an instance of AbstractUserReminder', $class));
         }
