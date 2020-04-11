@@ -68,7 +68,7 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'	  , 'lien'                 , 'Lien'      , array('size' => 60, 'maxlength' => 255));
 	$formulaire->addElement('text'	  , 'alt'                  , 'Description', array('size' => 60, 'maxlength' => 255));
     $file =& $formulaire->addElement('file', 'nouvelle-image'  , 'Image');
-    $formulaire->addElement('static'  , 'ancienne-image'       , ''          , '<img src="../../templates/site/images/'.$feuille->image.'" />');
+    $formulaire->addElement('static'  , 'note'       , ''          , '<img src="../../templates/site/images/'.$feuille->image.'" />');
     $formulaire->addElement('hidden'  , 'image');
     $formulaire->addElement('date'    , 'date'                 , 'Date'      , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
 	$formulaire->addElement('select'  , 'position'             , 'Position'  , $feuille->positionable());

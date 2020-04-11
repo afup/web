@@ -1,84 +1,116 @@
 {if $action == 'lister' || $action == 'debit' || $action == 'credit' }
 
-<!-- Required for paybox popups -->
-<meta name="referrer" content="no-referrer" />
+    <h2>Journal</h2>
 
-    <h2>Liste journal {$action} </h2>
+    <div class="ui menu">
+        <a href="index.php?page=compta_journal&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter une écriture" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <a href="index.php?page=compta_journal&amp;action=importer" class="item">
+            <i class="icon upload"></i>
+            Importer un fichier CSV
+        </a>
+    </div>
 
-<ul>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=ajouter" title="ajouter une écriture">Ajouter une écriture</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=importer" title="importer un fichier csv">Importer un fichier
-            CSV</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}"
-           title="ajouter une écriture">Journal Dépenses/Recettes</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}"
-           title="ajouter une écriture">Journal des dépenses</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}"
-           title="ajouter une écriture">Journal des recettes</a>
-    </li>
-    <li>
-        <a href="index.php?page=compta_journal&amp;action=export&id_periode={$smarty.get.id_periode}"
-           title="exporter en CSV">Exporter la période en CSV</a>
-    </li>
-</ul>
+    <div class="ui green segment">
+        <form method="GET" name="forum">
+            <input type="hidden" name="page" value="compta_journal" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Année comptable</label>
+                        <select name="id_periode" onchange="this.form.submit(); return false;">
+                            {foreach from=$listPeriode item=periode}
+                            <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
-  <table>
-    <form method="GET" name="forum">
-      <input type="hidden" name="page" value="compta_journal" />
-     <h2>Année comptable <select name="id_periode" onchange="this.form.submit(); return false;">
-    {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
-    {/foreach}
-    </select></h2>
-    </form>
-    </table>
-    <br/>
-    <table class="afup_tab tab--filterable">
-        <tr>
-            <!-- th width="20px">&nbsp;</th -->
-           <th><a href="index.php?page=compta_journal&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
-            <th>Compte</th>
-           <th><a href="index.php?page=compta_journal&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Evenement</a></th>
-           <th><a href="index.php?page=compta_journal&amp;tri=categorie&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Catégorie</a></th>
-            <th>Description</th>
-            <th>Debit</th>
-            <th>Crédit</th>
-            <th>Reglement</th>
-            <th>Justif ?</th>
-            <th>&nbsp;</th>
-       </tr>
+    <div class="ui segment">
+        <form method="GET" name="filtre" class="js-form-search">
+            <input type="hidden" name="page" value="compta_journal" />
+            <input type="hidden" name="id_periode" value="{$smarty.get.id_periode}" />
+
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" name="also_display_classifed_entries" {if $also_display_classifed_entries}checked="checked"{/if}>
+                            <label>Afficher aussi les entrées déjà pointées</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="ui menu">
+        <a href="index.php?page=compta_journal&amp;action=export&id_periode={$smarty.get.id_periode}&also_display_classifed_entries={$also_display_classifed_entries}" class="item">
+            <i class="icon file"></i>
+            Exporter la période en CSV
+        </a>
+    </div>
+
+    <div class="ui top attached tabular menu">
+        <a class="item {if $action == 'lister'}active{/if}" href="index.php?page=compta_journal&amp;action=lister&id_periode={$smarty.get.id_periode}&also_display_classifed_entries={$also_display_classifed_entries}">Dépenses/Recettes</a>
+        <a class="item {if $action == 'debit'}active{/if}" href="index.php?page=compta_journal&amp;action=debit&id_periode={$smarty.get.id_periode}&also_display_classifed_entries={$also_display_classifed_entries}">Dépenses</a>
+        <a class="item {if $action == 'credit'}active{/if}" href="index.php?page=compta_journal&amp;action=credit&id_periode={$smarty.get.id_periode}&also_display_classifed_entries={$also_display_classifed_entries}">Recettes</a><br />
+    </div>
+
+    <div class="ui bottom attached segment">
+        {if $journal}
+        <table class="ui table striped compact celled afup-tab-filterable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th data-tf-filter-type="select">Compte</th>
+                    <th data-tf-filter-type="select">Evenement</th>
+                    <th data-tf-filter-type="select">Catégorie</th>
+                    <th data-tf-filter-type="input">Description</th>
+                    <th data-tf-filter-type="input" class="right aligned">Debit</th>
+                    <th data-tf-filter-type="input" class="right aligned">Crédit</th>
+                    <th data-tf-filter-type="select">Reglement</th>
+                    <th>Justif ?</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
     {foreach from=$journal item=ecriture}
          <tr class="{cycle values="odd,even"}" id="journal-ligne-{$ecriture.idtmp}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td nowrap="nowrap"><a name="L{$ecriture.idtmp}"></a>{$ecriture.date_ecriture|date_format:"%d/%m/%Y"}</td>
             <td>{$ecriture.nom_compte}</td>
             <td>
             {if $ecriture.evenement=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}" style="width: 130px">
-                    {foreach from=$events item=event_name key=event_id}
-                    <option value="{$event_id}">{$event_name}</option>
-                    {/foreach}
-                </select>
+                <div class="ui form">
+                    <select class=" js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}" style="min-width:130px">
+                        {foreach from=$events item=event_name key=event_id}
+                        <option value="{$event_id}" {if $event_name == "A déterminer"}selected="selected"{/if}>{$event_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
             {else}
                 {$ecriture.evenement}
             {/if}
             </td>
              <td>
                 {if $ecriture.categorie=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}" style="width: 130px">
-                    {foreach from=$categories item=cat_name key=cat_id}
-                    <option value="{$cat_id}">{$cat_name}</option>
-                    {/foreach}
-                </select>
+                 <div class="ui form">
+                    <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}" style="min-width:130px">
+                        {foreach from=$categories item=cat_name key=cat_id}
+                        <option value="{$cat_id}" {if $cat_name == "A déterminer"}selected="selected"{/if}>{$cat_name}</option>
+                        {/foreach}
+                    </select>
+                 </div>
                 {else}
                     {$ecriture.categorie}
                 {/if}
@@ -87,20 +119,22 @@
                  {$ecriture.description|paybox_link}
              </td>
 		{if $ecriture.idoperation == 1}
-			<td  align='right' width='100'>-{$ecriture.montant|number_format:2:',':' '}</td>
+			<td class="right aligned" width='100'>-{$ecriture.montant|number_format:2:',':' '}</td>
 			<td width='100'></td>
 		{else}
 			<td width='100'></td>
-			<td align='right' width='100'>+{$ecriture.montant|number_format:2:',':' '}</td>
+			<td class="right aligned" width='100'>+{$ecriture.montant|number_format:2:',':' '}</td>
 		{/if}
 
             <td>
             {if $ecriture.reglement=='A déterminer'}
-                <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=reglement&amp;id={$ecriture.idtmp}">
-                    {foreach from=$payment_methods item=method_name key=method_id}
-                    <option value="{$method_id}">{$method_name}</option>
-                    {/foreach}
-                </select>
+                <div class="ui form">
+                    <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=reglement&amp;id={$ecriture.idtmp}" style="min-width:130px">
+                        {foreach from=$payment_methods item=method_name key=method_id}
+                        <option value="{$method_id}" {if $method_name == "A déterminer"}selected="selected"{/if}>{$method_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
             {else}
                 {$ecriture.reglement}
             {/if}
@@ -118,36 +152,80 @@
                     href="index.php?page=compta_journal&amp;action=download_attachment&amp;id={$ecriture.idtmp}"
                     title="Télécharger le justificatif"
                 >
-                    <img src="{$chemin_template}images/famfamfam/attach.png" alt="Attach" />
+                    <i class="paperclip icon"></i>
                 </a>
-                <div class="js-attachment-form-container" {if !$ecriture.attachment_required}style="display:none;"{/if}>
+                <div class="js-attachment-form-container"
+                     style="{if !$ecriture.attachment_required}display:none;"{/if}"
+                     data-position="left center"
+                     data-tooltip="Cliquez ou déposez un fichier dans la zone pour ajouter un justificatif"
+                >
                     <form action="index.php?page=compta_journal&amp;action=upload_attachment&amp;id={$ecriture.idtmp}"
-                          class="js-dropzone dz-journal-form"
-                          style="display:none;"
-                          ><img src="{$chemin_template}images/famfamfam/arrow_down.png" class="dz-message"/></form>
+                          class="js-dropzone dz-journal-form ui center aligned tertiary blue segment"
+                          style="display:none;cursor: pointer"
+                      >
+                        <i class="upload icon dz-message"></i>
+                    </form>
                 </div>
             </td>
-            <td style="text-align: right">
-                <a class="js-edit-comment" style="cursor:pointer;"
+            <td style="text-align: right" class="single line">
+                <a class="js-edit-comment compact ui icon button"
+                   style="cursor:pointer;"
+                   data-position="left center"
+                   data-tooltip='Editer le commentaire{if $ecriture.comment} ("{$ecriture.comment}"){/if}'
                    data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=comment&amp;id={$ecriture.idtmp}"
-                   data-comment="{$ecriture.comment}"><img src="{$chemin_template}images/famfamfam/comment_{if $ecriture.comment}edit{else}add{/if}.png"
-                         data-img-src-edit="{$chemin_template}images/famfamfam/comment_edit.png"
-                         data-img-src-add="{$chemin_template}images/famfamfam/comment_add.png"
-                         alt="Editer le commentaire" /></a>
+                   data-comment="{$ecriture.comment}">
+                        <i class="comment {if $ecriture.comment}{else}outline{/if} icon"></i>
+                </a>
 
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}" title="Modifier la ligne {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-                <a href="#" title="Ventiler la fiche de {$ecriture.description} " onclick="javascript:ventiler({$ecriture.idtmp}, {$ecriture.montant});return false;"><img src="{$chemin_template}images/famfamfam/arrow_divide.png" alt="Ventiler" /></a>
-                <a href="index.php?page=compta_journal&amp;action=supprimer&amp;id={$ecriture.idtmp}" title="Supprimer la fiche de {$ecriture.description} " onclick="return confirm('Etes-vous sûr de vouloir supprimer la fiche de {$ecriture.description} ?');"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" /></a>
-                <!--<a href="#" title="" onclick=""><img src="{$chemin_template}images/famfamfam/delete.png" alt="" /></a>-->
-               </td>
-        </tr>
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
+                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}"
+                   data-position="left center"
+                   data-tooltip="Modifier la ligne {$ecriture.description}"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alternate icon"></i>
+                </a>
+
+                <a href="#"
+                   data-position="left center"
+                   data-tooltip="Ventiler la fiche de {$ecriture.description}"
+                   class="compact ui icon button"
+                   onclick="javascript:ventiler({$ecriture.idtmp}, {$ecriture.montant});return false;"
+                >
+                    <i class="calculator icon"></i>
+                </a>
+
+                <a href="index.php?page=compta_journal&amp;action=supprimer&amp;id={$ecriture.idtmp}"
+                   data-position="left center"
+                   data-tooltip="Supprimer la fiche de {$ecriture.description} "
+                   class="compact ui red icon button confirmable"
+                   data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {$ecriture.description} ?"
+                >
+                    <i class="trash icon"></i>
+                </a>
+
+            </td>
         </tr>
     {/foreach}
+        </tbody>
      </table>
+    {else}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune ecriture
+            </div>
+            <div class="inline">
+                {if $also_display_classifed_entries }
+                {else}
+                <a class="ui button" href="index.php?page=compta_journal&amp;action={$action}&id_periode={$smarty.get.id_periode}&also_display_classifed_entries=1">Afficher aussi les entrées pointées</a>
+                {/if}
 
+            </div>
+        </div>
+    {/if}
+
+
+    </div>
 
     <div class="js-dz-preview-template" style="display:none;">
         <div class="dz-preview"></div>
@@ -156,174 +234,9 @@
     <div class="js-upload-loader upload-loader" style="display: none;">
         <img class="loader" src="{$chemin_template}images/ajax-loader.gif" alt="Loading…" />
     </div>
-    {literal}
-    <script>
-        // Ventiler une ligne
-        function ventiler(idLigne, montant) {
-            ventilation = prompt('Combien souhaitez-vous ventiler ? (utilisez le séparateur ; pour ventiler sur plusieurs lignes)' + "\n" + '(toutes les values saisies seront déduites de la ligne existante)', montant);
-            if (ventilation) {
-                if (ventilation >= montant) {
-                    alert('Vous ne pouvez pas saisir une valeur égale ou supérieur à la valeur initiale !')
-                } else {
-                    window.location='index.php?page=compta_journal&action=ventiler&id=' + idLigne + '&montant=' + ventilation;
-                }
-            }
-        }
 
-        // Paybox link in popup
-        (function ($) {
-            $(document).ready(function () {
-                $('.js-paybox-link').click(function () {
-                    var url = $(this).attr('href');
-                    window.open(url, "paybox", "width=1100, height=650");
-                    return false;
-                });
-            });
-        })(jQuery);
-
-        // Update line column value using select
-        // Or update comment using simple link and dialog box
-        (function ($) {
-            $(document).ready(function () {
-                // Init dropzones
-                $('.js-dropzone').each(function () {
-                    var elmt = $(this);
-                    elmt.dropzone({
-                        url: elmt.attr('href'),
-                        previewTemplate: $('.js-dz-preview-template').html(),
-                        init: function() {
-                            this.on("error", function(file, errorMessage, xhr) {
-                                $('.js-upload-loader').hide();
-                                alert(errorMessage);
-                            });
-                            this.on("success", function(file) {
-                                $(elmt.parents('td').get(0)).find('.js-has-attachment').show();
-                                $('.js-upload-loader').hide();
-                            });
-                            this.on("uploadprogress", function(file, progress, bytesSent) {
-                                // Display the progress
-                                if (!(progress >= 100)) {
-                                    $('.js-upload-loader').show();
-                                } else {
-                                    $('.js-upload-loader').hide();
-                                }
-                            });
-                        }
-                    });
-                    elmt.show();
-                });
-
-                // When we change the checked flag of a checkbox
-                $('.js-attachment-change').change(function (e) {
-                    var checkbox = e.target;
-                    var val = checkbox.checked ? checkbox.value : null;
-
-                    // Process request to change the column
-                    $.ajax({
-                        url: $(checkbox).data('post-url'),
-                        type: 'post',
-                        data: {
-                            val: val
-                        },
-                        dataType: 'json',
-                        success: function (/* data, textStatus, jqXHR */) {
-                            // Change visibility of the form
-                            if (val) {
-                                $(checkbox).parent().find('.js-attachment-form-container').show();
-                            } else {
-                                $(checkbox).parent().find('.js-attachment-form-container').hide();
-                            }
-                        },
-                        error: function (/* data, textStatus, jqXHR */) {
-                            // Reverse checked status (put it back)
-                            checkbox.checked = !checkbox.checked;
-                            alert('Oops… something went wrong. Still logged in?');
-                        }
-                    });
-                });
-                
-                // When we change the value of a select
-                $('.js-select-change').change(function (e) {
-                    var elmt = $(e.target);
-
-                    // Process request to change the column
-                    $.ajax({
-                        url: elmt.data('post-url'),
-                        type: 'post',
-                        data: {
-                            val: elmt.val()
-                        },
-                        dataType: 'json',
-                        success: function (data, textStatus, jqXHR) {
-                            // remove all span in td
-                            elmt.parent().find('span').remove();
-
-                            // update td content
-                            var span = $('<span></span>');
-                            span.html(elmt.find('option:selected').html() + " &#x2705;"); // success emoji: &#x2705;
-                            elmt.parent().append(span);
-                            elmt.remove();
-                        },
-                        error: function (data, textStatus, jqXHR) {
-                            // remove all span in td
-                            elmt.parent().find('span').remove();
-
-                            // update td content
-                            var span = $('<span></span>');
-                            span.html(" &#x1F6AB;"); // error emoji: &#x1F6AB;
-                            elmt.parent().append(span);
-                            elmt.val("");
-                        }
-                    });
-                });
-
-                // When we click on the comment link
-                $('a.js-edit-comment').click(function (e) {
-                    e.stopPropagation(); // Stop here
-
-                    if (e.target.nodeName === "IMG") {
-                        var elmt = $(e.target).parent();
-                    } else {
-                        var elmt = $(e.target);
-                    }
-
-                    // Get comment
-                    var comment = prompt("Commentaire :", elmt.data('comment'));
-
-                    // We have a comment, so update it!
-                    if (comment !== null) {
-                        $.ajax({
-                            url: elmt.data('post-url'),
-                            type: 'post',
-                            data: {
-                                val: comment
-                            },
-                            dataType: 'json',
-                            success: function (/* data, textStatus, jqXHR */) {
-                                // Update image
-                                var img = elmt.find('img');
-                                if (comment.length) {
-                                    var src = img.data('img-src-edit');
-                                } else {
-                                    var src = img.data('img-src-add');
-                                }
-                                img.attr('src', src);
-
-                                // Update comment in element's data
-                                elmt.data('comment', comment);
-                            },
-                            error: function (/* data, textStatus, jqXHR */) {
-                                alert('Oops… something went wrong. Still logged in?');
-                            }
-                        });
-                    }
-
-                    return false;
-                });
-            });
-        })(jQuery);
-    </script>
-    {/literal}
+    <!-- Required for paybox popups -->
+    <meta name="referrer" content="no-referrer" />
 
 {else}
     {if $action == 'importer'}

@@ -1,48 +1,67 @@
 {if $action == 'lister'}
-    <h2>Liste des forums</h2>
-    <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=forum_gestion&amp;action=ajouter" title="Ajouter un forum">Ajouter un forum</a><br />
-    <br/>
-    <p style="color:#f00">
-        On ne peut pas supprimer de forum pour lequel des éléments ont été associés.
-    </p>
-    <table class="afup_tab">
-        <tr>
-            <th align="left">Forum</th>
-            <th align="left">Informations</th>
-            <th align="left">Coupons</th>
-            <th align="left"></th>
-        </tr>
+    <h2>Liste des événements</h2>
+
+    <div class="ui menu">
+        <a href="index.php?page=forum_gestion&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter un forum" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <div class="ui message">
+        <p>On ne peut pas supprimer d'événement pour lequel des éléments ont été associés.</p>
+    </div>
+
+    <table class="ui table striped celled">
+        <thead>
+            <tr>
+                <th>Événement</th>
+                <th>Chemin</th>
+                <th class="right aligned">Places</th>
+                <th>Date début</th>
+                <th>Date Fin</th>
+                <th>Fin CFP</th>
+                <th>Fin vente</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
     {foreach from=$evenements item=evenement}
         <tr>
-            <td style="border-top: 1px solid #6874A7">
-                <strong>{$evenement.titre}</strong><br/><br/>
+            <td>
+                <strong>{$evenement.titre}</strong>
             </td>
-            <td style="border-top: 1px solid #6874A7">
-                Chemin sur le site : {$evenement.path}<br/>
-                Nombre places : {$evenement.nb_places}<br/>
-                Année : {$evenement.annee}<br/>
-                Du {$evenement.date_debut|date_format:"%d/%m/%Y"} au {$evenement.date_fin|date_format:"%d/%m/%Y"}<br/>
-                Fin appel projet : {$evenement.date_fin_appel_projet|date_format:"%d/%m/%Y %H:%M:%S"}<br/>
-                Fin appel conférencier : {$evenement.date_fin_appel_conferencier|date_format:"%d/%m/%Y %H:%M:%S"}<br/>
-                Fin prévente : {$evenement.date_fin_prevente|date_format:"%d/%m/%Y %H:%M:%S"}<br/>
-                Fin vente : {$evenement.date_fin_vente|date_format:"%d/%m/%Y %H:%M:%S"}<br/>
-            </td>
-            <td style="border-top: 1px solid #6874A7">
-                <div style="width:300px">
-                {foreach from=$evenement.coupons key=idCoupon item=coupon}
-                <span class="coupon" style="float:left;" title="{$coupon}" id="coupon_{$idCoupon}">{$coupon}&nbsp;</span>
-                {/foreach}
-                </div>
-            </td>
+            <td>{$evenement.path}</td>
+            <td class="right aligned"git >{$evenement.nb_places}</td>
+            <td>{$evenement.date_debut|date_format:"%d/%m/%Y"}</td>
+            <td>{$evenement.date_fin|date_format:"%d/%m/%Y"}</td>
+            <td>{$evenement.date_fin_appel_conferencier|date_format:"%d/%m/%Y %H:%M:%S"}</td>
+            <td>{$evenement.date_fin_vente|date_format:"%d/%m/%Y %H:%M:%S"}</td>
             <td style="text-align: right" nowrap="nowrap">
-                <a href="index.php?page=forum_gestion&amp;action=modifier&amp;id={$evenement.id}" title="Modifier le forum {$evenement.titre}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
+                <a href="index.php?page=forum_gestion&amp;action=modifier&amp;id={$evenement.id}"
+                   data-tooltip="Modifier le forum {$evenement.titre}"
+                   data-position="left center"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alernate icon"></i>
+                </a>
 
                 {if $evenement.supprimable}
-                <a href="index.php?page=forum_gestion&amp;action=supprimer_forum&amp;id={$evenement.id}" title="Supprimer le forum {$evenement.titre}"><img src="{$chemin_template}images/famfamfam/delete.png" alt="Supprimer" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce forum?');"/></a>
+                    <a href="index.php?page=forum_gestion&amp;action=supprimer_forum&amp;id={$evenement.id}"
+                       data-position="left center"
+                       data-tooltip="Supprimer le forum {$evenement.titre}"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer ce forum ?"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
                 {/if}
             </td>
         </tr>
     {foreachelse}
+        </tbody>
         <tr>
             <td colspan="4"><em>Aucun inscrit</em></td>
         </tr>
@@ -50,30 +69,22 @@
     </table>
 {else}
     {if $action == 'ajouter'}
-        <h2>Ajouter un forum</h2>
+        <h2>Ajouter un événément</h2>
     {else}
-        <h2>Modifier un forum</h2>
+        <h2>Modifier un événément</h2>
     {/if}
 
     {if $action != 'ajouter'}
-        <a href="/admin/event/send-test-mail-inscription?id={$id_forum}" >Envoyer un test du mail d'inscription sur bureau@afup.org</a>
+        <a href="" ></a>
+
+        <div class="ui menu">
+            <a href="/admin/event/send-test-mail-inscription?id={$id_forum}" class="item">
+                <i class=" icon mail"></i>
+                Envoyer un test du mail d'inscription sur bureau@afup.org
+            </a>
+        </div>
     {/if}
 
     {include file="formulaire.html"}
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-    {literal}
-    <script>
-        var simpleMdeList = document.getElementsByClassName('simplemde');
-        for (var i = 0; i < simpleMdeList.length; i++) {
-            var simplemde = new SimpleMDE({
-                element:simpleMdeList[i],
-                spellChecker: false,
-                hideIcons: ['side-by-side', 'fullscreen']
-            });
-        }
-    </script>
-    {/literal}
 
 {/if}

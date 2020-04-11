@@ -1,19 +1,24 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Virements en attente de réception pour {{ event.title }}</h2>
+    <h2>Virements en attente de réception</h2>
+
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
+    {% if pendingBankwires|length > 0 %}
     <form method="post" style="width:auto;">
-        <table class="afup_tab">
-            <tr>
-                <th>Facture</th>
-                <th>Société</th>
-                <th>Montant</th>
-                <th>Date</th>
-                <th>Places</th>
-                <th>¤</th>
-            </tr>
+        <table class="ui table striped compact celled">
+            <thead>
+                <tr>
+                    <th>Facture</th>
+                    <th>Société</th>
+                    <th>Montant</th>
+                    <th>Date</th>
+                    <th>Places</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
             {% for invoice in pendingBankwires %}
                 <tr>
                     <td>
@@ -37,12 +42,21 @@
                         {{ ticket.label }}<br />
                     {% endfor %}
                     </td>
-                    <td>
-                        <button type="submit" name="bankwireReceived" value="{{ invoice['invoices'].reference }}">Virement reçu</button>
+                    <td class="right aligned">
+                        <button class="ui button" type="submit" name="bankwireReceived" value="{{ invoice['invoices'].reference }}">Virement reçu</button>
                     </td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
         <input type="hidden" name="token" value="{{ token }}" />
     </form>
+    {% else %}
+    <div class="ui placeholder segment">
+        <div class="ui icon header">
+            <i class="meh outline icon"></i>
+            Aucune virement en attente.
+        </div>
+    </div>
+    {% endif  %}
 {% endblock %}

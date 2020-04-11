@@ -1,76 +1,121 @@
 {if $action == 'lister'}
-    <h2>Synthese des évènements</h2>
+    <h2>Synthese des événements</h2>
 
-    <form method="GET" name="evnt">
-        <input type="hidden" name="page" value="compta_synthese" />
-        <input type="hidden" name="action" value="lister" />
-        <h3>Sélectionner un évènement
-        <select name="idevnt" onchange="this.form.submit(); return false;">
-        {foreach from=$listEvenement item=listsEvenement }
-        <option value="{$listsEvenement.id}" {if $idevnt == $listsEvenement.id} selected{/if}> {$listsEvenement.evenement}</option>
-        {/foreach}
-        </select>
-        </h3>
-    </form>
+    <div class="ui segment">
+        <form method="GET" name="evnt">
+            <input type="hidden" name="page" value="compta_synthese" />
+            <input type="hidden" name="action" value="lister" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Événement</label>
+                        <select name="idevnt" onchange="this.form.submit(); return false;">
+                            {foreach from=$listEvenement item=listsEvenement }
+                            <option value="{$listsEvenement.id}" {if $idevnt == $listsEvenement.id} selected{/if}> {$listsEvenement.evenement}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
-    <br/>
-    <table class="afup_tab">
-        <tr>
-            <th valign="top"  align="center">Débit</th>
-            <th valign="top"  align="center">Crédit</th>
-        </tr>
-
-        <tr>
+    <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th class="center aligned">Débit</th>
+                <th class="center aligned">Crédit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="top aligned">
+                <td>
+                    <table class="ui table striped compact celled">
+                        <thead>
+                            <tr>
+                                <th>Catégorie</th>
+                                <th>Description</th>
+                                <th class="right aligned">Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {foreach from=$debit item=debits}
+                            <tr >
+                                <td>{$debits.categorie}</td>
+                                <td>{$debits.description}</td>
+                                 <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
+                            </tr>
+                        {foreachelse}
+                            <tr>
+                                <td><em>Aucune ecriture actuellement</em></td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+            </td>
             <td>
-                <table class="afup_tab_inside">
+                <table class="ui table striped compact celled">
+                    <thead>
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Description</th>
+                            <th class="right aligned">Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$credit item=credits}
                     <tr>
-                        <th>Catégorie</th>
-                        <th>Description</th>
-                        <th>Montant</th>
+                        <td>{$credits.categorie}</td>
+                        <td>{$credits.description}</td>
+                        <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
                     </tr>
-                {foreach from=$debit item=debits}
-                    <tr class="{cycle values="odd,even"}">
-                        <td>{$debits.categorie}</td>
-                        <td>{$debits.description}</td>
-                         <td align='right' width='100'>{$debits.montant|number_format:2:',':' '}</td>
-                    </tr>
-                {foreachelse}
+                    {foreachelse}
                     <tr>
                         <td><em>Aucune ecriture actuellement</em></td>
                     </tr>
-                {/foreach}
+                    {/foreach}
+                    </tbody>
                 </table>
-        </td>
-        <td>
-            <table class="afup_tab_inside">
-                <tr>
-                    <th>Catégorie</th>
-                    <th>Description</th>
-                    <th>Montant</th>
-                </tr>
-                {foreach from=$credit item=credits}
-                <tr class="{cycle values="odd,even"}">
-                    <td>{$credits.categorie}</td>
-                    <td>{$credits.description}</td>
-                    <td  align='right' width='100'>{$credits.montant|number_format:2:',':' '}</td>
-                </tr>
-                {foreachelse}
-                <tr class="{cycle values="odd,even"}">
-                    <td><em>Aucune ecriture actuellement</em></td>
-                </tr>
-                {/foreach}
-            </table>
-        </td>
-    </tr>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th class="center aligned">
+                <div class="ui tiny horizontal statistic">
+                    <div class="value">
+                        {$totalDepense|number_format:2:',':' '}
+                    </div>
+                    <div class="label">
+                        Total dépenses
+                    </div>
+                </div>
+            </th>
+            <th class="center aligned">
+                <div class="ui tiny horizontal statistic">
+                    <div class="value">
+                        {$totalRecette|number_format:2:',':' '}
+                    </div>
+                    <div class="label">
+                        Total recettes
+                    </div>
+                </div>
+            </th>
+        </tr>
 
-	<tr>
-        <th align='center'>Total dépenses : {$totalDepense|number_format:2:',':' '}</th>
-        <th align='center'>Total recettes : {$totalRecette|number_format:2:',':' '}</th>
-	</tr>
-
-	<tr>
-        <th colspan='2' align='center'>Différence : {$difMontant|number_format:2:',':' '}</th>
-    </tr>
+        <tr>
+            <th colspan="2" class="center aligned">
+                <div class="ui mini horizontal statistic">
+                    <div class="value">
+                        {$difMontant|number_format:2:',':' '}
+                    </div>
+                    <div class="label">
+                        Différence
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </tfoot>
 </table>
 {else}
     {if $action == 'ajouter'}

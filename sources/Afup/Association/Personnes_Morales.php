@@ -40,16 +40,25 @@ class Personnes_Morales
     function obtenirListe($champs = '*',
                           $ordre = 'raison_sociale',
                           $associatif = false,
-                          $filtre = false)
+                          $filtre = false,
+                          $isActive = null
+    )
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
         $requete .= '  afup_personnes_morales ';
+        $requete .= ' WHERE 1 = 1 ';
+
         if ($filtre) {
-            $requete .= 'WHERE raison_sociale LIKE \'%' . $filtre . '%\' ';
-            $requete .= 'OR ville LIKE \'%' . $filtre . '%\' ';
+            $requete .= 'AND (raison_sociale LIKE \'%' . $filtre . '%\' ';
+            $requete .= 'OR ville LIKE \'%' . $filtre . '%\' )';
         }
+
+        if (null !== $isActive) {
+            $requete .= ' AND afup_personnes_morales.etat = ' . $this->_bdd->echapper($isActive ? '1' : '0') . ' ';
+        }
+
         $requete .= 'ORDER BY ' . $ordre;
 
         if ($associatif) {

@@ -5,53 +5,70 @@
 {% block content %}
     <article id="members-stats">
         <h2>Statistiques concernant les membres</h2>
-        <table class="afup_tab">
-            <tbody>
-                <tr>
-                    <th colspan="2">Personnes physiques totales*</th>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center">
+
+        <div class="ui segment grid">
+            <div class="sixteen wide column center aligned">
+                <div class="ui statistic">
+                    <div class="value">
+                        <i class="user icon"></i>
                         {{ usersCount }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Personnes physiques non rattachées à une personne morale*</th>
-                    <th>Personnes physiques rattachées à une personne morale*</th>
-                </tr>
-                <tr>
-                    <td style="text-align: center">
-                        <b>{{ usersCountWithoutCompanies }}</b>
-                    </td>
-                    <td style="text-align: center">
+                    </div>
+                    <div class="label">
+                        Personnes physiques totales*
+                    </div>
+                </div>
+            </div>
+
+            <div class="eight wide column center aligned">
+                <div class="ui mini statistic">
+                    <div class="value">
+                        {{ usersCountWithoutCompanies }}
+                    </div>
+                    <div class="label">
+                        Personnes physiques non rattachées à une personne morale*
+                    </div>
+                </div>
+            </div>
+
+            <div class="eight wide column center aligned">
+                <div class="ui mini statistic">
+                    <div class="value">
                         {{ usersCountWithCompanies }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="label">
+                        Personnes physiques rattachées à une personne morale*
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <br />
+        <div class="ui segment grid">
+            <div class="sixteen wide column center aligned">
+                <div class="ui statistic">
+                    <div class="value">
+                        <i class="building icon"></i>
+                        {{ companiesCount }}
+                    </div>
+                    <div class="label">
+                        Personnes morales*
+                    </div>
+                </div>
+            </div>
 
-        <table class="afup_tab">
-            <thead>
-                <tr>
-                    <th>Personnes morales avec membre lié*</th>
-                    <th>Personnes morales*</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center">
+            <div class="sixteen wide column center aligned">
+                <div class="ui mini statistic">
+                    <div class="value">
                         {{ companiesCountWithLinkedUsers }}
-                    </td>
-                    <td style="text-align: center">
-                        <b>{{ companiesCount }}</b>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="label">
+                        Personnes morales avec membre lié*
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
-        <p><em>* Membres avec des cotisations en cours de validité uniquement</em></p>
+        <div class="ui segment">
+            <p><em>* Membres avec des cotisations en cours de validité uniquement</em></p>
+        </div>
     </article>
 {% endblock %}

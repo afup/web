@@ -60,7 +60,7 @@ foreach ($personnes_physiques_liste as $personne_physique) {
     $formulaire->addElement('static', 'info', $nom . '.');
 }
 
-$formulaire->addElement('header'  , ''                   , 'Paramétres');
+$formulaire->addElement('header'  , ''                   , 'Paramètres');
 $formulaire->addElement('select'  , 'etat'               , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',
                                                                                AFUP_DROITS_ETAT_INACTIF => 'Inactif'));
 

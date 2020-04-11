@@ -1,38 +1,171 @@
-{% extends 'admin/base.html.twig' %}
-{% block body %}
-    <div id="header">
-        <h1>
-            <img src="{{ asset('templates/administration/images/logo_afup.png') }}" />
-            {{ title }} − Administration AFUP
-        </h1>
-    </div>
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Administration AFUP</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+        <style>
+            .toc {
+                position: fixed;
+                z-index: 1;
+                background-color: #1b1c1d;
+                width: 250px;
+                height: 100%;
+                -webkit-box-flex: 0;
+            }
 
-    {% if app.user %}
-        {{ render(controller('AppBundle:Admin:getMenu')) }}
-        {% if app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
-            <p class="note error">
-                Votre cotisation a expiré. Les fonctionnalités réservées aux membres ne vous sont pas accessibles.
-            </p>
-        {% endif %}
-    {% endif %}
+            .article {
+                margin-left: 250px;
+                flex: 1 1 auto;
+                min-width: 0;
+            }
 
-    <div class="col1">
-        {% for type, messages in app.session.flashbag.all() %}
-            {% for message in messages %}
-                <div class="flash-{{type}}">{{message|raw}}</div>
-            {% endfor %}
-        {% endfor %}
-        {% block content %}
-            {{ content|raw }}
-        {% endblock %}
-    </div>
-
-    <div id="footer">
-        &copy; AFUP | Icônes <a href="http://www.famfamfam.com/lab/icons/silk/">FamFamFam</a>
-    </div>
+            .content {
+                padding: 20px;
+            }
 
 
-    <!-- Dropzone -->
-    <script type="text/javascript" src="{{ asset('javascript/dropzone/dropzone.min.js') }}"></script>
-    <script src="/js_dist/admin.js"></script>
-{% endblock %}
+            .full-height > .toc .menu {
+                border-radius: 0;
+                border-width: 0 1px 0 0;
+                box-shadow: none;
+                margin: 0;
+                width: inherit;
+                overflow: hidden;
+                will-change: transform;
+                max-height: 100vh;
+                overflow: auto;
+            }
+
+            /**
+            Techletter
+            **/
+            form#link-editor {
+                width: 650px !important;
+                margin-left: calc(50% + 1em);
+                padding: 1em;
+                position: fixed;
+                top: 50%;
+                left:0;
+                transform: translate(0, -50%);
+            }
+
+            form#link-editor.hidden{
+                display: none;
+            }
+
+            form#link-editor button.hidden {
+                display: none;
+            }
+
+            form#link-editor #close{
+                display: block;
+                text-align: right;
+            }
+        </style>
+
+    </head>
+
+    {% block body %}
+        <body id="{{ page|default('') }}" class="{{ class|default('') }}">
+            <div class="full-height">
+                <div class="toc">
+                    <div class="ui vertical inverted menu accordion">
+                        <div class="item logo">
+                            <img src="/templates/administration/images/logo_afup.png" style="max-width: 100%"/>
+                        </div>
+                        {{ render(controller('AppBundle:Admin:getMenu')) }}
+                    </div>
+                </div>
+            </div>
+            <div class="article">
+                <div class="ui menu asd borderless">
+                    <div class="right menu">
+                        <div class="item">
+                            <a class="ui button" href="/">Retour site</a>
+                        </div>
+                        <div class="item">
+                            <a class="ui button" href="/admin/logout">Se déconnecter</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    {% for bag in ['notice', 'success', 'error'] %}
+                        {% for flash_message in app.session.flashBag.get(bag)%}
+                            {% if bag == 'error'%}
+                                {% set messageclass = 'nagative' %}
+                            {% elseif bag == 'success' %}
+                                {% set messageclass = 'success' %}
+                            {% else %}
+                                {% set messageclass = 'info' %}
+                            {% endif %}
+                            {% if flash_message|length > 0 %}
+                            <div class="ui message {{ messageclass }}">
+                                <div class="header">
+                                    {{ flash_message|raw }}
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+
+                    {% block content %}
+                        {{ content|raw }}
+                    {% endblock %}
+                </div>
+            </div>
+
+            {% block javascript %}
+            <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+            <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+                <script type="text/javascript" src="/javascript/dropzone/dropzone.min.js"></script>
+
+                <script src="/javascript/tiny_mce/tiny_mce.js"></script>
+                <script src="/javascript/tiny_mce/jquery.tinymce.js"></script>
+                <script src="/javascript/tinymce.js"></script>
+
+            <script src="/js_dist/admin.js"></script>
+
+
+
+
+            <script>
+                $(document).ready(function() {
+                    $('.ui.dropdown').dropdown({action: "select"});
+                    $('.ui.checkbox').checkbox();
+                    $('.ui.accordion')
+                        .accordion()
+                    ;
+                });
+
+                $(document).ready(function () {
+                    $(document).on('click', '.confirmable', function () {
+                        return confirm($(this).data('confirmable-label'));
+                    });
+                });
+
+                var simpleMdeList = document.getElementsByClassName('simplemde');
+                for (var i = 0; i < simpleMdeList.length; i++) {
+                    var simplemde = new SimpleMDE({
+                        element:simpleMdeList[i],
+                        spellChecker: false,
+                        hideIcons: ['side-by-side', 'fullscreen']
+                    });
+                }
+
+            </script>
+
+            {% if js is defined %}
+                {{ js|raw }}
+            {% endif %}
+            {% endblock %}
+        </body>
+    {% endblock %}
+
+</html>

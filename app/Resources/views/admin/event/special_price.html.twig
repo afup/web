@@ -1,10 +1,11 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Liste des prix custom pour le {{ event.title }}</h2>
+    <h2>Tokens visiteurs</h2>
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
-    <table class="afup_tab">
+    {% if special_prices|length > 0 %}
+    <table class="ui table striped compact celled">
         <thead>
             <th>Description</th>
             <th>Date de création</th>
@@ -26,56 +27,85 @@
                 <td>{{ row.special_price.price }}</td>
                 <td>{{ row.special_price.dateStart|date('d/m/Y') }}</td>
                 <td>{{ row.special_price.dateEnd|date('d/m/Y') }}</td>
-                <td>{% if row['.aggregation']['inscription']|length > 0 %}oui{% else %}non{% endif %}</td>
+                <td>
+                    {% if row['.aggregation']['inscription']|length > 0 %}
+                        <span class="ui green label">oui</span>
+                    {% else %}
+                        <span class="ui red label">non</span>
+                    {% endif %}
+                </td>
                 <td><a href="{{ path('ticket', {'eventSlug' : event.path, 'token': row.special_price.token  }) }}">Lien</a></td>
 
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucun token créé
+            </div>
+        </div>
+    {% endif %}
 
-    <h2>Nouveau token</h2>
-    {{ form_start(form) }}
+    <div class="ui segment">
+        <h2 class="ui header">Nouveau token</h2>
 
-        <table class="afup_tab">
-            <thead>
-                <th>{{ form_label(form.price) }}</th>
-                <th>{{ form_label(form.dateStart) }}</th>
-                <th>{{ form_label(form.dateEnd) }}</th>
-                <th>{{ form_label(form.token) }}</th>
-                <th>{{ form_label(form.description) }}</th>
-                <th></th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        {{ form_errors(form.price) }}
-                        {{ form_widget(form.price) }}
-                    </td>
-                    <td>
-                        {{ form_errors(form.dateStart) }}
-                        {{ form_widget(form.dateStart) }}
-                    </td>
-                    <td>
-                        {{ form_errors(form.dateEnd) }}
-                        {{ form_widget(form.dateEnd) }}
-                    </td>
-                    <td>
-                        {{ form_errors(form.token) }}
-                        {{ form_widget(form.token) }}
-                    </td>
-                    <td>
-                        {{ form_errors(form.description) }}
-                        {{ form_widget(form.description) }}
-                    </td>
-                    <td>
-                        <button type="submit">Enregistrer</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="ui clearing divider"></div>
 
-    {{ form_errors(form) }}
+        {{ form_start(form) }}
 
-    {{ form_end(form) }}
+            <table class="ui table striped compact celled">
+                <thead>
+                    <th>{{ form_label(form.price) }}</th>
+                    <th>{{ form_label(form.dateStart) }}</th>
+                    <th>{{ form_label(form.dateEnd) }}</th>
+                    <th>{{ form_label(form.token) }}</th>
+                    <th>{{ form_label(form.description) }}</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.price) }}
+                                {{ form_widget(form.price) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.dateStart) }}
+                                {{ form_widget(form.dateStart, {attr:{"class": "inline fields"}}) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.dateEnd) }}
+                                {{ form_widget(form.dateEnd, {attr:{"class": "inline fields"}}) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.token) }}
+                                {{ form_widget(form.token) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.description) }}
+                                {{ form_widget(form.description) }}
+                            </div>
+                        </td>
+                        <td>
+                            <button type="submit" class="ui primary button">Enregistrer</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        {{ form_errors(form) }}
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

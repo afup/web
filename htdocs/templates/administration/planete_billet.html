@@ -1,11 +1,15 @@
 {if $action == 'lister'}
-    <h2>Liste des billets</h2>
-    <table class="afup_tab">
+    <h2>Billets</h2>
+
+    <table class="ui table striped compact celled">
+        <thead>
         <tr>
-            <th align="left"><a href="index.php?page=planete_billet&amp;tri=titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Titre</a></th>
-            <th align="left"><a href="index.php?page=planete_billet&amp;tri=contenu&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'contenu'}desc{else}asc{/if}">Contenu</a></th>
+            <th><a href="index.php?page=planete_billet&amp;tri=titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Titre</a></th>
+            <th><a href="index.php?page=planete_billet&amp;tri=contenu&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'contenu'}desc{else}asc{/if}">Contenu</a></th>
             <th><a href="index.php?page=planete_billet&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
         </tr>
+        </thead>
+        <tbody>
     {foreach from=$billets item=billet}
         <tr class="{if $billet.etat == 1}actif{else}inactif{/if}">
             <td>{$billet.titre}</td>
@@ -16,6 +20,7 @@
         <tr>
             <td><em>Aucun billet</em></td>
         </tr>
+        </tbody>
     {/foreach}
     </table>
 {/if}

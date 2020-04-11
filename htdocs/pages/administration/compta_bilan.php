@@ -9,7 +9,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 	exit;
 }
 
-$action = verifierAction(array('lister', 'editer','view','bilanpdf'));
+$action = verifierAction(array('lister', 'editer','view'));
 $smarty->assign('action', $action);
 
 //$compte=$_GET['compte'];
@@ -81,8 +81,6 @@ if ($action == 'lister') {
 	$difMontant = $sousTotalCredit - $sousTotalDebit ;
 	$smarty->assign('difMontant', $difMontant);
 		
-} elseif ($action == 'bilanpdf') {
-	$compta->genererBilanPDF($periode_debut,$periode_fin);
 } elseif ($action == 'supprimer') {
     if ($compta->supprimerEcriture($_GET['id']) ) {
         Logs::log('Suppression de l\'écriture ' . $_GET['id']);
@@ -91,4 +89,3 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'écriture', 'index.php?page=compta_journal&action=lister', true);
     }
 }
-?>

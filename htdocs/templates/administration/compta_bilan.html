@@ -1,214 +1,317 @@
 <h2>Bilan</h2>
 
-<form method="GET" name="evnt">
-    <input type="hidden" name="page" value="compta_bilan" />
-    <h3>Bilan <select name="id_periode" onchange="this.form.submit(); return false;">
-    {foreach from=$listPeriode item=periode}
-    <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
-    {/foreach}
-    </select></h3>
-</form>
-
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /> <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_bilan&amp;action=bilanpdf&amp;details={$debits.id}" title="imprimer pdf">Imprimer PDF</a><br />
+<div class="ui green segment">
+    <form method="GET" name="evnt">
+        <input type="hidden" name="page" value="compta_bilan" />
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Année comptable</label>
+                    <select name="id_periode" onchange="this.form.submit(); return false;">
+                        {foreach from=$listPeriode item=periode}
+                        <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 {if $action == 'lister'}
-    <table class="afup_tab">
-        <tr>
-            <th align="center">Débit</th>
-            <th align="center">Crédit</th>
-        </tr>
-        <tr>
-            <td>
-    <table class="afup_tab_inside">
-        <tr>
-            <th>Evenement</th>
-            <th></th>
-            <th>Montant</th>
-       </tr>
-    {foreach from=$debit item=debits}
-        <tr class="{cycle values="odd,even"}">
-            <td>{$debits.evenement}</td>
-            <td>
-               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_side_expand.png" alt="details" /></a>
-               <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/book_go.png" alt="details autre page" /></a>
-               <a href="index.php?page=compta_bilan&amp;action=pdf&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/page_white_acrobat.png" alt="PDF" /></a>
-            </td>
-             <td align='right' width='100'>{$debits.montant|number_format:2:',':' '}</td>
-        </tr>
-{if ($smarty.get.details==$debits.id) }
-	<tr class="{cycle values="odd,even"}">
-		<td colspan='2'>
-    <table class="afup_tab_inside">
-        <tr>
-            <th>Date ecriture</th>
-            <th>Descritpion</th>
-            <th>Montant</th>
-            <th>&nbsp;</th>
-       </tr>
-
-	    {foreach from=$dataDetailsDebit item=detail}
-        <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
-            <td>{$detail.description}</td>
-			<td align='right'>{$detail.montant|number_format:2:',':' '}</td>
-            <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-            </td>
-        </tr>
-
-
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
-   	</table>
-		</td>
-	<td></td>
-	</tr>
-{/if}
-
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
+    <table class="ui table striped very compact celled">
+            <thead>
+                <tr>
+                    <th class="center aligned" width="50%">Débit</th>
+                    <th class="center aligned" width="50%">Crédit</th>
+                </tr>
+            </thead>
+        <tbody>
+            <tr>
+                <td class="top aligned">
+                    <table class="ui table striped very compact celled">
+                        <thead>
+                            <tr>
+                                <th>Evenement</th>
+                                <th class="right aligned">Montant</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach from=$debit item=debits}
+                                <tr>
+                                    <td>{$debits.evenement}</td>
+                                    <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
+                                    <td class="right aligned single line">
+                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                           data-tooltip="Déplier les écritures de débit/crédit pour {$debits.evenement}"
+                                           data-position="left center"
+                                           class="compact ui icon button">
+                                            <i class="expand icon"></i>
+                                        </a>
+                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                           data-tooltip="Voir le détail des écritures de débit/crédit pour {$debits.evenement}"
+                                           data-position="left center"
+                                           class="compact ui icon button">
+                                            <i class="eye icon"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {if ($smarty.get.details==$debits.id) }
+                                    <tr>
+                                        <td colspan="3">
+                                            <table class="ui table striped compact celled">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date ecriture</th>
+                                                        <th>Description</th>
+                                                        <th class="right aligned">Montant</th>
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {foreach from=$dataDetailsDebit item=detail}
+                                                        <tr>
+                                                            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
+                                                            <td>{$detail.description}</td>
+                                                            <td class="right aligned">{$detail.montant|number_format:2:',':' '}</td>
+                                                            <td class="right aligned">
+                                                                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.compta_id}"
+                                                                   data-tooltip="Modifier la ligne {$detail.description}"
+                                                                   data-position="left center"
+                                                                   class="compact ui icon button">
+                                                                    <i class="pencil alernate icon"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    {foreachelse}
+                                                    <tr>
+                                                        <td><em>Aucune ecriture actuellement</em></td>
+                                                    </tr>
+                                                    {/foreach}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                {/if}
+                            {foreachelse}
+                                <tr>
+                                    <td><em>Aucune ecriture actuellement</em></td>
+                                </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </td>
+                <td class="top aligned">
+                    <table class="ui table striped compact celled">
+                        <thead>
+                            <tr>
+                                <th>Evenement</th>
+                                <th class="right aligned">Montant</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach from=$credit item=credits}
+                                <tr>
+                                    <td>{$credits.evenement}</td>
+                                    <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
+                                    <td class="right aligned single line">
+                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                           data-tooltip="Déplier les écritures de crédit/crédit pour {$debits.evenement}"
+                                           data-position="left center"
+                                           class="compact ui icon button"
+                                        >
+                                            <i class="expand icon"></i>
+                                        </a>
+                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                           data-tooltip="Voir le détail des écritures de débit/crédit pour {$debits.evenement}"
+                                           data-position="left center"
+                                           class="compact ui icon button"
+                                        >
+                                            <i class="eye icon"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {if ($smarty.get.details==$credits.id) }
+                                    <tr>
+                                        <td colspan='3'>
+                                            <table class="ui table striped very compact celled">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date ecriture</th>
+                                                        <th>Description</th>
+                                                        <th class="right aligned">Montant</th>
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {foreach from=$dataDetailsCredit item=detail}
+                                                        <tr>
+                                                            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
+                                                            <td>{$detail.description}</td>
+                                                            <td class="right aligned">{$detail.montant|number_format:2:',':' '}</td>
+                                                            <td class="right aligned">
+                                                                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.compta_id}"
+                                                                   data-tooltip="Modifier la ligne {$detail.description}"
+                                                                   data-position="left center"
+                                                                   class="compact ui icon button">
+                                                                    <i class="pencil alernate icon"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    {foreachelse}
+                                                        <tr>
+                                                            <td><em>Aucune ecriture actuellement</em></td>
+                                                        </tr>
+                                                    {/foreach}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                {/if}
+                            {foreachelse}
+                                <tr>
+                                    <td><em>Aucune ecriture actuellement</em></td>
+                                </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th class="center aligned">
+                    <div class="ui mini horizontal statistic">
+                        <div class="value">
+                            {$totalDepense|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </th>
+                <th class="center aligned">
+                    <div class="ui mini horizontal statistic">
+                        <div class="value">
+                            {$totalRecette|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="2" class="center aligned">
+                    <div class="ui tiny horizontal statistic">
+                        <div class="value">
+                            {$difMontant|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </tfoot>
     </table>
-	</td>
-    <td>
-	  <table class="afup_tab_inside">
-        <tr class="{cycle values="odd,even"}">
-            <!-- th width="20px">&nbsp;</th -->
-            <th>Evenement</th>
-            <th></th>
-            <th>Montant</th>
-       </tr>
-    {foreach from=$credit item=credits}
-        <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$credits.evenement}</td>
-            <td>
-               <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_side_expand.png" alt="details" /></a>
-               <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/book_go.png" alt="details autre page" /></a>
-               <a href="index.php?page=compta_bilan&amp;action=pdf&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/page_white_acrobat.png" alt="PDF" /></a>
-            </td>
-             <td align='right' width='100'>{$credits.montant|number_format:2:',':' '}</td>
-        </tr>
-{if ($smarty.get.details==$credits.id) }
-	<tr class="{cycle values="odd,even"}">
-		<td colspan='2'>
-    <table class="afup_tab_inside">
-        <tr>
-            <th>Date ecriture</th>
-            <th>Descritpion</th>
-            <th>Montant</th>
-            <th>&nbsp;</th>
-       </tr>
-
-	    {foreach from=$dataDetailsCredit item=detail}
-        <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
-            <td>{$detail.description}</td>
-			<td align='right'>{$detail.montant|number_format:2:',':' '}</td>
-            <td style="text-align: right">
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}" title="Modifier la ligne {$detail.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier" /></a>
-            </td>
-        </tr>
-
-
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
-   	</table>
-		</td>
-	<td></td>
-	</tr>
-{/if}
-
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
-    </table>
-    </td></tr>
-	<tr>
-	<td align='center'>{$totalDepense|number_format:2:',':' '}</td>
-	<td align='center'>{$totalRecette|number_format:2:',':' '}</td>
-	</tr>
-	<tr><td colspan='2'  align='center'>{$difMontant|number_format:2:',':' '}</tr>
-	</td></tr></table>
 
 {elseif $action == 'view'}
-<br />
-  <img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_bilan&amp;action=lister&id_periode={$smarty.get.id_periode}" title="retour bilan">Retour au bilan</a><br />
-<br />
-    <table><tr><td align="center">Débit
 
-    <table class="afup_tab">
-        <tr>
-            <th>Date ecriture</th>
-            <th>Descritpion</th>
-            <th>Montant</th>
-            <th>&nbsp;</th>
-       </tr>
+    <div class="ui menu">
+        <a href="index.php?page=compta_bilan&amp;action=lister&id_periode={$smarty.get.id_periode}" class="item">
+            <div data-tooltip="Retour du bilan" data-position="bottom left">
+                <i class="icon backward"></i>
+                Retour au bilan
+            </div>
+        </a>
+    </div>
 
-	    {foreach from=$dataDetailsDebit item=detail}
-        <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
-            <td>{$detail.description}</td>
-			<td align='right'>{$detail.montant|number_format:2:',':' '}</td>
+    <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th class="center aligned" width="50%">Débit</th>
+                <th class="center aligned" width="50%">Crédit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="top aligned">
+                    {if $dataDetailsDebit }
+                    <table class="ui table striped compact celled">
+                        <thead>
+                            <tr>
+                                <th>Date ecriture</th>
+                                <th>Description</th>
+                                <th class="right aligned">Montant</th>
+                            </tr>
+                        </thead>
 
-        </tr>
+                        {foreach from=$dataDetailsDebit item=detail}
+                            <tr>
+                                <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
+                                <td>{$detail.description}</td>
+                                <td class="right aligned">{$detail.montant|number_format:2:',':' '}</td>
+                            </tr>
+                        {/foreach}
+                    </table>
+                    {else}
+                        <div class="ui placeholder segment">
+                            <div class="ui icon header">
+                                <i class="meh outline icon"></i>
+                                Aucune écriture
+                            </div>
+                        </div>
+                    {/if}
+                </td>
+                <td class="top aligned">
+                    {if $dataDetailsCredit}
+                    <table class="ui table striped compact celled">
+                        <thead>
+                            <tr>
+                                <th>Date ecriture</th>
+                                <th>Description</th>
+                                <th class="right aligned">Montant</th>
+                            </tr>
+                        </thead>
 
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
-   	</table>
-
-	</td><td align="center" valign="top">Crédit
-	      <table class="afup_tab">
-        <tr>
-            <th>Date ecriture</th>
-            <th>Descritpion</th>
-            <th>Montant</th>
-            <th>&nbsp;</th>
-       </tr>
-
-	    {foreach from=$dataDetailsCredit item=detail}
-        <tr class="{cycle values="odd,even"}">
-            <!-- td width="20px"><input type="checkbox" value=""/></td -->
-            <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
-            <td>{$detail.description}</td>
-			<td align='right'>{$detail.montant|number_format:2:',':' '}</td>
-
-        </tr>
-
-
-    {foreachelse}
-        <tr>
-            <td><em>Aucune ecriture actuellement</em></td>
-        </tr>
-    {/foreach}
-   	</table>
-
-	<tr>
-	<th align='center'>{$sousTotalDebit|number_format:2:',':' '}</th>
-	<th align='center'>{$sousTotalCredit|number_format:2:',':' '}</th>
-	</tr>
-	<tr>
-        <th colspan='2'  align='center'>{$difMontant|number_format:2:',':' '}</th>
-    </tr>
-	</td></tr></table>
-
-
-{else}
+                        {foreach from=$dataDetailsCredit item=detail}
+                            <tr>
+                                <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
+                                <td>{$detail.description}</td>
+                                <td class="right aligned">{$detail.montant|number_format:2:',':' '}</td>
+                            </tr>
+                        {/foreach}
+                    </table>
+                    {else}
+                        <div class="ui placeholder segment">
+                            <div class="ui icon header">
+                                <i class="meh outline icon"></i>
+                                Aucune écriture
+                            </div>
+                        </div>
+                    {/if}
+                </td>
+            </tr>
+            <tr>
+                <td class="center aligned">
+                    <div class="ui mini horizontal statistic">
+                        <div class="value">
+                            {$sousTotalDebit|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </td>
+                <td class="center aligned">
+                    <div class="ui mini horizontal statistic">
+                        <div class="value">
+                            {$sousTotalCredit|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center aligned">
+                    <div class="ui tiny horizontal statistic">
+                        <div class="value">
+                            {$difMontant|number_format:2:',':' '}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
 {/if}

@@ -6,54 +6,100 @@
     {/if}
 
     {foreach from=$formulaire.sections key=num item=section}
-    <fieldset class="f{$num+1}{if $section.name == 'boutons'} boutons{/if}">
-        {if $section.header}<legend>{$section.header}</legend>{/if}
+
+    <div class="ui segment">
+        {if $section.header}
+        <h2 class="ui header">{$section.header}</h2>
+        <div class="ui clearing divider"></div>
+        {/if}
 
         {foreach from=$section.elements item=element}
         {if $element.required}{assign var='auMoinsUnChampsRequis' value=true}{/if}
-        <div class="rangee">
+        <div class="ui form">
+
+            {if $element.error}
+            <div class="ui grid">
+                <div class="three wide column">
+                </div>
+                <div class="nine wide column">
+                    <div class="ui negative message">
+                        {$element.error}
+                    </div>
+                </div>
+            </div>
+            {/if}
+
+            <div class="inline fields ui grid">
             {if $element.type == 'submit'}
-                {$element.html}
+                <label class="three wide column">
+                </label>
+                <div class="seven wide column">
+                    {$element.html}
+                </div>
             {elseif $element.type == 'static' && ($element.name == 'html')}
                 <p class="html">{$element.html|nl2br}</p>
             {elseif $element.type == 'static' && ($element.name == 'note')}
-                <p class="note">{$element.html|nl2br}</p>
+                <label class="three wide column">
+                </label>
+                <div class="field seven wide column">
+                    {$element.html|nl2br}
+                </div>
+            {elseif $element.type == 'static' && ($element.name == 'info')}
+                <label class="three wide column">
+                    {$element.label}
+                </label>
+                <div class="field seven wide column">
+                    {$element.html}
+                </div>
+            {elseif $element.type == 'static' && ($element.name == 'label')}
+                <label class="ten wide column">
+                    {$element.html}
+                </label>
             {elseif $element.type == 'static' && ($element.name == 'raccourci')}
                 <p class="raccourci">{$element.html|nl2br}</p>
             {elseif $element.type == 'group'}
                 {if $element.label != ''}
-                <label class="libelle">
+                <label class="three wide column right aligned">
                     {if $element.required}<span class="obligatoire">*</span>{/if}
                     {$element.label}
                 </label>
                 {/if}
-                <span class="element">
+                <div class="field">
                     {foreach from=$element.elements item=element_groupe name=groupe}
-                        {$element_groupe.html}
+                        <div class="ui radio checkbox">
+                            {$element_groupe.html}
+                        </div>
                         {if !$smarty.foreach.groupe.last}{$element.separator}{/if}
                     {/foreach}
-                    {if $element.error}<br /><p class="erreur">{$element.error}</p>{/if}
-                </span>
-            {else}
-                {if $element.label != ''}
-                <label class="libelle">
-                    {if $element.required}<span class="obligatoire">*</span>{/if}
-                    {$element.label}
+                </div>
+            {elseif $element.type == 'text' or $element.type == 'select' or $element.type == 'textarea'
+                or $element.type == 'password' or $element.type == 'checkbox' or $element.type == 'file'
+                or $element.type == 'date'
+                }
+                <label class="three wide column right aligned">
+                    {if $element.label != ''}
+                        {$element.label}{if $element.required}<span class="obligatoire">*</span>{/if}
+                    {/if}
                 </label>
-                {/if}
-                <span class="element">
-                  {$element.html}
-                  {if $element.error}<br /><p class="erreur">{$element.error}</p>{/if}
-                </span>
+                <div class="field nine wide column">
+                    <div class="ui {if $element.type == 'checkbox'}checkbox{else}input{/if}">
+                        {if $element.type == 'textarea'}<div style="width: 100%">{/if}
+                        {$element.html}
+                        {if $element.type == 'textarea'}</div>{/if}
+                    </div>
+                </div>
+            {else}
+                Type de champ {$element.type} {if $element.name }({$element.name}){/if} non géré.
             {/if}
+            </div>
         </div>
         {/foreach}
 
-        <!-- Vilain hack pour Opera -->
-        <div style="clear: both">&nbsp;</div>
-    </fieldset>
+    </div>
     {/foreach}
     {if $auMoinsUnChampsRequis}
-    <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+        <div class="ui segment">
+            <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+        </div>
     {/if}
 </form>

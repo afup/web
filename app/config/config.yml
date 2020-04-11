@@ -14,10 +14,13 @@ parameters:
         membres:
             nom: 'Membres'
             niveau: 'ROLE_ADMIN'
+            icon: 'user'
             elements:
                 personnes_physiques:
                     nom: 'Personnes physiques'
                     niveau: 'ROLE_ADMIN'
+                    extra_routes:
+                        - admin_slack_members_check
                 personnes_morales:
                     nom: 'Personnes morales'
                     niveau: 'ROLE_ADMIN'
@@ -25,36 +28,52 @@ parameters:
                     nom: 'Relances cotisations'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/association/relances/1'
+                    extra_routes:
+                        - admin_relances
                 reporting:
                     nom: 'Reporting'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/members/reporting'
+                    extra_routes:
+                        - admin_members_reporting
                 badges:
                     nom: 'Badges'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/members/badges'
+                    extra_routes:
+                        - admin_members_badges_index
+                        - admin_members_badges_new
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
+            icon: 'bullhorn'
             elements:
                 veille_ generer_campagne:
-                    nom: "Liste des campagnes"
+                    nom: "Campagnes"
                     niveau: "ROLE_VEILLE"
                     url: '/admin/techletter'
+                    extra_routes:
+                        - admin_techletter_index
+                        - admin_techletter_generate
                 techletter:
-                    nom: 'Abonnés à la techletter'
+                    nom: 'Abonnés'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/techletter/members'
+                    extra_routes:
+                        - admin_techletter_members
                 history:
-                    nom: 'Historique de la techletter'
+                    nom: 'Historique'
                     niveau: 'ROLE_VEILLE'
                     url: '/admin/techletter/history'
+                    extra_routes:
+                        - admin_techletter_history
         site:
             nom: 'Site'
             niveau: 'ROLE_SITE'
+            icon: "paint brush"
             elements:
                 site_feuilles:
                     nom: 'Feuilles'
@@ -76,77 +95,95 @@ parameters:
                     nom: 'Liste des antennes'
                     niveau: 'ROLE_ANTENNE'
         forum:
-            nom: 'Forum'
+            nom: 'Événements'
             niveau: 'ROLE_FORUM'
+            icon: "globe"
             elements:
                 forum_gestion:
-                    nom: 'Gestion forum'
+                    nom: 'Gestion événéments'
                     niveau: 'ROLE_ADMIN'
                 forum_salle:
-                    nom: 'Gestion des salles'
+                    nom: 'Salles'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/room'
+                    extra_routes:
+                        - admin_event_room
                 forum_suivi:
                     nom: 'Suivi'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/event/stats'
+                    extra_routes:
+                        - admin_event_stats
                 forum_inscriptions:
                     nom: 'Inscriptions'
                     niveau: 'ROLE_FORUM'
                 forum_pending_bankwires:
-                    nom: 'Inscriptions - virements en attente'
+                    nom: 'Virements en attente'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/bankwires'
+                    extra_routes:
+                        - admin_event_pending_bankwires
                 admin_event_sponsor_ticket:
-                    nom: 'Inscriptions sponsors'
+                    nom: 'Tokens sponsors'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/sponsor'
+                    extra_routes:
+                        - admin_event_sponsor_ticket
                 admin_event_special_price:
-                    nom: 'Inscriptions - prix custom'
+                    nom: 'Tokens visiteurs'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/special_price'
+                    extra_routes:
+                        - admin_event_special_price
                 admin_event_prices:
-                    nom: 'Inscriptions - liste des prix'
+                    nom: 'Tarifications'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/event/prices'
-                admin_event_speakers_management:
-                    nom: 'Gestion documentaire des speakers'
-                    niveau: 'ROLE_FORUM'
-                    url: '/admin/event/speakers-management'
+                    extra_routes:
+                        - admin_event_prices
                 forum_facturation:
-                    nom: 'Factures'
+                    nom: "Factures d'événément"
                     niveau: 'ROLE_ADMIN'
                 forum_sessions:
-                    nom: 'Sessions'
+                    nom: 'Conférences'
                     niveau: 'ROLE_FORUM'
                 forum_vote_github:
-                    nom: 'Sessions - votes visiteurs'
+                    nom: 'Votes visiteurs'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/vote/'
+                    extra_routes:
+                        - admin_vote
                 forum_conferenciers:
-                    nom: 'Conférenciers'
+                    nom: 'Speakers'
                     niveau: 'ROLE_FORUM'
+                admin_event_speakers_management:
+                    nom: 'Venue speakers'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/speakers-management'
+                    extra_routes:
+                        - admin_event_speakers_management
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
-                forum_partenaire:
-                    nom: 'Sponsors/Partenaires'
-                    niveau: 'ROLE_ADMIN'
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
+            icon: "money bill alternate"
             elements:
                 compta_devis:
-                    nom: 'Devis - Facture'
+                    nom: 'Devis'
+                    niveau: 'ROLE_ADMIN'
+                compta_facture:
+                    nom: 'Factures'
                     niveau: 'ROLE_ADMIN'
                 compta_journal:
                     nom: 'Journal'
                     niveau: 'ROLE_ADMIN'
                 compta_banque:
-                    nom: 'Compte Banques'
+                    nom: 'Compte banques'
                     niveau: 'ROLE_ADMIN'
                 compta_synthese:
-                    nom: 'Synthese Evenement'
+                    nom: 'Synthese événement'
                     niveau: 'ROLE_ADMIN'
                 compta_balance:
                     nom: 'Balance comptable'
@@ -157,12 +194,18 @@ parameters:
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'
+                    extra_pages:
+                        - compta_conf_categorie
+                        - compta_conf_operation
+                        - compta_conf_reglement
+                        - compta_conf_compte
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'
         planete:
             nom: 'Planète PHP FR'
             niveau: 'ROLE_ADMIN'
+            icon: "rss"
             elements:
                 planete_flux:
                     nom: 'Flux'
@@ -174,6 +217,7 @@ parameters:
         divers:
             nom: 'Divers'
             niveau: 'ROLE_ADMIN'
+            icon: "tag"
             elements:
                 configuration:
                     nom: 'Configuration'
@@ -184,14 +228,9 @@ parameters:
                 logs:
                     nom: 'Logs'
                     niveau: 'ROLE_ADMIN'
-        retour_site:
-          nom: 'Retour site'
-          url: '/'
-          niveau: 'ROLE_USER'
-        se_deconnecter:
-            nom: 'Se déconnecter'
-            url: '/admin/logout'
-            niveau: 'ROLE_USER'
+                forum_partenaire:
+                    nom: 'Sponsors/Partenaires'
+                    niveau: 'ROLE_ADMIN'
         connexion:
             nom: 'Connexion'
             masquee: true

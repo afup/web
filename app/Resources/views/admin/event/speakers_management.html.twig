@@ -1,26 +1,21 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Gestion documentaire des speakers du {{ event.title }}</h2>
+    <h2>Venue speakers</h2>
+
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
-    <style>
-        .speaker-management--no-response {
-            background-color: red;
-        }
-    </style>
-
-    <table class="afup_tab tab--filterable TF">
+    <table class="ui table striped compact celled afup-tab-filterable">
         <thead>
             <tr>
-                <th>Speaker</th>
-                <th>Venue au restaurant ?</th>
-                <th>A un régime spécifique ?</th>
-                <th>Précisions régime</th>
-                <th>Nuit d'hotel la veille ?</th>
-                <th>Nuit d'hotel entre les deux jours ?</th>
-                <th>Nuit d'hotel après l'événement ?</th>
-                <th>Pas de nuit d'hotel ?</th>
+                <th data-tf-filter-type="input">Speaker</th>
+                <th data-tf-filter-type="select"class="center aligned">Venue au restaurant ?</th>
+                <th data-tf-filter-type="select" class="center aligned">A un régime spécifique ?</th>
+                <th class="center aligned">Précisions régime</th>
+                <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel la veille ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel entre les deux jours ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel après l'événement ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Pas de nuit d'hotel ?</th>
                 <th></th>
             </tr>
         </thead>
@@ -28,7 +23,8 @@
         {% for speaker in speakers %}
             <tr>
                 <td>{{ speaker.speaker.label }}</td>
-                <td class="{% if speaker.speaker.willAttendSpeakersDiner is null %}speaker-management--no-response{% endif %}">
+                <td class="center aligned">
+                    <span class="ui {% if speaker.speaker.willAttendSpeakersDiner is null %}red{% endif %} label">
                     {% if speaker.speaker.willAttendSpeakersDiner is null %}
                         N/A
                     {% elseif speaker.speaker.willAttendSpeakersDiner  %}
@@ -36,8 +32,10 @@
                     {% else %}
                         non
                     {% endif %}
+                    </span>
                 </td>
-                <td class="{% if speaker.speaker.hasSpecialDiet is null %}speaker-management--no-response{% endif %}">
+                <td class="center aligned">
+                    <span class="ui {% if speaker.speaker.hasSpecialDiet is null %}red{% endif %} label">
                     {% if speaker.speaker.hasSpecialDiet is null %}
                         N/A
                     {% elseif speaker.speaker.hasSpecialDiet %}
@@ -45,15 +43,21 @@
                     {% else %}
                         non
                     {% endif %}
+                    </span>
                 </td>
-                <td class="{% if speaker.speaker.hasSpecialDiet and speaker.speaker.specialDietDescription is null %}speaker-management--no-response{% endif %}">
-                    {% if speaker.speaker.specialDietDescription %}
-                        {{ speaker.speaker.specialDietDescription }}
+                <td class="center aligned">
+                    {% if speaker.speaker.hasSpecialDiet and speaker.speaker.specialDietDescription is null %}
+                        <span class="ui red label">N/A</span>
                     {% else %}
-                        N/A
+                        {% if speaker.speaker.specialDietDescription %}
+                            {{ speaker.speaker.specialDietDescription }}
+                        {% else %}
+                            <span class="ui label">N/A</span>
+                        {% endif %}
                     {% endif %}
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightBefore is null %}speaker-management--no-response{% endif %}">
+                <td class="center aligned">
+                    <span {% if speaker.speaker.hasHotelNightBefore is null %}class="ui red label" {% endif %}>
                     {% if speaker.speaker.hasHotelNightBefore is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightBefore %}
@@ -61,8 +65,10 @@
                     {% else %}
                         non
                     {% endif %}
+                    </span>
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightBetween is null %}speaker-management--no-response{% endif %}">
+                <td  class="center aligned">
+                    <span class="ui {% if speaker.speaker.hasHotelNightBetween is null %}red{% endif %} label">
                     {% if speaker.speaker.hasHotelNightBetween is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightBetween %}
@@ -70,8 +76,10 @@
                     {% else %}
                         non
                     {% endif %}
+                    </span>
                 </td>
-                <td class="{% if speaker.speaker.hasHotelNightAfter is null %}speaker-management--no-response{% endif %}">
+                <td  class="center aligned">
+                    <span class="ui {% if speaker.speaker.hasHotelNightAfter is null %}red{% endif %} label">
                     {% if speaker.speaker.hasHotelNightAfter is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightAfter %}
@@ -79,8 +87,10 @@
                     {% else %}
                         non
                     {% endif %}
+                    </span>
                 </td>
-                <td class="{% if speaker.speaker.hasNoHotelNight is null %}speaker-management--no-response{% endif %}">
+                <td  class="center aligned">
+                    <span class="ui {% if speaker.speaker.hasNoHotelNight is null %}red{% endif %} label">
                     {% if speaker.speaker.hasNoHotelNight is null %}
                         N/A
                     {% elseif speaker.speaker.hasNoHotelNight %}
@@ -88,9 +98,16 @@
                     {% else %}
                         non
                     {% endif %}
+                    </span>
                 </td>
                 <td>
-                    <a href="{{ path('admin_event_speaker_infos', {speaker_id: speaker.speaker.id, id: event.id }) }}">Voir sa page</a>
+                    <a href="{{ path('admin_event_speaker_infos', {speaker_id: speaker.speaker.id, id: event.id }) }}"
+                       data-position="left center"
+                       data-tooltip="Voir sa page"
+                       class="compact ui icon button"
+                    >
+                        <i class="user secret icon"></i>
+                    </a>
                 </td>
             </tr>
         {% endfor %}

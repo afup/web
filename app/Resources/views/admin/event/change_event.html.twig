@@ -1,3 +1,12 @@
-{{ form_start(form) }}
-{{ form_label(form.id, 'Choisir un autre événement:') }} {{ form_widget(form.id, {attr: {onchange:'this.name="id"; this.form.submit(); return false;'}}) }}
-{{ form_end(form) }}
+<div class="ui violet segment">
+    {{ form_start(form) }}
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    {{ form_label(form.id, 'Événement') }}
+                    {{ form_widget(form.id, {attr: {onchange:'this.name="id"; this.form.submit(); return false;'}}) }}
+                </div>
+            </div>
+        </div>
+    {{ form_end(form) }}
+</div>

@@ -144,7 +144,8 @@ class Comptabilite
 
     function obtenirJournal($debitCredit = '',
                             $periode_debut = '',
-                            $periode_fin = ''
+                            $periode_fin = '',
+                            $onlyUnclasifedEntries = true
     )
     {
 
@@ -177,6 +178,17 @@ class Comptabilite
         $requete .= ' compta.date_ecriture >= \'' . $periode_debut . '\' ';
         $requete .= 'AND compta.date_ecriture <= \'' . $periode_fin . '\'  ';
         $requete .= $filtre;
+        if (true === $onlyUnclasifedEntries) {
+            $requete .= ' AND (
+                  compta_evenement.evenement = "A déterminer"
+                OR
+                  compta_categorie.categorie = "A déterminer"
+                OR
+                  compta_reglement.reglement = "A déterminer"
+                OR
+                  (compta.attachment_required = 1 AND compta.attachment_filename IS NULL)
+            ) ';
+        }
         $requete .= 'ORDER BY ';
         $requete .= 'compta.date_ecriture, numero_operation';
 
@@ -355,6 +367,14 @@ class Comptabilite
 
     }
 
+    public function obtenirListCategoriesSansEvenementVide($filtre = '', $where = '')
+    {
+        $categories = $this->obtenirListCategories($filtre, $where);
+        unset($categories[0]);
+
+        return $categories;
+    }
+
     function obtenirListEvenements($filtre = '', $where = '')
     {
         $requete = 'SELECT ';
@@ -381,6 +401,14 @@ class Comptabilite
         }
     }
 
+    public function obtenirListEvenementsSansEvenementVide($filtre = '', $where = '')
+    {
+        $events = $this->obtenirListEvenements($filtre, $where);
+        unset($events[0]);
+
+        return $events;
+    }
+
     function obtenirListReglements($filtre = '', $where = '')
     {
         $requete = 'SELECT ';
@@ -405,6 +433,14 @@ class Comptabilite
 
             return $result;
         }
+    }
+
+    public function obtenirListReglementsSansEvenementVide($filtre = '', $where = '')
+    {
+        $reglements = $this->obtenirListReglements($filtre, $where);
+        unset($reglements[0]);
+
+        return $reglements;
     }
 
     function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $montant, $description,
@@ -626,6 +662,7 @@ SQL;
         $requete .= ' IF( compta.idoperation =2, compta.montant, "" )  AS credit, ';
         $requete .= ' compta.date_ecriture, compta.description, ';
         $requete .= ' montant, ';
+        $requete .= ' compta.id as compta_id, ';
         $requete .= ' compta_evenement.id, compta_evenement.evenement   ';
         $requete .= 'FROM  ';
         $requete .= ' compta,  ';
@@ -759,56 +796,6 @@ SQL;
 
         return $tableau;
     }
-
-
-    function genererBilanPDF($periode_debut, $periode_fin)
-    {
-
-        // Construction du PDF
-
-        $pdf = new PDF('L', 'mm', 'A4');
-        //       $pdf = new AFUP_PDF_Compta();
-        //       $pdf->AddPage();
-        $pdf->AliasNbPages();
-
-
-        $pdf->AddPage();
-
-        $pdf->SetFont('Times', 'B', 18);
-        $pdf->Cell(0, 5, "Bilan ", 0, 0, 'C');
-
-
-        $debit = $this->obtenirBilan(1, $periode_debut = '', $periode_fin = '');
-        $credit = $this->obtenirBilan(2, $periode_debut = '', $periode_fin = '');
-
-
-        $header[] = array("Categorie", "Description", "Montant");
-
-        $depense = 0;
-//while( $row=$qid->fetch(PDO::FETCH_OBJ) )
-        foreach ($debit as $debits) {
-
-            $data[] = array($debits->evenement,
-                $debits->description,
-                $debits->montant
-            );
-            $depense += $debits->montant;
-        }
-
-        $data[] = array('', 'Total Dépenses', $depense);
-
-        $pdf->Ln(10);
-//$pdf->$this->tableau(1,$header,$data);
-
-
-        if (is_null($chemin)) {
-            $pdf->Output('bilan.pdf', 'D');
-        } else {
-            $pdf->Output($chemin, 'F');
-        }
-
-    }
-
 
     function supprimerEcriture($id)
     {

@@ -39,6 +39,15 @@ $smarty->assign('id_periode', $id_periode);
 $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode);
 
+$listeComptes = [
+    '1' => 'Courant',
+    '2' => 'Espece',
+    '3' => 'Livret A',
+    '4' => 'Paypal',
+];
+$smarty->assign('listeComptes', $listeComptes);
+$smarty->assign('compte_id', $compte);
+
 if ($action == 'lister') {
     $periode_debut = $listPeriode[$id_periode - 1]['date_debut'];
     $periode_fin = $listPeriode[$id_periode - 1]['date_fin'];

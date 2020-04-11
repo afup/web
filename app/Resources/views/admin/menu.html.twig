@@ -1,27 +1,28 @@
-<ul id="menu">
-    {% for clef, page in pages %}
-        {% if page.elements is defined %}
-            {% if page.niveau is not defined or is_granted(page.niveau) %}
-                <li>
-                    <span>{{ page.nom }}</span>
-                    <ul>
-                        {% for clef2, element in page.elements %}
-                            {% if element.niveau is not defined or is_granted(element.niveau) %}
-                                <li>
-                                    <a href="{% if element.url is defined %}{{ element.url }}{% else %}/pages/administration/index.php?page={{ clef2 }}{% endif %}"
-                                       {% if element.nouvelle_fenetre is defined and element.nouvelle_fenetre == true %}target="_blank"{% endif %}>{{ element.nom }}{% if element.nouvelle_fenetre is defined and element.nouvelle_fenetre == true %}
-                                            <i class="glyphicon glyphicon-new-window"></i>{% endif %}</a>
-                                </li>
-                            {% endif %}
+{% for clef, page in pages %}
+    {% if page.elements is defined %}
+        {% if page.niveau is not defined or is_granted(page.niveau) %}
+            <div class="item">
+                <div class="header {% if clef == current_group_key %}active{% endif %} title">
+                    {% if page.icon is defined %}
+                        <i class="icon {{ page.icon }}"></i>
+                    {% endif %}
+                    {{ page.nom }}
+                </div>
+                <div class="{% if clef == current_group_key %}active{% endif %} content">
+                    {% for clef2, element in page.elements %}
+                        {% if element.niveau is not defined or is_granted(element.niveau) %}
+                            <a href="{% if element.url is defined %}{{ element.url }}{% else %}/pages/administration/index.php?page={{ clef2 }}{% endif %}"
+                               class="item {% if clef2 == current_element_key %}active{% endif %}"
+                               {% if element.nouvelle_fenetre is defined and element.nouvelle_fenetre == true %}target="_blank"{% endif %}>{{ element.nom }}{% if element.nouvelle_fenetre is defined and element.nouvelle_fenetre == true %}
+                                    <i class="glyphicon glyphicon-new-window"></i>{% endif %}</a>
+                        {% endif %}
 
-                        {% endfor %}
-                    </ul>
-                </li>
-            {% endif %}
-        {% elseif page.masquee is not defined or page.masquee != true %}
-            <li>
-                <span><a href="{% if page.url is defined %}{{ page.url }}{% else %}/pages/administration/index.php?page={{ clef }}{% endif %}">{{ page.nom }}</a></span>
-            </li>
+                    {% endfor %}
+                </div>
+            </div>
         {% endif %}
-    {% endfor %}
-</ul>
+    {% elseif page.masquee is not defined or page.masquee != true %}
+        <a class="item"
+                    href="{% if page.url is defined %}{{ page.url }}{% else %}/pages/administration/index.php?page={{ clef }}{% endif %}">{{ page.nom }}</a>
+    {% endif %}
+{% endfor %}

@@ -185,23 +185,30 @@ if ($action == 'lister') {
 
 	if ($action != 'ajouter') {
         $conferenciers = $forum_appel->obtenirConferenciersPourSession($id);
-		$formulaire->addElement('header'  , ''                   , 'Conférenciers associés');
-		foreach ($conferenciers as $conferencier) {
-            $nom = $conferencier['nom'] . ' ' . $conferencier['prenom'][0];
-            $formulaire->addElement('static', 'info', $nom . '.',
-		    '<a href="index.php?page=forum_conferenciers&action=modifier&id=' . $conferencier['conferencier_id'] . '" title="Voir la fiche du conférencier">Voir la fiche</a>');
-        }
+		$smarty->assign('session_conferenciers', $conferenciers);
     }
 
-    $formulaire->addElement('header', null, 'Commentaires');
     $commentaires = $forum_appel->obtenirCommentairesPourSession($id);
-    if (is_array($commentaires)) {
-      foreach ($commentaires as $commentaire) {
-          $formulaire->addElement('static',
-                      'id_commentaire_'.$commentaire['id'],
-                                  date('d/m/Y h:i', $commentaire['date']),
-                                  $commentaire['commentaire'].'<br /><br /><em>'.$commentaire['nom'].' '.$commentaire['prenom'].'</em>');
-      }
+    if (is_array($commentaires) && count($commentaires)) {
+        $formulaire->addElement('header', null, 'Commentaires');
+        $feed = '<div class="ui feed">';
+        foreach ($commentaires as $commentaire) {
+            $feed .= '<div class="event">';
+            $feed .= '<div class="content">';
+            $feed .= '<div class="summary">';
+            $feed .= $commentaire['nom'].' '.$commentaire['prenom'];
+            $feed .= '<div class="date">';
+            $feed .= date('d/m/Y h:i', $commentaire['date']);
+            $feed .= '</div>';
+            $feed .= '</div>';
+            $feed .= '<div class="extra text">';
+            $feed .= $commentaire['commentaire'];
+            $feed .= '</div>';
+            $feed .= '</div>';
+            $feed .= '</div>';
+        }
+        $feed .= '</div>';
+        $formulaire->addElement('static', 'note', '', $feed);
     }
 
 	$formulaire->addElement('header', 'boutons'  , '');

@@ -2,22 +2,37 @@
 
 {% block content %}
 
+    <h2>Votes des visiteurs</h2>
+
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
-    <table class="afup_tab">
-        <tr>
-            <th>Votant</th>
-            <th>Conférence</th>
-            <th>Note</th>
-            <th>Commentaire</th>
-        </tr>
-        {% for vote in votes %}
-            <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
-                <td>{{ vote.githubUser.login }}</td>
-                <td>{{ vote.talk.title }}</td>
-                <td>{{ vote.vote }}</td>
-                <td>{{ vote.comment }}</td>
-            </tr>
-        {% endfor %}
+    {% if votes|length > 0 %}
+    <table class="ui table striped very compact celled">
+        <thead>
+                <tr>
+                    <th>Votant</th>
+                    <th>Conférence</th>
+                    <th class="right aligned">Note</th>
+                    <th>Commentaire</th>
+                </tr>
+            </thead>
+        <tbody>
+            {% for vote in votes %}
+                <tr>
+                    <td>{{ vote.githubUser.login }}</td>
+                    <td>{{ vote.talk.title }}</td>
+                    <td class="right aligned">{{ vote.vote }}</td>
+                    <td>{{ vote.comment }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune vote
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

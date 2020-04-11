@@ -1,16 +1,52 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
+{% form_theme form _self %}
+{%- block form_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div class="ui form">
+        <div class="inline fields ui grid">
+            {{- form_label(form, null, {label_attr: {class: "three wide column"}}) -}}
+            <div class="field seven wide column">
+                {{- form_errors(form) -}}
+                {{- form_widget(form, widget_attr) -}}
+            </div>
+        </div>
+    </div>
+{%- endblock form_row -%}
+
 {% block content %}
     <h2>Liste des tokens sponsors pour {{ event.title }}</h2>
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
-    <table class="afup_tab">
-        <tr>
-            <th>Société</th>
-            <th>Token</th>
-            <th>Invitations totales</th>
-            <th>Invitations utilisées</th>
-            <th> </th>
-        </tr>
+
+    <div class="ui menu">
+        <a href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}"
+           class="item confirmable"
+           data-confirmable-label="Souhaitez-vous vraiment envoyer des mails relance à tous les sponsors ayant encore des places ?"
+        >
+            <div data-position="bottom left"
+                 data-tooltip="Lorsque la fermeture de la billetterie approche, ce bouton permet d'envoyer des mails de rappel pour inciter les sponsors à enregistrer leurs places"
+             >
+                <i class="icon mail"></i>
+                Envoyer le mail de rappel
+            </div>
+        </a>
+    </div>
+
+    {% if tokens|length > 0 %}
+    <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th>Société</th>
+                <th>Token</th>
+                <th class="right aligned">Invitations totales</th>
+                <th class="right aligned">Invitations utilisées</th>
+                <th colspan="3"></th>
+            </tr>
+        </thead>
+        <tbody>
         {% set totalInvitations = 0 %}
         {% set totalUsedInvitations = 0 %}
         {% for token in tokens %}
@@ -19,44 +55,82 @@
                 {% set totalUsedInvitations = totalUsedInvitations + token.usedInvitations %}
                 <td>{{ token.company }}</td>
                 <td>{{ token.token }}</td>
-                <td>{{ token.maxInvitations }}</td>
-                <td>{{ token.usedInvitations }}</td>
-                <td>
+                <td class="right aligned">{{ token.maxInvitations }}</td>
+                <td class="right aligned">{{ token.usedInvitations }}</td>
+                <td class="right aligned">
                     <form class="sponsor--token-admin-view" method="post" action="{{ url('sponsor_ticket_home', {eventSlug: event.path}) }}">
                         <input type="hidden" name="sponsor_token" value="{{ token.token }}" />
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('sponsor_ticket') }}" />
-                        <input type="submit" name="see" value="Voir les invitations" />
-                    </form>
-                    <form class="sponsor--token-admin-view" method="post" action="{{ url('admin_event_sponsor_mail', {id: event.id}) }}">
-                        <input type="hidden" name="sponsor_token_id" value="{{ token.id }}" />
-                        <input type="submit" name="resend" value="Renvoyer le mail" />
-
-                        <a class="button sponsor--token-admin-edit" href="{{ url('admin_event_sponsor_ticket', {id: event.id, ticket: token.id}) }}">Editer</a>
+                        <input type="submit"
+                               name="see"
+                               value="Voir les invitations"
+                               class="compact ui icon button"
+                        />
                     </form>
                 </td>
+                <td class="right aligned">
+                    <form class="sponsor--token-admin-view" method="post" action="{{ url('admin_event_sponsor_mail', {id: event.id}) }}">
+                        <input type="hidden" name="sponsor_token_id" value="{{ token.id }}" />
+                        <input type="submit"
+                               name="resend"
+                               value="Renvoyer le mail"
+                               class="compact ui icon button"
+                        />
+                    </form>
+                </td>
+                <td class="single line right aligned">
+                    <a class="button sponsor--token-admin-edit compact ui icon button"
+                       href="{{ url('admin_event_sponsor_ticket', {id: event.id, ticket: token.id}) }}"
+                       data-position="left center"
+                       data-tooltip="Editer"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
+                </td>
             </tr>
-        {% else %}
-            <tr><td colspan="5">Aucune invitation créée</td></tr>
-        {% endfor %}
-        <tr class="even">
-            <th colspan="2"><strong>Total</strong></th>
-            <th>{{ totalInvitations }}</th>
-            <th>{{ totalUsedInvitations }}</th>
-            <th>¤</th>
-        </tr>
+        git{% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="2"><strong>Total</strong></th>
+                <th class="right aligned">{{ totalInvitations }}</th>
+                <th class="right aligned">{{ totalUsedInvitations }}</th>
+                <th></th>
+            </tr>
+        </tfoot>
     </table>
-    <p>
-        Lorsque la fermeture de la billetterie approche, ce bouton permet d'envoyer des mails de rappel pour inciter les sponsors à enregistrer leurs places.<br/>
-        <a class="button sponsor--token-admin-edit" href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}" onclick="return confirm('Souhaitez-vous vraiment envoyer des mails relance à tous les sponsors ayant encore des places ?');">Envoyer le mail de rappel</a>
-    </p>
-
-    {% if edit == true %}
-        <h2>Modifier le token de {{ form.vars.value.company}}</h2>
     {% else %}
-        <h2>Nouveau token</h2>
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune invitation créée
+            </div>
+        </div>
     {% endif %}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit">Enregistrer</button>
-    {{ form_end(form) }}
+
+    <div class="ui segment">
+        {% if edit == true %}
+            <h2 class="ui header">Modifier le token de {{ form.vars.value.company}}</h2>
+        {% else %}
+            <h2 class="ui header">Nouveau token</h2>
+        {% endif %}
+
+        <div class="ui clearing divider"></div>
+
+        <div>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                <div class="three wide column"></div>
+                <div class="field seven wide column">
+                    <button type="submit" class="ui primary button">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

@@ -40,9 +40,17 @@ if ($action == 'lister') {
         $needsUpToDateMembership = true;
     }
 
+    $onlyDisplayActive = true;
+    if (isset($_GET['also_display_inactive'])) {
+        $onlyDisplayActive = null;
+    }
+
+    $officesCollection = new \AppBundle\Offices\OfficesCollection();
     // Mise en place de la liste dans le scope de smarty
-    $smarty->assign('personnes', $personnes_physiques->obtenirListe($list_champs, $list_ordre, $list_filtre, false, false, false, null, null, $needsUpToDateMembership));
+    $smarty->assign('antennes', $officesCollection->getAll());
+    $smarty->assign('personnes', $personnes_physiques->obtenirListe($list_champs, $list_ordre, $list_filtre, false, false, false, $onlyDisplayActive, null, $needsUpToDateMembership));
     $smarty->assign('needs_up_to_date_membersip_checkbox', $needsUpToDateMembership ? '1': '0');
+    $smarty->assign('also_display_inactive', null === $onlyDisplayActive);
 } elseif ($action == 'supprimer') {
     if ($personnes_physiques->supprimer($_GET['id'])) {
         Logs::log('Suppression de la personne physique ' . $_GET['id']);
@@ -119,14 +127,7 @@ if ($action == 'lister') {
     }
 
     $formulaire->addElement('header' , '' , 'Informations');
-    if(isset($champs['etat']) && AFUP_DROITS_ETAT_ACTIF == $champs['etat']) {
-        $formulaire->addElement('static', 'note' , '    ' , '<a href="?page=personnes_physiques&action=envoi_bienvenue&id='.$_GET['id'].'">Envoyer un mail de bienvenue</a>');
-    }
     $formulaire->addElement('select' , 'id_personne_morale' , 'Personne morale', array(null => '') + $personnes_morales->obtenirListe('id, raison_sociale', 'raison_sociale', true));
-    if ($action == 'modifier') {
-        $formulaire->addElement('static', 'note' , '    ' , '<a href="#" onclick="voirPersonneMorale(); return false;" title="Voir la personne morale">Voir la personne morale</a>');
-    }
-
     $formulaire->addElement('select' , 'civilite' , 'Civilité' , array('M.', 'Mme', 'Mlle'));
 
     if ($action == 'ajouter') {
@@ -158,7 +159,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('select' , 'niveau_annuaire' , 'Annuaire des prestataires', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
-    $formulaire->addElement('select' , 'niveau_forum' , 'Forum PHP & PHP Tour', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
+    $formulaire->addElement('select' , 'niveau_forum' , 'Événément', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
     $formulaire->addElement('select' , 'niveau_site' , 'Site web', array(AFUP_DROITS_NIVEAU_MEMBRE => '--',
             AFUP_DROITS_NIVEAU_ADMINISTRATEUR => 'Gestionnaire'));
@@ -297,4 +298,7 @@ if ($action == 'lister') {
         'user_badge_form' => $userBadgeForm->createView(),
     ]));
     $smarty->assign('formulaire', genererFormulaire($formulaire));
+    if ($action == 'modifier') {
+        $smarty->assign('infos_personne_physique', $champs);
+    }
 }

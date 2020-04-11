@@ -263,12 +263,7 @@ if ($action == 'inscrire_forum') {
     //$sessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type));
     $sessions = $forum_appel->obtenirListeSessionsPourConferencier($_GET['id_forum'], $_GET['id']);
 
-    $formulaire->addElement('header', null, 'Sessions');
-    foreach ($sessions as $session) {
-        $url = 'index.php?page=forum_sessions&action=modifier&id=' . $session['session_id'] . '&id_forum=' . $_GET['id_forum'];
-        $formulaire->addElement('static', null, '<a href="' . $url . '">' . $session['titre'] . '</a>');
-    }
-
+    $smarty->assign('sessions_conferencier', $sessions);
 
     $formulaire->addElement('header', 'boutons', '');
     $formulaire->addElement('submit', 'soumettre', 'Soumettre');

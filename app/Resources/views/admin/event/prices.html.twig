@@ -1,10 +1,10 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Liste des prix pour le {{ event.title }}</h2>
+    <h2>Tarifications</h2>
     {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
 
-    <table class="afup_tab">
+    <table class="ui table striped compact celled">
         <thead>
             <th>Type - libellé</th>
             <th>Type - libellé technique</th>

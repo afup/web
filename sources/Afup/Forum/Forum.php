@@ -445,8 +445,10 @@ class Forum
             foreach ($aProgramme as $journee => $aInfos) {
                 $journee_aff = date('d/m/Y', strtotime($journee));
                 $sTable .= <<<CODE_HTML
-            <table summary="Agenda du forum" class="planning_agenda">
-              <caption>Jour {$j} : {$journee_aff}</caption>
+<div class="ui segment">
+<h2 class="ui header">Jour {$j} : {$journee_aff}</h2>
+        <div class="ui clearing divider"></div>
+            <table summary="Agenda du forum" class="ui table striped compact celled">
               <thead>
                 <tr>
                   <th class="horaire">&nbsp;</th>
@@ -545,7 +547,7 @@ CODE_HTML;
                 }
                 $sTable .= <<<CODE_HTML
               </tbody>
-            </table><br class="page_break">
+            </table></div><br class="page_break">
 
 CODE_HTML;
                 $j++;

@@ -1,48 +1,88 @@
 {if $action == 'lister'}
     <h2>Liste devis </h2>
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=ajouter" title="ajouter un devis">Ajouter un devis</a><br />
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" />Ajouter une facture (obligation de passer par la saisie d'un devis)<br />
-<br>
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_devis&amp;action=lister" title="ajouter un devis">Liste des devis</a><br />
-<img src="{$chemin_template}images/puce.png" class="puce" alt="Puce" /><a href="index.php?page=compta_facture&amp;action=lister" title="ajouter un devis">Liste des factures</a><br />
-<br/>
-    <table class="afup_tab">
+
+    <div class="ui menu">
+        <a href="index.php?page=compta_devis&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter un devis" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <table class="ui table striped compact celled afup-tab-filterable">
+        <thead>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
-           <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
-           <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
-            <th>Ville</th>
-            <th>Ref client</th>
-            <th>Numero devis</th>
-            <th>Prix</th>
+            <th data-tf-filter-type="input"><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+            <th data-tf-filter-type="input"><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
+            <th data-tf-filter-type="input">Ville</th>
+            <th data-tf-filter-type="input">Ref client</th>
+            <th data-tf-filter-type="input">Numero devis</th>
+            <th data-tf-filter-type="input"class="right aligned">Prix</th>
+            <th data-tf-filter-type="select" class="center aligned">Facturé ?</th>
             <th>&nbsp;</th>
        </tr>
+        </thead>
+        <tbody>
     {foreach from=$ecritures item=ecriture}
          <tr class="{cycle values="odd,even"}">
             <!-- td width="20px"><input type="checkbox" value=""/></td -->
             <td nowrap="nowrap">{$ecriture.date_devis|date_format:"%d/%m/%Y"}</td>
              <td>{$ecriture.societe}</td>
              <td  width="250">{$ecriture.ville}</td>
-			<td  align='right' width='100'>{$ecriture.ref_clt1}</td>
-			<td  align='right' width='100'>{$ecriture.numero_devis}</td>
-            <td  align='right' width='100'>{$ecriture.prix}</td>
-            <td style="text-align: left">
+			<td>{$ecriture.ref_clt1}</td>
+			<td>{$ecriture.numero_devis}</td>
+            <td class="right aligned">{$ecriture.prix|number_format:2:',':' '}</td>
+            <td class="center aligned">
+                {if $ecriture.numero_facture == ''}
+                    <span class="ui red label">non</span>
+                {else}
+                    <span class="ui green label">oui</span>
+                {/if}
+            </td>
+            <td class="right aligned single line">
 {if $ecriture.numero_facture == ''}
-               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier le devis {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier le devis" /></a>
+               <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}"
+                  data-position="left center"
+                  data-tooltip="Modifier le devis {$ecriture.description}"
+                  class="compact ui icon button"
+               >
+                   <i class="pencil alernate icon"></i>
+               </a>
 {else}
-               <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}" title="Modifier la facture {$ecriture.description}"><img src="{$chemin_template}images/famfamfam/application_form_edit.png" alt="Modifier la facture" /></a>
+               <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}"
+                  data-position="left center"
+                  data-tooltip="Modifier la facture {$ecriture.description}"
+                  class="compact ui icon button"
+               >
+                   <i class="pencil alernate icon"></i>
+               </a>
 {/if}
-                <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.numero_devis}" title="Télécharger le devis"><img src="{$chemin_template}images/famfamfam/report.png" alt="Téléchargement du devis" /></a>
+                <a href="index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={$ecriture.numero_devis}"
+                   data-position="left center"
+                   data-tooltip="Télécharger le devis"
+                   class="compact ui icon button"
+                >
+                    <i class="file pdf icon"></i>
+                </a>
 {if $ecriture.numero_facture == ''}
-               <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}" title="Transférer la ligne {$ecriture.description} en facture"><img src="{$chemin_template}images/famfamfam/cart_go.png" alt="Transfert en facture" /></a>
+               <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}"
+                  data-position="left center"
+                  data-tooltip="Transférer la ligne {$ecriture.description} en facture"
+                  class="compact ui icon button"
+               >
+                   <i class="cart icon"></i>
+               </a>
 {/if}
-               </td>
+           </td>
         </tr>
     {foreachelse}
         <tr>
             <td><em>Aucune ecriture actuellement</em></td>
         </tr>
     {/foreach}
+        </tbody>
      </table>
 
 
@@ -52,7 +92,11 @@
     {else}
         <h2>Modifier un devis</h2>
 
-        <a href="index.php?page=compta_devis&amp;action=ajouter&from={$devis_id}" title="ajouter un devis">Dupliquer le devis</a>
+        <div class="ui menu">
+            <a href="index.php?page=compta_devis&amp;action=ajouter&from={$devis_id}" class="item">
+                Dupliquer le devis
+            </a>
+        </div>
     {/if}
     {include file="formulaire.html"}
 {/if}
