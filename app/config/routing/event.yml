@@ -45,7 +45,7 @@ vote_new:
 
 cfp:
   path: /{eventSlug}/cfp
-  defaults: {_controller: AppBundle:CFP:index}
+  defaults: {_controller: AppBundle\Controller\Event\CFP\IndexAction}
 
 cfp_speaker:
   path: /{eventSlug}/cfp/speaker
