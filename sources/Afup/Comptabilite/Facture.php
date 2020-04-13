@@ -9,6 +9,9 @@ use Afup\Site\Utils\PDF_Facture;
 
 class Facture
 {
+    private $cipher  = 'aes-256-gcm';
+    private $key = 'PaiementFactureAFUP_AFUP';
+
     /**
      * @var \Afup\Site\Utils\Base_De_Donnees
      */
@@ -421,6 +424,20 @@ class Facture
         $requete = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
+        $pdf_name = sprintf('Facture - %s - %s.pdf', $coordonnees['societe'], $coordonnees['date_facture']);
+
+        $download = is_null($chemin);
+        if (is_null($chemin)) {
+            $chemin = AFUP_CHEMIN_RACINE . 'factures' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
+        }
+
+        if (!is_null($chemin) && is_readable($chemin)) {
+            header('Content-Type: application/pdf');
+            header('Content-Length: ' . strlen(file_get_contents($chemin)));
+            header('Content-disposition: attachment; filename="' . $pdf_name . '"');
+
+            return;
+        }
 
         $configuration = $GLOBALS['AFUP_CONF'];
 
@@ -552,24 +569,21 @@ class Facture
             $pdf->MultiCell(130, 5, utf8_decode($coordonnees['observation']));
         }
 
-        if (is_null($chemin)) {
-            $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_facture'] . '.pdf', 'D');
-        } else {
-            $pdf->Output($chemin, 'F');
-        }
+        $pdf->Output($chemin, 'F');
 
+        if ($download) {
+            $pdf->Output($pdf_name, 'D');
+        }
     }
 
     /**
      * Envoi par mail d'une facture au format PDF
      *
      * @param   string $reference Reference de la facturation
-     * @access public
      * @return bool Succès de l'envoi
      */
     function envoyerFacture($reference)
     {
-
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $personne = $this->obtenirParNumeroFacture($reference, 'email, nom, prenom');
@@ -584,18 +598,16 @@ class Facture
         $corps .= $configuration->obtenir('afup|adresse') . "\n";
         $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "\n";
 
-        $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
+        $chemin_facture = AFUP_CHEMIN_RACINE . 'factures' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
 
         $ok = Mailing::envoyerMail(
             $GLOBALS['conf']->obtenir('mails|email_expediteur'),
-            array($personne['email'], $personne['nom']),
+            [$personne['email'], $personne['nom']],
             $sujet,
             $corps,
-            array('file' => array(array($chemin_facture, 'facture-' . $reference . '.pdf')))
+            ['file' => [[$chemin_facture, 'facture-' . $reference . '.pdf']]]
         );
-
-        @unlink($chemin_facture);
 
         return $ok;
     }

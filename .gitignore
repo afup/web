@@ -34,6 +34,8 @@ js_dist
 # uploads
 /htdocs/uploads
 
+/htdocs/factures
+
 /app/config/parameters.yml
 /build/
 /phpunit.xml
