@@ -3,6 +3,7 @@
   "description": "Main repository for afup website",
   "type": "project",
   "require": {
+    "beberlei/assert": "^2.9",
     "league/oauth2-github": "^0.2.1",
     "symfony/symfony": "^3.4",
     "symfony/monolog-bundle": "^2.11",

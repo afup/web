@@ -4,6 +4,7 @@ namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Speaker implements NotifyPropertyInterface
@@ -84,7 +85,7 @@ class Speaker implements NotifyPropertyInterface
      *
      * @Assert\NotBlank(message="Please, upload a photo.")
      * @Assert\File(mimeTypes={"image/jpeg","image/png"})
-     * @var string
+     * @var UploadedFile|null
      */
     private $photo;
 
@@ -341,7 +342,7 @@ class Speaker implements NotifyPropertyInterface
     }
 
     /**
-     * @return string
+     * @return UploadedFile|null
      */
     public function getPhoto()
     {

@@ -49,21 +49,21 @@ cfp:
 
 cfp_speaker:
   path: /{eventSlug}/cfp/speaker
-  defaults: {_controller: AppBundle:CFP:speaker}
+  defaults: {_controller: AppBundle\Controller\Event\CFP\SpeakerAction}
 
 cfp_propose:
   path: /{eventSlug}/cfp/propose
-  defaults: {_controller: AppBundle:CFP:propose}
+  defaults: {_controller: AppBundle\Controller\Event\CFP\ProposeAction}
 
 cfp_edit:
   path: /{eventSlug}/cfp/{talkId}
-  defaults: {_controller: AppBundle:CFP:edit}
+  defaults: {_controller: AppBundle\Controller\Event\CFP\EditAction}
   requirements:
     talkId: '\d+'
 
 cfp_invite:
   path: /{eventSlug}/cfp/invite/{talkId}-{token}
-  defaults: {_controller: AppBundle:CFP:invite}
+  defaults: {_controller: AppBundle\Controller\Event\CFP\InviteAction}
   requirements:
     talkId: '\d+'
     token: '.+'

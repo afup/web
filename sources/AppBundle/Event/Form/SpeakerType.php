@@ -15,6 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SpeakerType extends AbstractType
 {
+    const OPT_PHOTO_REQUIRED = 'photo_required';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -25,7 +27,7 @@ class SpeakerType extends AbstractType
             ->add('company', TextType::class, ['required' => false])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
-            ->add('photo', FileType::class, ['label' => 'Photo de profil', 'data_class' => null, 'required' => $options['photo_required']])
+            ->add('photo', FileType::class, ['label' => 'Photo de profil', 'data_class' => null, 'required' => $options[self::OPT_PHOTO_REQUIRED]])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;
     }
@@ -33,7 +35,7 @@ class SpeakerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'photo_required' => true
+            self::OPT_PHOTO_REQUIRED => true
         ]);
     }
 }
