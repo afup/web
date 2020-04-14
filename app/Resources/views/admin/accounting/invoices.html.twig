@@ -1,0 +1,81 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Factures</h2>
+    <div class="ui message">
+        <div class="header">
+            Il n'est pas possible de créer directement une facture
+        </div>
+        <p>Il faut obligatoirement passer par la saisie d'un devis.</p>
+    </div>
+
+    <table class="ui table striped compact celled">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Clients</th>
+            <th>Ville</th>
+            <th class="right aligned">Numero facture</th>
+            <th>Référence client</th>
+            <th class="center aligned">Etat paiement</th>
+            <th class="right aligned">Prix</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ecriture in ecritures %}
+            <tr>
+                <td nowrap="nowrap">{{ ecriture.date_facture|date('d/m/Y') }}</td>
+                <td>{{ ecriture.societe }}</td>
+                <td>{{ ecriture.ville }}</td>
+                <td class="right aligned">{{ ecriture.numero_facture }}</td>
+                <td>{{ ecriture.ref_clt1 }}</td>
+                <td class="center aligned">
+                    {% if ecriture.etat_paiement == 2 %}
+                        <span class="ui label">Annulé</span>
+                    {% elseif ecriture.etat_paiement == 1 %}
+                        <span class="ui green label">Payé</span>
+                    {% else %}
+                        <span class="ui yellow label">En attente</span>
+                    {% endif %}
+                </td>
+                <td class="right aligned">{{ ecriture.prix|number_format(2, ',', ' ') }}</td>
+                <td class="single line right aligned">
+                    <a href="{{ path('admin_accounting_invoice_edit', {id: ecriture.id}) }}"
+                       data-position="left center"
+                       data-tooltip="Modifier la ligne {{ ecriture.numero_facture }}"
+                       class="compact ui icon button"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
+                    <a href="{{ path('admin_accounting_invoice_download', {ref: ecriture.numero_facture}) }}"
+                       data-position="left center"
+                       data-tooltip="Télécharger la facture"
+                       class="compact ui icon button"
+                    >
+                        <i class="file pdf icon"></i>
+                    </a>
+                    <a href="{{ path('admin_accounting_invoice_send', {ref: ecriture.numero_facture}) }}"
+                       data-position="left center"
+                       data-tooltip="Envoyer la facture par mail"
+                       class="compact ui icon button"
+                    >
+                        <i class="paper plane icon"></i>
+                    </a>
+                    <a href="/pages/paiement/index.php?&amp;ref={{ ecriture.link }}"
+                       data-position="left center"
+                       data-tooltip="Récuperer le lien de paiement en ligne"
+                       class="compact ui icon button"
+                    >
+                        <i class="shopping cart icon"></i>
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td><em>Aucune ecriture actuellement</em></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

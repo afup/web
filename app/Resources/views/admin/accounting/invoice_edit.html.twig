@@ -1,0 +1,14 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    {% if action == 'modifier' %}
+        <h2>Modifier une facture</h2>
+        <div class="ui menu">
+            <a href="/pages/administration/index.php?page=compta_devis&amp;action=ajouter&from={{ factureId }}" class="item">
+                Créer un devis depuis cette facture
+            </a>
+        </div>
+    {% endif %}
+
+    {% include 'formulaire.html.twig' %}
+{% endblock %}

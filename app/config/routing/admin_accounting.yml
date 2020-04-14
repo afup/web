@@ -1,0 +1,21 @@
+admin_accounting_invoices:
+  path: /factures
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\InvoicesAction}
+
+admin_accounting_invoice_edit:
+  path: /factures/{id}/modifier
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\InvoiceEditAction}
+  requirements:
+    ref: '[0-9]+'
+
+admin_accounting_invoice_download:
+  path: /factures/{ref}/telecharger
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\InvoiceDownloadAction}
+  requirements:
+    ref: '[0-9\-]+'
+
+admin_accounting_invoice_send:
+  path: /factures/{ref}/envoyer
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\InvoiceSendAction}
+  requirements:
+    ref: '[0-9\-]+'
