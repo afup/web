@@ -100,7 +100,7 @@ class PayboxFactory
         $paybox->set_langue('FRA'); // Langue de l'interface PayBox
         $paybox->set_site($this->getConf()->obtenir('paybox|site'));
         $paybox->set_rang($this->getConf()->obtenir('paybox|rang'));
-        $paybox->set_identifiant('83166771'); ///  @todo this should not be here
+        $paybox->set_identifiant($this->getConf()->obtenir('paybox|identifiant'));
 
         $paybox->set_wait(50000); // Délai d'attente avant la redirection
         $paybox->set_boutpi('R&eacute;gler par carte'); // Texte du bouton
