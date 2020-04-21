@@ -17,6 +17,15 @@ services:
     AppBundle\Security\MyGithubAuthenticator:
         autowire: true
 
+    AppBundle\Controller\CFPController:
+        autowire: true
+
+    AppBundle\Controller\SpeakerSuggestionController:
+        autowire: true
+
+    AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
+        autowire: true
+
     AppBundle\Event\Model\Repository\GithubUserRepository:
         class: AppBundle\Event\Model\Repository\GithubUserRepository
         factory: ["@ting", get]

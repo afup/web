@@ -73,7 +73,7 @@ class Mailer
      */
     public function sendTransactional(Message $message, $content, $address = null, $title = null)
     {
-        $this->renderTemplate($message, ':mail_templates:message-transactionnel.html.twig', [
+        $this->renderTemplate($message, 'mail_templates/message-transactionnel.html.twig', [
             'title' => $title ?: $message->getSubject(),
             'content' => $content,
             'address' => $address ?: MailUserFactory::afup()->getEmail(),

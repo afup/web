@@ -440,7 +440,7 @@ SQL;
             new MailUser($email, sprintf('%s %s', $firstName, $lastName))
         );
         $mailer = Mail::createMailer();
-        $mailer->renderTemplate($message, 'mail_templates:confirmation_creation_compte.html.twig', [
+        $mailer->renderTemplate($message, 'mail_templates/confirmation_creation_compte.html.twig', [
             'login' => $login,
             'adresse' => 'bonjour@afup.org',
             'ville' => '',

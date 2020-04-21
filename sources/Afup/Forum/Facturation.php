@@ -468,7 +468,7 @@ SQL;
             new MailUser($personne['email'], sprintf('%s %s', $personne['prenom'], $personne['nom']))
         );
         $mailer = Mail::createMailer();
-        $mailer->renderTemplate($message,'mail_templates:facture-forum.html.twig', [
+        $mailer->renderTemplate($message,'mail_templates/facture-forum.html.twig', [
             'raison_sociale' => $configuration->obtenir('afup|raison_sociale'),
             'adresse' => $configuration->obtenir('afup|adresse'),
             'ville' => $configuration->obtenir('afup|code_postal').' '.$configuration->obtenir('afup|ville'),
