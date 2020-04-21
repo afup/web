@@ -89,6 +89,7 @@ services:
         - ./:/var/www/html
     links:
       - db
+      - apachephp
       - mailcatcher
     command: "false"
 

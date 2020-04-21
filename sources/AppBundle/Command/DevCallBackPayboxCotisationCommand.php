@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function GuzzleHttp\Psr7\parse_query;
 
 class DevCallBackPayboxCotisationCommand extends ContainerAwareCommand
 {
@@ -46,10 +47,11 @@ EOF;
         ];
 
 
-        $url = 'http://localhost:80/association/paybox-callback?' . http_build_query($callBackParameters);
+        $url = 'https://apachephp:80/association/paybox-callback?' . http_build_query($callBackParameters);
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_exec($curl);
 
         $output->writeln("Appel au callback de paiement de cotisation effectué");
