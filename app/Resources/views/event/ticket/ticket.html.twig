@@ -148,8 +148,12 @@
                                                 <span class="tickets--type-stock tickets--type-stock-close-to-sold-out">Peu de billets disponibles</span><br />
                                             {% else %}
                                             {% endif %}
-
                                         </span>
+                                        {% if type.vars.attr['data-description'] %}
+                                            <div class="tickets--type-description">
+                                                {{ type.vars.attr['data-description'] }}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </li>
                             {% endfor %}
