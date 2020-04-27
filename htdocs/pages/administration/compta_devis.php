@@ -28,7 +28,7 @@ if ($action == 'lister') {
     $smarty->assign('ecritures', $ecritures);
 } elseif ($action == 'transfert') {
     $comptaFact->transfertDevis($_GET['ref']);
-    afficherMessage('Le devis a été transformé en facture', 'index.php?page=compta_facture&action=lister');
+    afficherMessage('Le devis a été transformé en facture', '/admin/compta/factures');
 } elseif ($action == 'telecharger_devis') {
     $comptaFact->genererDevis($_GET['ref']);
 } elseif ($action == 'ajouter' || $action == 'modifier') {

@@ -10,7 +10,12 @@ $ref = trim(mcrypt_cbc (MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', base64_dec
 $facture = $comptaFact->obtenir($ref);
 if ($facture) {
     if (isset($_GET['action']) && $_GET['action'] == 'voir-pdf') {
-        $comptaFact->genererFacture($facture['numero_facture']);
+        $content = $comptaFact->genererFacture($facture['numero_facture']);
+        header('Content-Type: application/octet-stream');
+        header('Content-Length: '.strlen($content));
+        header('Content-disposition: attachment; filename="fact'.$facture['numero_facture'].'.pdf"');
+        echo $content;
+        exit;
     } else {
         $details = $comptaFact->obtenir_details($ref);
         $prix = 0;

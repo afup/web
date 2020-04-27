@@ -176,6 +176,10 @@ parameters:
                 compta_facture:
                     nom: 'Factures'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/compta/factures'
+                    extra_routes:
+                      - admin_accounting_invoices
+                      - admin_accounting_invoice_edit
                 compta_journal:
                     nom: 'Journal'
                     niveau: 'ROLE_ADMIN'
@@ -353,3 +357,13 @@ knpu_oauth2_client:
             client_secret: "%github_client_secret%"
             # see below
             redirect_route: connection_github_check
+
+oneup_flysystem:
+  adapters:
+    cache_local:
+      local:
+        directory: '%kernel.cache_dir%'
+
+  filesystems:
+    invoices:
+      adapter: cache_local

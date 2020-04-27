@@ -1,0 +1,102 @@
+{% set auMoinsUnChampsRequis = false %}
+<form{{ formulaire.attributes }} onsubmit="return soumettreUneSeuleFois(this);">
+    {{ formulaire.hidden|raw }}
+    {% if erreur is defined %}
+        <p class="erreur">{{ erreur }}</p>
+    {% endif %}
+
+    {% for num, section in formulaire.sections %}
+        <div class="ui segment">
+            {% if section.header %}
+                <h2 class="ui header">{{ section.header }}</h2>
+                <div class="ui clearing divider"></div>
+            {% endif %}
+
+            {% for element in section.elements %}
+                {% if element.required %}{% set auMoinsUnChampsRequis = true %}{% endif %}
+                <div class="ui form">
+                    {% if element.error %}
+                        <div class="ui grid">
+                            <div class="three wide column">
+                            </div>
+                            <div class="nine wide column">
+                                <div class="ui negative message">
+                                    {{ element.error }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="inline fields ui grid">
+                        {% if element.type == 'submit' %}
+                            <label class="three wide column">
+                            </label>
+                            <div class="seven wide column">
+                                {{ element.html|raw }}
+                            </div>
+                        {% elseif element.type == 'static' and element.name == 'html' %}
+                            <p class="html">{{ element.html|raw|nl2br }}</p>
+                        {% elseif element.type == 'static' and element.name == 'note' %}
+                            <label class="three wide column">
+                            </label>
+                            <div class="field seven wide column">
+                                {{ element.html|raw|nl2br }}
+                            </div>
+                        {% elseif element.type == 'static' and element.name == 'info' %}
+                            <label class="three wide column">
+                                {{ element.label }}
+                            </label>
+                            <div class="field seven wide column">
+                                {{ element.html|raw }}
+                            </div>
+                        {% elseif element.type == 'static' and element.name == 'label' %}
+                            <label class="ten wide column">
+                                {{ element.html|raw }}
+                            </label>
+                        {% elseif element.type == 'static' and element.name == 'raccourci' %}
+                            <p class="raccourci">{{ element.html|raw|nl2br }}</p>
+                        {% elseif element.type == 'group' %}
+                            {% if element.label != '' %}
+                                <label class="three wide column right aligned">
+                                    {% if element.required %}<span class="obligatoire">*</span>{% endif %}
+                                    {{ element.label }}
+                                </label>
+                            {% endif %}
+                            <div class="field">
+                                {% for element_groupe in element.elements %}
+                                    <div class="ui radio checkbox">
+                                        {{ element_groupe.html|raw }}
+                                    </div>
+                                    {% if not loop.last %}{{ element.separator }}{% endif %}
+                                {% endfor %}
+                            </div>
+                        {% elseif element.type in ['text', 'select', 'textarea', 'password', 'checkbox', 'file', 'date'] %}
+                            <label class="three wide column right aligned">
+                                {% if element.label != '' %}
+                                    {{ element.label }}{% if element.required %}<span class="obligatoire">*</span>{% endif %}
+                                {% endif %}
+                            </label>
+                            <div class="field nine wide column">
+                                <div class="ui {% if element.type == 'checkbox' %}checkbox{% else %}input{% endif %}">
+                                    {% if element.type == 'textarea' %}
+                                    <div style="width: 100%">{% endif %}
+                                        {{ element.html|raw }}
+                                        {% if element.type == 'textarea' %}
+                                    </div>{% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            Type de champ {{ element.type }} {% if element.name %}({{ element.name }}){% endif %} non géré.
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    {% if auMoinsUnChampsRequis %}
+        <div class="ui segment">
+            <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+        </div>
+    {% endif %}
+</form>

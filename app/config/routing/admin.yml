@@ -37,6 +37,10 @@ admin_speaker_routes:
   resource: "admin_speaker.yml"
   prefix: /speaker
 
+admin_accounting_routes:
+  resource: "admin_accounting.yml"
+  prefix: /compta
+
 member_slack_invite:
   path: /member/slack-invite
   defaults: {_controller: AppBundle:MemberShip:slackInviteRequest}

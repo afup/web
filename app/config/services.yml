@@ -14,6 +14,26 @@ services:
     _defaults:
         public: true
 
+    Afup\Site\Utils\Configuration:
+      arguments: ['%kernel.project_dir%/configs/application/config.php']
+
+    AppBundle\Controller\Admin\Accounting\:
+        resource: '../../sources/AppBundle/Controller/Admin/Accounting/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\BackOfficeLegacyBridge:
+        autowire: true
+        autoconfigure: true
+        arguments:
+          $pages: '%app.pages_backoffice%'
+
+    AppBundle\Accounting\InvoiceService:
+        autowire: true
+        autoconfigure: true
+        arguments:
+          $filesystem: '@oneup_flysystem.invoices_filesystem'
+
     AppBundle\Security\MyGithubAuthenticator:
         autowire: true
 

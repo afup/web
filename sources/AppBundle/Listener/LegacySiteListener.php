@@ -24,19 +24,20 @@ class LegacySiteListener
     public function onKernelController(FilterControllerEvent $event)
     {
         if ($event->isMasterRequest() === false) {
-            return ;
+            return;
         }
 
+        $controller = $event->getController();
+
+        if (!is_array($controller) || [] === $controller || !$controller[0] instanceof SiteControllerInterface) {
+            return;
+        }
         /**
          * @var $controller SiteControllerInterface
          */
-        $controller = $event->getController()[0];
+        $controller = $controller[0];
 
-        if (! $controller instanceof SiteControllerInterface) {
-            return ;
-        }
-
-        require_once dirname(__FILE__) . '/../../Afup/Bootstrap/Http.php';
+        require_once __DIR__ . '/../../Afup/Bootstrap/Http.php';
 
         /**
          * @var $bdd Base_De_Donnees
