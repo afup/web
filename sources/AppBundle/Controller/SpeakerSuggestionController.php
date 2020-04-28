@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Event\Form\SpeakerSuggestionType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerSuggestionRepository;
@@ -12,6 +14,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SpeakerSuggestionController extends EventBaseController
 {
+    /** @var Mailer */
+    private $mailer;
+
+    public function __construct(Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     /**
      * @param string $eventSlug
      *
@@ -92,16 +102,6 @@ class SpeakerSuggestionController extends EventBaseController
             ]
         );
 
-        $this->get(\Afup\Site\Utils\Mail::class)->sendSimpleMessage(
-            $subject,
-            $content,
-            [
-                [
-                    'name' => 'Pôle conférences',
-                    'email' => 'conferences@afup.org'
-                ]
-            ]
-
-        );
+        $this->mailer->sendSimpleMessage($subject, $content, MailUserFactory::conferences());
     }
 }

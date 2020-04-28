@@ -2,7 +2,7 @@
 namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Base_De_Donnees;
-use Afup\Site\Utils\Mail;
+use AppBundle\Email\Mailer\Mailer;
 
 class Inscriptions
 {

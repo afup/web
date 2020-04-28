@@ -441,7 +441,7 @@ class MemberShipController extends SiteBaseController
             throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
         }
 
-        if ($cotisations->envoyerFacture($id, $this->get(\Afup\Site\Utils\Mail::class))) {
+        if ($cotisations->envoyerFacture($id, $this->get(\AppBundle\Email\Mailer\Mailer::class))) {
             $logs::log('Envoi par email de la facture pour la cotisation n°' . $id);
             $this->addFlash('success', 'La facture a été envoyée par mail');
         } else {

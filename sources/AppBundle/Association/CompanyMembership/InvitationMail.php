@@ -3,9 +3,12 @@
 
 namespace AppBundle\Association\CompanyMembership;
 
-use Afup\Site\Utils\Mail;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Email\Mailer\Message;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -13,9 +16,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 class InvitationMail
 {
     /**
-     * @var Mail
+     * @var Mailer
      */
-    private $mail;
+    private $mailer;
 
     /**
      * @var TranslatorInterface
@@ -27,9 +30,9 @@ class InvitationMail
      */
     private $router;
 
-    public function __construct(Mail $mail, TranslatorInterface $translator, RouterInterface $router)
+    public function __construct(Mailer $mailer, TranslatorInterface $translator, RouterInterface $router)
     {
-        $this->mail = $mail;
+        $this->mailer = $mailer;
         $this->translator = $translator;
         $this->router = $router;
     }
@@ -55,18 +58,10 @@ class InvitationMail
             ]
         );
 
-        return $this->mail->send(
-            'message-transactionnel-afup-org',
-            ['email' => $invitation->getEmail()],
-            [
-                'content' => $text,
-                'title' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName())
-            ],
-            ['subject' => sprintf("%s vous invite à profiter de son compte \"Membre AFUP\"", $companyMember->getCompanyName())],
-            false,
-            null,
-            null,
-            false
-        );
+        return $this->mailer->sendTransactional(new Message(
+            sprintf('%s vous invite à profiter de son compte "Membre AFUP"', $companyMember->getCompanyName()),
+            MailUserFactory::sponsors(),
+            new MailUser($invitation->getEmail())
+        ), $text);
     }
 }

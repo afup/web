@@ -2,7 +2,6 @@
 
 // Voir la classe Afup\Site\Association\Assemblee_Generale
 namespace Afup\Site\Association;
-use Afup\Site\Utils\Mail;
 use AppBundle\Association\Model\User;
 
 define('AFUP_ASSEMBLEE_GENERALE_PRESENCE_INDETERMINE', 0);
@@ -322,7 +321,7 @@ EOF;
         );
 
         $infos = $this->_bdd->obtenirEnregistrement($requete);
-        
+
         if (false === $infos) {
             return null;
         }

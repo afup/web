@@ -5,6 +5,7 @@ use Afup\Site\Corporate\Feuilles;
 use Afup\Site\Corporate\Feuille;
 use Afup\Site\Utils\Logs;
 
+/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
 	trigger_error("Direct access forbidden.", E_USER_ERROR);
 	exit;

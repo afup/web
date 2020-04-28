@@ -1,21 +1,23 @@
 <?php
 
-
 namespace AppBundle\Association\CompanyMembership;
 
-use Afup\Site\Utils\Mail;
 use AppBundle\Association\MembershipReminderInterface;
 use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\SubscriptionReminderLog;
 use AppBundle\Association\NotifiableInterface;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Email\Mailer\Message;
 
 abstract class AbstractCompanyReminder implements MembershipReminderInterface
 {
     /**
-     * @var Mail
+     * @var Mailer
      */
-    private $mail;
+    private $mailer;
 
     protected $membershipFee;
 
@@ -24,18 +26,18 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
     private $subscriptionReminderLogRepository;
 
     /**
-     * @param Mail $mail
-     * @param int $membershipFee
-     * @param int $membersPerFee
+     * @param Mailer                            $mailer
+     * @param int                               $membershipFee
+     * @param int                               $membersPerFee
      * @param SubscriptionReminderLogRepository $subscriptionReminderLogRepository
      */
     public function __construct(
-        Mail $mail,
+        Mailer $mailer,
         $membershipFee,
         $membersPerFee,
         SubscriptionReminderLogRepository $subscriptionReminderLogRepository
     ) {
-        $this->mail = $mail;
+        $this->mailer = $mailer;
         $this->membershipFee = $membershipFee;
         $this->membersPerFee = $membersPerFee;
         $this->subscriptionReminderLogRepository = $subscriptionReminderLogRepository;
@@ -56,18 +58,8 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
             ->setUserType(UserRepository::USER_TYPE_COMPANY)
         ;
 
-        $status = $this->mail->send('message-transactionnel-afup-org',
-            ['email' => $user->getEmail()],
-            [
-                'content' => $this->getText(),
-                'title' => $this->getSubject(),
-            ],
-            ['subject' => $this->getSubject()],
-            false,
-            null,
-            null,
-            false
-        );
+        $message = new Message($this->getSubject(), MailUserFactory::sponsors(), new MailUser($user->getEmail()));
+        $status = $this->mailer->sendTransactional($message, $this->getText());
         $log->setMailSent($status);
         $this->subscriptionReminderLogRepository->save($log);
     }

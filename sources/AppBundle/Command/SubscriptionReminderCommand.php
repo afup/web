@@ -3,7 +3,6 @@
 
 namespace AppBundle\Command;
 
-use Afup\Site\Utils\Mail;
 use AppBundle\Association;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -30,9 +29,10 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $factory = new Association\UserMembership\UserReminderFactory((new Mail()), $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class));
+        $mailer = $this->getContainer()->get(\AppBundle\Email\Mailer\Mailer::class);
+        $factory = new Association\UserMembership\UserReminderFactory($mailer, $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class));
         $companyFactory = new Association\CompanyMembership\CompanyReminderFactory(
-            (new Mail()),
+            $mailer,
             $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class)
         );
 

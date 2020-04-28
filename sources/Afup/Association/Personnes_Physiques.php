@@ -4,6 +4,9 @@ namespace Afup\Site\Association;
 
 use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Mailing;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Email\Mailer\Message;
 
 /**
  * Classe de gestion des personnes physiques
@@ -379,15 +382,11 @@ SQL;
                 $corps .= "Votre mot de passe : $mot_de_passe \n\n";
                 $corps .= "https://afup.org/admin/login";
 
-
-                $check = Mailing::envoyerMail(
-                    $GLOBALS['conf']->obtenir('mails|email_expediteur'),
-                    $email,
-                    "AFUP : Mot de passe perdu ?",
-                    $corps);
-
-                return ($check);
-
+                return Mailing::envoyerMail(new Message(
+                    'AFUP : Mot de passe perdu ?',
+                    new MailUser($GLOBALS['conf']->obtenir('mails|email_expediteur')),
+                    new MailUser($email)
+                ), $corps);
             }
         }
 
@@ -435,12 +434,18 @@ SQL;
 
     public function sendWelcomeMailWithData($firstName, $lastName, $login, $email)
     {
-        $mail = new Mail();
-        return $mail->send(
-            'confirmation-cr-ation-de-compte',
-            ['email' => $email, 'name' => sprintf('%s %s', $firstName, $lastName)],
-            ['login' => $login]
+        $message = new Message(
+            'Votre compte afup.org',
+            MailUserFactory::bureau(),
+            new MailUser($email, sprintf('%s %s', $firstName, $lastName))
         );
+        $mailer = Mail::createMailer();
+        $mailer->renderTemplate($message, 'mail_templates/confirmation_creation_compte.html.twig', [
+            'login' => $login,
+            'adresse' => 'bonjour@afup.org',
+            'ville' => '',
+        ]);
+        return $mailer->send($message);
     }
 
     /**
