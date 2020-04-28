@@ -10,6 +10,7 @@
 
 {% block content %}
     <div class="col-md-8">
+        {% if not invoice.isFree %}
         <h2>Paiement de vos billets</h2>
         <div>
             <p>
@@ -38,6 +39,17 @@
                 <p>Vous allez recevoir dans quelques instants la facture à l'adresse email de facturation.</p>
             {% endif %}
         </div>
+        {% else %}
+        <h2>Votre inscription</h2>
+        <div>
+            <p>
+                Nous avons bien re&ccedil;u votre inscription et nous vous en remercions !
+            </p>
+            Si vous avez la moindre question, n'hésitez pas à contacter <a href="mailto:bonjour@afup.org">bonjour@afup.org</a>.
+            </p>
+            <p>Vous allez recevoir dans quelques instants la facture à l'adresse email de facturation.</p>
+        </div>
+        {% endif %}
     </div>
     {% autoescape 'js' %}
         <script type="text/javascript">

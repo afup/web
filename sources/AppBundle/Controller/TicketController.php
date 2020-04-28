@@ -252,17 +252,47 @@ class TicketController extends EventBaseController
         }
 
         if ($invoice->getStatus() === Ticket::STATUS_PAID) {
-            $this->get('logger')->addWarning(sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef));
+            $this->get('logger')->addWarning(
+                sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef)
+            );
             return $this->render(':event/ticket:payment_already_done.html.twig', ['event' => $event]);
         }
 
         $params = [
             'event' => $event,
             'invoice' => $invoice,
-            'tickets' => $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByInvoiceWithDetail($invoice)
+            'tickets' => $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByInvoiceWithDetail(
+                $invoice
+            )
         ];
 
-        if ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
+        if ($invoice->isFree()) {
+            $invoice->setStatus(Ticket::STATUS_PAID);
+            $invoice->setInvoiceDate(new \DateTime('now'));
+            $invoice->setPaymentDate(new \DateTime('now'));
+            $invoice->setInvoice(true);
+            $invoice->setPaymentType(Ticket::PAYMENT_NONE);
+
+            $invoiceRepository->save($invoice);
+
+            $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);
+            $forumFacturation->envoyerFacture($invoice->getReference());
+
+            $ticketRepository = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class);
+            $tickets = $ticketRepository->getByInvoiceWithDetail($invoice);
+
+            /** @var Ticket $ticket */
+            foreach ($tickets as $ticket) {
+                $ticket->setStatus(Ticket::STATUS_PAID);
+                $ticket->setInvoiceStatus(Ticket::INVOICE_SENT);
+                $ticketRepository->save($ticket);
+
+                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket) {
+                    $this->get(Emails::class)->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
+                    return 1;
+                });
+            }
+        } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
             $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event);
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
             $params['rib'] = $GLOBALS['AFUP_CONF']->obtenir('rib');

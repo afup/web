@@ -1,5 +1,6 @@
 <?php
 namespace Afup\Site\Forum;
+use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
@@ -7,6 +8,8 @@ use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
+use AppBundle\Event\Model\Invoice;
+use AppBundle\Event\Model\Ticket;
 
 class Facturation
 {
@@ -426,7 +429,9 @@ SQL;
             }
             $pdf->SetTextColor(255, 0, 0);
             $pdf->Cell(130, 5);
-            $pdf->Cell(60, 5, utf8_decode('Payé ' . $type . ' le ' . date('d/m/Y', $facture['date_reglement'])));
+            if ($facture['type_reglement'] != Ticket::PAYMENT_NONE) {
+                $pdf->Cell(60, 5, utf8_decode('Payé ' . $type . ' le ' . date('d/m/Y', $facture['date_reglement'])));
+            }
             $pdf->SetTextColor(0, 0, 0);
         }
         $pdf->Ln();

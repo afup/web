@@ -206,6 +206,11 @@ class Invoice implements NotifyPropertyInterface
         return $this->paymentType;
     }
 
+    public function isFree()
+    {
+        return $this->getAmount() == 0;
+    }
+
     /**
      * @param int $paymentType
      * @return Invoice
