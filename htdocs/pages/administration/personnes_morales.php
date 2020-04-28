@@ -6,6 +6,7 @@ use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Logs;
 
+/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;

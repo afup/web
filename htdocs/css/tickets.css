@@ -135,6 +135,7 @@ ul.tickets--type-list li.tickets--type-list-emphasis {
 
 ul.tickets--type-list label{
     width: 500px;
+    font-weight: 700 !important;
 }
 ul.tickets--type-list label, div.tickets--pmr label{
     text-align: left;
@@ -148,6 +149,12 @@ ul.tickets--type-list input{
 }
 ul.tickets--type-list span.tickets--type-details{
     padding-left: 42px;
+    font-style: italic;
+}
+.tickets--type-list .tickets--type-description{
+    padding-left: 42px;
+    padding-top: .5em;
+    text-align: justify;
 }
 span.tickets--type-price{
     font-weight:bold;

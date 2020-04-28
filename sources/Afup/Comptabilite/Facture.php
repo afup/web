@@ -6,6 +6,9 @@ namespace Afup\Site\Comptabilite;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
+use AppBundle\Email\Mailer\Attachment;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\Message;
 
 class Facture
 {
@@ -569,9 +572,7 @@ class Facture
      */
     function envoyerFacture($reference)
     {
-
         $configuration = $GLOBALS['AFUP_CONF'];
-
         $personne = $this->obtenirParNumeroFacture($reference, 'email, nom, prenom');
 
         $sujet = "Facture AFUP\n";
@@ -587,13 +588,15 @@ class Facture
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
 
-        $ok = Mailing::envoyerMail(
-            $GLOBALS['conf']->obtenir('mails|email_expediteur'),
-            array($personne['email'], $personne['nom']),
-            $sujet,
-            $corps,
-            array('file' => array(array($chemin_facture, 'facture-' . $reference . '.pdf')))
-        );
+        $expediteur = $GLOBALS['conf']->obtenir('mails|email_expediteur');
+        $message = new Message($sujet, new MailUser($expediteur), new MailUser($personne['email'], $personne['nom']));
+        $message->addAttachment(new Attachment(
+            $chemin_facture,
+            'facture-'.$reference.'.pdf',
+            'base64',
+            'application/pdf'
+        ));
+        $ok = Mailing::envoyerMail($message, $corps);
 
         @unlink($chemin_facture);
 

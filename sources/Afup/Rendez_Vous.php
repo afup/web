@@ -3,6 +3,8 @@
 namespace Afup\Site;
 
 use Afup\Site\Utils\Mailing;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\Message;
 
 define('AFUP_RENDEZ_VOUS_REFUSE', 0);
 define('AFUP_RENDEZ_VOUS_VIENT', 1);
@@ -124,12 +126,11 @@ class Rendez_Vous
             );
             $link = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?hash=' . $hash;
             $link = str_replace('administration/index.php', 'rendezvous/confirmation.php', $link);
-            Mailing::envoyerMail(
-                array($GLOBALS['conf']->obtenir('mails|email_expediteur'), $GLOBALS['conf']->obtenir('mails|nom_expediteur')),
-                array($inscrit['email'], $inscrit['nom']),
+            Mailing::envoyerMail(new Message(
                 $sujet,
-                $corps . $link
-            );
+                new MailUser($GLOBALS['conf']->obtenir('mails|email_expediteur'), $GLOBALS['conf']->obtenir('mails|nom_expediteur')),
+                new MailUser($inscrit['email'], $inscrit['nom'])
+            ), $corps.$link);
             $succes += 1;
         }
         return $succes;

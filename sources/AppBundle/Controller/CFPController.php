@@ -3,8 +3,9 @@
 
 namespace AppBundle\Controller;
 
-use Afup\Site\Utils\Mail;
 use AppBundle\CFP\PhotoStorage;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Form\TalkInvitationType;
 use AppBundle\Event\Form\TalkType;
@@ -27,6 +28,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CFPController extends EventBaseController
 {
+    private $mailer;
+
+    public function __construct(Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     public function indexAction($eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
@@ -164,8 +172,7 @@ class CFPController extends EventBaseController
                         ]
                     );
 
-                    $mail = new Mail();
-                    $mail->sendSimpleMessage('CFP Afup', $text, [['email' => $invitation->getEmail()]]);
+                    $this->mailer->sendSimpleMessage('CFP Afup', $text, new MailUser($invitation->getEmail()));
                 });
 
                 $this->addFlash('success', $this->get('translator')->trans('Invitation envoyée !'));
