@@ -133,7 +133,14 @@
                                     <div>
                                         {{ form_widget(type) }}
                                         {{ form_label(type) }}
-                                        <span class="tickets--type-price">{{ type.vars.attr['data-price'] }}€</span><br />
+                                        <span class="tickets--type-price">
+                                            {% if type.vars.attr['data-price'] == 0 %}
+                                                OFFERT
+                                            {% else %}
+                                                {{ type.vars.attr['data-price'] }}€
+                                            {% endif %}
+                                        </span>
+                                        <br />
                                         <span class="tickets--type-details">
                                             <span class="tickets--type-dateEnd">
                                                 Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}
