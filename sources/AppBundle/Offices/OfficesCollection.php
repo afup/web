@@ -341,6 +341,7 @@ class OfficesCollection
                 'departements' => ['37'],
                 'meetup_urlname' => 'afup-tours-php',
                 'meetup_id' => '28638984',
+                'youtube' => 'https://www.youtube.com/channel/UCtKhGIofgKM9ecrdZNyn_pA',
                 'map' => [
                     "legend-first-point-x" => "380",
                     "legend-first-point-y" => "270",
