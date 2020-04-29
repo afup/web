@@ -469,7 +469,7 @@ SQL;
 
         $message = new Message(
             'Facture événement AFUP',
-            MailUserFactory::bureau(),
+            MailUserFactory::afup(),
             new MailUser($personne['email'], sprintf('%s %s', $personne['prenom'], $personne['nom']))
         );
         $mailer = Mail::createMailer();
