@@ -32,7 +32,8 @@
     "znk3r/html_quickform": "4.0.2",
     "friendsofpear/pear_exception": "0.0.*",
     "znk3r/html_common": "*",
-    "pear/pear": "^1.10"
+    "pear/pear": "^1.10",
+    "excelwebzone/recaptcha-bundle": "1.5.13"
   },
   "scripts": {
     "post-install-cmd": [

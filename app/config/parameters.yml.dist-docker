@@ -62,3 +62,7 @@ parameters:
 
     slack_api_url: "https://slack.com/api"
     slack_membre_token: ""
+
+    # Test keys from https://developers.google.com/recaptcha/docs/faq#id-like-to-run-automated-tests-with-recaptcha-what-should-i-do
+    recaptcha_public_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+    recaptcha_private_key: '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'

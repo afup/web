@@ -353,3 +353,7 @@ knpu_oauth2_client:
             client_secret: "%github_client_secret%"
             # see below
             redirect_route: connection_github_check
+
+ewz_recaptcha:
+    public_key: '%recaptcha_public_key%'
+    private_key: '%recaptcha_private_key%'
