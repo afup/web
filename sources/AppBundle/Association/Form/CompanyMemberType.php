@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaIsValid;
 
 class CompanyMemberType extends AbstractType
 {
@@ -46,6 +48,13 @@ class CompanyMemberType extends AbstractType
                 'entry_type'   => CompanyMemberInvitationType::class,
                 'allow_add' => true,
                 'required' => false
+            ])
+            ->add('recaptcha', EWZRecaptchaType::class, [
+                'label' => 'Vérification',
+                'mapped'      => false,
+                'constraints' => [
+                    new RecaptchaIsValid()
+                ]
             ])
             ->add('save', SubmitType::class, ['label' => 'saveMembership'])
         ;
