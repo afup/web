@@ -226,8 +226,8 @@
                 <div>
                     {{ form_errors(ticketForm.cgv) }}
                     {{ form_widget(ticketForm.cgv) }}
-                    <label for="{{ ticketForm.cgv.vars.id }}">
-                        J'accepte les <a href="https://event.afup.org/conditions-generales-de-vente/">conditions générale de vente</a>, <a href="https://event.afup.org/condition-generales-de-participation/">de participation</a> et m'engage à respecter <a href="https://afup.org/p/986-code-de-conduite">le code de conduite</a>.
+                    <label for="{{ ticketForm.cgv.vars.id }}" style="max-width: 850px; text-align: left">
+                        J'accepte les <a href="https://event.afup.org/conditions-generales-de-vente/">conditions générale de vente</a>, <a href="https://event.afup.org/condition-generales-de-participation/">de participation</a> et m'engage à respecter <a href="https://afup.org/p/986-code-de-conduite">le code de conduite</a>, et autorise l'AFUP à transmettre mon nom, prénom et email à <a href="https://livestorm.co">Livestorm</a> pour la gestion du webinar.
                     </label>
                 </div>
                 <div>
@@ -251,7 +251,9 @@
                 <div>
                     <p>Une fois votre commande effectuée, <strong>chaque participant recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
                         Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'événement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.<br>
+                        <!--
                         Le jour J il leur suffira de se présenter à l'accueil badges <strong>avec une pièce d'identité</strong>.
+                        -->
                     </p>
                 </div>
 
