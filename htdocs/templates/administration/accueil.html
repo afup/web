@@ -2,6 +2,63 @@
 
 Vous êtes connecté en tant que {$user_label}.
 
-<div class="ui basic right aligned segment">
-    <img src="https://identity.afup.org/assets/afup/afup-icon-black.svg" style="width: 50%;opacity: 0.3;">
+{literal}
+<style>
+    #accueil-container::after {
+        content: "";
+        background: url('https://identity.afup.org/assets/afup/afup-icon-black.svg');
+        background-position-x: right;
+        background-position-y: bottom;
+        background-repeat: no-repeat;
+        background-size: 35%;
+        opacity: 0.3;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+    }
+
+    #accueil-container {
+        min-height: 700px;
+        width: 100%;
+    }
+</style>
+{/literal}
+
+{if $cards }
+<div class="ui basic right aligned segment" id="accueil-container">
+    <div class="ui cards">
+        {foreach from=$cards item=card}
+        <div class="card">
+            <div class="content">
+                <div class="header">{$card.event_name}</div>
+                <div class="meta">
+                    Inscriptions
+                </div>
+                <div class="ui horizontal mini statistics">
+                    {foreach from=$card.statistics item=statistic key=label}
+                    <div class="statistic">
+                        <div class="value">
+                            {$statistic}
+                        </div>
+                        <div class="label">
+                            {$label}
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+
+            </div>
+            <a class="ui bottom attached button"
+               href="/pages/administration/index.php?page=forum_inscriptions&id_forum={$card.event_id}"
+            >
+                Voir plus
+            </a>
+        </div>
+        {/foreach}
+    </div>
+
 </div>
+{/if}
