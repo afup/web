@@ -19,6 +19,10 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Admin\SlackMembers\CheckMembersAction:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Controller\Admin\Talk\:
         resource: '../../sources/AppBundle/Controller/Admin/Talk/*'
         autowire: true

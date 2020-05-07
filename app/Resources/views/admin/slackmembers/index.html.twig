@@ -1,4 +1,4 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
     <h2>Vérification adhésion des membres inscrits au Slack</h2>
@@ -43,5 +43,4 @@
     {% else %}
         Aucune incohérence détectée dans les utilisateurs sur slack.
     {% endif %}
-
 {% endblock %}
