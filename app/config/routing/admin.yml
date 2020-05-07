@@ -4,7 +4,7 @@ admin_vote:
 
 admin_relances:
   path: /association/relances/{page}
-  defaults: {_controller: AppBundle:AdminMemberShip:reminderLog}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\ReminderLogAction}
 
 admin_void:
   path: /void

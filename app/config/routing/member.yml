@@ -4,27 +4,27 @@ member_index:
 
 member_contact:
   path: /contact
-  defaults: {_controller: AppBundle:MemberShip:contactDetails}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\ContactDetailsAction}
 
 member_membership_fee:
   path: /membership-fee
-  defaults: {_controller: AppBundle:MemberShip:membershipFee}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\MembershipFeeAction}
 
 member_membership_fee_download:
   path: /membership-fee/download
-  defaults: {_controller: AppBundle:MemberShip:membershipFeeDownload}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\MembershipFeeDownloadAction}
 
 member_membership_fee_send_mail:
   path: /membership-fee/send-mail
-  defaults: {_controller: AppBundle:MemberShip:membershipFeeSendMail}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\MembershipFeeSendMailAction}
 
 member_general_meeting:
   path: /general-meeting
-  defaults: {_controller: AppBundle:MemberShip:generalMeeting}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\GeneralMeetingAction}
 
 member_general_meeting_reports_download:
   path: /general-meeting-report-download/{filename}
-  defaults: {_controller: AppBundle:MemberShip:generalMettingDownloadReport}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\GeneralMeetingDownloadReportAction}
 
 member_techletter:
   path: /techletter
@@ -41,11 +41,11 @@ member_techletter_subscribe:
 
 admin_company:
   path: /company
-  defaults: {_controller: AppBundle:AdminMemberShip:company}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\CompanyAction}
 
 admin_company_members:
   path: /company/members/{id}
-  defaults: {_controller: AppBundle:AdminMemberShip:members, id: ~}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\MembersAction, id: ~}
 
 admin_company_public_profile:
   path: /company/public_profile
