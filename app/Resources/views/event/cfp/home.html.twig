@@ -68,5 +68,5 @@
             </div>
         {% endif %}
     </div>
-    {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
+    {{ sidebar|raw }}
 {% endblock %}

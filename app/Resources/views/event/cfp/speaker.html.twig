@@ -1,4 +1,4 @@
-{% extends ':event/cfp:base.html.twig' %}
+{% extends 'event/cfp/base.html.twig' %}
 
 {% block content %}
     <div class="col-md-8">
@@ -9,9 +9,9 @@
         {% if photo != null %}
             <h3>{{ 'Ma photo de profil'|trans }}</h3>
             <div class="photo-container">
-                <img src="{{ asset(photo) }}" />
+                <img src="{{ asset(photo) }}" alt="Photo"/>
             </div>
         {% endif %}
     </div>
-    {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
+    {{ sidebar|raw }}
 {% endblock %}

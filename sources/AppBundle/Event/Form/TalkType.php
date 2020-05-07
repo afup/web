@@ -15,6 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TalkType extends AbstractType
 {
+    const OPT_COC_CHECKED = 'codeOfConductChecked';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -65,7 +67,7 @@ class TalkType extends AbstractType
                     'label' => 'J\'accepte le code de conduite et les conditions générales de participation*',
                     'mapped' => false,
                     'required' => true,
-                    'data' => $options['codeOfConductChecked']
+                    'data' => $options[self::OPT_COC_CHECKED]
                 ]
             )
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
@@ -78,7 +80,7 @@ class TalkType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'codeOfConductChecked' => false
+            self::OPT_COC_CHECKED => false
         ]);
     }
 }

@@ -97,6 +97,21 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TalkRepository]
 
+    AppBundle\Event\Model\Repository\TalkInvitationRepository:
+        class: AppBundle\Event\Model\Repository\TalkInvitationRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TalkInvitationRepository]
+
+    AppBundle\Event\Model\Repository\TalkToSpeakersRepository:
+        class: AppBundle\Event\Model\Repository\TalkToSpeakersRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TalkToSpeakersRepository]
+
+    AppBundle\Event\Model\Repository\VoteRepository:
+        class: AppBundle\Event\Model\Repository\VoteRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\VoteRepository]
+
     AppBundle\Association\Model\Repository\CompanyMemberRepository:
         class: AppBundle\Association\Model\Repository\CompanyMemberRepository
         factory: ["@ting", get]
