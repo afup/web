@@ -3,28 +3,29 @@
 namespace AppBundle\Command;
 
 use AppBundle\Indexation\Talks\Runner;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class IndexTalksCommand extends ContainerAwareCommand
+class IndexTalksCommand extends Command
 {
-    /**
-     * @see Command
-     */
+    /** @var Runner */
+    private $runner;
+
+    public function __construct(Runner $runner)
+    {
+        parent::__construct(null);
+        $this->runner = $runner;
+    }
+
     protected function configure()
     {
         $this
-            ->setName('indexing:talks')
-        ;
+            ->setName('indexing:talks');
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $runner = new Runner($this->getContainer()->get(\AlgoliaSearch\Client::class), $this->getContainer()->get('ting'));
-        $runner->run();
+        $this->runner->run();
     }
 }
