@@ -36,10 +36,19 @@ services:
         autowire: true
         autoconfigure: true
 
-    AppBundle\Security\MyGithubAuthenticator:
+    AppBundle\Controller\Admin\:
+        resource: '../../sources/AppBundle/Controller/Admin/*'
         autowire: true
+        autoconfigure: true
 
-    AppBundle\Controller\CFPController:
+    AppBundle\Controller\Admin\GetMenuAction:
+        autowire: true
+        arguments:
+          $backOfficePages: '%app.pages_backoffice%'
+
+    AppBundle\Controller\BlocksHandler: ~
+
+    AppBundle\Security\MyGithubAuthenticator:
         autowire: true
 
     AppBundle\Controller\SpeakerSuggestionController:
@@ -81,7 +90,7 @@ services:
             - { name: kernel.event_listener, event: kernel.request, priority: 100 }
 
     AppBundle\Listener\LegacySiteListener:
-        arguments: ["@security.token_storage"]
+        autowire: true
         tags:
             - { name: kernel.event_listener, event: kernel.controller, priority: 100 }
 
