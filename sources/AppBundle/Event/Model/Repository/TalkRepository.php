@@ -8,6 +8,7 @@ use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -43,7 +44,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param Speaker $speaker
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getTalksBySpeaker(Event $event, Speaker $speaker)
     {
@@ -61,6 +62,26 @@ class TalkRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @param Event $event
+     * @param Speaker $speaker
+     * @return CollectionInterface
+     */
+    public function getPreviousTalksBySpeaker(Event $event, Speaker $speaker)
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT s.session_id, s.titre, s.abstract, s.id_forum, s.plannifie
+            FROM afup_sessions s
+            JOIN afup_conferenciers_sessions cs ON cs.session_id = s.session_id
+            WHERE s.id_forum != :event AND cs.conferencier_id = :speaker
+            ORDER BY s.titre ASC
+            LIMIT 0, 50
+            '
+        )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
      * Retrieve the list of talks to rate.
      * It retrieve $limit + 1 row. So if `count($results) <= $limit` there is no more result.
      * Otherwise you should add a "next" item on your paginator
@@ -70,7 +91,7 @@ class TalkRepository extends Repository implements MetadataInitializer
      * @param int $randomSeed used to create a consistent random
      * @param int $page starting from 1
      * @param int $limit
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getAllTalksAndRatingsForUser(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
@@ -117,7 +138,7 @@ class TalkRepository extends Repository implements MetadataInitializer
      * @param int $randomSeed used to create a consistent random
      * @param int $page starting from 1
      * @param int $limit
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getNewTalksToRate(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
@@ -136,7 +157,7 @@ class TalkRepository extends Repository implements MetadataInitializer
 
     /**
      * @param Event $event
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getByTalkWithSpeakers(Talk $talk)
     {
@@ -162,7 +183,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param bool $applyPublicationdateFilters
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
     public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true)
@@ -195,7 +216,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param bool $applyPublicationdateFilters
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
     public function getAllByEventWithSpeakers(Event $event)

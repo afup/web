@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Controller;
 
 use AppBundle\CFP\PhotoStorage;
@@ -33,30 +32,6 @@ class CFPController extends EventBaseController
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
-    }
-
-    public function indexAction($eventSlug)
-    {
-        $event = $this->checkEventSlug($eventSlug);
-
-        $now = new \DateTime();
-        if ($event->getDateEndCallForPapers() < $now) {
-            if ($event->getDateEndVote() > $now) {
-                return $this->redirectToRoute('event_index');
-            }
-        }
-
-        $talks = $this->get('ting')->get(TalkRepository::class)->getTalksBySpeaker($event, $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event));
-
-        return $this->render(
-            ':event/cfp:home.html.twig',
-            [
-                'event' => $event,
-                'talks' => $talks,
-                'speaker' => $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event),
-                'photoStorage' => $this->get(\AppBundle\CFP\PhotoStorage::class)
-            ]
-        );
     }
 
     public function speakerAction($eventSlug, Request $request)

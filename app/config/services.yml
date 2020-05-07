@@ -14,6 +14,11 @@ services:
     _defaults:
         public: true
 
+    AppBundle\Controller\Event\:
+        resource: '../../sources/AppBundle/Controller/Event/*'
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Security\MyGithubAuthenticator:
         autowire: true
 
