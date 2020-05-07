@@ -1,51 +1,51 @@
 admin_event_room:
   path: /room
-  defaults: {_controller: AppBundle:AdminEvent:room}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\RoomAction}
 
 admin_event_sponsor_ticket:
   path: /sponsor
-  defaults: {_controller: AppBundle:AdminEvent:sponsorTicket}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\SponsorTicketAction}
 
 admin_event_sponsor_mail:
   path: /sponsor/mail
-  defaults: {_controller: AppBundle:AdminEvent:resendSponsorToken}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\ResendSponsorTokenAction}
 
 admin_event_sponsor_lastcall_mail:
   path: /sponsor/lastcall
-  defaults: {_controller: AppBundle:AdminEvent:sendLastCallSponsorToken}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\SendLastCallSponsorTokenAction}
 
 admin_event_stats:
   path: /stats
-  defaults: {_controller: AppBundle:AdminEvent:stats}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\StatsAction}
 
 admin_event_pending_bankwires:
   path: /bankwires
-  defaults: {_controller: AppBundle:AdminEvent:pendingBankwires}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\PendingBankwiresAction}
 
 admin_event_speakers_management:
   path: /speakers-management
-  defaults: {_controller: AppBundle:AdminEvent:speakersManagement}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakersManagementAction}
 
 admin_event_special_price:
   path: /special_price
-  defaults: {_controller: AppBundle:AdminEvent:specialPrice}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\SpecialPriceAction}
 
 admin_event_prices:
   path: /prices
-  defaults: {_controller: AppBundle:Admin/Event/Prices:index }
+  defaults: {_controller: AppBundle\Controller\Admin\Event\PricesAction }
 
 admin_event_speaker_infos:
   path: /speaker-infos
-  defaults: {_controller: AppBundle:AdminEvent:speakerInfos}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakerInfosAction }
 
 admin_event_send_test_mail_inscription:
   path: /send-test-mail-inscription
-  defaults: {_controller: AppBundle:AdminEvent:sendTestInscriptionEmail}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\SendTestInscriptionEmailAction }
 
 admin_event_badges:
   path: /badges
-  defaults: {_controller: AppBundle:AdminEvent:badgesGenerate}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\BadgesGenerateAction }
 
 admin_event_previous_registrations:
   path: /previous_registrations
-  defaults: {_controller: AppBundle:AdminEvent:previousRegistrations}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\PreviousRegistrationsAction }

@@ -102,7 +102,7 @@ sponsor_leads_post:
 
 speaker-infos:
   path: /{eventSlug}/speaker-infos
-  defaults: {_controller: AppBundle:Speaker:speakerPage }
+  defaults: {_controller: AppBundle\Controller\Event\SpeakerPageAction }
 
 planning_ics:
   path: /{eventSlug}/planning.ics
