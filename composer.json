@@ -4,7 +4,7 @@
   "type": "project",
   "require": {
     "league/oauth2-github": "^0.2.1",
-    "symfony/symfony": "^3.1",
+    "symfony/symfony": "^3.4",
     "symfony/monolog-bundle": "^2.11",
     "sensio/distribution-bundle": "^5.0",
     "ccmbenchmark/ting_bundle": "^3.0",
