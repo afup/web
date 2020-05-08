@@ -4,6 +4,8 @@
 RewriteEngine On
 RewriteBase /
 
+RewriteRule ^(.*)/en/ $1 [L,R=301]
+
 RewriteRule ^forum-php-2017/programme/ /forumphp2017/programme [L,R=301]
 RewriteRule ^forum-php-2018/sponsors/ /forumphp2018/sponsors [L,R=301]
 RewriteRule ^forum-php-2018/accessibilite-et-inclusivite/ /forumphp2018/accessibilite-et-inclusivite [L,R=301]
