@@ -67,4 +67,4 @@ admin_techletter:
 
 admin_slack_members_check:
   path: /slackmembers/check
-  defaults: {_controller: AppBundle:AdminSlackMembre:checkMembers }
+  defaults: {_controller: AppBundle\Controller\Admin\SlackMembers\CheckMembersAction }
