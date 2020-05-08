@@ -26,7 +26,7 @@
     <div class="ui segment">
         <h2 class="ui header">Progression des ventes: Jour 1</h2>
         <div class="ui clearing divider"></div>
-        {% set percentage = ( (seats.one) / seats.available * 100)|round %}
+        {% set percentage = seats.available > 0 ? ( (seats.one) / seats.available * 100)|round : 0 %}
         <div class="ui teal progress" data-percent="{{ percentage }}">
             <div class="bar">
                 <div class="progress"></div>
@@ -39,7 +39,7 @@
         <h2 class="ui header">Progression des ventes: Jour 2</h2>
         <div class="ui clearing divider"></div>
 
-        {% set percentage = ( (seats.two) / seats.available * 100)|round %}
+        {% set percentage = seats.available > 0 ? ( (seats.two) / seats.available * 100)|round : 0 %}
         <div class="ui teal progress" data-percent="{{ percentage }}">
             <div class="bar">
                 <div class="progress"></div>

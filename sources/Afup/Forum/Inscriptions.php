@@ -2,7 +2,6 @@
 namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Base_De_Donnees;
-use AppBundle\Email\Mailer\Mailer;
 
 class Inscriptions
 {
@@ -111,6 +110,10 @@ SQL;
         HAVING jour < 0
         ORDER BY jour ASC ';
         $nombre_par_date = $this->_bdd->obtenirTous($requete);
+
+        if ([] === $nombre_par_date) {
+            $nombre_par_date = [['jour' => 1]];
+        }
 
         $suivis = [];
 
