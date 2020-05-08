@@ -19,6 +19,15 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Admin\Talk\:
+        resource: '../../sources/AppBundle/Controller/Admin/Talk/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Command\IndexTalksCommand:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Security\MyGithubAuthenticator:
         autowire: true
 
@@ -29,6 +38,9 @@ services:
         autowire: true
 
     AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
+        autowire: true
+
+    AppBundle\Indexation\Talks\Runner:
         autowire: true
 
     AppBundle\Event\Model\Repository\GithubUserRepository:
