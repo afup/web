@@ -53,7 +53,7 @@ class EventController extends EventBaseController
         $currentDate = new \DateTime();
 
         if ($event->getDateEndCallForPapers() < $currentDate) {
-            if (!$event->isVoteAvailable($currentDate)) {
+            if (!$event->isVoteAvailable()) {
                 return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
             }
 

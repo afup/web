@@ -23,7 +23,9 @@
                 {% for talk in eventTalkList.talks %}
                     <div class="mbm">
                         <h4 class="pts mbs">{{ talk.title }}</h4>
-                        <a class="right mrm" href="{{ url('cfp_edit', {eventSlug: event.path, talkId: talk.id}) }}">Modifier</a>
+                        {% if event.cfpOpen %}
+                            <a class="right mrm" href="{{ url('cfp_edit', {eventSlug: event.path, talkId: talk.id}) }}">Modifier</a>
+                        {% endif %}
                         <strong>
                             {{ talk.skillTranslationKey|trans }} - {{ talk.typeTranslationKey|trans }}
                         </strong>
@@ -40,8 +42,9 @@
                 <p>{{ 'Aucune proposition enregistrée pour le moment.'|trans }}</p>
             {% endif %}
         </div>
-        <a href="{{ url('cfp_propose', {eventSlug: event.path}) }}" class="button">Nouvelle proposition</a>
-
+        {% if event.cfpOpen %}
+            <a href="{{ url('cfp_propose', {eventSlug: event.path}) }}" class="button">Nouvelle proposition</a>
+        {% endif %}
         {% if previousEventTalkLists|length > 0 %}
             <h3>{{ 'Mes précédents CFP'|trans }}</h3>
             <div class="mls">
