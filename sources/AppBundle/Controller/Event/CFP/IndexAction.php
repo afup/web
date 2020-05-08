@@ -19,6 +19,7 @@ use Twig_Environment;
 
 class IndexAction
 {
+    const MAX_EVENTS_HISTORY = 50;
     /** @var TalkRepository */
     private $talkRepository;
     /** @var UrlGeneratorInterface */
@@ -71,7 +72,7 @@ class IndexAction
         /** @var EventTalkList[] $previousEventTalkLists */
         $previousEventTalkLists = [];
         /** @var Event $previousEvent */
-        foreach ($this->eventRepository->getPreviousEvents(50) as $previousEvent) {
+        foreach ($this->eventRepository->getPreviousEvents(self::MAX_EVENTS_HISTORY) as $previousEvent) {
             $previousEventTalkLists[$previousEvent->getId()] = new EventTalkList($previousEvent);
         }
         /** @var Talk $talk */

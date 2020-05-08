@@ -72,7 +72,8 @@ class TalkRepository extends Repository implements MetadataInitializer
             'SELECT s.session_id, s.titre, s.abstract, s.id_forum, s.plannifie
             FROM afup_sessions s
             JOIN afup_conferenciers_sessions cs ON cs.session_id = s.session_id
-            WHERE s.id_forum != :event AND cs.conferencier_id = :speaker
+            JOIN afup_conferenciers c ON cs.conferencier_id = c.conferencier_id
+            WHERE s.id_forum != :event AND c.user_github IN (SELECT user_github FROM afup_conferenciers WHERE conferencier_id = :speaker) 
             ORDER BY s.titre ASC
             LIMIT 0, 50
             '
