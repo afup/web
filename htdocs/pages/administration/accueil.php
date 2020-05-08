@@ -3,6 +3,7 @@
 /** @var \AppBundle\Controller\LegacyController $this */
 
 use Afup\Site\Forum\Inscriptions;
+use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 
@@ -33,8 +34,8 @@ if ($this->isGranted('ROLE_FORUM')) {
             $infos['statistics']['entrées (deuxième jour)'] = $inscriptionsData['second_jour']['inscrits'];
         }
 
-        $infos['event_name'] = $event->getTitle();
-        $infos['event_id'] = $event->getId();
+        $infos['title'] = $event->getTitle();
+        $infos['subtitle'] = "Inscriptions";
 
         $montantTotal = 0;
         foreach ($ticketEventTypeRepository->getTicketsByEvent($event, false) as $ticketEventType) {
@@ -42,9 +43,19 @@ if ($this->isGranted('ROLE_FORUM')) {
         }
 
         $infos['statistics']['montant total'] = number_format($montantTotal, 0, 0, ' ') . ' €';
+        $infos['url'] = "/pages/administration/index.php?page=forum_inscriptions&id_forum=" . $event->getId();
 
         $cards[] = $infos;
     }
+}
+
+if ($this->isGranted(('ROLE_VEILLE'))) {
+    $infos = [];
+    $infos['title'] = 'Abonnements à la veille';
+    $infos['statistics']['Abonnements'] = $this->get('ting')->get(TechletterSubscriptionsRepository::class)->countAllSubscriptionsWithUser();;
+    $infos['url'] = $this->generateUrl('admin_techletter_members');
+
+    $cards[] = $infos;
 }
 
 $smarty->assign('cards', $cards);
