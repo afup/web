@@ -63,8 +63,12 @@ if ($this->isGranted(('ROLE_ADMIN'))) {
     $infos = [];
     $infos['title'] = 'Membres';
     $statistics = $this->get(StatisticsComputer::class)->computeStatistics();
-    $infos['statistics']['Personnes physiques'] = $statistics['users_count'];
+    $infos['statistics']['Personnes physiques'] = $statistics['users_count_without_companies'];
     $infos['statistics']['Personnes morales'] = $statistics['companies_count'];
+
+    $infos['main_statistic']['label'] = 'Membres';
+    $infos['main_statistic']['value'] = $statistics['users_count'];
+
     $infos['url'] = $this->generateUrl('admin_members_reporting');
 
     $cards[] = $infos;
