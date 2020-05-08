@@ -23,6 +23,10 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Admin\Speaker\ExportAction:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Controller\Admin\Talk\:
         resource: '../../sources/AppBundle/Controller/Admin/Talk/*'
         autowire: true
