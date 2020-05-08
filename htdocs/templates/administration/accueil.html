@@ -33,10 +33,12 @@ Vous êtes connecté en tant que {$user_label}.
         {foreach from=$cards item=card}
         <div class="card">
             <div class="content">
-                <div class="header">{$card.event_name}</div>
+                <div class="header">{$card.title}</div>
+                {if $card.subtitle}
                 <div class="meta">
-                    Inscriptions
+                    {$card.subtitle}
                 </div>
+                {/if}
                 <div class="ui horizontal mini statistics">
                     {foreach from=$card.statistics item=statistic key=label}
                     <div class="statistic">
@@ -52,7 +54,7 @@ Vous êtes connecté en tant que {$user_label}.
 
             </div>
             <a class="ui bottom attached button"
-               href="/pages/administration/index.php?page=forum_inscriptions&id_forum={$card.event_id}"
+               href="{$card.url}"
             >
                 Voir plus
             </a>
