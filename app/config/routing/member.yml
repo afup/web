@@ -41,11 +41,11 @@ member_techletter_subscribe:
 
 admin_company:
   path: /company
-  defaults: {_controller: AppBundle:AdminMemberShip:company}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\CompanyAction}
 
 admin_company_members:
   path: /company/members/{id}
-  defaults: {_controller: AppBundle:AdminMemberShip:members, id: ~}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\MembersAction, id: ~}
 
 admin_company_public_profile:
   path: /company/public_profile

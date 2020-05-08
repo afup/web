@@ -21,21 +21,17 @@ class LegacyHashAuthenticator extends AbstractGuardAuthenticator
         $this->userRepository = $userRepository;
     }
 
+    public function supports(Request $request)
+    {
+        return $request->query->has('hash') && $request->isMethod(Request::METHOD_GET);
+    }
+
     /**
      * @inheritDoc
      */
     public function getCredentials(Request $request)
     {
-        if (
-            $request->query->has('hash') === false
-            || $request->getMethod() !== Request::METHOD_GET
-        ) {
-            return null;
-        }
-
-        return [
-            'hash' => $request->query->get('hash')
-        ];
+        return ['hash' => $request->query->get('hash')];
     }
 
     /**
@@ -77,8 +73,10 @@ class LegacyHashAuthenticator extends AbstractGuardAuthenticator
             $newUrl = preg_replace('/(\?|&)hash=.+?(?:&|$)/', '$1', $request->server->get('LEGACY_REFERER'));
             $response = new RedirectResponse($newUrl, Response::HTTP_TEMPORARY_REDIRECT);
             $response->setPrivate();
+
             return $response;
         }
+
         return null;
     }
 

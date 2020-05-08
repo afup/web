@@ -19,6 +19,11 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Admin\Membership\:
+      resource: '../../sources/AppBundle/Controller/Admin/Membership/*'
+      autowire: true
+      autoconfigure: true
+
     AppBundle\Controller\Admin\SlackMembers\CheckMembersAction:
         autowire: true
         autoconfigure: true
@@ -64,6 +69,16 @@ services:
         class: AppBundle\Event\Model\Repository\GithubUserRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\GithubUserRepository]
+
+    AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository:
+        class: AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository
+        factory: ['@ting', get]
+        arguments: [AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository]
+
+    AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository:
+        class: AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository
+        factory: ['@ting', get]
+        arguments: [AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository]
 
     AppBundle\Twig\TwigExtension:
         arguments: ['@AppBundle\Routing\LegacyRouter', "@Parsedown", '@AppBundle\Email\Parsedown', "@service_container"]
@@ -251,6 +266,16 @@ services:
     AppBundle\Model\CollectionFilter:
         autowire: true
 
+    AppBundle\Event\Talk\InvitationFormHandler:
+      autowire: true
+
+    AppBundle\Event\Talk\TalkFormHandler:
+      autowire: true
+
+    CCMBenchmark\TingBundle\Repository\RepositoryFactory: '@ting'
+    CCMBenchmark\Ting\UnitOfWork: '@ting.unitofwork'
+    KnpU\OAuth2ClientBundle\Client\ClientRegistry: '@knpu.oauth2.registry'
+
     AppBundle\Security\ActionThrottling\LogRepository:
         class: AppBundle\Security\ActionThrottling\LogRepository
         factory: ["@ting", get]
@@ -404,7 +429,7 @@ services:
         arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
 
     Trello\Client:
-        calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const:Trello\Client::AUTH_URL_CLIENT_ID]]]
+        calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const Trello\Client::AUTH_URL_CLIENT_ID]]]
 
     Trello\Manager:
         arguments: ['@Trello\Client']
@@ -431,7 +456,7 @@ services:
         class: Google_Client
         calls:
           - ["setAuthConfig", ["%google_groups_api_key%"]]
-          - ["setScopes", [[!php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP, !php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY]]]
+          - ["setScopes", [[!php/const Google_Service_Directory::ADMIN_DIRECTORY_GROUP, !php/const Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY]]]
           - ["setSubject", ['admin-mailing-listes-api@afup.org']]
 
     Google_Service_Directory:

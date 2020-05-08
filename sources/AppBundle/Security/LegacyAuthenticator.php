@@ -20,23 +20,22 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
         $this->userRepository = $userRepository;
     }
 
+    public function supports(Request $request)
+    {
+        return $request->getPathInfo() === '/admin/login'
+            && $request->isMethod(Request::METHOD_POST)
+            && $request->request->has('utilisateur')
+            && $request->request->has('mot_de_passe');
+    }
+
     /**
      * @inheritDoc
      */
     public function getCredentials(Request $request)
     {
-        if (
-            $request->getPathInfo() !== '/admin/login'
-            || $request->getMethod() !== Request::METHOD_POST
-            || $request->request->has('utilisateur') === false
-            || $request->request->has('mot_de_passe') === false
-        ) {
-            return null;
-        }
-
         return [
             'login' => $request->request->get('utilisateur'),
-            'password' => md5($request->request->get('mot_de_passe'))
+            'password' => md5($request->request->get('mot_de_passe')),
         ];
     }
 
@@ -107,6 +106,7 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
         if ($request->server->has('LEGACY_REFERER')) {
             return new RedirectResponse(sprintf('/admin/login?target=%s', urlencode($request->server->get('LEGACY_REFERER'))));
         }
+
         return new RedirectResponse('/admin/login');
     }
 }

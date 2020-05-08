@@ -6,6 +6,7 @@ namespace AppBundle\Association\Model\Repository;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -13,6 +14,9 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class CompanyMemberInvitationRepository extends Repository implements MetadataInitializer
 {
+    /**
+     * @return CollectionInterface&CompanyMemberInvitation[]
+     */
     public function loadPendingInvitationsByCompany(CompanyMember $companyMember)
     {
         return $this->getBy([
