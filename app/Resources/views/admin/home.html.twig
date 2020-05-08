@@ -1,0 +1,73 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Bienvenue dans l'administration de l'AFUP</h2>
+    Vous êtes connecté en tant que {{ user_label }}.
+    <style>
+        #accueil-container::after {
+            content: "";
+            background-image: url('https://identity.afup.org/assets/afup/afup-icon-black.svg');
+            background-position-x: right;
+            background-position-y: bottom;
+            background-repeat: no-repeat;
+            background-size: 35%;
+            opacity: 0.3;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            z-index: -1;
+        }
+
+        #accueil-container {
+            min-height: 700px;
+            width: 100%;
+        }
+    </style>
+    {% if cards %}
+        <div class="ui basic right aligned segment" id="accueil-container">
+            <div class="ui cards">
+                {% for card in cards %}
+                    <div class="card">
+                        <div class="content">
+                            <div class="header">{{ card.title }}</div>
+                            {% if card.subtitle is defined %}
+                                <div class="meta">
+                                    {{ card.subtitle }}
+                                </div>
+                            {% endif %}
+                            {% if card.main_statistic is defined %}
+                                <div class="ui horizontal tiny statistics">
+                                    <div class="statistic">
+                                        <div class="value">
+                                            {{ card.main_statistic.value }}
+                                        </div>
+                                        <div class="label">
+                                            {{ card.main_statistic.label }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="ui horizontal mini statistics">
+                                {% for label, statistic in card.statistics %}
+                                    <div class="statistic">
+                                        <div class="value">
+                                            {{ statistic }}
+                                        </div>
+                                        <div class="label">
+                                            {{ label }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <a class="ui bottom attached button" href="{{ card.url }}">
+                            Voir plus
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1632,7 +1632,7 @@ INSERT INTO `afup_site_feuille` (`id`, `id_parent`, `nom`, `lien`, `alt`, `posit
 (20, 1, 'Forum PHP', '/pages/forumphp2012/', '', -1, 1253916000, -1, 'forumphp.png'),
 (24, 21, 'Actualités', '06-actualit/9', '', 0, 1254002400, 1, NULL),
 (25, 38, 'Contact', 'faq/53/comment-contacter-l-afup', '', 4, 1254088800, 1, NULL),
-(26, 5, 'Connectez-vous', '/pages/administration', '', 9, 1266015600, 1, NULL),
+(26, 5, 'Connectez-vous', '/admin', '', 9, 1266015600, 1, NULL),
 (27, 1, 'Appel à conférenciers', 'https://afup.org/pages/phptourlille2011/', '', -2, 1305151200, -1, 'afup_phptour-carré.jpg'),
 (30, 1, 'Rendez-Vous', 'evenements/58', '', 0, 1292367600, 1, 'rendez-vous.png'),
 (29, 9, 'rtbf', 'retours-d-exp/434/sebastien-barbieri-rtbf-le-choix-de-lopen-source', '', 0, 1292281200, 1, 'logo_rtbf_be49px.jpg'),

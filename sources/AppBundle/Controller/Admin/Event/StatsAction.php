@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin\Event;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventSelectType;
+use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
@@ -24,6 +25,8 @@ class StatsAction
     private $ticketRepository;
     /** @var TicketTypeRepository */
     private $ticketTypeRepository;
+    /** @var EventStatsRepository */
+    private $eventStatsRepository;
     /** @var FormFactoryInterface */
     private $formFactory;
     /** @var Environment */
@@ -34,6 +37,7 @@ class StatsAction
         LegacyModelFactory $legacyModelFactory,
         TicketRepository $ticketRepository,
         TicketTypeRepository $ticketTypeRepository,
+        EventStatsRepository $eventStatsRepository,
         FormFactoryInterface $formFactory,
         Environment $twig
     ) {
@@ -41,6 +45,7 @@ class StatsAction
         $this->legacyModelFactory = $legacyModelFactory;
         $this->ticketRepository = $ticketRepository;
         $this->ticketTypeRepository = $ticketTypeRepository;
+        $this->eventStatsRepository = $eventStatsRepository;
         $this->formFactory = $formFactory;
         $this->twig = $twig;
     }
@@ -95,7 +100,7 @@ class StatsAction
             ],
         ];
 
-        $rawStatsByType = $legacyInscriptions->obtenirStatistiques($event->getId())['types_inscriptions']['payants'];
+        $rawStatsByType = $this->eventStatsRepository->getStats($event->getId())->ticketType->paying;
         $totalInscrits = array_sum($rawStatsByType);
         array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits) {
             if (isset($ticketTypes[$key]) === false) {

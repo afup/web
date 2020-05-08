@@ -1,3 +1,7 @@
+admin_home:
+  path: /
+  defaults: {_controller: AppBundle\Controller\Admin\HomeAction}
+
 admin_vote:
   path: /vote/
   defaults: {_controller: AppBundle:Vote:admin}
@@ -43,7 +47,7 @@ member_slack_invite:
 
 admin_members_reporting:
   path: /members/reporting
-  defaults: {_controller: AppBundle:MembershipAdmin:reporting}
+  defaults: {_controller: AppBundle\Controller\MembershipAdmin\ReportingAction}
 
 admin_members_badges_index:
   path: /members/badges

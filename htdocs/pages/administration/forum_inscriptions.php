@@ -1,11 +1,12 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Forum\Inscriptions;
-use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Facturation;
-use Afup\Site\Utils\Pays;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Pays;
+use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 
 /** @var \AppBundle\Controller\LegacyController $this */
@@ -86,7 +87,24 @@ if ($action == 'lister') {
     $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
     $smarty->assign('forum_tarifs_restantes', $restantes);
     $smarty->assign('forum_tarifs',$AFUP_Tarifs_Forum);
-    $smarty->assign('statistiques', $forum_inscriptions->obtenirStatistiques($_GET['id_forum']));
+    $stats = $this->get(EventStatsRepository::class)->getStats($_GET['id_forum']);
+    $smarty->assign('statistiques', [
+        'premier_jour' => [
+            'inscrits' => $stats->firstDay->registered,
+            'confirmes' => $stats->firstDay->confirmed,
+            'en_attente_de_reglement' => $stats->firstDay->pending,
+        ],
+        'second_jour' => [
+            'inscrits' => $stats->secondDay->registered,
+            'confirmes' => $stats->secondDay->confirmed,
+            'en_attente_de_reglement' => $stats->secondDay->pending,
+        ],
+        'types_inscriptions' => [
+            'confirmes' => $stats->ticketType->confirmed,
+            'inscrits' => $stats->ticketType->registered,
+            'payants' => $stats->ticketType->paying,
+        ],
+    ]);
 
     $smarty->assign('forums', $forum->obtenirListe());
     $smarty->assign('inscriptions', $forum_inscriptions->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));

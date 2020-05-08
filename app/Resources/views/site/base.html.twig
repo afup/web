@@ -25,7 +25,7 @@
             <div id="espace-membre" class="w33 tablet-hidden">
                 {% if app.user %}
                     {% if app.user.canAccessAdmin %}
-                        <a href="/pages/administration" class="header-button header-button__connect">Administration</a>
+                        <a href="{{ path('admin_home') }}" class="header-button header-button__connect">Administration</a>
                     {% endif %}
                     <a href="{{ path('admin_logout') }}" class="header-button header-button__connect">Se déconnecter</a>
                 {%  else  %}

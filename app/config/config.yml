@@ -11,6 +11,9 @@ parameters:
         accueil:
             nom: 'Accueil'
             niveau: 'ROLE_MEMBER_EXPIRED'
+            url: '/admin'
+            extra_routes:
+                - admin_home
         membres:
             nom: 'Membres'
             niveau: 'ROLE_ADMIN'

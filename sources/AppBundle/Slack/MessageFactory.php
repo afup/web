@@ -7,6 +7,7 @@ use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
@@ -197,9 +198,9 @@ class MessageFactory
      *
      * @return Message
      */
-    public function createMessageForTicketStats(Event $event, Inscriptions $inscriptions, TicketTypeRepository $ticketRepository, \DateTime $date = null)
+    public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, \DateTime $date = null)
     {
-        $inscriptionsData = $inscriptions->obtenirStatistiques($event->getId());
+        $eventStats = $eventStatsRepository->getStats($event->getId());
         $message = new Message();
         $message
             ->setChannel($event->isAfupDay() ? 'afupday' : 'pole-forum')
@@ -208,13 +209,13 @@ class MessageFactory
         ;
 
         if (null !== $date) {
-            $inscriptionsDataFiltered = $inscriptions->obtenirStatistiques($event->getId(), $date);
+            $eventStatsFiltered = $eventStatsRepository->getStats($event->getId(), $date);
 
             $attachment = new Attachment();
             $attachment
                 ->setTitle(sprintf('Liste des inscriptions depuis le %s : ', $date->format('d/m/Y H:i')))
             ;
-            foreach ($inscriptionsDataFiltered['types_inscriptions']['inscrits'] as $typeId => $value) {
+            foreach ($eventStatsFiltered->ticketType->registered as $typeId => $value) {
                 if (0 === $value) {
                     continue;
                 }
@@ -232,19 +233,14 @@ class MessageFactory
 
 
         if ($event->lastsOneDay()) {
-            $attachment
-                ->addField(
-                (new Field())->setShort(true)->setTitle('Journée unique')->setValue($inscriptionsData['premier_jour']['inscrits'])
-            )
-            ;
+            $attachment->addField((new Field())->setShort(true)->setTitle('Journée unique')
+                ->setValue($eventStats->firstDay->registered));
         } else {
             $attachment
-                ->addField(
-                    (new Field())->setShort(true)->setTitle('Premier jour')->setValue($inscriptionsData['premier_jour']['inscrits'])
-                )
-                ->addField(
-                    (new Field())->setShort(true)->setTitle('Deuxième jour')->setValue($inscriptionsData['second_jour']['inscrits'])
-                )
+                ->addField((new Field())->setShort(true)->setTitle('Premier jour')
+                    ->setValue($eventStats->firstDay->registered))
+                ->addField((new Field())->setShort(true)->setTitle('Deuxième jour')
+                    ->setValue($eventStats->secondDay->registered))
             ;
         }
 
