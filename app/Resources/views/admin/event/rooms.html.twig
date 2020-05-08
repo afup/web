@@ -1,9 +1,8 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
     <h2>Liste des salles pour {{ event.title }}</h2>
-
-    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     <div class="ui form">
         <table class="ui table striped compact celled">

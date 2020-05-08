@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Event\Speaker;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
@@ -9,59 +9,77 @@ use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SpeakerInfos\Form\HotelReservationType;
 use AppBundle\SpeakerInfos\Form\SpeakersDinerType;
+use DateTime;
+use DateTimeImmutable;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 
-class SpeakerController extends EventBaseController
+class SpeakerPage
 {
-    public function speakerPageAction(Request $request, $eventSlug)
-    {
-        $event = $this->checkEventSlug($eventSlug);
-        $speaker = $this->get(\AppBundle\CFP\SpeakerFactory::class)->getSpeaker($event);
+    /** @var TalkRepository */
+    private $talkRepository;
+    /** @var SpeakerRepository */
+    private $speakerRepository;
+    /** @var FormFactoryInterface */
+    private $formFactory;
+    /** @var FlashBagInterface */
+    private $flashBag;
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+    /** @var Environment */
+    private $twig;
 
-        return $this->internalSpeakerPageAction($request, $event, $speaker);
+    public function __construct(
+        TalkRepository $talkRepository,
+        SpeakerRepository $speakerRepository,
+        FormFactoryInterface $formFactory,
+        FlashBagInterface $flashBag,
+        UrlGeneratorInterface $urlGenerator,
+        Environment $twig
+    ) {
+        $this->talkRepository = $talkRepository;
+        $this->speakerRepository = $speakerRepository;
+        $this->formFactory = $formFactory;
+        $this->flashBag = $flashBag;
+        $this->urlGenerator = $urlGenerator;
+        $this->twig = $twig;
     }
 
-    public function internalSpeakerPageAction(Request $request, Event $event, Speaker $speaker)
+    public function handleRequest(Request $request, Event $event, Speaker $speaker)
     {
-        /**
-         * @var $talkRepository TalkRepository
-         */
-        $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $talks = array_filter(
-            iterator_to_array($talkRepository->getTalksBySpeaker($event, $speaker)),
-            function (Talk $talk) {
+            iterator_to_array($this->talkRepository->getTalksBySpeaker($event, $speaker)),
+            static function (Talk $talk) {
                 return true === $talk->getScheduled();
             }
         );
 
-        /**
-         * @var SpeakerRepository $speakerRepository
-         */
-        $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
-
-        $now = new \DateTime('now');
+        $now = new DateTime('now');
 
         $speakersDinerDefaults = [
             'will_attend' => $speaker->getWillAttendSpeakersDiner(),
             'has_special_diet' => $speaker->getHasSpecialDiet(),
             'special_diet_description' => $speaker->getSpecialDietDescription(),
         ];
-        $speakersDinerType = $this->createForm(SpeakersDinerType::class, $speakersDinerDefaults);
+        $speakersDinerType = $this->formFactory->create(SpeakersDinerType::class, $speakersDinerDefaults);
         $speakersDinerType->handleRequest($request);
 
         $shouldDisplaySpeakersDinerForm = $event->getSpeakersDinerEnabled() && $event->getDateEndSpeakersDinerInfosCollection() > $now;
 
         if ($shouldDisplaySpeakersDinerForm && $speakersDinerType->isValid()) {
             $speakersDinerData = $speakersDinerType->getData();
-
             $speaker->setWillAttendSpeakersDiner($speakersDinerData['will_attend']);
             $speaker->setHasSpecialDiet($speakersDinerData['has_special_diet']);
             $speaker->setSpecialDietDescription($speakersDinerData['special_diet_description']);
-            $speakerRepository->save($speaker);
+            $this->speakerRepository->save($speaker);
+            $this->flashBag->add('notice', 'Informations sur votre venue au restaurant des speakers enregistrées');
 
-            $this->addFlash('notice', 'Informations sur votre venue au restaurant des speakers enregistrées');
-
-            return $this->redirectToRoute('speaker-infos', ['eventSlug' => $event->getPath()]);
+            return new RedirectResponse($this->urlGenerator->generate('speaker-infos', ['eventSlug' => $event->getPath()]));
         }
 
         $nights = $speaker->getHotelNightsArray();
@@ -74,7 +92,7 @@ class SpeakerController extends EventBaseController
             'nights' => $nights,
         ];
 
-        $hotelReservationType = $this->createForm(HotelReservationType::class, $hotelReservationDefaults, ['event' => $event]);
+        $hotelReservationType = $this->formFactory->create(HotelReservationType::class, $hotelReservationDefaults, ['event' => $event]);
         $hotelReservationType->handleRequest($request);
 
         $shouldDisplayHotelReservationForm = $event->getAccomodationEnabled() && $event->getDateEndHotelInfosCollection() > $now;
@@ -83,22 +101,21 @@ class SpeakerController extends EventBaseController
             $hotelReservationData = $hotelReservationType->getData();
             $speaker->setHotelNightsArray($hotelReservationData['nights']);
 
-            $speakerRepository->save($speaker);
+            $this->speakerRepository->save($speaker);
+            $this->flashBag->add('notice', "Informations sur votre venue à l'hotel enregistrées");
 
-            $this->addFlash('notice', "Informations sur votre venue à l'hotel enregistrées");
-
-            return $this->redirectToRoute('speaker-infos', ['eventSlug' => $event->getPath()]);
+            return new RedirectResponse($this->urlGenerator->generate('speaker-infos', ['eventSlug' => $event->getPath()]));
         }
 
         $description = '';
         $eventCfp = $event->getCFP();
-        if ($request->getLocale() == 'en' && isset($eventCfp['speaker_management_en'])) {
+        if (isset($eventCfp['speaker_management_en']) && $request->getLocale() === 'en') {
             $description = $eventCfp['speaker_management_en'];
         } elseif (isset($eventCfp['speaker_management_fr'])) {
             $description = $eventCfp['speaker_management_fr'];
         }
 
-        return $this->render('event/speaker/page.html.twig', [
+        return new Response($this->twig->render('event/speaker/page.html.twig', [
             'event' => $event,
             'description' => $description,
             'talks_infos' => $this->addTalkInfos($event, $talks),
@@ -107,20 +124,18 @@ class SpeakerController extends EventBaseController
             'should_display_hotel_reservation_form' => $shouldDisplayHotelReservationForm,
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
-            'day_before_event' => \DateTimeImmutable::createFromMutable($event->getDateStart())->modify('- 1 day'),
-        ]);
+            'day_before_event' => DateTimeImmutable::createFromMutable($event->getDateStart())->modify('- 1 day'),
+        ]));
     }
 
     /**
-     * @param Event $event
-     * @param array $talks
+     * @param Talk[] $talks
      *
-     * @return array
+     * @return Talk[]
      */
     protected function addTalkInfos(Event $event, array $talks)
     {
-        $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $allTalks = $talkRepository->getByEventWithSpeakers($event, false);
+        $allTalks = $this->talkRepository->getByEventWithSpeakers($event, false);
         $allTalksById = [];
         foreach ($allTalks as $allTalk) {
             $allTalksById[$allTalk['talk']->getId()] = $allTalk;

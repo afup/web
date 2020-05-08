@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
@@ -176,6 +177,7 @@ class VoteController extends EventBaseController
             'votes' => $votes,
             'title' => 'Votes',
             'event' => $event,
+            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
         ]);
     }
 

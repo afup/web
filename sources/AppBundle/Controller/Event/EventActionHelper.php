@@ -8,7 +8,6 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use Assert\Assertion;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Twig_Environment;
 
 class EventActionHelper
 {
@@ -16,17 +15,13 @@ class EventActionHelper
     protected $eventRepository;
     /** @var TokenStorageInterface */
     private $tokenStorage;
-    /** @var Twig_Environment */
-    private $twig;
 
     public function __construct(
         EventRepository $eventRepository,
-        TokenStorageInterface $tokenStorage,
-        Twig_Environment $twig
+        TokenStorageInterface $tokenStorage
     ) {
         $this->eventRepository = $eventRepository;
         $this->tokenStorage = $tokenStorage;
-        $this->twig = $twig;
     }
 
     /**
@@ -41,6 +36,27 @@ class EventActionHelper
         $event = $this->eventRepository->getOneBy(['path' => $eventSlug]);
         if ($event === null) {
             throw new NotFoundHttpException('Event not found');
+        }
+
+        return $event;
+    }
+
+    /**
+     * @param int|null $id
+     * @param bool     $allowFallback
+     *
+     * @return Event
+     */
+    public function getEventById($id = null, $allowFallback = true)
+    {
+        $event = null;
+        if (null !== $id) {
+            $event = $this->eventRepository->get((int) $id);
+        } elseif ($allowFallback) {
+            $event = $this->eventRepository->getNextEvent();
+        }
+        if ($event === null) {
+            throw new NotFoundHttpException('Could not find event');
         }
 
         return $event;

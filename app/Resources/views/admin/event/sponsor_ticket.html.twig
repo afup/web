@@ -1,4 +1,4 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends 'admin/base_with_header.html.twig' %}
 
 {% form_theme form _self %}
 {%- block form_row -%}
@@ -19,7 +19,7 @@
 
 {% block content %}
     <h2>Liste des tokens sponsors pour {{ event.title }}</h2>
-    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     <div class="ui menu">
         <a href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}"

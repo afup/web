@@ -8,6 +8,7 @@ use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketType;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -17,6 +18,11 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TicketRepository extends Repository implements MetadataInitializer
 {
+    /**
+     * @param string $reference
+     *
+     * @return CollectionInterface&Ticket[]
+     */
     public function getByReference($reference)
     {
         return $this->getBy(['reference' => $reference]);
@@ -46,7 +52,7 @@ class TicketRepository extends Repository implements MetadataInitializer
     /**
      * @param Event[]|\Traversable $events
      *
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getRegistrationsForEventsWithNewsletterAllowed(\Traversable $events)
     {
@@ -158,7 +164,7 @@ class TicketRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getAllTicketsForExport()
     {
