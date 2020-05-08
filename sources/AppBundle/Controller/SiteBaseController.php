@@ -18,6 +18,7 @@ abstract class SiteBaseController extends Controller implements SiteControllerIn
 
     /**
      * @inheritDoc
+     * @deprecated use BlocksHandler
      */
     public function setDefaultBlocks(array $blocks)
     {

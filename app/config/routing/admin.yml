@@ -12,7 +12,7 @@ admin_void:
 
 admin_login:
   path: /login
-  defaults: {_controller: AppBundle:Admin:login}
+  defaults: {_controller: AppBundle\Controller\Admin\LoginAction}
 
 admin_logout:
   path: /logout
@@ -23,7 +23,7 @@ legacy_inscription:
 
 admin_password:
   path: /password
-  defaults: {_controller: AppBundle:Admin:lostPassword}
+  defaults: {_controller: AppBundle\Controller\Admin\LostPasswordAction}
 
 admin_event_routes:
     resource: "admin_event.yml"

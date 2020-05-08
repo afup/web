@@ -73,9 +73,9 @@
                 <div class="toc">
                     <div class="ui vertical inverted menu accordion">
                         <div class="item logo">
-                            <img src="/templates/administration/images/logo_afup.png" style="max-width: 100%"/>
+                            <img src="/templates/administration/images/logo_afup.png" style="max-width: 100%" alt="Logo AFUP"/>
                         </div>
-                        {{ render(controller('AppBundle:Admin:getMenu')) }}
+                        {{ render(controller('AppBundle\\Controller\\Admin\\GetMenuAction')) }}
                     </div>
                 </div>
             </div>
