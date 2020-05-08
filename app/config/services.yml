@@ -414,6 +414,12 @@ services:
         arguments:
           - 'Afup\Site\Association\Cotisations'
 
+    Afup\Site\Association\Personnes_Morales:
+        class: Afup\Site\Association\Personnes_Morales
+        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
+        arguments:
+            - 'Afup\Site\Association\Personnes_Morales'
+
     AppBundle\Event\Form\PurchaseType:
         autowire: true
         tags:
@@ -498,6 +504,11 @@ services:
 
     Ivory\HttpAdapter\CurlHttpAdapter:
         public: false
+
+    AppBundle\Association\UserMembership\StatisticsComputer:
+        arguments:
+            - '@AppBundle\Association\Model\Repository\UserRepository'
+            - '@Afup\Site\Association\Personnes_Morales'
 
     AppBundle\Association\UserMembership\SeniorityComputer:
         arguments: ['@Afup\Site\Association\Cotisations']

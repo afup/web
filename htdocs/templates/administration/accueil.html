@@ -39,6 +39,18 @@ Vous êtes connecté en tant que {$user_label}.
                     {$card.subtitle}
                 </div>
                 {/if}
+                {if $card.main_statistic }
+                <div class="ui horizontal tiny statistics">
+                    <div class="statistic">
+                        <div class="value">
+                            {$card.main_statistic.value}
+                        </div>
+                        <div class="label">
+                            {$card.main_statistic.label}
+                        </div>
+                    </div>
+                </div>
+                {/if}
                 <div class="ui horizontal mini statistics">
                     {foreach from=$card.statistics item=statistic key=label}
                     <div class="statistic">
