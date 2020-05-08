@@ -3,8 +3,8 @@
 namespace AppBundle\Controller\Admin\Event;
 
 use Afup\Site\Forum\Inscriptions;
+use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventSelectType;
-use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
@@ -12,13 +12,12 @@ use AppBundle\LegacyModelFactory;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
 
 class StatsAction
 {
-    /** @var EventRepository */
-    private $eventRepository;
+    /** @var EventActionHelper */
+    private $eventActionHelper;
     /** @var LegacyModelFactory */
     private $legacyModelFactory;
     /** @var TicketRepository */
@@ -31,14 +30,14 @@ class StatsAction
     private $twig;
 
     public function __construct(
-        EventRepository $eventRepository,
+        EventActionHelper $eventActionHelper,
         LegacyModelFactory $legacyModelFactory,
         TicketRepository $ticketRepository,
         TicketTypeRepository $ticketTypeRepository,
         FormFactoryInterface $formFactory,
         Environment $twig
     ) {
-        $this->eventRepository = $eventRepository;
+        $this->eventActionHelper = $eventActionHelper;
         $this->legacyModelFactory = $legacyModelFactory;
         $this->ticketRepository = $ticketRepository;
         $this->ticketTypeRepository = $ticketTypeRepository;
@@ -48,10 +47,7 @@ class StatsAction
 
     public function __invoke(Request $request)
     {
-        $event = $this->eventRepository->get($request->query->getInt('id'));
-        if ($event === null) {
-            throw new NotFoundHttpException('Could not find event');
-        }
+        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
 
         /** @var $legacyInscriptions Inscriptions */
         $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
