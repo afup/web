@@ -16,7 +16,6 @@ class MembershipAdminController extends Controller
         // Calculer le nombre au début de l'année
         // puis on fait une requete pour les nouvelles cotisations par jour & les périmées par jour
 
-        //$computer = new StatisticsComputer($userRepository, $personnes_morales);
         $statistics = $this->get(StatisticsComputer::class)->computeStatistics();
 
         return $this->render('admin/association/membership/stats.html.twig', [
