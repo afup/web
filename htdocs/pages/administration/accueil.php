@@ -52,7 +52,7 @@ if ($this->isGranted('ROLE_FORUM')) {
 if ($this->isGranted(('ROLE_VEILLE'))) {
     $infos = [];
     $infos['title'] = 'Abonnements à la veille';
-    $infos['statistics']['Abonnements'] = $this->get('ting')->get(TechletterSubscriptionsRepository::class)->countAllSubscriptionsWithUser();;
+    $infos['statistics']['Abonnements'] = $this->get('ting')->get(TechletterSubscriptionsRepository::class)->countAllSubscriptionsWithUser();
     $infos['url'] = $this->generateUrl('admin_techletter_members');
 
     $cards[] = $infos;
