@@ -86,22 +86,6 @@ function supprimerAccents($texte) {
     return preg_replace('/&([a-z])[a-z]+;/i',"$1", $texte);
 }
 
-function convertirDateEnTimestamp($date) {
-	if ($date<>'') {
-		$list_date = explode('/', $date);
-		return mktime(0, 0, 0, $list_date[1], $list_date[0], $list_date[2]);
-	}
-	return false;
-}
-
-function convertirTimestampEnDate($timestamp) {
-	$date = "";
-	if ($timestamp > 0) {
-		$date = date("d/m/Y", $timestamp);
-	}
-	return $date;
-}
-
 function obtenirTitre($pages, $page) {
     foreach ($pages as $_page => $_page_details) {
         if ($page == $_page) {

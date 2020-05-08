@@ -57,12 +57,12 @@
             {{ form_end(form) }}
         </div>
 
-        {% if persones_avec_pouvoir %}
+        {% if personnes_avec_pouvoir %}
             <h2>Vos pouvoirs</h2>
             Ces personnes vous ont donné leur pouvoir :
             <ul>
-            {% for persone_avec_pouvoir in persones_avec_pouvoir %}
-                <li>{{ persone_avec_pouvoir.nom }} {{ persone_avec_pouvoir.prenom }}</li>
+            {% for personne_avec_pouvoir in personnes_avec_pouvoir %}
+                <li>{{ personne_avec_pouvoir.lastname }} {{ personne_avec_pouvoir.firstname }}</li>
             {% endfor %}
             </ul>
         {% endif %}

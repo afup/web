@@ -9,9 +9,9 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    const STATUS_PENDING = AFUP_ASSEMBLEE_GENERALE_PRESENCE_INDETERMINE;
-    const STATUS_PRESENT = AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI;
-    const STATUS_NON_PRESENT = AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON;
+    const STATUS_PENDING = 0;
+    const STATUS_PRESENT = 1;
+    const STATUS_NON_PRESENT = 2;
 
     /**
      * @var int

@@ -65,6 +65,18 @@ admin_members_user_badge_delete:
   path: /members/user_badge/{userId}/{badgeId}/delete
   defaults: {_controller: AppBundle:Admin\Members\UserBadge:delete}
 
+admin_members_general_meeting:
+  path: /members/general_meeting
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\ListAction}
+
+admin_members_general_meeting_prepare:
+  path: /members/general_meeting/prepare
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\PrepareAction}
+
+admin_members_general_meeting_listing:
+  path: /members/general_meeting/listing
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\ListingAction}
+
 admin_techletter:
   resource: "techletter_admin.yml"
   prefix: /techletter

@@ -49,6 +49,10 @@ parameters:
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/general_meeting'
+                    extra_routes:
+                        - admin_members_general_meeting
+                        - admin_members_general_meeting_prepare
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
