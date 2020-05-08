@@ -1,7 +1,7 @@
-{% extends ':admin/association/membership:_base.html.twig' %}
+{% extends 'admin/association/membership/_base.html.twig' %}
 
 {% block submenu %}
-    {% include ':admin/association/membership:_company_menu.html.twig' with {
+    {% include 'admin/association/membership/_company_menu.html.twig' with {
         current: "members"
     } only %}
 {% endblock %}

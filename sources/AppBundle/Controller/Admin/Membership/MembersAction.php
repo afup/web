@@ -11,6 +11,7 @@ use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Controller\BlocksHandler;
 use AppBundle\Model\CollectionFilter;
 use Assert\Assertion;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -37,6 +38,8 @@ class MembersAction
     private $userRepository;
     /** @var CompanyMemberInvitationRepository */
     private $companyMemberInvitationRepository;
+    /** @var BlocksHandler */
+    private $blocksHandler;
     /** @var FormFactoryInterface */
     private $formFactory;
     /** @var CollectionFilter */
@@ -62,6 +65,7 @@ class MembersAction
         CompanyMemberRepository $companyMemberRepository,
         UserRepository $userRepository,
         CompanyMemberInvitationRepository $companyMemberInvitationRepository,
+        BlocksHandler $blocksHandler,
         FormFactoryInterface $formFactory,
         CollectionFilter $collectionFilter,
         UserCompany $userCompany,
@@ -76,6 +80,7 @@ class MembersAction
         $this->companyMemberRepository = $companyMemberRepository;
         $this->userRepository = $userRepository;
         $this->companyMemberInvitationRepository = $companyMemberInvitationRepository;
+        $this->blocksHandler = $blocksHandler;
         $this->formFactory = $formFactory;
         $this->collectionFilter = $collectionFilter;
         $this->security = $security;
@@ -146,7 +151,7 @@ class MembersAction
             'company' => $company,
             'canAddUser' => $canAddUser,
             'token' => $this->csrfTokenManager->getToken('admin_company_members'),
-        ]));
+        ] + $this->blocksHandler->getDefaultBlocks()));
     }
 
     private function addUser(

@@ -6,9 +6,11 @@ use AppBundle\Association\Form\AdminCompanyMemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Controller\BlocksHandler;
 use Assert\Assertion;
 use Exception;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -16,12 +18,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
-use Zend\Diactoros\Response\RedirectResponse;
 
 class CompanyAction
 {
     /** @var CompanyMemberRepository */
     private $companyMemberRepository;
+    /** @var BlocksHandler */
+    private $blocksHandler;
     /** @var FormFactoryInterface */
     private $formFactory;
     /** @var FlashBagInterface */
@@ -35,6 +38,7 @@ class CompanyAction
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,
+        BlocksHandler $blocksHandler,
         FormFactoryInterface $formFactory,
         FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator,
@@ -42,6 +46,7 @@ class CompanyAction
         Environment $twig
     ) {
         $this->companyMemberRepository = $companyMemberRepository;
+        $this->blocksHandler = $blocksHandler;
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
         $this->urlGenerator = $urlGenerator;
@@ -78,6 +83,6 @@ class CompanyAction
         return new Response($this->twig->render('admin/association/membership/company.html.twig', [
             'title' => 'Mon adhésion entreprise',
             'form' => $subscribeForm->createView(),
-        ]));
+        ] + $this->blocksHandler->getDefaultBlocks()));
     }
 }
