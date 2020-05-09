@@ -572,7 +572,7 @@ Vous pouvez la renouveler en réglant {$montant} euros :
 
 * En ligne via l'espace d'administration (c'est de loin la meilleure option !) :
 
-	https://afup.org/pages/administration/
+	https://afup.org/admin
 
 * Par virement bancaire en contactant le trésorier sur tresorier@afup.org.
 

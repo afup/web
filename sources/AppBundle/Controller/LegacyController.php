@@ -38,7 +38,7 @@ class LegacyController extends Controller
         $droits->chargerToutesLesPages($pages);
         if (!$droits->verifierDroitSurLaPage($_GET['page'])) {
             $flashBag->add('error', "Vous n'avez pas le droit d'accéder à cette page");
-            return $this->redirect('/pages/administration/index.php?page=accueil');
+            return $this->redirectToRoute('admin_home');
         }
 
         // Initialisation de AFUP_Log

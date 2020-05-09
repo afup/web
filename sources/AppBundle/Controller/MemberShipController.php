@@ -220,7 +220,7 @@ class MemberShipController extends SiteBaseController
 
         $this->log('Demande invitation slack', $this->getUser());
 
-        return $this->redirect('/pages/administration');
+        return $this->redirectToRoute('admin_home');
     }
 
     public function payboxCallbackAction(Request $request)

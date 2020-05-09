@@ -13,11 +13,6 @@ $inscriptions = new Inscriptions($bdd);
 
 // S'il ne reste plus de place, on ne permet pas l'inscription
 $nombre_places   = 200; // TODO : Mettre cela dans le fichier de configuration
-/*$nombre_inscrits = $inscriptions->obtenirNombreInscrits();
-if ($nombre_inscrits >= $nombre_places) {
-    $smarty->display('inscriptions_completes.html');
-    die();
-}*/
 
 //nombre possible d'inscrptions sur une même commande
 $nombre_personnes = 5;

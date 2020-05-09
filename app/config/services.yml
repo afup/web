@@ -42,6 +42,10 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\MembershipAdmin\ReportingAction:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Command\IndexTalksCommand:
         autowire: true
         autoconfigure: true
@@ -327,6 +331,9 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\EventRepository]
 
+    AppBundle\Event\Model\Repository\EventStatsRepository:
+        autowire: true
+
     AppBundle\Event\Model\Repository\BadgeRepository:
         class: AppBundle\Event\Model\Repository\BadgeRepository
         factory: ["@ting", get]
@@ -506,9 +513,7 @@ services:
         public: false
 
     AppBundle\Association\UserMembership\StatisticsComputer:
-        arguments:
-            - '@AppBundle\Association\Model\Repository\UserRepository'
-            - '@Afup\Site\Association\Personnes_Morales'
+        autowire: true
 
     AppBundle\Association\UserMembership\SeniorityComputer:
         arguments: ['@Afup\Site\Association\Cotisations']
@@ -552,3 +557,10 @@ services:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
+
+    Doctrine\DBAL\Configuration: ~
+    Doctrine\DBAL\Connection:
+        factory: [Doctrine\DBAL\DriverManager, 'getConnection']
+        arguments:
+            - {url: 'mysql://%database_user%:%database_password%@%database_host%:%database_port%/%database_name%?charset=utf8mb4'}
+            - '@Doctrine\DBAL\Configuration'

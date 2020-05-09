@@ -2,9 +2,9 @@
 
 namespace AppBundle\Command;
 
-use Afup\Site\Forum\Inscriptions;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,7 +29,6 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $forum_inscriptions = new Inscriptions($GLOBALS['AFUP_DB']);
         $eventReposotory = $this->getContainer()->get('ting')->get(EventRepository::class);
         $ticketRepository = $this->getContainer()->get('ting')->get(TicketTypeRepository::class);
 
@@ -44,7 +43,7 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
         foreach ($eventReposotory->getNextEvents() as $event) {
             $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForTicketStats(
                 $event,
-                $forum_inscriptions,
+                $this->getContainer()->get(EventStatsRepository::class),
                 $ticketRepository,
                 $date
             );
