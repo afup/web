@@ -6,7 +6,12 @@ use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
+use AppBundle\Event\Invoice\InvoiceService;
+use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
+use AppBundle\Event\Model\Repository\InvoiceRepository;
+use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 
 /** @var \AppBundle\Controller\LegacyController $this */
@@ -23,6 +28,8 @@ $smarty->assign('action', $action);
 $eventRepository = $this->get(\AppBundle\Event\Model\Repository\EventRepository::class);
 $ticketEventTypeRepository = $this->get(\AppBundle\Event\Model\Repository\TicketEventTypeRepository::class);
 $ticketTypeAvailability = $this->get(TicketTypeAvailability::class);
+$invoiceService = $this->get(InvoiceService::class);
+$invoiceRepository = $this->get(InvoiceRepository::class);
 
 function updateGlobalsForTarif(
     \AppBundle\Event\Model\Repository\EventRepository $eventRepository,
@@ -112,7 +119,9 @@ if ($action == 'lister') {
     $smarty->assign('now', (new \DateTime())->format('U'));
 
 } elseif ($action == 'supprimer') {
-    if ($forum_inscriptions->supprimerInscription($_GET['id']) && $forum_facturation->supprimerFacturation($_GET['id'])) {
+    /** @var Invoice|null $invoice */
+    $invoice = $invoiceRepository->getByReference($_GET['id']);
+    if ($forum_inscriptions->supprimerInscription($_GET['id']) && (null === $invoice || $invoiceService->deleteInvoice($invoice))) {
         Logs::log('Suppression de l\'inscription ' . $_GET['id']);
         afficherMessage('L\'inscription a été supprimée', 'index.php?page=forum_inscriptions&action=lister');
     } else {
@@ -149,7 +158,8 @@ if ($action == 'lister') {
     afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login", 'index.php?page=personnes_physiques&action=ajouter');
 } else {
 
-    $ticketRepository = $this->get('ting')->get(\AppBundle\Event\Model\Repository\TicketRepository::class);
+    /** @var TicketRepository $ticketRepository */
+    $ticketRepository = $this->get('ting')->get(TicketRepository::class);
 
     $pays = new Pays($bdd);
 
@@ -338,23 +348,31 @@ if ($action == 'lister') {
             }
 
 			// On ajoute l'inscription dans la base de données
-			$ok = $forum_inscriptions->ajouterInscription($valeurs['id_forum'],
-			                                              $valeurs['reference'],
-        												  $valeurs['type_inscription'],
-        											 	  $valeurs['civilite'],
-        												  $valeurs['nom'],
-        												  $valeurs['prenom'],
-        												  $valeurs['email'],
-        												  $valeurs['telephone'],
-        												  $valeurs['coupon'],
-        												  $valeurs['citer_societe'],
-        												  $valeurs['newsletter_afup'],
-        		                                          $valeurs['newsletter_nexen'],
-                                                          $valeurs['commentaires'],
-                                                          $valeurs['mobilite_reduite'],
-                                                          $valeurs['mail_partenaire'],
-                                                          $valeurs['etat'],
-                                                          $valeurs['facturation']);
+            $ticket = new Ticket();
+            $ticket->setDate(new DateTime());
+            $ticket->setAmount($GLOBALS['AFUP_Tarifs_Forum'][$valeurs['type_inscription']]);
+            $ticket->setForumId($valeurs['id_forum']);
+            $ticket->setReference($valeurs['reference']);
+            $ticket->setTicketTypeId($valeurs['type_inscription']);
+            $ticket->setCivility($valeurs['civilite']);
+            $ticket->setLastname($valeurs['nom']);
+            $ticket->setFirstname($valeurs['prenom']);
+            $ticket->setEmail($valeurs['email']);
+            $ticket->setPhoneNumber($valeurs['telephone']);
+            $ticket->setVoucher($valeurs['coupon']);
+            $ticket->setCompanyCitation($valeurs['citer_societe']);
+            $ticket->setNewsletter($valeurs['newsletter_afup']);
+            $ticket->setPmr($valeurs['mobilite_reduite']);
+            $ticket->setOptin($valeurs['mail_partenaire']);
+            $ticket->setComments($valeurs['commentaires']);
+            $ticket->setStatus($valeurs['etat']);
+            $ticket->setInvoiceStatus($valeurs['facturation']);
+            try {
+                $ticketRepository->save($ticket);
+                $ok = true;
+            } catch (Exception $e) {
+                $ok = false;
+            }
         } else {
             $ok = $forum_inscriptions->modifierInscription($_GET['id'],
             											   $valeurs['reference'],
@@ -382,7 +400,8 @@ if ($action == 'lister') {
             }
         }
 
-		$ok &= $forum_facturation->gererFacturation($valeurs['reference'],
+        try {
+             $invoiceService->handleInvoicing($valeurs['reference'],
                                                     $valeurs['type_reglement'],
                                                     $valeurs['informations_reglement'],
                                                     $valeurs['date_reglement'],
@@ -399,6 +418,9 @@ if ($action == 'lister') {
                                                     $valeurs['autorisation'],
                                                     $valeurs['transaction'],
                                                     $valeurs['etat']);
+        } catch (Exception $e) {
+            $ok = false;
+        }
 
         if ($ok) {
             if ($action == 'ajouter') {

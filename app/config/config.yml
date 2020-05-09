@@ -159,6 +159,11 @@ parameters:
                 forum_conferenciers:
                     nom: 'Speakers'
                     niveau: 'ROLE_FORUM'
+                    url: '/admin/speaker/'
+                    extra_routes:
+                        - admin_speaker_list
+                        - admin_speaker_add
+                        - admin_speaker_edit
                 admin_event_speakers_management:
                     nom: 'Venue speakers'
                     niveau: 'ROLE_FORUM'

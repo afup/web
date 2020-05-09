@@ -145,7 +145,16 @@ services:
         public: false
 
     AppBundle\CFP\PhotoStorage:
-        arguments: ["%kernel.root_dir%/../htdocs/uploads/speakers", "/uploads/speakers"]
+        arguments:
+          - "%kernel.root_dir%/../htdocs/uploads/speakers"
+          - "/uploads/speakers"
+          - "%kernel.root_dir%/../htdocs"
+
+    AppBundle\Event\Form\SpeakerFormDataFactory:
+      autowire: true
+
+    AppBundle\Event\Invoice\InvoiceService:
+      autowire: true
 
     Twig_Extensions_Extension_Intl:
         class: Twig_Extensions_Extension_Intl

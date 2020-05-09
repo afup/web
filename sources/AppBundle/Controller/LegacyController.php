@@ -31,7 +31,7 @@ class LegacyController extends Controller
         $flashBag = $this->get('session')->getFlashBag();
 
         if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__) . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
-            $_GET['page'] = 'accueil';
+            return $this->redirectToRoute('admin_home');
         }
 
         // On vérifie que l'utilisateur a le droit d'accéder à la page

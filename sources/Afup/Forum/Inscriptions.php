@@ -251,39 +251,6 @@ SQL;
         }
     }
 
-    function ajouterInscription($id_forum, $reference, $type_inscription, $civilite, $nom, $prenom,
-                                $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
-                                $newsletter_nexen, $commentaires = null, $mobilite_reduite = 0, $mail_partenaire = 0,
-                                $etat = AFUP_FORUM_ETAT_CREE, $facturation = AFUP_FORUM_FACTURE_A_ENVOYER)
-    {
-        $requete = 'INSERT INTO ';
-        $requete .= '  afup_inscription_forum (id_forum, date, reference, type_inscription, montant,
-                               civilite, nom, prenom, email, telephone, coupon, citer_societe,
-                               newsletter_afup, newsletter_nexen, commentaires, etat, facturation, mobilite_reduite, mail_partenaire) ';
-        $requete .= 'VALUES (';
-        $requete .= $id_forum . ',';
-        $requete .= time() . ',';
-        $requete .= $this->_bdd->echapper($reference) . ',';
-        $requete .= $this->_bdd->echapper($type_inscription) . ',';
-        $requete .= $GLOBALS['AFUP_Tarifs_Forum'][$type_inscription] . ',';
-        $requete .= $this->_bdd->echapper($civilite) . ',';
-        $requete .= $this->_bdd->echapper($nom) . ',';
-        $requete .= $this->_bdd->echapper($prenom) . ',';
-        $requete .= $this->_bdd->echapper($email) . ',';
-        $requete .= $this->_bdd->echapper($telephone) . ',';
-        $requete .= $this->_bdd->echapper($coupon) . ',';
-        $requete .= $this->_bdd->echapper($citer_societe) . ',';
-        $requete .= $this->_bdd->echapper($newsletter_afup) . ',';
-        $requete .= $this->_bdd->echapper($newsletter_nexen) . ',';
-        $requete .= $this->_bdd->echapper($commentaires) . ',';
-        $requete .= $etat . ',';
-        $requete .= $this->_bdd->echapper($facturation) . ',';
-        $requete .= $this->_bdd->echapper($mobilite_reduite) . ',';
-        $requete .= $this->_bdd->echapper($mail_partenaire) . ')';
-
-        return $this->_bdd->executer($requete);
-    }
-
     function modifierInscription($id, $reference, $type_inscription, $civilite, $nom, $prenom,
                                  $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
                                  $newsletter_nexen, $mail_partenaire, $commentaires, $etat, $facturation, $mobilite_reduite = 0)

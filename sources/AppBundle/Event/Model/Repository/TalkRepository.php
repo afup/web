@@ -44,7 +44,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param Speaker $speaker
-     * @return CollectionInterface
+     * @return CollectionInterface&Talk[]
      */
     public function getTalksBySpeaker(Event $event, Speaker $speaker)
     {
@@ -184,7 +184,14 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param bool $applyPublicationdateFilters
-     * @return CollectionInterface
+     *
+     * @return CollectionInterface&list<array{
+     *      talk: Talk,
+     *      speaker: AppBundle\Event\Model\Speaker,
+     *      room: ??,
+     *      planning: ??,
+     *     .aggregation: array<string, mixed>
+     * }>
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
     public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true)

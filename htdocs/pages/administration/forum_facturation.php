@@ -1,15 +1,21 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Facturation;
+use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
+use AppBundle\Event\Invoice\InvoiceService;
+use AppBundle\Event\Model\Repository\InvoiceRepository;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
+
+$invoiceRepository = $this->get(InvoiceRepository::class);
+/** @var InvoiceService $invoiceService */
+$invoiceService = $this->get(InvoiceService::class);
 
 $action = verifierAction(array('lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'facturer_facture', 'supprimer_facture', 'changer_date_reglement'));
 $tris_valides = array('date_facture', 'email', 'societe', 'etat');
@@ -65,12 +71,16 @@ if ($action == 'lister') {
 		afficherMessage("La facture n'a pas pu être prise en compte", 'index.php?page=forum_facturation&action=lister', true);
 	}
 } elseif ($action == 'supprimer_facture'){
-	if($forum_facturation->supprimerFacturation($_GET['ref'])){
-		Logs::log('Supprimer => facture n°' . $_GET['ref']);
-		afficherMessage('La facture est supprimée', 'index.php?page=forum_facturation&action=lister');
-	} else {
-		afficherMessage("La facture n'a pas pu être supprimée", 'index.php?page=forum_facturation&action=lister', true);
-	}
+    $invoice = $invoiceRepository->getByReference($_GET['ref']);
+    if (null !== $invoice) {
+        try {
+            $invoiceService->deleteInvoice($invoice);
+            Logs::log('Supprimer => facture n°' . $_GET['ref']);
+            afficherMessage('La facture est supprimée', 'index.php?page=forum_facturation&action=lister');
+        } catch (Exception $e) {
+        }
+    }
+    afficherMessage("La facture n'a pas pu être supprimée", 'index.php?page=forum_facturation&action=lister', true);
 } elseif ($action == 'changer_date_reglement'){
     $reglement = strtotime(implode('-', array_reverse(explode('/', $_GET['reglement']))));
     if ($forum_facturation->changerDateReglement($_GET['ref'], $reglement)) {
