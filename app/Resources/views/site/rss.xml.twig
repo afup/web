@@ -19,7 +19,7 @@
         <item>
             <title><![CDATA[{{billet.titre|raw }}]]></title>
             <link>{{url('news_display', {'code': billet.url}) }}</link>
-            <description><![CDATA[{{billet.contenu}}]]></description>
+            <description><![CDATA[{{billet.contenu|raw}}]]></description>
             <pubDate>{{billet.maj}}</pubDate>
             <guid>{{url('news_display', {'code': billet.url})}}</guid>
         </item>
