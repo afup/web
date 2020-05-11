@@ -1,22 +1,31 @@
 <?php
 
-
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Badge;
+use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
+use Exception;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use UnexpectedValueException;
 
+/**
+ * @method User|null get($primariesKeyValue, $forceMaster = false)
+ */
 class UserRepository extends Repository implements MetadataInitializer, UserProviderInterface
 {
     const USER_TYPE_PHYSICAL = 0;
@@ -140,6 +149,197 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     }
 
     /**
+     * Renvoie la liste des personnes physiques
+     *
+     * @param bool      $onlyActive
+     * @param string    $sort Tri des enregistrements
+     * @param int|int[] $userId
+     *
+     * @return CollectionInterface&User[]
+     */
+    public function search(
+        $sort = 'lastname',
+        $direction = 'asc',
+        $filter = null,
+        $companyId = null,
+        $userId = null,
+        $onlyActive = true,
+        $isCompanyManager = null,
+        $needsUptoDateMembership = null
+    ) {
+        Assertion::inArray($direction, ['asc', 'desc']);
+        $sorts = [
+            'lastname' => ['nom', 'prenom'],
+            'firstname' => ['prenom', 'nom'],
+            'status' => ['etat','nom', 'prenom'],
+        ];
+        Assertion::keyExists($sorts, $sort);
+
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser()
+            ->orderBy(array_map(static function ($field) use ($direction) {
+                return $field . ' ' . $direction;
+            }, $sorts[$sort]));
+
+        // On filtre sur tous les mots possibles. Donc plus on a de mots dans la recherche plus on aura de résultats.
+        // Mais ça peut aussi permettre de trouver des personnes en entrant par exemple "Prénom email" dans le champ de recherche :
+        //   Même si l'email ne colle pas on pourra trouver la personne.
+        // C'est un peu barbare mais généralement on ne met qu'un seul terme dans la recherche… du coup c'est pas bien grave.
+        if ($filter) {
+            $filters = explode(' ', $filter);
+            $filters = array_filter(array_map('trim', $filters));
+            $ors = [];
+            foreach ($filters as $i => $value) {
+                $ors[] = "app.login LIKE :filter$i OR app.nom LIKE :filter$i OR app.prenom LIKE :filter$i
+                    OR app.code_postal LIKE :filter$i OR app.ville LIKE :filter$i OR app.email LIKE :filter$i";
+                $queryBuilder->bindValue('filter' . $i, '%' . $value . '%');
+            }
+            $queryBuilder->where(implode(' OR ', $ors));
+        }
+        if ($companyId) {
+            $queryBuilder->where('app.id_personne_morale = :companyId')
+                ->bindValue('companyId', $companyId);
+        }
+        if ($userId) {
+            if (!is_array($userId)) {
+                $userId = [$userId];
+            }
+            $queryBuilder->where('app.id IN (:userIds)')
+                ->bindValue('userIds', $userId);
+        }
+        if ($onlyActive) {
+            $queryBuilder->where('app.etat = :status')
+                ->bindValue('status', User::STATUS_ACTIVE);
+        }
+        if ($isCompanyManager) {
+            $queryBuilder->where('app.roles LIKE \'%ROLE_COMPANY_MANAGER%\'');
+        }
+        if ($needsUptoDateMembership) {
+            $queryBuilder->where('app.needs_up_to_date_membership = 1');
+        }
+
+        return $this
+            ->getQuery($queryBuilder->getStatement())
+            ->setParams($queryBuilder->getBindValues())
+            ->query($this->getCollection($this->getHydratorForUser()));
+    }
+
+    /**
+     * Ajoute une personne physique
+     */
+    public function create(User $user)
+    {
+        if ($this->loginExists($user->getUsername())) {
+            throw new InvalidArgumentException('Il existe déjà un compte pour ce login.');
+        }
+        if ($this->emailExists($user->getEmail())) {
+            throw new InvalidArgumentException('Il existe un compte avec cette adresse email.');
+        }
+        if (0 !== $user->getCompanyId() && !$this->companyExists($user->getCompanyId())) {
+            throw new InvalidArgumentException('La personne morale n\'existe pas.');
+        }
+        if (null !== $user->getCountry() && !$this->countryExists($user->getCountry())) {
+            throw new InvalidArgumentException('Le pays n\'existe pas.');
+        }
+        try {
+            $this->save($user);
+        } catch (Exception $e) {
+            throw new RuntimeException("Impossible d'enregistrer l'utilisateur à cause d'une erreur SQL. Veuillez contacter le bureau !");
+        }
+    }
+
+    /**
+     * @param string $login Person's login
+     * @param int    $id    Identifier to ignore
+     *
+     * @return bool Login in use (TRUE) or not (FALSE)
+     */
+    public function loginExists($login, $id = 0)
+    {
+        return 0 < $this->getQuery('SELECT 1 FROM afup_personnes_physiques WHERE login = :login AND id <> :id')
+                ->setParams(['login' => $login, 'id' => $id])
+                ->query()->count();
+    }
+
+    public function edit(User $user)
+    {
+        if ($this->loginExists($user->getUsername(), $user->getId())) {
+            throw new InvalidArgumentException('Il existe déjà un compte pour ce login.');
+        }
+        if (0 !== $user->getCompanyId() && !$this->companyExists($user->getCompanyId())) {
+            throw new InvalidArgumentException('La personne morale n\'existe pas.');
+        }
+        if (null !== $user->getCountry() && !$this->countryExists($user->getCountry())) {
+            throw new InvalidArgumentException('Le pays n\'existe pas.');
+        }
+        $this->save($user);
+    }
+
+    public function remove(User $user)
+    {
+        $nbCotisations = (int) $this->getQuery('SELECT COUNT(*) nb FROM afup_cotisations WHERE type_personne = :memberType AND id_personne = :id')
+            ->setParams(['memberType' => AFUP_PERSONNES_PHYSIQUES, 'id' => $user->getId()])
+            ->query()->first()[0]->nb;
+        if (0 < $nbCotisations) {
+            throw new InvalidArgumentException('Impossible de supprimer une personne physique qui a des cotisations');
+        }
+
+        $this->delete($user);
+    }
+
+    /**
+     * @return CollectionInterface&User[]
+     */
+    public function getAdministrators()
+    {
+        $queryBuilder = $this->getQueryBuilderWithCompleteUser()
+            ->where('niveau_modules <> 0 OR niveau = :level')
+            ->orderBy(['nom', 'prenom']);
+        $queryBuilder->bindValue('level', User::LEVEL_ADMIN);
+
+        return $this
+            ->getQuery($queryBuilder->getStatement())
+            ->setParams($queryBuilder->getBindValues())
+            ->query($this->getCollection($this->getHydratorForUser()));
+    }
+
+    /**
+     * @param string $email Person's email
+     * @param int    $id    Identifier to ignore
+     *
+     * @return bool TRUE if the email exists, FALSE otherwise
+     */
+    private function emailExists($email, $id = 0)
+    {
+        return 0 < $this->getQuery('SELECT 1 FROM afup_personnes_physiques WHERE email = :email AND id <> :id')
+                ->setParams(['email' => $email, 'id' => $id])
+                ->query()->count();
+    }
+
+    /**
+     * @param int $companyId Company's identifier
+     *
+     * @return bool TRUE if the company exists, FALSE otherwise
+     */
+    private function companyExists($companyId)
+    {
+        return 0 < $this->getQuery('SELECT 1 FROM afup_personnes_morales WHERE id = :id')
+                ->setParams(['id' => $companyId])
+                ->query()->count();
+    }
+
+    /**
+     * @param int $countryId Country's identifier
+     *
+     * @return bool TRUE if the country exists, FALSE otherwise
+     */
+    private function countryExists($countryId)
+    {
+        return 0 < $this->getQuery('SELECT 1 FROM afup_pays WHERE id = :id')
+                ->setParams(['id' => $countryId])
+                ->query()->count();
+    }
+
+    /**
      * @return SelectInterface
      */
     private function getQueryBuilderWithSubscriptions()
@@ -171,7 +371,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'app.`niveau_modules`', 'app.`roles`', 'app.`civilite`', 'app.`nom`', 'app.`prenom`', 'app.`email`',
                 'app.`adresse`', 'app.`code_postal`', 'app.`ville`', 'app.`id_pays`', 'app.`telephone_fixe`',
                 'app.`telephone_portable`', 'app.`etat`', 'app.`date_relance`', 'app.`compte_svn`',
-                'app.`slack_invite_status`',
+                'app.`slack_invite_status`', 'app.`slack_alternate_email`', 'app.`needs_up_to_date_membership`',
                 'app.`nearest_office`',
                 'MD5(CONCAT(app.`id`, \'_\', app.`email`, \'_\', app.`login`)) as hash',
                 "MAX(ac.date_fin) AS lastsubcription"
@@ -191,7 +391,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         } elseif ($userType === self::USER_TYPE_COMPANY) {
             $queryBuilder->where('id_personne_morale <> 0');
         } elseif ($userType !== self::USER_TYPE_ALL) {
-            throw new \UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
+            throw new UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
         }
     }
 
@@ -309,6 +509,11 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'civilite',
+                'fieldName' => 'civility',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'prenom',
                 'fieldName' => 'firstName',
                 'type' => 'string'
@@ -385,6 +590,17 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'columnName' => 'slack_invite_status',
                 'fieldName' => 'slackInviteStatus',
                 'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'slack_alternate_email',
+                'fieldName' => 'alternateEmail',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'needs_up_to_date_membership',
+                'fieldName' => 'needsUpToDateMembership',
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
         ;
 

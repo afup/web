@@ -1,17 +1,19 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Corporate\Feuilles;
 use Afup\Site\Corporate\Rubrique;
 use Afup\Site\Corporate\Rubriques;
 use Afup\Site\Utils\Logs;
+use AppBundle\Association\Model\Repository\UserRepository;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
+
+$userRepository = $this->get(UserRepository::class);
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
 $tris_valides = array('titre', 'date');
@@ -22,7 +24,6 @@ $smarty->assign('action', $action);
 
 
 $rubriques = new Rubriques($bdd);
-$personnes_physiques = new Personnes_Physiques($bdd);
 $feuilles = new Feuilles($bdd);
 
 if ($action == 'lister') {
@@ -61,6 +62,10 @@ if ($action == 'lister') {
 } else {
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     $rubrique = new Rubrique($id);
+    $users = [null => ''];
+    foreach ($userRepository->search() as $user) {
+        $users[$user->getId()] = $user->getLastName().' '.$user->getFirstName();
+    }
 
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
@@ -85,7 +90,7 @@ if ($action == 'lister') {
     $formulaire->addElement('header'  , ''                         , 'Méta-données');
     $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'        , array('size' => 60, 'maxlength' => 255));
     $formulaire->addElement('select'  , 'id_parent'                , 'Parent'           , array(null => '' ) + $rubriques->obtenirListe('id, nom', 'nom', true));
-    $formulaire->addElement('select'  , 'id_personne_physique'     , 'Auteur'           , array(null => '' ) + $personnes_physiques->obtenirListe('id, CONCAT(prenom, " ", nom) as nom', 'nom', false, false, true));
+    $formulaire->addElement('select'  , 'id_personne_physique'     , 'Auteur'           , $users);
     $formulaire->addElement('date'    , 'date'                     , 'Date'             , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
     $formulaire->addElement('select'  , 'position'                 , 'Position'         , $rubrique->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'             , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));

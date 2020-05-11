@@ -1,7 +1,7 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Association\Personnes_Physiques;
+use AppBundle\Association\Model\Repository\UserRepository;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -9,12 +9,23 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'detail', 'rechercher'));
+$userRepository = $this->get(UserRepository::class);
+$action = verifierAction(['lister', 'detail', 'rechercher']);
 $smarty->assign('action', $action);
 
-
-$personnes_physiques = new Personnes_Physiques($bdd);
-
-$administrateurs = $personnes_physiques->getListeAvecDroitsAdministration();
+$administrateurs = [];
+foreach ($userRepository->getAdministrators() as $admin) {
+    $administrateurs[] = [
+        'id' => $admin->getId(),
+        'nom' => $admin->getLastname(),
+        'prenom' => $admin->getFirstName(),
+        'etat' => $admin->getStatus(),
+        'niveau' => $admin->getLevel(),
+        'niveau_annuaire' => $admin->getDirectoryLevel(),
+        'niveau_site' => $admin->getWebsiteLevel(),
+        'niveau_forum' => $admin->getEventLevel(),
+        'niveau_antenne' => $admin->getOfficeLevel(),
+    ];
+}
 
 $smarty->assign('administrateurs', $administrateurs);

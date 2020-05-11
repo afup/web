@@ -4,6 +4,7 @@
   "type": "project",
   "require": {
     "ext-gd": "*",
+    "ext-json": "*",
     "beberlei/assert": "^2.9",
     "league/oauth2-github": "^0.2.1",
     "symfony/symfony": "^3.4",

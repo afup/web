@@ -8,11 +8,15 @@ use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
 use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Invoice;
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
+use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -25,15 +29,17 @@ $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
 
-$eventRepository = $this->get(\AppBundle\Event\Model\Repository\EventRepository::class);
-$ticketEventTypeRepository = $this->get(\AppBundle\Event\Model\Repository\TicketEventTypeRepository::class);
+$eventRepository = $this->get(EventRepository::class);
+$ticketEventTypeRepository = $this->get(TicketEventTypeRepository::class);
 $ticketTypeAvailability = $this->get(TicketTypeAvailability::class);
 $invoiceService = $this->get(InvoiceService::class);
 $invoiceRepository = $this->get(InvoiceRepository::class);
+$session = $this->get(SessionInterface::class);
+$urlGenerator = $this->get(UrlGeneratorInterface::class);
 
 function updateGlobalsForTarif(
-    \AppBundle\Event\Model\Repository\EventRepository $eventRepository,
-    \AppBundle\Event\Model\Repository\TicketEventTypeRepository $ticketEventTypeRepository,
+    EventRepository $eventRepository,
+    TicketEventTypeRepository $ticketEventTypeRepository,
     TicketTypeAvailability $ticketTypeAvailability,
     $forumId,
     &$membersTickets = []
@@ -144,18 +150,20 @@ if ($action == 'lister') {
 } elseif ($action == 'generer_inscription_afup') {
     $champs = $forum_inscriptions->obtenir($_GET['id']);
     $champs2 = $forum_facturation->obtenir($champs['reference']);
-    $_SESSION['generer_personne_physique']['civilite'] = $champs['civilite'];
-    $_SESSION['generer_personne_physique']['nom'] = $champs['nom'];
-    $_SESSION['generer_personne_physique']['prenom'] = $champs['prenom'];
-    $_SESSION['generer_personne_physique']['email'] = $champs['email'];
-    $_SESSION['generer_personne_physique']['adresse'] = $champs2['adresse'];
-    $_SESSION['generer_personne_physique']['code_postal'] = $champs2['code_postal'];
-    $_SESSION['generer_personne_physique']['ville'] = $champs2['ville'];
-    $_SESSION['generer_personne_physique']['id_pays'] = $champs2['id_pays'];
-    $_SESSION['generer_personne_physique']['telephone_fixe'] = $champs['telephone'];
-    $_SESSION['generer_personne_physique']['telephone_portable'] = $champs['telephone'];
-    $_SESSION['generer_personne_physique']['etat'] = 1;
-    afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login", 'index.php?page=personnes_physiques&action=ajouter');
+    $session->set('generer_personne_physique', [
+        'civilite' => $champs['civilite'],
+        'nom' => $champs['nom'],
+        'prenom' => $champs['prenom'],
+        'email' => $champs['email'],
+        'adresse' => $champs2['adresse'],
+        'code_postal' => $champs2['code_postal'],
+        'ville' => $champs2['ville'],
+        'id_pays' => $champs2['id_pays'],
+        'telephone_fixe' => $champs['telephone'],
+        'telephone_portable' => $champs['telephone'],
+        'etat' => 1,
+    ]);
+    afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login",  $urlGenerator->generate('admin_members_add'));
 } else {
 
     /** @var TicketRepository $ticketRepository */

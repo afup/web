@@ -2,15 +2,18 @@
 
 // Impossible to access the file itself
 use Afup\Site\Association\Cotisations;
-use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Utils\Logs;
+use AppBundle\Association\Model\Repository\UserRepository;
+use Assert\Assertion;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
+
+$userRepository = $this->get(UserRepository::class);
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'telecharger_facture', 'envoyer_facture'));
 $smarty->assign('action', $action);
@@ -19,13 +22,15 @@ $smarty->assign('action', $action);
 
 
 if ($_GET['type_personne'] == AFUP_PERSONNES_PHYSIQUES) {
-    $personnes = new Personnes_Physiques($bdd);
+    $user = $userRepository->get($_GET['id_personne']);
+    Assertion::notNull($user);
+    $personne = ['nom' => $user->getLastName(), 'prenom' => $user->getFirstName()];
 } else {
     $personnes = new Personnes_Morales($bdd);
+    $personne = $personnes->obtenir($_GET['id_personne']);
 }
 $smarty->assign('type_personne', $_GET['type_personne']);
 $smarty->assign('id_personne'  , $_GET['id_personne']);
-$personne = $personnes->obtenir($_GET['id_personne']);
 $smarty->assign('personne', $personne);
 
 // Cotisations
@@ -37,7 +42,7 @@ if ($action == 'lister') {
 } elseif ($action == 'telecharger_facture'){
 	$cotisations->genererFacture($_GET['id']);
 } elseif ($action == 'envoyer_facture'){
-	if($cotisations->envoyerFacture($_GET['id'], $this->get(\AppBundle\Email\Mailer\Mailer::class))){
+	if($cotisations->envoyerFacture($_GET['id'], $this->get(\AppBundle\Email\Mailer\Mailer::class), $userRepository)){
 	   Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
        afficherMessage('La facture a été envoyée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne']);
 	} else {

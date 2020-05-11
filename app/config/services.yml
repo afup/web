@@ -67,6 +67,11 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Admin\Members\BadgeNewAction:
+        autowire: true
+        arguments:
+            $storageDir: '%kernel.project_dir%/htdocs/uploads/badges'
+
     AppBundle\Controller\Admin\GetMenuAction:
         autowire: true
         arguments:
@@ -300,6 +305,15 @@ services:
     AppBundle\Association\CompanyMembership\UserCompany:
         autowire: true
 
+    AppBundle\Association\UserMembership\UserService:
+        autowire: true
+
+    AppBundle\Association\Form\UserEditFormDataFactory:
+        autowire: true
+
+    AppBundle\Offices\OfficesCollection:
+        autowire: true
+
     AppBundle\Mailchimp\EventListener:
         arguments: ['@AppBundle\Mailchimp\Mailchimp', "%mailchimp_members_list%"]
         tags:
@@ -413,6 +427,10 @@ services:
 
     AppBundle\Event\Ticket\TicketTypeAvailability:
         autowire: true
+
+    AppBundle\Association\Form\UserEditType:
+        autowire: true
+        autoconfigure: true
 
     AppBundle\Event\Form\TicketType:
         autowire: true
@@ -601,3 +619,11 @@ services:
     AppBundle\Controller\Legacy\:
         resource: '../../sources/AppBundle/Controller/Legacy/*'
         autowire: true
+
+    Symfony\Component\HttpFoundation\Session\SessionInterface:
+        alias: 'session'
+        public: true
+
+    Symfony\Component\Routing\Generator\UrlGeneratorInterface:
+        alias: 'router'
+        public: true

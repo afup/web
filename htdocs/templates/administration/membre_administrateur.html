@@ -27,7 +27,7 @@
             <td>{if $administrateur.niveau_antenne == 2}Gestionnaire{else}---{/if}</td>
             <td>
                 <a id="modifier_{$administrateur.id}"
-                   href="index.php?page=personnes_physiques&amp;action=modifier&amp;id={$administrateur.id}"
+                   href="/admin/members/users/edit?id={$administrateur.id}"
                    data-position="left center"
                    data-tooltip="Modifier la fiche de {$administrateur.prenom} {$administrateur.nom}"
                    class="compact ui icon button"

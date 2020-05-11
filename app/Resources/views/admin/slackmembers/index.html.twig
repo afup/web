@@ -23,7 +23,7 @@
                 <td>
                     {% if result.user_found %}
                         {% if result.afup_user_id %}
-                            <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ result.afup_user_id }}">oui</a>
+                            <a href="{{ path('admin_members_user_edit', {id: result.afup_user_id}) }}">oui</a>
                         {% else %}
                             oui
                         {% endif %}

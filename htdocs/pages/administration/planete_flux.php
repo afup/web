@@ -1,15 +1,17 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Planete\Flux;
 use Afup\Site\Utils\Logs;
+use AppBundle\Association\Model\Repository\UserRepository;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
+
+$userRepository = $this->get(UserRepository::class);
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'tester'));
 $tris_valides = array('nom', 'url', 'etat');
@@ -77,13 +79,15 @@ if ($action == 'lister') {
         $champs = $planete_flux->obtenir($_GET['id']);
         $formulaire->setDefaults($champs);    
     }
-    $personnes_physiques = new Personnes_Physiques($bdd);
-
+    $users = [null => ''];
+    foreach ($userRepository->search() as $user) {
+        $users[$user->getId()] = $user->getLastName().' '.$user->getFirstName();
+    }
     $formulaire->addElement('header'  , ''                     , 'Informations');
     $formulaire->addElement('text'    , 'nom'                  , 'Nom'            , array('size' => 30, 'maxlength' => 40));
     $formulaire->addElement('text'    , 'url'                  , 'URL'            , array('size' => 50, 'maxlength' => 200));
     $formulaire->addElement('text'    , 'feed'                 , 'Flux'           , array('size' => 50, 'maxlength' => 200));
-    $formulaire->addElement('select'  , 'id_personne_physique' , 'Personne physique', array(null => '' ) + $personnes_physiques->obtenirListe('id, CONCAT(nom, " ", prenom) as nom_complet', 'nom, prenom', false, false, true));
+    $formulaire->addElement('select'  , 'id_personne_physique' , 'Personne physique', $users);
     
     $formulaire->addElement('header'  , ''                     , 'Paramètres');
     $formulaire->addElement('select'  , 'etat'                 , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',

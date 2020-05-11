@@ -2,12 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use Afup\Site\Association\Personnes_Physiques;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\BadgesComputer;
+use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use AppBundle\LegacyModelFactory;
 
 class MemberController extends SiteBaseController
 {
@@ -18,8 +17,8 @@ class MemberController extends SiteBaseController
         /** @var User $user */
         $user = $this->getUser();
         $generalMeetingFactory = $this->get(GeneralMeetingRepository::class);
-        $personnesPhysiques = $this->get(LegacyModelFactory::class)->createObject(Personnes_Physiques::class);
-        $cotisation = $personnesPhysiques->obtenirDerniereCotisation($user->getId());
+        $userService = $this->get(UserService::class);
+        $cotisation = $userService->getLastSubscription($user);
 
         $dateFinCotisation = null;
         if ($cotisation) {
