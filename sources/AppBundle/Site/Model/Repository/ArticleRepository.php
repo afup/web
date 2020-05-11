@@ -218,41 +218,6 @@ class ArticleRepository extends Repository implements MetadataInitializer
         return $events->first();
     }
 
-    public function findLastArticles($rowcount = 10)
-    {
-        $requete = ' SELECT';
-        $requete .= '  afup_site_article.* ';
-        $requete .= ' FROM';
-        $requete .= '  afup_site_article ';
-        $requete .= ' INNER JOIN';
-        $requete .= '  afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id';
-        $requete .= ' WHERE afup_site_article.etat = 1 ';
-        $requete .= ' AND afup_site_article.date <= UNIX_TIMESTAMP(NOW()) ';
-        $requete .= ' AND id_parent <> 52 '; // On affiche pas les articles des forums
-        $requete .= ' AND afup_site_rubrique.id <> :rubAsso'; // On affiche pas les articles de la page assocition
-        $requete .= ' AND afup_site_rubrique.id <> :rubAntenne'; // On affiche pas les articles de la page antennes
-        $requete .= ' AND afup_site_rubrique.id <> :rubAction'; // On affiche pas les articles de la page actions
-        $requete .= ' ORDER BY date DESC';
-        $requete .= ' LIMIT 0, ' . (int) $rowcount;
-
-        $query = $this
-            ->getPreparedQuery(
-                $requete
-            )->setParams([
-                'rubAsso' => Rubrique::ID_RUBRIQUE_ASSOCIATION,
-                'rubAntenne' => Rubrique::ID_RUBRIQUE_ANTENNES,
-                'rubAction' => Rubrique::ID_RUBRIQUE_NOS_ACTIONS,
-            ])
-        ;
-        $collection = $query->query($this->getCollection());
-
-        if ($collection->count() === 0) {
-            return null;
-        }
-
-        return $collection;
-    }
-
     /**
      * @inheritDoc
      */

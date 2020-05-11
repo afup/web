@@ -10,11 +10,10 @@ class RssFeedController extends SiteBaseController
 {
     public function __invoke()
     {
-        $articles = $this->get('ting')->get(ArticleRepository::class)->findLastArticles(20);
+        $articles = $this->get('ting')->get(ArticleRepository::class)->findPublishedNews(1, 20, []);
         $derniersArticles = [];
         foreach ($articles as $article) {
             /** @var Article $article */
-            $article = $article['afup_site_article'];
             $derniersArticles[] = [
                 'titre'   => $article->getTitle(),
                 'contenu' => $article->getContent(),
@@ -26,7 +25,7 @@ class RssFeedController extends SiteBaseController
             'feed' => [
             'title'         => "Le flux RSS de l'AFUP",
             'url'           => 'https://afup.org/',
-            'link'          => 'https://afup.org/rss.php',
+            'link'          => 'https://afup.org/rss.xml',
             'email'         => 'bonjour@afup.org',
             'author'        => 'AFUP',
             'date'          => date(DATE_RSS),
