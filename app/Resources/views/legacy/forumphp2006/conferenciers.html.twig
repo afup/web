@@ -1,0 +1,177 @@
+{% set conferenciers = [
+    {
+        nom: '<span class="red">Rasmus LERDORF</span>',
+        code: 'rlerdorf',
+        presentation: 'Créateur de <a href="http://www.php.net">PHP</a> et architecte chez <a href="http://www.yahoo.com/">Yahoo!</a>',
+        biographie: 'Né à Godhavn/Qeqertarsuaq sur l\'île de Disko non loin des côtes du Groenland en 1968. Il commence à barboter avec des produits estampillés UNIX dès 1985. <br /><br />Connu pour avoir initié le projet PHP en 1995 et le module mod_info au sein d\'Apache, il peut aussi être poursuivi pour l\'insertion de la clause LIMIT dans mSQL 1.x. Un apport défiant la norme ANSI92 SQL que l\'on retrouve, au moins conceptuellement, dans MySQL et PostgreSQL.',
+    },
+    {
+        nom: 'Roland BENEDETTI',
+        code: 'rbenedetti',
+        presentation: 'Directeur eZ systems Europe du Sud',
+        biographie: 'Roland Benedetti dirige le bureau "Europe du Sud" d\'eZ systems, bureau basé à Lyon et créé début 2006. Avant de rejoindre eZ systems, de formation ingénieur, il a accumulé une longue expérience en tant que consultant sur des projets Internet, reposant très souvent sur des technologies Open Source (en particulier sur PHP).',
+    },
+    {
+        nom: 'Laurent BOUFFIES',
+        code: 'lbouffies',
+        presentation: 'Directeur Marketing <a href="http://www.zend.fr/">Zend France</a>',
+        biographie: 'Laurent a animé dès fin 2005, le lancement de ZEND en France aux côtés de Shlomo Lechay, Coordinateur France. Laurent a un parcours diversifié qui comprend aussi bien la technologie que les ressources humaines. Ceci le prédispose particulièrement à accompagner le mouvement PHP qui au-delà de l\'aventure technologique est aussi une aventure humaine.',
+    },
+    {
+        nom: 'Romain BOURDON',
+        code: 'rbourdon',
+        presentation: 'Trésorier de l\'AFUP, Consultant chez <a href="http://www.anaskae.com/">Anaska</a>',
+        biographie: 'Romain BOURDON est co-fondateur des société Kaptive et Anaska et trésorier de l\'AFUP. Il est également le créateur et responsable du serveur WAMP5 permettant d\'installer facilement PHP5 sous Windows.',
+    },
+    {
+        code: 'gcroes',
+        nom: 'Gérald CROES',
+        presentation: 'Architecte logiciel chez <a href="http://www.alptis.org/">Alptis</a>',
+        biographie: 'Architecte logiciel chez <a href="http://www.alptis.org/">Alptis</a>, Gérald Croës s\'est spécialisé dans le milieu open source où il travaille sur la qualité logicielle, la capitalisation et l\'accélération des développements. Principal contributeur du framework Copix, co-traducteur de la documentation française de Smarty il écrit ponctuellement des articles techniques dans la presse informatique.',
+    },
+    {
+        nom: 'Bertrand DUNOGIER',
+        code: 'bdunogier',
+        presentation: 'Ingénieur logiciel & consultant chez eZ systems',
+        biographie: 'Bertrand Dunogier a rejoint eZ systems début 2006, après avoir été  pendant plusieurs années un membre actif de la communauté eZ publish. C\'est un développeur PHP expérimenté, membre actif du user group PHPEdit, et naturellement un expert eZ publish.',
+    },
+    {
+        nom: 'Sébastien HORDEAUX',
+        code: 'shordeaux',
+        presentation: 'Gérant de <a href="http://www.waterproof.fr/">WaterProof</a>',
+        biographie: 'Gérant  fondateur  de  la  société  <a href="http://www.waterproof.fr/">WaterProof SARL</a> qui développe et distribue des solutions pour PHP; notamment <a href="http://www.waterproof.fr/">l\'environnement  de  développement  PHPEdit</a>. Son expertise est forte dans le développement PHP/Delphi et dans les applications de gestion de contenus. <br /><br />Il intervient également pour des application de gestion logistique (Supply Chain).',
+    },
+    {
+        nom: 'Xavier LACOT',
+        code: 'xlacot',
+        presentation: 'Consultant chez <a href="http://www.clever-age.com">Clever Age</a>',
+        biographie: 'Ingénieur Web chez Clever Age, Xavier Lacot conçoit et réalise des applications Web pour le compte de clients tiers, principalement autour de la plateforme LAMP. Il s\'intéresse à tout ce qui touche au Web de près ou de loin, depuis la configuration d\'architectures serveur aux derniers développements du Web Sémantique.',
+    },
+    {
+        nom: 'Arnaud LIMBOURG',
+        code: 'alimbourg',
+        presentation: 'Développeur chez <a href="http://www.ipnotic-telecom.fr">ipnotic telecom</a>, membre de l\'&eacute;quipe <a href="http://pear.php.net/">PEAR</a>',
+        biographie: 'Membre de l\'équipe Assurance-Qualité de PEAR et impliqué dans le développement de paquetages <a href="http://pear.php.net">PEAR</a>. Arnaud est développeur chez <a href="http://www.ipnotic-telecom.fr">ipnotic telecom</a>',
+    },
+    {
+        code: 'flombardi',
+        nom: 'Franck LOMBARDI',
+        presentation: 'Responsable technique (TV ADSL) de Canal Plus',
+        biographie: 'Franck LOMBARDI est responsable technique sur la partie TV ADSL de Canal Plus. Il intervient sur les choix techniques de l\'architecture du Centre de Diffusion Numérique de Canal Plus.',
+    },
+    {
+        code: 'mlopez',
+        nom: 'Miguel LOPEZ',
+        presentation: 'Consultant qualité chez <a href="http://www.banksys.be/">Banksys</a> et professeur-assistant à l\'<a href="http://www.fundp.ac.be/">université de Namur</a>',
+        biographie: 'Pendant 4 ans Miguel Lopez a poursuivi un travail dans la recherche en qualité logicielle à l\'université de Namur (Belgique). Son projet de recherche avait pour objectif de mettre au point un outil d\'évaluation de la qualité d\'un logiciel sur base de l\'analyse de son code source. Aujourd\'hui, il combine une activité dans l\'industrie au sein de Banksys (entreprise de paiement électronique belge) comme consultant qualité avec une activité de recherche et de professeur-assistant en qualité logiciel à l\'université de Namur.',
+    },
+    {
+        nom: 'Perrick PENET',
+        code: 'ppenet',
+        presentation: 'Président de l\'<a href="https://afup.org">AFUP</a>, g&eacute;rant de <a href="http://www.noparking.net">No Parking</a>',
+        biographie: 'Perrick Penet est président de l\'afup. Il est également fondateur de la société <a href="http://www.noparking.net/">No Parking</a> qui développe notamment le <a href="http://www.noparking.net/opentime/index.php">logiciel de gestion du temps OpenTime</a>. Féru d\'Extreme Programming, il est également co-administrateur sur le logiciel libre <a href="http://www.simpletest.org">SimpleTest</a>.',
+    },
+    {
+        nom: 'Cyril PIERRE de GEYER',
+        code: 'cpierredegeyer',
+        presentation: 'Consultant formateur pour <a href="http://formation.anaska.fr/">Anaska formation</a> et <a href="http://www.kaptive.com/">Kaptive développement</a>',
+        biographie: 'Cyril PIERRE de GEYER est responsable technique de la société <a href="http://formation.anaska.fr">Anaska</a>, spécialisée dans les formations relatives aux technologies Open Source (PHP, Java, MySQL, Apache, ...). <br /><br />Co auteur du <a href="http://formation.anaska.fr/livre-php-5-avance.php">livre PHP5 avancé</a> iI fut président de l\'<a href="https://afup.org">Association française des utilisateurs de PHP</a> et participe aux sites <a href="http://www.phpteam.net">PHPteam.net</a> et <a href="http://www.phpfrance.com">PHPfrance</a>. Il a à son actif professionnel des références importantes (France3, Unesco, Cabinet du Premier Ministre, EPITA, Urssaf...).',
+    },
+    {
+        nom: 'Guillaume PON&Ccedil;ON',
+        code: 'gponcon',
+        presentation: 'Architecte et consultant chez <a href="http://www.kaptive.com/">Kaptive développement</a>',
+        biographie: 'Guillaume Ponçon est ingénieur expert PHP chez <a href="http://www.kaptive.com">Kaptive développement</a>.<br /><br />Auteur de l\'ouvrage <a href="http://www.amazon.fr/exec/obidos/ASIN/2212116764/">Best Practices PHP</a> (Eyrolles) et membre actif de l\'AFUP, il participe depuis plus de 5 ans à de nombreux projets professionnels et associatifs liés à la plate-forme PHP.',
+    },
+    {
+        code: 'drethans',
+        nom: '<span class="red">Derick RETHANS</span>',
+        presentation: 'Membre du PHP Group, créateur de Xdebug et architecte chez <a href="http://ez.no/">eZ Systems</a>.',
+        biographie: 'Derick Rethans trouve des solutions aux problèmes du web. Il contribue régulièrement au projet PHP : l\'extension mcrypt, des corrections de bug, des nouveautés (<samp>date</samp> récemment) et le leadership de l\'équipe de QA. Il travaille désormais pour eZ systems A.S. en Norvège. Dans son temps libre, on le trouve à améliorer SRM: Script Running Machine et Xdebug.',
+    },
+    {
+        code: 'trivoallan',
+        nom: 'Tristan RIVOALLAN',
+        presentation: 'Consultant chez <a href="http://www.clever-age.com">Clever Age</a>',
+        biographie: '',
+    },
+    {
+        nom: 'Herve SCHMITT',
+        code: 'hschmitt',
+        presentation: '<a href="http://www.richelieufinance.fr/">Richelieu Finance</a>',
+        biographie: 'Directeur de projet, analyste e-business, consultant fonctionnel,  Hervé SCHMITT rejoint la société <a href="http://www.richelieufinance.fr/">Richelieu Finance</a> en tant que coordinateur e-business afin d\'y développer une stratégie e-business pérenne.',
+    },
+    {
+        nom: 'Damien SEGUY',
+        code: 'dseguy',
+        presentation: 'Cofondateur de <a href="http://www.nexenservices.com">Nexen services</a> et membre du PHPGroup',
+        biographie: 'Damien Seguy est diplômé 1997 de l\'Ecole Centrale de Lille. Il fonde <a href="http://www.nexen.net">Nexen.net</a> en 1999, le premier portail PHP et MySQL en français. Responsable des documentations pour <a href="http://www.php.net">PHP.net</a> et <a href="http://www.mysql.com">MySQL.com</a>, il apporte un avantage décisif à <a href="http://www.nexenservices.com">Nexen Services</a> pour ses gammes d\'hébergement professionnel.<br />Damien Seguy intervient dans les conférences PHP internationales, et organise celle de Montréal. Il est l\'auteur de deux livres et du premier coffret DVD consacrés à PHP.',
+    },
+    {
+        code: 'tsteiner',
+        nom: 'Thomas STEINER',
+        presentation: 'Elève Ingénieur à l\'ENSIMAG &amp; ex-stagiaire chez <a href="http://www.google.com">Google</a>',
+        biographie: 'Eleve Ingénieur 3ème annee de l\'Ecole Nationale Supérieur d\'Informatique et de Mathématiques Appliquées de' ~
+        ' Grenoble (ENSIMAG), Thomas STEINER a fait sont stage de 2ème année chez Google Inc. pendant l\'été 2005.' ~
+        ' Il est en particulier à l\'origine du projet open source "APIlity PHP Library for Google AdWords".',
+    },
+    {
+        code: 'zsuraski',
+        nom: '<span class="red">Zeev SURASKI</span>',
+        presentation: 'Co-fondateur de <a href="http://www.zend.com/">ZEND Technologes</a> et CTO',
+        biographie: 'Zeev est co-architecte historique de PHP de même qu\'Andi GUTMANS, avec lequel il a fondé en 1999, ZEND Technologies, "La PHP Company". ZEND s\'est engagée depuis sous leur impulsion, dans un effort collaboratif avec la communauté et des partenariats avec les plus grands acteurs du marché informatique (IBM, Oracle, Sap, Intel...) à professionnaliser PHP afin qu\'il devienne une option stratégique au sein des grandes organisations.',
+    },
+    {
+        code: 'dvannuffelen',
+        nom: 'Denis VAN NUFFELEN',
+        presentation: 'Informaticien et chef de projet informatique au <a href="http://minfin.fgov.be">Service Public Fédéral Finances de Belgique</a>',
+        biographie: 'Informaticien et Chef de projet Informatique au Service Public Fédéral Finances (anciennement Ministère des' ~
+        ' Finances) de Belgique, il gère actuellement un projet visant à définir l\'architecture applicative du SPF' ~
+        ' Finances pour les aspects internet et intranet' ~
+        ' (architecture hardware & logicielle, méthodologies de développement, outils, framework). Il est en outre' ~
+        ' coordonateur de l\'ensemble des projets open-source et liés aux technologies web déployés au sein du Service' ~
+        ' Public Fédéral Finances.',
+    },
+    {
+        code: 'azmievski',
+        nom: '<span class="red">Andrei ZMIEVSKI</span>',
+        presentation: 'Membre du PHP Group et ingénieur logiciel chez <a href="http://www.yahoo.com">Yahoo!</a>',
+        biographie: 'Membre de l\'équipe "Core Software Infrastructure" chez Yahoo!, il est responsable du développement d\'un système de worflow pour l\'internationalisation des applications web et de l\'amélioration de PHP. Son projet phare se situe à l\'intersection de ces deux aspects : l\'ajout du support natif d\'Unicode au langage PHP. On retrouve ses contributions entre autres dans Smarty, PHP-GTK et Apache.',
+    },
+] %}
+{% include 'legacy/forumphp2006/entete.html.twig' %}
+<div id="cartouche-milieu">
+	<img id="cartouchepage" src="/templates/forumphp2006/images/cartouche-page.png" usemap="#m_cartouchepage" />
+	<map name="m_cartouchepage">
+	<area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="{{ path('legacy_event', {year: 2006, page: 'inscription.php'}) }}" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+	<area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="{{ path('legacy_event', {year: 2006, page: 'acces.php'}) }}" title="Accès" alt="Accès" >
+	</map>
+	<h1>&nbsp;&nbsp;Les conférenciers</h1>
+	
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    {% for conferencier in conferenciers %} 
+    <tr> 
+      <td colspan="2">
+        <hr width="100%" noshade align="center" size="1" />
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"><a name="{{ conferencier.code }}" />
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td valign="bottom"> 
+              <div class="homme"><b>{{ conferencier.nom|raw }}</b></div>
+            </td>
+            <td align="right" valign="bottom">{{ conferencier.presentation|raw }}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td width="59"><img src="/templates/forumphp2006/images/intervenants/{{ conferencier.code }}.jpg" border="0" align="left" /></td>
+      <td width="920" align="justify" valign="middle">{{ conferencier.biographie|raw }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% include 'legacy/forumphp2006/pied_de_page.html.twig' %}

@@ -210,10 +210,16 @@ RewriteRule ^phptourluxembourg2015.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptourlyon2014.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptournantes2012.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptourlille2011.*$ https://event.afup.org/archives/? [R=302]
+RewriteRule ^forumphp2016.*$ https://event.afup.org/archives/?  [L,R=301]
+RewriteRule ^forumphp2015.*$ https://event.afup.org/archives/?  [L,R=301]
 RewriteRule ^forumphp2014.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2013.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2012.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2010.*$ https://event.afup.org/archives/? [R=302]
+RewriteRule ^forumphp/.*$ https://event.afup.org  [L,R=301]
+
+## Moved to Symfony
+RewriteRule ^(forumphp2006)/?.*$ /app.php [END]
 
 RewriteRule ^questionnaire.*$ https:///barometre.afup.org [R=302]
 
@@ -299,5 +305,3 @@ RewriteRule ^site/$  "/?"  [L,R=302]
 
 RewriteCond %{QUERY_STRING} page=membre_assemblee_generale
 RewriteRule administration/index.php$  "/member/general-meeting"  [L,QSD,R=302]
-
-

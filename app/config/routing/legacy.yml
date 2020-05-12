@@ -1,0 +1,48 @@
+legacy_forumphp2006_acces:
+  path: /pages/forumphp2006/acces.php
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: legacy/forumphp2006/acces.html.twig
+
+legacy_forumphp2006_acces2:
+  path: /pages/forumphp2006/acces2.php
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: legacy/forumphp2006/acces2.html.twig
+
+legacy_forumphp2006_conferenciers:
+  path: /pages/forumphp2006/conferenciers.php
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: legacy/forumphp2006/conferenciers.html.twig
+
+legacy_forumphp2006_contact:
+  path: /pages/forumphp2006/contact.php
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: legacy/forumphp2006/contact.html.twig
+
+legacy_forumphp2006_inscription:
+  path: /pages/forumphp2006/inscription.php
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: legacy/forumphp2006/inscription.html.twig
+
+legacy_forumphp2006_resumes:
+  path: /pages/forumphp2006/resumes.php
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: legacy/forumphp2006/resumes.html.twig
+
+legacy_forumphp2006_sessions:
+  path: /pages/forumphp2006/sessions.php
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: legacy/forumphp2006/sessions.html.twig
+
+legacy_forumphp2006_index:
+  path: /pages/forumphp2006/{file}
+  defaults:
+    _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    template: legacy/forumphp2006/index.html.twig
+    file: ~
