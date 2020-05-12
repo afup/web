@@ -64,12 +64,16 @@ class PhotoStorage
         }
         if ($format !== self::DIR_ORIGINAL) {
             // We have to check if the file exists or create it from the original size
-            if (file_exists($this->getPath($speaker, $format)) === false) {
+            if (!$this->filesystem->exists($this->getPath($speaker, $format))) {
                 $this->generateFormat($speaker, $format);
             }
         }
 
-        return $this->publicPath . '/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getPhoto();
+        if ($this->filesystem->exists($this->getPath($speaker, $format))) {
+            return $this->publicPath . '/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getPhoto();
+        }
+
+        return null;
     }
 
     public function getPath(Speaker $speaker, $format)

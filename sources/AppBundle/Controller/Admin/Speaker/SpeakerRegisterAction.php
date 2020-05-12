@@ -123,12 +123,12 @@ class SpeakerRegisterAction
                 } catch (Exception $e) {
                     $this->flashBag->add('error', 'Une erreur est survenue lors de l\'ajout de la facturation');
 
-                    return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list'));
+                    return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $event->getId()]));
                 }
             }
         }
         $this->flashBag->add('notice', $nbSpeakers . ' conférenciers ont été ajoutés dans les inscriptions');
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list'));
+        return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $event->getId()]));
     }
 }
