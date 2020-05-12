@@ -88,18 +88,19 @@ class SpeakerEditAction
         }
         ksort($talks);
         $talks = array_values($talks);
-        $photo = null;
+        $photo = $originalPhoto = null;
         if (null !== $speaker->getPhoto()) {
             $photo = $this->photoStorage->getUrl($speaker, PhotoStorage::DIR_THUMBS);
-        } elseif ($speaker->getEventId() < self::ID_FORUM_PHOTO_STORAGE) {
-            $photo = $this->photoStorage->getLegacyUrl($event, $speaker);
+            $originalPhoto = $this->photoStorage->getUrl($speaker, PhotoStorage::DIR_ORIGINAL);
+            if (null === $photo && $event->getId() < self::ID_FORUM_PHOTO_STORAGE) {
+                $photo = $this->photoStorage->getLegacyUrl($event, $speaker);
+            }
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $speaker->setCivility($data->civility);
             $speaker->setFirstname($data->firstname);
             $speaker->setLastname($data->lastname);
-            $speaker->setPhoto($data->photo);
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setEmail($data->email);
@@ -117,7 +118,7 @@ class SpeakerEditAction
             $this->log('Modification du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname() . ' (' . $speaker->getId() . ')');
             $this->flashBag->add('notice', 'Le conférencier a été modifié');
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list'));
+            return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $event->getId()]));
         }
 
         return new Response($this->twig->render('admin/speaker/edit.html.twig', [
@@ -128,6 +129,7 @@ class SpeakerEditAction
             'form' => $form->createView(),
             'talks' => $talks,
             'photo' => $photo,
+            'originalPhoto' => $originalPhoto,
         ]));
     }
 }

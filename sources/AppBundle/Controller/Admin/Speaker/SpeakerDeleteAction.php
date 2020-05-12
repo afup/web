@@ -48,6 +48,6 @@ class SpeakerDeleteAction
             $this->flashBag->add('error', 'Une erreur est survenue lors de la suppression du conférencier');
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list'));
+        return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $speaker->getEventId()]));
     }
 }

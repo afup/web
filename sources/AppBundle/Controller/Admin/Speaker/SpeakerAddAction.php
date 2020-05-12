@@ -70,7 +70,6 @@ class SpeakerAddAction
             $speaker->setCivility($data->civility);
             $speaker->setFirstname($data->firstname);
             $speaker->setLastname($data->lastname);
-            $speaker->setPhoto($data->photo);
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setEmail($data->email);
@@ -84,7 +83,7 @@ class SpeakerAddAction
             $this->log('Ajout du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname());
             $this->flashBag->add('notice', 'Le conférencier a été ajouté');
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list'));
+            return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $event->getId()]));
         }
 
         return new Response($this->twig->render('admin/speaker/add.html.twig', [

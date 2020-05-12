@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\Admin\Speaker;
 
 use AppBundle\CFP\PhotoStorage;
-use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,8 +13,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SpeakerLinkGravatarAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
     /** @var SpeakerRepository */
     private $speakerRepository;
     /** @var PhotoStorage */
@@ -26,13 +23,11 @@ class SpeakerLinkGravatarAction
     private $urlGenerator;
 
     public function __construct(
-        EventActionHelper $eventActionHelper,
         SpeakerRepository $speakerRepository,
         PhotoStorage $photoStorage,
         FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->eventActionHelper = $eventActionHelper;
         $this->speakerRepository = $speakerRepository;
         $this->photoStorage = $photoStorage;
         $this->flashBag = $flashBag;

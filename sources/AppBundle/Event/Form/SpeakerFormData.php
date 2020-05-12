@@ -42,9 +42,6 @@ class SpeakerFormData
      */
     public $twitter;
     /**
-     * Wrapper for SpeakerType to allow picture upload
-     *
-     * @Assert\NotBlank(message="Please, upload a photo.")
      * @Assert\File(mimeTypes={"image/jpeg","image/png"})
      * @var UploadedFile|null
      */
