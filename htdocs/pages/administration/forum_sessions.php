@@ -5,8 +5,11 @@ use Afup\Site\Forum\AppelConferencier;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
+use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
+use Assert\Assertion;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -19,9 +22,8 @@ $tris_valides = array('s.titre', 's.date_soumission');
 $sens_valides = array('asc' , 'desc');
 $smarty->assign('action', $action);
 
-
-
-
+$eventRepository = $this->get(EventRepository::class);
+$speakerRepository = $this->get(SpeakerRepository::class);
 
 $forum = new Forum($bdd);
 $forum_appel = new AppelConferencier($bdd);
@@ -179,7 +181,12 @@ if ($action == 'lister') {
 
 
     $formulaire->addElement('header', null, 'Conférencier(s)');
-    $conferenciers = array(null => '' ) + $forum_appel->obtenirListeConferenciers($_GET['id_forum'], 'c.conferencier_id, CONCAT(c.nom, " ", c.prenom) as nom', 'c.nom, c.conferencier_id', true);
+    $event = $eventRepository->get($_GET['id_forum']);
+    Assertion::notNull($event);
+    $conferenciers = [null => ''];
+    foreach ($speakerRepository->searchSpeakers($event) as $speaker) {
+        $conferenciers[$speaker->getId()] = $speaker->getLastname().' '.$speaker->getFirstname();
+    }
 	$formulaire->addElement('select', 'conferencier_id_1'    , 'N°1', $conferenciers);
 	$formulaire->addElement('select', 'conferencier_id_2'    , 'N°2', $conferenciers);
     $formulaire->addElement('select', 'conferencier_id_3'    , 'N°3', $conferenciers);

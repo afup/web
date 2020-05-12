@@ -1,0 +1,18 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_label -%}
+    {% set label_attr = label_attr|merge({class: 'three wide column right aligned'}) %}
+    {{ parent() }}
+{%- endblock form_label -%}
+
+{%- block form_row -%}
+    <div class="inline fields ui grid">
+        {{ form_label(form) }}
+        <div class="field nine wide column">
+            <div class="ui input">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
+{%- endblock form_row -%}
