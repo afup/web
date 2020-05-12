@@ -3,7 +3,6 @@
 
 namespace AppBundle\Slack;
 
-use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Event;
@@ -13,6 +12,9 @@ use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
+use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use Assert\Assertion;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class MessageFactory
@@ -156,10 +158,10 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForGeneralMeeting(Assemblee_Generale $assembleeGenerale, UserRepository $userRepository)
+    public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
-        $timestamp = $assembleeGenerale->obternirDerniereDate();
-
+        $latestDate = $generalMeetingRepository->getLatestDate();
+        Assertion::notNull($latestDate);
         $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL));
 
         $message = new Message();
@@ -171,19 +173,15 @@ class MessageFactory
 
         $attachment = new Attachment();
         $attachment
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=assemblee_generale')
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Membres à jour de cotisation')->setValue($nombrePersonnesAJourDeCotisation)
-            )
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Présences et pouvoirs')->setValue($assembleeGenerale->obtenirNombrePresencesEtPouvoirs($timestamp))
-            )
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Présences')->setValue($assembleeGenerale->obtenirNombrePresences($timestamp))
-            )
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Quorum')->setValue($assembleeGenerale->obtenirEcartQuorum($timestamp, $nombrePersonnesAJourDeCotisation))
-            )
+            ->setTitleLink($urlGenerator->generate('admin_members_general_meeting', [], UrlGeneratorInterface::ABSOLUTE_URL))
+            ->addField((new Field())->setShort(true)->setTitle('Membres à jour de cotisation')
+                ->setValue($nombrePersonnesAJourDeCotisation))
+            ->addField((new Field())->setShort(true)->setTitle('Présences et pouvoirs')
+                ->setValue($generalMeetingRepository->countAttendeesAndPowers($latestDate)))
+            ->addField((new Field())->setShort(true)->setTitle('Présences')
+                ->setValue($generalMeetingRepository->countAttendees($latestDate)))
+            ->addField((new Field())->setShort(true)->setTitle('Quorum')
+                ->setValue($generalMeetingRepository->obtenirEcartQuorum($latestDate, $nombrePersonnesAJourDeCotisation)))
         ;
         $message->addAttachment($attachment);
 

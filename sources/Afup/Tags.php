@@ -95,15 +95,6 @@ HERE;
         return $this->_bdd->obtenirTous($requete);
     }
 
-    /**
-     *
-     * @deprecated Use obtenirNoeudsPersonnesPhysiques()
-     */
-    function obtenirNoeudsPersonnesPhysiqyes()
-    {
-        return $this->obtenirNoeudsPersonnesPhysiques();
-    }
-
     function obtenirNoeudsPersonnesPhysiques()
     {
         $requete = ' SELECT ';

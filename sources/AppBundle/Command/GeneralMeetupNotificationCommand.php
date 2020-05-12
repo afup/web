@@ -2,20 +2,49 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\Notifier\SlackNotifier;
+use AppBundle\Slack\MessageFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class GeneralMeetupNotificationCommand extends ContainerAwareCommand
+class GeneralMeetupNotificationCommand extends Command
 {
+    /** @var UserRepository */
+    private $userRepository;
+    /** @var GeneralMeetingRepository */
+    private $generalMeetingRepository;
+    /** @var MessageFactory */
+    private $messageFactory;
+    /** @var SlackNotifier */
+    private $slackNotifier;
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+
+    public function __construct(
+        UserRepository $userRepository,
+        GeneralMeetingRepository $generalMeetingRepository,
+        MessageFactory $messageFactory,
+        SlackNotifier $slackNotifier,
+        UrlGeneratorInterface $urlGenerator
+    ) {
+        parent::__construct();
+        $this->userRepository = $userRepository;
+        $this->generalMeetingRepository = $generalMeetingRepository;
+        $this->messageFactory = $messageFactory;
+        $this->slackNotifier = $slackNotifier;
+        $this->urlGenerator = $urlGenerator;
+    }
+
     /**
      * @see Command
      */
     protected function configure()
     {
-        $this
-            ->setName('general-meeting-notification')
-        ;
+        $this->setName('general-meeting-notification');
     }
 
     /**
@@ -23,13 +52,12 @@ class GeneralMeetupNotificationCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $assembleeGenerale = new \Afup\Site\Association\Assemblee_Generale($GLOBALS['AFUP_DB']);
-
-        if ($assembleeGenerale->hasGeneralMeetingPlanned()) {
-            $userRepository = $this->getContainer()->get(\AppBundle\Association\Model\Repository\UserRepository::class);
-            $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForGeneralMeeting($assembleeGenerale, $userRepository);
-
-            $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
+        if ($this->generalMeetingRepository->hasGeneralMeetingPlanned()) {
+            $this->slackNotifier->sendMessage($this->messageFactory->createMessageForGeneralMeeting(
+                $this->generalMeetingRepository,
+                $this->userRepository,
+                $this->urlGenerator
+            ));
         }
     }
 }

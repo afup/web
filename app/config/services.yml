@@ -20,14 +20,26 @@ services:
         autoconfigure: true
 
     AppBundle\Controller\Admin\Event\:
-      resource: '../../sources/AppBundle/Controller/Admin/Event/*'
-      autowire: true
-      autoconfigure: true
+        resource: '../../sources/AppBundle/Controller/Admin/Event/*'
+        autowire: true
+        autoconfigure: true
 
     AppBundle\Controller\Admin\Membership\:
-      resource: '../../sources/AppBundle/Controller/Admin/Membership/*'
-      autowire: true
-      autoconfigure: true
+        resource: '../../sources/AppBundle/Controller/Admin/Membership/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\Members\GeneralMeeting\:
+        resource: '../../sources/AppBundle/Controller/Admin/Members/GeneralMeeting/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Command\GeneralMeetupNotificationCommand:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\GeneralMeeting\GeneralMeetingRepository:
+        autowire: true
 
     AppBundle\Controller\Admin\SlackMembers\CheckMembersAction:
         autowire: true
