@@ -217,6 +217,13 @@ RewriteRule ^forumphp2013.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2012.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2010.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp/.*$ https://event.afup.org  [L,R=301]
+RewriteRule ^phptournantes2017/inscription.php$ https://event.afup.org/phptournantes2017/tickets-inscriptions/  [L,R=301]
+RewriteRule ^phptournantes2017.*$ https://event.afup.org/phptournantes2017/  [L,R=301]
+RewriteRule ^phptourclermont2016/conferenciers.php$ https://event.afup.org/php-tour-2016/speakers/  [L,R=301]
+RewriteRule ^phptourclermont2016/inscription.php$ https://event.afup.org/php-tour-2016/tickets-inscriptions/  [L,R=301]
+RewriteRule ^phptourclermont2016/sessions.php$ https://event.afup.org/php-tour-2016/programme/  [L,R=301]
+RewriteRule ^phptourclermont2016/forum_planning.php$ https://event.afup.org/forum-php-2016/planning/  [L,R=301]
+RewriteRule ^phptourclermont2016.*$ https://event.afup.org/archives/  [L,R=301]
 
 ## Moved to Symfony
 RewriteRule ^(forumphp2005|forumphp2006).*$ /app.php [END]
