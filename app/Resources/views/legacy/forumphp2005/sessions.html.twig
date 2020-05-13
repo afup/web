@@ -1,9 +1,9 @@
-{include file="entete.html"}
+{% include 'legacy/forumphp2005/entete.html.twig' %}
         <div id="cartouche-milieu">
-            <img id="cartouchepage" src="{$chemin_template}images/cartouche-page.png" usemap="#m_cartouchepage" />
+            <img id="cartouchepage" src="/templates/forumphp2005/images/cartouche-page.png" usemap="#m_cartouchepage" />
             <map name="m_cartouchepage">
-            <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="inscription.php" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
-            <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="acces.php" title="Accès" alt="Accès" >
+            <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="{{ path('legacy_event', {year: 2005, page: 'inscription.php'}) }}" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+            <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="{{ path('legacy_event', {year: 2005, page: 'acces.php'}) }}" title="Accès" alt="Accès" >
             </map>
             <h1>Le programme des deux jours</h1>
 
@@ -52,16 +52,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/keynote_forumphp2005_1.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/keynote_forumphp2005_1.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			9h - 9h15 : <b>Key Note</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#ppenet">Perrick
-              PENET</a>, <a href="./conferenciers.php?#jmfontaine">Jean-Marc FONTAINE</a> </span></td>
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#ppenet">Perrick
+              PENET</a>, <a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#jmfontaine">Jean-Marc FONTAINE</a> </span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#ppenet"><img src="{$chemin_template}images/intervenants/ppenet.jpg" alt="Perrick PENET" border="0" /></a><a href="conferenciers.php#jmfontaine"><img src="{$chemin_template}images/intervenants/jmfontaine.jpg" alt="Jean-marc Fontaine" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#ppenet"><img src="/templates/forumphp2005/images/intervenants/ppenet.jpg" alt="Perrick PENET" border="0" /></a><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#jmfontaine"><img src="/templates/forumphp2005/images/intervenants/jmfontaine.jpg" alt="Jean-marc Fontaine" border="0" /></a></td>
       <td align="justify" valign="top">
         <p>Cette session d'ouverture a pour objectif de présenter l'AFUP qui est
           organisatrice de ce cinquième forum PHP. Il sera également abordé les
@@ -82,16 +82,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="http://talks.php.net/show/afup05"><img src="{$chemin_template}images/html.gif" /></a><br />
+			<a href="http://talks.php.net/show/afup05"><img src="/templates/forumphp2005/images/html.gif" /></a><br />
 			9h30 - 10h15 : <b>Présentation de PHP</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#rlerdorf">Rasmus
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#rlerdorf">Rasmus
               LERDORF</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#rlerdorf"><img src="{$chemin_template}images/intervenants/rlerdorf.jpg" alt="Rasmus LERDORF" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#rlerdorf"><img src="/templates/forumphp2005/images/intervenants/rlerdorf.jpg" alt="Rasmus LERDORF" border="0" /></a></td>
       <td align="justify">
         <p>Première plate-forme web dans le monde, PHP est aussi une plate-forme
           d'entreprise au même titre que J2EE et .NET.<br />
@@ -117,16 +117,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/solutionslibres_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/solutionslibres_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			10h15 - 11h15 : <b>Panorama des solutions libres</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#cpierredegeyer">Cyril
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#cpierredegeyer">Cyril
               PIERRE de GEYER</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#cpierredegeyer"><img src="{$chemin_template}images/intervenants/cpierredegeyer.jpg" alt="Cyril PIERRE de GEYER" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#cpierredegeyer"><img src="/templates/forumphp2005/images/intervenants/cpierredegeyer.jpg" alt="Cyril PIERRE de GEYER" border="0" /></a></td>
       <td align="justify">
         <p>Une des grandes forces du logiciel libre réside dans la diversité des
           solutions existantes. C'est d'autant plus vrai dans le monde web où
@@ -149,16 +149,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/creditagricole_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/creditagricole_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			11h30 - 12h15 : <b>Retour d'expérience : Crédit Agricole</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#jbernard">Julien
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#jbernard">Julien
               BERNARD</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#jbernard"><img src="{$chemin_template}images/intervenants/jbernard.jpg" alt="Julien Bernard" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#jbernard"><img src="/templates/forumphp2005/images/intervenants/jbernard.jpg" alt="Julien Bernard" border="0" /></a></td>
       <td align="justify">
         <p>Crédit Agricole Asset Management utilise PHP depuis plus de 4 ans pour
           développer des applications web publiques et/ou sécurisées. </p>
@@ -179,16 +179,16 @@
           <tr>
             <td>
 			12h15 - 13h00 : <b>MySQL 5 : les nouveautés</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#mcarney">Michael
-              CARNEY</a> &amp; <a href="./conferenciers.php?#svaroqui">Stéphane
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#mcarney">Michael
+              CARNEY</a> &amp; <a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#svaroqui">Stéphane
               VAROQUI</a>, MySQL AB</span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#mcarney"><img src="{$chemin_template}images/intervenants/mcarney.jpg" alt="Michael Carney" border="0" /></a>
-        <!--<a href="conferenciers.php#svaroqui"><img src="{$chemin_template}images/intervenants/svaroqui.jpg" alt="Stéphane Varoqui" border="0" /></a>-->
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#mcarney"><img src="/templates/forumphp2005/images/intervenants/mcarney.jpg" alt="Michael Carney" border="0" /></a>
+        <!--<a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#svaroqui"><img src="/templates/forumphp2005/images/intervenants/svaroqui.jpg" alt="Stéphane Varoqui" border="0" /></a>-->
       </td>
       <td align="justify">
         <p>Présentation et démonstration de la version 5.0 de MySQL (procédures
@@ -207,16 +207,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-            <a href="{$chemin_template}talks/bestpracticesphp_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br>
+            <a href="/templates/forumphp2005/talks/bestpracticesphp_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br>
 			14h30 - 15h30 : <b>Bonnes Pratiques PHP</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#gponcon">Guillaume
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#gponcon">Guillaume
               PONÇON</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#gponcon"><img src="{$chemin_template}images/intervenants/gponcon.jpg" alt="Guillaume Ponçon" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#gponcon"><img src="/templates/forumphp2005/images/intervenants/gponcon.jpg" alt="Guillaume Ponçon" border="0" /></a></td>
       <td align="justify">
         <p>Cette session proposera un panorama de bonnes pratiques pour des développements
           PHP performants à tous niveaux. Nous aborderons comment :</p>
@@ -242,16 +242,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/lemonde.fr_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/lemonde.fr_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			15h30 - 16h15 : <b>PHP et <a href='http://www.lemonde.fr'>LeMonde.fr</a> : passé, présent (et avenir)</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#ograngelabat">Olivier
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#ograngelabat">Olivier
               GRANGE LABAT</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#ograngelabat"><img src="{$chemin_template}images/intervenants/ograngelabat.jpg" alt="Olivier Grange Labat" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#ograngelabat"><img src="/templates/forumphp2005/images/intervenants/ograngelabat.jpg" alt="Olivier Grange Labat" border="0" /></a></td>
       <td align="justify">
         <p>Dans cette présentation, nous reviendrons sur la migration d'une technologie
           propriétaire vers PHP dans le contexte d'un site Internet critique et
@@ -272,17 +272,17 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/airturquoise_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/airturquoise_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			16h30 - 17h20 : <b>Retour d'expérience : Air Turquoise décolle
               avec PHP</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#fbillardmadrieres">François
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#fbillardmadrieres">François
               BILLARD MADRIÈRES</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#fbillardmadrieres"><img src="{$chemin_template}images/intervenants/fbillardmadrieres.jpg" alt="Francois Billard Madrieres" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#fbillardmadrieres"><img src="/templates/forumphp2005/images/intervenants/fbillardmadrieres.jpg" alt="Francois Billard Madrieres" border="0" /></a></td>
       <td align="justify">
         <p>Mettre en place un système d'information pour une compagnie aérienne
           en moins de 6 mois : Cette présentation détaille la genèse de ce projet,
@@ -305,15 +305,15 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/keynote_forumphp2005_2.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/keynote_forumphp2005_2.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			9h - 9h15 : <b>Key Note</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#fbillardmadrieres">François BILLARD-MADRIERES</a>, <a href="./conferenciers.php?#dseguy">Damien SEGUY</a></span></td>
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#fbillardmadrieres">François BILLARD-MADRIERES</a>, <a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#dseguy">Damien SEGUY</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#fbillardmadrieres"><img src="{$chemin_template}images/intervenants/fbillardmadrieres.jpg" alt="François BILLARD-MADRIERES" border="0" /></a><a href="conferenciers.php#dseguy"><img src="{$chemin_template}images/intervenants/dseguy.jpg" alt="Damien SEGUY" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#fbillardmadrieres"><img src="/templates/forumphp2005/images/intervenants/fbillardmadrieres.jpg" alt="François BILLARD-MADRIERES" border="0" /></a><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#dseguy"><img src="/templates/forumphp2005/images/intervenants/dseguy.jpg" alt="Damien SEGUY" border="0" /></a></td>
       <td align="justify" valign="top">
         <p>François BILLARD-MADRIERES et Damien SEGUY, respectivement secrétaire et vice-président de l'AFUP, présenteront le programme de cette journée technique.</p>
       </td>
@@ -328,15 +328,15 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="http://talks.php.net/show/afup05_2"><img src="{$chemin_template}images/html.gif" /></a><br />
+			<a href="http://talks.php.net/show/afup05_2"><img src="/templates/forumphp2005/images/html.gif" /></a><br />
 			9h30 - 10h15 : <b>Présentation de PHP</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#rlerdorf">Rasmus LERDORF</a></span></td>
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#rlerdorf">Rasmus LERDORF</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#rlerdorf"><img src="{$chemin_template}images/intervenants/rlerdorf.jpg" alt="Rasmus LERDORF" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#rlerdorf"><img src="/templates/forumphp2005/images/intervenants/rlerdorf.jpg" alt="Rasmus LERDORF" border="0" /></a></td>
       <td align="justify">
         <p>
 		En 10 ans, PHP est passé d'un projet personnelle à un langage stable, robuste et puissant. Son créateur nous invite à le suivre dans les arcanes de ce projet Open Source. Acteurs, méthodes et innovations seront abordés avec comme ligne de conduite : comment utiliser PHP au mieux pour faire réussir vos projets ?
@@ -353,16 +353,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/extension_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/extension_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			10h15 - 11h15 : <b>Création d'une extension PHP</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#mhoel">Michel
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#mhoel">Michel
               HOEL</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#mhoel"><img src="{$chemin_template}images/intervenants/mhoel.jpg" alt="Michel Hoel" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#mhoel"><img src="/templates/forumphp2005/images/intervenants/mhoel.jpg" alt="Michel Hoel" border="0" /></a></td>
       <td align="justify">
         <p>Cette session vous permettra de répondre aux questions "pourquoi faire
           une extension à PHP ?", "Comment s'y prendre et s'assurer de la portabilité
@@ -387,16 +387,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/pear_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/pear_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			11h30 - 12h15 : <b>L'assurance qualité dans le projet PEAR</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#alimbourg">Arnaud
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#alimbourg">Arnaud
               LIMBOURG</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#alimbourg"><img src="{$chemin_template}images/intervenants/alimbourg.jpg" alt="Arnaud Limbourg" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#alimbourg"><img src="/templates/forumphp2005/images/intervenants/alimbourg.jpg" alt="Arnaud Limbourg" border="0" /></a></td>
       <td align="justify">
         <p>Le nombre et la diversité des contributeurs sur un projet de l'envergure
           de PEAR nécessite la mise en place d'outils et de règles afin d'assurer
@@ -415,17 +415,17 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-			<a href="{$chemin_template}talks/aspects_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/aspects_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			12h15 - 13h00 : <b>Programmation Orientée Aspects en PHP</b></td>
-            <td align="right"><span class="conferencier"><a href="./conferenciers.php?#gvanwormhoudt">Gilles
+            <td align="right"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#gvanwormhoudt">Gilles
               VANWORMHOUDT<br />
-              </a>&amp; <a href="./conferenciers.php?#wcandillon">William CANDILLON</a></span></td>
+              </a>&amp; <a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#wcandillon">William CANDILLON</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#wcandillon"><img src="{$chemin_template}images/intervenants/wcandillon.jpg" alt="William Candillon" border="0" /></a><a href="conferenciers.php#gvanwormhoudt"><img src="{$chemin_template}images/intervenants/gvanwormhoudt.jpg" alt="Gilles Vanwormhout" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#wcandillon"><img src="/templates/forumphp2005/images/intervenants/wcandillon.jpg" alt="William Candillon" border="0" /></a><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#gvanwormhoudt"><img src="/templates/forumphp2005/images/intervenants/gvanwormhoudt.jpg" alt="Gilles Vanwormhout" border="0" /></a></td>
       <td align="justify">
         <p>L'objectif de cette session est de présenter les les concepts fondamentaux
           de la Programmation Orientée Aspects (POA) et son intérêt dans les développements
@@ -446,16 +446,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td height="18">
-			<a href="{$chemin_template}talks/ajax_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/ajax_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			14h00 - 15h00 : <b>AJAX : Brillez avec vos applications web</b></td>
-            <td align="right" height="18"><span class="conferencier"><a href="./conferenciers.php?#shordeaux">Sébastien
+            <td align="right" height="18"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#shordeaux">Sébastien
               HORDEAUX</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#shordeaux"><img src="{$chemin_template}images/intervenants/shordeaux.jpg" alt="Sébastien Hordeaux" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#shordeaux"><img src="/templates/forumphp2005/images/intervenants/shordeaux.jpg" alt="Sébastien Hordeaux" border="0" /></a></td>
       <td align="justify">
         <p>L'ergonomie des applications web est de plus en plus évoluée et riche
           afin de permettre la même productivité que les applications de bureau.
@@ -477,16 +477,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td height="18">
-			<a href="{$chemin_template}talks/performances_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/performances_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			15h00 - 16h00 : <b>PHP et performances</b></td>
-            <td align="right" height="18"><span class="conferencier"><a href="./conferenciers.php?#edaspet">Eric
+            <td align="right" height="18"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#edaspet">Eric
               DASPET</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#edaspet"><img src="{$chemin_template}images/intervenants/edaspet.jpg" alt="Eric Daspet" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#edaspet"><img src="/templates/forumphp2005/images/intervenants/edaspet.jpg" alt="Eric Daspet" border="0" /></a></td>
       <td align="justify">
         <p>PHP jouit parfois d'une mauvaise réputation au niveau des performances.
           Nous verrons si cette réputation est méritée, si les performances sont
@@ -507,16 +507,16 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td height="18">
-			<a href="{$chemin_template}talks/pdo_forumphp2005.pdf"><img src="{$chemin_template}images/pdf.gif" /></a><br />
+			<a href="/templates/forumphp2005/talks/pdo_forumphp2005.pdf"><img src="/templates/forumphp2005/images/pdf.gif" /></a><br />
 			16h15 - 17h15 : <b>PDO : Abstraction de base de données avec PHP 5.1</b></td>
-            <td align="right" height="18"><span class="conferencier"><a href="./conferenciers.php?#wfurlong">Wez
+            <td align="right" height="18"><span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#wfurlong">Wez
               FURLONG</a></span></td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><a href="conferenciers.php#wfurlong"><img src="{$chemin_template}images/intervenants/wfurlong.jpg" alt="Wez Furlong" border="0" /></a></td>
+      <td align="center" valign="middle" nowrap><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}#wfurlong"><img src="/templates/forumphp2005/images/intervenants/wfurlong.jpg" alt="Wez Furlong" border="0" /></a></td>
       <td align="justify">
         <p>PHP 5.1 propose une nouvelle technique pour accéder aux données, PHP
           Data Objects (PDO) : elle fournit des APIs clairs, simples (mais puissants)
@@ -542,8 +542,8 @@
           <tr>
             <td height="18">17h15 - 18h00 : <b>Session Questions & Réponses avec le PHP Core</b></td>
             <td align="right" height="18">
-				<span class="conferencier"><a href="./conferenciers.php?#rlerdorf">Rasmus LERDORF</a></span><br />
-				<span class="conferencier"><a href="./conferenciers.php?#wfurlong">Wez FURLONG</a></span><br />
+				<span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#rlerdorf">Rasmus LERDORF</a></span><br />
+				<span class="conferencier"><a href="{{ path('legacy_event', {year: 2005, page: 'conferenciers.php'}) }}?#wfurlong">Wez FURLONG</a></span><br />
 				<span class="conferencier"><a>Zeev SURASKI</a></span><br />
 				<span class="conferencier"><a>Andrei ZMIEVSKI</a></span><br />
 				<span class="conferencier">...</span><br />
@@ -553,7 +553,7 @@
       </td>
     </tr>
     <tr>
-      <td align="center" valign="middle" nowrap><img src="{$chemin_template}images/intervenants/poweredbyphp.png" alt="PHP Core" border="0" /></td>
+      <td align="center" valign="middle" nowrap><img src="/templates/forumphp2005/images/intervenants/poweredbyphp.png" alt="PHP Core" border="0" /></td>
       <td align="justify">
         <p>Le PHP Core est l'équipe qui pilote les développements autour de PHP. Ils seront rassemblés pour une séance de Questions&nbsp;- Réponses avec le public&nbsp;: voici une occasion unique de les rencontrer et d'évoquer avec eux ce que PHP nous réserve pour les 10 ans à venir.</p>
       </td>
@@ -562,4 +562,4 @@
   <p><br />
   </p>
 </div>
-{include file="pied_de_page.html"}
+{% include 'legacy/forumphp2005/pied_de_page.html.twig' %}

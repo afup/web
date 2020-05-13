@@ -219,7 +219,7 @@ RewriteRule ^forumphp2010.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp/.*$ https://event.afup.org  [L,R=301]
 
 ## Moved to Symfony
-RewriteRule ^(forumphp2006)/?.*$ /app.php [END]
+RewriteRule ^(forumphp2005|forumphp2006).*$ /app.php [END]
 
 RewriteRule ^questionnaire.*$ https:///barometre.afup.org [R=302]
 
