@@ -1,0 +1,620 @@
+{% set sessions_fonctionnelles = [
+    {
+        horaire: '9h - 9h10',
+        nom: 'Keynote',
+        resume: '',
+        talks: [
+        {
+            code: '',
+            nom: '',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'alimbourg',
+            nom: 'Arnaud LIMBOURG',
+        },
+        {
+            code: 'ppenet',
+            nom: 'Perrick PENET',
+        },
+    ],
+    }, {
+        horaire: '9h15 - 10h15',
+        nom: 'PHP en 2007 : PHP4 est mort, longue vie à PHP5 & 6',
+        resume: '',
+        podcast: 'http://audiobank.tryphon.org/casts/866pmw9y',
+        talks: [
+            {
+                code: 'html',
+                nom: 'http://talks.php.net/show/afup07',
+            },
+        ],
+        conferenciers: [
+            {
+                code: 'rlerdorf',
+                nom: 'Rasmus LERDORF',
+            },
+        ],
+    }, {
+        horaire: '10h15 - 11h15',
+        nom: 'Web 2.0 : Améliorer l\'experience utilisateur de vos applications PHP grâce à Flex',
+        resume: '',
+        podcast: 'http://audiobank.tryphon.org/casts/majxhzxd',
+        talks: [
+            {
+                code: 'pdf',
+                nom: 'forumphp2007_flex.pdf',
+            },
+        ],
+        conferenciers: [
+            {
+                code: 'mchaize',
+                nom: 'Michaël CHAIZE',
+            },
+        ],
+    }, {
+        horaire: '11h30 - 12h30',
+        nom: 'Retour d\'expérience de la Chambre de Commerce de Paris : du Chaos à l\'Agilité avec PHP',
+        resume: '',
+        talks: [
+            {
+                code: 'pdf',
+                nom: 'ForumPHP2007-Agile.pdf',
+            },
+        ],
+        podcast: 'http://audiobank.tryphon.org/casts/jixgaa37',
+        conferenciers: [
+            {
+                code: 'rrougeron',
+                nom: 'Raphaël ROUGERON',
+            },
+        ],
+    }, {
+        horaire: '13h45 - 14h',
+        nom: 'Etat des lieux de PHP en France et annonce presse',
+        resume: '',
+        interactif: '/templates/forumphp2007/talks/le_marche_php_en_france/le_marche_php_en_france.htm',
+        podcast: 'http://audiobank.tryphon.org/casts/2x4dye7s',
+        talks: [
+            {
+                code: 'pdf',
+                nom: 'ecosystemePHP2007.pdf',
+            },
+            {
+                code: 'pdf',
+                nom: 'presentation_wampserver.pdf',
+            },
+        ],
+        conferenciers: [
+            {
+                code: 'cpierredegeyer',
+                nom: 'Cyril PIERRE de GEYER',
+            },
+            {
+                code: 'Guest',
+                nom: 'Guest',
+            },
+        ],
+    }, {
+        horaire: '14h - 15h',
+        nom: 'Retour d\'expérience de l\'integration de PHP chez les grands comptes',
+        resume: '',
+        podcast: 'http://audiobank.tryphon.org/casts/s9l0ojri',
+        talks: [
+            {
+                code: '',
+                nom: '',
+            },
+        ],
+        conferenciers: [
+            {
+                code: 'diachetta',
+                nom: 'David IACHETTA',
+            },
+            {
+                code: 'vdupont',
+                nom: 'Vincent DUPONT',
+            },
+        ],
+    }, {
+        horaire: '15h - 16h',
+        nom: 'Audit de code, retour d\'experience',
+        resume: '',
+        podcast: 'http://audiobank.tryphon.org/casts/4xe8gg9w',
+        talks: [
+            {
+                code: 'pdf',
+                nom: 'ForumPHP2007_audit.pdf',
+            },
+        ],
+        conferenciers: [
+            {
+                code: 'ncollignon',
+                nom: 'Nicolas COLLIGNON',
+            },
+            {
+                code: 'lnyffenegger',
+                nom: 'Louis NYFFENEGGER',
+            },
+        ],
+    }, {
+        horaire: '16h15 - 17h15',
+        nom: 'Accessibilite : le developpeur PHP aux premières loges',
+        resume: '',
+        talks: [
+            {
+                code: 'pdf',
+                nom: 'forumphp2007_accessibilite.pdf',
+            },
+        ],
+        conferenciers: [
+            {
+                code: 'sdeschamps',
+                nom: 'Stéphane DESCHAMPS',
+            },
+        ],
+    },
+] %}
+
+{% set sessions_techniques = [
+    {
+        horaire: '9h - 9h10',
+        nom: 'Keynote',
+        resume: '',
+        talks: [
+        {
+            code: '',
+            nom: '',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'alimbourg',
+            nom: 'Arnaud LIMBOURG',
+        },
+        {
+            code: 'gponcon',
+            nom: 'Guillaume PON&Ccedil;ON',
+        },
+    ],
+    },
+    {
+        horaire: '9h15 - 10h15',
+        nom: 'Web 2.0 : Optimisation d\'un site Web 2.0 : le cas de wat.tv',
+        resume: '',
+        talks: [
+        {
+            code: 'pdf',
+            nom: 'PHPForum-wat.tv.pdf',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'jfbustarret',
+            nom: 'Jean-François BUSTARRET',
+        },
+    ],
+    },
+    {
+        horaire: '10h45 - 11h45',
+        nom: 'Optimiser les performances avec un cache d\'OpCode - Le cas Facebook avec APC',
+        resume: '',
+        talks: [
+        {
+            code: 'pdf',
+            nom: 'apc@facebook.pdf',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'bshire',
+            nom: 'Brian SHIRE',
+        },
+    ],
+    },
+    {
+        horaire: '11h45 - 12h45',
+        nom: 'Web 2.0 : Rich Desktop Applications : l\'evolution des methodes de programmation côte serveur',
+        resume: '',
+        talks: [
+        {
+            code: 'pdf',
+            nom: 'ForumPHP2007-RDAs.pdf',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'rrougeron',
+            nom: 'Raphaël ROUGERON',
+        },
+    ],
+    },
+    {
+        horaire: '14h - 15h',
+        nom: 'Web 2.0 : Flex et PHP: techniques d\'intégration pour faire communiquer un client riche et un backoffice PHP',
+        resume: '',
+        talks: [
+        {
+            code: '',
+            nom: '',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'timbert',
+            nom: 'Thibault Imbert',
+        },
+        {
+            code: 'mchaize',
+            nom: 'Michael CHAIZE',
+        },
+    ],
+    },
+    {
+        horaire: '15h - 16h',
+        nom: 'Sécurite MySQL',
+        resume: '',
+        talks: [
+        {
+            code: 'pdf',
+            nom: 'securite.afup2007.pdf',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'dseguy',
+            nom: 'Damien SEGUY',
+        },
+    ],
+    },
+    {
+        horaire: '16h30 - 17h30',
+        nom: 'PHP::$unicode->i18n() : comment PHP 5.3 et PHP 6 vont changer la donne',
+        resume: '',
+        talks: [
+        {
+            code: 'pdf',
+            nom: 'php-i18n.pdf',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'azmievski',
+            nom: 'Andrei ZMIEVSKI',
+        },
+    ],
+    },
+] %}
+
+{% set sessions_atelier_1 = [
+    {
+        horaire: '9h - 10h30',
+        nom: 'Remanier son code pour PHP6',
+        resume: '',
+        talks: [
+        {
+            code: '',
+            nom: '',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'ppenet',
+            nom: 'Perrick PENET',
+        },
+    ],
+    },
+    {
+        horaire: '11h - 12h30',
+        nom: 'Utiliser pleinement le navigateur & les nouveaux clients Web',
+        resume: '',
+        talks: [
+        {
+            code: '',
+            nom: '',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'edaspet',
+            nom: 'Eric DASPET',
+        },
+    ],
+    },
+    {
+        horaire: '14h - 15h30',
+        nom: 'PHP\'s Dirty Secrets',
+        resume: '',
+        talks: [
+        {
+            code: '',
+            nom: '',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'drethans',
+            nom: 'Derick RETHANS',
+        },
+    ],
+    },
+] %}
+
+{% set sessions_atelier_2 = [
+    {
+        horaire: '9h - 10h30',
+        nom: 'Optimisation MySQL',
+        resume: '',
+        talks: [
+        {
+            code: '',
+            nom: '',
+        },
+    ],
+        conferenciers: [
+        {
+            code: 'odasini',
+            nom: 'Olivier DASINI',
+        },
+    ],
+    }, {
+        horaire: '11h - 12h30',
+        nom: 'Framework : Simplifier le developpement des interfaces bases de donnees avec Symfony',
+        resume: '',
+        talks: [
+            {
+                code: '',
+                nom: '',
+            },
+        ],
+        conferenciers: [
+            {
+                code: 'fpotencier',
+                nom: 'Fabien POTENCIER',
+            },
+        ],
+    }, {
+        horaire: '14h - 15h30',
+        nom: 'Les technos Microsoft pour les applications PHP',
+        resume: '',
+        talks: [
+            {
+                code: '',
+                nom: '',
+            },
+        ],
+        conferenciers: [
+            {
+                code: 'clauer',
+                nom: 'Christophe LAUER',
+            },
+        ],
+    },
+] %}
+
+{% include 'legacy/forumphp2007/entete.html.twig' %}
+        <div id="cartouche-milieu">
+            <img id="cartouchepage" src="/templates/forumphp2007/images/cartouche-page.png" usemap="#m_cartouchepage" />
+            <map name="m_cartouchepage">
+            <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="{{ path('legacy_event', {year: 2007, page: 'inscriptions.php'}) }}" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+            <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="{{ path('legacy_event', {year: 2007, page: 'acces.php'}) }}" title="Accès" alt="Accès" >
+            </map>
+            <h1>Les résumés de chaque session du Forum PHP 2007</h1>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><b>9 Novembre : Journée Fonctionnelle</b></td>
+    </tr>
+    {% for session in sessions_fonctionnelles %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <b>{{ session.nom|raw }}</b></td>
+            <td align="right">
+			    {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}?#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+				{% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2007/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+		{% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td>...
+      </td>
+      <td align="left" valign="top">
+	    {% for talk in session.talks %}
+            {% if talk.nom and talk.code != 'html' %}
+    			<a href="/templates/forumphp2007/talks/{{ talk.nom|raw }}">télécharger la présentation {{ talk.code|raw }}</a><br />
+			{% endif %}
+            {% if talk.code == 'html' %}
+    			<a href="{{ talk.nom|raw }}">Voir cette présentation</a><br />
+			{% endif %}
+		{% endfor %}
+      </td>
+    </tr>
+      {% if session.podcast is defined %}
+        <tr>
+           <td><a href="{{ session.podcast }}" title="podcast session {{ session.nom|raw }}">Ecouter la session</a></td>
+        </tr>
+      {% endif %}
+      {% if session.interactif is defined %}
+        <tr>
+           <td><a href="{{ session.interactif }}" title="session slides plus audio {{ session.nom|raw }}">Voir les slides avec l'audio</a></td>
+        </tr>
+      {% endif %}
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><b>10 Novembre : Journée Technique</b></td>
+    </tr>
+    {% for session in sessions_techniques %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <b>{{ session.nom|raw }}</b></td>
+            <td align="right">
+			    {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}?#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+				{% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2007/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+		{% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+      </td>
+      <td align="left" valign="top">
+        {% for talk in session.talks %}
+            {% if talk.nom %}
+    			<a href="/templates/forumphp2007/talks/{{ talk.nom|raw }}">télécharger la présentation {{ talk.code|raw }}</a><br />
+			{% endif %}
+		{% endfor %}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+<a name="jour2-1"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (ateliers 1)</strong></td>
+    </tr>
+    {% for session in sessions_atelier_1 %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <strong>{{ session.nom|raw }}</strong></td>
+            <td align="right">
+			    {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}?#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+				{% endfor %}
+		    	</td>
+          </tr>
+	    <tr>
+	      <td>
+	      </td>
+	      <td align="left" valign="top">
+            {% for talk in session.talks %}
+                {% if talk.nom %}
+	    			<a href="/templates/forumphp2007/talks/{{ talk.nom|raw }}">télécharger la présentation {{ talk.code|raw }}</a><br />
+				{% endif %}
+			{% endfor %}
+	      </td>
+	    </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2007/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+		{% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+	    <tr>
+	      <td>
+	      </td>
+	      <td align="left" valign="top">
+            {% for talk in session.talks %}
+              {% if talk.nom %}
+	    			<a href="/templates/forumphp2007/talks/{{ talk.nom|raw }}">télécharger la présentation {{ talk.code|raw }}</a><br />
+				{% endif %}
+			{% endfor %}
+	      </td>
+	    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <a name="jour2-2"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (ateliers 2)</strong></td>
+    </tr>
+    {% for session in sessions_atelier_2 %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <strong>{{ session.nom|raw }}</strong></td>
+            <td align="right">
+			    {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}?#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+				{% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2007/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+		{% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+<p>Auteur des résumés :<br />
+<strong>Henry Cesbron Lavau</strong>, rédacteur expert</p>
+
+</div>
+{% include 'legacy/forumphp2007/pied_de_page.html.twig' %}

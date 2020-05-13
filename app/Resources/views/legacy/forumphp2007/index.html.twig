@@ -1,0 +1,80 @@
+{% set actualites = [{
+    titre: 'Rendez-vous en 2008',
+    contenu: '<p>La page est tournée pour le Forum PHP 2007.</p><p>Merci aux quelques 450 visiteurs qui ont su braver les grèves pour venir écouter les meilleurs conférenciers PHP francophones et internationaux.</p>',
+    date: '22/11/2007',
+}
+] %}
+
+{% set infos_importantes = [
+    {
+        titre: 'Le podcast !',
+        contenu: '<p>Cette année l\'AFUP vous propose les podcast des conférences&nbsp;! ' ~
+        ' Parfait si vous désirez les réécouter en regardant les slides ou si vous n\'avez pu vous rendre au Forum.</p>' ~
+        '<p>Tout se passe à l\'adresse suivante : <a href="http://feeds.feedburner.com/forumphp2007" title="flux des podcasts">http://feeds.feedburner.com/forumphp2007</a>.</p><p>En allant directement sur cette page vous pourrez ajouter le flux à votre lecteur. Le podcast est une réalisation <a href="http://www.tryphon.org">http://www.tryphon.org</a></p>'
+    }, {
+        titre: 'Aperçu vidéo',
+        contenu: '<p><object type="application/x-shockwave-flash" data="/pages/video/player_flv.swf" height="252" width="330">
+            <param name="movie" value="/pages/video/player_flv.swf" height="252" width="330" />
+            <param name=FlashVars value="flv=/pages/video/forumphp2007.flv&amp;showstop=1&amp;bgcolor1=ffffff&amp;bgcolor2=cccccc&amp;buttoncolor=999999&amp;buttonovercolor=0&amp;slidercolor1=cccccc&amp;slidercolor2=999999&amp;sliderovercolor=666666&amp;playercolor=eeeeee&amp;title=Lecture_video&amp;height=252&amp;width=330" />
+            <param name="wmode" value="transparent" />
+        </object>
+        </p><p>Vous avez raté le Forum PHP 2007 ? Pour très bientôt un <a href="' ~ path('legacy_event', {year: 2007, page: 'resumes.php'}) ~ '">résumé complet avec les présentations</a> des conférenciers.</p>'
+    }, {
+        titre: 'Eyrolles offre des livres !',
+        contenu: '<p>Notre partenaire Eyrolles offre <a href="http://www.eyrolles.com/Accueil/Livre/9782212121674/livre-php-5-avance.php">dix exemplaires de son best seller PHP 5 avancé</a> ainsi que cinq exemplaires du livre <a href="http://www.eyrolles.com/Informatique/Livre/9782212121148/livre-securite-php-5-et-mysql.php">Sécurité PHP 5</a>.</p>' ~
+        '</p><p align="center"><a href="http://www.eyrolles.com/Accueil/Livre/9782212121674/livre-php-5-avance.php"><img src="https://afup.org/templates/forumphp2007/images/livre-php5-avance.gif" border=0></a>' ~
+        ' <a href="http://www.eyrolles.com/Informatique/Livre/9782212121148/livre-securite-php-5-et-mysql.php"><img src="https://afup.org/templates/forumphp2007/images/livre-php5securite.gif" border=0></a></p>' ~
+        '<p>Les livres seront offert par tirage au sort lors des conférences.</p>'
+    }
+] %}
+
+{% include 'legacy/forumphp2007/entete.html.twig' %}
+<div id="cartouche-gauche">
+    <div id="cartouche">
+        <img name="cartouchehaut" src="/templates/forumphp2007/images/cartouche-haut.png" alt="" height="92" width="231" />
+        <div class="a-interieur">
+            <p>ASIEM<br />Paris 7ème<br />
+        <b>21 et 22 novembre 2007</b></p>
+            <p>Venez suivre la septième édition du Forum PHP organisé par l'Association Française des Utilisateurs de PHP.</p>
+        </div>
+        <a href="{{ path('legacy_event', {year: 2007, page: 'acces.php'}) }}"><img name="cartoucheacces" src="/templates/forumphp2007/images/cartouche-acces.png" alt="" border="0" height="60" width="88" /></a><a href="{{ path('legacy_event', {year: 2007, page: 'inscriptions.php'}) }}"><img name="cartoucheinscriptions" src="/templates/forumphp2007/images/cartouche-inscriptions.png" alt="" border="0" height="60" width="143" /></a></div>
+</div>
+
+<div id="cartouche-droit">
+    <img id="seront-presents" src="/templates/forumphp2007/images/entete-seront-presents.png" alt="Ils seront présents" />
+    <br /><br />
+    <a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#rlerdorf"><span class="vip">Rasmus LERDORF</span></a> -
+    <i>Inventeur de PHP</i>
+    <br />
+    <a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#azmievski"><span class="vip">Andrei ZMIEVSKI</span></a> -
+    <i>Membre du PHPGroup</i>
+    <br /><br />
+    <a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#afup"><span class="vip">De nombreux acteurs français importants :</span></a><br />
+    <i>Romain BOURDON (WampServer)<br />Arnaud LIMBOURG (PEAR)<br />Perrick PENET (SimpleTest)<br />Cyril PIERRE de GEYER ("PHP 5 avancé")<br />Guillaume PON&Ccedil;ON ("Best Practices PHP5")<br />Damien SEGUY (NeXen.net)</i>
+    <br /><br />
+</div>
+
+<div class="spacer"></div>
+
+<div id="cartouche-milieu">
+  <table width="100%" border="0" cellspacing="0" cellpadding="8">
+    <tr>
+      <td width="231" valign="top">
+	  <h2>Actualités</h2>
+		{% for actualite in actualites %}
+			<h3 class="actualite">{{ actualite.titre }}</h3>
+			<div>{{ actualite.contenu|raw }}</div>
+			<div class="maj">Mise à jour : {{ actualite.date }}</div>
+		{% endfor %}
+
+      </td>
+      <td valign="top">
+        {% for info_importante in infos_importantes %}
+			<h2>{{ info_importante.titre }}</h2>
+			<div>{{ info_importante.contenu|raw }}</div>
+		{% endfor %}
+      </td>
+    </tr>
+  </table>
+</div>
+{% include 'legacy/forumphp2007/pied_de_page.html.twig' %}

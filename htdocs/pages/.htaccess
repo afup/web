@@ -226,7 +226,7 @@ RewriteRule ^phptourclermont2016/forum_planning.php$ https://event.afup.org/foru
 RewriteRule ^phptourclermont2016.*$ https://event.afup.org/archives/  [L,R=301]
 
 ## Moved to Symfony
-RewriteRule ^(forumphp2005|forumphp2006).*$ /app.php [END]
+RewriteRule ^forumphp(2005|2006|2007|2008|2009).*$ /app.php [END]
 
 RewriteRule ^questionnaire.*$ https:///barometre.afup.org [R=302]
 

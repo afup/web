@@ -1,12 +1,12 @@
-{include file="entete.html"}
+{% include 'legacy/forumphp2007/entete.html.twig' %}
 <div id="cartouche-milieu">
-    <img id="cartouchepage" src="{$chemin_template}images/cartouche-page.png" usemap="#m_cartouchepage" />
+    <img id="cartouchepage" src="/templates/forumphp2007/images/cartouche-page.png" usemap="#m_cartouchepage" />
     <map name="m_cartouchepage">
-    <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="inscription.php" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
-    <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="acces.php" title="Accès" alt="Accès" >
+    <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="{{ path('legacy_event', {year: 2007, page: 'inscriptions.php'}) }}" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+    <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="{{ path('legacy_event', {year: 2007, page: 'acces.php'}) }}" title="Accès" alt="Accès" >
     </map>
     <h1>Acc&egrave;s</h1>
-	<p><a href="acces.php"><img src="{$chemin_template}images/acces_asiem_details.png" alt="cliquez sur la cible pour plus d'infos" border="0" /></a><br />
+	<p><a href="{{ path('legacy_event', {year: 2007, page: 'acces.php'}) }}"><img src="/templates/forumphp2007/images/acces_asiem_details.png" alt="cliquez sur la cible pour plus d'infos" border="0" /></a><br />
     <span class="texte">Cliquez sur l'image revenir &agrave; la carte globale.</span></p>
 	<p><br />
     <span class="titre">Adresse :</span><span class="titreauteur"><br />
@@ -21,4 +21,4 @@
 	ou même <a href="http://maps.google.com/maps?f=q&hl=en&q=6,+rue+Albert+de+Lapparent+75007+Paris&sll=37.0625,-95.677068&sspn=33.435463,58.359375&ie=UTF8&ll=48.849072,2.308202&spn=0.006778,0.014248&z=16&iwloc=addr&om=1" target="_blank">Google Maps</a>
 	pour voir comment vous y rendre.</p>
 </div>
-{include file="pied_de_page.html"}
+{% include 'legacy/forumphp2007/pied_de_page.html.twig' %}
