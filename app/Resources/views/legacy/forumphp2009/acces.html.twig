@@ -1,7 +1,9 @@
-{include file="entete.html"}
+{% extends 'legacy/forumphp2009/base.twig' %}
+
+{% block content %}
 <div id="cartouche-milieu">
-	{include file="cartouche.html"}
-  <img src="{$chemin_template}images/logo_cite_des_sciences.jpg" align="right" border="0" style="margin: 20px;" />
+	{% include 'legacy/forumphp2009/cartouche.html.twig' %}
+  <img src="/templates/forumphp2009/images/logo_cite_des_sciences.jpg" align="right" border="0" style="margin: 20px;" />
     <h1>Acc&egrave;s</h1>
 	
 	<p><br />
@@ -32,7 +34,7 @@ Parc auto payant : entrée quai de la Charente.
 	<a href="http://maps.yahoo.com/" target="_blank">Yahoo Maps</a>
 	ou même <a href="http://maps.google.com/maps?f=q&source=s_q&hl=fr&geocode=&q=Cit%C3%A9+des+Sciences&sll=48.896098,2.386973&sspn=0.008365,0.02075&g=Cit%C3%A9+des+Sciences,+30+Avenue+Corentin+Cariou,+75019+Paris,+Paris,+Ile-de-France,+France&ie=UTF8&ll=48.896521,2.385943&spn=0.008365,0.02075&z=16&iwloc=B" target="_blank">Google Maps</a>
 	pour voir comment vous y rendre.</p>
-  <p><img src="{$chemin_template}images/plan-cite.jpg" alt="cliquez sur la cible pour plus d'infos" border="0" /><br />
+  <p><img src="/templates/forumphp2009/images/plan-cite.jpg" alt="cliquez sur la cible pour plus d'infos" border="0" /><br />
 </p>
 </div>
-{include file="pied_de_page.html"}
+{% endblock %}

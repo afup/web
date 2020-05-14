@@ -1,0 +1,50 @@
+{% extends 'legacy/forumphp2009/base.twig' %}
+{% block content %}
+<div id="cartouche-milieu">
+	{% include 'legacy/forumphp2009/cartouche.html.twig' %}
+    <h1>Les projets PHP</h1>
+<img src="/templates/forumphp2009/images/visuel-projet.jpg" alt="barcamp" width="169" height="126" align="right" longdesc="{{ path('legacy_event', {year: 2009, page: 'projets-php.php'}) }}" />
+
+<div>A l'occasion de ce forum PHP, l'AFUP va mettre en avant les <strong>projets Open Source français développés autour de PHP</strong>
+(frameworks, applicatifs, utilitaires, ...).
+<p> Nous allons donc mettre à disposition des personnes qui portent ces projets un espace à proximité des amphithéâtres et salles où se dérouleront les conférences. </p>
+</div>
+
+
+  <h3>Les projets présents</h3>
+  <ul>
+    {% for projet in projets %}
+    <li><a href="#{{ projet.session_id }}" > {{ projet.titre|raw }}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+  <div class="sessions">
+      {% for projet in projets %}
+    {% if projet.abstract is defined %}
+  <div class="session {{ projet.journee }}">
+    <a name="{{ projet.session_id }}" ></a>
+    <h3>
+      {{ projet.titre|raw }}
+    </h3>
+    <div class="spacer"></div>
+    <div class="details">
+      <div class="abstract">
+        {{ projet.abstract|raw }}
+      </div>
+        <div class="conferenciers">
+        {% for conferencier in projet.conferenciers %}
+                <div class="conferencier">
+              <a href="{{ path('legacy_event', {year: 2009, page: 'conferenciers.php'}) }}?type=projet#{{ conferencier.conferencier_id }}"><img src="/templates/forumphp2009/images/intervenants/{{ conferencier.conferencier_id }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+              <br />
+                  <a href="{{ path('legacy_event', {year: 2009, page: 'conferenciers.php'}) }}?type=projet#{{ conferencier.conferencier_id }}&type=projet">{{ conferencier.prenom|raw }} {{ conferencier.nom|raw }}</a>
+                </div>
+      {% endfor %}
+      <div class="spacer"></div>
+    </div>
+      </div>
+  </div>
+    {% endif %}
+    {% endfor %}
+    </div>
+{% endblock %}
+

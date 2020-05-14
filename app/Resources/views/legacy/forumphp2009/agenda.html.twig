@@ -1,6 +1,8 @@
-{include file="entete.html"}
+{% extends 'legacy/forumphp2009/base.twig' %}
+
+{% block content %}
         <div id="cartouche-milieu">
-{include file="cartouche.html"}
+{% include 'legacy/forumphp2009/cartouche.html.twig' %}
           <script type="text/javascript" src="../templates/forumphp2008/jquery-1.2.6.min.js"></script>
           <script type="text/javascript" src="../templates/forumphp2008/jquery.journee.js"></script>
           <h1>
@@ -14,8 +16,7 @@
             <li>Fermeture du Forum : vers 18h30</li>
           </ul>
           <div class="bloc_jour">
-{$agenda}
+{{ agenda|raw }}
           </div>
         </div>
-
-{include file="pied_de_page.html"}
+{% endblock %}

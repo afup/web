@@ -1,6 +1,7 @@
-{include file="entete.html"}
+{% extends 'legacy/forumphp2009/base.twig' %}
+{% block content %}
 <div id="cartouche-milieu">
-	{include file="cartouche.html"}
+	{% include 'legacy/forumphp2009/cartouche.html.twig' %}
     <h1>Rendez-vous en 2010</h1>
     <p>
     	D&eacute;sol&eacute; mais le Forum PHP 2009 est fini ;-)
@@ -9,4 +10,4 @@
 		A l'ann&eacute;e prochaine...
 	</p>
 </div>
-{include file="pied_de_page.html"}
+{% endblock %}

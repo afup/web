@@ -1,0 +1,40 @@
+{% extends 'legacy/forumphp2009/base.twig' %}
+
+{% block content %}
+<div id="cartouche-milieu">
+  {% include 'legacy/forumphp2009/cartouche.html.twig' %}
+  <h1>&nbsp;&nbsp;Les conf&eacute;renciers</h1>
+
+  <div class="conferenciers">
+    {% for conferencier in conferenciers %}
+    <div class="conferencier">  
+      <div class="photo" >
+      <img src="/templates/forumphp2009/images/intervenants/{{ conferencier.conferencier_id }}.jpg" border="0" align="left" />
+    </div> 
+    <div  class="body">  
+      <a name="{{ conferencier.conferencier_id }}" ></a>
+      <h3>
+        {{ conferencier.prenom|raw }} {{ conferencier.nom|raw }}
+      </h3>
+        <div class="societe">
+      {{ conferencier.societe|raw }}
+    </div>
+    <div class="spacer"></div>
+    <div class="biographie">
+      {{ conferencier.biographie|raw }}
+    </div>
+      <ul class="conferencier_sessions">
+      {% for session in conferencier.sessions %}
+      <li class="conferencier_session">
+      <a href="{{ path('legacy_event', {year: 2009, page: 'sessions.php'}) }}#{{ session.id }}">{{ session.titre|raw }}</a>
+    </li>
+      {% endfor %}
+    </ul>    
+         </div>
+    <div class="spacer"></div>
+  </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

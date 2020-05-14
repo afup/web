@@ -430,6 +430,12 @@ services:
         arguments:
           - 'Afup\Site\Forum\AppelConferencier'
 
+    Afup\Site\Forum\Forum:
+        class: Afup\Site\Forum\Forum
+        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
+        arguments:
+          - 'Afup\Site\Forum\Forum'
+
     Afup\Site\Utils\Pays:
         class: Afup\Site\Utils\Pays
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']

@@ -13,6 +13,31 @@ legacy_forum2008_sessions:
   defaults:
     _controller: AppBundle\Controller\Legacy\Forum2008SessionsAction
 
+legacy_forum2009_agenda:
+  path: /pages/forumphp2009/agenda.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2009AgendaAction
+
+legacy_forum2009_conferenciers:
+  path: /pages/forumphp2009/conferenciers.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2009ConferenciersAction
+
+legacy_forum2009_resumes:
+  path: /pages/forumphp2009/resumes.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2009ResumesAction
+
+legacy_forum2009_projets_php:
+  path: /pages/forumphp2009/projets-php.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2009ProjetsPhpAction
+
+legacy_forum2009_sessions:
+  path: /pages/forumphp2009/sessions.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2009SessionsAction
+
 legacy_event:
   path: /pages/forumphp{year}/{page}
   defaults:
@@ -20,4 +45,4 @@ legacy_event:
     page: index.php
   requirements:
     year: '200[5-9]'
-    page: '[a-z0-9_]+.php'
+    page: '[a-z0-9-_]+.php'

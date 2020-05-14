@@ -1,0 +1,21 @@
+{% extends 'legacy/forumphp2009/base.twig' %}
+
+{% block content %}
+<div id="cartouche-milieu">
+	{% include 'legacy/forumphp2009/cartouche.html.twig' %}
+    <h1>Sponsor Gold</h1>
+    {% include 'legacy/forumphp2009/liste_personnes.html.twig' with {personnes: sponsors_gold} %}<br />
+
+    <h1>Sponsors Silver</h1>
+    {% include 'legacy/forumphp2009/liste_personnes.html.twig' with {personnes: sponsors_silver} %}<br />
+
+    <h1>Sponsors Bronze</h1>
+    {% include 'legacy/forumphp2009/liste_personnes.html.twig' with {personnes: sponsors_bronze} %}<br />
+
+    <h1>Les partenaires</h1>
+    {% include 'legacy/forumphp2009/liste_personnes.html.twig' with {personnes: partenaires} %}
+    <p>
+     <a href="/templates/forumphp2009/pdf/Forum-PHP-2009-dossier-sponsor.pdf">Télécharger notre dossier sponsors </a>
+    </p>
+</div>
+{% endblock %}
