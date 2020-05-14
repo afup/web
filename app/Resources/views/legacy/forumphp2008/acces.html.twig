@@ -1,8 +1,8 @@
-{include file="entete.html"}
+{% include 'legacy/forumphp2008/entete.html.twig' %}
 <div id="cartouche-milieu">
-	{include file="cartouche.html"}
+    {% include 'legacy/forumphp2008/cartouche.html.twig' %}
     <h1>Acc&egrave;s</h1>
-	<p><a href="acces2.php"><img src="{$chemin_template}images/acces_asiem.png" alt="cliquez sur la cible pour plus d'infos" border="0" /></a><br />
+	<p><a href="{{ path('legacy_event', {year: 2008, page: 'acces2.php'}) }}"><img src="/templates/forumphp2008/images/acces_asiem.png" alt="cliquez sur la cible pour plus d'infos" border="0" /></a><br />
 	<span class="texte">Cliquez sur l'image pour agrandir.</span></p>
 	<p><br />
     <span class="titre">Adresse :</span><span class="titreauteur"><br />
@@ -17,4 +17,4 @@
 	ou même <a href="http://maps.google.com/maps?f=q&hl=en&q=6,+rue+Albert+de+Lapparent+75007+Paris&sll=37.0625,-95.677068&sspn=33.435463,58.359375&ie=UTF8&ll=48.849072,2.308202&spn=0.006778,0.014248&z=16&iwloc=addr&om=1" target="_blank">Google Maps</a>
 	pour voir comment vous y rendre.</p>
 </div>
-{include file="pied_de_page.html"}
+{% include 'legacy/forumphp2008/pied_de_page.html.twig' %}

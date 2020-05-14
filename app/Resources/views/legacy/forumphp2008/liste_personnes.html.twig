@@ -1,0 +1,43 @@
+<table border="0" cellspacing="0" cellpadding="6" width="100%">
+{% for personne in personnes %}
+  <tr>
+    <td bgcolor="#E1E4EF">
+      <table border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tr>
+          <td align="left">
+            {% if personne.nom %}<b>{% if personne.code is defined %}<a href="{{ path('legacy_event', {year: 2008, page: 'conferenciers.php'}) }}#{{ personne.code }}">{% else %}<a href="#">{% endif %}{{ personne.nom }}</a></b>{% endif %}
+            {% if personne.tache is defined %}&nbsp;<i class="gris">{{ personne.tache }}</i>{% endif %}
+          </td>
+{% if personne.site %}
+          <td align="right"><a href="{{ personne.site }}" target="_blank">{{ personne.site }}</a></td>
+{% else %}
+          <td>&nbsp;</td>
+{% endif %}
+        </tr>
+      </table>
+    <td>
+  </tr>
+  <tr>
+    <td>
+      <table border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tr>
+          <td align="justify" valign="top">
+	    {{ personne.texte|raw }}
+          </td>
+          <td align="center" valign="middle" width="150px">
+            <a href="{{ personne.site }}">
+{% if personne.logo %}
+              <img src="/templates/forumphp2008/images/{{ personne.logo }}" border="0"/>
+{% elseif personne.image %}
+              <img src="/templates/forumphp2008/images/{{ personne.image }}" border="0"/>
+{% else %}
+              &nbsp;
+{% endif %}
+            </a>
+          </td>
+        </tr>
+      </table>
+    <td>
+  </tr>
+{% endfor %}
+</table>

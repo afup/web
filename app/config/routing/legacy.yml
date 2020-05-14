@@ -1,3 +1,18 @@
+legacy_forum2008_conferenciers:
+  path: /pages/forumphp2008/conferenciers.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2008ConferenciersAction
+
+legacy_forum2008_resumes:
+  path: /pages/forumphp2008/resumes.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2008ResumesAction
+
+legacy_forum2008_sessions:
+  path: /pages/forumphp2008/sessions.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2008SessionsAction
+
 legacy_event:
   path: /pages/forumphp{year}/{page}
   defaults:

@@ -424,6 +424,12 @@ services:
         tags:
           - {name: form.type}
 
+    Afup\Site\Forum\AppelConferencier:
+        class: Afup\Site\Forum\AppelConferencier
+        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
+        arguments:
+          - 'Afup\Site\Forum\AppelConferencier'
+
     Afup\Site\Utils\Pays:
         class: Afup\Site\Utils\Pays
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
@@ -586,5 +592,6 @@ services:
             - {url: 'mysql://%database_user%:%database_password%@%database_host%:%database_port%/%database_name%?charset=utf8mb4'}
             - '@Doctrine\DBAL\Configuration'
 
-    AppBundle\Controller\Legacy\LegacyEventAction:
+    AppBundle\Controller\Legacy\:
+        resource: '../../sources/AppBundle/Controller/Legacy/*'
         autowire: true

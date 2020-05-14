@@ -1,9 +1,9 @@
-{include file="entete.html"}
+{% include 'legacy/forumphp2008/entete.html.twig' %}
 	<div id="cartouche-milieu">
-	{include file="cartouche.html"}
+    {% include 'legacy/forumphp2008/cartouche.html.twig' %}
 
-	<script type="text/javascript" src="{$chemin_template}jquery-1.2.6.min.js"></script>
-	<script type="text/javascript" src="{$chemin_template}jquery.journee.js"></script>
+	<script type="text/javascript" src="/templates/forumphp2008/jquery-1.2.6.min.js"></script>
+	<script type="text/javascript" src="/templates/forumphp2008/jquery.journee.js"></script>
 
 	<h1>Le programme des deux jours</h1>
 
@@ -59,45 +59,45 @@
     </ul>
 
     <div class="sessions">
-    {foreach from=$sessions item=session} 
-	<div class="session {$session.journee}">
-		<a name="{$session.session_id}" />
+    {% for session in sessions %}
+	<div class="session {{ session.journee }}">
+		<a name="{{ session.session_id }}" />
     	<div class="horaire">
-			{$session.debut|date_format:'%d/%m/%Y <strong>%H:%M'} - {$session.fin|date_format:'%H:%M'}</strong>
+			{{ session.debut|date('d/m/Y') }} <strong>{{ session.debut|date('H:i') }} - {{ session.fin|date('H:i') }}</strong>
 		</div>
     	<div class="salle">
-			{$session.nom_salle}
+			{{ session.nom_salle }}
 		</div>
     	<div class="journee">
-    		{foreach from=$session.journees item=journee}
-			<a href="#" class="{$journee}">{$journee}</a>
-			{/foreach}
+            {% for journee in session.journees %}
+			<a href="#" class="{{ journee }}">{{ journee }}</a>
+			{% endfor %}
 		</div>
 		<div class="spacer"></div>
 		<h3>
-			{$session.titre}
+			{{ session.titre|raw }}
 		</h3>
 		<div class="details">
 			<div class="abstract">
-				{$session.abstract}
+				{{ session.abstract|raw }}
 			</div>
 	   		<div class="conferenciers">
-		    {foreach from=$session.conferenciers item=conferencier} 
+                {% for conferencier in session.conferenciers %}
 	          		<div class="conferencier">
-			    		<a href="conferenciers.php#{$conferencier.conferencier_id}"><img src="{$chemin_template}images/intervenants/{$conferencier.conferencier_id}.jpg" alt="{$conferencier.nom}" border="0" /></a>
+			    		<a href="{{ path('legacy_event', {year: 2008, page: 'conferenciers.php'}) }}#{{ conferencier.conferencier_id }}}"><img src="/templates/forumphp2008/images/intervenants/{{ conferencier.conferencier_id }}}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
 			    		<br />
-	          			<a href="conferenciers.php#{$conferencier.conferencier_id}">{$conferencier.prenom} {$conferencier.nom}</a>
+	          			<a href="{{ path('legacy_event', {year: 2008, page: 'conferenciers.php'}) }}#{{ conferencier.conferencier_id }}}">{{ conferencier.prenom|raw }} {{ conferencier.nom|raw }}</a>
 	          		</div>
-			{/foreach}
+			{% endfor %}
 			<div class="spacer"></div>
 		</div>
    		</div>
 	</div>
-    {/foreach} 
+    {% endfor %}
 	</div>
 
 	<p><em>Le programme ci-dessus est donn&eacute; &agrave; titre indicatif : il peut encore &eacute;voluer.</em></p>
 
 
 </div>
-{include file="pied_de_page.html"}
+{% include 'legacy/forumphp2008/pied_de_page.html.twig' %}
