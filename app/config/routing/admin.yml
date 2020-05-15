@@ -45,6 +45,10 @@ admin_speaker_routes:
   resource: "admin_speaker.yml"
   prefix: /speaker
 
+admin_planete_routes:
+  resource: "admin_planete.yml"
+  prefix: /planete
+
 member_slack_invite:
   path: /member/slack-invite
   defaults: {_controller: AppBundle:MemberShip:slackInviteRequest}

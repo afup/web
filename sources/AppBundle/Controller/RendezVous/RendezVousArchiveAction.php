@@ -73,7 +73,7 @@ class RendezVousArchiveAction
 
         if ($formulaire->validate()) {
             if ($this->rendezVous->enregistrerInscrit($formulaire)) {
-                $this->log('Pré-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
+                $this->log('Pré-inscription au prochain rendez-vous de ' . $formulaire->exportValue('nom'));
 
                 return new Response($this->twig->render('legacy/rendezvous/message.html.twig', [
                         'resultat' => 'succes',

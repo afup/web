@@ -227,10 +227,18 @@ parameters:
                 planete_flux:
                     nom: 'Flux'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/planete/feeds'
+                    extra_routes:
+                      - admin_planete_feed_list
+                      - admin_planete_feed_add
+                      - admin_planete_feed_edit
 
                 planete_billet:
                     nom: 'Billets'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/planete/feed-articles'
+                    extra_routes:
+                      - admin_planete_feed_article_list
         divers:
             nom: 'Divers'
             niveau: 'ROLE_ADMIN'

@@ -47,8 +47,8 @@ class RendezVousIndexAction
         if (null !== $id) {
             $champsSlides = $this->rendezVous->obtenirSlides($id);
             foreach ($champsSlides as $i => $champSlide) {
-                $nextRendezVous['slides'.$i] = $champSlide['fichier'];
-                $nextRendezVous['urlslides'.$i] = $champSlide['url'];
+                $nextRendezVous['slides' . $i] = $champSlide['fichier'];
+                $nextRendezVous['urlslides' . $i] = $champSlide['url'];
             }
         }
 
@@ -94,7 +94,7 @@ class RendezVousIndexAction
             if ($formulaire->validate()) {
                 $ok = $this->rendezVous->enregistrerInscrit($formulaire);
                 if ($ok) {
-                    $this->log('Pré-inscription au prochain rendez-vous de '.$formulaire->exportValue('nom'));
+                    $this->log('Pré-inscription au prochain rendez-vous de ' . $formulaire->exportValue('nom'));
 
                     return new Response($this->twig->render('legacy/rendezvous/message.html.twig', [
                             'resultat' => 'succes',

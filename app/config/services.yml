@@ -442,6 +442,10 @@ services:
         tags:
           - {name: form.type}
 
+    AppBundle\Planete\FeedFormType:
+        autowire: true
+        autoconfigure: true
+
     Afup\Site\Forum\AppelConferencier:
         class: Afup\Site\Forum\AppelConferencier
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
@@ -637,3 +641,13 @@ services:
     AppBundle\Controller\RendezVous\:
         resource: '../../sources/AppBundle/Controller/RendezVous/*'
         autowire: true
+
+    PlanetePHP\FeedRepository:
+        autowire: true
+
+    PlanetePHP\FeedArticleRepository:
+        autowire: true
+
+    PlanetePHP\FeedCrawler:
+        autowire: true
+        public: true

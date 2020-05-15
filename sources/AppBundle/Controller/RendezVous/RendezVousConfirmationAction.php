@@ -84,7 +84,7 @@ class RendezVousConfirmationAction
 
         if ($formulaire->validate()) {
             if ($this->rendezVous->enregistrerConfirmationInscrit($formulaire)) {
-                $this->log('Confirmation pour le prochain rendez-vous de '.$formulaire->exportValue('nom'));
+                $this->log('Confirmation pour le prochain rendez-vous de ' . $formulaire->exportValue('nom'));
 
                 return new Response($this->twig->render('legacy/rendezvous/message.html.twig', [
                         'resultat' => 'succes',
