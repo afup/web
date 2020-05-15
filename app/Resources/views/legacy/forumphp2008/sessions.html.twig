@@ -1,0 +1,103 @@
+{% include 'legacy/forumphp2008/entete.html.twig' %}
+	<div id="cartouche-milieu">
+    {% include 'legacy/forumphp2008/cartouche.html.twig' %}
+
+	<script type="text/javascript" src="/templates/forumphp2008/jquery-1.2.6.min.js"></script>
+	<script type="text/javascript" src="/templates/forumphp2008/jquery.journee.js"></script>
+
+	<h1>Le programme des deux jours</h1>
+
+	<h2>8 d&eacute;cembre : Journ&eacute;e fonctionnelle</h2>
+  <ul>
+    <li>
+      
+      <strong>Temps forts</strong><br />
+         <ul>
+          <li>Retours d'exp&eacute;riences : Drupal, 20Minutes.fr et la BNP</li>
+          <li>Oracle c&ocirc;t&eacute; serveur, Javascript c&ocirc;t&eacute; client</li>
+          <li>Les solutions <cite>Haute disponibilit&eacute;</cite> avec MySQL</li>
+        </ul>
+      <br />
+      Orient&eacute;e fonctionnelle cette premi&egrave;re journ&eacute;e convient parfaitement aux
+      responsables informatiques et d&eacute;cideurs qui souhaitent d&eacute;couvrir le potentiel
+      de la plate-forme PHP. Les intervenants sont &agrave; la fois des entreprises utilisatrices
+      et des experts. De multiples d&eacute;monstrations et retours d'exp&eacute;rience auront
+      lieu.<br />
+    </li>
+    </ul>
+    
+    <h2>9 d&eacute;cembre : Journ&eacute;e technique</h2>
+    <ul>
+    <li>
+      
+      <strong>Temps fort</strong><br />
+        <ul>
+          <li>Conception d'une application PHP performante (analyse de code / d&eacute;couplage)</li>
+          <li>PHP 5.3 : les nouveaut&eacute;s du futur si proche</li>
+        </ul>
+      <p>
+      Cette seconde journ&eacute;e est destin&eacute;e &agrave; des profils techniques qui poss&egrave;dent
+      d&eacute;j&agrave; de solides connaissances sur PHP. Plac&eacute;e sous le signe de l'optimisation,
+      elle abordera diff&eacute;rentes probl&eacute;matiques telles que la s&eacute;curit&eacute; ou la gestion
+      des erreurs avec des d&eacute;monstrations et un parcours approfondi des codes
+      sources.
+      </p>
+      <p>
+      Deux salles annexes seront utilis&eacute;s pour des ateliers pratiques et des d&eacute;monstrations
+      (techniques, produits Open Source, projets communautaires) : un v&eacute;ritable espace pour
+      l'&eacute;change et l'&eacute;merveillement &agrave; la fois
+      des <a href="#" class="geek">d&eacute;veloppeurs</a> et des <a href="#" class="boss">d&eacute;cideurs</a>. 
+      </p>
+    </li>
+  </ul>
+	
+    <h1>Les horaires</h1>
+    <ul>
+        <li>ouverture des portes : 8h30</li>
+        <li>d&eacute;but des sessions : 9h</li>
+        <li>fin des sessions : vers 18h</li>
+    </ul>
+
+    <div class="sessions">
+    {% for session in sessions %}
+	<div class="session {{ session.journee }}">
+		<a name="{{ session.session_id }}" />
+    	<div class="horaire">
+			{{ session.debut|date('d/m/Y') }} <strong>{{ session.debut|date('H:i') }} - {{ session.fin|date('H:i') }}</strong>
+		</div>
+    	<div class="salle">
+			{{ session.nom_salle }}
+		</div>
+    	<div class="journee">
+            {% for journee in session.journees %}
+			<a href="#" class="{{ journee }}">{{ journee }}</a>
+			{% endfor %}
+		</div>
+		<div class="spacer"></div>
+		<h3>
+			{{ session.titre|raw }}
+		</h3>
+		<div class="details">
+			<div class="abstract">
+				{{ session.abstract|raw }}
+			</div>
+	   		<div class="conferenciers">
+                {% for conferencier in session.conferenciers %}
+	          		<div class="conferencier">
+			    		<a href="{{ path('legacy_event', {year: 2008, page: 'conferenciers.php'}) }}#{{ conferencier.conferencier_id }}}"><img src="/templates/forumphp2008/images/intervenants/{{ conferencier.conferencier_id }}}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+			    		<br />
+	          			<a href="{{ path('legacy_event', {year: 2008, page: 'conferenciers.php'}) }}#{{ conferencier.conferencier_id }}}">{{ conferencier.prenom|raw }} {{ conferencier.nom|raw }}</a>
+	          		</div>
+			{% endfor %}
+			<div class="spacer"></div>
+		</div>
+   		</div>
+	</div>
+    {% endfor %}
+	</div>
+
+	<p><em>Le programme ci-dessus est donn&eacute; &agrave; titre indicatif : il peut encore &eacute;voluer.</em></p>
+
+
+</div>
+{% include 'legacy/forumphp2008/pied_de_page.html.twig' %}

@@ -210,10 +210,23 @@ RewriteRule ^phptourluxembourg2015.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptourlyon2014.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptournantes2012.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptourlille2011.*$ https://event.afup.org/archives/? [R=302]
+RewriteRule ^forumphp2016.*$ https://event.afup.org/archives/?  [L,R=301]
+RewriteRule ^forumphp2015.*$ https://event.afup.org/archives/?  [L,R=301]
 RewriteRule ^forumphp2014.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2013.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2012.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^forumphp2010.*$ https://event.afup.org/archives/? [R=302]
+RewriteRule ^forumphp/.*$ https://event.afup.org  [L,R=301]
+RewriteRule ^phptournantes2017/inscription.php$ https://event.afup.org/phptournantes2017/tickets-inscriptions/  [L,R=301]
+RewriteRule ^phptournantes2017.*$ https://event.afup.org/phptournantes2017/  [L,R=301]
+RewriteRule ^phptourclermont2016/conferenciers.php$ https://event.afup.org/php-tour-2016/speakers/  [L,R=301]
+RewriteRule ^phptourclermont2016/inscription.php$ https://event.afup.org/php-tour-2016/tickets-inscriptions/  [L,R=301]
+RewriteRule ^phptourclermont2016/sessions.php$ https://event.afup.org/php-tour-2016/programme/  [L,R=301]
+RewriteRule ^phptourclermont2016/forum_planning.php$ https://event.afup.org/forum-php-2016/planning/  [L,R=301]
+RewriteRule ^phptourclermont2016.*$ https://event.afup.org/archives/  [L,R=301]
+
+## Moved to Symfony
+RewriteRule ^forumphp(2005|2006|2007|2008|2009).*$ /app.php [END]
 
 RewriteRule ^questionnaire.*$ https:///barometre.afup.org [R=302]
 
@@ -299,5 +312,3 @@ RewriteRule ^site/$  "/?"  [L,R=302]
 
 RewriteCond %{QUERY_STRING} page=membre_assemblee_generale
 RewriteRule administration/index.php$  "/member/general-meeting"  [L,QSD,R=302]
-
-

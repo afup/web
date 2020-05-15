@@ -351,7 +351,6 @@ class Forum
     function genAgenda($annee, $for_bo = false, $only_data = false, $forum_id = null, $linkFormat = null)
     {
         $aAgenda = $this->obtenirAgenda($annee, $forum_id);
-        //var_dump($aAgenda);
         if (isset($aAgenda) && count($aAgenda) > 0) {
             $nbConf = count($aAgenda);
             $nomSalles = array();

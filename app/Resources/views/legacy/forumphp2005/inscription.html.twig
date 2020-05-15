@@ -1,0 +1,13 @@
+{% include 'legacy/forumphp2005/entete.html.twig' %}
+<div id="cartouche-milieu">
+    <img id="cartouchepage" src="/templates/forumphp2005/images/cartouche-page.png" usemap="#m_cartouchepage" />
+    <map name="m_cartouchepage">
+    <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="{{ path('legacy_event', {year: 2005, page: 'inscription.php'}) }}" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+    <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="{{ path('legacy_event', {year: 2005, page: 'acces.php'}) }}" title="Accès" alt="Accès" >
+    </map>
+    <h1>Tarifs et inscriptions</h1>
+    <p>
+        Le Foum PHP est clos pour cette année. Rendez-vous en 2006 pour la prochaine édition.
+    </p>
+</div>
+{% include 'legacy/forumphp2005/pied_de_page.html.twig' %}

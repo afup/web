@@ -229,8 +229,15 @@ class AppelConferencier
 
         $forum = new Forum($this->_bdd);
         $forum_details = $forum->obtenir($id_forum);
+        if (!$forum_details) {
+            return [];
+        }
+        $directoryPath = __DIR__. "/../../../htdocs/templates/" . $forum_details['path'] . "/resumes/";
+        if (!is_dir($directoryPath)) {
+            return [];
+        }
 
-        $repertoire = new \DirectoryIterator(dirname(__FILE__) . "/../../htdocs/templates/" . $forum_details['path'] . "/resumes/");
+        $repertoire = new \DirectoryIterator($directoryPath);
         foreach ($repertoire as $file) {
             if (preg_match("/^[1-9]/", $file->getFilename())) {
                 $id = (int)$file->getFilename();
