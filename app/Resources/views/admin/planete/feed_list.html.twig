@@ -1,0 +1,115 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Flux</h2>
+
+    <div class="ui menu">
+        <a href="{{ path('admin_planete_feed_add') }}" class="item">
+            <div data-tooltip="Ajouter un flux" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <a href="{{ path('admin_planete_feed_list', {testFeeds: true}) }}" class="item">
+            <div data-tooltip="Tester la validité des flux (attention le chargement de la page sera plus long)" data-position="bottom left">
+                <i class="flag checkered icon"></i>
+                Test validité
+            </div>
+        </a>
+    </div>
+
+    <div class="ui segment">
+        <form method="GET" name="filtre">
+            <input type="hidden" name="sort" value="{{ sort }}"/>
+            <input type="hidden" name="direction" value="{{ direction }}"/>
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Recherche</label>
+                        <input type="text" name="filter" value="{{ filter|escape('html_attr') }}">
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button" name="submit_filtre"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th align="left"><a href="{{ path('admin_planete_feed_list', {
+                        sort: 'name',
+                        direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
+                    }) }}">Nom</a></th>
+                <th align="left"><a href="{{ path('admin_planete_feed_list', {
+                        sort: 'url',
+                        direction: direction == 'asc' and sort == 'url' ? 'desc' : 'asc'
+                    }) }}">URL</a></th>
+                <th class="center aligned"><a href="{{ path('admin_planete_feed_list', {
+                        sort: 'status',
+                        direction: direction == 'asc' and sort == 'status' ? 'desc' : 'asc'
+                    }) }}">Etat</a></th>
+                <th class="center aligned">Membre lié</th>
+                <th class="center aligned">Test du flux</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for feed in feeds %}
+            <tr class="{{ feed.status == 1 ? 'actif' : 'inactif' }}">
+                <td>{{ feed.name }}</td>
+                <td>
+                    <a href="{{ feed.feed }}"
+                       data-position="left center"
+                       data-tooltip="Accéder au flux RSS"
+                       class="compact ui orange icon button">
+                        <i class="rss icon"></i>
+                    </a>
+
+                    <a href="{{ feed.url }}">{{ feed.url }}</a>
+                </td>
+                <td class="center aligned">
+                    {% if feed.status == 1 %}
+                        <div class="ui label green">Actif</div>
+                    {% else %}
+                        <div class="ui label red">Inactif</div>
+                    {% endif %}
+                </td>
+                <td class="center aligned">
+                    {% if feed.userId is not null %}Oui{% endif %}
+                </td>
+                <td class="center aligned">
+                    {% if feed.status == 1 %}
+                        {% if testFeeds and feed.id in feedResults|keys %}
+                            {% set color = feedResults[feed.id] ? 'green' : 'red' %}
+                        {% endif %}
+                        <i class="flag {{ color|default('blue') }} checkered icon"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    <a href="{{ path('admin_planete_feed_edit', {id: feed.id}) }}"
+                       data-position="left center"
+                       data-tooltip="Modifier la fiche de {{ feed.name }}"
+                       class="compact ui icon button">
+                        <i class="pencil alernate icon"></i>
+                    </a>
+
+                    <a href="{{ path('admin_planete_feed_delete', {id: feed.id}) }}"
+                       data-position="left center"
+                       data-tooltip="Supprimer la fiche de {{ feed.name }}"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer le flux de {{ feed.name }} ?">
+                        <i class="trash icon"></i>
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            </tbody>
+            <tr>
+                <td><em>Aucun flux</em></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

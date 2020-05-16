@@ -442,6 +442,10 @@ services:
         tags:
           - {name: form.type}
 
+    AppBundle\Planete\FeedFormType:
+        autowire: true
+        autoconfigure: true
+
     Afup\Site\Forum\AppelConferencier:
         class: Afup\Site\Forum\AppelConferencier
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
@@ -453,6 +457,12 @@ services:
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
         arguments:
           - 'Afup\Site\Forum\Forum'
+
+    Afup\Site\Rendez_Vous:
+        class: Afup\Site\Rendez_Vous
+        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
+        arguments:
+          - 'Afup\Site\Rendez_Vous'
 
     Afup\Site\Utils\Pays:
         class: Afup\Site\Utils\Pays
@@ -626,4 +636,18 @@ services:
 
     Symfony\Component\Routing\Generator\UrlGeneratorInterface:
         alias: 'router'
+        public: true
+
+    AppBundle\Controller\RendezVous\:
+        resource: '../../sources/AppBundle/Controller/RendezVous/*'
+        autowire: true
+
+    PlanetePHP\FeedRepository:
+        autowire: true
+
+    PlanetePHP\FeedArticleRepository:
+        autowire: true
+
+    PlanetePHP\FeedCrawler:
+        autowire: true
         public: true

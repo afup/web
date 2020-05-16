@@ -226,7 +226,12 @@ RewriteRule ^phptourclermont2016/forum_planning.php$ https://event.afup.org/foru
 RewriteRule ^phptourclermont2016.*$ https://event.afup.org/archives/  [L,R=301]
 
 ## Moved to Symfony
+RewriteRule ^rendezvous.*$ /app.php [END]
 RewriteRule ^forumphp(2005|2006|2007|2008|2009).*$ /app.php [END]
+
+# Redirection en cas d'acces direct aux pages Planete PHP
+RewriteCond %{REQUEST_URI} ^/?pages/planete
+RewriteRule ^planete.*$ http://www.planete-php.fr/$1 [R=301]
 
 RewriteRule ^questionnaire.*$ https:///barometre.afup.org [R=302]
 

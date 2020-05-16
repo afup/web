@@ -9,8 +9,8 @@ trait DbLoggerTrait
 {
     public function log($message, User $user = null)
     {
-        $id = null !== $user ? $user->getId() : null;
-        Logs::initialiser($GLOBALS['bdd'], $id);
+        $id = null !== $user ? $user->getId() : 0;
+        Logs::initialiser($GLOBALS['AFUP_DB'], $id);
         Logs::log($message);
     }
 }

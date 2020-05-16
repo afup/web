@@ -68,11 +68,13 @@
   "autoload": {
     "psr-4": {
       "Afup\\Site\\": "sources/Afup/",
-      "AppBundle\\": "sources/AppBundle/"
+      "AppBundle\\": "sources/AppBundle/",
+      "PlanetePHP\\": "sources/PlanetePHP/"
     },
     "classmap": [
       "app/AppKernel.php",
-      "app/AppCache.php"
+      "app/AppCache.php",
+      "planete/app/PlaneteAppKernel.php"
     ],
     "files": [
       "sources/Afup/Bootstrap/_Common.php",

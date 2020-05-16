@@ -1,0 +1,19 @@
+admin_planete_feed_list:
+  path: /feeds
+  defaults: {_controller: AppBundle\Controller\Admin\Planete\FeedListAction}
+
+admin_planete_feed_add:
+  path: /feeds/add
+  defaults: {_controller: AppBundle\Controller\Admin\Planete\FeedAddAction}
+
+admin_planete_feed_edit:
+  path: /feeds/edit
+  defaults: {_controller: AppBundle\Controller\Admin\Planete\FeedEditAction}
+
+admin_planete_feed_delete:
+  path: /feeds/delete
+  defaults: {_controller: AppBundle\Controller\Admin\Planete\FeedDeleteAction}
+
+admin_planete_feed_article_list:
+  path: /feed-articles
+  defaults: {_controller: AppBundle\Controller\Admin\Planete\FeedArticleListAction}
