@@ -21,14 +21,13 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv) {
     session_start();
 
     /** @var \Composer\Autoload\ClassLoader $loader */
-    $loader = require __DIR__.'/../app/autoload.php';
+    $loader = require __DIR__.'/../vendor/autoload.php';
     Debug::enable();
 
     $kernel = new AppKernel('dev', true);
 } else {
     /** @var \Composer\Autoload\ClassLoader $loader */
-    $loader = require __DIR__.'/../app/autoload.php';
-    include_once __DIR__.'/../var/bootstrap.php.cache';
+    $loader = require __DIR__.'/../vendor/autoload.php';
 
     session_start();
 
