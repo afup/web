@@ -1,8 +1,10 @@
 {% use 'form_div_layout.html.twig' %}
 
 {%- block form_label -%}
-    {% set label_attr = label_attr|merge({class: 'three wide column right aligned'}) %}
-    {{ parent() }}
+    <div class="three wide column right aligned">
+        {{ parent() }}
+        {% if required %}<span class="obligatoire">*</span>{% endif %}
+    </div>
 {%- endblock form_label -%}
 
 {%- block form_row -%}
@@ -16,3 +18,9 @@
         </div>
     </div>
 {%- endblock form_row -%}
+
+{%- block checkbox_widget -%}
+    <div class="ui checkbox">
+        {{ parent() }}
+    </div>
+{%- endblock checkbox_widget -%}

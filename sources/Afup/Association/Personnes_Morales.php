@@ -4,6 +4,7 @@
 namespace Afup\Site\Association;
 
 use Afup\Site\Utils\Base_De_Donnees;
+use AppBundle\Association\Model\Repository\UserRepository;
 
 /**
  * Classe de gestion des personnes morales
@@ -203,16 +204,12 @@ class Personnes_Morales
      * @access public
      * @return bool     Succès de la suppression
      */
-    function supprimer($id)
+    function supprimer($id, UserRepository $userRepository)
     {
-
         $cotisation = new Cotisations($this->_bdd);
         $cotisation_personne_morale = $cotisation->obtenirListe(AFUP_PERSONNES_MORALES, $id, 'id');
-
-        $personne_physique = new Personnes_Physiques($this->_bdd);
-        $personne_physique_de_personne_morale = $personne_physique->obtenirListe('id', 'nom', '', $id);
-
-        if (sizeof($cotisation_personne_morale) == 0 and sizeof($personne_physique_de_personne_morale) == 0) {
+        $users = $userRepository->search('lastname', 'asc', null, $id);
+        if (count($cotisation_personne_morale) === 0 && count($users) === 0) {
             $requete = 'DELETE FROM afup_personnes_morales WHERE id=' . $id;
             return $this->_bdd->executer($requete);
         }

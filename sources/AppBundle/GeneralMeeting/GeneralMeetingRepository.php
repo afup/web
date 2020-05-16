@@ -77,7 +77,7 @@ SQL
         $query->execute();
         $row = $query->fetch();
 
-        return $row !== null ? new GeneralMeeting(
+        return is_array($row) ? new GeneralMeeting(
             (int) $row['id'],
             (int) $row['id_personne_physique'],
             DateTimeImmutable::createFromFormat('U', $row['date']),

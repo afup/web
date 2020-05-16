@@ -2,9 +2,8 @@
 
 namespace AppBundle\Controller\Admin;
 
-use Afup\Site\Association\Personnes_Physiques;
+use AppBundle\Association\UserMembership\UserService;
 use AppBundle\Controller\BlocksHandler;
-use AppBundle\LegacyModelFactory;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,24 +17,24 @@ class LostPasswordAction
 {
     /** @var FormFactoryInterface */
     private $formFactory;
-    /** @var LegacyModelFactory */
-    private $legacyModelFactory;
     /** @var BlocksHandler */
     private $blocksHandler;
     /** @var Environment */
     private $twig;
     /** @var FlashBagInterface */
     private $flashBag;
+    /** @var UserService */
+    private $userPasswordService;
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        LegacyModelFactory $legacyModelFactory,
+        UserService $userPasswordService,
         BlocksHandler $blocksHandler,
         Environment $twig,
         FlashBagInterface $flashBag
     ) {
         $this->formFactory = $formFactory;
-        $this->legacyModelFactory = $legacyModelFactory;
+        $this->userPasswordService = $userPasswordService;
         $this->blocksHandler = $blocksHandler;
         $this->twig = $twig;
         $this->flashBag = $flashBag;
@@ -50,9 +49,7 @@ class LostPasswordAction
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var $personnesPhysiques Personnes_Physiques */
-            $personnesPhysiques = $this->legacyModelFactory->createObject(Personnes_Physiques::class);
-            $personnesPhysiques->envoyerMotDePasse($form->getData()['email']);
+            $this->userPasswordService->resetPasswordForEmail($form->getData()['email']);
             $this->flashBag->add('notice', 'Votre demande a été prise en compte. Si un compte correspond à cet email vous recevez un nouveau mot de passe rapidement.');
         }
 

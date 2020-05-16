@@ -29,6 +29,10 @@ admin_password:
   path: /password
   defaults: {_controller: AppBundle\Controller\Admin\LostPasswordAction}
 
+admin_members:
+    resource: "admin_members.yml"
+    prefix: /members
+
 admin_event_routes:
     resource: "admin_event.yml"
     prefix: /event
@@ -48,22 +52,6 @@ member_slack_invite:
 admin_members_reporting:
   path: /members/reporting
   defaults: {_controller: AppBundle\Controller\MembershipAdmin\ReportingAction}
-
-admin_members_badges_index:
-  path: /members/badges
-  defaults: {_controller: AppBundle:Admin\Members\Badges:index}
-
-admin_members_badges_new:
-  path: /members/badges/new
-  defaults: {_controller: AppBundle:Admin\Members\Badges:new}
-
-admin_members_user_badge_new:
-  path: /members/user_badge/new
-  defaults: {_controller: AppBundle:Admin\Members\UserBadge:new}
-
-admin_members_user_badge_delete:
-  path: /members/user_badge/{userId}/{badgeId}/delete
-  defaults: {_controller: AppBundle:Admin\Members\UserBadge:delete}
 
 admin_members_general_meeting:
   path: /members/general_meeting

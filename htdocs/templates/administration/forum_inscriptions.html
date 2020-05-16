@@ -162,7 +162,7 @@
             <td nowrap="nowrap">{$inscription.date|date_format:"%d/%m/%Y %H:%M:%S"}</td>
             <td>
                 <strong>{$inscription.prenom} {$inscription.nom}</strong>
-                <a href="index.php?page=personnes_physiques&amp;filtre={$inscription.nom} {$inscription.email}"
+                <a href="/admin/members/users?filter={$inscription.nom} {$inscription.email}"
                    data-position="right center"
                    data-tooltip="Rechercher dans les membres"
                    class="compact ui icon mini button"

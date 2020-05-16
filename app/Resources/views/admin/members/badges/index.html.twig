@@ -35,7 +35,7 @@
                         <div class="item">
                             <i class="user icon"></i>
                             <div class="content">
-                                <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ user.id }}">
+                                <a href="{{ path('admin_members_user_edit', {id: user.id}) }}">
                                 {{ user.getLabel }}
                                 </a>
                             </div>

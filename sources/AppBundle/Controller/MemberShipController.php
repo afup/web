@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Association\Cotisations;
-use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
@@ -19,6 +18,7 @@ use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
@@ -178,10 +178,11 @@ class MemberShipController extends SiteBaseController
              * @var $user User
              */
             $user = $userForm->getData();
+            $user->setCivility('');
+            $user->setPlainPassword($user->getPassword());
             $user
                 ->setStatus(User::STATUS_ACTIVE)
                 ->setCompanyId($company->getId())
-                ->setPassword(md5($user->getPassword())) /** @TODO We should change that */
             ;
 
             if ($invitation->getManager()) {
@@ -226,6 +227,7 @@ class MemberShipController extends SiteBaseController
     public function payboxCallbackAction(Request $request)
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
+        $userRepository = $this->get(UserRepository::class);
         /**
          * @var $cotisations Cotisations
          */
@@ -251,13 +253,13 @@ class MemberShipController extends SiteBaseController
             $lastCotisation = $cotisations->obtenirDerniere($account['type'], $account['id']);
 
             if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
-                $user = $this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->get($account['id']);
+                $user = $userRepository->get($account['id']);
                 $event = new NewMemberEvent($user);
                 $this->get('event_dispatcher')->dispatch($event::NAME, $event);
             }
 
             $cotisations->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
-            $cotisations->notifierRegelementEnLigneAuTresorier($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
+            $cotisations->notifierRegelementEnLigneAuTresorier($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId(), $userRepository);
             $logs::log("Ajout de la cotisation " . $payboxResponse->getCmd() . " via Paybox.");
         }
         return new Response();
@@ -320,17 +322,17 @@ class MemberShipController extends SiteBaseController
         return Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
     }
 
-    public function membershipFeeAction(Request $request)
+    public function membershipFeeAction()
     {
         global $bdd;
-        $personnes_physiques = new Personnes_Physiques($bdd);
+        $userRepository = $this->get(UserRepository::class);
+        $userService = $this->get(UserService::class);
         $cotisations = $this->getCotisations();
 
         $identifiant = $this->getDroits()->obtenirIdentifiant();
-
-        $donnees = $personnes_physiques->obtenir($identifiant);
-
-        $cotisation = $personnes_physiques->obtenirDerniereCotisation($identifiant);
+        $user = $userRepository->get($identifiant);
+        Assertion::notNull($user);
+        $cotisation = $userService->getLastSubscription($user);
 
         if (!$cotisation) {
             $message = '';
@@ -346,8 +348,8 @@ class MemberShipController extends SiteBaseController
             );
         }
 
-        $cotisation_physique = $cotisations->obtenirListe(0, $donnees['id']);
-        $cotisation_morale = $cotisations->obtenirListe(1, $donnees['id_personne_morale']);
+        $cotisation_physique = $cotisations->obtenirListe(0, $user->getId());
+        $cotisation_morale = $cotisations->obtenirListe(1, $user->getCompanyId());
 
         if (is_array($cotisation_morale) && is_array($cotisation_physique)) {
             $cotisations = array_merge($cotisation_physique, $cotisation_morale);
@@ -359,8 +361,8 @@ class MemberShipController extends SiteBaseController
             $cotisations = [];
         }
 
-        if ($donnees['id_personne_morale'] > 0) {
-            $id_personne = $donnees['id_personne_morale'];
+        if ($user->getCompanyId() > 0) {
+            $id_personne = $user->getCompanyId();
             $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
             $type_personne = AFUP_PERSONNES_MORALES;
             $prefixe = 'Personne morale';
@@ -375,12 +377,12 @@ class MemberShipController extends SiteBaseController
         $formattedMontant = number_format($montant, 2, ',', ' ');
         $libelle = sprintf("%s : <strong>%s€</strong>", $prefixe, $formattedMontant);
 
-        $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $donnees['nom']);
+        $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
 
         $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
             $reference,
             (float) $montant,
-            $donnees['email']
+            $user->getEmail()
         );
 
         $paybox = str_replace('INPUT TYPE=SUBMIT', 'INPUT TYPE=SUBMIT class="button button--call-to-action"', $paybox);
@@ -435,13 +437,14 @@ class MemberShipController extends SiteBaseController
         $id = $request->get('id');
 
         $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
+        $userRepository = $this->get(UserRepository::class);
 
         if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
             $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
             throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
         }
 
-        if ($cotisations->envoyerFacture($id, $this->get(\AppBundle\Email\Mailer\Mailer::class))) {
+        if ($cotisations->envoyerFacture($id, $this->get(\AppBundle\Email\Mailer\Mailer::class), $userRepository)) {
             $logs::log('Envoi par email de la facture pour la cotisation n°' . $id);
             $this->addFlash('success', 'La facture a été envoyée par mail');
         } else {
@@ -453,6 +456,7 @@ class MemberShipController extends SiteBaseController
 
     public function generalMeetingAction(Request $request)
     {
+        $userService = $this->get(UserService::class);
         /** @var User $user */
         $user = $this->getUser();
         Assertion::isInstanceOf($user, User::class);
@@ -460,11 +464,9 @@ class MemberShipController extends SiteBaseController
         $generalMeetingRepository = $this->get(GeneralMeetingRepository::class);
         $latestDate = $generalMeetingRepository->getLatestDate();
         Assertion::notNull($latestDate);
-        $personnes_physiques = $this->get(LegacyModelFactory::class)->createObject(Personnes_Physiques::class);
-
         $generalMeetingPlanned = $generalMeetingRepository->hasGeneralMeetingPlanned();
 
-        $cotisation = $personnes_physiques->obtenirDerniereCotisation($user->getId());
+        $cotisation = $userService->getLastSubscription($user);
         $needsMembersheepFeePayment = $latestDate->getTimestamp() > strtotime("+14 day", $cotisation['date_fin']);
 
         if ($needsMembersheepFeePayment) {

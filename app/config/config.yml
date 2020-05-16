@@ -22,8 +22,13 @@ parameters:
                 personnes_physiques:
                     nom: 'Personnes physiques'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/users'
                     extra_routes:
                         - admin_slack_members_check
+                        - admin_members_user_list
+                        - admin_members_user_add
+                        - admin_members_user_edit
+
                 personnes_morales:
                     nom: 'Personnes morales'
                     niveau: 'ROLE_ADMIN'

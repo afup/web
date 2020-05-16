@@ -6,11 +6,13 @@ use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
+use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
+use Assert\Assertion;
 use DateInterval;
 use DateTime;
 
@@ -208,7 +210,7 @@ class Cotisations
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function notifierRegelementEnLigneAuTresorier($cmd, $total, $autorisation, $transaction)
+    function notifierRegelementEnLigneAuTresorier($cmd, $total, $autorisation, $transaction, UserRepository $userRepository)
     {
         /**
          * @var $configuration Configuration
@@ -219,10 +221,16 @@ class Cotisations
 
         if (AFUP_PERSONNES_MORALES == $type_personne) {
             $personnes = new Personnes_Morales($this->_bdd);
+            $infos = $personnes->obtenir($id_personne, 'nom, prenom, email');
         } else {
-            $personnes = new Personnes_Physiques($this->_bdd);
+            $user = $userRepository->get($id_personne);
+            Assertion::notNull($user);
+            $infos = [
+                'nom' => $user->getLastName(),
+                'prenom' => $user->getFirstName(),
+                'email' => $user->getEmail(),
+            ];
         }
-        $infos = $personnes->obtenir($id_personne, 'nom, prenom, email');
 
         $sujet = "Paiement cotisation AFUP\n";
 
@@ -388,7 +396,7 @@ class Cotisations
      * @access public
      * @return bool Succès de l'envoi
      */
-    public function envoyerFacture($id_cotisation, Mailer $mailer)
+    public function envoyerFacture($id_cotisation, Mailer $mailer, UserRepository $userRepository)
     {
         $configuration = $GLOBALS['AFUP_CONF'];
 
@@ -396,10 +404,16 @@ class Cotisations
 
         if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
             $personnePhysique = new Personnes_Morales($this->_bdd);
+            $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email');
         } else {
-            $personnePhysique = new Personnes_Physiques($this->_bdd);
+            $user = $userRepository->get($personne['id_personne']);
+            Assertion::notNull($user);
+            $contactPhysique = [
+                'nom'=> $user->getLastName(),
+                'prenom'=> $user->getFirstName(),
+                'email'=> $user->getEmail(),
+            ];
         }
-        $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email');
 
         $corps = "Bonjour,<br />";
         $corps .= "<p>Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.</p>";
@@ -480,129 +494,6 @@ class Cotisations
         } else {
             return time();
         }
-    }
-
-    function obtenirListeRelancesPersonnesPhysiques()
-    {
-        $requete = 'SELECT ';
-        $requete .= '  personnes.id as id_personne, ';
-        $requete .= '  CONCAT(personnes.nom, " ",  personnes.prenom) AS nom,';
-        $requete .= '  personnes.email, ';
-        $requete .= '  cotisations.type_personne, ';
-        $requete .= '  cotisations.date_fin, ';
-        $requete .= '  IF (cotisations.nombre_relances IS NULL, 0, cotisations.nombre_relances) AS nombre_relances, ';
-        $requete .= '  cotisations.date_derniere_relance ';
-        $requete .= 'FROM ';
-        $requete .= '  afup_personnes_physiques AS personnes ';
-        $requete .= 'LEFT JOIN ';
-        $requete .= '  afup_cotisations AS cotisations ';
-        $requete .= 'ON ';
-        $requete .= '  personnes.id = cotisations.id_personne ';
-        $requete .= 'AND ';
-        $requete .= '  cotisations.id IN (SELECT MAX(id) FROM afup_cotisations WHERE type_personne = 0 GROUP BY id_personne) ';
-        $requete .= 'WHERE ';
-        $requete .= '  personnes.etat = 1 ';
-        $requete .= 'AND ';
-        $requete .= '  personnes.id_personne_morale = 0 ';
-        $requete .= 'AND ';
-        $requete .= '  (cotisations.date_fin < ' . time() . ' or cotisations.date_fin IS NULL) ';
-        $requete .= 'ORDER BY';
-        $requete .= '  date_fin';
-
-        return $this->_bdd->obtenirTous($requete);
-    }
-
-    function obtenirListeRelancesPersonnesMorales()
-    {
-        $requete = 'SELECT ';
-        $requete .= '  personnes.id as id_personne, ';
-        $requete .= '  personnes.raison_sociale AS nom, ';
-        $requete .= '  personnes.email, ';
-        $requete .= '  cotisations.type_personne, ';
-        $requete .= '  cotisations.date_fin, ';
-        $requete .= '  IF (cotisations.nombre_relances IS NULL, 0, cotisations.nombre_relances) AS nombre_relances, ';
-        $requete .= '  cotisations.date_derniere_relance ';
-        $requete .= 'FROM ';
-        $requete .= '  afup_personnes_morales AS personnes ';
-        $requete .= 'LEFT JOIN ';
-        $requete .= '  afup_cotisations AS cotisations ';
-        $requete .= 'ON ';
-        $requete .= '  personnes.id = cotisations.id_personne ';
-        $requete .= 'AND ';
-        $requete .= '  cotisations.id IN (SELECT MAX(id) FROM afup_cotisations WHERE type_personne = 1 GROUP BY id_personne) ';
-        $requete .= 'WHERE ';
-        $requete .= '  personnes.etat = 1 ';
-        $requete .= 'AND ';
-        $requete .= '  (cotisations.date_fin < ' . time() . ' or cotisations.date_fin IS NULL) ';
-        $requete .= 'ORDER BY';
-        $requete .= '  date_fin';
-
-        return $this->_bdd->obtenirTous($requete);
-    }
-
-    /**
-     * Relance une personne afin qu'elle renouvelle sa cotisation.
-     *
-     * @access public
-     * @param    int $type_personne Type de personne concerné
-     * @param    int $id_personne Identifiant de la personne concernée
-     * @return bool
-     */
-    function relancer($type_personne, $id_personne)
-    {
-        $configuration = $GLOBALS['AFUP_CONF'];
-
-        if (AFUP_PERSONNES_MORALES == $type_personne) {
-            $personnes = new Personnes_Morales($this->_bdd);
-        } else {
-            $personnes = new Personnes_Physiques($this->_bdd);
-        }
-        $infos = $personnes->obtenir($id_personne, 'nom, prenom, email');
-
-        $sujet = "Relance cotisation AFUP\n";
-
-        $montant = AFUP_PERSONNES_MORALES == $type_personne ? $personnes->getMembershipFee($id_personne) : AFUP_COTISATION_PERSONNE_PHYSIQUE;
-
-        $corps = <<<TXT
-Bonjour,
-
-Votre cotisation annuelle à l'AFUP est arrivée à son terme.
-
-Vous pouvez la renouveler en réglant {$montant} euros :
-
-* En ligne via l'espace d'administration (c'est de loin la meilleure option !) :
-
-	https://afup.org/admin
-
-* Par virement bancaire en contactant le trésorier sur tresorier@afup.org.
-
-Merci !
-
-Cordialement,
-Le trésorier
-TXT;
-
-        $ok = Mailing::envoyerMail(new Message(
-            $sujet,
-            new MailUser($GLOBALS['conf']->obtenir('mails|email_expediteur')),
-            new MailUser($infos['email'], $infos['nom'].' '.$infos['prenom'])
-        ), $corps);
-
-        if (false === $ok) {
-            return false;
-        }
-
-        $requete = 'UPDATE';
-        $requete .= '  afup_cotisations ';
-        $requete .= 'SET';
-        $requete .= '  nombre_relances=IF(nombre_relances IS NULL, 1, nombre_relances+1),';
-        $requete .= '  date_derniere_relance=' . time() . ' ';
-        $requete .= 'WHERE';
-        $requete .= '  type_personne=' . $type_personne;
-        $requete .= '  AND id_personne=' . $id_personne;
-        $this->_bdd->executer($requete);
-
-        return true;
     }
 
     /**

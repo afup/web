@@ -1,0 +1,43 @@
+admin_members_user_list:
+  path: /users
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserListAction}
+
+admin_members_user_add:
+  path: /users/add
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserAddAction}
+
+admin_members_user_edit:
+  path: /users/edit
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserEditAction}
+
+admin_members_user_delete:
+  path: /users/delete
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserDeleteAction}
+
+admin_members_user_reset_password:
+  path: /users/reset-password
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserResetPasswordAction}
+
+admin_members_user_send_welcome:
+  path: /users/send-welcome
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserSendWelcomeAction}
+
+admin_members_user_export:
+  path: /users/export
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserExportAction}
+
+admin_members_user_badge_new:
+  path: /user_badge/new
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserBadgeNewAction}
+
+admin_members_user_badge_delete:
+  path: /user_badge/{userId}/{badgeId}/delete
+  defaults: {_controller: AppBundle\Controller\Admin\Members\UserBadgeDeleteAction}
+
+admin_members_badges_index:
+  path: /badges
+  defaults: {_controller: AppBundle\Controller\Admin\Members\BadgeListAction}
+
+admin_members_badges_new:
+  path: /badges/new
+  defaults: {_controller: AppBundle\Controller\Admin\Members\BadgeNewAction}
