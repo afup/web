@@ -1,3 +1,18 @@
+legacy_forum2016_conferenciers:
+  path: /pages/forumphp2016/conferenciers.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2016ConferenciersAction
+
+legacy_forum2016_planning:
+  path: /pages/forumphp2016/forum_planning.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2016PlanningAction
+
+legacy_forum2016_sessions:
+  path: /pages/forumphp2016/sessions.php
+  defaults:
+    _controller: AppBundle\Controller\Legacy\Forum2016SessionsAction
+
 legacy_forum2008_conferenciers:
   path: /pages/forumphp2008/conferenciers.php
   defaults:

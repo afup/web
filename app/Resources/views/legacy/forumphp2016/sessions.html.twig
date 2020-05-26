@@ -1,0 +1,46 @@
+{% for jour, sessions in journees %}
+    <article class="first">
+        <a name="{{ jour }}"></a>
+        <h3>{{ jour }}</h3>
+        <div class="article-body">
+            <div class="sessions">
+                {% for session in sessions %}
+                    <div class="session {{ session.journee }}">
+                        <a name="{{ session.session_id }}"></a>
+                        <h4>{{ session.titre }}</h4>
+                        <div class="horaire">
+                            <span class="salle">{{ session.nom_salle }}</span> {{ session.debut|date('d/m/Y') }}
+                            <strong>{{ session.debut|date('H:i') }}-{{ session.fin|date('H:i') }}</strong>
+                        </div>
+
+                        <div class="details">
+                            <div class="abstract">{{ session.abstract }}</div>
+                            <div>
+                                {% for conferencier in session.conferenciers %}
+                                    <div class="conferencier">
+                                        <a href="/forum-php-2016/speakers/#{{ conferencier.conferencier_id }}">
+                                            <img src="/templates/forumphp2016/images/intervenants/{{ conferencier.conferencier_id }}.jpg"
+                                                 alt="{{ conferencier.nom }}" border="0" height="120"/>
+                                        </a><br/>
+                                        <a href="/forum-php-2016/speakers/#{{ conferencier.conferencier_id }}">
+                                            {{ conferencier.prenom }} {{ conferencier.nom }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </article>
+{% endfor %}
+
+<h3>informations complémentaires</h3>
+<article class="first">
+    <div class="article-body">
+        <p>
+            <em>Le programme ci-dessus est donn&eacute; &agrave; titre indicatif : il peut encore &eacute;voluer.</em>
+        </p>
+    </div>
+</article>
