@@ -72,7 +72,9 @@ class LegacyController extends Controller
 
     public function registerAction(Request $request)
     {
-        global $bdd, $droits;
+        global $droits;
+
+        $bdd = $GLOBALS['AFUP_DB'];
 
         $server = $_SERVER;
         $_SERVER['REQUEST_URI'] = '/administration/';
