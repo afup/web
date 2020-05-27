@@ -318,13 +318,12 @@ class MemberShipController extends SiteBaseController
 
     private function getDroits()
     {
-        global $bdd;
-        return Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
+        return Utils::fabriqueDroits($GLOBALS['AFUP_DB'], $this->get('security.token_storage'), $this->get('security.authorization_checker'));
     }
 
     public function membershipFeeAction()
     {
-        global $bdd;
+        $bdd = $GLOBALS['AFUP_DB'];
         $userRepository = $this->get(UserRepository::class);
         $userService = $this->get(UserService::class);
         $cotisations = $this->getCotisations();
@@ -403,8 +402,7 @@ class MemberShipController extends SiteBaseController
 
     private function getCotisations()
     {
-        global $bdd;
-        return new Cotisations($bdd, $this->getDroits());
+        return new Cotisations($GLOBALS['AFUP_DB'], $this->getDroits());
     }
 
     public function membershipFeeDownloadAction(Request $request)
