@@ -206,6 +206,9 @@ RewriteRule ^(.*)$  "/?"  [L,R=302]
 
 RewriteRule ^lille.*$ /association/antennes? [R=302]
 
+## Moved to Symfony
+RewriteRule ^forumphp2016/(forum_planning|conferenciers|sessions).php.*$ /app.php [END]
+
 RewriteRule ^phptourluxembourg2015.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptourlyon2014.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptournantes2012.*$ https://event.afup.org/archives/? [R=302]
