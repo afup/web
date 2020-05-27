@@ -14,7 +14,7 @@
                         </div>
 
                         <div class="details">
-                            <div class="abstract">{{ session.abstract }}</div>
+                            <div class="abstract">{{ session.abstract|raw }}</div>
                             <div>
                                 {% for conferencier in session.conferenciers %}
                                     <div class="conferencier">
