@@ -2,7 +2,7 @@
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Utils\Configuration;
-use AppBundle\Association\Model\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class Page
 {
@@ -60,7 +60,7 @@ class Page
         return $branche->naviguer(5, 2);
     }
 
-    function header($url = null, User $user = null)
+    function header($url = null, UserInterface $user = null)
     {
         $branche = new Branche($this->bdd);
         $url = urldecode($url);
