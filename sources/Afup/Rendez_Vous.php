@@ -128,7 +128,7 @@ class Rendez_Vous
             $link = str_replace('administration/index.php', 'rendezvous/confirmation.php', $link);
             Mailing::envoyerMail(new Message(
                 $sujet,
-                new MailUser($GLOBALS['conf']->obtenir('mails|email_expediteur'), $GLOBALS['conf']->obtenir('mails|nom_expediteur')),
+                new MailUser($GLOBALS['AFUP_CONF']->obtenir('mails|email_expediteur'), $GLOBALS['AFUP_CONF']->obtenir('mails|nom_expediteur')),
                 new MailUser($inscrit['email'], $inscrit['nom'])
             ), $corps.$link);
             $succes += 1;
