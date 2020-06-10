@@ -371,7 +371,7 @@ if ($action == 'lister') {
             $ticket->setCompanyCitation($valeurs['citer_societe']);
             $ticket->setNewsletter($valeurs['newsletter_afup']);
             $ticket->setPmr($valeurs['mobilite_reduite']);
-            $ticket->setOptin($valeurs['mail_partenaire']);
+            $ticket->setOptin((bool) $valeurs['mail_partenaire']);
             $ticket->setComments($valeurs['commentaires']);
             $ticket->setStatus($valeurs['etat']);
             $ticket->setInvoiceStatus($valeurs['facturation']);
@@ -409,10 +409,11 @@ if ($action == 'lister') {
         }
 
         try {
+            $paymentDate = null !== $valeurs['date_reglement'] ? DateTime::createFromFormat('U', $valeurs['date_reglement']) : null;
              $invoiceService->handleInvoicing($valeurs['reference'],
                                                     $valeurs['type_reglement'],
                                                     $valeurs['informations_reglement'],
-                                                    $valeurs['date_reglement'],
+                                                    $paymentDate,
                                                     $valeurs['email_facturation'],
                                                     $valeurs['societe_facturation'],
                                                     $valeurs['nom_facturation'],
