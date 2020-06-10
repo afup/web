@@ -25,7 +25,7 @@ class SpeakerPageAction
         $this->eventActionHelper = $eventActionHelper;
     }
 
-    public function speakerPageAction(Request $request)
+    public function __invoke(Request $request)
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         $speaker = $this->speakerFactory->getSpeaker($event);
