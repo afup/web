@@ -54,6 +54,11 @@ class Ticket implements NotifyPropertyInterface
     const TYPE_AFUP_DAY_CROISIERE = 110;
     const TYPE_AFUP_DAY_LATE = 111;
     const TYPE_AFUP_DAY_CFP_SUBMITTER = 112;
+    const TYPE_AFUP_DAY_LIVE_FREE = 113;
+    const TYPE_AFUP_DAY_LIVE_SOUTIEN_1 = 114;
+    const TYPE_AFUP_DAY_LIVE_SOUTIEN_2 = 115;
+    const TYPE_AFUP_DAY_LIVE_SOUTIEN_3 = 116;
+    const TYPE_AFUP_DAY_LIVE_SOUTIEN_4 = 117;
 
 
     const SPECIAL_PRICE = AFUP_FORUM_SPECIAL_PRICE;

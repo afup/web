@@ -167,6 +167,11 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_AFUP_DAY_CROISIERE:
             case Ticket::TYPE_AFUP_DAY_LATE:
             case Ticket::TYPE_AFUP_DAY_CFP_SUBMITTER:
+            case Ticket::TYPE_AFUP_DAY_LIVE_FREE:
+            case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_1:
+            case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_2:
+            case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_3:
+            case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_4:
                 return 'PASS JOUR 1';
                 break;
             case AFUP_FORUM_DEUXIEME_JOURNEE:
