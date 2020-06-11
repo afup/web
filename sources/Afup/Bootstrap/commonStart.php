@@ -141,6 +141,7 @@ $AFUP_Tarifs_Forum_Lib = array(
     AFUP_FORUM_SPECIAL_PRICE => 'Tarif Spécial',
 );
 
+$GLOBALS['AFUP_Tarifs_Forum_Lib'] = $AFUP_Tarifs_Forum_Lib;
 
 
 // Initialisation de ting
