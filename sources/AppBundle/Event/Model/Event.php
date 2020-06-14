@@ -684,4 +684,9 @@ class Event implements NotifyPropertyInterface
 
         return $this;
     }
+
+    public function isOnline()
+    {
+        return false !== strpos($this->getPath(), 'enligne');
+    }
 }
