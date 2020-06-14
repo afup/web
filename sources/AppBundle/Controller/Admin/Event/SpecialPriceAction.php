@@ -54,7 +54,7 @@ class SpecialPriceAction
         $this->twig = $twig;
     }
 
-    public function specialPriceAction(Request $request)
+    public function __invoke(Request $request)
     {
         $event = $this->eventActionHelper->getEventById($request->query->get('id'));
         /** @var User $user */
