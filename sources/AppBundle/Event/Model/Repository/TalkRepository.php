@@ -49,12 +49,12 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getTalksBySpeaker(Event $event, Speaker $speaker)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie
+            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, genre
             FROM afup_sessions sessions
             LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
             WHERE id_forum = :event AND cs.conferencier_id = :speaker
             ORDER BY titre
-            LIMIT 0, 10
+            LIMIT 0, 20
             '
         )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
 
@@ -69,7 +69,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getPreviousTalksBySpeaker(Event $event, Speaker $speaker)
     {
         $query = $this->getPreparedQuery(
-            'SELECT s.session_id, s.titre, s.abstract, s.id_forum, s.plannifie
+            'SELECT s.session_id, s.titre, s.abstract, s.id_forum, s.plannifie, s.skill, s.genre
             FROM afup_sessions s
             JOIN afup_conferenciers_sessions cs ON cs.session_id = s.session_id
             JOIN afup_conferenciers c ON cs.conferencier_id = c.conferencier_id
