@@ -1,18 +1,26 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Liste des salles pour {{ event.title }}</h2>
+    <h2>Liste des salles pour {{ event == null ? '':event.title }}</h2>
     {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
-    <div class="ui form">
-        <table class="ui table striped compact celled">
-            <thead>
+    {% if event == null %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Changez d'événement pour afficher les données.
+            </div>
+        </div>
+    {% else %}
+        <div class="ui form">
+            <table class="ui table striped compact celled">
+                <thead>
                 <tr>
                     <th>Salle</th>
                     <th></th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {% for form in editForms %}
                     <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
                         <td>
@@ -25,7 +33,7 @@
                         </td>
                         <td class="right aligned">
                             <input type="submit" name="edit" form="form_edit_{{ loop.index0 }}" value="Sauvegarder"
-                               class="compact ui button"
+                                   class="compact ui button"
                             />
                             <input type="submit" name="delete" form="form_edit_{{ loop.index0 }}" value="Supprimer"
                                    class="compact ui red button"
@@ -33,8 +41,8 @@
                         </td>
                     </tr>
                 {% endfor %}
-            </tbody>
-            <tfoot>
+                </tbody>
+                <tfoot>
                 <tr>
                     <th>
                         <div class="ui input">
@@ -50,7 +58,8 @@
                         />
                     </th>
                 </tr>
-            </tfoot>
-        </table>
-    </div>
+                </tfoot>
+            </table>
+        </div>
+    {% endif %}
 {% endblock %}

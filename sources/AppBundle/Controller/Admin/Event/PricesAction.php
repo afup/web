@@ -35,9 +35,13 @@ class PricesAction
 
     public function __invoke(Request $request)
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
-        $ticketEventTypes = $this->ticketEventTypeRepository->getTicketsByEvent($event);
-
+        $id = $request->query->get('id');
+        $event = null;
+        $ticketEventTypes = [];
+        if ($id !== null) {
+            $event = $this->eventActionHelper->getEventById($id);
+            $ticketEventTypes = $this->ticketEventTypeRepository->getTicketsByEvent($event);
+        }
         return new Response($this->twig->render('admin/event/prices.html.twig', [
             'ticket_event_types' => $ticketEventTypes,
             'event' => $event,

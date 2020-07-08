@@ -56,35 +56,41 @@ class SpecialPriceAction
 
     public function __invoke(Request $request)
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
-        /** @var User $user */
-        $user = $this->security->getUser();
-        Assertion::isInstanceOf($user, User::class);
+        $id = $request->query->get('id');
+        $event = null;
+        $form = null;
+        if ($id !== null) {
+            $event = $this->eventActionHelper->getEventById($id);
+            /** @var User $user */
+            $user = $this->security->getUser();
+            Assertion::isInstanceOf($user, User::class);
 
-        $specialPrice = new TicketSpecialPrice();
-        $specialPrice
-            ->setToken(base64_encode(random_bytes(30)))
-            ->setEventId($event->getId())
-            ->setDateStart(new DateTime())
-            ->setDateEnd($event->getDateEndSales())
-            ->setCreatedOn(new DateTime())
-            ->setCreatorId($user->getId());
+            $specialPrice = new TicketSpecialPrice();
+            $specialPrice
+                ->setToken(base64_encode(random_bytes(30)))
+                ->setEventId($event->getId())
+                ->setDateStart(new DateTime())
+                ->setDateEnd($event->getDateEndSales())
+                ->setCreatedOn(new DateTime())
+                ->setCreatorId($user->getId());
 
-        $form = $this->formFactory->create(TicketSpecialPriceType::class, $specialPrice);
-        $form->handleRequest($request);
+            $form = $this->formFactory->create(TicketSpecialPriceType::class, $specialPrice);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->ticketSpecialPriceRepository->save($form->getData());
-            $this->flashBag->add('notice', 'Le token a été enregistré');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->ticketSpecialPriceRepository->save($form->getData());
+                $this->flashBag->add('notice', 'Le token a été enregistré');
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_event_special_price', ['id' => $event->getId()]));
+                return new RedirectResponse($this->urlGenerator->generate('admin_event_special_price',
+                    ['id' => $event->getId()]));
+            }
         }
 
         return new Response($this->twig->render('admin/event/special_price.html.twig', [
-            'special_prices' => $this->ticketSpecialPriceRepository->getByEvent($event),
+            'special_prices' => $event === null ? [] : $this->ticketSpecialPriceRepository->getByEvent($event),
             'event' => $event,
             'title' => 'Gestion des prix custom',
-            'form' => $form->createView(),
+            'form' => $form === null ? null : $form->createView(),
             'event_select_form' => $this->formFactory->create(EventSelectType::class, $event)->createView(),
         ]));
     }

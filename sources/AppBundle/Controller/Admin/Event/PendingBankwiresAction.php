@@ -74,23 +74,28 @@ class PendingBankwiresAction
 
     public function __invoke(Request $request)
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
+        $id = $request->query->get('id');
+        $event = null;
+        if ($id !==null) {
+            $event = $this->eventActionHelper->getEventById($id);
 
-        if ($request->isMethod(Request::METHOD_POST)) {
-            if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('admin_event_bankwires', $request->request->get('token')))) {
-                $this->flashBag->add('error', 'Erreur de token CSRF, veuillez réessayer');
-            } else {
-                $reference = $request->request->get('bankwireReceived');
-                $invoice = $this->invoiceRepository->getByReference($reference);
-                if ($invoice === null) {
-                    throw new NotFoundHttpException(sprintf('No invoice with this reference: "%s"', $reference));
+            if ($request->isMethod(Request::METHOD_POST)) {
+                if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('admin_event_bankwires',
+                    $request->request->get('token')))) {
+                    $this->flashBag->add('error', 'Erreur de token CSRF, veuillez réessayer');
+                } else {
+                    $reference = $request->request->get('bankwireReceived');
+                    $invoice = $this->invoiceRepository->getByReference($reference);
+                    if ($invoice === null) {
+                        throw new NotFoundHttpException(sprintf('No invoice with this reference: "%s"', $reference));
+                    }
+                    $this->setInvoicePaid($event, $invoice);
                 }
-                $this->setInvoicePaid($event, $invoice);
             }
         }
 
         return new Response($this->twig->render('admin/event/bankwires.html.twig', [
-            'pendingBankwires' => $this->invoiceRepository->getPendingBankwires($event),
+            'pendingBankwires' => $event === null ? [] : $this->invoiceRepository->getPendingBankwires($event),
             'event' => $event,
             'title' => 'Virements en attente',
             'token' => $this->csrfTokenManager->getToken('admin_event_bankwires'),

@@ -28,7 +28,7 @@ class EventSelectType extends AbstractType
                 [
                     'choice_label' => 'title',
                     'choice_value' => 'id',
-                    'data' => $options['data'],
+                    'data' => isset($options['data']) ? $options['data']:null,
                     'choices' => $this->eventRepository->getAll()
                 ]
             )

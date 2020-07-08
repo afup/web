@@ -36,12 +36,16 @@ class SpeakersManagementAction extends Controller
 
     public function __invoke(Request $request)
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
+        $id = $request->query->get('id');
+        $event = null;
+        if ($id !== null) {
+            $event = $this->eventActionHelper->getEventById($id);
+        }
 
         return new Response($this->twig->render('admin/event/speakers_management.html.twig', [
             'event' => $event,
             'title' => 'Gestion documentaire des speakers',
-            'speakers' => $this->speakerRepository->getScheduledSpeakersByEvent($event, true),
+            'speakers' => $event === null ? null : $this->speakerRepository->getScheduledSpeakersByEvent($event, true),
             'event_select_form' => $this->formFactory->create(EventSelectType::class, $event)->createView(),
         ]));
     }

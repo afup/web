@@ -167,11 +167,7 @@ class VoteController extends EventBaseController
         $eventRepository = $this->get('ting')->get(EventRepository::class);
         $event = $this->getEvent($eventRepository, $request);
 
-        if ($event === null) {
-            throw $this->createNotFoundException(sprintf('Could not found event'));
-        }
-
-        $votes = $this->get('ting')->get(VoteRepository::class)->getVotesByEvent($event->getId());
+        $votes = $event === null ? []:$this->get('ting')->get(VoteRepository::class)->getVotesByEvent($event->getId());
 
         return $this->render('admin/vote/liste.html.twig', [
             'votes' => $votes,
@@ -184,12 +180,12 @@ class VoteController extends EventBaseController
     private function getEvent(EventRepository $eventRepository, Request $request)
     {
         $event = null;
-        if ($request->query->has('id') === false) {
-            $event = $eventRepository->getNextEvent();
-            $event = $eventRepository->get($event->getId());
-        } else {
+        if ($request->query->has('id') !== false) {
             $id = $request->query->getInt('id');
             $event = $eventRepository->get($id);
+            if ($event === null) {
+                throw $this->createNotFoundException(sprintf('Could not found event'));
+            }
         }
 
         return $event;

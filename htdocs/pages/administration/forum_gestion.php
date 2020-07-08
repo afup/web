@@ -41,11 +41,17 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression du coupon', 'index.php?page=forum_gestion&action=lister', true);
     }
 } elseif ($action == 'supprimer') {
-    if ($forums->supprimer($_GET['id'])) {
-        Logs::log('Suppression du forum ' . $_GET['id']);
-        afficherMessage('Le forum a été supprimé', 'index.php?page=forum_gestion&action=lister');
+    if (!$forums->supprimable($_GET['id'])) {
+        afficherMessage('Impossible de supprimer ce forum',
+            'index.php?page=forum_gestion&action=lister', true);
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression du forum', 'index.php?page=forum_gestion&action=lister', true);
+        if ($forums->supprimer($_GET['id'])) {
+            Logs::log('Suppression du forum ' . $_GET['id']);
+            afficherMessage('Le forum a été supprimé', 'index.php?page=forum_gestion&action=lister');
+        } else {
+            afficherMessage('Une erreur est survenue lors de la suppression du forum',
+                'index.php?page=forum_gestion&action=lister', true);
+        }
     }
 } else {
     $formulaire = instancierFormulaire();
