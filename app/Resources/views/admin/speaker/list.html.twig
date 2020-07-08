@@ -21,6 +21,9 @@
 </div>
 
 <div class="ui menu">
+{% if eventId == null %}
+    <div class="item">Changez d'événement dans le menu ci dessus</div>
+    {% else %}
     <a href="{{ path('admin_speaker_add' ,{eventId: eventId}) }}" class="item">
         <div data-tooltip="Ajouter un conférencier" data-position="bottom left">
             <i class="icon plus square"></i>
@@ -34,6 +37,7 @@
         <i class="icon file"></i>
         Exporter les speakers
     </a>
+    {% endif %}
 </div>
 
 <div class="ui segment">
@@ -124,7 +128,7 @@
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
-                Aucun speaker
+                Aucun speaker. {% if eventId == null %}Essayez de changez d'événement.{% endif %}
             </div>
         </div>
     {% endif %}

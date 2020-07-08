@@ -49,28 +49,34 @@ class SpeakerListAction
         Assertion::inArray($sort, self::VALID_SORTS);
         Assertion::inArray($direction, self::VALID_DIRECTIONS);
         $filter = $request->query->get('filter');
-        $event = $this->eventActionHelper->getEventById($request->query->get('eventId'));
-        $speakers = $this->speakerRepository->searchSpeakers($event, $sort, $direction, $filter);
-        $talks = [];
-        foreach ($speakers as $speaker) {
-            $speakerTalks = [];
-            foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
-                if ($talk->getType() !== Talk::TYPE_PHP_PROJECT) {
-                    $speakerTalks[$talk->getTitle()] = $talk;
+        $eventId = $request->query->get('eventId');
+        $event = null;
+        $speakers=[];
+        $talks=[];
+        if ($eventId !== null) {
+            $event = $this->eventActionHelper->getEventById($eventId);
+            $speakers = $this->speakerRepository->searchSpeakers($event, $sort, $direction, $filter);
+            $talks = [];
+            foreach ($speakers as $speaker) {
+                $speakerTalks = [];
+                foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
+                    if ($talk->getType() !== Talk::TYPE_PHP_PROJECT) {
+                        $speakerTalks[$talk->getTitle()] = $talk;
+                    }
                 }
+                ksort($speakerTalks);
+                $talks[$speaker->getId()] = array_values($speakerTalks);
             }
-            ksort($speakerTalks);
-            $talks[$speaker->getId()] = array_values($speakerTalks);
         }
         /** @var Event[] $events */
         $events = $this->eventRepository->getAll();
 
         return new Response($this->twig->render('admin/speaker/list.html.twig', [
-            'eventId' => $event->getId(),
+            'eventId' => $event === null ? null:$event->getId(),
             'events' => $events,
             'speakers' => $speakers,
             'talks' => $talks,
-            'nbSpeakers' => $this->speakerRepository->countByEvent($event),
+            'nbSpeakers' => $event === null ? 0:$this->speakerRepository->countByEvent($event),
             'sort' => $sort,
             'direction' => $direction,
             'filter' => $filter,

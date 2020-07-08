@@ -50,45 +50,53 @@ class RoomAction
 
     public function __invoke(Request $request)
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
-        $rooms = $this->roomRepository->getByEvent($event);
-        $editForms = $this->getFormsForRooms($rooms);
+        $id = $request->query->get('id');
+        $event = null;
+        $rooms = null;
+        $addForm = null;
+        $editForms = null;
+        if ($id !== null) {
+            $event = $this->eventActionHelper->getEventById($id);
+            $rooms = $this->roomRepository->getByEvent($event);
+            $editForms = $this->getFormsForRooms($rooms);
 
-        foreach ($editForms as $form) {
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $room = $form->getData();
-                if ($request->request->has('delete')) {
-                    $this->roomRepository->delete($room);
-                    $this->flashBag->add('notice', sprintf('La salle "%s" a été supprimée.', $room->getName()));
-                } else {
-                    $this->roomRepository->save($room);
-                    $this->flashBag->add('notice', sprintf('La salle "%s" a été sauvegardée.', $room->getName()));
+            foreach ($editForms as $form) {
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $room = $form->getData();
+                    if ($request->request->has('delete')) {
+                        $this->roomRepository->delete($room);
+                        $this->flashBag->add('notice', sprintf('La salle "%s" a été supprimée.', $room->getName()));
+                    } else {
+                        $this->roomRepository->save($room);
+                        $this->flashBag->add('notice', sprintf('La salle "%s" a été sauvegardée.', $room->getName()));
+                    }
+
+                    return new RedirectResponse($this->urlGenerator->generate('admin_event_room',
+                        ['id' => $event->getId()]));
                 }
+            }
 
-                return new RedirectResponse($this->urlGenerator->generate('admin_event_room', ['id' => $event->getId()]));
+            $newRoom = new Room();
+            $newRoom->setEventId($event->getId());
+
+            $addForm = $this->formFactory->create(RoomType::class, $newRoom);
+            $addForm->handleRequest($request);
+
+            if ($addForm->isSubmitted() && $addForm->isValid()) {
+                $newRoom = $addForm->getData();
+                $this->roomRepository->save($newRoom);
+                $this->flashBag->add('notice', sprintf('La salle "%s" a été ajoutée.', $newRoom->getName()));
+
+                return new RedirectResponse($this->urlGenerator->generate('admin_event_room',
+                    ['id' => $event->getId()]));
             }
         }
-
-        $newRoom = new Room();
-        $newRoom->setEventId($event->getId());
-
-        $addForm = $this->formFactory->create(RoomType::class, $newRoom);
-        $addForm->handleRequest($request);
-
-        if ($addForm->isSubmitted() && $addForm->isValid()) {
-            $newRoom = $addForm->getData();
-            $this->roomRepository->save($newRoom);
-            $this->flashBag->add('notice', sprintf('La salle "%s" a été ajoutée.', $newRoom->getName()));
-
-            return new RedirectResponse($this->urlGenerator->generate('admin_event_room', ['id' => $event->getId()]));
-        }
-
         return new Response($this->twig->render('admin/event/rooms.html.twig', [
             'event' => $event,
             'rooms' => $rooms,
-            'addForm' => $addForm->createView(),
-            'editForms' => array_map(static function (Form $form) {
+            'addForm' => $addForm === null ? null : $addForm->createView(),
+            'editForms' => $editForms === null ? null : array_map(static function (Form $form) {
                 return $form->createView();
             }, $editForms),
             'title' => 'Gestion des salles',
@@ -105,7 +113,8 @@ class RoomAction
     {
         $forms = [];
         foreach ($rooms as $room) {
-            $forms[] = $this->formFactory->createNamedBuilder('edit_room_' . $room->getId(), RoomType::class, $room)->getForm();
+            $forms[] = $this->formFactory->createNamedBuilder('edit_room_' . $room->getId(), RoomType::class,
+                $room)->getForm();
         }
 
         return $forms;

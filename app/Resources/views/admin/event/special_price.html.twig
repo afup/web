@@ -44,7 +44,7 @@
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
-                Aucun token créé
+                Aucun token trouvé.{% if event == null %} Essayez de changer d'événement{% endif %}
             </div>
         </div>
     {% endif %}
@@ -53,7 +53,14 @@
         <h2 class="ui header">Nouveau token</h2>
 
         <div class="ui clearing divider"></div>
-
+    {% if form == null %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Changer d'événement pour pouvoir ajouter un token.
+            </div>
+        </div>
+        {% else %}
         {{ form_start(form) }}
 
             <table class="ui table striped compact celled">
@@ -107,5 +114,6 @@
         {{ form_errors(form) }}
 
         {{ form_end(form) }}
+    {% endif %}
     </div>
 {% endblock %}
