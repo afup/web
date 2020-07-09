@@ -265,6 +265,23 @@ class MemberShipController extends SiteBaseController
         return new Response();
     }
 
+    public function payboxRedirectAction(Request $request)
+    {
+        $invoice = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->getByReference($request->get('cmd'));
+
+        if ($invoice === null) {
+            throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->get('cmd')));
+        }
+
+        $payboxResponse = PayboxResponseFactory::createFromRequest($request);
+
+        return $this->render(':site/company_membership:paybox_redirect.html.twig', [
+            'invoice' => $invoice,
+            'payboxResponse' => $payboxResponse,
+            'status' => $request->get('status')
+        ]);
+    }
+
     public function contactDetailsAction(Request $request)
     {
         $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);

@@ -55,6 +55,10 @@ membership_payment:
   path: /paybox-callback
   defaults: {_controller: AppBundle:MemberShip:payboxCallback}
 
+membership_payment_redirect:
+  path: /paybox-redirect
+  defaults: {_controller: AppBundle:MemberShip:payboxRedirect}
+
 techletter:
   path: /techletter
   defaults: {_controller: AppBundle:Techletter:index}

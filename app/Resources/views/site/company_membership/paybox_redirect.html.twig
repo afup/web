@@ -1,0 +1,18 @@
+{% extends ':site:base.html.twig' %}
+{% block inner_content %}
+    <div class="col-md-8">
+        <h2>Paiement de votre cotisation</h2>
+        <div>
+            <p>
+                {% if payboxResponse.successful %}
+                    Le paiement de votre cotisation s'est bien passé, merci.
+                {% else %}
+                    Il y a eu une erreur lors de l'enregistrement de votre cotisation.
+                {% endif %}
+            </p>
+            <p>
+                Si vous avez la moindre question, n'hésitez pas à contacter <a href="mailto:bonjour@afup.org">bonjour@afup.org</a>.
+            </p>
+        </div>
+    </div>
+{% endblock %}

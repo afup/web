@@ -67,5 +67,5 @@ Ensuite pour le paiement il faut utiliser ces informations [de carte](http://www
 Après le paiement paybox effectue un retour sur le serveur et c'est suite à ce retour que l'on effectue des actions comme l'ajout de la cotisation. Afin d'en simplifier l'appel il existe une commande dédiée qui s'appelle comme cela, où l'argument en exemple correspond à l'URL de la page de retour sur le site après paiement.  
 
 ```
-bin/console dev:callback-paybox-cotisation "https://localhost:9206/pages/administration/paybox_effectue.php?total=3000&cmd=C2020-150120201239-0-770-GALLO-E4F&autorisation=XXXXXX&transaction=588033888&status=00000"
+bin/console dev:callback-paybox-cotisation "https://localhost:9206/association/paybox-redirect?total=3000&cmd=C2020-150120201239-0-770-GALLO-E4F&autorisation=XXXXXX&transaction=588033888&status=00000"
 ```
