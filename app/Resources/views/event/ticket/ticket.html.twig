@@ -168,15 +168,6 @@
 
                         <p class="tickets--type-stock-limit"><em>{{ 'Dans la limite des stocks disponibles.'|trans }}</em></p>
 
-                        <p>{{ 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :'|trans }}</p>
-                        <div class="tickets--pmr">
-                            {{ form_label(ticket.pmr) }}
-                            {% for response in ticket.pmr %}
-                                {{ form_widget(response) }}
-                                {{ form_label(response) }}
-                            {% endfor %}
-                        </div>
-
                         <p>{{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}</p>
 
                         {{ form_widget(ticket.specialPriceToken) }}

@@ -204,7 +204,7 @@ SQL;
 
         return $liste_emargement;
     }
-    
+
     /**
      * Renvoit la liste des inscriptions au forum
      *
@@ -253,7 +253,7 @@ SQL;
 
     function modifierInscription($id, $reference, $type_inscription, $civilite, $nom, $prenom,
                                  $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
-                                 $newsletter_nexen, $mail_partenaire, $commentaires, $etat, $facturation, $mobilite_reduite = 0)
+                                 $newsletter_nexen, $mail_partenaire, $commentaires, $etat, $facturation)
     {
         $requete = 'UPDATE ';
         $requete .= '  afup_inscription_forum ';
@@ -274,7 +274,6 @@ SQL;
         $requete .= '  commentaires=' . $this->_bdd->echapper($commentaires) . ',';
         $requete .= '  etat=' . $this->_bdd->echapper($etat) . ',';
         $requete .= '  facturation=' . $this->_bdd->echapper($facturation) . ',';
-        $requete .= '  mobilite_reduite=' . $this->_bdd->echapper($mobilite_reduite) . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
 
