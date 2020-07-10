@@ -265,15 +265,7 @@ class MemberShipController extends SiteBaseController
         return new Response();
     }
 
-    public function payboxRedirectAction(Request $request)
-    {
-        $payboxResponse = PayboxResponseFactory::createFromRequest($request);
 
-        return $this->render(':site/company_membership:paybox_redirect.html.twig', [
-            'payboxResponse' => $payboxResponse,
-            'status' => $request->get('status')
-        ]);
-    }
 
     public function contactDetailsAction(Request $request)
     {
