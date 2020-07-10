@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Admin\Event;
 
-
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
