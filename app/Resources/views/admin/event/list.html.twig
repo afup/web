@@ -1,0 +1,83 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+
+    <h2>Liste des événements</h2>
+
+    <div class="ui menu">
+        <a href="/pages/administration/index.php?page=forum_gestion&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter un forum" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <div class="ui message">
+        <p>On ne peut pas supprimer d'événement pour lequel des éléments ont été associés.</p>
+    </div>
+
+    <table class="ui table striped celled">
+        <thead>
+        <tr>
+            <th>Événement</th>
+            <th>Chemin</th>
+            <th class="right aligned">Places</th>
+            <th>Date début</th>
+            <th>Date Fin</th>
+            <th>Fin CFP</th>
+            <th>Fin vente</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>
+                    <strong>{{ event.titre }}</strong>
+                </td>
+                <td>{{ event.path }}</td>
+                <td class="right aligned">{{ event.nb_places }}</td>
+                <td>{{ event.date_debut|date("d/m/Y") }}</td>
+                <td>{{ event.date_fin|date("d/m/Y") }}</td>
+                <td>{{ event.date_fin_appel_conferencier|date("d/m/Y H:i:s") }}</td>
+                <td>{{ event.date_fin_vente|date("d/m/Y H:i:s") }}</td>
+                <td style="text-align: right" nowrap="nowrap">
+                    <a href="/pages/administration/index.php?page=forum_gestion&amp;action=modifier&amp;id={{ event.id }}"
+                       data-tooltip="Modifier le forum {{ event.titre }}"
+                       data-position="left center"
+                       class="compact ui icon button"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
+
+                    {% if  event.est_supprimable == '1' %}
+                        <a href="/pages/administration/index.php?page=forum_gestion&amp;action=supprimer&amp;id={{ event.id }}"
+                           data-position="left center"
+                           data-tooltip="Supprimer le forum {{ event.titre }}"
+                           class="compact ui red icon button confirmable"
+                           data-confirmable-label="Etes-vous sûr de vouloir supprimer ce forum ?"
+                        >
+                            <i class="trash icon"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="10" style="text-align: center;">
+                    <div class="ui icon header">
+                        <i class="meh outline icon"></i>
+                        Aucune information. {% if event == null %}Essayez de changez d'événement !{% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
+
+
