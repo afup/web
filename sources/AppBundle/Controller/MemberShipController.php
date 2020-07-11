@@ -265,6 +265,8 @@ class MemberShipController extends SiteBaseController
         return new Response();
     }
 
+
+
     public function contactDetailsAction(Request $request)
     {
         $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);

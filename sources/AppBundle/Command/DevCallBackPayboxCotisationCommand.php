@@ -16,7 +16,7 @@ class DevCallBackPayboxCotisationCommand extends ContainerAwareCommand
     {
         $help = <<<EOF
 Cette commande simplifie l'appel au callback de paybox.
-Il faut dans le container l'appeller avec un argument comme celui-ci "ttps://localhost:9206/pages/administration/paybox_effectue.php?total=3000&cmd=C2020-150120200752-0-770-GALLO-DCB&autorisation=XXXXXX&transaction=587904761&status=00000"
+Il faut dans le container l'appeller avec un argument comme celui-ci "https://localhost:9206/association/paybox-redirect?total=3000&cmd=C2020-150120200752-0-770-GALLO-DCB&autorisation=XXXXXX&transaction=587904761&status=00000"
 Il correspond à l'URL de la page de retour de paiement.
 EOF;
 
