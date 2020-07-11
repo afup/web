@@ -17,6 +17,10 @@ class CmsPageController extends SiteBaseController
             throw $this->createNotFoundException();
         }
 
+        if (false === $this->isGranted('ROLE_ADMIN') && $article['etat'] !== '1') {
+            throw $this->createAccessDeniedException();
+        }
+
         $rubriqueRepository = new Rubrique($article['id_site_rubrique'], $GLOBALS['AFUP_DB']);
         $rubriqueRepository->charger();
         $rubrique = $rubriqueRepository->exportable();
