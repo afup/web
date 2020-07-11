@@ -89,7 +89,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             inscriptions.id, inscriptions.date, inscriptions.reference, inscriptions.coupon, inscriptions.type_inscription,
             inscriptions.montant, inscriptions.informations_reglement, inscriptions.civilite, inscriptions.nom, inscriptions.prenom,
             inscriptions.email, inscriptions.telephone, inscriptions.citer_societe, inscriptions.newsletter_afup, inscriptions.newsletter_nexen,
-            inscriptions.commentaires, inscriptions.etat, inscriptions.facturation, inscriptions.id_forum, inscriptions.mobilite_reduite,
+            inscriptions.commentaires, inscriptions.etat, inscriptions.facturation, inscriptions.id_forum,
             inscriptions.mail_partenaire, inscriptions.presence_day1, inscriptions.presence_day2,
             tarif_event.id_tarif, tarif_event.id_event, tarif_event.price, tarif_event.date_start, tarif_event.date_end, tarif_event.description,
             tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active
@@ -302,12 +302,6 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'columnName' => 'member_type',
                 'fieldName' => 'memberType',
                 'type' => 'int'
-            ])
-            ->addField([
-                'columnName' => 'mobilite_reduite',
-                'fieldName' => 'pmr',
-                'type' => 'bool',
-                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'mail_partenaire',

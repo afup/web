@@ -72,7 +72,7 @@ $forum_inscriptions = new Inscriptions($bdd);
 $forum_facturation = new Facturation($bdd);
 
 if ($action == 'lister') {
-    $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, i.mobilite_reduite, f.type_reglement, i.presence_day1, i.presence_day2';
+    $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, f.type_reglement, i.presence_day1, i.presence_day2';
     $list_ordre = 'date desc';
     $list_sens = 'desc';
     $list_associatif = false;
@@ -183,7 +183,6 @@ if ($action == 'lister') {
                 'mail_partenaire' => 0,
                 'newsletter_afup' => 0,
                 'newsletter_nexen' => 0,
-                'mobilite_reduite' => 0,
                 'date_reglement' => (new \DateTime())->format('Y-m-d')
             ]
         );
@@ -242,9 +241,6 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'  , 'telephone'                , 'Tél.'           , array('size' => 20, 'maxlength' => 20));
 
     $groupe = array();
-    $groupe[] = $formulaire->createElement('radio', 'mobilite_reduite', null, 'oui', 1);
-    $groupe[] = $formulaire->createElement('radio', 'mobilite_reduite', null, 'non', 0);
-    $formulaire->addGroup($groupe, 'groupe_mobilite_reduite', 'Personne à mobilité réduite', '<br/>', false);
 
 	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
@@ -370,7 +366,6 @@ if ($action == 'lister') {
             $ticket->setVoucher($valeurs['coupon']);
             $ticket->setCompanyCitation($valeurs['citer_societe']);
             $ticket->setNewsletter($valeurs['newsletter_afup']);
-            $ticket->setPmr($valeurs['mobilite_reduite']);
             $ticket->setOptin((bool) $valeurs['mail_partenaire']);
             $ticket->setComments($valeurs['commentaires']);
             $ticket->setStatus($valeurs['etat']);
@@ -397,8 +392,7 @@ if ($action == 'lister') {
         												   $valeurs['mail_partenaire'],
                                                            $valeurs['commentaires'],
         												   $valeurs['etat'],
-        												   $valeurs['facturation'],
-                                                           $valeurs['mobilite_reduite']);
+        												   $valeurs['facturation']);
 
             /** @var \AppBundle\Event\Model\Ticket $ticket */
             $ticket = $ticketRepository->get($_GET['id']);

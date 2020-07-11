@@ -185,11 +185,6 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @var bool
      */
-    private $pmr = false;
-
-    /**
-     * @var bool
-     */
     private $day1Checkin;
 
     /**
@@ -641,26 +636,6 @@ class Ticket implements NotifyPropertyInterface
         $this->propertyChanged('memberId', $this->memberId, $memberId);
 
         $this->memberId = $memberId;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getPmr()
-    {
-        return $this->pmr;
-    }
-
-    /**
-     * @param bool $pmr
-     * @return Ticket
-     */
-    public function setPmr($pmr)
-    {
-        $pmr = (bool) $pmr;
-        $this->propertyChanged('pmr', $this->pmr, $pmr);
-        $this->pmr = $pmr;
         return $this;
     }
 

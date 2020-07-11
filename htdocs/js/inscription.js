@@ -30,9 +30,6 @@ $(document).ready(function(){
 			if (typeof $('input[name="purchase[tickets][' + i +'][ticketType]"]:checked').val() === "undefined") {
 			    $('fieldset.f' + i).find('ul.tickets--type-list input[type=radio]:not(:disabled):first').attr('checked', true);
 			}
-			if (typeof $('input[name="purchase[tickets][' + i +'][pmr]"]:checked').val() === "undefined") {
-			    $('fieldset.f' + i).find('div.pmr input[type=radio]:eq(1)').attr('checked', true);
-			}
 
             updateFieldsetSummary($('fieldset.f' + i));
         }

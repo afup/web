@@ -173,15 +173,6 @@ class TicketType extends AbstractType
         });
 
         $builder
-            ->add('pmr', ChoiceType::class, [
-                'label' => 'Mobilité réduite',
-                'multiple' => false,
-                'expanded' => true,
-                'choices' => [
-                    'Oui' => '1',
-                    'Non' => '0'
-                ]
-            ])
             ->add('tag1', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 1 ou Id Twitter (ex: @afup)']])
             ->add('tag2', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 2']])
             ->add('tag3', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 3']])
