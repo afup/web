@@ -1,7 +1,7 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
-
+    {% set token_delete=csrf_token('forum_delete') %}
     <h2>Liste des événements</h2>
 
     <div class="ui menu">
@@ -52,7 +52,7 @@
                     </a>
 
                     {% if  event.est_supprimable == '1' %}
-                        <a href="/pages/administration/index.php?page=forum_gestion&amp;action=supprimer&amp;id={{ event.id }}"
+                        <a href="{{ path('admin_event_delete', {'id': event.id, 'token': token_delete}) }}"
                            data-position="left center"
                            data-tooltip="Supprimer le forum {{ event.titre }}"
                            class="compact ui red icon button confirmable"
