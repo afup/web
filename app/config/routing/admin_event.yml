@@ -1,3 +1,7 @@
+admin_event_list:
+  path: /list
+  defaults: {_controller: AppBundle\Controller\Admin\Event\ListAction}
+
 admin_event_room:
   path: /room
   defaults: {_controller: AppBundle\Controller\Admin\Event\RoomAction}

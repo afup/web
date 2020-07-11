@@ -114,6 +114,9 @@ parameters:
                 forum_gestion:
                     nom: 'Gestion événéments'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/list'
+                    extra_routes:
+                        - admin_event_list
                 forum_salle:
                     nom: 'Salles'
                     niveau: 'ROLE_ADMIN'

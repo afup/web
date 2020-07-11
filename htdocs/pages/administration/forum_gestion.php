@@ -11,7 +11,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'ajouter_coupon', 'supprimer_coupon'));
+$action = verifierAction(array('ajouter', 'modifier', 'supprimer'));
 $smarty->assign('action', $action);
 
 
@@ -19,38 +19,17 @@ $smarty->assign('action', $action);
 $forums = new Forum($bdd);
 $coupons = new Coupon($bdd);
 
-if ($action == 'lister') {
-    $evenements = $forums->obtenirListe(null, '*', 'date_debut desc');
-    foreach ($evenements as &$e) {
-        $e['supprimable'] = $forums->supprimable($e['id']);
-        $e['coupons'] = $coupons->obtenirCouponsForum($e['id']);
-    }
-    $smarty->assign('evenements', $evenements);
-} elseif ($action == 'ajouter_coupon') {
-    if ($coupons->ajouter($_GET['id_forum'], $_GET['coupon'])) {
-        Logs::log('Ajout du coupon de forum');
-        afficherMessage('Le coupon a été ajouté', 'index.php?page=forum_gestion&action=lister');
-    } else {
-        afficherMessage('Une erreur est survenue lors de l\'ajout du coupon', 'index.php?page=forum_gestion&action=lister', true);
-    }
-} elseif ($action == 'supprimer_coupon') {
-    if ($coupons->supprimer($_GET['id'])) {
-        Logs::log('Suppression du coupon de forum ' . $_GET['id']);
-        afficherMessage('Le coupon a été supprimé', 'index.php?page=forum_gestion&action=lister');
-    } else {
-        afficherMessage('Une erreur est survenue lors de la suppression du coupon', 'index.php?page=forum_gestion&action=lister', true);
-    }
-} elseif ($action == 'supprimer') {
+if ($action == 'supprimer') {
     if (!$forums->supprimable($_GET['id'])) {
         afficherMessage('Impossible de supprimer ce forum',
-            'index.php?page=forum_gestion&action=lister', true);
+            '/admin/event/list', true);
     } else {
         if ($forums->supprimer($_GET['id'])) {
             Logs::log('Suppression du forum ' . $_GET['id']);
-            afficherMessage('Le forum a été supprimé', 'index.php?page=forum_gestion&action=lister');
+            afficherMessage('Le forum a été supprimé', '/admin/event/list');
         } else {
             afficherMessage('Une erreur est survenue lors de la suppression du forum',
-                'index.php?page=forum_gestion&action=lister', true);
+                '/admin/event/list', true);
         }
     }
 } else {
@@ -211,7 +190,7 @@ if ($action == 'lister') {
             } else {
                 Logs::log('Modification du forum ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('Le forum a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), 'index.php?page=forum_gestion&action=lister');
+            afficherMessage('Le forum a été ' . (($action == 'ajouter') ? 'ajouté' : 'modifié'), '/admin/event/list');
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' du forum');
         }
