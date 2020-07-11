@@ -2,6 +2,13 @@ admin_event_list:
   path: /list
   defaults: {_controller: AppBundle\Controller\Admin\Event\ListAction}
 
+admin_event_delete:
+  path: /delete/{id}/{token}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\RemoveEventAction}
+  requirements:
+    id: \d+
+    token: '[a-zA-Z0-9_-]+'
+
 admin_event_room:
   path: /room
   defaults: {_controller: AppBundle\Controller\Admin\Event\RoomAction}
