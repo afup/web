@@ -8,6 +8,19 @@ admin_event_delete:
   requirements:
     id: \d+
 
+admin_event_new:
+  path: /new
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\AddEditEventAction
+    id: null
+
+admin_event_edit:
+  path: /edit/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\AddEditEventAction
+  requirements:
+    id: \d+
+
 admin_event_room:
   path: /room
   defaults: {_controller: AppBundle\Controller\Admin\Event\RoomAction}

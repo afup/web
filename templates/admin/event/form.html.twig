@@ -1,0 +1,365 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Ajouter un événément</h2>
+    {#    <form action="/pages/administration/index.php?page=forum_gestion&amp;action=ajouter" method="post" id="formulaire" onsubmit="return soumettreUneSeuleFois(this);">#}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+
+    <div class="ui segment">
+        <h2 class="ui header">Gestion d'événément</h2>
+        <div class="ui clearing divider"></div>
+
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.title, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.title) }}
+                        {{ form_widget(form.title) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.path, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.path) }}
+                        {{ form_widget(form.path) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.trelloListId, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.trelloListId) }}
+                        {{ form_widget(form.trelloListId) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.logoUrl, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.logoUrl) }}
+                        {{ form_widget(form.logoUrl) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.seats, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.seats) }}
+                        {{ form_widget(form.seats) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.placeName, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.placeName) }}
+                        {{ form_widget(form.placeName) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.placeAddress, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.placeAddress) }}
+                        {{ form_widget(form.placeAddress) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateStart, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateStart) }}
+                        {{ form_widget(form.dateStart) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateEnd, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateEnd) }}
+                        {{ form_widget(form.dateEnd) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateEndCallForProjects, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateEndCallForProjects) }}
+                        {{ form_widget(form.dateEndCallForProjects) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateEndCallForPapers, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateEndCallForPapers) }}
+                        {{ form_widget(form.dateEndCallForPapers) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.voteEnabled, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.voteEnabled) }}
+                        {{ form_widget(form.voteEnabled) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateEndVote, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateEndVote) }}
+                        {{ form_widget(form.dateEndVote) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateEndPreSales, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateEndPreSales) }}
+                        {{ form_widget(form.dateEndPreSales) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateEndSales, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateEndSales) }}
+                        {{ form_widget(form.dateEndSales) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateEndSpeakersDinerInfosCollection, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateEndSpeakersDinerInfosCollection) }}
+                        {{ form_widget(form.dateEndSpeakersDinerInfosCollection) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.dateEndHotelInfosCollection, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.dateEndHotelInfosCollection) }}
+                        {{ form_widget(form.dateEndHotelInfosCollection) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.datePlanningAnnouncement, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.datePlanningAnnouncement) }}
+                        {{ form_widget(form.datePlanningAnnouncement) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.cFP.cfp_fr, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.cFP.cfp_fr) }}
+                        {{ form_widget(form.cFP.cfp_fr) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.cFP.cfp_en, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.cFP.cfp_en) }}
+                        {{ form_widget(form.cFP.cfp_en) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.cFP.speaker_management_fr, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.cFP.speaker_management_fr) }}
+                        {{ form_widget(form.cFP.speaker_management_fr) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.cFP.speaker_management_en, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.cFP.speaker_management_en) }}
+                        {{ form_widget(form.cFP.speaker_management_en) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.cFP.sponsor_management_fr, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.cFP.sponsor_management_fr) }}
+                        {{ form_widget(form.cFP.sponsor_management_fr) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.cFP.sponsor_management_en, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.cFP.sponsor_management_en) }}
+                        {{ form_widget(form.cFP.sponsor_management_en) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.cFP.mail_inscription_content, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.cFP.mail_inscription_content) }}
+                        {{ form_widget(form.cFP.mail_inscription_content) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.cFP.become_sponsor_description, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.cFP.become_sponsor_description) }}
+                        {{ form_widget(form.cFP.become_sponsor_description) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.speakersDinerEnabled, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.speakersDinerEnabled) }}
+                        {{ form_widget(form.speakersDinerEnabled) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.accomodationEnabled, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.accomodationEnabled) }}
+                        {{ form_widget(form.accomodationEnabled) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui header">Coupons</h2>
+        <div class="ui clearing divider"></div>
+
+        <div class="ui form">
+
+
+            <div class="inline fields ui grid">
+                {{ form_label(form.coupons, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.coupons) }}
+                        {{ form_widget(form.coupons) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+
+
+            <div class="inline fields ui grid">
+                <label class="three wide column">
+                </label>
+                <div class="seven wide column">
+                    <input name="soumettre" value="Soumettre" type="submit" class="ui primary button">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="ui segment">
+        <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+
+
