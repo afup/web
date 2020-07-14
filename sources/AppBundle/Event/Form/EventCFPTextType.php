@@ -14,16 +14,16 @@ class EventCFPTextType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cfp_fr', TextareaType::class, ['required' => false, 'label' => 'CFP (fr)'])
-            ->add('cfp_en', TextareaType::class, ['required' => false, 'label' => 'CFP (en)'])
-            ->add('speaker_management_fr', TextareaType::class, ['required' => false, 'label' => 'Infos speakers (fr)'])
-            ->add('speaker_management_en', TextareaType::class, ['required' => false, 'label' => 'Infos speakers (en)'])
-            ->add('sponsor_management_fr', TextareaType::class, ['required' => false, 'label' => 'Infos sponsors (fr)'])
-            ->add('sponsor_management_en', TextareaType::class, ['required' => false, 'label' => 'Infos sponsors (en)'])
+            ->add('cfp_fr', TextareaType::class, ['required' => false, 'label' => 'CFP (fr)', 'attr'=>['rows'=> 5, 'cols'=>50, 'class'=>'simplemde']])
+            ->add('cfp_en', TextareaType::class, ['required' => false, 'label' => 'CFP (en)', 'attr'=>['rows'=> 5, 'cols'=>50, 'class'=>'simplemde']])
+            ->add('speaker_management_fr', TextareaType::class, ['required' => false, 'label' => 'Infos speakers (fr)', 'attr'=>['rows'=> 5, 'cols'=>50, 'class'=>'tinymce']])
+            ->add('speaker_management_en', TextareaType::class, ['required' => false, 'label' => 'Infos speakers (en)', 'attr'=>['rows'=> 5, 'cols'=>50, 'class'=>'tinymce']])
+            ->add('sponsor_management_fr', TextareaType::class, ['required' => false, 'label' => 'Infos sponsors (fr)', 'attr'=>['rows'=> 5, 'cols'=>50, 'class'=>'tinymce']])
+            ->add('sponsor_management_en', TextareaType::class, ['required' => false, 'label' => 'Infos sponsors (en)', 'attr'=>['rows'=> 5, 'cols'=>50, 'class'=>'tinymce']])
             ->add('mail_inscription_content', TextareaType::class,
-                ['required' => false, 'label' => 'Contenu mail inscription'])
+                ['required' => false, 'label' => 'Contenu mail inscription', 'attr'=>['rows'=> 5, 'cols'=>50, 'class'=>'simplemde']])
             ->add('become_sponsor_description', TextareaType::class,
-                ['required' => false, 'label' => 'Contenu page devenir sponsor']);
+                ['required' => false, 'label' => 'Contenu page devenir sponsor', 'attr'=>['rows'=> 5, 'cols'=>50, 'class'=>'simplemde']]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

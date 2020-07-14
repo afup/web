@@ -35,6 +35,15 @@
         </div>
         <div class="ui form">
             <div class="inline fields ui grid">
+                <label class="three wide column">
+                </label>
+                <div class="field seven wide column">
+                    <i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
                 {{ form_label(form.trelloListId, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
                 <div class="field nine wide column">
                     <div class="ui input">
@@ -214,8 +223,10 @@
                 {{ form_label(form.cFP.cfp_fr, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
                 <div class="field nine wide column">
                     <div class="ui input">
+                        <div style="width: 100%">
                         {{ form_errors(form.cFP.cfp_fr) }}
                         {{ form_widget(form.cFP.cfp_fr) }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -225,8 +236,10 @@
                 {{ form_label(form.cFP.cfp_en, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
                 <div class="field nine wide column">
                     <div class="ui input">
+                        <div style="width: 100%">
                         {{ form_errors(form.cFP.cfp_en) }}
                         {{ form_widget(form.cFP.cfp_en) }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -279,9 +292,10 @@
             <div class="inline fields ui grid">
                 {{ form_label(form.cFP.mail_inscription_content, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
                 <div class="field nine wide column">
-                    <div class="ui input">
+                    <div class="ui input"><div style="width: 100%">
                         {{ form_errors(form.cFP.mail_inscription_content) }}
                         {{ form_widget(form.cFP.mail_inscription_content) }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -291,8 +305,10 @@
                 {{ form_label(form.cFP.become_sponsor_description, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
                 <div class="field nine wide column">
                     <div class="ui input">
+                        <div style="width: 100%">
                         {{ form_errors(form.cFP.become_sponsor_description) }}
                         {{ form_widget(form.cFP.become_sponsor_description) }}
+                        </div>
                     </div>
                 </div>
             </div>
