@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Admin\Event;
 
-
 use AppBundle\Event\Form\EventType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventCouponRepository;
@@ -83,16 +82,20 @@ class AddEditEventAction
 
         $form = $this->formFactory->create(EventType::class, $event);
         $form->get('coupons')->setData($couponTxt);
+//        $form->get('cFP')->setData($event->getCFP());
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            dump($form->get('cFP')->getData(), $event);
+//            $event->setCFP($form->get('cFP')->getData());
+
             $this->eventRepository->save($event);
 
             $couponsPost = explode(',', $form->get('coupons')->getData());
             $couponsPost = array_map('trim', $couponsPost);
             $this->couponRepository->changeCouponForEvent($couponsPost, $event);
 
-            $this->flashBag->add('notice', 'Evénement '.$action);
+            $this->flashBag->add('notice', 'Evénement ' . $action);
             return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
         }
         return new Response($this->twig->render('admin/event/form.html.twig', ['form' => $form->createView()]));
