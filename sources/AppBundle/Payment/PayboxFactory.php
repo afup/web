@@ -40,11 +40,12 @@ class PayboxFactory
         $paybox->set_porteur($email); // Email du client final (Le porteur de la carte)
 
         $paybox->set_repondreA($this->router->generate('membership_payment', [], RouterInterface::ABSOLUTE_URL));
-        $returnUrl = $this->router->generate('membership_payment_redirect', [], RouterInterface::ABSOLUTE_URL);
-        $paybox->set_effectue($returnUrl);
-        $paybox->set_refuse($returnUrl);
-        $paybox->set_annule($returnUrl);
-        $paybox->set_erreur($returnUrl);
+        $paybox->set_effectue($this->router->generate('membership_payment_redirect', ['type'=>'success'], RouterInterface::ABSOLUTE_URL));
+        $paybox->set_refuse($this->router->generate('membership_payment_redirect', ['type'=>'refused'], RouterInterface::ABSOLUTE_URL));
+        $paybox->set_annule($this->router->generate('membership_payment_redirect', ['type'=>'canceled'], RouterInterface::ABSOLUTE_URL));
+        $paybox->set_erreur($this->router->generate('membership_payment_redirect', ['type'=>'error'], RouterInterface::ABSOLUTE_URL));
+
+
 
         if (!preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
             throw new \RuntimeException('Could not create the payment');
