@@ -2,7 +2,6 @@
 
 namespace AppBundle\Event\Form;
 
-
 use AppBundle\Event\Model\Event;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -35,54 +34,74 @@ class EventType extends AbstractType
             ->add('dateEnd', DateType::class,
                 ['required' => false, 'widget' => 'single_text', 'label' => 'Date de fin'])
             ->add('dateEndCallForProjects', DateTimeType::class,
-                ['required' => false, 'widget' => 'single_text', 'label' => 'Date de fin de l\'appel aux projets'])
+                [
+                    'required' => false,
+                    'years' => range(2001, date('Y')+5),
+                    'label' => 'Date de fin de l\'appel aux projets',
+                    'with_seconds' => true,
+                ])
             ->add('dateEndCallForPapers', DateTimeType::class, [
                 'required' => false,
-                'widget' => 'single_text',
-                'label' => 'Date de fin de l\'appel aux conférenciers'
+                'years' => range(2001, date('Y')+5),
+                'label' => 'Date de fin de l\'appel aux conférenciers',
+                'with_seconds' => true,
             ])
             ->add('voteEnabled', CheckboxType::class,
                 ['required' => false, 'label' => 'Activer le vote sur les conférences'])
             ->add('dateEndVote', DateTimeType::class, [
                 'required' => false,
-                'widget' => 'single_text',
-                'label' => 'Date de fin de vote sur le CFP'
+                'years' => range(2001, date('Y')+5),
+                'label' => 'Date de fin de vote sur le CFP',
+                'with_seconds' => true,
             ])
             ->add('dateEndPreSales', DateTimeType::class, [
                 'required' => false,
-                'widget' => 'single_text',
-                'label' => 'Date de fin de pré-vente'
+                'years' => range(2001, date('Y')+5),
+                'label' => 'Date de fin de pré-vente',
+                'with_seconds' => true,
             ])
             ->add('dateEndSales', DateTimeType::class, [
                 'required' => false,
-                'widget' => 'single_text',
-                'label' => 'Date de fin de vente'
+                'years' => range(2001, date('Y')+5),
+                'label' => 'Date de fin de vente',
+                'with_seconds' => true,
             ])
             ->add('dateEndSpeakersDinerInfosCollection', DateTimeType::class, [
                 'required' => false,
-                'widget' => 'single_text',
-                'label' => 'Date de fin saisie repas confférenciers'
+                'years' => range(2001, date('Y')+5),
+                'label' => 'Date de fin saisie repas confférenciers',
+                'with_seconds' => true,
             ])
             ->add('dateEndHotelInfosCollection', DateTimeType::class, [
                 'required' => false,
-                'widget' => 'single_text',
-                'label' => 'Date de fin saisie nuités hotel'
+                'years' => range(2001, date('Y')+5),
+                'label' => 'Date de fin saisie nuités hotel',
+                'with_seconds' => true,
             ])
             ->add('datePlanningAnnouncement', DateTimeType::class, [
                 'required' => false,
-                'widget' => 'single_text',
-                'label' => 'Date annonce planning'
+                'years' => range(2001, date('Y')+5),
+                'label' => 'Date annonce planning',
+                'with_seconds' => true,
             ])
-            ->add('cFP', EventCFPTextType::class, ['required'=>false, 'label'=>false])
-            ->add('speakersDinerEnabled', CheckboxType::class, ['required'=>false, 'label'=>'Activer le repas des speakers'])
-            ->add('accomodationEnabled', CheckboxType::class, ['required'=>false, 'label'=>'Activer les nuits d\'hôtel'])
-            ->add('coupons', TextareaType::class, ['required'=>false, 'mapped'=>false, 'label'=>'Liste des coupons', 'attr' => ['placeholder'=>'Ici c\'est une liste de coupons séparées par des virgules', 'title'=>'Ici c\'est une liste de coupons séparées par des virgules']])
-        ;
+            ->add('cFP', EventCFPTextType::class, ['required' => false, 'label' => false])
+            ->add('speakersDinerEnabled', CheckboxType::class,
+                ['required' => false, 'label' => 'Activer le repas des speakers'])
+            ->add('accomodationEnabled', CheckboxType::class,
+                ['required' => false, 'label' => 'Activer les nuits d\'hôtel'])
+            ->add('coupons', TextareaType::class, [
+                'required' => false,
+                'mapped' => false,
+                'label' => 'Liste des coupons',
+                'attr' => [
+                    'placeholder' => 'Ici c\'est une liste de coupons séparées par des virgules',
+                    'title' => 'Ici c\'est une liste de coupons séparées par des virgules'
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['data_class' => Event::class]);
     }
-
 }

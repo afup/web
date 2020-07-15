@@ -216,7 +216,8 @@ SQL;
                 'fieldName' => 'dateEndCallForProjects',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
             ->addField([
@@ -224,7 +225,8 @@ SQL;
                 'fieldName' => 'dateEndCallForPapers',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
             ->addField([
@@ -237,7 +239,8 @@ SQL;
                 'fieldName' => 'dateEndPreSales',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
             ->addField([
@@ -245,7 +248,8 @@ SQL;
                 'fieldName' => 'dateEndSales',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
             ->addField([
@@ -253,7 +257,8 @@ SQL;
                 'fieldName' => 'dateEndSpeakersDinerInfosCollection',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
             ->addField([
@@ -261,7 +266,8 @@ SQL;
                 'fieldName' => 'datePlanningAnnouncement',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
             ->addField([
@@ -269,7 +275,8 @@ SQL;
                 'fieldName' => 'dateEndHotelInfosCollection',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
             ->addField([
@@ -277,7 +284,7 @@ SQL;
                 'fieldName' => 'cfp',
                 'type' => 'json',
                 'serializer_options' => [
-                    'unserialize' => ['assoc' => true]
+                    'unserialize' => ['assoc' => true],
                 ]
             ])
             ->addField([

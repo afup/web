@@ -2,7 +2,6 @@
 
 namespace AppBundle\Event\Model\Repository;
 
-
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventCoupon;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;

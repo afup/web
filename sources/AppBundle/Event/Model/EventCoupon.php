@@ -2,7 +2,6 @@
 
 namespace AppBundle\Event\Model;
 
-
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
