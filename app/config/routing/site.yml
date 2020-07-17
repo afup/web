@@ -57,7 +57,7 @@ membership_payment:
 
 membership_payment_redirect:
   path: /paybox-redirect
-  defaults: {_controller: AppBundle\Controller\PayboxRedirectAction}
+  defaults: {_controller: AppBundle\Controller\PayboxRedirectAction:index}
 
 techletter:
   path: /techletter
