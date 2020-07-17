@@ -4,28 +4,16 @@ namespace AppBundle\Controller;
 
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
-class PayboxRedirectAction
+class PayboxRedirectAction extends SiteBaseController
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
-    }
-
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
 
-        return new Response($this->twig->render('site/company_membership/paybox_redirect.html.twig', [
+        return $this->render('site/company_membership/paybox_redirect.html.twig', [
             'payboxResponse' => $payboxResponse,
             'status' => $request->get('status')
-        ]));
+        ]);
     }
 }
