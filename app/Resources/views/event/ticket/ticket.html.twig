@@ -158,7 +158,7 @@
                                         </span>
                                         {% if type.vars.attr['data-description'] %}
                                             <div class="tickets--type-description">
-                                                {{ type.vars.attr['data-description'] }}
+                                                {{ type.vars.attr['data-description']|markdown }}
                                             </div>
                                         {% endif %}
                                     </div>
