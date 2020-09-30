@@ -41,8 +41,8 @@ class Facture
         $requete .= ' numero_devis != "" ';
 
         if (null !== $idPeriode) {
-            $requete .= sprintf(' AND acf.date_facture >= (select date_debut from compta_periode where id = %s)', $this->_bdd->echapper($idPeriode));
-            $requete .= sprintf(' AND acf.date_facture <= (select date_fin from compta_periode where id = %s)', $this->_bdd->echapper($idPeriode));
+            $requete .= sprintf(' AND acf.date_devis >= (select date_debut from compta_periode where id = %s)', $this->_bdd->echapper($idPeriode));
+            $requete .= sprintf(' AND acf.date_devis <= (select date_fin from compta_periode where id = %s)', $this->_bdd->echapper($idPeriode));
         }
 
         $requete .= 'GROUP BY ';
