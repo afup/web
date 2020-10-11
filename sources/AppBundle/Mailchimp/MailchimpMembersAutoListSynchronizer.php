@@ -44,11 +44,11 @@ class MailchimpMembersAutoListSynchronizer
 
     public function synchronize()
     {
-        $subscribdedEmailsOnMailchimp = $this->getSubscribedEmailsOnMailchimp();
-        $subscribdedEmailsOnWebsite = $this->getSubscribedEmailsOnWebsite();
+        $subscribedEmailsOnMailchimp = $this->getSubscribedEmailsOnMailchimp();
+        $subscribedEmailsOnWebsite = $this->getSubscribedEmailsOnWebsite();
 
-        $this->unsubscribeAddresses(array_diff($subscribdedEmailsOnMailchimp, $subscribdedEmailsOnWebsite));
-        $this->subscribeAddresses(array_diff($subscribdedEmailsOnWebsite, $subscribdedEmailsOnMailchimp));
+        $this->unsubscribeAddresses(array_diff($subscribedEmailsOnMailchimp, $subscribedEmailsOnWebsite));
+        $this->subscribeAddresses(array_diff($subscribedEmailsOnWebsite, $subscribedEmailsOnMailchimp));
     }
 
     /**
