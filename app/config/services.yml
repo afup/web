@@ -288,6 +288,10 @@ services:
         class: AppBundle\TechLetter\MailchimpSynchronizer
         arguments: ["@app.mailchimp_techletter_api", '@AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository', "%mailchimp_techletter_list%"]
 
+    app.mailchimp_members_auto_synchronizer:
+        class: AppBundle\Mailchimp\MailchimpMembersAutoListSynchronizer
+        arguments: ['@AppBundle\Mailchimp\Mailchimp', '@AppBundle\Association\Model\Repository\UserRepository', "%mailchimp_members_list%"]
+
     Afup\Site\Utils\Configuration:
       arguments: ['%kernel.project_dir%/configs/application/config.php']
 
