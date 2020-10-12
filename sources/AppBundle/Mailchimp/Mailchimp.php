@@ -93,7 +93,7 @@ class Mailchimp
      */
     private function getAddressId($email)
     {
-        return md5($email);
+        return md5(strtolower($email));
     }
 
 
