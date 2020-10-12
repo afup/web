@@ -402,6 +402,12 @@ services:
     AppBundle\Association\Factory\UserFactory:
         autowire: true
 
+    AppBundle\Association\Form\CompanyEditFormDataFactory:
+        autowire: true
+
+    AppBundle\Offices\OfficesCollection:
+      autowire: true
+
     AppBundle\Antennes\AntennesCollection:
         autowire: true
 
@@ -545,6 +551,10 @@ services:
 
 
     AppBundle\Association\Form\UserEditType:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Association\Form\CompanyEditType:
         autowire: true
         autoconfigure: true
 

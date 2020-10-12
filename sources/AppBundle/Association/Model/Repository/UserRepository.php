@@ -194,7 +194,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                     OR app.code_postal LIKE :filter$i OR app.ville LIKE :filter$i OR app.email LIKE :filter$i";
                 $queryBuilder->bindValue('filter' . $i, '%' . $value . '%');
             }
-            $queryBuilder->where(implode(' OR ', $ors));
+            $queryBuilder->where('(' . implode(' OR ', $ors) . ')');
         }
         if ($companyId) {
             $queryBuilder->where('app.id_personne_morale = :companyId')

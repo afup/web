@@ -12,7 +12,7 @@
                 <i class="money bill icon"></i>
                 Voir les cotisations
             </a>
-            <a href="/pages/administration/index.php?page=personnes_morales&action=modifier&id={{ user.companyId }}" class="item">
+            <a href="{{ path('admin_members_company_edit', {id: user.companyId}) }}" class="item">
                 <div data-tooltip="Voir la personne morale" data-position="bottom left">
                     <i class="building icon"></i>
                     Voir la personne morale
