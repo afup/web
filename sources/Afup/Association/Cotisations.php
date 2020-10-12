@@ -6,6 +6,7 @@ use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
@@ -42,6 +43,9 @@ class Cotisations
      * @var Droits|null
      */
     private $_droits;
+
+    /** @var CompanyMemberRepository */
+    private $companyMemberRepository;
 
     /**
      * Constructeur.
@@ -219,9 +223,14 @@ class Cotisations
 
         list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
 
-        if (AFUP_PERSONNES_MORALES == $type_personne) {
-            $personnes = new Personnes_Morales($this->_bdd);
-            $infos = $personnes->obtenir($id_personne, 'nom, prenom, email');
+        if (AFUP_PERSONNES_MORALES === (int) $type_personne) {
+            $company = $this->companyMemberRepository->get($id_personne);
+            Assertion::notNull($company);
+            $infos = [
+                'nom' => $company->getLastName(),
+                'prenom' => $company->getFirstName(),
+                'email' => $company->getEmail(),
+            ];
         } else {
             $user = $userRepository->get($id_personne);
             Assertion::notNull($user);
@@ -403,8 +412,13 @@ class Cotisations
         $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
 
         if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
-            $personnePhysique = new Personnes_Morales($this->_bdd);
-            $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email');
+            $company = $this->companyMemberRepository->get($personne['id_personne']);
+            Assertion::notNull($company);
+            $contactPhysique = [
+                'nom'=> $company->getLastName(),
+                'prenom'=> $company->getFirstName(),
+                'email'=> $company->getEmail(),
+            ];
         } else {
             $user = $userRepository->get($personne['id_personne']);
             Assertion::notNull($user);
@@ -593,5 +607,10 @@ class Cotisations
         }
 
         return false;
+    }
+
+    public function setCompanyMemberRepository(CompanyMemberRepository $companyMemberRepository)
+    {
+        $this->companyMemberRepository = $companyMemberRepository;
     }
 }

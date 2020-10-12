@@ -80,6 +80,9 @@ class CompanyMember implements NotifyPropertyInterface
      */
     private $phone;
 
+    /** @var string|null */
+    private $cellphone;
+
     /**
      * @var int
      */
@@ -689,5 +692,17 @@ class CompanyMember implements NotifyPropertyInterface
         $this->membershipReason = $membershipReason;
 
         return $this;
+    }
+
+    /** @return string|null */
+    public function getCellphone()
+    {
+        return $this->cellphone;
+    }
+
+    /** @param string|null $cellphone */
+    public function setCellphone($cellphone)
+    {
+        $this->cellphone = $cellphone;
     }
 }

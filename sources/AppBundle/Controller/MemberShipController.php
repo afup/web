@@ -10,6 +10,7 @@ use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\ContactDetailsType;
 use AppBundle\Association\Form\UserType;
+use AppBundle\Association\MembershipFeeReferenceGenerator;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
@@ -19,8 +20,10 @@ use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\UserService;
+use AppBundle\Email\Mailer\Mailer;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\LegacyModelFactory;
+use AppBundle\Payment\PayboxFactory;
 use AppBundle\Payment\PayboxResponseFactory;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use Assert\Assertion;
@@ -111,7 +114,7 @@ class MemberShipController extends SiteBaseController
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
-        $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
+        $paybox = $this->get(PayboxFactory::class)->createPayboxForSubscription(
             'F' . $invoiceNumber,
             (float) $invoice['montant'],
             $company->getEmail()
@@ -325,9 +328,9 @@ class MemberShipController extends SiteBaseController
 
     public function membershipFeeAction()
     {
-        $bdd = $GLOBALS['AFUP_DB'];
         $userRepository = $this->get(UserRepository::class);
         $userService = $this->get(UserService::class);
+        $companyMemberRepository = $this->get(CompanyMemberRepository::class);
         $cotisations = $this->getCotisations();
 
         $identifiant = $this->getDroits()->obtenirIdentifiant();
@@ -364,10 +367,14 @@ class MemberShipController extends SiteBaseController
 
         if ($user->getCompanyId() > 0) {
             $id_personne = $user->getCompanyId();
-            $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
             $type_personne = AFUP_PERSONNES_MORALES;
             $prefixe = 'Personne morale';
-            $montant = $personne_morale->getMembershipFee($id_personne);
+            $company = $companyMemberRepository->get($user->getCompanyId());
+            $nbMembers = 3;
+            if (null !== $company && null !== $company->getMaxMembers()) {
+                $nbMembers = $company->getMaxMembers();
+            }
+            $montant = ceil($nbMembers / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE;
         } else {
             $id_personne = $identifiant;
             $type_personne = AFUP_PERSONNES_PHYSIQUES;
@@ -378,9 +385,9 @@ class MemberShipController extends SiteBaseController
         $formattedMontant = number_format($montant, 2, ',', ' ');
         $libelle = sprintf("%s : <strong>%s€</strong>", $prefixe, $formattedMontant);
 
-        $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
+        $reference = (new MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
 
-        $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
+        $paybox = $this->get(PayboxFactory::class)->createPayboxForSubscription(
             $reference,
             (float) $montant,
             $user->getEmail()
@@ -444,7 +451,7 @@ class MemberShipController extends SiteBaseController
             throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
         }
 
-        if ($cotisations->envoyerFacture($id, $this->get(\AppBundle\Email\Mailer\Mailer::class), $userRepository)) {
+        if ($cotisations->envoyerFacture($id, $this->get(Mailer::class), $userRepository)) {
             $logs::log('Envoi par email de la facture pour la cotisation n°' . $id);
             $this->addFlash('success', 'La facture a été envoyée par mail');
         } else {
