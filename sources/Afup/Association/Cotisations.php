@@ -9,6 +9,7 @@ use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -48,6 +49,9 @@ class Cotisations
      * @var Droits|null
      */
     private $_droits;
+
+    /** @var CompanyMemberRepository */
+    private $companyMemberRepository;
 
     /**
      * Constructeur.
@@ -213,9 +217,13 @@ class Cotisations
         if (AFUP_PERSONNES_MORALES == $account['type']) {
             $invoiceNumber = substr($cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);
-            $personnes = new Personnes_Morales($this->_bdd);
-            $infos = $personnes->obtenir($cotisation['id_personne'], 'nom, prenom, email');
-        } else {
+            $company = $this->companyMemberRepository->get($cotisation['id_personne']);
+            Assertion::notNull($company);
+            $infos = [
+                'nom' => $company->getLastName(),
+                'prenom' => $company->getFirstName(),
+                'email' => $company->getEmail(),
+            ];        } else {
             $user = $userRepository->get($account['id']);
             Assertion::notNull($user);
             $infos = [
@@ -503,9 +511,13 @@ class Cotisations
         $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
 
         if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
-            $personnePhysique = new Personnes_Morales($this->_bdd);
-            $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email, raison_sociale');
-            $patternPrefix = $contactPhysique['raison_sociale'];
+            $company = $this->companyMemberRepository->get($personne['id_personne']);
+            Assertion::notNull($company);
+            $contactPhysique = [
+                'nom'=> $company->getLastName(),
+                'prenom'=> $company->getFirstName(),
+                'email'=> $company->getEmail(),
+            ];
         } else {
             $user = $userRepository->get($personne['id_personne']);
             Assertion::notNull($user);
@@ -688,5 +700,10 @@ class Cotisations
         }
 
         return false;
+    }
+
+    public function setCompanyMemberRepository(CompanyMemberRepository $companyMemberRepository)
+    {
+        $this->companyMemberRepository = $companyMemberRepository;
     }
 }
