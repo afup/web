@@ -29,6 +29,14 @@ class Mailchimp
         );
     }
 
+    public function subscribeAddressWithoutConfirmation($list, $email)
+    {
+        return $this->client->put(
+            'lists/' . $list . '/members/' . $this->getAddressId($email),
+            ['status' => 'subscribed', 'email_address' => $email, 'language' => 'fr']
+        );
+    }
+
     const MAX_MEMBERS_PER_PAGE = 50;
 
     /**

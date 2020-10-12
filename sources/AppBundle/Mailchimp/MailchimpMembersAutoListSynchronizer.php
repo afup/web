@@ -44,8 +44,8 @@ class MailchimpMembersAutoListSynchronizer
 
     public function synchronize()
     {
-        $subscribedEmailsOnMailchimp = $this->getSubscribedEmailsOnMailchimp();
-        $subscribedEmailsOnWebsite = $this->getSubscribedEmailsOnWebsite();
+        $subscribedEmailsOnMailchimp = array_map('strtolower', $this->getSubscribedEmailsOnMailchimp());
+        $subscribedEmailsOnWebsite = array_map('strtolower', $this->getSubscribedEmailsOnWebsite());
 
         $this->unsubscribeAddresses(array_diff($subscribedEmailsOnMailchimp, $subscribedEmailsOnWebsite));
         $this->subscribeAddresses(array_diff($subscribedEmailsOnWebsite, $subscribedEmailsOnMailchimp));
@@ -81,7 +81,7 @@ class MailchimpMembersAutoListSynchronizer
     {
         foreach ($emails as $email) {
             $this->logger->info('Subscribe {address} to techletter', ['address' => $email]);
-            $this->mailchimp->subscribeAddress($this->listId, $email);
+            $this->mailchimp->subscribeAddressWithoutConfirmation($this->listId, $email);
         }
     }
 
