@@ -1,0 +1,8 @@
+framework:
+  test: ~
+  session:
+    storage_id: session.storage.mock_file
+  router:
+    strict_requirements: true
+  profiler:
+    collect: false

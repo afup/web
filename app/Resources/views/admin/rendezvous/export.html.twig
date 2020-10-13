@@ -1,0 +1,16 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Exporter vers un wiki BarCamp</h2>
+    <textarea cols="70" rows="70" wrap="softwrap">
+    {# @var attendee \App\RendezVous\RendezVousAttendee #}
+        {% for attendee in attendees -%}
+            &lt;tr&gt;
+            &lt;td&gt;{{ attendee.id }}&lt;/td&gt;
+            &lt;td&gt;{{ attendee.lastname }} {{ attendee.firstname }}&lt;/td&gt;
+            &lt;td&gt;{{ attendee.email }}&lt;/td&gt;
+            &lt;td&gt;{{ attendee.company }}&lt;/td&gt;
+            &lt;/tr&gt;
+        {%- endfor %}
+</textarea>
+{% endblock %}

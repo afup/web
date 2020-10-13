@@ -1,6 +1,9 @@
 <?php
 
 // Inclusion de l'autoload de composer
+use CCMBenchmark\Ting\Repository\Metadata;
+use CCMBenchmark\Ting\Repository\MetadataInitializer;
+
 require_once dirname(__FILE__) . '/../../../vendor/autoload.php';
 
 // Configuration du composant de traduction
