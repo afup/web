@@ -17,6 +17,7 @@ $smarty->assign('action', $action);
 
 $forums = new Forum($bdd);
 $coupons = new Coupon($bdd);
+$forumPath = null;
 
 $formulaire = instancierFormulaire();
 if ($action == 'ajouter') {
@@ -38,6 +39,8 @@ if ($action == 'ajouter') {
         $champs['mail_inscription_content'] = $text['mail_inscription_content'];
         $champs['become_sponsor_description'] = $text['become_sponsor_description'];
     }
+
+    $forumPath = $champs['path'];
 
     $formulaire->setDefaults($champs);
 
@@ -206,3 +209,4 @@ if ($formulaire->validate()) {
 
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 $smarty->assign('id_forum', $_GET['id']);
+$smarty->assign('forum_path', $forumPath);
