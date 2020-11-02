@@ -57,7 +57,7 @@ Votes: Votes
 'Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.': 'Please fill out your speaker profile to accept an invitation.'
 'Invitation envoyée !': 'Invitation sent!'
 'Vous etes désormais co-conférencier !': 'You are now a co-speaker!'
-mail.invitation.text: "Hi !<br />\n%login% invites you to share his talk \"%title%\" as a co-speaker.\nTo accept this invitation, follow this link: %link%<br />\nOtherwise, ignore this email.<br />\n<br />\nAfup team.\n"
+mail.invitation.text: "Hi !<br />\n%name% invites you to share his talk \"%title%\" as a co-speaker.\nTo accept this invitation, follow this link: %link%<br />\nOtherwise, ignore this email.<br />\n<br />\nAfup team.\n"
 Conférenciers: Speakers
 'Invitations en attente': 'Pending invitations'
 'Faire cette conférence à plusieurs': 'Present this conference with other speakers'

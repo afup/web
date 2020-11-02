@@ -7,7 +7,7 @@
 'Twitter': 'Twitter'
 'mail.invitation.text': |
   Bonjour !<br />
-  %login% vous invite à rejoindre sa conférence "%title%" en tant que co-conférencier.
+  %name% vous invite à rejoindre sa conférence "%title%" en tant que co-conférencier.
   Pour accepter, suivez ce lien: %link%<br />
   Sinon, ignorez tout simplement cet email.<br />
   <br />
