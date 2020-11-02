@@ -47,7 +47,7 @@ $formulaire->addElement('text'    , 'ville'              , 'Ville'          , ar
 $formulaire->addElement('select'  , 'id_pays'            , 'Pays'           , $pays->obtenirPays());
 
 $formulaire->addElement('header'  , ''                   , 'Contact administratif');
-$formulaire->addElement('select'  , 'civilite'           , 'Civilité'       , array('M.', 'Mme', 'Mlle'));
+$formulaire->addElement('select'  , 'civilite'           , 'Civilité'       , array('M.', 'Mme'));
 $formulaire->addElement('text'    , 'nom'                , 'Nom'            , array('size' => 30, 'maxlength' => 40));
 $formulaire->addElement('text'    , 'prenom'             , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
 $formulaire->addElement('text'    , 'email'              , 'Email'          , array('size' => 30, 'maxlength' => 100));

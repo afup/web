@@ -11,7 +11,7 @@ class UserEditFormData
     public $companyId;
     /**
      * @var Assert\NotBlank()
-     * @var Assert\Choice(choices={"M.", "Mme", "Mlle"}, strict=true)
+     * @var Assert\Choice(choices={"M.", "Mme"}, strict=true)
      */
     public $civility = 'M.';
     /**
