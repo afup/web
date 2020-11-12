@@ -46,11 +46,31 @@ class Mailchimp
      */
     public function getAllSubscribedMembersAddresses($list)
     {
+        return $this->callMembersAddresses($list, 'subscribed');
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    public function getAllCleaneddMembersAddresses($list)
+    {
+        return $this->callMembersAddresses($list, 'cleaned');
+    }
+
+    /**
+     * @param string $list
+     * @param string $status
+     * @return array
+     */
+    private function callMembersAddresses($list, $status)
+    {
         $response = $this->client->get(
             'lists/' . $list . '/members',
             [
                 'count' => 0,
-                'status' => 'subscribed',
+                'status' => $status,
             ]
         );
 
@@ -65,7 +85,7 @@ class Mailchimp
                     'count' => self::MAX_MEMBERS_PER_PAGE,
                     'offset' => $i * self::MAX_MEMBERS_PER_PAGE,
                     'fields' => 'members.email_address',
-                    'status' => 'subscribed',
+                    'status' => $status,
                 ]
             );
 

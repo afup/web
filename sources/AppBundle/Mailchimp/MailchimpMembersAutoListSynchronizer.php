@@ -44,11 +44,19 @@ class MailchimpMembersAutoListSynchronizer
 
     public function synchronize()
     {
-        $subscribedEmailsOnMailchimp = array_map('strtolower', $this->getSubscribedEmailsOnMailchimp());
+        $subscribedEmailsOnMailchimp = array_map('strtolower', $this->mailchimp->getAllSubscribedMembersAddresses($this->listId));
+        $cleanedEmailsOnMailchimp = array_map('strtolower', $this->mailchimp->getAllCleaneddMembersAddresses($this->listId));
         $subscribedEmailsOnWebsite = array_map('strtolower', $this->getSubscribedEmailsOnWebsite());
 
-        $this->unsubscribeAddresses(array_diff($subscribedEmailsOnMailchimp, $subscribedEmailsOnWebsite));
-        $this->subscribeAddresses(array_diff($subscribedEmailsOnWebsite, $subscribedEmailsOnMailchimp));
+        $addressesToUnsubscribe = array_diff($subscribedEmailsOnMailchimp, $subscribedEmailsOnWebsite);
+        $addressesToSubscribe = array_diff($subscribedEmailsOnWebsite, $subscribedEmailsOnMailchimp);
+
+        // Les adresses cleaned sont par exemple des hard bounces : on ne peux pas les passer en subscribred dans mailchimp
+        // Il peuvent tout de même être des membres à jour de cotisation, on va ici éviter des erreurs lors de la synchro en les ignornant
+        $addressesToSubscribe = array_diff($addressesToSubscribe, $cleanedEmailsOnMailchimp);
+
+        $this->unsubscribeAddresses($addressesToUnsubscribe);
+        $this->subscribeAddresses($addressesToSubscribe);
     }
 
     /**
