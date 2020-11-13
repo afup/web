@@ -113,6 +113,18 @@ class Mailchimp
     }
 
     /**
+     * @param $list
+     * @param $email
+     * @return \Illuminate\Support\Collection
+     */
+    public function archiveAddress($list, $email)
+    {
+        return $this->client->delete(
+            'lists/' . $list . '/members/' . $this->getAddressId($email)
+        );
+    }
+
+    /**
      * Mailchimp uses a predictable id to allow upsert operations on subscriptions.
      * It's based on a hash of the email.
      *

@@ -48,14 +48,14 @@ class MailchimpMembersAutoListSynchronizer
         $cleanedEmailsOnMailchimp = array_map('strtolower', $this->mailchimp->getAllCleaneddMembersAddresses($this->listId));
         $subscribedEmailsOnWebsite = array_map('strtolower', $this->getSubscribedEmailsOnWebsite());
 
-        $addressesToUnsubscribe = array_diff($subscribedEmailsOnMailchimp, $subscribedEmailsOnWebsite);
+        $addressesToArchive = array_diff($subscribedEmailsOnMailchimp, $subscribedEmailsOnWebsite);
         $addressesToSubscribe = array_diff($subscribedEmailsOnWebsite, $subscribedEmailsOnMailchimp);
 
         // Les adresses cleaned sont par exemple des hard bounces : on ne peux pas les passer en subscribred dans mailchimp
         // Il peuvent tout de même être des membres à jour de cotisation, on va ici éviter des erreurs lors de la synchro en les ignornant
         $addressesToSubscribe = array_diff($addressesToSubscribe, $cleanedEmailsOnMailchimp);
 
-        $this->unsubscribeAddresses($addressesToUnsubscribe);
+        $this->archiveAddresses($addressesToArchive);
         $this->subscribeAddresses($addressesToSubscribe);
     }
 
@@ -74,11 +74,14 @@ class MailchimpMembersAutoListSynchronizer
     /**
      * @param array $emails
      */
-    private function unsubscribeAddresses(array $emails)
+    private function archiveAddresses(array $emails)
     {
+        // Ici on archive les contacts pour deux raisons :
+        // - Cela permet de distinguer les personnes qui ont réellement voulu unsubscriber de personnes qu'on en enlevées nous même de la liste
+        // - Les contacts archivés ne sont pas comptés dans la facturation et permet de limiter le coût de Mailchimp
         foreach ($emails as $email) {
             $this->logger->info('Unsubscribe {address} to techletter', ['address' => $email]);
-            $this->mailchimp->unSubscribeAddress($this->listId, $email);
+            $this->mailchimp->archiveAddress($this->listId, $email);
         }
     }
 
