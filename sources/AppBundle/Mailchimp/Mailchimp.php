@@ -54,6 +54,16 @@ class Mailchimp
      *
      * @return array
      */
+    public function getAllUnSubscribedMembersAddresses($list)
+    {
+        return $this->callMembersAddresses($list, 'unsubscribed');
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
     public function getAllCleaneddMembersAddresses($list)
     {
         return $this->callMembersAddresses($list, 'cleaned');
