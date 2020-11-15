@@ -46,11 +46,41 @@ class Mailchimp
      */
     public function getAllSubscribedMembersAddresses($list)
     {
+        return $this->callMembersAddresses($list, 'subscribed');
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    public function getAllUnSubscribedMembersAddresses($list)
+    {
+        return $this->callMembersAddresses($list, 'unsubscribed');
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    public function getAllCleaneddMembersAddresses($list)
+    {
+        return $this->callMembersAddresses($list, 'cleaned');
+    }
+
+    /**
+     * @param string $list
+     * @param string $status
+     * @return array
+     */
+    private function callMembersAddresses($list, $status)
+    {
         $response = $this->client->get(
             'lists/' . $list . '/members',
             [
                 'count' => 0,
-                'status' => 'subscribed',
+                'status' => $status,
             ]
         );
 
@@ -65,7 +95,7 @@ class Mailchimp
                     'count' => self::MAX_MEMBERS_PER_PAGE,
                     'offset' => $i * self::MAX_MEMBERS_PER_PAGE,
                     'fields' => 'members.email_address',
-                    'status' => 'subscribed',
+                    'status' => $status,
                 ]
             );
 
@@ -89,6 +119,18 @@ class Mailchimp
         return $this->client->put(
             'lists/' . $list . '/members/' . $this->getAddressId($email),
             ['status' => 'unsubscribed', 'email_address' => $email]
+        );
+    }
+
+    /**
+     * @param $list
+     * @param $email
+     * @return \Illuminate\Support\Collection
+     */
+    public function archiveAddress($list, $email)
+    {
+        return $this->client->delete(
+            'lists/' . $list . '/members/' . $this->getAddressId($email)
         );
     }
 
