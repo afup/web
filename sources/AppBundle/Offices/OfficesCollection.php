@@ -2,6 +2,7 @@
 
 namespace AppBundle\Offices;
 
+/** @TODO: rename to OfficeRepository and replace arrays with Office objects */
 class OfficesCollection
 {
     public function getAll()
@@ -367,7 +368,7 @@ class OfficesCollection
             return $office;
         }
 
-        throw new \InvalidArgumentException('Office nout found');
+        throw new \InvalidArgumentException('Office not found');
     }
 
     public function getAllSortedByLabels()

@@ -1,11 +1,11 @@
 <em>Prochain rendez-vous :</em>
-<h1>{{ rendezvous.titre }}</h1>
+<h1>{{ rendezVous.title }}</h1>
 
-<blockquote>{{ rendezvous.accroche }}</blockquote>
+<blockquote>{{ rendezVous.pitch }}</blockquote>
 
 <div id="infos">
-    <div>Date : {{ rendezvous.date }}</div>
-    <div>Horaire : {{ rendezvous.debut }} - {{ rendezvous.fin }}</div>
-    <div>Capacité : {{ rendezvous.capacite }} places</div>
-    <div>Lieu : {{ rendezvous.lieu }}</div>
+    <div>Date : {{ rendezVous.start|date('d/m/Y') }}</div>
+    <div>Horaire : {{ rendezVous.start|date('H:i') }} - {{ rendezVous.end|date('H:i') }}</div>
+    <div>Capacité : {{ rendezVous.capacity }} places</div>
+    <div>Lieu : {{ rendezVous.place }}</div>
 </div>

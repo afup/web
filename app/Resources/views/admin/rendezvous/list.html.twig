@@ -1,0 +1,177 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Liste des inscrits du rendez-vous</h2>
+
+    {% if rendezVousList|length %}
+        <div class="ui violet segment">
+            <form name="event_select" method="get">
+            </form>
+            <form method="GET" name="forum">
+                <div class="ui form">
+                    <div class="inline fields">
+                        <div class="field">
+                            <label for="id" class="required">Rendez-vous</label>
+                            <select name="id" onchange="this.form.submit(); return false;">
+                                {% for rdv in rendezVousList %}
+                                    <option value="{{ rdv.id }}" {% if rendezVous and rendezVous.id == rdv.id %} selected{% endif %}>
+                                        {% if rdv.start < ('now'|date('U')) %}* {% endif %}{{ rdv.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+    <div class="ui menu">
+        <a href="{{ path('admin_rendezvous_prepare') }}" class="item" title="Préparer un nouveau rendez-vous">
+            <div>
+                <i class="icon plus square"></i>
+                Préparer un nouveau rendez-vous
+            </div>
+        </a>
+
+        {% if rendezVous %}
+            <a href="{{ path('admin_rendezvous_prepare', {id: rendezVous.id}) }}" class="item" title="Modifier le prochain rendez-vous">
+                Modifier le rendez-vous
+            </a>
+            <a href="{{ path('admin_rendezvous_attendee_add', {id: rendezVous.id}) }}" class="item" title="Ajouter une inscription">
+                Ajouter une inscription
+            </a>
+            <a href="{{ path('admin_rendezvous_confirmation_send', {id: rendezVous.id}) }}" class="item" title="Envoyer les demandes de confirmation">
+                Envoyer les demandes de confirmation
+            </a>
+            <a href="{{ path('admin_rendezvous_fill', {id: rendezVous.id}) }}" class="item" title="Remplir avec la liste d'attente">
+                Remplir avec la liste d'attente
+            </a>
+            <a href="{{ path('admin_rendezvous_export', {id: rendezVous.id }) }}" class="item" title="Exporter vers un BarCamp">
+                Exporter vers un BarCamp
+            </a>
+            <a href="{{ path('admin_rendezvous_attendees_list', {id: rendezVous.id }) }}" class="item" title="Imprimer le prochain rendez-vous">
+                Imprimer le Rendez-vous
+            </a>
+        {% endif %}
+    </div>
+
+    {% if rendezVous %}
+        <div class="ui segment">
+            <ul>
+                <li>Inscrits : {{ nbComing }}</li>
+                <li>En attente : {{ nbPending }}</li>
+                <li>Capacité : {{ rendezVous.capacity|default(0) }}</li>
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="ui segment">
+        <form method="GET" action="{{ path('admin_rendezvous_list') }}" name="filtre" class="js-form-search">
+            <input type="hidden" name="sort" value="{{ sort }}"/>
+            <input type="hidden" name="direction" value="{{ direction }}"/>
+            <div class="ui form">
+                <input type="hidden" name="id" value="{{ rendezVous.id|default('') }}">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Recherche</label>
+                        <input type="text" name="filter" class="js-filtre" value="{{ filter|escape('html_attr') }}">
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button"/>
+                    </div>
+                    {% if filter %}
+                        <div class="field">
+                            <button class="ui button" type="button" onclick="$('.js-filtre').val(''); $('.js-form-search').submit();">Annuler la recherche
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+
+        {% if attendees|length > 0 %}
+            <table class="ui table striped compact celled">
+                <thead>
+                <tr>
+                    <th align="left">
+                        <a href="{{ path('admin_rendezvous_list', {
+                            sort: 'name',
+                            direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
+                        }) }}">Nom Prénom</a>
+                    </th>
+                    <th align="left">
+                        <a href="{{ path('admin_rendezvous_list', {
+                            sort: 'company',
+                            direction: direction == 'asc' and sort == 'company' ? 'desc' : 'asc'
+                        }) }}">Entreprise</a>
+                    </th>
+                    <th align="left">
+                        <a href="{{ path('admin_rendezvous_list', {
+                            sort: 'phone',
+                            direction: direction == 'asc' and sort == 'phone' ? 'desc' : 'asc'
+                        }) }}">Téléphone</a>
+                    </th>
+                    <th align="left">
+                        <a href="{{ path('admin_rendezvous_list', {
+                            sort: 'presence',
+                            direction: direction == 'asc' and sort == 'presence' ? 'desc' : 'asc'
+                        }) }}">Présence</a>
+                    </th>
+                    <th align="left">
+                        <a href="{{ path('admin_rendezvous_list', {
+                            sort: 'confirmed',
+                            direction: direction == 'asc' and sort == 'confirmed' ? 'desc' : 'asc'
+                        }) }}">Confirmation</a>
+                    </th>
+                    <th></th>
+                </tr>
+                {# @var attendee \App\RendezVous\RendezVousAttendee #}
+                {% for attendee in attendees %}
+                    <tr>
+                        <td><a href="mailto:{{ attendee.email }}">{{ attendee.lastname }} {{ attendee.firstname }}</a></td>
+                        <td>{{ attendee.company }}</td>
+                        <td>{{ attendee.phone }}</td>
+                        <td>
+                            {% if attendee.presence == constant('App\\RendezVous\\RendezVousAttendee::COMING') %}
+                                Vient
+                            {% elseif attendee.presence == constant('App\\RendezVous\\RendezVousAttendee::PENDING') %}
+                                En attente
+                            {% elseif attendee.presence == constant('App\\RendezVous\\RendezVousAttendee::REFUSED') %}
+                                Refusé
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if attendee.confirmed == constant('App\\RendezVous\\RendezVousAttendee::CONFIRMED') %}
+                                Oui
+                            {% elseif attendee.confirmed == constant('App\\RendezVous\\RendezVousAttendee::DECLINED') %}
+                                Non
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a id="modifier_{{ attendee.id }}" href="{{ path('admin_rendezvous_attendee_edit', {id: attendee.id}) }}"
+                               title="Modifier l'inscription de {{ attendee.lastname }}"
+                               class="compact ui icon button"
+                               data-position="left center"
+                               data-tooltip="Modifier">
+                                <i class="pencil icon"></i>
+                            </a>
+
+                            <a id="supprimer_{{ attendee.id }}" href="{{ path('admin_rendezvous_attendee_delete', {id: attendee.id}) }}"
+                               title="Supprimer l'inscription de {{ attendee.lastname }}"
+                               class="compact ui red icon button confirmable"
+                               data-position="left center"
+                               data-tooltip="Supprimer"
+                               data-confirmable-label="Etes-vous sûr de vouloir supprimer l'inscription de {{ attendee.lastname }} ?">
+                                <i class="trash icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><em>Aucun inscrit</em></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,10 +1,17 @@
 <?php
 
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
 class AppKernel extends Kernel
 {
+    use MicroKernelTrait;
+
+    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
     public function registerBundles()
     {
         $bundles = [
@@ -37,16 +44,38 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+        return $this->getProjectDir().'/var/cache/'.$this->getEnvironment();
     }
 
     public function getLogDir()
     {
-        return dirname(__DIR__).'/var/logs';
+        return $this->getProjectDir().'/var/logs';
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
-        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+        // Feel free to remove the "container.autowiring.strict_mode" parameter
+        // if you are using symfony/dependency-injection 4.0+ as it's the default behavior
+        $container->setParameter('container.autowiring.strict_mode', true);
+        $container->setParameter('container.dumper.inline_class_loader', true);
+        // TODO: replace with .env
+        $loader->load($this->getProjectDir().'/app/config/parameters.yml');
+
+        foreach ([$this->getProjectDir().'/app/config', $this->getProjectDir().'/sources/**/config'] as $confDir) {
+            $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');
+            $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
+            $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
+            $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
+        }
+    }
+
+    protected function configureRoutes(RouteCollectionBuilder $routes)
+    {
+        foreach ([$this->getProjectDir().'/app/config', $this->getProjectDir().'/sources/**/config'] as $confDir) {
+            // Load routes from each domain
+            $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
+            $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+            $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
+        }
     }
 }

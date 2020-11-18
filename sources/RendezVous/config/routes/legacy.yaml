@@ -1,0 +1,22 @@
+legacy_rendezvous:
+  path: /{page}
+  defaults:
+    _controller: App\RendezVous\ViewNext\ViewNextAction
+    page: index.php
+  requirements:
+    page: 'index.php'
+
+legacy_rendezvous_archive:
+  path: /archive.php
+  defaults:
+    _controller: App\RendezVous\RegisterAttendee\RegisterAttendeeAction
+
+legacy_rendezvous_archives:
+  path: /archives.php
+  defaults:
+    _controller: App\RendezVous\ListArchives\ListArchivesAction
+
+legacy_rendezvous_confirmation:
+  path: /confirmation.php
+  defaults:
+    _controller: App\RendezVous\ConfirmRendezVous\ConfirmRendezVousAction

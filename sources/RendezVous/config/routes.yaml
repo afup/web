@@ -1,0 +1,7 @@
+rendezvous_admin:
+  resource: routes/admin.yaml
+  prefix: /admin/rendezvous
+
+rendezvous_legacy:
+  resource: routes/legacy.yaml
+  prefix: /pages/rendezvous

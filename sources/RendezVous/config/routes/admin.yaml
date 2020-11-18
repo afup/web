@@ -1,0 +1,35 @@
+admin_rendezvous_list:
+  path: /list
+  defaults: { _controller: App\RendezVous\Admin\ListRendezVous\ListRendezVousAction }
+
+admin_rendezvous_prepare:
+  path: /prepare
+  defaults: { _controller: App\RendezVous\Admin\PrepareRendezVous\PrepareRendezVousAction }
+
+admin_rendezvous_attendee_add:
+  path: /attendees/add
+  defaults: { _controller: App\RendezVous\Admin\AddAttendee\AddAttendeeAction }
+
+admin_rendezvous_confirmation_send:
+  path: /send-confirmation
+  defaults: { _controller: App\RendezVous\Admin\SendConfirmation\SendConfirmationAction }
+
+admin_rendezvous_fill:
+  path: /fill
+  defaults: { _controller: App\RendezVous\Admin\FillRendezVous\FillRendezVousAction }
+
+admin_rendezvous_export:
+  path: /export
+  defaults: { _controller: App\RendezVous\Admin\ExportRendezVous\ExportRendezVousAction }
+
+admin_rendezvous_attendees_list:
+  path: /attendees/list
+  defaults: { _controller: App\RendezVous\Admin\ListAttendees\ListAttendeesAction }
+
+admin_rendezvous_attendee_edit:
+  path: /attendees/edit
+  defaults: { _controller: App\RendezVous\Admin\EditAttendee\EditAttendeeAction }
+
+admin_rendezvous_attendee_delete:
+  path: /attendees/delete
+  defaults: { _controller: App\RendezVous\Admin\DeleteAttendee\DeleteAttendeeAction }

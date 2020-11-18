@@ -1,0 +1,39 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+    autoconfigure: true
+
+  _instanceof:
+    App\Action:
+      tags: [ controller.service_arguments ]
+
+  App\RendezVous\RendezVousRepository:
+    class: App\RendezVous\Infrastructure\TingRendezVousRepository
+    factory: [ '@CCMBenchmark\TingBundle\Repository\RepositoryFactory', get ]
+    arguments: [ App\RendezVous\Infrastructure\TingRendezVousRepository ]
+  App\RendezVous\RendezVousAttendeeRepository:
+    class: App\RendezVous\Infrastructure\TingRendezVousAttendeeRepository
+    factory: [ '@CCMBenchmark\TingBundle\Repository\RepositoryFactory', get ]
+    arguments: [ App\RendezVous\Infrastructure\TingRendezVousAttendeeRepository ]
+  App\RendezVous\RendezVousSlideRepository:
+    class: App\RendezVous\Infrastructure\TingRendezVousSlideRepository
+    factory: [ '@CCMBenchmark\TingBundle\Repository\RepositoryFactory', get ]
+    arguments: [ App\RendezVous\Infrastructure\TingRendezVousSlideRepository ]
+
+  App\RendezVous\Admin\AddAttendee\AddAttendeeAction: ~
+  App\RendezVous\Admin\EditAttendee\EditAttendeeAction: ~
+  App\RendezVous\Admin\DeleteAttendee\DeleteAttendeeAction: ~
+  App\RendezVous\Admin\ExportRendezVous\ExportRendezVousAction: ~
+  App\RendezVous\Admin\FillRendezVous\FillRendezVousAction: ~
+  App\RendezVous\Admin\ListAttendees\ListAttendeesAction: ~
+  App\RendezVous\Admin\ListRendezVous\ListRendezVousAction: ~
+  App\RendezVous\Admin\PrepareRendezVous\PrepareRendezVousAction: ~
+  App\RendezVous\Admin\PrepareRendezVous\PrepareRendezVousFormType: ~
+  App\RendezVous\Admin\SendConfirmation\SendConfirmationAction: ~
+  App\RendezVous\Admin\SendConfirmation\SendConfirmationFormType: ~
+  App\RendezVous\ConfirmRendezVous\ConfirmRendezVousAction: ~
+  App\RendezVous\ListArchives\ListArchivesAction: ~
+  App\RendezVous\RegisterAttendee\RegisterAttendeeAction: ~
+  App\RendezVous\RendezVousService: ~
+  App\RendezVous\ViewNext\ViewNextAction: ~

@@ -1,0 +1,48 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    Liste des inscrits du rendez-vous<br/>
+    {% for rdv in rendezVousList %}
+        {% if rdv.id == rendezVous.id %}
+            {{ rdv.title }}
+        {% endif %}
+    {% endfor %}
+    <br/>
+    <table class="afup_tab">
+        <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
+            <th align="left">Nom Prénom</th>
+            <th align="left">Entreprise</th>
+            <th align="left">Présence</th>
+            <th align="left">Confimé</th>
+            <th align="left" style="width: 30%;">Pointage</th>
+        </tr>
+        {# @var attendee \App\RendezVous\RendezVousAttendee #}
+        {% for attendee in attendees %}
+            <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
+                <td><strong>{{ attendee.lastname }} {{ attendee.firstname }}</strong></td>
+                <td>{{ attendee.company }}</td>
+                <td style="text-align: center">
+                    {% if attendee.presence == constant('App\\RendezVous\\RendezVousAttendee::COMING') %}
+                        Vient
+                    {% elseif attendee.presence == constant('App\\RendezVous\\RendezVousAttendee::PENDING') %}
+                        En attente
+                    {% else %}
+                        Refusé
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if attendee.confirmed == constant('App\\RendezVous\\RendezVousAttendee::CONFIRMED') %}
+                        Oui
+                    {% elseif attendee.confirmed == constant('App\\RendezVous\\RendezVousAttendee::DECLINED') %}
+                        Non
+                    {% endif %}
+                </td>
+                <td></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td><em>Aucune inscription</em></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
