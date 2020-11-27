@@ -54,7 +54,7 @@ abstract class AbstractUserReminder implements MembershipReminderInterface
 
         $status = $this->mailer->sendTransactional(new Message(
             $this->getSubject(),
-            MailUserFactory::sponsors(),
+            MailUserFactory::bureau(),
             new MailUser($user->getEmail())
         ), $this->getText(), MailUserFactory::bureau()->getEmail());
         $log->setMailSent($status);
