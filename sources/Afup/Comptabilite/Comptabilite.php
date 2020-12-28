@@ -419,13 +419,23 @@ class Comptabilite
         return $events;
     }
 
-    function obtenirListReglements($filtre = '', $where = '')
+    function obtenirListReglements($filtre = '', $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, reglement ';
         $requete .= 'FROM  ';
         $requete .= 'compta_reglement  ';
-        if ($where) $requete .= 'WHERE id=' . $where . ' ';
+        $wheres = [];
+        if ($where) {
+            $wheres[] = 'id=' . $where . ' ';
+        }
+        if ($usedInAccountingJournal) {
+            $wheres[] = 'hide_in_accounting_journal_at IS NULL';
+        }
+
+        if (count($wheres)) {
+            $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
+        }
 
         $requete .= 'ORDER BY ';
         $requete .= 'reglement ';
@@ -445,9 +455,9 @@ class Comptabilite
         }
     }
 
-    public function obtenirListReglementsSansEvenementVide($filtre = '', $where = '')
+    public function obtenirListReglementsJournal()
     {
-        $reglements = $this->obtenirListReglements($filtre, $where);
+        $reglements = $this->obtenirListReglements('','', true);
         unset($reglements[0]);
 
         return $reglements;
