@@ -340,13 +340,23 @@ class Comptabilite
         }
     }
 
-    function obtenirListCategories($filtre = '', $where = '')
+    function obtenirListCategories($filtre = '', $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, idevenement, categorie ';
         $requete .= 'FROM  ';
         $requete .= 'compta_categorie  ';
-        if ($where) $requete .= 'WHERE id=' . $where . ' ';
+        $wheres = [];
+        if ($where) {
+            $wheres[] = 'id=' . $where . ' ';
+        }
+        if ($usedInAccountingJournal) {
+            $wheres[] = 'hide_in_accounting_journal_at IS NULL';
+        }
+
+        if (count($wheres)) {
+            $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
+        }
 
         $requete .= 'ORDER BY ';
         $requete .= 'categorie ';
@@ -367,9 +377,9 @@ class Comptabilite
 
     }
 
-    public function obtenirListCategoriesSansEvenementVide($filtre = '', $where = '')
+    public function obtenirListCategoriesJournal()
     {
-        $categories = $this->obtenirListCategories($filtre, $where);
+        $categories = $this->obtenirListCategories('', '', true);
         unset($categories[0]);
 
         return $categories;
