@@ -375,13 +375,23 @@ class Comptabilite
         return $categories;
     }
 
-    function obtenirListEvenements($filtre = '', $where = '')
+    function obtenirListEvenements($filtre = '', $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, evenement ';
         $requete .= 'FROM  ';
         $requete .= 'compta_evenement  ';
-        if ($where) $requete .= 'WHERE id=' . $where . ' ';
+        $wheres = [];
+        if ($where) {
+            $wheres[] = 'id=' . $where . ' ';
+        }
+        if ($usedInAccountingJournal) {
+            $wheres[] = 'hide_in_accounting_journal_at IS NULL';
+        }
+
+        if (count($wheres)) {
+            $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
+        }
 
         $requete .= 'ORDER BY ';
         $requete .= 'evenement ';
@@ -401,9 +411,9 @@ class Comptabilite
         }
     }
 
-    public function obtenirListEvenementsSansEvenementVide($filtre = '', $where = '')
+    public function obtenirListEvenementsJournal()
     {
-        $events = $this->obtenirListEvenements($filtre, $where);
+        $events = $this->obtenirListEvenements('', '', true);
         unset($events[0]);
 
         return $events;
