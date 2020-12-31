@@ -8,6 +8,7 @@ namespace Afup\Site\Comptabilite;
 
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Base_De_Donnees;
+use AppBundle\Compta\Importer\Importer;
 
 class Comptabilite
 {
@@ -886,84 +887,76 @@ SQL;
 
     /**
      *
-     * @param array $csvFile
+     * @param Importer $importer
      * @return bool
      */
-    function extraireComptaDepuisCSVBanque($csvFile)
+    function extraireComptaDepuisCSVBanque(Importer $importer)
     {
-        if (!is_array($csvFile) || !count($csvFile)) {
+        if (!$importer->validate()) {
             return false;
         }
-        // On vérifie la première ligne
-        if (!substr($csvFile[0], 0, 17) == 'Code de la banque') {
-            return false;
-        }
-        // On efface les 4 premières lignes
-        $csvFile = array_slice($csvFile, 4);
-        foreach ($csvFile as $ligne) {
-            $donnees = explode(';', $ligne);
-            if (count($donnees) == 7) {
-                $numero_operation = $donnees[1];
-                // On vérife si l'enregistrement existe déjà
-                $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
 
-                $date_ecriture = '20' . implode('-', array_reverse(explode('/', $donnees[0])));
-                $description = $donnees[2] . '-' . $donnees[5];
-                $donnees[3] = abs(str_replace(',', '.', $donnees[3]));
-                $donnees[4] = abs(str_replace(',', '.', $donnees[4]));
-                if ($donnees[4] == '') {
-                    $idoperation = 1;
-                    $montant = $donnees[3];
-                } else {
-                    $idoperation = 2;
-                    $montant = $donnees[4];
+        foreach ($importer->extract() as $donnees) {
+            $numero_operation = $donnees[1];
+            // On vérife si l'enregistrement existe déjà
+            $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
+
+            $date_ecriture = '20' . implode('-', array_reverse(explode('/', $donnees[0])));
+            $description = $donnees[2] . '-' . $donnees[5];
+            $donnees[3] = abs(str_replace(',', '.', $donnees[3]));
+            $donnees[4] = abs(str_replace(',', '.', $donnees[4]));
+            if ($donnees[4] == '') {
+                $idoperation = 1;
+                $montant = $donnees[3];
+            } else {
+                $idoperation = 2;
+                $montant = $donnees[4];
+            }
+            // On tente les préaffectations
+            $categorie = 26; // Catégorie 26 = "A déterminer"
+            $evenement = 8;  // Evénement 8 = "A déterminer"
+
+            $idmode_regl = 9;
+            switch (strtoupper(substr($donnees[2], 0, 3))) {
+                case 'CB ':
+                    $idmode_regl = 2;
+                    break;
+                case 'VIR':
+                    $idmode_regl = 3;
+                    break;
+                case 'CHE':
+                case 'REM':
+                    $idmode_regl = 4;
+                    break;
+            }
+
+            if (!is_array($enregistrement)) {
+                $this->ajouter($idoperation, 1, $categorie, $date_ecriture, '', $montant, $description, '', $idmode_regl, $date_ecriture, '', $evenement, $numero_operation);
+            } else {
+                $modifier = false;
+                if ($enregistrement['idcategorie'] == 26 && $categorie != 26) {
+                    $enregistrement['idcategorie'] = $categorie;
+                    $modifier = true;
                 }
-                // On tente les préaffectations
-                $categorie = 26; // Catégorie 26 = "A déterminer"
-                $evenement = 8;  // Evénement 8 = "A déterminer"
-
-                $idmode_regl = 9;
-                switch (strtoupper(substr($donnees[2], 0, 3))) {
-                    case 'CB ':
-                        $idmode_regl = 2;
-                        break;
-                    case 'VIR':
-                        $idmode_regl = 3;
-                        break;
-                    case 'CHE':
-                    case 'REM':
-                        $idmode_regl = 4;
-                        break;
+                if ($enregistrement['idevenement'] == 8 && $evenement != 8) {
+                    $enregistrement['idevenement'] = $evenement;
+                    $modifier = true;
                 }
-
-                if (!is_array($enregistrement)) {
-                    $this->ajouter($idoperation, 1, $categorie, $date_ecriture, '', $montant, $description, '', $idmode_regl, $date_ecriture, '', $evenement, $numero_operation);
-                } else {
-                    $modifier = false;
-                    if ($enregistrement['idcategorie'] == 26 && $categorie != 26) {
-                        $enregistrement['idcategorie'] = $categorie;
-                        $modifier = true;
-                    }
-                    if ($enregistrement['idevenement'] == 8 && $evenement != 8) {
-                        $enregistrement['idevenement'] = $evenement;
-                        $modifier = true;
-                    }
-                    if ($modifier) {
-                        $this->modifier($enregistrement['id'],
-                            $enregistrement['idoperation'],
-                            1,
-                            $enregistrement['idcategorie'],
-                            $enregistrement['date_ecriture'],
-                            $enregistrement['nom_frs'],
-                            $enregistrement['montant'],
-                            $enregistrement['description'],
-                            $enregistrement['numero'],
-                            $enregistrement['idmode_regl'],
-                            $enregistrement['date_regl'],
-                            $enregistrement['obs_regl'],
-                            $enregistrement['idevenement'],
-                            $enregistrement['numero_operation']);
-                    }
+                if ($modifier) {
+                    $this->modifier($enregistrement['id'],
+                        $enregistrement['idoperation'],
+                        1,
+                        $enregistrement['idcategorie'],
+                        $enregistrement['date_ecriture'],
+                        $enregistrement['nom_frs'],
+                        $enregistrement['montant'],
+                        $enregistrement['description'],
+                        $enregistrement['numero'],
+                        $enregistrement['idmode_regl'],
+                        $enregistrement['date_regl'],
+                        $enregistrement['obs_regl'],
+                        $enregistrement['idevenement'],
+                        $enregistrement['numero_operation']);
                 }
             }
         }
