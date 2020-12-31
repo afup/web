@@ -898,9 +898,6 @@ SQL;
         if (!substr($csvFile[0], 0, 17) == 'Code de la banque') {
             return false;
         }
-        $forum = new Forum($this->_bdd);
-        $futurForum = $forum->obtenirDernier();
-        $futurEvenement = $this->obtenirEvenementParIdForum($futurForum);
         // On efface les 4 premières lignes
         $csvFile = array_slice($csvFile, 4);
         foreach ($csvFile as $ligne) {
@@ -924,24 +921,7 @@ SQL;
                 // On tente les préaffectations
                 $categorie = 26; // Catégorie 26 = "A déterminer"
                 $evenement = 8;  // Evénement 8 = "A déterminer"
-                if (strpos($donnees[5], 'CONTRAT 8316677013')) {
-                    if ($idoperation == 2) {// CREDIT
-                        // Virement PAYBOX
-                        if ($montant < 100) {
-                            // Vraisemblablement des cotisations
-                            $categorie = 4;  // Catégorie 4 = "Cotisation AFUP"
-                            $evenement = 27; // Evénement 27 = "Assocation AFUP"
-                        } else {
-                            // Vraisemblablement un réglement pour le prochain événement
-                            $categorie = 3;  // Catégorie 3 = "Inscription"
-                            $evenement = $futurEvenement;
-                        }
-                    } else {// DEBIT
-                        // Commission PAYBOX
-                        $categorie = 28; // Catégorie 28 = "Frais de compte"
-                        $evenement = 26; // Evénement 26 = "Gestion"
-                    }
-                }
+
                 $idmode_regl = 9;
                 switch (strtoupper(substr($donnees[2], 0, 3))) {
                     case 'CB ':
