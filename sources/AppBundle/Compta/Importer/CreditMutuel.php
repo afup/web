@@ -8,14 +8,19 @@ class CreditMutuel implements Importer
 
     public function initialize($filePath)
     {
-        // TODO: Implement initialize() method.
     }
 
+    /**
+     * @return boolean
+     */
     public function validate()
     {
-        return true;
+        return false;
     }
 
+    /**
+     * @return Operation[]
+     */
     public function extract()
     {
         return [];

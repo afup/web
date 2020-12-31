@@ -9,6 +9,7 @@ namespace Afup\Site\Comptabilite;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Compta\Importer\Importer;
+use AppBundle\Compta\Importer\Operation;
 
 class Comptabilite
 {
@@ -896,28 +897,22 @@ SQL;
             return false;
         }
 
-        foreach ($importer->extract() as $donnees) {
-            $numero_operation = $donnees[1];
+        foreach ($importer->extract() as $operation) {
+            $numero_operation = $operation->getNumeroOperation();
             // On vérife si l'enregistrement existe déjà
             $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
 
-            $date_ecriture = '20' . implode('-', array_reverse(explode('/', $donnees[0])));
-            $description = $donnees[2] . '-' . $donnees[5];
-            $donnees[3] = abs(str_replace(',', '.', $donnees[3]));
-            $donnees[4] = abs(str_replace(',', '.', $donnees[4]));
-            if ($donnees[4] == '') {
-                $idoperation = 1;
-                $montant = $donnees[3];
-            } else {
-                $idoperation = 2;
-                $montant = $donnees[4];
-            }
+            $date_ecriture = $operation->getDateEcriture();
+            $description = $operation->getDescription();
+            $idoperation = $operation->isCredit() ? 2 : 1;
+            $montant = $operation->getMontant();
+
             // On tente les préaffectations
             $categorie = 26; // Catégorie 26 = "A déterminer"
             $evenement = 8;  // Evénement 8 = "A déterminer"
 
             $idmode_regl = 9;
-            switch (strtoupper(substr($donnees[2], 0, 3))) {
+            switch (strtoupper(substr($description, 0, 3))) {
                 case 'CB ':
                     $idmode_regl = 2;
                     break;

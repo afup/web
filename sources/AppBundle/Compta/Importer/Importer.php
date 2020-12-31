@@ -16,7 +16,7 @@ interface Importer
     public function validate();
 
     /**
-     * @return mixed
+     * @return Operation[]
      */
     public function extract();
 

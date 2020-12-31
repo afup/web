@@ -45,6 +45,9 @@ class CaisseEpargne implements Importer
         return true;
     }
 
+    /**
+     * @return Operation[]
+     */
     public function extract()
     {
         foreach ($this->file as $i => $data) {
@@ -56,7 +59,26 @@ class CaisseEpargne implements Importer
                 continue;
             }
 
-            yield $data;
+            $dateEcriture = '20' . implode('-', array_reverse(explode('/', $data[0])));
+            if ('' === $data[5]) {
+                $description = $data[2];
+            } elseif (false === strpos($data[5], $data[2])) {
+                $description = $data[2] . ' - ' . $data[5];
+            } else {
+                $description = $data[5];
+            }
+
+            if ('' === $data[4]) {
+                $montant = abs(str_replace(',', '.', $data[3]));
+                $type = Operation::DEBIT;
+            } else {
+                $montant = abs(str_replace(',', '.', $data[4]));
+                $type = Operation::CREDIT;
+            }
+
+            $numeroOperation = $data[1];
+
+            yield new Operation($dateEcriture, $description, $montant, $type, $numeroOperation);
         }
     }
 }
