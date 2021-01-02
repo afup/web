@@ -68,6 +68,9 @@ class CaisseEpargne implements Importer
                 $description = $data[5];
             }
 
+            // petit nettoyage pour virer les espaces multiples
+            $description = implode(' ', array_filter(explode(' ', $description)));
+
             if ('' === $data[4]) {
                 $montant = abs(str_replace(',', '.', $data[3]));
                 $type = Operation::DEBIT;

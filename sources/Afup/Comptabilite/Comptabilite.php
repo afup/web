@@ -10,6 +10,9 @@ use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Compta\Importer\Importer;
 use AppBundle\Compta\Importer\Operation;
+use AppBundle\Model\ComptaCategorie;
+use AppBundle\Model\ComptaEvenement;
+use AppBundle\Model\ComptaModeReglement;
 
 class Comptabilite
 {
@@ -476,13 +479,14 @@ class Comptabilite
     }
 
     function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $montant, $description,
-                     $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $numero_operation = null)
+                     $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $numero_operation = null,
+                     $attachmentRequired = 0)
     {
 
         $requete = 'INSERT INTO ';
         $requete .= 'compta (';
         $requete .= 'idoperation,idcategorie,date_ecriture,nom_frs,montant,description,';
-        $requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation,idcompte) ';
+        $requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation,idcompte, attachment_required) ';
         $requete .= 'VALUES (';
         $requete .= $this->_bdd->echapper($idoperation) . ',';
         $requete .= $this->_bdd->echapper($idcategorie) . ',';
@@ -496,7 +500,8 @@ class Comptabilite
         $requete .= $this->_bdd->echapper($obs_regl) . ',';
         $requete .= $this->_bdd->echapper($idevenement) . ',';
         $requete .= $this->_bdd->echapper($numero_operation) . ',';
-        $requete .= $this->_bdd->echapper($idcompte) . ' ';
+        $requete .= $this->_bdd->echapper($idcompte) . ',';
+        $requete .= $this->_bdd->echapper($attachmentRequired) . '';
         $requete .= ');';
 
         $resultat = $this->_bdd->executer($requete);
@@ -507,7 +512,7 @@ class Comptabilite
     }
 
     function modifier($id, $idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $montant, $description,
-                      $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $comment, $numero_operation = null)
+                      $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $comment, $numero_operation = null, $attachmentRequired = 0)
     {
 
         $requete = 'UPDATE ';
@@ -528,7 +533,8 @@ class Comptabilite
         if ($numero_operation) {
             $requete .= 'numero_operation=' . $this->_bdd->echapper($numero_operation) . ',';
         }
-        $requete .= 'idevenement=' . $this->_bdd->echapper($idevenement) . ' ';
+        $requete .= 'idevenement=' . $this->_bdd->echapper($idevenement) . ',';
+        $requete .= 'attachment_required=' . $this->_bdd->echapper($attachmentRequired) . ' ';
         $requete .= 'WHERE ';
         $requete .= 'id=' . $id . ' ';
 
@@ -911,22 +917,120 @@ SQL;
             $categorie = 26; // Catégorie 26 = "A déterminer"
             $evenement = 8;  // Evénement 8 = "A déterminer"
 
-            $idmode_regl = 9;
-            switch (strtoupper(substr($description, 0, 3))) {
-                case 'CB ':
-                    $idmode_regl = 2;
+            $idModeReglement = 9;
+            $attachmentRequired = 0;
+
+            $firstPartDescription = strtoupper(explode(' ', $description)[0]);
+            switch ($firstPartDescription) {
+                case 'CB':
+                    $idModeReglement = ComptaModeReglement::CB;
                     break;
                 case 'VIR':
-                    $idmode_regl = 3;
+                    $idModeReglement = ComptaModeReglement::VIREMENT;
                     break;
                 case 'CHE':
                 case 'REM':
-                    $idmode_regl = 4;
+                    $idModeReglement = ComptaModeReglement::CHEQUE;
+                    break;
+                case 'PRLV':
+                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
                     break;
             }
 
+            if ($operation->isCredit()) {
+                if (0 === strpos($description, 'VIR SEPA sprd.net AG')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::GOODIES;
+                    $attachmentRequired = 1;
+                }
+            } else {
+                if (0 === strpos($description, '*CB COM AFUP ')) {
+                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
+                }
+
+                if (0 === strpos($description, '* COTIS ASSOCIATIS ESSENTIEL')) {
+                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
+                }
+
+                if (0 === strpos(strtoupper($description), 'PRLV URSSAF')) {
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::CHARGES_SOCIALES;
+                }
+
+                if ($description === 'PRLV B2B DGFIP') {
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::PRELEVEMENT_SOURCE;
+                }
+
+                if (0 === strpos($description, 'PRLV A3M - RETRAITE - MALAKOFF HUMANIS')) {
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::CHARGES_SOCIALES;
+                }
+
+                if (0 === strpos($description, 'PRLV Online SAS -')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::OUTILS;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'CB MEETUP ORG')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::MEETUP;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'PRLV POINT TRANSACTION SYSTEM -')) {
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos(strtoupper($description), 'CB MAILCHIMP FACT')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::MAILCHIMP;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'CB AWS EMEA FACT')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::OUTILS;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'CB GANDI FACT')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::GANDI;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'CB Twilio')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::OUTILS;
+                    $attachmentRequired = 1;
+                }
+            }
+
             if (!is_array($enregistrement)) {
-                $this->ajouter($idoperation, 1, $categorie, $date_ecriture, '', $montant, $description, '', $idmode_regl, $date_ecriture, '', $evenement, $numero_operation);
+                $this->ajouter(
+                    $idoperation,
+                    1,
+                    $categorie,
+                    $date_ecriture,
+                    '',
+                    $montant,
+                    $description,
+                    '',
+                    $idModeReglement,
+                    $date_ecriture,
+                    '',
+                    $evenement,
+                    $numero_operation,
+                    $attachmentRequired
+                );
             } else {
                 $modifier = false;
                 if ($enregistrement['idcategorie'] == 26 && $categorie != 26) {
@@ -951,7 +1055,9 @@ SQL;
                         $enregistrement['date_regl'],
                         $enregistrement['obs_regl'],
                         $enregistrement['idevenement'],
-                        $enregistrement['numero_operation']);
+                        $enregistrement['numero_operation'],
+                        $attachmentRequired
+                    );
                 }
             }
         }
