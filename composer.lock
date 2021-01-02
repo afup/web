@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e7a0d6fc855855093957e5b499d6aa9",
+    "content-hash": "54a7df7372ff4678b399d11bcafec54d",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -228,7 +228,7 @@
                 "repository",
                 "unitofwork"
             ],
-            "time": "2017-01-31T15:09:57+00:00"
+            "time": "2017-01-31T14:09:57+00:00"
         },
         {
             "name": "ccmbenchmark/ting_bundle",
@@ -260,7 +260,7 @@
                 "Apache-2.0"
             ],
             "description": "Symfony 2 bundle for ccmbenchmark/ting",
-            "time": "2016-03-21T16:17:44+00:00"
+            "time": "2016-03-21T15:17:44+00:00"
         },
         {
             "name": "cdaguerre/php-trello-api",
@@ -4025,16 +4025,16 @@
         },
         {
             "name": "smarty/smarty",
-            "version": "v2.6.25",
+            "version": "v2.6.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smarty-php/smarty.git",
-                "reference": "de8354e152b60c83858ba46be1145f9faa35b7be"
+                "reference": "4ab9757b492f08a38f68123a6e7c1df7110bbc49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/de8354e152b60c83858ba46be1145f9faa35b7be",
-                "reference": "de8354e152b60c83858ba46be1145f9faa35b7be",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/4ab9757b492f08a38f68123a6e7c1df7110bbc49",
+                "reference": "4ab9757b492f08a38f68123a6e7c1df7110bbc49",
                 "shasum": ""
             },
             "require": {
@@ -4072,7 +4072,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-10-30T23:52:59+00:00"
+            "time": "2017-11-03T06:39:13+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -4245,6 +4245,20 @@
                 "ctype",
                 "polyfill",
                 "portable"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -4686,6 +4700,20 @@
             "keywords": [
                 "framework"
             ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-03-30T06:25:29+00:00"
         },
         {
@@ -4850,7 +4878,7 @@
             ],
             "authors": [
                 {
-                    "name": "William Durand",
+                    "name": "William DURAND",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -5269,6 +5297,12 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
+            "funding": [
+                {
+                    "url": "https://github.com/keradus",
+                    "type": "github"
+                }
+            ],
             "time": "2020-04-15T18:51:10+00:00"
         },
         {
@@ -5467,6 +5501,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": "symfony/maker-bundle",
             "time": "2016-09-06T01:30:19+00:00"
         },
         {
@@ -5589,5 +5624,6 @@
         "ext-gd": "*",
         "ext-json": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
