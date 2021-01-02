@@ -9,6 +9,10 @@ class GeneralMeetingVote implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
+    const VALUE_YES = 'oui';
+    const VALUE_NO = 'non';
+    const VALUE_ABSENTION = 'absention';
+
     /**
      * @var int
      */
@@ -105,6 +109,18 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         return $this->value;
     }
 
+    public function getValueLabel()
+    {
+        $valuesLabels = self::getVoteLabelsByValue();
+        $value = $this->getValue();
+
+        if (isset($valuesLabels[$value])) {
+            return $valuesLabels[$value];
+        }
+
+        return null;
+    }
+
     /**
      * @param string $value
      */
@@ -135,5 +151,24 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public static function isValueAllowed($value)
+    {
+        return in_array($value, self::getAllValues());
+    }
+
+    private static function getAllValues()
+    {
+        return array_keys(self::getVoteLabelsByValue());
+    }
+
+    public static function getVoteLabelsByValue()
+    {
+        return [
+            self::VALUE_YES => 'Oui',
+            self::VALUE_NO => 'Non',
+            self::VALUE_ABSENTION => 'Absention',
+        ];
     }
 }
