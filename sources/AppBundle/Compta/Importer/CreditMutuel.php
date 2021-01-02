@@ -2,6 +2,8 @@
 
 namespace AppBundle\Compta\Importer;
 
+use AppBundle\Model\ComptaCompte;
+
 class CreditMutuel implements Importer
 {
     const CODE = 'CMUT';
@@ -24,5 +26,10 @@ class CreditMutuel implements Importer
     public function extract()
     {
         return [];
+    }
+
+    public function getCompteId()
+    {
+        return ComptaCompte::COURANT_CMUT;
     }
 }

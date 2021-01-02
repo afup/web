@@ -1017,7 +1017,7 @@ SQL;
             if (!is_array($enregistrement)) {
                 $this->ajouter(
                     $idoperation,
-                    1,
+                    $importer->getCompteId(),
                     $categorie,
                     $date_ecriture,
                     '',
@@ -1044,7 +1044,7 @@ SQL;
                 if ($modifier) {
                     $this->modifier($enregistrement['id'],
                         $enregistrement['idoperation'],
-                        1,
+                        $importer->getCompteId(),
                         $enregistrement['idcategorie'],
                         $enregistrement['date_ecriture'],
                         $enregistrement['nom_frs'],

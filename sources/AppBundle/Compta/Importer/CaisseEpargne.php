@@ -2,6 +2,8 @@
 
 namespace AppBundle\Compta\Importer;
 
+use AppBundle\Model\ComptaCompte;
+
 class CaisseEpargne implements Importer
 {
     const CODE = 'CE';
@@ -83,5 +85,10 @@ class CaisseEpargne implements Importer
 
             yield new Operation($dateEcriture, $description, $montant, $type, $numeroOperation);
         }
+    }
+
+    public function getCompteId()
+    {
+        return ComptaCompte::COURANT_CE;
     }
 }

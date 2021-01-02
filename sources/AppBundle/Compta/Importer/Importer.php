@@ -20,4 +20,8 @@ interface Importer
      */
     public function extract();
 
+    /**
+     * @return int
+     */
+    public function getCompteId();
 }
