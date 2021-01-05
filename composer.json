@@ -36,7 +36,8 @@
     "friendsofpear/pear_exception": "0.0.*",
     "znk3r/html_common": "*",
     "pear/pear": "^1.10",
-    "doctrine/dbal": "^2.5"
+    "doctrine/dbal": "^2.5",
+    "excelwebzone/recaptcha-bundle": "1.5.13"
   },
   "scripts": {
     "post-install-cmd": [
