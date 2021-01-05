@@ -1,10 +1,14 @@
+admin_home:
+  path: /
+  defaults: {_controller: AppBundle\Controller\Admin\HomeAction}
+
 admin_vote:
   path: /vote/
   defaults: {_controller: AppBundle:Vote:admin}
 
 admin_relances:
   path: /association/relances/{page}
-  defaults: {_controller: AppBundle:AdminMemberShip:reminderLog}
+  defaults: {_controller: AppBundle\Controller\Admin\Membership\ReminderLogAction}
 
 admin_void:
   path: /void
@@ -12,7 +16,7 @@ admin_void:
 
 admin_login:
   path: /login
-  defaults: {_controller: AppBundle:Admin:login}
+  defaults: {_controller: AppBundle\Controller\Admin\LoginAction}
 
 admin_logout:
   path: /logout
@@ -23,7 +27,11 @@ legacy_inscription:
 
 admin_password:
   path: /password
-  defaults: {_controller: AppBundle:Admin:lostPassword}
+  defaults: {_controller: AppBundle\Controller\Admin\LostPasswordAction}
+
+admin_members:
+    resource: "admin_members.yml"
+    prefix: /members
 
 admin_event_routes:
     resource: "admin_event.yml"
@@ -37,29 +45,29 @@ admin_speaker_routes:
   resource: "admin_speaker.yml"
   prefix: /speaker
 
+admin_planete_routes:
+  resource: "admin_planete.yml"
+  prefix: /planete
+
 member_slack_invite:
   path: /member/slack-invite
   defaults: {_controller: AppBundle:MemberShip:slackInviteRequest}
 
 admin_members_reporting:
   path: /members/reporting
-  defaults: {_controller: AppBundle:MembershipAdmin:reporting}
+  defaults: {_controller: AppBundle\Controller\MembershipAdmin\ReportingAction}
 
-admin_members_badges_index:
-  path: /members/badges
-  defaults: {_controller: AppBundle:Admin\Members\Badges:index}
+admin_members_general_meeting:
+  path: /members/general_meeting
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\ListAction}
 
-admin_members_badges_new:
-  path: /members/badges/new
-  defaults: {_controller: AppBundle:Admin\Members\Badges:new}
+admin_members_general_meeting_prepare:
+  path: /members/general_meeting/prepare
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\PrepareAction}
 
-admin_members_user_badge_new:
-  path: /members/user_badge/new
-  defaults: {_controller: AppBundle:Admin\Members\UserBadge:new}
-
-admin_members_user_badge_delete:
-  path: /members/user_badge/{userId}/{badgeId}/delete
-  defaults: {_controller: AppBundle:Admin\Members\UserBadge:delete}
+admin_members_general_meeting_listing:
+  path: /members/general_meeting/listing
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\ListingAction}
 
 admin_techletter:
   resource: "techletter_admin.yml"
@@ -67,4 +75,4 @@ admin_techletter:
 
 admin_slack_members_check:
   path: /slackmembers/check
-  defaults: {_controller: AppBundle:AdminSlackMembre:checkMembers }
+  defaults: {_controller: AppBundle\Controller\Admin\SlackMembers\CheckMembersAction }

@@ -1,4 +1,27 @@
 admin_speaker_export:
   path: /export
-  defaults: {_controller: AppBundle:AdminSpeaker:export}
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\ExportAction}
 
+admin_speaker_list:
+  path: /
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerListAction}
+
+admin_speaker_add:
+  path: /add
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerAddAction}
+
+admin_speaker_delete:
+  path: /delete
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerDeleteAction}
+
+admin_speaker_edit:
+  path: /edit
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerEditAction}
+
+admin_speaker_link_gravatar:
+  path: /link-gravatar
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerLinkGravatarAction}
+
+admin_speaker_register:
+  path: /register
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerRegisterAction}

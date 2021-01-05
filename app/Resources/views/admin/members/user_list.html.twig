@@ -1,0 +1,201 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Personnes physiques</h2>
+
+    <div class="ui menu">
+        <a href="{{ path('admin_members_user_add') }}" class="item">
+            <div data-tooltip="Ajouter une personne physique" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <div class="ui simple dropdown item" tabindex="0">
+            <i class="icon download"></i>
+            <span class="text">Exports</span>
+            <i class="dropdown icon"></i>
+            <div class="menu hidden" tabindex="-1">
+                <a class="item" href="{{ path('admin_members_user_export') }}">Toutes les personnes physiques en CSV</a>
+                <a class="item" href="{{ path('admin_members_user_export', {isActive: 1}) }}" title="Export en CSV">Export des personnes physiques actives en CSV</a>
+                <a class="item" href="{{ path('admin_members_user_export', {isActive: 1, isCompanyManager: 1}) }}" title="Export en CSV">Export des personnes
+                    physiques actives et company managers en CSV</a>
+            </div>
+        </div>
+        <a class="item" href="{{ path('admin_slack_members_check') }}">
+            <i class="icon slack"></i>
+            Vérification slack membres
+        </a>
+    </div>
+
+    <div class="ui segment">
+        <form method="GET" action="{{ path('admin_members_user_list') }}" name="filtre" class="js-form-search">
+            <input type="hidden" name="sort" value="{{ sort }}"/>
+            <input type="hidden" name="direction" value="{{ direction }}"/>
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Recherche</label>
+                        <input type="text" name="filter" class="js-filtre" value="{{ filter|escape('html_attr') }}">
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" name="needsUpToDateMembership" value="1"
+                                   {% if needsUpToDateMembership %}checked="checked"{% endif %}>
+                            <label>Afficher seulement les membres nécéssitant d'avoir une cotisation à jour</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" name="alsoDisplayInactive" value="1"
+                                   {% if not onlyDisplayActive %}checked="checked"{% endif %}>
+                            <label>Afficher aussi les membres inactifs</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button"/>
+                    </div>
+                    {% if filter %}
+                        <div class="field">
+                            <button class="ui button" type="button" onclick="$('.js-filtre').val(''); $('.js-form-search').submit();">Annuler la recherche
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+
+        {% if users|length > 0 %}
+            <table class="ui table striped compact celled">
+                <thead>
+                <tr>
+                    <th align="left"><a href="{{ path('admin_members_user_list', {
+                            sort: 'lastname',
+                            direction: direction == 'asc' and sort == 'lastname' ? 'desc' : 'asc'
+                        }) }}">Nom</a></th>
+                    <th align="left"><a href="{{ path('admin_members_user_list', {
+                            sort: 'firstname',
+                            direction: direction == 'asc' and sort == 'firstname' ? 'desc' : 'asc'
+                        }) }}">Prénom</a></th>
+                    <th align="left">Login</th>
+                    <th style="text-align: center"><a href="{{ path('admin_members_user_list', {
+                            sort: 'status',
+                            direction: direction == 'asc' and sort == 'status' ? 'desc' : 'asc'
+                        }) }}">Etat</a></th>
+                    <th>Antenne</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                {% for user in users %}
+                    {% set isActive = user.status == constant('AppBundle\\Association\\Model\\User::STATUS_ACTIVE') %}
+                    {% set isPending = user.status == constant('AppBundle\\Association\\Model\\User::STATUS_PENDING') %}
+                    <tr>
+                        <td class="{{ isActive ? 'actif' : 'disabled' }}">{{ user.lastname }}</td>
+                        <td class="{{ isActive ? 'actif' : 'disabled' }}">{{ user.firstname }}</td>
+                        <td class="{{ isActive ? 'actif' : 'disabled' }}">{{ user.username }}</td>
+                        <td style="text-align: center">
+                            {% if isActive %}
+                                <div class="ui label green">Actif</div>
+                            {% elseif isPending %}
+                                finalisé
+                            {% else %}
+                                <div class="ui label red">Inactif</div>
+                            {% endif %}
+                        </td>
+                        <td class="{% if isActive %}actif{% else %}disabled{% endif %}">
+                            {% if user.nearestOffice in offices|keys %}
+                                <span class="ui image label">
+                        <img src="{{ offices[user.nearestOffice].logo_url }}">
+                                {{ offices[user.nearestOffice].label }}
+                    </span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: right">
+                            {% if not user.companyId %}
+                                <a id="cotisations_{{ user.id }}"
+                                   href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ constant('AFUP_PERSONNES_PHYSIQUES') }}&amp;id_personne={{ user.id }}"
+                                   data-position="left center"
+                                   data-tooltip="Gérer les cotisations de {{ user.firstname }} {{ user.lastname }}"
+                                   class="compact ui green icon button"
+                                >
+                                    <i class="money bill alternate icon"></i>
+                                </a>
+                            {% else %}
+                                <a id="modifier_moral_{{ user.id }}"
+                                   href="/pages/administration/index.php?page=personnes_morales&amp;action=modifier&amp;id={{ user.companyId }}"
+                                   data-position="left center"
+                                   data-tooltip="Accéder à la fiche de la personne morale"
+                                   class="compact ui icon button"
+                                >
+                                    <i class="building icon"></i>
+                                </a>
+                                <a id="cotisations_{{ user.id }}"
+                                   href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ constant('AFUP_PERSONNES_MORALES') }}&amp;id_personne={{ user.companyId }}"
+                                   data-position="left center"
+                                   data-tooltip="Gérer les cotisations de la personne morale"
+                                   class="compact ui green icon button"
+                                >
+                                    <i class="money bill alternate icon"></i>
+                                </a>
+                            {% endif %}
+
+                            <a id="modifier_{{ user.id }}"
+                               href="{{ path('admin_members_user_edit', {id: user.id}) }}"
+                               data-position="left center"
+                               data-tooltip="Modifier la fiche de {{ user.firstname }} {{ user.lastname }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
+
+                            <a id="supprimer_{{ user.id }}"
+                               href="{{ path('admin_members_user_delete', {id: user.id}) }}"
+                               data-position="left center"
+                               data-tooltip="Supprimer la fiche de {{ user.firstname }} {{ user.lastname }}"
+                               class="compact ui red icon button confirmable"
+                               data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {{ user.firstname }} {{ user.lastname }} ?"
+                            >
+                                <i class="trash icon"></i>
+                            </a>
+
+                            <a id="envoi_mdp_{{ user.id }}"
+                               href="{{ path('admin_members_user_reset_password', {id: user.id}) }}"
+                               data-position="left center"
+                               data-tooltip="Renvoyer un nouveau mot de passe &agrave; {{ user.firstname }} {{ user.lastname }}"
+                               class="compact ui icon button confirmable"
+                               data-confirmable-label="Etes-vous sûr de vouloir renvoyer un nouveau mot de passe à {{ user.firstname }} {{ user.lastname }} ?"
+                            >
+                                <i class="paper plane icon"></i>
+                            </a>
+                            <a href="{{ path('member_index', {hash: user.hash}) }}"
+                               data-position="left center"
+                               data-tooltip="Se connecter en tant que {{ user.firstname }} {{ user.lastname }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="user secret icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="meh outline icon"></i>
+                    Aucune personne physique
+                </div>
+                <div class="inline">
+                    {% if onlyDisplayActive %}
+                        <a class="ui button" href="{{ path('admin_members_user_list', {
+                            sort: sort,
+                            direction: direction,
+                            filter: filter,
+                            needsUpToDateMembership: needsUpToDateMembership,
+                            alsoDisplayInactive: 1
+                        }) }}">Afficher aussi les personnes physiques inactives</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

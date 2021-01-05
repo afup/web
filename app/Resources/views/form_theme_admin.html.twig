@@ -1,0 +1,26 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_label -%}
+    <div class="three wide column right aligned">
+        {{ parent() }}
+        {% if required %}<span class="obligatoire">*</span>{% endif %}
+    </div>
+{%- endblock form_label -%}
+
+{%- block form_row -%}
+    <div class="inline fields ui grid">
+        {{ form_label(form) }}
+        <div class="field nine wide column">
+            <div class="ui input">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
+{%- endblock form_row -%}
+
+{%- block checkbox_widget -%}
+    <div class="ui checkbox">
+        {{ parent() }}
+    </div>
+{%- endblock checkbox_widget -%}

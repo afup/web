@@ -5,6 +5,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Ticket;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -63,6 +64,27 @@ class EventRepository extends Repository implements MetadataInitializer
         }
 
         return $events->first();
+    }
+
+    public function getList($id = null)
+    {
+        $sql = <<<ENDSQL
+SELECT f.id, f.titre, f.path, f.nb_places, f.date_debut, f.date_fin, f.date_fin_appel_conferencier, f.date_fin_vente, IF(count(s.session_id) + count(i.id)>0, 0, 1) as est_supprimable
+FROM afup_forum f
+LEFT JOIN afup_sessions s ON (f.id = s.id_forum)
+LEFT JOIN afup_inscription_forum i ON (f.id = i.id_forum)
+%s
+GROUP BY f.id, f.titre, f.path, f.nb_places, f.date_debut, f.date_fin, f.date_fin_appel_conferencier, f.date_fin_vente
+ORDER BY date_debut desc;
+ENDSQL;
+        $sql = sprintf($sql, $id === null ? '':'WHERE f.id = :id');
+
+
+        $query = $this->getQuery($sql);
+        if ($id !== null) {
+            $query->setParams(['id'=>$id]);
+        }
+        return $query->query($this->getCollection(new HydratorArray()));
     }
 
     public function getAllPastEventWithSpeakerEmail($email)

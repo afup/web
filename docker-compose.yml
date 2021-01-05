@@ -47,6 +47,8 @@ services:
       args:
         uid: ${CURRENT_UID:-1001}
         gid: "1001"
+    environment:
+      SYMFONY_ENV: "dev"
     volumes:
       - ./:/var/www/html
     links:

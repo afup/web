@@ -1,0 +1,138 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Assemblée générale</h2>
+
+    <div class="ui menu">
+        <a href="{{ path('admin_members_general_meeting_prepare') }}" class="item">
+            <div data-tooltip="Préparer une assemblée générale" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Préparer une assemblée générale
+            </div>
+        </a>
+    </div>
+
+    {% if latestDate %}
+        <div class="ui segment">
+            <h2 class="ui header">Dernière assemblée générale ({{ latestDate|date('d/m/Y') }})</h2>
+            <div class="ui clearing divider"></div>
+
+            <div class="ui menu">
+                <a href="{{ path('admin_members_general_meeting_listing') }}" class="item">
+                    <i class="icon print"></i>
+                    Imprimer la feuille d'émargement
+                </a>
+            </div>
+
+            <div class="ui statistics">
+                <div class="statistic">
+                    <div class="value">
+                        {{ convocations }}
+                    </div>
+                    <div class="label">
+                        Membres à jour de cotisation
+                    </div>
+                </div>
+                <div class="statistic">
+                    <div class="value">
+                        {{ nbAttendeesAndPowers }}
+                    </div>
+                    <div class="label">
+                        Présences et pouvoirs
+                    </div>
+                </div>
+                <div class="statistic">
+                    <div class="value">
+                        {{ nbAttendees }}
+                    </div>
+                    <div class="label">
+                        Présences
+                    </div>
+                </div>
+                <div class="statistic {{ quorum > 0 ? 'green' : 'red' }}">
+                    <div class="value">
+                        {{ quorum }}
+                    </div>
+                    <div class="label">
+                        Quorum
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="ui segment">
+        <h2 class="ui header">Liste des présences</h2>
+        <div class="ui clearing divider"></div>
+
+        <form method="GET" name="filtre">
+            <input type="hidden" name="sort" value="{{ sort }}"/>
+            <input type="hidden" name="direction" value="{{ direction }}"/>
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Date</label>
+                        <select name="date">
+                            {% for date in dates %}
+                                <option value="{{ date|date('U') }}"
+                                        {% if date == selectedDate %}selected="selected"{% endif %}>
+                                    {{ date|date('d/m/Y') }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="OK" class="ui button" name="submit_date"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table class="ui table striped compact celled afup-tab-filterable">
+            <thead>
+            <tr>
+                <th data-tf-filter-type="input" align="left">
+                    <a href="{{ path('admin_members_general_meeting', {
+                        sort: 'nom',
+                        direction: direction == 'asc' and sort == 'nom' ? 'desc' : 'asc'
+                    }) }}">Nom Prénom</a>
+                </th>
+                <th data-tf-filter-type="input"><a href="{{ path('admin_members_general_meeting') }}">Email</a></th>
+                <th data-tf-filter-type="select"><a href="{{ path('admin_members_general_meeting') }}">A jour</a></th>
+                <th data-tf-filter-type="select">Antenne</th>
+                <th><a href="{{ path('admin_members_general_meeting', {
+                        sort: 'date_consultation',
+                        direction: direction == 'asc' and sort == 'date_consultation' ? 'desc' : 'asc'
+                    }) }}">Consultation</a></th>
+                <th data-tf-filter-type="select"><a href="{{ path('admin_members_general_meeting', {
+                        sort: 'presence',
+                        direction: direction == 'asc' and sort == 'presence' ? 'desc' : 'asc'
+                    }) }}">Présence</a></th>
+                <th data-tf-filter-type="input"><a href="{{ path('admin_members_general_meeting', {
+                        sort: 'personnes_avec_pouvoir_nom',
+                        direction: direction == 'asc' and sort == 'personnes_avec_pouvoir_nom' ? 'desc' : 'asc'
+                    }) }}">Pouvoir</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for attendee in attendees %}
+                <tr {% if not attendee.id in validAttendeeIds %}style="text-decoration: line-through;color:#999999"{% endif %}>
+                    <td>{{ attendee.lastname }} {{ attendee.firstname }}</td>
+                    <td>{{ attendee.email }}</td>
+                    <td>{{ attendee.id in validAttendeeIds ? 'Oui' : 'Non' }}</td>
+                    <td>{{ attendee.nearestOffice }}</td>
+                    <td>{{ attendee.consultationDate ? attendee.consultationDate|date('d/m/Y') : '' }}</td>
+                    <td style="text-align: center">
+                        {% if attendee.present %}Présent{% elseif attendee.absent %}Absent{% else %}??{% endif %}
+                    </td>
+                    <td>{{ attendee.powerLastname }} {{ attendee.powerFirstname }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td><em>Aucune personne physique</em></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

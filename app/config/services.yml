@@ -14,22 +14,112 @@ services:
     _defaults:
         public: true
 
-    AppBundle\Security\MyGithubAuthenticator:
+    AppBundle\Controller\Event\:
+        resource: '../../sources/AppBundle/Controller/Event/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\Event\:
+        resource: '../../sources/AppBundle/Controller/Admin/Event/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\Membership\:
+        resource: '../../sources/AppBundle/Controller/Admin/Membership/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\Members\GeneralMeeting\:
+        resource: '../../sources/AppBundle/Controller/Admin/Members/GeneralMeeting/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Command\GeneralMeetupNotificationCommand:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\GeneralMeeting\GeneralMeetingRepository:
         autowire: true
 
-    AppBundle\Controller\CFPController:
+    AppBundle\Controller\Admin\SlackMembers\CheckMembersAction:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\Speaker\ExportAction:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\Talk\:
+        resource: '../../sources/AppBundle/Controller/Admin/Talk/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\MembershipAdmin\ReportingAction:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Command\IndexTalksCommand:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\:
+        resource: '../../sources/AppBundle/Controller/Admin/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\Members\BadgeNewAction:
+        autowire: true
+        arguments:
+            $storageDir: '%kernel.project_dir%/htdocs/uploads/badges'
+
+    AppBundle\Controller\Admin\GetMenuAction:
+        autowire: true
+        arguments:
+          $backOfficePages: '%app.pages_backoffice%'
+
+    AppBundle\Controller\BlocksHandler: ~
+
+    AppBundle\Security\MyGithubAuthenticator:
         autowire: true
 
     AppBundle\Controller\SpeakerSuggestionController:
         autowire: true
 
+    AppBundle\Controller\PayboxRedirectAction:
+        autowire: true
+
     AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
         autowire: true
+
+    AppBundle\Indexation\Talks\Runner:
+        autowire: true
+
+    AppBundle\Event\Speaker\SpeakerPage:
+        autowire: true
+
+    AppBundle\Event\Form\EventSelectType:
+        autowire: true
+        autoconfigure: true
 
     AppBundle\Event\Model\Repository\GithubUserRepository:
         class: AppBundle\Event\Model\Repository\GithubUserRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\GithubUserRepository]
+
+    AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository:
+        class: AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository
+        factory: ['@ting', get]
+        arguments: [AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository]
+
+    AppBundle\Event\Model\Repository\RoomRepository:
+        class: AppBundle\Event\Model\Repository\RoomRepository
+        factory: ['@ting', get]
+        arguments: [AppBundle\Event\Model\Repository\RoomRepository]
+
+    AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository:
+        class: AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository
+        factory: ['@ting', get]
+        arguments: [AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository]
 
     AppBundle\Twig\TwigExtension:
         arguments: ['@AppBundle\Routing\LegacyRouter', "@Parsedown", '@AppBundle\Email\Parsedown', "@service_container"]
@@ -56,7 +146,7 @@ services:
             - { name: kernel.event_listener, event: kernel.request, priority: 100 }
 
     AppBundle\Listener\LegacySiteListener:
-        arguments: ["@security.token_storage"]
+        autowire: true
         tags:
             - { name: kernel.event_listener, event: kernel.controller, priority: 100 }
 
@@ -75,7 +165,16 @@ services:
         public: false
 
     AppBundle\CFP\PhotoStorage:
-        arguments: ["%kernel.root_dir%/../htdocs/uploads/speakers", "/uploads/speakers"]
+        arguments:
+          - "%kernel.root_dir%/../htdocs/uploads/speakers"
+          - "/uploads/speakers"
+          - "%kernel.root_dir%/../htdocs"
+
+    AppBundle\Event\Form\SpeakerFormDataFactory:
+      autowire: true
+
+    AppBundle\Event\Invoice\InvoiceService:
+      autowire: true
 
     Twig_Extensions_Extension_Intl:
         class: Twig_Extensions_Extension_Intl
@@ -91,6 +190,21 @@ services:
         class: AppBundle\Event\Model\Repository\TalkRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TalkRepository]
+
+    AppBundle\Event\Model\Repository\TalkInvitationRepository:
+        class: AppBundle\Event\Model\Repository\TalkInvitationRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TalkInvitationRepository]
+
+    AppBundle\Event\Model\Repository\TalkToSpeakersRepository:
+        class: AppBundle\Event\Model\Repository\TalkToSpeakersRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\TalkToSpeakersRepository]
+
+    AppBundle\Event\Model\Repository\VoteRepository:
+        class: AppBundle\Event\Model\Repository\VoteRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\VoteRepository]
 
     AppBundle\Association\Model\Repository\CompanyMemberRepository:
         class: AppBundle\Association\Model\Repository\CompanyMemberRepository
@@ -174,6 +288,10 @@ services:
         class: AppBundle\TechLetter\MailchimpSynchronizer
         arguments: ["@app.mailchimp_techletter_api", '@AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository', "%mailchimp_techletter_list%"]
 
+    app.mailchimp_members_auto_synchronizer:
+        class: AppBundle\Mailchimp\MailchimpMembersAutoListSynchronizer
+        arguments: ['@AppBundle\Mailchimp\Mailchimp', '@AppBundle\Association\Model\Repository\UserRepository', "%mailchimp_members_list%"]
+
     Afup\Site\Utils\Configuration:
       arguments: ['%kernel.project_dir%/configs/application/config.php']
 
@@ -194,6 +312,15 @@ services:
     AppBundle\Association\CompanyMembership\UserCompany:
         autowire: true
 
+    AppBundle\Association\UserMembership\UserService:
+        autowire: true
+
+    AppBundle\Association\Form\UserEditFormDataFactory:
+        autowire: true
+
+    AppBundle\Offices\OfficesCollection:
+        autowire: true
+
     AppBundle\Mailchimp\EventListener:
         arguments: ['@AppBundle\Mailchimp\Mailchimp', "%mailchimp_members_list%"]
         tags:
@@ -201,6 +328,16 @@ services:
 
     AppBundle\Model\CollectionFilter:
         autowire: true
+
+    AppBundle\Event\Talk\InvitationFormHandler:
+      autowire: true
+
+    AppBundle\Event\Talk\TalkFormHandler:
+      autowire: true
+
+    CCMBenchmark\TingBundle\Repository\RepositoryFactory: '@ting'
+    CCMBenchmark\Ting\UnitOfWork: '@ting.unitofwork'
+    KnpU\OAuth2ClientBundle\Client\ClientRegistry: '@knpu.oauth2.registry'
 
     AppBundle\Security\ActionThrottling\LogRepository:
         class: AppBundle\Security\ActionThrottling\LogRepository
@@ -235,6 +372,9 @@ services:
         class: AppBundle\Event\Model\Repository\EventRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\EventRepository]
+
+    AppBundle\Event\Model\Repository\EventStatsRepository:
+        autowire: true
 
     AppBundle\Event\Model\Repository\BadgeRepository:
         class: AppBundle\Event\Model\Repository\BadgeRepository
@@ -295,6 +435,10 @@ services:
     AppBundle\Event\Ticket\TicketTypeAvailability:
         autowire: true
 
+    AppBundle\Association\Form\UserEditType:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Event\Form\TicketType:
         autowire: true
         tags:
@@ -304,6 +448,28 @@ services:
         autowire: true
         tags:
           - {name: form.type}
+
+    AppBundle\Planete\FeedFormType:
+        autowire: true
+        autoconfigure: true
+
+    Afup\Site\Forum\AppelConferencier:
+        class: Afup\Site\Forum\AppelConferencier
+        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
+        arguments:
+          - 'Afup\Site\Forum\AppelConferencier'
+
+    Afup\Site\Forum\Forum:
+        class: Afup\Site\Forum\Forum
+        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
+        arguments:
+          - 'Afup\Site\Forum\Forum'
+
+    Afup\Site\Rendez_Vous:
+        class: Afup\Site\Rendez_Vous
+        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
+        arguments:
+          - 'Afup\Site\Rendez_Vous'
 
     Afup\Site\Utils\Pays:
         class: Afup\Site\Utils\Pays
@@ -322,6 +488,12 @@ services:
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
         arguments:
           - 'Afup\Site\Association\Cotisations'
+
+    Afup\Site\Association\Personnes_Morales:
+        class: Afup\Site\Association\Personnes_Morales
+        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
+        arguments:
+            - 'Afup\Site\Association\Personnes_Morales'
 
     AppBundle\Event\Form\PurchaseType:
         autowire: true
@@ -355,7 +527,7 @@ services:
         arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
 
     Trello\Client:
-        calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const:Trello\Client::AUTH_URL_CLIENT_ID]]]
+        calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const Trello\Client::AUTH_URL_CLIENT_ID]]]
 
     Trello\Manager:
         arguments: ['@Trello\Client']
@@ -382,7 +554,7 @@ services:
         class: Google_Client
         calls:
           - ["setAuthConfig", ["%google_groups_api_key%"]]
-          - ["setScopes", [[!php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP, !php/const:Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY]]]
+          - ["setScopes", [[!php/const Google_Service_Directory::ADMIN_DIRECTORY_GROUP, !php/const Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY]]]
           - ["setSubject", ['admin-mailing-listes-api@afup.org']]
 
     Google_Service_Directory:
@@ -407,6 +579,9 @@ services:
 
     Ivory\HttpAdapter\CurlHttpAdapter:
         public: false
+
+    AppBundle\Association\UserMembership\StatisticsComputer:
+        autowire: true
 
     AppBundle\Association\UserMembership\SeniorityComputer:
         arguments: ['@Afup\Site\Association\Cotisations']
@@ -450,3 +625,36 @@ services:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
+
+    Doctrine\DBAL\Configuration: ~
+    Doctrine\DBAL\Connection:
+        factory: [Doctrine\DBAL\DriverManager, 'getConnection']
+        arguments:
+            - {url: 'mysql://%database_user%:%database_password%@%database_host%:%database_port%/%database_name%?charset=utf8mb4'}
+            - '@Doctrine\DBAL\Configuration'
+
+    AppBundle\Controller\Legacy\:
+        resource: '../../sources/AppBundle/Controller/Legacy/*'
+        autowire: true
+
+    Symfony\Component\HttpFoundation\Session\SessionInterface:
+        alias: 'session'
+        public: true
+
+    Symfony\Component\Routing\Generator\UrlGeneratorInterface:
+        alias: 'router'
+        public: true
+
+    AppBundle\Controller\RendezVous\:
+        resource: '../../sources/AppBundle/Controller/RendezVous/*'
+        autowire: true
+
+    PlanetePHP\FeedRepository:
+        autowire: true
+
+    PlanetePHP\FeedArticleRepository:
+        autowire: true
+
+    PlanetePHP\FeedCrawler:
+        autowire: true
+        public: true

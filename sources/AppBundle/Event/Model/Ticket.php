@@ -54,6 +54,19 @@ class Ticket implements NotifyPropertyInterface
     const TYPE_AFUP_DAY_CROISIERE = 110;
     const TYPE_AFUP_DAY_LATE = 111;
     const TYPE_AFUP_DAY_CFP_SUBMITTER = 112;
+    const TYPE_AFUP_DAY_LIVE_FREE = 113;
+    const TYPE_AFUP_DAY_LIVE_SOUTIEN_1 = 114;
+    const TYPE_AFUP_DAY_LIVE_SOUTIEN_2 = 115;
+    const TYPE_AFUP_DAY_LIVE_SOUTIEN_3 = 116;
+    const TYPE_AFUP_DAY_LIVE_SOUTIEN_4 = 117;
+
+    const TYPE_FORUM_PHP_LIVE_FREE = 118;
+    const TYPE_FORUM_PHP_LIVE_SOUTIEN_1 = 119;
+    const TYPE_FORUM_PHP_LIVE_SOUTIEN_2 = 120;
+    const TYPE_FORUM_PHP_LIVE_SOUTIEN_3 = 121;
+    const TYPE_FORUM_PHP_LIVE_SOUTIEN_4 = 122;
+    const TYPE_FORUM_PHP_LIVE_SOUTIEN_5 = 123;
+    const TYPE_FORUM_PHP_LIVE_SOUTIEN_6 = 124;
 
 
     const SPECIAL_PRICE = AFUP_FORUM_SPECIAL_PRICE;
@@ -176,11 +189,6 @@ class Ticket implements NotifyPropertyInterface
      * @var int
      */
     private $memberId;
-
-    /**
-     * @var bool
-     */
-    private $pmr = false;
 
     /**
      * @var bool
@@ -636,26 +644,6 @@ class Ticket implements NotifyPropertyInterface
         $this->propertyChanged('memberId', $this->memberId, $memberId);
 
         $this->memberId = $memberId;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getPmr()
-    {
-        return $this->pmr;
-    }
-
-    /**
-     * @param bool $pmr
-     * @return Ticket
-     */
-    public function setPmr($pmr)
-    {
-        $pmr = (bool) $pmr;
-        $this->propertyChanged('pmr', $this->pmr, $pmr);
-        $this->pmr = $pmr;
         return $this;
     }
 

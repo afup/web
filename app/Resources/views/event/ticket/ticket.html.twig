@@ -133,7 +133,14 @@
                                     <div>
                                         {{ form_widget(type) }}
                                         {{ form_label(type) }}
-                                        <span class="tickets--type-price">{{ type.vars.attr['data-price'] }}€</span><br />
+                                        <span class="tickets--type-price">
+                                            {% if type.vars.attr['data-price'] == 0 %}
+                                                OFFERT
+                                            {% else %}
+                                                {{ type.vars.attr['data-price'] }}€
+                                            {% endif %}
+                                        </span>
+                                        <br />
                                         <span class="tickets--type-details">
                                             <span class="tickets--type-dateEnd">
                                                 Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}
@@ -151,7 +158,7 @@
                                         </span>
                                         {% if type.vars.attr['data-description'] %}
                                             <div class="tickets--type-description">
-                                                {{ type.vars.attr['data-description'] }}
+                                                {{ type.vars.attr['data-description']|markdown }}
                                             </div>
                                         {% endif %}
                                     </div>
@@ -160,15 +167,6 @@
                         </ul>
 
                         <p class="tickets--type-stock-limit"><em>{{ 'Dans la limite des stocks disponibles.'|trans }}</em></p>
-
-                        <p>{{ 'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :'|trans }}</p>
-                        <div class="tickets--pmr">
-                            {{ form_label(ticket.pmr) }}
-                            {% for response in ticket.pmr %}
-                                {{ form_widget(response) }}
-                                {{ form_label(response) }}
-                            {% endfor %}
-                        </div>
 
                         <p>{{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}</p>
 
@@ -219,8 +217,12 @@
                 <div>
                     {{ form_errors(ticketForm.cgv) }}
                     {{ form_widget(ticketForm.cgv) }}
-                    <label for="{{ ticketForm.cgv.vars.id }}">
-                        J'accepte les <a href="https://event.afup.org/conditions-generales-de-vente/">conditions générale de vente</a>, <a href="https://event.afup.org/condition-generales-de-participation/">de participation</a> et m'engage à respecter <a href="https://afup.org/p/986-code-de-conduite">le code de conduite</a>.
+                    <label for="{{ ticketForm.cgv.vars.id }}" style="max-width: 850px; text-align: left">
+                        J'accepte les <a href="https://event.afup.org/conditions-generales-de-vente/">conditions générale de vente</a>, <a href="https://event.afup.org/condition-generales-de-participation/">de participation</a> et m'engage à respecter <a href="https://afup.org/p/986-code-de-conduite">le code de conduite</a>
+                        {% if event.isOnline %}
+                        , et autorise l'AFUP à transmettre mon nom, prénom et email à <a href="https://livestorm.co">Livestorm</a> et <a href="https://workadventu.re/">WorkAdventu.re</a> pour la gestion du webinar
+                        {% endif %}
+                        .
                     </label>
                 </div>
                 <div>
@@ -244,7 +246,9 @@
                 <div>
                     <p>Une fois votre commande effectuée, <strong>chaque participant recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
                         Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'événement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.<br>
+                        <!--
                         Le jour J il leur suffira de se présenter à l'accueil badges <strong>avec une pièce d'identité</strong>.
+                        -->
                     </p>
                 </div>
 

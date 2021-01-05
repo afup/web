@@ -4,6 +4,7 @@ namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use DateTime;
 
 class Event implements NotifyPropertyInterface
 {
@@ -30,52 +31,52 @@ class Event implements NotifyPropertyInterface
     private $CFP;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateStart;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEnd;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEndCallForProjects;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEndCallForPapers;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEndVote;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEndPreSales;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEndSales;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEndSpeakersDinerInfosCollection;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEndHotelInfosCollection;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $datePlanningAnnouncement;
 
@@ -176,7 +177,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateStart()
     {
@@ -184,10 +185,10 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateStart
+     * @param DateTime $dateStart
      * @return Event
      */
-    public function setDateStart(\DateTime $dateStart)
+    public function setDateStart(DateTime $dateStart)
     {
         $this->propertyChanged('dateStart', $this->dateStart, $dateStart);
         $this->dateStart = $dateStart;
@@ -195,17 +196,17 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateTime
+     * @param DateTime $dateTime
      *
      * @return bool
      */
-    public function startsBefore(\DateTime $dateTime)
+    public function startsBefore(DateTime $dateTime)
     {
         return $this->getDateStart() < $dateTime;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateEnd()
     {
@@ -213,7 +214,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateEnd
+     * @param DateTime $dateEnd
      * @return Event
      */
     public function setDateEnd($dateEnd)
@@ -224,7 +225,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateEndCallForProjects()
     {
@@ -232,7 +233,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateEndCallForProjects
+     * @param DateTime $dateEndCallForProjects
      * @return Event
      */
     public function setDateEndCallForProjects($dateEndCallForProjects)
@@ -243,7 +244,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateEndCallForPapers()
     {
@@ -251,7 +252,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateEndCallForPapers
+     * @param DateTime $dateEndCallForPapers
      * @return Event
      */
     public function setDateEndCallForPapers($dateEndCallForPapers)
@@ -262,7 +263,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateEndVote()
     {
@@ -274,10 +275,10 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateEndVote
+     * @param DateTime $dateEndVote
      * @return Event
      */
-    public function setDateEndVote(\DateTime $dateEndVote = null)
+    public function setDateEndVote(DateTime $dateEndVote = null)
     {
         $this->propertyChanged('dateEndVote', $this->dateEndVote, $dateEndVote);
         $this->dateEndVote = $dateEndVote;
@@ -285,17 +286,33 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $currentDate
+     * @return bool
+     */
+    public function isCfpOpen(DateTime $currentDate = null)
+    {
+        if ($currentDate === null) {
+            $currentDate = new DateTime();
+        }
+
+        return $this->getDateEndCallForPapers() >= $currentDate;
+    }
+
+    /**
+     * @param DateTime $currentDate
      *
      * @return bool
      */
-    public function isVoteAvailable(\DateTime $currentDate)
+    public function isVoteAvailable(DateTime $currentDate = null)
     {
+        if ($currentDate === null) {
+            $currentDate = new DateTime();
+        }
+
         return $this->getVoteEnabled() && $this->getDateEndVote() >= $currentDate;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateEndPreSales()
     {
@@ -303,7 +320,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateEndPreSales
+     * @param DateTime $dateEndPreSales
      * @return Event
      */
     public function setDateEndPreSales($dateEndPreSales)
@@ -314,7 +331,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateEndSales()
     {
@@ -322,7 +339,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateEndSales
+     * @param DateTime $dateEndSales
      * @return Event
      */
     public function setDateEndSales($dateEndSales)
@@ -489,7 +506,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateEndSpeakersDinerInfosCollection()
     {
@@ -497,11 +514,11 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateEndSpeakersDinerInfosCollection
+     * @param DateTime $dateEndSpeakersDinerInfosCollection
      *
      * @return $this
      */
-    public function setDateEndSpeakersDinerInfosCollection(\DateTime $dateEndSpeakersDinerInfosCollection = null)
+    public function setDateEndSpeakersDinerInfosCollection(DateTime $dateEndSpeakersDinerInfosCollection = null)
     {
         $this->propertyChanged('dateEndSpeakersDinerInfosCollection', $this->dateEndSpeakersDinerInfosCollection, $dateEndSpeakersDinerInfosCollection);
         $this->dateEndSpeakersDinerInfosCollection = $dateEndSpeakersDinerInfosCollection;
@@ -510,7 +527,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateEndHotelInfosCollection()
     {
@@ -518,11 +535,11 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $dateEndHotelInfosCollection
+     * @param DateTime $dateEndHotelInfosCollection
      *
      * @return $this
      */
-    public function setDateEndHotelInfosCollection(\DateTime $dateEndHotelInfosCollection = null)
+    public function setDateEndHotelInfosCollection(DateTime $dateEndHotelInfosCollection = null)
     {
         $this->propertyChanged('dateEndHotelInfosCollection', $this->dateEndHotelInfosCollection, $dateEndHotelInfosCollection);
         $this->dateEndHotelInfosCollection = $dateEndHotelInfosCollection;
@@ -536,11 +553,11 @@ class Event implements NotifyPropertyInterface
     public function isPlanningDisplayable()
     {
         $date = $this->getDatePlanningAnnouncement();
-        return $date === null || new \DateTime() >= $date;
+        return $date === null || new DateTime() >= $date;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDatePlanningAnnouncement()
     {
@@ -548,11 +565,11 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime|null $datePlanningAnnouncement
+     * @param DateTime|null $datePlanningAnnouncement
      *
      * @return $this
      */
-    public function setDatePlanningAnnouncement(\DateTime $datePlanningAnnouncement = null)
+    public function setDatePlanningAnnouncement(DateTime $datePlanningAnnouncement = null)
     {
         $this->propertyChanged('datePlanningAnnouncement', $this->datePlanningAnnouncement, $datePlanningAnnouncement);
         $this->datePlanningAnnouncement = $datePlanningAnnouncement;
@@ -666,5 +683,10 @@ class Event implements NotifyPropertyInterface
         $this->waitingListUrl = $waitingListUrl;
 
         return $this;
+    }
+
+    public function isOnline()
+    {
+        return false !== strpos($this->getPath(), 'enligne');
     }
 }

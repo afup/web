@@ -1,30 +1,75 @@
-{% extends ':event/cfp:base.html.twig' %}
+{% extends 'event/cfp/base.html.twig' %}
 
 {% block content %}
     <div class="col-md-8">
         <h2>CFP: {{ event.title }}</h2>
         <h3>{{ 'Mon espace conférencier'|trans }}</h3>
-        {% if speaker.id == 0 %}
-            <p>{{ 'Vous n\'avez pas encore rempli votre profil conférencier.'|trans }}</p>
-        {% else %}
-            <div class="photo-container">
-                <img src="{{ asset(photoStorage.url(speaker)) }}" />
-            </div>
-            <p><strong>{{ speaker.firstname~' '~speaker.lastname }}</strong></p>
-            <p>{{ speaker.biography|nl2br }}</p>
-        {% endif %}
+        <div class="mlm">
+            <p class="right mrm"><a href="{{ url('cfp_speaker', {eventSlug: event.path}) }}">Modifier</a></p>
+            {% if speaker.id == 0 %}
+                <p>{{ 'Vous n\'avez pas encore rempli votre profil conférencier.'|trans }}</p>
+            {% else %}
+                <div class="photo-container">
+                    <img src="{{ asset(speakerPhoto) }}"/>
+                </div>
+                <p><strong>{{ speaker.firstname~' '~speaker.lastname }}</strong></p>
+                <p>{{ speaker.biography|nl2br }}</p>
+            {% endif %}
+        </div>
         <h3>{{ 'Mes propositions'|trans }}</h3>
 
-        {% if talks.count > 0 %}
-            <ul>
-                {% for talk in talks %}
-                    <li><a href="{{ url('cfp_edit', {eventSlug: event.path, talkId: talk.id}) }}">{{ talk.title }}</a></li>
+        <div class="mlm">
+            {% if eventTalkList.talks|length > 0 %}
+                {% for talk in eventTalkList.talks %}
+                    <div class="mbm">
+                        <h4 class="pts mbs">{{ talk.title }}</h4>
+                        {% if event.cfpOpen %}
+                            <a class="right mrm" href="{{ url('cfp_edit', {eventSlug: event.path, talkId: talk.id}) }}">Modifier</a>
+                        {% endif %}
+                        <strong>
+                            {{ talk.skillTranslationKey|trans }} - {{ talk.typeTranslationKey|trans }}
+                        </strong>
+                        <div class="clear">
+                            {% if talk.useMarkdown %}
+                                {{ talk.getAbstract|raw|markdown }}
+                            {% else %}
+                                {{ talk.getAbstract|raw }}
+                            {% endif %}
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
-        {% else %}
-            <p>{{ 'Aucune proposition enregistrée pour le moment.'|trans }}</p>
+            {% else %}
+                <p>{{ 'Aucune proposition enregistrée pour le moment.'|trans }}</p>
+            {% endif %}
+        </div>
+        {% if event.cfpOpen %}
+            <a href="{{ url('cfp_propose', {eventSlug: event.path}) }}" class="button">Nouvelle proposition</a>
         {% endif %}
-
+        {% if previousEventTalkLists|length > 0 %}
+            <h3>{{ 'Mes précédents CFP'|trans }}</h3>
+            <div class="mls">
+                {% for previousEventTalkList in previousEventTalkLists %}
+                    <h4 class="ptm">CFP: {{ previousEventTalkList.event.title|trans }}</h4>
+                    <div class="mls">
+                        {% for talk in previousEventTalkList.talks %}
+                            <div class="mbm">
+                                <h5 class="pts mbs">{{ talk.title }}</h5>
+                                <strong>
+                                    {{ talk.skillTranslationKey|trans }} - {{ talk.typeTranslationKey|trans }}
+                                </strong>
+                                <div class="">
+                                    {% if talk.useMarkdown %}
+                                        {{ talk.abstract|raw|markdown }}
+                                    {% else %}
+                                        {{ talk.abstract|raw }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
-    {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
+    {{ sidebar|raw }}
 {% endblock %}

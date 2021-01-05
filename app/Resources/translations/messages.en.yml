@@ -39,6 +39,8 @@ Avancé: Expert
 N/A: N/A
 'Pour pouvoir proposer une conférence ou voter, il vous sera nécessaire de vous authentifier avec Github.': 'To submit a talk or rate submitted ones, you have to connect to your github account.'
 'Pour pouvoir proposer une conférence, il vous sera nécessaire de vous authentifier avec Github.': 'To submit a talk, you have to connect to your github account.'
+'Pour pouvoir voter, il vous sera nécessaire de vous authentifier avec Github.': 'To rate submitted ones, you have to connect to your github account.'
+'Le CFP est terminé pour cet évènement': 'The call for paper is closed for this event'
 Civility: Civility
 Firstname: Firstname
 Lastname: Lastname
@@ -90,7 +92,6 @@ Billetterie: Ticketting
 'Vous êtes connecté avec un compte AFUP personnel. Vous pouvez acheter une place au tarif membre pour vous seul.': 'You are connected with a personnal account. You can buy one member ticket for yourself.'
 'Attention votre cotisation ne sera plus valable le jour de l''événement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l''événement.': 'Please take care of your membership. It won''t be valid at the date of the event. You can order members tickets but you will have to pay your membership fee before the event.'
 'Dans la limite des stocks disponibles.': 'In the limit of the available stock.'
-'Afin de vous accueillir dans les meilleures conditions, nous souhaitons savoir si vous êtes une personne à mobilité réduite :': 'In order to welcome you in the best conditions, we wish to know if you are a person with reduced mobility:'
 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l''évènement': 'Please tick the 3 tags (and / or your Twitter id), these tags will be printed on your badge to facilitate networking during the event:'
 'D''autres moyens de paiements sont disponibles si nécessaire (cliquer ici).': 'Other means of payment are available if necessary (click here).'
 'La billetterie est fermée !': 'The ticketing is closed!'
@@ -118,7 +119,7 @@ Billetterie: Ticketting
   <p>Best regads,<br />
   The sponsoring team AFUP</p>
 
-  <p>Follow the AFUP on <a href="https://twitter.com/afup">Twitter</a> (@afup) and Facebook.</p>
+  <p>Follow the AFUP on <a href="https://twitter.com/afup">Twitter</a> (@afup).</p>
   <p><a href="https://afup.org">afup.org</a>
 'Merci': 'Thank you'
 "Vous allez recevoir le dossier par mail dans quelques minutes.": "You will receive the file by mail in a few minutes."

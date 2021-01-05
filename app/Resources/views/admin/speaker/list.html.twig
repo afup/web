@@ -1,0 +1,136 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+<h2>Speakers</h2>
+
+<div class="ui violet segment">
+    <form method="GET" name="forum">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Événement</label>
+                    <select name="eventId" onchange="this.form.submit(); return false;">
+                        {% for event in events %}
+                            <option value="{{ event.id }}"{% if eventId == event.id %} selected{% endif %}>{{ event.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="ui menu">
+{% if eventId == null %}
+    <div class="item">Changez d'événement dans le menu ci dessus</div>
+    {% else %}
+    <a href="{{ path('admin_speaker_add' ,{eventId: eventId}) }}" class="item">
+        <div data-tooltip="Ajouter un conférencier" data-position="bottom left">
+            <i class="icon plus square"></i>
+            Ajouter
+        </div>
+    </a>
+    <a href="{{ path('admin_speaker_register', {eventId: eventId}) }}" class="item">
+        Créer les insciptions conférencier pour le forum
+    </a>
+    <a href="{{ path('admin_speaker_export', {id: eventId}) }}" class="item">
+        <i class="icon file"></i>
+        Exporter les speakers
+    </a>
+    {% endif %}
+</div>
+
+<div class="ui segment">
+    <form method="GET" name="filtre">
+        <input type="hidden" name="sort" value="{{ sort }}"/>
+        <input type="hidden" name="direction" value="{{ direction }}"/>
+        <input type="hidden" name="eventId" value="{{ eventId }}"/>
+
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Recherche</label>
+                    <input type="text" name="filter" value="{{ filter }}">
+                </div>
+                <div class="field">
+                    <input type="submit" value="Filtrer" name="submit_filtre" class="ui button">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="ui mini horizontal statistic">
+        <div class="value">
+            {{ nbSpeakers }}
+        </div>
+        <div class="label">
+            speakers
+        </div>
+    </div>
+
+    {% if speakers %}
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th align="left"><a href="{{ path('admin_speaker_list', {
+                        sort: 'name',
+                        direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
+                    }) }}">Nom Prénom</a></th>
+                <th align="left"><a href="{{ path('admin_speaker_list', {
+                        sort: 'company',
+                        direction: direction == 'asc' and sort == 'company' ? 'desc' : 'asc'
+                    }) }}">Société</a></th>
+                <th>Conférence(s)</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for speaker in speakers %}
+                <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
+                    <td><strong>{{ speaker.lastname }} {{ speaker.firstname }}</strong></td>
+                    <td>{{ speaker.company }}</td>
+                    <td>
+                        <div class="ui list">
+                            {% for talk in talks[speaker.id] %}
+                                <div class="item">
+                                    <i class="book icon"></i>
+                                    <div class="content">
+                                        <a href="/pages/administration/index.php?page=forum_sessions&action=modifier&id={{ talk.id }}&id_forum={{ eventId }}">
+                                            {{ talk.title }}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </td>
+                    <td style="text-align: right" nowrap="nowrap">
+                        <a href="{{ path('admin_speaker_edit', {id: speaker.id}) }}"
+                           data-position="left center"
+                           data-tooltip="Modifier la fiche de {{ speaker.lastname }} {{ speaker.firstname }}"
+                           class="compact ui icon button"
+                        >
+                            <i class="pencil alernate icon"></i>
+                        </a>
+                        <a href="{{ path('admin_speaker_delete', {id: speaker.id}) }}"
+                           data-position="left center"
+                           data-tooltip="Supprimer la fiche de {{ speaker.lastname }} {{ speaker.firstname }}"
+                           class="compact ui red icon button confirmable"
+                           data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {{ speaker.lastname }} {{ speaker.firstname }} ?"
+                        >
+                            <i class="trash icon"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucun speaker. {% if eventId == null %}Essayez de changez d'événement.{% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

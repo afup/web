@@ -1,0 +1,41 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Billets</h2>
+
+    <table class="ui table striped compact celled">
+        <thead>
+        <tr>
+            <th>
+                <a href="{{ path('admin_planete_feed_article_list', {
+                    sort: 'title',
+                    direction: direction == 'asc' and sort == 'title' ? 'desc' : 'asc'
+                }) }}">Titre</a>
+            </th>
+            <th><a href="{{ path('admin_planete_feed_article_list', {
+                    sort: 'content',
+                    direction: direction == 'asc' and sort == 'content' ? 'desc' : 'asc'
+                }) }}">Contenu</a>
+            </th>
+            <th><a href="{{ path('admin_planete_feed_article_list', {
+                    sort: 'status',
+                    direction: direction == 'asc' and sort == 'status' ? 'desc' : 'asc'
+                }) }}">Etat</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+        <tr class="{{ article.status == 1 ? 'actif' : 'inactif' }}">
+            <td>{{ article.title }}</td>
+            <td>{{ article.content|striptags }}</td>
+            <td style="text-align: center">{{ article.status == 1 ? 'Actif' : 'Inactif (non lié à PHP)' }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td><em>Aucun billet</em></td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+{% endblock %}

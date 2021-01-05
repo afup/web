@@ -1,9 +1,8 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
     <h2>Virements en attente de réception</h2>
-
-    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     {% if pendingBankwires|length > 0 %}
     <form method="post" style="width:auto;">
@@ -55,7 +54,7 @@
     <div class="ui placeholder segment">
         <div class="ui icon header">
             <i class="meh outline icon"></i>
-            Aucune virement en attente.
+            Aucune virement en attente. {% if event == null %} Essayez de changer d'événement{% endif %}
         </div>
     </div>
     {% endif  %}

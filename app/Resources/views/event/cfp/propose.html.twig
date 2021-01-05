@@ -1,4 +1,4 @@
-{% extends ':event/cfp:base.html.twig' %}
+{% extends 'event/cfp/base.html.twig' %}
 {% block content %}
     <div class="col-md-8">
         <h2>CFP: {{ event.title }}</h2>
@@ -12,7 +12,7 @@
             {{ 'En tant que conférencier, j\'accepte d\'être filmé et photographié gratuitement au profit exclusif de l\'AFUP, pour diffusion sur internet ou sur tout autre support de communication diffusé notamment en Europe, pour une durée de 10 ans après ma conférence.'|trans }}</p>
         <p>** {{ 'Ces notes facultatives peuvent contenir des informations sur votre conférence que vous ne voudriez pas voir apparaitre sur le système de vote et dans le programme'|trans }}.</p>
     </div>
-    {{ render(controller('AppBundle:CFP:sidebar', {eventSlug: event.path})) }}
+    {{ sidebar|raw }}
 {% endblock %}
 
 {% block javascripts %}

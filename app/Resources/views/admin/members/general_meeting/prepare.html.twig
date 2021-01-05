@@ -1,0 +1,27 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <div class="ui segment">
+        <h2 class="ui header">Préparer une assemblée générale</h2>
+        <div class="ui clearing divider"></div>
+        <div>
+            {{ form_start(form) }}
+            <div class="ui form">
+                <div class="field seven wide column">
+                    {{ form_label(form.date) }}
+                    {{ form_widget(form.date, {attr: {class: "inline fields"} }) }}
+                    {{ form_errors(form.date) }}
+                </div>
+                <div class="field seven wide column">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description, {attr: {class: "inline fields"} }) }}
+                    {{ form_errors(form.description) }}
+                </div>
+                <div class="field seven wide column">
+                    {{ form_row(form.submit, {attr: {class: "ui primary button"}}) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

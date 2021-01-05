@@ -2,7 +2,7 @@
 
 namespace AppBundle\Validator\Constraints;
 
-use CCMBenchmark\Ting\Repository\RepositoryFactory;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

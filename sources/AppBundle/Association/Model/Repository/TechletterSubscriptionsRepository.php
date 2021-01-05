@@ -56,8 +56,20 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
             ->mapObjectTo('app', 'ats', 'setUser')
         ;
 
-        return $this->getQuery(
-            'SELECT app.login, app.email, app.nom, app.prenom, MAX(ac.date_fin) AS lastsubscription, ats.subscription_date, ats.id, ats.user_id
+        return $this->getQuery($this->getAllSubscriptionsWithUserQuery())->query($this->getCollection($hydrator));
+    }
+
+    public function countAllSubscriptionsWithUser()
+    {
+        $sql = sprintf("SELECT COUNT(*) as cnt FROM (%s) req", $this->getAllSubscriptionsWithUserQuery());
+        $row = $this->getQuery($sql)->execute();
+
+        return $row['cnt'];
+    }
+
+    private function getAllSubscriptionsWithUserQuery()
+    {
+        return 'SELECT app.login, app.email, app.nom, app.prenom, MAX(ac.date_fin) AS lastsubscription, ats.subscription_date, ats.id, ats.user_id
             FROM afup_techletter_subscriptions ats
             LEFT JOIN afup_personnes_physiques app ON app.id = ats.user_id
             LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
@@ -69,8 +81,7 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
             ) as latest_unsubscriptions ON (app.email = latest_unsubscriptions.email AND latest_unsubscriptions.max_unsubscriptions_date > ats.subscription_date) 
             WHERE latest_unsubscriptions.email IS NULL
             GROUP BY app.id
-          ')->query($this->getCollection($hydrator))
-            ;
+          ';
     }
 
     /**

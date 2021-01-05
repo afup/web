@@ -6,6 +6,8 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use Assert\Assertion;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -16,7 +18,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
 {
     /**
      * @param Talk $talk
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface&Speaker[]
      */
     public function getSpeakersByTalk(Talk $talk)
     {
@@ -35,7 +37,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
      * @param Event $event
      * @param bool $returnTalksThatWillBePublished
      *
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getScheduledSpeakersByEvent(Event $event, $returnTalksThatWillBePublished = false)
     {
@@ -66,7 +68,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      *
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getSpeakersByEvent(Event $event)
     {
@@ -96,6 +98,49 @@ class SpeakerRepository extends Repository implements MetadataInitializer
             'eventId' => $event->getId(),
             'email' => $email,
         ])->first();
+    }
+
+    /**
+     * @param string|null $filter
+     *
+     * @return CollectionInterface&Speaker[]
+     */
+    public function searchSpeakers(Event $event, $sort = 'name', $direction = 'asc', $filter = null)
+    {
+        $sorts = [
+            'name' => 'c.nom',
+            'company' => 'c.societe',
+        ];
+        Assertion::keyExists($sorts, $sort);
+        Assertion::inArray($direction, ['asc', 'desc']);
+        $params = ['eventId' => $event->getId()];
+        $filterCondition = '';
+        if ($filter) {
+            $filterCondition = 'AND CONCAT(c.nom, c.prenom, c.societe) LIKE :filter';
+            $params['filter'] = '%' . $filter . '%';
+        }
+        $query = $this->getPreparedQuery(<<<SQL
+SELECT c.*
+FROM afup_conferenciers c
+WHERE c.id_forum = :eventId
+$filterCondition
+GROUP BY c.conferencier_id, c.nom
+ORDER BY $sorts[$sort] $direction
+SQL
+        )->setParams($params);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * @return int
+     */
+    public function countByEvent(Event $event)
+    {
+        $query = $this->getPreparedQuery('SELECT COUNT(*) AS nb FROM (SELECT nom, prenom FROM afup_conferenciers WHERE id_forum = :eventId GROUP BY nom, prenom) c')
+            ->setParams(['eventId' => $event->getId()]);
+
+        return (int) $query->query()->first()[0]->nb;
     }
 
     /**

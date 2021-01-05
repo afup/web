@@ -1,8 +1,8 @@
 admin_talk_export:
   path: /export
-  defaults: {_controller: AppBundle:AdminTalk:export}
+  defaults: {_controller: AppBundle\Controller\Admin\Talk\ExportAction}
 
 
 admin_talk_index:
   path: /update_indexation
-  defaults: {_controller: AppBundle:AdminTalk:updateIndexation}
+  defaults: {_controller: AppBundle\Controller\Admin\Talk\UpdateIndexationAction}

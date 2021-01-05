@@ -2,7 +2,6 @@
 
 namespace AppBundle\Command;
 
-use Afup\Site\Association\Assemblee_Generale;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Groups\GroupRepository;
@@ -33,8 +32,6 @@ class UpdateMailingListMembersCommand extends ContainerAwareCommand
         $output->writeln("Synchronisation Mailing Lists " . date('Y-m-d H:i:s'));
 
         $output->writeln(" - récupération des membres à jour de cotisation...");
-
-        $assembly = $this->getContainer()->get(\AppBundle\LegacyModelFactory::class)->createObject(Assemblee_Generale::class);
         /**
          * @var $membersAfup User[]
          */

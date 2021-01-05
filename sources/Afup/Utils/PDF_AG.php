@@ -2,13 +2,18 @@
 
 namespace Afup\Site\Utils;
 
+use AppBundle\GeneralMeeting\Attendee;
+
 class PDF_AG extends \FPDF
 {
     const CELL_HEIGHT = 7;
-
     private $footerTitle = '';
 
-    public function prepareContent(array $personnesPhysiques)
+    /**
+     * @param Attendee[] $attendees
+     * @param int[]      $validAttendees
+     */
+    public function prepareContent(array $attendees)
     {
         $this->AddPage();
 
@@ -23,45 +28,41 @@ class PDF_AG extends \FPDF
 
         $this->Ln();
 
-        usort(
-            $personnesPhysiques,
-            function($a, $b) {
-                $triA = $a['nom'] . ' ' . $a['prenom'];
-                if (strlen($a['personnes_avec_pouvoir_nom'])) {
-                    $triA = $a['personnes_avec_pouvoir_nom'] . ' ' . $a['personnes_avec_pouvoir_prenom'];
-                }
-
-                $triB = $b['nom'] . ' ' . $b['prenom'];
-                if (strlen($b['personnes_avec_pouvoir_nom'])) {
-                    $triB = $b['personnes_avec_pouvoir_nom'] . ' ' . $b['personnes_avec_pouvoir_prenom'];
-                }
-
-                if ($triA == $triB) {
-                    if ($a['presence'] == $b['presence']) {
-                        return 0;
-                    }
-                    return ($a['presence'] < $b['presence']) ? -1 : 1;
-                }
-
-                return ($triA < $triB) ? -1 : 1;
+        usort($attendees, static function (Attendee $a, Attendee $b) {
+            $triA = $a->getLastname().' '.$a->getFirstname();
+            if ($a->getPowerLastname()) {
+                $triA = $a->getPowerLastname().' '.$a->getPowerFirstname();
             }
-        );
 
-        foreach ($personnesPhysiques as $personne) {
+            $triB = $b->getLastname().' '.$b->getFirstname();
+            if ($b->getPowerLastname()) {
+                $triB = $b->getPowerLastname().' '.$b->getPowerFirstname();
+            }
 
+            if ($triA !== $triB) {
+                return $triA < $triB ? -1 : 1;
+            }
+            if ($a->getPresence() === $b->getPresence()) {
+                return 0;
+            }
+
+            return $a->getPresence() < $b->getPresence() ? -1 : 1;
+        });
+
+        foreach ($attendees as $attendee) {
             $this->SetFont('Arial', '', 12);
 
             $presence = '??';
-            if ($personne['presence'] == AFUP_ASSEMBLEE_GENERALE_PRESENCE_OUI) {
+            if ($attendee->isPresent()) {
                 $presence = 'Présent';
-            } elseif ($personne['presence'] == AFUP_ASSEMBLEE_GENERALE_PRESENCE_NON) {
+            } elseif ($attendee->isAbsent()) {
                 $presence = 'Absent';
             }
 
             $this->writeRow([
-                $personne['nom'] . ' ' . $personne['prenom'],
+                $attendee->getLastname().' '.$attendee->getFirstname(),
                 $presence,
-                $personne['personnes_avec_pouvoir_nom'] . ' ' . $personne['personnes_avec_pouvoir_prenom'],
+                $attendee->getPowerLastname().' '.$attendee->getPowerFirstname(),
                 '',
             ]);
 
@@ -78,11 +79,11 @@ class PDF_AG extends \FPDF
         }
     }
 
-    function Footer()
+    public function Footer()
     {
         $this->SetY(-15);
-        $this->SetFont('Arial','I',8);
-        $this->Cell(0,10,utf8_decode($this->getFooterTitle()) . ' - Page '.$this->PageNo(),0,0,'C');
+        $this->SetFont('Arial', 'I', 8);
+        $this->Cell(0, 10, utf8_decode($this->getFooterTitle()).' - Page '.$this->PageNo(), 0, 0, 'C');
     }
 
     public function getFooterTitle()

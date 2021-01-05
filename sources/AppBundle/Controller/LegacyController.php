@@ -3,11 +3,14 @@
 
 namespace AppBundle\Controller;
 
-use Afup\Site\Association\Personnes_Morales;
-use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Utils;
+use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\Model\User;
+use AppBundle\Association\UserMembership\UserService;
+use Exception;
+use Smarty;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,14 +34,14 @@ class LegacyController extends Controller
         $flashBag = $this->get('session')->getFlashBag();
 
         if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__) . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
-            $_GET['page'] = 'accueil';
+            return $this->redirectToRoute('admin_home');
         }
 
         // On vérifie que l'utilisateur a le droit d'accéder à la page
         $droits->chargerToutesLesPages($pages);
         if (!$droits->verifierDroitSurLaPage($_GET['page'])) {
             $flashBag->add('error', "Vous n'avez pas le droit d'accéder à cette page");
-            return $this->redirect('/pages/administration/index.php?page=accueil');
+            return $this->redirectToRoute('admin_home');
         }
 
         // Initialisation de AFUP_Log
@@ -69,18 +72,20 @@ class LegacyController extends Controller
 
     public function registerAction(Request $request)
     {
-        global $bdd, $conf, $droits, $smarty;
+        global $droits;
+
+        $bdd = $GLOBALS['AFUP_DB'];
 
         $server = $_SERVER;
         $_SERVER['REQUEST_URI'] = '/administration/';
-        require_once dirname(__FILE__) . '/../../Afup/Bootstrap/Http.php';
-
+        require dirname(__FILE__) . '/../../Afup/Bootstrap/Http.php';
+        /** @var Smarty $smarty */
+        $userRepository = $this->get(UserRepository::class);
+        /** @var UserService $userService */
+        $userService = $this->get(UserService::class);
         $_SERVER = $server;
         $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
         Logs::initialiser($bdd, $droits->obtenirIdentifiant());
-        $personnes_physiques = new Personnes_Physiques($bdd);
-
-        $personnes_morales = new Personnes_Morales($bdd);
         $pays = new Pays($bdd);
 
         $formulaire = instancierFormulaire();
@@ -131,9 +136,8 @@ class LegacyController extends Controller
         $formulaire->addRule('nom', 'Nom manquant', 'required');
         $formulaire->addRule('prenom', 'Prénom manquant', 'required');
         $formulaire->addRule('login', 'Login manquant', 'required');
-        $formulaire->addRule('login', 'Login déjà existant', 'callback', function ($value) use ($bdd) {
-            $personnePhysique = new Personnes_Physiques($bdd);
-            return !$personnePhysique->loginExists(0, $value);
+        $formulaire->addRule('login', 'Login déjà existant', 'callback', static function ($value) use ($userRepository) {
+            return !$userRepository->loginExists($value);
         });
         $formulaire->addRule('email', 'Email manquant', 'required');
         $formulaire->addRule('email', 'Email invalide', 'email');
@@ -144,48 +148,29 @@ class LegacyController extends Controller
         $formulaire->addRule(['mot_de_passe', 'confirmation_mot_de_passe'], 'Le mot de passe et sa confirmation ne concordent pas', 'compare');
 
         if ($formulaire->validate()) {
-            // Construction du champ niveau_modules : concaténation dse différentes valeurs
-            $niveau_modules = $formulaire->exportValue('niveau_apero') .
-                $formulaire->exportValue('niveau_annuaire') .
-                $formulaire->exportValue('niveau_site');
-            $login = $formulaire->exportValue('login');
-            $mot_de_passe = md5($formulaire->exportValue('mot_de_passe')); /** @TODO WE SHOULD REALLY CHANGE THAT !!! */
-
             try {
-                $ok = $personnes_physiques->ajouter(
-                    0,
-                    $login,
-                    $mot_de_passe,
-                    $formulaire->exportValue('niveau'),
-                    $niveau_modules,
-                    $formulaire->exportValue('civilite'),
-                    $formulaire->exportValue('nom'),
-                    $formulaire->exportValue('prenom'),
-                    $formulaire->exportValue('email'),
-                    $formulaire->exportValue('adresse'),
-                    $formulaire->exportValue('code_postal'),
-                    $formulaire->exportValue('ville'),
-                    $formulaire->exportValue('id_pays'),
-                    $formulaire->exportValue('telephone_fixe'),
-                    $formulaire->exportValue('telephone_portable'),
-                    $formulaire->exportValue('etat'),
-                    $formulaire->exportValue('compte_svn'),
-                    $formulaire->exportValue('nearest_office'),
-                    true // Throws exception!
-                );
-
-                if ($ok) {
-                    Logs::log('Ajout de la personne physique ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom'));
-
-                    $user = $this->get(\AppBundle\Association\Model\Repository\UserRepository::class)->loadUserByUsername($login);
-
-                    $personnes_physiques->sendWelcomeMailWithData(
-                        $formulaire->exportValue('prenom'),
-                        $formulaire->exportValue('nom'),
-                        $formulaire->exportValue('login'),
-                        $formulaire->exportValue('email')
-                    );
-
+                $user = new User();
+                $user->setStatus($formulaire->exportValue('etat'));
+                $user->setUsername($formulaire->exportValue('login'));
+                $user->setPlainPassword($formulaire->exportValue('mot_de_passe'));
+                $user->setLevel($formulaire->exportValue('niveau'));
+                $user->setDirectoryLevel($formulaire->exportValue('niveau_annuaire'));
+                $user->setWebsiteLevel($formulaire->exportValue('niveau_site'));
+                $user->setCivility($formulaire->exportValue('civilite'));
+                $user->setLastName($formulaire->exportValue('nom'));
+                $user->setFirstName($formulaire->exportValue('prenom'));
+                $user->setEmail($formulaire->exportValue('email'));
+                $user->setAddress($formulaire->exportValue('adresse'));
+                $user->setZipCode($formulaire->exportValue('code_postal'));
+                $user->setCity($formulaire->exportValue('ville'));
+                $user->setCountry($formulaire->exportValue('id_pays'));
+                $user->setPhone($formulaire->exportValue('telephone_fixe'));
+                $user->setMobilephone($formulaire->exportValue('telephone_portable'));
+                $user->setNearestOffice($formulaire->exportValue('nearest_office'));
+                try {
+                    $userRepository->create($user);
+                    Logs::log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
+                    $userService->sendWelcomeEmail($user);
                     $this->addFlash('notice', 'Merci pour votre inscription. Il ne reste plus qu\'à régler votre cotisation.');
 
                     return $this->get('security.authentication.guard_handler')
@@ -195,10 +180,10 @@ class LegacyController extends Controller
                             $this->get(\AppBundle\Security\LegacyAuthenticator::class),
                             'legacy_secured_area'
                         );
-                } else {
+                } catch (Exception $e) {
                     $smarty->assign('erreur', 'Une erreur est survenue lors de la création de votre compte. Veuillez recommencer. Merci.');
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $message = sprintf('Une erreur est survenue lors de la création de votre compte (%s). N\'hésitez pas à contacter le bureau via bonjour@afup.org si vous ne comprenez pas l\'erreur en nous précisant le message qui vous est donné. Merci !', $e->getMessage());
                 $smarty->assign('erreur', $message);
             }

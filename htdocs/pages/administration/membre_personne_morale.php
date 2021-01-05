@@ -1,40 +1,40 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Association\Personnes_Morales;
-use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Pays;
+use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\Model\User;
+use Assert\Assertion;
 
+/** @var \Afup\Site\Droits $droits */
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
 
+$userRepository = $this->get(UserRepository::class);
 $personnes_morales = new Personnes_Morales($bdd);
 
-
-$personnes_physiques = new Personnes_Physiques($bdd);
-
 $identifiant = $droits->obtenirIdentifiant();
-$personne_physique = $personnes_physiques->obtenir($identifiant);
-if ($personne_physique['id_personne_morale'] == 0) {
+$user = $userRepository->get($identifiant);
+Assertion::notNull($user);
+if (!$user->getCompanyId()) {
     // Cette page est reservee aux membres appartenants à une personne morale
     header('HTTP/1.1 403 FORBIDDEN');
     exit;
 }
-$id_personne_morale = $personne_physique['id_personne_morale'];
 
 $action='modifier';
 $smarty->assign('action', $action);
-$personnes_physiques_liste = $personnes_physiques->obtenirListe('*', 'nom, prenom', false, $id_personne_morale);
-
+$users = $userRepository->search('lastname', 'asc', null, $user->getCompanyId());
 
 $pays = new Pays($bdd);
 
 $formulaire = instancierFormulaire();
-$champs = $personnes_morales->obtenir($id_personne_morale);
+$champs = $personnes_morales->obtenir($user->getCompanyId());
 unset($champs['mot_de_passe']);
 $formulaire->setDefaults($champs);
 
@@ -55,9 +55,11 @@ $formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , a
 $formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , array('size' => 20, 'maxlength' => 20));
 
 $formulaire->addElement('header'  , ''                   , 'Membres associés');
-foreach ($personnes_physiques_liste as $personne_physique) {
-    $nom = $personne_physique['nom'] . ' ' . $personne_physique['prenom'][0];
-    empty($personne_physique['etat']) and $nom = "<del>$nom</del>";
+foreach ($users as $user) {
+    $nom = $user->getLastName() . ' ' . $user->getFirstName()[0];
+    if (User::STATUS_INACTIVE === $user->getStatus()) {
+        $nom = "<del>$nom</del>";
+    }
     $formulaire->addElement('static', 'info', $nom . '.');
 }
 
@@ -79,7 +81,7 @@ $formulaire->addRule('ville'         , 'Ville manquante'         , 'required');
 
 if ($formulaire->validate()) {
     $ok = $personnes_morales->modifier(
-        $id_personne_morale,
+        $user->getCompanyId(),
         $formulaire->exportValue('civilite'),
         $formulaire->exportValue('nom'),
         $formulaire->exportValue('prenom'),

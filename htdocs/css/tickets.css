@@ -159,6 +159,9 @@ ul.tickets--type-list span.tickets--type-details{
 span.tickets--type-price{
     font-weight:bold;
     font-family: Glegoo,Helvetica,Arial,sans-serif;
+    display: inline-block;
+    min-width: 50px;
+    text-align: right;
 }
 span.tickets--type-members{
     color: #4c6eaf;

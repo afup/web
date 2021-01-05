@@ -36,7 +36,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     /**
      * @var int
      */
-    private $companyId;
+    private $companyId = 0;
 
     /**
      * @var string
@@ -82,6 +82,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
      * @var string
      */
     private $email;
+
+    /**
+     * @var string|null
+     */
+    private $alternateEmail;
 
     /**
      * @var string
@@ -147,6 +152,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
      * @var int
      */
     private $slackInviteStatus = self::SLACK_INVITE_STATUS_NONE;
+
+    /**
+     * @var bool
+     */
+    private $needsUpToDateMembership = true;
 
     /**
      * @return int
@@ -275,6 +285,14 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $this->propertyChanged('password', $this->password, $password);
         $this->password = $password;
         return $this;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPlainPassword($password)
+    {
+        $this->setPassword(md5($password));
     }
 
     /**
@@ -788,5 +806,75 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $this->id = $array['id'];
         $this->username = $array['username'];
         $this->password = $array['password'];
+    }
+
+    public function getDirectoryLevel()
+    {
+        return $this->levelModules[1];
+    }
+
+    public function setDirectoryLevel($level)
+    {
+        $oldLevelModules = $this->levelModules;
+        $this->levelModules[1] = $level;
+        $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
+    }
+
+    public function getWebsiteLevel()
+    {
+        return $this->levelModules[2];
+    }
+
+    public function setWebsiteLevel($level)
+    {
+        $oldLevelModules = $this->levelModules;
+        $this->levelModules[2] = $level;
+        $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
+    }
+
+    public function getEventLevel()
+    {
+        return $this->levelModules[3];
+    }
+
+    public function setEventLevel($level)
+    {
+        $oldLevelModules = $this->levelModules;
+        $this->levelModules[3] = $level;
+        $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
+    }
+
+    public function getOfficeLevel()
+    {
+        return $this->levelModules[4];
+    }
+
+    public function setOfficeLevel($level)
+    {
+        $oldLevelModules = $this->levelModules;
+        $this->levelModules[4] = $level;
+        $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
+    }
+
+    public function getAlternateEmail()
+    {
+        return $this->alternateEmail;
+    }
+
+    public function setAlternateEmail($alternateEmail)
+    {
+        $this->propertyChanged('alternateEmail', $this->alternateEmail, $alternateEmail);
+        $this->alternateEmail = $alternateEmail;
+    }
+
+    public function getNeedsUpToDateMembership()
+    {
+        return $this->needsUpToDateMembership;
+    }
+
+    public function setNeedsUpToDateMembership($needsUpToDateMembership)
+    {
+        $this->propertyChanged('needsUpToDateMembership', $this->needsUpToDateMembership, $needsUpToDateMembership);
+        $this->needsUpToDateMembership = $needsUpToDateMembership;
     }
 }

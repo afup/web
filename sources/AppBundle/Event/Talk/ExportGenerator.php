@@ -41,6 +41,7 @@ class ExportGenerator
             'description',
             'staff_notes',
             'programme_mentoring',
+            'youtube_id',
         ];
 
         $toFile->fputcsv($columns);
@@ -95,6 +96,7 @@ class ExportGenerator
             'description' => $talk->getAbstract(),
             'staff_notes' => $talk->getStaffNotes(),
             'programme_mentoring' => $talk->getNeedsMentoring() ? 'oui' : 'non',
+            'youtube_id' => $talk->getYoutubeId(),
         ];
     }
 

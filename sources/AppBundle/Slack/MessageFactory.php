@@ -3,15 +3,18 @@
 
 namespace AppBundle\Slack;
 
-use Afup\Site\Association\Assemblee_Generale;
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
+use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use Assert\Assertion;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class MessageFactory
@@ -155,10 +158,10 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForGeneralMeeting(Assemblee_Generale $assembleeGenerale, UserRepository $userRepository)
+    public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
-        $timestamp = $assembleeGenerale->obternirDerniereDate();
-
+        $latestDate = $generalMeetingRepository->getLatestDate();
+        Assertion::notNull($latestDate);
         $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL));
 
         $message = new Message();
@@ -170,19 +173,15 @@ class MessageFactory
 
         $attachment = new Attachment();
         $attachment
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=assemblee_generale')
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Membres à jour de cotisation')->setValue($nombrePersonnesAJourDeCotisation)
-            )
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Présences et pouvoirs')->setValue($assembleeGenerale->obtenirNombrePresencesEtPouvoirs($timestamp))
-            )
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Présences')->setValue($assembleeGenerale->obtenirNombrePresences($timestamp))
-            )
-            ->addField(
-                (new Field())->setShort(true)->setTitle('Quorum')->setValue($assembleeGenerale->obtenirEcartQuorum($timestamp, $nombrePersonnesAJourDeCotisation))
-            )
+            ->setTitleLink($urlGenerator->generate('admin_members_general_meeting', [], UrlGeneratorInterface::ABSOLUTE_URL))
+            ->addField((new Field())->setShort(true)->setTitle('Membres à jour de cotisation')
+                ->setValue($nombrePersonnesAJourDeCotisation))
+            ->addField((new Field())->setShort(true)->setTitle('Présences et pouvoirs')
+                ->setValue($generalMeetingRepository->countAttendeesAndPowers($latestDate)))
+            ->addField((new Field())->setShort(true)->setTitle('Présences')
+                ->setValue($generalMeetingRepository->countAttendees($latestDate)))
+            ->addField((new Field())->setShort(true)->setTitle('Quorum')
+                ->setValue($generalMeetingRepository->obtenirEcartQuorum($latestDate, $nombrePersonnesAJourDeCotisation)))
         ;
         $message->addAttachment($attachment);
 
@@ -197,9 +196,9 @@ class MessageFactory
      *
      * @return Message
      */
-    public function createMessageForTicketStats(Event $event, Inscriptions $inscriptions, TicketTypeRepository $ticketRepository, \DateTime $date = null)
+    public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, \DateTime $date = null)
     {
-        $inscriptionsData = $inscriptions->obtenirStatistiques($event->getId());
+        $eventStats = $eventStatsRepository->getStats($event->getId());
         $message = new Message();
         $message
             ->setChannel($event->isAfupDay() ? 'afupday' : 'pole-forum')
@@ -208,13 +207,13 @@ class MessageFactory
         ;
 
         if (null !== $date) {
-            $inscriptionsDataFiltered = $inscriptions->obtenirStatistiques($event->getId(), $date);
+            $eventStatsFiltered = $eventStatsRepository->getStats($event->getId(), $date);
 
             $attachment = new Attachment();
             $attachment
                 ->setTitle(sprintf('Liste des inscriptions depuis le %s : ', $date->format('d/m/Y H:i')))
             ;
-            foreach ($inscriptionsDataFiltered['types_inscriptions']['inscrits'] as $typeId => $value) {
+            foreach ($eventStatsFiltered->ticketType->registered as $typeId => $value) {
                 if (0 === $value) {
                     continue;
                 }
@@ -232,19 +231,14 @@ class MessageFactory
 
 
         if ($event->lastsOneDay()) {
-            $attachment
-                ->addField(
-                (new Field())->setShort(true)->setTitle('Journée unique')->setValue($inscriptionsData['premier_jour']['inscrits'])
-            )
-            ;
+            $attachment->addField((new Field())->setShort(true)->setTitle('Journée unique')
+                ->setValue($eventStats->firstDay->registered));
         } else {
             $attachment
-                ->addField(
-                    (new Field())->setShort(true)->setTitle('Premier jour')->setValue($inscriptionsData['premier_jour']['inscrits'])
-                )
-                ->addField(
-                    (new Field())->setShort(true)->setTitle('Deuxième jour')->setValue($inscriptionsData['second_jour']['inscrits'])
-                )
+                ->addField((new Field())->setShort(true)->setTitle('Premier jour')
+                    ->setValue($eventStats->firstDay->registered))
+                ->addField((new Field())->setShort(true)->setTitle('Deuxième jour')
+                    ->setValue($eventStats->secondDay->registered))
             ;
         }
 

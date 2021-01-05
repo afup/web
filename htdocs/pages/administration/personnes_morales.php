@@ -1,16 +1,18 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Association\Personnes_Physiques;
 use Afup\Site\Association\Personnes_Morales;
-use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Pays;
+use AppBundle\Association\Model\Repository\UserRepository;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
 }
+
+$userRepository = $this->get(UserRepository::class);
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
 $tris_valides = array('raison_sociale', 'etat');
@@ -42,15 +44,24 @@ if ($action == 'lister') {
     $smarty->assign('personnes', $personnes_morales->obtenirListe($list_champs, $list_ordre, $list_associatif, $list_filtre, $onlyDisplayActive));
     $smarty->assign('also_display_inactive', null === $onlyDisplayActive);
 } elseif ($action == 'supprimer') {
-    if ($personnes_morales->supprimer($_GET['id'])) {
+    if ($personnes_morales->supprimer($_GET['id'], $userRepository)) {
         Logs::log('Suppression de la personne morale ' . $_GET['id']);
         afficherMessage('La personne morale a été supprimée', 'index.php?page=personnes_morales&action=lister');
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de la personne morale', 'index.php?page=personnes_morales&action=lister', true);
     }
 } else {
-    $personnes_physiques = new Personnes_Physiques($bdd);
-    $personnes_physiques_liste = empty($_GET['id'])? array() : $personnes_physiques->obtenirListe('*', 'nom, prenom', false, $_GET['id']);
+    $users = [];
+    if (!empty($_GET['id'])) {
+        foreach ($userRepository->search('lastname', 'asc', null, $_GET['id']) as $user) {
+            $users[] = [
+                'id' => $user->getId(),
+                'etat' => $user->getStatus(),
+                'nom' => $user->getLastName(),
+                'prenom' => $user->getFirstName(),
+            ];
+        }
+    }
 
     $pays = new Pays($bdd);
 
@@ -82,7 +93,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , array('size' => 20, 'maxlength' => 20));
     $formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , array('size' => 20, 'maxlength' => 20));
     if($action != 'ajouter') {
-        $smarty->assign('personnes_physiques_associees', $personnes_physiques_liste);
+        $smarty->assign('personnes_physiques_associees', $users);
     }
     $formulaire->addElement('header'  , ''                   , 'Paramètres');
     $formulaire->addElement('select'  , 'etat'               , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',

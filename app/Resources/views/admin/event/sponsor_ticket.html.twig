@@ -1,6 +1,6 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends 'admin/base_with_header.html.twig' %}
 
-{% form_theme form _self %}
+
 {%- block form_row -%}
     {%- set widget_attr = {} -%}
     {%- if help is not empty -%}
@@ -18,10 +18,13 @@
 {%- endblock form_row -%}
 
 {% block content %}
-    <h2>Liste des tokens sponsors pour {{ event.title }}</h2>
-    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+    <h2>Liste des tokens sponsors pour {{ event == null ? '' : event.title }}</h2>
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     <div class="ui menu">
+        {% if event == null %}
+            <div class="item">Changez d'événement dans le menu ci dessus</div>
+        {% else %}
         <a href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}"
            class="item confirmable"
            data-confirmable-label="Souhaitez-vous vraiment envoyer des mails relance à tous les sponsors ayant encore des places ?"
@@ -33,6 +36,7 @@
                 Envoyer le mail de rappel
             </div>
         </a>
+        {% endif %}
     </div>
 
     {% if tokens|length > 0 %}
@@ -103,7 +107,7 @@
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
-                Aucune invitation créée
+                Aucune invitation trouvée. {% if event == null %} Essayez de changer d'événement{% endif %}
             </div>
         </div>
     {% endif %}
@@ -118,6 +122,15 @@
         <div class="ui clearing divider"></div>
 
         <div>
+            {% if form == null %}
+                <div class="ui placeholder segment">
+                    <div class="ui icon header">
+                        <i class="meh outline icon"></i>
+                        Changer d'événement pour pouvoir ajouter un token.
+                    </div>
+                </div>
+            {% else %}
+                {% form_theme form _self %}
         {{ form_start(form) }}
         {{ form_widget(form) }}
 
@@ -131,6 +144,7 @@
         </div>
 
         {{ form_end(form) }}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

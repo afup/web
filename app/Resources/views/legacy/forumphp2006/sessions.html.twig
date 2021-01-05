@@ -1,0 +1,363 @@
+{% set sessions_fonctionnelles = [
+    {
+        horaire: '9h - 9h15',
+        nom: 'Keynote',
+        resume: 'Cette session d\'ouverture a pour objectif de présenter l\'AFUP qui est organisatrice de ce cinquième forum PHP. Il sera également abordé les évolutions de moeurs vis à vis de PHP, son adoption massive sur Internet et sa percée sur les Intranet.<br /><br />Perrick PENET et Romain BOURDON respectivement président et trésorier de l\'AFUP présenteront également le programme des conférences de ces deux jours.',
+        conferenciers: [
+        {
+            code: 'ppenet',
+            nom: 'Perrick PENET',
+        }, {
+            code: 'rbourdon',
+            nom: 'Romain BOURDON',
+        }
+    ],
+    }, {
+        horaire: '9h20 - 10h20',
+        nom: 'PHP en 2006 : writing and profiling rich applications',
+        resume: 'PHP est devenu très populaire grâce à son approche simple et pragmatique du problème "Web". Cet univers du web a beaucoup évolué et on parle désormais du "Web2.0". PHP y prend toute sa place avec de plus en plus de personnes combinant des services web pour obtenir des applications riches avec AJAX. Au cours de cette session Rasmus couvrira les briques nécessaires à la construction de ces applications modernes : avec un paquet d\'exemples au passage.',
+        conferenciers: [
+            {
+                code: 'rlerdorf',
+                nom: 'Rasmus LERDORF',
+            },
+        ],
+    }, {
+        horaire: '10h30 - 11h30',
+        nom: 'Ajax et Web Services en PHP : Google AdWords API avec APIlity',
+        resume: 'AdWords a fait la fortune de Google. Et l\'API AdWords, une bibliothèque pour réaliser un service Web,' ~
+        ' vous offre cette puissance. Une librairie Open Source - APIlity - permet de remplacer des appels de' ~
+        ' fonctions AdWords API complexes par des appels de fonctions PHP. Découvrez un cas concret de l\'application' ~
+        ' web d\'aujourd\'hui et de demain avec web services et AJAX.',
+        conferenciers: [
+            {
+                code: 'tsteiner',
+                nom: 'Thomas STEINER',
+            },
+        ],
+    }, {
+        horaire: '11h40 - 12h40',
+        nom: 'PHP dans l\'entreprise ... la contribution de ZEND',
+        resume: 'Un an après son installation en France, ZEND France présentera sa démarche et son apport concret sur le marché français, pour l\'adoption de PHP comme option professionnelle et stratégique dans le monde de l\'entreprise et des grandes organisations.<br />' ~
+        'Zeev SURASKI sera accompagné par Laurent BOUFFIES pour présenter le projet PRESTO pour l\'Administration. Le "ZEND Way for PHP" (professionnalisation des pratiques PHP) et le "ZEND framework" (capitalisation, mutualisation et distribution de composants PHP) seront aussi abordés.',
+        conferenciers: [
+        {
+            code: 'zsuraski',
+            nom: 'Zeev SURASKI',
+        },
+        {
+            code: 'lbouffies',
+            nom: 'Laurent BOUFFIES',
+        },
+    ],
+    }, {
+        horaire: '14h - 14h45',
+        nom: 'PHP au Service Public Fédéral Finances de Belgique : l\'intégration réussie PHP-Java',
+        resume: 'Depuis l\'an 2000, un vaste chantier de modernisation a été mis en oeuvre, notamment au niveau informatique.' ~
+        ' Dans un univers au départ Java, PHP5 (avec PDO et son modèle objet amélioré) s\'est fait une' ~
+        ' place : le retour d\'expérience précieux d\'une évolution à grande échelle.',
+        conferenciers: [
+            {
+                code: 'dvannuffelen',
+                nom: 'Denis VAN NUFFELEN',
+            },
+        ],
+    }, {
+        horaire: '14h55 - 15h40',
+        nom: 'Optimisation / industrialisation d\'une plateforme de service basée sur PHP',
+        resume: 'Cette conférence résolument axée vers la pratique permettra de trouver des réponses à l\'optimisation de PHP:' ~
+        ' évaluer un site existant, mettre en place une architecture scalable et optimale, optimiser les performances' ~
+        ' (configuration logicielle, cache, compilation, bases de données). Elle sera illustrée par une' ~
+        ' présentation des évolutions et optimisations de la plateforme de services TV / ADSL du groupe Canal+.',
+        conferenciers: [
+            {
+                code: 'cpierredegeyer',
+                nom: 'Cyril PIERRE DE GEYER',
+            },
+            {
+                code: 'gponcon',
+                nom: 'Guillaume PON&Ccedil;ON',
+            },
+            {
+                code: 'flombardi',
+                nom: 'Franck LOMBARDI',
+            }
+        ],
+    }, {
+        horaire: '15h50 - 16h30',
+        nom: 'Des briques Open Source pour refondre un site internet en PHP (Trac, SVN, Symfony, architecture) -- l\'exemple de Richelieu Finance',
+        resume: 'Richelieu Finance a fait appel à Clever Age pour l\'assister dans la refont de son site internet en PHP.' ~
+        ' Ce retour d\'expérience sera l\'occasion de présenter l\'atelier de développement basé sur Trac et' ~
+        ' Subversion ainsi que l\'intégration du framework d\'application PHP5 Symfony qui a permis de reprendre les' ~
+        ' développements existants. La mise en place d\'une architecture de serveurs tolérante aux pannes et' ~
+        ' progressivement extensible complétera la présentation.',
+        conferenciers: [
+            {
+                code: 'trivoallan',
+                nom: 'Tristan RIVOALLAN',
+            },
+            {
+                code: 'xlacot',
+                nom: 'Xavier LACOT',
+            },
+            {
+                code: 'hschmitt',
+                nom: 'Hervé SCHMITT',
+            },
+        ],
+    }, {
+        horaire: '16h40 - 17h25',
+        nom: 'eZ systems : PHP inside',
+        resume: 'eZ systems est éditeur de logiciels Open Source pour les entreprises, dans le domaine de la gestion de contenus. Depuis sa création en 1999, eZ systems a misé sur la technologie PHP pour développer ses solutions. Aujourd\'hui, dans une logique d\'ouverture qui lui est très chère, eZ systems propose librement eZ publish, un des logiciels de gestion de contenus Open Source les plus sophistiqués sur le marché ainsi que eZ components, un ensemble de librairies PHP de haute qualité. Cette conférence présentera eZ  publish, le logiciel principal d\'eZ systems, sous un axe technique et fonctionnel, et présentera également un retour d\'expérience sur le choix stratégique de PHP pour un éditeur de logiciel tel que eZ systems et les liens tenus existant aujourd\'hui entre PHP et eZ systems.',
+        conferenciers: [
+            {
+                code: 'rbenedetti',
+                nom: 'Roland BENEDETTI',
+            },
+            {
+                code: 'bdunogier',
+                nom: 'Bertrand DUNOGIER',
+            },
+        ],
+    },
+] %}
+
+{% set sessions_techniques = [
+    {
+        horaire: '9h - 9h15',
+        nom: 'Keynote',
+        resume: 'Guillaume PON&Ccedil;ON et Arnaud LIMBOURG, respectivement vice-président et secrétaire de l\'AFUP, présenteront le programme de cette journée technique.',
+        conferenciers: [
+        {
+            code: 'gponcon',
+            nom: 'Guillaume PON&Ccedil;ON',
+        },
+        {
+            code: 'alimbourg',
+            nom: 'Arnaud LIMBOURG',
+        },
+    ],
+    },
+    {
+        horaire: '9h20 - 10h20',
+        nom: 'eZ components, RAD pour PHP',
+        resume: 'eZ components est une librairie de composants pour PHP qui permettent de résoudre une large panoplie des' ~
+        ' problèmes récurrents en développement web. Intéropérabilité, design propre, flexibilité, liberté,' ~
+        ' cohérence : telles en sont les maîtres-mots. Avec aussi une bonne documentation, une license BSD claire' ~
+        ' et une gratuité totale. Derick Rethans - responsable du projet - en présentera la structure, les contenus' ~
+        ' et les avancées, avec une démonstration s\'appuyant sur les composants les plus excitants.',
+        conferenciers: [
+        {
+            code: 'drethans',
+            nom: 'Derick RETHANS',
+        },
+    ],
+    },
+    {
+        horaire: '10h30 - 11h30',
+        nom: 'Design Patterns & PHP',
+        resume: 'Les design patterns, largement connus et utilisés dans le monde Java, sont un peu la prose du monde PHP :' ~
+        ' Les développeurs les utilisent parfois sans le savoir.  Cette session à pour objectif de présenter les' ~
+        ' principaux designs patterns, leurs objectifs, et la façon dont ils peuvent être implémentés en PHP. Une' ~
+        ' session truffée d\'exemples d\'implémentation avec en particulier une gestion transparente des transactions.',
+        conferenciers: [
+        {
+            code: 'gcroes',
+            nom: 'Gérald CROES',
+        },
+    ],
+    },
+    {
+        horaire: '11h40 - 12h40',
+        nom: 'PHPUnit: Comment faire du développement agile un atout compétitif',
+        resume: 'PHPUnit  est  une  librairie  de  tests  unitaires  qui vous permettra d\'améliorer  la  qualité  de  vos' ~
+        ' applications, leur flexibilité et le votre  confort de développement. A l\'issue de cette présentation,' ~
+        ' vous saurez comment fonctionne cette librairie, comment l\'utiliser et surtout comment se servir de cette' ~
+        ' approche "agile" pour livrer encore plus rapidement vos projets. Un retour d\'expérience sur une application' ~
+        ' d\'entreprise -- le gestionnaire  de rapports utilisateurs wIT -- permettra de voir avec un cas concret' ~
+        ' les améliorations quotidienne apportées par cette technique.',
+        conferenciers: [
+        {
+            code: 'shordeaux',
+            nom: 'Sébastien HORDEAUX',
+        },
+    ],
+    },
+    {
+        horaire: '14h - 15h00',
+        nom: 'Sécurité des applications PHP',
+        resume: 'Depuis 2005, la sécurité est un point crucial pour les applications Web en général et PHP en particulier.' ~
+        ' Avec son statut de langage dominant sur le Web, PHP est une cible facile pour les pirates. Dans cette' ~
+        ' session, vous aurez un bilan des problèmes de sécurité qui se présentent aux applications Web' ~
+        ' écritent en PHP et MySQL, les techniques d\'attaques et les défenses à mettre en place, ainsi que les' ~
+        ' concepts de protections des applications. Avec le regard exercé d\'un hébergeur reconnu.',
+        conferenciers: [
+        {
+            code: 'dseguy',
+            nom: 'Damien SEGUY',
+        },
+    ],
+    },
+    {
+        horaire: '15h10 - 16h10',
+        nom: 'PHPMeter, un outil simple et léger pour évaluer la qualité d\'un code PHP',
+        resume: 'La présentation porte sur l\'outil PHPMeter d\'évaluation de la qualité du code d\'une application PHP.' ~
+        ' PHPMeter est un outil d\'analyse de code PHP 4 & 5 basé sur la famille de fonctions Tokenizer de PHP.' ~
+        ' PHPMeter analyse les sources et collecte une série de mesures relatives à la qualité du code (complexité,' ~
+        ' maintenabilité, fiabilité, évolutivité). Il permet l\'évaluation de trois qualités importantes d\'un code' ~
+        ' source PHP, à savoir: la maintenabilité, la fiabilité et l\'évolutivité. La présentation sera faite sur' ~
+        ' base de l\'analyse du code source de deux projets open source d\'envergure : Spip et Wordpress.',
+        conferenciers: [
+        {
+            code: 'mlopez',
+            nom: 'Miguel LOPEZ',
+        },
+    ],
+    }, {
+        horaire: '16h20 - 17h20',
+        nom: 'Unicode : une révolution en marche pour PHP6',
+        resume: 'Le support d\'Unicode en natif est la principale avancée de PHP6. Au cours de cette sessions vous' ~
+        ' découvrirez la révolution apportée à votre façon de programmer et manipuler des textes' ~
+        ' mutlilingues. Le mot d\'ordre ? Profiter enfin des subtilités de langage et de culture au coeur de votre' ~
+        ' code !',
+        conferenciers: [
+            {
+                code: 'azmievski',
+                nom: 'Andrei ZMIEVSKI',
+            },
+        ],
+    },
+] %}
+
+{% include 'legacy/forumphp2006/entete.html.twig' %}
+        <div id="cartouche-milieu">
+            <img id="cartouchepage" src="/templates/forumphp2006/images/cartouche-page.png" usemap="#m_cartouchepage" />
+            <map name="m_cartouchepage">
+            <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="{{ path('legacy_event', {year: 2006, page: 'inscription.php'}) }}" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+            <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="{{ path('legacy_event', {year: 2006, page: 'acces.php'}) }}" title="Accès" alt="Accès" >
+            </map>
+            <h1>Le programme des deux jours</h1>
+
+            <h2><a href="#nov9">9 novembre : Journée fonctionnelle</a></h2>
+  <ul>
+    <li>
+      
+      <b>Temps forts</b><br />
+         <ul>
+          <li>Tour d'horizon de l'univers de PHP (dont PHP6) par l'inventeur de PHP Rasmus LERDORF</li>
+          <li>Ajax et Web Services en PHP avec les API Google AdWords</li>
+          <li>PHP au sein du Service Public Fédéral Finances de Belgique</li>
+        </ul>
+      <br />
+      Orientée fonctionnelle cette première journée convient parfaitement aux
+      responsables informatiques et décideurs qui souhaitent découvrir le potentiel
+      de la plate-forme PHP. Les intervenants sont à la fois des entreprises utilisatrices
+      et des experts. De multiples démonstrations et retours d'expérience auront
+      lieu. <br />
+    </li>
+    </ul>
+    <h2><a href="#nov10">10 novembre : Journée technique</a></h2>
+    <ul>
+    <li>
+      
+      <b>Temps fort</b><br />
+        <ul>
+          <li>Unicode : une révolution en marche pour PHP6</li>
+          <li>Design Patterns & PHP</li>
+          <li>Sécurité des applications PHP</li>
+        </ul>
+      <br />
+      Cette seconde journée est destinée à des profils techniques qui possèdent
+      déjà de solides connaissances sur PHP. Placée sous le signe de l'optimisation,
+      elle abordera différentes problématiques telles que la sécurité ou la gestion
+      des erreurs avec des démonstrations et un parcours approfondi des codes
+      sources.<br />
+      <br />
+    </li>
+  </ul>
+
+    <h1>Les horaires</h1>
+    <ul>
+        <li>ouverture des portes : 8h30</li>
+        <li>début des sessions : 9h</li>
+        <li>fin des sessions : vers 18h</li>
+    </ul>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><b>9 Novembre : Journée Fonctionnelle</b></td>
+    </tr>
+    {% for session in sessions_fonctionnelles %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+            {{ session.horaire }} : <b>{{ session.nom|raw }}</b></td>
+            <td align="right">
+                {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2006, page: 'conferenciers.php'}) }}#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+                {% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+        {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2006, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2006/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+        {% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><b>10 Novembre : Journée Technique</b></td>
+    </tr>
+    {% for session in sessions_techniques %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <b>{{ session.nom|raw }}</b></td>
+            <td align="right">
+                {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2006, page: 'conferenciers.php'}) }}#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+                {% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+        {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2006, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2006/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+        {% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+{% include 'legacy/forumphp2006/pied_de_page.html.twig' %}

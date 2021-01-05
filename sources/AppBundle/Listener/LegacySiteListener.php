@@ -4,66 +4,49 @@
 namespace AppBundle\Listener;
 
 use Afup\Site\Corporate\Page;
-use Afup\Site\Utils\Base_De_Donnees;
+use AppBundle\Controller\BlocksHandler;
 use AppBundle\Controller\SiteControllerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Security;
 
 class LegacySiteListener
 {
-    /**
-     * @var TokenStorage
-     */
-    private $tokenStorage;
+    /** @var Security */
+    private $security;
+    /** @var BlocksHandler */
+    private $blocksHandler;
 
-    public function __construct(TokenStorage $tokenStorage)
+    public function __construct(Security $security, BlocksHandler $blocksHandler)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
+        $this->blocksHandler = $blocksHandler;
     }
 
     public function onKernelController(FilterControllerEvent $event)
     {
         if ($event->isMasterRequest() === false) {
-            return ;
+            return;
         }
 
-        /**
-         * @var $controller SiteControllerInterface
-         */
-        $controller = $event->getController()[0];
+        require_once __DIR__ . '/../../Afup/Bootstrap/Http.php';
 
-        if (! $controller instanceof SiteControllerInterface) {
-            return ;
-        }
-
-        require_once dirname(__FILE__) . '/../../Afup/Bootstrap/Http.php';
-
-        /**
-         * @var $bdd Base_De_Donnees
-         */
         $page = new Page($GLOBALS['AFUP_DB']);
-
-        $controller->setDefaultBlocks([
+        $blocks = [
             'community' => $page->community(),
-            'header' => $page->header($_SERVER['REQUEST_URI'], $this->getUser()),
+            'header' => $page->header($_SERVER['REQUEST_URI'], $this->security->getUser()),
             'sidebar' => $page->getRightColumn(),
             'social' => $page->social(),
             'footer' => $page->footer()
-        ]);
-
+        ];
+        $this->blocksHandler->setDefaultBlocks($blocks);
+        // TODO: remove once SiteControllerInterface is removed in favor of BlocksHandler
+        $controller = $event->getController();
+        if (!is_array($controller) || [] === $controller || !$controller[0] instanceof SiteControllerInterface) {
+            return;
+        }
+        /** @var $controller SiteControllerInterface */
+        $controller = $controller[0];
+        $controller->setDefaultBlocks($blocks);
         $controller->setConfiguration($GLOBALS['AFUP_CONF']);
-    }
-
-    protected function getUser()
-    {
-        if (null === $token = $this->tokenStorage->getToken()) {
-            return null;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return null;
-        }
-
-        return $user;
     }
 }

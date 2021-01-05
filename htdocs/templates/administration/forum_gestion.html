@@ -1,90 +1,28 @@
-{if $action == 'lister'}
-    <h2>Liste des événements</h2>
-
-    <div class="ui menu">
-        <a href="index.php?page=forum_gestion&amp;action=ajouter" class="item">
-            <div data-tooltip="Ajouter un forum" data-position="bottom left">
-                <i class="icon plus square"></i>
-                Ajouter
-            </div>
-        </a>
-    </div>
-
-    <div class="ui message">
-        <p>On ne peut pas supprimer d'événement pour lequel des éléments ont été associés.</p>
-    </div>
-
-    <table class="ui table striped celled">
-        <thead>
-            <tr>
-                <th>Événement</th>
-                <th>Chemin</th>
-                <th class="right aligned">Places</th>
-                <th>Date début</th>
-                <th>Date Fin</th>
-                <th>Fin CFP</th>
-                <th>Fin vente</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    {foreach from=$evenements item=evenement}
-        <tr>
-            <td>
-                <strong>{$evenement.titre}</strong>
-            </td>
-            <td>{$evenement.path}</td>
-            <td class="right aligned"git >{$evenement.nb_places}</td>
-            <td>{$evenement.date_debut|date_format:"%d/%m/%Y"}</td>
-            <td>{$evenement.date_fin|date_format:"%d/%m/%Y"}</td>
-            <td>{$evenement.date_fin_appel_conferencier|date_format:"%d/%m/%Y %H:%M:%S"}</td>
-            <td>{$evenement.date_fin_vente|date_format:"%d/%m/%Y %H:%M:%S"}</td>
-            <td style="text-align: right" nowrap="nowrap">
-                <a href="index.php?page=forum_gestion&amp;action=modifier&amp;id={$evenement.id}"
-                   data-tooltip="Modifier le forum {$evenement.titre}"
-                   data-position="left center"
-                   class="compact ui icon button"
-                >
-                    <i class="pencil alernate icon"></i>
-                </a>
-
-                {if $evenement.supprimable}
-                    <a href="index.php?page=forum_gestion&amp;action=supprimer_forum&amp;id={$evenement.id}"
-                       data-position="left center"
-                       data-tooltip="Supprimer le forum {$evenement.titre}"
-                       class="compact ui red icon button confirmable"
-                       data-confirmable-label="Etes-vous sûr de vouloir supprimer ce forum ?"
-                    >
-                        <i class="trash icon"></i>
-                    </a>
-                {/if}
-            </td>
-        </tr>
-    {foreachelse}
-        </tbody>
-        <tr>
-            <td colspan="4"><em>Aucun inscrit</em></td>
-        </tr>
-    {/foreach}
-    </table>
+{if $action == 'ajouter'}
+<h2>Ajouter un événément</h2>
 {else}
-    {if $action == 'ajouter'}
-        <h2>Ajouter un événément</h2>
-    {else}
-        <h2>Modifier un événément</h2>
-    {/if}
-
-    {if $action != 'ajouter'}
-        <a href="" ></a>
-
-        <div class="ui menu">
-            <a href="/admin/event/send-test-mail-inscription?id={$id_forum}" class="item">
-                <i class=" icon mail"></i>
-                Envoyer un test du mail d'inscription sur bureau@afup.org
-            </a>
-        </div>
-    {/if}
-
-    {include file="formulaire.html"}
-
+<h2>Modifier un événément</h2>
 {/if}
+
+{if $action != 'ajouter'}
+<a href=""></a>
+
+<div class="ui menu">
+    <a href="/admin/event/send-test-mail-inscription?id={$id_forum}" class="item">
+        <i class=" icon mail"></i>
+        Envoyer un test du mail d'inscription sur bureau@afup.org
+    </a>
+    <div class="ui simple dropdown item" tabindex="0">
+        <i class="icon linkify"></i>
+        <span class="text">Accès rapides</span>
+        <i class="dropdown icon"></i>
+        <div class="menu hidden" tabindex="-1">
+            <a class="item" href="/event/{$forum_path}">CFP</a>
+            <a class="item" href="/event/{$forum_path}/tickets">Billeterie</a>
+            <a class="item" href="/event/{$forum_path}/sponsor/become-sponsor">Devenir sponsor</a>
+        </div>
+    </div>
+</div>
+{/if}
+
+{include file="formulaire.html"}

@@ -25,7 +25,7 @@
             <div id="espace-membre" class="w33 tablet-hidden">
                 {% if app.user %}
                     {% if app.user.canAccessAdmin %}
-                        <a href="/pages/administration" class="header-button header-button__connect">Administration</a>
+                        <a href="{{ path('admin_home') }}" class="header-button header-button__connect">Administration</a>
                     {% endif %}
                     <a href="{{ path('admin_logout') }}" class="header-button header-button__connect">Se déconnecter</a>
                 {%  else  %}
@@ -156,10 +156,7 @@
                             <a href="https://twitter.com/afup"><i class="fa fa-twitter"></i></a>
                         </div>
                         <div class="col-md-1 pre-footer-icon">
-                            <a href="https://facebook.com/fandelafup"><i class="fa fa-facebook"></i></a>
-                        </div>
-                        <div class="col-md-1 pre-footer-icon">
-                            <a href="/pages/site/rss.php"><i class="fa fa-rss"></i></a>
+                            <a href="{{ path('feed_rss') }}"><i class="fa fa-feed"></i></a>
                         </div>
                     </div>
                 </div>

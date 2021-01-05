@@ -8,6 +8,7 @@ use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -43,17 +44,38 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param Speaker $speaker
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface&Talk[]
      */
     public function getTalksBySpeaker(Event $event, Speaker $speaker)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie
+            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, genre
             FROM afup_sessions sessions
             LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
             WHERE id_forum = :event AND cs.conferencier_id = :speaker
             ORDER BY titre
-            LIMIT 0, 10
+            LIMIT 0, 20
+            '
+        )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * @param Event $event
+     * @param Speaker $speaker
+     * @return CollectionInterface
+     */
+    public function getPreviousTalksBySpeaker(Event $event, Speaker $speaker)
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT s.session_id, s.titre, s.abstract, s.id_forum, s.plannifie, s.skill, s.genre
+            FROM afup_sessions s
+            JOIN afup_conferenciers_sessions cs ON cs.session_id = s.session_id
+            JOIN afup_conferenciers c ON cs.conferencier_id = c.conferencier_id
+            WHERE s.id_forum != :event AND c.user_github IN (SELECT user_github FROM afup_conferenciers WHERE conferencier_id = :speaker) 
+            ORDER BY s.titre ASC
+            LIMIT 0, 50
             '
         )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
 
@@ -70,7 +92,7 @@ class TalkRepository extends Repository implements MetadataInitializer
      * @param int $randomSeed used to create a consistent random
      * @param int $page starting from 1
      * @param int $limit
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getAllTalksAndRatingsForUser(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
@@ -117,7 +139,7 @@ class TalkRepository extends Repository implements MetadataInitializer
      * @param int $randomSeed used to create a consistent random
      * @param int $page starting from 1
      * @param int $limit
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getNewTalksToRate(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
@@ -136,7 +158,7 @@ class TalkRepository extends Repository implements MetadataInitializer
 
     /**
      * @param Event $event
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getByTalkWithSpeakers(Talk $talk)
     {
@@ -162,7 +184,14 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param bool $applyPublicationdateFilters
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     *
+     * @return CollectionInterface&list<array{
+     *      talk: Talk,
+     *      speaker: AppBundle\Event\Model\Speaker,
+     *      room: ??,
+     *      planning: ??,
+     *     .aggregation: array<string, mixed>
+     * }>
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
     public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true)
@@ -195,7 +224,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param bool $applyPublicationdateFilters
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
     public function getAllByEventWithSpeakers(Event $event)
@@ -204,7 +233,7 @@ class TalkRepository extends Repository implements MetadataInitializer
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
         $query = $this->getPreparedQuery(
-            'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes,
+            'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes, talk.youtube_id,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.email, speaker.conferencier_id 
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id

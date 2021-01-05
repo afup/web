@@ -1,0 +1,51 @@
+{% extends 'legacy/forumphp2009/base.twig' %}
+
+{% block content %}
+	<div id="cartouche-milieu">
+	{% include 'legacy/forumphp2009/cartouche.html.twig' %}
+
+	<script type="text/javascript" src="/templates/forumphp2009/jquery-1.2.6.min.js"></script>
+	<script type="text/javascript" src="/templates/forumphp2009/jquery.journee.js"></script>
+
+    <div class="sessions">
+        {% for session in sessions %}
+        {% if session.abstract is defined %}
+	<div class="session {{ session.journee }}">
+		<a name="{{ session.session_id }}" ></a>
+		<h3>
+			{{ session.titre|raw }}
+		</h3>
+          <div class="horaire">
+              {{ session.debut|date('d/m/Y') }} <strong>{{ session.debut|date('H:i') }} - {{ session.fin|date('H:i') }}</strong>
+    </div>
+      <div class="salle">
+          {{ session.nom_salle }}
+    </div>
+    <br/>
+    <br/>
+		<div class="spacer"></div>
+		<div class="details">
+			<div class="abstract">
+                {{ session.abstract|raw }}
+			</div>
+	   		<div class="conferenciers">
+                {% for conferencier in session.conferenciers %}
+	          		<div class="conferencier">
+			    		<a href="{{ path('legacy_event', {year: 2009, page: 'conferenciers.php'}) }}#{{ conferencier.conferencier_id }}"><img src="/templates/forumphp2009/images/intervenants/{{ conferencier.conferencier_id }}.jpg" alt="{{ conferencier.nom|raw }}" border="0"  height="120"/></a>
+			    		<br />
+	          			<a href="{{ path('legacy_event', {year: 2009, page: 'conferenciers.php'}) }}#{{ conferencier.conferencier_id }}">{{ conferencier.prenom|raw }} {{ conferencier.nom|raw }}</a>
+	          		</div>
+			{% endfor %}
+			<div class="spacer"></div>
+		</div>
+   		</div>
+	</div>
+    {% endif %}
+    {% endfor %}
+	</div>
+
+	<p><em>Le programme ci-dessus est donn&eacute; &agrave; titre indicatif : il peut encore &eacute;voluer.</em></p>
+
+
+</div>
+{% endblock %}

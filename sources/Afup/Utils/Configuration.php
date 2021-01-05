@@ -117,6 +117,7 @@ class Configuration
      */
     function obtenir($cle)
     {
+
         eval('$valeur=$this->_valeurs["' . str_replace('|', '"]["', $cle) . '"];');
         return $valeur;
     }

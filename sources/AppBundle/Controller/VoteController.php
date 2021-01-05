@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
@@ -28,7 +29,7 @@ class VoteController extends EventBaseController
     public function indexAction($eventSlug, $page = 1, $all = false)
     {
         $event = $this->checkEventSlug($eventSlug);
-        if (!$event->isVoteAvailable(new \DateTime())) {
+        if (!$event->isVoteAvailable()) {
             return $this->render(':event:cfp/closed.html.twig', ['event' => $event]);
         }
 
@@ -103,7 +104,7 @@ class VoteController extends EventBaseController
     public function newAction(Request $request, $eventSlug, $talkId)
     {
         $event = $this->checkEventSlug($eventSlug);
-        if (!$event->isVoteAvailable(new \DateTime())) {
+        if (!$event->isVoteAvailable()) {
             return new JsonResponse(['errors' => ['Cfp is closed !']], Response::HTTP_BAD_REQUEST);
         }
 
@@ -166,28 +167,25 @@ class VoteController extends EventBaseController
         $eventRepository = $this->get('ting')->get(EventRepository::class);
         $event = $this->getEvent($eventRepository, $request);
 
-        if ($event === null) {
-            throw $this->createNotFoundException(sprintf('Could not found event'));
-        }
-
-        $votes = $this->get('ting')->get(VoteRepository::class)->getVotesByEvent($event->getId());
+        $votes = $event === null ? []:$this->get('ting')->get(VoteRepository::class)->getVotesByEvent($event->getId());
 
         return $this->render('admin/vote/liste.html.twig', [
             'votes' => $votes,
             'title' => 'Votes',
             'event' => $event,
+            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
         ]);
     }
 
     private function getEvent(EventRepository $eventRepository, Request $request)
     {
         $event = null;
-        if ($request->query->has('id') === false) {
-            $event = $eventRepository->getNextEvent();
-            $event = $eventRepository->get($event->getId());
-        } else {
+        if ($request->query->has('id') !== false) {
             $id = $request->query->getInt('id');
             $event = $eventRepository->get($id);
+            if ($event === null) {
+                throw $this->createNotFoundException(sprintf('Could not found event'));
+            }
         }
 
         return $event;

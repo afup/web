@@ -11,6 +11,9 @@ parameters:
         accueil:
             nom: 'Accueil'
             niveau: 'ROLE_MEMBER_EXPIRED'
+            url: '/admin'
+            extra_routes:
+                - admin_home
         membres:
             nom: 'Membres'
             niveau: 'ROLE_ADMIN'
@@ -19,8 +22,13 @@ parameters:
                 personnes_physiques:
                     nom: 'Personnes physiques'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/users'
                     extra_routes:
                         - admin_slack_members_check
+                        - admin_members_user_list
+                        - admin_members_user_add
+                        - admin_members_user_edit
+
                 personnes_morales:
                     nom: 'Personnes morales'
                     niveau: 'ROLE_ADMIN'
@@ -46,6 +54,10 @@ parameters:
                 assemblee_generale:
                     nom: 'Assemblée générale'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/general_meeting'
+                    extra_routes:
+                        - admin_members_general_meeting
+                        - admin_members_general_meeting_prepare
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
@@ -102,6 +114,9 @@ parameters:
                 forum_gestion:
                     nom: 'Gestion événéments'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/list'
+                    extra_routes:
+                        - admin_event_list
                 forum_salle:
                     nom: 'Salles'
                     niveau: 'ROLE_ADMIN'
@@ -156,6 +171,11 @@ parameters:
                 forum_conferenciers:
                     nom: 'Speakers'
                     niveau: 'ROLE_FORUM'
+                    url: '/admin/speaker/'
+                    extra_routes:
+                        - admin_speaker_list
+                        - admin_speaker_add
+                        - admin_speaker_edit
                 admin_event_speakers_management:
                     nom: 'Venue speakers'
                     niveau: 'ROLE_FORUM'
@@ -210,10 +230,18 @@ parameters:
                 planete_flux:
                     nom: 'Flux'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/planete/feeds'
+                    extra_routes:
+                      - admin_planete_feed_list
+                      - admin_planete_feed_add
+                      - admin_planete_feed_edit
 
                 planete_billet:
                     nom: 'Billets'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/planete/feed-articles'
+                    extra_routes:
+                      - admin_planete_feed_article_list
         divers:
             nom: 'Divers'
             niveau: 'ROLE_ADMIN'

@@ -1,8 +1,8 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
     <h2>Tarifications</h2>
-    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     <table class="ui table striped compact celled">
         <thead>
@@ -73,6 +73,14 @@
                     {% endif %}
                 </td>
             </tr>
+
+        {% else %}
+            <tr><td colspan="10" style="text-align: center;">
+                    <div class="ui icon header">
+                        <i class="meh outline icon"></i>
+                        Aucune information. {% if event == null %}Essayez de changez d'événement !{% endif %}
+                    </div>
+                </td></tr>
         {% endfor %}
         </tbody>
     </table>

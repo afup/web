@@ -1,0 +1,12 @@
+{% for personne in personnes %}
+            <a title="{{ personne.a_title|default('') }}" href="{{ personne.site }}" target="_blank">
+{% if personne.logo %}
+              <img src="/templates/forumphp2009/images/{{ personne.logo }}" border="0"/>
+{% elseif personne.image %}
+              <img src="/templates/forumphp2009/images/{{ personne.image }}" border="0"/>
+{% else %}
+              &nbsp;
+{% endif %}
+            </a><br/><br/>
+          
+{% endfor %}

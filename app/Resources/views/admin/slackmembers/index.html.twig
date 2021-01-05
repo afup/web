@@ -1,4 +1,4 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
     <h2>Vérification adhésion des membres inscrits au Slack</h2>
@@ -23,7 +23,7 @@
                 <td>
                     {% if result.user_found %}
                         {% if result.afup_user_id %}
-                            <a href="/pages/administration/index.php?page=personnes_physiques&action=modifier&id={{ result.afup_user_id }}">oui</a>
+                            <a href="{{ path('admin_members_user_edit', {id: result.afup_user_id}) }}">oui</a>
                         {% else %}
                             oui
                         {% endif %}
@@ -43,5 +43,4 @@
     {% else %}
         Aucune incohérence détectée dans les utilisateurs sur slack.
     {% endif %}
-
 {% endblock %}

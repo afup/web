@@ -1,10 +1,8 @@
-{% extends ':admin:base_with_header.html.twig' %}
+{% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
-
     <h2>Votes des visiteurs</h2>
-
-    {{ render(controller('AppBundle:AdminEvent:changeEvent', {selectedEvent: event})) }}
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     {% if votes|length > 0 %}
     <table class="ui table striped very compact celled">
@@ -31,7 +29,7 @@
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
-                Aucune vote
+                Aucun vote.{% if event == null %} Essayez de changez d'événement.{% endif %}
             </div>
         </div>
     {% endif %}

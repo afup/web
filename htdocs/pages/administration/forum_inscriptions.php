@@ -1,12 +1,22 @@
 <?php
 
 // Impossible to access the file itself
-use Afup\Site\Forum\Inscriptions;
-use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Facturation;
-use Afup\Site\Utils\Pays;
+use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Pays;
+use AppBundle\Event\Invoice\InvoiceService;
+use AppBundle\Event\Model\Invoice;
+use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Model\Repository\EventStatsRepository;
+use AppBundle\Event\Model\Repository\InvoiceRepository;
+use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -19,13 +29,17 @@ $tris_valides = array('i.date', 'i.nom', 'f.societe', 'i.etat');
 $sens_valides = array( 'desc','asc' );
 $smarty->assign('action', $action);
 
-$eventRepository = $this->get(\AppBundle\Event\Model\Repository\EventRepository::class);
-$ticketEventTypeRepository = $this->get(\AppBundle\Event\Model\Repository\TicketEventTypeRepository::class);
+$eventRepository = $this->get(EventRepository::class);
+$ticketEventTypeRepository = $this->get(TicketEventTypeRepository::class);
 $ticketTypeAvailability = $this->get(TicketTypeAvailability::class);
+$invoiceService = $this->get(InvoiceService::class);
+$invoiceRepository = $this->get(InvoiceRepository::class);
+$session = $this->get(SessionInterface::class);
+$urlGenerator = $this->get(UrlGeneratorInterface::class);
 
 function updateGlobalsForTarif(
-    \AppBundle\Event\Model\Repository\EventRepository $eventRepository,
-    \AppBundle\Event\Model\Repository\TicketEventTypeRepository $ticketEventTypeRepository,
+    EventRepository $eventRepository,
+    TicketEventTypeRepository $ticketEventTypeRepository,
     TicketTypeAvailability $ticketTypeAvailability,
     $forumId,
     &$membersTickets = []
@@ -58,7 +72,7 @@ $forum_inscriptions = new Inscriptions($bdd);
 $forum_facturation = new Facturation($bdd);
 
 if ($action == 'lister') {
-    $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, i.mobilite_reduite, f.type_reglement, i.presence_day1, i.presence_day2';
+    $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, f.type_reglement, i.presence_day1, i.presence_day2';
     $list_ordre = 'date desc';
     $list_sens = 'desc';
     $list_associatif = false;
@@ -86,7 +100,24 @@ if ($action == 'lister') {
     $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
     $smarty->assign('forum_tarifs_restantes', $restantes);
     $smarty->assign('forum_tarifs',$AFUP_Tarifs_Forum);
-    $smarty->assign('statistiques', $forum_inscriptions->obtenirStatistiques($_GET['id_forum']));
+    $stats = $this->get(EventStatsRepository::class)->getStats($_GET['id_forum']);
+    $smarty->assign('statistiques', [
+        'premier_jour' => [
+            'inscrits' => $stats->firstDay->registered,
+            'confirmes' => $stats->firstDay->confirmed,
+            'en_attente_de_reglement' => $stats->firstDay->pending,
+        ],
+        'second_jour' => [
+            'inscrits' => $stats->secondDay->registered,
+            'confirmes' => $stats->secondDay->confirmed,
+            'en_attente_de_reglement' => $stats->secondDay->pending,
+        ],
+        'types_inscriptions' => [
+            'confirmes' => $stats->ticketType->confirmed,
+            'inscrits' => $stats->ticketType->registered,
+            'payants' => $stats->ticketType->paying,
+        ],
+    ]);
 
     $smarty->assign('forums', $forum->obtenirListe());
     $smarty->assign('inscriptions', $forum_inscriptions->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
@@ -94,7 +125,9 @@ if ($action == 'lister') {
     $smarty->assign('now', (new \DateTime())->format('U'));
 
 } elseif ($action == 'supprimer') {
-    if ($forum_inscriptions->supprimerInscription($_GET['id']) && $forum_facturation->supprimerFacturation($_GET['id'])) {
+    /** @var Invoice|null $invoice */
+    $invoice = $invoiceRepository->getByReference($_GET['id']);
+    if ($forum_inscriptions->supprimerInscription($_GET['id']) && (null === $invoice || $invoiceService->deleteInvoice($invoice))) {
         Logs::log('Suppression de l\'inscription ' . $_GET['id']);
         afficherMessage('L\'inscription a été supprimée', 'index.php?page=forum_inscriptions&action=lister');
     } else {
@@ -117,21 +150,24 @@ if ($action == 'lister') {
 } elseif ($action == 'generer_inscription_afup') {
     $champs = $forum_inscriptions->obtenir($_GET['id']);
     $champs2 = $forum_facturation->obtenir($champs['reference']);
-    $_SESSION['generer_personne_physique']['civilite'] = $champs['civilite'];
-    $_SESSION['generer_personne_physique']['nom'] = $champs['nom'];
-    $_SESSION['generer_personne_physique']['prenom'] = $champs['prenom'];
-    $_SESSION['generer_personne_physique']['email'] = $champs['email'];
-    $_SESSION['generer_personne_physique']['adresse'] = $champs2['adresse'];
-    $_SESSION['generer_personne_physique']['code_postal'] = $champs2['code_postal'];
-    $_SESSION['generer_personne_physique']['ville'] = $champs2['ville'];
-    $_SESSION['generer_personne_physique']['id_pays'] = $champs2['id_pays'];
-    $_SESSION['generer_personne_physique']['telephone_fixe'] = $champs['telephone'];
-    $_SESSION['generer_personne_physique']['telephone_portable'] = $champs['telephone'];
-    $_SESSION['generer_personne_physique']['etat'] = 1;
-    afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login", 'index.php?page=personnes_physiques&action=ajouter');
+    $session->set('generer_personne_physique', [
+        'civilite' => $champs['civilite'],
+        'nom' => $champs['nom'],
+        'prenom' => $champs['prenom'],
+        'email' => $champs['email'],
+        'adresse' => $champs2['adresse'],
+        'code_postal' => $champs2['code_postal'],
+        'ville' => $champs2['ville'],
+        'id_pays' => $champs2['id_pays'],
+        'telephone_fixe' => $champs['telephone'],
+        'telephone_portable' => $champs['telephone'],
+        'etat' => 1,
+    ]);
+    afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login",  $urlGenerator->generate('admin_members_add'));
 } else {
 
-    $ticketRepository = $this->get('ting')->get(\AppBundle\Event\Model\Repository\TicketRepository::class);
+    /** @var TicketRepository $ticketRepository */
+    $ticketRepository = $this->get('ting')->get(TicketRepository::class);
 
     $pays = new Pays($bdd);
 
@@ -147,7 +183,6 @@ if ($action == 'lister') {
                 'mail_partenaire' => 0,
                 'newsletter_afup' => 0,
                 'newsletter_nexen' => 0,
-                'mobilite_reduite' => 0,
                 'date_reglement' => (new \DateTime())->format('Y-m-d')
             ]
         );
@@ -206,9 +241,6 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'  , 'telephone'                , 'Tél.'           , array('size' => 20, 'maxlength' => 20));
 
     $groupe = array();
-    $groupe[] = $formulaire->createElement('radio', 'mobilite_reduite', null, 'oui', 1);
-    $groupe[] = $formulaire->createElement('radio', 'mobilite_reduite', null, 'non', 0);
-    $formulaire->addGroup($groupe, 'groupe_mobilite_reduite', 'Personne à mobilité réduite', '<br/>', false);
 
 	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
 	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
@@ -320,23 +352,30 @@ if ($action == 'lister') {
             }
 
 			// On ajoute l'inscription dans la base de données
-			$ok = $forum_inscriptions->ajouterInscription($valeurs['id_forum'],
-			                                              $valeurs['reference'],
-        												  $valeurs['type_inscription'],
-        											 	  $valeurs['civilite'],
-        												  $valeurs['nom'],
-        												  $valeurs['prenom'],
-        												  $valeurs['email'],
-        												  $valeurs['telephone'],
-        												  $valeurs['coupon'],
-        												  $valeurs['citer_societe'],
-        												  $valeurs['newsletter_afup'],
-        		                                          $valeurs['newsletter_nexen'],
-                                                          $valeurs['commentaires'],
-                                                          $valeurs['mobilite_reduite'],
-                                                          $valeurs['mail_partenaire'],
-                                                          $valeurs['etat'],
-                                                          $valeurs['facturation']);
+            $ticket = new Ticket();
+            $ticket->setDate(new DateTime());
+            $ticket->setAmount($GLOBALS['AFUP_Tarifs_Forum'][$valeurs['type_inscription']]);
+            $ticket->setForumId($valeurs['id_forum']);
+            $ticket->setReference($valeurs['reference']);
+            $ticket->setTicketTypeId($valeurs['type_inscription']);
+            $ticket->setCivility($valeurs['civilite']);
+            $ticket->setLastname($valeurs['nom']);
+            $ticket->setFirstname($valeurs['prenom']);
+            $ticket->setEmail($valeurs['email']);
+            $ticket->setPhoneNumber($valeurs['telephone']);
+            $ticket->setVoucher($valeurs['coupon']);
+            $ticket->setCompanyCitation($valeurs['citer_societe']);
+            $ticket->setNewsletter($valeurs['newsletter_afup']);
+            $ticket->setOptin((bool) $valeurs['mail_partenaire']);
+            $ticket->setComments($valeurs['commentaires']);
+            $ticket->setStatus($valeurs['etat']);
+            $ticket->setInvoiceStatus($valeurs['facturation']);
+            try {
+                $ticketRepository->save($ticket);
+                $ok = true;
+            } catch (Exception $e) {
+                $ok = false;
+            }
         } else {
             $ok = $forum_inscriptions->modifierInscription($_GET['id'],
             											   $valeurs['reference'],
@@ -353,8 +392,7 @@ if ($action == 'lister') {
         												   $valeurs['mail_partenaire'],
                                                            $valeurs['commentaires'],
         												   $valeurs['etat'],
-        												   $valeurs['facturation'],
-                                                           $valeurs['mobilite_reduite']);
+        												   $valeurs['facturation']);
 
             /** @var \AppBundle\Event\Model\Ticket $ticket */
             $ticket = $ticketRepository->get($_GET['id']);
@@ -364,10 +402,12 @@ if ($action == 'lister') {
             }
         }
 
-		$ok &= $forum_facturation->gererFacturation($valeurs['reference'],
+        try {
+            $paymentDate = null !== $valeurs['date_reglement'] ? DateTime::createFromFormat('U', $valeurs['date_reglement']) : null;
+             $invoiceService->handleInvoicing($valeurs['reference'],
                                                     $valeurs['type_reglement'],
                                                     $valeurs['informations_reglement'],
-                                                    $valeurs['date_reglement'],
+                                                    $paymentDate,
                                                     $valeurs['email_facturation'],
                                                     $valeurs['societe_facturation'],
                                                     $valeurs['nom_facturation'],
@@ -381,6 +421,9 @@ if ($action == 'lister') {
                                                     $valeurs['autorisation'],
                                                     $valeurs['transaction'],
                                                     $valeurs['etat']);
+        } catch (Exception $e) {
+            $ok = false;
+        }
 
         if ($ok) {
             if ($action == 'ajouter') {

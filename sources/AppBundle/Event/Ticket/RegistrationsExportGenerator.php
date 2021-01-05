@@ -167,6 +167,11 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_AFUP_DAY_CROISIERE:
             case Ticket::TYPE_AFUP_DAY_LATE:
             case Ticket::TYPE_AFUP_DAY_CFP_SUBMITTER:
+            case Ticket::TYPE_AFUP_DAY_LIVE_FREE:
+            case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_1:
+            case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_2:
+            case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_3:
+            case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_4:
                 return 'PASS JOUR 1';
                 break;
             case AFUP_FORUM_DEUXIEME_JOURNEE:
@@ -187,6 +192,13 @@ class RegistrationsExportGenerator
             case AFUP_FORUM_LATE_BIRD_AFUP:
             case AFUP_FORUM_CFP_SUBMITTER:
             case AFUP_FORUM_SPECIAL_PRICE:
+            case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_1:
+            case Ticket::TYPE_FORUM_PHP_LIVE_FREE:
+            case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_2:
+            case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_3:
+            case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_4:
+            case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_5:
+            case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_6:
                 return 'PASS 2 JOURS';
                 break;
             case AFUP_FORUM_ORGANISATION:

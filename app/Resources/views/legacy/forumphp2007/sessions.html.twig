@@ -1,0 +1,509 @@
+{% set sessions_fonctionnelles = [
+    {
+        horaire: '9h - 9h10',
+        nom: 'Keynote',
+        resume: 'Cette session d\'ouverture a pour objectif de présenter l\'AFUP qui est organisatrice de ce septième forum PHP.',
+        conferenciers: [
+        {
+            code: 'alimbourg',
+            nom: 'Arnaud LIMBOURG',
+        },
+        {
+            code: 'ppenet',
+            nom: 'Perrick PENET',
+        },
+    ],
+    },
+    {
+        horaire: '9h15 - 10h15',
+        nom: 'PHP en 2007 : PHP4 est mort, longue vie à PHP5 & 6',
+        resume: 'PHP est devenu très populaire grâce à son approche simple et pragmatique du problème "Web". Cet univers du web a beaucoup évolué et on parle désormais du "Web2.0". PHP y prend toute sa place avec de plus en plus de personnes combinant des services web pour obtenir des applications riches avec AJAX. Au cours de cette session Rasmus couvrira les briques nécessaires à la construction de ces applications modernes : avec un paquet d\'exemples au passage.',
+        conferenciers: [
+        {
+            code: 'rlerdorf',
+            nom: 'Rasmus LERDORF',
+        },
+    ],
+    },
+    {
+        horaire: '10h15 - 11h15',
+        nom: 'Web 2.0 : Améliorer l\'experience utilisateur de vos applications PHP grâce à Flex',
+        resume: 'Les RIA (Rich Internet Applications) remportent un succès grandissant. Les acteurs du business web comme Google ou et Yahoo!, tout comme les marques classiques comme Harley Davidson ou Sony Ericsson affirment leurs présence sur le web en proposant des expériences de plus en plus riches pour l\'internaute.
+            Cependant, encore peu de développeurs de RIA tirent profit de la puissance de la technologie serveur PHP combinée aux technologies de présentation comme Ajax, XUL, Flash ou Flex. Durant cette présentation, vous découvrirez comment mixer les technologies openSource Adobe Flex et PHP et enfin proposer des expériences nouvelles sur le web qui vont modifier les interactions avec les utilisateurs et capter leur attention.',
+        conferenciers: [
+        {
+            code: 'mchaize',
+            nom: 'Michaël CHAIZE',
+        },
+    ],
+    },
+    {
+        horaire: '11h30 - 12h30',
+        nom: 'Retour d\'expérience de la Chambre de Commerce de Paris : du Chaos à l\'Agilité avec PHP',
+        resume: 'Qui ne s\'est pas retrouvé un jour dans un projet à l\'issue incertaine pour diverses raisons ? Délais ridiculement courts, spécifications incomplètes ou bien changeant sans arrêt, collègues peu adaptés au travail en équipe, pas de chef de projet identifié, ... la liste des menaces pouvant peser sur un projet de développement est longue. Cette session s\'efforcera de démontrer qu\'avec les bons outils (PHP bien sûr), et un peu de méthode, on peut arriver à s\'en sortir. S\'il n\'est pas possible d\'utiliser une méthode agile dans son intégralité, certaines techniques peuvent être fort utiles. Nous étudierons les stratégies de tests (unitaires, fonctionnels et utilisateurs) à employer, ainsi que les outils associés. Nous montrerons enfin que PHP par sa souplesse, sa simplicité d\'emploi, et ses très nombreuses librairies et frameworks, est un peu le couteau suisse ultime pour survivre à ce genre de projets.',
+        conferenciers: [
+        {
+            code: 'rrougeron',
+            nom: 'Raphaël ROUGERON',
+        },
+    ],
+    },
+    {
+        horaire: '13h45 - 14h',
+        nom: 'Etat des lieux de PHP en France et annonce presse',
+        resume: 'En quelques minutes nous ferons un état des lieux de PHP en France puis l\'un des principaux projets OpenSource liés à PHP (plus de 6.000 téléchargements jours) nous fera l\'honneur de venir annoncer et présenter sa nouvelle version.',
+        conferenciers: [
+        {
+            code: 'cpierredegeyer',
+            nom: 'Cyril PIERRE de GEYER',
+        },
+        {
+            code: 'guest',
+            nom: 'GUEST',
+        },
+    ],
+    },
+    {
+        horaire: '14h - 15h',
+        nom: 'Retour d\'expérience de l\'integration de PHP chez les grands comptes',
+        resume: 'Depuis plusieurs années, nous assistons à l\'émergence de PHP au sein des grandes entreprises dans des domaines tels que la télécommunication, les transports et la santé. PHP y est utilisé à la fois pour créer des solutions d\'intégration et pour développer des applications opérationnelles.
+            Nous montrerons d\'abord comment PHP peut s\'insérer au sein de l\'architecture de l\'entreprise, et utiliser toues les ressources disponibles : serveurs, bases de données, web-services, réseau, authentification, etc.
+            Nous expliquerons ensuite comment PHP est utilisé pour créer une base de communication entre des solutions hétérogènes, via des solutions SOA, SQL, XML, sécurité, etc.
+            Enfin, nous décrirons quelques exemples d\'applications opérationnelles réalisées en PHP, et leur rôle dans le fonctionnement quotidien de l\'entreprise.',
+        conferenciers: [
+        {
+            code: 'diachetta',
+            nom: 'David IACHETTA',
+        },
+        {
+            code: 'vdupont',
+            nom: 'Vincent DUPONT',
+        },
+    ],
+    },
+    {
+        horaire: '15h - 16h',
+        nom: 'Audit de code, retour d\'experience',
+        resume: 'Le développement d\'application web est un domaine complexe et la sécurité est trop souvent oubliée lors de la création d\'un site internet.
+           Tout d\'abord, la présentation s\'attachera à mettre en avant les diffèrentes attaques possibles sur les applications web : injection SQL, inclusion de fichiers, injection de code, cross site scripting, cross site request forgery ainsi que leur exploitation. Une présentation des erreurs souvent rencontrées lors d\'audits de code réalisé par HSC sera réalisé afin de mettre en avant les problèmes récurrents dans les applications PHP. L\'ensemble de la présentation s\'appuiera sur des exemples concrets provenant d\'audit de code ou de vulnérabilités sur des applications libres.
+           Enfin, la présentation abordera aussi le durcissement du moteur PHP à l\'aide du fichier php.ini et comment ce durcissement peut réduire l\'impact d\'une vulnérabilité.',
+        conferenciers: [
+        {
+            code: 'ncollignon',
+            nom: 'Nicolas COLLIGNON',
+        },
+        {
+            code: 'lnyffenegger',
+            nom: 'Louis NYFFENEGGER',
+        },
+    ],
+    },
+    {
+        horaire: '16h15 - 17h15',
+        nom: 'Accessibilite : le developpeur PHP aux premières loges',
+        resume: 'En dernier ressort, une fois les maquettes HTML livrées, c\'est au développeur PHP qu\'incombe souvent de produire le code qui sera utilisé sur le site. Nous détaillerons ensemble le minimum pour que le niveau d\'accessibilité produit soit satisfaisant, et nous apprendrons à éviter les écueils que nous réserve le développement d\'un site dynamique du point de vue de l\'accessibilité du produit fini.',
+        conferenciers: [
+        {
+            code: 'sdeschamps',
+            nom: 'Stéphane DESCHAMPS',
+        },
+    ],
+    },
+] %}
+
+{% set sessions_techniques = [
+    {
+        horaire: '9h - 9h10',
+        nom: 'Keynote',
+        resume: 'Cette session d\'ouverture a pour but de présenter l\'AFUP et son rôle au sein de la communauté des techniciens. Elle abordera les évolutions techniques majeures proposées par PHP et leurs impacts sur les méthodes de travail.',
+        conferenciers: [
+        {
+            code: 'alimbourg',
+            nom: 'Arnaud LIMBOURG',
+        },
+        {
+            code: 'gponcon',
+            nom: 'Guillaume PON&Ccedil;ON',
+        },
+    ],
+    },
+    {
+        horaire: '9h15 - 10h15',
+        nom: 'Web 2.0 : Optimisation d\'un site Web 2.0 : le cas de wat.tv',
+        resume: 'Assurer la tenue en charge et la disponibilité d\'un site Web a fort traffic pose un certain nombre de problèmes, qui se trouvent exacerbés sur un site web 2.0, fortement interactif et personnalisé. Retour d\'expérience de wat.tv, site de partage de médias audio/vidéo/photo du groupe TF1.',
+        conferenciers: [
+        {
+            code: 'jfbustarret',
+            nom: 'Jean-François BUSTARRET',
+        },
+    ],
+    },
+    {
+        horaire: '10h45 - 11h45',
+        nom: 'Optimiser les performances avec un cache d\'OpCode - Le cas Facebook avec APC',
+        resume: 'Facebook\'s exponential growth and popularity would not be possible without APC, a PHP bytecode and variable cache. Facebook\'s technical lead for PHP internals will introduce APC for intermediate and advanced PHP users. Attendees will learn about Facebook\'s scalability challenges and it\'s unique APC implementation details. Installation, configuration, and usage techniques will be presented that can be applied to improve performance and user experience.',
+        conferenciers: [
+        {
+            code: 'bshire',
+            nom: 'Brian SHIRE',
+        },
+    ],
+    },
+    {
+        horaire: '11h45 - 12h45',
+        nom: 'Web 2.0 : Rich Desktop Applications : l\'evolution des methodes de programmation côte serveur',
+        resume: 'Traditionnellement, le développement d\'applis web en PHP prenait en compte la génération de l\'interface HTML de l\'application, mais l\'arrivée en masse de nouvelles plateformes de RDA (Adobe AIR, Silverlight, XULRunner, etc...) va entrainer une évolution de l\'architecture côté serveur. Les développeurs PHP vont devoir évoluer vers une architecture applicative orientée services, dans le but de fournir une API accessible par divers protocoles de communication (REST, SOAP, XMLRPC) et capable de gérer différents formats de données (XML, JSON, etc..). Après une revue des différentes plateformes RDA existantes, de leurs points forts et faibles, et surtout de leurs possibilités d\'interfaçage avec PHP, nous examinerons plusieurs architectures possibles pour ce type d\'applications, en mettant en avant des solutions permettant de fournir également aux utilisateurs une interface web classique. Nous réfléchirons en particulier aux changements de méthodes de développement nécessaires, notamment par rapport aux tests de l\'application.',
+        conferenciers: [
+        {
+            code: 'rrougeron',
+            nom: 'Raphaël ROUGERON',
+        },
+    ],
+    },
+    {
+        horaire: '14h - 15h',
+        nom: 'Web 2.0 : Flex et PHP: techniques d\'intégration pour faire communiquer un client riche et un backoffice PHP',
+        resume: 'Les applications riches réalisées avec le SDK OpenSource Flex permettent de tirer profit de toute la puissance du Player Flash côté client. Les gains pour les utilisateurs sont évidents: expérience engageante, meilleurs temps de réponse, applications ergonomiques, rich media dans une même interface, etc...
+                    Thibault Imbert présentera les meilleurs techniques de communication entre une application Flex et un serveur PHP: http/REST, JSON et surtout AMF. Le framework opensource AMFPHP révolutionne l\'échange de données en faisant transiter des objets typés sur un flux binaire sécurisé.',
+        conferenciers: [
+        {
+            code: 'timbert',
+            nom: 'Thibault Imbert',
+        },
+        {
+            code: 'mchaize',
+            nom: 'Michael CHAIZE',
+        },
+    ],
+    },
+    {
+        horaire: '15h - 16h',
+        nom: 'Sécurite MySQL',
+        resume: 'La sécurité des bases de données est une condition critique à leur exploitation. Effacement, falsification ou simplement divulgation sont les menaces les plus sérieuses qui rôdent et attendent le premier faux-pas des administrateurs. Il est primordial de bien connaître les aspects sécurité de MySQL, et de faire des choix éclairés parmi les protections natives.Durant cette présentation nous examinerons le système de droits, les directives de configurations, les techniques d\'intrusion et les vulnérabilités sur le Web : pour chaque menace, nous verrons quels sont les défenses disponibles pour se protéger efficacement.',
+        conferenciers: [
+        {
+            code: 'dseguy',
+            nom: 'Damien SEGUY',
+        },
+    ],
+    },
+    {
+        horaire: '16h30 - 17h30',
+        nom: 'PHP::$unicode->i18n() : comment PHP 5.3 et PHP 6 vont changer la donne',
+        resume: 'Deux nouvelles versions de PHP sont en chantier avec leurs lots de fonctionnalités "namespace", "late static binding", "circular garbage collection", "unicode", etc.<br />Autant de nouveautés dans les mains des développeurs PHP. Un tour détaillé de ce qui attend les développeurs PHP dans les mois à venir avec le leader de la version 6 de PHP !',
+        conferenciers: [
+        {
+            code: 'azmievski',
+            nom: 'Andrei ZMIEVSKI',
+        },
+    ],
+    },
+] %}
+
+{% set sessions_atelier_1 = [
+    {
+        horaire: '9h - 10h30',
+        nom: 'Remanier son code pour PHP6',
+        resume: 'PHP6 commence à pointer le bout de son nez : sous la forme d\'un kata
+         (écriture de code en live), nous explorerons des concepts et
+         méthodes utilisables en PHP6 -- avec des tests unitaires et 
+        de recette au passage !<br />De "vielles" lignes en PHP4, nous 
+        aboutirons en direct à un code remanié prêt pour la migration.
+         Attention après le 08/08/2008 -- fin définitive du support PHP4 -- il sera trop tard.',
+        conferenciers: [
+        {
+            code: 'ppenet',
+            nom: 'Perrick PENET',
+        },
+    ],
+    },
+    {
+        horaire: '11h - 12h30',
+        nom: 'Utiliser pleinement le navigateur & les nouveaux clients Web',
+        resume: 'Il est possible d\'aller plus loin que les applications classiques. En profitant pleinement des capacités du navigateurs cet atelier vous montrera comment améliorer les performances et modulariser l\'existant. HTTP, REST et Ajax sont au menu pour une application orienté services légère, simple à modifier et avec une API partageable avec vos clients.',
+        conferenciers: [
+        {
+            code: 'edaspet',
+            nom: 'Eric DASPET',
+        },
+    ],
+    },
+    {
+        horaire: '14h - 15h30',
+        nom: 'PHP\'s Dirty Secrets',
+        resume: 'PHP\'s internals are a big secret, even things that appear so easy from the outside are not as simple as they seem. In this session I will explain to you several of PHP\'s concepts, and with this knowledge you will be able to use PHP in a smarter way, increasing the performance of your applications.
+           In the first part of this session I will explains the basics of how PHP manages to execute your scripts through a web server. This includes PHP\'s execution cycle: locating the file containing the script; reading, parsing, and compiling; the difference between compile time and run time and what sort of impact that has on certain uses of PHP. I will also cover how byte code caches such as APC, eAccelerator and the accelerator part of Zend Platform work.
+           In the second part of the session I will dive into the internals a little bit more, and cover explain how PHP deals with variables, classes and references in great detail, going into the details of the implementation (copy-on-write, refcounting, circular references, types and objects).',
+        conferenciers: [
+        {
+            code: 'drethans',
+            nom: 'Derick RETHANS',
+        },
+    ],
+    },
+] %}
+
+{% set sessions_atelier_2 = [
+    {
+        horaire: '9h - 10h30',
+        nom: 'Optimisation MySQL',
+        resume: 'Installer et mettre en production un serveur MySQL est une chose aisée. Cette simplicité ne doit pas faire oublier que les performances de votre application dépendent également des performances de votre SGBD. Un paramétrage optimal et des requêtes pertinentes permettons d\'éviter que votre serveur MySQL ne se transforme en goulet d\'étranglement.
+                       Lors de cette conférence, nous verrons :
+                       - Paramètres du serveur MySQL
+                       - Tuning des requêtes
+                       - Les bonnes pratiques
+                       - Techniques avancées',
+        conferenciers: [
+        {
+            code: 'odasini',
+            nom: 'Olivier DASINI',
+        },
+    ],
+    },
+    {
+        horaire: '11h - 12h30',
+        nom: 'Framework : Simplifier le developpement des interfaces bases de donnees avec Symfony',
+        resume: 'Chaque projet Web nécessite de développement d\'un Back-Office. Afin d\'interagir avec la base de données, le développeur réinvente la roue à chaque projet afin de proposer à l\'utilisateur une interface double permettant d\'un côté de lister, filtrer, trier des listes d\'éléments et d\'un autre de visualiser, créer, mettre à jour et supprimer des éléments de la base. La création d\'un telle interface est généralement longue, fastidieuse et sans réelle valeur ajoutée.
+            Durant cette session, je vous propose de découvrir le générateur d\'administration du framework symfony. Ce générateur d\'administration permet de développer et de mettre en ligne une interface Back-Office de façon quasiment automatique à partir de la description de votre base de données.
+            Le grand intérêt de ce générateur est qu\'il est très extensible, tant du point de vue de sa configurabilité que des possibilités d\'extensions et ceci grâce aux avancées du PHP5 et au socle du framework symfony.
+            Enfin, nous verrons que cette abstraction est indépendante de l\'ORM choisi et que symfony propose de façon indifférente la génération de ces interfaces avec Propel ou Doctrine de façon transparente.',
+        conferenciers: [
+        {
+            code: 'fpotencier',
+            nom: 'Fabien POTENCIER',
+        },
+    ],
+    },
+    {
+        horaire: '14h - 15h30',
+        nom: 'Les technos Microsoft pour les applications PHP',
+        resume: 'Fast CGI dans IIS 7 (Windows Server 2008), Microsoft Ajax Framework et PHP, Phalanger (Compiler du PHP pour le framework .NET), Silverlight',
+        conferenciers: [
+        {
+            code: 'clauer',
+            nom: 'Christophe LAUER',
+        },
+    ],
+    },
+] %}
+
+{% include 'legacy/forumphp2007/entete.html.twig' %}
+        <div id="cartouche-milieu">
+            <img id="cartouchepage" src="/templates/forumphp2007/images/cartouche-page.png" usemap="#m_cartouchepage" />
+            <map name="m_cartouchepage">
+            <area shape="poly" coords="294,60,424,60,424,86,294,86,294,60" href="{{ path('legacy_event', {year: 2007, page: 'inscriptions.php'}) }}" title="Tarifs et inscriptions" alt="Tarifs et inscriptions" >
+            <area shape="poly" coords="221,60,291,60,291,86,221,86,221,60" href="{{ path('legacy_event', {year: 2007, page: 'acces.php'}) }}" title="Accès" alt="Accès" >
+            </map>
+            <h1>Le programme des deux jours</h1>
+
+            <h2><a href="#jour1">21 novembre : Journée fonctionnelle</a></h2>
+  <ul>
+    <li>
+      
+      <strong>Temps forts</strong><br />
+         <ul>
+          <li>Comment faire vivre son site Web2.0 avec PHP5 ?</li>
+          <li>Les clients riches avec PHP : Flex pour l'exemple</li>
+          <li>Optimistations, méthodes, sécurité : des retours d'expérience dans les grands comptes</li>
+        </ul>
+      <br />
+      Orientée fonctionnelle cette première journée convient parfaitement aux
+      responsables informatiques et décideurs qui souhaitent découvrir le potentiel
+      de la plate-forme PHP. Les intervenants sont à la fois des entreprises utilisatrices
+      et des experts. De multiples démonstrations et retours d'expérience auront
+      lieu.<br />
+    </li>
+    </ul>
+    <h2><a href="#jour2-0">22 novembre : Journée technique</a></h2>
+    <ul>
+    <li>
+      
+      <strong>Temps fort</strong><br />
+        <ul>
+          <li>Les nouveautés de PHP6 : une première en France</li>
+          <li>Comment Facebook tient la charge avec APC</li>
+          <li>Sécurité : MySQL et PHP sous surveillance</li>
+        </ul>
+      <p>
+      Cette seconde journée est destinée à des profils techniques qui possèdent
+      déjà de solides connaissances sur PHP. Placée sous le signe de l'optimisation,
+      elle abordera différentes problématiques telles que la sécurité ou la gestion
+      des erreurs avec des démonstrations et un parcours approfondi des codes
+      sources.
+      </p>
+      <p>
+      Deux salles annexes seront utilisés pour des ateliers pratiques et des démonstrations
+      (techniques, produits Open Source, projets communautaires) : un véritable espace pour
+      l'échange et l'émerveillement.
+      </p>
+    </li>
+  </ul>
+	
+    <h1>Les horaires</h1>
+    <ul>
+        <li>ouverture des portes : 8h30</li>
+        <li>début des sessions : 9h</li>
+        <li>fin des sessions : vers 18h</li>
+    </ul>
+
+  <a name="jour1"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>21 novembre : Journée Fonctionnelle</strong></td>
+    </tr>
+    {% for session in sessions_fonctionnelles %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <strong>{{ session.nom|raw }}</strong></td>
+            <td align="right">
+			    {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}?#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+				{% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2007/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+		{% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+  <a name="jour2-0"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (conférences)</strong></td>
+    </tr>
+    {% for session in sessions_techniques %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <strong>{{ session.nom|raw }}</strong></td>
+            <td align="right">
+			    {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}?#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+				{% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2007/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+		{% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+  <a name="jour2-1"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (ateliers 1)</strong></td>
+    </tr>
+    {% for session in sessions_atelier_1 %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <strong>{{ session.nom|raw }}</strong></td>
+            <td align="right">
+			    {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}?#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+				{% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2007/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+		{% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+  <a name="jour2-2"></a>
+  <table width="100%" border="0" cellspacing="0" cellpadding="6">
+    <tr>
+      <td colspan="2" bgcolor="#E0E2ED" height="32"><strong>22 novembre : Journée Technique (ateliers 2)</strong></td>
+    </tr>
+    {% for session in sessions_atelier_2 %}
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+			{{ session.horaire }} : <strong>{{ session.nom|raw }}</strong></td>
+            <td align="right">
+			    {% for conferencier in session.conferenciers %}
+            		<span class="conferencier"><a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}?#{{ conferencier.code }}">{{ conferencier.nom|raw }}</a></span><br />
+				{% endfor %}
+		    	</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle" nowrap>
+	    {% for conferencier in session.conferenciers %}
+    		<a href="{{ path('legacy_event', {year: 2007, page: 'conferenciers.php'}) }}#{{ conferencier.code }}"><img src="/templates/forumphp2007/images/intervenants/{{ conferencier.code }}.jpg" alt="{{ conferencier.nom|raw }}" border="0" /></a>
+		{% endfor %}
+      </td>
+      <td align="justify" valign="top">
+        {{ session.resume|raw }}
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" nowrap colspan="2">
+        <hr width="100%" size="1" noshade align="center" />
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+	<p><em>Le programme ci-dessus est donné à titre indicatif : il peut encore évoluer.</em></p>
+
+
+</div>
+{% include 'legacy/forumphp2007/pied_de_page.html.twig' %}
