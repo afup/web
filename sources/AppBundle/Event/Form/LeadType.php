@@ -3,6 +3,8 @@
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\Lead;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaIsValid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -25,6 +27,13 @@ class LeadType extends AbstractType
             ->add('language', ChoiceType::class, [
                 'choices' => ['fr' => 'fr', 'en' => 'en'],
                 'multiple' => false
+            ])
+            ->add('recaptcha', EWZRecaptchaType::class, [
+                'label' => 'Vérification',
+                'mapped' => false,
+                'constraints' => [
+                    new RecaptchaIsValid()
+                ]
             ])
         ;
     }
