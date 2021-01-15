@@ -125,7 +125,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $submittedOn
+     * @param \DateTime $createdAt
      *
      * @return $this
      */

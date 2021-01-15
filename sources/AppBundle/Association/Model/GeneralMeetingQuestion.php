@@ -151,7 +151,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $submittedOn
+     * @param \DateTime $createdAt
      *
      * @return $this
      */
