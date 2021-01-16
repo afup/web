@@ -109,6 +109,9 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         return $this->value;
     }
 
+    /**
+     * @return string|null
+     */
     public function getValueLabel()
     {
         $valuesLabels = self::getVoteLabelsByValue();
