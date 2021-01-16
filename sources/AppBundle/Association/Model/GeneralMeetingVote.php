@@ -11,7 +11,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
 
     const VALUE_YES = 'oui';
     const VALUE_NO = 'non';
-    const VALUE_ABSENTION = 'absention';
+    const VALUE_ABSTENTION = 'abstention';
 
     /**
      * @var int
@@ -171,7 +171,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         return [
             self::VALUE_YES => 'Oui',
             self::VALUE_NO => 'Non',
-            self::VALUE_ABSENTION => 'Absention',
+            self::VALUE_ABSENTION => 'Abstention',
         ];
     }
 }
