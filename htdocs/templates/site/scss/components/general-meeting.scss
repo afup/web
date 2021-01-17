@@ -1,0 +1,14 @@
+.general-meeeting-vote-action__button {
+  min-width: 50% !important; /* Les boutons sont chargés en CSS et non pas via le scss, ils sont chargés plus bas. On doit donc mettre ici le important */
+}
+
+@media (max-width: 460px) {
+  .general-meeeting-vote-action__button-container {
+    width: 100%;
+  }
+
+  .general-meeeting-vote-action__button {
+    min-width: 100%;
+    margin: 10px 0;
+  }
+}
