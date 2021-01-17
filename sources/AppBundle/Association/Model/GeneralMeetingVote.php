@@ -171,7 +171,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         return [
             self::VALUE_YES => 'Oui',
             self::VALUE_NO => 'Non',
-            self::VALUE_ABSENTION => 'Abstention',
+            self::VALUE_ABSTENTION => 'Abstention',
         ];
     }
 }
