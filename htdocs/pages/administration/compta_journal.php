@@ -565,7 +565,7 @@ elseif ($action == 'supprimer') {
 	$formulaire->addElement('header', null          , 'Import CSV');
     $formulaire->addElement('file', 'fichiercsv', 'Fichier banque'     );
     $formulaire->addElement('select', 'banque', 'Banque', [
-        Importer\CaisseEpargne::CODE => 'Caisse Epargne',
+        Importer\CaisseEpargne::CODE => "Caisse d'Épargne",
         Importer\CreditMutuel::CODE => 'Crédit Mutuel',
     ]);
 
