@@ -187,4 +187,14 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     {
         return self::STATUS_WAITING === $this->getStatus();
     }
+
+    public function hasStatusOpened()
+    {
+        return self::STATUS_OPENED === $this->getStatus();
+    }
+
+    public function hasStatusClosed()
+    {
+        return self::STATUS_CLOSED === $this->getStatus();
+    }
 }

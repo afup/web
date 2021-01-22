@@ -82,6 +82,12 @@ SQL;
         $this->save($question);
     }
 
+    public function close(GeneralMeetingQuestion $question)
+    {
+        $question->setClosedAt(new \DateTime());
+        $this->save($question);
+    }
+
     /**
      * @inheritDoc
      */

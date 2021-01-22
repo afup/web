@@ -39,11 +39,19 @@
                         <td>{{ question.label }}</td>
                         <td>
                             {% if question.hasStatusWaiting %}
-                            <a
-                                href="{{ url('admin_members_general_vote_open', {id: question.id}) }}"
-                                class="ui button confirmable"
-                                data-confirmable-label="Etes-vous sûr de vouloir ouvrir la question '{{ question.label }}' ?"
-                            >Ouvrir</a>
+                                <a
+                                    href="{{ url('admin_members_general_vote_open', {id: question.id}) }}"
+                                    class="ui button confirmable"
+                                    data-confirmable-label="Etes-vous sûr de vouloir ouvrir la question '{{ question.label }}' ?"
+                                >Ouvrir</a>
+                            {% elseif question.hasStatusOpened %}
+                                <a
+                                    href="{{ url('admin_members_general_vote_close', {id: question.id}) }}"
+                                    class="ui button confirmable"
+                                    data-confirmable-label="Etes-vous sûr de vouloir fermer la question '{{ question.label }}' ?"
+                                >Fermer</a>
+                            {% elseif question.hasStatusClosed %}
+                                <span class="ui disabled button ">Clos</span>
                             {% endif %}
                         </td>
                     </tr>
