@@ -76,6 +76,12 @@ SQL;
         ]);
     }
 
+    public function open(GeneralMeetingQuestion $question)
+    {
+        $question->setOpenedAt(new \DateTime());
+        $this->save($question);
+    }
+
     /**
      * @inheritDoc
      */

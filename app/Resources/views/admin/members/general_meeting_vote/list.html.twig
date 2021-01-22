@@ -30,12 +30,22 @@
                 <thead>
                     <tr>
                         <th>Vote</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for question in questions %}
                     <tr>
                         <td>{{ question.label }}</td>
+                        <td>
+                            {% if question.hasStatusWaiting %}
+                            <a
+                                href="{{ url('admin_members_general_vote_open', {id: question.id}) }}"
+                                class="ui button confirmable"
+                                data-confirmable-label="Etes-vous sûr de vouloir ouvrir la question '{{ question.label }}' ?"
+                            >Ouvrir</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

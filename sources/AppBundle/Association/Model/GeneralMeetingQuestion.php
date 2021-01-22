@@ -9,6 +9,10 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
+    const STATUS_WAITING = 'waiting';
+    const STATUS_OPENED = 'opened';
+    const STATUS_CLOSED = 'closed';
+
     /**
      * @var int
      */
@@ -161,5 +165,26 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        if (null !== $this->getClosedAt()) {
+            return self::STATUS_CLOSED;
+        }
+
+        if (null !== $this->getOpenedAt()) {
+            return self::STATUS_OPENED;
+        }
+
+        return self::STATUS_WAITING;
+    }
+
+    public function hasStatusWaiting()
+    {
+        return self::STATUS_WAITING === $this->getStatus();
     }
 }

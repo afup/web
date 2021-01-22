@@ -73,6 +73,10 @@ admin_members_general_vote_list:
   path: /members/general_meeting_vote
   defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingVote\ListAction}
 
+admin_members_general_vote_open:
+  path: /members/general_meeting_vote/open
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingVote\OpenAction}
+
 admin_techletter:
   resource: "techletter_admin.yml"
   prefix: /techletter
