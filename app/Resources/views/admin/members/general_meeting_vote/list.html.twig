@@ -1,0 +1,52 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Assemblée générale - votes</h2>
+
+    <div class="ui segment">
+        <form method="GET" name="filtre">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Date</label>
+                        <select name="date">
+                            {% for date in dates %}
+                                <option value="{{ date|date('U') }}"
+                                        {% if date == selectedDate %}selected="selected"{% endif %}>
+                                    {{ date|date('d/m/Y') }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="OK" class="ui button" name="submit_date"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {% if questions|length > 0 %}
+            <table class="ui table striped compact celled">
+                <thead>
+                    <tr>
+                        <th>Vote</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for question in questions %}
+                    <tr>
+                        <td>{{ question.label }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="meh outline icon"></i>
+                    Aucun vote pour cette assemblée générale.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

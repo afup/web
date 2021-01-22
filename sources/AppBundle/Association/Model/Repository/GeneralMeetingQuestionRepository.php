@@ -65,6 +65,18 @@ SQL;
     }
 
     /**
+     * @param \DateTimeInterface $date
+     *
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function loadByDate(\DateTimeInterface $generalMeetingDate)
+    {
+        return $this->getBy([
+            'date' => $generalMeetingDate->format('U'),
+        ]);
+    }
+
+    /**
      * @inheritDoc
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
