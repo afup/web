@@ -1,0 +1,41 @@
+name: CI
+
+on: [push]
+
+jobs:
+
+  unit:
+    name: "Unit tests"
+    runs-on: ubuntu-16.04
+ 
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["5.6", "7.0"]
+ 
+    steps:
+      - uses: actions/checkout@v2
+ 
+      - name: PHP - Switch
+        run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
+ 
+      - name: Composer - Get Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        id: cache-composer
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-php.${{ matrix.php }}-${{ github.sha }}
+          restore-keys: composer-php.${{ matrix.php }}-
+
+      - name: Composer - Create cache directory
+        run: mkdir -p /home/runner/.composer/cache
+        if: steps.cache-composer.outputs.cache-hit != 'true'
+
+      - name: Composer install
+        run: composer install --no-scripts
+
+      - name: Tests - Unit
+        run: ./bin/atoum
