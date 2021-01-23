@@ -472,7 +472,7 @@ class MemberShipController extends SiteBaseController
         if ($needsMembersheepFeePayment) {
             return $this->render('admin/association/membership/generalmeeting_membersheepfee.html.twig', [
                 'title' => $title,
-                'date_general_meeting' => $latestDate->format('d/m/Y'),
+                'latest_date' => $latestDate,
             ]);
         }
 
@@ -531,7 +531,7 @@ class MemberShipController extends SiteBaseController
 
         return $this->render('admin/association/membership/generalmeeting.html.twig', [
             'title' => $title,
-            'date_general_meeting' => $latestDate->format('d/m/Y'),
+            'latest_date' => $latestDate,
             'form' => $form->createView(),
             'reports' => $this->prepareGeneralMeetingsReportsList(),
             'general_meeting_planned' => $generalMeetingPlanned,
