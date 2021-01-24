@@ -37,6 +37,43 @@
         </div>
         {% endif %}
 
+        {% if question_results|length > 0 %}
+        <h2>Résultats des votes de l'Assemblée Générale du {{ date_general_meeting }}</h2>
+
+        <table class="afup-table">
+            <thead>
+                <tr>
+                    <th class="general-meeeting-vote-results__column--question">Vote</th>
+                    <th class="general-meeeting-vote-results__column--result" >Oui</th>
+                    <th class="general-meeeting-vote-results__column--result" >Non</th>
+                    <th class="general-meeeting-vote-results__column--result" >Abstention</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for question_result in question_results %}
+                <tr>
+                    <td class="general-meeeting-vote-results__column--question">
+                        {{ question_result.question.label }}
+                    </td>
+                    <td class="general-meeeting-vote-results__column--result">
+                        <span class="general-meeeting-vote-results__responsive-label">Oui</span>
+                        {{ question_result.count_oui }}
+                    </td>
+                    <td class="general-meeeting-vote-results__column--result">
+                        <span class="general-meeeting-vote-results__responsive-label">Non</span>
+                        {{ question_result.count_non }}
+                    </td>
+                    <td class="general-meeeting-vote-results__column--result">
+                        <span class="general-meeeting-vote-results__responsive-label">Abstention</span>
+                        {{ question_result.count_abstention }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
         <h2>Ma participation à l'Assemblée Générale du {{ date_general_meeting }}</h2>
         <div class="afup-form">
             {{ form_start(form) }}

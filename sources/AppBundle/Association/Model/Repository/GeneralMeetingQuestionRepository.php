@@ -45,6 +45,25 @@ SQL;
         return $collection->first();
     }
 
+    public function loadClosedQuestions(\DateTimeInterface $generalMeetingDate)
+    {
+        $sql = <<<SQL
+SELECT
+  afup_assemblee_generale_question.*
+FROM afup_assemblee_generale_question
+WHERE
+  afup_assemblee_generale_question.closed_at IS NOT NULL
+  AND afup_assemblee_generale_question.date = :general_meeting_date
+ORDER BY afup_assemblee_generale_question.opened_at ASC
+SQL;
+
+        $params = [
+            'general_meeting_date' => $generalMeetingDate->format('U'),
+        ];
+
+        return $this->getPreparedQuery($sql)->setParams($params)->query($this->getCollection(new HydratorSingleObject()));
+    }
+
     /**
      * @inheritDoc
      */

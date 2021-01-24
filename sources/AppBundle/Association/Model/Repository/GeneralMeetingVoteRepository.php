@@ -3,6 +3,7 @@
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\GeneralMeetingVote;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -17,6 +18,31 @@ class GeneralMeetingVoteRepository extends Repository implements MetadataInitial
             'userId' => $userId,
         ]);
     }
+
+    public function getResultsForQuestionId($questionId)
+    {
+        $results = [
+            GeneralMeetingVote::VALUE_YES => 0,
+            GeneralMeetingVote::VALUE_NO => 0,
+            GeneralMeetingVote::VALUE_ABSTENTION => 0,
+        ];
+
+        $sql = <<<SQL
+SELECT `value`,
+       SUM(afup_vote_assemblee_generale.weight) as weight_sum
+FROM afup_vote_assemblee_generale
+WHERE afup_vote_assemblee_generale.afup_assemblee_generale_question_id = :question_id
+GROUP BY `value`
+SQL;
+
+        $preparedQuery = $this->getPreparedQuery($sql)->setParams(['question_id' => $questionId]);
+        foreach ($preparedQuery->query($this->getCollection(new HydratorArray())) as $row) {
+            $results[$row['value']] = $row['weight_sum'];
+        }
+
+        return $results;
+    }
+
 
     /**
      * @inheritDoc

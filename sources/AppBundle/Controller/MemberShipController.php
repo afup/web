@@ -537,9 +537,26 @@ class MemberShipController extends SiteBaseController
         $generalMeetingVoteRepository = $this->get(GeneralMeetingVoteRepository::class);
 
         $currentQuestion = $generalMeetingQuestionRepository->loadNextOpenedQuestion($latestDate);
-        $voteForCurrentQuestion = $generalMeetingVoteRepository->loadByQuestionIdAndUserId($currentQuestion->getId(), $this->getUserId());
+
+        $voteForCurrentQuestion = null;
+        if (null !== $currentQuestion) {
+            $voteForCurrentQuestion = $generalMeetingVoteRepository->loadByQuestionIdAndUserId($currentQuestion->getId(), $this->getUserId());
+        }
+
+        $questionResults = [];
+        foreach ($generalMeetingQuestionRepository->loadClosedQuestions($latestDate) as $question) {
+            $results = $generalMeetingVoteRepository->getResultsForQuestionId($question->getId());
+
+            $questionResults[] = [
+                'question' => $question,
+                'count_oui' => $results[GeneralMeetingVote::VALUE_YES],
+                'count_non' => $results[GeneralMeetingVote::VALUE_NO],
+                'count_abstention' => $results[GeneralMeetingVote::VALUE_ABSTENTION],
+            ];
+        }
 
         return $this->render('admin/association/membership/generalmeeting.html.twig', [
+            'question_results' => $questionResults,
             'question' => $currentQuestion,
             'vote_for_current_question' => $voteForCurrentQuestion,
             'vote_labels_by_values' => GeneralMeetingVote::getVoteLabelsByValue(),
