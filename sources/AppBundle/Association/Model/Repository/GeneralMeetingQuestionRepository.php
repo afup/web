@@ -65,6 +65,30 @@ SQL;
     }
 
     /**
+     * @param \DateTimeInterface $date
+     *
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     */
+    public function loadByDate(\DateTimeInterface $generalMeetingDate)
+    {
+        return $this->getBy([
+            'date' => $generalMeetingDate->format('U'),
+        ]);
+    }
+
+    public function open(GeneralMeetingQuestion $question)
+    {
+        $question->setOpenedAt(new \DateTime());
+        $this->save($question);
+    }
+
+    public function close(GeneralMeetingQuestion $question)
+    {
+        $question->setClosedAt(new \DateTime());
+        $this->save($question);
+    }
+
+    /**
      * @inheritDoc
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

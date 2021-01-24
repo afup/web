@@ -58,6 +58,12 @@ parameters:
                     extra_routes:
                         - admin_members_general_meeting
                         - admin_members_general_meeting_prepare
+                assemblee_generale_votes:
+                    nom: 'Assemblée générale - votes'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/general_meeting_vote'
+                    extra_routes:
+                        - admin_members_general_vote_list
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
