@@ -4,6 +4,8 @@
 namespace AppBundle\Association\Form;
 
 use AppBundle\Association\Model\CompanyMember;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaIsValid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -46,6 +48,13 @@ class CompanyMemberType extends AbstractType
                 'entry_type'   => CompanyMemberInvitationType::class,
                 'allow_add' => true,
                 'required' => false
+            ])
+            ->add('recaptcha', EWZRecaptchaType::class, [
+                'label' => 'Vérification',
+                'mapped' => false,
+                'constraints' => [
+                    new RecaptchaIsValid()
+                ]
             ])
             ->add('save', SubmitType::class, ['label' => 'saveMembership'])
         ;

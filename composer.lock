@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e7a0d6fc855855093957e5b499d6aa9",
+    "content-hash": "c8610f53f3f630fdc5df7a092ffbeb76",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -868,6 +868,7 @@
                 "cache",
                 "caching"
             ],
+            "abandoned": true,
             "time": "2016-01-26T17:28:51+00:00"
         },
         {
@@ -1165,6 +1166,60 @@
                 "parser"
             ],
             "time": "2017-05-14T14:47:48+00:00"
+        },
+        {
+            "name": "excelwebzone/recaptcha-bundle",
+            "version": "v1.5.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
+                "reference": "0ab877583961efac961d651fd3bcc3bfcf3d543c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/0ab877583961efac961d651fd3bcc3bfcf3d543c",
+                "reference": "0ab877583961efac961d651fd3bcc3bfcf3d543c",
+                "shasum": ""
+            },
+            "require": {
+                "google/recaptcha": "^1.1",
+                "php": ">=5.6 || ^7.0",
+                "symfony/form": "^2.8 || ^3.0 || ^4.0",
+                "symfony/framework-bundle": "^2.8 || ^3.0 || ^4.0",
+                "symfony/security-bundle": "^2.8 || ^3.0 || ^4.0",
+                "symfony/validator": "^2.8 || ^3.0 || ^4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5 || ^6 || ^7"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "symfony": {
+                    "allow-contrib": "true"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EWZ\\Bundle\\RecaptchaBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael H. Arieli",
+                    "email": "excelwebzone@gmail.com",
+                    "homepage": "http://excelwebzone.com/"
+                }
+            ],
+            "description": "This bundle provides easy reCAPTCHA form field integration",
+            "homepage": "https://github.com/excelwebzone/EWZRecaptchaBundle",
+            "keywords": [
+                "recaptcha"
+            ],
+            "time": "2019-01-21T16:57:28+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -1511,6 +1566,53 @@
                 "oauth2"
             ],
             "time": "2017-10-10T17:01:45+00:00"
+        },
+        {
+            "name": "google/recaptcha",
+            "version": "1.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/recaptcha.git",
+                "reference": "614f25a9038be4f3f2da7cbfd778dc5b357d2419"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/recaptcha/zipball/614f25a9038be4f3f2da7cbfd778dc5b357d2419",
+                "reference": "614f25a9038be4f3f2da7cbfd778dc5b357d2419",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.2.20|^2.15",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^4.8.36|^5.7.27|^6.59|^7.5.11"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ReCaptcha\\": "src/ReCaptcha"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Client library for reCAPTCHA, a free service that protects websites from spam and abuse.",
+            "homepage": "https://www.google.com/recaptcha/",
+            "keywords": [
+                "Abuse",
+                "captcha",
+                "recaptcha",
+                "spam"
+            ],
+            "time": "2020-03-31T17:50:54+00:00"
         },
         {
             "name": "guzzle/guzzle",
@@ -2886,7 +2988,9 @@
             "version": "v1.10.9",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip"
+                "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "library",
             "autoload": {
@@ -3963,6 +4067,7 @@
                 "configuration",
                 "distribution"
             ],
+            "abandoned": true,
             "time": "2016-09-14T20:25:12+00:00"
         },
         {
@@ -4014,7 +4119,9 @@
             "version": "1.53",
             "dist": {
                 "type": "zip",
-                "url": "http://www.fpdf.org/en/dl.php?v=153&f=zip"
+                "url": "http://www.fpdf.org/en/dl.php?v=153&f=zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "library",
             "autoload": {
@@ -4738,6 +4845,7 @@
                 "i18n",
                 "text"
             ],
+            "abandoned": true,
             "time": "2016-10-25T17:34:14+00:00"
         },
         {
@@ -4922,7 +5030,9 @@
             "version": "v2.0.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip"
+                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "library",
             "autoload": {
@@ -4936,7 +5046,9 @@
             "version": "4.0.2",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip"
+                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "library",
             "autoload": {
@@ -5467,6 +5579,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": "symfony/maker-bundle",
             "time": "2016-09-06T01:30:19+00:00"
         },
         {

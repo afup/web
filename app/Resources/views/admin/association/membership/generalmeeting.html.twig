@@ -10,7 +10,7 @@
 
 {% block page_content %}
     {% if general_meeting_planned %}
-        <h2>Ma participation à l'Assemblée Générale du {{ date_general_meeting }}</h2>
+        <h2>Ma participation à l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}</h2>
         <div class="afup-form">
             {{ form_start(form) }}
 

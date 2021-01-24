@@ -3,6 +3,7 @@
 // Impossible to access the file itself
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Utils\Logs;
+use AppBundle\Compta\Importer;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -72,9 +73,9 @@ if ($action == 'lister' || $action == 'debit' || $action == 'credit' || $action 
 }
 
 if ($action == 'lister' || $action == 'debit' || $action == 'credit') {
-    $smarty->assign('categories', $compta->obtenirListCategoriesSansEvenementVide());
-    $smarty->assign('events', $compta->obtenirListEvenementsSansEvenementVide());
-    $smarty->assign('payment_methods', $compta->obtenirListReglementsSansEvenementVide());
+    $smarty->assign('categories', $compta->obtenirListCategoriesJournal());
+    $smarty->assign('events', $compta->obtenirListEvenementsJournal());
+    $smarty->assign('payment_methods', $compta->obtenirListReglementsJournal());
 }
 
 if ($action == 'lister') {
@@ -563,18 +564,27 @@ elseif ($action == 'supprimer') {
     $formulaire = instancierFormulaire();
 	$formulaire->addElement('header', null          , 'Import CSV');
     $formulaire->addElement('file', 'fichiercsv', 'Fichier banque'     );
+    $formulaire->addElement('select', 'banque', 'Banque', [
+        Importer\CaisseEpargne::CODE => "Caisse d'Épargne",
+        Importer\CreditMutuel::CODE => 'Crédit Mutuel',
+    ]);
 
 	$formulaire->addElement('header', 'boutons'  , '');
 	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
 
     if ($formulaire->validate()) {
-		$valeurs = $formulaire->exportValues();
+        $valeurs = $formulaire->exportValues();
         $file =& $formulaire->getElement('fichiercsv');
         $tmpDir = dirname(__FILE__) . '/../../../tmp';
         if ($file->isUploadedFile()) {
             $file->moveUploadedFile($tmpDir, 'banque.csv');
-            $lignes = file($tmpDir . '/banque.csv');
-            if ($compta->extraireComptaDepuisCSVBanque($lignes)) {
+            $importerFactory = new Importer\Factory();
+            $importer = $importerFactory->create(
+                $tmpDir . '/banque.csv',
+                $valeurs['banque']
+            );
+            $importer->initialize($tmpDir . '/banque.csv');
+            if ($compta->extraireComptaDepuisCSVBanque($importer)) {
                 Logs::log('Chargement fichier banque');
                 afficherMessage('Le fichier a été importé', 'index.php?page=compta_journal&action=lister');
             } else {
