@@ -10,6 +10,14 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class GeneralMeetingVoteRepository extends Repository implements MetadataInitializer
 {
+    public function loadByQuestionIdAndUserId($questionId, $userId)
+    {
+        return $this->getOneBy([
+            'questionId' => $questionId,
+            'userId' => $userId,
+        ]);
+    }
+
     /**
      * @inheritDoc
      */

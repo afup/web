@@ -10,6 +10,33 @@
 
 {% block page_content %}
     {% if general_meeting_planned %}
+        {% if question %}
+        <h2>Mon vote lors de l'assemblée générale</h2>
+
+        <div class="afup-form">
+            <form>
+                <fieldset>
+                    <legend>{{ question.label }}</legend>
+                    <div class="afup-form-container">
+                        {% if not vote_for_current_question %}
+                        <div class="container">
+                            {% for value, label in vote_labels_by_values %}
+                                <div class="col-md-4 txtcenter general-meeeting-vote-action__button-container">
+                                    <a href="{{ url('member_general_meeting_vote', {questionId: question.id, vote: value}) }}" class="button button--call-to-action general-meeeting-vote-action__button">{{ label }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            <div class="txtcenter">
+                                Votre vote : <span style="font-weight: bold">{{ vote_for_current_question.getValueLabel }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        {% endif %}
+
         <h2>Ma participation à l'Assemblée Générale du {{ date_general_meeting }}</h2>
         <div class="afup-form">
             {{ form_start(form) }}

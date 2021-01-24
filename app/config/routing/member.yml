@@ -22,6 +22,10 @@ member_general_meeting:
   path: /general-meeting
   defaults: {_controller: AppBundle:MemberShip:generalMeeting}
 
+member_general_meeting_vote:
+  path: /general-meeting/vote
+  defaults: {_controller: AppBundle:MemberShip:generalMeetingVote}
+
 member_general_meeting_reports_download:
   path: /general-meeting-report-download/{filename}
   defaults: {_controller: AppBundle:MemberShip:generalMettingDownloadReport}
