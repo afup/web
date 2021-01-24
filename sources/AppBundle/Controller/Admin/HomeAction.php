@@ -8,6 +8,7 @@ use AppBundle\Association\UserMembership\StatisticsComputer;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use Assert\Assertion;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -32,12 +33,15 @@ class HomeAction
     private $security;
     /** @var Environment */
     private $twig;
+    /** @var GeneralMeetingRepository */
+    private $generalMeetingRepository;
 
     public function __construct(
         EventRepository $eventRepository,
         EventStatsRepository $eventStatsRepository,
         TicketEventTypeRepository $ticketEventTypeRepository,
         TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        GeneralMeetingRepository $generalMeetingRepository,
         StatisticsComputer $statisticsComputer,
         UrlGeneratorInterface $urlGenerator,
         Security $security,
@@ -51,6 +55,7 @@ class HomeAction
         $this->urlGenerator = $urlGenerator;
         $this->security = $security;
         $this->twig = $twig;
+        $this->generalMeetingRepository = $generalMeetingRepository;
     }
 
     public function __invoke()
@@ -108,6 +113,22 @@ class HomeAction
                 ],
                 'url' => $this->urlGenerator->generate('admin_members_reporting'),
             ];
+
+            $latestDate = $this->generalMeetingRepository->getLatestDate();
+            if ($this->generalMeetingRepository->hasGeneralMeetingPlanned($latestDate)) {
+                $cards[] = [
+                    'title' => 'Assemblée générale',
+                    'statistics' => [
+                        'Votes et pouvoirs' => $this->generalMeetingRepository->countAttendeesAndPowers($latestDate),
+                        'Présences' => $this->generalMeetingRepository->countAttendees($latestDate),
+                    ],
+                    'main_statistic' => [
+                        'label' => 'Quorum',
+                        'value' => $this->generalMeetingRepository->obtenirEcartQuorum($latestDate, $statistics->usersCount),
+                    ],
+                    'url' => $this->urlGenerator->generate('admin_members_general_meeting'),
+                ];
+            }
         }
 
         return new Response($this->twig->render('admin/home.html.twig', [
