@@ -389,7 +389,7 @@ SQL
      */
     public function obtenirEcartQuorum(DateTimeInterface $date, $nombrePersonnesAJourDeCotisation)
     {
-        $quorum = (int) ceil($nombrePersonnesAJourDeCotisation / 3);
+        $quorum = (int) ceil($nombrePersonnesAJourDeCotisation / 4);
 
         return $this->countAttendeesAndPowers($date) - $quorum;
     }
