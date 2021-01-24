@@ -1,0 +1,46 @@
+.general-meeeting-vote-action__button {
+  min-width: 50% !important; /* Les boutons sont chargés en CSS et non pas via le scss, ils sont chargés plus bas. On doit donc mettre ici le important */
+}
+
+@media (max-width: 460px) {
+  .general-meeeting-vote-action__button-container {
+    width: 100%;
+  }
+
+  .general-meeeting-vote-action__button {
+    min-width: 100%;
+    margin: 10px 0;
+  }
+}
+
+.general-meeeting-vote-results__column--question {
+  width: 70%;
+}
+
+.general-meeeting-vote-results__column--result {
+  width: 10%;
+  text-align: right;
+}
+
+.general-meeeting-vote-results__responsive-label {
+  display: none;
+}
+
+@media (max-width: 460px) {
+  .general-meeeting-vote-results__column--question,
+  .general-meeeting-vote-results__column--result {
+    width: 100%;
+    display: block;
+  }
+
+  .general-meeeting-vote-results__column--question {
+    background-color: #50a0dd;
+    color: white;
+    font-weight: bold;
+  }
+
+  .general-meeeting-vote-results__responsive-label {
+    display: inline-block;
+    font-weight: bold;
+  }
+}
