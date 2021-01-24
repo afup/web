@@ -1,0 +1,62 @@
+<?php
+
+namespace AppBundle\Controller\Admin\Members\GeneralMeetingVote;
+
+use AppBundle\Association\Model\GeneralMeetingQuestion;
+use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+class CloseAction
+{
+    /**
+     * @var FlashBagInterface
+     */
+    private $flashBag;
+
+    /**
+     * @var GeneralMeetingQuestionRepository
+     */
+    private $generalMeetingQuestionRepository;
+
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
+    public function __construct(
+        GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        FlashBagInterface $flashBag,
+        UrlGeneratorInterface $urlGenerator
+    ) {
+        $this->flashBag = $flashBag;
+        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
+        $this->urlGenerator = $urlGenerator;
+    }
+
+    public function __invoke(Request $request)
+    {
+        $questionId = $request->query->getInt('id');
+
+        /** @var GeneralMeetingQuestion $question */
+        $question = $this->generalMeetingQuestionRepository->get($questionId);
+
+        if (null === $question) {
+            throw new NotFoundHttpException(sprintf("Question %d not found", $questionId));
+        }
+
+        if (false === $question->hasStatusOpened()) {
+            throw new AccessDeniedHttpException("Only questions with status opened can be opened");
+        }
+
+        $this->generalMeetingQuestionRepository->close($question);
+
+        $this->flashBag->add('notice', 'Le vote a été fermée');
+
+        return new RedirectResponse($this->urlGenerator->generate('admin_members_general_vote_list', ['date' => $question->getDate()->format('U')]));
+    }
+}

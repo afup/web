@@ -12,8 +12,12 @@ use AppBundle\Association\Form\ContactDetailsType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
+use AppBundle\Association\Model\GeneralMeetingQuestion;
+use AppBundle\Association\Model\GeneralMeetingVote;
 use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
+use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -529,7 +533,33 @@ class MemberShipController extends SiteBaseController
 
         $attendeesWithPower = $generalMeetingRepository->getAttendees($latestDate, 'nom', 'asc', $user->getId());
 
+        $generalMeetingQuestionRepository = $this->get(GeneralMeetingQuestionRepository::class);
+        $generalMeetingVoteRepository = $this->get(GeneralMeetingVoteRepository::class);
+
+        $currentQuestion = $generalMeetingQuestionRepository->loadNextOpenedQuestion($latestDate);
+
+        $voteForCurrentQuestion = null;
+        if (null !== $currentQuestion) {
+            $voteForCurrentQuestion = $generalMeetingVoteRepository->loadByQuestionIdAndUserId($currentQuestion->getId(), $this->getUserId());
+        }
+
+        $questionResults = [];
+        foreach ($generalMeetingQuestionRepository->loadClosedQuestions($latestDate) as $question) {
+            $results = $generalMeetingVoteRepository->getResultsForQuestionId($question->getId());
+
+            $questionResults[] = [
+                'question' => $question,
+                'count_oui' => $results[GeneralMeetingVote::VALUE_YES],
+                'count_non' => $results[GeneralMeetingVote::VALUE_NO],
+                'count_abstention' => $results[GeneralMeetingVote::VALUE_ABSTENTION],
+            ];
+        }
+
         return $this->render('admin/association/membership/generalmeeting.html.twig', [
+            'question_results' => $questionResults,
+            'question' => $currentQuestion,
+            'vote_for_current_question' => $voteForCurrentQuestion,
+            'vote_labels_by_values' => GeneralMeetingVote::getVoteLabelsByValue(),
             'title' => $title,
             'latest_date' => $latestDate,
             'form' => $form->createView(),
@@ -538,6 +568,51 @@ class MemberShipController extends SiteBaseController
             'last_general_meeting_description' => $lastGeneralMeetingDescription,
             'personnes_avec_pouvoir' => $attendeesWithPower,
         ]);
+    }
+
+    public function generalMeetingVoteAction(Request $request)
+    {
+        $generalMeetingRepository = $this->get(GeneralMeetingRepository::class);
+        $generalMeetingQuestionRepository = $this->get(GeneralMeetingQuestionRepository::class);
+        $generalMeetingVoteRepository = $this->get(GeneralMeetingVoteRepository::class);
+
+        if (null === ($questionId = $request->get('questionId'))) {
+            throw $this->createNotFoundException('QuestionId manquant');
+        }
+
+        if (false === GeneralMeetingVote::isValueAllowed($vote = $request->query->getAlpha('vote'))) {
+            throw $this->createNotFoundException('Vote manquant');
+        }
+
+        /** @var $question GeneralMeetingQuestion */
+        if (null === ($question = $generalMeetingQuestionRepository->get($questionId))) {
+            throw $this->createNotFoundException('QuestionId missing');
+        }
+
+        $userId = $this->getUserId();
+        $redirection = $this->redirectToRoute('member_general_meeting');
+
+        if (null !== $generalMeetingVoteRepository->loadByQuestionIdAndUserId($questionId, $userId)) {
+            $this->addFlash('error', 'Vous avez déjà voté pour cette question');
+            return $redirection;
+        }
+
+        $weight = 1 + count($generalMeetingRepository->getAttendees($question->getDate(), 'nom', 'asc', $userId));
+
+        $generalMeetingVote = new GeneralMeetingVote();
+        $generalMeetingVote
+            ->setQuestionId($question->getId())
+            ->setUserId($this->getUserId())
+            ->setWeight($weight)
+            ->setValue($vote)
+            ->setCreatedAt(new \DateTime())
+        ;
+
+        $generalMeetingVoteRepository->save($generalMeetingVote);
+
+        $this->addFlash('notice', 'Votre vote a été pris en compte');
+
+        return $redirection;
     }
 
     public function generalMettingDownloadReportAction($filename)

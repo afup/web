@@ -359,6 +359,16 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository]
 
+    AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository:
+        class: AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository]
+
+    AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository:
+        class: AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository]
+
     AppBundle\Security\ActionThrottling\ActionThrottling:
         autowire: true
 
