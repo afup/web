@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Afup\Site\Forum\Facturation;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Form\SponsorTicketType;
@@ -245,6 +246,7 @@ class TicketController extends EventBaseController
         $invoiceRepository = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
 
         $invoiceRef = $request->get('invoiceRef', $request->query->get('invoiceRef', null));
+        /** @var Invoice $invoice */
         $invoice = $invoiceRepository->getByReference($invoiceRef);
 
         if ($invoice === null) {
@@ -295,7 +297,8 @@ class TicketController extends EventBaseController
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
             $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event);
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
-            $params['rib'] = $GLOBALS['AFUP_CONF']->obtenir('rib');
+            $bankAccountFactory = new BankAccountFactory($GLOBALS['AFUP_CONF']);
+            $params['bankAccount'] = $bankAccountFactory->createApplyableAt($invoice->getinvoiceDate());
 
             // For bankwire, companies need to retrieve the invoice
             $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);

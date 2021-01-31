@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\PDF_Facture;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;
@@ -23,6 +24,7 @@ use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\UserService;
+use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponseFactory;
@@ -121,10 +123,12 @@ class MemberShipController extends SiteBaseController
             $company->getEmail()
         );
 
+        $bankAccountFactory = new BankAccountFactory($this->legacyConfiguration);
+
         return $this->render(':site/company_membership:payment.html.twig', [
             'paybox' => $paybox,
             'invoice' => $invoice,
-            'rib' => $this->legacyConfiguration->obtenir('rib'),
+            'bankAccount' => $bankAccountFactory->createApplyableAt(\DateTimeImmutable::createFromFormat('U', $invoice['date_debut'])),
             'afup' => $this->legacyConfiguration->obtenir('afup')
         ]);
     }

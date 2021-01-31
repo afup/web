@@ -335,7 +335,6 @@ class Cotisations
 
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        // Construction du PDF
         $dateCotisation = \DateTimeImmutable::createFromFormat('U', $cotisation['date_debut']);
         $bankAccountFactory = new BankAccountFactory($configuration);
         // Construction du PDF
