@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
-use Afup\Site\Utils\PDF_Facture;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;

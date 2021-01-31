@@ -6,7 +6,6 @@ use Afup\Site\Utils\Configuration;
 
 class BankAccountFactory
 {
-
     /**
      * @var Configuration
      */
@@ -32,5 +31,4 @@ class BankAccountFactory
             $this->configuration->obtenir($configKey . '|iban')
         );
     }
-
 }

@@ -4,7 +4,6 @@ namespace AppBundle\Compta\BankAccount;
 
 class BankAccount
 {
-
     /**
      * @var string
      */
