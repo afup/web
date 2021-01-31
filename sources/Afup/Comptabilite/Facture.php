@@ -6,6 +6,7 @@ namespace Afup\Site\Comptabilite;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
+use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\Message;
@@ -314,12 +315,17 @@ class Facture
 
         $pays = new Pays($this->_bdd);
 
+        $dateDevis = isset($coordonnees['date_devis']) && !empty($coordonnees['date_devis'])
+            ? \DateTimeImmutable::createFromFormat('Y-m-d', $coordonnees['date_devis'])
+            : new \DateTimeImmutable();
+
+        $bankAccountFactory = new BankAccountFactory($configuration);
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration);
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateDevis));
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($coordonnees['date_devis']) && !empty($coordonnees['date_devis'])) ? strtotime($coordonnees['date_devis']) : time()));
+        $pdf->Cell(60, 5, 'Le ' . $dateDevis->format('d/m/Y'));
 
         $pdf->Ln();
         $pdf->Ln();
@@ -435,13 +441,17 @@ class Facture
 
         $pays = new Pays($this->_bdd);
 
-        // Construction du PDF
+        $dateFacture = isset($coordonnees['date_facture']) && !empty($coordonnees['date_facture'])
+            ? \DateTimeImmutable::createFromFormat('Y-m-d', $coordonnees['date_facture'])
+            : new \DateTimeImmutable();
 
-        $pdf = new PDF_Facture($configuration);
+        $bankAccountFactory = new BankAccountFactory($configuration);
+        // Construction du PDF
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($coordonnees['date_facture']) && !empty($coordonnees['date_facture'])) ? strtotime($coordonnees['date_facture']) : time()));
+        $pdf->Cell(60, 5, 'Le ' . $dateFacture->format('d/m/Y'));
 
         $pdf->Ln();
         $pdf->Ln();
