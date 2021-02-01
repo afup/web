@@ -484,7 +484,6 @@ class MemberShipController extends SiteBaseController
         if (null !== $attendee) {
             $defaultPresence = $attendee->getPresence();
             $defaultPowerId = $attendee->getPowerId();
-
         }
 
         $form = $this->createFormBuilder()
