@@ -481,8 +481,14 @@ class MemberShipController extends SiteBaseController
         }
 
         $attendee = $generalMeetingRepository->getAttendee($user->getUsername(), $latestDate);
-        Assertion::notNull($attendee);
         $lastGeneralMeetingDescription = $generalMeetingRepository->obtenirDescription($latestDate);
+
+        $defaultPresence = 0;
+        $defaultPowerId = null;
+        if (null !== $attendee) {
+            $defaultPresence = $attendee->getPresence();
+            $defaultPowerId = $attendee->getPowerId();
+        }
 
         $form = $this->createFormBuilder()
             ->add('presence', ChoiceType::class, ['expanded' => true, 'choices' => ['Oui' => 1, 'Non' => 2, 'Je ne sais pas encore' => 0]])
@@ -497,8 +503,8 @@ class MemberShipController extends SiteBaseController
             )
             ->add('save', SubmitType::class, ['label' => 'Confirmer'])
             ->setData([
-                'presence' => $attendee->getPresence(),
-                'id_personne_avec_pouvoir' => $attendee->getPowerId(),
+                'presence' => $defaultPresence,
+                'id_personne_avec_pouvoir' => $defaultPowerId,
             ])
             ->getForm();
 
@@ -506,7 +512,7 @@ class MemberShipController extends SiteBaseController
 
         if ($form->isValid()) {
             $data = $form->getData();
-            if (null !== $attendee->getPresence()) {
+            if (null !== $attendee) {
                 $ok = $generalMeetingRepository->editAttendee(
                     $user->getUsername(),
                     $latestDate,
