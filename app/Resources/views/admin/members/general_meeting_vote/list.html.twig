@@ -25,18 +25,25 @@
             </div>
         </form>
 
-        {% if questions|length > 0 %}
+        {% if rows|length > 0 %}
             <table class="ui table striped compact celled">
                 <thead>
                     <tr>
                         <th>Vote</th>
+                        <th>Oui</th>
+                        <th>Non</th>
+                        <th>Peut-être</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                {% for question in questions %}
+                {% for row in rows %}
+                    {% set question = row.question %}
                     <tr>
                         <td>{{ question.label }}</td>
+                        <td>{% if question.hasStatusOpened or question.hasStatusClosed %}{{ row.results.oui }}{% else %}n/a{% endif %}</td>
+                        <td>{% if question.hasStatusOpened or question.hasStatusClosed %}{{ row.results.non }}{% else %}n/a{% endif %}</td>
+                        <td>{% if question.hasStatusOpened or question.hasStatusClosed %}{{ row.results.abstention }}{% else %}n/a{% endif %}</td>
                         <td>
                             {% if question.hasStatusWaiting %}
                                 <a
