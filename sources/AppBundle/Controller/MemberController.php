@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
-use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\BadgesComputer;
