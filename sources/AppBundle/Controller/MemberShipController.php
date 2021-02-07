@@ -595,8 +595,14 @@ class MemberShipController extends SiteBaseController
             throw $this->createNotFoundException('QuestionId missing');
         }
 
-        $userId = $this->getUserId();
         $redirection = $this->redirectToRoute('member_general_meeting');
+
+        if (false === $question->hasStatusOpened()) {
+            $this->addFlash('error', "Ce vote n'est pas ouvert");
+            return $redirection;
+        }
+
+        $userId = $this->getUserId();
 
         if (null !== $generalMeetingVoteRepository->loadByQuestionIdAndUserId($questionId, $userId)) {
             $this->addFlash('error', 'Vous avez déjà voté pour cette question');
