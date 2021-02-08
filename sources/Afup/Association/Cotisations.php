@@ -363,6 +363,14 @@ class Cotisations
         $pdf->Ln(10);
         $pdf->MultiCell(130, 5, utf8_decode($nom . "\n" . $personne['adresse'] . "\n" . $personne['code_postal'] . "\n" . $personne['ville']));
 
+        if (isset($cotisation['reference_client'])) {
+            $pdf->Ln(10);
+            $pdf->MultiCell(180, 5, utf8_decode(sprintf(
+                "Référence client : %s",
+                $cotisation['reference_client']
+            )));
+        }
+
         $pdf->Ln(15);
 
         $pdf->MultiCell(180, 5, utf8_decode("Facture concernant votre adhésion à l'Association Française des Utilisateurs de PHP (AFUP)."));
