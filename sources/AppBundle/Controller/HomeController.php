@@ -68,7 +68,6 @@ class HomeController extends SiteBaseController
             }
 
             return $cacheItem->get();
-
         } catch (\AlgoliaSearch\AlgoliaException $e) {
             $this->get('logger')->error($e->getMessage());
             return [];
