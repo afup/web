@@ -37,6 +37,7 @@ class MemberController extends SiteBaseController
         $displayLinkToGeneralMeetingVote = false;
 
         if ($hasGeneralMeetingPlanned
+            && null !== $latestDate
             && ($latestDate->format('Y-m-d') == (new \DateTime())->format('Y-m-d'))
             && count($generalMeetingQuestionRepository->loadByDate($latestDate)) > 0
         ) {
