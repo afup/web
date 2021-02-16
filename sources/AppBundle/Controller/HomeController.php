@@ -56,14 +56,29 @@ class HomeController extends SiteBaseController
             return [];
         }
 
+        $cache = $this->get('cache.system');
+        $cacheKey = 'home_algolia_meetups';
+
         try {
-            $algolia = $this->get(\AlgoliaSearch\Client::class);
-            $index = $algolia->initIndex('afup_meetups');
-            $results = $index->search('', ['hitsPerPage' => self::MAX_MEETUPS]);
+            $cacheItem = $cache->getItem($cacheKey);
+            if (!$cacheItem->isHit()) {
+                $cacheItem->expiresAfter(new \DateInterval('P1D'));
+                $cacheItem->set($this->doGetLatestMeetups());
+                $cache->save($cacheItem);
+            }
+
+            return $cacheItem->get();
         } catch (\AlgoliaSearch\AlgoliaException $e) {
             $this->get('logger')->error($e->getMessage());
             return [];
         }
+    }
+
+    private function doGetLatestMeetups()
+    {
+        $algolia = $this->get(\AlgoliaSearch\Client::class);
+        $index = $algolia->initIndex('afup_meetups');
+        $results = $index->search('', ['hitsPerPage' => self::MAX_MEETUPS]);
 
         return $results['hits'];
     }
