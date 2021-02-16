@@ -16,6 +16,15 @@
 
 {% block page_content %}
 
+    {% if display_link_to_general_meeting_vote %}
+    <a class="button-inverted button__medium button--call-to-action"
+       href="{{ path('member_general_meeting') }}"
+       style="display: block; font-size: 2rem"
+    >
+        Voter lors de l'assemblée générale
+    </a>
+    {% endif %}
+
     <h2>Mon compte</h2>
 
     <div class="member-index">

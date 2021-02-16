@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\BadgesComputer;
@@ -27,6 +28,22 @@ class MemberController extends SiteBaseController
 
         $daysBeforeMembershipExpiration = $user->getDaysBeforeMembershipExpiration();
 
+        $generalMeetingRepository = $this->get(GeneralMeetingRepository::class);
+        $generalMeetingQuestionRepository = $this->get(GeneralMeetingQuestionRepository::class);
+
+        $latestDate = $generalMeetingRepository->getLatestDate();
+        $hasGeneralMeetingPlanned = $generalMeetingFactory->hasGeneralMeetingPlanned($latestDate);
+
+        $displayLinkToGeneralMeetingVote = false;
+
+        if ($hasGeneralMeetingPlanned
+            && null !== $latestDate
+            && ($latestDate->format('Y-m-d') == (new \DateTime())->format('Y-m-d'))
+            && count($generalMeetingQuestionRepository->loadByDate($latestDate)) > 0
+        ) {
+            $displayLinkToGeneralMeetingVote = true;
+        }
+
         return $this->render(
             ':site:member/index.html.twig',
             [
@@ -36,9 +53,10 @@ class MemberController extends SiteBaseController
                 'membership_fee_call_to_update' => null === $daysBeforeMembershipExpiration || $daysBeforeMembershipExpiration < self::DAYS_BEFORE_CALL_TO_UPDATE,
                 'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
                 'office_label' => $user->getNearestOfficeLabel(),
-                'has_general_meeting_planned' => $generalMeetingFactory->hasGeneralMeetingPlanned(),
+                'has_general_meeting_planned' => $hasGeneralMeetingPlanned,
                 'has_user_rspved_to_next_general_meeting' => $generalMeetingFactory->hasUserRspvedToLastGeneralMeeting($user),
                 'membershipfee_end_date' => $dateFinCotisation,
+                'display_link_to_general_meeting_vote' => $displayLinkToGeneralMeetingVote,
             ]
         );
     }
