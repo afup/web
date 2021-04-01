@@ -125,7 +125,8 @@ class BlogController extends EventBaseController
 
             $defaultProgramPagePrefix = '/';
             if (isset($events[$talk->getForumId()])) {
-                $defaultProgramPagePrefix = '/' . $events[$talk->getForumId()]->getPath() . '/programme/';
+                $eventPath = $events[$talk->getForumId()]->getPath();
+                $defaultProgramPagePrefix = $request->query->get('program-page-prefix-' . $eventPath, '/' . $eventPath . '/programme/');
             }
             $talkWithData['program_page_prefix'] = $request->query->get('program-page-prefix', $defaultProgramPagePrefix);
             $eventPlanning[$startDay][$start][$room->getId()] = $talkWithData;
