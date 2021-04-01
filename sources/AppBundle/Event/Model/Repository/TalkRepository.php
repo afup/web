@@ -196,6 +196,24 @@ class TalkRepository extends Repository implements MetadataInitializer
      */
     public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true)
     {
+        return $this->getByEventsWithSpeakers([$event], $applyPublicationdateFilters);
+    }
+
+    /**
+     * @param Event $event
+     * @param bool $applyPublicationdateFilters
+     *
+     * @return CollectionInterface&list<array{
+     *      talk: Talk,
+     *      speaker: AppBundle\Event\Model\Speaker,
+     *      room: ??,
+     *      planning: ??,
+     *     .aggregation: array<string, mixed>
+     * }>
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
+    public function getByEventsWithSpeakers(array $events, $applyPublicationdateFilters = true)
+    {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
@@ -204,8 +222,21 @@ class TalkRepository extends Repository implements MetadataInitializer
             $publicationdateFilters = 'AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
         }
 
+        $params = [];
+
+        $inEventsKeys = [];
+        $cpt = 0;
+        foreach ($events as $event) {
+            $cpt++;
+            $key = 'event_id_' . $cpt;
+            $inEventsKeys[] = ':' . $key;
+            $params[$key] = $event->getId();
+        }
+
+        $inEvents = implode(',', $inEventsKeys);
+
         $query = $this->getPreparedQuery(
-            sprintf('SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
+            sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
             talk.joindin,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, 
             planning.debut, planning.fin, room.id, room.nom
@@ -214,12 +245,13 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
-            WHERE talk.id_forum = :event AND plannifie = 1 %s
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $publicationdateFilters)
-        )->setParams(['event' => $event->getId()]);
+            WHERE talk.id_forum IN(%s) AND plannifie = 1 %s
+            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $inEvents, $publicationdateFilters)
+        )->setParams($params);
 
         return $query->query($this->getCollection($hydrator));
     }
+
 
     /**
      * @param Event $event
