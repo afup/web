@@ -271,7 +271,7 @@ class Facturation
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            $pdf->Cell(50, 5, utf8_decode($inscription['pretty_name']), 1);
+            $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
             $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
             $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
             $total += $inscription['montant'];
