@@ -186,6 +186,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
 
+    AppBundle\Association\Model\Repository\RubriqueRepository:
+        class: AppBundle\Association\Model\Repository\RubriqueRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Association\Model\Repository\RubriqueRepository]
+
     AppBundle\Event\Model\Repository\TalkRepository:
         class: AppBundle\Event\Model\Repository\TalkRepository
         factory: ["@ting", get]

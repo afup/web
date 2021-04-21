@@ -88,3 +88,7 @@ admin_techletter:
 admin_slack_members_check:
   path: /slackmembers/check
   defaults: {_controller: AppBundle\Controller\Admin\SlackMembers\CheckMembersAction }
+
+admin_site:
+  resource: "admin_site.yml"
+  prefix: /site
