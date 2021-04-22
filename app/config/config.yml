@@ -349,6 +349,8 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
+
+        
         association:
             namespace : AppBundle\Association\Model\Repository
             directory : "@AppBundle/Association/Model/Repository"

@@ -1,4 +1,4 @@
 admin_site_rubriques_list:
   path: /rubriques
-  defaults: {_controller: AppBundle\Controller\Admin\Site\RubriqueListAction}
+  defaults: {_controller: AppBundle\Controller\RubriqueController::index}
 

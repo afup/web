@@ -186,11 +186,7 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
 
-    AppBundle\Association\Model\Repository\RubriqueRepository:
-        class: AppBundle\Association\Model\Repository\RubriqueRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Association\Model\Repository\RubriqueRepository]
-
+    
     AppBundle\Event\Model\Repository\TalkRepository:
         class: AppBundle\Event\Model\Repository\TalkRepository
         factory: ["@ting", get]
@@ -430,6 +426,11 @@ services:
         class: AppBundle\Groups\Model\Repository\MailingListRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Groups\Model\Repository\MailingListRepository]
+
+    AppBundle\Site\Model\Repository\RubriqueRepository:
+        class: AppBundle\Site\Model\Repository\RubriqueRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Site\Model\Repository\RubriqueRepository]
 
     AppBundle\Site\Model\Repository\ArticleRepository:
         class: AppBundle\Site\Model\Repository\ArticleRepository
