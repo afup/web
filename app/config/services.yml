@@ -67,6 +67,14 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Admin\Site\:
+        resource: '../../sources/AppBundle/Controller/Admin/Site/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\Admin\Site\RubriqueController:
+        autowire: true
+
     AppBundle\Controller\Admin\Members\BadgeNewAction:
         autowire: true
         arguments:
