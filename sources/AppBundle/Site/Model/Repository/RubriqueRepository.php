@@ -13,22 +13,28 @@ use AppBundle\Site\Model\Rubrique;
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
 
-    public function getAllRubriques()
+    public function getAllRubriques($champs = '*', $ordre = 'id', $filtre = null)
     {
-        $sql = "
-        SELECT *
-        FROM afup_site_rubrique
-        WHERE 1
-        ";
+        $requete = 'SELECT';
+        $requete .= '  ' . $champs . ' ';
+        $requete .= 'FROM';
+        $requete .= '  afup_site_rubrique ';
 
-        $query = $this->getPreparedQuery($sql);
-
-        $array = [];
-        foreach ($query->query($this->getCollection(new HydratorArray()))->getIterator() as $row) {
-            $array[] = $row;
+        if (strlen(trim($filtre)) > 0) {
+            $requete .= sprintf(' WHERE afup_site_rubrique.nom LIKE %s ', $this->bdd->echapper('%' . $filtre . '%'));
         }
 
-        return $array;
+        $requete .= 'ORDER BY ' . $ordre;
+
+        $query = $this->getQuery($requete);
+
+        $rubriques = [];
+        foreach ($query->query($this->getCollection(new HydratorArray()))->getIterator() as $row) {
+            $rubriques[] = array('id'=> $row['id'],'nom' => $row['nom'], 'date' => $row['date'], 'etat' => $row['etat']);
+        }
+
+        return $rubriques;
+    
     }
     /**
      * @inheritDoc

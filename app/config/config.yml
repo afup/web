@@ -99,6 +99,9 @@ parameters:
                 site_rubriques:
                     nom: 'Rubriques'
                     niveau: 'ROLE_SITE'
+                    url : '/admin/site/rubriques'
+                    extra_routes: 
+                        - admin_site_rubriques_list
                 site_articles:
                     nom: 'Articles'
                     niveau: 'ROLE_SITE'
