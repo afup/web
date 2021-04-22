@@ -1,9 +1,9 @@
 <?php
 
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Admin\Site;
 
-
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Site\Model\Rubrique;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 
 
-class RubriqueController extends SiteBaseController
+class RubriqueController extends Controller
 {
     public function index() 
     {
