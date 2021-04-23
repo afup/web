@@ -9,45 +9,64 @@ use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use AppBundle\Site\Model\Rubrique;
+use Afup\Site\Utils\Base_De_Donnees;
 
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
 
-    public function getAllRubriques($champs = '*', $ordre = 'id', $filtre = null)
+    public function getAllRubriques($champs = '*', $ordre = 'nom', $direction='desc', $filtre = null, $associatif = false)
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
         $requete .= '  afup_site_rubrique ';
-
         if (strlen(trim($filtre)) > 0) {
-            $requete .= sprintf(' WHERE afup_site_rubrique.nom LIKE %s ', $this->bdd->echapper('%' . $filtre . '%'));
+            $requete .= sprintf(' WHERE afup_site_rubrique.nom LIKE %s ', $GLOBALS['AFUP_DB']->echapper('%' . $filtre . '%'));
         }
-
         $requete .= 'ORDER BY ' . $ordre;
-
         $query = $this->getQuery($requete);
 
         $rubriques = [];
-        foreach ($query->query($this->getCollection(new HydratorArray()))->getIterator() as $row) {
-            $rubriques[] = array('id'=> $row['id'],'nom' => $row['nom'], 'date' => $row['date'], 'etat' => $row['etat']);
-        }
+        if ($champs === '*') {
+            foreach ($query->query($this->getCollection(new HydratorArray()))->getIterator() as $row) {
+                $rubriques[] = array(
+                    'id'=> $row['id'],
+                    'nom' => $row['nom'], 
+                    'date' => $row['date'], 
+                    'etat' => $row['etat'],
+                );
+            }
+        } else {
+            $expected = explode(',',trim($champs));
+            foreach ($query->query($this->getCollection(new HydratorArray()))->getIterator() as $row) {
+                $data = array();
 
-        return $rubriques;
-    
+                foreach ($expected as $key=>$value) {
+                    $data[$key] =  $value;
+                }
+                $rubriques[] = $data;
+
+            }
+
+            
+        }
+        if ($associatif) {
+            return $GLOBALS['AFUP_DB']->obtenirAssociatif($requete);
+        } else {
+            return $GLOBALS['AFUP_DB']->obtenirTous($requete);
+        }
     }
+
     /**
      * @inheritDoc
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
     {
         $metadata = new Metadata($serializerFactory);
-
         $metadata->setEntity(Rubrique::class);
         $metadata->setConnectionName('main');
         $metadata->setDatabase($options['database']);
         $metadata->setTable('afup_site_rubrique');
-
         $metadata
         ->addField([
             'columnName' => 'id',
@@ -116,9 +135,7 @@ class RubriqueRepository extends Repository implements MetadataInitializer
             'fieldName' => 'feuille_associee',
             'type' => 'int',
         ])
-        
     ;
-
     return $metadata;
     }
 }

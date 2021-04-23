@@ -1,4 +1,12 @@
 admin_site_rubriques_list:
   path: /rubriques
-  defaults: {_controller: AppBundle\Controller\Admin\Site\RubriqueController::index}
+  defaults: {_controller: AppBundle\Controller\Admin\Site\RubriqueController::listRubriques}
 
+admin_site_rubriques_add:
+  path: /rubriques/add
+  defaults: {_controller: AppBundle\Controller\Admin\Site\RubriqueController::addRubrique}
+  
+admin_site_rubriques_edit:
+  path: /rubriques/edit
+  defaults: {_controller: AppBundle\Controller\Admin\Site\RubriqueController::editRubrique}
+  

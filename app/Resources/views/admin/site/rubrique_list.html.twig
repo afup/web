@@ -1,11 +1,10 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
-
    <h2>Liste des rubriques</h2>
-
+{{ dump(rubriques) }}
     <div class="ui menu">
-        <a href="{#{{ path('admin_site_rubrique_add') }}#}index.php?page=site_rubriques&amp;action=ajouter" class="item">
+        <a href="{{ path('admin_site_rubriques_add') }}" class="item">
             <div data-tooltip="Ajouter une rubrique" data-position="bottom left">
                 <i class="icon plus square"></i>
                 Ajouter
@@ -14,37 +13,55 @@
     </div>
 
     <div class="ui segment">
-        <form method="GET" name="filtre">
-            <input type="hidden" name="page" value="site_rubriques" />
+        <form method="GET" name="filter">
             <input type="hidden" name="sort"  value="{{ sort }}" />
             <input type="hidden" name="direction" value="{{ direction }}" />
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
                         <label>Recherche</label>
-                        <input type="text" name="filtre" value="{{ filter }}">
+                        <input type="text" name="filter" value="{{ filter }}">
                     </div>
                     <div class="field">
-                        <input type="submit" value="Filtrer" class="ui button" name="submit_filtre" />
+                        <input type="submit" value="Filtrer" class="ui button" />
                     </div>
                 </div>
             </div>
         </form>
 
-        <table class="ui table striped compact celled">
+        <table class="ui table striped compact celled w-100">
             <thead>
                 <tr>
-                    <th><a href="index.php?page=site_rubriques&amp;tri=date&amp;sens={% if direction == 'asc' and sort == 'date' %}desc{% else %}asc{% endif %}">Date</a></th>
-                    <th><a href="index.php?page=site_rubriques&amp;tri=nom&amp;sens={% if direction == 'asc' and sort == 'nom' %}desc{% else %}asc{% endif %}">Nom</a></th>
-                    <th class="center aligned"><a href="index.php?page=site_rubriques&amp;tri=etat&amp;sens={% if direction == 'asc' and sort == 'etat' %}desc{% else %}asc{% endif %}">Etat</a></th>
+                    <th>
+                        {% if direction == 'asc' and sort == 'date' %}
+                            <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : 'desc'}) }}">Date</a>
+                        {% else %}
+                            <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : 'asc'}) }}">Date</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if direction == 'asc' and sort == 'nom' %}
+                            <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : 'desc'}) }}">Nom</a>
+                        {% else %}
+                            <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : 'asc'}) }}">Nom</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if direction == 'asc' and sort == 'etat' %}
+                            <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat', 'direction' : 'desc'}) }}">Etat</a>
+                        {% else %}
+                            <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat', 'direction' : 'asc'}) }}">Etat</a>
+                        {% endif %}
+                    </th>
                     <th></th>
+                    
                 </tr>
             </thead>
             <tbody>
             {% if rubriques|length > 0 %}
                 {% for rub in rubriques %}
                 <tr>
-                    <td>{{ rub.date }}</td>
+                    <td>{% if rub.date != null %}{{ rub.date|date('d-m-Y') }}{% endif %}</td>
                     <td style="white-space : normal;">{{ rub.nom }}</td>
                      <td class="center aligned">
                         {% if rub.etat == 1 %}

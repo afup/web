@@ -102,6 +102,8 @@ parameters:
                     url : '/admin/site/rubriques'
                     extra_routes: 
                         - admin_site_rubriques_list
+                        - admin_site_rubriques_add
+                        - admin_site_rubriques_edit
                 site_articles:
                     nom: 'Articles'
                     niveau: 'ROLE_SITE'

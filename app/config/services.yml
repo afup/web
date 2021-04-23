@@ -440,6 +440,9 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Site\Model\Repository\RubriqueRepository]
 
+   
+
+
     AppBundle\Site\Model\Repository\ArticleRepository:
         class: AppBundle\Site\Model\Repository\ArticleRepository
         factory: ["@ting", get]
@@ -449,6 +452,11 @@ services:
         class: AppBundle\TechLetter\Model\Repository\SendingRepository
         factory: ["@ting", get]
         arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
+
+
+    AppBundle\Site\Form\RubriqueType:
+        autowire: true
+        autoconfigure: true
 
     AppBundle\Event\Ticket\SponsorTicketHelper:
         autowire: true
