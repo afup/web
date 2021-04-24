@@ -5,7 +5,7 @@
 {% block content %}
     <h2>Créer une rubrique</h2>
     {{ form_start(form) }}
-    
+
         <div class="ui segment">
             <h2 class="ui header">Rubrique</h2>
             <div class="ui clearing divider"></div>
@@ -29,6 +29,7 @@
                     {{ form_row(form.auteur) }}
                     {{ form_row(form.date) }}
                     {{ form_row(form.position) }}
+                    {{ form_row(form.pagination) }}
                     {{ form_row(form.etat) }}
                     {{ form_row(form.feuille_associee) }}
                 </div>
@@ -47,9 +48,9 @@
             </div>
         </div>
         <div class="ui segment">
-            <p>
-                <span class="obligatoire">*</span> indique un champ obligatoire
-            </p>
+                <p>
+                    <span class="obligatoire">*</span> indique un champ obligatoire
+                </p>
         </div>
 
     {{ form_end(form) }}

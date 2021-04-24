@@ -2,17 +2,27 @@
 
 namespace AppBundle\Site\Model\Repository;
 
-use CCMBenchmark\Ting\Repository\Repository;
-use CCMBenchmark\Ting\Repository\HydratorArray;
-use CCMBenchmark\Ting\Repository\HydratorSingleObject;
-use CCMBenchmark\Ting\Repository\Metadata;
-use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
-use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use AppBundle\Site\Model\Rubrique;
 use Afup\Site\Utils\Base_De_Donnees;
+use CCMBenchmark\Ting\Repository\Repository;
+use CCMBenchmark\Ting\Repository\HydratorArray;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
+use CCMBenchmark\Ting\Repository\Metadata;
+use CCMBenchmark\Ting\Repository\MetadataInitializer;
+use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use Aura\SqlQuery\Common\SelectInterface;
+use Assert\Assertion;
+use Exception;
 
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
+    public function getOneById($id)
+    {
+        $req = 'SELECT * FROM afup_site_rubrique WHERE id ='. $id . ';';
+        return $GLOBALS['AFUP_DB']->obtenirEnregistrement($req, MYSQLI_BOTH);
+    }
 
     public function getAllRubriques($champs = '*', $ordre = 'nom', $direction='desc', $filtre = null, $associatif = false)
     {
@@ -45,16 +55,62 @@ class RubriqueRepository extends Repository implements MetadataInitializer
                     $data[$key] =  $value;
                 }
                 $rubriques[] = $data;
-
             }
+        }
+        return $associatif ? $GLOBALS['AFUP_DB']->obtenirAssociatif($requete) : $GLOBALS['AFUP_DB']->obtenirTous($requete);
+    }
+    
+    public function insertRubrique($rubrique)
+    {
+        $requete = 'INSERT INTO afup_site_rubrique
+        SET
+        id_parent            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdParent()) . ',
+        id_personne_physique = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdPersonnePhysique()) . ',
+        position             = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getPosition()) . ',
+        date                 = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getDate()) . ',
+        nom                  = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getNom()) . ',
+        raccourci            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getRaccourci()) . ',
+        descriptif           = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getDescriptif()) . ',
+        contenu              = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getContenu()) . ',
+        icone                = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIcone()) . ',
+        feuille_associee     = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getFeuilleAssociee()) . ',
+        etat                 = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getEtat());
+        if ($rubrique->getId() > 0) {
+            $requete .= ', id            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->id);
+        }
+        $query = $this->getQuery($requete);
+        $resultat = $query->execute();
+        if ($resultat) {
+            $this->id = $GLOBALS['AFUP_DB']->obtenirDernierId();
+        }
+        return $resultat;
+    }
 
-            
-        }
-        if ($associatif) {
-            return $GLOBALS['AFUP_DB']->obtenirAssociatif($requete);
-        } else {
-            return $GLOBALS['AFUP_DB']->obtenirTous($requete);
-        }
+    public function updateRubrique ($rubrique) 
+    {
+        $requete = 
+            'UPDATE afup_site_rubrique SET
+                id_parent            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdParent()) . ',
+                id_personne_physique = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdPersonnePhysique()) . ',
+                position             = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getPosition()) . ',
+                date                 = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getDate()) . ',
+                nom                  = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getNom()) . ',
+                raccourci            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getRaccourci()) . ',
+                descriptif           = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getDescriptif()) . ',
+                contenu              = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getContenu()) . ',
+                pagination           = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getPagination()) . ',
+                icone                = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIcone()) . ',
+                etat                 = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getEtat()) . ',
+                feuille_associee     = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getFeuilleAssociee()) . '
+            WHERE id             = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getId())
+        ;
+        return $GLOBALS['AFUP_DB']->executer($requete);
+    }
+
+    public function deleteRubrique ($id) 
+    {
+        $requete =  'DELETE FROM afup_site_rubrique WHERE id = '. $id .';' ;
+        return $GLOBALS['AFUP_DB']->executer($requete);
     }
 
     /**

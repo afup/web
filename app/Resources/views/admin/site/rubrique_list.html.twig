@@ -2,7 +2,6 @@
 
 {% block content %}
    <h2>Liste des rubriques</h2>
-{{ dump(rubriques) }}
     <div class="ui menu">
         <a href="{{ path('admin_site_rubriques_add') }}" class="item">
             <div data-tooltip="Ajouter une rubrique" data-position="bottom left">
@@ -74,7 +73,7 @@
                     </td>
                     <td class="single line right aligned">
                         <a id="modifier_{{ rub.id }}"
-                            href="index.php?page=site_rubriques&amp;action=modifier&amp;id={{ rub.id }}"
+                            href="{{ path('admin_site_rubriques_edit', {'id': rub.id }) }}"
                             data-position="left center"
                             data-tooltip="Modifier la rubrique {{ rub.nom }}"
                             class="compact ui icon button"
@@ -83,7 +82,7 @@
                         </a>
 
                         <a id="supprimer_{{ rub.id }}"
-                        href="index.php?page=site_rubriques&amp;action=supprimer&amp;id={{ rub.id }}"
+                        href="{{path('admin_site_rubriques_delete', {'id': rub.id }) }}"
                         data-position="left center"
                         data-tooltip="Supprimer la rubrique {{ rub.nom }}"
                         class="compact ui red icon button confirmable"

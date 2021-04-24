@@ -71,8 +71,17 @@ services:
         resource: '../../sources/AppBundle/Controller/Admin/Site/*'
         autowire: true
         autoconfigure: true
+        
+    AppBundle\Controller\Admin\Site\ListRubriquesAction:
+        autowire: true
 
-    AppBundle\Controller\Admin\Site\RubriqueController:
+    AppBundle\Controller\Admin\Site\AddRubriqueAction:
+        autowire: true
+
+    AppBundle\Controller\Admin\Site\EditRubriqueAction:
+        autowire: true
+
+    AppBundle\Controller\Admin\Site\deleteRubriqueAction:
         autowire: true
 
     AppBundle\Controller\Admin\Members\BadgeNewAction:

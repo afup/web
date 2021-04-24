@@ -25,9 +25,10 @@ class RubriqueEditFormData
 
     /**
     * @Assert\Image(
-     *     minHeight = 43,
-     *     maxHeight = 37
-     * )     */
+     *     minHeight = 37,
+     *     maxHeight = 43
+     * )     
+     * */
     public $icone;
 
     /**
@@ -36,20 +37,10 @@ class RubriqueEditFormData
      */
     public $raccourci;
 
-    /**
-     * @Assert\Type(
-     *     type="object",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
-     */
+   
     public $parent;
 
-    /**
-     * @Assert\Type(
-     *     type="object",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
-     */
+   
     public $auteur;
 
     /**
@@ -62,17 +53,17 @@ class RubriqueEditFormData
      */
     public $position;
 
+     /**
+     * @Assert\Type("integer")
+     */
+    public $pagination;
+
     /**
      * @Assert\Type("integer")
      */
     public $etat;
 
-    /**
-     * @Assert\Type(
-     *     type="object",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
-     */
+  
     public $feuille_associee;
 
 }
