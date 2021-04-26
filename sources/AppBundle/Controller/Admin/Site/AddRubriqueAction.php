@@ -3,22 +3,20 @@
 namespace AppBundle\Controller\Admin\Site;
 
 use Afup\Site\Logger\DbLoggerTrait;
-use AppBundle\Site\Model\Rubrique;
-use AppBundle\Site\Model\Repository\RubriqueRepository;
 use AppBundle\Site\Form\RubriqueEditFormData;
 use AppBundle\Site\Form\RubriqueFormDataFactory;
 use AppBundle\Site\Form\RubriqueType;
+use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Site\Model\Rubrique;
+use Exception;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
-use Exception;
 
 class AddRubriqueAction
 {
@@ -42,19 +40,18 @@ class AddRubriqueAction
     /** @var RubriqueRepository */
     private $rubriqueRepository;
 
-     /** @var string */
-     private $storageDir;
-    
+    /** @var string */
+    private $storageDir;
+
     public function __construct(
-        FormFactoryInterface $formFactory, 
-        RubriqueFormDataFactory  $rubriqueFormDataFactory,  
+        FormFactoryInterface $formFactory,
+        RubriqueFormDataFactory  $rubriqueFormDataFactory,
         RubriqueRepository $rubriqueRepository,
         Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
         $storageDir
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->rubriqueFormDataFactory = $rubriqueFormDataFactory;
         $this->rubriqueRepository =  $rubriqueRepository;
@@ -69,7 +66,7 @@ class AddRubriqueAction
         $data = new RubriqueEditFormData();
         $form = $this->formFactory->create(RubriqueType::class, $data);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $rubrique = new Rubrique();
 
@@ -78,7 +75,7 @@ class AddRubriqueAction
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = hash('sha256', $originalFilename);
-                $newFilename = $safeFilename .'.'. $file->guessExtension();
+                $newFilename = $safeFilename . '.' . $file->guessExtension();
 
                 try {
                     $file->move($this->storageDir, $newFilename);
@@ -86,12 +83,11 @@ class AddRubriqueAction
                 } catch (FileException $e) {
                     $this->flashBag->add('error', 'Une erreur est survenue lors du traitement de l\'icône');
                 }
-
             }
             $this->rubriqueFormDataFactory->toRubrique($form->getData(),$rubrique);
 
             try {
-                $this->rubriqueRepository->insertRubrique($rubrique);
+                $this->rubriqueRepository->save($rubrique);
                 $this->log('Ajout de la rubrique ' . $rubrique->getNom());
                 $this->flashBag->add('notice', 'La rubrique a été ajoutée');
                 return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
@@ -102,11 +98,8 @@ class AddRubriqueAction
 
         return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),
-            'formTitle' => 'Modifier une rubrique',
+            'formTitle' => 'Ajouter une rubrique',
             'icone' => false,
         ]));
     }
-
-    
-    
 }

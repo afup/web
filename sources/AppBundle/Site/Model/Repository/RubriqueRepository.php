@@ -3,63 +3,45 @@
 namespace AppBundle\Site\Model\Repository;
 
 use AppBundle\Site\Model\Rubrique;
-use Afup\Site\Utils\Base_De_Donnees;
-use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Repository\HydratorArray;
-use CCMBenchmark\Ting\Repository\CollectionInterface;
-use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
+use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
-use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
-use Aura\SqlQuery\Common\SelectInterface;
-use Assert\Assertion;
-use Exception;
 
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
     public function getOneById($id)
     {
-        $req = 'SELECT * FROM afup_site_rubrique WHERE id ='. $id . ';';
+        $req = 'SELECT * FROM afup_site_rubrique WHERE id =' . $id . ';';
         return $GLOBALS['AFUP_DB']->obtenirEnregistrement($req, MYSQLI_BOTH);
     }
 
-    public function getAllRubriques($champs = '*', $ordre = 'nom', $direction='desc', $filtre = null, $associatif = false)
+    public function getAllRubriques($ordre = 'nom', $direction='desc', $filtre = null)
     {
-        $requete = 'SELECT';
-        $requete .= '  ' . $champs . ' ';
-        $requete .= 'FROM';
-        $requete .= '  afup_site_rubrique ';
-        if (strlen(trim($filtre)) > 0) {
-            $requete .= sprintf(' WHERE afup_site_rubrique.nom LIKE %s ', $GLOBALS['AFUP_DB']->echapper('%' . $filtre . '%'));
+        if ($direction !== 'desc' && $direction !== 'asc') {
+            $direction = 'asc';
         }
-        $requete .= 'ORDER BY ' . $ordre;
-        $query = $this->getQuery($requete);
-
-        $rubriques = [];
-        if ($champs === '*') {
-            foreach ($query->query($this->getCollection(new HydratorArray()))->getIterator() as $row) {
-                $rubriques[] = array(
-                    'id'=> $row['id'],
-                    'nom' => $row['nom'], 
-                    'date' => $row['date'], 
-                    'etat' => $row['etat'],
-                );
-            }
-        } else {
-            $expected = explode(',',trim($champs));
-            foreach ($query->query($this->getCollection(new HydratorArray()))->getIterator() as $row) {
-                $data = array();
-
-                foreach ($expected as $key=>$value) {
-                    $data[$key] =  $value;
-                }
-                $rubriques[] = $data;
+        $meta = $this->getMetadata();
+        $found = false;
+        foreach ($meta->getFields() as $field) {
+            if ($field['columnName'] === $ordre) {
+                $found=true;
+                break;
             }
         }
-        return $associatif ? $GLOBALS['AFUP_DB']->obtenirAssociatif($requete) : $GLOBALS['AFUP_DB']->obtenirTous($requete);
+        if ($found === false) {
+            $ordre = 'nom';
+        }
+
+        $requete = 'SELECT  * FROM afup_site_rubrique WHERE afup_site_rubrique.nom LIKE :fitre';
+        $requete .= 'ORDER BY ' . $ordre . ' ' . $direction;
+
+        $query = $this->getPreparedQuery($requete)->setParams(['filtre' => '%' . $filtre . '%']);
+
+        return $query->query($this->getCollection(new HydratorArray()));
     }
-    
+
     public function insertRubrique($rubrique)
     {
         $requete = 'INSERT INTO afup_site_rubrique
@@ -86,9 +68,9 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         return $resultat;
     }
 
-    public function updateRubrique ($rubrique) 
+    public function updateRubrique($rubrique)
     {
-        $requete = 
+        $requete =
             'UPDATE afup_site_rubrique SET
                 id_parent            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdParent()) . ',
                 id_personne_physique = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdPersonnePhysique()) . ',
@@ -107,9 +89,9 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         return $GLOBALS['AFUP_DB']->executer($requete);
     }
 
-    public function deleteRubrique ($id) 
+    public function deleteRubrique($id)
     {
-        $requete =  'DELETE FROM afup_site_rubrique WHERE id = '. $id .';' ;
+        $requete =  'DELETE FROM afup_site_rubrique WHERE id = ' . $id . ';' ;
         return $GLOBALS['AFUP_DB']->executer($requete);
     }
 
@@ -135,7 +117,7 @@ class RubriqueRepository extends Repository implements MetadataInitializer
             'columnName' => 'id_parent',
             'fieldName' => 'id_parent',
             'type' => 'int',
-        ]) 
+        ])
         ->addField([
             'columnName' => 'nom',
             'fieldName' => 'nom',
@@ -170,7 +152,7 @@ class RubriqueRepository extends Repository implements MetadataInitializer
             'columnName' => 'etat',
             'fieldName' => 'etat',
             'type' => 'int',
-        ]) 
+        ])
         ->addField([
             'columnName' => 'id_personne_physique',
             'fieldName' => 'id_personne_physique',
@@ -192,6 +174,6 @@ class RubriqueRepository extends Repository implements MetadataInitializer
             'type' => 'int',
         ])
     ;
-    return $metadata;
+        return $metadata;
     }
 }

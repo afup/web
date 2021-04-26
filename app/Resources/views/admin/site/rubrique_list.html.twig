@@ -34,11 +34,7 @@
             <thead>
                 <tr>
                     <th>
-                        {% if direction == 'asc' and sort == 'date' %}
-                        <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : 'desc'}) }}">
-                        {% else %}
-                        <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : 'asc'}) }}">
-                        {% endif %}
+                        <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
                             Date
                         </a>
                     </th>
@@ -61,7 +57,7 @@
                         </a>
                     </th>
                     <th></th>
-                    
+
                 </tr>
             </thead>
             <tbody>
@@ -101,7 +97,7 @@
                     </td>
                  <tr>
                 {% endfor %}
-                
+
             {% else %}
                 <tr>
                     <td colspan="4"><em>Aucune rubrique</em></td>

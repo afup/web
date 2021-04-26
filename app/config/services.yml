@@ -67,26 +67,15 @@ services:
         autowire: true
         autoconfigure: true
 
-    AppBundle\Controller\Admin\Site\:
-        resource: '../../sources/AppBundle/Controller/Admin/Site/*'
-        autowire: true
-        autoconfigure: true
-        
-    AppBundle\Controller\Admin\Site\ListRubriquesAction:
-        autowire: true
-
     AppBundle\Controller\Admin\Site\AddRubriqueAction:
         autowire: true
-        arguments : 
+        arguments :
             $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
 
     AppBundle\Controller\Admin\Site\EditRubriqueAction:
         autowire: true
-        arguments : 
+        arguments :
             $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
-
-    AppBundle\Controller\Admin\Site\deleteRubriqueAction:
-        autowire: true
 
     AppBundle\Controller\Admin\Members\BadgeNewAction:
         autowire: true
@@ -207,7 +196,7 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
 
-    
+
     AppBundle\Event\Model\Repository\TalkRepository:
         class: AppBundle\Event\Model\Repository\TalkRepository
         factory: ["@ting", get]
@@ -453,7 +442,7 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Site\Model\Repository\RubriqueRepository]
 
-   
+
 
 
     AppBundle\Site\Model\Repository\ArticleRepository:
