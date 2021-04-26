@@ -74,9 +74,8 @@ class RubriqueType extends AbstractType
             ])
 
             ->add('icone', FileType::class,[
-                'label' => 'Icône',
+                'label' => 'Icône (Taille requise : 43 x 37 pixels)',
                 'required' => false,
-                'help' => 'Taille requise : 43 x 37 pixels',
                 'data_class' => null
             ])
             

@@ -41,6 +41,9 @@ class AddRubriqueAction
 
     /** @var RubriqueRepository */
     private $rubriqueRepository;
+
+     /** @var string */
+     private $storageDir;
     
     public function __construct(
         FormFactoryInterface $formFactory, 
@@ -48,7 +51,8 @@ class AddRubriqueAction
         RubriqueRepository $rubriqueRepository,
         Environment $twig,
         UrlGeneratorInterface $urlGenerator,
-        FlashBagInterface $flashBag
+        FlashBagInterface $flashBag,
+        $storageDir
     )
     {
         $this->formFactory = $formFactory;
@@ -57,6 +61,7 @@ class AddRubriqueAction
         $this->twig = $twig;
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
+        $this->storageDir = $storageDir;
     }
 
     public function __invoke(Request $request)
@@ -72,16 +77,16 @@ class AddRubriqueAction
             $file = $form->get('icone')->getData();
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+                $safeFilename = hash('sha256', $originalFilename);
+                $newFilename = $safeFilename .'.'. $file->guessExtension();
 
                 try {
-                    $file->move(dirname(__FILE__).'/../../templates/site/images/', $newFilename);
+                    $file->move($this->storageDir, $newFilename);
+                    $rubrique->setIcone($newFilename);
                 } catch (FileException $e) {
                     $this->flashBag->add('error', 'Une erreur est survenue lors du traitement de l\'icône');
                 }
 
-                $rubrique->setIcone($newFilename);
             }
             $this->rubriqueFormDataFactory->toRubrique($form->getData(),$rubrique);
 
@@ -98,7 +103,7 @@ class AddRubriqueAction
         return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),
             'formTitle' => 'Modifier une rubrique',
-            'icone' => false
+            'icone' => false,
         ]));
     }
 

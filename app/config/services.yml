@@ -77,9 +77,13 @@ services:
 
     AppBundle\Controller\Admin\Site\AddRubriqueAction:
         autowire: true
+        arguments : 
+            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
 
     AppBundle\Controller\Admin\Site\EditRubriqueAction:
         autowire: true
+        arguments : 
+            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
 
     AppBundle\Controller\Admin\Site\deleteRubriqueAction:
         autowire: true
