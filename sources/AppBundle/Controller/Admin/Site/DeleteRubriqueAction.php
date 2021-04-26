@@ -8,12 +8,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Exception;
 
 
 class DeleteRubriqueAction
 {
     use DbLoggerTrait;
+
+     /**
+     * @var CsrfTokenManagerInterface
+     */
+    private $csrfTokenManager;
 
     /** @var FlashBagInterface */
     private $flashBag;
@@ -27,16 +34,30 @@ class DeleteRubriqueAction
     /** @var RubriqueRepository */
     private $rubriqueRepository;
     
-    public function __construct(RubriqueRepository $rubriqueRepository, UrlGeneratorInterface $urlGenerator,FlashBagInterface $flashBag)
+    public function __construct(
+        RubriqueRepository $rubriqueRepository,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UrlGeneratorInterface $urlGenerator,
+        FlashBagInterface $flashBag
+    )
     {
         $this->rubriqueRepository =  $rubriqueRepository;
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
+        $this->csrfTokenManager = $csrfTokenManager;
     }
 
-    public function __invoke(Request $request)
+    /**
+     * @param int $id
+     * @param string $token
+     * @return RedirectResponse
+     */
+    public function __invoke($id, $token)
     {
-        $id = $GLOBALS['AFUP_DB']->echapper($request->get('id'));
+        if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('rubrique_delete', $token))) {
+            $this->flashBag->add('error', 'Token invalide');
+            return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list'));
+        }
         $rubrique = $this->rubriqueRepository->getOneById($id);
         $name = $rubrique["nom"];
         try {

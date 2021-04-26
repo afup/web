@@ -98,6 +98,7 @@ class AddRubriqueAction
         return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),
             'formTitle' => 'Modifier une rubrique',
+            'icone' => false
         ]));
     }
 

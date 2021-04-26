@@ -1,6 +1,8 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
+    {% set token_delete=csrf_token('rubrique_delete') %}
+
    <h2>Liste des rubriques</h2>
     <div class="ui menu">
         <a href="{{ path('admin_site_rubriques_add') }}" class="item">
@@ -88,7 +90,7 @@
                         </a>
 
                         <a id="supprimer_{{ rub.id }}"
-                        href="{{path('admin_site_rubriques_delete', {'id': rub.id }) }}"
+                        href="{{path('admin_site_rubriques_delete', {'id': rub.id, 'token': token_delete }) }}"
                         data-position="left center"
                         data-tooltip="Supprimer la rubrique {{ rub.nom }}"
                         class="compact ui red icon button confirmable"
