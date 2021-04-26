@@ -33,24 +33,30 @@
                 <tr>
                     <th>
                         {% if direction == 'asc' and sort == 'date' %}
-                            <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : 'desc'}) }}">Date</a>
+                        <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : 'desc'}) }}">
                         {% else %}
-                            <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : 'asc'}) }}">Date</a>
+                        <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : 'asc'}) }}">
                         {% endif %}
+                            Date
+                        </a>
                     </th>
                     <th>
                         {% if direction == 'asc' and sort == 'nom' %}
-                            <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : 'desc'}) }}">Nom</a>
+                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : 'desc'}) }}">
                         {% else %}
-                            <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : 'asc'}) }}">Nom</a>
+                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : 'asc'}) }}">
                         {% endif %}
+                            Nom
+                        </a>
                     </th>
                     <th>
                         {% if direction == 'asc' and sort == 'etat' %}
-                            <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat', 'direction' : 'desc'}) }}">Etat</a>
+                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat', 'direction' : 'desc'}) }}">
                         {% else %}
-                            <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat', 'direction' : 'asc'}) }}">Etat</a>
+                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat', 'direction' : 'asc'}) }}">
                         {% endif %}
+                            Etat
+                        </a>
                     </th>
                     <th></th>
                     
