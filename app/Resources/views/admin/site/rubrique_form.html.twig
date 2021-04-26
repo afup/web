@@ -3,7 +3,8 @@
 {% form_theme form 'form_theme_admin.html.twig' %}
 
 {% block content %}
-    <h2>Créer une rubrique</h2>
+    <h2>{{ formTitle }}</h2>
+    
     {{ form_start(form) }}
 
         <div class="ui segment">
@@ -15,6 +16,10 @@
                     {{ form_row(form.descriptif) }}
                     {{ form_row(form.contenu) }}
                     {{ form_row(form.icone) }}
+                    {% if icone  %}
+                        <span>Actuellement : {{ icone }}</span>
+                        <img src="{{ icone }}" >
+                    {% endif %}
                 </div>
             </div>
         </div>

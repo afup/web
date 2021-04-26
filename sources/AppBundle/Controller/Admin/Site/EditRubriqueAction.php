@@ -115,9 +115,10 @@ class EditRubriqueAction
             }
         }
         $icone = $rubrique->getIcone() !== null ? $GLOBALS['AFUP_CONF']->obtenir('web|path').'templates/site/images/'.$rubrique->getIcone() : false;
-        return new Response($this->twig->render('admin/site/rubrique_edit.html.twig', [
+        return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),
-            'icone' => $icone
+            'icone' => $icone,
+            'formTitle' => 'Créer une rubrique',
         ]));
     } 
     
