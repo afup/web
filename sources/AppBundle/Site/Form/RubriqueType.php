@@ -3,10 +3,12 @@
 namespace AppBundle\Site\Form;
 
 use Afup\Site\Corporate\Feuilles;
+use AppBundle\Site\Model\Rubrique;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -15,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RubriqueType extends AbstractType
+class RubriqueType extends AbstractType 
 {
     private $rubriqueRepository;
     private $userRepository;
@@ -28,16 +30,20 @@ class RubriqueType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $users = [null => ''];
-        foreach ($this->userRepository->search() as $user) {
-            $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
+        $users = [];
+        foreach ($this->userRepository->getAll() as $user) {
+           $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
         }
-        $feuilles = new Feuilles($GLOBALS['AFUP_DB']);
-        $feuillesChoices = $feuilles->obtenirListe('nom, id', 'nom', true);
-        $rubriquesChoices = $this->rubriqueRepository->getAllRubriques('nom, id', 'nom', 'desc',  null, true);
+        
+        $feuilles = (new Feuilles($GLOBALS['AFUP_DB']))->obtenirListe('nom, id', 'nom', true);
         $positions = [];
         for ($i = 9; $i >= -9; $i--) {
             $positions[$i] = $i;
+        }
+
+        $rubriques = [];
+        foreach ($this->rubriqueRepository->getAll() as $rubrique) {
+            $rubriques[$rubrique->getNom()] = $rubrique->getId();
         }
         $builder
             ->add('nom', TextType::class, [
@@ -84,13 +90,13 @@ class RubriqueType extends AbstractType
                 ]
             ])
 
-            ->add('parent', ChoiceType::class, [
+            ->add('idParent', ChoiceType::class, [
+                'label' => 'Parent',
+                'choices' => $rubriques,
                 'required' => false,
-                'choices' => $rubriquesChoices,
-                'label'=>'Rubrique parente'
             ])
 
-            ->add('auteur', ChoiceType::class, [
+            ->add('idPersonnePhysique', ChoiceType::class, [
                 'required' => false,
                 'label' => 'Auteur',
                 'choices' => $users
@@ -99,6 +105,8 @@ class RubriqueType extends AbstractType
             ->add('date', DateType::class,[
                 'required' => false,
                 'label' => 'Date',
+                'input'=>'datetime',
+                'data' => new \Datetime(),
                 'years' => range(2001,date('Y')),
                 'attr' => [
                     'style' => 'display: flex;',
@@ -121,18 +129,19 @@ class RubriqueType extends AbstractType
                 'choices' => ['Hors ligne' => -1, 'En attente' => 0, 'En ligne' => 1]
             ])
 
-            ->add('feuille_associee', ChoiceType::class, [
+            ->add('feuilleAssociee', ChoiceType::class, [
                 'label' => 'Feuille associée',
                 'required' => false,
-                'choices' => $feuillesChoices
+                'choices' => $feuilles
+            ])
+
+            ->add('save', SubmitType::class, [
+                'label' => 'Enregistrer',
+                'attr' => [
+                    'class' => 'ui primary button'
+                ] 
             ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => RubriqueEditFormData::class,
-        ]);
-    }
 }

@@ -2,13 +2,10 @@
 
 namespace AppBundle\Controller\Admin\Site;
 
+use AppBundle\Controller\SiteBaseController;
 use Afup\Site\Logger\DbLoggerTrait;
-use AppBundle\Site\Form\RubriqueEditFormData;
-use AppBundle\Site\Form\RubriqueFormDataFactory;
 use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
-use Exception;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
+use Exception;
 
-class EditRubriqueAction
+class EditRubriqueAction extends SiteBaseController
 {
     use DbLoggerTrait;
 
@@ -30,15 +28,6 @@ class EditRubriqueAction
     /** @var Environment */
     private $twig;
 
-    /** @var FormFactoryInterface */
-    private $formFactory;
-
-    /** @var RubriqueFormDataFactory */
-    private $rubriqueFormDataFactory;
-
-    /** @var RubriqueEditFormData */
-    private $rubriqueEditFormData;
-
     /** @var RubriqueRepository */
     private $rubriqueRepository;
 
@@ -46,26 +35,19 @@ class EditRubriqueAction
     private $storageDir;
 
     public function __construct(
-        FormFactoryInterface $formFactory,
-        RubriqueFormDataFactory  $rubriqueFormDataFactory,
         RubriqueRepository $rubriqueRepository,
-        RubriqueEditFormData $rubriqueEditFormData,
         Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
         $storageDir
     ) {
-        $this->formFactory = $formFactory;
-        $this->rubriqueFormDataFactory = $rubriqueFormDataFactory;
-        $this->rubriqueEditFormData = $rubriqueEditFormData;
         $this->rubriqueRepository =  $rubriqueRepository;
         $this->twig = $twig;
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
         $this->storageDir = $storageDir;
     }
-
-
+    
     /**
      * @param int $id
      * @param Request $request
@@ -77,20 +59,17 @@ class EditRubriqueAction
     public function __invoke($id,Request $request)
     {
         $rubrique = $this->rubriqueRepository->get($id);
-
-        $old = $this->rubriqueFormDataFactory->fromRubrique($rubrique);
-
-        $form = $this->formFactory->create(RubriqueType::class, $old);
+        $form = $this->createForm(RubriqueType::class, $rubrique);
+      
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+           
              /* Handling the icon file : */
             $file = $form->get('icone')->getData();
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = hash('sha256', $originalFilename);
+                $safeFilename = hash('sha1', $originalFilename);
                 $newFilename = $safeFilename . '.' . $file->guessExtension();
-
                 try {
                     $file->move($this->storageDir, $newFilename);
                     $rubrique->setIcone($newFilename);
@@ -98,18 +77,16 @@ class EditRubriqueAction
                     $this->flashBag->add('error', 'Une erreur est survenue lors du traitement de l\'icône');
                 }
             }
-
-            $this->rubriqueFormDataFactory->toRubrique($old, $rubrique);
             try {
                 $this->rubriqueRepository->save($rubrique);
                 $this->log('Modification de la Rubrique ' . $rubrique->getNom());
-                $this->flashBag->add('notice', 'La rubrique a été modifiée');
+                $this->flashBag->add('notice', 'La rubrique '. $rubrique->getNom() . ' a été modifiée');
                 return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
             } catch (Exception $e) {
                 $this->flashBag->add('error', 'Une erreur est survenue lors de la modification de la rubrique');
             }
         }
-        $icone = $rubrique->getIcone() !== null ? $this->storageDir . DIRECTORY_SEPARATOR . $rubrique->getIcone() : false;
+        $icone = $rubrique->getIcone() !== null ? '/templates/site/images/' . $rubrique->getIcone() : false;
         return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),
             'icone' => $icone,

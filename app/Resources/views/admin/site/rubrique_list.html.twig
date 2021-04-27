@@ -39,20 +39,12 @@
                         </a>
                     </th>
                     <th>
-                        {% if direction == 'asc' and sort == 'nom' %}
-                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : 'desc'}) }}">
-                        {% else %}
-                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : 'asc'}) }}">
-                        {% endif %}
+                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
                             Nom
                         </a>
                     </th>
                     <th>
-                        {% if direction == 'asc' and sort == 'etat' %}
-                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat', 'direction' : 'desc'}) }}">
-                        {% else %}
-                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat', 'direction' : 'asc'}) }}">
-                        {% endif %}
+                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat' , 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
                             Etat
                         </a>
                     </th>

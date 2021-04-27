@@ -11,13 +11,8 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
-    public function getOneById($id)
-    {
-        $req = 'SELECT * FROM afup_site_rubrique WHERE id =' . $id . ';';
-        return $GLOBALS['AFUP_DB']->obtenirEnregistrement($req, MYSQLI_BOTH);
-    }
 
-    public function getAllRubriques($ordre = 'nom', $direction='desc', $filtre = null)
+    public function getAllRubriques($ordre = 'nom', $direction='asc', $filtre = '%')
     {
         if ($direction !== 'desc' && $direction !== 'asc') {
             $direction = 'asc';
@@ -33,68 +28,15 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         if ($found === false) {
             $ordre = 'nom';
         }
-
-        $requete = 'SELECT  * FROM afup_site_rubrique WHERE afup_site_rubrique.nom LIKE :fitre';
+        
+        $requete = 'SELECT  * FROM afup_site_rubrique WHERE afup_site_rubrique.nom LIKE :filtre ';
         $requete .= 'ORDER BY ' . $ordre . ' ' . $direction;
-
-        $query = $this->getPreparedQuery($requete)->setParams(['filtre' => '%' . $filtre . '%']);
+        $query = $this->getQuery($requete);
+        $query->setParams(['filtre' => '%' . $filtre . '%']);
 
         return $query->query($this->getCollection(new HydratorArray()));
     }
-
-    public function insertRubrique($rubrique)
-    {
-        $requete = 'INSERT INTO afup_site_rubrique
-        SET
-        id_parent            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdParent()) . ',
-        id_personne_physique = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdPersonnePhysique()) . ',
-        position             = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getPosition()) . ',
-        date                 = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getDate()) . ',
-        nom                  = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getNom()) . ',
-        raccourci            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getRaccourci()) . ',
-        descriptif           = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getDescriptif()) . ',
-        contenu              = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getContenu()) . ',
-        icone                = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIcone()) . ',
-        feuille_associee     = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getFeuilleAssociee()) . ',
-        etat                 = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getEtat());
-        if ($rubrique->getId() > 0) {
-            $requete .= ', id            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->id);
-        }
-        $query = $this->getQuery($requete);
-        $resultat = $query->execute();
-        if ($resultat) {
-            $this->id = $GLOBALS['AFUP_DB']->obtenirDernierId();
-        }
-        return $resultat;
-    }
-
-    public function updateRubrique($rubrique)
-    {
-        $requete =
-            'UPDATE afup_site_rubrique SET
-                id_parent            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdParent()) . ',
-                id_personne_physique = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIdPersonnePhysique()) . ',
-                position             = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getPosition()) . ',
-                date                 = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getDate()) . ',
-                nom                  = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getNom()) . ',
-                raccourci            = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getRaccourci()) . ',
-                descriptif           = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getDescriptif()) . ',
-                contenu              = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getContenu()) . ',
-                pagination           = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getPagination()) . ',
-                icone                = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getIcone()) . ',
-                etat                 = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getEtat()) . ',
-                feuille_associee     = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getFeuilleAssociee()) . '
-            WHERE id             = ' . $GLOBALS['AFUP_DB']->echapper($rubrique->getId())
-        ;
-        return $GLOBALS['AFUP_DB']->executer($requete);
-    }
-
-    public function deleteRubrique($id)
-    {
-        $requete =  'DELETE FROM afup_site_rubrique WHERE id = ' . $id . ';' ;
-        return $GLOBALS['AFUP_DB']->executer($requete);
-    }
-
+   
     /**
      * @inheritDoc
      */
@@ -115,7 +57,7 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         ])
         ->addField([
             'columnName' => 'id_parent',
-            'fieldName' => 'id_parent',
+            'fieldName' => 'idParent',
             'type' => 'int',
         ])
         ->addField([
@@ -146,7 +88,10 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         ->addField([
             'columnName' => 'date',
             'fieldName' => 'date',
-            'type' => 'int',
+            'type' => 'datetime',
+            'serializer_options' => [
+                'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                'serialize' => ['format' => 'U'],            ],
         ])
         ->addField([
             'columnName' => 'etat',
@@ -155,7 +100,7 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         ])
         ->addField([
             'columnName' => 'id_personne_physique',
-            'fieldName' => 'id_personne_physique',
+            'fieldName' => 'idPersonnePhysique',
             'type' => 'int',
         ])
         ->addField([
@@ -167,10 +112,11 @@ class RubriqueRepository extends Repository implements MetadataInitializer
             'columnName' => 'pagination',
             'fieldName' => 'pagination',
             'type' => 'int',
+            
         ])
         ->addField([
             'columnName' => 'feuille_associee',
-            'fieldName' => 'feuille_associee',
+            'fieldName' => 'feuilleAssociee',
             'type' => 'int',
         ])
     ;

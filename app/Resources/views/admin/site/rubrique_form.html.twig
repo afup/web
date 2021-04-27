@@ -30,13 +30,13 @@
             <div>
                 <div class="ui form">
                     {{ form_row(form.raccourci) }}
-                    {{ form_row(form.parent) }}
-                    {{ form_row(form.auteur) }}
-                    {{ form_row(form.date) }}
+                     {{ form_row(form.idParent) }} 
+                    {{ form_row(form.idPersonnePhysique) }}
+                    {{ form_row(form.date) }} 
                     {{ form_row(form.position) }}
                     {{ form_row(form.pagination) }}
                     {{ form_row(form.etat) }}
-                    {{ form_row(form.feuille_associee) }}
+                    {{ form_row(form.feuilleAssociee) }}
                 </div>
             </div>
         </div>
@@ -46,7 +46,8 @@
                     <div class="inline fields ui grid">
                         <div class="three wide column"></div>
                         <div class="field nine wide column">
-                            <submit type="submit" class="ui primary button">Enregistrer</submit>
+                            {{ form_row(form.save) }}
+
                         </div>
                     </div>
                 </div>

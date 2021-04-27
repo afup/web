@@ -23,21 +23,16 @@ class ListRubriquesAction
 
     public function __invoke(Request $request)
     {
-        $fields = [
-            'date',
-            'nom',
-            'etat',
-        ];
+        $fields = ['date', 'nom', 'etat'];
+
         $sort = $request->query->get('sort', 'nom');
         if (in_array($sort, $fields) === false) {
             $sort = 'nom';
         }
-
         $direction = $request->query->get('direction', 'asc');
-
-
         $filter = $request->query->get('filter');
         $rubriques = $this->rubriqueRepository->getAllRubriques($sort, $direction, $filter);
+
         return new Response($this->twig->render('admin/site/rubrique_list.html.twig', [
             'rubriques' => $rubriques,
             'filter' => $filter,
