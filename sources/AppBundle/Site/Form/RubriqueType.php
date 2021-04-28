@@ -134,13 +134,6 @@ class RubriqueType extends AbstractType
                 'required' => false,
                 'choices' => $feuilles
             ])
-
-            ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer',
-                'attr' => [
-                    'class' => 'ui primary button'
-                ] 
-            ])
         ;
     }
 
