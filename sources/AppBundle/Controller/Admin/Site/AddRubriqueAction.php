@@ -58,11 +58,6 @@ class AddRubriqueAction extends SiteBaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /*Handling the date : */
-            $date = $form->get('icone')->getData();
-            if ($date) {
-              //  $rubrique->setDate($date)
-            }
             /* Handling the icon file : */
             $file = $form->get('icone')->getData();
             if ($file) {
