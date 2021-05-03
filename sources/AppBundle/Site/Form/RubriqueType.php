@@ -38,7 +38,7 @@ class RubriqueType extends AbstractType
         }
         
         $feuilles = (new Feuilles($GLOBALS['AFUP_DB']))->obtenirListe('nom, id', 'nom', true);
-        
+
         $positions = [];
         for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
@@ -54,8 +54,8 @@ class RubriqueType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'maxlength' => 255,
-                    'size' => 60
-                ]
+                    'size' => 60,
+                ],
             ])
 
             ->add('descriptif', TextareaType::class, [
@@ -64,8 +64,8 @@ class RubriqueType extends AbstractType
                 'attr' => [
                     'cols' => 42,
                     'rows' => 10,
-                    'class' => 'tinymce'
-                ]
+                    'class' => 'tinymce',
+                ],
             ])
 
             ->add('contenu', TextareaType::class, [
@@ -74,14 +74,14 @@ class RubriqueType extends AbstractType
                 'attr' => [
                     'cols' => 42,
                     'rows' => 20,
-                    'class' => 'tinymce'
-                ]
+                    'class' => 'tinymce',
+                ],
             ])
 
             ->add('icone', FileType::class,[
                 'label' => 'Icône (Taille requise : 43 x 37 pixels)',
                 'required' => false,
-                'data_class' => null
+                'data_class' => null,
             ])
 
             ->add('raccourci', TextType::class,[
@@ -89,8 +89,8 @@ class RubriqueType extends AbstractType
                 'label' => 'Raccourci',
                 'attr' => [
                     'maxlength' => 255,
-                    'size' => 60
-                ]
+                    'size' => 60,
+                ],
             ])
 
             ->add('idParent', ChoiceType::class, [
@@ -102,7 +102,7 @@ class RubriqueType extends AbstractType
             ->add('idPersonnePhysique', ChoiceType::class, [
                 'required' => false,
                 'label' => 'Auteur',
-                'choices' => $users
+                'choices' => $users,
             ])
 
             ->add('date', DateType::class,[
@@ -113,29 +113,29 @@ class RubriqueType extends AbstractType
                 'years' => range(2001,date('Y')),
                 'attr' => [
                     'style' => 'display: flex;',
-                ]
+                ],
             ])
 
             ->add('position', ChoiceType::class, [
                 'required' => false,
                 'label' => 'Position ',
-                'choices' => $positions
+                'choices' => $positions,
             ])
 
             ->add('pagination', IntegerType::class, [
-                'required' => false
+                'required' => false,
             ])
 
             ->add('etat', ChoiceType::class, [
                 'label' => 'Etat',
                 'required' => false,
-                'choices' => ['Hors ligne' => -1, 'En attente' => 0, 'En ligne' => 1]
+                'choices' => ['Hors ligne' => -1, 'En attente' => 0, 'En ligne' => 1,],
             ])
 
             ->add('feuilleAssociee', ChoiceType::class, [
                 'label' => 'Feuille associée',
                 'required' => false,
-                'choices' => $feuilles
+                'choices' => $feuilles,
             ])
         ;
     }
