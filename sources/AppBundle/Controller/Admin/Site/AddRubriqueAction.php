@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 use Exception;
 
-
 class AddRubriqueAction extends SiteBaseController
 {
     use DbLoggerTrait;
@@ -58,7 +57,6 @@ class AddRubriqueAction extends SiteBaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* Handling the icon file : */
             $file = $form->get('icone')->getData();
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -77,7 +75,6 @@ class AddRubriqueAction extends SiteBaseController
                 $this->flashBag->add('notice', 'La rubrique '. $rubrique->getNom() .' a été ajoutée');
                 return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
             } catch (Exception $e) {
-                throw $e;
                 $this->flashBag->add('error', 'Une erreur est survenue  lors de l\'ajout de la rubrique');
             }
         }
