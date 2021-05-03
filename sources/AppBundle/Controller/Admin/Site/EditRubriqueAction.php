@@ -63,8 +63,6 @@ class EditRubriqueAction extends SiteBaseController
       
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-           
-             /* Handling the icon file : */
             $file = $form->get('icone')->getData();
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -77,15 +75,12 @@ class EditRubriqueAction extends SiteBaseController
                     $this->flashBag->add('error', 'Une erreur est survenue lors du traitement de l\'icône');
                 }
             }
-            try {
-                $this->rubriqueRepository->save($rubrique);
-                $this->log('Modification de la Rubrique ' . $rubrique->getNom());
-                $this->flashBag->add('notice', 'La rubrique '. $rubrique->getNom() . ' a été modifiée');
-                return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
-            } catch (Exception $e) {
-                $this->flashBag->add('error', 'Une erreur est survenue lors de la modification de la rubrique');
-            }
+            $this->rubriqueRepository->save($rubrique);
+            $this->log('Modification de la Rubrique ' . $rubrique->getNom());
+            $this->flashBag->add('notice', 'La rubrique '. $rubrique->getNom() . ' a été modifiée');
+            return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
         }
+        
         $icone = $rubrique->getIcone() !== null ? '/templates/site/images/' . $rubrique->getIcone() : false;
         return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),
