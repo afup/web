@@ -17,15 +17,15 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         if ($direction !== 'desc' && $direction !== 'asc') {
             $direction = 'asc';
         }
-        $meta = $this->getMetadata();
-        $found = false;
-        foreach ($meta->getFields() as $field) {
+        $metadata = $this->getMetadata();
+        $columnNameFound = false;
+        foreach ($metadata->getFields() as $field) {
             if ($field['columnName'] === $ordre) {
-                $found=true;
+                $columnNameFound=true;
                 break;
             }
         }
-        if ($found === false) {
+        if ($columnNameFound === false) {
             $ordre = 'nom';
         }
         
@@ -90,8 +90,14 @@ class RubriqueRepository extends Repository implements MetadataInitializer
             'fieldName' => 'date',
             'type' => 'datetime',
             'serializer_options' => [
-                'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
-                'serialize' => ['format' => 'U'],            ],
+                'unserialize' => [
+                    'unSerializeUseFormat' => true, 
+                    'format' => 'U',
+                ],
+                'serialize' => [
+                    'format' => 'U',
+                ],            
+            ],
         ])
         ->addField([
             'columnName' => 'etat',
