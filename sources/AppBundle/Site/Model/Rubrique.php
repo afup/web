@@ -20,68 +20,28 @@ class Rubrique implements NotifyPropertyInterface
      */
     private $id;
     
-    /**
-     * @Assert\Type("integer")
-     */
     private $idPersonnePhysique;
 
-    /**
-     * @Assert\Type("integer")
-     */
     private $idParent;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=255)
-     */
     private $nom;
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=255)
-     */
+
     private $raccourci;
 
-    /**
-     * @Assert\Length(max=255)
-     */
     private $descriptif;
 
-    /**
-     * @Assert\NotBlank()
-     */
     private $contenu;
 
-    /**
-     * @Assert\Type("integer")
-     */
     private $position;
 
-    /**
-    * @Assert\Image(
-     *     minHeight = 37,
-     *     maxHeight = 43
-     * )     
-     * */
     private $icone;
 
-    /**
-     * @Assert\Type("integer")
-     */
     private $date;
 
-    /**
-     * @Assert\Type("integer")
-     */
     private $etat;
 
-    /**
-     * @Assert\Type("integer")
-     */
     private $pagination = 0;
     
-    /**
-     * @Assert\Type("integer")
-     */
     private $feuilleAssociee;
 
     public function getId() {
