@@ -19,6 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RubriqueType extends AbstractType 
 {
+    const POSITIONS_RUBRIQUES = 9;
+
     private $rubriqueRepository;
     private $userRepository;
 
@@ -36,8 +38,9 @@ class RubriqueType extends AbstractType
         }
         
         $feuilles = (new Feuilles($GLOBALS['AFUP_DB']))->obtenirListe('nom, id', 'nom', true);
+        
         $positions = [];
-        for ($i = 9; $i >= -9; $i--) {
+        for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
         }
 
