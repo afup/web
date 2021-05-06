@@ -6,14 +6,12 @@ use AppBundle\Controller\SiteBaseController;
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
-use Exception;
 
 class EditRubriqueAction extends SiteBaseController
 {
@@ -68,12 +66,8 @@ class EditRubriqueAction extends SiteBaseController
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = hash('sha1', $originalFilename);
                 $newFilename = $safeFilename . '.' . $file->guessExtension();
-                try {
-                    $file->move($this->storageDir, $newFilename);
-                    $rubrique->setIcone($newFilename);
-                } catch (FileException $e) {
-                    $this->flashBag->add('error', 'Une erreur est survenue lors du traitement de l\'icône');
-                }
+                $file->move($this->storageDir, $newFilename);
+                $rubrique->setIcone($newFilename);
             }
             $this->rubriqueRepository->save($rubrique);
             $this->log('Modification de la Rubrique ' . $rubrique->getNom());

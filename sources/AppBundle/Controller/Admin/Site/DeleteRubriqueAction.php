@@ -4,7 +4,6 @@ namespace AppBundle\Controller\Admin\Site;
 
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
-use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -57,13 +56,9 @@ class DeleteRubriqueAction
         }
         $rubrique = $this->rubriqueRepository->get($id);
         $name = $rubrique->getNom();
-        try {
-            $this->rubriqueRepository->delete($rubrique);
-            $this->log('Suppression de la Rubrique ' . $name);
-            $this->flashBag->add('notice', 'La rubrique ' . $name . ' a été supprimée');
-        } catch (Exception $e) {
-            $this->flashBag->add('error', 'Une erreur est survenue lors de la suppression de la rubrique' . $name);
-        }
+        $this->rubriqueRepository->delete($rubrique);
+        $this->log('Suppression de la Rubrique ' . $name);
+        $this->flashBag->add('notice', 'La rubrique ' . $name . ' a été supprimée');
         return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list'));
     }
 }
