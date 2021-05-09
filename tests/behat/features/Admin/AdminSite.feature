@@ -2,6 +2,8 @@ Feature: Administration - Partie Site
 
   @reloadDbWithTestData
   Scenario: Ajout/modification/suppression d'une rubrique
+    Given I am on the homepage
+    Then print last response
     Given I am logged in as admin and on the Administration
     And I follow "Rubriques"
     Then I should see "Liste des rubriques"

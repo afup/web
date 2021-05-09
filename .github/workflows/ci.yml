@@ -81,29 +81,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: PHP - Switch
-        run: sudo update-alternatives --set php /usr/bin/php5.6
-
-      - name: Composer - Get Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - uses: actions/cache@v1
-        id: cache-composer
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-php.5.6-${{ github.sha }}
-          restore-keys: composer-php.5.6-
-
-      - name: Composer - Create cache directory
-        run: mkdir -p /home/runner/.composer/cache
-        if: steps.cache-composer.outputs.cache-hit != 'true'
-
-      - name: CS fixer prerequisites
-        run: make configs/application/config.php
-
-      - name: Composer install
-        run: composer install --no-scripts
-
       - name: Tests - Functional
         run: make test-functional
