@@ -20,6 +20,10 @@ services:
       MYSQL_DATABASE: web
     volumes:
       - ./data/mysqltest:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   apachephp:
     build:
@@ -67,6 +71,9 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    depends_on:
+      dbtest:
+        condition: service_healthy
 
   planete:
     build:
