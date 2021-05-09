@@ -58,6 +58,16 @@ class FeatureContext implements Context
      */
     public function iAmLoggedInAsAdminAndOnTheAdministration()
     {
+        $this->iAmLoggedInAsAdmin();
+        $this->minkContext->clickLink("Administration");
+    }
+
+    /**
+     * @Given I am logged in as admin
+     */
+    public function iAmLoggedInAsAdmin()
+    {
+
         $this->minkContext->iAmOnHomepage();
         $this->minkContext->assertPageContainsText("Tous les deux mois, des nouvelles de L'AFUP");
         $this->minkContext->clickLink("Se connecter");
@@ -66,6 +76,5 @@ class FeatureContext implements Context
         $this->minkContext->fillField("mot_de_passe", "admin");
         $this->minkContext->pressButton("Se connecter");
         $this->minkContext->assertPageContainsText("Espace membre");
-        $this->minkContext->clickLink("Administration");
     }
 }
