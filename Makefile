@@ -63,8 +63,8 @@ init-db:
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make db-seed
 
 config: configs/application/config.php app/config/parameters.yml
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make vendors
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make assets
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp make vendors
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp make assets
 
 test:
 	./bin/atoum
