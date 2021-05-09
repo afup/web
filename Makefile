@@ -71,7 +71,7 @@ test:
 	./bin/php-cs-fixer fix --dry-run -vv
 
 
-test-functional:
+test-functional: config data
 	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest
 	CURRENT_UID=$(CURRENT_UID) docker-compose up -d dbtest apachephptest
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp ./bin/behat
