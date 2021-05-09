@@ -93,7 +93,10 @@
   "require-dev": {
     "atoum/atoum": "^2.8",
     "atoum/stubs": "^2.5",
-    "friendsofphp/php-cs-fixer": "~2"
+    "friendsofphp/php-cs-fixer": "~2",
+    "behat/behat": "^3.7",
+    "behat/mink-extension": "^2.3",
+    "behat/mink-goutte-driver": "^1.2"
   },
   "repositories": [
     {
