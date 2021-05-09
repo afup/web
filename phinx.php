@@ -19,6 +19,19 @@ if (is_file(__DIR__ . '/vendor/sensio/generator-bundle/composer.json')) {
         'port' => $containerDev->getParameter('database_port'),
         'charset' => 'utf8mb4',
     ];
+
+    $kernelDev = new AppKernel('test', true);
+    $kernelDev->boot();
+    $containerDev = $kernelDev->getContainer();
+    $environments['test'] = [
+        'adapter' => 'mysql',
+        'host' => $containerDev->getParameter('database_host'),
+        'name' => $containerDev->getParameter('database_name'),
+        'user' => $containerDev->getParameter('database_user'),
+        'pass' => $containerDev->getParameter('database_password'),
+        'port' => $containerDev->getParameter('database_port'),
+        'charset' => 'utf8mb4',
+    ];
 }
 
 $kernelProd = new AppKernel('prod', true);
