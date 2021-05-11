@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller\Admin\Site;
 
-use AppBundle\Controller\SiteBaseController;
 use Afup\Site\Logger\DbLoggerTrait;
+use AppBundle\Controller\SiteBaseController;
 use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
