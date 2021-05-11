@@ -61,13 +61,13 @@ class AddRubriqueAction extends SiteBaseController
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = hash('sha1', $originalFilename);
-                $newFilename = $safeFilename .'.'. $file->guessExtension();
+                $newFilename = $safeFilename . '.' . $file->guessExtension();
                 $file->move($this->storageDir, $newFilename);
                 $rubrique->setIcone($newFilename);
             }
             $this->rubriqueRepository->save($rubrique);
-            $this->log('Ajout de la rubrique '. $rubrique->getNom());
-            $this->flashBag->add('notice', 'La rubrique '. $rubrique->getNom() .' a été ajoutée');
+            $this->log('Ajout de la rubrique ' . $rubrique->getNom());
+            $this->flashBag->add('notice', 'La rubrique ' . $rubrique->getNom() . ' a été ajoutée');
             return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
         }
 
