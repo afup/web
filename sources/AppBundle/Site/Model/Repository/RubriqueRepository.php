@@ -11,7 +11,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
-
     public function getAllRubriques($ordre = 'nom', $direction='asc', $filtre = '%')
     {
         if ($direction !== 'desc' && $direction !== 'asc') {
