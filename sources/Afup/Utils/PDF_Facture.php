@@ -2,6 +2,8 @@
 
 namespace Afup\Site\Utils;
 
+use AppBundle\Compta\BankAccount\BankAccount;
+
 class PDF_Facture extends \FPDF
 {
     /**
@@ -11,21 +13,28 @@ class PDF_Facture extends \FPDF
      *
      * @access protected
      */
-    var $configuration = null;
+    public $configuration;
+
+    /**
+     * @var BankAccount
+     */
+    private $bankAccount;
 
     /**
      * Constructor
      *
      * @param Configuration $configuration The Afup\Site\Utils\Configuration object
+     * @param BankAccount $bankAccount
      * @param string $orientation The page's orientation (portrait = P, landscape = L)
      * @param string $unit The page's units. Default is mm
      * @param string $format The page's format. Default is A4
      * @return void
      * @throws \Exception
      */
-    function __construct($configuration, $orientation = 'P', $unit = 'mm', $format = 'A4')
+    function __construct($configuration, BankAccount $bankAccount, $orientation = 'P', $unit = 'mm', $format = 'A4')
     {
         parent::FPDF($orientation, $unit, $format);
+        $this->bankAccount = $bankAccount;
 
         $this->setAFUPConfiguration($configuration);
     }
@@ -127,34 +136,34 @@ class PDF_Facture extends \FPDF
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(130, 3, 'Identification RIB : Banque', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-95, 3, $this->configuration->obtenir('rib|etablissement'), 0, 0, 'C');
+        $this->Cell(-95, 3, $this->bankAccount->getEtablissement(), 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(112, 3, 'Guichet', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-95, 3, $this->configuration->obtenir('rib|guichet'), 0, 0, 'C');
+        $this->Cell(-95, 3, $this->bankAccount->getGuichet(), 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(111, 3, utf8_decode('N° Cpte'), 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-88, 3, $this->configuration->obtenir('rib|compte'), 0, 0, 'C');
+        $this->Cell(-88, 3, $this->bankAccount->getCompte(), 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(107, 3, utf8_decode('Clé'), 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-99, 3, $this->configuration->obtenir('rib|cle'), 0, 0, 'C');
+        $this->Cell(-99, 3, $this->bankAccount->getCle(), 0, 0, 'C');
 
         $this->Ln();
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(120, 3, 'Identification IBAN', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-62, 3, $this->configuration->obtenir('rib|iban'), 0, 0, 'C');
+        $this->Cell(-62, 3, $this->bankAccount->getIban(), 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(110, 3, 'BIC', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-90, 3, $this->configuration->obtenir('rib|bic'), 0, 0, 'C');
+        $this->Cell(-90, 3, $this->bankAccount->getBic(), 0, 0, 'C');
 
         $this->Ln();
 
