@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Site\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -145,7 +146,7 @@ class Rubrique implements NotifyPropertyInterface
 
     public function getDate()
     {
-        return  new \DateTime (date('d-M-y', $this->date));
+        return  new \DateTime(date('d-M-y', $this->date));
     }
 
     public function setDate($date)
