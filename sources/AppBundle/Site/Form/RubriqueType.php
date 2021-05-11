@@ -3,7 +3,6 @@
 namespace AppBundle\Site\Form;
 
 use Afup\Site\Corporate\Feuilles;
-use AppBundle\Site\Model\Rubrique;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class RubriqueType extends AbstractType
@@ -190,5 +188,4 @@ class RubriqueType extends AbstractType
             ])
         ;
     }
-
 }

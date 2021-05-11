@@ -38,7 +38,7 @@ class EditRubriqueAction extends SiteBaseController
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
         $storageDir
-    ) 
+    )
     {
         $this->rubriqueRepository =  $rubriqueRepository;
         $this->twig = $twig;
