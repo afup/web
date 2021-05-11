@@ -28,7 +28,7 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         if ($columnNameFound === false) {
             $ordre = 'nom';
         }
-        
+
         $requete = 'SELECT  * FROM afup_site_rubrique WHERE afup_site_rubrique.nom LIKE :filtre ';
         $requete .= 'ORDER BY ' . $ordre . ' ' . $direction;
         $query = $this->getQuery($requete);
@@ -36,7 +36,7 @@ class RubriqueRepository extends Repository implements MetadataInitializer
 
         return $query->query($this->getCollection(new HydratorArray()));
     }
-   
+
     /**
      * @inheritDoc
      */
@@ -118,7 +118,6 @@ class RubriqueRepository extends Repository implements MetadataInitializer
             'columnName' => 'pagination',
             'fieldName' => 'pagination',
             'type' => 'int',
-            
         ])
         ->addField([
             'columnName' => 'feuille_associee',

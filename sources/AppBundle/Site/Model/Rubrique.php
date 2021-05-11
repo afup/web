@@ -14,12 +14,12 @@ class Rubrique implements NotifyPropertyInterface
     const ID_RUBRIQUE_ANTENNES = 84;
     const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
     const ID_RUBRIQUE_NOS_ACTIONS = 88;
-    
+
     /**
      * @Assert\Type("integer")
      */
     private $id;
-    
+
     private $idPersonnePhysique;
 
     private $idParent;
@@ -41,13 +41,13 @@ class Rubrique implements NotifyPropertyInterface
     private $etat;
 
     private $pagination = 0;
-    
+
     private $feuilleAssociee;
 
     public function getId() {
         return $this->id;
     }
-     
+
     public function setId($id)
     {
         $this->propertyChanged('id', $this->id, $id);
@@ -66,7 +66,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getIdParent() {
         return $this->idParent;
     }
-    
+
     public function setIdParent($id) {
         $this->propertyChanged('idParent', $this->idParent, $id);
         $this->idParent = $id;
@@ -75,7 +75,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getNom() {
         return $this->nom;
     }
-    
+
     public function setNom($nom) {
         $this->propertyChanged('nom', $this->nom, $nom);
         $this->nom = $nom;
@@ -84,7 +84,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getRaccourci() {
         return $this->raccourci;
     }
-    
+
     public function setRaccourci($raccourci) {
         $this->propertyChanged('raccourci', $this->raccourci, $raccourci);
         $this->raccourci = $raccourci;
@@ -93,7 +93,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getDescriptif() {
         return $this->descriptif;
     }
-    
+
     public function setDescriptif($descriptif) {
         $this->descriptif = $descriptif;
         $this->propertyChanged('descriptif', $this->descriptif, $descriptif);
@@ -102,7 +102,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getContenu() {
         return $this->contenu;
     }
-    
+
     public function setContenu($contenu) {
         $this->propertyChanged('contenu', $this->contenu, $contenu);
         $this->contenu = $contenu;
@@ -111,7 +111,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getPosition() {
         return $this->position;
     }
-    
+
     public function setPosition($position) {
         $this->propertyChanged('position', $this->position, $position);
         $this->position = $position;
@@ -120,7 +120,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getIcone() {
         return $this->icone;
     }
-    
+
     public function setIcone($icone) {
         $this->propertyChanged('icone', $this->icone, $icone);
         $this->icone = $icone;
@@ -129,7 +129,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getDate() {
         return  new \DateTime (date('d-M-y', $this->date));
     }
-    
+
     public function setDate($date) {
         $date = is_null($date) ? $date : $date->getTimestamp();
         $this->propertyChanged('date', $this->date, $date);
@@ -139,7 +139,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getEtat() {
         return $this->etat;
     }
-    
+
     public function setEtat($etat) {
         $this->propertyChanged('etat', $this->etat, $etat);
         $this->etat = $etat;
@@ -148,7 +148,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getPagination() {
         return $this->pagination;
     }
-    
+
     public function setPagination($pagination = 0) {
         $pagination = is_null($pagination) ? 0 : $pagination;
         $this->propertyChanged('pagination', $this->pagination, $pagination);
@@ -158,7 +158,7 @@ class Rubrique implements NotifyPropertyInterface
     public function getFeuilleAssociee() {
         return $this->feuilleAssociee;
     }
-    
+
     public function setFeuilleAssociee($feuilleAssociee) {
         $this->propertyChanged('feuilleAssociee', $this->feuilleAssociee, $feuilleAssociee);
         $this->feuilleAssociee = $feuilleAssociee;

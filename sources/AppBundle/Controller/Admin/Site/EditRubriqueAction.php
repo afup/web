@@ -38,14 +38,15 @@ class EditRubriqueAction extends SiteBaseController
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
         $storageDir
-    ) {
+    ) 
+    {
         $this->rubriqueRepository =  $rubriqueRepository;
         $this->twig = $twig;
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
         $this->storageDir = $storageDir;
     }
-    
+
     /**
      * @param int $id
      * @param Request $request
@@ -58,7 +59,7 @@ class EditRubriqueAction extends SiteBaseController
     {
         $rubrique = $this->rubriqueRepository->get($id);
         $form = $this->createForm(RubriqueType::class, $rubrique);
-      
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('icone')->getData();
@@ -74,7 +75,7 @@ class EditRubriqueAction extends SiteBaseController
             $this->flashBag->add('notice', 'La rubrique '. $rubrique->getNom() .' a été modifiée');
             return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
         }
-        
+
         $icone = $rubrique->getIcone() !== null ? '/templates/site/images/'. $rubrique->getIcone() : false;
         return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),

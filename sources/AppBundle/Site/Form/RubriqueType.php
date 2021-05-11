@@ -39,7 +39,7 @@ class RubriqueType extends AbstractType
         foreach ($this->userRepository->getAll() as $user) {
            $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
         }
-        
+
         $feuilles = (new Feuilles($GLOBALS['AFUP_DB']))->obtenirListe('nom, id', 'nom', true);
 
         $positions = [];
