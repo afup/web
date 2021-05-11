@@ -61,9 +61,9 @@ class EditRubriqueAction extends SiteBaseController
         $form = $this->createForm(RubriqueType::class, $rubrique);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()){
             $file = $form->get('icone')->getData();
-            if ($file) {
+            if ($file){
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = hash('sha1', $originalFilename);
                 $newFilename = $safeFilename . '.' . $file->guessExtension();
@@ -75,7 +75,6 @@ class EditRubriqueAction extends SiteBaseController
             $this->flashBag->add('notice', 'La rubrique ' . $rubrique->getNom() . ' a été modifiée');
             return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
         }
-
         $icone = $rubrique->getIcone() !== null ? '/templates/site/images/' . $rubrique->getIcone() : false;
         return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),

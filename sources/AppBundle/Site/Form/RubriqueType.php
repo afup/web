@@ -31,19 +31,17 @@ class RubriqueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $users = [];
-        foreach ($this->userRepository->getAll() as $user) {
+        foreach ($this->userRepository->getAll() as $user){
            $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
         }
-
         $feuilles = (new Feuilles($GLOBALS['AFUP_DB']))->obtenirListe('nom, id', 'nom', true);
 
         $positions = [];
-        for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
+        for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--){
             $positions[$i] = $i;
         }
-
         $rubriques = [];
-        foreach ($this->rubriqueRepository->getAll() as $rubrique) {
+        foreach ($this->rubriqueRepository->getAll() as $rubrique){
             $rubriques[$rubrique->getNom()] = $rubrique->getId();
         }
         $builder
