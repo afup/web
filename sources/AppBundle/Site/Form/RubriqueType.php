@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class RubriqueType extends AbstractType 
+class RubriqueType extends AbstractType
 {
     const POSITIONS_RUBRIQUES = 9;
 
@@ -102,7 +102,7 @@ class RubriqueType extends AbstractType
                     new Assert\Image([
                         'minHeight' => 37,
                         'maxHeight' => 43,
-                    ]),   
+                    ]),
                 ]
             ])
 
@@ -123,10 +123,10 @@ class RubriqueType extends AbstractType
             ->add('idParent', ChoiceType::class, [
                 'label' => 'Parent',
                 'choices' => $rubriques,
-                'required' => false,    
+                'required' => false,
                 'constraints' => [
                     new Assert\Type("integer"),
-                ],            
+                ],
             ])
 
             ->add('idPersonnePhysique', ChoiceType::class, [
@@ -149,7 +149,7 @@ class RubriqueType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\Type("datetime"),
-                ],   
+                ],
             ])
 
             ->add('position', ChoiceType::class, [
@@ -165,20 +165,20 @@ class RubriqueType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Type("integer"),
-                ],   
+                ],
             ])
 
             ->add('etat', ChoiceType::class, [
                 'label' => 'Etat',
                 'required' => false,
                 'choices' => [
-                    'Hors ligne' => -1, 
-                    'En attente' => 0, 
+                    'Hors ligne' => -1,
+                    'En attente' => 0,
                     'En ligne' => 1,
                 ],
                 'constraints' => [
                     new Assert\Type("integer"),
-                ],   
+                ],
             ])
 
             ->add('feuilleAssociee', ChoiceType::class, [
@@ -187,7 +187,7 @@ class RubriqueType extends AbstractType
                 'choices' => $feuilles,
                 'constraints' => [
                     new Assert\Type("integer"),
-                ],   
+                ],
             ])
         ;
     }

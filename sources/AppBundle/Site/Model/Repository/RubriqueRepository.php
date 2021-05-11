@@ -91,12 +91,12 @@ class RubriqueRepository extends Repository implements MetadataInitializer
             'type' => 'datetime',
             'serializer_options' => [
                 'unserialize' => [
-                    'unSerializeUseFormat' => true, 
+                    'unSerializeUseFormat' => true,
                     'format' => 'U',
                 ],
                 'serialize' => [
                     'format' => 'U',
-                ],            
+                ],
             ],
         ])
         ->addField([
