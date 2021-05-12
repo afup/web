@@ -31,17 +31,16 @@ class RubriqueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $users = [];
-        foreach ($this->userRepository->getAll() as $user){
-           $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
+        foreach ($this->userRepository->getAll() as $user) {
+            $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
         }
         $feuilles = (new Feuilles($GLOBALS['AFUP_DB']))->obtenirListe('nom, id', 'nom', true);
-
         $positions = [];
-        for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--){
+        for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
         }
         $rubriques = [];
-        foreach ($this->rubriqueRepository->getAll() as $rubrique){
+        foreach ($this->rubriqueRepository->getAll() as $rubrique) {
             $rubriques[$rubrique->getNom()] = $rubrique->getId();
         }
         $builder
@@ -58,7 +57,6 @@ class RubriqueType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
-
             ->add('descriptif', TextareaType::class, [
                 'label' => 'Descriptif',
                 'required' => false,
@@ -73,7 +71,6 @@ class RubriqueType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
-
             ->add('contenu', TextareaType::class, [
                 'label' => 'Contenu',
                 'required' => true,
@@ -88,8 +85,7 @@ class RubriqueType extends AbstractType
                     new Assert\NotBlank(),
                 ],
             ])
-
-            ->add('icone', FileType::class,[
+            ->add('icone', FileType::class, [
                 'label' => 'Icône (Taille requise : 43 x 37 pixels)',
                 'required' => false,
                 'data_class' => null,
@@ -100,8 +96,7 @@ class RubriqueType extends AbstractType
                     ]),
                 ]
             ])
-
-            ->add('raccourci', TextType::class,[
+            ->add('raccourci', TextType::class, [
                 'required' => true,
                 'label' => 'Raccourci',
                 'attr' => [
@@ -114,7 +109,6 @@ class RubriqueType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
-
             ->add('idParent', ChoiceType::class, [
                 'label' => 'Parent',
                 'choices' => $rubriques,
@@ -123,7 +117,6 @@ class RubriqueType extends AbstractType
                     new Assert\Type("integer"),
                 ],
             ])
-
             ->add('idPersonnePhysique', ChoiceType::class, [
                 'required' => false,
                 'label' => 'Auteur',
@@ -132,13 +125,12 @@ class RubriqueType extends AbstractType
                     new Assert\Type("integer"),
                 ],
             ])
-
-            ->add('date', DateType::class,[
+            ->add('date', DateType::class, [
                 'required' => false,
                 'label' => 'Date',
                 'input'=>'datetime',
                 'data' => new \Datetime(),
-                'years' => range(2001,date('Y')),
+                'years' => range(2001, date('Y')),
                 'attr' => [
                     'style' => 'display: flex;',
                 ],
@@ -146,7 +138,6 @@ class RubriqueType extends AbstractType
                     new Assert\Type("datetime"),
                 ],
             ])
-
             ->add('position', ChoiceType::class, [
                 'required' => false,
                 'label' => 'Position ',
@@ -155,14 +146,12 @@ class RubriqueType extends AbstractType
                     new Assert\Type("integer"),
                 ],
             ])
-
             ->add('pagination', IntegerType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Type("integer"),
                 ],
             ])
-
             ->add('etat', ChoiceType::class, [
                 'label' => 'Etat',
                 'required' => false,
@@ -175,7 +164,6 @@ class RubriqueType extends AbstractType
                     new Assert\Type("integer"),
                 ],
             ])
-
             ->add('feuilleAssociee', ChoiceType::class, [
                 'label' => 'Feuille associée',
                 'required' => false,

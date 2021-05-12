@@ -32,13 +32,7 @@ class EditRubriqueAction extends SiteBaseController
     /** @var string */
     private $storageDir;
 
-    public function __construct(
-        RubriqueRepository $rubriqueRepository,
-        Environment $twig,
-        UrlGeneratorInterface $urlGenerator,
-        FlashBagInterface $flashBag,
-        $storageDir
-    )
+    public function __construct(RubriqueRepository $rubriqueRepository,Environment $twig,UrlGeneratorInterface $urlGenerator,FlashBagInterface $flashBag,$storageDir)
     {
         $this->rubriqueRepository =  $rubriqueRepository;
         $this->twig = $twig;
@@ -59,11 +53,10 @@ class EditRubriqueAction extends SiteBaseController
     {
         $rubrique = $this->rubriqueRepository->get($id);
         $form = $this->createForm(RubriqueType::class, $rubrique);
-
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('icone')->getData();
-            if ($file){
+            if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = hash('sha1', $originalFilename);
                 $newFilename = $safeFilename . '.' . $file->guessExtension();
