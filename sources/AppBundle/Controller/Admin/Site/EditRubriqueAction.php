@@ -73,6 +73,7 @@ class EditRubriqueAction extends SiteBaseController
             'form' => $form->createView(),
             'icone' => $icone,
             'formTitle' => 'Modifier une rubrique',
+            'submitLabel' => 'Modifer',
         ]));
     }
 }

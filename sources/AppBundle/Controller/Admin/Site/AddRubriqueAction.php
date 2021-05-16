@@ -73,6 +73,7 @@ class AddRubriqueAction extends SiteBaseController
             'form' => $form->createView(),
             'formTitle' => 'Ajouter une rubrique',
             'icone' => false,
+            'submitLabel' => 'Ajouter',
         ]));
     }
 }
