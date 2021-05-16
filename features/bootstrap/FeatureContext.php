@@ -77,4 +77,24 @@ class FeatureContext implements Context
         $this->minkContext->pressButton("Se connecter");
         $this->minkContext->assertPageContainsText("Espace membre");
     }
+
+    /**
+     * @Then The :field field should only contain the follow values :expectedValuesJson
+     */
+    public function selectHasValues($field, $expectedValuesJson)
+    {
+        $node = $this->minkContext->assertSession()->fieldExists($field);
+        $options = $node->findAll('css', 'option');
+
+        $expectedValues = json_decode($expectedValuesJson, true);
+
+        $foundValues = [];
+        foreach ($options as $option) {
+            $foundValues[] = $option->getText();
+        }
+
+        if ($foundValues != $expectedValues) {
+            throw new \Exception(sprintf('The select has the following values %s (expected %s)', json_encode($foundValues, JSON_UNESCAPED_UNICODE), $expectedValuesJson));
+        }
+    }
 }

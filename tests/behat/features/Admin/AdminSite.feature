@@ -23,7 +23,15 @@ Feature: Administration - Partie Site
     And I press "Modifier"
     Then I should see "Liste des rubriques"
     And the ".content table" element should contain "Événéments"
+    # Les rebriquers sont bien visibles sur la page de création d'un article
+    When I follow "Articles"
+    Then I should see "Liste des articles"
+    When I follow "Ajouter"
+    Then I should see "Ajouter un article"
+    Then The "id_site_rubrique" field should only contain the follow values '["", "Actualités", "Événéments"]'
+
     # suppression d'une rubrique
-    When I follow "supprimer_10"
+    When I follow "Rubriques"
+    And I follow "supprimer_10"
     Then I should see "Liste des rubriques"
     But the ".content table" element should not contain "Événements"
