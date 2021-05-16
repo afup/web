@@ -7,6 +7,7 @@ use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\SubscriptionReminderLog;
 use AppBundle\Association\NotifiableInterface;
+use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
@@ -59,6 +60,14 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
         ;
 
         $message = new Message($this->getSubject(), MailUserFactory::sponsors(), new MailUser($user->getEmail()));
+
+        $message->addAttachment(new Attachment(
+            __DIR__ . '/../_data/membership-renouvellement-cotisation.pdf',
+            'membership-renouvellement-cotisation.pdf',
+            'base64',
+            'application/pdf'
+        ));
+
         $status = $this->mailer->sendTransactional($message, $this->getText());
         $log->setMailSent($status);
         $this->subscriptionReminderLogRepository->save($log);
