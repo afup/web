@@ -63,12 +63,19 @@ init-db:
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make db-seed
 
 config: configs/application/config.php app/config/parameters.yml
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make vendors
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make assets
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp make vendors
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp make assets
 
 test:
 	./bin/atoum
 	./bin/php-cs-fixer fix --dry-run -vv
+
+
+test-functional: data config
+	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest
+	CURRENT_UID=$(CURRENT_UID) docker-compose up -d dbtest apachephptest
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp ./bin/behat
+	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest
 
 data:
 	mkdir data

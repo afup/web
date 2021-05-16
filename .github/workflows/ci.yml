@@ -73,3 +73,13 @@ jobs:
 
       - name: Tests - CS Fixer
         run: ./bin/php-cs-fixer fix --dry-run -vv
+
+  functional:
+    name: "Functional tests"
+    runs-on: ubuntu-16.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Tests - Functional
+        run: make test-functional
