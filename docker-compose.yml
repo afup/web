@@ -11,6 +11,20 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
 
+  dbtest:
+    build: ./docker/dockerfiles/mysqltest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: afup
+      MYSQL_PASSWORD: afup
+      MYSQL_DATABASE: web
+    volumes:
+      - ./data/mysqltest:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
   apachephp:
     build:
       context: ./docker/dockerfiles/apachephp
@@ -40,6 +54,26 @@ services:
     links:
       - db
       - mailcatcher
+
+  apachephptest:
+    build:
+      context: ./docker/dockerfiles/apachephp
+      args:
+        uid: ${CURRENT_UID:-1001}
+        gid: "1001"
+        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
+    environment:
+      SYMFONY_ENV: "test"
+    volumes:
+      - ./:/var/www/html
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://apachephptest:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      dbtest:
+        condition: service_healthy
 
   planete:
     build:
@@ -93,6 +127,8 @@ services:
       - db
       - apachephp
       - mailcatcher
+      - apachephptest
+      - dbtest
     command: "false"
 
   cliphp7:
