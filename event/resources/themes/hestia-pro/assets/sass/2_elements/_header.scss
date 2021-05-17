@@ -1,0 +1,12 @@
+.header-layout-classic-blog.page:not(.home):not(.archive) .main-raised {
+  border-radius: 0;
+}
+
+.header-layout-classic-blog:not(.page-template-default):not(.home):not(.archive) {
+  &.woocommerce.archive .main-raised,
+  &.single .main-raised,
+  .main-raised {
+    margin-top: 0;
+  }
+}
+

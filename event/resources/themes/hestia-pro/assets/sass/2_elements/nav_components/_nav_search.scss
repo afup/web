@@ -1,0 +1,124 @@
+@media (max-width: 768px) {
+  .hestia-nav-search {
+    margin-top: 25px;
+    .search-submit {
+      display: block;
+      pointer-events: all;
+    }
+    form {
+      width: 100%;
+      margin-bottom: 0;
+      &:after {
+        font-size: 16px;
+        display: block;
+      }
+    }
+    label {
+      padding-right: 25px;
+    }
+  }
+  .navbar .navbar-nav > li.hestia-search-in-menu a.hestia-toggle-search {
+    display: none;
+  }
+}
+
+.hestia-toggle-search svg {
+  fill: #555;
+  vertical-align: middle;
+}
+
+.navbar.navbar-transparent .hestia-toggle-search svg {
+  fill: #fff;
+}
+
+// Search on full screen menu.
+.full-screen-menu {
+  .hestia-toggle-search {
+    display: none;
+  }
+  .hestia-nav-search {
+    margin-top: 25px;
+    text-align: left;
+  }
+}
+
+@media( min-width: 769px ) {
+  // Search in left-right sidebar layout.
+  .navbar:not(.full-screen-menu) {
+    .hestia-toggle-search {
+      display: block;
+      //padding: 12.5px;
+      width: 55px;
+      i {
+        font-size: 16px;
+      }
+    }
+    .hestia-search-in-menu {
+      cursor: pointer;
+      position: relative;
+      //z-index: 999;
+      vertical-align: middle;
+      display: inline-block;
+    }
+    // Search opened.
+    &.nav-searching {
+      .hestia-nav-search form {
+        max-width: 200px;
+        opacity: 1;
+        pointer-events: all;
+      }
+      #main-navigation ul.nav li:not(.hestia-search-in-menu) {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+    // end Search opened.
+    .hestia-nav-search {
+      padding: 0 15px;
+      text-align: left;
+      .search-submit {
+        display: none;
+        pointer-events: none;
+      }
+      form {
+        width: 200px;
+        max-width: 0;
+        padding: 5px;
+        transition: all .5s ease;
+        position: absolute;
+        right: 40px;
+        box-sizing: border-box;
+        opacity: 0;
+        pointer-events: none;
+      }
+      form:after {
+        display: none;
+      }
+      label {
+        padding: 0;
+      }
+    }
+    &.navbar-transparent {
+      .hestia-nav-search form {
+        .search-field {
+          color: #ffffff;
+          &::-webkit-input-placeholder {
+            color: #ffffff;
+          }
+          &::-moz-placeholder {
+            color: #ffffff;
+          }
+          &:-ms-input-placeholder {
+            color: #ffffff;
+          }
+          &:-moz-placeholder {
+            color: #ffffff;
+          }
+        }
+        .control-label {
+          color: #fff;
+        }
+      }
+    }
+  }
+}

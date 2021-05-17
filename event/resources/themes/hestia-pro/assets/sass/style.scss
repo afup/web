@@ -1,0 +1,97 @@
+/*
+Theme Name:     Hestia Pro
+Theme URI:      https://themeisle.com/themes/hestia-pro/
+Author:         ThemeIsle
+Author URI:     https://themeisle.com
+Tested up to:   5.6
+Requires PHP:   5.4.0
+Description:    Hestia Pro is a modern WordPress theme for professionals. It fits creative business, small businesses (restaurants, wedding planners, sport/medical shops), startups, corporate businesses, online agencies and firms, portfolios, ecommerce (WooCommerce), and freelancers. It has a multipurpose one-page design, widgetized footer, blog/news page and a clean look, is compatible with: Flat Parallax Slider, Photo Gallery, Travel Map and Elementor Page Builder . The theme is responsive, WPML, Retina ready, SEO friendly, and uses Material Kit for design.
+Version:        3.0.16
+License:        GNU General Public License v2 or later
+License URI:    http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:    hestia-pro
+WordPress Available:  no
+Requires License:    yes
+Tags: blog, custom-logo, portfolio, e-commerce, rtl-language-support, post-formats, grid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-menu, featured-image-header, featured-images, flexible-header, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, editor-style, footer-widgets, left-sidebar, right-sidebar, wide-blocks
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+
+Hestia Pro is based on Underscores http://underscores.me/, (C) 2012-2015 Automattic, Inc.
+Underscores is distributed under the terms of the GNU GPL v2 or later.
+*/
+
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# General
+	## Generic styles
+	## Buttons and links
+# Navigation
+# Forms
+# Pagination and navbar
+# Typography
+# Cards styling
+# Tables
+# Sections Styling
+    ## About Section
+    ## Portfolio Section
+    ## Contact Section
+    ## Team Section
+    ## Subscribe Section
+# Footer
+# Blog
+	## Content
+	## Sidebar
+	## Attachment Page
+# Woocommerce Integration
+	## My Account Page
+	## Generic
+	## YITH Magnifier
+# Responsive
+--------------------------------------------------------------*/
+
+@import "0_base/variables";
+@import "0_base/mixins";
+@import "0_base/placeholders";
+
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+@import "1_typography/typography-main";
+
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+@import "2_elements/elements-main";
+
+/*--------------------------------------------------------------
+# Sections
+--------------------------------------------------------------*/
+@import "3_sections/sections-main";
+
+/*--------------------------------------------------------------
+# Blog
+--------------------------------------------------------------*/
+@import "4_blog/blog-main";
+
+/*--------------------------------------------------------------
+# Page
+--------------------------------------------------------------*/
+@import "5_page/page-main";
+
+/*--------------------------------------------------------------
+# Modals
+--------------------------------------------------------------*/
+@import "13_modals/modals";
+
+/*--------------------------------------------------------------
+# Responsive
+--------------------------------------------------------------*/
+@import "7_responsive/responsive-main";
+
+/*--------------------------------------------------------------
+# Compatibility
+--------------------------------------------------------------*/
+@import "8_compatibility/compatibility-main";

@@ -1,0 +1,76 @@
+// Pricing
+.card-pricing {
+  text-align: center;
+
+  .card-title {
+    margin-top: 30px;
+  }
+
+  .content {
+    padding: 15px !important;
+  }
+
+  small {
+
+    &:first-child {
+      position: relative;
+      top: -17px;
+    }
+  }
+
+  ul {
+    max-width: 240px;
+    margin: 10px auto;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(153, 153, 153, 0.3);
+      color: $color-body-text;
+      text-align: center;
+
+      &:last-child {
+        border: 0;
+      }
+
+      b {
+        color: $color-secondary;
+      }
+    }
+  }
+
+  .hestia-pricing-icon-wrapper {
+    border-radius: 50%;
+    border: 1px solid #e5e5e5;
+    width: 80px;
+    height: 80px;
+    margin: 10px auto 0;
+
+    i {
+      color: inherit;
+      font-size: 30px;
+      line-height: 80px;
+    }
+  }
+
+  .hestia-pricing-icon-wrapper.pricing-has-icon + .card-title {
+
+    font-size: 25px;
+    margin-top: 20px;
+
+    small {
+      color: inherit;
+      top: 0;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+  }
+
+  .card-pricing.card-plain {
+    .hestia-pricing-icon-wrapper {
+      border-color: #d6d1d1;
+    }
+  }
+}

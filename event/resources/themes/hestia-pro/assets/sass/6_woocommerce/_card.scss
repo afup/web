@@ -1,0 +1,203 @@
+// Product
+.card-product {
+  vertical-align: top;
+  margin-top: 30px;
+
+  .btn-simple.btn-just-icon {
+    padding: 0;
+  }
+
+  .footer {
+    display: table;
+    margin-top: 5px;
+    width: 100%;
+
+    .price {
+      display: table-cell !important;
+      vertical-align: top;
+      text-align: left;
+
+      h4 {
+        color: $color-secondary;
+        margin-bottom: 0;
+      }
+    }
+
+    .stats {
+      display: table-cell !important;
+      padding-left: 10px;
+      vertical-align: bottom;
+      float: none;
+      text-align: right;
+
+      a {
+        margin: 10px 0 !important;
+      }
+      a.button,
+      a.button:hover {
+        box-shadow: none !important;
+        color: inherit !important;
+      }
+
+      i {
+        top: 0;
+        margin-bottom: 2px;
+      }
+    }
+  }
+
+  .card-description {
+    ul {
+      list-style: none outside;
+      padding: 0;
+      margin-bottom: 10px;
+    }
+  }
+
+
+  .card-title,
+  .category,
+  .card-description {
+    text-align: center;
+  }
+}
+
+.product-category.product {
+  h2.woocommerce-loop-category__title {
+    font-size: 18px !important;
+  }
+}
+
+/* Raise card-plain on shop loop items
+ * without adding box-shadow
+ */
+.card-product.card-plain {
+  .card-image {
+    margin-top: -30px;
+  }
+}
+
+/**
+ * Card image hover style
+ */
+.card-product {
+
+  .card-image a:hover {
+    opacity: 1 !important;
+  }
+
+  &.swap-images:hover .card-image{
+    transform: none;
+    box-shadow: 0 5px 15px -8px rgba(0, 0, 0, .24), 0 8px 10px -5px rgba(0, 0, 0, .2), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  &.card-plain{
+    .card-image {
+      box-shadow: none;
+      padding: 5px;
+      > .onsale{
+        margin: 0;
+      }
+    }
+
+    &.swap-images:hover .card-image{
+      box-shadow: none;
+      padding: 5px;
+    }
+
+    &.pop-and-glow:hover .card-image{
+      box-shadow: none;
+      img{
+        -webkit-box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.5), 0 5px 25px 0 rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.5), 0 5px 25px 0 rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .card-image, .card-image img {
+    transition: all 0.3s;
+  }
+
+  &.pop-and-glow{
+    .card-image{
+      overflow: visible;
+    }
+    &:hover {
+      .card-image{
+        -webkit-transform: translate(0, -10px);
+        -ms-transform: translate(0, -10px);
+        transform: translate(0, -10px);
+        -webkit-box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.5), 0 5px 25px 0 rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.5), 0 5px 25px 0 rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  &.zoom{
+    .card-image a{
+      display: inline-flex;
+      overflow: hidden;
+    }
+    &:hover {
+      .card-image a img{
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  &.swap-images{
+    .card-image a img:nth-of-type(2) {
+      display: none;
+    }
+
+    &:hover{
+      .card-image {
+        transform: none;
+        a img:nth-of-type(2) {
+          display: inline-flex;
+        }
+        a img:first-child{
+          display: none;
+        }
+      }
+    }
+  }
+
+  &.blur:hover .card-image a{
+    filter: blur(2px);
+  }
+
+  &.fadein {
+    .card-image a{
+      opacity: .7;
+    }
+    &:hover {
+      .card-image a{
+        opacity: 1;
+      }
+    }
+  }
+
+  &.fadeout:hover .card-image img {
+    opacity: .7;
+  }
+
+  &.glow:hover .card-image img {
+    filter: brightness(1.1);
+  }
+
+  &.colorize {
+    .card-image img {
+      filter: grayscale(100%);
+    }
+    &:hover {
+      > .card-image img {
+        filter: grayscale(0%);
+      }
+    }
+  }
+
+  &.grayscale:hover .card-image img{
+        filter: grayscale(100%);
+  }
+}

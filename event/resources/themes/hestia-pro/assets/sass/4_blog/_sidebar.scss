@@ -1,0 +1,119 @@
+.widget {
+  margin-bottom: 30px;
+  word-break: break-word;
+
+  ul {
+    padding: 0 0 0 10px;
+    margin: 0;
+    list-style: none;
+
+    li {
+      line-height: 2.4;
+      padding-top: 5px;
+      &:first-child {
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+aside .widget .btn a{
+  color:#fff;
+}
+
+aside .widget a {
+  color: #23527c;
+}
+
+.widget {
+  a:hover {
+    color: $color-primary-hover;
+  }
+  #searchform {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  h5 {
+    font-family: $secondary-font;
+    margin-bottom: 10px;
+  }
+  select {
+    width: 100%;
+  }
+}
+
+.hestia-widget-placeholder {
+  border: 1px dashed #b4b9be;
+  padding: 25px;
+  text-align: center;
+
+  .widget {
+    margin: 0;
+  }
+}
+.single .hestia_right aside.blog-sidebar {
+  padding: 0;
+}
+.hestia_right .hestia-widget-placeholder {
+  padding: 5px;
+}
+
+.widget_calendar {
+  th,
+  tr,
+  td {
+    padding: 7px 0;
+    text-align: center;
+  }
+}
+
+.hestia-sidebar-toggle-container{
+  clear: both;
+}
+
+/**
+ * Off Canvas style for shop sidebar
+ */
+
+.hestia-sidebar-open,
+.hestia-sidebar-close {
+  display: none;
+  padding: 10px;
+}
+
+
+body.off-canvas{
+  .hestia-sidebar-open,
+  .hestia-sidebar-close{
+    display: inline-block;
+  }
+  .shop-sidebar-wrapper{
+    position: fixed;
+    top: 0;
+    z-index: 1030;
+    height: 100%;
+    background: #fff;
+    border-right: 1px solid #f0f0f0;
+    left: -100%;
+    transition: 0.5s ease;
+    padding: 60px 20px 20px;
+    overflow-y: scroll;
+    &.sidebar-open{
+      left: 0;
+    }
+    .card {
+      box-shadow: none;
+    }
+  }
+}
+
+.row-sidebar-toggle{
+  text-align: right;
+  .hestia-sidebar-close{
+    padding: 10px 13px;
+  }
+  &.desktop{
+    clear: both;
+    text-align: left;
+  }
+}

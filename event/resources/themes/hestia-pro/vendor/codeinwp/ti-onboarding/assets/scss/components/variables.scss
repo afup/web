@@ -1,0 +1,16 @@
+$error: #ED5565;
+$primary: #008ec2;
+$success: #1AB394;
+$warning: #F8AC59;
+
+@mixin unblur( $time ) {
+  -webkit-animation: unblur $time cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+  animation: unblur $time cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+
+@mixin heartpop( $delay: .7s ) {
+  -webkit-animation: heartpop 0.9s both;
+  animation: heartpop 0.9s both;
+  animation-delay: $delay;
+  -webkit-animation-delay: $delay;
+}

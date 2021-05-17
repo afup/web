@@ -1,0 +1,227 @@
+/**
+ * Shop Grid
+ * Products Grid on any page where WooCommerce shortcode is used, including the Shop page
+ *
+ * Why is this file here and not in 6_woocommerce folder
+ * It's because woocommerce CSS it's loaded only on WC pages and front page
+ * This approach should work on any page where a WooCommerce shortcode is used
+ */
+.woocommerce {
+  ul.products:before {
+    display: none !important;
+  }
+  ul.products.columns-6,
+  ul.products.columns-5,
+  ul.products.columns-4,
+  ul.products.columns-3,
+  ul.products.columns-2,
+  ul.products.columns-1 {
+    display: grid;
+
+    li.product {
+      width: auto;
+      min-width: 0;
+      margin: 0;
+    }
+    li.product-category {
+      text-align: center;
+    }
+  }
+
+  h6.category{
+    font-size: 12px;
+  }
+}
+@media (min-width: 992px) {
+
+  .woocommerce {
+    .products.columns-6 {
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .products.columns-5 {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .products.columns-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .products.columns-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .products.columns-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .products.columns-1 {
+      grid-template-columns: 1fr;
+
+      li.product-category {
+        margin: 30px auto 0 !important;
+      }
+    }
+
+    .products.columns-2,
+    .products.columns-1 {
+      li.product-category {
+
+        > a > img {
+          max-width: 230px;
+        }
+      }
+      li.product {
+
+        text-align: center;
+
+        .card-product {
+
+          width: auto;
+
+          .card-image {
+            > a > img {
+              max-width: 230px;
+            }
+          }
+
+          .content {
+            max-width: 230px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px;
+          }
+        }
+      }
+    }
+
+    /* Compatibility with left and right sidebar on archive page */
+    .content-sidebar-left,
+    .content-sidebar-right {
+      .products.columns-6,
+      .products.columns-5 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+}
+@media (max-width: 991px) {
+
+  .woocommerce {
+    .products.columns-6,
+    .products.columns-5,
+    .products.columns-4,
+    .products.columns-3,
+    .products.columns-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .products.columns-2 {
+      li.product-category {
+        margin: 30px auto 30px;
+      }
+    }
+
+    .products.columns-1 {
+      grid-template-columns: 1fr;
+
+      li {
+        margin: 25px auto;
+      }
+      li.product-category {
+        margin: 55px auto 25px;
+      }
+    }
+
+    .products.columns-6,
+    .products.columns-5,
+    .products.columns-4,
+    .products.columns-3,
+    .products.columns-2,
+    .products.columns-1 {
+      li.product-category {
+
+        > a > img {
+          max-width: 230px;
+        }
+      }
+      li.product {
+
+        text-align: center;
+
+        .card-product {
+
+          width: auto;
+
+          .card-image {
+            > a > img {
+              max-width: 230px;
+            }
+          }
+
+          .content {
+            max-width: 230px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px;
+          }
+        }
+      }
+    }
+
+
+    /* Compatibility with left and right sidebar on archive page */
+    .content-sidebar-left,
+    .content-sidebar-right {
+      .products.columns-6,
+      .products.columns-5 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  } /* End of woocommerce */
+} /* End of media query */
+@media (max-width: 767px) {
+  .woocommerce {
+
+    .products[class*="columns-"] {
+      grid-template-columns: 1fr;
+
+      li {
+        margin: 20px auto 1px !important;
+      }
+      li.product-category {
+        margin: 50px auto 1px !important;
+      }
+
+    }
+
+    /* Compatibility with left and right sidebar on archive page */
+    .content-sidebar-left,
+    .content-sidebar-right {
+      .products.columns-6,
+      .products.columns-5 {
+        grid-template-columns: 1fr;
+      }
+    }
+  } /* End of woocommerce */
+} /* End of media query */
+
+
+
+/* Compatibility with Internet Explorer */
+@supports not (display: grid){
+  @media (min-width: 992px){
+    @include grid-support-desktop();
+  }
+  @media (max-width: 991px){
+    @include grid-support-tablet();
+  }
+  @media (max-width: 767px){
+    @include grid-support-mobile();
+  }
+}
+
+@media (min-width: 992px) and (-ms-high-contrast: active), (min-width: 992px) and (-ms-high-contrast: none) {
+  @include grid-support-desktop();
+}
+@media (max-width: 991px) and (-ms-high-contrast: active), (max-width: 991px) and (-ms-high-contrast: none) {
+  @include grid-support-tablet();
+}
+@media (max-width: 767px) and (-ms-high-contrast: active), (max-width: 767px) and (-ms-high-contrast: none) {
+  @include grid-support-mobile();
+}

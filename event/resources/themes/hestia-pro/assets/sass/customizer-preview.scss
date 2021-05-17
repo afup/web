@@ -1,0 +1,254 @@
+/*
+ * Customizer stylesheet.
+ */
+.pirate-forms-placeholder {
+  .header-primary {
+    background: rgba(60, 60, 60, 0.9);
+    z-index: 100;
+    border: 2px dashed #8a8a8a;
+  }
+  .card {
+    background: rgba(255,255,255,0.1);
+    border: 2px dashed #8a8a8a;
+    z-index: 50;
+    position: relative;
+    &:after {
+      border-radius: 6px;
+      z-index: -1;
+      content: " ";
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
+  }
+  .pirate-forms-placeholder-overlay {
+    top: 0;
+    text-align: center;
+    color: #fff;
+    padding: 0 30px;
+    position: absolute;
+    height: 100%;
+    display: inline-block;
+    &:before {
+      height: 100%;
+      width: 0;
+      display: inline-block;
+      content: '';
+      vertical-align: middle;
+    }
+    .placeholder-text {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      font-weight: 100;
+      padding: 15px 15px;
+      .customize-partial-edit-shortcut button {
+        top: -25px;
+      }
+    }
+  }
+  .pirate_forms_wrap {
+    form, div {
+      opacity: .3;
+      z-index: -2;
+      button {
+        box-shadow:none;
+        border: 2px dashed #8a8a8a;
+        background-color: #333;
+      }
+    }
+  }
+  .pirate-forms-placeholder-align {
+    display: inline-block;
+    margin: 0 -7px;
+    vertical-align: middle;
+    width: 100%;
+    &:before {
+      content: '';
+      display: inline-block;
+      float: left;
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+}
+
+
+
+.customize-partial-edit-shortcut-custom_header{
+  z-index: 9999;
+}
+
+.customize-partial-edit-shortcut-hestia_big_title_background {
+  right: 80px;
+  top: 80px;
+}
+
+.customize-partial-edit-shortcut-hestia_placeholder_sidebar_woocommerce,
+.customize-partial-edit-shortcut-hestia_placeholder_sidebar_1 {
+  left: 45px;
+  top: -10px;
+  position: relative;
+}
+
+.customize-partial-edit-shortcut-hestia_feature_thumbnail,
+.customize-partial-edit-shortcut-hestia_copyright_alignment,
+.customize-partial-edit-shortcut-hestia_top_bar_alignment,
+.customize-partial-edit-shortcut-hestia_ribbon_background,
+.customize-partial-edit-shortcut-hestia_subscribe_background,
+.customize-partial-edit-shortcut-hestia_contact_background{
+  right: 10px;
+  top: 10px;
+  z-index: 1029;
+}
+
+.customize-partial-edit-shortcut-hestia_features_hide,
+.customize-partial-edit-shortcut-hestia_about_hide,
+.customize-partial-edit-shortcut-hestia_shop_hide,
+.customize-partial-edit-shortcut-hestia_portfolio_hide,
+.customize-partial-edit-shortcut-hestia_team_hide,
+.customize-partial-edit-shortcut-hestia_pricing_hide,
+.customize-partial-edit-shortcut-hestia_ribbon_hide,
+.customize-partial-edit-shortcut-hestia_testimonials_hide,
+.customize-partial-edit-shortcut-hestia_clients_bar_hide,
+.customize-partial-edit-shortcut-hestia_subscribe_hide,
+.customize-partial-edit-shortcut-hestia_blog_hide,
+.customize-partial-edit-shortcut-hestia_contact_hide{
+  left: 40px;
+  top: 0;
+  z-index: 999;
+  opacity: 1;
+}
+
+.customize-partial-edit-shortcut-hestia_contact_content_new,
+.customize-partial-edit-shortcut-hestia_shop_items,
+.customize-partial-edit-shortcut-hestia_blog_items,
+.customize-partial-edit-shortcut-hestia_shop_categories,
+.customize-partial-edit-shortcut-hestia_shop_order,
+.customize-partial-edit-shortcut-hestia_shop_shortcode,
+.customize-partial-edit-shortcut-hestia_portfolio_items,
+.customize-partial-edit-shortcut-hestia_portfolio_boxes_type,
+.customize-partial-edit-shortcut-hestia_blog_categories,
+body.blog .customize-partial-edit-shortcut-hestia_blog_hide,
+.customize-partial-edit-shortcut-hestia_slider_alignment,
+.customize-partial-edit-shortcut-hestia_big_title_background{
+  display: none;
+}
+
+.customize-partial-edit-shortcut-primary-menu{
+  top: 0;
+  z-index: 10000;
+  position: relative;
+  float: right;
+  right: -30px;
+}
+
+
+
+
+/**
+ * Features section - selective refresh style
+ */
+.hestia-features,
+.hestia-about,
+.hestia-shop:not(.related),
+.hestia-work,
+.hestia-team,
+.hestia-pricing,
+.hestia-ribbon,
+.hestia-testimonials,
+.hestia-subscribe:not(#subscribe-on-blog),
+body.page .hestia-blogs,
+.hestia-clients-bar,
+.hestia-contact{
+  &:not(.is-shortcode){
+    position: relative;
+    &:before {
+      transition: .3s ease;
+      z-index: 100;
+      position: absolute;
+      content: " ";
+      border: 2px dashed rgba(121, 121, 121, 0.22);
+      top: 20px;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      pointer-events: none;
+    }
+    &:hover:before {
+      border-color: #00A0D0;
+    }
+  }
+}
+
+.hestia-features-title-area,
+.hestia-shop-title-area,
+.hestia-team-title-area,
+.hestia-pricing-title-area,
+.hestia-testimonials-title-area,
+.hestia-subscribe-title-area,
+.hestia-blogs-title-area,
+.hestia-contact-title-area,
+.hestia-portfolio-title-area,
+.pirate-forms-placeholder-align{
+  transition: .3s ease;
+  &:hover{
+    .customize-partial-edit-shortcut{
+      opacity: 1;
+    }
+  }
+  .customize-partial-edit-shortcut{
+    transition: .3s ease;
+    opacity: 0;
+    button{
+      margin:0;
+    }
+  }
+}
+
+.hestia-features-content,
+.hestia-about-content,
+.hestia-team-content,
+.hestia-table-one,
+.hestia-table-two,
+.hestia-ribbon-content,
+.hestia-testimonials-content,
+.hestia-blog-content,
+.hestia-clients-bar,
+.hestia-contact .hestia-description,
+.hestia-contact-form-col{
+  transition: .3s ease;
+  position: relative;
+  .customize-partial-edit-shortcut{
+    transition: .3s ease;
+    opacity: 0;
+    button{
+      margin: 0;
+    }
+    &.customize-partial-edit-shortcut-hestia_pricing_table_one_title,
+    &.customize-partial-edit-shortcut-hestia_pricing_table_two_title{
+      button {
+        left: 0;
+      }
+    }
+  }
+  &:hover{
+    .customize-partial-edit-shortcut{
+      opacity: 1;
+    }
+  }
+}
+
+.customize-partial-refreshing:before {
+  content: url(../img/ajax-loader.gif) !important;
+  top: 50% !important;
+  transform: translate3d(-50%, 0, 0);
+  border: none !important;
+  bottom: auto !important;
+  right: auto !important;
+  margin: 0 auto;
+  left: 50% !important;
+  position: absolute;
+  z-index: 10000;
+}

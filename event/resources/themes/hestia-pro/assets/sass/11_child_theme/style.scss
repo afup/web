@@ -1,0 +1,61 @@
+/*
+Theme Name: Tiny Hestia
+Theme URI: https://www.themeisle.com/
+Description: Tiny Hestia is a child theme for blogging enthusiasts and for page builders fans. The theme is optimised for speed and designed to work well with: Elementor, Beaver Builder, SiteOrigin, Divi or Visual Composer, using those you can easily create a business/corporate site and pretty much anything else. Is a modern material design theme, obviously responsive with a clean design and lots of options.
+Author: ThemeIsle
+URI: https://www.themeisle.com/
+Template: hestia
+Version: 1.0.2
+Tags: blog, custom-logo, portfolio, e-commerce, rtl-language-support, post-formats, grid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-menu, featured-image-header, featured-images, flexible-header, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, editor-style, footer-widgets, left-sidebar, right-sidebar, wide-blocks
+*/
+
+
+@import "../0_base/variables";
+@import "../0_base/mixins";
+@import "../0_base/placeholders";
+
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+@import "../1_typography/typography-main";
+
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+@import "../2_elements/elements-main";
+
+/*--------------------------------------------------------------
+## Generic
+--------------------------------------------------------------*/
+@import "../3_sections/generic";
+
+/*--------------------------------------------------------------
+## Footer
+--------------------------------------------------------------*/
+@import "../3_sections/footer";
+
+/*--------------------------------------------------------------
+## Top bar
+--------------------------------------------------------------*/
+@import "../3_sections/topbar";
+
+/*--------------------------------------------------------------
+# Blog
+--------------------------------------------------------------*/
+@import "../4_blog/blog-main";
+
+/*--------------------------------------------------------------
+# Page
+--------------------------------------------------------------*/
+@import "../5_page/page-main";
+
+
+/*--------------------------------------------------------------
+# Responsive
+--------------------------------------------------------------*/
+@import "../7_responsive/responsive-main";
+
+/*--------------------------------------------------------------
+# Compatibility
+--------------------------------------------------------------*/
+@import "../8_compatibility/compatibility-main";

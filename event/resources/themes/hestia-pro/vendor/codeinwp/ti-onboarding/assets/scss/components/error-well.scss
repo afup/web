@@ -1,0 +1,28 @@
+.error-well {
+  @include unblur(.3s);
+  background: #eeeeee;
+  padding: 15px;
+  border: 1px solid #dfdfdf;
+  color: #6c6868;
+  text-align: left;
+  p {
+    font-weight: 300;
+    line-height: 1.8;
+    margin: 0 0 20px;
+    a {
+      text-decoration: none;
+      font-weight: 500;
+    }
+  }
+  .buttons {
+    display: flex;
+  }
+  .button {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    i {
+      margin-right: 5px;
+    }
+  }
+}

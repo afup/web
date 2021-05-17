@@ -1,0 +1,43 @@
+.is__onboarding {
+  overflow-y: scroll;
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #f1f1f1;
+
+  .library-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 25px;
+    background: #fff;
+    box-shadow: 0 1px 14px rgba(34, 31, 31, 0.1);
+
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+  }
+  .site-box {
+    margin-bottom: 25px;
+  }
+
+  .ti-sites-lib {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .ti-sites-lib > div.migrate-text {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@mixin layout-onboarding--desktop() {
+  .is__onboarding {
+    padding: 50px 0;
+  }
+}

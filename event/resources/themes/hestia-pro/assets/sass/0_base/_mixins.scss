@@ -1,0 +1,197 @@
+// Buttons
+// Box shadow for each social network
+@mixin buttons-box-shadow($color) {
+  -webkit-box-shadow: 0 2px 2px 0 rgba($color,0.14), 0 3px 1px -2px rgba($color,0.2), 0 1px 5px 0 rgba($color,0.12);
+  -moz-box-shadow: 0 2px 2px 0 rgba($color,0.14), 0 3px 1px -2px rgba($color,0.2), 0 1px 5px 0 rgba($color,0.12);
+  box-shadow: 0 2px 2px 0 rgba($color,0.14), 0 3px 1px -2px rgba($color,0.2), 0 1px 5px 0 rgba($color,0.12);
+
+  &:hover, &:focus, &:active {
+    -webkit-box-shadow: 0 14px 26px -12px rgba($color,0.42),0 4px 23px 0 rgba(0,0,0,0.12),0 8px 10px -5px rgba($color,0.2);
+    -moz-box-shadow: 0 14px 26px -12px rgba($color,0.42),0 4px 23px 0 rgba(0,0,0,0.12),0 8px 10px -5px rgba($color,0.2);
+    box-shadow: 0 14px 26px -12px rgba($color,0.42),0 4px 23px 0 rgba(0,0,0,0.12),0 8px 10px -5px rgba($color,0.2);
+  }
+}
+
+// Code for each social network
+@mixin buttons-social-icon($network,$color) {
+  .btn.btn-#{$network},
+  .navbar .navbar-nav > li > a.btn.btn-#{$network} {
+    &, &:hover, &:focus, &:active {
+      color: #fff;
+      background-color: $color;
+    }
+  }
+
+  .btn.btn-#{$network},
+  .navbar .navbar-nav > li > a.btn.btn-#{$network} {
+    @include buttons-box-shadow($color);
+  }
+
+  .btn.btn-#{$network}.btn-simple,
+  .navbar .navbar-nav > li > a.btn.btn-#{$network}.btn-simple {
+    color: $color;
+    background-color: transparent;
+    @extend %buttons-box-shadow-none;
+  }
+}
+
+// Forms
+// Box shadow for each social network
+@mixin forms-background-gradient($color) {
+  background-image: -webkit-gradient(linear,left top, left bottom,from($color),to($color)),-webkit-gradient(linear,left top, left bottom,from(#d2d2d2),to(#d2d2d2));
+  background-image: -webkit-linear-gradient($color,$color),-webkit-linear-gradient(#d2d2d2,#d2d2d2);
+  background-image: linear-gradient($color,$color),linear-gradient(#d2d2d2,#d2d2d2);
+}
+
+//Shadows
+@mixin shadow-z-5(){
+  box-shadow:
+          0 27px 24px 0 rgba(0, 0, 0, 0.2),
+          0 40px 77px 0 rgba(0, 0, 0, 0.22);
+}
+
+
+// Team section - Social Icons
+@mixin footer-buttons-social-icon($network,$color) {
+  .hestia-team .footer a[href*="#{$network}.com"],
+  .team .footer a[href*="#{$network}.com"],
+  .footer-menu a[href*="#{$network}.com"]{
+    color: $color;
+  }
+}
+
+/* Grid desktop MS / No grid support */
+@mixin grid-support-desktop() {
+  .woocommerce {
+    ul.products.columns-6,
+    ul.products.columns-5,
+    ul.products.columns-4,
+    ul.products.columns-3,
+    ul.products.columns-2,
+    ul.products.columns-1 {
+
+      display: block;
+      -ms-grid-columns: none;
+    }
+
+    .content-full,
+    .content-sidebar-left,
+    .content-sidebar-right {
+      ul.products.columns-4 li.product {
+        width: 25%;
+      }
+      ul.products.columns-3 li.product {
+        width: 33.33%;
+      }
+      ul.products.columns-2 li.product {
+        width: 50%;
+      }
+      ul.products.columns-1 li.product {
+        width: 100%;
+      }
+    }
+
+    .content-full {
+      ul.products.columns-6 li.product {
+        width: 16.66%;
+      }
+      ul.products.columns-5 li.product {
+        width: 20%;
+      }
+    }
+    .content-sidebar-left,
+    .content-sidebar-right {
+      ul.products.columns-6 li.product,
+      ul.products.columns-5 li.product {
+        width: 25%;
+      }
+      ul.products.columns-6,
+      ul.products.columns-5 {
+        li.first {
+          clear: none;
+        }
+      }
+    }
+  }
+
+  .woocommerce.single-product ul.products {
+    display: block;
+
+    li.product {
+      width: 25%;
+    }
+  }
+  .woocommerce-cart ul.products {
+    display: block;
+
+    li.product {
+      width: 50%;
+    }
+  }
+}
+
+@mixin grid-support-tablet() {
+  .woocommerce {
+    ul.products.columns-6,
+    ul.products.columns-5,
+    ul.products.columns-4,
+    ul.products.columns-3,
+    ul.products.columns-2,
+    ul.products.columns-1 {
+      display: block;
+
+      li.first,
+      li.last {
+        clear: none;
+      }
+    }
+    ul.products.columns-6 li.product,
+    ul.products.columns-5 li.product,
+    ul.products.columns-4 li.product,
+    ul.products.columns-3 li.product,
+    ul.products.columns-2 li.product {
+
+      width: 50%;
+    }
+    ul.products.columns-1 li.product {
+      width: 100%;
+    }
+  }
+
+  .woocommerce-cart ul.products,
+  .woocommerce.single-product ul.products {
+    display: block;
+
+    li.product {
+      width: 50%;
+    }
+  }
+}
+
+@mixin grid-support-mobile() {
+  .woocommerce {
+    ul.products.columns-6 li.product,
+    ul.products.columns-5 li.product,
+    ul.products.columns-4 li.product,
+    ul.products.columns-3 li.product,
+    ul.products.columns-2 li.product,
+    ul.products.columns-1 li.product {
+      width: 100%;
+    }
+  }
+
+  .woocommerce-cart ul.products,
+  .woocommerce.single-product ul.products {
+    display: block;
+
+    li.product {
+      width: 100%;
+    }
+  }
+}
+
+@mixin stick-footer-to-bottom() {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}

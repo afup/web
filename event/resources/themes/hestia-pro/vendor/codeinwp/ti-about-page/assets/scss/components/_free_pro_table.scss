@@ -1,0 +1,77 @@
+#free_pro {
+  padding: 0 !important;
+  .free-pro-table {
+    width: 100%;
+    border-spacing: 0;
+  }
+
+  .free-pro-table thead {
+    background-color: #fafafa;
+  }
+
+  .free-pro-table th {
+    border-bottom: 1px solid #eaeaea;
+    padding: 20px 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .free-pro-table tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+
+  .free-pro-table td {
+    border-bottom: 1px solid #eaeaea;
+    padding: 25px 20px 20px;
+  }
+
+  .free-pro-table h3 {
+    font-weight: 400;
+    color: #000;
+    margin-top: 0;
+    font-size: 21px;
+  }
+
+  .free-pro-table p {
+    margin: 0;
+    color: #454545;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .free-pro-table .only-lite,
+  .free-pro-table .only-pro {
+    width: 15%;
+    text-align: center;
+  }
+
+  .free-pro-table .only-lite .dashicons-before:before {
+    color: #8fc622;
+  }
+
+  .free-pro-table .only-pro .dashicons-before:before {
+    color: #f2433f;
+  }
+
+  .free-pro-table .only-lite .dashicons-before:before,
+  .free-pro-table .only-pro .dashicons-before:before {
+    width: 35px;
+    height: 35px;
+    font-size: 35px;
+  }
+
+  .ti-about-page-text-right {
+    text-align: right;
+  }
+
+  .ti-about-page-text-center {
+    text-align: center;
+  }
+
+  .free_vs_pro_banner {
+    padding: 20px;
+    background: #fff;
+    width: auto;
+  }
+}

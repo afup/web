@@ -1,0 +1,24 @@
+.about-sidebar {
+  background-color: #fff;
+  box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  width: 20%;
+
+  .about-sidebar-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+
+  h4 {
+    margin: 0;
+    color: #797979;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #01a3e7;
+  }
+}

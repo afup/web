@@ -1,0 +1,51 @@
+.woocommerce {
+  #reviews #comments ol.commentlist {
+    padding: 0;
+  }
+
+  div.product #reviews .comment img {
+    overflow: hidden;
+    width: 45px;
+    height: 45px;
+    margin: 0 auto;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  #reviews #comments ol.commentlist li {
+    img.avatar {
+      overflow: hidden;
+      width: 45px;
+      height: 45px;
+      margin: 0 auto;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    .comment-text {
+      margin-bottom: 25px;
+      border: none;
+    }
+  }
+  .comment-form .comment-notes {
+    display: none;
+  }
+  .comment-reply-title {
+    font-family: $secondary-font;
+    color: $color-secondary;
+    text-decoration: none;
+    word-wrap: break-word;
+    margin: 20px 0 10px;
+    text-align: center;
+    display: block;
+  }
+  .form-submit {
+    text-align: right;
+  }
+}

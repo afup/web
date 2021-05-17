@@ -1,0 +1,155 @@
+.contactus {
+  .content .row {
+    padding: 0;
+  }
+  .col-md-offset-2 {
+    padding: 0 20px;
+  }
+  .form-group {
+    margin: 0;
+    padding-bottom: 24px;
+  }
+  .pirate-forms-footer .form-group{
+    padding-bottom: 0;
+  }
+
+  .card .content {
+    padding: 30px 30px 0;
+  }
+
+  .pirate_forms_wrap {
+    float: none;
+    #pirate-forms-contact-message {
+      height: 130px;
+    }
+    .form_field_wrap {
+      margin-bottom: 17px;
+    }
+    .btn {
+      margin: 0;
+    }
+    .pirateform_wrap_classes_spam_wrap {
+      color: #aaa;
+      font-weight: 400;
+    }
+  }
+
+  .contact_message_wrap {
+    margin-bottom: 0;
+  }
+
+  .contact_submit_wrap {
+    text-align: right;
+    margin-bottom: 0;
+  }
+
+  .hestia-info,
+  .info {
+    margin: 0;
+    padding: 0;
+
+    &,
+    p,
+    a:not(.btn) {
+      color: #ccc;
+    }
+
+    a:not(.btn):hover {
+      text-decoration: underline;
+    }
+
+    &:first-child {
+      margin-top: 30px;
+    }
+
+    .info-title {
+      margin-top: 20px;
+      color: #fff;
+    }
+
+    .icon {
+      margin-top: 14px;
+      color: #fff;
+    }
+  }
+
+  h5.description {
+    color: #ccc;
+  }
+
+  .card-contact {
+    margin-top: 30px;
+  }
+
+  .pirate_forms_wrap .pirate-forms-footer {
+    display: block;
+    .form_captcha_wrap {
+      display: block;
+      > div > div {
+        margin: 0 auto 20px;
+      }
+      + .contact_submit_wrap {
+        text-align: center;
+        display: block;
+      }
+    }
+  }
+}
+
+.pirate_forms_wrap .pirate-forms-footer .form_field_wrap.contact_submit_wrap {
+  width: 100%;
+  text-align: right;
+}
+
+.pirate-forms-maps-custom {
+  span:before,
+  span:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
+  span:before {
+    background: transparent;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    left: 0;
+    height: 18px;
+    width: 18px;
+  }
+
+  span:after {
+    content: '\f00c';
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    left: 2px;
+    top: 1px;
+    color: transparent;
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  label {
+    color: #aaa;
+    cursor: pointer;
+    font-weight: 100;
+    margin: 8px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  input[type="checkbox"]:checked + label span:after {
+    color: #787878;
+  }
+}
+
+.pirate-forms-file-upload-input,
+.pirate_forms_three_inputs_wrap .form_field_wrap input.pirate-forms-file-upload-input {
+  height: 50px;
+  padding: 0 15px;
+  margin: 10px 0 0;
+}

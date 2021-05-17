@@ -1,0 +1,32 @@
+@media (max-width: 600px) {
+  body.admin-bar {
+    .navbar {
+      &.navbar-scroll-point{
+        top: 0;
+        &.header-with-topbar {
+          top: 0;
+        }
+        &.navbar-transparent {
+          margin-top: 0;
+          top: 46px;
+        }
+      }
+      &.navbar-not-transparent {
+        margin-top: 0;
+      }
+    }
+
+    .navbar {
+      &.navbar-scroll-point {
+        &.navbar-fixed-top .navbar-collapse, &.header-with-topbar.navbar-fixed-top .navbar-collapse {
+          max-height: calc(100% - 70px);
+          margin-top: 70px;
+        }
+        &.navbar-fixed-top.navbar-transparent .navbar-collapse, &.header-with-topbar.navbar-fixed-top.navbar-transparent .navbar-collapse {
+          max-height: calc(100% - 70px);
+          margin-top: 115px;
+        }
+      }
+    }
+  }
+}
