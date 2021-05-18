@@ -2,6 +2,7 @@
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Utils\Configuration;
+use AppBundle\Site\Model\Feuille;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class Page
