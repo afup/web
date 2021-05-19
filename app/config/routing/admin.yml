@@ -92,3 +92,4 @@ admin_slack_members_check:
 admin_site:
   resource: "admin_site.yml"
   prefix: /site
+  

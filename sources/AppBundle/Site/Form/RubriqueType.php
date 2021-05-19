@@ -2,8 +2,8 @@
 
 namespace AppBundle\Site\Form;
 
+use Afup\Site\Corporate\Feuilles;
 use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\Site\Model\Repository\FeuilleRepository;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,14 +19,12 @@ class RubriqueType extends AbstractType
 {
     const POSITIONS_RUBRIQUES = 9;
 
-    private $feuilleRepository;
     private $rubriqueRepository;
     private $userRepository;
 
-    public function __construct(FeuilleRepository $feuilleRepository, RubriqueRepository $rubriqueRepository, UserRepository $userRepository)
+    public function __construct(RubriqueRepository $rubriqueRepository, UserRepository $userRepository)
     {
         $this->rubriqueRepository = $rubriqueRepository;
-        $this->feuilleRepository = $feuilleRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -36,10 +34,7 @@ class RubriqueType extends AbstractType
         foreach ($this->userRepository->getAll() as $user) {
             $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
         }
-        $feuilles = [];
-        foreach ($this->feuilleRepository->getAll() as $feuille) {
-            $feuilles[$feuille->getNom()] = $feuille->getId();
-        }
+        $feuilles = (new Feuilles($GLOBALS['AFUP_DB']))->obtenirListe('nom, id', 'nom', true);
         $positions = [];
         for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
@@ -130,12 +125,12 @@ class RubriqueType extends AbstractType
                     new Assert\Type("integer"),
                 ],
             ])
-            ->add('date', DateType::class,[
+            ->add('date', DateType::class, [
                 'required' => false,
                 'label' => 'Date',
-                'view_timezone' => 'Europe/Paris',
                 'input'=>'datetime',
-                'years' => range(2001,date('Y')),
+                'data' => new \Datetime(),
+                'years' => range(2001, date('Y')),
                 'attr' => [
                     'style' => 'display: flex;',
                 ],

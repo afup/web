@@ -20,17 +20,29 @@ class Rubrique implements NotifyPropertyInterface
      * @Assert\Type("integer")
      */
     private $id;
+
     private $idPersonnePhysique;
+
     private $idParent;
+
     private $nom;
+
     private $raccourci;
+
     private $descriptif;
+
     private $contenu;
+
     private $position;
+
     private $icone;
+
     private $date;
+
     private $etat;
+
     private $pagination = 0;
+
     private $feuilleAssociee;
 
     public function getId()
@@ -134,11 +146,12 @@ class Rubrique implements NotifyPropertyInterface
 
     public function getDate()
     {
-        return  $this->date;
+        return  new \DateTime(date('d-M-y', $this->date));
     }
 
     public function setDate($date)
     {
+        $date = is_null($date) ? $date : $date->getTimestamp();
         $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
     }
