@@ -146,12 +146,11 @@ class Rubrique implements NotifyPropertyInterface
 
     public function getDate()
     {
-        return  new \DateTime(date('d-M-y', $this->date));
+        return  $this->date;
     }
 
     public function setDate($date)
     {
-        $date = is_null($date) ? $date : $date->getTimestamp();
         $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
     }
