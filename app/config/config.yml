@@ -99,6 +99,11 @@ parameters:
                 site_rubriques:
                     nom: 'Rubriques'
                     niveau: 'ROLE_SITE'
+                    url : '/admin/site/rubriques'
+                    extra_routes: 
+                        - admin_site_rubriques_list
+                        - admin_site_rubriques_add
+                        - admin_site_rubriques_edit
                 site_articles:
                     nom: 'Articles'
                     niveau: 'ROLE_SITE'
@@ -349,6 +354,7 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
+        
         association:
             namespace : AppBundle\Association\Model\Repository
             directory : "@AppBundle/Association/Model/Repository"
@@ -391,3 +397,4 @@ knpu_oauth2_client:
 ewz_recaptcha:
     public_key: '%recaptcha_public_key%'
     private_key: '%recaptcha_private_key%'
+    

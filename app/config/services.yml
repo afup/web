@@ -67,6 +67,16 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Admin\Site\AddRubriqueAction:
+        autowire: true
+        arguments :
+            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
+
+    AppBundle\Controller\Admin\Site\EditRubriqueAction:
+        autowire: true
+        arguments :
+            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
+
     AppBundle\Controller\Admin\Members\BadgeNewAction:
         autowire: true
         arguments:
@@ -185,6 +195,7 @@ services:
         class: AppBundle\Association\Model\Repository\UserRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
+
 
     AppBundle\Event\Model\Repository\TalkRepository:
         class: AppBundle\Event\Model\Repository\TalkRepository
@@ -426,6 +437,14 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Groups\Model\Repository\MailingListRepository]
 
+    AppBundle\Site\Model\Repository\RubriqueRepository:
+        class: AppBundle\Site\Model\Repository\RubriqueRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Site\Model\Repository\RubriqueRepository]
+
+
+
+
     AppBundle\Site\Model\Repository\ArticleRepository:
         class: AppBundle\Site\Model\Repository\ArticleRepository
         factory: ["@ting", get]
@@ -435,6 +454,11 @@ services:
         class: AppBundle\TechLetter\Model\Repository\SendingRepository
         factory: ["@ting", get]
         arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
+
+
+    AppBundle\Site\Form\RubriqueType:
+        autowire: true
+        autoconfigure: true
 
     AppBundle\Event\Ticket\SponsorTicketHelper:
         autowire: true
