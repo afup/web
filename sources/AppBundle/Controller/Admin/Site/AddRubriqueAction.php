@@ -38,7 +38,7 @@ class AddRubriqueAction extends SiteBaseController
         Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
-        $storageDir
+        $storageDir=''
     ) {
         $this->rubriqueRepository =  $rubriqueRepository;
         $this->twig = $twig;
