@@ -27,12 +27,10 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         if ($columnNameFound === false) {
             $ordre = 'nom';
         }
-
-        $requete = 'SELECT  * FROM afup_site_rubrique WHERE afup_site_rubrique.nom LIKE :filtre ';
+        $requete = 'SELECT * FROM afup_site_rubrique WHERE afup_site_rubrique.nom LIKE :filtre ';
         $requete .= 'ORDER BY ' . $ordre . ' ' . $direction;
         $query = $this->getQuery($requete);
         $query->setParams(['filtre' => '%' . $filtre . '%']);
-
         return $query->query($this->getCollection(new HydratorArray()));
     }
 
@@ -47,83 +45,84 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         $metadata->setDatabase($options['database']);
         $metadata->setTable('afup_site_rubrique');
         $metadata
-        ->addField([
-            'columnName' => 'id',
-            'fieldName' => 'id',
-            'primary'       => true,
-            'autoincrement' => true,
-            'type' => 'int',
-        ])
-        ->addField([
-            'columnName' => 'id_parent',
-            'fieldName' => 'idParent',
-            'type' => 'int',
-        ])
-        ->addField([
-            'columnName' => 'nom',
-            'fieldName' => 'nom',
-            'type' => 'string',
-        ])
-        ->addField([
-            'columnName' => 'raccourci',
-            'fieldName' => 'raccourci',
-            'type' => 'string',
-        ])
-        ->addField([
-            'columnName' => 'contenu',
-            'fieldName' => 'contenu',
-            'type' => 'string',
-        ])
-        ->addField([
-            'columnName' => 'descriptif',
-            'fieldName' => 'descriptif',
-            'type' => 'string',
-        ])
-        ->addField([
-            'columnName' => 'position',
-            'fieldName' => 'position',
-            'type' => 'int',
-        ])
-        ->addField([
-            'columnName' => 'date',
-            'fieldName' => 'date',
-            'type' => 'datetime',
-            'serializer_options' => [
-                'unserialize' => [
-                    'unSerializeUseFormat' => true,
-                    'format' => 'U',
+            ->addField([
+                'columnName' => 'id',
+                'fieldName' => 'id',
+                'primary' => true,
+                'autoincrement' => true,
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'id_parent',
+                'fieldName' => 'idParent',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'nom',
+                'fieldName' => 'nom',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'raccourci',
+                'fieldName' => 'raccourci',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'contenu',
+                'fieldName' => 'contenu',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'descriptif',
+                'fieldName' => 'descriptif',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'position',
+                'fieldName' => 'position',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'date',
+                'fieldName' => 'date',
+                'type' => 'datetime',
+                'view_timezone' => 'Europe/Paris',
+                'serializer_options' => [
+                    'unserialize' => [
+                        'unSerializeUseFormat' => true,
+                        'format' => 'U',
+                    ],
+                    'serialize' => [
+                        'format' => 'U',
+                    ],
                 ],
-                'serialize' => [
-                    'format' => 'U',
-                ],
-            ],
-        ])
-        ->addField([
-            'columnName' => 'etat',
-            'fieldName' => 'etat',
-            'type' => 'int',
-        ])
-        ->addField([
-            'columnName' => 'id_personne_physique',
-            'fieldName' => 'idPersonnePhysique',
-            'type' => 'int',
-        ])
-        ->addField([
-            'columnName' => 'icone',
-            'fieldName' => 'icone',
-            'type' => 'string',
-        ])
-        ->addField([
-            'columnName' => 'pagination',
-            'fieldName' => 'pagination',
-            'type' => 'int',
-        ])
-        ->addField([
-            'columnName' => 'feuille_associee',
-            'fieldName' => 'feuilleAssociee',
-            'type' => 'int',
-        ])
-    ;
+            ])
+            ->addField([
+                'columnName' => 'etat',
+                'fieldName' => 'etat',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'id_personne_physique',
+                'fieldName' => 'idPersonnePhysique',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'icone',
+                'fieldName' => 'icone',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'pagination',
+                'fieldName' => 'pagination',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'feuille_associee',
+                'fieldName' => 'feuilleAssociee',
+                'type' => 'int',
+            ])
+        ;
         return $metadata;
     }
 }

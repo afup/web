@@ -67,12 +67,22 @@ services:
         autowire: true
         autoconfigure: true
 
-    AppBundle\Controller\Admin\Site\AddRubriqueAction:
+    AppBundle\Controller\Admin\Site\Rubriques\AddRubriqueAction:
         autowire: true
         arguments :
             $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
 
-    AppBundle\Controller\Admin\Site\EditRubriqueAction:
+    AppBundle\Controller\Admin\Site\Rubriques\EditRubriqueAction:
+        autowire: true
+        arguments :
+            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
+
+    AppBundle\Controller\Admin\Site\Feuilles\AddFeuilleAction:
+        autowire: true
+        arguments :
+           $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
+
+    AppBundle\Controller\Admin\Site\Feuilles\EditFeuilleAction:
         autowire: true
         arguments :
             $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
@@ -442,8 +452,10 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Site\Model\Repository\RubriqueRepository]
 
-
-
+    AppBundle\Site\Model\Repository\FeuilleRepository:
+        class: AppBundle\Site\Model\Repository\FeuilleRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Site\Model\Repository\FeuilleRepository]
 
     AppBundle\Site\Model\Repository\ArticleRepository:
         class: AppBundle\Site\Model\Repository\ArticleRepository
@@ -455,8 +467,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
 
-
     AppBundle\Site\Form\RubriqueType:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Site\Form\FeuilleType:
         autowire: true
         autoconfigure: true
 
