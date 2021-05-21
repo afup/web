@@ -68,6 +68,10 @@ class Ticket implements NotifyPropertyInterface
     const TYPE_FORUM_PHP_LIVE_SOUTIEN_5 = 123;
     const TYPE_FORUM_PHP_LIVE_SOUTIEN_6 = 124;
 
+    const TYPE_AFUP_DAY_2021_LIVE_1 = 125;
+    const TYPE_AFUP_DAY_2021_LIVE_2 = 126;
+    const TYPE_AFUP_DAY_2021_LIVE_3 = 127;
+    const TYPE_AFUP_DAY_2021_LIVE_4 = 128;
 
     const SPECIAL_PRICE = AFUP_FORUM_SPECIAL_PRICE;
 

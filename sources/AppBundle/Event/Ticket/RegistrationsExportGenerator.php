@@ -172,6 +172,10 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_2:
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_3:
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_4:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_1:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_2:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_3:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_4:
                 return 'PASS JOUR 1';
                 break;
             case AFUP_FORUM_DEUXIEME_JOURNEE:
