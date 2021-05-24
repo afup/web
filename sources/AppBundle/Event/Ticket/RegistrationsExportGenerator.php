@@ -173,13 +173,11 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_3:
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_4:
             case Ticket::TYPE_AFUP_DAY_2021_LIVE_1:
-            case Ticket::TYPE_AFUP_DAY_2021_LIVE_2:
-            case Ticket::TYPE_AFUP_DAY_2021_LIVE_3:
-            case Ticket::TYPE_AFUP_DAY_2021_LIVE_4:
                 return 'PASS JOUR 1';
                 break;
             case AFUP_FORUM_DEUXIEME_JOURNEE:
             case AFUP_FORUM_LATE_BIRD_DEUXIEME_JOURNEE:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_2:
                 return 'PASS JOUR 2';
                 break;
             case AFUP_FORUM_2_JOURNEES:
@@ -203,6 +201,8 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_4:
             case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_5:
             case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_6:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_3:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_4:
                 return 'PASS 2 JOURS';
                 break;
             case AFUP_FORUM_ORGANISATION:
