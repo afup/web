@@ -38,8 +38,8 @@ security:
             logout_on_user_change: true
             guard:
                 authenticators:
-                    - 'AppBundle\Security\MyGithubAuthenticator'
-                entry_point: 'AppBundle\Security\MyGithubAuthenticator'
+                    - '%github_authenticator%'
+                entry_point: '%github_authenticator%'
 
         main:
             anonymous: ~
