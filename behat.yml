@@ -9,6 +9,7 @@ default:
   extensions:
     Behat\MinkExtension:
       base_url:  'https://apachephptest:80'
+      files_path: '%paths.base%/tests/behat/files'
       sessions:
         default:
           goutte:
