@@ -12,3 +12,47 @@ License URI:    http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:    hestia-pro
 Template:       hestia-pro
 */
+.hestia-top-bar{
+    font-family: Roboto, Helvetica, sans-serif;
+    letter-spacing: 0.08em;
+    font-size: 13px;
+}
+.hestia-top-bar .col-md-12.pull-right {
+    text-align:center !important;
+}
+
+.hestia-top-bar ul{
+    line-height: 2!important;
+}
+.hestia-top-bar ul li a{
+    padding: 0 .5rem !important;
+    margin: 0 !important;
+}
+.hestia-top-bar ul li:nth-child(2){
+    background-color: #36a7df;
+}
+
+footer.footer{
+    background-color: #dddddd;
+}
+footer.footer-big ul li a {
+    text-transform: none;
+    font-weight: normal;
+}
+.footer .widget h5{
+    font-weight: normal;
+}
+.footer a{
+    color: #859093;
+    font-size:13px;
+}
+footer #menu-footer-archives .menu-item {
+    border-top: 1px solid #e5e5e5;
+}
+@media (min-width: 992px) {
+    footer.footer .col-md-12 .widget_nav_menu {
+        float:left;
+        width: 20%;
+        padding-right: 30px;
+    }
+}

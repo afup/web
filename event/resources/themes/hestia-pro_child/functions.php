@@ -52,7 +52,7 @@ if ( !function_exists( 'hestia_child_parent_css' ) ):
 
     }
 endif;
-add_action( 'wp_enqueue_scripts', 'hestia_child_parent_css', 10 );
+add_action( 'wp_enqueue_scripts', 'hestia_child_parent_css', 1 );
 
 /**
  * Import options from the parent theme
