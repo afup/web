@@ -113,6 +113,12 @@ article.conferenciers .article-body.conferencier {
 	}
 }
 
+@media (max-width: 768px) {
+	.hestia-team .card-image img{
+		object-fit: contain;
+	}
+}
+
 @media (min-width: 361px) {
 	.photo{
 		float:left;
