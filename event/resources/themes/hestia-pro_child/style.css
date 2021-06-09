@@ -16,6 +16,7 @@ Template:       hestia-pro
 	font-family: Roboto, Helvetica, sans-serif;
 	letter-spacing: 0.08em;
 	font-size: 13px;
+	height: auto;
 }
 .hestia-top-bar .col-md-12.pull-right {
 	text-align:center !important;
@@ -64,6 +65,12 @@ footer .content .menu-item {
 		width: 20%;
 		padding-right: 30px;
 	}
+}
+
+.card-testimonial .card-avatar img {
+	object-fit: contain;
+	width: 130px;
+	height: 130px
 }
 
 /** Speakers Page **/
