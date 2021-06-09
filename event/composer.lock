@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a07946487401cbe687ebb00d0ee25a7c",
+    "content-hash": "ea15e65a5729ca88e6b0bc2e41637d21",
     "packages": [
         {
             "name": "composer/installers",
@@ -658,6 +658,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/jquery-t-countdown-widget/"
+        },
+        {
+            "name": "wpackagist-plugin/qtranslate-x",
+            "version": "3.4.6.8",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/qtranslate-x/",
+                "reference": "tags/3.4.6.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/qtranslate-x.3.4.6.8.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/qtranslate-x/"
         }
     ],
     "packages-dev": [],

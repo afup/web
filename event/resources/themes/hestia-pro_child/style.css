@@ -26,19 +26,19 @@ Template:       hestia-pro
 }
 
 #menu-global-afup{
-		display: flex;
-			justify-content: center;
-		}
+	display: flex;
+	justify-content: center;
+}
 
 .hestia-top-bar ul li{
-		margin: 0;
-	}
+	margin: 0;
+}
 .hestia-top-bar ul li a{
 	padding: 0 .5rem !important;
 	margin: 0 !important;
 }
 .hestia-top-bar ul li:nth-child(2){
-	background-color: #36a7df;		
+	background-color: #36a7df;
 }
 
 footer.footer{
@@ -66,3 +66,102 @@ footer .content .menu-item {
 	}
 }
 
+/** Speakers Page **/
+article.conferenciers {
+	margin-bottom: 3em;
+	min-height: 120px;
+}
+
+.conferenciers h3 {
+	font-family: Roboto, Helvetica, sans-serif;
+	text-transform: uppercase;
+	font-weight: 400;
+	color: #045e80;
+	display: inline-block;
+	margin-right: 1rem;
+}
+
+.conferenciers img{
+	object-fit: cover;
+	width: 90px;
+	height: 90px;
+	border-radius: 50%;
+	-webkit-box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+article.conferenciers a.twitter {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+article.conferenciers .article-body.conferencier {
+	clear: both;
+}
+@media (max-width: 360px) {
+	.photo{
+		text-align: center;
+		margin: 1rem 0;
+	}
+}
+
+@media (min-width: 361px) {
+	.photo{
+		float:left;
+	}
+	.article-body.conferencier p {
+		padding-left: 120px;
+	}
+
+	.article-body.conferencier ul {
+		padding-left: 120px;
+	}
+}
+
+.article-body.conferencier ul li {
+	list-style-type: none;
+}
+
+.article-body.conferencier ul li a {
+	text-decoration: none;
+	color: #51ace4;
+}
+
+.article-body.conferencier ul li a:hover {
+	text-decoration: underline;
+}
+
+/** Program Page **/
+.session{
+	clear: both;
+}
+
+.session h4 {
+	font-family: Roboto, Helvetica, sans-serif;
+	font-weight: 100;
+	text-transform: uppercase;
+	color: #18213e;
+	font-size: 150%;
+	border-bottom: solid #18213e thin;
+}
+
+.session .horaire {
+	font-family: Roboto, Helvetica, sans-serif;
+	font-weight: 100;
+	text-align: right;
+	margin-bottom: 1em;
+}
+
+.session .horaire span.salle {
+	font-weight: 400;
+}
+
+.session .horaire strong {
+	color: #51ace4;
+}
+
+.session .conferencier a {
+	text-decoration: none;
+	color: #51ace4;
+}
