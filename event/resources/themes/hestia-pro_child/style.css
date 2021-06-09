@@ -117,6 +117,9 @@ article.conferenciers .article-body.conferencier {
 	.hestia-team .card-image img{
 		object-fit: contain;
 	}
+	.hestia-team .col-xs-6{
+		width: 100%;
+	}
 }
 
 @media (min-width: 361px) {
