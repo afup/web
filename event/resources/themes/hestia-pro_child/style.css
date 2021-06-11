@@ -13,10 +13,10 @@ Text Domain:    hestia-pro
 Template:       hestia-pro
 */
 .hestia-top-bar{
-	font-family: Roboto, Helvetica, sans-serif;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	letter-spacing: 0.08em;
 	font-size: 13px;
-	height: auto;
+	height: 30px;
 }
 .hestia-top-bar .col-md-12.pull-right {
 	text-align:center !important;
@@ -33,10 +33,13 @@ Template:       hestia-pro
 
 .hestia-top-bar ul li{
 	margin: 0;
+	line-height: 20px;
+	height: 30px;
 }
 .hestia-top-bar ul li a{
-	padding: 0 .5rem !important;
+	padding: 4px 15px;
 	margin: 0 !important;
+	letter-spacing: 0.08em;
 }
 .hestia-top-bar ul li:nth-child(2){
 	background-color: #36a7df;
@@ -110,15 +113,6 @@ article.conferenciers .article-body.conferencier {
 	.photo{
 		text-align: center;
 		margin: 1rem 0;
-	}
-}
-
-@media (max-width: 768px) {
-	.hestia-team .card-image img{
-		object-fit: contain;
-	}
-	.hestia-team .col-xs-6{
-		width: 100%;
 	}
 }
 
