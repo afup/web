@@ -1,0 +1,145 @@
+.editor-styles-wrapper {
+  .editor-default-block-appender textarea.editor-default-block-appender__content {
+    font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+  }
+  .editor-writing-flow {
+    font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
+    color: $color-secondary;
+    font-size: 18px;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    p {
+      font-size: 18px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 500;
+      line-height: 1.618;
+    }
+
+    a {
+      color: #e91e63;
+      text-decoration: none;
+
+      &:hover {
+        opacity: .75;
+      }
+    }
+
+
+    $headings: (
+            'h1': 42px,
+            'h2': 37px,
+            'h3': 32px,
+            'h4': 27px,
+            'h5': 23px,
+            'h6': 18px,
+    );
+    @each $tag, $size in $headings {
+      #{$tag} {
+        font-size: $size;
+      }
+    }
+
+    pre {
+      display: block;
+      padding: 9.5px;
+      margin: 0 0 10px;
+      font-size: 13px;
+      line-height: 1.42857143;
+      word-break: break-all;
+      word-wrap: break-word;
+      color: #333;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    }
+  }
+
+  //<editor-fold desc="Cover block text size">
+  .wp-block-cover {
+    font-size: inherit;
+
+    p.wp-block-cover-text {
+      font-size: 2em;
+    }
+  }
+
+  //</editor-fold>
+
+  //<editor-fold desc="Block Quote">
+  .wp-block-quote {
+
+    p {
+      font-style: italic;
+    }
+
+    &.has-text-align-right{
+      border-right: 5px solid #eee;
+    }
+
+    &:not(.has-text-align-right){
+      border-left: 5px solid #eee;
+    }
+
+    &:not(.is-large):not(.is-style-large) {
+      padding: 10px 20px;
+
+      .wp-block-quote__citation {
+        font-size: .8em;
+        color: #777;
+        font-style: normal;
+        font-weight: 400;
+      }
+    }
+
+    &.is-style-large {
+      p {
+        font-size: 24px;
+      }
+
+      .wp-block-quote__citation {
+        font-size: 18px;
+        color: #777;
+        font-style: normal;
+        font-weight: 400;
+      }
+    }
+  }
+
+  //</editor-fold>
+
+  //<editor-fold desc="Tables">
+  .wp-block-table {
+    td {
+      border: none;
+    }
+    tr {
+      border-bottom: 1px solid #eee;
+    }
+  }
+  //</editor-fold>
+
+  .wp-block-separator {
+    color: #eee;
+    background-color: #eee;
+    border: none;
+    &:not(.is-style-wide):not(.is-style-dots) {
+      height: 2px;
+      max-width: 150px;
+    }
+    .is-style-default{
+      height: 1px;
+    }
+    &.is-style-wide {
+      max-width: 100%;
+      height: 1px;
+    }
+  }
+}
+

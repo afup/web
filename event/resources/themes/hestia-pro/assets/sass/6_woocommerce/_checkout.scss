@@ -1,0 +1,181 @@
+/* Kepp the navbar with the logo when Distraction free option is enabled */
+@media ( min-width: 769px ) {
+
+  .woocommerce-checkout .navbar:not(.full-screen-menu).navbar-scroll-point.hestia_center .navbar-header .title-logo-wrapper {
+    display: block !important;
+  }
+}
+
+.hestia-checkout-no-distraction .title-logo-wrapper {
+  pointer-events: none;
+}
+
+.woocommerce .col2-set,
+.woocommerce-page .col2-set,
+.woocommerce-checkout .col2-set {
+  float: left;
+  width: 48%;
+  margin-right: 12%;
+}
+
+.woocommerce-account .col2-set {
+  width: 100%;
+}
+
+.woocommerce-checkout .col2-set {
+  margin-bottom: 50px;
+}
+
+#customer_details {
+  .col-1,
+  .col-2 {
+    clear: left;
+    width: 100%;
+  }
+}
+
+#order_review {
+  float: right;
+  clear: right;
+  width: 40%;
+  margin-right: 0;
+}
+
+.woocommerce-checkout {
+
+  table.shop_table td strong {
+    display: block;
+  }
+
+  .woocommerce-info,
+  .woocommerce-error,
+  .woocommerce-message,
+  #payment {
+    border-radius: 3px;
+  }
+
+  #payment {
+    background: #f0f0f0;
+
+    #place_order {
+      float: none;
+    }
+
+    ul.payment_methods,
+    div.form-row {
+      padding: 20px;
+    }
+
+    ul.payment_methods {
+      border: none;
+
+      li {
+        background: #f0f0f0;
+      }
+
+      li {
+        &:last-child {
+          div.payment_box {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    div.payment_box {
+      background: #dfdfdf;
+
+      ::before {
+        border-color: #dfdfdf;
+      }
+    }
+
+    .payment_method_paypal {
+      .about_paypal {
+        float: none;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .checkout_coupon {
+    .form-row {
+      margin-bottom: 0;
+      width: 53%;
+    }
+
+    .form-row-last {
+      text-align: right;
+      width: 47%;
+    }
+  }
+
+  .form-row label {
+    color: $color-secondary;
+  }
+
+  .select2-container--default .select2-selection--single,
+  .select2-dropdown {
+    border-color: #d2d2d2;
+  }
+  .woocommerce-checkout-payment {
+    .form-row .woocommerce-form__label-for-checkbox, li>label {
+      color: #2d3359;
+
+      span:not(.required) {
+        padding-left: 20px;
+      }
+      input {
+        margin: 7px 0 0;
+      }
+    }
+    input[type="checkbox"] {
+      position: relative;
+      margin: 0px;
+    }
+  }
+
+  .woocommerce-account-fields {
+    p.create-account {
+      margin: 0;
+    }
+  }
+
+  .woocommerce-shipping-fields {
+    h3 {
+      margin: 0;
+      padding-left: 3px;
+
+      label {
+        margin: 0 0 10px;
+
+        input {
+          margin-left: 0;
+          position: relative;
+        }
+
+        span {
+          color: #999999;
+        }
+      }
+    }
+  }
+
+  .shop_table tr.shipping td p {
+    margin: 0;
+  }
+
+  #ship-to-different-address {
+    margin-bottom: 30px;
+
+    #ship-to-different-address-checkbox {
+      float: left;
+      margin: 0;
+    }
+
+    span {
+      float: left;
+      margin-left: 7px;
+    }
+  }
+}

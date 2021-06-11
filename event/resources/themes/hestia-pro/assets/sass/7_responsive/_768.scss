@@ -1,0 +1,354 @@
+@media (min-width: 769px) {
+  .form-horizontal .control-label {
+    padding-top: 8px;
+  }
+
+  @import '../2_elements/nav_components/min_769';
+
+}
+
+@media (max-width: 768px) {
+  @import '../2_elements/nav_components/max_768';
+
+  .big-title-sidebar-wrapper {
+    width: 100%;
+    padding: 0;
+
+    .pirate-forms-contact-widget {
+      max-width: 370px;
+      margin: 0 auto;
+    }
+  }
+
+  .single .section {
+    padding: 30px 0 0;
+
+    &.section-blog-info {
+      padding: 15px 0 30px;
+    }
+  }
+
+  .media .avatar, .media-body .avatar, .media-area .avatar {
+    margin: 0;
+    width: 35px;
+    height: 35px;
+  }
+
+  .subscribe-line .btn {
+    margin-top: 15px;
+  }
+
+  ul.children {
+    padding-left: 5px;
+    border-left: 1px #cfcfcf solid;
+  }
+
+  .blog-post .section-comments .comment-respond .author {
+    display: none;
+  }
+
+  .hestia-about .text-area {
+    margin-bottom: 20px;
+  }
+  .home .main-raised section:first-of-type {
+    border-radius: 0;
+  }
+
+  .footer {
+    &.footer-big {
+      padding: 30px 0 26px;
+    }
+
+    .footer-menu {
+      width: 100%;
+    }
+
+    .copyright {
+      display: inline-block;
+      float: none !important;
+      width: 100%;
+      padding: 10px 0;
+      text-align: center;
+    }
+  }
+
+  .main-raised {
+    margin-right: 0;
+    margin-left: 0;
+    border-radius: 0;
+  }
+
+  hr {
+    margin-top: 0;
+  }
+
+  // Home - About
+  .hestia-about {
+    padding-top: 30px;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .widget_sow-image {
+      .panel-widget-style {
+        margin-top: -60px;
+        padding: 0 0 60px 0 !important;
+      }
+    }
+  }
+
+  // Home - Team
+  .hestia-team,
+  .team,
+  .authors-on-blog {
+    .card-image {
+      height: 100px;
+      margin: 0 auto;
+      width: 100px;
+
+      img {
+        object-fit: cover;
+      }
+    }
+
+    .col-xs-6:nth-of-type(2n+1) {
+      clear: both;
+    }
+
+    .card {
+      .content {
+        text-align: center;
+
+        .card-description {
+          display: none;
+        }
+
+        .footer {
+          margin-left: 0;
+          margin-top: 0;
+
+          .btn.btn-just-icon {
+            margin: 0 5px;
+            padding: 0;
+
+            i {
+              width: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Home - Portfolio
+  .hestia-work {
+    .card {
+      cursor: pointer;
+    }
+  }
+
+  // Home - Pricing
+  .pricing {
+    padding: 60px 0 40px;
+  }
+
+  // Home - Contact Us
+  .contactus {
+    .card-contact {
+      margin-top: 90px;
+    }
+
+    .form_captcha_wrap {
+      .pirate-forms-google-recaptcha > div {
+        margin: 0 auto;
+      }
+    }
+
+    .contact_submit_wrap {
+      text-align: center;
+    }
+  }
+
+  // Clear top padding
+  .hestia-clear-top-padding{
+    margin-top: -30px;
+  }
+
+  // Single post
+  .single {
+    &.single-post {
+      .section-blog-info {
+        .entry-social {
+          margin: 15px 0 30px;
+        }
+
+        .card-profile {
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+
+  // Page
+  .page {
+    .section {
+      &.section-text {
+        padding: 30px 0;
+      }
+    }
+  }
+
+  .single-post,
+  .page,
+  .blog,
+  .archive,
+  .category {
+    .page-header {
+      &.header-small {
+        min-height: 0;
+
+        .container {
+          padding: 120px 15px 50px;
+
+          .hestia-title {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Top bar
+  .hestia-top-bar {
+    overflow: hidden;
+
+    .col-md-6 {
+      text-align: center;
+      width: 100%;
+
+      &.pull-right {
+        display: none;
+      }
+    }
+
+    .col-md-12 {
+      &,
+      &.pull-right {
+        float: none !important;
+        text-align: center;
+      }
+    }
+
+    .widget.widget_shopping_cart {
+      display: none;
+    }
+  }
+
+  .home:not(.blog) .main-raised {
+    margin-top: 0;
+  }
+
+  .home:not(.blog) .page-header {
+    min-height: 0;
+  }
+
+  .header {
+    .carousel .item .container {
+      padding-top: 170px;
+      padding-bottom: 100px;
+    }
+
+    .buttons > .btn-right ~ .btn-left {
+      margin-top: 40px;
+    }
+
+    &.header-with-topbar {
+      .carousel .item .container {
+        padding-top: 210px;
+      }
+    }
+  }
+
+  .header {
+    .carousel .carousel-control {
+      margin-top: 35px;
+    }
+
+    &.header-with-topbar {
+      .carousel .carousel-control {
+        margin-top: 55px;
+      }
+    }
+  }
+
+  .obfx-sharing-bottom {
+    left: 0;
+  }
+
+  // Slider
+  .carousel {
+    .buttons .btn-left + .btn-right,
+    .buttons .btn-left,
+    .buttons .btn-right {
+      margin: 0 15px 15px;
+    }
+  }
+
+  .navbar.navbar-transparent {
+    .hestia-hide-if-transparent{
+      display: block;
+    }
+
+    .hestia-transparent-logo{
+      display: none;
+    }
+  }
+
+
+}
+
+
+@media (max-width: 767px) {
+  .carousel {
+    .page-header {
+      .row {
+        flex-direction: column;
+        justify-content: center;
+        padding: 0;
+        text-align: center;
+
+        .margin-right-auto,
+        .margin-left-auto {
+          margin: inherit;
+        }
+
+        .big-title-slider-content {
+          text-align: center;
+        }
+      }
+    }
+
+    .item .container.container-height-auto {
+      top: 0;
+      transform: none;
+    }
+
+    .carousel-control {
+      &.left i {
+        left: 10px;
+      }
+
+      &.right i {
+        right: 10px;
+      }
+    }
+  }
+}
+
+
+@media (max-width: 600px) {
+  body.admin-bar .navbar {
+    margin-top: 0;
+  }
+}

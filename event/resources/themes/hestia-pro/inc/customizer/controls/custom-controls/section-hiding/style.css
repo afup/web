@@ -1,0 +1,25 @@
+.control-section-hiding-section .hestia-toggle-section,
+.control-section-sidebar .hestia-toggle-section{
+	text-decoration: none;
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+.control-section-hiding-section .hestia-toggle-section .dashicons,
+.control-section-sidebar .hestia-toggle-section .dashicons{
+	font-size:16px;
+	vertical-align: middle;
+}
+
+.hestia-section-visible .hestia-toggle-section{
+	color: #929292;
+}
+
+#customize-theme-controls .accordion-section-title.hestia-section-hidden,
+.hestia-section-hidden .hestia-toggle-section{
+	color: #dcdcdc;
+}
+
+.hestia-toggle-section{
+	float:left
+}

@@ -1,0 +1,106 @@
+@import "../0_base/variables";
+
+/*--------------------------------------------------------------
+## Elementor Styles Basic
+--------------------------------------------------------------*/
+.elementor-widget {
+  //Image Slider
+  .elementor-slick-slider {
+    .slick-slider .slick-next, .slick-slider .slick-prev {
+      box-shadow: none;
+      &:before {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+    .slick-dots button {
+      box-shadow: none;
+      &:before {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+  //Button
+  .elementor-button {
+    box-shadow: none;
+    background-color: $color-rose;
+  }
+  //Icon
+  .elementor-icon {
+    color: $color-rose;
+    &:hover {
+      color: rgba(233, 30, 99, 0.65);
+    }
+  }
+
+  &.elementor-view-stacked .elementor-icon {
+    color: #fff;
+    background-color: $color-rose;
+    &:hover {
+      background-color: rgba(233, 30, 99, 0.65);
+      color: #fff;
+    }
+  }
+
+  &.elementor-view-framed .elementor-icon {
+    color: $color-rose;
+    border-color: $color-rose;
+    &:hover {
+      border-color: rgba(233, 30, 99, 0.65);
+      color: rgba(233, 30, 99, 0.65);
+    }
+  }
+
+  //Separator
+  .elementor-divider-separator {
+    border-color: $color-secondary;
+  }
+  //Icon Box
+  .elementor-icon-box-title, .elementor-image-box-title {
+    font-weight: 700;
+    font-size: 1.2em;
+    font-family: $secondary-font;
+    color: $color-secondary;
+  }
+  .elementor-icon-box-description, .elementor-image-box-description {
+    color: #a5a5a5;
+    font-size: 16px;
+  }
+  //Counter and Testimonial
+  .elementor-counter .elementor-counter-number-wrapper {
+    font-family: $primary-font;
+    font-weight: 700;
+  }
+  .elementor-counter .elementor-counter-title,
+  .elementor-testimonial-wrapper .elementor-testimonial-name {
+    font-family: $secondary-font;
+    font-weight: 700;
+    color: $color-secondary;
+  }
+  .elementor-testimonial-wrapper .elementor-testimonial-content {
+    font-size: 17px;
+  }
+  //Tabs Accordion and Toggle
+  .elementor-tab-title,
+  .elementor-accordion-title,
+  .elementor-toggle-title {
+    font-family: $secondary-font
+  }
+  .elementor-tab-title.active,
+  .elementor-accordion-title.active,
+  .elementor-toggle-title.active {
+    color: $color-rose;
+  }
+}
+
+//Progress Bar
+
+.elementor-widget-progress {
+  .elementor-progress-bar {
+    background-color: $color-rose;
+  }
+  .elementor-title {
+    font-family: $secondary-font;
+    font-weight: 700;
+    line-height: 2.5em;
+  }
+}

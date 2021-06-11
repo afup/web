@@ -1,0 +1,354 @@
+/*
+ * Customizer stylesheet.
+ */
+.pirate-forms-placeholder .header-primary {
+  background: rgba(60, 60, 60, 0.9);
+  z-index: 100;
+  border: 2px dashed #8a8a8a;
+}
+
+.pirate-forms-placeholder .card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed #8a8a8a;
+  z-index: 50;
+  position: relative;
+}
+
+.pirate-forms-placeholder .card:after {
+  border-radius: 6px;
+  z-index: -1;
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.pirate-forms-placeholder .pirate-forms-placeholder-overlay {
+  top: 0;
+  text-align: center;
+  color: #fff;
+  padding: 0 30px;
+  position: absolute;
+  height: 100%;
+  display: inline-block;
+}
+
+.pirate-forms-placeholder .pirate-forms-placeholder-overlay:before {
+  height: 100%;
+  width: 0;
+  display: inline-block;
+  content: '';
+  vertical-align: middle;
+}
+
+.pirate-forms-placeholder .pirate-forms-placeholder-overlay .placeholder-text {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  font-weight: 100;
+  padding: 15px 15px;
+}
+
+.pirate-forms-placeholder .pirate-forms-placeholder-overlay .placeholder-text .customize-partial-edit-shortcut button {
+  top: -25px;
+}
+
+.pirate-forms-placeholder .pirate_forms_wrap form, .pirate-forms-placeholder .pirate_forms_wrap div {
+  opacity: .3;
+  z-index: -2;
+}
+
+.pirate-forms-placeholder .pirate_forms_wrap form button, .pirate-forms-placeholder .pirate_forms_wrap div button {
+  box-shadow: none;
+  border: 2px dashed #8a8a8a;
+  background-color: #333;
+}
+
+.pirate-forms-placeholder .pirate-forms-placeholder-align {
+  display: inline-block;
+  margin: 0 -7px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.pirate-forms-placeholder .pirate-forms-placeholder-align:before {
+  content: '';
+  display: inline-block;
+  float: left;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.customize-partial-edit-shortcut-custom_header {
+  z-index: 9999;
+}
+
+.customize-partial-edit-shortcut-hestia_big_title_background {
+  right: 80px;
+  top: 80px;
+}
+
+.customize-partial-edit-shortcut-hestia_placeholder_sidebar_woocommerce,
+.customize-partial-edit-shortcut-hestia_placeholder_sidebar_1 {
+  left: 45px;
+  top: -10px;
+  position: relative;
+}
+
+.customize-partial-edit-shortcut-hestia_feature_thumbnail,
+.customize-partial-edit-shortcut-hestia_copyright_alignment,
+.customize-partial-edit-shortcut-hestia_top_bar_alignment,
+.customize-partial-edit-shortcut-hestia_ribbon_background,
+.customize-partial-edit-shortcut-hestia_subscribe_background,
+.customize-partial-edit-shortcut-hestia_contact_background {
+  right: 10px;
+  top: 10px;
+  z-index: 1029;
+}
+
+.customize-partial-edit-shortcut-hestia_features_hide,
+.customize-partial-edit-shortcut-hestia_about_hide,
+.customize-partial-edit-shortcut-hestia_shop_hide,
+.customize-partial-edit-shortcut-hestia_portfolio_hide,
+.customize-partial-edit-shortcut-hestia_team_hide,
+.customize-partial-edit-shortcut-hestia_pricing_hide,
+.customize-partial-edit-shortcut-hestia_ribbon_hide,
+.customize-partial-edit-shortcut-hestia_testimonials_hide,
+.customize-partial-edit-shortcut-hestia_clients_bar_hide,
+.customize-partial-edit-shortcut-hestia_subscribe_hide,
+.customize-partial-edit-shortcut-hestia_blog_hide,
+.customize-partial-edit-shortcut-hestia_contact_hide {
+  left: 40px;
+  top: 0;
+  z-index: 999;
+  opacity: 1;
+}
+
+.customize-partial-edit-shortcut-hestia_contact_content_new,
+.customize-partial-edit-shortcut-hestia_shop_items,
+.customize-partial-edit-shortcut-hestia_blog_items,
+.customize-partial-edit-shortcut-hestia_shop_categories,
+.customize-partial-edit-shortcut-hestia_shop_order,
+.customize-partial-edit-shortcut-hestia_shop_shortcode,
+.customize-partial-edit-shortcut-hestia_portfolio_items,
+.customize-partial-edit-shortcut-hestia_portfolio_boxes_type,
+.customize-partial-edit-shortcut-hestia_blog_categories,
+body.blog .customize-partial-edit-shortcut-hestia_blog_hide,
+.customize-partial-edit-shortcut-hestia_slider_alignment,
+.customize-partial-edit-shortcut-hestia_big_title_background {
+  display: none;
+}
+
+.customize-partial-edit-shortcut-primary-menu {
+  top: 0;
+  z-index: 10000;
+  position: relative;
+  float: right;
+  right: -30px;
+}
+
+/**
+ * Features section - selective refresh style
+ */
+.hestia-features:not(.is-shortcode),
+.hestia-about:not(.is-shortcode),
+.hestia-shop:not(.related):not(.is-shortcode),
+.hestia-work:not(.is-shortcode),
+.hestia-team:not(.is-shortcode),
+.hestia-pricing:not(.is-shortcode),
+.hestia-ribbon:not(.is-shortcode),
+.hestia-testimonials:not(.is-shortcode),
+.hestia-subscribe:not(#subscribe-on-blog):not(.is-shortcode),
+body.page .hestia-blogs:not(.is-shortcode),
+.hestia-clients-bar:not(.is-shortcode),
+.hestia-contact:not(.is-shortcode) {
+  position: relative;
+}
+
+.hestia-features:not(.is-shortcode):before,
+.hestia-about:not(.is-shortcode):before,
+.hestia-shop:not(.related):not(.is-shortcode):before,
+.hestia-work:not(.is-shortcode):before,
+.hestia-team:not(.is-shortcode):before,
+.hestia-pricing:not(.is-shortcode):before,
+.hestia-ribbon:not(.is-shortcode):before,
+.hestia-testimonials:not(.is-shortcode):before,
+.hestia-subscribe:not(#subscribe-on-blog):not(.is-shortcode):before,
+body.page .hestia-blogs:not(.is-shortcode):before,
+.hestia-clients-bar:not(.is-shortcode):before,
+.hestia-contact:not(.is-shortcode):before {
+  transition: .3s ease;
+  z-index: 100;
+  position: absolute;
+  content: " ";
+  border: 2px dashed rgba(121, 121, 121, 0.22);
+  top: 20px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  pointer-events: none;
+}
+
+.hestia-features:not(.is-shortcode):hover:before,
+.hestia-about:not(.is-shortcode):hover:before,
+.hestia-shop:not(.related):not(.is-shortcode):hover:before,
+.hestia-work:not(.is-shortcode):hover:before,
+.hestia-team:not(.is-shortcode):hover:before,
+.hestia-pricing:not(.is-shortcode):hover:before,
+.hestia-ribbon:not(.is-shortcode):hover:before,
+.hestia-testimonials:not(.is-shortcode):hover:before,
+.hestia-subscribe:not(#subscribe-on-blog):not(.is-shortcode):hover:before,
+body.page .hestia-blogs:not(.is-shortcode):hover:before,
+.hestia-clients-bar:not(.is-shortcode):hover:before,
+.hestia-contact:not(.is-shortcode):hover:before {
+  border-color: #00A0D0;
+}
+
+.hestia-features-title-area,
+.hestia-shop-title-area,
+.hestia-team-title-area,
+.hestia-pricing-title-area,
+.hestia-testimonials-title-area,
+.hestia-subscribe-title-area,
+.hestia-blogs-title-area,
+.hestia-contact-title-area,
+.hestia-portfolio-title-area,
+.pirate-forms-placeholder-align {
+  transition: .3s ease;
+}
+
+.hestia-features-title-area:hover .customize-partial-edit-shortcut,
+.hestia-shop-title-area:hover .customize-partial-edit-shortcut,
+.hestia-team-title-area:hover .customize-partial-edit-shortcut,
+.hestia-pricing-title-area:hover .customize-partial-edit-shortcut,
+.hestia-testimonials-title-area:hover .customize-partial-edit-shortcut,
+.hestia-subscribe-title-area:hover .customize-partial-edit-shortcut,
+.hestia-blogs-title-area:hover .customize-partial-edit-shortcut,
+.hestia-contact-title-area:hover .customize-partial-edit-shortcut,
+.hestia-portfolio-title-area:hover .customize-partial-edit-shortcut,
+.pirate-forms-placeholder-align:hover .customize-partial-edit-shortcut {
+  opacity: 1;
+}
+
+.hestia-features-title-area .customize-partial-edit-shortcut,
+.hestia-shop-title-area .customize-partial-edit-shortcut,
+.hestia-team-title-area .customize-partial-edit-shortcut,
+.hestia-pricing-title-area .customize-partial-edit-shortcut,
+.hestia-testimonials-title-area .customize-partial-edit-shortcut,
+.hestia-subscribe-title-area .customize-partial-edit-shortcut,
+.hestia-blogs-title-area .customize-partial-edit-shortcut,
+.hestia-contact-title-area .customize-partial-edit-shortcut,
+.hestia-portfolio-title-area .customize-partial-edit-shortcut,
+.pirate-forms-placeholder-align .customize-partial-edit-shortcut {
+  transition: .3s ease;
+  opacity: 0;
+}
+
+.hestia-features-title-area .customize-partial-edit-shortcut button,
+.hestia-shop-title-area .customize-partial-edit-shortcut button,
+.hestia-team-title-area .customize-partial-edit-shortcut button,
+.hestia-pricing-title-area .customize-partial-edit-shortcut button,
+.hestia-testimonials-title-area .customize-partial-edit-shortcut button,
+.hestia-subscribe-title-area .customize-partial-edit-shortcut button,
+.hestia-blogs-title-area .customize-partial-edit-shortcut button,
+.hestia-contact-title-area .customize-partial-edit-shortcut button,
+.hestia-portfolio-title-area .customize-partial-edit-shortcut button,
+.pirate-forms-placeholder-align .customize-partial-edit-shortcut button {
+  margin: 0;
+}
+
+.hestia-features-content,
+.hestia-about-content,
+.hestia-team-content,
+.hestia-table-one,
+.hestia-table-two,
+.hestia-ribbon-content,
+.hestia-testimonials-content,
+.hestia-blog-content,
+.hestia-clients-bar,
+.hestia-contact .hestia-description,
+.hestia-contact-form-col {
+  transition: .3s ease;
+  position: relative;
+}
+
+.hestia-features-content .customize-partial-edit-shortcut,
+.hestia-about-content .customize-partial-edit-shortcut,
+.hestia-team-content .customize-partial-edit-shortcut,
+.hestia-table-one .customize-partial-edit-shortcut,
+.hestia-table-two .customize-partial-edit-shortcut,
+.hestia-ribbon-content .customize-partial-edit-shortcut,
+.hestia-testimonials-content .customize-partial-edit-shortcut,
+.hestia-blog-content .customize-partial-edit-shortcut,
+.hestia-clients-bar .customize-partial-edit-shortcut,
+.hestia-contact .hestia-description .customize-partial-edit-shortcut,
+.hestia-contact-form-col .customize-partial-edit-shortcut {
+  transition: .3s ease;
+  opacity: 0;
+}
+
+.hestia-features-content .customize-partial-edit-shortcut button,
+.hestia-about-content .customize-partial-edit-shortcut button,
+.hestia-team-content .customize-partial-edit-shortcut button,
+.hestia-table-one .customize-partial-edit-shortcut button,
+.hestia-table-two .customize-partial-edit-shortcut button,
+.hestia-ribbon-content .customize-partial-edit-shortcut button,
+.hestia-testimonials-content .customize-partial-edit-shortcut button,
+.hestia-blog-content .customize-partial-edit-shortcut button,
+.hestia-clients-bar .customize-partial-edit-shortcut button,
+.hestia-contact .hestia-description .customize-partial-edit-shortcut button,
+.hestia-contact-form-col .customize-partial-edit-shortcut button {
+  margin: 0;
+}
+
+.hestia-features-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button, .hestia-features-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-about-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-about-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-team-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-team-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-table-one .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-table-one .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-table-two .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-table-two .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-ribbon-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-ribbon-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-testimonials-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-testimonials-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-blog-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-blog-content .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-clients-bar .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-clients-bar .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-contact .hestia-description .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-contact .hestia-description .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button,
+.hestia-contact-form-col .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_one_title button,
+.hestia-contact-form-col .customize-partial-edit-shortcut.customize-partial-edit-shortcut-hestia_pricing_table_two_title button {
+  left: 0;
+}
+
+.hestia-features-content:hover .customize-partial-edit-shortcut,
+.hestia-about-content:hover .customize-partial-edit-shortcut,
+.hestia-team-content:hover .customize-partial-edit-shortcut,
+.hestia-table-one:hover .customize-partial-edit-shortcut,
+.hestia-table-two:hover .customize-partial-edit-shortcut,
+.hestia-ribbon-content:hover .customize-partial-edit-shortcut,
+.hestia-testimonials-content:hover .customize-partial-edit-shortcut,
+.hestia-blog-content:hover .customize-partial-edit-shortcut,
+.hestia-clients-bar:hover .customize-partial-edit-shortcut,
+.hestia-contact .hestia-description:hover .customize-partial-edit-shortcut,
+.hestia-contact-form-col:hover .customize-partial-edit-shortcut {
+  opacity: 1;
+}
+
+.customize-partial-refreshing:before {
+  content: url(../img/ajax-loader.gif) !important;
+  top: 50% !important;
+  transform: translate3d(-50%, 0, 0);
+  border: none !important;
+  bottom: auto !important;
+  right: auto !important;
+  margin: 0 auto;
+  left: 50% !important;
+  position: absolute;
+  z-index: 10000;
+}

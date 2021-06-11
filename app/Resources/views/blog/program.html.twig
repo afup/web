@@ -30,9 +30,11 @@
                     {% for speaker in talk[".aggregation"].speaker %}
                         {% if speaker is not null %}
                             <div class="conferencier">
-                                <a href="{{ speakersPagePrefix }}#{{ speaker.id }}">
-                                    <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(speaker) }}" alt="{{ speaker.label }}">
-                                </a><br>
+                                <div class="photo">
+                                    <a href="{{ speakersPagePrefix }}#{{ speaker.id }}">
+                                        <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(speaker) }}" alt="{{ speaker.label }}">
+                                    </a><br>
+                                </div>
                                 <a href="{{ speakersPagePrefix }}#{{ speaker.id }}">{{ speaker.label }}</a>
                             </div>
                         {% endif %}

@@ -1,0 +1,18 @@
+.hooks-none {
+	display:none;
+}
+#hestia_search_hooks {
+	display: inline;
+	position: relative;
+	top: -2px;
+	left: 20px;
+	margin: 0;
+	width: 280px;
+	font-size: 16px;
+	font-weight: 300;
+	line-height: 1.5;
+}
+.hestia_hook_field_textarea {
+	width: 100%;
+	height: 100px;
+}

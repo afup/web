@@ -1,0 +1,8 @@
+@import "0_base/variables";
+@import "0_base/mixins";
+@import "0_base/placeholders";
+/*--------------------------------------------------------------
+# Woocommerce Integration
+--------------------------------------------------------------*/
+//WooCommerce Main Stylesheet
+@import "6_woocommerce/woocommerce-main";

@@ -1,0 +1,346 @@
+legend {
+  margin-bottom: 20px;
+}
+
+output {
+  padding-top: 8px;
+}
+
+.radio label,
+.checkbox label {
+  min-height: 20px;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.label {
+  background-color: #fff;
+  border-radius: 2px;
+
+  &.label-default {
+    background-color: #fff;
+  }
+
+  &.label-primary {
+    background-color: $color-primary;
+  }
+
+  &.label-success {
+    background-color: $color-success;
+  }
+
+  &.label-danger {
+    background-color: $color-danger;
+  }
+
+  &.label-rose {
+    background-color: $color-rose;
+  }
+}
+
+.form-control,
+.form-group .form-control,
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea {
+  @extend %forms-inputs-styling;
+}
+
+.form-control {
+  height: 36px;
+  padding: 7px 0;
+  vertical-align: middle;
+}
+
+.form-control-static {
+  min-height: 34px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.form-control,
+.form-group .form-control {
+  &::-moz-placeholder,
+  &:-ms-input-placeholder,
+  &::-webkit-input-placeholder {
+    color: #aaa;
+  }
+}
+
+.form-control[readonly],
+.form-control[disabled],
+fieldset[disabled] .form-control,
+.form-group .form-control[readonly],
+.form-group .form-control[disabled],
+fieldset[disabled] .form-group .form-control {
+  background-color: transparent;
+}
+
+.form-control[disabled],
+fieldset[disabled] .form-control,
+.form-group .form-control[disabled],
+fieldset[disabled] .form-group .form-control {
+  border-bottom: 1px dotted #d2d2d2;
+  background-image: none;
+}
+
+.form-control {
+  margin-bottom: 7px;
+}
+
+.form-control::-moz-placeholder,
+.form-control:-ms-input-placeholder,
+.form-control::-webkit-input-placeholder,
+.checkbox label,
+.radio label,
+label {
+  &, .form-group & {
+    color: #aaa;
+  }
+}
+
+label.control-label {
+  margin: 16px 0 0;
+  color: #aaa;
+}
+
+.help-block {
+  margin-top: 0;
+}
+
+.form-group {
+  padding-bottom: 7px;
+  position: relative;
+
+  .form-control {
+    margin-bottom: 7px;
+  }
+
+  label.control-label {
+    margin: 16px 0 0;
+    color: #aaa;
+  }
+
+  input[type=file] {
+    position: relative;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  textarea ~ .form-control-highlight {
+    margin-top: -11px;
+  }
+
+  .help-block {
+    margin-top: 0;
+    display: none;
+    position: absolute;
+  }
+
+  &.label-static label.control-label,
+  &.label-placeholder label.control-label,
+  &.label-floating label.control-label {
+    @extend %transition-all-3s-ease;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &.label-floating label.control-label {
+    will-change: left,top,contents;
+  }
+
+  &.label-placeholder:not(.is-empty) label.control-label {
+    display: none;
+  }
+
+  &.label-floating label.control-label,
+  &.label-placeholder label.control-label {
+    top: -7px;
+    left: 0;
+  }
+
+  &.label-static label.control-label,
+  &.label-floating.is-focused label.control-label,
+  &.label-floating:not(.is-empty) label.control-label {
+    top: -28px;
+    left: 0;
+  }
+
+  &.is-focused .form-control {
+    @extend %forms-inputs-styling-on-focus;
+  }
+
+  &.is-focused .form-control .material-input:after {
+    background-color: $color-primary;
+  }
+
+  &.is-focused.label-placeholder label,
+  &.is-focused.label-placeholder label.control-label {
+    color: #aaa;
+  }
+
+  &.is-focused select.form-control {
+    @extend %buttons-box-shadow-none;
+    border-color: #d2d2d2;
+  }
+
+  &.has-warning .form-control {
+    @extend %buttons-box-shadow-none;
+  }
+
+  &.has-warning.is-focused .form-control {
+    @include forms-background-gradient($color-warning);
+  }
+
+  &.has-warning label.control-label {
+    color: $color-warning;
+  }
+
+  &.has-error .form-control {
+    @extend %buttons-box-shadow-none;
+  }
+
+  &.has-error.is-focused .form-control {
+    @include forms-background-gradient($color-danger);
+  }
+
+  &.has-error label.control-label {
+    color: $color-danger;
+  }
+
+  &.has-success .form-control {
+    @extend %buttons-box-shadow-none;
+  }
+
+  &.has-success.is-focused .form-control {
+    @include forms-background-gradient($color-success);
+  }
+
+  &.has-success label.control-label {
+    color: $color-success;
+  }
+
+  &.has-info .form-control {
+    @extend %buttons-box-shadow-none;
+  }
+
+  &.has-info.is-focused .form-control {
+    @include forms-background-gradient($color-info);
+  }
+
+  &.has-info label.control-label,
+  &.has-info .help-block {
+    color: $color-info;
+  }
+}
+
+select {
+  &.form-control {
+    @extend %buttons-box-shadow-none;
+    border: 0;
+    border-radius: 0;
+  }
+
+  &.form-control[multiple],
+  .form-group.is-focused select.form-control[multiple] {
+    height: 85px;
+  }
+}
+
+.input-group-btn .btn {
+  margin: 0 0 7px;
+}
+
+.input-group {
+  .input-group-btn {
+    padding: 0 12px;
+  }
+
+  .input-group-addon {
+    padding: 6px 15px 0;
+    border: 0;
+    background: transparent;
+  }
+}
+
+.form-control-feedback {
+  opacity: 0;
+
+  .has-success & {
+    opacity: 1;
+    color: $color-success;
+  }
+
+  .has-error & {
+    opacity: 1;
+    color: $color-danger;
+  }
+}
+
+// Search input icon
+.searchform,
+.search-form {
+  label {
+    display: table-cell;
+    vertical-align: top;
+    padding-right: 25px;
+    width: 100%;
+  }
+}
+
+.searchform:not(.media-toolbar-primary),
+.search-form:not(.media-toolbar-primary),
+.woocommerce-product-search {
+  display: table;
+  position: relative;
+
+  input[type=submit], button {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    text-indent: -9999px;
+    top: -19px;
+    width: 45px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTY2NCIgaGVpZ2h0PSIxNjY0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiB2aWV3Qm94PSIwIDAgMTY2NCAxNjY0IiBzdHlsZT0iLW1zLXRyYW5zZm9ybTogcm90YXRlKDM2MGRlZyk7IC13ZWJraXQtdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTsgdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTsiPjxwYXRoIGQ9Ik0xMTUyIDcwNHEwLTE4NS0xMzEuNS0zMTYuNVQ3MDQgMjU2VDM4Ny41IDM4Ny41VDI1NiA3MDR0MTMxLjUgMzE2LjVUNzA0IDExNTJ0MzE2LjUtMTMxLjVUMTE1MiA3MDR6bTUxMiA4MzJxMCA1Mi0zOCA5MHQtOTAgMzhxLTU0IDAtOTAtMzhsLTM0My0zNDJxLTE3OSAxMjQtMzk5IDEyNHEtMTQzIDAtMjczLjUtNTUuNXQtMjI1LTE1MHQtMTUwLTIyNVQwIDcwNHQ1NS41LTI3My41dDE1MC0yMjV0MjI1LTE1MFQ3MDQgMHQyNzMuNSA1NS41dDIyNSAxNTB0MTUwIDIyNVQxNDA4IDcwNHEwIDIyMC0xMjQgMzk5bDM0MyAzNDNxMzcgMzcgMzcgOTB6IiBmaWxsPSJ3aGl0ZSIvPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxNjY0IiBoZWlnaHQ9IjE2NjQiIGZpbGw9InJnYmEoMCwgMCwgMCwgMCkiIC8+PC9zdmc+);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px 29px;
+  }
+
+  input[type=search] {
+    height: 36px;
+  }
+}
+
+.blog-sidebar-wrapper {
+  .widget:nth-of-type(1) {
+    &.widget_search,
+    &.widget_product_search {
+      padding-top: 11px;
+    }
+  }
+}
+
+.comment-form-cookies-consent {
+  #wp-comment-cookies-consent {
+    margin: 0 10px 0 0;
+  }
+  label {
+    display: inline;
+  }
+}

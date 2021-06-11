@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: #fff;
+  .header-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px 40px;
+    h1 {
+      margin: 0;
+      font-weight: 300;
+      font-size: 30px;
+      line-height: normal;
+    }
+    .ti-logo {
+      margin-left: auto;
+    }
+    img {
+      height: 75px;
+    }
+  }
+  ul {
+    width: 100%;
+  }
+}

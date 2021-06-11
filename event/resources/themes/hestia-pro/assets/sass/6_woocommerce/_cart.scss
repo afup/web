@@ -1,0 +1,26 @@
+.woocommerce-page.woocommerce-cart .cross-sells h2 {
+  margin-bottom: 30px;
+}
+
+@media (min-width: 992px) {
+
+  .woocommerce-page.woocommerce-cart ul.products > li.product {
+
+    text-align: left;
+    padding: 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+  .woocommerce-page.woocommerce-cart .cross-sells h2 {
+    text-align: center;
+  }
+}
+
+@media (max-width: 767px) {
+
+  .woocommerce-page.woocommerce-cart .cross-sells h2 {
+    text-align: center;
+  }
+}

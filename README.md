@@ -69,3 +69,9 @@ Après le paiement paybox effectue un retour sur le serveur et c'est suite à ce
 ```
 bin/console dev:callback-paybox-cotisation "https://localhost:9206/association/paybox-redirect?total=3000&cmd=C2020-150120201239-0-770-GALLO-E4F&autorisation=XXXXXX&transaction=588033888&status=00000"
 ```
+
+### Wordpress event.afup.org
+Le blog wordpress est géré à l'aide de composer.
+
+Pour mettre à jour les dépendances, il faut utiliser la commande suivante: `docker run --rm --entrypoint php --user $(id -u):$(id -g) --volume $(pwd):/project herloct/composer:1.4.2-php5.6 -ddate.timezone=Europe/Paris /usr/local/bin/composer update --ignore-platform-reqs`
+

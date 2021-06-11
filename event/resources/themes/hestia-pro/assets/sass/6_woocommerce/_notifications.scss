@@ -1,0 +1,79 @@
+.woocommerce-info,
+.woocommerce-error,
+.woocommerce-message {
+  padding: 20px 15px 20px 50px !important;
+  border: none;
+  color: #fff;
+  background: #efefef;
+
+  &:before {
+    top: 19px;
+    color: $color-secondary;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+  }
+
+  > a.button {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 5px 10px 0;
+    color: $color-secondary;
+
+    &:hover {
+      color: $color-secondary;
+      background: none;
+      box-shadow: none;
+      opacity: .75;
+    }
+  }
+}
+
+.woocommerce-info {
+  color: #fff;
+  background-color: $color-info;
+  &:before {
+    color: #fff;
+    content: "";
+    display: inline-block;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJpbmZvIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtaW5mbyBmYS13LTYiIHJvbGU9ImltZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTkyIDUxMiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTIwIDQyNC4yMjloMjBWMjc5Ljc3MUgyMGMtMTEuMDQ2IDAtMjAtOC45NTQtMjAtMjBWMjEyYzAtMTEuMDQ2IDguOTU0LTIwIDIwLTIwaDExMmMxMS4wNDYgMCAyMCA4Ljk1NCAyMCAyMHYyMTIuMjI5aDIwYzExLjA0NiAwIDIwIDguOTU0IDIwIDIwVjQ5MmMwIDExLjA0Ni04Ljk1NCAyMC0yMCAyMEgyMGMtMTEuMDQ2IDAtMjAtOC45NTQtMjAtMjB2LTQ3Ljc3MWMwLTExLjA0NiA4Ljk1NC0yMCAyMC0yMHpNOTYgMEM1Ni4yMzUgMCAyNCAzMi4yMzUgMjQgNzJzMzIuMjM1IDcyIDcyIDcyIDcyLTMyLjIzNSA3Mi03MlMxMzUuNzY0IDAgOTYgMHoiPjwvcGF0aD48L3N2Zz4=);
+    width: 5.25px;
+    height: 22px;
+    background-size: 5.25px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  a{
+    color: #fff;
+    &:hover {
+      opacity: .75;
+      color: #fff;
+    }
+  }
+}
+
+.woocommerce-error {
+  background-color: #fccbc7;
+  color: $color-secondary;
+
+  &:before {
+    content: "\f12a";
+  }
+}
+
+.woocommerce-message {
+  background-color: #e5ffe8;
+  color: $color-secondary;
+
+  a:not(.button) {
+    color: $color-secondary;
+
+    &:hover {
+      opacity: .75;
+    }
+  }
+
+  &:before {
+    content: "\f00c";
+  }
+}

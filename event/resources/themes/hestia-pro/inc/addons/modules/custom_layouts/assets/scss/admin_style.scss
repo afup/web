@@ -1,0 +1,179 @@
+@import "slimselect";
+
+.hestia-custom-editor-mode {
+  .block-editor-block-list__layout,
+  .editor-block-list__layout,
+  #elementor-switch-mode,
+  #postdivrich,
+  .fl-builder-admin,
+  .brizy-buttons {
+    display: none;
+  }
+
+  #post-body-content {
+    #hestia-editor-mode {
+      margin: 20px 0;
+    }
+  }
+}
+
+.hestia-custom-layouts-settings {
+  width: 60%;
+
+  tr {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 25px 0;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  td, th {
+    flex: 0.5 1 150px;
+  }
+
+  input, select {
+    width: 100%;
+  }
+}
+.hestia-rule-groups {
+  margin-top: 20px;
+}
+.hestia-rule-group {
+  border: 1px solid #ececec;
+  border-radius: 5px;
+  padding: 20px;
+
+  .individual-rule {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .hestia-magic-tags{
+      width: 100%;
+    }
+  }
+
+  select {
+    width: 100%;
+  }
+
+  .rule-wrap {
+    padding-right: 20px;
+    width: 25%;
+  }
+
+  .single-end-rule {
+    display: none;
+
+    &.has-data {
+      display: block;
+    }
+  }
+
+  .actions-wrap {
+    width: auto;
+    margin-left: auto;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    .action {
+      display: flex;
+      align-items: center;
+
+      &.duplicate {
+        display: none;
+        margin-left: 10px;
+        i {
+          line-height: 1.4;
+        }
+      }
+
+      i {
+        line-height: 1.25;
+      }
+    }
+  }
+}
+
+//<editor-fold desc="Operators">
+.hestia-rule-group-wrap {
+  .operator {
+    width: 100%;
+    font-weight: 700;
+    color: #696969;
+    font-size: 13px;
+    display: block;
+    padding: 10px;
+  }
+
+  > .operator {
+    padding: 10px 0 10px 20px;
+  }
+  &:last-child > .operator {
+    display: none;
+  }
+}
+
+//</editor-fold>
+
+.individual-rule:first-child {
+  .action.remove {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.individual-rule:last-child {
+  .operator {
+    display: none;
+  }
+
+  .action.duplicate {
+    display: block;
+  }
+}
+
+.rule-group-actions {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.hestia-rule-group-wrap:first-child {
+  .rule-group-actions {
+    display: none !important;
+    pointer-events: none;
+  }
+}
+
+.hestia-rule-group-template {
+  display: none !important;
+}
+
+.hestia-available-tags-list li{
+  &:first-child{
+    margin-left: 0;
+  }
+  display: inline;
+  background: #ffffff;
+  margin: 3px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  font-size: 10px;
+}
+
+.edit-post-header__toolbar{
+  #hestia-editor-mode{
+    display: flex;
+    padding: 2px;
+  }
+}

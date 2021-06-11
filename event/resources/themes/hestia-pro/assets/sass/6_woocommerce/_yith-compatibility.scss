@@ -1,0 +1,32 @@
+li.yith_magnifier_thumbnail {
+  display: block;
+  position: relative;
+  padding: 0 10px;
+
+  a {
+    margin: 25px auto;
+
+    img {
+      border-radius: 6px;
+    }
+  }
+}
+
+.yith_magnifier_zoom_magnifier {
+  border: none !important;
+}
+
+#yith-quick-view-content {
+
+  div.entry-summary {
+    padding: 15px 15px 15px 40px;
+  }
+
+  .product_meta {
+    margin-top: 20px;
+  }
+}
+
+.woocommerce .card-product a.button.yith-wcqv-button {
+  margin-bottom: 30px;
+}
