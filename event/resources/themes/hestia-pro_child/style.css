@@ -101,6 +101,7 @@ footer .content .menu-item {
 article.conferenciers {
 	margin-bottom: 3em;
 	min-height: 120px;
+	clear: both;
 }
 
 .conferenciers h3 {
@@ -120,6 +121,7 @@ article.conferenciers {
 	-webkit-box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 	box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+	margin-bottom: 20px;
 }
 
 article.conferenciers a.twitter {
@@ -127,7 +129,7 @@ article.conferenciers a.twitter {
 	margin-left: 20px;
 }
 
-article.conferenciers .article-body.conferencier {
+article.conferenciers, .article-body.conferencier {
 	clear: both;
 }
 @media (max-width: 360px) {
@@ -138,7 +140,7 @@ article.conferenciers .article-body.conferencier {
 }
 
 @media (min-width: 361px) {
-	.photo{
+	.article-body.conferencier .photo{
 		float:left;
 	}
 	.article-body.conferencier p {
@@ -179,10 +181,15 @@ article.conferenciers .article-body.conferencier {
 }
 
 .session div.details div:not(.abstract){
-	flex-basis: auto;
+	flex-basis: 120px;
 	flex-shrink: 0;
 }
 
+@media(min-width:361px) {
+	.session .details .abstract{
+		flex-basis: calc(100% - 120px);
+	}
+}
 
 @media(max-width:360px) {
 	.session .details {
