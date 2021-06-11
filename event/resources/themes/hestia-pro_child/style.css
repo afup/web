@@ -178,7 +178,7 @@ article.conferenciers .article-body.conferencier {
 	flex-direction: row-reverse;
 }
 
-.session div:not(.abstract){
+.session div.details div:not(.abstract){
 	flex-basis: auto;
 	flex-shrink: 0;
 }
@@ -188,7 +188,7 @@ article.conferenciers .article-body.conferencier {
 	.session .details {
 		flex-direction: column-reverse;
 	}
-	.session div:not(.abstract){
+	.session div.details div:not(.abstract){
 		text-align: center;
 		flex-basis: auto;
 	}
