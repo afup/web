@@ -18,6 +18,13 @@ Template:       hestia-pro
 	font-size: 13px;
 	height: 30px;
 }
+
+@media (max-width: 361px) {
+	.hestia-top-bar{
+		font-size: 9px;
+	}
+}
+
 .hestia-top-bar .col-md-12.pull-right {
 	text-align:center !important;
 }
@@ -43,6 +50,14 @@ Template:       hestia-pro
 }
 .hestia-top-bar ul li:nth-child(2){
 	background-color: #36a7df;
+}
+
+.navbar.header-with-topbar {
+	top: 30px;
+}
+
+.navbar.navbar-scroll-point {
+	top: 0;
 }
 
 footer.footer{
