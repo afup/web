@@ -25,6 +25,12 @@ Template:       hestia-pro
 	}
 }
 
+@media (max-width: 768px) {
+	body.admin-bar .navbar.header-with-topbar{
+		top: 75px;
+	}
+}
+
 .hestia-top-bar .col-md-12.pull-right {
 	text-align:center !important;
 }
@@ -98,7 +104,7 @@ article.conferenciers {
 }
 
 .conferenciers h3 {
-	font-family: Roboto, Helvetica, sans-serif;
+	/* font-family: Roboto, Helvetica, sans-serif; */
 	text-transform: uppercase;
 	font-weight: 400;
 	color: #045e80;
@@ -106,7 +112,7 @@ article.conferenciers {
 	margin-right: 1rem;
 }
 
-.conferenciers img{
+.conferenciers img, .conferencier img{
 	object-fit: cover;
 	width: 90px;
 	height: 90px;
@@ -162,13 +168,30 @@ article.conferenciers .article-body.conferencier {
 	clear: both;
 }
 
-.session h4 {
-	font-family: Roboto, Helvetica, sans-serif;
+.session h4, .conferenciers h3 {
+	font-family: "Roboto Slab", "Times New Roman", serif;
 	font-weight: 100;
-	text-transform: uppercase;
-	color: #18213e;
-	font-size: 150%;
-	border-bottom: solid #18213e thin;
+}
+
+.session .details{
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.session div:not(.abstract){
+	flex-basis: auto;
+	flex-shrink: 0;
+}
+
+
+@media(max-width:360px) {
+	.session .details {
+		flex-direction: column-reverse;
+	}
+	.session div:not(.abstract){
+		text-align: center;
+		flex-basis: auto;
+	}
 }
 
 .session .horaire {
