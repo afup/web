@@ -1,12 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\Admin\Site;
+namespace AppBundle\Controller\Admin\Site\Rubriques;
 
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Controller\SiteBaseController;
 use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
-use AppBundle\Site\Model\Rubrique;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-class AddRubriqueAction extends SiteBaseController
+class EditRubriqueAction extends SiteBaseController
 {
     use DbLoggerTrait;
 
@@ -38,7 +37,7 @@ class AddRubriqueAction extends SiteBaseController
         Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
-        $storageDir=''
+        $storageDir
     ) {
         $this->rubriqueRepository =  $rubriqueRepository;
         $this->twig = $twig;
@@ -47,13 +46,19 @@ class AddRubriqueAction extends SiteBaseController
         $this->storageDir = $storageDir;
     }
 
-    public function __invoke(Request $request)
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return RedirectResponse|Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function __invoke($id,Request $request)
     {
-        $rubrique = new Rubrique();
+        $rubrique = $this->rubriqueRepository->get($id);
         $form = $this->createForm(RubriqueType::class, $rubrique);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('icone')->getData();
             if ($file) {
@@ -62,18 +67,20 @@ class AddRubriqueAction extends SiteBaseController
                 $newFilename = $safeFilename . '.' . $file->guessExtension();
                 $file->move($this->storageDir, $newFilename);
                 $rubrique->setIcone($newFilename);
+                $this->flashBag->add('error', 'Une erreur est survenue lors du traitement de l\'icône');
             }
             $this->rubriqueRepository->save($rubrique);
-            $this->log('Ajout de la rubrique ' . $rubrique->getNom());
-            $this->flashBag->add('notice', 'La rubrique ' . $rubrique->getNom() . ' a été ajoutée');
+            $this->log('Modification de la Rubrique ' . $rubrique->getNom());
+            $this->flashBag->add('notice', 'La rubrique ' . $rubrique->getNom() . ' a été modifiée');
             return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
         }
 
+        $icone = $rubrique->getIcone() !== null ? '/templates/site/images/' . $rubrique->getIcone() : false;
         return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),
-            'formTitle' => 'Ajouter une rubrique',
-            'icone' => false,
-            'submitLabel' => 'Ajouter',
+            'icone' => $icone,
+            'formTitle' => 'Modifier une rubrique',
+            'submitLabel' => 'Modifier',
         ]));
     }
 }

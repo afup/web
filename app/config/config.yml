@@ -96,6 +96,11 @@ parameters:
                 site_feuilles:
                     nom: 'Feuilles'
                     niveau: 'ROLE_SITE'
+                    url : '/admin/site/feuilles'
+                    extra_routes: 
+                        - admin_site_feuilles_list
+                        - admin_site_feuilles_add
+                        - admin_site_feuilles_edit
                 site_rubriques:
                     nom: 'Rubriques'
                     niveau: 'ROLE_SITE'

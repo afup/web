@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Admin\Site;
+namespace AppBundle\Controller\Admin\Site\Rubriques;
 
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Controller\SiteBaseController;
@@ -38,7 +38,7 @@ class AddRubriqueAction extends SiteBaseController
         Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
-        $storageDir=''
+        $storageDir
     ) {
         $this->rubriqueRepository =  $rubriqueRepository;
         $this->twig = $twig;
@@ -51,9 +51,7 @@ class AddRubriqueAction extends SiteBaseController
     {
         $rubrique = new Rubrique();
         $form = $this->createForm(RubriqueType::class, $rubrique);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('icone')->getData();
             if ($file) {

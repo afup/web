@@ -20,29 +20,17 @@ class Rubrique implements NotifyPropertyInterface
      * @Assert\Type("integer")
      */
     private $id;
-
     private $idPersonnePhysique;
-
     private $idParent;
-
     private $nom;
-
     private $raccourci;
-
     private $descriptif;
-
     private $contenu;
-
     private $position;
-
     private $icone;
-
     private $date;
-
     private $etat;
-
     private $pagination = 0;
-
     private $feuilleAssociee;
 
     public function getId()

@@ -4,9 +4,9 @@ namespace AppBundle\Controller;
 
 use Afup\Site\Corporate\Articles;
 use Afup\Site\Corporate\Branche;
-use Afup\Site\Corporate\Feuille;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Site\Model\Feuille;
 
 class HomeController extends SiteBaseController
 {

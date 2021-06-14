@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\Admin\Site;
+namespace AppBundle\Controller\Admin\Site\Feuilles;
 
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Controller\SiteBaseController;
-use AppBundle\Site\Form\RubriqueType;
-use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Site\Form\FeuilleType;
+use AppBundle\Site\Model\Repository\FeuilleRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-class EditRubriqueAction extends SiteBaseController
+class EditFeuilleAction extends SiteBaseController
 {
     use DbLoggerTrait;
 
@@ -26,15 +26,20 @@ class EditRubriqueAction extends SiteBaseController
     /** @var Environment */
     private $twig;
 
-    /** @var RubriqueRepository */
-    private $rubriqueRepository;
+    /** @var FeuilleRepository */
+    private $feuilleRepository;
 
     /** @var string */
     private $storageDir;
 
-    public function __construct(RubriqueRepository $rubriqueRepository,Environment $twig,UrlGeneratorInterface $urlGenerator,FlashBagInterface $flashBag,$storageDir = '')
-    {
-        $this->rubriqueRepository =  $rubriqueRepository;
+    public function __construct(
+        FeuilleRepository $feuilleRepository,
+        Environment $twig,
+        UrlGeneratorInterface $urlGenerator,
+        FlashBagInterface $flashBag,
+        $storageDir
+    ) {
+        $this->feuilleRepository =  $feuilleRepository;
         $this->twig = $twig;
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
@@ -49,30 +54,31 @@ class EditRubriqueAction extends SiteBaseController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke($id,Request $request)
+    public function __invoke($id, Request $request)
     {
-        $rubrique = $this->rubriqueRepository->get($id);
-        $form = $this->createForm(RubriqueType::class, $rubrique);
+        $feuille = $this->feuilleRepository->get($id);
+        $form = $this->createForm(FeuilleType::class, $feuille);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('icone')->getData();
+            $file = $form->get('image')->getData();
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = hash('sha1', $originalFilename);
                 $newFilename = $safeFilename . '.' . $file->guessExtension();
                 $file->move($this->storageDir, $newFilename);
-                $rubrique->setIcone($newFilename);
+                $feuille->setIcone($newFilename);
             }
-            $this->rubriqueRepository->save($rubrique);
-            $this->log('Modification de la Rubrique ' . $rubrique->getNom());
-            $this->flashBag->add('notice', 'La rubrique ' . $rubrique->getNom() . ' a été modifiée');
-            return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
+            $this->feuilleRepository->save($feuille);
+            $this->log('Modification de la Feuille ' . $feuille->getNom());
+            $this->flashBag->add('notice', 'La feuille ' . $feuille->getNom() . ' a été modifiée');
+            return new RedirectResponse($this->urlGenerator->generate('admin_site_feuilles_list', ['filter' => $feuille->getNom()]));
         }
-        $icone = $rubrique->getIcone() !== null ? '/templates/site/images/' . $rubrique->getIcone() : false;
-        return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
+        $image = $feuille->getImage() !== null ? '/templates/site/images/' . $feuille->getImage() : false;
+        return new Response($this->twig->render('admin/site/feuille_form.html.twig', [
+            'formTitle' => 'Modifier une feuille',
+            'subTitle' => 'Feuille ' . $feuille->getNom(),
             'form' => $form->createView(),
-            'icone' => $icone,
-            'formTitle' => 'Modifier une rubrique',
+            'image' => $image,
             'submitLabel' => 'Modifier',
         ]));
     }

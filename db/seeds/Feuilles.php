@@ -1,6 +1,6 @@
 <?php
 
-use Afup\Site\Corporate\Feuille;
+use AppBundle\Site\Model\Feuille;
 use Phinx\Seed\AbstractSeed;
 
 class Feuilles extends AbstractSeed
