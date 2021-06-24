@@ -92,7 +92,7 @@ class Paybox
         // correspondre exactement à l'ordre des champs dans la chaîne hachée
         $sanitizedInputs['PBX_HMAC'] = $hmac;
 
-        $htmlForm = '<form method="POST" action="https://' . $this->domainServer . '/cgi/MYchoix_pagepaiement.cgi">'  . PHP_EOL;
+        $htmlForm = '<form method="POST" action="https://' . $this->domainServer . '/cgi/MYchoix_pagepaiement.cgi">' . PHP_EOL;
         foreach ($sanitizedInputs as $inputKey => $inputValue) {
             $htmlForm .= '  <input type="hidden" name="' . $inputKey . '" value="' . $inputValue . '">' . PHP_EOL;
         }
