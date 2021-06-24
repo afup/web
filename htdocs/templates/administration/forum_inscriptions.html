@@ -214,8 +214,8 @@
                             <span class="ui red label">
                                 A expiré le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
                             </span>
-                            <a class="compact ui tiny icon button" href="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}">
-                                URL Paiment
+                            <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}">
+                                URL Paiement
                             </a>
                         </td>
                     {elseif $inscription.lastsubscription < $finForum}
@@ -223,8 +223,8 @@
                             <span class="ui orange label">
                                 Expire le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
                             </span>
-                            <a class="compact ui tiny icon button" href="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}">
-                                URL Paiment
+                            <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}">
+                                URL Paiement
                             </a>
                         </td>
                     {else}

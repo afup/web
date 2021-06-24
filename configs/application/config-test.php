@@ -36,13 +36,7 @@ $configuration['bureau']['2']='ThierryMarianne';
 $configuration['bureau']['3']='paxal';
 $configuration['bureau']['4']='ChristopheVilleneuve';
 $configuration['bureau']['5']='LaurenceHoizey';
-$configuration['paybox_prod']['site']='';
-$configuration['paybox_prod']['rang']='';
-$configuration['paybox_test']['site']='';
-$configuration['paybox_test']['rang']='';
-$configuration['paybox']['site']='';
-$configuration['paybox']['rang']='';
-$configuration['paybox']['identifiant']='107904482';
+
 $configuration['planete']['pertinence']='php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
 $configuration['site']['prefix']='pages/site/';
 $configuration['site']['query_prefix']='?route=';
