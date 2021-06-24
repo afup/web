@@ -82,7 +82,7 @@ class PayboxFactory
         return $paybox->generate($now);
     }
 
-    private function getPaybox()
+    public function getPaybox()
     {
         return new Paybox(
             $this->payboxDomainServer,
