@@ -242,6 +242,7 @@ services:
 
     AppBundle\Payment\PayboxFactory:
         autowire: true
+        arguments: ["@router", "%paybox_domain_server%", "%paybox_secret_key%", "%paybox_site%", "%paybox_rang%", "%paybox_identifiant%"]
 
     slack_members_legacy_client:
         class: AppBundle\Slack\LegacyClient
