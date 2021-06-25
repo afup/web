@@ -20,7 +20,7 @@ class SpeakerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('civility', ChoiceType::class, ['choices' => ['M' => 'M', 'Mlle' => 'Mlle', 'Mme' => 'Mme']])
+            ->add('civility', ChoiceType::class, ['choices' => ['M' => 'M', 'Mme' => 'Mme']])
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('email', EmailType::class)

@@ -262,5 +262,5 @@ INSERT INTO `afup_pays` (`id`, `nom`) VALUES ('AD', 'Andorre'),
 -- Dumping data for table `afup_personnes_physiques`
 -- 
 
-INSERT INTO `afup_personnes_physiques` (`id`, `id_personne_morale`, `login`, `mot_de_passe`, `niveau`, `niveau_modules`, `civilite`, `nom`, `prenom`, `email`, `adresse`, `code_postal`, `ville`, `id_pays`, `telephone_fixe`, `telephone_portable`, `etat`, `date_relance`) VALUES (1, NULL, 'admin', '1a1dc91c907325c69271ddf0c944bc72', 2, '', 'Mlle', 'Ministrateur', 'Aude', 'aude@example.com', '3 rue du lac', '59000', 'Lille', 'FR', '03 20 01 02 03', '06 20 04 05 06', 1, NULL);
+INSERT INTO `afup_personnes_physiques` (`id`, `id_personne_morale`, `login`, `mot_de_passe`, `niveau`, `niveau_modules`, `civilite`, `nom`, `prenom`, `email`, `adresse`, `code_postal`, `ville`, `id_pays`, `telephone_fixe`, `telephone_portable`, `etat`, `date_relance`) VALUES (1, NULL, 'admin', '1a1dc91c907325c69271ddf0c944bc72', 2, '', 'Mme', 'Ministrateur', 'Aude', 'aude@example.com', '3 rue du lac', '59000', 'Lille', 'FR', '03 20 01 02 03', '06 20 04 05 06', 1, NULL);
 

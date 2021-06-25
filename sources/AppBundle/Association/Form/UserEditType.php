@@ -33,7 +33,7 @@ class UserEditType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $civilities = ['M.', 'Mme', 'Mlle'];
+        $civilities = ['M.', 'Mme'];
         $builder
             ->add('companyId', ChoiceType::class, [
                 'label' => 'Personne morale',

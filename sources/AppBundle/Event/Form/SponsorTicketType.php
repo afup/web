@@ -19,7 +19,6 @@ class SponsorTicketType extends AbstractType
                 'label' => 'Civilité',
                 'choices' => [
                     'M.' => 'M.',
-                    'Mlle' => 'Mlle',
                     'Mme' => 'Mme'
                 ]
             ])
