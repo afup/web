@@ -3,7 +3,6 @@
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\TicketEventType;
 use AppBundle\Event\Model\TicketType;
@@ -13,61 +12,48 @@ class TicketTypeAvailability
     const DAY_ONE = 'one';
     const DAY_TWO = 'two';
     const DAY_BOTH = 'both';
-    /**
-     * @var TicketEventTypeRepository
-     */
-    private $ticketEventTypeRepository;
-
-    /**
-     * @var TicketRepository
-     */
+    /** @var TicketRepository */
     private $ticketRepository;
 
-    public function __construct(TicketEventTypeRepository $ticketEventTypeRepository, TicketRepository $ticketRepository)
+    public function __construct(TicketRepository $ticketRepository)
     {
-        $this->ticketEventTypeRepository = $ticketEventTypeRepository;
         $this->ticketRepository = $ticketRepository;
     }
 
     public function getStock(TicketEventType $ticketEventType, Event $event)
     {
         // Les tickets depuis les tokens doivent fonctionner même après le sold out
-        if ($ticketEventType->getTicketType()->getTechnicalName() == TicketType::SPECIAL_PRICE_TECHNICAL_NAME) {
+        if ($ticketEventType->getTicketType()->getTechnicalName() === TicketType::SPECIAL_PRICE_TECHNICAL_NAME) {
             return PHP_INT_MAX;
         }
 
+        $maxTickets = $ticketEventType->getMaxTickets();
+
         if (count($ticketEventType->getTicketType()->getDays()) === 2) {
-            $seats = $event->getSeats();
-
-            if (null !== ($maxTickets = $ticketEventType->getMaxTickets())) {
-                $seats = $maxTickets;
-            }
-
+            list($day1, $day2) = $ticketEventType->getTicketType()->getDays();
             // Two days ticket
-            $stock = $seats - max(
-                $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDays()[0], $event),
-                $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDays()[1], $event)
-                )
-            ;
+            $stock = $event->getSeats() - max(
+                    $this->ticketRepository->getPublicSoldTicketsByDay($day1, $event),
+                    $this->ticketRepository->getPublicSoldTicketsByDay($day2, $event)
+                );
+            if (null !== $maxTickets) {
+                $maxTickets -= max(
+                    $this->ticketRepository->getPublicSoldTicketsByDayOfType($day1, $event, $ticketEventType->getTicketType()),
+                    $this->ticketRepository->getPublicSoldTicketsByDayOfType($day2, $event, $ticketEventType->getTicketType())
+                );
+            }
         } else {
-            $allTicketsForTheDay = $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDay(), $event);
-            $typeTicketsForTheDay = $this->ticketRepository->getPublicSoldTicketsByDayOfType($ticketEventType->getTicketType()->getDay(), $event, $ticketEventType->getTicketType());
+            $stock = $event->getSeats() - $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDay(), $event);
 
-            $stockTotal = $event->getSeats() - $allTicketsForTheDay;
-
-            if (null !== ($maxTickets = $ticketEventType->getMaxTickets())) {
-                $stockForType = $maxTickets - $typeTicketsForTheDay;
-
-                $stock = min($stockTotal, $stockForType);
-            } else {
-                $stock = $stockTotal;
+            if (null !== $maxTickets) {
+                $maxTickets -= $this->ticketRepository->getPublicSoldTicketsByDayOfType($ticketEventType->getTicketType()
+                    ->getDay(), $event, $ticketEventType->getTicketType());
             }
         }
-
-        if ($stock < 0) {
-            $stock = 0;
+        if (null !== $maxTickets) {
+            $stock = min($stock, $maxTickets);
         }
 
-        return $stock;
+        return max($stock, 0);
     }
 }
