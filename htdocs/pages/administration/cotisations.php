@@ -2,9 +2,10 @@
 
 // Impossible to access the file itself
 use Afup\Site\Association\Cotisations;
-use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Utils\Logs;
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Email\Mailer\Mailer;
 use Assert\Assertion;
 
 /** @var \AppBundle\Controller\LegacyController $this */
@@ -14,6 +15,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 }
 
 $userRepository = $this->get(UserRepository::class);
+$companyMemberRepository = $this->get(CompanyMemberRepository::class);
 
 $action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'telecharger_facture', 'envoyer_facture'));
 $smarty->assign('action', $action);
@@ -26,8 +28,9 @@ if ($_GET['type_personne'] == AFUP_PERSONNES_PHYSIQUES) {
     Assertion::notNull($user);
     $personne = ['nom' => $user->getLastName(), 'prenom' => $user->getFirstName()];
 } else {
-    $personnes = new Personnes_Morales($bdd);
-    $personne = $personnes->obtenir($_GET['id_personne']);
+    $company = $companyMemberRepository->get($_GET['id_personne']);
+    Assertion::notNull($company);
+    $personne = ['nom' => $company->getLastName(), 'prenom' => $company->getFirstName()];
 }
 $smarty->assign('type_personne', $_GET['type_personne']);
 $smarty->assign('id_personne'  , $_GET['id_personne']);
@@ -42,7 +45,7 @@ if ($action == 'lister') {
 } elseif ($action == 'telecharger_facture'){
 	$cotisations->genererFacture($_GET['id']);
 } elseif ($action == 'envoyer_facture'){
-	if($cotisations->envoyerFacture($_GET['id'], $this->get(\AppBundle\Email\Mailer\Mailer::class), $userRepository)){
+	if($cotisations->envoyerFacture($_GET['id'], $this->get(Mailer::class), $userRepository)){
 	   Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
        afficherMessage('La facture a été envoyée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne']);
 	} else {
@@ -53,7 +56,7 @@ if ($action == 'lister') {
         Logs::log('Suppression de la cotisation ' . $_GET['id']);
         afficherMessage('La cotisation a été supprimée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' .$_GET['id_personne']);
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de la personne morale', 'index.php?page=personnes_morales&action=lister', true);
+        afficherMessage('Une erreur est survenue lors de la suppression de la personne morale', '/admin/members/companies', true);
     }
 } else {
     // Formulaire

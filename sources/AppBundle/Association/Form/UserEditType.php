@@ -2,8 +2,8 @@
 
 namespace AppBundle\Association\Form;
 
-use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Utils\Pays;
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,17 +18,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class UserEditType extends AbstractType
 {
-    /** @var Personnes_Morales */
-    private $personnesMorales;
     /** @var Pays */
     private $pays;
+    /** @var CompanyMemberRepository */
+    private $companyMemberRepository;
 
     public function __construct(
-        Personnes_Morales $personnesMorales,
+        CompanyMemberRepository $companyMemberRepository,
         Pays $pays
     ) {
-        $this->personnesMorales = $personnesMorales;
         $this->pays = $pays;
+        $this->companyMemberRepository = $companyMemberRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -38,7 +38,7 @@ class UserEditType extends AbstractType
             ->add('companyId', ChoiceType::class, [
                 'label' => 'Personne morale',
                 'required' => false,
-                'choices' => array_flip($this->personnesMorales->obtenirListe('id, raison_sociale', 'raison_sociale', true)),
+                'choices' => array_flip($this->companyMemberRepository->getList()),
             ])
             ->add('civility', ChoiceType::class, [
                 'label' => 'Civilité',
