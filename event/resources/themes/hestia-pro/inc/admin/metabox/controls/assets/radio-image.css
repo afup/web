@@ -1,0 +1,79 @@
+.ui-buttonset, .buttonset{
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+.ui-buttonset > label,
+.buttonset > label {
+    padding: 3px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    height: auto;
+    background: none;
+    border: none;
+    box-shadow: none;
+
+}
+
+.ui-buttonset > label,
+.ui-buttonset > a,
+.buttonset > label,
+.buttonset > a {
+    flex-grow: 1;
+    flex-basis: 0;
+    align-self: center;
+}
+
+.ui-buttonset > label img,
+.buttonset > label img {
+    max-width: 100%;
+}
+
+.ui-buttonset img,
+.buttonset img{ border: 1px solid #e7e8eb; }
+
+.ui-buttonset .ui-state-active img,
+.buttonset .ui-state-active img {
+    border-color: #00b6ff;
+    -webkit-box-shadow: 0 0 1px #3ec8ff;
+    box-shadow: 0 0 5px #3EC8FE;
+}
+
+.ui-buttonset span.ui-button-text,
+.buttonset span.ui-button-text {
+    padding: 0;
+}
+.ui-buttonset > label.ui-button,
+.buttonset > label.ui-button{
+    margin-right: 0;
+}
+.reset-data-wrapper{
+    padding: 0 2px 0;
+    flex-basis: 100%
+}
+
+.reset-data-wrapper span.dashicons {
+    height: auto;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+.reset-data {
+    transition: .3s ease-out;
+    text-align: center !important;
+    flex-basis: 100%;
+    width: 100%;
+}
+
+.reset-data .dashicons:before {
+    font-size: 14px;
+}
+
+.reset-data:after {
+    content: "Reset to default value";
+    font-size: 12px;
+    vertical-align: middle;
+    line-height: 30px;
+}

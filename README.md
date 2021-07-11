@@ -53,11 +53,11 @@ Config par défaut:
 # Paiements avec Paybox
 
 Il est possible de tester les paiements Paybox en environnement de développement.
-Pour cela, les identifiant, site et rang [de test](www1.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier de configuration par défaut.
+Pour cela, les identifiant, site et rang [de test](www1.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier parameters.yml par défaut.
 
 Ensuite pour le paiement il faut utiliser ces informations [de carte](http://www1.paybox.com/espace-integrateur-documentation/cartes-de-tests/) (celle _"Carte participant au programme 3-D Secure (enrôlée)"_) : 
-* Numéro de carte : `4012 0010 3714 1112`
-* Validité : `12/20`
+* Numéro de carte : `1111 2222 3333 4444`
+* Validité : `12/25`
 * CVV : `123`
  
 ## Callbacks de paiement
@@ -69,3 +69,9 @@ Après le paiement paybox effectue un retour sur le serveur et c'est suite à ce
 ```
 bin/console dev:callback-paybox-cotisation "https://localhost:9206/association/paybox-redirect?total=3000&cmd=C2020-150120201239-0-770-GALLO-E4F&autorisation=XXXXXX&transaction=588033888&status=00000"
 ```
+
+### Wordpress event.afup.org
+Le blog wordpress est géré à l'aide de composer.
+
+Pour mettre à jour les dépendances, il faut utiliser la commande suivante: `docker run --rm --entrypoint php --user $(id -u):$(id -g) --volume $(pwd):/project herloct/composer:1.4.2-php5.6 -ddate.timezone=Europe/Paris /usr/local/bin/composer update --ignore-platform-reqs`
+

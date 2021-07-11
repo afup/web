@@ -1,0 +1,89 @@
+@import "elementor-basic";
+/*--------------------------------------------------------------
+## Elementor Styles Pro
+--------------------------------------------------------------*/
+// Post Loop
+.elementor-posts .elementor-post {
+  .elementor-post__read-more {
+    color: $color-secondary;
+    font-weight: 300;
+  }
+  .elementor-post__title {
+    font-family: $secondary-font;
+    font-weight: 700;
+    a {
+      color: $color-secondary;
+    }
+  }
+  .elementor-post__excerpt p {
+    color: $color-body-text;
+  }
+  .elementor-post__thumbnail {
+    -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.elementor-widget {
+  // Forms
+  .elementor-field-group .elementor-field-textual {
+    border-color: transparent;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  // Price List
+  .elementor-field-label, .elementor-price-list-title {
+    color: $color-secondary;
+    font-family: $secondary-font;
+  }
+  .elementor-price-list-separator,
+  .elementor-price-list-description {
+    color: $color-secondary;
+  }
+  //Price Table
+  .elementor-price-table__ribbon-inner {
+    color: #fff;
+    font-family: $secondary-font;
+    background: $color-secondary;
+  }
+
+  .elementor-price-table {
+    .elementor-price-table__header {
+      background: #323437;
+    }
+    .elementor-price-table__heading,
+    .elementor-price-table__subheading {
+      color: #fff;
+    }
+    .elementor-price-table__price {
+      color: $color-secondary;
+      font-family: $secondary-font;
+    }
+    .elementor-price-table__currency,
+    .elementor-price-table__period,
+    .elementor-price-table__features-list {
+      color: #777;
+    }
+  }
+
+}
+
+//Countdown
+.elementor-widget-countdown {
+  .elementor-countdown-wrapper {
+    .elementor-countdown-item {
+      background-color: transparent;
+    }
+  }
+  .elementor-countdown-digits {
+    color: $color-rose;
+    font-family: $primary-font;
+    font-weight: 700;
+  }
+  .elementor-countdown-label {
+    color: $color-secondary;
+    font-family: $secondary-font;
+    font-weight: 700;
+  }
+}

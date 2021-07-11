@@ -1,0 +1,65 @@
+.toast-wrap {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast {
+  @include flip-in();
+  border: 1px solid transparent;
+  padding: 10px 15px;
+  color: #fff;
+  font-weight: 300;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  min-width: 250px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, .25);
+
+  &.fade-out {
+    @include flip-out(.4s);
+  }
+
+  &.success {
+    background-color: $success;
+    border-color: darken($success, 10%);
+  }
+
+  &.error-toast {
+    background-color: $error;
+    border-color: darken($error, 10%);
+  }
+
+  .dismiss {
+    background-color: rgba(0, 0, 0, .25);
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all .1s ease-out;
+    margin-left: auto;
+    align-self: flex-end;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, .5);
+    }
+  }
+  .toast-icon {
+    position: relative;
+    margin-right: 5px;
+    @include heartpop( .3s );
+    &.dashicons-yes {
+      top: 1px;
+    }
+  }
+  .message {
+    margin-right: 15px;
+  }
+}

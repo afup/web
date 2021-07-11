@@ -1,0 +1,29 @@
+table,
+.table {
+  width: 100%;
+
+  > {
+    thead > tr > th {
+      border-bottom-width: 1px;
+      padding: 12px 8px;
+      vertical-align: middle;
+    }
+
+    tbody > tr > th,
+    tfoot > tr > th,
+    thead > tr > td,
+    tbody > tr > td,
+    tfoot > tr > td {
+      padding: 12px 8px;
+      vertical-align: middle;
+    }
+
+    tbody > tr {
+      border-bottom: 1px solid #eee;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+  }
+}

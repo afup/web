@@ -1,0 +1,93 @@
+.ti__stepper {
+ @include unblur(.3s);
+  li {
+    display: flex;
+    align-items: center;
+    color: #23282d;
+    padding: 20px 10px;
+    color: rgba(0, 0, 0, 0.87);
+    position: relative;
+
+    &:not(:last-child):before {
+      content: "";
+      display: block;
+      height: 40px;
+      width: 1px;
+      position: absolute;
+      left: 22px;
+      top: 47px;
+      background-color: #bdbdbd;
+      z-index: 1;
+    }
+
+    &.done:not(:last-child):before {
+      background-color: $success;
+    }
+
+    &.active-step .step-count {
+      background-color: $primary;
+
+      .dashicons {
+        &:before {
+          display: block;
+          animation: rotation 2s infinite linear;
+        }
+      }
+    }
+
+    &.waiting .step-count {
+      background-color: $warning;
+      .dashicons {
+        left: .5px;
+      }
+    }
+
+    &.done {
+      .step-count {
+        background-color: $success;
+        .dashicons {
+          font-size: 21px;
+          right: 2px;
+          top: 1px;
+          position: relative;
+        }
+      }
+    }
+
+    &.error .step-count {
+      background-color: $error;
+    }
+
+    &.skip {
+      .nicename {
+        opacity: .5;
+      }
+
+      .step-count {
+        .dashicons {
+          font-size: 16px;
+          transform: rotate(35deg);
+          left: 2px;
+          top: 1px;
+        }
+      }
+    }
+  }
+}
+
+.step-count {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  font-size: 15px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.38);
+  color: #fff;
+
+  .dashicons {
+    position: relative;
+    line-height: 24px;
+  }
+}

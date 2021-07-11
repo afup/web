@@ -1,0 +1,31 @@
+.hestia-about {
+  background-attachment: fixed;
+  color: $color-body-text;
+
+  h1, h2, h3, h4, h5 {
+    color: $color-secondary;
+    text-decoration: none;
+    word-wrap: break-word;
+    font-family: $secondary-font;
+  }
+
+  &.section-image {
+    color: #fefefe;
+    h1, h2, h3, h4, h5 {
+      color: #fff;
+    }
+    h6 {
+      color: rgba(255, 255, 255, 0.76);
+    }
+  }
+  .customizer-hidden {
+    display: none;
+  }
+}
+
+.is-ios {
+  .hestia-about,
+  .hestia-ribbon {
+    background-attachment: scroll;
+  }
+}

@@ -1,0 +1,112 @@
+.hestia-work {
+  .portfolio-item {
+    margin-top: 30px;
+    cursor: pointer;
+  }
+  .card-background .content {
+    padding-bottom: 50px;
+    opacity: 0;
+  }
+  .col-md-4 .card-background .content {
+    padding-top: 30%;
+  }
+  .col-md-6 .card-background .content {
+    padding-top: 20%;
+  }
+  .card-background {
+    &:hover {
+      a:hover {
+        opacity: 1;
+      }
+      .content {
+        opacity: 1;
+        -webkit-transition: all ease 0.5s;
+        transition: all ease 0.5s;
+      }
+    }
+  }
+  .portfolio-item {
+    &:nth-child(6n) .label {
+      background-color: $color-success;
+    }
+    &:nth-child(6n+1) .label {
+      background-color: $color-primary-hover;
+    }
+    &:nth-child(6n+2) .label {
+      background-color: $color-info;
+    }
+    &:nth-child(6n+3) .label {
+      background-color: $color-danger;
+    }
+    &:nth-child(6n+4) .label {
+      background-color: $color-warning;
+    }
+    &:nth-child(6n+5) .label {
+      background-color: $color-rose;
+    }
+  }
+}
+
+.hestia-portfolio-modal{
+  .header-filter-gradient{
+    border-radius: 6px 6px 0 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
+  }
+}
+
+.hestia-portfolio-modal {
+  background: rgba(0,0,0,0.7);
+  .modal-header {
+    position: relative;
+    border-radius: 6px 6px 0 0;
+    h3 {
+      margin: 0;
+      padding: 104px 0;
+      color: #fff;
+    }
+    &:before {
+      border-radius: 6px 6px 0 0;
+    }
+
+    a{
+      color: #ffffff;
+      z-index: 2;
+      &:hover{
+        color: #ffffff;
+      }
+    }
+    &:after{
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 6px 6px 0 0;
+    }
+
+    .close{
+      z-index: 3;
+      font-size: 30px;
+      background: none;
+      float: right;
+      box-shadow: none;
+      line-height: 16px;
+      margin: 0;
+      padding: 10px;
+    }
+
+    .portfolio-title-container{
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  .modal-content{
+    border-radius: 6px;
+    .modal-body{
+      padding:40px;
+    }
+    .portfolio-loading{
+      padding: 20px 0;
+    }
+  }
+}

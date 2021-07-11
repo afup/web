@@ -1,0 +1,98 @@
+@import "variables";
+.ti-wl-branding {
+  margin: 20px auto;
+  max-width: 1200px;
+  position: relative;
+  .form-branding {
+
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-column-gap: 20px;
+
+    .form-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 20px;
+    }
+
+    .form-block {
+      border-radius: 8px;
+
+      h2 {
+        font-size: 20px;
+        padding: 12px 12px 0 12px;
+        margin: 0;
+        vert-align: middle;
+        .ti-wl-icon{
+          vertical-align: middle;
+          margin-right: 8px;
+          padding: 5px;
+          border-radius: 50%;
+          color: #fff;
+          font-size:18px;
+          box-shadow: -1px 0px 13px -4px rgba(0,0,0,0.75);
+          border: 2px solid;
+          &.ti-agency-icon{
+            color: #5cacff;
+            boder-color: #5cacff;
+          }
+          &.ti-theme-icon{
+            color: #4e3288;
+            border-color: #4e3288;
+          }
+          &.ti-plugin-icon{
+            color: #f06723;
+            border-color: #f06723;
+          }
+        }
+      }
+      .field-wrap {
+        margin: 20px 0;
+        label {
+          margin-bottom: 5px;
+          display: block;
+          &.toggle-label{
+            display: inline-block;
+            line-height:22px;
+            margin-left: 5px;
+          }
+          &.vue-js-switch{
+            display: inline-block;
+          }
+        }
+        input, textarea {
+          width: 100%;
+          border: 1px solid #ddd;
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+          background-color: #fff;
+          color: #32373c;
+          outline: none;
+          transition: 0.05s border-color ease-in-out;
+          padding: 8px;
+          margin: 0;
+        }
+      }
+      .inside{
+        margin-top: 0;
+      }
+      .button-hero{
+        width: 100%;
+      }
+
+      .notice {
+        margin: 10px 0;
+        border: none;
+        padding: 5px;
+        &.invalid {
+          background: #ef0e0e;
+          color: #fff;
+        }
+      }
+    }
+  }
+  @import "toast";
+}
+
+
+
+

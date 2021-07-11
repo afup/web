@@ -55,6 +55,3 @@ COPY apache.crt /etc/apache2/ssl/apache.crt
 COPY apache.key /etc/apache2/ssl/apache.key
 
 RUN a2enmod ssl
-
-# Paybox
-COPY cgi-bin/paybox.cgi /usr/lib/cgi-bin/paybox.cgi

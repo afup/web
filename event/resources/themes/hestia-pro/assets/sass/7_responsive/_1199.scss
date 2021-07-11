@@ -1,0 +1,21 @@
+@media (max-width: 1199px) {
+  .hestia-features .row,
+  .hestia-about .row,
+  .products .row,
+  .hestia-work .row,
+  .hestia-team .row,
+  .pricing .row,
+  .hestia-testimonials .row,
+  section.hestia-blogs .row,
+  .contactus .row {
+    padding: 0 15px;
+  }
+
+  .products .container {
+    width: 100%;
+  }
+
+  .main-raised {
+    margin: -60px 15px 0;
+  }
+}

@@ -1,0 +1,55 @@
+<wpml-config>
+    <admin-texts>
+        <key name='theme_mods_hestia-pro'>
+            <key name='hestia_blog_title' />
+            <key name='hestia_blog_subtitle' />
+            <key name='hestia_blog_items' />
+            <key name='hestia_blog_subscribe_title' />
+            <key name='hestia_blog_subscribe_subtitle' />
+            <key name='hestia_contact_title' />
+            <key name='hestia_contact_form_shortcode' />
+            <key name='hestia_contact_subtitle' />
+            <key name='hestia_contact_area_title' />
+            <key name='hestia_contact_content_new' />
+            <key name='hestia_features_title' />
+            <key name='hestia_features_subtitle' />
+            <key name='hestia_general_credits' />
+            <key name='hestia_portfolio_title' />
+            <key name='hestia_portfolio_subtitle' />
+            <key name='hestia_portfolio_items' />
+            <key name='hestia_pricing_title' />
+            <key name='hestia_pricing_subtitle' />
+            <key name='hestia_pricing_table_one_title' />
+            <key name='hestia_pricing_table_one_price' />
+            <key name='hestia_pricing_table_one_features' />
+            <key name='hestia_pricing_table_one_link' />
+            <key name='hestia_pricing_table_one_text' />
+            <key name='hestia_pricing_table_two_title' />
+            <key name='hestia_pricing_table_two_price' />
+            <key name='hestia_pricing_table_two_features' />
+            <key name='hestia_pricing_table_two_link' />
+            <key name='hestia_pricing_table_two_text' />
+            <key name='hestia_shop_title' />
+            <key name='hestia_shop_subtitle' />
+            <key name='hestia_shop_items' />
+            <key name='hestia_subscribe_title' />
+            <key name='hestia_subscribe_subtitle' />
+            <key name='hestia_team_title' />
+            <key name='hestia_team_subtitle' />
+            <key name='hestia_testimonials_title' />
+            <key name='hestia_testimonials_subtitle' />
+            <key name='hestia_big_title_background' />
+            <key name='hestia_big_title_title' />
+            <key name='hestia_big_title_text' />
+            <key name='hestia_big_title_button_text' />
+            <key name='hestia_big_title_button_link' />
+            <key name='hestia_ribbon_background' />
+            <key name='hestia_ribbon_text' />
+            <key name='hestia_ribbon_button_text' />
+            <key name='hestia_ribbon_button_url' />
+            <key name='header_image' />
+            <key name='custom_logo' />
+            <key name='hestia_transparent_header_logo' />
+        </key>
+    </admin-texts>
+</wpml-config>

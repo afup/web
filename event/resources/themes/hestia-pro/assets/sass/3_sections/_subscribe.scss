@@ -1,0 +1,98 @@
+.subscribe-line {
+  padding: 65px 0;
+
+  .card {
+    margin-top: 30px;
+
+    .content .row {
+      margin: 0;
+    }
+
+    .input-group {
+      display: table;
+
+      .input-group-addon {
+        display: table-cell;
+        padding: 0 15px 0 0;
+        width: 1%;
+      }
+
+      .form-group {
+        display: table-cell;
+        padding-bottom: 0;
+      }
+    }
+
+    input[type=submit],
+    input[type=button],
+    .btn {
+      white-space: nowrap;
+    }
+  }
+
+  &.subscribe-line-image {
+    position: relative;
+    background-position: top center;
+    background-size: cover;
+
+    .title,
+    .hestia-title {
+      color: #fff;
+    }
+
+    &:after {
+      display: block;
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.66);
+      content: "";
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  .card h5,
+  .sib_loader {
+    display: none !important;
+  }
+}
+
+#sib_signup_form_1 {
+  text-align: center;
+  .input-group-addon{
+    width: 20px;
+    display: inline-block;
+    vertical-align: bottom;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  p.form-group{
+    display: inline-block;
+    width: calc(100% - 30px);
+    margin-bottom: 15px;
+    text-align: left;
+    position: relative;
+    z-index: 0;
+    label{
+      z-index: -1;
+      top: 10px;
+      position: absolute;
+      font-weight: 400;
+      color: #909090;
+    }
+  }
+  p.form-group:not(.is-empty){
+    label{
+      display: none;
+    }
+  }
+}

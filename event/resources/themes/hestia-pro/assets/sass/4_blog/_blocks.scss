@@ -1,0 +1,62 @@
+//<editor-fold desc="Quote">
+figure.wp-block-pullquote {
+  border-left: none;
+  border-top: 4px solid;
+  border-bottom: 4px solid;
+  margin: 20px 0;
+  padding: 3em 0;
+
+  p {
+    font-size: 28px;
+    font-style: normal;
+    margin-bottom: 20px;
+  }
+
+  blockquote {
+    margin: 1em;
+    border: none;
+  }
+
+  cite {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 300;
+  }
+}
+
+//</editor-fold>
+
+//<editor-fold desc="Font Sizes">
+$gutenberg-sizes: (
+        'small': 13px,
+        'medium': 20px,
+        'large': 36px,
+        'huge': 48px
+);
+
+.single-post-wrap, .page-content-wrap {
+  @each $type, $size in $gutenberg-sizes {
+    .has-#{$type}-font-size {
+      font-size: $size;
+    }
+  }
+}
+
+//</editor-fold>
+
+.wp-block-separator {
+  color: #eee;
+  background-color: #eee;
+  border: none;
+  &:not(.is-style-wide):not(.is-style-dots) {
+    height: 2px;
+    max-width: 150px;
+  }
+  .is-style-default{
+    height: 1px;
+  }
+  &.is-style-wide {
+    max-width: 100%;
+    height: 1px;
+  }
+}

@@ -1,0 +1,32 @@
+.section.pagebuilder-section{
+	padding-bottom: 0;
+}
+
+.dokan-dashboard .blog-post-wrapper .container {
+	width: 100%;
+	padding: 0;
+}
+.dokan-dashboard .blog-post-wrapper .section {
+	padding: 0;
+}
+.dokan-dashboard .dokan-dash-sidebar ul.dokan-dashboard-menu li.products {
+	padding: 0;
+}
+.dokan-dashboard .dokan-dashboard-content {
+	padding: 25px;
+}
+.dokan-dashboard.woocommerce.single-product .section {
+	padding-bottom: 0;
+}
+
+@media (max-width: 767px) {
+	div#dokan-secondary {
+		width: 100%;
+		padding: 30px;
+	}
+
+	div#dokan-primary {
+		width: 100%;
+		padding: 30px;
+	}
+}

@@ -1,0 +1,22 @@
+#demo-import {
+  width: 100%;
+}
+#ti-sites-library {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @import "components/variables";
+  @import "components/generic";
+  @import "components/layout-onboarding";
+  @import "components/layout";
+  @import "components/preview";
+  @import "components/import-modal";
+  @import "components/migration";
+  @import "components/tabs";
+  @import "components/stepper";
+  @import "components/error-well";
+  @import "components/media-queries";
+}
+
+.ti-ob--preview-open {
+  overflow: hidden;
+}

@@ -1,0 +1,46 @@
+.migrate-notice {
+  position: relative;
+}
+
+.migration-dismiss {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  font-size: 13px;
+  line-height: 1.23076923;
+  text-decoration: none;
+
+  &:before {
+    background: none;
+    color: #72777c;
+    content: "\f153";
+    display: block;
+    font: normal 16px/20px dashicons;
+    height: 20px;
+    text-align: center;
+    width: 20px;
+    transition: all .1s ease-in-out;
+  }
+}
+
+.site-box.migrate-screenshot {
+  margin: 0 auto 25px;
+}
+
+.migrate-text {
+  h3 {
+    margin-top: 0;
+  }
+
+  .ti-sites-lib {
+    margin: 1.25em 0;
+  }
+}
+
+
+@mixin migrate--desktop() {
+  .migrate-notice .site-box.migrate-screenshot {
+    max-width: 32%;
+  }
+}

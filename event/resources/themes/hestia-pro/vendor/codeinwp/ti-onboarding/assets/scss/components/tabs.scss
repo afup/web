@@ -1,0 +1,41 @@
+.tabs-component {
+  width: 100%;
+}
+.tabs-component-tabs {
+  display: flex;
+  li {
+    margin-right: 20px;
+    text-transform: capitalize;
+    font-weight: 600;
+    background-color: #DADCDC;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    a {
+      text-decoration: none;
+      color: #666;
+    }
+    &.is-active {
+      background-color: #0085ba;
+      a {
+        color: #fff;
+      }
+    }
+  }
+}
+
+.template-search-wrapper {
+  margin-bottom: 20px;
+  input {
+    width: 100%;
+  }
+}
+
+@mixin tabs--laptop() {
+  .template-search-wrapper {
+    text-align: left;
+    input {
+      width: 300px;
+    }
+  }
+}

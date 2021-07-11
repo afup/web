@@ -1,0 +1,173 @@
+body {
+  direction: ltr;
+  background-color: #e5e5e5;
+  overflow-x: hidden;
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+embed, iframe, img, object, video, button, input, select, textarea, .wp-caption {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+ul, ol {
+  margin-bottom: 30px;
+}
+
+legend {
+  border-bottom: 0;
+}
+
+.container {
+  max-width: 100%;
+}
+
+.margin-left-auto {
+  margin-left: auto;
+}
+
+.margin-right-auto {
+  margin-right: auto;
+}
+
+.animation-transition-fast, .navbar, .panel .panel-heading i, .section-cards .card {
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
+}
+
+.thumbnail {
+  padding: 0;
+  border: 0 none;
+  border-radius: 0;
+}
+
+// Sane default links styling.
+.section-image .description .default-link,
+.section-image .default-link,
+.hestia-title .default-link,
+.title .default-link,
+.default-link:hover,
+.default-link {
+  color: #fff;
+}
+
+.description .default-link {
+  color: $color-body-text;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+@media (min-width: 992px) {
+  .row {
+    &.hestia-like-table {
+      display: table;
+      width: 100%;
+
+      > div {
+        display: table-cell;
+        vertical-align: middle;
+        float: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .hestia-xs-text-center {
+    text-align: center;
+  }
+}
+
+// Random colors for cards categories
+.hestia-blogs article,
+.related.products ul li,
+.woocommerce.archive .blog-post .products li,
+.woocommerce .products li,
+.shop-item,
+.related-posts div {
+  &:nth-of-type(6n) .category a {
+    color: $color-success;
+  }
+
+  &:nth-of-type(6n+1) .category a {
+    color: $color-primary-hover;
+  }
+
+  &:nth-of-type(6n+2) .category a {
+    color: $color-info;
+  }
+
+  &:nth-of-type(6n+3) .category a {
+    color: $color-danger;
+  }
+
+  &:nth-of-type(6n+4) .category a {
+    color: $color-warning;
+  }
+
+  &:nth-of-type(6n+5) .category a {
+    color: $color-rose;
+  }
+}
+
+.hestia-blogs article {
+  &:nth-of-type(6n) .card-body .btn {
+    background-color: $color-success;
+  }
+
+  &:nth-of-type(6n+1) .card-body .btn {
+    background-color: $color-primary-hover;
+  }
+
+  &:nth-of-type(6n+2) .card-body .btn {
+    background-color: $color-info;
+  }
+
+  &:nth-of-type(6n+3) .card-body .btn {
+    background-color: $color-danger;
+  }
+
+  &:nth-of-type(6n+4) .card-body .btn {
+    background-color: $color-warning;
+  }
+
+  &:nth-of-type(6n+5) .card-body .btn {
+    background-color: $color-rose;
+  }
+}
+
+/* Audio shortcode */
+.wp-audio-shortcode {
+  margin-bottom: 20px;
+}
+
+/* Video Shortcode */
+.wp-video-shortcode {
+  margin-bottom: 20px;
+}
+
+input[type="radio"] + label, input[type="checkbox"] + label {
+  font-weight: 400;
+}
+
+blockquote {
+  &.has-text-align-right{
+    border-left: 0;
+    border-right: 5px solid #eee;
+  }
+  cite {
+    font-size: .8em;
+    color: #777;
+    font-style: normal;
+    font-weight: 400;
+  }
+}

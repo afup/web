@@ -1,0 +1,135 @@
+.accordion-section-title .button {
+  font-weight: 400;
+}
+
+.hestia-notice{
+  position: relative;
+}
+
+.hestia-customizer-heading {
+  display: block;
+  margin: 0 -12px;
+  padding: 13px 12px;
+  background-color: #fff;
+  color: #555;
+  border: 1px solid #ddd;
+  border-left: 0;
+  border-right: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-transform: uppercase
+}
+
+
+//Upsell style
+.themeisle-upsell {
+  background: #fff;
+  padding: 21px;
+  border-radius: 3px;
+}
+
+.themeisle-upsell .upsell-pro-label {
+  font-weight: bold;
+  background: #a7a7a7;
+  color: #fff;
+  text-transform: uppercase;
+  padding: 2px 6px 2px 7px;
+  letter-spacing: .1px;
+  font-size: 12px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.themeisle-upsell-features {
+  li{
+    &:last-child{
+      margin-bottom: 20px;
+    }
+    line-height: 24px;
+    margin-bottom: 23px;
+    font-size: 14px;
+  }
+  &.no-explained{
+    li{
+      margin-bottom: 0;
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.themeisle-upsell .button {
+  margin-right: 21px;
+  width: 100%;
+  text-align:center;
+  letter-spacing: .2px;
+}
+
+.themeisle-upsell hr {
+  margin-top: 22px;
+  margin-bottom: 16px;
+}
+
+.themeisle-upsell-feature-list li:before {
+  line-height: 37px;
+}
+
+.themeisle-upsell-feature-list li {
+  line-height: 22px;
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom:6px;
+}
+
+.themeisle-upsell-feature-list li:last-child {
+  margin-bottom: 0;
+}
+
+.frontpage-sections-upsell {
+  padding: 10px 10px 11px 14px;
+}
+
+.themeisle-boxed-section {
+  margin: 12px;
+}
+
+// Generic
+#customize-controls #accordion-section-hestia_upsell_main_section.control-section .accordion-section-title:hover {
+  background-color: #0073aa;
+  color: #fff;
+}
+
+#customize-controls #accordion-section-hestia_upsell_main_section.control-section .accordion-section-title:hover:after {
+  color: #fff;
+}
+
+// Decrease Customizer sidebar width
+@media (min-width: 992px) and (max-width: 1300px) {
+  body.wp-customizer {
+    .wp-full-overlay.expanded {
+      margin-left: 280px;
+    }
+
+    .wp-full-overlay-sidebar {
+      width: 280px;
+    }
+
+    .expanded .wp-full-overlay-footer {
+      width: 279px;
+    }
+  }
+}
+
+.customize-control-description a.button{
+  span.dashicons{
+    vertical-align: middle;
+    font-size: initial;
+    line-height: initial;
+    margin-right: 5px;
+    width: auto;
+    height: auto;
+  }
+}

@@ -1,0 +1,91 @@
+.ti-sites-lib__preview {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+
+  iframe {
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+    border: none;
+    flex: 1;
+  }
+
+  .preview-sidebar__container {
+    display: flex;
+    padding: 15px 50px;
+    align-items: center;
+  }
+}
+
+.preview-sidebar {
+  position: relative;
+  border-top: 1px solid #ccc;
+
+  .site-title {
+    margin: 0;
+    font-size: 15px;
+    padding-left: 25px;
+  }
+
+  .buttons-wrap {
+    align-self: flex-end;
+    margin-left: auto;
+  }
+
+  .ellipsis {
+    max-width: 50%;
+  }
+
+  .nav-buttons {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    width: 150px;
+
+    .prev-next {
+      display: none;
+    }
+
+    button {
+      width: 50px;
+      border-top: none;
+      border-bottom: none;
+      border-left: 0;
+      background-color: transparent;
+
+      &:hover {
+        color: #fff;
+        background-color: $primary;
+        cursor: pointer;
+        border-color: darken($primary, 10%);
+      }
+    }
+
+    .next {
+      border-left: 0;
+    }
+  }
+}
+
+@mixin preview--laptop() {
+  .preview-sidebar {
+    .site-title {
+      padding-left: 125px;
+    }
+
+    .nav-buttons {
+      .prev-next {
+        display: flex;
+      }
+    }
+  }
+}

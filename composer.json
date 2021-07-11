@@ -37,7 +37,8 @@
     "znk3r/html_common": "*",
     "pear/pear": "^1.10",
     "doctrine/dbal": "^2.5",
-    "excelwebzone/recaptcha-bundle": "1.5.13"
+    "excelwebzone/recaptcha-bundle": "1.5.13",
+    "ext-curl": "*"
   },
   "scripts": {
     "post-install-cmd": [

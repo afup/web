@@ -1,0 +1,32 @@
+/*EDIT CONTENT CONTROL*/
+.edit-content-button{  margin-bottom: 10px;}
+.edit-content-button:before{content: "\f464";opacity: 0.6;background-color: #ddd;padding: 4px 5px;margin-left: -10px;margin-right: 7px;font-size: 18px;vertical-align: top;border-radius: 2px 0 0 2px;font-family: 'dashicons';}
+
+/*--------------------------WIDGETS------------------------------------*/
+#wp-editor-widget-container{position:fixed;left:0;right:0;bottom:0;z-index:9999999;background:#f1f1f1;border-top:1px solid #ddd;}
+
+
+
+@media screen and (min-width: 800px){
+	#wp-editor-widget-container{
+		left:300px;
+	}
+}
+
+@media screen and (min-width: 1667px){
+	#wp-editor-widget-container{
+		left:18%;
+	}
+}
+
+#wp-editor-widget-container .close{position:absolute;top:17px;right:7px;width:30px;height:30px;z-index:1000; text-decoration: none; opacity:0.4; text-align: center;}
+#wp-editor-widget-container .close{ opacity:0.7;}
+#wp-editor-widget-container .icon:after{font: 400 22px/45px dashicons; content: "\f335";color: #888;text-decoration: none!important; line-height: 30px}
+#wp-editor-widget-container .close:active{outline:0}
+#wp-editor-widget-container .editor{margin:50px}
+#available-widgets [class*=wp_editor_widget] .widget-title:before{content:"\f478"}
+
+body.wp-customizer #wp-editor-widget-container{ bottom:-650px;}
+body.wp-customizer #wp-editor-widget-container.editoron{ bottom:0;}
+body.wp-customizer #wp-editor-widget-container .editor {margin: 10px; margin-top: 55px;}
+body.widgets_access .widget-position table tr:nth-child(3) {display: none;}

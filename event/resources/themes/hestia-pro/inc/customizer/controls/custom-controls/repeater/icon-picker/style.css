@@ -1,0 +1,52 @@
+.iconpicker *,
+.icp-container {
+    position: relative
+}
+
+.icp-container .input-group-addon {
+    position: absolute;
+    top: 1px;
+    left: 5px;
+    padding: 3px
+}
+
+input.icp {
+    padding-left: 30px
+}
+
+.iconpicker-popover{
+    display: none;
+    border: 1px solid;
+    padding-bottom: 10px;
+}
+
+.iconpicker-popover .popover-title{
+    padding: 10px;
+    background: #eeeeee;
+}
+
+.iconpicker-popover.iconpicker-visible{
+    display: block;
+}
+
+.iconpicker .iconpicker-items  {
+    display: block;
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.iconpicker .iconpicker-items i {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    margin: 3px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 18px;
+    color: #444;
+    box-shadow: 0 0 0 1px #ddd;
+    transition: transform .2s ease
+}

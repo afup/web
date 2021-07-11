@@ -1,0 +1,260 @@
+/*
+ * Header titles.
+ */
+.carousel .hestia-title {
+	font-size: 67px;
+}
+
+.carousel span.sub-title {
+	font-size: 18px;
+}
+
+@media (max-width: 768px) {
+	.carousel .hestia-title,
+	h1.hestia-title {
+		font-size: 36px;
+	}
+	.page-header.header-small .hestia-title,
+	.page-header.header-small .title {
+		font-size: 26px;
+	}
+}
+
+/*
+ * Section primary headings.
+ */
+h2.hestia-title,
+h2.title {
+	font-size: 37px;
+}
+
+@media (max-width: 768px) {
+	h2.hestia-title,
+	h2.title {
+		font-size: 24px;
+	}
+}
+
+.woocommerce div.product .product_title,
+.woocommerce .related.products h2,
+.woocommerce .exclusive-products h2{
+	font-size: 32px;
+}
+
+
+@media (max-width: 768px) {
+	.woocommerce div.product .product_title,
+	.woocommerce .related.products h2,
+    .woocommerce .exclusive-products h2{
+		font-size: 24px;
+	}
+}
+
+.subscribe-line h3.hestia-title,
+#comments .hestia-title,
+.woocommerce .comment-reply-title,
+.woocommerce-cart .blog-post h1.hestia-title,
+.woocommerce-checkout .blog-post h1.hestia-title {
+	font-size: 27px;
+}
+
+h5.description,
+h5.subscribe-description {
+	font-size: 18px;
+}
+
+.subscribe-line .description {
+	font-size: 14px;
+}
+
+/*
+ * Section secondary headings.
+ */
+.woocommerce-cart .blog-post h1.hestia-title,
+.woocommerce-checkout .blog-post h1.hestia-title {
+	font-size: 27px;
+}
+
+.hestia-work .card-title,
+.woocommerce .cart-collaterals h2,
+.woocommerce .cross-sells h2,
+.woocommerce.single-product .summary .price,
+.woocommerce-checkout .blog-post .section form.woocommerce-checkout h3:not(#ship-to-different-address) {
+	font-size: 23px;
+}
+
+h4.card-title,
+.hestia-info h4.info-title,
+.footer .widget h5,
+section.contactus h4.hestia-title {
+	font-size: 18px;
+}
+
+.blog .card-blog .card-title,
+.archive .card-blog .card-title,
+.blog .hestia-blog-featured-card .card-title {
+	font-size: 25px;
+}
+
+/*
+ * Section content.
+ */
+h6.category {
+	font-size: 12px;
+}
+
+.woocommerce .product .card-product .card-description p,
+.card-description,
+section.pricing p.text-gray,
+.woocommerce.single-product .woocommerce-product-details__short-description {
+	font-size: 14px;
+}
+
+.hestia-features .hestia-info p {
+	font-size: 16px;
+}
+
+/*
+ * Post/page headings.
+ */
+h1,
+.single-post-wrap h1,
+.page-content-wrap h1,
+.hestia-title.title-in-content {
+	font-size: 42px;
+}
+
+@media (max-width: 768px) {
+	.hestia-title.title-in-content {
+		font-size: 36px;
+	}
+}
+
+h2,
+.single-post-wrap h2,
+.page-content-wrap h2 {
+	font-size: 37px;
+}
+
+h3,
+.single-post-wrap h3,
+.page-content-wrap h3 {
+	font-size: 32px;
+}
+
+h4,
+.single-post-wrap h4,
+.page-content-wrap h4 {
+	font-size: 27px;
+}
+
+h5,
+.single-post-wrap h5,
+.page-content-wrap h5 {
+	font-size: 23px;
+}
+
+h6,
+.single-post-wrap h6,
+.page-content-wrap h6 {
+	font-size: 18px;
+}
+
+@media (max-width: 768px) {
+	h1,
+	.single-post-wrap h1,
+	.page-content-wrap h1,
+	.page-template-template-fullwidth article h1 {
+		font-size: 30px;
+	}
+
+	h2,
+	.single-post-wrap h2,
+	.page-content-wrap h2,
+	.page-template-template-fullwidth article h2 {
+		font-size: 28px;
+	}
+
+	h3,
+	.single-post-wrap h3,
+	.page-content-wrap h3,
+	.page-template-template-fullwidth article h3 {
+		font-size: 24px;
+	}
+
+	h4,
+	.single-post-wrap h4,
+	.page-content-wrap h4,
+	.page-template-template-fullwidth article h4 {
+		font-size: 22px;
+	}
+
+	h5,
+	.single-post-wrap h5,
+	.page-content-wrap h5,
+	.page-template-template-fullwidth article h5 {
+		font-size: 20px;
+	}
+
+	h6,
+	.single-post-wrap h6,
+	.page-content-wrap h6,
+	.page-template-template-fullwidth article h6 {
+		font-size: 18px;
+	}
+}
+
+/*
+ * Post/page content.
+ */
+.single-post-wrap,
+.page-content-wrap,
+.single-post-wrap ul,
+.page-content-wrap ul,
+.single-post-wrap ol,
+.page-content-wrap ol,
+.single-post-wrap dl,
+.page-content-wrap dl,
+.single-post-wrap table,
+.page-content-wrap table,
+.page-template-template-fullwidth article,
+.page-template-template-fullwidth article ul,
+.page-template-template-fullwidth article ol,
+.page-template-template-fullwidth article dl,
+.page-template-template-fullwidth article table {
+	font-size: 18px;
+}
+
+@media (max-width: 768px) {
+	.single-post-wrap,
+	.page-content-wrap,
+	.single-post-wrap ul,
+	.page-content-wrap ul,
+	.single-post-wrap ol,
+	.page-content-wrap ol,
+	.single-post-wrap dl,
+	.page-content-wrap dl,
+	.single-post-wrap table,
+	.page-content-wrap table,
+	.page-template-template-fullwidth article,
+	.page-template-template-fullwidth article ul,
+	.page-template-template-fullwidth article ol,
+	.page-template-template-fullwidth article dl,
+	.page-template-template-fullwidth article table {
+		font-size: 16px;
+	}
+}
+
+/*
+ * Body.
+ */
+body {
+	font-size: 14px;
+}
+
+/*
+ * Menu.
+ */
+.navbar a {
+	font-size: 12px;
+}

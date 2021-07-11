@@ -1,0 +1,331 @@
+@media (max-width: 991px) {
+  .navbar .navbar-nav > li {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .page-header {
+    height: auto;
+    min-height: 0;
+  }
+
+  .card.card-raised .card-image {
+    margin-top: -30px;
+    display: block;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .card.card-raised {
+    padding: 20px;
+  }
+
+  .woocommerce-checkout .page-header {
+    height: auto;
+  }
+
+  .hestia-about .text-area {
+    margin: 0 0 10px;
+  }
+
+  .blog .page-header.header-small h2 {
+    margin: 0;
+  }
+
+  .blog .page-header.header-small {
+    height: auto;
+    min-height: 0;
+  }
+
+  .page-header .iframe-container {
+    padding: 30px 0;
+  }
+
+  .card-form-horizontal .form-group {
+    padding-bottom: 20px;
+  }
+
+  .carousel .page-header {
+    padding: 0 30px;
+  }
+
+  .btn.btn-simple {
+    padding-right: 0;
+    padding-left: 0;
+    text-align: left;
+  }
+  .hestia-work .col-md-6 .card-background .content,
+  .hestia-work .col-md-4 .card-background .content {
+    padding-top: 15%;
+  }
+  .hestia-features .row,
+  .features .row,
+  .hestia-about .row,
+  .about .row,
+  .products .row,
+  .hestia-work .row,
+  .work .row,
+  .hestia-team .row,
+  .team .row,
+  .pricing .row,
+  .hestia-testimonials .row,
+  .testimonials .row,
+  section.hestia-blogs .row,
+  .contactus .row {
+    padding: 0 10px;
+  }
+
+  .single aside.blog-sidebar {
+    padding: 40px 30px;
+  }
+
+  .shop-sidebar.card {
+    width: 100%;
+    text-align: initial;
+  }
+
+  .shop-sidebar-wrapper {
+    text-align: center;
+  }
+
+  .products {
+    .shop-item:nth-of-type(2n+1) {
+      clear: both;
+    }
+  }
+
+  .subscribe-line {
+    .card {
+      .content {
+        padding: 0;
+      }
+
+      .form-group {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  // Blog, Category
+  .blog,
+  .archive {
+    .hestia-blogs {
+      padding-top: 0;
+
+      .card-blog {
+        .card-image {
+          margin-bottom: 30px;
+        }
+      }
+    }
+
+    #authors-on-blog {
+      padding-bottom: 40px;
+    }
+  }
+
+  // Home
+  .home {
+    section.hestia-blogs {
+      padding: 30px 0 65px;
+    }
+  }
+
+  // Single post
+  .single {
+    &.single-post {
+      .section-blog-info {
+        .card-profile {
+          .card-title,
+          .description {
+            text-align: center;
+          }
+          .card-avatar {
+            margin-bottom: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  // Sidebar
+  .hestia-sidebar-open,
+  .hestia-sidebar-close {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0;
+    padding: 12px 15px;
+  }
+
+  .row-sidebar-toggle {
+    margin: 30px 15px 0;
+    text-align: right;
+  }
+
+  .row-sidebar-toggle.desktop{
+    display: none;
+  }
+
+  .page {
+    .row-sidebar-toggle {
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+  }
+
+  .shop-sidebar-wrapper{
+    position: fixed;
+    top: 0;
+    z-index: 1030;
+    height: 100%;
+    background: #fff;
+    border-right: 1px solid #f0f0f0;
+    left: -100%;
+    transition: 0.5s ease;
+    padding: 60px 20px 20px;
+    overflow-y: scroll;
+    &.sidebar-open{
+      left: 0;
+    }
+    .card {
+      box-shadow: none;
+    }
+  }
+
+  .archive.woocommerce {
+    .hestia-sidebar-open {
+      margin-top: 15px;
+    }
+
+    .shop-sidebar-active {
+      margin-top: 10px;
+    }
+
+    .row-sidebar-toggle.col-sm-3 {
+      margin: 0;
+      text-align: left;
+
+      .hestia-sidebar-open {
+        margin: 15px 0 0;
+      }
+    }
+  }
+
+  .shop-sidebar.card.card-raised {
+    box-shadow: none;
+    margin: 0;
+    padding: 0 15px;
+  }
+
+  // Top bar
+  .hestia-top-bar {
+    .container {
+      width: 100%;
+    }
+
+    .col-md-6 {
+      width: 50%;
+    }
+  }
+
+  // Home - Team
+  .hestia-team,
+  .team {
+    .card {
+      .content {
+        padding-top: 15px;
+
+        .footer {
+          .btn.btn-just-icon {
+            padding: 12px;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  // Home - Pricing
+  .pricing {
+    p.text-gray {
+      margin-bottom: 40px;
+    }
+  }
+
+  .related-posts .hestia-title {
+    margin-bottom: 60px;
+  }
+
+  @include featured-cards--tablet();
+}
+
+@media (min-width: 992px) {
+  .navbar .navbar-collapse {
+    text-align: center;
+  }
+
+  .card.card-raised .card-image {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .navbar .navbar-center {
+    display: inline-block;
+    float: none;
+  }
+
+  .navbar .navbar-nav > li {
+    margin: 0;
+  }
+
+  .navbar .navbar-nav > li.btn {
+    margin: 0 10px;
+  }
+
+  .navbar .navbar-nav > li.btn:last-child {
+    margin-right: 0;
+  }
+
+  .entry-social {
+    text-align: right;
+  }
+
+  .footer {
+    .content {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+
+    .row {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+
+    .col-md-4 {
+      padding: 0 30px;
+    }
+  }
+
+  // Sidebar
+  .blog-sidebar-wrapper,
+  .shop-sidebar-wrapper {
+    float: left;
+    position: static;
+    background: transparent;
+  }
+
+  .big-title-sidebar-wrapper {
+    .pirate-forms-contact-widget {
+      max-width: 370px;
+    }
+  }
+
+  .row-sidebar-toggle.desktop{
+    display: block;
+  }
+
+  .row-sidebar-toggle.mobile{
+    display: none;
+  }
+}
+

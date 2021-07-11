@@ -1,0 +1,76 @@
+.hestia-features, .features {
+  padding: 75px 0 55px;
+  text-align: center;
+
+  .hestia-title,
+  .title {
+    margin-top: 10px;
+  }
+
+  .hestia-info,
+  .info {
+    padding: 70px 0 30px;
+    margin: 0 auto;
+  }
+
+  .feature-box {
+    .card {
+      width: auto;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+    img {
+      max-width: 150px;
+    }
+  }
+}
+
+.hestia-info, .info {
+  a:hover {
+    .info-title, .icon {
+      opacity: .75;
+    }
+    .icon {
+      transform: scale(1.05) translateY(-5px);
+    }
+  }
+  max-width: 360px;
+  .icon {
+    transition: .3s ease;
+    color: $color-body-text;
+  }
+  .info-title {
+    transition: .3s ease;
+    margin: 30px 0 15px;
+    color: $color-secondary;
+  }
+  p {
+    color: $color-body-text;
+  }
+}
+
+.info-horizontal {
+  .icon {
+    float: left;
+    margin-top: 24px;
+    margin-right: 10px;
+  }
+  .description {
+    overflow: hidden;
+  }
+}
+
+.icon {
+  &.icon-primary {
+    color: $color-primary;
+  }
+  &.icon-success {
+    color: $color-success;
+  }
+  &.icon-danger {
+    color: $color-danger;
+  }
+  &.icon-rose {
+    color: $color-rose;
+  }
+}
