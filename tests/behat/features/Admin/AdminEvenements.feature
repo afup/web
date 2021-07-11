@@ -9,3 +9,12 @@ Feature: Administration - Partie Evenements
     When I follow "Ajouter"
     Then I should see "Ajouter une inscription pour le forum"
     Then The "civilite" field should only contain the follow values '["M.", "Mme", "Mlle"]'
+    When I select "2" from "type_inscription"
+    And I fill in "nom" with "Nom participant"
+    And I fill in "prenom" with "Prénom participant"
+    And I fill in "email" with "nomparticipant@gmail.com"
+    And I select "2" from "type_reglement"
+    And I press "Soumettre"
+    Then I should see "L'inscription a été ajoutée"
+    And I should see "Inscriptions"
+    And I should see "Prénom participant Nom participant"
