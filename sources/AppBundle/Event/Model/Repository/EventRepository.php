@@ -40,7 +40,7 @@ class EventRepository extends Repository implements MetadataInitializer
         return $events;
     }
 
-    public function getLatestEvent()
+    public function getLastEvent()
     {
         $query = $this
             ->getQuery('SELECT id, path, titre, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum ORDER BY date_debut DESC, id DESC')

@@ -55,7 +55,7 @@ class EventActionHelper
         } elseif ($allowFallback) {
             $event = $this->eventRepository->getNextEvent();
 
-            if (null === $event && null !== ($latestEvent = $this->eventRepository->getLatestEvent())) {
+            if (null === $event && null !== ($latestEvent = $this->eventRepository->getLastEvent())) {
                 $event = $latestEvent;
             }
         }
