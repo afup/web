@@ -6,7 +6,6 @@ namespace AppBundle\Controller;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
-use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Event\Model\Vote;
