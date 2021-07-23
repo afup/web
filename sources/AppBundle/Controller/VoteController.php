@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -161,11 +162,8 @@ class VoteController extends EventBaseController
 
     public function adminAction(Request $request)
     {
-        /**
-         * @var $eventRepository EventRepository
-         */
-        $eventRepository = $this->get('ting')->get(EventRepository::class);
-        $event = $this->getEvent($eventRepository, $request);
+        $eventId = $request->query->get('id');
+        $event = $this->get(EventActionHelper::class)->getEventById($eventId);
 
         $votes = $event === null ? []:$this->get('ting')->get(VoteRepository::class)->getVotesByEvent($event->getId());
 
@@ -175,19 +173,5 @@ class VoteController extends EventBaseController
             'event' => $event,
             'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
         ]);
-    }
-
-    private function getEvent(EventRepository $eventRepository, Request $request)
-    {
-        $event = null;
-        if ($request->query->has('id') !== false) {
-            $id = $request->query->getInt('id');
-            $event = $eventRepository->get($id);
-            if ($event === null) {
-                throw $this->createNotFoundException(sprintf('Could not found event'));
-            }
-        }
-
-        return $event;
     }
 }
