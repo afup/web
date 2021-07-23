@@ -75,22 +75,20 @@ class PendingBankwiresAction
     public function __invoke(Request $request)
     {
         $id = $request->query->get('id');
-        $event = null;
-        if ($id !==null) {
-            $event = $this->eventActionHelper->getEventById($id);
 
-            if ($request->isMethod(Request::METHOD_POST)) {
-                if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('admin_event_bankwires',
-                    $request->request->get('token')))) {
-                    $this->flashBag->add('error', 'Erreur de token CSRF, veuillez réessayer');
-                } else {
-                    $reference = $request->request->get('bankwireReceived');
-                    $invoice = $this->invoiceRepository->getByReference($reference);
-                    if ($invoice === null) {
-                        throw new NotFoundHttpException(sprintf('No invoice with this reference: "%s"', $reference));
-                    }
-                    $this->setInvoicePaid($event, $invoice);
+        $event = $this->eventActionHelper->getEventById($id);
+
+        if ($request->isMethod(Request::METHOD_POST)) {
+            if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('admin_event_bankwires',
+                $request->request->get('token')))) {
+                $this->flashBag->add('error', 'Erreur de token CSRF, veuillez réessayer');
+            } else {
+                $reference = $request->request->get('bankwireReceived');
+                $invoice = $this->invoiceRepository->getByReference($reference);
+                if ($invoice === null) {
+                    throw new NotFoundHttpException(sprintf('No invoice with this reference: "%s"', $reference));
                 }
+                $this->setInvoicePaid($event, $invoice);
             }
         }
 

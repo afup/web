@@ -50,24 +50,21 @@ class SpeakerListAction
         Assertion::inArray($direction, self::VALID_DIRECTIONS);
         $filter = $request->query->get('filter');
         $eventId = $request->query->get('eventId');
-        $event = null;
-        $speakers=[];
-        $talks=[];
-        if ($eventId !== null) {
-            $event = $this->eventActionHelper->getEventById($eventId);
-            $speakers = $this->speakerRepository->searchSpeakers($event, $sort, $direction, $filter);
-            $talks = [];
-            foreach ($speakers as $speaker) {
-                $speakerTalks = [];
-                foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
-                    if ($talk->getType() !== Talk::TYPE_PHP_PROJECT) {
-                        $speakerTalks[$talk->getTitle()] = $talk;
-                    }
+
+        $event = $this->eventActionHelper->getEventById($eventId);
+        $speakers = $this->speakerRepository->searchSpeakers($event, $sort, $direction, $filter);
+        $talks = [];
+        foreach ($speakers as $speaker) {
+            $speakerTalks = [];
+            foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
+                if ($talk->getType() !== Talk::TYPE_PHP_PROJECT) {
+                    $speakerTalks[$talk->getTitle()] = $talk;
                 }
-                ksort($speakerTalks);
-                $talks[$speaker->getId()] = array_values($speakerTalks);
             }
+            ksort($speakerTalks);
+            $talks[$speaker->getId()] = array_values($speakerTalks);
         }
+
         /** @var Event[] $events */
         $events = $this->eventRepository->getAll();
 

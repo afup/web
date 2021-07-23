@@ -54,7 +54,12 @@ class EventActionHelper
             $event = $this->eventRepository->get((int) $id);
         } elseif ($allowFallback) {
             $event = $this->eventRepository->getNextEvent();
+
+            if (null === $event && null !== ($latestEvent = $this->eventRepository->getLastEvent())) {
+                $event = $latestEvent;
+            }
         }
+
         if ($event === null) {
             throw new NotFoundHttpException('Could not find event');
         }
