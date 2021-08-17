@@ -68,3 +68,23 @@ function hestia_child_get_parent_options() {
 							}
 }
 add_action( 'after_switch_theme', 'hestia_child_get_parent_options' );
+
+// cf get_time_tags et maybe_render_post_meta dans event/resources/themes/hestia-pro/inc/views/blog/class-hestia-header-layout-manager.php
+// avec cette modification on n'affiche plus la personne ayant créé l'article
+function afup_posted_by() {
+    $time = 'Publié le ';
+
+    $time .= '<time class="entry-date published" datetime="' . esc_attr( get_the_date( 'c' ) ) . '" content="' . esc_attr( get_the_date( 'Y-m-d' ) ) . '">';
+    $time .= esc_html( get_the_time( get_option( 'date_format' ) ) );
+    $time .= '</time>';
+    if ( get_the_time( 'U' ) === get_the_modified_time( 'U' ) ) {
+        return $time;
+    }
+    $time .= '<time class="updated hestia-hidden" datetime="' . esc_attr( get_the_modified_date( 'c' ) ) . '">';
+    $time .= esc_html( get_the_time( get_option( 'date_format' ) ) );
+    $time .= '</time>';
+
+    return $time;
+}
+
+add_filter('hestia_single_post_meta', 'afup_posted_by');
