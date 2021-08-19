@@ -18,3 +18,5 @@ parameters:
     database_name: web
     database_user: afup
     database_password: afup
+    github_authenticator: "AppBundle\\Security\\TestGithubAuthenticator"
+    slack_url: null
