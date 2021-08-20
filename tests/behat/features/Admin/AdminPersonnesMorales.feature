@@ -8,7 +8,7 @@ Feature: Administration - Partie Personnes morales
     # ajout d'une personne morale
     When I follow "Ajouter"
     Then I should see "Ajouter une personne morale"
-    Then The "civilite" field should only contain the follow values '["M.", "Mme", "Mlle"]'
+    Then The "civilite" field should only contain the follow values '["M.", "Mme"]'
     When I press "Ajouter"
     Then I should see "Raison sociale manquante"
     When I fill in "raison_sociale" with "My Corp"
