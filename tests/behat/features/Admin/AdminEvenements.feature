@@ -8,7 +8,7 @@ Feature: Administration - Partie Evenements
     # ajout d'une rubrique
     When I follow "Ajouter"
     Then I should see "Ajouter une inscription pour le forum"
-    Then The "civilite" field should only contain the follow values '["M.", "Mme", "Mlle"]'
+    Then The "civilite" field should only contain the follow values '["M.", "Mme"]'
     When I select "2" from "type_inscription"
     And I fill in "nom" with "Nom participant"
     And I fill in "prenom" with "Prénom participant"
