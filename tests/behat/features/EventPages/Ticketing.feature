@@ -5,7 +5,7 @@ Feature: Event pages - Ticketing
     Given I am on "/event/forum/tickets"
     Then I should see "Billetterie: forum"
     And I should see "Si vous rencontrez le moindre problème, n'hésitez pas à nous contacter à l'adresse bonjour [@] afup.org."
-    Then The "purchase[tickets][0][civility]" field should only contain the follow values '["M.", "Mlle", "Mme"]'
+    Then The "purchase[tickets][0][civility]" field should only contain the follow values '["M.", "Mme"]'
     When I fill in "purchase[tickets][0][firstname]" with "Prénom personne 1"
     And I fill in "purchase[tickets][0][lastname]" with "Nom personne 1"
     And I fill in "purchase[tickets][0][email]" with "personne1@yahoo.fr"
