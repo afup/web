@@ -220,3 +220,19 @@ article.conferenciers, .article-body.conferencier {
 	text-decoration: none;
 	color: #51ace4;
 }
+
+table.talk-widget,
+table.speaker-widget {
+	font-size: 0.8em;
+}
+
+table.talk-widget td,
+table.speaker-widget td {
+	border-top: 1px solid #f3f4f5;
+	border-left: 1px solid #f3f4f5;
+}
+
+.single-post-container {
+	width: 100%;
+	margin-left: 0;
+}
