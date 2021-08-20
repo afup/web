@@ -39,7 +39,7 @@ Feature: Administration - Partie Evenements
     And I should see "Aucun ticket enregistré pour le moment."
     And I should see "Nouveau ticket"
     # Ajout d'une invitation
-    And The "sponsor_ticket[civility]" field should only contain the follow values '["M.", "Mlle", "Mme"]'
+    And The "sponsor_ticket[civility]" field should only contain the follow values '["M.", "Mme"]'
     When I fill in "sponsor_ticket[firstname]" with "Nom personne invitée"
     And I fill in "sponsor_ticket[lastname]" with "Prénom personne invitée"
     And I fill in "sponsor_ticket[email]" with "personneinvitee@masociete.com"
