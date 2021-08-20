@@ -7,7 +7,7 @@ Feature: Site Public - Register
     Then I should see "Devenir membre de l'AFUP"
     When I follow "Adhérer en tant que particulier"
     Then I should see "Formulaire d'incription à l'AFUP"
-    Then The "civilite" field should only contain the follow values '["M.", "Mme", "Mlle"]'
+    Then The "civilite" field should only contain the follow values '["M.", "Mme"]'
     When I fill in "nom" with "Mon nom"
     And I fill in "prenom" with "Mon prénom"
     And I fill in "login" with "lelogin"

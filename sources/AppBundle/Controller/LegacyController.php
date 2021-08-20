@@ -115,7 +115,7 @@ class LegacyController extends Controller
         $formulaire->addElement('hidden', 'compte_svn');
 
         $formulaire->addElement('header', '', 'Informations');
-        $formulaire->addElement('select', 'civilite', 'Civilité', ['M.', 'Mme', 'Mlle']);
+        $formulaire->addElement('select', 'civilite', 'Civilité', ['M.', 'Mme']);
         $formulaire->addElement('text', 'nom', 'Nom', ['size' => 30, 'maxlength' => 40]);
         $formulaire->addElement('text', 'prenom', 'Prénom', ['size' => 30, 'maxlength' => 40]);
         $formulaire->addElement('text', 'login', 'Login', ['size' => 30, 'maxlength' => 30]);
