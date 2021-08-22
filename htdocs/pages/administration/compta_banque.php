@@ -42,8 +42,10 @@ $smarty->assign('listPeriode', $listPeriode);
 
 $listeComptes = [
     '1' => 'Courant',
+    '5' => 'Courant CM',
     '2' => 'Espece',
     '3' => 'Livret A',
+    '6' => 'Livret A CM',
     '4' => 'Paypal',
 ];
 $smarty->assign('listeComptes', $listeComptes);
