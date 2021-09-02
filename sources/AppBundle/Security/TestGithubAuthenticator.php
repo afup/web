@@ -111,7 +111,10 @@ class TestGithubAuthenticator extends SocialAuthenticator
     {
         $body = "<h1>Oauth login test</h1>";
         foreach ($this->getTestUsersDetails() as $name => $infos) {
-            $body .= sprintf('<a href="%s">Connect as %s</a><br />', $request->getUri() . '?github_test_user=' . $name, $name);
+            $uri = $request->getUri();
+            $uri .= $request->query->count() ? '&' : '?';
+            $uri .= 'github_test_user=' . $name;
+            $body .= sprintf('<a href="%s">Connect as %s</a><br />', $uri, $name);
         }
         return new Response($body);
     }

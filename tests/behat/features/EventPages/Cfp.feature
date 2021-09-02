@@ -10,7 +10,7 @@ Feature: Event pages - CFP
     And I should see "Vous n'avez pas encore rempli votre profil conférencier."
     When I follow "Mon profil conférencier"
     Then I should see "Photo de profil"
-    Then The "speaker[civility]" field should only contain the follow values '["M", "Mlle", "Mme"]'
+    Then The "speaker[civility]" field should only contain the follow values '["M", "Mme"]'
     When I fill in "speaker[firstname]" with "Mon prénom"
     And I fill in "speaker[lastname]" with "Mon prénom"
     And I fill in "speaker[email]" with "monemail@provider.fr"
