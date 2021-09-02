@@ -38,7 +38,7 @@ class UserEditType extends AbstractType
             ->add('companyId', ChoiceType::class, [
                 'label' => 'Personne morale',
                 'required' => false,
-                'choices' => array_flip($this->personnesMorales->obtenirListe('id, raison_sociale', 'raison_sociale', true)),
+                'choices' => array_flip($this->personnesMorales->obtenirListe('id, CONCAT(raison_sociale, " (id : ", id, ")")', 'raison_sociale', true)),
             ])
             ->add('civility', ChoiceType::class, [
                 'label' => 'Civilité',
