@@ -22,7 +22,7 @@
 {% endif %}
 
 {% if widget_type == 'speaker' or widget_type == 'all' %}
-    <h3>{% if speakers|length > 1 %}Les speakers{% else %}Le speaker{% endif %}</h3>
+    <h3>{% if talks_infos|length > 1 %}Des conférences présentées par{% else %}Une conférence présentée par{% endif %}</h3>
     {% for speaker in speakers %}
     <table class="speaker-widget">
         <tr>
