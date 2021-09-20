@@ -470,7 +470,7 @@ class AppelConferencier
             $requete .= 'tweets = ' . $this->_bdd->echapper($tweets) . ', ';
         }
         if ($transcript !== null) {
-            $requete .= 'transcript = ' . $this->_bdd->echapper($tweets) . ', ';
+            $requete .= 'transcript = ' . $this->_bdd->echapper($transcript) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;
