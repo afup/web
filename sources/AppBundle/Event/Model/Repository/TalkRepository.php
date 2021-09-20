@@ -407,6 +407,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'transcript',
+                'fieldName' => 'transcript',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'markdown',
                 'fieldName' => 'useMarkdown',
                 'type' => 'bool',
