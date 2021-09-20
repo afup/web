@@ -11,6 +11,27 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '315',
+                width: '530',
+                videoId: '{{ talk.youtubeId }}'
+            });
+        }
+
+        $('.transcript p').on('click', function(e) {
+            location.hash = "#player";
+            player.seekTo($(e.target).data('cueStart'));
+        })
+    </script>
 {% endblock %}
 
 {% block title %}{{ talk.title }} - {{ event.title }} - {{ parent() }}{% endblock %}
@@ -110,7 +131,7 @@
             <div class="col-md-6">
                 <h2>Vidéo</h2>
                 <div class="responsive-video-container">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ talk.youtubeId }}" frameborder="0" allowfullscreen></iframe>
+                    <div id="player"></div>
                 </div>
             </div>
             {% endif %}
@@ -212,6 +233,28 @@
 
                 </div>
             </div>
+        {% endif %}
+
+
+        {% if transcript %}
+        <div class="container">
+            <div class="col-md-12">
+                <div class="container comments-title-container">
+                    <div class="col-md-12">
+                        <h2>Transcript</h2>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="col-md-12 talk-comment-container transcript">
+
+                    {% for cue in transcript %}
+                        <p data-cue-start="{{ cue.start }}" style="cursor:pointer;">{{ cue.text }}</p>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
         {% endif %}
 
     </div>

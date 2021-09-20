@@ -8,6 +8,10 @@ class Parser
 {
     public function parse($contentSrt)
     {
+        if (null === $contentSrt) {
+            return [];
+        }
+
         $subripFile = new SubripFile();
         $subripFile->loadFromString($contentSrt);
 
