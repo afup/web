@@ -38,7 +38,8 @@
     "pear/pear": "^1.10",
     "doctrine/dbal": "^2.5",
     "excelwebzone/recaptcha-bundle": "1.5.13",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "captioning/captioning": "^2.6"
   },
   "scripts": {
     "post-install-cmd": [
