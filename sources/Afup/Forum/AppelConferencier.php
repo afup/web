@@ -102,6 +102,8 @@ class AppelConferencier
 
     function obtenirSession($id = 0, $champs = '*', $complement = true)
     {
+        $this->_bdd->executer("SET NAMES utf8mb4");
+
         $requete = ' SELECT ';
         $requete .= '  ' . $champs . ' ';
         $requete .= ' FROM ';
@@ -424,6 +426,8 @@ class AppelConferencier
         $tweets = null,
         $transcript = null
     ) {
+        $this->_bdd->executer("SET NAMES utf8mb4");
+
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
         $requete .= ' date_soumission = ' . $this->_bdd->echapper($date_soumission) . ', ';
