@@ -6,7 +6,7 @@ jobs:
 
   unit:
     name: "Unit tests"
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
  
     strategy:
       fail-fast: false
@@ -16,8 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
  
-      - name: PHP - Switch
-        run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
  
       - name: Composer - Get Cache Directory
         id: composer-cache
@@ -42,13 +44,15 @@ jobs:
 
   lint:
     name: "Linter"
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: PHP - Switch
-        run: sudo update-alternatives --set php /usr/bin/php5.6
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '5.6'
 
       - name: Composer - Get Cache Directory
         id: composer-cache
@@ -76,7 +80,7 @@ jobs:
 
   functional:
     name: "Functional tests"
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v2
