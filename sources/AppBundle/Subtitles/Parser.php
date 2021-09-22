@@ -22,7 +22,6 @@ class Parser
 
         /** @var \Captioning\Format\SubripCue $cue */
         foreach ($subripFile->getCues() as $cue) {
-
             if (null === $currentText) {
                 $currentText = $cue->getText();
                 $currentStart = round($cue->getStartMS() / 1000);
