@@ -102,6 +102,8 @@ class AppelConferencier
 
     function obtenirSession($id = 0, $champs = '*', $complement = true)
     {
+        $this->_bdd->executer("SET NAMES utf8mb4");
+
         $requete = ' SELECT ';
         $requete .= '  ' . $champs . ' ';
         $requete .= ' FROM ';
@@ -421,8 +423,11 @@ class AppelConferencier
         $video_has_fr_subtitles = null,
         $video_has_en_subtitles = null,
         $date_publication = null,
-        $tweets = null
+        $tweets = null,
+        $transcript = null
     ) {
+        $this->_bdd->executer("SET NAMES utf8mb4");
+
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
         $requete .= ' date_soumission = ' . $this->_bdd->echapper($date_soumission) . ', ';
@@ -467,6 +472,9 @@ class AppelConferencier
         }
         if ($tweets !== null) {
             $requete .= 'tweets = ' . $this->_bdd->echapper($tweets) . ', ';
+        }
+        if ($transcript !== null) {
+            $requete .= 'transcript = ' . $this->_bdd->echapper($transcript) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;

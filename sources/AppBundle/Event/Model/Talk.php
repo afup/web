@@ -132,6 +132,11 @@ class Talk implements NotifyPropertyInterface
     private $tweets;
 
     /**
+     * @var string|null
+     */
+    private $transcript;
+
+    /**
      * @var bool
      */
     private $useMarkdown = true;
@@ -734,6 +739,27 @@ class Talk implements NotifyPropertyInterface
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getTranscript()
+    {
+        return $this->transcript;
+    }
+
+    /**
+     * @param string|null $transcript
+     *
+     * @return $this
+     */
+    public function setTranscript($transcript)
+    {
+        $this->transcript = $transcript;
+
+        return $this;
+    }
+
 
     /**
      * @return array
