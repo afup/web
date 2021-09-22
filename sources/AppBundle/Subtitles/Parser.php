@@ -12,7 +12,13 @@ class Parser
             return [];
         }
 
-        $subripFile = new SubripFile();
+        if (0 === strlen(trim($contentSrt))) {
+            return [];
+        }
+
+        // on passe le quatrième paramètre $_requireStrictFileFormat à false pour autoriser d'avoir des sous-titres qui
+        // se chevauchent (sinon on a une excption)
+        $subripFile = new SubripFile(null, null, false, false);
         $subripFile->loadFromString($contentSrt);
 
         $parsedContent = [];
