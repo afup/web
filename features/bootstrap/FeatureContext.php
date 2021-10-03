@@ -105,4 +105,18 @@ class FeatureContext implements Context
     {
         $this->minkContext->assertSession()->responseHeaderEquals($headerName, $expectedValue);
     }
+
+    /**
+     * @When I follow the button of tooltip :arg1
+     */
+    public function clickLinkOfTooltip($tooltip)
+    {
+        $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
+
+        if (null === $link) {
+            throw new \Exception(sprintf('Link of tooltip "%s" not found',$tooltip));
+        }
+
+        $link->click();
+    }
 }
