@@ -34,6 +34,7 @@ RUN a2enmod rewrite && \
     ln -s /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf && \
     echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
 
+RUN sed -i '/^mozilla\/DST_Root_CA_X3.crt/s/^/!/' /etc/ca-certificates.conf && update-ca-certificates -f
 RUN apt-get update && apt-get install -y build-essential wget gnupg
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get update && apt-get install -y nodejs
