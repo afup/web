@@ -14,7 +14,9 @@ RUN apt-get update && \
         libmcrypt4 \
         libmcrypt-dev \
         libicu-dev \
-        wget && \
+        wget \
+        apt-transport-https \
+        ca-certificates && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install pdo_mysql mbstring mysqli zip gd mcrypt intl && \
     if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug; fi && \
