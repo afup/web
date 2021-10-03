@@ -36,3 +36,13 @@ Feature: Espace membre, accueil
     Then the "contact_details[address]" field should contain "42 rue des lilas"
     And the "contact_details[zipcode]" field should contain "75001"
     And the "contact_details[city]" field should contain "Lyon Cedex"
+
+  @reloadDbWithTestData
+  Scenario: On peux télécharger la facture de cotisation
+    Given I am logged in as admin
+    And I follow "Espace membre"
+    Then I should see "Cotisations"
+    When I follow "Consulter"
+    Then I should see "Payer ma cotisation"
+    When I follow "Télécharger la facture"
+    Then the response header "Content-disposition" should equal 'attachment; filename="facture-.pdf"'
