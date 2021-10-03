@@ -14,6 +14,7 @@ RUN apt-get update && \
         libmcrypt4 \
         libmcrypt-dev \
         libicu-dev \
+        apt-transport-https \
         wget && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install pdo_mysql mbstring mysqli zip gd mcrypt intl && \
