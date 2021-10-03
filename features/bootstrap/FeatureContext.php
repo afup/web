@@ -97,4 +97,12 @@ class FeatureContext implements Context
             throw new \Exception(sprintf('The select has the following values %s (expected %s)', json_encode($foundValues, JSON_UNESCAPED_UNICODE), $expectedValuesJson));
         }
     }
+
+    /**
+     * @Then the response header :arg1 should equal :arg2
+     */
+    public function assertResponseHeaderEquals($headerName, $expectedValue)
+    {
+        $this->minkContext->assertSession()->responseHeaderEquals($headerName, $expectedValue);
+    }
 }
