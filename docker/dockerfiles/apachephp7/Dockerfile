@@ -24,10 +24,6 @@ RUN apt-get update && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install pdo_mysql mbstring mysqli zip gd mcrypt intl && \
     if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-2.6.1 && docker-php-ext-enable xdebug; fi && \
-    apt-get remove -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev && \
     apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists/*
 
