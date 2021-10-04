@@ -3,6 +3,8 @@
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Model\Repository\GithubUserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -17,6 +19,14 @@ class SpeakerType extends AbstractType
 {
     const OPT_PHOTO_REQUIRED = 'photo_required';
 
+    /** @var GithubUserRepository */
+    private $githubUserRepository;
+
+    public function __construct(GithubUserRepository $githubUserRepository)
+    {
+        $this->githubUserRepository = $githubUserRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -27,6 +37,18 @@ class SpeakerType extends AbstractType
             ->add('company', TextType::class, ['required' => false])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
+            ->add('githubUser',
+                ChoiceType::class,
+                [
+                    'required' => false,
+                    'choice_label' => function ($choice) {
+                        /** @var GithubUser $choice */
+                        return "{$choice->getLogin()} ({$choice->getName()})";
+                    },
+                    'choice_value' => 'id',
+                    'choices' => $this->githubUserRepository->getAll()
+                ]
+            )
             ->add('photo', FileType::class, ['label' => 'Photo de profil', 'data_class' => null, 'required' => $options[self::OPT_PHOTO_REQUIRED]])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;

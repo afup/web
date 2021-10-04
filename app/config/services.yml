@@ -114,6 +114,10 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Event\Form\SpeakerType:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Event\Model\Repository\GithubUserRepository:
         class: AppBundle\Event\Model\Repository\GithubUserRepository
         factory: ["@ting", get]

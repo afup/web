@@ -1,0 +1,92 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+<h2>Github Users</h2>
+
+<div class="ui menu">
+    <a href="{{ path('admin_github_user_add') }}" class="item">
+        <div data-tooltip="Ajouter un utilisateur github" data-position="bottom left">
+            <i class="icon plus square"></i>
+            Ajouter
+        </div>
+    </a>
+    </a>
+</div>
+
+<div class="ui segment">
+    <form method="GET" name="filtre">
+        <input type="hidden" name="sort" value="{{ sort }}"/>
+        <input type="hidden" name="direction" value="{{ direction }}"/>
+
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Recherche</label>
+                    <input type="text" name="filter" value="{{ filter }}">
+                </div>
+                <div class="field">
+                    <input type="submit" value="Filtrer" name="submit_filtre" class="ui button">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="ui mini horizontal statistic">
+        <div class="value">
+            {{ nbGithubUsers }}
+        </div>
+        <div class="label">
+            github users
+        </div>
+    </div>
+
+    {% if githubUsers %}
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th width="60">&nbsp;</th>
+                <th align="left"><a href="{{ path('admin_github_user_list', {
+                        sort: 'login',
+                        direction: direction == 'asc' and sort == 'login' ? 'desc' : 'asc'
+                    }) }}">Login</a></th>
+                <th align="left"><a href="{{ path('admin_github_user_list', {
+                        sort: 'name',
+                        direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
+                    }) }}">Name</a></th>
+                <th align="left">
+                    Profile
+                </th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for githubUser in githubUsers %}
+                <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
+                    <td><img src="{{ githubUser.avatarUrl }}&s=48" /></td>
+                    <td><strong>{{ githubUser.login }}</strong></td>
+                    <td>{{ githubUser.name }}</td>
+                    <td><a href="{{ githubUser.profileUrl }}" target="_blank">Voir le profil</a></td>
+                    <td style="text-align: right" nowrap="nowrap">
+                        <a href="{{ path('admin_github_user_delete', {id: githubUser.id}) }}"
+                           data-position="left center"
+                           data-tooltip="Supprimer la fiche de {{ githubUser.name }} ({{ githubUser.login }})"
+                           class="compact ui red icon button confirmable"
+                           data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {{ githubUser.name }} ({{ githubUser.login }}) ?"
+                        >
+                            <i class="trash icon"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucun Github User.
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

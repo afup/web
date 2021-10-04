@@ -60,6 +60,22 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
     }
 
     /**
+     * @return GithubUser
+     */
+    public static function fromApi(array $apiData)
+    {
+        $githubUser = new GithubUser();
+        $githubUser->setLogin($apiData['login']);
+        $githubUser->setGithubId($apiData['id']);
+        $githubUser->setAvatarUrl($apiData['avatar_url']);
+        $githubUser->setCompany($apiData['company']);
+        $githubUser->setName($apiData['name']);
+        $githubUser->setProfileUrl($apiData['html_url']);
+
+        return $githubUser;
+    }
+
+    /**
      * @param int $id
      * @return GithubUser
      */

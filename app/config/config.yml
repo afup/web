@@ -271,6 +271,9 @@ parameters:
                 forum_partenaire:
                     nom: 'Sponsors/Partenaires'
                     niveau: 'ROLE_ADMIN'
+                github_users:
+                    nom: 'Github Users'
+                    url: '/admin/github_user'
         connexion:
             nom: 'Connexion'
             masquee: true
