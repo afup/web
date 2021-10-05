@@ -215,9 +215,11 @@
         {% for badge in badges %}
                 <div class="col-md-3 col-sm-12 member-badge">
                     {% if badge.id is defined %}
-                        <img src="{{ path('badge_image', {id: badge.id })}}" alt="Badge">
+                        <img title="{{ badge.tooltip }}"
+                             src="{{ path('badge_image', {id: badge.id })}}" alt="Badge">
                     {% else %}
-                        <img src="/images/badges/{{ badge.code }}.png" alt="Badge {{ badge.code }}">
+                        <img title="{{ badge.tooltip }}"
+                             src="/images/badges/{{ badge.code }}.png" alt="Badge {{ badge.code }}">
                     {% endif %}
                 </div>
         {% endfor %}
