@@ -72,7 +72,7 @@
                     <h4>Nouveau ticket</h4>
                 {% endif %}
                 <p>{{ 'Places disponibles'|trans }}: {{ sponsorTicket.pendingInvitations }} / {{ sponsorTicket.maxInvitations }} </p>
-                {% if sponsorTicket.pendingInvitations == 0 %}
+                {% if sponsorTicket.pendingInvitations == 0 and edit == false %}
                     <p>Vous avez utilisé toutes vos invitations. Nous avons hâte de vous retrouver lors de cet événement !</p>
                 {% else %}
                     {{ form_start(ticketForm, {attr: {class: 'sponsor--ticket-edit'}}) }}
