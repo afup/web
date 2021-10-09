@@ -59,6 +59,7 @@ class Users extends AbstractSeed
                 'id_personne' => self::ID_USER_EXPIRIE,
                 'montant' => 25,
                 'date_fin' => $dateDebutUserExpire + $oneMonthInSeconds * 12,
+                'numero_facture' => 'COTIS-2018-198',
             ]
         ];
 
