@@ -67,13 +67,20 @@ class FeatureContext implements Context
      */
     public function iAmLoggedInAsAdmin()
     {
+        $this->iAmLoggedInWithTheUserAndThePassword('admin', 'admin');
+    }
 
+    /**
+     * @Given I am logged-in with the user :arg1 and the password :arg2
+     */
+    public function iAmLoggedInWithTheUserAndThePassword($user, $password)
+    {
         $this->minkContext->iAmOnHomepage();
         $this->minkContext->assertPageContainsText("Tous les deux mois, des nouvelles de L'AFUP");
         $this->minkContext->clickLink("Se connecter");
         $this->minkContext->assertPageContainsText("Email ou nom d'utilisateur");
-        $this->minkContext->fillField("utilisateur", "admin");
-        $this->minkContext->fillField("mot_de_passe", "admin");
+        $this->minkContext->fillField("utilisateur", $user);
+        $this->minkContext->fillField("mot_de_passe", $password);
         $this->minkContext->pressButton("Se connecter");
         $this->minkContext->assertPageContainsText("Espace membre");
     }

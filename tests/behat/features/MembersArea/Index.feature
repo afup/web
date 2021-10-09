@@ -39,10 +39,10 @@ Feature: Espace membre, accueil
 
   @reloadDbWithTestData
   Scenario: On peux télécharger la facture de cotisation
-    Given I am logged in as admin
+    Given I am logged-in with the user "userexpire" and the password "userexpire"
     And I follow "Espace membre"
     Then I should see "Cotisations"
-    When I follow "Consulter"
+    When I follow "Se mettre à jour"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
     Then the response header "Content-disposition" should equal 'attachment; filename="facture-.pdf"'
