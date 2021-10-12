@@ -1,0 +1,21 @@
+Feature: Administration - Partie GitHub Users
+
+  @reloadDbWithTestData
+  Scenario Outline: Accès à la liste des utilisateurs GitHub
+    Given I am logged in as admin and on the Administration
+    And I follow "Github Users"
+    Then the ".content h2" element should contain "Github Users"
+    When I follow "Ajouter"
+    Then I should see "Ajouter un utilisateur GitHub"
+    When I fill in "github_user[user]" with "<username>"
+    And I <afupCrew> "github_user[afupCrew]"
+    And I press "Sauvegarder"
+    Then I should see "L'utilisateur github a été ajouté"
+    And I should see "Github Users"
+    And I should see "<username>"
+    And I should see "<name>"
+
+    Examples:
+      | username  | afupCrew | name                 |
+      | amenophis | uncheck  | Jérémy Leherpeur     |
+      | agallou   | check    | Adrien Gallou (afup) |
