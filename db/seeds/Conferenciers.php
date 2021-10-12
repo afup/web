@@ -19,7 +19,7 @@ class Conferenciers extends AbstractSeed
                 'societe' => 'AFUP',
                 'biographie' => 'Président 2018-2019 de l\'AFUP',
                 'twitter' => 'ubermuda',
-                'user_github' => null,
+                'user_github' => GithubUsers::ID_GITHUBUSER_UBERMUDA,
                 'photo' => '1968.jpg',
                 'will_attend_speakers_diner' => null,
                 'has_special_diet' => null,
