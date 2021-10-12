@@ -14,23 +14,6 @@
 </div>
 
 <div class="ui segment">
-    <form method="GET" name="filtre">
-        <input type="hidden" name="sort" value="{{ sort }}"/>
-        <input type="hidden" name="direction" value="{{ direction }}"/>
-
-        <div class="ui form">
-            <div class="inline fields">
-                <div class="field">
-                    <label>Recherche</label>
-                    <input type="text" name="filter" value="{{ filter }}">
-                </div>
-                <div class="field">
-                    <input type="submit" value="Filtrer" name="submit_filtre" class="ui button">
-                </div>
-            </div>
-        </div>
-    </form>
-
     <div class="ui mini horizontal statistic">
         <div class="value">
             {{ nbGithubUsers }}
@@ -45,16 +28,10 @@
             <thead>
             <tr>
                 <th width="60">&nbsp;</th>
-                <th align="left"><a href="{{ path('admin_github_user_list', {
-                        sort: 'login',
-                        direction: direction == 'asc' and sort == 'login' ? 'desc' : 'asc'
-                    }) }}">Login</a></th>
-                <th align="left"><a href="{{ path('admin_github_user_list', {
-                        sort: 'name',
-                        direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
-                    }) }}">Name</a></th>
+                <th align="left">Nom d'utilisateur</th>
+                <th align="left">Nom</th>
                 <th align="left">
-                    Profile
+                    Profil
                 </th>
             </tr>
             </thead>
@@ -63,7 +40,7 @@
                 <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
                     <td><img src="{{ githubUser.avatarUrl }}&s=48" /></td>
                     <td><strong>{{ githubUser.login }}</strong></td>
-                    <td>{{ githubUser.name }}</td>
+                    <td>{{ githubUser.name }}{{ githubUser.afupCrew ? ' (afup)' : '' }}</td>
                     <td><a href="{{ githubUser.profileUrl }}" target="_blank">Voir le profil</a></td>
                 </tr>
             {% endfor %}
