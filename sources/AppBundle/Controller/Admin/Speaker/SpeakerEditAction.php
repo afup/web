@@ -104,9 +104,7 @@ class SpeakerEditAction
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setEmail($data->email);
-            if ($data->user !== null) {
-                $speaker->setUser($data->user->getId());
-            }
+            $speaker->setUser($data->user !== null ? $data->user->getId() : null);
             $speaker->setCompany($data->company);
             $this->speakerRepository->save($speaker);
             if ($data->photo) {
