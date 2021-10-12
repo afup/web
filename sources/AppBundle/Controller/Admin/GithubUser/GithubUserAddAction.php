@@ -5,7 +5,6 @@ namespace AppBundle\Controller\Admin\GithubUser;
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Event\Form\GithubUserFormData;
 use AppBundle\Event\Form\GithubUserType;
-use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\GithubUserRepository;
 use AppBundle\Github\GithubClient;
 use Symfony\Component\Form\FormFactoryInterface;

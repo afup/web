@@ -3,8 +3,8 @@
 namespace AppBundle\Github;
 
 use AppBundle\Event\Model\GithubUser;
-use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
 use AppBundle\Github\Exception\UnableToFindGithubUserException;
+use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
 
