@@ -51,5 +51,5 @@ class SpeakerFormData
     /**
      * @var null|GithubUser
      */
-    public $githubUser;
+    public $user;
 }

@@ -6,6 +6,7 @@ namespace AppBundle\Event\Form;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\GithubUserRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -37,16 +38,24 @@ class SpeakerType extends AbstractType
             ->add('company', TextType::class, ['required' => false])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
-            ->add('githubUser',
+            ->add('user',
                 ChoiceType::class,
                 [
+                    'label' => 'GitHub User',
                     'required' => false,
                     'choice_label' => function ($choice) {
                         /** @var GithubUser $choice */
                         return "{$choice->getLogin()} ({$choice->getName()})";
                     },
-                    'choice_value' => 'id',
-                    'choices' => $this->githubUserRepository->getAll()
+                    'choice_value' => function ($choice) {
+                        if ($choice instanceof GithubUser) {
+                            return $choice->getId();
+                        }
+                        return $choice;
+                    },
+                    'choice_loader' => new CallbackChoiceLoader(function() {
+                        return $this->githubUserRepository->getAll();
+                    }),
                 ]
             )
             ->add('photo', FileType::class, ['label' => 'Photo de profil', 'data_class' => null, 'required' => $options[self::OPT_PHOTO_REQUIRED]])
