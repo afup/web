@@ -67,13 +67,20 @@ class FeatureContext implements Context
      */
     public function iAmLoggedInAsAdmin()
     {
+        $this->iAmLoggedInWithTheUserAndThePassword('admin', 'admin');
+    }
 
+    /**
+     * @Given I am logged-in with the user :arg1 and the password :arg2
+     */
+    public function iAmLoggedInWithTheUserAndThePassword($user, $password)
+    {
         $this->minkContext->iAmOnHomepage();
         $this->minkContext->assertPageContainsText("Tous les deux mois, des nouvelles de L'AFUP");
         $this->minkContext->clickLink("Se connecter");
         $this->minkContext->assertPageContainsText("Email ou nom d'utilisateur");
-        $this->minkContext->fillField("utilisateur", "admin");
-        $this->minkContext->fillField("mot_de_passe", "admin");
+        $this->minkContext->fillField("utilisateur", $user);
+        $this->minkContext->fillField("mot_de_passe", $password);
         $this->minkContext->pressButton("Se connecter");
         $this->minkContext->assertPageContainsText("Espace membre");
     }
@@ -96,5 +103,27 @@ class FeatureContext implements Context
         if ($foundValues != $expectedValues) {
             throw new \Exception(sprintf('The select has the following values %s (expected %s)', json_encode($foundValues, JSON_UNESCAPED_UNICODE), $expectedValuesJson));
         }
+    }
+
+    /**
+     * @Then the response header :arg1 should equal :arg2
+     */
+    public function assertResponseHeaderEquals($headerName, $expectedValue)
+    {
+        $this->minkContext->assertSession()->responseHeaderEquals($headerName, $expectedValue);
+    }
+
+    /**
+     * @When I follow the button of tooltip :arg1
+     */
+    public function clickLinkOfTooltip($tooltip)
+    {
+        $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
+
+        if (null === $link) {
+            throw new \Exception(sprintf('Link of tooltip "%s" not found',$tooltip));
+        }
+
+        $link->click();
     }
 }

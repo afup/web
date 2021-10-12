@@ -28,7 +28,7 @@ Feature: Administration - Partie Evenements
     # ajout d'un token
     When I fill in "sponsor_token[company]" with "Ma société"
     And I fill in "sponsor_token[contactEmail]" with "testToken1@mail.com"
-    And I fill in "sponsor_token[maxInvitations]" with "1"
+    And I fill in "sponsor_token[maxInvitations]" with "2"
     And I press "Enregistrer"
     # Listing des tokens
     Then I should see "Invitations totales"
@@ -46,3 +46,10 @@ Feature: Administration - Partie Evenements
     And I press "Enregistrer"
     # Listing des invitations renseignées
     Then I should see "personneinvitee@masociete.com"
+    # La modification d'une place ne modifie pas le nombre de places disponibles
+    # (ici on a actullement un bug, qui sera corrigé)
+    And I should see "Places disponibles: 1 / 2"
+    When I follow "Modifier"
+    And I fill in "sponsor_ticket[lastname]" with "Prénom personne invitée modifée"
+    And I press "Enregistrer"
+    Then I should see "Places disponibles: 0 / 2 "

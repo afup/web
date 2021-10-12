@@ -6,7 +6,7 @@ $environments = [
     'default_migration_table' => 'phinxlog',
 ];
 
-if (is_file(__DIR__ . '/vendor/sensio/generator-bundle/composer.json')) {
+if (is_file(__DIR__ . '/vendor/behat/behat/composer.json')) {
     $kernelDev = new AppKernel('dev', true);
     $kernelDev->boot();
     $containerDev = $kernelDev->getContainer();

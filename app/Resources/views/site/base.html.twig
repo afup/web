@@ -5,7 +5,8 @@
 {% block stylesheets %}
     <!--[if lt IE 9]><script src="{{ asset('templates/site/js/html5shiv.js') }}"></script><![endif]-->
     <link href='https://fonts.googleapis.com/css?family=Podkova:400,700|Glegoo' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/v4-shims.css">
     <link rel="stylesheet" href="{{ asset('templates/site/css/styles.css') }}?v={{ asset_md5_start('templates/site/css/styles.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('templates/site/css/global-menu.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('/css/grid.css') }}?v={{ asset_md5_start('css/grid.css') }}" media="all" />
@@ -153,10 +154,13 @@
                             <span class="pre-footer-newsletter-caption">Tous les deux mois, des nouvelles de L'AFUP</span>
                         </div>
                         <div class="col-md-1 pre-footer-icon">
-                            <a href="https://twitter.com/afup"><i class="fa fa-twitter"></i></a>
+                            <a href="https://twitter.com/afup"><i class="fab fa-twitter"></i></a>
                         </div>
                         <div class="col-md-1 pre-footer-icon">
-                            <a href="{{ path('feed_rss') }}"><i class="fa fa-feed"></i></a>
+                            <a href="https://mastodon.online/@afup"><i class="fab fa-mastodon"></i></a>
+                        </div>
+                        <div class="col-md-1 pre-footer-icon">
+                            <a href="{{ path('feed_rss') }}"><i class="fas fa-rss"></i></a>
                         </div>
                     </div>
                 </div>
