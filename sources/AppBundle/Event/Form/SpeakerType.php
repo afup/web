@@ -53,7 +53,7 @@ class SpeakerType extends AbstractType
                         }
                         return $choice;
                     },
-                    'choice_loader' => new CallbackChoiceLoader(function() {
+                    'choice_loader' => new CallbackChoiceLoader(function () {
                         return $this->githubUserRepository->getAll();
                     }),
                 ]
