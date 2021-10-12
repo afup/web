@@ -25,7 +25,7 @@ Feature: Administration - Partie Personnes physiques
     And I follow "Afficher aussi les personnes physiques inactives"
     Then I should see "Mon prénom"
     # on supprime la personne
-    When I follow "supprimer_2"
+    When I follow "supprimer_3"
     Then I should see "La personne physique a été supprimée"
 
   @reloadDbWithTestData
