@@ -3,30 +3,52 @@
 namespace AppBundle\Github;
 
 use AppBundle\Event\Model\GithubUser;
+use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
+use AppBundle\Github\Exception\UnableToFindGithubUserException;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\RequestOptions;
 
 class GithubClient
 {
     /**
+     * @var ClientInterface
+     */
+    private $githubClient;
+
+    public function __construct(ClientInterface $githubClient)
+    {
+        $this->githubClient = $githubClient;
+    }
+
+    /**
      * @param string $username
-     * @return GithubUser|null
+     *
+     * @return GithubUser
+     *
+     * @throws UnableToFindGithubUserException
+     * @throws UnableToGetGithubUserInfosException
      */
     public function getUserInfos($username)
     {
-        $opts = [
-            "http" => [
-                "method" => "GET",
-                "header" => "Accept: application/json\r\n".
-                    "User-Agent: afup\r\n"
-            ]
-        ];
+        $response = $this->githubClient->get("/users/{$username}", [
+            RequestOptions::HEADERS => [
+                'Accept' => 'application/vnd.github.v3+json',
+                'User-Agent' => 'afup',
+            ],
+            RequestOptions::HTTP_ERRORS => false,
+        ]);
 
-        $context = stream_context_create($opts);
-
-        $result = @file_get_contents('https://api.github.com/users/'.$username, false, $context);
-        if ($result === false) {
-            return null;
+        if ($response->getStatusCode() === 404) {
+            throw new UnableToFindGithubUserException($username);
         }
 
-        return GithubUser::fromApi(json_decode($result, true));
+        if ($response->getStatusCode() === 200) {
+            return GithubUser::fromApi(json_decode($response->getBody(), true));
+        }
+
+        throw new UnableToGetGithubUserInfosException(
+            $response->getStatusCode(),
+            $response->getBody()->getContents()
+        );
     }
 }

@@ -4,9 +4,12 @@
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\GithubUser;
+use AppBundle\Github\Exception\UnableToFindGithubUserException;
+use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
 use AppBundle\Github\GithubClient;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,7 +21,9 @@ class GithubUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', TextType::class)
+            ->add('user', TextType::class, [
+                'invalid_message' => "Impossible de charger les informations de l'utilisateur GitHub."
+            ])
             ->add('afupCrew', CheckboxType::class, [
                 'required' => false,
             ])
@@ -40,7 +45,17 @@ class GithubUserType extends AbstractType
                  * @param $githubUsername string
                  */
                 function ($githubUsername) use ($githubClient) {
-                    return $githubClient->getUserInfos($githubUsername);
+                    if ($githubUsername === null) {
+                        return null;
+                    }
+
+                    try {
+                        return $githubClient->getUserInfos($githubUsername);
+                    } catch (UnableToFindGithubUserException $e) {
+                        throw new TransformationFailedException($e->getMessage());
+                    } catch (UnableToGetGithubUserInfosException $e) {
+                        throw new TransformationFailedException($e->getMessage());
+                    }
                 }
             ));
     }

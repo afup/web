@@ -63,8 +63,8 @@ class GithubUserAddAction
             $githubUser->setAfupCrew($data->afupCrew);
             $this->githubUserRepository->save($githubUser);
 
-            $this->log('Ajout de l\'utilisateur github ' . $githubUser->getLogin());
-            $this->flashBag->add('notice', 'L\'utilisateur github a été ajouté');
+            $this->log("Ajout de l'utilisateur github {$githubUser->getLogin()}");
+            $this->flashBag->add('notice', "L'utilisateur github a été ajouté");
 
             return new RedirectResponse($this->urlGenerator->generate('admin_github_user_list'));
         }

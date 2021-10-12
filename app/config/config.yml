@@ -197,6 +197,9 @@ parameters:
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
+                github_users:
+                    nom: 'Github Users'
+                    url: '/admin/event/github-user'
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
@@ -271,9 +274,6 @@ parameters:
                 forum_partenaire:
                     nom: 'Sponsors/Partenaires'
                     niveau: 'ROLE_ADMIN'
-                github_users:
-                    nom: 'Github Users'
-                    url: '/admin/github_user'
         connexion:
             nom: 'Connexion'
             masquee: true

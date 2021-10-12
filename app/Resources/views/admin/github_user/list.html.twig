@@ -56,7 +56,6 @@
                 <th align="left">
                     Profile
                 </th>
-                <th>&nbsp;</th>
             </tr>
             </thead>
             <tbody>
@@ -66,16 +65,6 @@
                     <td><strong>{{ githubUser.login }}</strong></td>
                     <td>{{ githubUser.name }}</td>
                     <td><a href="{{ githubUser.profileUrl }}" target="_blank">Voir le profil</a></td>
-                    <td style="text-align: right" nowrap="nowrap">
-                        <a href="{{ path('admin_github_user_delete', {id: githubUser.id}) }}"
-                           data-position="left center"
-                           data-tooltip="Supprimer la fiche de {{ githubUser.name }} ({{ githubUser.login }})"
-                           class="compact ui red icon button confirmable"
-                           data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {{ githubUser.name }} ({{ githubUser.login }}) ?"
-                        >
-                            <i class="trash icon"></i>
-                        </a>
-                    </td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -95,4 +95,4 @@ admin_site:
 
 admin_github_user_routes:
   resource: "admin_github_user.yml"
-  prefix: /github_user
+  prefix: /event/github-user
