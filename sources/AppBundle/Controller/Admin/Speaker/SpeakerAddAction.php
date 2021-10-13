@@ -62,7 +62,11 @@ class SpeakerAddAction
         $event = $this->eventRepository->get($request->query->get('eventId'));
         Assertion::notNull($event);
         $data = new SpeakerFormData();
-        $form = $this->formFactory->create(SpeakerType::class, $data);
+        $form = $this->formFactory->create(
+            SpeakerType::class,
+            $data,
+            [SpeakerType::OPT_USER_GITHUB => true]
+        );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $speaker = new Speaker();

@@ -79,6 +79,7 @@ class SpeakerEditAction
         $data = $this->speakerFormDataFactory->fromSpeaker($speaker);
         $form = $this->formFactory->create(SpeakerType::class, $data, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
+            SpeakerType::OPT_USER_GITHUB => true,
         ]);
         $talks = [];
         foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {

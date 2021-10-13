@@ -19,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SpeakerType extends AbstractType
 {
     const OPT_PHOTO_REQUIRED = 'photo_required';
+    const OPT_USER_GITHUB = 'user_github';
 
     /** @var GithubUserRepository */
     private $githubUserRepository;
@@ -38,26 +39,33 @@ class SpeakerType extends AbstractType
             ->add('company', TextType::class, ['required' => false])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
-            ->add('user',
-                ChoiceType::class,
-                [
-                    'label' => 'GitHub User',
-                    'required' => false,
-                    'choice_label' => function ($choice) {
-                        /** @var GithubUser $choice */
-                        return "{$choice->getLogin()} ({$choice->getName()})";
-                    },
-                    'choice_value' => function ($choice) {
-                        if ($choice instanceof GithubUser) {
-                            return $choice->getId();
-                        }
-                        return $choice;
-                    },
-                    'choice_loader' => new CallbackChoiceLoader(function () {
-                        return $this->githubUserRepository->getAll();
-                    }),
-                ]
-            )
+        ;
+        if (true === $options[self::OPT_USER_GITHUB]) {
+            $builder
+                ->add('user',
+                    ChoiceType::class,
+                    [
+                        'label' => 'GitHub User',
+                        'required' => false,
+                        'choice_label' => function ($choice) {
+                            /** @var GithubUser $choice */
+                            return "{$choice->getLogin()} ({$choice->getName()})";
+                        },
+                        'choice_value' => function ($choice) {
+                            if ($choice instanceof GithubUser) {
+                                return $choice->getId();
+                            }
+                            return $choice;
+                        },
+                        'choice_loader' => new CallbackChoiceLoader(function () {
+                            return $this->githubUserRepository->getAll();
+                        }),
+                    ]
+                )
+            ;
+        }
+
+        $builder
             ->add('photo', FileType::class, ['label' => 'Photo de profil', 'data_class' => null, 'required' => $options[self::OPT_PHOTO_REQUIRED]])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;
@@ -65,8 +73,11 @@ class SpeakerType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            self::OPT_PHOTO_REQUIRED => true
-        ]);
+        $resolver
+            ->setDefaults([
+                self::OPT_PHOTO_REQUIRED => true,
+                self::OPT_USER_GITHUB => true,
+            ])
+        ;
     }
 }
