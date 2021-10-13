@@ -42,14 +42,14 @@ class SpeakerType extends AbstractType
         ;
         if (true === $options[self::OPT_USER_GITHUB]) {
             $builder
-                ->add('user',
+                ->add('github_user',
                     ChoiceType::class,
                     [
-                        'label' => 'GitHub User',
+                        'property_path' => 'githubUser',
+                        'label' => 'Utilisateur GitHub',
                         'required' => false,
-                        'choice_label' => function ($choice) {
-                            /** @var GithubUser $choice */
-                            return "{$choice->getLogin()} ({$choice->getName()})";
+                        'choice_label' => function (GithubUser $user) {
+                            return (string) $user;
                         },
                         'choice_value' => function ($choice) {
                             if ($choice instanceof GithubUser) {
@@ -76,7 +76,7 @@ class SpeakerType extends AbstractType
         $resolver
             ->setDefaults([
                 self::OPT_PHOTO_REQUIRED => true,
-                self::OPT_USER_GITHUB => true,
+                self::OPT_USER_GITHUB => false,
             ])
         ;
     }

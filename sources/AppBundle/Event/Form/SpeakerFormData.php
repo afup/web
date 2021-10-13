@@ -47,9 +47,8 @@ class SpeakerFormData
      * @var UploadedFile|null
      */
     public $photo;
-
     /**
      * @var null|GithubUser
      */
-    public $user;
+    public $githubUser;
 }

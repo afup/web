@@ -29,9 +29,7 @@ class GithubUserAddAction
     private $urlGenerator;
     /** @var Environment */
     private $twig;
-    /**
-     * @var GithubClient
-     */
+    /** @var GithubClient */
     private $githubClient;
 
     public function __construct(

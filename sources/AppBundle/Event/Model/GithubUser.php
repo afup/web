@@ -59,6 +59,11 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
         return $this->id;
     }
 
+    public function __toString()
+    {
+        return "{$this->login} ({$this->name})";
+    }
+
     /**
      * @return GithubUser
      */

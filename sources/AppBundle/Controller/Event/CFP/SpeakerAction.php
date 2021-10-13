@@ -79,7 +79,6 @@ class SpeakerAction
         $speaker = $this->speakerFactory->getSpeaker($event);
         $form = $this->formFactory->create(SpeakerType::class, $speaker, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
-            SpeakerType::OPT_USER_GITHUB => false,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

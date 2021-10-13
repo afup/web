@@ -77,7 +77,7 @@ class SpeakerAddAction
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setEmail($data->email);
-            $speaker->setUser($data->user !== null ? $data->user->getId() : null);
+            $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);
             $this->speakerRepository->save($speaker);
             if (null !== $data->photo) {

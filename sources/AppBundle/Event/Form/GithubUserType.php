@@ -22,7 +22,7 @@ class GithubUserType extends AbstractType
     {
         $builder
             ->add('user', TextType::class, [
-                'invalid_message' => "Impossible de charger les informations de l'utilisateur GitHub."
+                'invalid_message' => 'Impossible de charger les informations de l\'utilisateur GitHub.'
             ])
             ->add('afupCrew', CheckboxType::class, [
                 'required' => false,
