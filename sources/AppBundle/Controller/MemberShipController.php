@@ -426,10 +426,12 @@ class MemberShipController extends SiteBaseController
 
         $tempfile = tempnam(sys_get_temp_dir(), 'membership_fee_download');
         $numeroFacture = $cotisations->genererFacture($id, $tempfile);
+        $cotisation = $cotisations->obtenir($id);
+        $pattern = str_replace(' ', '', $this->getUser()->getLastName()) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
 
         $response = new BinaryFileResponse($tempfile, 200, [], false);
         $response->deleteFileAfterSend(true);
-        $response->setContentDisposition('attachment', 'facture-' . $numeroFacture . '.pdf');
+        $response->setContentDisposition('attachment', $pattern);
 
         return $response;
     }

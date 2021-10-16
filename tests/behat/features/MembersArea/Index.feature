@@ -45,4 +45,4 @@ Feature: Espace membre, accueil
     When I follow "Se mettre à jour"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
-    Then the response header "Content-disposition" should equal 'attachment; filename="facture-COTIS-2018-198.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename="Maurice_COTIS-2018-198_13072018.pdf"'

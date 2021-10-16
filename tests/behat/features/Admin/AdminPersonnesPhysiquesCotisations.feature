@@ -10,4 +10,4 @@ Feature: Administration - Partie Personnes physiques - cotisations
     When I follow "cotisations_2"
     Then I should see "Cotisations de Jean Maurice"
     When I follow the button of tooltip "Télécharger la facture"
-    Then the response header "Content-disposition" should equal 'attachment; filename="facture-COTIS-2018-198.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename="Maurice_COTIS-2018-198_13072018.pdf"'
