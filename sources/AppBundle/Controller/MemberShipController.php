@@ -427,7 +427,19 @@ class MemberShipController extends SiteBaseController
         $tempfile = tempnam(sys_get_temp_dir(), 'membership_fee_download');
         $numeroFacture = $cotisations->genererFacture($id, $tempfile);
         $cotisation = $cotisations->obtenir($id);
-        $pattern = str_replace(' ', '', $this->getUser()->getLastName()) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
+
+        if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+            /** @var CompanyMember $company */
+            $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($cotisation['id_personne']);
+            Assertion::isInstanceOf($company, CompanyMember::class);
+            $patternPrefix = $company->getCompanyName();
+        } else {
+            $user = $this->get('ting')->get(UserRepository::class)->get($cotisation['id_personne']);
+            Assertion::isInstanceOf($user, User::class);
+            $patternPrefix = $user->getLastName();
+        }
+
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
 
         $response = new BinaryFileResponse($tempfile, 200, [], false);
         $response->deleteFileAfterSend(true);
