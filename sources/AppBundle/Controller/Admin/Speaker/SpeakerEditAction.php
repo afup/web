@@ -105,6 +105,7 @@ class SpeakerEditAction
             $speaker->setTwitter($data->twitter);
             $speaker->setEmail($data->email);
             $speaker->setCompany($data->company);
+            $speaker->setLocality($data->locality);
             $this->speakerRepository->save($speaker);
             if ($data->photo) {
                 if ($event->getId() < self::ID_FORUM_PHOTO_STORAGE) {

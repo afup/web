@@ -53,7 +53,7 @@
                     {{ talk_info.talk.title }}
                     <i>
                         {% if talk_info.planning %}
-                            ({{ talk_info.room.name }})
+                            {% if talk_info.room %}({{ talk_info.room.name }}){% endif %}
                             ({{ talk_info.planning.start|localizeddate('full', 'short', app.request.locale) }})
                         {% else %}
                             (salle et dates de passage à venir)

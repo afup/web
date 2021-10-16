@@ -25,6 +25,7 @@ class SpeakerType extends AbstractType
             ->add('lastname', TextType::class)
             ->add('email', EmailType::class)
             ->add('company', TextType::class, ['required' => false])
+            ->add('locality', TextType::class, ['required' => false, 'help' => 'Indiquer votre ville nous permet de mieux anticiper les déplacements'])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
             ->add('photo', FileType::class, ['label' => 'Photo de profil', 'data_class' => null, 'required' => $options[self::OPT_PHOTO_REQUIRED]])

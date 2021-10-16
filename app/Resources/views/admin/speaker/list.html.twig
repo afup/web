@@ -87,7 +87,10 @@
             <tbody>
             {% for speaker in speakers %}
                 <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
-                    <td><strong>{{ speaker.lastname }} {{ speaker.firstname }}</strong></td>
+                    <td>
+                        <strong>{{ speaker.lastname }} {{ speaker.firstname }}</strong>
+                        {% if speaker.locality %} <em>{{ speaker.locality }}</em>{% endif %}
+                    </td>
                     <td>{{ speaker.company }}</td>
                     <td>
                         <div class="ui list">

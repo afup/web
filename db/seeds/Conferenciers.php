@@ -17,6 +17,7 @@ class Conferenciers extends AbstractSeed
                 'prenom' => 'Geoffrey',
                 'email' => 'foo@bar.baz',
                 'societe' => 'AFUP',
+                'ville' => 'Paris',
                 'biographie' => 'Président 2018-2019 de l\'AFUP',
                 'twitter' => 'ubermuda',
                 'user_github' => null,
