@@ -38,7 +38,7 @@ Feature: Espace membre, accueil
     And the "contact_details[city]" field should contain "Lyon Cedex"
 
   @reloadDbWithTestData
-  Scenario: On peux télécharger la facture de cotisation
+  Scenario: On peux télécharger la facture de cotisation pour une personne physique
     Given I am logged-in with the user "userexpire" and the password "userexpire"
     And I follow "Espace membre"
     Then I should see "Cotisations"
@@ -46,3 +46,13 @@ Feature: Espace membre, accueil
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
     Then the response header "Content-disposition" should equal 'attachment; filename="Maurice_COTIS-2018-198_13072018.pdf"'
+
+  @reloadDbWithTestData
+  Scenario: On peux télécharger la facture de cotisation pour une personne morale
+    Given I am logged-in with the user "edmonddupont" and the password "edmonddupont"
+    And I follow "Espace membre"
+    Then I should see "Cotisations"
+    When I follow "Se mettre à jour"
+    Then I should see "Payer ma cotisation"
+    When I follow "Télécharger la facture"
+    Then the response header "Content-disposition" should equal 'attachment; filename="Dupont_COTIS-2018-201_13072018.pdf"'
