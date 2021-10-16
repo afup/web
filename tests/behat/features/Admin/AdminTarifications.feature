@@ -7,7 +7,7 @@ Feature: Administration - Partie Tarifications
     Then the ".content h2" element should contain "Tarifications"
     When I follow "Ajouter"
     Then I should see "Tarifications - Ajouter"
-    Then I select "2" from "ticket_event_ticketType"
+    Then I select "3" from "ticket_event_ticketType"
     And I fill in "ticket_event_price" with "42"
     And I fill in "ticket_event_dateStart" with "2021-10-20T09:00:00"
     And I fill in "ticket_event_dateEnd" with "2021-10-21T18:00:00"
