@@ -1,0 +1,3 @@
+#CURRENT_USER := $(shell id -u)
+#CURRENT_GROUP := $(shell id -g)
+#PHP_VERSION ?= 56

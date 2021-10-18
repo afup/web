@@ -33,19 +33,19 @@ class FeatureContext implements Context
 
     private function resetDb()
     {
-        $pdo = new \PDO("mysql:host=dbtest", "root", "root");
-        $pdo->exec('DROP DATABASE IF EXISTS web');
-        $pdo->exec('CREATE DATABASE web');
+        $pdo = new \PDO("mysql:host=db", "root", "root");
+        $pdo->exec('DROP DATABASE IF EXISTS web_test');
+        $pdo->exec('CREATE DATABASE web_test');
     }
 
     private function migrateDb()
     {
-        $this->runCommand( ["./bin/phinx", "migrate", "-e", "test"]);
+        $this->runCommand( ["./vendor/bin/phinx", "migrate", "-e", "test"]);
     }
 
     private function seedRun()
     {
-        $this->runCommand( ["./bin/phinx", "seed:run", "-e", "test"]);
+        $this->runCommand( ["./vendor/bin/phinx", "seed:run", "-e", "test"]);
     }
 
     private function runCommand(array $command)

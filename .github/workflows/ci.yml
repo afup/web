@@ -40,7 +40,7 @@ jobs:
         run: composer install --no-scripts
 
       - name: Tests - Unit
-        run: ./bin/atoum
+        run: ./vendor/bin/atoum
 
   lint:
     name: "Linter"
@@ -76,7 +76,7 @@ jobs:
         run: composer install --no-scripts
 
       - name: Tests - CS Fixer
-        run: ./bin/php-cs-fixer fix --dry-run -vv
+        run: ./vendor/bin/php-cs-fixer fix --dry-run -vv
 
   functional:
     name: "Functional tests"

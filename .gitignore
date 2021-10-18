@@ -1,5 +1,3 @@
-.env
-
 deps.lock
 .idea
 # OS X
@@ -50,13 +48,11 @@ js_dist
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 /htdocs/bundles/
-/bin/atoum
-/bin/phinx
-/bin/php-cs-fixer
 /docker-compose.override.yml
 /composer.phar
-/data
 
 /event/vendor
 /event/wp
 /event/composer.phar
+
+.php_cs.cache

@@ -59,7 +59,6 @@
     ]
   },
   "config": {
-    "bin-dir": "bin",
     "secure-http": false
   },
   "extra": {

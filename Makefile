@@ -1,118 +1,119 @@
--include .env
+MAKEFLAGS += --no-print-directory
 
-CURRENT_UID ?= $(shell id -u)
-DOCKER_UP_OPTIONS ?=
+COLOR_RESET   = \033[0m
+COLOR_SUCCESS = \033[32m
+COLOR_ERROR   = \033[31m
+COLOR_COMMENT = \033[33m
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console
+define log
+	echo "[$(COLOR_COMMENT)$(shell date +"%T")$(COLOR_RESET)][$(COLOR_COMMENT)$(@)$(COLOR_RESET)] $(COLOR_COMMENT)$(1)$(COLOR_RESET)"
+endef
 
-install: vendors event/vendor
+define log_success
+	echo "[$(COLOR_SUCCESS)$(shell date +"%T")$(COLOR_RESET)][$(COLOR_SUCCESS)$(@)$(COLOR_RESET)] $(COLOR_SUCCESS)$(1)$(COLOR_RESET)"
+endef
 
-docker-up: .env var/logs/.docker-build data docker-compose.override.yml
-	CURRENT_UID=$(CURRENT_UID) docker-compose up $(DOCKER_UP_OPTIONS)
+define log_error
+	echo "[$(COLOR_ERROR)$(shell date +"%T")$(COLOR_RESET)][$(COLOR_ERROR)$(@)$(COLOR_RESET)] $(COLOR_ERROR)$(1)$(COLOR_RESET)"
+endef
 
-docker-stop:
-	CURRENT_UID=$(CURRENT_UID) docker-compose stop
+define touch
+	$(shell mkdir -p $(shell dirname $(1)))
+	$(shell touch -m $(1))
+endef
 
-docker-down:
-	CURRENT_UID=$(CURRENT_UID) docker-compose down
+define touch_dir
+	$(shell mkdir -p $(shell dirname $(1)))
+	$(shell touch -c -m $(1))
+endef
 
-var/logs/.docker-build: docker-compose.yml docker-compose.override.yml $(shell find docker -type f)
-	CURRENT_UID=$(CURRENT_UID) ENABLE_XDEBUG=$(ENABLE_XDEBUG) docker-compose build
-	touch var/logs/.docker-build
+CURRENT_USER := $(shell id -u)
+CURRENT_GROUP := $(shell id -g)
+PHP_VERSION ?= 5.6
 
-.env:
-	cp .env-dist .env
+-include Makefile.override
+
+TTY := $(shell tty -s || echo '-T')
+DOCKER_COMPOSE := PHP_VERSION=$(PHP_VERSION) docker-compose
+DOCKER_COMPOSE_RUN := CURRENT_USER=$(CURRENT_USER) CURRENT_GROUP=$(CURRENT_GROUP) $(DOCKER_COMPOSE) run $(TTY) --no-deps --rm
+DOCKER_COMPOSE_EXEC := $(DOCKER_COMPOSE) exec $(TTY)
+
+.DEFAULT_GOAL := help
+.PHONY: help
+help:
+	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $$(echo '$(MAKEFILE_LIST)' | cut -d ' ' -f2) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 docker-compose.override.yml:
-	cp docker-compose.override.yml-dist docker-compose.override.yml
+	cp docker-compose.override.yml.dist docker-compose.override.yml
 
-vendors: vendor node_modules
+build: var/make/build ## Build the docker stack
+var/make/build: docker-compose.override.yml $(shell find docker -type f)
+	@$(call log,Building docker images ...)
+	$(DOCKER_COMPOSE) build --pull
+	@$(call touch,var/make/build)
+	@$(call log_success,Done)
 
-vendor: composer.phar composer.lock
-	php composer.phar install
+.PHONY: pull
+pull: ## Pulling docker images
+	@$(call log,Pulling docker images ...)
+	$(DOCKER_COMPOSE) pull
+	@$(call log_success,Done)
 
-node_modules:
-	yarn install
+.PHONY: php-shell
+php-shell: var/make/build ## Enter in the PHP container
+	@$(call log,Entering inside php container ...)
+	@$(DOCKER_COMPOSE_RUN) php ash
 
-composer.phar:
-	$(eval EXPECTED_SIGNATURE = "$(shell wget -q -O - https://composer.github.io/installer.sig)")
-	$(eval ACTUAL_SIGNATURE = "$(shell php -r "copy('https://getcomposer.org/installer', 'composer-setup.php'); echo hash_file('SHA384', 'composer-setup.php');")")
-	@if [ "$(EXPECTED_SIGNATURE)" != "$(ACTUAL_SIGNATURE)" ]; then echo "Invalid signature"; exit 1; fi
-	php composer-setup.php
-	rm composer-setup.php
+.PHONY: yarn-shell
+yarn-shell: var/make/build ## Enter in the yarn container
+	@$(call log,Entering inside yarn container ...)
+	@$(DOCKER_COMPOSE_RUN) yarn ash
 
-assets:
-	./node_modules/.bin/webpack -p
+start: var/make/start ## Start the docker stack
+var/make/start: var/make/build docker-compose.yml vendor
+	@$(call log,Starting the stack ...)
+	$(DOCKER_COMPOSE) up -d
+	@$(MAKE) db
+	@$(call touch,var/make/start)
+	@$(call log_success,Done)
 
-watch:
-	./node_modules/.bin/webpack --progress --colors --watch
+.PHONY: stop
+stop: ## Stop the docker stack
+	@$(call log,Stopping the docker stack ...)
+	$(DOCKER_COMPOSE) stop
+	@rm -rf var/make/start
+	@$(call log_success,Done)
 
-configs/application/config.php:
-	cp configs/application/config.php.dist-docker configs/application/config.php
+.PHONY: clean
+clean: ## Clean the docker stack
+	@$(MAKE) stop
+	@$(call log,Cleaning the docker stack ...)
+	$(DOCKER_COMPOSE) down --remove-orphans
+	rm -rf vendor/* var/cache/* var/log/* var/make/* node_moddules/*
+	@$(call log_success,Done)
 
-app/config/parameters.yml:
-	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
+vendor: var/make/build composer.lock composer.json  ## Install composer dependencies
+	@$(call log,Installing vendors ...)
+	$(DOCKER_COMPOSE_RUN) php composer install
+	@$(call touch_dir,vendor)
+	@$(call log_success,Done)
 
-init:
-	make config
-	make init-db
+node_modules: var/make/build yarn.lock package.json package.json ## Install yarn dependencies
+	@$(call log,Installing node_modules ...)
+	@$(DOCKER_COMPOSE_RUN) yarn yarn install --immutable
+	@$(call log_success,Done)
 
-init-db:
-	make reset-db
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make db-migrations
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp make db-seed
+assets-build: htdocs/js_dist ## Build assets
+htdocs/js_dist: node_modules
+	@$(call log,Building assets ...)
+	@$(DOCKER_COMPOSE_RUN) yarn yarn build
+	@$(call log_success,Done)
 
-config: configs/application/config.php app/config/parameters.yml
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp make vendors
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp make assets
-
-test:
-	./bin/atoum
-	./bin/php-cs-fixer fix --dry-run -vv
-
-
-test-functional: data config
-	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest mailcatcher
-	CURRENT_UID=$(CURRENT_UID) docker-compose up -d dbtest apachephptest mailcatcher
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp ./bin/behat
-	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest mailcatcher
-
-data:
-	mkdir data
-	mkdir data/composer
-
-hooks: .git/hooks/pre-commit .git/hooks/post-checkout
-
-.git/hooks/pre-commit: Makefile
-	echo "#!/bin/sh" > .git/hooks/pre-commit
-	echo "docker-compose run --rm  cliphp make test" >> .git/hooks/pre-commit
-	chmod +x .git/hooks/pre-commit
-
-.git/hooks/post-checkout: Makefile
-	echo "#!/bin/sh" > .git/hooks/post-checkout
-	echo "docker-compose run --rm  cliphp make vendor" >> .git/hooks/post-checkout
-	chmod +x .git/hooks/post-checkout
-
-
-event/composer.phar:
-	$(eval EXPECTED_SIGNATURE = "$(shell wget -q -O - https://composer.github.io/installer.sig)")
-	$(eval ACTUAL_SIGNATURE = "$(shell cd event && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php'); echo hash_file('SHA384', 'composer-setup.php');")")
-	@if [ "$(EXPECTED_SIGNATURE)" != "$(ACTUAL_SIGNATURE)" ]; then echo "Invalid signature"; exit 1; fi
-	cd event && php composer-setup.php
-	cd event && rm composer-setup.php
-
-event/vendor: event/composer.phar event/composer.lock
-	cd event && php composer.phar install
-
-reset-db:
-	echo 'DROP DATABASE IF EXISTS web' | docker-compose run --rm db /opt/mysql_no_db
-	echo 'CREATE DATABASE web' | docker-compose run --rm db /opt/mysql_no_db
-
-db-migrations:
-	php bin/phinx migrate
-
-db-seed:
-	php bin/phinx seed:run
-
-console:
-	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp bash
+db: var/make/db
+var/make/db: var/make/build
+	@$(call log,Preparing db ...)
+	$(DOCKER_COMPOSE_RUN) php waitforit -host=db -port=3306
+	$(DOCKER_COMPOSE_RUN) php vendor/bin/phinx migrate
+	$(DOCKER_COMPOSE_RUN) php vendor/bin/phinx seed:run
+	@$(call touch,var/make/db)
+	@$(call log_success,Done)

@@ -1,151 +1,44 @@
-version: "2.2"
-
 services:
-  db:
-    build: ./docker/dockerfiles/mysql
+  mariadb:
+    image: mariadb:10.0.29
+    build: docker/mariadb
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: afup
       MYSQL_PASSWORD: afup
       MYSQL_DATABASE: web
-    volumes:
-      - ./data/mysql:/var/lib/mysql
 
-  dbtest:
-    build: ./docker/dockerfiles/mysqltest
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: afup
-      MYSQL_PASSWORD: afup
-      MYSQL_DATABASE: web
-    volumes:
-      - ./data/mysqltest:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
-
-  apachephp:
+  php:
+    user: ${CURRENT_USER:-1000}:${CURRENT_GROUP:-1000}
     build:
-      context: ./docker/dockerfiles/apachephp
+      context: ./docker/php
       args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
-    environment:
-      SYMFONY_ENV: "dev"
-    volumes:
-      - ./:/var/www/html
+        PHP_VERSION: ${PHP_VERSION:-5.6}
     links:
-      - db
-      - mailcatcher
-
-  apachephp7:
-    build:
-      context: ./docker/dockerfiles/apachephp7
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
-    environment:
-      SYMFONY_ENV: "dev"
+      - "mariadb:db"
+#      - "maildev:smtp"
     volumes:
-      - ./:/var/www/html
-    links:
-      - db
-      - mailcatcher
-
-  apachephptest:
-    build:
-      context: ./docker/dockerfiles/apachephp
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
+      - .:/app
+      - ~/.cache/composer:/tmp/composer
     environment:
-      SYMFONY_ENV: "test"
-    volumes:
-      - ./:/var/www/html
-    healthcheck:
-      test: ["CMD", "curl", "-f", "https://apachephptest:80"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      COMPOSER_HOME: /tmp/composer
     depends_on:
-      dbtest:
-        condition: service_healthy
+      - mariadb
+      - yarn
+#      - maildev
 
-  planete:
+  nginx:
     build:
-      context: ./docker/dockerfiles/planete
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-    environment:
-      SYMFONY_ENV: "dev"
+      context: ./docker/nginx
     volumes:
-      - ./:/var/www/html
-    links:
-      - db
-      - mailcatcher
+      - .:/app
+    depends_on:
+      - "php"
 
-  event:
+  yarn:
+    user: ${FIXUID:-1000}:${FIXGID:-1000}
     build:
-      context: ./docker/dockerfiles/event
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-    environment:
-      AFUP_WEBSITE_URL: 'https://apachephp:80'
+      context: ./docker/yarn
     volumes:
-      - ./:/var/www/html
-    links:
-      - dbevent
-      - apachephp
-
-  dbevent:
-    build: ./docker/dockerfiles/mysql_event
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: afup
-      MYSQL_PASSWORD: afup
-      MYSQL_DATABASE: event
-    volumes:
-      - ./data/mysql_event:/var/lib/mysql
-
-  cliphp:
-    build:
-      context: ./docker/dockerfiles/apachephp
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-    user: localUser
-    volumes:
-        - ./data/composer:/home/localUser/.composer
-        - ./:/var/www/html
-    links:
-      - db
-      - apachephp
-      - mailcatcher
-      - apachephptest
-      - dbtest
-    command: "false"
-
-  cliphp7:
-    build:
-      context: ./docker/dockerfiles/apachephp7
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
-    user: localUser
-    volumes:
-      - ./data/composer:/home/localUser/.composer
-      - ./:/var/www/html
-    links:
-      - db
-      - mailcatcher
-    command: "false"
-
-  mailcatcher:
-    image: schickling/mailcatcher
+      - .:/app
+      - ~/.cache/yarn:/home/node/.cache/yarn
