@@ -52,7 +52,8 @@ class GithubUserAddAction
     {
         $data = new GithubUserFormData();
         $form = $this->formFactory->create(GithubUserType::class, $data, [
-            'github_client' => $this->githubClient
+            'github_client' => $this->githubClient,
+            'github_user_repository' => $this->githubUserRepository,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

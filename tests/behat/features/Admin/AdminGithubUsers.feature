@@ -14,6 +14,14 @@ Feature: Administration - Partie GitHub Users
     And I should see "Github Users"
     And I should see "<username>"
     And I should see "<name>"
+    Then I should see 2 "table tbody tr" elements
+    # on vérifie que si on ajoute deux fois le même user, l'ajout est bloqué
+    When I follow "Ajouter"
+    Then I should see "Ajouter un utilisateur GitHub"
+    When I fill in "github_user[user]" with "<username>"
+    And I <afupCrew> "github_user[afupCrew]"
+    And I press "Sauvegarder"
+    Then I should see "Un autre compte existe avec cette information: <username>"
 
     Examples:
       | username  | afupCrew | name                 |

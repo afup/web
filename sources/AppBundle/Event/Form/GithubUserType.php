@@ -4,9 +4,11 @@
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Model\Repository\GithubUserRepository;
 use AppBundle\Github\Exception\UnableToFindGithubUserException;
 use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
 use AppBundle\Github\GithubClient;
+use AppBundle\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -22,6 +24,12 @@ class GithubUserType extends AbstractType
     {
         $builder
             ->add('user', TextType::class, [
+                'constraints' => [
+                    new UniqueEntity([
+                        'repository' => $options['github_user_repository'],
+                        'fields' => ['login']
+                    ])
+                ],
                 'invalid_message' => 'Impossible de charger les informations de l\'utilisateur GitHub.'
             ])
             ->add('afupCrew', CheckboxType::class, [
@@ -62,11 +70,18 @@ class GithubUserType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => GithubUserFormData::class,
-            'github_client' => null,
-        ]);
-
-        $resolver->setAllowedTypes('github_client', GithubClient::class);
+        $resolver
+            ->setDefaults([
+                'data_class' => GithubUserFormData::class,
+                'github_client' => null,
+                'github_user_repository' => null,
+            ])
+            ->setAllowedTypes('github_client', GithubClient::class)
+            ->setAllowedTypes('github_user_repository', GithubUserRepository::class)
+            ->setRequired([
+                'github_client',
+                'github_user_repository'
+            ])
+        ;
     }
 }
