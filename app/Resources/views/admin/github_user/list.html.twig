@@ -41,7 +41,7 @@
                     <td><img loading="lazy" src="{{ githubUser.avatarUrl }}&s=48" width="48" height="48" alt="{{ githubUser.login }} github avatar" /></td>
                     <td><strong>{{ githubUser.login }}</strong></td>
                     <td>{{ githubUser.name }}{{ githubUser.afupCrew ? ' (afup)' : '' }}</td>
-                    <td><a href="{{ githubUser.profileUrl }}" target="_blank">Voir le profil</a></td>
+                    <td><a rel="noopener" href="{{ githubUser.profileUrl }}" target="_blank">Voir le profil</a></td>
                 </tr>
             {% endfor %}
             </tbody>
