@@ -6,9 +6,39 @@ class Users extends AbstractSeed
 {
     const ID_USER_ADMIN = 1;
     const ID_USER_EXPIRIE = 2;
+    const ID_USER_PERSONNE_MORALE = 3;
+
+    const ID_PERSONNE_MORALE_MY_CORP = 1;
 
     public function run()
     {
+        $data = [
+            [
+                'id'    => self::ID_PERSONNE_MORALE_MY_CORP,
+                'civilite' => '1',
+                'nom' => 'Dupont',
+                'prenom' => 'Raoul',
+                'email' => 'raoul.dupont@mycorp.fr',
+                'raison_sociale' => 'MyCorp',
+                'siret' => '4445451',
+                'adresse' => '12 cours Hopper',
+                'code_postal' => '69001',
+                'ville' => 'LYON',
+                'id_pays' => 'FR',
+                'etat' => 0,
+            ],
+        ];
+
+        $table = $this->table('afup_personnes_morales');
+
+        $table->truncate();
+
+        $table
+            ->insert($data)
+            ->save()
+        ;
+
+
         $data = [
             [
                 'id'    => self::ID_USER_ADMIN,
@@ -28,6 +58,17 @@ class Users extends AbstractSeed
                 'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'prenom' => 'Jean',
                 'email' => 'userexpire@yahoo.fr',
+            ],
+            [
+                'id'    => self::ID_USER_PERSONNE_MORALE,
+                'login' => 'edmonddupont',
+                'mot_de_passe' => md5('edmonddupont'),
+                'nom' => 'Dupont',
+                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
+                'prenom' => 'Edmond',
+                'email' => 'edmond.dupont@mycorp.fr',
+                'roles' => '["ROLE_COMPANY_MANAGER"]',
+                'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
             ],
         ];
 
@@ -60,6 +101,14 @@ class Users extends AbstractSeed
                 'montant' => 25,
                 'date_fin' => $dateDebutUserExpire + $oneMonthInSeconds * 12,
                 'numero_facture' => 'COTIS-2018-198',
+            ],
+            [
+                'date_debut' => $dateDebutUserExpire,
+                'type_personne' => 1, // AFUP_COTISATION_MORALE
+                'id_personne' => self::ID_PERSONNE_MORALE_MY_CORP,
+                'montant' => 150,
+                'date_fin' => $dateDebutUserExpire + $oneMonthInSeconds * 12,
+                'numero_facture' => 'COTIS-2018-201',
             ]
         ];
 

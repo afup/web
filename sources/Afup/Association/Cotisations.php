@@ -357,8 +357,10 @@ class Cotisations
 
         if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
             $nom = $personne['raison_sociale'];
+            $patternPrefix = $personne['raison_sociale'];
         } else {
             $nom = $personne['prenom'] . ' ' . $personne['nom'];
+            $patternPrefix = $personne['nom'];
         }
         $pdf->Ln(10);
         $pdf->MultiCell(130, 5, utf8_decode($nom . "\n" . $personne['adresse'] . "\n" . $personne['code_postal'] . "\n" . $personne['ville']));
@@ -393,7 +395,7 @@ class Cotisations
         $pdf->Cell(10, 5, utf8_decode('Lors de votre règlement, merci de préciser la mention : "Facture n°' . $cotisation['numero_facture']) . '"');
 
         if (is_null($chemin)) {
-            $pattern = str_replace(' ', '', $personne['nom']) . '_' . $cotisation['numero_facture'] . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
+            $pattern = str_replace(' ', '', $patternPrefix) . '_' . $cotisation['numero_facture'] . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
 
             $pdf->Output($pattern, 'D');
         } else {
@@ -418,7 +420,8 @@ class Cotisations
 
         if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
             $personnePhysique = new Personnes_Morales($this->_bdd);
-            $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email');
+            $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email, raison_sociale');
+            $patternPrefix = $contactPhysique['raison_sociale'];
         } else {
             $user = $userRepository->get($personne['id_personne']);
             Assertion::notNull($user);
@@ -427,6 +430,7 @@ class Cotisations
                 'prenom'=> $user->getFirstName(),
                 'email'=> $user->getEmail(),
             ];
+            $patternPrefix = $contactPhysique['nom'];
         }
 
         $corps = "Bonjour,<br />";
@@ -440,7 +444,7 @@ class Cotisations
         $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $numeroFacture = $this->genererFacture($id_cotisation, $cheminFacture);
         $cotisation = $this->obtenirDerniere($personne['type_personne'], $personne['id_personne']);
-        $pattern = str_replace(' ', '', $contactPhysique['nom']) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
 
         $message = new Message('Facture AFUP', null, new MailUser(
             $contactPhysique['email'],
