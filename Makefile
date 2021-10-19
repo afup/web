@@ -57,7 +57,7 @@ docker-compose.override.yml:
 build: var/make/build ## Build the docker stack
 var/make/build: docker-compose.override.yml $(shell find docker -type f)
 	@$(call log,Building docker images ...)
-	$(DOCKER_COMPOSE) build --pull
+	DOCKER_BUILDKIT=1 $(DOCKER_COMPOSE) build --pull
 	@$(call touch,var/make/build)
 	@$(call log_success,Done)
 
@@ -136,19 +136,19 @@ var/make/db-test: var/make/start
 	@$(call log_success,Done)
 
 .PHONY: code-style-check
-code-style-check: var/make/build
+code-style-check: vendor
 	@$(call log,Running code-style check ...)
 	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/php-cs-fixer fix --dry-run -vv
 	@$(call log_success,Done)
 
 .PHONY: unit-tests
-unit-tests: var/make/build
+unit-tests: vendor
 	@$(call log,Running unit tests ...)
 	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/atoum
 	@$(call log_success,Done)
 
 .PHONY: func-tests
-func-tests: var/make/start
+func-tests: vendor
 	@$(call log,Running func tests ...)
 	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/behat
 	@$(call log_success,Done)
