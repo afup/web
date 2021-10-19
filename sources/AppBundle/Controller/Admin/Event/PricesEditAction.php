@@ -65,6 +65,7 @@ class PricesEditAction
         $form = $this->formFactory->create(TicketEventType::class, $ticketEventType, [
             'ticketTypes' => $ticketTypes
         ]);
+        // Pour qu'il ne soit pas modifiable dans le formulaire
         $form->remove('ticketType');
 
         $form->handleRequest($request);

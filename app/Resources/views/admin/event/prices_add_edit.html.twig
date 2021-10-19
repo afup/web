@@ -18,11 +18,11 @@
                 {% else %}
                     <div class="inline fields ui grid">
                         <div class="three wide column right aligned">
-                            {{ 'ticket.ticket_type'|trans }}
+                            Type de ticket
                         </div>
                         <div class="field nine wide column">
                             <div class="ui input">
-                                {{ form.vars.value.ticketType }}
+                                {{ form.vars.value.ticketType.label }}
                             </div>
                         </div>
                     </div>

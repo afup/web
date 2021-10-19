@@ -25,42 +25,42 @@ class TicketEventType extends AbstractType
                 'constraints' => [
                     new NotBlank()
                 ],
-                'label' => 'ticket.ticket_type'
+                'label' => 'Type de ticket'
             ])
             ->add('price', MoneyType::class, [
-                'currency' => '',
+                'currency' => 'EUR',
                 'constraints' => [
                     new GreaterThanOrEqual(0),
                     new NotBlank()
                 ],
-                'label' => 'ticket.price'
+                'label' => 'Montant'
             ])
             ->add('dateStart', DateTimeType::class, [
-                'widget' => 'single_text',
+                'widget' => 'choice',
                 'constraints' => [
                     new NotBlank()
                 ],
-                'label' => 'ticket.date_start'
+                'label' => 'Date de début'
             ])
             ->add('dateEnd', DateTimeType::class, [
-                'widget' => 'single_text',
+                'widget' => 'choice',
                 'constraints' => [
                     new NotBlank()
                 ],
-                'label' => 'ticket.date_end'
+                'label' => 'Date de fin'
             ])
             ->add('description', TextareaType::class, [
                 'constraints' => [
                     new NotBlank()
                 ],
-                'label' => 'ticket.description'
+                'label' => 'Description'
             ])
             ->add('maxTickets', IntegerType::class, [
                 'constraints' => [
                     new GreaterThanOrEqual(0),
                 ],
                 'required' => false,
-                'label' => 'ticket.max_tickets'
+                'label' => 'Nombre max. de tickets'
             ]);
     }
 
@@ -80,7 +80,7 @@ class TicketEventType extends AbstractType
 
         /** @var TicketType $ticketType */
         foreach ($ticketTypes as $ticketType) {
-            $choices[(string) $ticketType] = $ticketType;
+            $choices[$ticketType->getLabel()] = $ticketType;
         }
 
         return $choices;

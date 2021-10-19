@@ -85,10 +85,15 @@
                     {% endif %}
                 </td>
                 <td class="single line right aligned">
+                    {% set text = 'Modifier le tarif' %}
+                    {% if ticket_event_type.ticketType %}
+                        {% set text = text ~ ' ' ~ ticket_event_type.ticketType.prettyName %}
+                    {% endif %}
                     <a href="{{ path('admin_event_prices_edit', {id: ticket_event_type.ticketTypeId, event: ticket_event_type.eventId}) }}"
                        data-position="left center"
                        class="compact ui icon button"
-                       data-tooltip="Modifier ce tarif">
+                       data-tooltip="{{ text }}"
+                       title="{{ text }}">
                         <i class="pencil alernate icon"></i>
                     </a>
                 </td>

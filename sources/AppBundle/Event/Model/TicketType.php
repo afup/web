@@ -56,7 +56,7 @@ class TicketType implements NotifyPropertyInterface
      */
     private $day;
 
-    public function __toString()
+    public function getLabel()
     {
         return sprintf('%s - %s%s - %s',
             $this->getTechnicalName(),
