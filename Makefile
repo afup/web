@@ -38,13 +38,21 @@ DOCKER_COMPOSE := PHP_VERSION=$(PHP_VERSION) docker-compose
 DOCKER_COMPOSE_RUN := CURRENT_USER=$(CURRENT_USER) CURRENT_GROUP=$(CURRENT_GROUP) $(DOCKER_COMPOSE) run $(TTY) --no-deps --rm
 DOCKER_COMPOSE_EXEC := $(DOCKER_COMPOSE) exec $(TTY)
 
+DOCKER_COMPOSE_RUN_PHP := $(DOCKER_COMPOSE_RUN) php
+DOCKER_COMPOSE_EXEC_PHP := $(DOCKER_COMPOSE_EXEC) php
+
+DOCKER_COMPOSE_RUN_YARN := $(DOCKER_COMPOSE_RUN) yarn
+DOCKER_COMPOSE_EXEC_YARN := $(DOCKER_COMPOSE_EXEC) yarn
+
 .DEFAULT_GOAL := help
 .PHONY: help
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $$(echo '$(MAKEFILE_LIST)' | cut -d ' ' -f2) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 docker-compose.override.yml:
+	@$(call log,Installing docker-compose.override.yml ...)
 	cp docker-compose.override.yml.dist docker-compose.override.yml
+	@$(call log_success,Done)
 
 build: var/make/build ## Build the docker stack
 var/make/build: docker-compose.override.yml $(shell find docker -type f)
@@ -62,15 +70,15 @@ pull: ## Pulling docker images
 .PHONY: php-shell
 php-shell: var/make/build ## Enter in the PHP container
 	@$(call log,Entering inside php container ...)
-	@$(DOCKER_COMPOSE_RUN) php ash
+	@$(DOCKER_COMPOSE_RUN_PHP) ash
 
 .PHONY: yarn-shell
 yarn-shell: var/make/build ## Enter in the yarn container
 	@$(call log,Entering inside yarn container ...)
-	@$(DOCKER_COMPOSE_RUN) yarn ash
+	@$(DOCKER_COMPOSE_RUN_YARN) ash
 
 start: var/make/start ## Start the docker stack
-var/make/start: var/make/build docker-compose.yml vendor
+var/make/start: var/make/build docker-compose.yml vendor node_modules
 	@$(call log,Starting the stack ...)
 	$(DOCKER_COMPOSE) up -d
 	@$(MAKE) db
@@ -94,26 +102,53 @@ clean: ## Clean the docker stack
 
 vendor: var/make/build composer.lock composer.json  ## Install composer dependencies
 	@$(call log,Installing vendors ...)
-	$(DOCKER_COMPOSE_RUN) php composer install
+	$(DOCKER_COMPOSE_RUN_PHP) composer install
 	@$(call touch_dir,vendor)
 	@$(call log_success,Done)
 
 node_modules: var/make/build yarn.lock package.json package.json ## Install yarn dependencies
 	@$(call log,Installing node_modules ...)
-	@$(DOCKER_COMPOSE_RUN) yarn yarn install --immutable
+	@$(DOCKER_COMPOSE_RUN_YARN) yarn install --immutable
 	@$(call log_success,Done)
 
 assets-build: htdocs/js_dist ## Build assets
 htdocs/js_dist: node_modules
 	@$(call log,Building assets ...)
-	@$(DOCKER_COMPOSE_RUN) yarn yarn build
+	@$(DOCKER_COMPOSE_RUN_YARN) yarn build
 	@$(call log_success,Done)
 
 db: var/make/db
-var/make/db: var/make/build
+var/make/db: var/make/start
 	@$(call log,Preparing db ...)
-	$(DOCKER_COMPOSE_RUN) php waitforit -host=db -port=3306
-	$(DOCKER_COMPOSE_RUN) php vendor/bin/phinx migrate
-	$(DOCKER_COMPOSE_RUN) php vendor/bin/phinx seed:run
+	$(DOCKER_COMPOSE_EXEC_PHP) waitforit -host=db -port=3306
+	$(DOCKER_COMPOSE_EXEC_PHP) ./vendor/bin/phinx migrate
+	$(DOCKER_COMPOSE_EXEC_PHP) ./vendor/bin/phinx seed:run
 	@$(call touch,var/make/db)
+	@$(call log_success,Done)
+
+db: var/make/db-test
+var/make/db-test: var/make/start
+	@$(call log,Preparing db test ...)
+	$(DOCKER_COMPOSE_EXEC_PHP) waitforit -host=db -port=3306
+	$(DOCKER_COMPOSE_EXEC_PHP) ./vendor/bin/phinx migrate
+	$(DOCKER_COMPOSE_EXEC_PHP) ./vendor/bin/phinx seed:run
+	@$(call touch,var/make/db-test)
+	@$(call log_success,Done)
+
+.PHONY: code-style-check
+code-style-check: var/make/build
+	@$(call log,Running code-style check ...)
+	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/php-cs-fixer fix --dry-run -vv
+	@$(call log_success,Done)
+
+.PHONY: unit-tests
+unit-tests: var/make/build
+	@$(call log,Running unit tests ...)
+	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/atoum
+	@$(call log_success,Done)
+
+.PHONY: func-tests
+func-tests: var/make/start
+	@$(call log,Running func tests ...)
+	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/behat
 	@$(call log_success,Done)
