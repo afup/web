@@ -59,6 +59,29 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
         );
     }
 
+    public function update(TicketEventType $ticketEventType)
+    {
+        $sql = 'UPDATE afup_forum_tarif_event
+            SET price = :price,
+                date_start = :date_start,
+                date_end = :date_end,
+                description = :description,
+                max_tickets = :max_tickets
+            WHERE id_tarif = :id_tarif AND id_event = :id_event';
+
+        $query = $this->getPreparedQuery($sql)->setParams([
+            'id_tarif' => $ticketEventType->getTicketTypeId(),
+            'id_event' => $ticketEventType->getEventId(),
+            'price' => $ticketEventType->getPrice(),
+            'date_start' => $ticketEventType->getDateStart()->format(\DateTime::ATOM),
+            'date_end' => $ticketEventType->getDateEnd()->format(\DateTime::ATOM),
+            'description' => $ticketEventType->getDescription(),
+            'max_tickets' => $ticketEventType->getMaxTickets()
+        ]);
+
+        return $query->execute();
+    }
+
     /**
      * @param Event $event
      * @param bool $publicOnly

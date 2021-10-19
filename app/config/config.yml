@@ -168,6 +168,8 @@ parameters:
                     url: '/admin/event/prices'
                     extra_routes:
                         - admin_event_prices
+                        - admin_event_prices_add
+                        - admin_event_prices_edit
                 forum_facturation:
                     nom: "Factures d'événément"
                     niveau: 'ROLE_ADMIN'

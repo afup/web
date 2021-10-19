@@ -40,6 +40,17 @@ class Tarif extends AbstractSeed
                 'day' => 'one,two',
                 'cfp_submitter_only' => false,
             ],
+            [
+                'id' => 4,
+                'technical_name' => 'AFUP_TEST',
+                'pretty_name' => 'Pour les tests',
+                'public' => true,
+                'members_only' => true,
+                'default_price' => 100,
+                'active' => true,
+                'day' => 'one,two',
+                'cfp_submitter_only' => false,
+            ],
         ];
 
         $table = $this->table('afup_forum_tarif');

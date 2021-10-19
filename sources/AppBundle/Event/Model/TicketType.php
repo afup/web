@@ -56,6 +56,16 @@ class TicketType implements NotifyPropertyInterface
      */
     private $day;
 
+    public function getLabel()
+    {
+        return sprintf('%s - %s%s - %s',
+            $this->getTechnicalName(),
+            $this->getPrettyName(),
+            $this->getIsRestrictedToMembers() ? ' - (réservé aux membres)' : '',
+            $this->getPrettyDays()
+        );
+    }
+
     /**
      * @return int
      */
@@ -231,5 +241,24 @@ class TicketType implements NotifyPropertyInterface
     public function getDays()
     {
         return explode(',', $this->day);
+    }
+
+    public function getPrettyDays()
+    {
+        $days = [];
+        foreach ($this->getDays() as $day) {
+            switch ($day) {
+                case Ticket::DAY_ONE:
+                    $days[] = 'JOUR 1';
+                    break;
+                case Ticket::DAY_TWO:
+                    $days[] = 'JOUR 2';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return implode(', ', $days);
     }
 }
