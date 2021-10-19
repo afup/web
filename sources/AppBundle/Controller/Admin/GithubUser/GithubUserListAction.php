@@ -24,7 +24,7 @@ class GithubUserListAction
 
     public function __invoke(Request $request)
     {
-        $githubUsers = $this->githubUserRepository->getAll();
+        $githubUsers = $this->githubUserRepository->getAllOrderedByLogin();
 
         return new Response($this->twig->render('admin/github_user/list.html.twig', [
             'githubUsers' => $githubUsers,

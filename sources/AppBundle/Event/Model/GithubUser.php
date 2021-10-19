@@ -59,9 +59,14 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
         return $this->id;
     }
 
-    public function __toString()
+    public function getLabel()
     {
-        return "{$this->login} ({$this->name})";
+        $label = $this->login;
+        if (null !== $this->name) {
+            $label .= " ({$this->name})";
+        }
+
+        return $label;
     }
 
     /**

@@ -49,7 +49,7 @@ class SpeakerType extends AbstractType
                         'label' => 'Utilisateur GitHub',
                         'required' => false,
                         'choice_label' => function (GithubUser $user) {
-                            return (string) $user;
+                            return $user->getLabel();
                         },
                         'choice_value' => function ($choice) {
                             if ($choice instanceof GithubUser) {
@@ -58,7 +58,7 @@ class SpeakerType extends AbstractType
                             return $choice;
                         },
                         'choice_loader' => new CallbackChoiceLoader(function () {
-                            return $this->githubUserRepository->getAll();
+                            return $this->githubUserRepository->getAllOrderedByLogin();
                         }),
                     ]
                 )
