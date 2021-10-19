@@ -12,6 +12,8 @@ services:
     user: ${CURRENT_USER:-1000}:${CURRENT_GROUP:-1000}
     build:
       context: ./docker/php
+      cache_from: type=local,src=/tmp/.buildx-cache
+      cache_to: type=local,dest=/tmp/.buildx-cache
       args:
         PHP_VERSION: ${PHP_VERSION:-5.6}
     links:

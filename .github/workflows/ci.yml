@@ -27,18 +27,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          push: false
-          load: true
-          tags: afup/php:${{ matrix.php }}-latest
-          builder: ${{ steps.buildx.outputs.name }}
-          file: ./docker/php/Dockerfile
-          context: ./docker/php
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-
       - name: Tests - Unit
         run: PHP_VERSION=${{ matrix.php }} DOCKER_BUILDKIT=1 make unit-tests
 
