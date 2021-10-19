@@ -62,7 +62,11 @@ class SpeakerAddAction
         $event = $this->eventRepository->get($request->query->get('eventId'));
         Assertion::notNull($event);
         $data = new SpeakerFormData();
-        $form = $this->formFactory->create(SpeakerType::class, $data);
+        $form = $this->formFactory->create(
+            SpeakerType::class,
+            $data,
+            [SpeakerType::OPT_USER_GITHUB => true]
+        );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $speaker = new Speaker();
@@ -73,6 +77,7 @@ class SpeakerAddAction
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setEmail($data->email);
+            $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);
             $this->speakerRepository->save($speaker);
             if (null !== $data->photo) {

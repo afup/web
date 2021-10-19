@@ -106,6 +106,28 @@ class FeatureContext implements Context
     }
 
     /**
+     * @Then The :field field should has the following selected value :expectedValue
+     */
+    public function selectHasForCurrentSelectedValue($field, $expectedValue)
+    {
+        $node = $this->minkContext->assertSession()->fieldExists($field);
+        $options = $node->findAll('css', 'option');
+
+        $selectedValue = null;
+        foreach ($options as $option) {
+            if ($option->isSelected()) {
+                $selectedValue = $option->getValue();
+                break;
+            }
+        }
+
+        if ($selectedValue != $expectedValue) {
+            throw new \Exception(sprintf('The select has the following value "%s" (expected "%s")', $selectedValue, $expectedValue));
+        }
+    }
+
+
+    /**
      * @Then the response header :arg1 should equal :arg2
      */
     public function assertResponseHeaderEquals($headerName, $expectedValue)

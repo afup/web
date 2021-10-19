@@ -79,6 +79,7 @@ class SpeakerEditAction
         $data = $this->speakerFormDataFactory->fromSpeaker($speaker);
         $form = $this->formFactory->create(SpeakerType::class, $data, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
+            SpeakerType::OPT_USER_GITHUB => true,
         ]);
         $talks = [];
         foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
@@ -104,6 +105,7 @@ class SpeakerEditAction
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setEmail($data->email);
+            $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);
             $this->speakerRepository->save($speaker);
             if ($data->photo) {

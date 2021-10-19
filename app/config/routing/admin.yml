@@ -92,4 +92,7 @@ admin_slack_members_check:
 admin_site:
   resource: "admin_site.yml"
   prefix: /site
-  
+
+admin_github_user_routes:
+  resource: "admin_github_user.yml"
+  prefix: /event/github-user

@@ -1,0 +1,58 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+<h2>Github Users</h2>
+
+<div class="ui menu">
+    <a href="{{ path('admin_github_user_add') }}" class="item">
+        <div data-tooltip="Ajouter un utilisateur github" data-position="bottom left">
+            <i class="icon plus square"></i>
+            Ajouter
+        </div>
+    </a>
+    </a>
+</div>
+
+<div class="ui segment">
+    <div class="ui mini horizontal statistic">
+        <div class="value">
+            {{ nbGithubUsers }}
+        </div>
+        <div class="label">
+            github users
+        </div>
+    </div>
+
+    {% if githubUsers %}
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th width="60">&nbsp;</th>
+                <th align="left">Nom d'utilisateur</th>
+                <th align="left">Nom</th>
+                <th align="left">
+                    Profil
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for githubUser in githubUsers %}
+                <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
+                    <td><img loading="lazy" src="{{ githubUser.avatarUrl }}&s=48" width="48" height="48" alt="{{ githubUser.login }} github avatar" /></td>
+                    <td><strong>{{ githubUser.login }}</strong></td>
+                    <td>{{ githubUser.name }}{{ githubUser.afupCrew ? ' (afup)' : '' }}</td>
+                    <td><a rel="noopener" href="{{ githubUser.profileUrl }}" target="_blank">Voir le profil</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucun utilisateur GitHub.
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

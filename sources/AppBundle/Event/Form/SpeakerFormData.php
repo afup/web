@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Event\Model\GithubUser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,4 +47,8 @@ class SpeakerFormData
      * @var UploadedFile|null
      */
     public $photo;
+    /**
+     * @var null|GithubUser
+     */
+    public $githubUser;
 }

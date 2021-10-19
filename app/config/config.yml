@@ -199,6 +199,11 @@ parameters:
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
+                admin_github_user_list:
+                    nom: 'Github Users'
+                    url: '/admin/event/github-user'
+                    extra_routes:
+                        - admin_github_user_add
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
