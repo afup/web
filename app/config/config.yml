@@ -204,6 +204,7 @@ parameters:
                     url: '/admin/event/github-user'
                     extra_routes:
                         - admin_github_user_add
+                        - admin_github_user_list
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
