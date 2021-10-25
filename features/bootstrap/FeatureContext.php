@@ -8,6 +8,7 @@ use Symfony\Component\Process\Process;
 
 class FeatureContext implements Context
 {
+    const MAILCATCHER_URL = 'http://mailcatcher:1080';
 
     /** @var \Behat\MinkExtension\Context\MinkContext */
     private $minkContext;
@@ -148,4 +149,72 @@ class FeatureContext implements Context
 
         $link->click();
     }
+
+
+
+    /**
+     * @BeforeScenario @clearEmails
+     */
+    public function clearEmails()
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, self::MAILCATCHER_URL . '/messages');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            throw new \RuntimException(sprintf('Error : ' . curl_error($ch)));
+        }
+
+        curl_close($ch);
+    }
+
+
+    /**
+     * @Then I should only receive the following emails:
+     */
+    public function theFollowingEmailsShoudBeReceived(TableNode $expectedEmails)
+    {
+        $expectedEmailsArray = [];
+        foreach ($expectedEmails as $expectedEmail) {
+            $expectedEmailsArray[] = [
+                'to' => $expectedEmail['to'],
+                'subject' => $expectedEmail['subject'],
+            ];
+        }
+
+
+        $content = file_get_contents(self::MAILCATCHER_URL . '/messages');
+        $decodedContent = json_decode($content, true);
+
+        $foundEmails = [];
+        foreach ($decodedContent as $mail) {
+            $foundEmails[] = [
+                'to' => implode(',', $mail['recipients']),
+                'subject' => $mail['subject'],
+            ];
+        }
+
+        if ($foundEmails != $expectedEmailsArray) {
+            throw new \Exception(sprintf('The emails are not the expected ones "%s" (expected "%s")', var_export($foundEmails, true), var_export($expectedEmailsArray, true)));
+        }
+    }
+
+    /**
+     * @Then the plain text content of the message of id :id should be :
+     */
+    public function thePlainTextContentOfTheMessageOfIdShouldBe($id, PyStringNode $expectedContent)
+    {
+        $content = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.plain');
+        $expectedContentString = $expectedContent->getRaw();
+
+        $content = str_replace("\r\n", "\n", $content);
+
+        if ($content != $expectedContentString) {
+            throw new \Exception(sprintf("The content \n%s\nis not the expected one \n%s\n", var_export($content, true), var_export($expectedContentString, true)));
+        }
+    }
+
 }
