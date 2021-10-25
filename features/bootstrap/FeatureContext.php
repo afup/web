@@ -165,7 +165,7 @@ class FeatureContext implements Context
 
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
-            throw new \RuntimException(sprintf('Error : ' . curl_error($ch)));
+            throw new \RuntimeException(sprintf('Error : ' . curl_error($ch)));
         }
 
         curl_close($ch);
