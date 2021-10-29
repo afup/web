@@ -65,6 +65,11 @@ class Speaker implements NotifyPropertyInterface
     private $company;
 
     /**
+     * @var string
+     */
+    private $locality;
+
+    /**
      * @Assert\NotBlank()
      * @var string
      */
@@ -266,6 +271,25 @@ class Speaker implements NotifyPropertyInterface
     {
         $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocality()
+    {
+        return $this->locality;
+    }
+
+    /**
+     * @param string $locality
+     * @return Speaker
+     */
+    public function setLocality($locality)
+    {
+        $this->propertyChanged('locality', $this->locality, $locality);
+        $this->locality = $locality;
         return $this;
     }
 

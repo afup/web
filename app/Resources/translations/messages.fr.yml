@@ -3,6 +3,7 @@
 'Lastname': 'Nom'
 'Email': 'Email'
 'Company': 'Société'
+'Locality': 'Ville'
 'Biography': 'Biographie'
 'Twitter': 'Twitter'
 'mail.invitation.text': |

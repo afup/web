@@ -107,6 +107,7 @@ class SpeakerEditAction
             $speaker->setEmail($data->email);
             $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);
+            $speaker->setLocality($data->locality);
             $this->speakerRepository->save($speaker);
             if ($data->photo) {
                 if ($event->getId() < self::ID_FORUM_PHOTO_STORAGE) {

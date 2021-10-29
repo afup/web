@@ -34,6 +34,10 @@ class SpeakerFormData
      */
     public $company;
     /**
+     * @var string
+     */
+    public $locality;
+    /**
      * @Assert\NotBlank()
      * @var string
      */

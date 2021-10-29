@@ -194,6 +194,11 @@ SQL
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'ville',
+                'fieldName' => 'locality',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'biographie',
                 'fieldName' => 'biography',
                 'type' => 'string'
