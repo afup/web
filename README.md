@@ -29,6 +29,9 @@ Vous pouvez aussi y accéder directement via la commande: `docker/bin/mysql`
 
 * `make docker-stop` : éteint les containers en fonctionnement.
 * `make docker-down` : détruit les containers existants.
+* `docker/bin/mysql` : connexion à la base de données.
+* `docker/bin/bash` : PHP 5.6 cli.
+* `docker/bin/bashphp7` : PHP 7.0 cli.
 
 ### Configuration avancée
 
