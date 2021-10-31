@@ -57,6 +57,7 @@
                     <td class="single line right aligned">
                         {% if question.hasStatusWaiting %}
                             <a href="{{ url('admin_members_general_vote_open', {id: question.id}) }}"
+                               id="question-{{ question.id }}-open"
                                data-position="left center"
                                class="compact ui icon button confirmable"
                                data-tooltip="Ouvrir cette question aux votes"
@@ -64,6 +65,7 @@
                                 <i class="folder open icon"></i>
                             </a>
                             <a href="{{ url('admin_members_general_question_edit', {id: question.id}) }}"
+                               id="question-{{ question.id }}-edit"
                                data-position="left center"
                                class="compact ui icon button"
                                data-tooltip="Modifier cette question">
@@ -71,6 +73,7 @@
                             </a>
                         {% elseif question.hasStatusOpened %}
                             <a href="{{ url('admin_members_general_vote_close', {id: question.id}) }}"
+                               id="question-{{ question.id }}-close"
                                data-position="left center"
                                class="compact ui icon button confirmable"
                                data-tooltip="Fermer cette question aux votes"
@@ -83,6 +86,7 @@
 
                         {% if not question.hasVotes(row.results) %}
                             <a href="{{ url('admin_members_general_question_delete', {id: question.id}) }}"
+                               id="question-{{ question.id }}-delete"
                                data-position="left center"
                                class="compact ui icon button confirmable"
                                data-tooltip="Supprimer cette question aux votes"
