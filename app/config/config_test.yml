@@ -13,6 +13,10 @@ web_profiler:
     intercept_redirects: false
 
 parameters:
+    database_host: db
+    database_port: 3306
     database_name: web_test
+    database_user: root
+    database_password: root
     github_authenticator: "AppBundle\\Security\\TestGithubAuthenticator"
     slack_url: null

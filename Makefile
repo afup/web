@@ -57,7 +57,7 @@ docker-compose.override.yml:
 build: var/make/build ## Build the docker stack
 var/make/build: docker-compose.override.yml $(shell find docker -type f)
 	@$(call log,Building docker images ...)
-	DOCKER_BUILDKIT=1 $(DOCKER_COMPOSE) build --pull
+	$(DOCKER_COMPOSE) build --pull php httpd #nginx
 	@$(call touch,var/make/build)
 	@$(call log_success,Done)
 
@@ -78,7 +78,7 @@ yarn-shell: var/make/build ## Enter in the yarn container
 	@$(DOCKER_COMPOSE_RUN_YARN) ash
 
 start: var/make/start ## Start the docker stack
-var/make/start: var/make/build docker-compose.yml vendor node_modules
+var/make/start: var/make/build docker-compose.yml vendor htdocs/js_dist
 	@$(call log,Starting the stack ...)
 	$(DOCKER_COMPOSE) up -d
 	@$(MAKE) db
@@ -99,6 +99,8 @@ clean: ## Clean the docker stack
 	$(DOCKER_COMPOSE) down --remove-orphans
 	rm -rf vendor/* var/cache/* var/log/* var/make/* node_moddules/*
 	@$(call log_success,Done)
+
+deps: vendor node_modules ## Install dependencies
 
 vendor: var/make/build composer.lock composer.json  ## Install composer dependencies
 	@$(call log,Installing vendors ...)
@@ -148,7 +150,7 @@ unit-tests: vendor
 	@$(call log_success,Done)
 
 .PHONY: func-tests
-func-tests: vendor
+func-tests: var/make/start
 	@$(call log,Running func tests ...)
 	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/behat
 	@$(call log_success,Done)

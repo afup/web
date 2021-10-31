@@ -8,7 +8,7 @@ default:
         - Behat\MinkExtension\Context\MinkContext
   extensions:
     Behat\MinkExtension:
-      base_url:  'http://nginx:80'
+      base_url:  'http://httpd:80'
       files_path: '%paths.base%/tests/behat/files'
       sessions:
         default:

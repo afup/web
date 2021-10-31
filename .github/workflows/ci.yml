@@ -15,45 +15,33 @@ jobs:
  
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       - name: Tests - Unit
-        run: PHP_VERSION=${{ matrix.php }} DOCKER_BUILDKIT=1 make unit-tests
+        run: PHP_VERSION=${{ matrix.php }} make unit-tests
 
-#  lint:
-#    name: "Linter"
-#    runs-on: ubuntu-18.04
-#
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        php: ["5.6", "7.0"]
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Tests - CS Fixer
-#        run: PHP_VERSION=${{ matrix.php }} make code-style-check
-#
-#  functional:
-#    name: "Functional tests"
-#    runs-on: ubuntu-18.04
-#
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        php: ["5.6", "7.0"]
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Tests - Functional
-#        run: PHP_VERSION=${{ matrix.php }} make func-tests
+  lint:
+    name: "Linter"
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["5.6", "7.0"]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Tests - CS Fixer
+        run: PHP_VERSION=${{ matrix.php }} make code-style-check
+
+  functional:
+    name: "Functional tests"
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["5.6", "7.0"]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Tests - Functional
+        run: PHP_VERSION=${{ matrix.php }} make func-tests

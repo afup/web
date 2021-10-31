@@ -1,8 +1,8 @@
 <?php
-$configuration['bdd']['hote']='dbtest';
-$configuration['bdd']['base']='web';
-$configuration['bdd']['utilisateur']='afup';
-$configuration['bdd']['mot_de_passe']='afup';
+$configuration['bdd']['hote']='db';
+$configuration['bdd']['base']='web_tests';
+$configuration['bdd']['utilisateur']='root';
+$configuration['bdd']['mot_de_passe']='root';
 $configuration['web']['path']='/';
 
 $configuration['divers']['niveau_erreur']='32767';

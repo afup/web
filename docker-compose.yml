@@ -12,8 +12,6 @@ services:
     user: ${CURRENT_USER:-1000}:${CURRENT_GROUP:-1000}
     build:
       context: ./docker/php
-      cache_from: type=local,src=/tmp/.buildx-cache
-      cache_to: type=local,dest=/tmp/.buildx-cache
       args:
         PHP_VERSION: ${PHP_VERSION:-5.6}
     links:
@@ -29,13 +27,21 @@ services:
       - yarn
 #      - maildev
 
-  nginx:
+  httpd:
     build:
-      context: ./docker/nginx
+      context: ./docker/httpd
     volumes:
       - .:/app
     depends_on:
       - "php"
+
+#  nginx:
+#    build:
+#      context: ./docker/nginx
+#    volumes:
+#      - .:/app
+#    depends_on:
+#      - "php"
 
   yarn:
     user: ${FIXUID:-1000}:${FIXGID:-1000}
