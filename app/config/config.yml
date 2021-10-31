@@ -65,6 +65,8 @@ parameters:
                     url: '/admin/members/general_meeting_vote'
                     extra_routes:
                         - admin_members_general_vote_list
+                        - admin_members_general_question_add
+                        - admin_members_general_question_edit
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"

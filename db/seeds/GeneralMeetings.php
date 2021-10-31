@@ -15,10 +15,7 @@ class GeneralMeetings extends AbstractSeed
         ];
 
         $table = $this->table('afup_assemblee_generale');
-
-        $table->getAdapter()->execute('SET FOREIGN_KEY_CHECKS=0;');
         $table->truncate();
-        $table->getAdapter()->execute('SET FOREIGN_KEY_CHECKS=1;');
         $table
             ->insert($data)
             ->save()

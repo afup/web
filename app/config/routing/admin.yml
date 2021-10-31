@@ -73,6 +73,18 @@ admin_members_general_vote_list:
   path: /members/general_meeting_vote
   defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingVote\ListAction}
 
+admin_members_general_question_add:
+  path: /members/general_meeting_question/{date}/add
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingQuestion\AddAction}
+
+admin_members_general_question_edit:
+  path: /members/general_meeting_question/{id}/edit
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingQuestion\EditAction}
+
+admin_members_general_question_delete:
+  path: /members/general_meeting_question/{id}/delete
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingQuestion\DeleteAction}
+
 admin_members_general_vote_open:
   path: /members/general_meeting_vote/open
   defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingVote\OpenAction}

@@ -89,6 +89,30 @@ SQL
     }
 
     /**
+     * @param DateTimeInterface $date
+     * @return array|null
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findOneByDate(DateTimeInterface $date)
+    {
+        $query = $this->connection->prepare(<<<SQL
+SELECT * FROM afup_assemblee_generale
+WHERE afup_assemblee_generale.date = :date
+LIMIT 1
+SQL
+        );
+
+        $query->bindValue('date', $date->getTimestamp());
+        $query->execute();
+        $row = $query->fetch();
+
+        return is_array($row) ? [
+            'date' => DateTime::createFromFormat('U', $row['date']),
+            'description' => $row['description']
+        ] : null;
+    }
+
+    /**
      * @return int
      */
     public function countAttendeesAndPowers(DateTimeInterface $date)
