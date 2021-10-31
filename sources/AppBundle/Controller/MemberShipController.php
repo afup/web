@@ -659,6 +659,9 @@ class MemberShipController extends SiteBaseController
     private function prepareGeneralMeetingsReportsList()
     {
         $dir = $this->container->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . '/htdocs/uploads/general_meetings_reports';
+        if (!is_dir($dir)) {
+            return [];
+        }
 
         $finder = new Finder();
         $files = $finder->name("*.pdf")->in($dir);
