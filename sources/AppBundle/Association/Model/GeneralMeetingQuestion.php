@@ -2,7 +2,6 @@
 
 namespace AppBundle\Association\Model;
 
-use AppBundle\GeneralMeeting\GeneralMeeting;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 

@@ -36,5 +36,4 @@ class GeneralMeetingQuestionFormType extends AbstractType
             'data_class' => GeneralMeetingQuestion::class,
         ]);
     }
-
 }

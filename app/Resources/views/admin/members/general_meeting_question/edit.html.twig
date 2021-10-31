@@ -9,14 +9,14 @@
         <div class="ui form">
             <div class="field wide column">
                 {{ form_label(form.label) }}
-                {{ form_widget(form.label, {attr: {class: "inline fields"} }) }}
+                {{ form_widget(form.label, {attr: {class: 'inline fields'} }) }}
                 {{ form_errors(form.label) }}
             </div>
             <div class="field wide column inline fields">
                 <a href="{{ path('admin_members_general_vote_list', {
                     'date': form.vars.value.date|date('U')
                 }) }}" class="ui button">Retour</a>
-                {{ form_row(form.submit, {attr: {class: "ui primary button"}, label: "Modifier cette question"}) }}
+                {{ form_row(form.submit, {attr: {class: 'ui primary button'}, label: 'Modifier cette question'}) }}
             </div>
         </div>
         {{ form_end(form) }}

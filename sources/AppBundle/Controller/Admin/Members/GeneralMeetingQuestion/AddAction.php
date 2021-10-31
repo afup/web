@@ -56,12 +56,11 @@ class AddAction
 
         $question = new GeneralMeetingQuestion();
         $question->setDate($generalMeeting['date']);
-        $question->setCreatedAt(New \DateTime());
+        $question->setCreatedAt(new \DateTime());
 
         $form = $this->formFactory->create(GeneralMeetingQuestionFormType::class, $question);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->generalMeetingQuestionRepository->save($question);
             $this->flashBag->add('notice', 'La question a été ajoutée');
 
