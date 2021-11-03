@@ -1,6 +1,5 @@
 services:
   mariadb:
-    image: mariadb:10.0.29
     build: docker/mariadb
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -16,7 +15,7 @@ services:
         PHP_VERSION: ${PHP_VERSION:-5.6}
     links:
       - "mariadb:db"
-#      - "maildev:smtp"
+      - "mailcatcher:smtp"
     volumes:
       - .:/app
       - ~/.cache/composer:/tmp/composer
@@ -25,7 +24,7 @@ services:
     depends_on:
       - mariadb
       - yarn
-#      - maildev
+      - mailcatcher
 
   httpd:
     build:
@@ -42,3 +41,8 @@ services:
     volumes:
       - .:/app
       - ~/.cache/yarn:/home/node/.cache/yarn
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
