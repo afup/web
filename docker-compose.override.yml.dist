@@ -2,9 +2,6 @@ services:
   mariadb:
     ports:
       - "3606:3306"
-#  nginx:
-#    ports:
-#      - "9236:80"
   httpd:
     ports:
       - "9235:80"

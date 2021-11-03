@@ -5,6 +5,8 @@ RUN sed -i \
         #-e 's/^#\(Include .*httpd-ssl.conf\)/\1/' \
         -e '/LoadModule rewrite_module/s/^#//g' \
         -e '/LoadModule ssl_module/s/^#//g' \
+        -e '/LoadModule proxy_module/s/^#//g' \
+        -e '/LoadModule proxy_fcgi_module/s/^#//g' \
         conf/httpd.conf
 
 COPY httpd-vhosts.conf /usr/local/apache2/conf/extra/httpd-vhosts.conf

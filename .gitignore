@@ -16,6 +16,11 @@ deps.lock
 
 /bin/generate_vcards
 /bin/vobject
+/bin/atoum
+/bin/behat
+/bin/phinx
+/bin/php-cs-fixer
+/bin/simple-phpunit
 
 /htdocs/cache
 /htdocs/tmp/twig

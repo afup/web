@@ -57,7 +57,7 @@ docker-compose.override.yml:
 build: var/make/build ## Build the docker stack
 var/make/build: docker-compose.override.yml $(shell find docker -type f)
 	@$(call log,Building docker images ...)
-	$(DOCKER_COMPOSE) build --pull php httpd #nginx
+	$(DOCKER_COMPOSE) build --pull php httpd
 	@$(call touch,var/make/build)
 	@$(call log_success,Done)
 
@@ -97,7 +97,7 @@ clean: ## Clean the docker stack
 	@$(MAKE) stop
 	@$(call log,Cleaning the docker stack ...)
 	$(DOCKER_COMPOSE) down --remove-orphans
-	rm -rf vendor/* var/cache/* var/log/* var/make/* node_moddules/*
+	rm -rf vendor var/cache/* var/log/* var/make node_modules ht_docs/js_dist
 	@$(call log_success,Done)
 
 deps: vendor node_modules ## Install dependencies
@@ -123,8 +123,8 @@ db: var/make/db
 var/make/db: var/make/start
 	@$(call log,Preparing db ...)
 	$(DOCKER_COMPOSE_EXEC_PHP) waitforit -host=db -port=3306
-	$(DOCKER_COMPOSE_EXEC_PHP) ./vendor/bin/phinx migrate
-	$(DOCKER_COMPOSE_EXEC_PHP) ./vendor/bin/phinx seed:run
+	$(DOCKER_COMPOSE_EXEC_PHP) ./bin/phinx migrate
+	$(DOCKER_COMPOSE_EXEC_PHP) ./bin/phinx seed:run
 	@$(call touch,var/make/db)
 	@$(call log_success,Done)
 
@@ -132,25 +132,30 @@ db: var/make/db-test
 var/make/db-test: var/make/start
 	@$(call log,Preparing db test ...)
 	$(DOCKER_COMPOSE_EXEC_PHP) waitforit -host=db -port=3306
-	$(DOCKER_COMPOSE_EXEC_PHP) ./vendor/bin/phinx migrate
-	$(DOCKER_COMPOSE_EXEC_PHP) ./vendor/bin/phinx seed:run
+	$(DOCKER_COMPOSE_EXEC_PHP) ./bin/phinx migrate
+	$(DOCKER_COMPOSE_EXEC_PHP) ./bin/phinx seed:run
 	@$(call touch,var/make/db-test)
 	@$(call log_success,Done)
 
 .PHONY: code-style-check
 code-style-check: vendor
 	@$(call log,Running code-style check ...)
-	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/php-cs-fixer fix --dry-run -vv
+	$(DOCKER_COMPOSE_RUN_PHP) ./bin/php-cs-fixer fix --dry-run -vv
 	@$(call log_success,Done)
 
 .PHONY: unit-tests
 unit-tests: vendor
 	@$(call log,Running unit tests ...)
-	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/atoum
+	$(DOCKER_COMPOSE_RUN_PHP) ./bin/atoum
 	@$(call log_success,Done)
 
 .PHONY: func-tests
 func-tests: var/make/start
 	@$(call log,Running func tests ...)
-	$(DOCKER_COMPOSE_RUN_PHP) ./vendor/bin/behat
+	$(DOCKER_COMPOSE_RUN_PHP) ./bin/behat
 	@$(call log_success,Done)
+
+.PHONY: docker-logs
+docker-logs:
+	$(DOCKER_COMPOSE) logs -f
+	$(DOCKER_COMPOSE) logs -f

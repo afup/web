@@ -40,12 +40,12 @@ class FeatureContext implements Context
 
     private function migrateDb()
     {
-        $this->runCommand( ["./vendor/bin/phinx", "migrate", "-e", "test"]);
+        $this->runCommand( ["./bin/phinx", "migrate", "-e", "test"]);
     }
 
     private function seedRun()
     {
-        $this->runCommand( ["./vendor/bin/phinx", "seed:run", "-e", "test"]);
+        $this->runCommand( ["./bin/phinx", "seed:run", "-e", "test"]);
     }
 
     private function runCommand(array $command)
