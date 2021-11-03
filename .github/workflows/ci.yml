@@ -44,4 +44,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Tests - Functional
-        run: PHP_VERSION=${{ matrix.php }} make func-tests
+        run: PHP_VERSION=${{ matrix.php }} make init func-tests

@@ -54,6 +54,20 @@ docker-compose.override.yml:
 	cp docker-compose.override.yml.dist docker-compose.override.yml
 	@$(call log_success,Done)
 
+app/config/parameters.yml:
+	@$(call log,Installing app/config/parameters.yml ...)
+	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
+	@$(call log_success,Done)
+
+configs/application/config.php:
+	@$(call log,Installing configs/application/config.php ...)
+	cp configs/application/config.php.dist-docker configs/application/config.php
+	@$(call log_success,Done)
+
+.PHONY: init
+init: configs/application/config.php app/config/parameters.yml
+	@$(MAKE) db
+
 build: var/make/build ## Build the docker stack
 var/make/build: docker-compose.override.yml $(shell find docker -type f)
 	@$(call log,Building docker images ...)
@@ -81,7 +95,6 @@ start: var/make/start ## Start the docker stack
 var/make/start: var/make/build docker-compose.yml vendor htdocs/js_dist
 	@$(call log,Starting the stack ...)
 	$(DOCKER_COMPOSE) up -d
-	@$(MAKE) db
 	@$(call touch,var/make/start)
 	@$(call log_success,Done)
 
