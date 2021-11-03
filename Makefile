@@ -56,20 +56,16 @@ docker-compose.override.yml:
 
 app/config/parameters.yml:
 	@$(call log,Installing app/config/parameters.yml ...)
-	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
+	cp app/config/parameters.yml.dist app/config/parameters.yml
 	@$(call log_success,Done)
 
 configs/application/config.php:
 	@$(call log,Installing configs/application/config.php ...)
-	cp configs/application/config.php.dist-docker configs/application/config.php
+	cp configs/application/config.php.dist configs/application/config.php
 	@$(call log_success,Done)
 
-.PHONY: init
-init: configs/application/config.php app/config/parameters.yml
-	@$(MAKE) db
-
 build: var/make/build ## Build the docker stack
-var/make/build: docker-compose.override.yml $(shell find docker -type f)
+var/make/build: docker-compose.override.yml app/config/parameters.yml configs/application/config.php $(shell find docker -type f)
 	@$(call log,Building docker images ...)
 	$(DOCKER_COMPOSE) build --pull php httpd
 	@$(call touch,var/make/build)
@@ -139,15 +135,6 @@ var/make/db: var/make/start
 	$(DOCKER_COMPOSE_EXEC_PHP) ./bin/phinx migrate
 	$(DOCKER_COMPOSE_EXEC_PHP) ./bin/phinx seed:run
 	@$(call touch,var/make/db)
-	@$(call log_success,Done)
-
-db: var/make/db-test
-var/make/db-test: var/make/start
-	@$(call log,Preparing db test ...)
-	$(DOCKER_COMPOSE_EXEC_PHP) waitforit -host=db -port=3306
-	$(DOCKER_COMPOSE_EXEC_PHP) ./bin/phinx migrate
-	$(DOCKER_COMPOSE_EXEC_PHP) ./bin/phinx seed:run
-	@$(call touch,var/make/db-test)
 	@$(call log_success,Done)
 
 .PHONY: code-style-check
