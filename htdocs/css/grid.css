@@ -98,3 +98,9 @@ div.container:after {
         padding-right: 4px;
     }
 }
+
+@media (max-width: 991px) {
+    .col-md-6 {
+        width: 100%;
+    }
+}
