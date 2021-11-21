@@ -408,4 +408,7 @@ knpu_oauth2_client:
 ewz_recaptcha:
     public_key: '%recaptcha_public_key%'
     private_key: '%recaptcha_private_key%'
-    
+
+
+ekino_new_relic:
+    log_exceptions: true
