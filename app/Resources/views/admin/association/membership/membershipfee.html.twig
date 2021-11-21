@@ -48,6 +48,7 @@
                     </td>
                     <td class="txtright">{{ cotisation.montant|number_format(2, ',') }} &euro;</td>
                     <td style="text-align: right; white-space: nowrap">
+                        {% if cotisation.telecharger_facture %}
                         <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la cotisation">
                             <i class="fa fa-file"></i>
                             Télécharger la facture
@@ -56,6 +57,11 @@
                             <i class="fa fa-envelope"></i>
                             Recevoir par mail
                         </a>
+                        {% else %}
+                            <div title="Contactez la personne qui à le droit de gérer le compte de l'entreprise">
+                                Facture non accessible <i class="fa fa-question-circle"></i>
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

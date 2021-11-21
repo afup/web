@@ -345,7 +345,7 @@ class MemberShipController extends SiteBaseController
             $endSubscription = $cotisations->finProchaineCotisation($cotisation);
             $message = sprintf(
                 'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
-        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
+        Si vous renouvelez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
                 number_format($cotisation['montant'], 2, ',', ' '),
                 EURO,
                 date("d/m/Y", $cotisation['date_fin']),
@@ -353,17 +353,21 @@ class MemberShipController extends SiteBaseController
             );
         }
 
-        $cotisation_physique = $cotisations->obtenirListe(0, $user->getId());
-        $cotisation_morale = $cotisations->obtenirListe(1, $user->getCompanyId());
+        $cotisations_physique = $cotisations->obtenirListe(0, $user->getId());
+        $cotisations_morale = $cotisations->obtenirListe(1, $user->getCompanyId());
 
-        if (is_array($cotisation_morale) && is_array($cotisation_physique)) {
-            $cotisations = array_merge($cotisation_physique, $cotisation_morale);
-        } elseif (is_array($cotisation_morale)) {
-            $cotisations = $cotisation_morale;
-        } elseif (is_array($cotisation_physique)) {
-            $cotisations = $cotisation_physique;
+        if (is_array($cotisations_morale) && is_array($cotisations_physique)) {
+            $liste_cotisations = array_merge($cotisations_physique, $cotisations_morale);
+        } elseif (is_array($cotisations_morale)) {
+            $liste_cotisations = $cotisations_morale;
+        } elseif (is_array($cotisations_physique)) {
+            $liste_cotisations = $cotisations_physique;
         } else {
-            $cotisations = [];
+            $liste_cotisations = [];
+        }
+
+        foreach ($liste_cotisations as $k => $cotisation) {
+            $liste_cotisations[$k]['telecharger_facture'] = $cotisations->isCurrentUserAllowedToReadInvoice($cotisation['id']);
         }
 
         if ($user->getCompanyId() > 0) {
@@ -396,7 +400,7 @@ class MemberShipController extends SiteBaseController
             ':admin/association/membership:membershipfee.html.twig',
             [
                 'title' => 'Ma cotisation',
-                'cotisations' => $cotisations,
+                'cotisations' => $liste_cotisations,
                 'time' => time(),
                 'montant' => $montant,
                 'libelle' => $libelle,
