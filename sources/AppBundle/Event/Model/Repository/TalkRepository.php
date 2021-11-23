@@ -266,7 +266,7 @@ class TalkRepository extends Repository implements MetadataInitializer
 
         $query = $this->getPreparedQuery(
             'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes, talk.youtube_id,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.email, speaker.conferencier_id 
+            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.ville, speaker.societe, speaker.email, speaker.conferencier_id
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
