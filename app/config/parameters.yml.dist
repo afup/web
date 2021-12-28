@@ -69,3 +69,5 @@ parameters:
     paybox_site: "1999888"
     paybox_rang: "32"
     paybox_identifiant: "110647233"
+
+    blog_api_key: 123456
