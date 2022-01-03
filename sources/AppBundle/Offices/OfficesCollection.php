@@ -273,6 +273,7 @@ class OfficesCollection
                 'meetup_id' => '22364687',
                 'logo_url' => '/images/offices/rennes.svg',
                 'twitter' => 'AFUP_Rennes',
+                'blog_url' => 'https://rennes.afup.org/',
                 'youtube' => 'https://www.youtube.com/channel/UCv1VGfqKhygjTOZkdVUWfpQ',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/rennes/workadventure',
                 'map' => [
