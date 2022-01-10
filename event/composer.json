@@ -1,6 +1,6 @@
 {
     "require": {
-        "johnpbloch/wordpress": "5.7.2",
+        "johnpbloch/wordpress": "5.8.3",
         "wpackagist-plugin/cookie-law-info" : "1.5.3",
         "wpackagist-plugin/eu-cookie-law" : "3.1.6",
         "wpackagist-plugin/custom-javascript-editor" : "1.1",
