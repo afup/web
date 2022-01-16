@@ -7,6 +7,7 @@ class Users extends AbstractSeed
     const ID_USER_ADMIN = 1;
     const ID_USER_EXPIRIE = 2;
     const ID_USER_PERSONNE_MORALE = 3;
+    const ID_USER_PERSONNE_MORALE_NON_MANAGER = 4;
 
     const ID_PERSONNE_MORALE_MY_CORP = 1;
 
@@ -68,6 +69,17 @@ class Users extends AbstractSeed
                 'prenom' => 'Edmond',
                 'email' => 'edmond.dupont@mycorp.fr',
                 'roles' => '["ROLE_COMPANY_MANAGER"]',
+                'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
+            ],
+            [
+                'id'    => self::ID_USER_PERSONNE_MORALE_NON_MANAGER,
+                'login' => 'raoul',
+                'mot_de_passe' => md5('raoul'),
+                'nom' => 'Raoul',
+                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
+                'prenom' => 'Jan',
+                'email' => 'jean.raoul@mycorp.fr',
+                'roles' => '[]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
             ],
         ];
