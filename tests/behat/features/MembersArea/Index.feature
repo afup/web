@@ -64,6 +64,6 @@ Feature: Espace membre, accueil
     Then I should see "Cotisations"
     When I follow "Se mettre à jour"
     Then I should see "Payer ma cotisation"
-    Then I should see "Télécharger la facture"
+    Then I should not see "Télécharger la facture"
     When I am on "/member/membership-fee/download?id=3"
     Then the response status code should be 403
