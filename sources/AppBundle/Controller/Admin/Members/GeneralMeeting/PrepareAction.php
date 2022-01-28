@@ -50,7 +50,7 @@ class PrepareAction
 
                 return new RedirectResponse($request->getRequestUri());
             }
-            $this->flashBag->add('erreur', 'Une erreur est survenue lors de la préparation des personnes physiques');
+            $this->flashBag->add('error', 'Une erreur est survenue lors de la préparation des personnes physiques');
         }
 
         return new Response($this->twig->render('admin/members/general_meeting/prepare.html.twig', [
