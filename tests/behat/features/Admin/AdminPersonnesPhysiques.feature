@@ -22,7 +22,8 @@ Feature: Administration - Partie Personnes physiques
     Then I should not see "Cette valeur ne doit pas être vide"
     # on vérifie qu'il est dans la liste
     When I follow "Personnes physiques"
-    And I follow "Afficher aussi les personnes physiques inactives"
+    And I check "alsoDisplayInactive"
+    And I press "Filtrer"
     Then I should see "Mon prénom"
     # on supprime la personne
     When I follow "supprimer_3"
