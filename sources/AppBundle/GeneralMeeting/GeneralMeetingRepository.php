@@ -308,6 +308,22 @@ SQL
     }
 
     /**
+     * @param DateTimeInterface $date
+     * @param string $description
+     * @return bool
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function save(DateTimeInterface $date, $description)
+    {
+        $query = $this->connection->prepare('UPDATE afup_assemblee_generale SET `description` = :description
+            WHERE `date` = :date');
+        $query->bindValue('date', $date->getTimestamp());
+        $query->bindValue('description', $description);
+
+        return $query->execute();
+    }
+
+    /**
      * @param int $personId
      * @param int $presence
      * @param int $powerId

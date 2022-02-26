@@ -11,9 +11,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-class PrepareAction
+class EditAction
 {
     use DbLoggerTrait;
 
@@ -25,35 +27,47 @@ class PrepareAction
     private $twig;
     /** @var GeneralMeetingRepository */
     private $generalMeetingRepository;
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
 
     public function __construct(
         GeneralMeetingRepository $generalMeetingRepository,
         FormFactoryInterface $formFactory,
         FlashBagInterface $flashBag,
-        Environment $twig
+        Environment $twig,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->generalMeetingRepository = $generalMeetingRepository;
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
         $this->twig = $twig;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request)
     {
-        $form = $this->formFactory->create(PrepareFormType::class, ['date' => new DateTime()]);
+        $date = new DateTime('@' . $request->query->get('date'));
+
+        $generaleMeeting = $this->generalMeetingRepository->findOneByDate($date);
+        if (null === $generaleMeeting) {
+            throw new NotFoundHttpException(sprintf('General meeting with date "%d" not found', $date->getTimestamp()));
+        }
+        $form = $this->formFactory->create(PrepareFormType::class, $generaleMeeting, ['without_date' => true]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            if ($this->generalMeetingRepository->prepare($data['date'], $data['description'])) {
-                $this->log('Ajout de la préparation des personnes physiques à l\'assemblée générale');
-                $this->flashBag->add('notice', 'La préparation des personnes physiques a été ajoutée');
 
-                return new RedirectResponse($request->getRequestUri());
-            }
-            $this->flashBag->add('error', 'Une erreur est survenue lors de la préparation des personnes physiques');
+            $this->generalMeetingRepository->save($generaleMeeting['date'], $data['description']);
+
+            $this->flashBag->add('success', 'Description enregistrée');
+            return new RedirectResponse($this->urlGenerator->generate('admin_members_general_meeting_edit', [
+                'date' => $date->getTimestamp()
+            ]));
         }
 
-        return new Response($this->twig->render('admin/members/general_meeting/prepare.html.twig', [
+        return new Response($this->twig->render('admin/members/general_meeting/edit.html.twig', [
             'form' => $form->createView(),
         ]));
     }

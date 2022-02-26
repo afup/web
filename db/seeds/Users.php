@@ -1,5 +1,6 @@
 <?php
 
+use AppBundle\Association\Model\User;
 use Phinx\Seed\AbstractSeed;
 
 class Users extends AbstractSeed
@@ -8,6 +9,7 @@ class Users extends AbstractSeed
     const ID_USER_EXPIRIE = 2;
     const ID_USER_PERSONNE_MORALE = 3;
     const ID_USER_PERSONNE_MORALE_NON_MANAGER = 4;
+    const ID_USER_PERSONNE_PHYSIQUE = 5;
 
     const ID_PERSONNE_MORALE_MY_CORP = 1;
 
@@ -81,6 +83,17 @@ class Users extends AbstractSeed
                 'email' => 'jean.raoul@mycorp.fr',
                 'roles' => '[]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
+            ],
+            [
+                'id'    => self::ID_USER_PERSONNE_PHYSIQUE,
+                'login' => 'paul',
+                'mot_de_passe' => md5('paul'),
+                'nom' => 'Paul',
+                'prenom' => 'Personne',
+                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
+                'email' => 'paul.personne@mycorp.fr',
+                'roles' => '[]',
+                'etat' => User::STATUS_ACTIVE
             ],
         ];
 

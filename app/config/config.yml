@@ -59,6 +59,7 @@ parameters:
                     extra_routes:
                         - admin_members_general_meeting
                         - admin_members_general_meeting_prepare
+                        - admin_members_general_meeting_edit
                 assemblee_generale_votes:
                     nom: 'Assemblée générale - votes'
                     niveau: 'ROLE_ADMIN'
