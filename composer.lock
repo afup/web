@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "814cc5e0587d800884c182588be58176",
+    "content-hash": "474e590136f4222c76bb64ccb6f628b0",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -3155,9 +3155,7 @@
             "version": "v1.10.9",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip"
             },
             "type": "library",
             "autoload": {
@@ -4382,9 +4380,7 @@
             "version": "1.53",
             "dist": {
                 "type": "zip",
-                "url": "http://www.fpdf.org/en/dl.php?v=153&f=zip",
-                "reference": null,
-                "shasum": null
+                "url": "http://www.fpdf.org/en/dl.php?v=153&f=zip"
             },
             "type": "library",
             "autoload": {
@@ -4395,27 +4391,22 @@
         },
         {
             "name": "smarty/smarty",
-            "version": "v2.6.25",
+            "version": "v2.6.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smarty-php/smarty.git",
-                "reference": "de8354e152b60c83858ba46be1145f9faa35b7be"
+                "reference": "533fa2abe308dcc009c7bdab977d530b32408346"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/de8354e152b60c83858ba46be1145f9faa35b7be",
-                "reference": "de8354e152b60c83858ba46be1145f9faa35b7be",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/533fa2abe308dcc009c7bdab977d530b32408346",
+                "reference": "533fa2abe308dcc009c7bdab977d530b32408346",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.6.x-dev"
-                }
-            },
             "autoload": {
                 "classmap": [
                     "libs/Smarty.class.php",
@@ -4442,7 +4433,13 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-10-30T23:52:59+00:00"
+            "support": {
+                "forum": "http://www.smarty.net/forums/",
+                "irc": "irc://irc.freenode.org/smarty",
+                "issues": "http://code.google.com/p/smarty-php/issues/list",
+                "source": "https://github.com/smarty-php/smarty/tree/v2.6.33"
+            },
+            "time": "2021-10-23T12:46:52+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -5560,9 +5557,7 @@
             "version": "v2.0.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip"
             },
             "type": "library",
             "autoload": {
@@ -5576,9 +5571,7 @@
             "version": "4.0.2",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip"
             },
             "type": "library",
             "autoload": {
@@ -6447,5 +6440,6 @@
         "ext-json": "*",
         "ext-curl": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
 }
