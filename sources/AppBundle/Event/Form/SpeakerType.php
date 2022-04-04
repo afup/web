@@ -38,6 +38,7 @@ class SpeakerType extends AbstractType
             ->add('email', EmailType::class)
             ->add('company', TextType::class, ['required' => false])
             ->add('locality', TextType::class, ['required' => false, 'help' => 'Indiquer votre ville nous permet de mieux anticiper les déplacements'])
+            ->add('phone_number', TextType::class, ['required' => false, 'property_path' => 'phoneNumber', 'label' => 'Phone', 'help' => 'Utilisé uniquement pour vous contacter avant et durant de l\'événement.'])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
         ;

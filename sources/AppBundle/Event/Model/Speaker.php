@@ -115,6 +115,11 @@ class Speaker implements NotifyPropertyInterface
     private $hotelNights;
 
     /**
+     * @var string|null
+     */
+    private $phoneNumber;
+
+    /**
      * @return int
      */
     public function getId()
@@ -291,6 +296,23 @@ class Speaker implements NotifyPropertyInterface
         $this->propertyChanged('locality', $this->locality, $locality);
         $this->locality = $locality;
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * @param string|null $phoneNumber
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->propertyChanged('phoneNumber', $this->phoneNumber, $phoneNumber);
+        $this->phoneNumber = $phoneNumber;
     }
 
     /**

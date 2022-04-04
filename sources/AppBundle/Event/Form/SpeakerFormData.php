@@ -55,4 +55,9 @@ class SpeakerFormData
      * @var null|GithubUser
      */
     public $githubUser;
+
+    /**
+     * @var string
+     */
+    public $phoneNumber;
 }

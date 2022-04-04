@@ -54,7 +54,8 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         speaker.will_attend_speakers_diner,
         speaker.has_special_diet,
         speaker.special_diet_description,
-        speaker.hotel_nights
+        speaker.hotel_nights,
+        speaker.phone_number
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
@@ -196,6 +197,11 @@ SQL
             ->addField([
                 'columnName' => 'ville',
                 'fieldName' => 'locality',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'phone_number',
+                'fieldName' => 'phoneNumber',
                 'type' => 'string'
             ])
             ->addField([
