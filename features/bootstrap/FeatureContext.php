@@ -137,6 +137,14 @@ class FeatureContext implements Context
     }
 
     /**
+     * @Then the response header :arg1 should match :arg2
+     */
+    public function assertResponseHeaderMatch($headerName, $regExpExpectedValue)
+    {
+        $this->minkContext->assertSession()->responseHeaderMatches($headerName, $regExpExpectedValue);
+    }
+
+    /**
      * @When I follow the button of tooltip :arg1
      */
     public function clickLinkOfTooltip($tooltip)
