@@ -8,7 +8,8 @@
         <thead>
             <tr>
                 <th data-tf-filter-type="input">Speaker</th>
-                <th data-tf-filter-type="select"class="center aligned">Venue au restaurant ?</th>
+                <th data-tf-filter-type="select" class="center aligned">{{ 'Phone'|trans }}</th>
+                <th data-tf-filter-type="select" class="center aligned">Venue au restaurant ?</th>
                 <th data-tf-filter-type="select" class="center aligned">A un régime spécifique ?</th>
                 <th class="center aligned">Précisions régime</th>
                 <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel la veille ?</th>
@@ -22,6 +23,13 @@
         {% for speaker in speakers %}
             <tr>
                 <td>{{ speaker.speaker.label }}</td>
+                <td class="center aligned">
+                    {% if speaker.speaker.phoneNumber is empty %}
+                        <span class="ui red label">N/A</span>
+                    {% else %}
+                        {{ speaker.speaker.phoneNumber }}
+                    {% endif %}
+                </td>
                 <td class="center aligned">
                     <span class="ui {% if speaker.speaker.willAttendSpeakersDiner is null %}red{% endif %} label">
                     {% if speaker.speaker.willAttendSpeakersDiner is null %}

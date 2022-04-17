@@ -8,6 +8,7 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SpeakerInfos\Form\HotelReservationType;
+use AppBundle\SpeakerInfos\Form\SpeakersContactType;
 use AppBundle\SpeakerInfos\Form\SpeakersDinerType;
 use DateTime;
 use DateTimeImmutable;
@@ -60,6 +61,20 @@ class SpeakerPage
         );
 
         $now = new DateTime('now');
+
+        $speakersContactDefaults = [
+            'phone_number' => $speaker->getPhoneNumber()
+        ];
+        $speakersContactType = $this->formFactory->create(SpeakersContactType::class, $speakersContactDefaults);
+        $speakersContactType->handleRequest($request);
+        if ($speakersContactType->isValid()) {
+            $speakersContactData = $speakersContactType->getData();
+            $speaker->setPhoneNumber($speakersContactData['phone_number']);
+            $this->speakerRepository->save($speaker);
+            $this->flashBag->add('notice', 'Informations de contact enregistrées');
+
+            return new RedirectResponse($this->urlGenerator->generate('speaker-infos', ['eventSlug' => $event->getPath()]));
+        }
 
         $speakersDinerDefaults = [
             'will_attend' => $speaker->getWillAttendSpeakersDiner(),
@@ -124,6 +139,7 @@ class SpeakerPage
             'should_display_hotel_reservation_form' => $shouldDisplayHotelReservationForm,
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
+            'speakers_contact_form' => $speakersContactType->createView(),
             'day_before_event' => DateTimeImmutable::createFromMutable($event->getDateStart())->modify('- 1 day'),
         ]));
     }
