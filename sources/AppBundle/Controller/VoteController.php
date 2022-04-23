@@ -8,9 +8,11 @@ use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
+use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
+use AppBundle\Notifier\SlackNotifier;
 use CCMBenchmark\Ting;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +36,7 @@ class VoteController extends EventBaseController
         }
 
         /**
-         * @var $talkRepository \AppBundle\Event\Model\Repository\TalkRepository
+         * @var $talkRepository TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
 
@@ -80,7 +82,7 @@ class VoteController extends EventBaseController
      * @param string $eventSlug
      * @param int $talkId
      * @param Vote $vote
-     * @return Form
+     * @return FormInterface
      */
     private function createVoteForm($eventSlug, $talkId, Vote $vote)
     {
@@ -89,6 +91,7 @@ class VoteController extends EventBaseController
         }
 
         $vote->setSessionId($talkId);
+
         return $this
             ->formBuilder->create(
                 'vote' . $talkId,
@@ -117,6 +120,7 @@ class VoteController extends EventBaseController
         if ($form->isSubmitted() === false) {
             return new JsonResponse(['errors' => ['Form not submitted']], Response::HTTP_BAD_REQUEST);
         }
+
         if ($form->isValid() === false) {
             $errors = [];
             foreach ($form->getErrors(true) as $error) {
@@ -126,30 +130,21 @@ class VoteController extends EventBaseController
             return new JsonResponse(['errors' => $errors], Response::HTTP_BAD_REQUEST);
         }
 
-
-        /**
-         * @var $talkRepository \AppBundle\Event\Model\Repository\TalkRepository
-         */
-        $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $talk = $talkRepository->getOneBy(['id' => $talkId]);
-        if ($talk === null) {
+        $talk = $this->findTalk($talkId);
+        if (!$talk) {
             return new JsonResponse(['errors' => ['Talk does not exists']], Response::HTTP_BAD_REQUEST);
         }
 
-        /**
-         * @var $voteRepository VoteRepository
-         */
+        /** @var $voteRepository VoteRepository */
         $voteRepository = $this->get('ting')->get(VoteRepository::class);
-        /**
-         * @var $vote Vote
-         */
+        /** @var $vote Vote */
         $vote = $form->getData();
         $vote->setSubmittedOn(new \DateTime());
 
         try {
             $vote->setTalk($talk);
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($vote) {
-                $this->get(\AppBundle\Notifier\SlackNotifier::class)->notifyVote($vote);
+                $this->get(SlackNotifier::class)->notifyVote($vote);
             });
             $voteRepository->upsert($vote);
         } catch (Ting\Exception $e) {
@@ -172,5 +167,22 @@ class VoteController extends EventBaseController
             'event' => $event,
             'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
         ]);
+    }
+
+    /**
+     * @param $talkId
+     * @return Talk|false
+     */
+    private function findTalk($talkId)
+    {
+        /** @var $talkRepository TalkRepository */
+        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+        /** @var Talk $talk */
+        $talk = $talkRepository->getOneBy(['id' => $talkId]);
+        if ($talk) {
+            return $talk;
+        }
+
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 Feature: Event pages - CFP
 
   @reloadDbWithTestData
-  Scenario: On se crée son profil Speaker
+  Scenario: On se crée son profil speaker userGithub1
     Given I am on "/event/forum/cfp"
     Then I should see "Oauth login test"
     When I follow "Connect as userGithub1"
@@ -19,7 +19,7 @@ Feature: Event pages - CFP
     And I press "Sauvegarder"
     Then I should see "Profil sauvegardé."
 
-  Scenario: Sans proposition on voit un mesage défié
+  Scenario: Sans proposition on voit un message
     Given I am on "/event/forum/cfp"
     Then I should see "Oauth login test"
     When I follow "Connect as userGithub2"
@@ -28,7 +28,7 @@ Feature: Event pages - CFP
     Then I should see "Les nouvelles conférences à noter"
     And I should see "Il n'y a plus aucune conférence à noter !"
 
-  Scenario: On Crée un nouvelle proposition
+  Scenario: On crée une nouvelle proposition en tant que userGithub1 mais on ne peut pas la noter
     Given I am on "/event/forum/cfp"
     Then I should see "Oauth login test"
     When I follow "Connect as userGithub1"
@@ -39,8 +39,12 @@ Feature: Event pages - CFP
     And I fill in "talk[abstract]" with "L'histoire des poissons rouges à travers les ages"
     And I check "talk[codeOfConduct]"
     And I press "Sauvegarder"
+    When I am on "/event/forum/cfp"
+    Then I should see "Généalogie des poissons rouges"
+    When I am on "/event/forum/vote"
+    Then I should not see "Généalogie des poissons rouges"
 
-  Scenario: On voit la nouvelle proposition en tant que user 2
+  Scenario: On voit la nouvelle proposition en tant que userGithub2
     Given I am on "/event/forum/cfp"
     Then I should see "Oauth login test"
     When I follow "Connect as userGithub2"
@@ -48,7 +52,3 @@ Feature: Event pages - CFP
     When I follow "Voter pour les conférences"
     Then I should see "Les nouvelles conférences à noter"
     And I should see "Généalogie des poissons rouges"
-
-
-
-
