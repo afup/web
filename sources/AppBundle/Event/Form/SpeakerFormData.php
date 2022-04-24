@@ -50,7 +50,7 @@ class SpeakerFormData
      * @Assert\File(mimeTypes={"image/jpeg","image/png"})
      * @var UploadedFile|null
      */
-    public $photo;
+    public $photoFile;
     /**
      * @var null|GithubUser
      */

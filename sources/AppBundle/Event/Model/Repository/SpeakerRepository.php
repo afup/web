@@ -87,6 +87,29 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    public function getFromLastEventAndUserId($eventId, $githubUserId)
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT afup_conferenciers.*
+        FROM afup_conferenciers
+        JOIN afup_forum ON (afup_forum.id = afup_conferenciers.id_forum)
+        WHERE afup_conferenciers.id_forum != :eventId
+        AND afup_conferenciers.user_github = :userGithub
+        GROUP BY afup_conferenciers.conferencier_id, afup_forum.date_debut
+        ORDER BY afup_forum.date_debut DESC
+        LIMIT 1
+        '
+        )->setParams(['eventId' => $eventId, 'userGithub' => $githubUserId]);
+
+        $speaker = $query->query($this->getCollection(new HydratorSingleObject()));
+
+        if ($speaker->count() === 0) {
+            return null;
+        }
+
+        return $speaker->first();
+    }
+
     /**
      * @param Event $event
      * @param string $email

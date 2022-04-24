@@ -81,8 +81,8 @@ class SpeakerAddAction
             $speaker->setCompany($data->company);
             $speaker->setPhoneNumber($data->phoneNumber);
             $this->speakerRepository->save($speaker);
-            if (null !== $data->photo) {
-                $fileName = $this->photoStorage->store($data->photo, $speaker);
+            if (null !== $data->photoFile) {
+                $fileName = $this->photoStorage->store($data->photoFile, $speaker);
                 $speaker->setPhoto($fileName);
                 $this->speakerRepository->save($speaker);
             }
