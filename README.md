@@ -8,7 +8,6 @@ Vous retrouverez les ports dans le fichier `docker-compose.override.yml`
 Par défaut:
 * Site AFUP : <https://localhost:9205/>
 * Planète PHP : <https://localhost:9215/>
-* Event : <https://localhost:9225/>
 * Mailcatcher: <http://localhost:1181/>
 
 _Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.override.yml`._
@@ -56,9 +55,9 @@ Config par défaut:
 # Paiements avec Paybox
 
 Il est possible de tester les paiements Paybox en environnement de développement.
-Pour cela, les identifiant, site et rang [de test](www1.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier parameters.yml par défaut.
+Pour cela, les identifiant, site et rang [de test](https://www.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier parameters.yml par défaut.
 
-Ensuite pour le paiement il faut utiliser ces informations [de carte](http://www1.paybox.com/espace-integrateur-documentation/cartes-de-tests/) (celle _"Carte participant au programme 3-D Secure (enrôlée)"_) : 
+Ensuite pour le paiement il faut utiliser ces informations [de carte](https://www.paybox.com/espace-integrateur-documentation/cartes-de-tests/) (celle _"Carte participant au programme 3-D Secure (enrôlée)"_) : 
 * Numéro de carte : `1111 2222 3333 4444`
 * Validité : `12/25`
 * CVV : `123`
@@ -73,8 +72,30 @@ Après le paiement paybox effectue un retour sur le serveur et c'est suite à ce
 bin/console dev:callback-paybox-cotisation "https://localhost:9206/association/paybox-redirect?total=3000&cmd=C2020-150120201239-0-770-GALLO-E4F&autorisation=XXXXXX&transaction=588033888&status=00000"
 ```
 
-### Wordpress event.afup.org
-Le blog wordpress est géré à l'aide de composer.
+## Connection GitHub (pour le CFP)
 
-Pour mettre à jour les dépendances, il faut utiliser la commande suivante: `docker run --rm --entrypoint php --user $(id -u):$(id -g) --volume $(pwd):/project herloct/composer:1.4.2-php5.6 -ddate.timezone=Europe/Paris /usr/local/bin/composer update --ignore-platform-reqs`
+### Créer une application GitHub : 
 
+Aller sur [Register a new OAuth application](https://github.com/settings/applications/new)
+
+Créer une application avec ces paramètres :
+* Application name: `AFUP/Web dev`
+* Homepage URL: `https://localhost:9205/`
+* Authorization callback URL: `https://localhost:9205/connect/github/check`
+
+Valider avec le bouton `Register application` 
+
+Récupérer le `Client ID`et le `Client secret`
+
+Mettre ces 2 informations dans le fichier
+```yaml
+# app/config/parameters.yml
+
+parameters:
+
+    # ...
+
+    # GitHub's connection details
+    github_client_id: <Client ID GitHub>
+    github_client_secret: <Client secret GitHub>
+```
