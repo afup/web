@@ -1,26 +1,7 @@
-Feature: Administration - Partie Evenements
+Feature: Administration - Événements - Tokens Sponsors
 
   @reloadDbWithTestData
-  Scenario: Accès à la liste à l'ajout d'une inscription
-    Given I am logged in as admin and on the Administration
-    And I follow "Inscriptions"
-    Then the ".content h2" element should contain "Inscriptions"
-    # ajout d'une rubrique
-    When I follow "Ajouter"
-    Then I should see "Ajouter une inscription pour le forum"
-    Then The "civilite" field should only contain the follow values '["M.", "Mme"]'
-    When I select "2" from "type_inscription"
-    And I fill in "nom" with "Nom participant"
-    And I fill in "prenom" with "Prénom participant"
-    And I fill in "email" with "nomparticipant@gmail.com"
-    And I select "2" from "type_reglement"
-    And I press "Soumettre"
-    Then I should see "L'inscription a été ajoutée"
-    And I should see "Inscriptions"
-    And I should see "Prénom participant Nom participant"
-
-
-  @reloadDbWithTestData
+  @clearEmails
   Scenario: Tickets sponsors
     Given I am logged in as admin and on the Administration
     And I follow "Tokens sponsors"
@@ -52,3 +33,11 @@ Feature: Administration - Partie Evenements
     And I fill in "sponsor_ticket[lastname]" with "Prénom personne invitée modifée"
     And I press "Enregistrer"
     Then I should see "Places disponibles: 1 / 2 "
+    # Envoi de l'email de rappel
+    When I am on "/admin/event/sponsor"
+    Then I follow "Envoyer le mail de rappel"
+    And I should see "1 mails de relance ont été envoyés"
+    And I should only receive the following emails:
+      | to                    | subject                                                      |
+      | <testToken1@mail.com> | Toutes les informations concernant votre sponsoring du forum |
+      | <testToken1@mail.com> | Sponsor: enregistrez-vous pour le forum                      |

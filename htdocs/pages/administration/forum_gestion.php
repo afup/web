@@ -51,8 +51,8 @@ if ($action == 'ajouter') {
     $formulaire->addElement('hidden', 'id', $_GET['id']);
 }
 
-$formulaire->addElement('header', '', "Gestion d'événément");
-$formulaire->addElement('text', 'titre', "Titre de l'événément", ['size' => 30, 'maxlength' => 100]);
+$formulaire->addElement('header', '', "Gestion d'événement");
+$formulaire->addElement('text', 'titre', "Titre de l'événement", ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'path', 'Chemin du template', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('static', 'info', '',
     '<i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>');
