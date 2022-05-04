@@ -220,6 +220,32 @@ class FeatureContext implements Context
     }
 
     /**
+     * @Then the checksum of the attachment :filename of the message of id :id should be :md5sum
+     */
+    public function theChecksumOfTheAttachmntOfTheMessagOfIdShouldBe($filename, $id, $md5sum)
+    {
+        $infos = json_decode(file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.json'), true);
+
+        $cid = null;
+        foreach ($infos['attachments'] as $attachment) {
+            if ($attachment['filename'] == $filename) {
+                $cid = $attachment['cid'];
+            }
+        }
+
+        if (null === $cid) {
+          throw new \Exception(sprintf("Attachment with name %s not found", $filename));
+        }
+
+        $attachmentContent = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '/parts/' . $cid);
+        $actualMd5sum = md5($attachmentContent);
+
+        if ($actualMd5sum != $md5sum) {
+            throw new \Exception(sprintf("The md5sum of %s, if not %s (found %s)", $filename, $md5sum, $actualMd5sum));
+        }
+    }
+
+    /**
      * @Then the plain text content of the message of id :id should be :
      */
     public function thePlainTextContentOfTheMessageOfIdShouldBe($id, PyStringNode $expectedContent)
