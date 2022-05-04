@@ -71,7 +71,7 @@ test:
 	./bin/php-cs-fixer fix --dry-run -vv
 
 
-test-functional: data config
+test-functional: data config htdocs/uploads
 	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest mailcatcher
 	CURRENT_UID=$(CURRENT_UID) docker-compose up -d dbtest apachephptest mailcatcher
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp ./bin/behat
@@ -80,6 +80,9 @@ test-functional: data config
 data:
 	mkdir data
 	mkdir data/composer
+
+htdocs/uploads:
+	mkdir htdocs/uploads
 
 hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 
