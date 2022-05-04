@@ -48,6 +48,15 @@ class FeatureContext implements Context
         $this->runCommand( ["./bin/phinx", "seed:run", "-e", "test"]);
     }
 
+    /**
+     * @BeforeScenario @clearAllMailInscriptionAttachments
+     */
+    public function beforeScenarioClearAllMailInscriptionAttachments()
+    {
+        $filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        $filesystem->remove(__DIR__ . '/../../htdocs/uploads/mail_inscription_attachment');
+    }
+
     private function runCommand(array $command)
     {
         $process = new Process($command);
