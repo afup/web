@@ -1,6 +1,7 @@
 Feature: Administration - Événements - Gestions Événements
 
   @reloadDbWithTestData
+  @clearEmails
   Scenario: On crée un nouvel événement vide
     Given I am logged in as admin and on the Administration
     And I follow "Gestion événements"
@@ -111,3 +112,25 @@ Feature: Administration - Événements - Gestions Événements
     And I should see "999"
     And I should see "03/03/2027"
     And I should see "06/03/2027"
+
+ Scenario: Si on tente d'en envoyer un mail de test sans contenu, on a un message d'erreur
+    Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
+    Then I should see "Modifier un événement"
+    When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
+    Then I should see "Contenu du mail d'inscription non trouvé pour le forum forum"
+
+  Scenario: On arrive bien à ajouter un contenu de mail d'inscription
+    Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
+    And I fill in "mail_inscription_content" with "Infos à propos de l'événement"
+    And I press "Soumettre"
+    Then I should see "Le forum a été modifié"
+
+  Scenario: Si on tente d'en envoyer un mail de test avec contenu, le mail est bien envoyé
+    Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
+    When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
+    And I should only receive the following emails:
+      | to                                     | subject         |
+      | <bureau@afup.org>,<tresorier@afup.org> | [forum] Merci ! |
