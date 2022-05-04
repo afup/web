@@ -188,7 +188,7 @@ class Facturation
 
     protected function truncate($value, $length)
     {
-        if ($value <= $legth) {
+        if ($value <= $length) {
             return $value;
         }
 

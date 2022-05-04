@@ -104,7 +104,7 @@ parameters:
                     nom: 'Rubriques'
                     niveau: 'ROLE_SITE'
                     url : '/admin/site/rubriques'
-                    extra_routes: 
+                    extra_routes:
                         - admin_site_rubriques_list
                         - admin_site_rubriques_add
                         - admin_site_rubriques_edit
@@ -127,7 +127,7 @@ parameters:
             icon: "globe"
             elements:
                 forum_gestion:
-                    nom: 'Gestion événéments'
+                    nom: 'Gestion événements'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/list'
                     extra_routes:
@@ -174,7 +174,7 @@ parameters:
                         - admin_event_prices_add
                         - admin_event_prices_edit
                 forum_facturation:
-                    nom: "Factures d'événément"
+                    nom: "Factures d'événement"
                     niveau: 'ROLE_ADMIN'
                 forum_sessions:
                     nom: 'Conférences'
@@ -366,7 +366,7 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
-        
+
         association:
             namespace : AppBundle\Association\Model\Repository
             directory : "@AppBundle/Association/Model/Repository"
