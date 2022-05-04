@@ -2,6 +2,7 @@ Feature: Administration - Événements - Gestions Événements
 
   @reloadDbWithTestData
   @clearEmails
+  @clearAllMailInscriptionAttachments
   Scenario: On crée un nouvel événement vide
     Given I am logged in as admin and on the Administration
     And I follow "Gestion événements"
@@ -134,3 +135,21 @@ Feature: Administration - Événements - Gestions Événements
     And I should only receive the following emails:
       | to                                     | subject         |
       | <bureau@afup.org>,<tresorier@afup.org> | [forum] Merci ! |
+
+  Scenario: On arrive bien à ajouter un fichier au mail d'inscription
+    Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
+    And I should not see "Un fichier joint au mail d'inscription est déjà présent"
+    And I attach the file "test_file1.pdf" to "mail_inscription_attachment"
+    And I press "Soumettre"
+    Then I should see "Le forum a été modifié"
+
+  @clearEmails
+  Scenario: Si on tente d'en envoyer un mail de test avec contenu et fichier joint, le mail est bien envoyé avec la pièce jointe
+    Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
+    When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
+    And I should only receive the following emails:
+      | to                                     | subject         |
+      | <bureau@afup.org>,<tresorier@afup.org> | [forum] Merci ! |
+    Then the checksum of the attachment "forum.pdf" of the message of id "1" should be "27df44e78e2f3c9a7f331275a4c5b304"
