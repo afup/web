@@ -4,6 +4,7 @@
 use Afup\Site\Forum\Coupon;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
+use AppBundle\Event\Model\Event;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -11,7 +12,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(['ajouter', 'modifier']);
+$action = verifierAction(['ajouter', 'modifier', 'get_mail_inscription_attachment']);
 $smarty->assign('action', $action);
 
 
@@ -20,7 +21,13 @@ $coupons = new Coupon($bdd);
 $forumPath = null;
 
 $formulaire = instancierFormulaire();
-if ($action == 'ajouter') {
+if ($action == 'get_mail_inscription_attachment') {
+    $champs = $forums->obtenir($_GET['id']);
+    header('Content-type: application/pdf');
+    header('Content-disposition: attachment; filename=' . $champs['titre'] . '.pdf');
+    echo file_get_contents(Event::getInscriptionAttachmentFilepath($champs['path']));
+    exit(0);
+} elseif ($action == 'ajouter') {
     $formulaire->setDefaults([
         'civilite' => 'M.',
         'id_pays' => 'FR'
@@ -97,6 +104,11 @@ $formulaire->addElement('textarea', 'sponsor_management_en', 'Infos sponsors (en
     ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
 $formulaire->addElement('textarea', 'mail_inscription_content', 'Contenu mail inscription',
     ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+$fileMailInscriptionAttachment = $formulaire->addElement('file', 'mail_inscription_attachment', "Pièce jointe du mail d'inscription");
+if (Event::hasInscriptionAttachment($forumPath)) {
+    $formulaire->addElement('static', 'info', '',
+        "Un fichier joint au mail d'inscription&nbsp;<a target='mail_inscription_attachment' href='/pages/administration/index.php?page=forum_gestion&action=get_mail_inscription_attachment&id=" . $_GET['id']. "'>est déjà présent</a>.");
+}
 $formulaire->addElement('textarea', 'become_sponsor_description', "Contenu page devenir sponsor",
     ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
@@ -111,8 +123,20 @@ $formulaire->addElement('submit', 'soumettre', 'Soumettre');
 $formulaire->addRule('titre', 'Titre du forum manquant', 'required');
 $formulaire->addRule('nb_places', 'Nombre de places manquant', 'required');
 
+$formulaire->addRule('mail_inscription_attachment', 'Seulement des PDFs sont autorisés', 'mimetype', ['application/pdf']);
+
+
 if ($formulaire->validate()) {
     $valeurs = $formulaire->exportValues();
+
+    if ($fileMailInscriptionAttachment->isUploadedFile()) {
+        $inscriptionAttachmentDir = Event::getInscriptionAttachmentDir();
+        if (!is_dir($inscriptionAttachmentDir)) {
+            mkdir($inscriptionAttachmentDir);
+        }
+        $fileMailInscriptionAttachment->moveUploadedFile($inscriptionAttachmentDir, $formulaire->exportValue('path') . '.pdf');
+    }
+
     if ($action == 'ajouter') {
         $ok = $forums->ajouter(
             $formulaire->exportValue('titre'),

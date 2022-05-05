@@ -689,4 +689,19 @@ class Event implements NotifyPropertyInterface
     {
         return false !== strpos($this->getPath(), 'enligne');
     }
+
+    public static function getInscriptionAttachmentDir()
+    {
+        return __DIR__ . '/../../../../htdocs/uploads/mail_inscription_attachment/';
+    }
+
+    public static function getInscriptionAttachmentFilepath($eventPath)
+    {
+        return self::getInscriptionAttachmentDir() . $eventPath . '.pdf';
+    }
+
+    public static function hasInscriptionAttachment($eventPath)
+    {
+        return is_file(self::getInscriptionAttachmentFilepath($eventPath));
+    }
 }
