@@ -9,26 +9,26 @@ Feature: Administration - Partie Site
     # ajout d'une rubrique
     When I follow "Ajouter"
     Then I should see "Ajouter une rubrique"
-    When I fill in "rubrique[nom]" with "Événément"
+    When I fill in "rubrique[nom]" with "Événement"
     And I fill in "rubrique[contenu]" with "contenu événements"
     And I fill in "rubrique[raccourci]" with "evenements"
     And I select "En ligne" from "rubrique[etat]"
     And I press "Ajouter"
     Then I should see "Liste des rubriques"
-    And the ".content table" element should contain "Événément"
+    And the ".content table" element should contain "Événement"
     # modification d'une rubrique
     When I follow "modifier_10"
     Then I should see "Modifier une rubrique"
-    When I fill in "rubrique[nom]" with "Événéments"
+    When I fill in "rubrique[nom]" with "Événements"
     And I press "Modifier"
     Then I should see "Liste des rubriques"
-    And the ".content table" element should contain "Événéments"
+    And the ".content table" element should contain "Événements"
     # Les rebriquers sont bien visibles sur la page de création d'un article
     When I follow "Articles"
     Then I should see "Liste des articles"
     When I follow "Ajouter"
     Then I should see "Ajouter un article"
-    Then The "id_site_rubrique" field should only contain the follow values '["", "Actualités", "Événéments"]'
+    Then The "id_site_rubrique" field should only contain the follow values '["", "Actualités", "Événements"]'
 
     # suppression d'une rubrique
     When I follow "Rubriques"

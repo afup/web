@@ -57,6 +57,7 @@ class TicketRepository extends Repository implements MetadataInitializer
     public function getRegistrationsForEventsWithNewsletterAllowed(\Traversable $events)
     {
         $params = [];
+        $idsParams = [];
         $cpt = 0;
         foreach ($events as $event) {
             $key = 'event_id' . ++$cpt;

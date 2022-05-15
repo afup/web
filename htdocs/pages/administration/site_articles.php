@@ -156,5 +156,9 @@ if ($action == 'lister') {
         }
     }
 
+    if ($action == 'modifier') {
+        $smarty->assign('url_site', $this->get('router')->generate('news_display', ['code' => $article->getCode()]));
+    }
+
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }

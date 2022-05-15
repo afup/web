@@ -99,3 +99,23 @@ parameters:
     github_client_id: <Client ID GitHub>
     github_client_secret: <Client secret GitHub>
 ```
+
+## Connection Google Map Geocoding (pour les exports des Inscriptions)
+
+Aller sur [Google Cloud Platform Console](https://console.cloud.google.com/projectcreate)
+
+Créer un projet avec ces paramètres :
+* Nom du projet: `AFUP/Web dev`
+* Valider avec le bouton `Créer`
+
+Puis dans `Identifiants`, `Créer des identifiants`, récupérer la clé
+
+Mettre cette information dans le fichier
+```yaml
+# app/config/parameters.yml
+parameters:
+    # ...
+    google_maps_api_key: <Clé API Google>
+```
+
+Puis dans `API et services` activer l'API `Geocoding API`.

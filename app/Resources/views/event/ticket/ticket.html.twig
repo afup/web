@@ -71,7 +71,7 @@
             {% if app.user %}
                 {% if app.user.companyId > 0 %}
                     <p>{{ 'Vous êtes connecté avec le compte AFUP de l\'entreprise %company%. Votre cotisation est valable pour %maxMembers% salarié·e·s. Vous pouvez donc acheter %maxMembers% tickets au tarif AFUP pour cet événement - pour qui vous voulez !'|trans({ '%maxMembers%': app.user.company.maxMembers, '%company%': app.user.company.companyName}) }}</p>
-                    <p>{{ 'Vous avez déjà acheté %soldTickets% ticket(s) au tarif AFUP pour cet événément.'|trans({'%soldTickets%': soldTicketsForMember}) }}</p>
+                    <p>{{ 'Vous avez déjà acheté %soldTickets% ticket(s) au tarif AFUP pour cet événement.'|trans({'%soldTickets%': soldTicketsForMember}) }}</p>
                 {% else %}
                     <p>{{ 'Vous êtes connecté avec un compte AFUP personnel. Vous pouvez acheter une place au tarif membre pour vous seul. Pour être valable, cette place doit être enregistrée avec l\'adresse %mail%.'|trans({'%mail%': app.user.email}) }}</p>
                 {% endif %}

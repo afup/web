@@ -48,6 +48,15 @@ class FeatureContext implements Context
         $this->runCommand( ["./bin/phinx", "seed:run", "-e", "test"]);
     }
 
+    /**
+     * @BeforeScenario @clearAllMailInscriptionAttachments
+     */
+    public function beforeScenarioClearAllMailInscriptionAttachments()
+    {
+        $filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        $filesystem->remove(__DIR__ . '/../../htdocs/uploads/mail_inscription_attachment');
+    }
+
     private function runCommand(array $command)
     {
         $process = new Process($command);
@@ -137,6 +146,14 @@ class FeatureContext implements Context
     }
 
     /**
+     * @Then the response header :arg1 should match :arg2
+     */
+    public function assertResponseHeaderMatch($headerName, $regExpExpectedValue)
+    {
+        $this->minkContext->assertSession()->responseHeaderMatches($headerName, $regExpExpectedValue);
+    }
+
+    /**
      * @When I follow the button of tooltip :arg1
      */
     public function clickLinkOfTooltip($tooltip)
@@ -199,6 +216,32 @@ class FeatureContext implements Context
 
         if ($foundEmails != $expectedEmailsArray) {
             throw new \Exception(sprintf('The emails are not the expected ones "%s" (expected "%s")', var_export($foundEmails, true), var_export($expectedEmailsArray, true)));
+        }
+    }
+
+    /**
+     * @Then the checksum of the attachment :filename of the message of id :id should be :md5sum
+     */
+    public function theChecksumOfTheAttachmntOfTheMessagOfIdShouldBe($filename, $id, $md5sum)
+    {
+        $infos = json_decode(file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.json'), true);
+
+        $cid = null;
+        foreach ($infos['attachments'] as $attachment) {
+            if ($attachment['filename'] == $filename) {
+                $cid = $attachment['cid'];
+            }
+        }
+
+        if (null === $cid) {
+          throw new \Exception(sprintf("Attachment with name %s not found", $filename));
+        }
+
+        $attachmentContent = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '/parts/' . $cid);
+        $actualMd5sum = md5($attachmentContent);
+
+        if ($actualMd5sum != $md5sum) {
+            throw new \Exception(sprintf("The md5sum of %s, if not %s (found %s)", $filename, $md5sum, $actualMd5sum));
         }
     }
 
