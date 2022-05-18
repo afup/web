@@ -15,7 +15,7 @@ Feature: Event pages - CFP
     And I fill in "speaker[lastname]" with "Mon prénom"
     And I fill in "speaker[email]" with "monemail@provider.fr"
     And I fill in "speaker[biography]" with "Ma biographie"
-    And I attach the file "avatar1.png" to "speaker[photo]"
+    And I attach the file "avatar1.png" to "speaker[photoFile]"
     And I press "Sauvegarder"
     Then I should see "Profil sauvegardé."
 

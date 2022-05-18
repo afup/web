@@ -7,7 +7,6 @@ use AppBundle\CFP\SpeakerFactory;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
-use Assert\Assertion;
 use DateTime;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -77,17 +76,20 @@ class SpeakerAction
             return new Response($this->twig->render('event/cfp/closed.html.twig', ['event' => $event]));
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
+
         $form = $this->formFactory->create(SpeakerType::class, $speaker, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->speakerRepository->save($speaker);
-            $file = $speaker->getPhoto();
-            Assertion::notNull($file);
-            $fileName = $this->photoStorage->store($file, $speaker);
-            $speaker->setPhoto($fileName);
-            $this->speakerRepository->save($speaker);
+
+            $file = $speaker->getPhotoFile();
+            if ($file !== null) {
+                $fileName = $this->photoStorage->store($file, $speaker);
+                $speaker->setPhoto($fileName);
+                $this->speakerRepository->save($speaker);
+            }
 
             $this->flashBag->add('success', $this->translator->trans('Profil sauvegardé.'));
             if ($this->session->has('pendingInvitation')) {

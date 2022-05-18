@@ -110,11 +110,11 @@ class SpeakerEditAction
             $speaker->setLocality($data->locality);
             $speaker->setPhoneNumber($data->phoneNumber);
             $this->speakerRepository->save($speaker);
-            if ($data->photo) {
+            if ($data->photoFile) {
                 if ($event->getId() < self::ID_FORUM_PHOTO_STORAGE) {
-                    $fileName = $this->photoStorage->storeLegacy($data->photo, $event, $speaker);
+                    $fileName = $this->photoStorage->storeLegacy($data->photoFile, $event, $speaker);
                 } else {
-                    $fileName = $this->photoStorage->store($data->photo, $speaker);
+                    $fileName = $this->photoStorage->store($data->photoFile, $speaker);
                 }
                 $speaker->setPhoto($fileName);
             }

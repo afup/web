@@ -4,6 +4,9 @@
     <div class="col-md-8">
         <h2>CFP: {{ event.title }}</h2>
         <h3>{{ 'Mon profil conférencier'|trans }}</h3>
+        {% if form.isFromPreviousEvent is defined %}
+            <p>{{ 'speaker_from_previous_event'|trans }}</p>
+        {% endif %}
         {{ form(form) }}
 
         {% if photo != null %}

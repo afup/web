@@ -6,6 +6,7 @@ use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Speaker implements NotifyPropertyInterface
 {
@@ -86,13 +87,17 @@ class Speaker implements NotifyPropertyInterface
     private $githubUser;
 
     /**
+     * @var string|null
+     */
+    private $photo;
+
+    /**
      * Wrapper for SpeakerType to allow picture upload
      *
-     * @Assert\NotBlank(message="Please, upload a photo.")
      * @Assert\File(mimeTypes={"image/jpeg","image/png"})
      * @var UploadedFile|null
      */
-    private $photo;
+    private $photoFile;
 
     /**
      * @var bool|null
@@ -388,7 +393,7 @@ class Speaker implements NotifyPropertyInterface
     }
 
     /**
-     * @return UploadedFile|null
+     * @return string|null
      */
     public function getPhoto()
     {
@@ -401,8 +406,28 @@ class Speaker implements NotifyPropertyInterface
      */
     public function setPhoto($photo)
     {
-        $this->propertyChanged('photo', $this->photo, $photo);
-        $this->photo = $photo;
+        if ($this->photo === null || $photo !== null) {
+            $this->propertyChanged('photo', $this->photo, $photo);
+            $this->photo = $photo;
+        }
+        return $this;
+    }
+
+    /**
+     * @return UploadedFile|null
+     */
+    public function getPhotoFile()
+    {
+        return $this->photoFile;
+    }
+
+    /**
+     * @param UploadedFile|null $photoFile
+     * @return Speaker
+     */
+    public function setPhotoFile(UploadedFile $photoFile)
+    {
+        $this->photoFile = $photoFile;
         return $this;
     }
 
@@ -564,5 +589,18 @@ class Speaker implements NotifyPropertyInterface
         }
 
         return 0 === count($hotelNights);
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        // check if the name is actually a fake name
+        if ($this->getPhoto() === null && $this->getPhotoFile() === null) {
+            $context->buildViolation('Please, upload a photo.')
+                ->atPath('photoFile')
+                ->addViolation();
+        }
     }
 }
