@@ -704,4 +704,24 @@ class Event implements NotifyPropertyInterface
     {
         return is_file(self::getInscriptionAttachmentFilepath($eventPath));
     }
+
+    public static function getSponsorFileDir()
+    {
+        return __DIR__ . '/../../../../htdocs/docs/';
+    }
+
+    public static function getSponsorFilePublicPath($eventPath, $language)
+    {
+        return '/docs/' . $eventPath . '-sponsoring-' . $language . '.pdf';
+    }
+
+    public static function getSponsorFilePath($eventPath, $language)
+    {
+        return self::getSponsorFileDir() . $eventPath . '-sponsoring-' . $language . '.pdf';
+    }
+
+    public static function hasSponsorFile($eventPath, $language)
+    {
+        return is_file(self::getSponsorFilePath($eventPath, $language));
+    }
 }

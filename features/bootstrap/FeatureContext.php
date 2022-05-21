@@ -4,13 +4,16 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\MinkContext;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
+use AppBundle\Event\Model\Event;
 
 class FeatureContext implements Context
 {
     const MAILCATCHER_URL = 'http://mailcatcher:1080';
 
-    /** @var \Behat\MinkExtension\Context\MinkContext */
+    /** @var MinkContext */
     private $minkContext;
 
     /** @BeforeScenario */
@@ -18,7 +21,7 @@ class FeatureContext implements Context
     {
         $environment = $scope->getEnvironment();
 
-        $this->minkContext = $environment->getContext('Behat\MinkExtension\Context\MinkContext');
+        $this->minkContext = $environment->getContext(MinkContext::class);
     }
 
     /**
@@ -53,8 +56,17 @@ class FeatureContext implements Context
      */
     public function beforeScenarioClearAllMailInscriptionAttachments()
     {
-        $filesystem = new \Symfony\Component\Filesystem\Filesystem();
-        $filesystem->remove(__DIR__ . '/../../htdocs/uploads/mail_inscription_attachment');
+        $filesystem = new Filesystem();
+        $filesystem->remove(Event::getInscriptionAttachmentDir());
+    }
+
+    /**
+     * @BeforeScenario @clearAllSponsorFiles
+     */
+    public function beforeScenarioClearAllSponsorFiles()
+    {
+        $filesystem = new Filesystem();
+        $filesystem->remove(Event::getSponsorFileDir());
     }
 
     private function runCommand(array $command)

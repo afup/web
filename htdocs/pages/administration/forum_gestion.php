@@ -98,10 +98,6 @@ $formulaire->addElement('textarea', 'speaker_management_fr', 'Infos speakers (fr
     ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
 $formulaire->addElement('textarea', 'speaker_management_en', 'Infos speakers (eb)',
     ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
-$formulaire->addElement('textarea', 'sponsor_management_fr', 'Infos sponsors (fr)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
-$formulaire->addElement('textarea', 'sponsor_management_en', 'Infos sponsors (en)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
 $formulaire->addElement('textarea', 'mail_inscription_content', 'Contenu mail inscription',
     ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $fileMailInscriptionAttachment = $formulaire->addElement('file', 'mail_inscription_attachment', "Pièce jointe du mail d'inscription");
@@ -109,10 +105,32 @@ if (Event::hasInscriptionAttachment($forumPath)) {
     $formulaire->addElement('static', 'info', '',
         "Un fichier joint au mail d'inscription&nbsp;<a target='mail_inscription_attachment' href='/pages/administration/index.php?page=forum_gestion&action=get_mail_inscription_attachment&id=" . $_GET['id']. "'>est déjà présent</a>.");
 }
-$formulaire->addElement('textarea', 'become_sponsor_description', "Contenu page devenir sponsor",
-    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+
 $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
 $formulaire->addElement('checkbox', 'accomodation_enabled', "Activer les nuits d'hôtel");
+
+$formulaire->addElement('header', '', 'Sponsoring');
+$formulaire->addElement('textarea', 'become_sponsor_description', "Contenu page devenir sponsor",
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+$formulaire->addElement('textarea', 'sponsor_management_fr', 'Infos sponsors (fr)',
+    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+$formulaire->addElement('textarea', 'sponsor_management_en', 'Infos sponsors (en)',
+    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+
+$fileSponsorFRAttachment = $formulaire->addElement('file', 'file_sponsor_fr', "Dossier de sponsoring (FR)");
+if (Event::hasSponsorFile($formulaire->exportValue('path'), 'fr')) {
+    $publicPath = Event::getSponsorFilePublicPath($formulaire->exportValue('path'), 'fr');
+    $formulaire->addElement('static', 'info', '',
+        "<a target='file_sponsor_fr' href='".$publicPath."'>Voir le dossier de sponsoring (FR)</a>");
+}
+
+$fileSponsorENAttachment = $formulaire->addElement('file', 'file_sponsor_en', "Dossier de sponsoring (EN)");
+if (Event::hasSponsorFile($formulaire->exportValue('path'), 'en')) {
+    $publicPath = Event::getSponsorFilePublicPath($formulaire->exportValue('path'), 'en');
+    $formulaire->addElement('static', 'info', '',
+        "<a target='file_sponsor_en' href='".$publicPath."'>Voir le dossier de sponsoring (EN)</a>");
+}
+
 
 $formulaire->addElement('header', '', 'Coupons');
 $legend = "Ici c'est une liste de coupons séparées par des virgules";
@@ -124,6 +142,8 @@ $formulaire->addRule('titre', 'Titre du forum manquant', 'required');
 $formulaire->addRule('nb_places', 'Nombre de places manquant', 'required');
 
 $formulaire->addRule('mail_inscription_attachment', 'Seulement des PDFs sont autorisés', 'mimetype', ['application/pdf']);
+$formulaire->addRule('file_sponsor_fr', 'Seulement des PDFs sont autorisés', 'mimetype', ['application/pdf']);
+$formulaire->addRule('file_sponsor_en', 'Seulement des PDFs sont autorisés', 'mimetype', ['application/pdf']);
 
 
 if ($formulaire->validate()) {
@@ -135,6 +155,24 @@ if ($formulaire->validate()) {
             mkdir($inscriptionAttachmentDir);
         }
         $fileMailInscriptionAttachment->moveUploadedFile($inscriptionAttachmentDir, $formulaire->exportValue('path') . '.pdf');
+    }
+
+    if ($fileSponsorFRAttachment->isUploadedFile()) {
+        $dir = Event::getSponsorFileDir();
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        $filename = Event::getSponsorFilePath($formulaire->exportValue('path'), 'fr');
+        $fileSponsorFRAttachment->moveUploadedFile($dir, basename($filename));
+    }
+
+    if ($fileSponsorENAttachment->isUploadedFile()) {
+        $dir = Event::getSponsorFileDir();
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        $filename = Event::getSponsorFilePath($formulaire->exportValue('path'), 'en');
+        $fileSponsorENAttachment->moveUploadedFile($dir, basename($filename));
     }
 
     if ($action == 'ajouter') {
