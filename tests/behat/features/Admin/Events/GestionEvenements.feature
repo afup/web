@@ -3,6 +3,7 @@ Feature: Administration - Événements - Gestions Événements
   @reloadDbWithTestData
   @clearEmails
   @clearAllMailInscriptionAttachments
+  @clearAllSponsorFiles
   Scenario: On crée un nouvel événement vide
     Given I am logged in as admin and on the Administration
     And I follow "Gestion événements"
@@ -101,7 +102,6 @@ Feature: Administration - Événements - Gestions Événements
     And I fill in "sponsor_management_en" with "Sponsors, come, you will be very visible!"
     And I fill in "mail_inscription_content" with "Le super email d'inscription"
     And I fill in "become_sponsor_description" with "Le super email de sponsoring"
-    And I fill in "become_sponsor_description" with "Le super email de sponsoring"
     And I check "speakers_diner_enabled"
     And I check "accomodation_enabled"
     And I fill in "coupons" with "FREE_FORUM2027,SUPER_FORUM2027"
@@ -143,6 +143,19 @@ Feature: Administration - Événements - Gestions Événements
     And I attach the file "test_file1.pdf" to "mail_inscription_attachment"
     And I press "Soumettre"
     Then I should see "Le forum a été modifié"
+
+  Scenario: On arrive bien à ajouter les dossiers de sponsoring
+    Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
+    And I should not see "Voir le dossier de sponsoring (FR)"
+    And I attach the file "test_file1.pdf" to "file_sponsor_fr"
+    And I should not see "Voir le dossier de sponsoring (EN)"
+    And I attach the file "test_file1.pdf" to "file_sponsor_en"
+    And I press "Soumettre"
+    Then I should see "Le forum a été modifié"
+    When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
+    Then I should see "Voir le dossier de sponsoring (FR)"
+    And I should see "Voir le dossier de sponsoring (EN)"
 
   @clearEmails
   Scenario: Si on tente d'en envoyer un mail de test avec contenu et fichier joint, le mail est bien envoyé avec la pièce jointe

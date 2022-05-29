@@ -566,7 +566,7 @@ services:
         autowire: true
 
     AppBundle\Event\Sponsorship\SponsorshipLeadMail:
-        arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
+        arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger"]
 
     Trello\Client:
         calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const Trello\Client::AUTH_URL_CLIENT_ID]]]
