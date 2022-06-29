@@ -125,6 +125,11 @@ class Speaker implements NotifyPropertyInterface
     private $phoneNumber;
 
     /**
+     * @var string|null
+     */
+    private $referentPerson;
+
+    /**
      * @return int
      */
     public function getId()
@@ -318,6 +323,23 @@ class Speaker implements NotifyPropertyInterface
     {
         $this->propertyChanged('phoneNumber', $this->phoneNumber, $phoneNumber);
         $this->phoneNumber = $phoneNumber;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReferentPerson()
+    {
+        return $this->referentPerson;
+    }
+
+    /**
+     * @param string|null $referentPerson
+     */
+    public function setReferentPerson($referentPerson)
+    {
+        $this->propertyChanged('referentPerson', $this->referentPerson, $referentPerson);
+        $this->referentPerson = $referentPerson;
     }
 
     /**

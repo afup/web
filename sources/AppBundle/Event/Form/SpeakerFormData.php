@@ -60,4 +60,9 @@ class SpeakerFormData
      * @var string
      */
     public $phoneNumber;
+
+    /**
+     * @var string
+     */
+    public $referentPerson;
 }

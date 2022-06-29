@@ -267,6 +267,11 @@ SQL
                 'fieldName' => 'hotelNights',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'referent_person',
+                'fieldName' => 'referentPerson',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;

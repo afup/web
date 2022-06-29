@@ -19,6 +19,7 @@ class SpeakerFormDataFactory
         $data->twitter = $speaker->getTwitter();
         $data->githubUser = $speaker->getUser();
         $data->phoneNumber = $speaker->getPhoneNumber();
+        $data->referentPerson = $speaker->getReferentPerson();
 
         return $data;
     }

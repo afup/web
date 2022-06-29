@@ -56,6 +56,7 @@ class SpeakerType extends AbstractType
             ->add('phone_number', TextType::class, ['required' => false, 'property_path' => 'phoneNumber', 'label' => 'Phone', 'help' => 'Utilisé uniquement pour vous contacter avant et durant de l\'événement.'])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
+            ->add('referent_person', TextType::class, ['required' => false, 'property_path' => 'referentPerson',])
 
         ;
         if (true === $options[self::OPT_USER_GITHUB]) {

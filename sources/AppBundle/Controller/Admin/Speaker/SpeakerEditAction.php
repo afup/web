@@ -109,6 +109,7 @@ class SpeakerEditAction
             $speaker->setCompany($data->company);
             $speaker->setLocality($data->locality);
             $speaker->setPhoneNumber($data->phoneNumber);
+            $speaker->setReferentPerson($data->referentPerson);
             $this->speakerRepository->save($speaker);
             if ($data->photoFile) {
                 if ($event->getId() < self::ID_FORUM_PHOTO_STORAGE) {
