@@ -20,6 +20,8 @@ class SpeakerFormDataFactory
         $data->githubUser = $speaker->getUser();
         $data->phoneNumber = $speaker->getPhoneNumber();
         $data->referentPerson = $speaker->getReferentPerson();
+        $data->referentPersonEmail = $speaker->getReferentPersonEmail();
+
 
         return $data;
     }

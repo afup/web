@@ -272,6 +272,11 @@ SQL
                 'fieldName' => 'referentPerson',
                 'type' => 'string'
             ])
+            ->addField([
+                'columnName' => 'referent_person_email',
+                'fieldName' => 'referentPersonEmail',
+                'type' => 'string'
+            ])
         ;
 
         return $metadata;

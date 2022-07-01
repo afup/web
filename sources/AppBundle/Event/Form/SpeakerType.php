@@ -57,6 +57,7 @@ class SpeakerType extends AbstractType
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
             ->add('referent_person', TextType::class, ['required' => false, 'property_path' => 'referentPerson', 'label' => 'Personne référente'])
+            ->add('referent_person_email', TextType::class, ['required' => false, 'property_path' => 'referentPersonEmail', 'label' => 'Email personne référente'])
 
         ;
         if (true === $options[self::OPT_USER_GITHUB]) {

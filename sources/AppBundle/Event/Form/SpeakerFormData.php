@@ -65,4 +65,9 @@ class SpeakerFormData
      * @var string
      */
     public $referentPerson;
+
+    /**
+     * @var string
+     */
+    public $referentPersonEmail;
 }
