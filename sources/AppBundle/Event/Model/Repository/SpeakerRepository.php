@@ -53,6 +53,8 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         speaker.biographie, speaker.twitter, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
         speaker.will_attend_speakers_diner,
         speaker.has_special_diet,
+        speaker.referent_person,
+        speaker.referent_person_email,
         speaker.special_diet_description,
         speaker.hotel_nights,
         speaker.phone_number
