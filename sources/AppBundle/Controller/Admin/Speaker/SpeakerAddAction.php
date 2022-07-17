@@ -80,6 +80,7 @@ class SpeakerAddAction
             $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);
             $speaker->setPhoneNumber($data->phoneNumber);
+            $speaker->setReferentPerson($data->referentPerson);
             $this->speakerRepository->save($speaker);
             if (null !== $data->photoFile) {
                 $fileName = $this->photoStorage->store($data->photoFile, $speaker);
