@@ -35,7 +35,7 @@
                                 <a href="{{ path('news_display', {code: actualite.code}) }}">
                                     <span class="home-list-date">{{ actualite.date|date('d/m') }}</span>
                                     {% if loop.first  %}
-                                        <h4 style="display: inline-block">{{ actualite.titre }}</h4>
+                                        <span class="home-actualite-title">{{ actualite.titre }}</span>
                                         <div class="home-list-chapeau-container">
                                             <p>
                                                 {{ actualite.getChapeau|raw }}
