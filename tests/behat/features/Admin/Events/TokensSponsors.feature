@@ -19,6 +19,8 @@ Feature: Administration - Événements - Tokens Sponsors
     And I should see "VOS PLACES GRATUITES"
     And I should see "Aucun ticket enregistré pour le moment."
     And I should see "Nouveau ticket"
+    # Vérifie le markdown depuis sponsor_management_
+    And the response should contain "<strong>Sponsors</strong>, venez, vous serez très visible !"
     # Ajout d'une invitation
     And The "sponsor_ticket[civility]" field should only contain the follow values '["M.", "Mme"]'
     When I fill in "sponsor_ticket[firstname]" with "Nom personne invitée"
