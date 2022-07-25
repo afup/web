@@ -95,9 +95,9 @@ $formulaire->addElement('text', 'waiting_list_url', "URL de la liste d'attente",
 $formulaire->addElement('textarea', 'cfp_fr', 'CFP (fr)', ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'cfp_en', 'CFP (en)', ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'speaker_management_fr', 'Infos speakers (fr)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'speaker_management_en', 'Infos speakers (eb)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'mail_inscription_content', 'Contenu mail inscription',
     ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $fileMailInscriptionAttachment = $formulaire->addElement('file', 'mail_inscription_attachment', "Pièce jointe du mail d'inscription");
@@ -113,9 +113,9 @@ $formulaire->addElement('header', '', 'Sponsoring');
 $formulaire->addElement('textarea', 'become_sponsor_description', "Contenu page devenir sponsor",
     ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'sponsor_management_fr', 'Infos sponsors (fr)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'sponsor_management_en', 'Infos sponsors (en)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 
 $fileSponsorFRAttachment = $formulaire->addElement('file', 'file_sponsor_fr', "Dossier de sponsoring (FR)");
 if (Event::hasSponsorFile($formulaire->exportValue('path'), 'fr')) {
