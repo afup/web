@@ -133,9 +133,20 @@ class TechLetterGenerateController extends SiteBaseController
 
         $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
 
+        // Save the date
+        if ($request->getMethod() === Request::METHOD_POST
+            && $this->isCsrfTokenValid('techletterDate', $request->request->get('_csrf_token'))) {
+            $sending->setSendingDate(new \DateTime($request->request->get('sendingDate')));
+            $this->sendingRepository->save($sending);
+            $this->addFlash('notice', 'Date mise à jour');
+
+            return $this->redirectToRoute('admin_techletter_generate', ['techletterId' => $techletterId]);
+        }
+
         if (
-            $request->getMethod() === Request::METHOD_POST
-            && $this->isCsrfTokenValid('sendToMailchimp', $request->request->get('_csrf_token'))
+            $request->getMethod() === Request::METHOD_POST &&
+            ($this->isCsrfTokenValid('sendToMailchimp', $request->request->get('_csrf_token')) ||
+             $this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token')))
         ) {
             $mailContent = $this
                 ->render(
@@ -145,8 +156,7 @@ class TechLetterGenerateController extends SiteBaseController
                         'preview' => false
                     ]
                 )
-                ->getContent()
-            ;
+                ->getContent();
 
             $subject = sprintf("Veille de l'AFUP du %s", $sending->getSendingDate()->format('d/m/Y'));
 
@@ -162,11 +172,18 @@ class TechLetterGenerateController extends SiteBaseController
                 ]
             );
 
+            if ($this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token'))) {
+                $this->get('app.mailchimp_techletter_api')->scheduleCampaign($response['id'], $sending->setSendingDate());
+                $message = sprintf("Newsletter envoyée, verrouillée et planifiée pour être envoyée à %s sur Mailchimp",
+                    $sending->getSendingDate()->format('d/m/Y H:i'));
+            } else {
+                $message = "La campagne a été générée. Il faut maintenant <a href='https://us8.admin.mailchimp.com/campaigns/edit?id=" . $response['web_id'] . "' target='_blank'>se connecter sur Mailchimp</a> pour la valider/en planifier l'envoi";
+            }
+
             $sending->setArchiveUrl($response['long_archive_url']);
             $sending->setSentToMailchimp(true);
             $this->sendingRepository->save($sending);
 
-            $message = "La campagne a été générée. Il faut maintenant <a href='https://us8.admin.mailchimp.com/campaigns/edit?id=" . $response['web_id'] . "' target='_blank'>se connecter sur Mailchimp</a> pour la valider/en planifier l'envoi";
             $this->addFlash('notice', $message);
 
             return $this->redirectToRoute('admin_techletter_index');

@@ -171,4 +171,11 @@ class Mailchimp
             ]
         );
     }
+
+    public function scheduleCampaign($campaignId, $datetime)
+    {
+        return $this->client->post('campaigns/' . $campaignId . '/actions/schedule', [
+            'schedule_time' => $datetime->format('c')
+        ]);
+    }
 }
