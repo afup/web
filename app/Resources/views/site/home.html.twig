@@ -83,8 +83,8 @@
                     {% elseif talk %}
                         <h2>Le talk du jour</h2>
                         <a href="{{ path('talks_show', { id: talk.getId(), slug: talk.getSlug()}) }}" class="home-talk-of-the-day">
-                            <img class="" src="https://img.youtube.com/vi/{{ talk.youtubeId }}/hqdefault.jpg" /><br />
-                            <h4>{{ talk.getTitle }}</h4>
+                            <img class="" src="https://img.youtube.com/vi/{{ talk.youtubeId }}/hqdefault.jpg" title="{{ talk.getTitle }}"/><br />
+                            <span class="home-actualite-title">{{ talk.getTitle }}</span>
                         </a>
 
                     {% endif %}
