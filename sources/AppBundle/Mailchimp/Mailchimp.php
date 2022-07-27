@@ -158,6 +158,10 @@ class Mailchimp
         );
     }
 
+    /**
+     * @param string $list
+     * @param array $settings
+     */
     public function createCampaign($list, array $settings)
     {
         return $this->client->post(
@@ -172,6 +176,10 @@ class Mailchimp
         );
     }
 
+    /**
+     * @param int $campaignId
+     * @param \Datetime $datetime
+     */
     public function scheduleCampaign($campaignId, $datetime)
     {
         return $this->client->post('campaigns/' . $campaignId . '/actions/schedule', [
