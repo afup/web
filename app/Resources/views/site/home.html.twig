@@ -5,12 +5,12 @@
 {% macro home_feuille(feuille) %}
     <h2>{{ feuille.nom }}</h2>
     {% if feuille.image %}
-        <a href="{{ feuille.lien }}" title="Voir plus : {{ feuille.nom }}"><img src="/templates/site/images/{{ feuille.image }}" /></a>
+        <a href="{{ feuille.lien }}"><img src="/templates/site/images/{{ feuille.image }}" /></a>
     {% endif %}
     {% if feuille.alt %}
         <p>{{ feuille.alt }}</p>
     {% endif %}
-    <a href="{{ feuille.lien }}" class="home-view-more">Voir plus <i class="fa fa-arrow-right"></i></a>
+    <a href="{{ feuille.lien }}" title="Voir plus : {{ feuille.nom }}" class="home-view-more">Voir plus <i class="fa fa-arrow-right"></i></a>
 {% endmacro %}
 
 {% block content %}
