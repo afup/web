@@ -35,6 +35,7 @@ class Event extends AbstractSeed
                 'date_fin_vote' => date('Y-m-d H:i:s', ($event - $oneMonthInSeconds * 2) + $oneDayInSeconds * 7),
                 'date_fin_prevente' => $now + $oneMonthInSeconds,
                 'date_fin_vente' => $event - $oneDayInSeconds * 7,
+                'date_fin_vente_token_sponsor' => $event - $oneDayInSeconds * 7,
                 'date_fin_saisie_repas_speakers' => $event - $oneDayInSeconds * 7,
                 'date_fin_saisie_nuites_hotel' => $event - $oneDayInSeconds * 7,
                 'place_name' => 'Paris',
