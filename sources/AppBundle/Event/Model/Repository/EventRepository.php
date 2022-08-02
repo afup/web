@@ -258,6 +258,14 @@ SQL;
                 ]
             ])
             ->addField([
+                'columnName' => 'date_fin_vente_token_sponsor',
+                'fieldName' => 'dateEndSalesSponsorToken',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
+            ])
+            ->addField([
                 'columnName' => 'date_fin_saisie_repas_speakers',
                 'fieldName' => 'dateEndSpeakersDinerInfosCollection',
                 'type' => 'datetime',
