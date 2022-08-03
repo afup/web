@@ -68,6 +68,11 @@ class Event implements NotifyPropertyInterface
     /**
      * @var DateTime
      */
+    private $dateEndSalesSponsorToken;
+
+    /**
+     * @var DateTime
+     */
     private $dateEndSpeakersDinerInfosCollection;
 
     /**
@@ -346,6 +351,28 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('dateEndSales', $this->dateEndSales, $dateEndSales);
         $this->dateEndSales = $dateEndSales;
+        return $this;
+    }
+
+
+    /**
+     * @return DateTime
+     */
+    public function getDateEndSalesSponsorToken()
+    {
+        return $this->dateEndSalesSponsorToken;
+    }
+
+    /**
+     * @param DateTime $dateEndSalesSponsorToken
+     *
+     * @return $this
+     */
+    public function setDateEndSalesSponsorToken($dateEndSalesSponsorToken)
+    {
+        $this->propertyChanged('dateEndSalesSponsorToken', $this->dateEndSalesSponsorToken, $dateEndSalesSponsorToken);
+        $this->dateEndSalesSponsorToken = $dateEndSalesSponsorToken;
+
         return $this;
     }
 

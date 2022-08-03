@@ -84,6 +84,8 @@ $formulaire->addElement('date', 'date_fin_prevente', 'Date de fin de pré-vente'
     ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
 $formulaire->addElement('date', 'date_fin_vente', 'Date de fin de vente',
     ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
+$formulaire->addElement('date', 'date_fin_vente_token_sponsor', 'Date de fin de vente tokens sponsors',
+    ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
 $formulaire->addElement('date', 'date_fin_saisie_repas_speakers', 'Date de fin saisie repas confférenciers',
     ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
 $formulaire->addElement('date', 'date_fin_saisie_nuites_hotel', 'Date de fin saisie nuités hotel',
@@ -186,6 +188,7 @@ if ($formulaire->validate()) {
             $formulaire->exportValue('date_fin_vote'),
             $formulaire->exportValue('date_fin_prevente'),
             $formulaire->exportValue('date_fin_vente'),
+            $formulaire->exportValue('date_fin_vente_token_sponsor'),
             $formulaire->exportValue('date_fin_saisie_repas_speakers'),
             $formulaire->exportValue('date_fin_saisie_nuites_hotel'),
             $formulaire->exportValue('date_annonce_planning'),
@@ -224,6 +227,7 @@ if ($formulaire->validate()) {
             $formulaire->exportValue('date_fin_vote'),
             $formulaire->exportValue('date_fin_prevente'),
             $formulaire->exportValue('date_fin_vente'),
+            $formulaire->exportValue('date_fin_vente_token_sponsor'),
             $formulaire->exportValue('date_fin_saisie_repas_speakers'),
             $formulaire->exportValue('date_fin_saisie_nuites_hotel'),
             $formulaire->exportValue('date_annonce_planning'),
