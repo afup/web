@@ -6,7 +6,7 @@ class Feuille
 {
     const ID_FEUILLE_ANTENNES = 71;
     const ID_FEUILLE_ASSOCIATION = 74;
-    const ID_FEUILLE_COLONNE_DROITE = 1;
+    const ID_FEUILLE_COLONNE_DROITE = 1001;
     const ID_FEUILLE_HEADER = 21;
     const ID_FEUILLE_FOOTER = 38;
     const ID_FEUILLE_NOS_ACTIONS = 96;
@@ -17,6 +17,7 @@ class Feuille
     public $lien;
     public $alt;
     public $image;
+    public $image_alt;
     public $position;
     public $date;
     public $etat;
@@ -49,6 +50,7 @@ class Feuille
         			lien      = ' . $this->bdd->echapper($this->lien) . ',
         			alt       = ' . $this->bdd->echapper($this->alt) . ',
         			image     = ' . $this->bdd->echapper($this->image) . ',
+                    image_alt = ' . $this->bdd->echapper($this->image_alt) . ',
         			position  = ' . $this->bdd->echapper($this->position) . ',
         			date      = ' . $this->bdd->echapper($this->date) . ',
         			patterns  = ' . $this->bdd->echapper($this->patterns) . ',
@@ -69,7 +71,8 @@ class Feuille
         			lien      = ' . $this->bdd->echapper($this->lien) . ',
         			alt       = ' . $this->bdd->echapper($this->alt) . ',
         			image     = ' . $this->bdd->echapper($this->image) . ',
-        			position  = ' . $this->bdd->echapper($this->position) . ',
+        			image_alt = ' . $this->bdd->echapper($this->image_alt) . ',
+                    position  = ' . $this->bdd->echapper($this->position) . ',
         			date      = ' . $this->bdd->echapper($this->date) . ',
         			patterns  = ' . $this->bdd->echapper($this->patterns) . ',
         			etat      = ' . $this->bdd->echapper($this->etat) . '
@@ -86,6 +89,7 @@ class Feuille
         $this->lien = $f['lien'];
         $this->alt = $f['alt'];
         $this->image = $f['image'];
+        $this->image_alt = $f['image_alt'];
         $this->position = $f['position'];
         $this->date = $f['date'];
         $this->etat = $f['etat'];
@@ -101,6 +105,7 @@ class Feuille
             'lien' => $this->lien,
             'alt' => $this->alt,
             'image' => $this->image,
+            'image_alt' => $this->image_alt,
             'position' => $this->position,
             'date' => date('Y-m-d', $this->date),
             'etat' => $this->etat,
