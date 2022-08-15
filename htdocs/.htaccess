@@ -19,7 +19,6 @@
 
 RewriteEngine On
 
-RewriteRule ^become-sponsor$  "/event/afupday2022lille/sponsor/become-sponsor" [L,R=302]
 RewriteRule ^super-apero$  "/association/super-apero" [L,R=302]
 RewriteRule ^superapero$  "/association/super-apero" [L,R=302]
 RewriteRule ^association/super-apero-8-mars-2018$ "/super-apero" [L,R=302]
