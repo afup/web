@@ -76,13 +76,16 @@ class NewsController extends SiteBaseController
         $formData = $form->getData();
         $filters = null === $formData ? [] : $formData;
 
+        $totalItems = $this->getArticleRepository()->countPublishedNews($filters);
+
         return $this->render(
             ':site:news/list.html.twig',
             [
                 'filters' => $filters,
                 'articles' => $this->getArticleRepository()->findPublishedNews($page, self::ARTICLES_PER_PAGE, $filters),
-                'total_items' => $this->getArticleRepository()->countPublishedNews($filters),
+                'total_items' => $totalItems,
                 'current_page' => $page,
+                'total_page' => floor($totalItems / self::ARTICLES_PER_PAGE) + 1,
                 'articles_per_page' => self::ARTICLES_PER_PAGE,
                 'form' => $form->createView(),
             ]

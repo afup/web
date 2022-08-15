@@ -1,5 +1,7 @@
 {% extends ':site:base.html.twig' %}
 
+{% block title %}Devenir membre de l'AFUP{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
@@ -59,7 +61,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><img src="/images/badges/membrephysique-badges.png"/></td>
+                            <td><img src="/images/badges/membrephysique-badges.png" alt="Membre AFUP" /></td>
                         </tr>
                         <tr>
                             <td>Soutien des activités de l'association</td>
@@ -106,7 +108,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td><img src="/images/badges/membremoral-badges.png"/></td>
+                        <td><img src="/images/badges/membremoral-badges.png" alt="" /></td>
                     </tr>
                     <tr>
                         <td>Plus grand soutien des activités de l'association</td>
