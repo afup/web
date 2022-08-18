@@ -26,6 +26,7 @@ Vous pouvez aussi y accéder directement via la commande: `docker/bin/mysql`
 
 ### Autres commandes
 
+* `make docker-up` : allume les containers.
 * `make docker-stop` : éteint les containers en fonctionnement.
 * `make docker-down` : détruit les containers existants.
 * `docker/bin/mysql` : connexion à la base de données.
@@ -51,6 +52,31 @@ Config par défaut:
 - host: localhost
 - port: 3606
 - database: web
+
+# Tests
+
+Il est possible de lancer les divers tests unitaires et fonctionnels à partir des containers.
+
+Pre-requis : valider que les containers utilisés par les tests sont allumés, il s'agit des containers `dbtest`, `apachephptest` et `mailcatcher`. S'il ne sont pas allumés, il est possible de le faire via `make docker-up`.
+
+Lancement des tests unitaires : 
+- Se connecter dans le conteneur php `docker/bin/bash`
+- Lancer les tests et valider le code :
+```
+	./bin/atoum
+	./bin/php-cs-fixer fix --dry-run -vv
+```
+- Une alternative est d'utiliser la commande `make test` qui effectuer la même action.
+
+Lancement des tests unitaires : 
+- Se connecter dans le conteneur php `docker/bin/bash`
+- Lancer les tests :
+```
+	./bin/behat
+```
+- Une alternative est d'utiliser la commande `make test-functional`, attention cette commande arrête les containeurs de tests à la fin de l'exécution de la suite de test. Si par la suite vous souhaitez lancer un test, il faut bien penser à les allumer de nouveau.
+
+Dans chacun des cas, il est possible de spécifier un test dans la ligne de commande. Exemple: `./bin/behat tests/behat/features/Admin/AdminFeuilles.feature`
 
 # Paiements avec Paybox
 
