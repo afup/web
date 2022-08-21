@@ -156,7 +156,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     /**
      * @var bool
      */
-    private $needsUpToDateMembership = true;
+    private $needsUpToDateMembership = false;
 
     /**
      * @return int
