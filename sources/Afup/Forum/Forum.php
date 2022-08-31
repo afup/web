@@ -419,7 +419,7 @@ CODE_HTML;
 
 CODE_HTML;
                 /* On boucle maintenant sur chaque demi-heure de l'agenda (de 08h00 à 18h00 */
-                for ($h = 8; $h < 18; $h++) {
+                for ($h = 8; $h < 19; $h++) {
                     for ($i = 0; $i < 12; $i++) {
                         $bKeynote = false;
                         $m = sprintf('%02d', 5 * $i);
