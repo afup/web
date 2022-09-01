@@ -25,7 +25,7 @@
                     <td>
                         {% if company_member %}
                         <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}"
-                            title="Profile de l'entreprise {{ company_member.companyName }}">
+                            title="Profil de l'entreprise {{ company_member.companyName }}">
                             {% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
                             <img src="{{ logo_url }}" alt="" />
                         </a>
