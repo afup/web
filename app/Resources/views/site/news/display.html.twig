@@ -1,5 +1,7 @@
 {% extends ':site:base.html.twig' %}
 
+{% block title %}{{ article.getTitle }} - AFUP{% endblock %}
+
 {% block metas %}
     {{ parent() }}
     <meta name="twitter:card" content="summary">
@@ -19,7 +21,7 @@
 
     {% if header_image %}
     <div class="article-header">
-        <img src="{{ header_image }}">
+        <img src="{{ header_image }}" alt="" />
     </div>
     {% endif %}
 

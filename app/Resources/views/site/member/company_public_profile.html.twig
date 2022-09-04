@@ -32,7 +32,7 @@
                 {% if company_member.logoUrl %}
                     <div>
                         <label></label>
-                        <img src="{{ path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}" style="max-width: 200px" />
+                        <img src="{{ path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}" style="max-width: 200px" alt="" />
                     </div>
                 {% endif %}
                 {{ form_row(form.website_url) }}

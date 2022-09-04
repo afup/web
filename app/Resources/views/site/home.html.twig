@@ -20,8 +20,9 @@
             <div class="container">
                 <div class="col-md-12">
                     <blockquote>
-                        Apéros, rendez-vous et cycle de conférences, l'AFUP est au coeur de la communauté PHP depuis 2000.
-                        L'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté
+                        Apéros, rendez-vous et cycle de conférences, l'<abbr title="Association Française des Utilisateurs de PHP">AFUP</abbr>
+                        est au cœur de la communauté PHP depuis 2000.
+                        L'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté.
                     </blockquote>
                 </div>
             </div>
@@ -83,7 +84,7 @@
                     {% elseif talk %}
                         <h2>Le talk du jour</h2>
                         <a href="{{ path('talks_show', { id: talk.getId(), slug: talk.getSlug()}) }}" class="home-talk-of-the-day">
-                            <img class="" src="https://img.youtube.com/vi/{{ talk.youtubeId }}/hqdefault.jpg" title="{{ talk.getTitle }}"/><br />
+                            <img class="" src="https://img.youtube.com/vi/{{ talk.youtubeId }}/hqdefault.jpg" title="{{ talk.getTitle }}" alt="" /><br />
                             <span class="home-actualite-title">{{ talk.getTitle }}</span>
                         </a>
 

@@ -1,5 +1,7 @@
 {% extends ':site:base.html.twig' %}
 
+{% block title %}La veille de l'AFUP{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/glyphicons.css') }}" media="screen" />
@@ -16,7 +18,7 @@
 
     <div class="techletter-subscription--header">
         <div class="techletter-subscription-capture">
-            <img src="{{ asset('images/techletter/sample.png') }}" />
+            <img src="{{ asset('images/techletter/sample.png') }}" alt="La veille de l'AFUP" />
         </div>
         <div class="techletter-subscription-header-content">
             <h2>Simplifiez votre veille sur PHP.</h2>

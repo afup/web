@@ -1,4 +1,7 @@
 {% extends ':site:base.html.twig' %}
+
+{% block title %}Les antennes de l'AFUP{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/grid.css') }}" media="all" />
@@ -287,15 +290,15 @@
 )) }}
 <div class="mw1400p center" id="container">
 <div class="line" id="main">
-    <h1>Antennes</h1>
+    <h1>Les antennes</h1>
 
-    <p>Une dizaine d'antennes locales, représentantes de l'AFUP en région, organise rencontres, meetups et apéros PHP
+    <p>Une quinzaine d'antennes locales, représentantes de l'AFUP en région, organise rencontres, meetups et apéros PHP
         tout au long de l'année, tisse des liens au sein de la communauté  de développeuses et de développeurs et fait la promotion du PHP dans les entreprises partout en France.</p>
 
     <div class="container">
         <div class="col-md-8">
             <div class="map-container">
-                <div class="map">Antennes AFUP françaises</div>
+                <div class="map">Carte de France des antennes de l'AFUP.</div>
             </div>
         </div>
         <div class="col-md-4 tablet-hidden">
@@ -373,7 +376,7 @@
             >
                <div class="container">
                     <div class="col-md-2">
-                        <img src="{{ office.logo_url }}" />
+                        <img src="{{ office.logo_url }}" alt="" />
                     </div>
                     <div class="col-md-10">
                         <h3>{{ office.label }}</h3>
