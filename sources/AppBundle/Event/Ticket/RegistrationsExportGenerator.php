@@ -93,8 +93,12 @@ class RegistrationsExportGenerator
         $tickets = $this->ticketRepository->getByEvent($event);
 
         foreach ($tickets as $ticket) {
-            if ($ticket->getStatus() == Ticket::STATUS_CANCELLED) {
+            if (
+                $ticket->getStatus() == Ticket::STATUS_CANCELLED
+                ||  $ticket->getStatus() == Ticket::STATUS_ERROR
+            ) {
                 // On n'exporte pas les billets inscriptions annulées
+                // ou en erreur de paiement
                 continue;
             }
 
