@@ -148,6 +148,12 @@ class TechLetterGenerateController extends SiteBaseController
             ($this->isCsrfTokenValid('sendToMailchimp', $request->request->get('_csrf_token')) ||
              $this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token')))
         ) {
+            // Ne pas planifier l'envoi dans le passé
+            $limitDatetime = new \DateTime('+5 min');
+            if ($sending->getSendingDate() < $limitDatetime) {
+                $sending->setSendingDate($limitDatetime);
+            }
+
             $mailContent = $this
                 ->render(
                     ':admin/techletter:mail_template.html.twig',
