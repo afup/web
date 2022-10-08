@@ -118,6 +118,7 @@ class Invoice implements NotifyPropertyInterface
      * @var Ticket[]
      * @Assert\Valid()
      * @AfupAssert\CorporateMember(groups={"corporate"})
+     * @AfupAssert\TicketsCfpSubmitter()
      */
     private $tickets = [];
 
