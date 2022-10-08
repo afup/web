@@ -108,6 +108,7 @@
             </div>
 
             {% set currentDate = 'now'|date('Y-m-d') %}
+            {{ form_errors(ticketForm.tickets) }}
 
             {% for key,ticket in ticketForm.tickets %}
                 <fieldset class="f{{ key+1 }} tickets--fieldset">
@@ -120,8 +121,8 @@
                         {{ form_row(ticket.phoneNumber) }}
                         {{ form_row(ticket.nearestOffice) }}
 
-                        {{ form_errors(ticket.ticketEventType) }}
                         {{ form_label(ticket.ticketEventType) }}
+                        {{ form_errors(ticket.ticketEventType) }}
                         <ul class="tickets--type-list">
                             {% set endDate = null %}
                             {% for type in ticket.ticketEventType %}

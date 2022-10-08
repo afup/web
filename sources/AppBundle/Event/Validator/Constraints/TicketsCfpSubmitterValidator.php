@@ -10,7 +10,7 @@ class TicketsCfpSubmitterValidator extends ConstraintValidator
 {
     /**
      * @param Ticket[] $value
-     * @param PersonalMember $constraint
+     * @param TicketsCfpSubmitter $constraint
      * @return void
      */
     public function validate($value, Constraint $constraint)
@@ -27,7 +27,7 @@ class TicketsCfpSubmitterValidator extends ConstraintValidator
                 if ($specialCFPSubmitter > 1) {
                     $this->context->buildViolation($constraint->messageTooMuchCfpSubmitterTickets)
                         ->setParameter('{{ ticket_pretty_name }}', $ticket->getTicketEventType()->getTicketType()->getPrettyName())
-                        ->atPath($index)
+                        ->atPath('[' . $index . '].ticketEventType')
                         ->addViolation()
                     ;
                 }
