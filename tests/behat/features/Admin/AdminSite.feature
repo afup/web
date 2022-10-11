@@ -9,29 +9,29 @@ Feature: Administration - Partie Site
     # ajout d'une rubrique
     When I follow "Ajouter"
     Then I should see "Ajouter une rubrique"
-    When I fill in "rubrique[nom]" with "Événement"
-    And I fill in "rubrique[contenu]" with "contenu événements"
+    When I fill in "rubrique[nom]" with "Évènement"
+    And I fill in "rubrique[contenu]" with "contenu évènements"
     And I fill in "rubrique[raccourci]" with "evenements"
     And I select "En ligne" from "rubrique[etat]"
     And I press "Ajouter"
     Then I should see "Liste des rubriques"
-    And the ".content table" element should contain "Événement"
+    And the ".content table" element should contain "Évènement"
     # modification d'une rubrique
     When I follow "modifier_10"
     Then I should see "Modifier une rubrique"
-    When I fill in "rubrique[nom]" with "Événements"
+    When I fill in "rubrique[nom]" with "Évènements"
     And I press "Modifier"
     Then I should see "Liste des rubriques"
-    And the ".content table" element should contain "Événements"
+    And the ".content table" element should contain "Évènements"
     # Les rebriquers sont bien visibles sur la page de création d'un article
     When I follow "Articles"
     Then I should see "Liste des articles"
     When I follow "Ajouter"
     Then I should see "Ajouter un article"
-    Then The "id_site_rubrique" field should only contain the follow values '["", "Actualités", "Événements"]'
+    Then The "id_site_rubrique" field should only contain the follow values '["", "Actualités", "Évènements"]'
 
     # suppression d'une rubrique
     When I follow "Rubriques"
     And I follow "supprimer_10"
     Then I should see "Liste des rubriques"
-    But the ".content table" element should not contain "Événements"
+    But the ".content table" element should not contain "Évènements"

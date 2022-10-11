@@ -1,4 +1,4 @@
-Feature: Administration - Événements - Suivi
+Feature: Administration - Évènements - Suivi
 
   @reloadDbWithTestData
   Scenario: On vérifie la page du suivi

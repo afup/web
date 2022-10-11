@@ -58,14 +58,14 @@ if ($action == 'get_mail_inscription_attachment') {
     $formulaire->addElement('hidden', 'id', $_GET['id']);
 }
 
-$formulaire->addElement('header', '', "Gestion d'événement");
-$formulaire->addElement('text', 'titre', "Titre de l'événement", ['size' => 30, 'maxlength' => 100]);
+$formulaire->addElement('header', '', "Gestion d'évènement");
+$formulaire->addElement('text', 'titre', "Titre de l'évènement", ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'path', 'Chemin du template', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('static', 'info', '',
     '<i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>');
 $formulaire->addElement('text', 'trello_list_id', 'Liste trello pour les leads',
     ['size' => 30, 'maxlength' => 100]);
-$formulaire->addElement('text', 'logo_url', "URL du logo de l'événement", ['size' => 30, 'maxlength' => 255]);
+$formulaire->addElement('text', 'logo_url', "URL du logo de l'évènement", ['size' => 30, 'maxlength' => 255]);
 $formulaire->addElement('text', 'nb_places', 'Nombre de places', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'place_name', 'Nom du lieu', ['size' => 30, 'maxlength' => 255]);
 $formulaire->addElement('text', 'place_address', 'Adresse du lieu', ['size' => 30, 'maxlength' => 255]);

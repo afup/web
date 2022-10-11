@@ -5,7 +5,7 @@ Feature: Event pages - Proposition speaker
   Scenario: On envoie une proposition de speaker
     Given I am on "/event/forum"
     When I follow "Suggérer un·e conférencier·e"
-    Then I should see "À chaque événement, le pôle conférences travaille dur pour"
+    Then I should see "À chaque évènement, le pôle conférences travaille dur pour"
     When I fill in "speaker_suggestion[suggester_email]" with "mailspeaker@yahoo.fr"
     And I fill in "speaker_suggestion[suggester_name]" with "Dark Vador"
     And I fill in "speaker_suggestion[speaker_name]" with "Luke Skywalker"

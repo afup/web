@@ -23,7 +23,7 @@
 
     <div class="ui menu">
         {% if event == null %}
-            <div class="item">Changez d'événement dans le menu ci dessus</div>
+            <div class="item">Changez d'évènement dans le menu ci dessus</div>
         {% else %}
         <a href="{{ url('admin_event_sponsor_lastcall_mail', {id: event.id}) }}"
            class="item confirmable"
@@ -107,7 +107,7 @@
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
-                Aucune invitation trouvée. {% if event == null %} Essayez de changer d'événement{% endif %}
+                Aucune invitation trouvée. {% if event == null %} Essayez de changer d'évènement{% endif %}
             </div>
         </div>
     {% endif %}
@@ -126,7 +126,7 @@
                 <div class="ui placeholder segment">
                     <div class="ui icon header">
                         <i class="meh outline icon"></i>
-                        Changer d'événement pour pouvoir ajouter un token.
+                        Changer d'évènement pour pouvoir ajouter un token.
                     </div>
                 </div>
             {% else %}

@@ -1,4 +1,4 @@
-Feature: Administration - Événements - Inscriptions
+Feature: Administration - Évènements - Inscriptions
 
   @reloadDbWithTestData
   Scenario: Accès à la liste puis ajout d'une inscription
@@ -30,8 +30,8 @@ Feature: Administration - Événements - Inscriptions
   Scenario: Export CSV: Badges
     Given I am logged in as admin and on the Administration
     # Création d'un évènement
-    And I follow "Gestion événements"
-    Then the ".content h2" element should contain "Liste des événements"
+    And I follow "Gestion évènements"
+    Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
     Then I fill in "titre" with "AFUP export badges"
     And I fill in "nb_places" with "666"
@@ -43,11 +43,11 @@ Feature: Administration - Événements - Inscriptions
     Then the response status code should be 200
     And the response header "Content-disposition" should match '#^attachment; filename="inscriptions_forum_.*.csv"#'
 
-  Scenario: Export CSV: Inscrits aux 4 derniers événements
+  Scenario: Export CSV: Inscrits aux 4 derniers évènements
     Given I am logged in as admin and on the Administration
     # Création d'un évènement
-    And I follow "Gestion événements"
-    Then the ".content h2" element should contain "Liste des événements"
+    And I follow "Gestion évènements"
+    Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
     Then I fill in "titre" with "AFUP export derniers"
     And I fill in "nb_places" with "4242"
@@ -55,6 +55,6 @@ Feature: Administration - Événements - Inscriptions
     # Export
     And I follow "Inscriptions"
     Then I should see "Exports"
-    And I follow "Exporter les inscrits aux 4 derniers événements"
+    And I follow "Exporter les inscrits aux 4 derniers évènements"
     Then the response status code should be 200
     And the response header "Content-disposition" should match '#^attachment; filename="inscriptions_([0-9]*)_derniers_events.csv"#'

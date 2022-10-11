@@ -1,4 +1,4 @@
-Feature: Administration - Événements - Tokens Sponsors
+Feature: Administration - Évènements - Tokens Sponsors
 
   @reloadDbWithTestData
   @clearEmails

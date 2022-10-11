@@ -85,7 +85,7 @@ if ($action == 'lister') {
         $sheet->setCellValue('A3', 'Date');
         $sheet->setCellValue('B3', 'Opération');
         $sheet->setCellValue('C3', 'Description');
-        $sheet->setCellValue('D3', 'Evénement');
+        $sheet->setCellValue('D3', 'Événement');
         $sheet->setCellValue('E3', 'Catégorie');
         $sheet->setCellValue('F3', 'Dépense');
         $sheet->setCellValue('G3', 'Recette');

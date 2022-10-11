@@ -344,7 +344,7 @@ class Facturation
         $numeroFacture = $this->genererFacture($reference, $cheminFacture);
 
         $message = new Message(
-            'Facture événement AFUP',
+            'Facture évènement AFUP',
             MailUserFactory::afup(),
             new MailUser($personne['email'], sprintf('%s %s', $personne['prenom'], $personne['nom']))
         );

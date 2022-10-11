@@ -138,7 +138,7 @@ class UserEditType extends AbstractType
                 ],
             ])
             ->add('eventLevel', ChoiceType::class, [
-                'label' => 'Événement',
+                'label' => 'Évènement',
                 'choices' => [
                     '--' => User::LEVEL_MEMBER,
                     'Gestionnaire' => User::LEVEL_ADMIN,

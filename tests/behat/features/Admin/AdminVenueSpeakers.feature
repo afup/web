@@ -1,7 +1,7 @@
 Feature: Administration - Partie Venue Speakers
 
   @reloadDbWithTestData
-  Scenario: Liste des speakers liés à un événement et modification d'une information sur la page info speaker
+  Scenario: Liste des speakers liés à un évènement et modification d'une information sur la page info speaker
     Given I am logged in as admin and on the Administration
     And I follow "Venue speakers"
     Then the ".content h2" element should contain "Venue speakers"
@@ -17,7 +17,7 @@ Feature: Administration - Partie Venue Speakers
     And I press "Enregistrer"
     # Quand on clique sur Enregistrer, on est redirigé vers l'authentification github
     # car le formulaire renvoie vers la partie publique (/event/forum/speaker-infos) qui ne contient aucune conférence ouverte
-    # et pas la partie admin (/admin/event/speaker-infos) qui nous permet d'aller sur n'importe quel événement.
+    # et pas la partie admin (/admin/event/speaker-infos) qui nous permet d'aller sur n'importe quel évènement.
     # Pour palier à ce problème, on navigue manuellement vers la partie admin pour revenir à la bonne page
     And I am on "/admin/event/speaker-infos?speaker_id=1&id=1"
     Then I should see "Informations de contact enregistrées"

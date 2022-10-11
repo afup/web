@@ -200,7 +200,7 @@ search.addWidget(
         },
         operator: "and",
         templates: {
-            header: "<h4>Événement</h4>",
+            header: "<h4>Évènement</h4>",
             item: refinementItemTemplate
         },
         showMore: {
