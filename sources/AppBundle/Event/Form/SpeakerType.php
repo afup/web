@@ -56,12 +56,14 @@ class SpeakerType extends AbstractType
             ->add('phone_number', TextType::class, ['required' => false, 'property_path' => 'phoneNumber', 'label' => 'Phone', 'help' => 'Utilisé uniquement pour vous contacter avant et durant de l\'événement.'])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
-            ->add('referent_person', TextType::class, ['required' => false, 'property_path' => 'referentPerson', 'label' => 'Personne référente'])
-            ->add('referent_person_email', TextType::class, ['required' => false, 'property_path' => 'referentPersonEmail', 'label' => 'Email personne référente'])
-
         ;
+
         if (true === $options[self::OPT_USER_GITHUB]) {
+            // mieux vaudrait passer par un option référeent ou "saisie dans le BO", mais le bug
+            // a été vu lors du Forum PHP 2022, on est pragmatique et le corrige au plus vite.
             $builder
+                ->add('referent_person', TextType::class, ['required' => false, 'property_path' => 'referentPerson', 'label' => 'Personne référente'])
+                ->add('referent_person_email', TextType::class, ['required' => false, 'property_path' => 'referentPersonEmail', 'label' => 'Email personne référente'])
                 ->add('github_user',
                     ChoiceType::class,
                     [
