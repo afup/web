@@ -1,24 +1,24 @@
-Feature: Administration - Événements - Gestions Événements
+Feature: Administration - Évènements - Gestions Évènements
 
   @reloadDbWithTestData
   @clearEmails
   @clearAllMailInscriptionAttachments
   @clearAllSponsorFiles
-  Scenario: On crée un nouvel événement vide
+  Scenario: On crée un nouvel évènement vide
     Given I am logged in as admin and on the Administration
-    And I follow "Gestion événements"
-    Then the ".content h2" element should contain "Liste des événements"
+    And I follow "Gestion évènements"
+    Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
-    Then I should see "Ajouter un événement"
-    Then I should see "Gestion d'événement"
+    Then I should see "Ajouter un évènement"
+    Then I should see "Gestion d'évènement"
     And I press "Soumettre"
     Then I should see "Titre du forum manquant"
     And I should see "Nombre de places manquant"
 
-  Scenario: On crée un nouvel événement
+  Scenario: On crée un nouvel évènement
     Given I am logged in as admin and on the Administration
-    And I follow "Gestion événements"
-    Then the ".content h2" element should contain "Liste des événements"
+    And I follow "Gestion évènements"
+    Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
 
     Then I fill in "titre" with "Forum AFUP 2027"
@@ -108,7 +108,7 @@ Feature: Administration - Événements - Gestions Événements
 
     And I press "Soumettre"
     Then I should see "Le forum a été ajouté"
-    And I should see "Liste des événements"
+    And I should see "Liste des évènements"
     And I should see "Forum AFUP 2027"
     And I should see "999"
     And I should see "03/03/2027"
@@ -117,14 +117,14 @@ Feature: Administration - Événements - Gestions Événements
  Scenario: Si on tente d'en envoyer un mail de test sans contenu, on a un message d'erreur
     Given I am logged in as admin and on the Administration
     When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
-    Then I should see "Modifier un événement"
+    Then I should see "Modifier un évènement"
     When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
     Then I should see "Contenu du mail d'inscription non trouvé pour le forum forum"
 
   Scenario: On arrive bien à ajouter un contenu de mail d'inscription
     Given I am logged in as admin and on the Administration
     When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
-    And I fill in "mail_inscription_content" with "Infos à propos de l'événement"
+    And I fill in "mail_inscription_content" with "Infos à propos de l'évènement"
     And I press "Soumettre"
     Then I should see "Le forum a été modifié"
 

@@ -111,7 +111,7 @@ class BadgesComputer
             $badgesCodes[] = [
                 'date' => $eventInfo['date']->format('Y-m-d'),
                 'code' => 'jy-etais-' . $eventInfo['path'],
-                'tooltip' => 'Participation à l\'événement ' . $eventInfo['title'],
+                'tooltip' => 'Participation à l\'évènement ' . $eventInfo['title'],
             ];
         }
 

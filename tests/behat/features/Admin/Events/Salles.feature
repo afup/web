@@ -1,4 +1,4 @@
-Feature: Administration - Événements - Salles
+Feature: Administration - Évènements - Salles
 
   @reloadDbWithTestData
   Scenario: On crée une nouvelle salle vide

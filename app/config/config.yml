@@ -122,12 +122,12 @@ parameters:
                     nom: 'Liste des antennes'
                     niveau: 'ROLE_ANTENNE'
         forum:
-            nom: 'Événements'
+            nom: 'Évènements'
             niveau: 'ROLE_FORUM'
             icon: "globe"
             elements:
                 forum_gestion:
-                    nom: 'Gestion événements'
+                    nom: 'Gestion évènements'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/list'
                     extra_routes:
@@ -174,7 +174,7 @@ parameters:
                         - admin_event_prices_add
                         - admin_event_prices_edit
                 forum_facturation:
-                    nom: "Factures d'événement"
+                    nom: "Factures d'évènement"
                     niveau: 'ROLE_ADMIN'
                 forum_sessions:
                     nom: 'Conférences'
@@ -226,7 +226,7 @@ parameters:
                     nom: 'Compte banques'
                     niveau: 'ROLE_ADMIN'
                 compta_synthese:
-                    nom: 'Synthese événement'
+                    nom: 'Synthese évènement'
                     niveau: 'ROLE_ADMIN'
                 compta_balance:
                     nom: 'Balance comptable'

@@ -1,4 +1,4 @@
-Feature: Administration - Événements - Virements en attente
+Feature: Administration - Évènements - Virements en attente
 
   @reloadDbWithTestData
   Scenario: Accès à la liste des virements

@@ -54,7 +54,7 @@ class TwitterListCreateCommand extends ContainerAwareCommand
         ;
 
         if (null === $event) {
-            throw new \InvalidArgumentException("L'événement sur lequel filter n'a pas été trouvé");
+            throw new \InvalidArgumentException("L'évènement sur lequel filter n'a pas été trouvé");
         }
 
         return $event;

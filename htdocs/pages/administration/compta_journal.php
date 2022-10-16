@@ -279,7 +279,7 @@ elseif ($action === 'export') {
     $columns = [
         'Date',
         'Compte',
-        'Evénement',
+        'Événement',
         'Catégorie',
         'Description',
         'Débit',

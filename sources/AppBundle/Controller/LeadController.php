@@ -49,7 +49,7 @@ class LeadController extends EventBaseController
     }
 
     /**
-     * Redirige vers la page de sponsoring du dernier événement.
+     * Redirige vers la page de sponsoring du dernier évènement.
      *
      * @return RedirectResponse
      */
