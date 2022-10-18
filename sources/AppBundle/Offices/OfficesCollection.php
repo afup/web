@@ -162,6 +162,7 @@ class OfficesCollection
                 'meetup_id' => '18724486',
                 'logo_url' => '/images/offices/montpellier.svg',
                 'twitter' => 'afup_mtp',
+                'youtube' => 'https://www.youtube.com/channel/UCr9f4-DksVhdv45q2245HeQ',
                 'map' => [
                     "legend-first-point-x" => "530",
                     "legend-first-point-y" => "520",
@@ -317,6 +318,7 @@ class OfficesCollection
                 'longitude' => '6.6151',
                 'logo_url' => '/images/offices/lorraine.svg',
                 'twitter' => 'AFUP_Lorraine',
+                'youtube' => 'https://www.youtube.com/channel/UC08QRZncvlgWxUbVbmUs42Q',
                 'departements' => ['54', '55', '57', '88'],
                 'meetup_urlname' => 'afup-lorraine-php',
                 'meetup_id' => '26854931',
