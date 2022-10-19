@@ -50,9 +50,7 @@ class TicketEventType extends AbstractType
                 'label' => 'Date de fin'
             ])
             ->add('description', TextareaType::class, [
-                'constraints' => [
-                    new NotBlank()
-                ],
+                'required' => false,
                 'label' => 'Description'
             ])
             ->add('maxTickets', IntegerType::class, [
