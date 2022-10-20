@@ -51,6 +51,7 @@ class Users extends AbstractSeed
                 'niveau' => 2, // AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
                 'prenom' => 'Admin',
                 'email' => 'admin@admin.fr',
+                'niveau_modules' => '00000'
             ],
             // utilisateur ayant expiré, avec une date de cotisation fixe, utile pour les tests
             [
@@ -61,6 +62,7 @@ class Users extends AbstractSeed
                 'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'prenom' => 'Jean',
                 'email' => 'userexpire@yahoo.fr',
+                'niveau_modules' => '00000',
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_MORALE,
@@ -72,6 +74,7 @@ class Users extends AbstractSeed
                 'email' => 'edmond.dupont@mycorp.fr',
                 'roles' => '["ROLE_COMPANY_MANAGER"]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
+                'niveau_modules' => '00000',
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_MORALE_NON_MANAGER,
@@ -83,6 +86,7 @@ class Users extends AbstractSeed
                 'email' => 'jean.raoul@mycorp.fr',
                 'roles' => '[]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
+                'niveau_modules' => '00000',
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_PHYSIQUE,
@@ -93,7 +97,8 @@ class Users extends AbstractSeed
                 'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'email' => 'paul.personne@mycorp.fr',
                 'roles' => '[]',
-                'etat' => User::STATUS_ACTIVE
+                'etat' => User::STATUS_ACTIVE,
+                'niveau_modules' => '00000',
             ],
         ];
 

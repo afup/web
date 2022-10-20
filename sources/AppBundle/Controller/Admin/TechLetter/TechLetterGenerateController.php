@@ -285,7 +285,7 @@ class TechLetterGenerateController extends SiteBaseController
         ]);
         $this->mailer->send($message);
 
-        $this->addFlash('notice', 'Le mail de test à été envoyé');
+        $this->addFlash('notice', 'Le mail de test a été envoyé');
 
         return $this->redirectToRoute('admin_techletter_generate', ['techletterId' => $sendingId]);
     }
