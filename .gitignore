@@ -46,7 +46,6 @@ js_dist
 !/var/sessions
 /var/sessions/*
 !var/sessions/.gitkeep
-!var/SymfonyRequirements.php
 /htdocs/bundles/
 /bin/atoum
 /bin/behat
