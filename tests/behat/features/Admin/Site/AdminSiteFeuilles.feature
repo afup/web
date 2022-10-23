@@ -15,7 +15,7 @@ Feature: Administration - Partie Site
     And I press "Ajouter"
     Then I should see "Liste des feuilles"
     And the ".content table" element should contain "Feuille test"
-    # modification d'une rubrique
+    # modification d'une feuille
     When I follow "modifier_1012"
     Then I should see "Modifier une feuille"
     And I should see "Feuille test"
