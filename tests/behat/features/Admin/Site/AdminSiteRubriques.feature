@@ -23,7 +23,7 @@ Feature: Administration - Partie Site
     And I press "Modifier"
     Then I should see "Liste des rubriques"
     And the ".content table" element should contain "Évènements"
-    # Les rebriquers sont bien visibles sur la page de création d'un article
+    # Les rubriques sont bien visibles sur la page de création d'un article
     When I follow "Articles"
     Then I should see "Liste des articles"
     When I follow "Ajouter"
