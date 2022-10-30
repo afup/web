@@ -113,17 +113,24 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * Retourne `true` si le speaker avec l'email ($email) a soumis au moins 1 CFP pour l'évènement ($event) passé en paramètre.
+     *
      * @param Event $event
      * @param string $email
      *
-     * @return Speaker|null
+     * @return bool
      */
-    public function getByEventAndEmail(Event $event, $email)
+    public function hasCFPSubmitted(Event $event, $email)
     {
-        return $this->getBy([
-            'eventId' => $event->getId(),
-            'email' => $email,
-        ])->first();
+        $query = $this->getPreparedQuery(
+            'SELECT COUNT(afup_conferenciers.conferencier_id) AS cfp
+        FROM afup_conferenciers
+        JOIN afup_conferenciers_sessions ON (afup_conferenciers_sessions.conferencier_id = afup_conferenciers.conferencier_id)
+        JOIN afup_sessions ON (afup_conferenciers_sessions.session_id = afup_sessions.session_id)
+        WHERE afup_sessions.id_forum = :eventId AND afup_conferenciers.email = :email'
+        )->setParams(['eventId' => $event->getId(), 'email' => $email]);
+
+        return $query->query()->first()[0]->cfp > 0;
     }
 
     /**

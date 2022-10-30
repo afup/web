@@ -62,7 +62,7 @@ class PurchaseTypeFactory
             }
         }
 
-        $isCfpSubmitter = null !== $user && null !== $this->speakerRepository->getByEventAndEmail($event, $user->getEmail());
+        $isCfpSubmitter = null !== $user && $this->speakerRepository->hasCFPSubmitted($event, $user->getEmail());
 
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
         $ticket = new Ticket();

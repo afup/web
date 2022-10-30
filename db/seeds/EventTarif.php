@@ -28,6 +28,13 @@ class EventTarif extends AbstractSeed
                 'date_start' => '2010-01-01 10:00:00',
                 'date_end' => '2099-12-31 23:59:59',
             ],
+            [
+                'id_tarif' => 5,
+                'id_event' => Event::ID_FORUM,
+                'price' => 2,
+                'date_start' => '2010-01-01 10:00:00',
+                'date_end' => '2099-12-31 23:59:59',
+            ],
         ];
 
         $table = $this->table('afup_forum_tarif_event');
