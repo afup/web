@@ -29,6 +29,9 @@ class EventRepository extends Repository implements MetadataInitializer
         return $events->first();
     }
 
+    /**
+     * @return CollectionInterface|Event|null
+     */
     public function getNextEvents()
     {
         $query = $this
@@ -36,6 +39,10 @@ class EventRepository extends Repository implements MetadataInitializer
         ;
 
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
+
+        if ($events->count() === 0) {
+            return null;
+        }
 
         return $events;
     }
