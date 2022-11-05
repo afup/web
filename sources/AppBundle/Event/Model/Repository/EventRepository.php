@@ -15,13 +15,24 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class EventRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @deprecated il y aura surement des soucis liés à l'AFUP Day en utilisant cette méthode
+     * @return CollectionInterface
+     */
+    public function getEvenList()
+    {
+        $query = $this
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut');
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * @deprecated TODO: à remplacer par getNextEvents de partout
      *
      * @return Event|null
      */
     public function getNextEvent()
     {
-        $events = $this->getNextEvents();
+        $events = $this->getEvenList();
 
         if ($events->count() === 0) {
             return null;
@@ -34,16 +45,13 @@ class EventRepository extends Repository implements MetadataInitializer
      */
     public function getNextEvents()
     {
-        $query = $this
-            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
-        ;
-
-        $events = $query->query($this->getCollection(new HydratorSingleObject()));
+        $events = $this->getEvenList();
 
         if ($events->count() === 0) {
             return null;
+        } elseif ($events->count() === 1) {
+            return $events;
         }
-
         return $events;
     }
 
