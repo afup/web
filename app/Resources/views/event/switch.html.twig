@@ -4,43 +4,6 @@
     {{ parent() }}
 {% endblock %}
 
-{% block header %}
-<header class="navbar navbar-inverse" role="navigation">
-    <div class="container-fluid">
-        <nav>
-            <ul class="nav navbar-nav">
-                {% if menu.items is defined %}
-                    {% for item in menu.items %}
-                        <li class="{% if loop.first %}first{% endif %} {% if app.request.get('_route') == item.route %}active{% endif %}">
-                            <a href="{{ url(item.route, {eventSlug: event.path}) }}">
-                                {{ item.title|trans }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                {% endif %}
-                <li>
-                    {% set locale = 'fr' %}
-                    {% if app.request.locale == 'fr' %}
-                        {% set locale = 'en' %}
-                    {% endif %}
-                    {% set parameters = app.request.attributes.get('_route_params')|merge({'_locale':locale}) %}
-                    <a href="{{ url(app.request.get('_route'), parameters) }}">
-                        [{{ locale }}]
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="navbar-right hidden-xs">
-            <a href="https://afup.org" target="_blank" id="logo">
-                <img src="{{ asset('templates/site/img/logo-afup.svg') }}" alt="logo AFUP">
-                <img src="{{ asset('templates/site/img/logo-afup-mobile.svg') }}" alt="logo AFUP" class="mobile">
-            </a>
-        </div>
-    </div>
-</header>
-
-{% endblock %}
-
 {% block content %}
     <h2>{{'Plusieurs évènements en ce moment !'|trans}}</h2>
     <div id="homeButtons">
