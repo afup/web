@@ -137,6 +137,11 @@ class Talk implements NotifyPropertyInterface
     private $transcript;
 
     /**
+     * @var string|null
+     */
+    private $verbatim;
+
+    /**
      * @var bool
      */
     private $useMarkdown = true;
@@ -756,6 +761,26 @@ class Talk implements NotifyPropertyInterface
     public function setTranscript($transcript)
     {
         $this->transcript = $transcript;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVerbatim()
+    {
+        return $this->verbatim;
+    }
+
+    /**
+     * @param string|null $transcript
+     *
+     * @return $this
+     */
+    public function setVerbatim($verbatim)
+    {
+        $this->verbatim = $verbatim;
 
         return $this;
     }

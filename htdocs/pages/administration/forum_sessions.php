@@ -178,6 +178,7 @@ if ($action == 'lister') {
         $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
         $formulaire->addElement('textarea'    , 'tweets'          , "Tweets", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea'    , 'transcript'          , "Sous titres en français (format SRT)", ['style' => "width:100%;min-height:100px"]);
+        $formulaire->addElement('textarea', 'verbatim', 'Verbatim', ['cols' => 40, 'rows' => 15,'class'=> 'simplemde']);
     }
 
 
@@ -266,7 +267,8 @@ if ($action == 'lister') {
                                                 $valeurs['video_has_en_subtitles'],
                                                 $valeurs['date_publication']['Y'].'-'.$valeurs['date_publication']['M'].'-'.$valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s'],
                                                 $valeurs['tweets'],
-                                                $valeurs['transcript']
+                                                $valeurs['transcript'],
+                                                $valeurs['verbatim']
             );
             $forum_appel->delierSession($session_id);
         }

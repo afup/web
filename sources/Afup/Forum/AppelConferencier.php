@@ -424,7 +424,8 @@ class AppelConferencier
         $video_has_en_subtitles = null,
         $date_publication = null,
         $tweets = null,
-        $transcript = null
+        $transcript = null,
+        $verbatim = null
     ) {
         $this->_bdd->executer("SET NAMES utf8mb4");
 
@@ -475,6 +476,9 @@ class AppelConferencier
         }
         if ($transcript !== null) {
             $requete .= 'transcript = ' . $this->_bdd->echapper($transcript) . ', ';
+        }
+        if ($verbatim !== null) {
+            $requete .= 'verbatim = ' . $this->_bdd->echapper($verbatim) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;
