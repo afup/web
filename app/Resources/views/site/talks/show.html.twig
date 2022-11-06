@@ -257,5 +257,23 @@
         </div>
         {% endif %}
 
+        {% if talk.verbatim %}
+        <div class="container">
+            <div class="col-md-12">
+                <div class="container comments-title-container">
+                    <div class="col-md-12">
+                        <h2>Verbatim</h2>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="col-md-12">
+                        {{ talk.verbatim|markdown }}
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
+
     </div>
 {% endblock %}
