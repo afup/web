@@ -423,6 +423,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'verbatim',
+                'fieldName' => 'verbatim',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'markdown',
                 'fieldName' => 'useMarkdown',
                 'type' => 'bool',
