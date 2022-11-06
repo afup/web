@@ -414,6 +414,7 @@ class AppelConferencier
         $joindin = null,
         $youtubeId = null,
         $slidesUrl = null,
+        $openfeedbackPath = null,
         $blogPostUrl = null,
         $interviewUrl = null,
         $languageCode = null,
@@ -443,6 +444,9 @@ class AppelConferencier
         }
         if ($slidesUrl !== null) {
             $requete .= ' slides_url = ' . $this->_bdd->echapper($slidesUrl) . ', ';
+        }
+        if ($openfeedbackPath !== null) {
+            $requete .= ' openfeedback_path = ' . $this->_bdd->echapper($openfeedbackPath) . ', ';
         }
         if ($blogPostUrl !== null) {
             $requete .= ' blog_post_url = ' . $this->_bdd->echapper($blogPostUrl) . ', ';

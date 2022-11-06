@@ -169,6 +169,7 @@ if ($action == 'lister') {
         $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
         $formulaire->addElement('text'    , 'youtube_id'          , 'Id de la conférence sur youtube' , array('size' => 40, 'maxlength' => 30));
         $formulaire->addElement('text'    , 'slides_url'          , 'URL où trouver les slides' , array('size' => 80, 'maxlength' => 255));
+        $formulaire->addElement('text'    , 'openfeedback_path'          , 'Chemin la conférence sur openfeedback' , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('text'    , 'blog_post_url'          , 'URL de la version  article de blog de la conférence' , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('text'    , 'interview_url'          , "URL de l'interview" , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('select', 'language_code', 'Langue', Talk::getLanguageLabelsByKey());
@@ -257,6 +258,7 @@ if ($action == 'lister') {
                                                 $valeurs['joindin'],
                                                 $valeurs['youtube_id'],
                                                 $valeurs['slides_url'],
+                                                $valeurs['openfeedback_path'],
                                                 $valeurs['blog_post_url'],
                                                 $valeurs['interview_url'],
                                                 $valeurs['language_code'],

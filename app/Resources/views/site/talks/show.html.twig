@@ -83,7 +83,7 @@
 
                 </div>
 
-                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId or talk.getVideoHasEnSubtitles or talk.getVideoHasFrSubtitles %}
+                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId or talk.getVideoHasEnSubtitles or talk.getVideoHasFrSubtitles or talk.hasOpenfeedbackPath %}
                 <div class="container">
                     <div class="col-md-12">
                         <h2>Informations complémentaires</h2>
@@ -110,6 +110,12 @@
                         {% if talk.hasJoindinId %}
                             <li>
                                 <a class="talk-info-link" href="{{ talk.getJoindinUrl }}"><i class="fa fa-comments"></i> Fiche joind.in</a>
+                            </li>
+                        {% endif %}
+
+                        {% if talk.hasOpenfeedbackPath %}
+                            <li>
+                                <a class="talk-info-link" href="{{ talk.getOpenfeedbackUrl }}"><i class="fa fa-comments"></i> Fiche openfeedback.io</a>
                             </li>
                         {% endif %}
 
