@@ -124,6 +124,11 @@ class Talk implements NotifyPropertyInterface
     /**
      * @var string|null
      */
+    private $openfeedbackPath;
+
+    /**
+     * @var string|null
+     */
     private $languageCode;
 
     /**
@@ -483,6 +488,44 @@ class Talk implements NotifyPropertyInterface
         }
 
         return '/talks/' . $this->getUrlKey() . '/joindin';
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOpenfeedbackPath()
+    {
+        return $this->openfeedbackPath;
+    }
+
+    /**
+     * @param string|null $openfeedbackPath
+     */
+    public function setOpenfeedbackPath($openfeedbackPath)
+    {
+        $this->openfeedbackPath = $openfeedbackPath;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasOpenfeedbackPath()
+    {
+        return null !== $this->getOpenfeedbackPath();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getOpenfeedbackUrl()
+    {
+        if (!$this->hasOpenfeedbackPath()) {
+            return null;
+        }
+
+        return 'https://openfeedback.io/' . $this->getOpenfeedbackPath();
     }
 
     /**

@@ -408,6 +408,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'openfeedback_path',
+                'fieldName' => 'openfeedbackPath',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'language_code',
                 'fieldName' => 'languageCode',
                 'type' => 'string'
