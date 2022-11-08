@@ -18,15 +18,17 @@
         <div class="navbar-header">
             <a href="#body" class="nav-button-open" aria-label="open navigation"></a>
             <a href="#" class="nav-button-close" aria-label="close navigation"></a>
-            {% if menu.main is defined %}
+            {% if menu.main is defined  and event is defined%}
                 <a class="navbar-brand hidden-xs {% if app.request.get('_route') == menu.main.route %}active{% endif %}"
                    href="{{ url(menu.main.route, {eventSlug: event.path}) }}">{{ menu.main.title|trans }}</a>
+            {% elseif menu.main is defined  and event is not defined %}
+                <a class="navbar-brand hidden-xs" href="/event">{{ 'Évènements'|trans }}</a>
             {% endif %}
         </div>
 
         <nav>
             <ul class="nav navbar-nav">
-                {% if menu.items is defined %}
+                {% if menu.items is defined and event is defined %}
                     {% for item in menu.items %}
                         <li class="{% if loop.first %}first{% endif %} {% if app.request.get('_route') == item.route %}active{% endif %}">
                             <a href="{{ url(item.route, {eventSlug: event.path}) }}">

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Controller;
 
 use AppBundle\Calendar\IcsPLanningGenerator;
@@ -18,14 +17,20 @@ class EventController extends EventBaseController
     {
         /**
          * @var $eventRepository EventRepository
+         *
+         * @return Response
          */
         $eventRepository = $this->get('ting')->get(EventRepository::class);
-        $event = $eventRepository->getNextEvent();
+        $events = $eventRepository->getNextEvents();
 
-        if ($event === null) {
+        if ($events === null) {
             return $this->render(':event:none.html.twig');
+        } elseif ($events->count() === 1) {
+            $event = $events->first();
+            return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
         }
-        return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
+
+        return $this->render(':event:switch.html.twig', ['events' => $events]);
     }
 
     public function speakerInfosIndexAction()

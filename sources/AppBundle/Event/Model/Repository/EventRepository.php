@@ -15,20 +15,22 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class EventRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @deprecated il y aura surement des soucis liés à l'AFUP Day en utilisant cette méthode
+     * @deprecated TODO: à remplacer par getNextEvents de partout
      *
      * @return Event|null
      */
     public function getNextEvent()
     {
         $events = $this->getNextEvents();
-
         if ($events->count() === 0) {
             return null;
         }
         return $events->first();
     }
 
+    /**
+     * @return CollectionInterface|Event|null
+     */
     public function getNextEvents()
     {
         $query = $this
@@ -37,6 +39,9 @@ class EventRepository extends Repository implements MetadataInitializer
 
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
 
+        if ($events->count() === 0) {
+            return null;
+        }
         return $events;
     }
 
