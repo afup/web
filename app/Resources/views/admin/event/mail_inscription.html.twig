@@ -10,4 +10,22 @@
     </div>
 {% endif %}
 
+<div>
+    <div itemtype="https://schema.org/EventReservation" itemscope>
+        <div itemprop="underName" itemtype="https://schema.org/Person" itemscope>
+            <meta itemprop="name" content="{{ recipient.name }}" />
+        </div>
+        <div itemprop="reservationFor" itemtype="https://schema.org/Event" itemscope>
+            <div itemprop="location" itemtype="https://schema.org/Place" itemscope>
+                <meta itemprop="name" content="{{ event.placeName }}" />
+                <div itemtype="https://schema.org/PostalAddress" itemscope>
+                    <meta itemprop="streetAddress" content="{{ event.placeAddress }}" />
+                </div>
+            </div>
+            <meta itemprop="name" content="{{ event.title }}" />
+            <meta itemprop="startDate" content="{{ event.dateStart|date("Y-m-d\\T00:00:00P") }}" />
+            <meta itemprop="endDate" content="{{ event.dateEnd|date("Y-m-d\\T00:00:00P") }}" />
+        </div>
+    </div>
+</div>
 {% endblock %}
