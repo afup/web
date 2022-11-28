@@ -7,6 +7,7 @@ use AppBundle\Calendar\JsonPlanningGenerator;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
+use AppBundle\Openfeedback\OpenfeedbackJsonGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -131,5 +132,21 @@ class EventController extends EventBaseController
         $event = $this->get('ting')->get(EventRepository::class)->getCurrentEvent();
 
         return new RedirectResponse($this->generateUrl('event_calendar', ['eventSlug' => $event->getPath()]));
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function openfeedbackJsonAction($eventSlug)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+
+        $photoStorage = $this->get(\AppBundle\CFP\PhotoStorage::class);
+        $ting = $this->get('ting');
+        $talkRepository = $ting->get(TalkRepository::class);
+
+        $generator = new OpenfeedbackJsonGenerator($talkRepository, $photoStorage);
+
+        return new JsonResponse($generator->generate($event));
     }
 }
