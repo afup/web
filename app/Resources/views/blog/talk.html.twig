@@ -11,7 +11,7 @@
                     {{ talks_info.talk.getAbstract|raw }}
                 {% endif %}
             </td>
-            {% if talks_info.event.datePlanningAnnouncement is not defined or "now"|date < talks_info.event.datePlanningAnnouncement|date %}
+{% if talks_info.event.isPlanningDisplayable %}
                 <td width="20%" style="vertical-align: middle; text-align: center">
                 {{ talks_info.room.name }}<br />
                 {{ talks_info.planning.start|date('d/m/Y') }}<br />
