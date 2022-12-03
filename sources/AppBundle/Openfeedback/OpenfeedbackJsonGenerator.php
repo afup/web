@@ -91,7 +91,7 @@ class OpenfeedbackJsonGenerator
 
             $data['sessions'][$talk->getId()] = $talkFormatted;
 
-            if (!$this->isSpeakerDuplicatation($data, $speakersFormatted)) {
+            if ($this->isNotSpeakerDuplicatation($data, $speakersFormatted)) {
                 foreach ($speakersFormatted as $person) {
                     $data['speakers'][$person["id"]] = $person;
                 }
@@ -114,10 +114,11 @@ class OpenfeedbackJsonGenerator
      * @param array $speakers
      * @return bool
      */
-    public function isSpeakerDuplicatation($data, array $speakers)
+    public function isNotSpeakerDuplicatation($data, array $speakers)
     {
-        return !(!is_array($data)
+        return
+            !is_array($data)
             || !array_key_exists('speakers', $data)
-            || $speakers !== end($data['speakers']));
+            || $speakers !== end($data['speakers']);
     }
 }
