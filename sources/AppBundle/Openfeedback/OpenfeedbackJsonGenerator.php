@@ -84,10 +84,13 @@ class OpenfeedbackJsonGenerator
                 'tags' => [$talk->getTypeLabel()],
                 'title' => $talk->getTitle(),
                 'id' => "{$talk->getId()}",
-                'startTime' => $this->getOpenfeedbackFormat($planning->getStart()),
-                'endTime' => $this->getOpenfeedbackFormat($planning->getEnd()),
                 'trackTitle' => ($room ? $room->getName() : ''),
             ];
+
+            if (null !== $planning) {
+                $talkFormatted ['startTime'] = $this->getOpenfeedbackFormat($planning->getStart());
+                $talkFormatted ['endTime'] = $this->getOpenfeedbackFormat($planning->getEnd());
+            }
 
             $data['sessions'][$talk->getId()] = $talkFormatted;
 
