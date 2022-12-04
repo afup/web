@@ -36,7 +36,7 @@ class Conferenciers extends AbstractSeed
                 'email' => 'foo@bar.baz',
                 'societe' => 'AFUP',
                 'ville' => 'Paris',
-                'biographie' => 'Président pôle outils',
+                'biographie' => 'Bio Adrien',
                 'twitter' => 'agallou',
                 'user_github' => 2,
                 'photo' => '1968.jpg',
