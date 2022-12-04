@@ -180,9 +180,10 @@ class TechLetterGenerateController extends SiteBaseController
 
             if ($this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token'))) {
                 try {
-                    $response = $this->get('app.mailchimp_techletter_api')->scheduleCampaign($response['id'], $sending->getSendingDate());
-                    $message = sprintf("Newsletter envoyée, verrouillée et planifiée pour être envoyée à %s sur Mailchimp",
-                        $sending->getSendingDate()->format('d/m/Y H:i')
+                    $this->get('app.mailchimp_techletter_api')->scheduleCampaign($response['id'], $sending->getSendingDate());
+                    $message = sprintf("Newsletter envoyée, verrouillée et planifiée pour être envoyée à %s (%s) sur Mailchimp",
+                        $sending->getSendingDate()->format('d/m/Y H:i'),
+                        $sending->getSendingDate()->getTimezone()->getName()
                     );
                     $this->addFlash('notice', $message);
                 } catch (\Exception $exception) {
