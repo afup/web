@@ -19,6 +19,16 @@ class GithubUsers extends AbstractSeed
                 'avatar_url' => 'https://avatars.githubusercontent.com/u/10758?v=4',
                 'afup_crew' => 1,
             ],
+            [
+                'id' => 2,
+                'github_id' => 320372,
+                'login' => 'agallou',
+                'name' => 'Adrien Gallou',
+                'company' => 'Unow',
+                'profile_url' => 'https://github.com/agallou',
+                'avatar_url' => 'https://avatars.githubusercontent.com/u/320372?v=4',
+                'afup_crew' => 1,
+            ],
         ];
 
         $table = $this->table('afup_user_github');

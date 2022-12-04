@@ -27,6 +27,24 @@ class Conferenciers extends AbstractSeed
                 'special_diet_description' => null,
                 'hotel_nights' => null,
             ],
+            [
+                'conferencier_id' => 2,
+                'id_forum' => Event::ID_FORUM,
+                'civilite' => 'M.',
+                'nom' => 'Gallou',
+                'prenom' => 'Adrien',
+                'email' => 'foo@bar.baz',
+                'societe' => 'AFUP',
+                'ville' => 'Paris',
+                'biographie' => 'Bio Adrien',
+                'twitter' => 'agallou',
+                'user_github' => 2,
+                'photo' => '1968.jpg',
+                'will_attend_speakers_diner' => null,
+                'has_special_diet' => null,
+                'special_diet_description' => null,
+                'hotel_nights' => null,
+            ],
         ];
 
         $table = $this->table('afup_conferenciers');

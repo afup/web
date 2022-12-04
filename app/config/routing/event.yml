@@ -119,3 +119,7 @@ event_calendar:
 planning_json:
   path: /{eventSlug}/planning.json
   defaults: {_controller: AppBundle:Event:planningJson}
+
+openfeedback_json:
+  path: /{eventSlug}/openfeedback.json
+  defaults: {_controller: AppBundle:Event:openfeedbackJson}
