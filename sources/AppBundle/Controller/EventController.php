@@ -147,6 +147,10 @@ class EventController extends EventBaseController
 
         $generator = new OpenfeedbackJsonGenerator($talkRepository, $photoStorage);
 
-        return new JsonResponse($generator->generate($event));
+        $response =  new JsonResponse($generator->generate($event));
+
+        $response->headers->set('Access-Control-Allow-Origin', 'https://openfeedback.io');
+
+        return $response;
     }
 }
