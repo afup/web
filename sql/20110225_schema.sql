@@ -2183,69 +2183,6 @@ CREATE TABLE `afup_presences_assemblee_generale` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-
-
-# Dump of table afup_rendezvous
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `afup_rendezvous`;
-
-CREATE TABLE `afup_rendezvous` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `titre` varchar(255) DEFAULT NULL,
-  `accroche` mediumtext,
-  `theme` mediumtext,
-  `debut` int(11) DEFAULT NULL,
-  `fin` int(11) DEFAULT NULL,
-  `lieu` varchar(255) DEFAULT NULL,
-  `url` varchar(255) NOT NULL DEFAULT '',
-  `plan` varchar(255) NOT NULL DEFAULT '',
-  `adresse` mediumtext NOT NULL,
-  `capacite` mediumint(9) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-
-
-# Dump of table afup_rendezvous_inscrits
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `afup_rendezvous_inscrits`;
-
-CREATE TABLE `afup_rendezvous_inscrits` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_rendezvous` int(11) DEFAULT NULL,
-  `nom` varchar(255) DEFAULT NULL,
-  `entreprise` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `telephone` varchar(255) DEFAULT NULL,
-  `presence` tinyint(4) DEFAULT NULL,
-  `confirme` tinyint(4) DEFAULT '0',
-  `creation` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-
-
-# Dump of table afup_sessions
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `afup_sessions`;
-
-CREATE TABLE `afup_sessions` (
-  `session_id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_forum` smallint(6) NOT NULL DEFAULT '0',
-  `date_soumission` date NOT NULL DEFAULT '0000-00-00',
-  `titre` varchar(255) NOT NULL DEFAULT '',
-  `abstract` text NOT NULL,
-  `journee` tinyint(1) NOT NULL DEFAULT '0',
-  `genre` tinyint(1) NOT NULL DEFAULT '1',
-  `plannifie` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`session_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-
-
 # Dump of table afup_sessions_note
 # ------------------------------------------------------------
 
