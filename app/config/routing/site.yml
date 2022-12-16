@@ -56,8 +56,13 @@ membership_payment:
   defaults: {_controller: AppBundle:MemberShip:payboxCallback}
 
 membership_payment_redirect:
-  path: /paybox-redirect
-  defaults: {_controller: AppBundle\Controller\PayboxRedirectAction:index}
+  path: /paybox-redirect/{type}
+  defaults:
+    _controller: AppBundle\Controller\PayboxRedirectAction:index
+    type: success
+  requirements:
+    type: success|error|canceled|refused
+
 
 techletter:
   path: /techletter
