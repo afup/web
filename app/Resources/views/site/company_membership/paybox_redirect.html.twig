@@ -6,13 +6,13 @@
             <p>
                 {% if payboxResponse.successful %}
                     Le paiement de votre cotisation s'est bien passé, merci.
-                {% else if return_type == 'refused' %}
+                {% elseif return_type == 'refused' %}
                     Votre paiement a été refusé.<br>
                     Aucun montant n'a &eacute;t&eacute; pr&eacute;lev&eacute;.
-                {% else if return_type == 'canceled' %}
+                {% elseif return_type == 'canceled' %}
                     Votre paiement a &eacute;t&eacute; annul&eacute;.<br>
                     Aucun montant n'a &eacute;t&eacute; pr&eacute;lev&eacute;.
-                {% else if return_type == 'error' %}
+                {% elseif return_type == 'error' %}
                     Il y a eu une erreur lors de l'enregistrement de votre cotisation.
                 {% endif %}
             </p>
