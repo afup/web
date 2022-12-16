@@ -7,17 +7,17 @@
         <thead>
         <tr>
             <th>
-                <a href="{{ path('admin_planete_billets', {
+                <a href="{{ path('admin_planete_feed_article_list', {
                     sort: 'title',
                     direction: direction == 'asc' and sort == 'title' ? 'desc' : 'asc'
                 }) }}">Titre</a>
             </th>
-            <th><a href="{{ path('admin_planete_billets', {
+            <th><a href="{{ path('admin_planete_feed_article_list', {
                     sort: 'content',
                     direction: direction == 'asc' and sort == 'content' ? 'desc' : 'asc'
                 }) }}">Contenu</a>
             </th>
-            <th><a href="{{ path('admin_planete_billets', {
+            <th><a href="{{ path('admin_planete_feed_article_list', {
                     sort: 'status',
                     direction: direction == 'asc' and sort == 'status' ? 'desc' : 'asc'
                 }) }}">Etat</a>

@@ -101,6 +101,17 @@
         <h2>Ajouter un article</h2>
     {else}
         <h2>Modifier un article</h2>
+
+        <div class="ui menu">
+            <div class="ui simple dropdown item" tabindex="0">
+                <i class="icon linkify"></i>
+                <span class="text">Accès rapides</span>
+                <i class="dropdown icon"></i>
+                <div class="menu hidden" tabindex="-1">
+                    <a class="item" href="{$url_site}">Voir sur le site</a>
+                </div>
+            </div>
+        </div>
     {/if}
     {include file="formulaire.html"}
 {/if}

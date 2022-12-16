@@ -4,6 +4,7 @@ namespace AppBundle\Event\Talk;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 
 class ExportGenerator
@@ -41,6 +42,7 @@ class ExportGenerator
             'description',
             'staff_notes',
             'programme_mentoring',
+            'youtube_id',
         ];
 
         $toFile->fputcsv($columns);
@@ -88,13 +90,14 @@ class ExportGenerator
             'format' => $talk->getTypeLabel(),
             'typage' => '',
             'speaker' => $this->prepareSpeakersLabel($speakers),
-            'provenance' => '',
+            'provenance' => $this->prepareSpeakersLocalities($speakers),
             'theme' => '',
             'langue' => $this->getLanguageLabel($talk),
             'titre' => $talk->getTitle(),
             'description' => $talk->getAbstract(),
             'staff_notes' => $talk->getStaffNotes(),
             'programme_mentoring' => $talk->getNeedsMentoring() ? 'oui' : 'non',
+            'youtube_id' => $talk->getYoutubeId(),
         ];
     }
 
@@ -121,6 +124,30 @@ class ExportGenerator
         }
 
         return $names;
+    }
+
+    /**
+     * @param array|Speaker[] $speakers
+     *
+     * @return string
+     */
+    private function prepareSpeakersLocalities(array $speakers)
+    {
+        return implode(',', $this->getSpeakersLocalities($speakers));
+    }
+
+    /**
+     * @param array|Speaker[] $speakers
+     * @return array
+     */
+    private function getSpeakersLocalities(array $speakers)
+    {
+        $localities = [];
+        foreach ($speakers as $speaker) {
+            $localities[] = $speaker->getLocality();
+        }
+
+        return $localities;
     }
 
     /**

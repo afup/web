@@ -51,7 +51,7 @@ search.addWidget(
 
 
                 if (typeof data.blog_post_url !== 'undefined') {
-                    content += '<a class="talk-info-link" href="' + data.blog_post_url + '" class="talk-list-" target="blog-post"><i class="fa fa-rss"></i> Transcript</a>';
+                    content += '<a class="talk-info-link" href="' + data.blog_post_url + '" class="talk-list-" target="blog-post"><i class="fa fa-rss"></i> Article de blog</a>';
                 }
 
                 if (typeof data.slides_url !== 'undefined') {
@@ -130,7 +130,7 @@ search.addWidget(
     instantsearch.widgets.toggle({
         container: '#refinement-has-blog-post',
         attributeName: 'has_blog_post',
-        label: 'Avec transcript',
+        label: 'Avec article de blog',
         values: {
             on: true
         },
@@ -200,7 +200,7 @@ search.addWidget(
         },
         operator: "and",
         templates: {
-            header: "<h4>Événement</h4>",
+            header: "<h4>Évènement</h4>",
             item: refinementItemTemplate
         },
         showMore: {

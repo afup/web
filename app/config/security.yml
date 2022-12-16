@@ -38,8 +38,8 @@ security:
             logout_on_user_change: true
             guard:
                 authenticators:
-                    - 'AppBundle\Security\MyGithubAuthenticator'
-                entry_point: 'AppBundle\Security\MyGithubAuthenticator'
+                    - '%github_authenticator%'
+                entry_point: '%github_authenticator%'
 
         main:
             anonymous: ~
@@ -58,7 +58,7 @@ security:
         - { path: ^/member, roles: [ROLE_USER, ROLE_MEMBER_EXPIRED]}
         - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check), roles: ROLE_NO_ACCESS}
         - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
-        - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1" }
+        - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1 or request.headers.get('x-afup-blog-api-key') == '%blog_api_key%'" }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }
         - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: "%paybox_ips%" }
         - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: ROLE_SUPER_ADMIN }

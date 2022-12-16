@@ -12,7 +12,7 @@ class Reminder7DaysBeforeEnd extends AbstractUserReminder
 <p>Votre adhésion d’un an à l’AFUP est désormais très proche de son terme : plus que 7 jours avant la fin de sa validité.</p>
 
 <p>Durant une année, vous avez pu profiter des différentes mailing-lists mises en place par l’association,
-et vous avez pu bénéficier des tarifs spéciaux “membres AFUP” lors de nos événements. Mais avant toute chose,
+et vous avez pu bénéficier des tarifs spéciaux “membres AFUP” lors de nos évènements. Mais avant toute chose,
 par votre adhésion, vous avez activement participé au dynamisme de la communauté PHP, vous avez permis à des cycles de
 conférences majeurs d’exister, et vous avez soutenu les valeurs et la philosophie de notre association.</p>
 

@@ -13,12 +13,12 @@
             <h3>{% trans %}VOS PLACES GRATUITES{% endtrans %}</h3>
 
             {% if sold_out %}
-                <p>Désolé, la billeterie n'est plus disponible pour cet événement.</p>
+                <p>Désolé, la billetterie n'est plus disponible pour cet évènement.</p>
 
             {% else %}
                 <p>
-                    {% trans with { '%date%': "<b>" ~ event.dateEndSales|localizeddate('full', 'none') ~ "</b>" } %}
-                        Enregistrez vous-même vos invités avant le %date% dernier délai. Vos invités recevront leur convocation quelques jours avant l’événement.
+                    {% trans with { '%date%': "<b>" ~ event.dateEndSalesSponsorToken|localizeddate('full', 'none') ~ "</b>" } %}
+                        Enregistrez vous-même vos invités avant le %date% dernier délai. Vos invités recevront leur convocation quelques jours avant l’évènement.
                     {% endtrans %}
                 </p>
 
@@ -72,8 +72,8 @@
                     <h4>Nouveau ticket</h4>
                 {% endif %}
                 <p>{{ 'Places disponibles'|trans }}: {{ sponsorTicket.pendingInvitations }} / {{ sponsorTicket.maxInvitations }} </p>
-                {% if sponsorTicket.pendingInvitations == 0 %}
-                    <p>Vous avez utilisé toutes vos invitations. Nous avons hâte de vous retrouver lors de cet événement !</p>
+                {% if sponsorTicket.pendingInvitations == 0 and edit == false %}
+                    <p>Vous avez utilisé toutes vos invitations. Nous avons hâte de vous retrouver lors de cet évènement !</p>
                 {% else %}
                     {{ form_start(ticketForm, {attr: {class: 'sponsor--ticket-edit'}}) }}
                     {{ form_errors(ticketForm) }}
@@ -85,7 +85,7 @@
             {% endif %}
         </div>
         <div class="col-md-6">
-            {{ sponsors_infos|raw }}
+            {{ sponsors_infos|markdown }}
         </div>
     </div>
 {% endblock %}

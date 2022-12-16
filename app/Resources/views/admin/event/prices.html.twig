@@ -4,18 +4,30 @@
     <h2>Tarifications</h2>
     {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
+    <div class="ui menu">
+        <a href="{{ path('admin_event_prices_add', {event: event.id}) }}" class="item">
+            <div data-tooltip="Ajouter un tarif" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
     <table class="ui table striped compact celled">
         <thead>
-            <th>Type - libellé</th>
-            <th>Type - libellé technique</th>
-            <th>Prix</th>
-            <th>Date de début</th>
-            <th>Date de fin</th>
-            <th>Description</th>
-            <th>Limité membres ?</th>
-            <th>Limité CFP ?</th>
-            <th>Jours</th>
-            <th title="Une fois ce nombre de places publiques vendus, on ne vends plus des billets de ce type">Maximum</th>
+            <tr>
+                <th>Type - libellé</th>
+                <th>Type - libellé technique</th>
+                <th>Prix</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Description</th>
+                <th>Limité membres ?</th>
+                <th>Limité CFP ?</th>
+                <th>Jours</th>
+                <th title="Une fois ce nombre de places publiques vendus, on ne vends plus des billets de ce type">Maximum</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
         {% for ticket_event_type in ticket_event_types %}
@@ -33,12 +45,12 @@
                 <td>{{ ticket_event_type.price }}&nbsp;€</td>
                 <td>
                     {% if ticket_event_type.dateStart %}
-                        {{ ticket_event_type.dateStart|date('Y-m-d H:i:s') }}
+                        {{ ticket_event_type.dateStart|date('d/m/Y H:i') }}
                     {% endif %}
                 </td>
                 <td>
                     {% if ticket_event_type.dateEnd %}
-                        {{ ticket_event_type.dateEnd|date('Y-m-d H:i:s') }}
+                        {{ ticket_event_type.dateEnd|date('d/m/Y H:i') }}
                     {% endif %}
                 </td>
                 <td>{{ ticket_event_type.description }}</td>
@@ -62,7 +74,7 @@
                 </td>
                 <td>
                     {% if ticket_event_type.ticketType %}
-                        {{ ticket_event_type.ticketType.day }}
+                        {{ ticket_event_type.ticketType.prettyDays|join(', ') }}
                     {% endif %}
                 </td>
                 <td>
@@ -72,13 +84,26 @@
                         n/a
                     {% endif %}
                 </td>
+                <td class="single line right aligned">
+                    {% set text = 'Modifier le tarif' %}
+                    {% if ticket_event_type.ticketType %}
+                        {% set text = text ~ ' ' ~ ticket_event_type.ticketType.prettyName %}
+                    {% endif %}
+                    <a href="{{ path('admin_event_prices_edit', {id: ticket_event_type.ticketTypeId, event: ticket_event_type.eventId}) }}"
+                       data-position="left center"
+                       class="compact ui icon button"
+                       data-tooltip="{{ text }}"
+                       title="{{ text }}">
+                        <i class="pencil alernate icon"></i>
+                    </a>
+                </td>
             </tr>
 
         {% else %}
             <tr><td colspan="10" style="text-align: center;">
                     <div class="ui icon header">
                         <i class="meh outline icon"></i>
-                        Aucune information. {% if event == null %}Essayez de changez d'événement !{% endif %}
+                        Aucune information. {% if event == null %}Essayez de changez d'évènement !{% endif %}
                     </div>
                 </td></tr>
         {% endfor %}

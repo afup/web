@@ -70,8 +70,8 @@
         <div class="tickets--members-detail">
             {% if app.user %}
                 {% if app.user.companyId > 0 %}
-                    <p>{{ 'Vous êtes connecté avec le compte AFUP de l\'entreprise %company%. Votre cotisation est valable pour %maxMembers% salarié·e·s. Vous pouvez donc acheter %maxMembers% tickets au tarif AFUP pour cet événement - pour qui vous voulez !'|trans({ '%maxMembers%': app.user.company.maxMembers, '%company%': app.user.company.companyName}) }}</p>
-                    <p>{{ 'Vous avez déjà acheté %soldTickets% ticket(s) au tarif AFUP pour cet événément.'|trans({'%soldTickets%': soldTicketsForMember}) }}</p>
+                    <p>{{ 'Vous êtes connecté avec le compte AFUP de l\'entreprise %company%. Votre cotisation est valable pour %maxMembers% salarié·e·s. Vous pouvez donc acheter %maxMembers% tickets au tarif AFUP pour cet évènement - pour qui vous voulez !'|trans({ '%maxMembers%': app.user.company.maxMembers, '%company%': app.user.company.companyName}) }}</p>
+                    <p>{{ 'Vous avez déjà acheté %soldTickets% ticket(s) au tarif AFUP pour cet évènement.'|trans({'%soldTickets%': soldTicketsForMember}) }}</p>
                 {% else %}
                     <p>{{ 'Vous êtes connecté avec un compte AFUP personnel. Vous pouvez acheter une place au tarif membre pour vous seul. Pour être valable, cette place doit être enregistrée avec l\'adresse %mail%.'|trans({'%mail%': app.user.email}) }}</p>
                 {% endif %}
@@ -79,7 +79,7 @@
                 {% if app.user.lastSubscription < date() %}
                     <p><strong>{{ "Attention votre cotisation est expirée. Pour souscrire des places au tarif afup, renouvelez votre cotisation dans le <a href='%url%'>back-office</a>."|trans({'%url%': url('admin_login' ) })|raw }}</strong></p>
                 {% elseif app.user.lastSubscription < event.dateEnd %}
-                    <p><strong>{{ "Attention votre cotisation ne sera plus valable le jour de l'événement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l'événement."|trans }}</strong></p>
+                    <p><strong>{{ "Attention votre cotisation ne sera plus valable le jour de l'évènement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l'évènement."|trans }}</strong></p>
                 {% endif %}
             {% else %}
                 <p>Pour acheter des places au tarif AFUP, vous devez vous <a href="{{ url('admin_login') }}">connecter</a>.</p>
@@ -108,6 +108,7 @@
             </div>
 
             {% set currentDate = 'now'|date('Y-m-d') %}
+            {{ form_errors(ticketForm.tickets) }}
 
             {% for key,ticket in ticketForm.tickets %}
                 <fieldset class="f{{ key+1 }} tickets--fieldset">
@@ -120,8 +121,8 @@
                         {{ form_row(ticket.phoneNumber) }}
                         {{ form_row(ticket.nearestOffice) }}
 
-                        {{ form_errors(ticket.ticketEventType) }}
                         {{ form_label(ticket.ticketEventType) }}
+                        {{ form_errors(ticket.ticketEventType) }}
                         <ul class="tickets--type-list">
                             {% set endDate = null %}
                             {% for type in ticket.ticketEventType %}
@@ -158,7 +159,7 @@
                                         </span>
                                         {% if type.vars.attr['data-description'] %}
                                             <div class="tickets--type-description">
-                                                {{ type.vars.attr['data-description'] }}
+                                                {{ type.vars.attr['data-description']|markdown }}
                                             </div>
                                         {% endif %}
                                     </div>
@@ -220,7 +221,7 @@
                     <label for="{{ ticketForm.cgv.vars.id }}" style="max-width: 850px; text-align: left">
                         J'accepte les <a href="https://event.afup.org/conditions-generales-de-vente/">conditions générale de vente</a>, <a href="https://event.afup.org/condition-generales-de-participation/">de participation</a> et m'engage à respecter <a href="https://afup.org/p/986-code-de-conduite">le code de conduite</a>
                         {% if event.isOnline %}
-                        , et autorise l'AFUP à transmettre mon nom, prénom et email à <a href="https://livestorm.co">Livestorm</a> pour la gestion du webinar
+                        , et autorise l'AFUP à transmettre mon nom, prénom et email à <a href="https://livestorm.co">Livestorm</a> et <a href="https://workadventu.re/">WorkAdventu.re</a> pour la gestion du webinar
                         {% endif %}
                         .
                     </label>
@@ -245,7 +246,7 @@
 
                 <div>
                     <p>Une fois votre commande effectuée, <strong>chaque participant recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
-                        Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'événement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.<br>
+                        Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'évènement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.<br>
                         <!--
                         Le jour J il leur suffira de se présenter à l'accueil badges <strong>avec une pièce d'identité</strong>.
                         -->

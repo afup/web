@@ -29,6 +29,14 @@ class Mailchimp
         );
     }
 
+    public function subscribeAddressWithoutConfirmation($list, $email)
+    {
+        return $this->client->put(
+            'lists/' . $list . '/members/' . $this->getAddressId($email),
+            ['status' => 'subscribed', 'email_address' => $email, 'language' => 'fr']
+        );
+    }
+
     const MAX_MEMBERS_PER_PAGE = 50;
 
     /**
@@ -38,11 +46,41 @@ class Mailchimp
      */
     public function getAllSubscribedMembersAddresses($list)
     {
+        return $this->callMembersAddresses($list, 'subscribed');
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    public function getAllUnSubscribedMembersAddresses($list)
+    {
+        return $this->callMembersAddresses($list, 'unsubscribed');
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    public function getAllCleaneddMembersAddresses($list)
+    {
+        return $this->callMembersAddresses($list, 'cleaned');
+    }
+
+    /**
+     * @param string $list
+     * @param string $status
+     * @return array
+     */
+    private function callMembersAddresses($list, $status)
+    {
         $response = $this->client->get(
             'lists/' . $list . '/members',
             [
                 'count' => 0,
-                'status' => 'subscribed',
+                'status' => $status,
             ]
         );
 
@@ -57,7 +95,7 @@ class Mailchimp
                     'count' => self::MAX_MEMBERS_PER_PAGE,
                     'offset' => $i * self::MAX_MEMBERS_PER_PAGE,
                     'fields' => 'members.email_address',
-                    'status' => 'subscribed',
+                    'status' => $status,
                 ]
             );
 
@@ -85,6 +123,18 @@ class Mailchimp
     }
 
     /**
+     * @param $list
+     * @param $email
+     * @return \Illuminate\Support\Collection
+     */
+    public function archiveAddress($list, $email)
+    {
+        return $this->client->delete(
+            'lists/' . $list . '/members/' . $this->getAddressId($email)
+        );
+    }
+
+    /**
      * Mailchimp uses a predictable id to allow upsert operations on subscriptions.
      * It's based on a hash of the email.
      *
@@ -93,7 +143,7 @@ class Mailchimp
      */
     private function getAddressId($email)
     {
-        return md5($email);
+        return md5(strtolower($email));
     }
 
 
@@ -108,6 +158,10 @@ class Mailchimp
         );
     }
 
+    /**
+     * @param string $list
+     * @param array $settings
+     */
     public function createCampaign($list, array $settings)
     {
         return $this->client->post(
@@ -120,5 +174,16 @@ class Mailchimp
                 'settings' => $settings
             ]
         );
+    }
+
+    /**
+     * @param int $campaignId
+     * @param \Datetime $datetime
+     */
+    public function scheduleCampaign($campaignId, $datetime)
+    {
+        return $this->client->post('campaigns/' . $campaignId . '/actions/schedule', [
+            'schedule_time' => $datetime->format('c')
+        ]);
     }
 }

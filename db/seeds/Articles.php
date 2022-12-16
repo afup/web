@@ -1,6 +1,6 @@
 <?php
 
-use Afup\Site\Corporate\Rubrique;
+use AppBundle\Site\Model\Rubrique;
 use Phinx\Seed\AbstractSeed;
 
 class Articles extends AbstractSeed

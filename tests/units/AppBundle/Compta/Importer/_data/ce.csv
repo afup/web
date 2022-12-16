@@ -1,0 +1,9 @@
+Code de la banque : 17515;Code de l'agence : 90000;Date de d�but de t�l�chargement : 28/11/2020;Date de fin de t�l�chargement : 30/11/2020;
+Num�ro de compte : 08045168680;Nom du compte : CPT DEPOT PROF.;Devise : EUR;
+
+Solde en fin de p�riode;;;;32127,23
+Date;Num�ro d'op�ration;Libell�;D�bit;Cr�dit;D�tail;
+30/11/20;3011202020201130-08.38.07.588296 -;*CB COM AFUP 291120;-0,39;;*CB COM AFUP 291120 CONTRAT 8316677 REM 105031 ;
+30/11/20;3011202020201130-08.33.10.302574 -;CB AFUP              291120;;+30,00;CB AFUP              291120 CONTRAT 8316677     REM 105031 ;
+28/11/20;2811202020201128-17.19.50.751101 -;CB Mailchimp       FACT 271120;-76,01;;CB Mailchimp       FACT 271120 ;
+Solde en d�but de p�riode;;;;39916,24

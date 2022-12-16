@@ -16,6 +16,15 @@
 
 {% block page_content %}
 
+    {% if display_link_to_general_meeting_vote %}
+    <a class="button-inverted button__medium button--call-to-action"
+       href="{{ path('member_general_meeting') }}"
+       style="display: block; font-size: 2rem"
+    >
+        Voter lors de l'assemblée générale
+    </a>
+    {% endif %}
+
     <h2>Mon compte</h2>
 
     <div class="member-index">
@@ -206,9 +215,11 @@
         {% for badge in badges %}
                 <div class="col-md-3 col-sm-12 member-badge">
                     {% if badge.id is defined %}
-                        <img src="{{ path('badge_image', {id: badge.id })}}" alt="Badge">
+                        <img title="{{ badge.tooltip }}"
+                             src="{{ path('badge_image', {id: badge.id })}}" alt="Badge">
                     {% else %}
-                        <img src="/images/badges/{{ badge.code }}.png" alt="Badge {{ badge.code }}">
+                        <img title="{{ badge.tooltip }}"
+                             src="/images/badges/{{ badge.code }}.png" alt="Badge {{ badge.code }}">
                     {% endif %}
                 </div>
         {% endfor %}

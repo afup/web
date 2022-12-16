@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    github_authenticator: "AppBundle\\Security\\MyGithubAuthenticator"
     app.pages_backoffice:
         accueil:
             nom: 'Accueil'
@@ -58,6 +59,15 @@ parameters:
                     extra_routes:
                         - admin_members_general_meeting
                         - admin_members_general_meeting_prepare
+                        - admin_members_general_meeting_edit
+                assemblee_generale_votes:
+                    nom: 'Assemblée générale - votes'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/general_meeting_vote'
+                    extra_routes:
+                        - admin_members_general_vote_list
+                        - admin_members_general_question_add
+                        - admin_members_general_question_edit
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
@@ -93,6 +103,11 @@ parameters:
                 site_rubriques:
                     nom: 'Rubriques'
                     niveau: 'ROLE_SITE'
+                    url : '/admin/site/rubriques'
+                    extra_routes:
+                        - admin_site_rubriques_list
+                        - admin_site_rubriques_add
+                        - admin_site_rubriques_edit
                 site_articles:
                     nom: 'Articles'
                     niveau: 'ROLE_SITE'
@@ -107,12 +122,12 @@ parameters:
                     nom: 'Liste des antennes'
                     niveau: 'ROLE_ANTENNE'
         forum:
-            nom: 'Événements'
+            nom: 'Évènements'
             niveau: 'ROLE_FORUM'
             icon: "globe"
             elements:
                 forum_gestion:
-                    nom: 'Gestion événéments'
+                    nom: 'Gestion évènements'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/list'
                     extra_routes:
@@ -156,8 +171,10 @@ parameters:
                     url: '/admin/event/prices'
                     extra_routes:
                         - admin_event_prices
+                        - admin_event_prices_add
+                        - admin_event_prices_edit
                 forum_facturation:
-                    nom: "Factures d'événément"
+                    nom: "Factures d'évènement"
                     niveau: 'ROLE_ADMIN'
                 forum_sessions:
                     nom: 'Conférences'
@@ -185,6 +202,12 @@ parameters:
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
+                admin_github_user_list:
+                    nom: 'Github Users'
+                    url: '/admin/event/github-user'
+                    extra_routes:
+                        - admin_github_user_add
+                        - admin_github_user_list
         tresorerie:
             nom: 'Trésorerie'
             niveau: 'ROLE_ADMIN'
@@ -203,7 +226,7 @@ parameters:
                     nom: 'Compte banques'
                     niveau: 'ROLE_ADMIN'
                 compta_synthese:
-                    nom: 'Synthese événement'
+                    nom: 'Synthese évènement'
                     niveau: 'ROLE_ADMIN'
                 compta_balance:
                     nom: 'Balance comptable'
@@ -343,6 +366,7 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
+
         association:
             namespace : AppBundle\Association\Model\Repository
             directory : "@AppBundle/Association/Model/Repository"
@@ -381,3 +405,11 @@ knpu_oauth2_client:
             client_secret: "%github_client_secret%"
             # see below
             redirect_route: connection_github_check
+
+ewz_recaptcha:
+    public_key: '%recaptcha_public_key%'
+    private_key: '%recaptcha_private_key%'
+
+
+ekino_new_relic:
+    log_exceptions: true

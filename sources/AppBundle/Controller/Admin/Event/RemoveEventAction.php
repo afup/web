@@ -55,19 +55,19 @@ class RemoveEventAction
         }
         $result = $this->eventRepository->getList($id);
         if (count($result) !== 1) {
-            $this->flashBag->add('error', 'Identifiant d\'événement incorrect');
+            $this->flashBag->add('error', 'Identifiant d\'évènement incorrect');
             return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
         }
 
         if ($result->first()['est_supprimable'] !== '1') {
-            $this->flashBag->add('error', 'Impossible de supprimer un événement utilisé');
+            $this->flashBag->add('error', 'Impossible de supprimer un évènement utilisé');
             return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
         }
 
         $event = $this->eventRepository->get($id);
         $this->eventRepository->delete($event);
 
-        $this->flashBag->add('notice', 'Evénement supprimé');
+        $this->flashBag->add('notice', 'Événement supprimé');
         return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
     }
 }

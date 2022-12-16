@@ -169,6 +169,7 @@ if ($action == 'lister') {
         $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
         $formulaire->addElement('text'    , 'youtube_id'          , 'Id de la conférence sur youtube' , array('size' => 40, 'maxlength' => 30));
         $formulaire->addElement('text'    , 'slides_url'          , 'URL où trouver les slides' , array('size' => 80, 'maxlength' => 255));
+        $formulaire->addElement('text'    , 'openfeedback_path'          , 'Chemin la conférence sur openfeedback' , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('text'    , 'blog_post_url'          , 'URL de la version  article de blog de la conférence' , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('text'    , 'interview_url'          , "URL de l'interview" , array('size' => 80, 'maxlength' => 255));
         $formulaire->addElement('select', 'language_code', 'Langue', Talk::getLanguageLabelsByKey());
@@ -177,6 +178,8 @@ if ($action == 'lister') {
         $formulaire->addElement('checkbox'    , 'video_has_en_subtitles'          , "Sous titres EN présents");
         $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
         $formulaire->addElement('textarea'    , 'tweets'          , "Tweets", ['style' => "width:100%;min-height:100px"]);
+        $formulaire->addElement('textarea'    , 'transcript'          , "Sous titres en français (format SRT)", ['style' => "width:100%;min-height:100px"]);
+        $formulaire->addElement('textarea', 'verbatim', 'Verbatim', ['cols' => 40, 'rows' => 15,'class'=> 'simplemde']);
     }
 
 
@@ -255,6 +258,7 @@ if ($action == 'lister') {
                                                 $valeurs['joindin'],
                                                 $valeurs['youtube_id'],
                                                 $valeurs['slides_url'],
+                                                $valeurs['openfeedback_path'],
                                                 $valeurs['blog_post_url'],
                                                 $valeurs['interview_url'],
                                                 $valeurs['language_code'],
@@ -264,7 +268,9 @@ if ($action == 'lister') {
                                                 $valeurs['video_has_fr_subtitles'],
                                                 $valeurs['video_has_en_subtitles'],
                                                 $valeurs['date_publication']['Y'].'-'.$valeurs['date_publication']['M'].'-'.$valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s'],
-                                                $valeurs['tweets']
+                                                $valeurs['tweets'],
+                                                $valeurs['transcript'],
+                                                $valeurs['verbatim']
             );
             $forum_appel->delierSession($session_id);
         }

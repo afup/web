@@ -9,11 +9,11 @@ class Reminder15DaysBeforeEnd extends AbstractCompanyReminder
     {
         return 'Cher membre AFUP,<br />
 <p>Votre adhésion d’un an à l’AFUP approche de son terme ! Déjà presque une année que vous bénéficiez de nos tarifs
-avantageux lors de nos événements et que vous soutenez activement la communauté PHP.</p> 
+avantageux lors de nos évènements et que vous soutenez activement la communauté PHP.</p> 
 
 <p>Être membre de l’AFUP, c’est permettre à vos salarié·e·s de rester proche d’un réseau de développeurs dynamiques
 et créatifs, c’est soutenir l’open Source, ses valeurs et sa philosophie, c’est accompagner l’AFUP dans l’organisation
-d’événements majeurs du monde PHP. Mais c’est, avant toute chose, faire partie d’une communauté conviviale, festive et
+d’évènements majeurs du monde PHP. Mais c’est, avant toute chose, faire partie d’une communauté conviviale, festive et
 accueillante, qui ne serait pas tout à fait la même sans vous…</p>
 
 <p><strong>Restez avec nous !</strong> Renouvelez dès maintenant votre adhésion, en réglant votre cotisation en ligne.

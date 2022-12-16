@@ -21,7 +21,7 @@ planningPHPTourApp.directive('fullcalendar', function() {
                 slotMinutes:15,
                 firstHour:8,
                 minTime:8,
-                maxTime:18,
+                maxTime:19,
                 slotEventOverlap: false,
                 h: 850,
                 timeFormat: 'HH:mm { - HH:mm}',

@@ -1,4 +1,7 @@
 {% extends ':site:base.html.twig' %}
+
+{% block title %}Les antennes de l'AFUP{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/grid.css') }}" media="all" />
@@ -287,15 +290,15 @@
 )) }}
 <div class="mw1400p center" id="container">
 <div class="line" id="main">
-    <h1>Antennes</h1>
+    <h1>Les antennes</h1>
 
-    <p>Une dizaine d'antennes locales, représentantes de l'AFUP en région, organise rencontres, meetups et apéros PHP
+    <p>Une quinzaine d'antennes locales, représentantes de l'AFUP en région, organise rencontres, meetups et apéros PHP
         tout au long de l'année, tisse des liens au sein de la communauté  de développeuses et de développeurs et fait la promotion du PHP dans les entreprises partout en France.</p>
 
     <div class="container">
         <div class="col-md-8">
             <div class="map-container">
-                <div class="map">Antennes AFUP françaises</div>
+                <div class="map">Carte de France des antennes de l'AFUP.</div>
             </div>
         </div>
         <div class="col-md-4 tablet-hidden">
@@ -314,7 +317,7 @@
     <p>L'antenne locale est l'interlocuteur de prédilection en région pour créer des passerelles avec les écoles, les
         entreprises PHP et les autres associations web locales. <strong>Grâce à l'antenne locale, la communauté se rencontre, se fédère, et des ponts se créent avec tous les intervenants importants du monde Open Source</strong>.</p>
     <h3>Participation à l’AFUP Day</h3>
-    <p>L’AFUP Day est le grand événement printanier de l’AFUP : une journée de conférences mono-track organisée le même jour simultanément dans plusieurs antennes AFUP. Quand l'équipe est dynamique et motivée, et que la communauté locale suit, elle peut dès lors soumettre sa candidature pour accueillir l'événement dans sa ville l’année suivante.</p>
+    <p>L’AFUP Day est le grand évènement printanier de l’AFUP : une journée de conférences mono-track organisée le même jour simultanément dans plusieurs antennes AFUP. Quand l'équipe est dynamique et motivée, et que la communauté locale suit, elle peut dès lors soumettre sa candidature pour accueillir l'évènement dans sa ville l’année suivante.</p>
     <h2>Envie de vous impliquer ?</h2>
     <p>Chaque antenne locale est représentée par une équipe, élue par la communauté locale lors des élections annuelles de juin. Si elle est l'interlocuteur privilégié de l'AFUP pour votre région, elle a cependant besoin de connaître les envies, les besoins de son audience, pour
         organiser des meetups qui l'intéresseront : pensez à contacter votre antenne pour lui soumettre vos idées.
@@ -373,7 +376,7 @@
             >
                <div class="container">
                     <div class="col-md-2">
-                        <img src="{{ office.logo_url }}" />
+                        <img src="{{ office.logo_url }}" alt="" />
                     </div>
                     <div class="col-md-10">
                         <h3>{{ office.label }}</h3>
@@ -402,6 +405,12 @@
                         {% if office.youtube is defined %}
                             <a class="button-inverted" href="{{ office.youtube }}">
                                 <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
+                            </a>
+                        {% endif %}
+
+                        {% if office.workadventure_url is defined %}
+                            <a class="button-inverted" href="{{ office.workadventure_url }}">
+                                <i aria-hidden="true" class="fa fa-video-camera"></i>&nbsp;Work&nbsp;Adventure
                             </a>
                         {% endif %}
                     </div>

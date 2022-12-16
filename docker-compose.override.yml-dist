@@ -16,11 +16,6 @@ services:
   mailcatcher:
     ports:
       - "1181:1080"
-  event:
-    ports:
-      - "9225:80"
-    environment:
-      AFUP_GLOBAL_MENU_PREFIX: 'https://localhost:9205'
   apachephp7:
     ports:
       - "9235:80"

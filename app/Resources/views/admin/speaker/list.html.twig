@@ -8,7 +8,7 @@
         <div class="ui form">
             <div class="inline fields">
                 <div class="field">
-                    <label>Événement</label>
+                    <label>Évènement</label>
                     <select name="eventId" onchange="this.form.submit(); return false;">
                         {% for event in events %}
                             <option value="{{ event.id }}"{% if eventId == event.id %} selected{% endif %}>{{ event.title }}</option>
@@ -22,7 +22,7 @@
 
 <div class="ui menu">
 {% if eventId == null %}
-    <div class="item">Changez d'événement dans le menu ci dessus</div>
+    <div class="item">Changez d'évènement dans le menu ci dessus</div>
     {% else %}
     <a href="{{ path('admin_speaker_add' ,{eventId: eventId}) }}" class="item">
         <div data-tooltip="Ajouter un conférencier" data-position="bottom left">
@@ -87,7 +87,10 @@
             <tbody>
             {% for speaker in speakers %}
                 <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
-                    <td><strong>{{ speaker.lastname }} {{ speaker.firstname }}</strong></td>
+                    <td>
+                        <strong>{{ speaker.lastname }} {{ speaker.firstname }}</strong>
+                        {% if speaker.locality %} <em>{{ speaker.locality }}</em>{% endif %}
+                    </td>
                     <td>{{ speaker.company }}</td>
                     <td>
                         <div class="ui list">
@@ -128,7 +131,7 @@
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
-                Aucun speaker. {% if eventId == null %}Essayez de changez d'événement.{% endif %}
+                Aucun speaker. {% if eventId == null %}Essayez de changez d'évènement.{% endif %}
             </div>
         </div>
     {% endif %}

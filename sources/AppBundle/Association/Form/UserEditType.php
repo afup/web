@@ -33,12 +33,12 @@ class UserEditType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $civilities = ['M.', 'Mme', 'Mlle'];
+        $civilities = ['M.', 'Mme'];
         $builder
             ->add('companyId', ChoiceType::class, [
                 'label' => 'Personne morale',
                 'required' => false,
-                'choices' => array_flip($this->personnesMorales->obtenirListe('id, raison_sociale', 'raison_sociale', true)),
+                'choices' => array_flip($this->personnesMorales->obtenirListe('id, CONCAT(raison_sociale, " (id : ", id, ")")', 'raison_sociale', true)),
             ])
             ->add('civility', ChoiceType::class, [
                 'label' => 'Civilité',
@@ -138,7 +138,7 @@ class UserEditType extends AbstractType
                 ],
             ])
             ->add('eventLevel', ChoiceType::class, [
-                'label' => 'Événement',
+                'label' => 'Évènement',
                 'choices' => [
                     '--' => User::LEVEL_MEMBER,
                     'Gestionnaire' => User::LEVEL_ADMIN,

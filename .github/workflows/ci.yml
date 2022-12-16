@@ -1,0 +1,89 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+
+  unit:
+    name: "Unit tests"
+    runs-on: ubuntu-18.04
+ 
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["5.6", "7.0"]
+ 
+    steps:
+      - uses: actions/checkout@v2
+ 
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+ 
+      - name: Composer - Get Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        id: cache-composer
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-php.${{ matrix.php }}-${{ github.sha }}
+          restore-keys: composer-php.${{ matrix.php }}-
+
+      - name: Composer - Create cache directory
+        run: mkdir -p /home/runner/.composer/cache
+        if: steps.cache-composer.outputs.cache-hit != 'true'
+
+      - name: Composer install
+        run: composer install --no-scripts
+
+      - name: Tests - Unit
+        run: ./bin/atoum
+
+  lint:
+    name: "Linter"
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '5.6'
+
+      - name: Composer - Get Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        id: cache-composer
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-php.5.6-${{ github.sha }}
+          restore-keys: composer-php.5.6-
+
+      - name: Composer - Create cache directory
+        run: mkdir -p /home/runner/.composer/cache
+        if: steps.cache-composer.outputs.cache-hit != 'true'
+
+      - name: CS fixer prerequisites
+        run: make configs/application/config.php
+
+      - name: Composer install
+        run: composer install --no-scripts
+
+      - name: Tests - CS Fixer
+        run: ./bin/php-cs-fixer fix --dry-run -vv
+
+  functional:
+    name: "Functional tests"
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Tests - Functional
+        run: make test-functional

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Event\Model\GithubUser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,6 +34,10 @@ class SpeakerFormData
      */
     public $company;
     /**
+     * @var string
+     */
+    public $locality;
+    /**
      * @Assert\NotBlank()
      * @var string
      */
@@ -45,5 +50,24 @@ class SpeakerFormData
      * @Assert\File(mimeTypes={"image/jpeg","image/png"})
      * @var UploadedFile|null
      */
-    public $photo;
+    public $photoFile;
+    /**
+     * @var null|GithubUser
+     */
+    public $githubUser;
+
+    /**
+     * @var string
+     */
+    public $phoneNumber;
+
+    /**
+     * @var string
+     */
+    public $referentPerson;
+
+    /**
+     * @var string
+     */
+    public $referentPersonEmail;
 }

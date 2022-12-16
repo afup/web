@@ -15,12 +15,11 @@ deps.lock
 */*.bak
 .vagrant
 /default
-
-/bin/generate_vcards
-/bin/vobject
+.php_cs.cache
 
 /htdocs/cache
 /htdocs/tmp/twig
+/tmp/
 node_modules
 /configs/application/config.php
 /tests/simpletest
@@ -47,15 +46,19 @@ js_dist
 !/var/sessions
 /var/sessions/*
 !var/sessions/.gitkeep
-!var/SymfonyRequirements.php
 /htdocs/bundles/
 /bin/atoum
+/bin/behat
+/bin/generate_vcards
 /bin/phinx
 /bin/php-cs-fixer
+/bin/simple-phpunit
+/bin/vobject
 /docker-compose.override.yml
 /composer.phar
 /data
 
 /event/vendor
 /event/wp
-/event/composer.phar
+/event/composer-setup.php
+/event/composer-temp.phar

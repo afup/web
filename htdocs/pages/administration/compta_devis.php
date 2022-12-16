@@ -1,6 +1,7 @@
 <?php
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Logs;
@@ -22,11 +23,25 @@ $action = verifierAction(array(
 $smarty->assign('action', $action);
 
 
+$compta = new Comptabilite($bdd);
 $comptaFact = new Facture($bdd);
 
 if ($action == 'lister') {
-    $ecritures = $comptaFact->obtenirDevis();
+    ;
+
+    if (isset($_GET['id_periode']) && $_GET['id_periode']) {
+        $id_periode= $_GET['id_periode'];
+    } else {
+        $id_periode="";
+    }
+
+    $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
+
+    $ecritures = $comptaFact->obtenirDevis($id_periode);
+
+    $smarty->assign('id_periode', $id_periode);
     $smarty->assign('ecritures', $ecritures);
+    $smarty->assign('listPeriode', $compta->obtenirListPeriode());
 } elseif ($action == 'transfert') {
     $comptaFact->transfertDevis($_GET['ref']);
     afficherMessage('Le devis a été transformé en facture', 'index.php?page=compta_facture&action=lister');

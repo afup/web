@@ -3,11 +3,12 @@
 'Lastname': 'Nom'
 'Email': 'Email'
 'Company': 'Société'
+'Locality': 'Ville'
 'Biography': 'Biographie'
 'Twitter': 'Twitter'
 'mail.invitation.text': |
   Bonjour !<br />
-  %login% vous invite à rejoindre sa conférence "%title%" en tant que co-conférencier.
+  %name% vous invite à rejoindre sa conférence "%title%" en tant que co-conférencier.
   Pour accepter, suivez ce lien: %link%<br />
   Sinon, ignorez tout simplement cet email.<br />
   <br />
@@ -27,7 +28,7 @@
 
   <p><a href="%link%">%link%</a></p>
 
-  <p>Suivez l’AFUP sur <a href="https://twitter.com/afup">Twitter</a> (@afup) et Facebook.</p>
+  <p>Suivez l’AFUP sur <a href="https://twitter.com/afup">Twitter</a> (@afup).</p>
 
   <p>Bienvenue dans la communauté des PHP lovers !</p>
 
@@ -52,7 +53,7 @@ type.3: "20 mn"
 
   <br />
 
-  L'événement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
+  L'évènement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
 
   <br />
 
@@ -82,7 +83,7 @@ type.3: "20 mn"
 
   <br />
 
-  L'événement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
+  L'évènement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
 
   <br />
 
@@ -118,7 +119,7 @@ type.3: "20 mn"
 
   <br />
 
-  L'événement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
+  L'évènement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
 
   <br />
 
@@ -150,7 +151,7 @@ type.3: "20 mn"
 
   <br />
 
-  L'événement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
+  L'évènement approche ! Pour faciliter votre préparation et tirer le plus grand parti de notre collaboration, nous vous invitons à visiter <a href="%link%">la page dédiée aux sponsors</a> (%link%) et d’y inscrire votre token unique suivant : <pre>%token%</pre>
 
   <br />
 
@@ -192,7 +193,7 @@ type.3: "20 mn"
   <p>À bientôt,<br />
   L’équipe sponsoring AFUP</p>
 
-  <p>Suivez l’AFUP sur <a href="https://twitter.com/afup">Twitter</a> (@afup) et Facebook.</p>
+  <p>Suivez l’AFUP sur <a href="https://twitter.com/afup">Twitter</a> (@afup).</p>
   <p><a href="https://afup.org">afup.org</a>
 Billetterie: Billetterie
 Update: Modifier
@@ -201,3 +202,5 @@ Mobile phone: Téléphone (portable)
 Nearest office: Antenne la plus proche
 The password fields must match: Les mots de passe doivent correspondre
 country: Pays
+speakers_contact_help: Vos informations de contact sont importantes pour pouvoir vous joindre avant et pendant l'évènement en cas de nécessité. Elles seront utilisées notamment le jour J par l'équipe organisatrice pour vous accompagner ou vous guider en cas de problème. En aucun cas ces informations ne sont cédées à un tiers.
+speaker_from_previous_event: Nous avons prérempli ce formulaire avec les informations de votre précédente soumission. Vous pouvez les éditer ou non selon votre souhait.

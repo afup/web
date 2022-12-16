@@ -40,3 +40,23 @@
     max-width: 420px;
   }
 }
+
+.home-actualite-title {
+  font-size: 1.23em;
+  font-weight: 700;
+  line-height: 1.05em;
+  font-family: "Glegoo", serif;
+  color: #4c6eaf;
+  margin: 20px 0 10px 0;
+  display: inline-block;
+}
+
+.home-actualite-title a{
+  font-size: 1em;
+  color: #4c6eaf;
+  text-decoration: none;
+}
+
+.home-actualite-title a:hover {
+  text-decoration: underline;
+}

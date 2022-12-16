@@ -8,6 +8,11 @@ namespace Afup\Site\Comptabilite;
 
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Base_De_Donnees;
+use AppBundle\Compta\Importer\Importer;
+use AppBundle\Compta\Importer\Operation;
+use AppBundle\Model\ComptaCategorie;
+use AppBundle\Model\ComptaEvenement;
+use AppBundle\Model\ComptaModeReglement;
 
 class Comptabilite
 {
@@ -340,13 +345,23 @@ class Comptabilite
         }
     }
 
-    function obtenirListCategories($filtre = '', $where = '')
+    function obtenirListCategories($filtre = '', $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, idevenement, categorie ';
         $requete .= 'FROM  ';
         $requete .= 'compta_categorie  ';
-        if ($where) $requete .= 'WHERE id=' . $where . ' ';
+        $wheres = [];
+        if ($where) {
+            $wheres[] = 'id=' . $where . ' ';
+        }
+        if ($usedInAccountingJournal) {
+            $wheres[] = 'hide_in_accounting_journal_at IS NULL';
+        }
+
+        if (count($wheres)) {
+            $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
+        }
 
         $requete .= 'ORDER BY ';
         $requete .= 'categorie ';
@@ -367,21 +382,31 @@ class Comptabilite
 
     }
 
-    public function obtenirListCategoriesSansEvenementVide($filtre = '', $where = '')
+    public function obtenirListCategoriesJournal()
     {
-        $categories = $this->obtenirListCategories($filtre, $where);
+        $categories = $this->obtenirListCategories('', '', true);
         unset($categories[0]);
 
         return $categories;
     }
 
-    function obtenirListEvenements($filtre = '', $where = '')
+    function obtenirListEvenements($filtre = '', $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, evenement ';
         $requete .= 'FROM  ';
         $requete .= 'compta_evenement  ';
-        if ($where) $requete .= 'WHERE id=' . $where . ' ';
+        $wheres = [];
+        if ($where) {
+            $wheres[] = 'id=' . $where . ' ';
+        }
+        if ($usedInAccountingJournal) {
+            $wheres[] = 'hide_in_accounting_journal_at IS NULL';
+        }
+
+        if (count($wheres)) {
+            $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
+        }
 
         $requete .= 'ORDER BY ';
         $requete .= 'evenement ';
@@ -401,21 +426,31 @@ class Comptabilite
         }
     }
 
-    public function obtenirListEvenementsSansEvenementVide($filtre = '', $where = '')
+    public function obtenirListEvenementsJournal()
     {
-        $events = $this->obtenirListEvenements($filtre, $where);
+        $events = $this->obtenirListEvenements('', '', true);
         unset($events[0]);
 
         return $events;
     }
 
-    function obtenirListReglements($filtre = '', $where = '')
+    function obtenirListReglements($filtre = '', $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, reglement ';
         $requete .= 'FROM  ';
         $requete .= 'compta_reglement  ';
-        if ($where) $requete .= 'WHERE id=' . $where . ' ';
+        $wheres = [];
+        if ($where) {
+            $wheres[] = 'id=' . $where . ' ';
+        }
+        if ($usedInAccountingJournal) {
+            $wheres[] = 'hide_in_accounting_journal_at IS NULL';
+        }
+
+        if (count($wheres)) {
+            $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
+        }
 
         $requete .= 'ORDER BY ';
         $requete .= 'reglement ';
@@ -435,22 +470,23 @@ class Comptabilite
         }
     }
 
-    public function obtenirListReglementsSansEvenementVide($filtre = '', $where = '')
+    public function obtenirListReglementsJournal()
     {
-        $reglements = $this->obtenirListReglements($filtre, $where);
+        $reglements = $this->obtenirListReglements('','', true);
         unset($reglements[0]);
 
         return $reglements;
     }
 
     function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $montant, $description,
-                     $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $numero_operation = null)
+                     $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $numero_operation = null,
+                     $attachmentRequired = 0)
     {
 
         $requete = 'INSERT INTO ';
         $requete .= 'compta (';
         $requete .= 'idoperation,idcategorie,date_ecriture,nom_frs,montant,description,';
-        $requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation,idcompte) ';
+        $requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation,idcompte, attachment_required) ';
         $requete .= 'VALUES (';
         $requete .= $this->_bdd->echapper($idoperation) . ',';
         $requete .= $this->_bdd->echapper($idcategorie) . ',';
@@ -464,7 +500,8 @@ class Comptabilite
         $requete .= $this->_bdd->echapper($obs_regl) . ',';
         $requete .= $this->_bdd->echapper($idevenement) . ',';
         $requete .= $this->_bdd->echapper($numero_operation) . ',';
-        $requete .= $this->_bdd->echapper($idcompte) . ' ';
+        $requete .= $this->_bdd->echapper($idcompte) . ',';
+        $requete .= $this->_bdd->echapper($attachmentRequired) . '';
         $requete .= ');';
 
         $resultat = $this->_bdd->executer($requete);
@@ -475,7 +512,7 @@ class Comptabilite
     }
 
     function modifier($id, $idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $montant, $description,
-                      $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $comment, $numero_operation = null)
+                      $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $comment, $numero_operation = null, $attachmentRequired = 0)
     {
 
         $requete = 'UPDATE ';
@@ -496,7 +533,8 @@ class Comptabilite
         if ($numero_operation) {
             $requete .= 'numero_operation=' . $this->_bdd->echapper($numero_operation) . ',';
         }
-        $requete .= 'idevenement=' . $this->_bdd->echapper($idevenement) . ' ';
+        $requete .= 'idevenement=' . $this->_bdd->echapper($idevenement) . ',';
+        $requete .= 'attachment_required=' . $this->_bdd->echapper($attachmentRequired) . ' ';
         $requete .= 'WHERE ';
         $requete .= 'id=' . $id . ' ';
 
@@ -856,104 +894,170 @@ SQL;
 
     /**
      *
-     * @param array $csvFile
+     * @param Importer $importer
      * @return bool
      */
-    function extraireComptaDepuisCSVBanque($csvFile)
+    function extraireComptaDepuisCSVBanque(Importer $importer)
     {
-        if (!is_array($csvFile) || !count($csvFile)) {
+        if (!$importer->validate()) {
             return false;
         }
-        // On vérifie la première ligne
-        if (!substr($csvFile[0], 0, 17) == 'Code de la banque') {
-            return false;
-        }
-        $forum = new Forum($this->_bdd);
-        $futurForum = $forum->obtenirDernier();
-        $futurEvenement = $this->obtenirEvenementParIdForum($futurForum);
-        // On efface les 4 premières lignes
-        $csvFile = array_slice($csvFile, 4);
-        foreach ($csvFile as $ligne) {
-            $donnees = explode(';', $ligne);
-            if (count($donnees) == 7) {
-                $numero_operation = $donnees[1];
-                // On vérife si l'enregistrement existe déjà
-                $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
 
-                $date_ecriture = '20' . implode('-', array_reverse(explode('/', $donnees[0])));
-                $description = $donnees[2] . '-' . $donnees[5];
-                $donnees[3] = abs(str_replace(',', '.', $donnees[3]));
-                $donnees[4] = abs(str_replace(',', '.', $donnees[4]));
-                if ($donnees[4] == '') {
-                    $idoperation = 1;
-                    $montant = $donnees[3];
-                } else {
-                    $idoperation = 2;
-                    $montant = $donnees[4];
+        foreach ($importer->extract() as $operation) {
+            $numero_operation = $operation->getNumeroOperation();
+            // On vérife si l'enregistrement existe déjà
+            $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
+
+            $date_ecriture = $operation->getDateEcriture();
+            $description = $operation->getDescription();
+            $idoperation = $operation->isCredit() ? 2 : 1;
+            $montant = $operation->getMontant();
+
+            // On tente les préaffectations
+            $categorie = 26; // Catégorie 26 = "A déterminer"
+            $evenement = 8;  // Événement 8 = "A déterminer"
+
+            $idModeReglement = 9;
+            $attachmentRequired = 0;
+
+            $firstPartDescription = strtoupper(explode(' ', $description)[0]);
+            switch ($firstPartDescription) {
+                case 'CB':
+                    $idModeReglement = ComptaModeReglement::CB;
+                    break;
+                case 'VIR':
+                    $idModeReglement = ComptaModeReglement::VIREMENT;
+                    break;
+                case 'CHE':
+                case 'REM':
+                    $idModeReglement = ComptaModeReglement::CHEQUE;
+                    break;
+                case 'PRLV':
+                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
+                    break;
+            }
+
+            if ($operation->isCredit()) {
+                if (0 === strpos($description, 'VIR SEPA sprd.net AG')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::GOODIES;
+                    $attachmentRequired = 1;
                 }
-                // On tente les préaffectations
-                $categorie = 26; // Catégorie 26 = "A déterminer"
-                $evenement = 8;  // Evénement 8 = "A déterminer"
-                if (strpos($donnees[5], 'CONTRAT 8316677013')) {
-                    if ($idoperation == 2) {// CREDIT
-                        // Virement PAYBOX
-                        if ($montant < 100) {
-                            // Vraisemblablement des cotisations
-                            $categorie = 4;  // Catégorie 4 = "Cotisation AFUP"
-                            $evenement = 27; // Evénement 27 = "Assocation AFUP"
-                        } else {
-                            // Vraisemblablement un réglement pour le prochain événement
-                            $categorie = 3;  // Catégorie 3 = "Inscription"
-                            $evenement = $futurEvenement;
-                        }
-                    } else {// DEBIT
-                        // Commission PAYBOX
-                        $categorie = 28; // Catégorie 28 = "Frais de compte"
-                        $evenement = 26; // Evénement 26 = "Gestion"
-                    }
-                }
-                $idmode_regl = 9;
-                switch (strtoupper(substr($donnees[2], 0, 3))) {
-                    case 'CB ':
-                        $idmode_regl = 2;
-                        break;
-                    case 'VIR':
-                        $idmode_regl = 3;
-                        break;
-                    case 'CHE':
-                    case 'REM':
-                        $idmode_regl = 4;
-                        break;
+            } else {
+                if (0 === strpos($description, '*CB COM AFUP ')) {
+                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
                 }
 
-                if (!is_array($enregistrement)) {
-                    $this->ajouter($idoperation, 1, $categorie, $date_ecriture, '', $montant, $description, '', $idmode_regl, $date_ecriture, '', $evenement, $numero_operation);
-                } else {
-                    $modifier = false;
-                    if ($enregistrement['idcategorie'] == 26 && $categorie != 26) {
-                        $enregistrement['idcategorie'] = $categorie;
-                        $modifier = true;
-                    }
-                    if ($enregistrement['idevenement'] == 8 && $evenement != 8) {
-                        $enregistrement['idevenement'] = $evenement;
-                        $modifier = true;
-                    }
-                    if ($modifier) {
-                        $this->modifier($enregistrement['id'],
-                            $enregistrement['idoperation'],
-                            1,
-                            $enregistrement['idcategorie'],
-                            $enregistrement['date_ecriture'],
-                            $enregistrement['nom_frs'],
-                            $enregistrement['montant'],
-                            $enregistrement['description'],
-                            $enregistrement['numero'],
-                            $enregistrement['idmode_regl'],
-                            $enregistrement['date_regl'],
-                            $enregistrement['obs_regl'],
-                            $enregistrement['idevenement'],
-                            $enregistrement['numero_operation']);
-                    }
+                if (0 === strpos($description, '* COTIS ASSOCIATIS ESSENTIEL')) {
+                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
+                }
+
+                if (0 === strpos(strtoupper($description), 'PRLV URSSAF')) {
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::CHARGES_SOCIALES;
+                }
+
+                if ($description === 'PRLV B2B DGFIP') {
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::PRELEVEMENT_SOURCE;
+                }
+
+                if (0 === strpos($description, 'PRLV A3M - RETRAITE - MALAKOFF HUMANIS')) {
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::CHARGES_SOCIALES;
+                }
+
+                if (0 === strpos($description, 'PRLV Online SAS -')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::OUTILS;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'CB MEETUP ORG')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::MEETUP;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'PRLV POINT TRANSACTION SYSTEM -')) {
+                    $evenement = ComptaEvenement::GESTION;
+                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos(strtoupper($description), 'CB MAILCHIMP FACT')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::MAILCHIMP;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'CB AWS EMEA FACT')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::OUTILS;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'CB GANDI FACT')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::GANDI;
+                    $attachmentRequired = 1;
+                }
+
+                if (0 === strpos($description, 'CB Twilio')) {
+                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
+                    $categorie = ComptaCategorie::OUTILS;
+                    $attachmentRequired = 1;
+                }
+            }
+
+            if (!is_array($enregistrement)) {
+                $this->ajouter(
+                    $idoperation,
+                    $importer->getCompteId(),
+                    $categorie,
+                    $date_ecriture,
+                    '',
+                    $montant,
+                    $description,
+                    '',
+                    $idModeReglement,
+                    $date_ecriture,
+                    '',
+                    $evenement,
+                    $numero_operation,
+                    $attachmentRequired
+                );
+            } else {
+                $modifier = false;
+                if ($enregistrement['idcategorie'] == 26 && $categorie != 26) {
+                    $enregistrement['idcategorie'] = $categorie;
+                    $modifier = true;
+                }
+                if ($enregistrement['idevenement'] == 8 && $evenement != 8) {
+                    $enregistrement['idevenement'] = $evenement;
+                    $modifier = true;
+                }
+                if ($modifier) {
+                    $this->modifier($enregistrement['id'],
+                        $enregistrement['idoperation'],
+                        $importer->getCompteId(),
+                        $enregistrement['idcategorie'],
+                        $enregistrement['date_ecriture'],
+                        $enregistrement['nom_frs'],
+                        $enregistrement['montant'],
+                        $enregistrement['description'],
+                        $enregistrement['numero'],
+                        $enregistrement['idmode_regl'],
+                        $enregistrement['date_regl'],
+                        $enregistrement['obs_regl'],
+                        $enregistrement['idevenement'],
+                        $enregistrement['numero_operation'],
+                        $attachmentRequired
+                    );
                 }
             }
         }

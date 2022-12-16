@@ -30,33 +30,35 @@
         (function ($) {
             $(document).ready(function () {
                 // Init dropzones
-                $('.js-dropzone').each(function () {
-                    var elmt = $(this);
-                    elmt.dropzone({
-                        url: elmt.attr('href'),
-                        previewTemplate: $('.js-dz-preview-template').html(),
-                        init: function() {
-                            this.on("error", function(file, errorMessage, xhr) {
-                                $('.js-upload-loader').hide();
-                                alert(errorMessage);
-                            });
-                            this.on("success", function(file) {
-                                $(elmt.parents('td').get(0)).find('.js-has-attachment').show();
-                                $('.js-upload-loader').hide();
-                            });
-                            this.on("uploadprogress", function(file, progress, bytesSent) {
-                                // Display the progress
-                                if (!(progress >= 100)) {
-                                    $('.js-upload-loader').show();
-                                } else {
+                var initDropzone = function(container) {
+                    $('.js-dropzone', container).each(function () {
+                        var elmt = $(this);
+                        elmt.dropzone({
+                            url: elmt.attr('href'),
+                            previewTemplate: $('.js-dz-preview-template').html(),
+                            init: function() {
+                                this.on("error", function(file, errorMessage, xhr) {
                                     $('.js-upload-loader').hide();
-                                }
-                            });
-                        }
+                                    alert(errorMessage);
+                                });
+                                this.on("success", function(file) {
+                                    $(elmt.parents('td').get(0)).find('.js-has-attachment').show();
+                                    $('.js-upload-loader').hide();
+                                });
+                                this.on("uploadprogress", function(file, progress, bytesSent) {
+                                    // Display the progress
+                                    if (!(progress >= 100)) {
+                                        $('.js-upload-loader').show();
+                                    } else {
+                                        $('.js-upload-loader').hide();
+                                    }
+                                });
+                            }
+                        });
+                        elmt.show();
                     });
-                    elmt.show();
-                });
-
+                }
+                initDropzone(document);
                 // When we change the checked flag of a checkbox
                 $('.js-attachment-change').change(function (e) {
                     var checkbox = e.target;
@@ -72,10 +74,16 @@
                         dataType: 'json',
                         success: function (/* data, textStatus, jqXHR */) {
                             // Change visibility of the form
+                            var formContainer = $(checkbox).parent().find('.js-attachment-form-container');
                             if (val) {
-                                $(checkbox).parent().find('.js-attachment-form-container').show();
+                                formContainer.find('.js-dropzone--lazy')
+                                    .addClass('js-dropzone')
+                                    .removeClass('js-dropzone--lazy')
+                                ;
+                                initDropzone(formContainer);
+                                formContainer.show();
                             } else {
-                                $(checkbox).parent().find('.js-attachment-form-container').hide();
+                                formContainer.hide();
                             }
                         },
                         error: function (/* data, textStatus, jqXHR */) {

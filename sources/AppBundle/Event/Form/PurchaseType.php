@@ -59,6 +59,7 @@ class PurchaseType extends AbstractType
                     'member_type' => $options['member_type'],
                     'is_cfp_submitter' => $options['is_cfp_submitter'],
                     'special_price_token' => $options['special_price_token'],
+                    'error_bubbling' => false,
                 ]
             ])
             ->add('paymentType', ChoiceType::class, [

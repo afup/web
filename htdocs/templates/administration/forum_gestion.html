@@ -1,7 +1,7 @@
 {if $action == 'ajouter'}
-<h2>Ajouter un événément</h2>
+<h2>Ajouter un évènement</h2>
 {else}
-<h2>Modifier un événément</h2>
+<h2>Modifier un évènement</h2>
 {/if}
 
 {if $action != 'ajouter'}
@@ -12,6 +12,17 @@
         <i class=" icon mail"></i>
         Envoyer un test du mail d'inscription sur bureau@afup.org
     </a>
+    <div class="ui simple dropdown item" tabindex="0">
+        <i class="icon linkify"></i>
+        <span class="text">Accès rapides</span>
+        <i class="dropdown icon"></i>
+        <div class="menu hidden" tabindex="-1">
+            <a class="item" href="/event/{$forum_path}">CFP</a>
+            <a class="item" href="/event/{$forum_path}/tickets">Billeterie</a>
+            <a class="item" href="/event/{$forum_path}/sponsor/become-sponsor">Devenir sponsor</a>
+            <a class="item" href="/event/{$forum_path}/openfeedback.json">Export vers Openfeedback</a>
+        </div>
+    </div>
 </div>
 {/if}
 

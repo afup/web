@@ -6,6 +6,8 @@
     } only %}
 {% endblock %}
 
+{% block title %}Les entreprises adhérentes à l'AFUP{% endblock %}
+
 {% block page_title %}Entreprises adhérentes{% endblock %}
 
 {% block page_content %}
@@ -22,9 +24,10 @@
                 {% for company_member in group %}
                     <td>
                         {% if company_member %}
-                        <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}">
+                        <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}"
+                            title="Profil de l'entreprise {{ company_member.companyName }}">
                             {% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
-                            <img src="{{ logo_url }}" />
+                            <img src="{{ logo_url }}" alt="" />
                         </a>
                         {% endif %}
                     </td>
@@ -35,7 +38,8 @@
                 {% for company_member in group %}
                     <td>
                         {% if company_member %}
-                        <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}">
+                        <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}"
+                           title="Profile de l'entreprise {{ company_member.companyName }}">
                             {{ company_member.companyName }}
                         </a>
                         {% endif %}

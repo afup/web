@@ -3,7 +3,6 @@
 
 namespace AppBundle\Payment;
 
-use Afup\Site\Utils\Configuration;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use Symfony\Component\Routing\RouterInterface;
@@ -11,103 +10,83 @@ use Symfony\Component\Routing\RouterInterface;
 class PayboxFactory
 {
     /**
-     * @var Configuration
-     */
-    private $conf;
-
-    /**
      * @var RouterInterface
      */
     private $router;
 
-    public function __construct(RouterInterface $router)
+    private $payboxDomainServer;
+    private $payboxSecretKey;
+    private $payboxSite;
+    private $payboxRang;
+    private $payboxIdentifiant;
+
+    public function __construct(RouterInterface $router, $payboxDomainServer, $payboxSecretKey, $payboxSite, $payboxRang, $payboxIdentifiant)
     {
         $this->router = $router;
+        $this->payboxDomainServer = $payboxDomainServer;
+        $this->payboxSecretKey = $payboxSecretKey;
+        $this->payboxSite = $payboxSite;
+        $this->payboxRang = $payboxRang;
+        $this->payboxIdentifiant = $payboxIdentifiant;
     }
 
     /**
      * @param string $facture Facture id
      * @param float $montant Amount to pay
      * @param string $email Email of the company
+     *
      * @return string html with payment button
      */
     public function createPayboxForSubscription($facture, $montant, $email)
     {
         $paybox = $this->getPaybox();
 
-        $paybox->set_total($montant * 100); // Total de la commande, en centimes d'euros
-        $paybox->set_cmd($facture); // Référence de la commande
-        $paybox->set_porteur($email); // Email du client final (Le porteur de la carte)
+        $now = new \DateTime();
 
-        $paybox->set_repondreA($this->router->generate('membership_payment', [], RouterInterface::ABSOLUTE_URL));
-        $paybox->set_effectue($this->router->generate('membership_payment_redirect', ['type'=>'success'], RouterInterface::ABSOLUTE_URL));
-        $paybox->set_refuse($this->router->generate('membership_payment_redirect', ['type'=>'refused'], RouterInterface::ABSOLUTE_URL));
-        $paybox->set_annule($this->router->generate('membership_payment_redirect', ['type'=>'canceled'], RouterInterface::ABSOLUTE_URL));
-        $paybox->set_erreur($this->router->generate('membership_payment_redirect', ['type'=>'error'], RouterInterface::ABSOLUTE_URL));
+        $paybox
+            ->setTotal($montant * 100) // Total de la commande, en centimes d'euros
+            ->setCmd($facture) // Référence de la commande
+            ->setPorteur($email) // Email du client final (Le porteur de la carte)
+            ->setUrlRetourEffectue($this->router->generate('membership_payment_redirect', ['type'=>'success'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourRefuse($this->router->generate('membership_payment_redirect', ['type'=>'refused'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourAnnule($this->router->generate('membership_payment_redirect', ['type'=>'canceled'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourErreur($this->router->generate('membership_payment_redirect', ['type'=>'error'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRepondreA($this->router->generate('membership_payment', [], RouterInterface::ABSOLUTE_URL))
+        ;
 
-
-
-        if (!preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
-            throw new \RuntimeException('Could not create the payment');
-        }
-        return $r[1];
+        return $paybox->generate($now);
     }
 
     public function createPayboxForTicket(Invoice $invoice, Event $event)
     {
         $paybox = $this->getPaybox();
 
-        $paybox->set_total($invoice->getAmount() * 100); // Total de la commande, en centimes d'euros
-        $paybox->set_cmd($invoice->getReference()); // Référence de la commande
-        $paybox->set_porteur($invoice->getEmail()); // Email du client final (Le porteur de la carte)
+        $now = new \DateTime();
 
-        $paybox->set_repondreA($this->router->generate('ticket_paybox_callback', ['eventSlug' => $event->getPath()], RouterInterface::ABSOLUTE_URL));
         $returnUrl = $this->router->generate('ticket_paybox_redirect', ['eventSlug' => $event->getPath()], RouterInterface::ABSOLUTE_URL);
+        $ipnUrl = $this->router->generate('ticket_paybox_callback', ['eventSlug' => $event->getPath()], RouterInterface::ABSOLUTE_URL);
 
-        $paybox->set_effectue($returnUrl);
-        $paybox->set_refuse($returnUrl);
-        $paybox->set_annule($returnUrl);
-        $paybox->set_erreur($returnUrl);
+        $paybox
+            ->setTotal($invoice->getAmount() * 100) // Total de la commande, en centimes d'euros
+            ->setCmd($invoice->getReference()) // Référence de la commande
+            ->setPorteur($invoice->getEmail()) // Email du client final (Le porteur de la carte)
+            ->setUrlRetourEffectue($returnUrl)
+            ->setUrlRetourRefuse($returnUrl)
+            ->setUrlRetourAnnule($returnUrl)
+            ->setUrlRepondreA($ipnUrl)
+        ;
 
-        if (preg_match('#<CENTER>.*</b>(.*)</CENTER>#is', $paybox->paiement(), $r)) {
-            return $r[1];
-        } else {
-            throw new \RuntimeException('Could not create the payment');
-        }
+        return $paybox->generate($now);
     }
 
-    /**
-     * @return Configuration
-     */
-    private function getConf()
+    public function getPaybox()
     {
-        if ($this->conf === null) {
-            if (isset($GLOBALS['AFUP_CONF']) === false) {
-                throw new \RuntimeException('Configuration undefined');
-            }
-            $this->conf = $GLOBALS['AFUP_CONF'];
-        }
-
-        return $this->conf;
-    }
-
-    /**
-     * @return \paybox
-     */
-    private function getPaybox()
-    {
-        require_once 'paybox/payboxv2.inc';
-
-        $paybox = new \paybox();
-        $paybox->set_langue('FRA'); // Langue de l'interface PayBox
-        $paybox->set_site($this->getConf()->obtenir('paybox|site'));
-        $paybox->set_rang($this->getConf()->obtenir('paybox|rang'));
-        $paybox->set_identifiant($this->getConf()->obtenir('paybox|identifiant'));
-
-        $paybox->set_wait(50000); // Délai d'attente avant la redirection
-        $paybox->set_boutpi('R&eacute;gler par carte'); // Texte du bouton
-        $paybox->set_bkgd('#FAEBD7'); // Fond de page
-        $paybox->set_output('B');
-        return $paybox; // On veut gerer l'affichage dans la page intermediaire
+        return new Paybox(
+            $this->payboxDomainServer,
+            $this->payboxSecretKey,
+            $this->payboxSite,
+            $this->payboxRang,
+            $this->payboxIdentifiant
+        );
     }
 }

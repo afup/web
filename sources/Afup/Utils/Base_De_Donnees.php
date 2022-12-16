@@ -40,7 +40,7 @@ class Base_De_Donnees
     {
         if ($this->link === null) {
             $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['password']) or die('Connexion à la base de données impossible');
-            mysqli_set_charset($this->link, "utf8");
+            mysqli_set_charset($this->link, "utf8mb4");
             $this->selectionnerBase($this->config['database']);
         }
         return $this->link;

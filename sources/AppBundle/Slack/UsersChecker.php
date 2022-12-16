@@ -6,6 +6,7 @@ use AppBundle\Association\Model\Repository\UserRepository;
 
 class UsersChecker
 {
+    const SUBSCRIPTION_DELAY = '+15 days';
     /**
      * @var UsersClient
      */
@@ -55,9 +56,21 @@ class UsersChecker
                     $userInfo['afup_last_subscription']=$userDb->getLastSubscription();
                     $userInfo['afup_user_id'] = $userDb->getId();
                     $userInfo['user_found']=true;
-                    if ($userDb->getLastSubscription() < $today) {
-                        //Utilisateur inactif ou sans souscription : a supprimer
+
+                    $lastSubscription = $userDb->getLastSubscription();
+
+                    if (null === $lastSubscription) {
                         $result[] = $userInfo;
+                    } else {
+                        //Issue 1133 : on n'ajoute que les utilisateurs dont la date de fin de souscription est dépassée de 15 jours.
+                        //Ca revient à tester si la date d'aujourd'hui est supérieure à la date de fin de souscription + 15 jours
+                        $dateAlarm = clone $lastSubscription;
+                        $dateAlarm = $dateAlarm->modify(self::SUBSCRIPTION_DELAY);
+
+                        if ($dateAlarm < $today) {
+                            //Utilisateur inactif ou sans souscription : a supprimer
+                            $result[] = $userInfo;
+                        }
                     }
                 } catch (\Symfony\Component\Security\Core\Exception\UsernameNotFoundException $e) {
                     //User Not found ! A supprimer de slack !

@@ -7,7 +7,7 @@
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
-                        <label>Événement</label>
+                        <label>Évènement</label>
                         <select name="id_forum" onchange="this.form.submit(); return false;">
                             {foreach from=$forums item=forum}
                             <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>

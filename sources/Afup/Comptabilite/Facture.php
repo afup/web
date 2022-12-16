@@ -26,7 +26,7 @@ class Facture
     /* Journal des opération
      *
      */
-    function obtenirDevis()
+    function obtenirDevis($idPeriode = null)
     {
 
         $requete = 'SELECT ';
@@ -39,6 +39,12 @@ class Facture
         $requete .= ' acfd.idafup_compta_facture = acf.id ';
         $requete .= 'WHERE  ';
         $requete .= ' numero_devis != "" ';
+
+        if (null !== $idPeriode) {
+            $requete .= sprintf(' AND acf.date_devis >= (select date_debut from compta_periode where id = %s)', $this->_bdd->echapper($idPeriode));
+            $requete .= sprintf(' AND acf.date_devis <= (select date_fin from compta_periode where id = %s)', $this->_bdd->echapper($idPeriode));
+        }
+
         $requete .= 'GROUP BY ';
         $requete .= ' acf.id, date_devis, numero_devis, date_facture, numero_facture, societe, service, adresse, code_postal, ville, id_pays, email, observation, ref_clt1, ref_clt2, ref_clt3, nom, prenom, tel, etat_paiement, date_paiement, devise_facture ';
         $requete .= 'ORDER BY ';

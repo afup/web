@@ -19,11 +19,11 @@
             }
         }
     </style>
-    <meta property="og:title" content="AFUP - Super-apéro PHP - 14 mars" />
+    <meta property="og:title" content="AFUP - Super-apéro PHP - 23 juin" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ app.request.getSchemeAndHttpHost() }}{{ path('superapero') }}" />
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() }}/images/super_apero_php-300x213.png" />
-    <meta property="og:description" content="Les 16 antennes AFUP vous attendent pour célébrer PHP le soir du jeudi 14 mars" />
+    <meta property="og:description" content="Les 16 antennes AFUP vous attendent pour célébrer PHP le soir du jeudi 23 juin" />
     <meta property="og:site_name" content="AFUP" />
 {% endblock %}
 
@@ -31,20 +31,18 @@
     <div class="mw1400p center" id="container">
         <div class="line" id="main">
             <h1>
-                <img src="http://identity.afup.org/assets/apero_php/logo_apero_php.png" />
+                <img src="https://identity.afup.org/assets/apero_php/logo_apero_php.png" alt="" />
                 Super-apéro PHP
-                <img src="http://identity.afup.org/assets/apero_php/logo_apero_php.png" />
+                <img src="https://identity.afup.org/assets/apero_php/logo_apero_php.png" alt="" />
             </h1>
 
             <h2 style="text-align: center">Des apéros PHP le même jour dans toutes les antennes !</h2>
 
             <blockquote>
-                <p>Bloquez votre mercredi 18 mars : le Super Apéro PHP est de retour ! Les antennes vous attendent pour lever votre verre en l’honneur de notre langage préféré et, 2020 oblige, célébrer les 20 ans de l’AFUP. Rejoignez votre antenne, retrouvez la communauté pour un talk ou autour de quelques bières et jouez au quiz inter-antennes !</p>
+                <p>Cette fois-ci c’est la bonne ! Le Super Apéro PHP revient enfin en présentiel, et en force, puisque le rendez-vous communautaire organisé le même soir dans l’ensemble des antennes AFUP est cette année couplé aux élections, visant à renouveler la composition des équipes des dites-antennes.</p>
             </blockquote>
 
-            <p>En ce mercredi 18 mars, l'AFUP synchronise les montres des antennes AFUP sur l'ensemble du territoire, et invite les développeurs PHP à se retrouver autour d'un verre, à échanger sur leurs derniers projets PHP et de profiter le temps d'une soirée de toutes les bonnes ondes de la communauté !</p>
-            <p>Les antennes vous attendent donc près de chez vous : certaines organisent par exemple une conférence animée par un spécialiste PHP, mais toutes prévoient le verre de l’amitié et la participation au quiz qui mettra en compétition toutes les antennes AFUP ! Retrouvez ci-dessous l'ensemble des villes concernées et le programme de votre soirée :</p>
-
+            <p>Rendez-vous donc le soir du jeudi 23 juin dans votre antenne AFUP locale, pour assister à des talks passionnants, jouer en compétition avec les autres antennes, élire vos coordinateurs et coordinatrices locaux et lever votre verre à PHP. Retrouvez l’ensemble des rendez-vous ci-dessous et assistez à une soirée qui boostera toute la communauté PHP !</p>
 
             {% for apero in aperos %}
                 {% if loop.index is odd %}
@@ -54,7 +52,7 @@
                 <div class="col-md-6">
                     <div class="container">
                         <div class="col-md-2">
-                            <img src="{{ office_logo(apero.code) }}" />
+                            <img src="{{ office_logo(apero.code) }}" alt="" />
                         </div>
                         <div class="col-md-10">
                             <h3>{{ office_name(apero.code) }}</h3>
@@ -80,10 +78,6 @@
             {% if aperos|length is odd %}
                 </div>
             {% endif %}
-
-        <a href="https://shop.afup.org">
-            <img src="/images/header-superaperophp.png" />
-        </a>
     </div>
 {% endblock %}
 

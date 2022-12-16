@@ -5,3 +5,5 @@
 'This ticket is not available anymore.': "Ce ticket n'est plus disponible."
 'You must use the same email for your ticket and you membership.': "Vous devez utiliser l'adresse email liée à votre adhésion pour ce billet."
 'You must be connected with a valid membership to order this ticket.': "Vous devez être connecté et avoir une adhésion en cours de validité pour commander ce billet"
+'Please, upload a photo.': "Veuillez ajouter une photo de profil."
+'You can only order one ticket "{{ ticket_pretty_name }}".': Vous ne pouvez commander qu'un seul billet "{{ ticket_pretty_name }}"

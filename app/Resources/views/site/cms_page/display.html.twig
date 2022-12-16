@@ -1,5 +1,7 @@
 {% extends ':site:base.html.twig' %}
 
+{% block title %}{{ article.titre }} - AFUP{% endblock %}
+
 {% block header %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />

@@ -10,7 +10,71 @@
 
 {% block page_content %}
     {% if general_meeting_planned %}
-        <h2>Ma participation à l'Assemblée Générale du {{ date_general_meeting }}</h2>
+        {% if question %}
+        <h2>Mon vote lors de l'assemblée générale</h2>
+
+        <div class="afup-form">
+            <form>
+                <fieldset>
+                    <legend>{{ question.label }}</legend>
+                    <div class="afup-form-container">
+                        {% if not vote_for_current_question %}
+                        <div class="container">
+                            {% for value, label in vote_labels_by_values %}
+                                <div class="col-md-4 txtcenter general-meeeting-vote-action__button-container">
+                                    <a href="{{ url('member_general_meeting_vote', {questionId: question.id, vote: value}) }}" class="button button--call-to-action general-meeeting-vote-action__button">{{ label }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            <div class="txtcenter">
+                                Votre vote : <span style="font-weight: bold">{{ vote_for_current_question.getValueLabel }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if question_results|length > 0 %}
+        <h2>Résultats des votes de l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}</h2>
+
+        <table class="afup-table">
+            <thead>
+                <tr>
+                    <th class="general-meeeting-vote-results__column--question">Vote</th>
+                    <th class="general-meeeting-vote-results__column--result" >Oui</th>
+                    <th class="general-meeeting-vote-results__column--result" >Non</th>
+                    <th class="general-meeeting-vote-results__column--result" >Abstention</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for question_result in question_results %}
+                <tr>
+                    <td class="general-meeeting-vote-results__column--question">
+                        {{ question_result.question.label }}
+                    </td>
+                    <td class="general-meeeting-vote-results__column--result">
+                        <span class="general-meeeting-vote-results__responsive-label">Oui</span>
+                        {{ question_result.count_oui }}
+                    </td>
+                    <td class="general-meeeting-vote-results__column--result">
+                        <span class="general-meeeting-vote-results__responsive-label">Non</span>
+                        {{ question_result.count_non }}
+                    </td>
+                    <td class="general-meeeting-vote-results__column--result">
+                        <span class="general-meeeting-vote-results__responsive-label">Abstention</span>
+                        {{ question_result.count_abstention }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <h2>Ma participation à l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}</h2>
         <div class="afup-form">
             {{ form_start(form) }}
 

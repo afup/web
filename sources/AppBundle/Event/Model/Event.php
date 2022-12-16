@@ -68,6 +68,11 @@ class Event implements NotifyPropertyInterface
     /**
      * @var DateTime
      */
+    private $dateEndSalesSponsorToken;
+
+    /**
+     * @var DateTime
+     */
     private $dateEndSpeakersDinerInfosCollection;
 
     /**
@@ -346,6 +351,28 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('dateEndSales', $this->dateEndSales, $dateEndSales);
         $this->dateEndSales = $dateEndSales;
+        return $this;
+    }
+
+
+    /**
+     * @return DateTime
+     */
+    public function getDateEndSalesSponsorToken()
+    {
+        return $this->dateEndSalesSponsorToken;
+    }
+
+    /**
+     * @param DateTime $dateEndSalesSponsorToken
+     *
+     * @return $this
+     */
+    public function setDateEndSalesSponsorToken($dateEndSalesSponsorToken)
+    {
+        $this->propertyChanged('dateEndSalesSponsorToken', $this->dateEndSalesSponsorToken, $dateEndSalesSponsorToken);
+        $this->dateEndSalesSponsorToken = $dateEndSalesSponsorToken;
+
         return $this;
     }
 
@@ -688,5 +715,40 @@ class Event implements NotifyPropertyInterface
     public function isOnline()
     {
         return false !== strpos($this->getPath(), 'enligne');
+    }
+
+    public static function getInscriptionAttachmentDir()
+    {
+        return __DIR__ . '/../../../../htdocs/uploads/mail_inscription_attachment/';
+    }
+
+    public static function getInscriptionAttachmentFilepath($eventPath)
+    {
+        return self::getInscriptionAttachmentDir() . $eventPath . '.pdf';
+    }
+
+    public static function hasInscriptionAttachment($eventPath)
+    {
+        return is_file(self::getInscriptionAttachmentFilepath($eventPath));
+    }
+
+    public static function getSponsorFileDir()
+    {
+        return __DIR__ . '/../../../../htdocs/docs/';
+    }
+
+    public static function getSponsorFilePublicPath($eventPath, $language)
+    {
+        return '/docs/' . $eventPath . '-sponsoring-' . $language . '.pdf';
+    }
+
+    public static function getSponsorFilePath($eventPath, $language)
+    {
+        return self::getSponsorFileDir() . $eventPath . '-sponsoring-' . $language . '.pdf';
+    }
+
+    public static function hasSponsorFile($eventPath, $language)
+    {
+        return is_file(self::getSponsorFilePath($eventPath, $language));
     }
 }

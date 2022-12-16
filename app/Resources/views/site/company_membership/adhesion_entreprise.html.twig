@@ -54,6 +54,12 @@
 
         </fieldset>
 
+        <fieldset>
+            <div>
+                {{ form_row(form.recaptcha) }}
+            </div>
+        </fieldset>
+
         <div class="right">
             {{ form_widget(form.save, {attr: { "class": "button button--call-to-action"}}) }}
         </div>

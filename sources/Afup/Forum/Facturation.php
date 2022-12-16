@@ -165,7 +165,7 @@ class Facturation
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            $pdf->Cell(50, 5, utf8_decode($inscription['pretty_name']), 1);
+            $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
             $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
             $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
             $total += $inscription['montant'];
@@ -184,6 +184,15 @@ class Facturation
         } else {
             $pdf->Output($chemin, 'F');
         }
+    }
+
+    protected function truncate($value, $length)
+    {
+        if ($value <= $length) {
+            return $value;
+        }
+
+        return substr($value, 0, $length) . '...';
     }
 
     /**
@@ -262,7 +271,7 @@ class Facturation
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            $pdf->Cell(50, 5, utf8_decode($inscription['pretty_name']), 1);
+            $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
             $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
             $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
             $total += $inscription['montant'];
@@ -335,7 +344,7 @@ class Facturation
         $numeroFacture = $this->genererFacture($reference, $cheminFacture);
 
         $message = new Message(
-            'Facture événement AFUP',
+            'Facture évènement AFUP',
             MailUserFactory::afup(),
             new MailUser($personne['email'], sprintf('%s %s', $personne['prenom'], $personne['nom']))
         );

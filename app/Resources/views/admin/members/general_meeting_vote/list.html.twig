@@ -1,0 +1,110 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Assemblée générale - votes</h2>
+
+    <div class="ui segment">
+        <form method="GET" name="filtre">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label for="date">Assemblée du </label>
+                        <select name="date" id="date">
+                            {% for date in dates %}
+                                <option value="{{ date|date('U') }}"
+                                        {% if date == selectedDate %}selected="selected"{% endif %}>
+                                    {{ date|date('d/m/Y') }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="OK" class="ui button" name="submit_date"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="ui menu">
+        <a href="{{ path('admin_members_general_question_add', {'date': latestDate|date('U')}) }}" class="item">
+            <div data-tooltip="Ajouter une question pour l'assemblée générale du {{ latestDate|date('d/m/Y') }}" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter une question
+            </div>
+        </a>
+    </div>
+
+    {% if rows|length > 0 %}
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th>Vote</th>
+                <th>Oui</th>
+                <th>Non</th>
+                <th>Abstention</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                {% set question = row.question %}
+                <tr>
+                    <td>{{ question.label }}</td>
+                    <td>{% if question.hasStatusOpened or question.hasStatusClosed %}{{ row.results.oui }}{% else %}n/a{% endif %}</td>
+                    <td>{% if question.hasStatusOpened or question.hasStatusClosed %}{{ row.results.non }}{% else %}n/a{% endif %}</td>
+                    <td>{% if question.hasStatusOpened or question.hasStatusClosed %}{{ row.results.abstention }}{% else %}n/a{% endif %}</td>
+                    <td class="single line right aligned">
+                        {% if question.hasStatusWaiting %}
+                            <a href="{{ url('admin_members_general_vote_open', {id: question.id}) }}"
+                               id="question-{{ question.id }}-open"
+                               data-position="left center"
+                               class="compact ui icon button confirmable"
+                               data-tooltip="Ouvrir cette question aux votes"
+                               data-confirmable-label="Êtes-vous sûr de vouloir ouvrir la question '{{ question.label }}' ?">
+                                <i class="folder open icon"></i>
+                            </a>
+                            <a href="{{ url('admin_members_general_question_edit', {id: question.id}) }}"
+                               id="question-{{ question.id }}-edit"
+                               data-position="left center"
+                               class="compact ui icon button"
+                               data-tooltip="Modifier cette question">
+                                <i class="pencil alernate icon"></i>
+                            </a>
+                        {% elseif question.hasStatusOpened %}
+                            <a href="{{ url('admin_members_general_vote_close', {id: question.id}) }}"
+                               id="question-{{ question.id }}-close"
+                               data-position="left center"
+                               class="compact ui icon button confirmable"
+                               data-tooltip="Fermer cette question aux votes"
+                               data-confirmable-label="Êtes-vous sûr de vouloir fermer la question '{{ question.label }}' ?">
+                                <i class="folder icon"></i>
+                            </a>
+                        {% elseif question.hasStatusClosed %}
+                            <span class="ui disabled button">Clos</span>
+                        {% endif %}
+
+                        {% if not question.hasVotes(row.results) %}
+                            <a href="{{ url('admin_members_general_question_delete', {id: question.id}) }}"
+                               id="question-{{ question.id }}-delete"
+                               data-position="left center"
+                               class="compact ui icon button confirmable"
+                               data-tooltip="Supprimer cette question"
+                               data-confirmable-label="Êtes-vous sûr de vouloir supprimer la question '{{ question.label }}' ?">
+                                <i class="trash icon"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucun vote pour cette assemblée générale.
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

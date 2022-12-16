@@ -8,7 +8,7 @@
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
-                        <label>Événement</label>
+                        <label>Évènement</label>
                         <select name="id_forum" onchange="this.form.submit(); return false;">
                             {foreach from=$forums item=forum}
                             <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
@@ -32,9 +32,8 @@
             <span class="text">Exports</span>
             <i class="dropdown icon"></i>
             <div class="menu hidden" tabindex="-1">
-                <a class="item" href="index.php?page=forum_badge&amp;action=export&amp;id_forum={$id_forum}" title="Exporter les inscriptions">Exporter les inscriptions</a>
                 <a class="item" href="/admin/event/badges?id={$id_forum}" title="Exporter les inscriptions pour les badges">Exporter les inscriptions pour les badges <i>(prends environ une minute)</a></i>
-                <a class="item" href="/admin/event/previous_registrations?event_count=4">Exporter les inscrits aux 4 derniers événements <i>(ayant acceptés d'être contactés, et pour les événements passés)</i></a>
+                <a class="item" href="/admin/event/previous_registrations?event_count=4">Exporter les inscrits aux 4 derniers évènements <i>(ayant acceptés d'être contactés, et pour les évènements passés)</i></a>
             </div>
         </div>
 
@@ -214,8 +213,8 @@
                             <span class="ui red label">
                                 A expiré le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
                             </span>
-                            <a class="compact ui tiny icon button" href="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}">
-                                URL Paiment
+                            <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{$inscription.id}&forum={$id_forum}">
+                                URL Paiement
                             </a>
                         </td>
                     {elseif $inscription.lastsubscription < $finForum}
@@ -223,8 +222,8 @@
                             <span class="ui orange label">
                                 Expire le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
                             </span>
-                            <a class="compact ui tiny icon button" href="https://afup.org/pages/event-payment/?ref=ins-{$inscription.id}&forum={$forum.id}">
-                                URL Paiment
+                            <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{$inscription.id}&forum={$id_forum}">
+                                URL Paiement
                             </a>
                         </td>
                     {else}
@@ -281,7 +280,7 @@ Lors de votre inscription au {$info_forum.titre}, vous avez souhaité profiter d
  - un accès au back-office, qui vous permettra de nous aider à nourrir les projets.
  - des invitations aux Rendez-vous AFUP : conférences thématiques, à Paris ou en province, animées par des experts. Le coût de ces conférences étant pris en charge par l'AFUP, elles sont gratuites pour les participants !
  - des Apéros PHP : des développeurs se réunissent régulièrement autour d'un verre pour discuter PHP. Soyez tenu au courant de ces apéros, participez à ceux qui se déroulent dans votre ville, rencontrez des développeurs PHP près de chez vous.
- - un tarif préférentiel au Forum PHP et au PHP Tour: votre adhésion à l'AFUP vous donnera droit au tarif « membre AFUP » lors de ces prochains événements.
+ - un tarif préférentiel au Forum PHP et au PHP Tour: votre adhésion à l'AFUP vous donnera droit au tarif « membre AFUP » lors de ces prochains évènements.
  - des réductions exclusives négociées auprès de nos partenaires sur leurs formations et leurs services
  - l'inscription à la mailing-list des membres de l'AFUP: un problème de code ? Besoin d'un conseil ? Une offre d'emploi à diffuser ? Une actualité qui pourrait intéresser la communauté ? Ecrivez à la mailing-list membres@afup.org et échangez avec les centaines de membres de l'AFUP.
 
@@ -312,7 +311,7 @@ J'ai besoin de vous pour régler ce soucis.
 
 Si votre adhésion est en cours et valide, je vous invite à m'en faire part par retour d'email afin que je puisse valider votre inscription.
 
-Sans situation régulière à la remise de votre badge lors de votre venue sur le lieu, la régularisation du tarif de votre place vous sera demandée afin de pouvoir participer à notre événement.
+Sans situation régulière à la remise de votre badge lors de votre venue sur le lieu, la régularisation du tarif de votre place vous sera demandée afin de pouvoir participer à notre évènement.
 
 Si vous souhaitez pouvoir accéder au {$forum.titre} plusieurs solutions s'offrent à vous :
 

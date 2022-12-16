@@ -15,29 +15,43 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class EventRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @deprecated il y aura surement des soucis liés à l'AFUP Day en utilisant cette méthode
+     * @deprecated TODO: à remplacer par getNextEvents de partout
      *
      * @return Event|null
      */
     public function getNextEvent()
     {
         $events = $this->getNextEvents();
-
         if ($events->count() === 0) {
             return null;
         }
         return $events->first();
     }
 
+    /**
+     * @return CollectionInterface|Event|null
+     */
     public function getNextEvents()
     {
         $query = $this
-            ->getQuery('SELECT id, path, titre, date_debut, date_fin, date_fin_appel_conferencier FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
         ;
 
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
 
+        if ($events->count() === 0) {
+            return null;
+        }
         return $events;
+    }
+
+    public function getLastEvent()
+    {
+        $query = $this
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum ORDER BY date_debut DESC, id DESC')
+        ;
+
+        return $query->query($this->getCollection(new HydratorSingleObject()))->first();
     }
 
     public function getNextEventForGithubUser(GithubUser $githubUser)
@@ -243,6 +257,14 @@ SQL;
             ->addField([
                 'columnName' => 'date_fin_vente',
                 'fieldName' => 'dateEndSales',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                ]
+            ])
+            ->addField([
+                'columnName' => 'date_fin_vente_token_sponsor',
+                'fieldName' => 'dateEndSalesSponsorToken',
                 'type' => 'datetime',
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']

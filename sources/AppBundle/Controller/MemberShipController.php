@@ -12,8 +12,12 @@ use AppBundle\Association\Form\ContactDetailsType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
+use AppBundle\Association\Model\GeneralMeetingQuestion;
+use AppBundle\Association\Model\GeneralMeetingVote;
 use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
+use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -341,7 +345,7 @@ class MemberShipController extends SiteBaseController
             $endSubscription = $cotisations->finProchaineCotisation($cotisation);
             $message = sprintf(
                 'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
-        Si vous renouvellez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
+        Si vous renouvelez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
                 number_format($cotisation['montant'], 2, ',', ' '),
                 EURO,
                 date("d/m/Y", $cotisation['date_fin']),
@@ -349,17 +353,21 @@ class MemberShipController extends SiteBaseController
             );
         }
 
-        $cotisation_physique = $cotisations->obtenirListe(0, $user->getId());
-        $cotisation_morale = $cotisations->obtenirListe(1, $user->getCompanyId());
+        $cotisations_physique = $cotisations->obtenirListe(0, $user->getId());
+        $cotisations_morale = $cotisations->obtenirListe(1, $user->getCompanyId());
 
-        if (is_array($cotisation_morale) && is_array($cotisation_physique)) {
-            $cotisations = array_merge($cotisation_physique, $cotisation_morale);
-        } elseif (is_array($cotisation_morale)) {
-            $cotisations = $cotisation_morale;
-        } elseif (is_array($cotisation_physique)) {
-            $cotisations = $cotisation_physique;
+        if (is_array($cotisations_morale) && is_array($cotisations_physique)) {
+            $liste_cotisations = array_merge($cotisations_physique, $cotisations_morale);
+        } elseif (is_array($cotisations_morale)) {
+            $liste_cotisations = $cotisations_morale;
+        } elseif (is_array($cotisations_physique)) {
+            $liste_cotisations = $cotisations_physique;
         } else {
-            $cotisations = [];
+            $liste_cotisations = [];
+        }
+
+        foreach ($liste_cotisations as $k => $cotisation) {
+            $liste_cotisations[$k]['telecharger_facture'] = $cotisations->isCurrentUserAllowedToReadInvoice($cotisation['id']);
         }
 
         if ($user->getCompanyId() > 0) {
@@ -392,7 +400,7 @@ class MemberShipController extends SiteBaseController
             ':admin/association/membership:membershipfee.html.twig',
             [
                 'title' => 'Ma cotisation',
-                'cotisations' => $cotisations,
+                'cotisations' => $liste_cotisations,
                 'time' => time(),
                 'montant' => $montant,
                 'libelle' => $libelle,
@@ -422,10 +430,24 @@ class MemberShipController extends SiteBaseController
 
         $tempfile = tempnam(sys_get_temp_dir(), 'membership_fee_download');
         $numeroFacture = $cotisations->genererFacture($id, $tempfile);
+        $cotisation = $cotisations->obtenir($id);
+
+        if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+            /** @var CompanyMember $company */
+            $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($cotisation['id_personne']);
+            Assertion::isInstanceOf($company, CompanyMember::class);
+            $patternPrefix = $company->getCompanyName();
+        } else {
+            $user = $this->get('ting')->get(UserRepository::class)->get($cotisation['id_personne']);
+            Assertion::isInstanceOf($user, User::class);
+            $patternPrefix = $user->getLastName();
+        }
+
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
 
         $response = new BinaryFileResponse($tempfile, 200, [], false);
         $response->deleteFileAfterSend(true);
-        $response->setContentDisposition('attachment', 'facture-' . $numeroFacture . '.pdf');
+        $response->setContentDisposition('attachment', $pattern);
 
         return $response;
     }
@@ -472,13 +494,19 @@ class MemberShipController extends SiteBaseController
         if ($needsMembersheepFeePayment) {
             return $this->render('admin/association/membership/generalmeeting_membersheepfee.html.twig', [
                 'title' => $title,
-                'date_general_meeting' => $latestDate->format('d/m/Y'),
+                'latest_date' => $latestDate,
             ]);
         }
 
         $attendee = $generalMeetingRepository->getAttendee($user->getUsername(), $latestDate);
-        Assertion::notNull($attendee);
         $lastGeneralMeetingDescription = $generalMeetingRepository->obtenirDescription($latestDate);
+
+        $defaultPresence = 0;
+        $defaultPowerId = null;
+        if (null !== $attendee) {
+            $defaultPresence = $attendee->getPresence();
+            $defaultPowerId = $attendee->getPowerId();
+        }
 
         $form = $this->createFormBuilder()
             ->add('presence', ChoiceType::class, ['expanded' => true, 'choices' => ['Oui' => 1, 'Non' => 2, 'Je ne sais pas encore' => 0]])
@@ -493,8 +521,8 @@ class MemberShipController extends SiteBaseController
             )
             ->add('save', SubmitType::class, ['label' => 'Confirmer'])
             ->setData([
-                'presence' => $attendee->getPresence(),
-                'id_personne_avec_pouvoir' => $attendee->getPowerId(),
+                'presence' => $defaultPresence,
+                'id_personne_avec_pouvoir' => $defaultPowerId,
             ])
             ->getForm();
 
@@ -502,7 +530,7 @@ class MemberShipController extends SiteBaseController
 
         if ($form->isValid()) {
             $data = $form->getData();
-            if (null !== $attendee->getPresence()) {
+            if (null !== $attendee) {
                 $ok = $generalMeetingRepository->editAttendee(
                     $user->getUsername(),
                     $latestDate,
@@ -529,15 +557,92 @@ class MemberShipController extends SiteBaseController
 
         $attendeesWithPower = $generalMeetingRepository->getAttendees($latestDate, 'nom', 'asc', $user->getId());
 
+        $generalMeetingQuestionRepository = $this->get(GeneralMeetingQuestionRepository::class);
+        $generalMeetingVoteRepository = $this->get(GeneralMeetingVoteRepository::class);
+
+        $currentQuestion = $generalMeetingQuestionRepository->loadNextOpenedQuestion($latestDate);
+
+        $voteForCurrentQuestion = null;
+        if (null !== $currentQuestion) {
+            $voteForCurrentQuestion = $generalMeetingVoteRepository->loadByQuestionIdAndUserId($currentQuestion->getId(), $this->getUserId());
+        }
+
+        $questionResults = [];
+        foreach ($generalMeetingQuestionRepository->loadClosedQuestions($latestDate) as $question) {
+            $results = $generalMeetingVoteRepository->getResultsForQuestionId($question->getId());
+
+            $questionResults[] = [
+                'question' => $question,
+                'count_oui' => $results[GeneralMeetingVote::VALUE_YES],
+                'count_non' => $results[GeneralMeetingVote::VALUE_NO],
+                'count_abstention' => $results[GeneralMeetingVote::VALUE_ABSTENTION],
+            ];
+        }
+
         return $this->render('admin/association/membership/generalmeeting.html.twig', [
+            'question_results' => $questionResults,
+            'question' => $currentQuestion,
+            'vote_for_current_question' => $voteForCurrentQuestion,
+            'vote_labels_by_values' => GeneralMeetingVote::getVoteLabelsByValue(),
             'title' => $title,
-            'date_general_meeting' => $latestDate->format('d/m/Y'),
+            'latest_date' => $latestDate,
             'form' => $form->createView(),
             'reports' => $this->prepareGeneralMeetingsReportsList(),
             'general_meeting_planned' => $generalMeetingPlanned,
             'last_general_meeting_description' => $lastGeneralMeetingDescription,
             'personnes_avec_pouvoir' => $attendeesWithPower,
         ]);
+    }
+
+    public function generalMeetingVoteAction(Request $request)
+    {
+        $generalMeetingRepository = $this->get(GeneralMeetingRepository::class);
+        $generalMeetingQuestionRepository = $this->get(GeneralMeetingQuestionRepository::class);
+        $generalMeetingVoteRepository = $this->get(GeneralMeetingVoteRepository::class);
+
+        if (null === ($questionId = $request->get('questionId'))) {
+            throw $this->createNotFoundException('QuestionId manquant');
+        }
+
+        if (false === GeneralMeetingVote::isValueAllowed($vote = $request->query->getAlpha('vote'))) {
+            throw $this->createNotFoundException('Vote manquant');
+        }
+
+        /** @var $question GeneralMeetingQuestion */
+        if (null === ($question = $generalMeetingQuestionRepository->get($questionId))) {
+            throw $this->createNotFoundException('QuestionId missing');
+        }
+
+        $redirection = $this->redirectToRoute('member_general_meeting');
+
+        if (false === $question->hasStatusOpened()) {
+            $this->addFlash('error', "Ce vote n'est pas ouvert");
+            return $redirection;
+        }
+
+        $userId = $this->getUserId();
+
+        if (null !== $generalMeetingVoteRepository->loadByQuestionIdAndUserId($questionId, $userId)) {
+            $this->addFlash('error', 'Vous avez déjà voté pour cette question');
+            return $redirection;
+        }
+
+        $weight = 1 + count($generalMeetingRepository->getAttendees($question->getDate(), 'nom', 'asc', $userId));
+
+        $generalMeetingVote = new GeneralMeetingVote();
+        $generalMeetingVote
+            ->setQuestionId($question->getId())
+            ->setUserId($this->getUserId())
+            ->setWeight($weight)
+            ->setValue($vote)
+            ->setCreatedAt(new \DateTime())
+        ;
+
+        $generalMeetingVoteRepository->save($generalMeetingVote);
+
+        $this->addFlash('notice', 'Votre vote a été pris en compte');
+
+        return $redirection;
     }
 
     public function generalMettingDownloadReportAction($filename)
@@ -558,6 +663,9 @@ class MemberShipController extends SiteBaseController
     private function prepareGeneralMeetingsReportsList()
     {
         $dir = $this->container->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . '/htdocs/uploads/general_meetings_reports';
+        if (!is_dir($dir)) {
+            return [];
+        }
 
         $finder = new Finder();
         $files = $finder->name("*.pdf")->in($dir);

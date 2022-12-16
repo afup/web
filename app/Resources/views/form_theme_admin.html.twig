@@ -3,7 +3,7 @@
 {%- block form_label -%}
     <div class="three wide column right aligned">
         {{ parent() }}
-        {% if required %}<span class="obligatoire">*</span>{% endif %}
+        {% if required == true %}<span class="obligatoire">*</span>{% endif %}
     </div>
 {%- endblock form_label -%}
 
@@ -24,3 +24,17 @@
         {{ parent() }}
     </div>
 {%- endblock checkbox_widget -%}
+
+{%- block datetime_widget -%}
+    {% if widget == 'single_text' %}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {% set attr = attr|merge({'class': "inline fields"}) %}
+        <div {{ block('widget_container_attributes') }}>
+            {{- form_errors(form.date) -}}
+            {{- form_errors(form.time) -}}
+            {{- form_widget(form.date, {attr: {class: 'inline fields'}}) -}}
+            {{- form_widget(form.time, {attr: {class: 'inline fields'}}) -}}
+        </div>
+    {%- endif -%}
+{%- endblock datetime_widget -%}

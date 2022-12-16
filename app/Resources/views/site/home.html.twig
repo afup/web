@@ -5,12 +5,12 @@
 {% macro home_feuille(feuille) %}
     <h2>{{ feuille.nom }}</h2>
     {% if feuille.image %}
-        <a href="{{ feuille.lien }}"><img src="/templates/site/images/{{ feuille.image }}" /></a>
+        <a href="{{ feuille.lien }}"><img alt="{{ feuille.image_alt }}" src="/templates/site/images/{{ feuille.image }}" /></a>
     {% endif %}
     {% if feuille.alt %}
         <p>{{ feuille.alt }}</p>
     {% endif %}
-    <a href="{{ feuille.lien }}" class="home-view-more">Voir plus <i class="fa fa-arrow-right"></i></a>
+    <a href="{{ feuille.lien }}" title="Voir plus : {{ feuille.nom }}" class="home-view-more">Voir plus <i class="fa fa-arrow-right"></i></a>
 {% endmacro %}
 
 {% block content %}
@@ -20,8 +20,9 @@
             <div class="container">
                 <div class="col-md-12">
                     <blockquote>
-                        Apéros, rendez-vous et cycle de conférences, l'AFUP est au coeur de la communauté PHP depuis 2000.
-                        L'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté
+                        Apéros, rendez-vous et cycle de conférences, l'<abbr title="Association Française des Utilisateurs de PHP">AFUP</abbr>
+                        est au cœur de la communauté PHP depuis 2000.
+                        L'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté.
                     </blockquote>
                 </div>
             </div>
@@ -35,7 +36,7 @@
                                 <a href="{{ path('news_display', {code: actualite.code}) }}">
                                     <span class="home-list-date">{{ actualite.date|date('d/m') }}</span>
                                     {% if loop.first  %}
-                                        <h4 style="display: inline-block">{{ actualite.titre }}</h4>
+                                        <span class="home-actualite-title">{{ actualite.titre }}</span>
                                         <div class="home-list-chapeau-container">
                                             <p>
                                                 {{ actualite.getChapeau|raw }}
@@ -50,7 +51,7 @@
                         {% endfor %}
                     </ul>
 
-                    <a href="/pages/site/?route=06-actualit/9" class="home-view-more">Voir plus <i class="fa fa-arrow-right"></i></a>
+                    <a href="/pages/site/?route=06-actualit/9" class="home-view-more" title="Voir plus : d'autres actualités">Voir plus <i class="fa fa-arrow-right"></i></a>
                 </div>
 
                 <div class="col-md-6">
@@ -74,7 +75,7 @@
                         {% endfor %}
                     </ul>
 
-                    <a href="{{ path('meetups_list') }}"  class="home-view-more">Voir plus <i class="fa fa-arrow-right"></i></a>
+                    <a href="{{ path('meetups_list') }}" class="home-view-more" title="Voir plus : meetups dans les antennes">Voir plus <i class="fa fa-arrow-right"></i></a>
                 </div>
 
                 <div class="col-md-6">
@@ -83,8 +84,8 @@
                     {% elseif talk %}
                         <h2>Le talk du jour</h2>
                         <a href="{{ path('talks_show', { id: talk.getId(), slug: talk.getSlug()}) }}" class="home-talk-of-the-day">
-                            <img class="" src="https://img.youtube.com/vi/{{ talk.youtubeId }}/hqdefault.jpg" /><br />
-                            <h4>{{ talk.getTitle }}</h4>
+                            <img class="" src="https://img.youtube.com/vi/{{ talk.youtubeId }}/hqdefault.jpg" title="{{ talk.getTitle }}" alt="" /><br />
+                            <span class="home-actualite-title">{{ talk.getTitle }}</span>
                         </a>
 
                     {% endif %}

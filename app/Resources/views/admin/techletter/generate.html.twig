@@ -1,71 +1,93 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Générer une veille de l'AFUP</h2>
+    <h2>Veille de l'AFUP du {{ sending.sendingDate|date("d/m/Y") }}</h2>
 
-	<link rel="stylesheet" href="{{ asset('assets/techletter/notyf.min.css') }}" />
-	<script src="{{ asset('assets/techletter/notyf.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/techletter/notyf.min.css') }}"/>
+    <script src="{{ asset('assets/techletter/notyf.min.js') }}"></script>
 
-	<div class="ui menu asd borderless">
-		<div class="right menu">
-			<div class="item">
-				<form class="afup--form" action="{{ path('admin_techletter_send_test') }}" method="get">
-					<input type="hidden" name="techletterId" value="{{ sending.id }}" />
-					<input type="submit" class="ui button" value="Envoyer une newsletter de test au Pôle" />
-				</form>
-			</div>
-			<div class="item">
-				<form method="post" class="afup--form">
-					<input
-							class="ui button primary"
-							type="submit"
-							name="sendToMailchimp"
-							value="Verrouiller et envoyer à Mailchimp"
-							onclick="return confirm('Etes-vous sur que cette NL est prete ?');"
-					/>
+    <div class="ui menu asd borderless">
+        <div class="right menu">
+            <div class="item">
+                <form class="afup--form" action="{{ path('admin_techletter_send_test') }}" method="get">
+                    <input type="hidden" name="techletterId" value="{{ sending.id }}"/>
+                    <input type="submit" class="ui button" value="Envoyer une newsletter de test au Pôle"/>
+                </form>
+            </div>
+            <div class="item">
+                <form method="post" class="afup--form">
+                    <input class="ui button primary"
+                           type="submit"
+                           name="sendToMailchimp"
+                           value="Verrouiller et envoyer à Mailchimp"
+                           onclick="return confirm('Êtes-vous sûr que cette NL est prête ?');"/>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('sendToMailchimp') }}"/>
+                </form>
+            </div>
+            <div class="item">
+                <form method="post" class="afup--form">
+                    <input class="ui button"
+                           type="submit"
+                           name="sendToMailchimpAndSchedule"
+                           value="Envoyer, verrouiller et planifier l'envoi sur Mailchimp"
+                           onclick="return confirm('Êtes-vous sûr que cette NL est prête ?\nEnvoyer, verrouiller et planifier l\'envoi sur Mailchimp ?');"/>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('sendToMailchimpAndSchedule') }}"/>
+                </form>
+            </div>
+        </div>
+    </div>
 
-					<input type="hidden" name="_csrf_token" value="{{ csrf_token('sendToMailchimp') }}" />
-				</form>
-			</div>
-		</div>
-	</div>
+    <div class="ui grid segment">
+        <iframe src="" id="preview-techletter" name="preview-techletter" class="eight wide column" frameborder="0"></iframe>
 
-	<div class="ui grid segment">
-		<iframe src="" id="preview-techletter" name="preview-techletter" frameborder="0" class="eight wide column"></iframe>
-	</div>
+        <div class="four wide column">
+            <form method="post" class="ui form">
+                <div class="inline fields">
+                    <label for="sendingDate">Date planifiée</label>
+                    <div>
+                        <input name="sendingDate" type="datetime-local"
+                               value="{{ sending.sendingDate|date("Y-m-d H:i:s") }}" id="sendingDate"/>
+                    </div>
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterDate') }}"/>
+                <button type="submit" class="ui button">Mettre à jour la date de planification</button>
+            </form>
+        </div>
+    </div>
 
+    <form id="link-editor" class="hidden ui form active modal" data-refresh="{{ url('admin_techletter_retrieve') }}">
+        <a href="#" id="close"> <i class="close icon"></i></a>
 
-	<form id="link-editor" class="hidden ui form active modal" data-refresh="{{ url('admin_techletter_retrieve') }}">
-		<a href="#" id="close"> <i class="close icon"></i></a>
+        <fieldset class="ui content segment" id="update-link">
+        </fieldset>
 
-		<fieldset class="ui content segment" id="update-link">
-		</fieldset>
+        <div class="actions">
+            <button id="up" title="Remonter ce lien" class="ui button">Remonter</button>
+            <button id="down" title="Descendre ce lien" class="ui button">Descendre</button>
+            <button id="delete" class="ui button">Supprimer</button>
+            <button id="refresh"
+                    title="Écraser la saisie actuelle par les informations récupérées depuis l'URL indiquée"
+                    class="ui button">
+                Actualiser depuis l'URL
+            </button>
+        </div>
+        <div class="actions">
+            <input type="reset" value="Fermer" class="ui button"/>
+            <input type="submit" value="Sauvegarder et mettre à jour" class="ui button primary"/>
+        </div>
+    </form>
 
-		<div class="actions">
-			<button id="up" title="Remonter ce lien" class="ui button">Remonter</button>
-			<button id="down" title="Descendre ce lien" class="ui button">Descendre</button>
-			<button id="delete" class="ui button">Supprimer</button>
-			<button id="refresh" title="Écraser la saisie actuelle par les informations récupérées depuis l'url indiquée" class="ui button">
-				Actualiser depuis l'url
-			</button>
-		</div>
-		<div class="actions">
-			<input type="reset" value="Fermer" class="ui button"/>
-			<input type="submit" value="Sauvegarder et mettre à jour" class="ui button primary" />
-		</div>
-	</form>
-
-	<form method="post" action="{{ url('admin_techletter_preview') }}" target="preview-techletter" id="form-update">
-		<input type="hidden" name="techletterId" value="{{ sending.id }}" />
-		<input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterPreview') }}" />
-		<input name="techletter" id="textarea" type="hidden" value="" />
-	</form>
+    <form method="post" action="{{ url('admin_techletter_preview') }}" target="preview-techletter" id="form-update">
+        <input type="hidden" name="techletterId" value="{{ sending.id }}"/>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterPreview') }}"/>
+        <input name="techletter" id="textarea" type="hidden" value=""/>
+    </form>
 
     <script>
-		(function (w) {
-			w.techletter = {{ tech_letter|json_encode|raw }};
-		})(window);
+        (function (w) {
+            w.techletter = {{ tech_letter|json_encode|raw }};
+        })(window);
     </script>
-	<script src="{{ asset('js_dist/techletter.js') }}"></script>
+    <script src="{{ asset('js_dist/techletter.js') }}"></script>
 
 {% endblock %}

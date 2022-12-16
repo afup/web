@@ -273,7 +273,7 @@ SQL;
         $requete .= '  mail_partenaire=' . $this->_bdd->echapper($mail_partenaire) . ',';
         $requete .= '  commentaires=' . $this->_bdd->echapper($commentaires) . ',';
         $requete .= '  etat=' . $this->_bdd->echapper($etat) . ',';
-        $requete .= '  facturation=' . $this->_bdd->echapper($facturation) . ',';
+        $requete .= '  facturation=' . $this->_bdd->echapper($facturation);
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
 

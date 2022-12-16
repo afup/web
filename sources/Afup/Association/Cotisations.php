@@ -134,15 +134,16 @@ class Cotisations
      * cotisation
      * @param int $date_fin Date de fin de la cotisation
      * @param string $commentaires Commentaires concernnant la cotisation
+     * @param string $referenceClient Reference client à mentionner sur la facture
      * @access public
      * @return bool     Succès de l'ajout
      */
     function ajouter($type_personne, $id_personne, $montant, $type_reglement,
-                     $informations_reglement, $date_debut, $date_fin, $commentaires)
+                     $informations_reglement, $date_debut, $date_fin, $commentaires, $referenceClient = null)
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_cotisations (type_personne, id_personne, montant, type_reglement , informations_reglement,';
-        $requete .= '                    date_debut, date_fin, numero_facture, token, commentaires) ';
+        $requete .= '                    date_debut, date_fin, numero_facture, token, commentaires, reference_client) ';
         $requete .= 'VALUES (';
         $requete .= $type_personne . ',';
         $requete .= $id_personne . ',';
@@ -153,7 +154,8 @@ class Cotisations
         $requete .= $date_fin . ',';
         $requete .= $this->_bdd->echapper($this->_genererNumeroFacture()) . ',';
         $requete .= $this->_bdd->echapper(base64_encode(random_bytes(30))) . ',';
-        $requete .= $this->_bdd->echapper($commentaires) . ')';
+        $requete .= $this->_bdd->echapper($commentaires) . ',';
+        $requete .= $this->_bdd->echapper($referenceClient) . ')';
 
         if ($this->_bdd->executer($requete) === false) {
             return false;
@@ -174,11 +176,12 @@ class Cotisations
      * cotisation
      * @param int $date_fin Date de fin de la cotisation
      * @param string $commentaires Commentaires concernnant la cotisation
+     * @param string $referenceClient Reference client à mentionner sur la facture
      * @access public
      * @return bool Succès de la modification
      */
     function modifier($id, $type_personne, $id_personne, $montant, $type_reglement,
-                      $informations_reglement, $date_debut, $date_fin, $commentaires)
+                      $informations_reglement, $date_debut, $date_fin, $commentaires, $referenceClient)
     {
         $requete = 'UPDATE';
         $requete .= '  afup_cotisations ';
@@ -190,7 +193,8 @@ class Cotisations
         $requete .= '  informations_reglement=' . $this->_bdd->echapper($informations_reglement) . ',';
         $requete .= '  date_debut=' . $date_debut . ',';
         $requete .= '  date_fin=' . $date_fin . ',';
-        $requete .= '  commentaires=' . $this->_bdd->echapper($commentaires) . ' ';
+        $requete .= '  commentaires=' . $this->_bdd->echapper($commentaires) . ',';
+        $requete .= '  reference_client=' . $this->_bdd->echapper($referenceClient) . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
         if ($this->_bdd->executer($requete) === false) {
@@ -353,11 +357,21 @@ class Cotisations
 
         if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
             $nom = $personne['raison_sociale'];
+            $patternPrefix = $personne['raison_sociale'];
         } else {
             $nom = $personne['prenom'] . ' ' . $personne['nom'];
+            $patternPrefix = $personne['nom'];
         }
         $pdf->Ln(10);
         $pdf->MultiCell(130, 5, utf8_decode($nom . "\n" . $personne['adresse'] . "\n" . $personne['code_postal'] . "\n" . $personne['ville']));
+
+        if (isset($cotisation['reference_client'])) {
+            $pdf->Ln(10);
+            $pdf->MultiCell(180, 5, utf8_decode(sprintf(
+                "Référence client : %s",
+                $cotisation['reference_client']
+            )));
+        }
 
         $pdf->Ln(15);
 
@@ -381,7 +395,9 @@ class Cotisations
         $pdf->Cell(10, 5, utf8_decode('Lors de votre règlement, merci de préciser la mention : "Facture n°' . $cotisation['numero_facture']) . '"');
 
         if (is_null($chemin)) {
-            $pdf->Output('facture-' . $cotisation['numero_facture'] . '.pdf', 'D');
+            $pattern = str_replace(' ', '', $patternPrefix) . '_' . $cotisation['numero_facture'] . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
+
+            $pdf->Output($pattern, 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -404,7 +420,8 @@ class Cotisations
 
         if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
             $personnePhysique = new Personnes_Morales($this->_bdd);
-            $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email');
+            $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email, raison_sociale');
+            $patternPrefix = $contactPhysique['raison_sociale'];
         } else {
             $user = $userRepository->get($personne['id_personne']);
             Assertion::notNull($user);
@@ -413,6 +430,7 @@ class Cotisations
                 'prenom'=> $user->getFirstName(),
                 'email'=> $user->getEmail(),
             ];
+            $patternPrefix = $contactPhysique['nom'];
         }
 
         $corps = "Bonjour,<br />";
@@ -425,17 +443,19 @@ class Cotisations
 
         $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $numeroFacture = $this->genererFacture($id_cotisation, $cheminFacture);
+        $cotisation = $this->obtenirDerniere($personne['type_personne'], $personne['id_personne']);
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
 
         $message = new Message('Facture AFUP', null, new MailUser(
             $contactPhysique['email'],
             sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom'])
         ));
         $message->addAttachment(new Attachment(
-                $cheminFacture,
-                'facture-'.$numeroFacture.'.pdf',
-                'base64',
-                'application/pdf'
-            ));
+            $cheminFacture,
+            $pattern,
+            'base64',
+            'application/pdf'
+        ));
         $ok = $mailer->sendTransactional($message, $corps);
         @unlink($cheminFacture);
 

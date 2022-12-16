@@ -1,0 +1,102 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    {% set token_delete=csrf_token('rubrique_delete') %}
+
+   <h2>Liste des rubriques</h2>
+    <div class="ui menu">
+        <a href="{{ path('admin_site_rubriques_add') }}" class="item">
+            <div data-tooltip="Ajouter une rubrique" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <div class="ui segment">
+        <form method="GET" name="filter">
+            <input type="hidden" name="sort"  value="{{ sort }}" />
+            <input type="hidden" name="direction" value="{{ direction }}" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Recherche</label>
+                        <input type="text" name="filter" value="{{ filter }}">
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table class="ui table striped compact celled w-100">
+            <thead>
+                <tr>
+                    <th>
+                        <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                            Date
+                        </a>
+                    </th>
+                    <th>
+                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                            Nom
+                        </a>
+                    </th>
+                    <th>
+                        <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat' , 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                            Etat
+                        </a>
+                    </th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+            {% if rubriques|length > 0 %}
+                {% for rub in rubriques %}
+                <tr>
+                    <td>{% if rub.date != null %}{{ rub.date|date('d-m-Y') }}{% endif %}</td>
+                    <td style="white-space : normal;">{{ rub.nom }}</td>
+                     <td class="center aligned">
+                        {% if rub.etat == 1 %}
+                            <a class="ui orange label">En ligne</a>
+                        {% elseif rub.etat == -1 %}
+                            <a class="ui grey label">Hors ligne</a>
+                        {% else %}
+                            <a class="ui violet label">En attente</a>
+                        {% endif %}
+                    </td>
+                    <td class="single line right aligned">
+                        <a id="modifier_{{ rub.id }}"
+                            href="{{ path('admin_site_rubriques_edit', {'id': rub.id }) }}"
+                            data-position="left center"
+                            data-tooltip="Modifier la rubrique {{ rub.nom }}"
+                            class="compact ui icon button"
+                        >
+                            <i class="pencil alernate icon"></i>
+                        </a>
+
+                        <a id="supprimer_{{ rub.id }}"
+                        href="{{path('admin_site_rubriques_delete', {'id': rub.id, 'token': token_delete }) }}"
+                        data-position="left center"
+                        data-tooltip="Supprimer la rubrique {{ rub.nom }}"
+                        class="compact ui red icon button confirmable"
+                        data-confirmable-label="Etes-vous sûr de vouloir supprimer la rubrique {{ rub.nom }} ?"
+                        >
+                            <i class="trash icon"></i>
+                        </a>
+                    </td>
+                 <tr>
+                {% endfor %}
+
+            {% else %}
+                <tr>
+                    <td colspan="4"><em>Aucune rubrique</em></td>
+                </tr>
+            {% endif %}
+            </tbody>
+
+        </table>
+    </div>
+{% endblock %}

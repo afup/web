@@ -1,0 +1,20 @@
+{% extends ':event:base.html.twig' %}
+
+{% block metas %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{'Plusieurs évènements en ce moment !'|trans}}</h2>
+    <div id="homeButtons">
+        <div class="buttons">
+            {% for event in events %}
+                <a href="{{ url('event', {eventSlug: event.path}) }}">
+                    <div class="button">
+                        {{ event.title|trans }}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -5,7 +5,8 @@
 {% block stylesheets %}
     <!--[if lt IE 9]><script src="{{ asset('templates/site/js/html5shiv.js') }}"></script><![endif]-->
     <link href='https://fonts.googleapis.com/css?family=Podkova:400,700|Glegoo' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/v4-shims.css">
     <link rel="stylesheet" href="{{ asset('templates/site/css/styles.css') }}?v={{ asset_md5_start('templates/site/css/styles.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('templates/site/css/global-menu.css') }}" media="all" />
     <link rel="stylesheet" href="{{ asset('/css/grid.css') }}?v={{ asset_md5_start('css/grid.css') }}" media="all" />
@@ -34,8 +35,8 @@
                 {% endif %}
             </div>
             <a href="/" id="logo">
-                <img src="{{ asset('templates/site/img/logo-afup.svg') }}" alt="logo AFUP">
-                <img src="{{ asset('templates/site/img/logo-afup-mobile.svg') }}" alt="logo AFUP" class="mobile">
+                <img src="{{ asset('templates/site/img/logo-afup.svg') }}" alt="AFUP: Association française des utilisateurs de PHP" />
+                <img src="{{ asset('templates/site/img/logo-afup-mobile.svg') }}" alt="AFUP: Association française des utilisateurs de PHP" class="mobile" />
             </a>
             <a href="#body" class="nav-button-open" aria-label="open navigation"></a>
             <a href="#" class="nav-button-close" aria-label="close navigation"></a>
@@ -148,18 +149,18 @@
                             </svg>
                         </div>
                         <div class="col-md-7 tablet-hidden">
-                            <span class="pre-footer-newsletter-title">Inscription à la newsletter</span>
+                            <label class="pre-footer-newsletter-title" for="subscriber_email">Inscription à la newsletter</label>
                             {{ render(controller('AppBundle:Newsletter:subscribeForm')) }}
                             <span class="pre-footer-newsletter-caption">Tous les deux mois, des nouvelles de L'AFUP</span>
                         </div>
                         <div class="col-md-1 pre-footer-icon">
-                            <a href="https://twitter.com/afup"><i class="fa fa-twitter"></i></a>
+                            <a href="https://twitter.com/afup" class="pre-footer-social-network" title="Accédez au compte Twitter de l'AFUP"><i class="fab fa-twitter"></i></a>
                         </div>
                         <div class="col-md-1 pre-footer-icon">
-                            <a href="https://facebook.com/fandelafup"><i class="fa fa-facebook"></i></a>
+                            <a href="https://mastodon.online/@afup" class="pre-footer-social-network"  title="Accédez au compte Mastodon de l'AFUP"><i class="fab fa-mastodon"></i></a>
                         </div>
                         <div class="col-md-1 pre-footer-icon">
-                            <a href="{{ path('feed_rss') }}"><i class="fa fa-feed"></i></a>
+                            <a href="{{ path('feed_rss') }}" class="pre-footer-social-network"  title="Accédez au flux RSS de l'AFUP"><i class="fas fa-rss"></i></a>
                         </div>
                     </div>
                 </div>

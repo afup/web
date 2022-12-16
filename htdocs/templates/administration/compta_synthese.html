@@ -1,5 +1,5 @@
 {if $action == 'lister'}
-    <h2>Synthese des événements</h2>
+    <h2>Synthese des évènements</h2>
 
     <div class="ui segment">
         <form method="GET" name="evnt">
@@ -8,7 +8,7 @@
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
-                        <label>Événement</label>
+                        <label>Évènement</label>
                         <select name="idevnt" onchange="this.form.submit(); return false;">
                             {foreach from=$listEvenement item=listsEvenement }
                             <option value="{$listsEvenement.id}" {if $idevnt == $listsEvenement.id} selected{/if}> {$listsEvenement.evenement}</option>

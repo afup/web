@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="fr">
     <head>
         {% block metas %}
         <meta charset="UTF-8">
@@ -27,15 +27,18 @@
         {% endif %}
     </head>
     <body id="body" class="{% block body_css %}{% endblock %}">
+        <a class="evitement" href="#contenu">Aller au contenu</a>
         <div id="afup-global-menu">
-            <a href="https://afup.org" class="lien-entete lien-entete__active">AFUP</a>
-            <a href="https://event.afup.org" class="lien-entete">Forum PHP 2020</a>
-            <a href="https://barometre.afup.org" class="lien-entete">Baromètre</a>
-            <a href="http://www.planete-php.fr" class="lien-entete">Planète PHP</a>
+            <a href="https://afup.org" class="lien-entete lien-entete__active" tabindex="-1">AFUP</a>
+            <a href="https://event.afup.org" class="lien-entete" tabindex="-1">AFUP Day 2023</a>
+            <a href="https://barometre.afup.org" class="lien-entete" tabindex="-1">Baromètre</a>
+            <a href="http://www.planete-php.fr" class="lien-entete" tabindex="-1">Planète PHP</a>
+            <a href="https://pufa.afup.org" class="lien-entete" tabindex="-1">PUFA</a>
         </div>
         {% block header '' %}
 
         {% block container_wrapper %}
+        <a id="contenu" tabindex="-1"></a>
         <div class="container wrapper">
             {% for bag in ['notice', 'success', 'error'] %}
                 {% for flash_message in app.session.flashBag.get(bag) %}

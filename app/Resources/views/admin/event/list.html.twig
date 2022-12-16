@@ -2,7 +2,7 @@
 
 {% block content %}
     {% set token_delete=csrf_token('forum_delete') %}
-    <h2>Liste des événements</h2>
+    <h2>Liste des évènements</h2>
 
     <div class="ui menu">
         <a href="/pages/administration/index.php?page=forum_gestion&amp;action=ajouter" class="item">
@@ -14,13 +14,13 @@
     </div>
 
     <div class="ui message">
-        <p>On ne peut pas supprimer d'événement pour lequel des éléments ont été associés.</p>
+        <p>On ne peut pas supprimer d'évènement pour lequel des éléments ont été associés.</p>
     </div>
 
     <table class="ui table striped celled">
         <thead>
         <tr>
-            <th>Événement</th>
+            <th>Évènement</th>
             <th>Chemin</th>
             <th class="right aligned">Places</th>
             <th>Date début</th>
@@ -69,7 +69,7 @@
                 <td colspan="10" style="text-align: center;">
                     <div class="ui icon header">
                         <i class="meh outline icon"></i>
-                        Aucune information. {% if event == null %}Essayez de changez d'événement !{% endif %}
+                        Aucune information. {% if event == null %}Essayez de changez d'évènement !{% endif %}
                     </div>
                 </td>
             </tr>

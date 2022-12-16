@@ -34,7 +34,7 @@ class SpeakersDinerType extends AbstractType
                     'expanded' => true,
                     'choices' => [
                         "Non, je n'ai pas de régime alimentaire particulier" => 0,
-                        "J'ai un régime alimentaire particulier / des contraines alimentaires" => 1,
+                        "J'ai un régime alimentaire particulier / des contraintes alimentaires" => 1,
                     ],
                 ]
             )

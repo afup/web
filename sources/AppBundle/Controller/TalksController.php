@@ -7,6 +7,7 @@ use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Offices\OfficesCollection;
+use AppBundle\Subtitles\Parser;
 
 class TalksController extends SiteBaseController
 {
@@ -42,6 +43,9 @@ class TalksController extends SiteBaseController
         $event = $this->get('ting')->get(EventRepository::class)->get($planning->getEventId());
         $comments = $this->get(\AppBundle\Joindin\JoindinComments::class)->getCommentsFromTalk($talk);
 
+        $parser = new Parser();
+        $parsedContent = $parser->parse($talk->getTranscript());
+
         return $this->render(
             ':site:talks/show.html.twig',
             [
@@ -49,6 +53,7 @@ class TalksController extends SiteBaseController
                 'event' => $event,
                 'speakers' => $speakers,
                 'comments' => $comments,
+                'transcript' => $parsedContent,
             ]
         );
     }

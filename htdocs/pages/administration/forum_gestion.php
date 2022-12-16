@@ -4,6 +4,7 @@
 use Afup\Site\Forum\Coupon;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
+use AppBundle\Event\Model\Event;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -11,15 +12,22 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(['ajouter', 'modifier']);
+$action = verifierAction(['ajouter', 'modifier', 'get_mail_inscription_attachment']);
 $smarty->assign('action', $action);
 
 
 $forums = new Forum($bdd);
 $coupons = new Coupon($bdd);
+$forumPath = null;
 
 $formulaire = instancierFormulaire();
-if ($action == 'ajouter') {
+if ($action == 'get_mail_inscription_attachment') {
+    $champs = $forums->obtenir($_GET['id']);
+    header('Content-type: application/pdf');
+    header('Content-disposition: attachment; filename=' . $champs['titre'] . '.pdf');
+    echo file_get_contents(Event::getInscriptionAttachmentFilepath($champs['path']));
+    exit(0);
+} elseif ($action == 'ajouter') {
     $formulaire->setDefaults([
         'civilite' => 'M.',
         'id_pays' => 'FR'
@@ -39,6 +47,8 @@ if ($action == 'ajouter') {
         $champs['become_sponsor_description'] = $text['become_sponsor_description'];
     }
 
+    $forumPath = $champs['path'];
+
     $formulaire->setDefaults($champs);
 
     if (isset($champs) && isset($champs['id'])) {
@@ -48,14 +58,14 @@ if ($action == 'ajouter') {
     $formulaire->addElement('hidden', 'id', $_GET['id']);
 }
 
-$formulaire->addElement('header', '', "Gestion d'événément");
-$formulaire->addElement('text', 'titre', "Titre de l'événément", ['size' => 30, 'maxlength' => 100]);
+$formulaire->addElement('header', '', "Gestion d'évènement");
+$formulaire->addElement('text', 'titre', "Titre de l'évènement", ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'path', 'Chemin du template', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('static', 'info', '',
     '<i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>');
 $formulaire->addElement('text', 'trello_list_id', 'Liste trello pour les leads',
     ['size' => 30, 'maxlength' => 100]);
-$formulaire->addElement('text', 'logo_url', "URL du logo de l'événement", ['size' => 30, 'maxlength' => 255]);
+$formulaire->addElement('text', 'logo_url', "URL du logo de l'évènement", ['size' => 30, 'maxlength' => 255]);
 $formulaire->addElement('text', 'nb_places', 'Nombre de places', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'place_name', 'Nom du lieu', ['size' => 30, 'maxlength' => 255]);
 $formulaire->addElement('text', 'place_address', 'Adresse du lieu', ['size' => 30, 'maxlength' => 255]);
@@ -74,6 +84,8 @@ $formulaire->addElement('date', 'date_fin_prevente', 'Date de fin de pré-vente'
     ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
 $formulaire->addElement('date', 'date_fin_vente', 'Date de fin de vente',
     ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
+$formulaire->addElement('date', 'date_fin_vente_token_sponsor', 'Date de fin de vente tokens sponsors',
+    ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
 $formulaire->addElement('date', 'date_fin_saisie_repas_speakers', 'Date de fin saisie repas confférenciers',
     ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
 $formulaire->addElement('date', 'date_fin_saisie_nuites_hotel', 'Date de fin saisie nuités hotel',
@@ -85,19 +97,42 @@ $formulaire->addElement('text', 'waiting_list_url', "URL de la liste d'attente",
 $formulaire->addElement('textarea', 'cfp_fr', 'CFP (fr)', ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'cfp_en', 'CFP (en)', ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'speaker_management_fr', 'Infos speakers (fr)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'speaker_management_en', 'Infos speakers (eb)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
-$formulaire->addElement('textarea', 'sponsor_management_fr', 'Infos sponsors (fr)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
-$formulaire->addElement('textarea', 'sponsor_management_en', 'Infos sponsors (en)',
-    ['rows' => 5, 'cols' => 50, 'class' => 'tinymce']);
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
 $formulaire->addElement('textarea', 'mail_inscription_content', 'Contenu mail inscription',
     ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
-$formulaire->addElement('textarea', 'become_sponsor_description', "Contenu page devenir sponsor",
-    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+$fileMailInscriptionAttachment = $formulaire->addElement('file', 'mail_inscription_attachment', "Pièce jointe du mail d'inscription");
+if (Event::hasInscriptionAttachment($forumPath)) {
+    $formulaire->addElement('static', 'info', '',
+        "Un fichier joint au mail d'inscription&nbsp;<a target='mail_inscription_attachment' href='/pages/administration/index.php?page=forum_gestion&action=get_mail_inscription_attachment&id=" . $_GET['id']. "'>est déjà présent</a>.");
+}
+
 $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
 $formulaire->addElement('checkbox', 'accomodation_enabled', "Activer les nuits d'hôtel");
+
+$formulaire->addElement('header', '', 'Sponsoring');
+$formulaire->addElement('textarea', 'become_sponsor_description', "Contenu page devenir sponsor",
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+$formulaire->addElement('textarea', 'sponsor_management_fr', 'Infos sponsors (fr)',
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+$formulaire->addElement('textarea', 'sponsor_management_en', 'Infos sponsors (en)',
+    ['rows' => 5, 'cols' => 50, 'class' => 'simplemde']);
+
+$fileSponsorFRAttachment = $formulaire->addElement('file', 'file_sponsor_fr', "Dossier de sponsoring (FR)");
+if (Event::hasSponsorFile($formulaire->exportValue('path'), 'fr')) {
+    $publicPath = Event::getSponsorFilePublicPath($formulaire->exportValue('path'), 'fr');
+    $formulaire->addElement('static', 'info', '',
+        "<a target='file_sponsor_fr' href='".$publicPath."'>Voir le dossier de sponsoring (FR)</a>");
+}
+
+$fileSponsorENAttachment = $formulaire->addElement('file', 'file_sponsor_en', "Dossier de sponsoring (EN)");
+if (Event::hasSponsorFile($formulaire->exportValue('path'), 'en')) {
+    $publicPath = Event::getSponsorFilePublicPath($formulaire->exportValue('path'), 'en');
+    $formulaire->addElement('static', 'info', '',
+        "<a target='file_sponsor_en' href='".$publicPath."'>Voir le dossier de sponsoring (EN)</a>");
+}
+
 
 $formulaire->addElement('header', '', 'Coupons');
 $legend = "Ici c'est une liste de coupons séparées par des virgules";
@@ -108,8 +143,40 @@ $formulaire->addElement('submit', 'soumettre', 'Soumettre');
 $formulaire->addRule('titre', 'Titre du forum manquant', 'required');
 $formulaire->addRule('nb_places', 'Nombre de places manquant', 'required');
 
+$formulaire->addRule('mail_inscription_attachment', 'Seulement des PDFs sont autorisés', 'mimetype', ['application/pdf']);
+$formulaire->addRule('file_sponsor_fr', 'Seulement des PDFs sont autorisés', 'mimetype', ['application/pdf']);
+$formulaire->addRule('file_sponsor_en', 'Seulement des PDFs sont autorisés', 'mimetype', ['application/pdf']);
+
+
 if ($formulaire->validate()) {
     $valeurs = $formulaire->exportValues();
+
+    if ($fileMailInscriptionAttachment->isUploadedFile()) {
+        $inscriptionAttachmentDir = Event::getInscriptionAttachmentDir();
+        if (!is_dir($inscriptionAttachmentDir)) {
+            mkdir($inscriptionAttachmentDir);
+        }
+        $fileMailInscriptionAttachment->moveUploadedFile($inscriptionAttachmentDir, $formulaire->exportValue('path') . '.pdf');
+    }
+
+    if ($fileSponsorFRAttachment->isUploadedFile()) {
+        $dir = Event::getSponsorFileDir();
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        $filename = Event::getSponsorFilePath($formulaire->exportValue('path'), 'fr');
+        $fileSponsorFRAttachment->moveUploadedFile($dir, basename($filename));
+    }
+
+    if ($fileSponsorENAttachment->isUploadedFile()) {
+        $dir = Event::getSponsorFileDir();
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        $filename = Event::getSponsorFilePath($formulaire->exportValue('path'), 'en');
+        $fileSponsorENAttachment->moveUploadedFile($dir, basename($filename));
+    }
+
     if ($action == 'ajouter') {
         $ok = $forums->ajouter(
             $formulaire->exportValue('titre'),
@@ -121,6 +188,7 @@ if ($formulaire->validate()) {
             $formulaire->exportValue('date_fin_vote'),
             $formulaire->exportValue('date_fin_prevente'),
             $formulaire->exportValue('date_fin_vente'),
+            $formulaire->exportValue('date_fin_vente_token_sponsor'),
             $formulaire->exportValue('date_fin_saisie_repas_speakers'),
             $formulaire->exportValue('date_fin_saisie_nuites_hotel'),
             $formulaire->exportValue('date_annonce_planning'),
@@ -159,6 +227,7 @@ if ($formulaire->validate()) {
             $formulaire->exportValue('date_fin_vote'),
             $formulaire->exportValue('date_fin_prevente'),
             $formulaire->exportValue('date_fin_vente'),
+            $formulaire->exportValue('date_fin_vente_token_sponsor'),
             $formulaire->exportValue('date_fin_saisie_repas_speakers'),
             $formulaire->exportValue('date_fin_saisie_nuites_hotel'),
             $formulaire->exportValue('date_annonce_planning'),
@@ -206,3 +275,4 @@ if ($formulaire->validate()) {
 
 $smarty->assign('formulaire', genererFormulaire($formulaire));
 $smarty->assign('id_forum', $_GET['id']);
+$smarty->assign('forum_path', $forumPath);

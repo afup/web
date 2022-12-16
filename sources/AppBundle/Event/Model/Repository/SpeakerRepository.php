@@ -53,8 +53,11 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         speaker.biographie, speaker.twitter, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
         speaker.will_attend_speakers_diner,
         speaker.has_special_diet,
+        speaker.referent_person,
+        speaker.referent_person_email,
         speaker.special_diet_description,
-        speaker.hotel_nights
+        speaker.hotel_nights,
+        speaker.phone_number
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
@@ -86,18 +89,48 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    public function getFromLastEventAndUserId($eventId, $githubUserId)
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT afup_conferenciers.*
+        FROM afup_conferenciers
+        JOIN afup_forum ON (afup_forum.id = afup_conferenciers.id_forum)
+        WHERE afup_conferenciers.id_forum != :eventId
+        AND afup_conferenciers.user_github = :userGithub
+        GROUP BY afup_conferenciers.conferencier_id, afup_forum.date_debut
+        ORDER BY afup_forum.date_debut DESC
+        LIMIT 1
+        '
+        )->setParams(['eventId' => $eventId, 'userGithub' => $githubUserId]);
+
+        $speaker = $query->query($this->getCollection(new HydratorSingleObject()));
+
+        if ($speaker->count() === 0) {
+            return null;
+        }
+
+        return $speaker->first();
+    }
+
     /**
+     * Retourne `true` si le speaker avec l'email ($email) a soumis au moins 1 CFP pour l'évènement ($event) passé en paramètre.
+     *
      * @param Event $event
      * @param string $email
      *
-     * @return Speaker|null
+     * @return bool
      */
-    public function getByEventAndEmail(Event $event, $email)
+    public function hasCFPSubmitted(Event $event, $email)
     {
-        return $this->getBy([
-            'eventId' => $event->getId(),
-            'email' => $email,
-        ])->first();
+        $query = $this->getPreparedQuery(
+            'SELECT COUNT(afup_conferenciers.conferencier_id) AS cfp
+        FROM afup_conferenciers
+        JOIN afup_conferenciers_sessions ON (afup_conferenciers_sessions.conferencier_id = afup_conferenciers.conferencier_id)
+        JOIN afup_sessions ON (afup_conferenciers_sessions.session_id = afup_sessions.session_id)
+        WHERE afup_sessions.id_forum = :eventId AND afup_conferenciers.email = :email'
+        )->setParams(['eventId' => $event->getId(), 'email' => $email]);
+
+        return $query->query()->first()[0]->cfp > 0;
     }
 
     /**
@@ -194,6 +227,16 @@ SQL
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'ville',
+                'fieldName' => 'locality',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'phone_number',
+                'fieldName' => 'phoneNumber',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'biographie',
                 'fieldName' => 'biography',
                 'type' => 'string'
@@ -231,6 +274,16 @@ SQL
             ->addField([
                 'columnName' => 'hotel_nights',
                 'fieldName' => 'hotelNights',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'referent_person',
+                'fieldName' => 'referentPerson',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'referent_person_email',
+                'fieldName' => 'referentPersonEmail',
                 'type' => 'string'
             ])
         ;
