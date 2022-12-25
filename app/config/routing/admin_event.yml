@@ -45,6 +45,17 @@ admin_event_prices:
   path: /prices
   defaults: {_controller: AppBundle\Controller\Admin\Event\PricesAction }
 
+admin_event_prices_add:
+  path: /prices/add
+  defaults: {_controller: AppBundle\Controller\Admin\Event\PricesAddAction}
+
+admin_event_prices_edit:
+  path: /prices/edit/{event}/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\PricesEditAction}
+  requirements:
+    event: \d+
+    id: \d+
+
 admin_event_speaker_infos:
   path: /speaker-infos
   defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakerInfosAction }

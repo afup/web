@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingVote;
 
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
+use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,11 @@ class ListAction
     private $generalMeetingQuestionRepository;
 
     /**
+     * @var GeneralMeetingVoteRepository
+     */
+    private $generalMeetingVoteRepository;
+
+    /**
      * @var Environment
      */
     private $twig;
@@ -29,11 +35,13 @@ class ListAction
     public function __construct(
         GeneralMeetingRepository $generalMeetingRepository,
         GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        GeneralMeetingVoteRepository $generalMeetingVoteRepository,
         Environment $twig
     ) {
         $this->generalMeetingRepository = $generalMeetingRepository;
         $this->twig = $twig;
         $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
+        $this->generalMeetingVoteRepository = $generalMeetingVoteRepository;
     }
 
     public function __invoke(Request $request)
@@ -46,11 +54,19 @@ class ListAction
             $selectedDate = DateTimeImmutable::createFromFormat('U', $request->get('date')) ?: null;
         }
 
+        $rows = [];
+        foreach ($this->generalMeetingQuestionRepository->loadByDate($selectedDate) as $question) {
+            $rows[] = [
+                'question' => $question,
+                'results' => $this->generalMeetingVoteRepository->getResultsForQuestionId($question->getId()),
+            ];
+        }
+
         return new Response($this->twig->render('admin/members/general_meeting_vote/list.html.twig', [
             'dates' => $dates,
             'latestDate' => $latestDate,
             'selectedDate' => $selectedDate,
-            'questions' => $this->generalMeetingQuestionRepository->loadByDate($selectedDate),
+            'rows' => $rows,
         ]));
     }
 }

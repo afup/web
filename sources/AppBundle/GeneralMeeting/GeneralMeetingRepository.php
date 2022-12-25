@@ -89,6 +89,30 @@ SQL
     }
 
     /**
+     * @param DateTimeInterface $date
+     * @return array|null
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findOneByDate(DateTimeInterface $date)
+    {
+        $query = $this->connection->prepare(<<<SQL
+SELECT * FROM afup_assemblee_generale
+WHERE afup_assemblee_generale.date = :date
+LIMIT 1
+SQL
+        );
+
+        $query->bindValue('date', $date->getTimestamp());
+        $query->execute();
+        $row = $query->fetch();
+
+        return is_array($row) ? [
+            'date' => DateTime::createFromFormat('U', $row['date']),
+            'description' => $row['description']
+        ] : null;
+    }
+
+    /**
      * @return int
      */
     public function countAttendeesAndPowers(DateTimeInterface $date)
@@ -277,6 +301,22 @@ SQL
 
         $query = $this->connection->prepare('REPLACE INTO afup_assemblee_generale (`date`, `description`)
             VALUES (:date, :description)');
+        $query->bindValue('date', $date->getTimestamp());
+        $query->bindValue('description', $description);
+
+        return $query->execute();
+    }
+
+    /**
+     * @param DateTimeInterface $date
+     * @param string $description
+     * @return bool
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function save(DateTimeInterface $date, $description)
+    {
+        $query = $this->connection->prepare('UPDATE afup_assemblee_generale SET `description` = :description
+            WHERE `date` = :date');
         $query->bindValue('date', $date->getTimestamp());
         $query->bindValue('description', $description);
 

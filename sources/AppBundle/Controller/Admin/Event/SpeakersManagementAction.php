@@ -37,10 +37,8 @@ class SpeakersManagementAction extends Controller
     public function __invoke(Request $request)
     {
         $id = $request->query->get('id');
-        $event = null;
-        if ($id !== null) {
-            $event = $this->eventActionHelper->getEventById($id);
-        }
+
+        $event = $this->eventActionHelper->getEventById($id);
 
         return new Response($this->twig->render('admin/event/speakers_management.html.twig', [
             'event' => $event,

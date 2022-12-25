@@ -51,15 +51,26 @@ class BlogController extends EventBaseController
      */
     public function planningAction(Request $request, $eventSlug)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $eventSlugs = explode(',', $eventSlug);
+        $events = [];
+        foreach ($eventSlugs as $eventSlug) {
+            $event = $this->checkEventSlug($eventSlug);
+            $events[$event->getId()] = $event;
+        }
 
         /**
          * @var $talkRepository TalkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $applyPublicationDateFilters = $request->query->getBoolean('apply-publication-date-filters', true);
-        $talks = $talkRepository->getByEventWithSpeakers($event, $applyPublicationDateFilters);
-        $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
+
+
+        $talks = $talkRepository->getByEventsWithSpeakers($events, $applyPublicationDateFilters);
+
+        $jsonld = [];
+        foreach ($events as $event) {
+            $jsonld[] = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
+        }
 
         $eventPlanning = [];
         $rooms = [];
@@ -111,6 +122,13 @@ class BlogController extends EventBaseController
             $interval = $planning->getEnd()->diff($planning->getStart());
             $talkWithData['length'] = $interval->i + $interval->h * 60;
 
+
+            $defaultProgramPagePrefix = '/';
+            if (isset($events[$talk->getForumId()])) {
+                $eventPath = $events[$talk->getForumId()]->getPath();
+                $defaultProgramPagePrefix = $request->query->get('program-page-prefix-' . $eventPath, '/' . $eventPath . '/programme/');
+            }
+            $talkWithData['program_page_prefix'] = $request->query->get('program-page-prefix', $defaultProgramPagePrefix);
             $eventPlanning[$startDay][$start][$room->getId()] = $talkWithData;
 
             if (isset($rooms[$room->getId()]) === false) {
@@ -118,18 +136,25 @@ class BlogController extends EventBaseController
             }
         }
 
+        $hasAllEventsDisplayable = true;
+        foreach ($events as $event) {
+            if (false === $event->isPlanningDisplayable()) {
+                $hasAllEventsDisplayable = false;
+            }
+        }
+
+
         return $this->render(
             ':blog:planning.html.twig',
                 [
                     'planning' => $eventPlanning,
-                    'event' => $event,
-                    'planningDisplayable' => false === $applyPublicationDateFilters || $event->isPlanningDisplayable(),
+                    'events' => $events,
+                    'planningDisplayable' => false === $applyPublicationDateFilters || $hasAllEventsDisplayable,
                     'rooms' => $rooms,
                     'hourMin' => $hourMin,
                     'hourMax' => $hourMax,
                     'precision' => 5,
                     'jsonld' => $jsonld,
-                    'programPagePrefix' => $request->query->get('program-page-prefix', '/' . $event->getPath() . '/programme/'),
                 ]
         );
     }

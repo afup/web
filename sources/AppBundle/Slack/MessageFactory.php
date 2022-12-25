@@ -213,7 +213,7 @@ class MessageFactory
             $attachment
                 ->setTitle(sprintf('Liste des inscriptions depuis le %s : ', $date->format('d/m/Y H:i')))
             ;
-            foreach ($eventStatsFiltered->ticketType->registered as $typeId => $value) {
+            foreach ($eventStatsFiltered->ticketType->confirmed as $typeId => $value) {
                 if (0 === $value) {
                     continue;
                 }
@@ -232,13 +232,13 @@ class MessageFactory
 
         if ($event->lastsOneDay()) {
             $attachment->addField((new Field())->setShort(true)->setTitle('Journée unique')
-                ->setValue($eventStats->firstDay->registered));
+                ->setValue($eventStats->firstDay->confirmed + $eventStats->firstDay->pending));
         } else {
             $attachment
                 ->addField((new Field())->setShort(true)->setTitle('Premier jour')
-                    ->setValue($eventStats->firstDay->registered))
+                    ->setValue($eventStats->firstDay->confirmed + $eventStats->firstDay->pending))
                 ->addField((new Field())->setShort(true)->setTitle('Deuxième jour')
-                    ->setValue($eventStats->secondDay->registered))
+                    ->setValue($eventStats->secondDay->confirmed + $eventStats->secondDay->pending))
             ;
         }
 

@@ -53,108 +53,102 @@ class StatsAction
     public function __invoke(Request $request)
     {
         $id = $request->query->get('id');
-        $event = null;
-        $chart = null;
-        $pieChartConf = null;
-        $stats = null;
-        $ticketsDayOne = null;
-        $ticketsDayTwo = null;
-        if ($id !== null) {
-            $event = $this->eventActionHelper->getEventById($id);
 
-            /** @var $legacyInscriptions Inscriptions */
-            $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
+        $event = $this->eventActionHelper->getEventById($id);
 
-            $stats = $legacyInscriptions->obtenirSuivi($event->getId());
-            $ticketsDayOne = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
-            $ticketsDayTwo = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
+        /** @var $legacyInscriptions Inscriptions */
+        $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
 
-            $ticketTypes = [];
+        $stats = $legacyInscriptions->obtenirSuivi($event->getId());
+        $ticketsDayOne = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
+        $ticketsDayTwo = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
 
-            $chart = [
-                'chart' => [
-                    'renderTo' => 'container',
-                    'zoomType' => 'x',
-                    'spacingRight' => 20,
-                ],
-                'title' => ['text' => 'Evolution des inscriptions'],
-                'subtitle' => ['text' => 'Cliquez/glissez dans la zone pour zoomer'],
-                'xAxis' => [
-                    'type' => 'linear',
-                    'title' => ['text' => null],
-                    'allowDecimals' => false,
-                ],
-                'yAxis' => [
-                    'title' => ['text' => 'Inscriptions'],
-                    'min' => 0,
-                    'startOnTick' => false,
-                    'showFirstLabel' => false,
-                ],
-                'tooltip' => ['shared' => true],
-                'legend' => ['enabled' => true],
-                'series' => [
-                    [
-                        'name' => $event->getTitle(),
-                        'data' => array_values(array_map(static function ($item) {
-                            return $item['n'];
-                        }, $stats['suivi'])),
-                    ],
-                    [
-                        'name' => 'n-1',
-                        'data' => array_values(array_map(static function ($item) {
-                            return $item['n_1'];
-                        }, $stats['suivi'])),
-                    ],
-                ],
-            ];
+        $ticketTypes = [];
 
-            $rawStatsByType = $this->eventStatsRepository->getStats($event->getId())->ticketType->paying;
-            $totalInscrits = array_sum($rawStatsByType);
-            array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits) {
-                if (isset($ticketTypes[$key]) === false) {
-                    $type = $this->ticketTypeRepository->get($key);
-                    $ticketTypes[$key] = $type->getPrettyName();
-                }
-                $item = ['name' => $ticketTypes[$key], 'y' => $item / $totalInscrits];
-            });
+        $chart = [
+            'chart' => [
+                'renderTo' => 'container',
+                'zoomType' => 'x',
+                'spacingRight' => 20,
+            ],
+            'title' => ['text' => 'Evolution des inscriptions'],
+            'subtitle' => ['text' => 'Cliquez/glissez dans la zone pour zoomer'],
+            'xAxis' => [
+                'type' => 'linear',
+                'title' => ['text' => null],
+                'allowDecimals' => false,
+            ],
+            'yAxis' => [
+                'title' => ['text' => 'Inscriptions'],
+                'min' => 0,
+                'startOnTick' => false,
+                'showFirstLabel' => false,
+            ],
+            'tooltip' => ['shared' => true],
+            'legend' => ['enabled' => true],
+            'series' => [
+                [
+                    'name' => $event->getTitle(),
+                    'data' => array_values(array_map(static function ($item) {
+                        return $item['n'];
+                    }, $stats['suivi'])),
+                ],
+                [
+                    'name' => 'n-1',
+                    'data' => array_values(array_map(static function ($item) {
+                        return $item['n_1'];
+                    }, $stats['suivi'])),
+                ],
+            ],
+        ];
 
-            $rawStatsByType = array_values($rawStatsByType);
+        $rawStatsByType = $this->eventStatsRepository->getStats($event->getId())->ticketType->paying;
+        $totalInscrits = array_sum($rawStatsByType);
+        array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits) {
+            if (isset($ticketTypes[$key]) === false) {
+                $type = $this->ticketTypeRepository->get($key);
+                $ticketTypes[$key] = $type->getPrettyName();
+            }
+            $item = ['name' => $ticketTypes[$key], 'y' => $item / $totalInscrits];
+        });
 
-            $pieChartConf = [
-                "chart" => [
-                    "plotBackgroundColor" => null,
-                    "plotBorderWidth" => null,
-                    "plotShadow" => false,
-                    "type" => 'pie',
-                ],
-                "title" => [
-                    "text" => 'Répartition des types d\'inscriptions payantes',
-                ],
-                "tooltip" => [
-                    "pointFormat" => '{series.name}: <b>{point.percentage:.1f}%</b>',
-                ],
-                "plotOptions" => [
-                    "pie" => [
-                        "allowPointSelect" => true,
-                        "cursor" => 'pointer',
-                        "dataLabels" => [
-                            "enabled" => true,
-                            "format" => '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            "style" => [
-                                "color" => 'black',
-                            ],
+        $rawStatsByType = array_values($rawStatsByType);
+
+        $pieChartConf = [
+            "chart" => [
+                "plotBackgroundColor" => null,
+                "plotBorderWidth" => null,
+                "plotShadow" => false,
+                "type" => 'pie',
+            ],
+            "title" => [
+                "text" => 'Répartition des types d\'inscriptions payantes',
+            ],
+            "tooltip" => [
+                "pointFormat" => '{series.name}: <b>{point.percentage:.1f}%</b>',
+            ],
+            "plotOptions" => [
+                "pie" => [
+                    "allowPointSelect" => true,
+                    "cursor" => 'pointer',
+                    "dataLabels" => [
+                        "enabled" => true,
+                        "format" => '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        "style" => [
+                            "color" => 'black',
                         ],
                     ],
                 ],
-                "series" => [
-                    [
-                        "name" => 'Inscriptions',
-                        "colorByPoint" => true,
-                        "data" => $rawStatsByType,
-                    ],
+            ],
+            "series" => [
+                [
+                    "name" => 'Inscriptions',
+                    "colorByPoint" => true,
+                    "data" => $rawStatsByType,
                 ],
-            ];
-        }
+            ],
+        ];
+
         return new Response($this->twig->render('admin/event/stats.html.twig', [
             'title' => 'Suivi inscriptions',
             'event' => $event,

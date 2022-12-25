@@ -29,6 +29,10 @@ class SymfonyKernel
             $env = 'dev';
         }
 
+        if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'test') {
+            $env = 'test';
+        }
+
         $this->kernel = new \AppKernel($env, $debug);
         $this->kernel->boot();
         if ($request === null) {

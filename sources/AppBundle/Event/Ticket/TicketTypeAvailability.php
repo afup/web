@@ -36,32 +36,25 @@ class TicketTypeAvailability
             return PHP_INT_MAX;
         }
 
+        // selon si on est sur un ticket un jour ou deux jours, on calcule différement le nombre de tickets vendus, et le nombre de tickets vendus du type
         if (count($ticketEventType->getTicketType()->getDays()) === 2) {
-            $seats = $event->getSeats();
-
-            if (null !== ($maxTickets = $ticketEventType->getMaxTickets())) {
-                $seats = $maxTickets;
-            }
-
-            // Two days ticket
-            $stock = $seats - max(
-                $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDays()[0], $event),
-                $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDays()[1], $event)
-                )
-            ;
+            $allTickets = $this->ticketRepository->getPublicSoldTickets($event);
+            $typeTickets = $this->ticketRepository->getPublicSoldTicketsOfType($event, $ticketEventType->getTicketType());
         } else {
-            $allTicketsForTheDay = $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDay(), $event);
-            $typeTicketsForTheDay = $this->ticketRepository->getPublicSoldTicketsByDayOfType($ticketEventType->getTicketType()->getDay(), $event, $ticketEventType->getTicketType());
+            $allTickets = $this->ticketRepository->getPublicSoldTicketsByDay($ticketEventType->getTicketType()->getDay(), $event);
+            $typeTickets = $this->ticketRepository->getPublicSoldTicketsByDayOfType($event, $ticketEventType->getTicketType()->getDay(), $ticketEventType->getTicketType());
+        }
 
-            $stockTotal = $event->getSeats() - $allTicketsForTheDay;
+        // on regarde combien de tickets il nous reste
+        $stockTotal = $event->getSeats() - $allTickets;
 
-            if (null !== ($maxTickets = $ticketEventType->getMaxTickets())) {
-                $stockForType = $maxTickets - $typeTicketsForTheDay;
+        if (null !== ($maxTickets = $ticketEventType->getMaxTickets())) {
+            $stockForType = $maxTickets - $typeTickets;
 
-                $stock = min($stockTotal, $stockForType);
-            } else {
-                $stock = $stockTotal;
-            }
+            // si on a un maximum sur le nombre de tickets, soit on a tout vendu au global, soit on a tout vendu pour le type de ticket
+            $stock = min($stockTotal, $stockForType);
+        } else {
+            $stock = $stockTotal;
         }
 
         if ($stock < 0) {

@@ -1,30 +1,32 @@
 {% if widget_type == 'talk' or widget_type == 'all' %}
     <h3>{% if talks_infos|length > 1 %}Les conférences{% else %}La conférence{% endif %}</h3>
     {% for talks_info in talks_infos %}
-    <table>
+    <table class="talk-widget">
         <tr>
             <td width="80%" style="text-align: left;padding: 10px;vertical-align: top">
-                <h4>{{ talks_info.talk.getTitle }}</h4>
+                <h5>{{ talks_info.talk.getTitle }}</h5>
                 {% if talks_info.talk.useMarkdown %}
                     {{ talks_info.talk.getAbstract|raw|markdown }}
                 {% else %}
                     {{ talks_info.talk.getAbstract|raw }}
                 {% endif %}
             </td>
-            <td width="20%" style="vertical-align: middle">
-                {{ talks_info.room.name }}<br />
-                {{ talks_info.planning.start|date('d/m/Y') }}<br />
-                {{ talks_info.planning.start|date('H:i') }}-{{ talks_info.planning.end|date('H:i') }}
-            </td>
+            {% if talks_info.event.isPlanningDisplayable %}
+                <td width="20%" style="vertical-align: middle; text-align: center">
+                    {{ talks_info.room.name }}<br />
+                    {{ talks_info.planning.start|date('d/m/Y') }}<br />
+                    {{ talks_info.planning.start|date('H:i') }}-{{ talks_info.planning.end|date('H:i') }}
+                </td>
+            {% endif %}
         </tr>
     </table>
     {% endfor %}
 {% endif %}
 
 {% if widget_type == 'speaker' or widget_type == 'all' %}
-    <h3>{% if speakers|length > 1 %}Les speakers{% else %}Le speaker{% endif %}</h3>
+    <h3>{% if talks_infos|length > 1 %}Des conférences présentées par{% else %}Une conférence présentée par{% endif %}</h3>
     {% for speaker in speakers %}
-    <table>
+    <table class="speaker-widget">
         <tr>
             <td width="20%" style="vertical-align: top">
                 <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(speaker) }}" alt="{{ speaker.label }}"><br />

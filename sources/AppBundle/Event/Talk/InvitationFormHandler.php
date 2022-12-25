@@ -65,7 +65,7 @@ class InvitationFormHandler
         // Send mail to the other guy, begging for him to join the talk
         $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($talk, $user, $event, $invitation) {
             $text = $this->translator->trans('mail.invitation.text', [
-                '%login%' => $user->getLogin(),
+                '%name%' => $user->getName() ?: $user->getLogin(),
                 '%title%' => $talk->getTitle(),
                 '%link%' => $this->urlGenerator->generate('cfp_invite', [
                     'eventSlug' => $event->getPath(),

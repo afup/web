@@ -8,7 +8,6 @@ Vous retrouverez les ports dans le fichier `docker-compose.override.yml`
 Par défaut:
 * Site AFUP : <https://localhost:9205/>
 * Planète PHP : <https://localhost:9215/>
-* Event : <https://localhost:9225/>
 * Mailcatcher: <http://localhost:1181/>
 
 _Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.override.yml`._
@@ -27,8 +26,12 @@ Vous pouvez aussi y accéder directement via la commande: `docker/bin/mysql`
 
 ### Autres commandes
 
+* `make docker-up` : allume les containers.
 * `make docker-stop` : éteint les containers en fonctionnement.
 * `make docker-down` : détruit les containers existants.
+* `docker/bin/mysql` : connexion à la base de données.
+* `docker/bin/bash` : PHP 5.6 cli.
+* `docker/bin/bashphp7` : PHP 7.0 cli.
 
 ### Configuration avancée
 
@@ -50,14 +53,39 @@ Config par défaut:
 - port: 3606
 - database: web
 
+# Tests
+
+Il est possible de lancer les divers tests unitaires et fonctionnels à partir des containers.
+
+Pre-requis : valider que les containers utilisés par les tests sont allumés, il s'agit des containers `dbtest`, `apachephptest` et `mailcatcher`. S'il ne sont pas allumés, il est possible de le faire via `make docker-up`.
+
+Lancement des tests unitaires : 
+- Se connecter dans le conteneur php `docker/bin/bash`
+- Lancer les tests et valider le code :
+```
+	./bin/atoum
+	./bin/php-cs-fixer fix --dry-run -vv
+```
+- Une alternative est d'utiliser la commande `make test` qui effectuer la même action.
+
+Lancement des tests unitaires : 
+- Se connecter dans le conteneur php `docker/bin/bash`
+- Lancer les tests :
+```
+	./bin/behat
+```
+- Une alternative est d'utiliser la commande `make test-functional`, attention cette commande arrête les containeurs de tests à la fin de l'exécution de la suite de test. Si par la suite vous souhaitez lancer un test, il faut bien penser à les allumer de nouveau.
+
+Dans chacun des cas, il est possible de spécifier un test dans la ligne de commande. Exemple: `./bin/behat tests/behat/features/Admin/AdminFeuilles.feature`
+
 # Paiements avec Paybox
 
 Il est possible de tester les paiements Paybox en environnement de développement.
-Pour cela, les identifiant, site et rang [de test](www1.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier de configuration par défaut.
+Pour cela, les identifiant, site et rang [de test](https://www.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier parameters.yml par défaut.
 
-Ensuite pour le paiement il faut utiliser ces informations [de carte](http://www1.paybox.com/espace-integrateur-documentation/cartes-de-tests/) (celle _"Carte participant au programme 3-D Secure (enrôlée)"_) : 
-* Numéro de carte : `4012 0010 3714 1112`
-* Validité : `12/20`
+Ensuite pour le paiement il faut utiliser ces informations [de carte](https://www.paybox.com/espace-integrateur-documentation/cartes-de-tests/) (celle _"Carte participant au programme 3-D Secure (enrôlée)"_) : 
+* Numéro de carte : `1111 2222 3333 4444`
+* Validité : `12/25`
 * CVV : `123`
  
 ## Callbacks de paiement
@@ -69,3 +97,51 @@ Après le paiement paybox effectue un retour sur le serveur et c'est suite à ce
 ```
 bin/console dev:callback-paybox-cotisation "https://localhost:9206/association/paybox-redirect?total=3000&cmd=C2020-150120201239-0-770-GALLO-E4F&autorisation=XXXXXX&transaction=588033888&status=00000"
 ```
+
+## Connection GitHub (pour le CFP)
+
+### Créer une application GitHub : 
+
+Aller sur [Register a new OAuth application](https://github.com/settings/applications/new)
+
+Créer une application avec ces paramètres :
+* Application name: `AFUP/Web dev`
+* Homepage URL: `https://localhost:9205/`
+* Authorization callback URL: `https://localhost:9205/connect/github/check`
+
+Valider avec le bouton `Register application` 
+
+Récupérer le `Client ID`et le `Client secret`
+
+Mettre ces 2 informations dans le fichier
+```yaml
+# app/config/parameters.yml
+
+parameters:
+
+    # ...
+
+    # GitHub's connection details
+    github_client_id: <Client ID GitHub>
+    github_client_secret: <Client secret GitHub>
+```
+
+## Connection Google Map Geocoding (pour les exports des Inscriptions)
+
+Aller sur [Google Cloud Platform Console](https://console.cloud.google.com/projectcreate)
+
+Créer un projet avec ces paramètres :
+* Nom du projet: `AFUP/Web dev`
+* Valider avec le bouton `Créer`
+
+Puis dans `Identifiants`, `Créer des identifiants`, récupérer la clé
+
+Mettre cette information dans le fichier
+```yaml
+# app/config/parameters.yml
+parameters:
+    # ...
+    google_maps_api_key: <Clé API Google>
+```
+
+Puis dans `API et services` activer l'API `Geocoding API`.

@@ -109,7 +109,7 @@ class TicketController extends EventBaseController
         $ticketForm->handleRequest($request);
 
         if ($ticketForm->isSubmitted() && $ticketForm->isValid() && $sponsorTicket->getPendingInvitations() > 0) {
-            if ($event->getDateEndSales() < new \DateTime()) {
+            if ($event->getDateEndSalesSponsorToken() < new \DateTime()) {
                 return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
             }
 
@@ -149,7 +149,7 @@ class TicketController extends EventBaseController
             'ticketForm' => $ticketForm->createView(),
             'registeredTickets' => $sponsorTicketHelper->getRegisteredTickets($sponsorTicket),
             'edit' => $edit,
-            'sold_out' => $event->getDateEndSales() < new \DateTime(),
+            'sold_out' => $event->getDateEndSalesSponsorToken() < new \DateTime(),
         ]);
     }
 

@@ -79,6 +79,7 @@ class SpeakerEditAction
         $data = $this->speakerFormDataFactory->fromSpeaker($speaker);
         $form = $this->formFactory->create(SpeakerType::class, $data, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
+            SpeakerType::OPT_USER_GITHUB => true,
         ]);
         $talks = [];
         foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
@@ -104,13 +105,18 @@ class SpeakerEditAction
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setEmail($data->email);
+            $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);
+            $speaker->setLocality($data->locality);
+            $speaker->setPhoneNumber($data->phoneNumber);
+            $speaker->setReferentPerson($data->referentPerson);
+            $speaker->setReferentPersonEmail($data->referentPersonEmail);
             $this->speakerRepository->save($speaker);
-            if ($data->photo) {
+            if ($data->photoFile) {
                 if ($event->getId() < self::ID_FORUM_PHOTO_STORAGE) {
-                    $fileName = $this->photoStorage->storeLegacy($data->photo, $event, $speaker);
+                    $fileName = $this->photoStorage->storeLegacy($data->photoFile, $event, $speaker);
                 } else {
-                    $fileName = $this->photoStorage->store($data->photo, $speaker);
+                    $fileName = $this->photoStorage->store($data->photoFile, $speaker);
                 }
                 $speaker->setPhoto($fileName);
             }

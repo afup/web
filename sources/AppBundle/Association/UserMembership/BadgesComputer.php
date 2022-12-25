@@ -57,6 +57,7 @@ class BadgesComputer
             $specific[] = [
                 'date' => $userBadge->getIssuedAt()->format('Y-m-d'),
                 'id' => $userBadge->getBadge()->getId(),
+                'tooltip' => $userBadge->getBadge()->getLabel(),
             ];
         }
 
@@ -87,6 +88,7 @@ class BadgesComputer
             $badgesCodes[] = [
                 'date' => ($seniorityInfos['first_year'] + $i) . '-01-01',
                 'code' => $i . 'ans',
+                'tooltip' => 'Membre depuis ' . $i . ' an' . ($i > 1 ? 's' : ''),
             ];
         }
 
@@ -100,7 +102,8 @@ class BadgesComputer
         foreach ($this->getSpeakerYears($user) as $year) {
             $badgesCodes[] = [
                 'date' => $year . '-01-01',
-                'code' => 'speaker' . $year
+                'code' => 'speaker' . $year,
+                'tooltip' => 'Speaker de l\'année ' . $year,
             ];
         }
 
@@ -108,6 +111,7 @@ class BadgesComputer
             $badgesCodes[] = [
                 'date' => $eventInfo['date']->format('Y-m-d'),
                 'code' => 'jy-etais-' . $eventInfo['path'],
+                'tooltip' => 'Participation à l\'évènement ' . $eventInfo['title'],
             ];
         }
 
@@ -115,6 +119,7 @@ class BadgesComputer
             $badgesCodes[] = [
                 'date' => $date->format('Y-m-d'),
                 'code' => 'ag-' . $date->format('Y'),
+                'tooltip' => 'Participation à l\'AG de ' . $date->format('Y'),
             ];
         }
 
@@ -125,6 +130,7 @@ class BadgesComputer
             $badgesCodes[] = [
                 'date' => ($seniorityInfos['first_year'] + $i) . '-01-01',
                 'code' => $i . 'ans',
+                'tooltip' => 'Membre depuis ' . $i . ' an' . ($i > 1 ? 's' : ''),
             ];
         }
 
@@ -188,6 +194,7 @@ class BadgesComputer
             $eventInfos[] = [
                 'path' => $event->getPath(),
                 'date' => $event->getDateStart(),
+                'title' => $event->getTitle(),
             ];
         }
 

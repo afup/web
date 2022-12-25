@@ -8,7 +8,7 @@
 
 {% block page_title %}{{ company_member.companyName }}{% endblock %}
 
-{% block title %}AFUP - Profil entreprise - {{ company_member.companyName }}{% endblock %}
+{% block title %}{{ company_member.companyName }} est adhérente à l'AFUP{% endblock %}
 
 {% block body_css %}migrated-page{% endblock %}
 
@@ -28,7 +28,7 @@
     <h2>L'entreprise</h2>
     <div class="container">
         <div class="col-md-4">
-            <img src="{{ logo_url }}" />
+            <img src="{{ logo_url }}" alt="" />
         </div>
         <div class="col-md-8">
             {{ company_member.description|nl2br }}
@@ -67,7 +67,7 @@
             <div class="container">
                 {% for local_office in offices %}
                     <div class="col-md-3 col-sm-12 member-badge">
-                        <img src="{{ local_office.logo_url }}" /><br />
+                        <img src="{{ local_office.logo_url }}" alt="" /><br />
                         {{ local_office.label }}
                     </div>
                 {% else %}

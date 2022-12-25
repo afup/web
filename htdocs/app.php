@@ -4,9 +4,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
 $isDevEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'dev';
+$isTestEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'test';
 
-if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv) {
-    if (!$isDevEnv
+if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
+    if (!($isDevEnv || $isTestEnv)
         &&
         (
             isset($_SERVER['HTTP_CLIENT_IP'])
@@ -24,7 +25,11 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv) {
     $loader = require __DIR__.'/../vendor/autoload.php';
     Debug::enable();
 
-    $kernel = new AppKernel('dev', true);
+    if ($isDevEnv) {
+        $kernel = new AppKernel('dev', true);
+    } else {
+        $kernel = new AppKernel('test', true);
+    }
 } else {
     /** @var \Composer\Autoload\ClassLoader $loader */
     $loader = require __DIR__.'/../vendor/autoload.php';

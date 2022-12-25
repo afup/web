@@ -57,6 +57,7 @@ class TicketRepository extends Repository implements MetadataInitializer
     public function getRegistrationsForEventsWithNewsletterAllowed(\Traversable $events)
     {
         $params = [];
+        $idsParams = [];
         $cpt = 0;
         foreach ($events as $event) {
             $key = 'event_id' . ++$cpt;
@@ -107,26 +108,35 @@ class TicketRepository extends Repository implements MetadataInitializer
         );
     }
 
-    public function getPublicSoldTicketsByDay($day, Event $event)
+    public function getPublicSoldTickets(Event $event)
     {
-        return $this->getPublicSoldTicketsByDayOfType($day, $event);
+        return $this->getPublicSoldTicketsByDayOfType($event);
     }
 
-    public function getPublicSoldTicketsByDayOfType($day, Event $event, TicketType $ticketType = null)
+    public function getPublicSoldTicketsByDay($day, Event $event)
+    {
+        return $this->getPublicSoldTicketsByDayOfType($event, $day);
+    }
+
+    public function getPublicSoldTicketsByDayOfType(Event $event, $day = null, TicketType $ticketType = null)
     {
         $sql = '
             SELECT COUNT(aif.id) AS sold_tickets
             FROM afup_inscription_forum aif
             JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
-            WHERE aif.id_forum = :event AND aft.public = 1 AND FIND_IN_SET(:day, aft.day) > 0
+            WHERE aif.id_forum = :event AND aft.public = 1
             AND aif.etat <> :state_cancelled
         ';
 
         $params = [
             'event' => $event->getId(),
-            'day' => $day,
             'state_cancelled' => Ticket::STATUS_CANCELLED,
         ];
+
+        if (null !== $day) {
+            $sql .= '  AND FIND_IN_SET(:day, aft.day) > 0 ';
+            $params['day'] = $day;
+        }
 
         if (null !== $ticketType) {
             $sql .= ' AND aif.type_inscription = :ticket_type_id';
@@ -143,6 +153,11 @@ class TicketRepository extends Repository implements MetadataInitializer
         }
 
         return $tickets->first()['sold_tickets'];
+    }
+
+    public function getPublicSoldTicketsOfType(Event $event, TicketType $ticketType = null)
+    {
+        return $this->getPublicSoldTicketsByDayOfType($event, null, $ticketType);
     }
 
     /**

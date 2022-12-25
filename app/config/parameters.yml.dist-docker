@@ -13,7 +13,7 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    # Github connection details
+    # GitHub's connection details
     github_client_id: id
     github_client_secret: secret
 
@@ -66,3 +66,11 @@ parameters:
     # Test keys from https://developers.google.com/recaptcha/docs/faq#id-like-to-run-automated-tests-with-recaptcha-what-should-i-do
     recaptcha_public_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
     recaptcha_private_key: '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+
+    paybox_domain_server: "preprod-tpeweb.paybox.com"
+    paybox_secret_key: "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+    paybox_site: "1999888"
+    paybox_rang: "32"
+    paybox_identifiant: "110647233"
+
+    blog_api_key: 123456

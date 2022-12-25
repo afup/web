@@ -51,7 +51,7 @@ $smarty->assign('listPeriode', $listPeriode );
 function paybox_link($description)
 {
     $matches = array();
-    if (preg_match('`CB\s+AFUP\s+([0-9]{2})([0-9]{2})([0-9]{2})-CB\s+AFUP`', $description, $matches)) {
+    if (preg_match('`CB\s+AFUP\s+([0-9]{2})([0-9]{2})([0-9]{2})\s+CONTRAT`', $description, $matches)) {
         $date = $matches[1] . "/" . $matches[2] . "/" . (2000 + (int) $matches[3]);
 
         $url  = sprintf('https://admin.paybox.com/cgi/CBDCum.cgi?lg=FR&amp;SelDate=%1$s&amp;SelDateAu=%1$s', $date);
@@ -279,7 +279,7 @@ elseif ($action === 'export') {
     $columns = [
         'Date',
         'Compte',
-        'Evénement',
+        'Événement',
         'Catégorie',
         'Description',
         'Débit',
@@ -588,7 +588,7 @@ elseif ($action == 'supprimer') {
                 Logs::log('Chargement fichier banque');
                 afficherMessage('Le fichier a été importé', 'index.php?page=compta_journal&action=lister');
             } else {
-                afficherMessage('Le fichier n\'a pas été importé', 'index.php?page=compta_journal&action=lister', true);
+                afficherMessage("Le fichier n'a pas été importé. Le format est-il valide ?", 'index.php?page=compta_journal&action=lister', true);
             }
             unlink($tmpDir . '/banque.csv');
         }

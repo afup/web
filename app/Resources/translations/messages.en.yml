@@ -22,7 +22,6 @@
 'Aucun évènement en préparation ! Revenez bientot !': 'No event coming! Come back soon!'
 'Appel à conférences': 'Call for papers'
 M: Mr.
-Mlle: Ms.
 Mme: Mrs.
 'Photo de profil': 'Profile picture'
 Sauvegarder: Save
@@ -46,6 +45,7 @@ Firstname: Firstname
 Lastname: Lastname
 Email: Email
 Company: Company
+Locality: Locality
 Biography: Biography
 Twitter: Twitter
 'Thème:': 'Theme:'
@@ -57,7 +57,7 @@ Votes: Votes
 'Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.': 'Please fill out your speaker profile to accept an invitation.'
 'Invitation envoyée !': 'Invitation sent!'
 'Vous etes désormais co-conférencier !': 'You are now a co-speaker!'
-mail.invitation.text: "Hi !<br />\n%login% invites you to share his talk \"%title%\" as a co-speaker.\nTo accept this invitation, follow this link: %link%<br />\nOtherwise, ignore this email.<br />\n<br />\nAfup team.\n"
+mail.invitation.text: "Hi !<br />\n%name% invites you to share his talk \"%title%\" as a co-speaker.\nTo accept this invitation, follow this link: %link%<br />\nOtherwise, ignore this email.<br />\n<br />\nAfup team.\n"
 Conférenciers: Speakers
 'Invitations en attente': 'Pending invitations'
 'Faire cette conférence à plusieurs': 'Present this conference with other speakers'
@@ -90,7 +90,7 @@ Language: Language
 Billetterie: Ticketting
 'Vous êtes connecté avec un compte AFUP d''entreprise. Pour acheter des places au tarif AFUP, celles-ci doivent être enregistrées pour les membres de votre adhésion.': 'You are connected with an enterprise membership account. You can only buy tickets for the accounts of your memberships.'
 'Vous êtes connecté avec un compte AFUP personnel. Vous pouvez acheter une place au tarif membre pour vous seul.': 'You are connected with a personnal account. You can buy one member ticket for yourself.'
-'Attention votre cotisation ne sera plus valable le jour de l''événement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l''événement.': 'Please take care of your membership. It won''t be valid at the date of the event. You can order members tickets but you will have to pay your membership fee before the event.'
+'Attention votre cotisation ne sera plus valable le jour de l''évènement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l''évènement.': 'Please take care of your membership. It won''t be valid at the date of the event. You can order members tickets but you will have to pay your membership fee before the event.'
 'Dans la limite des stocks disponibles.': 'In the limit of the available stock.'
 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l''évènement': 'Please tick the 3 tags (and / or your Twitter id), these tags will be printed on your badge to facilitate networking during the event:'
 'D''autres moyens de paiements sont disponibles si nécessaire (cliquer ici).': 'Other means of payment are available if necessary (click here).'
@@ -99,16 +99,16 @@ Billetterie: Ticketting
 'Places disponibles': 'Available seats'
 'Dossier sponsor': 'Sponsoring file'
 'Devenir sponsor': 'Become a sponsor'
-'Notre événement': 'Our event'
+'Notre évènement': 'Our event'
 'Notre public': 'Our public'
 'Nos offres': 'Our offers'
-"Depuis 15 ans, l'AFUP organise le Forum PHP, événement majeur en Europe autour du PHP. Il se déroulera cette\n                année les 26 et 27 octobre au Marriott Paris - Rive Gauche, situé dans le quartier de Denfert-Rochereau.": "For 15 years, AFUP has organized the Forum PHP, a major event in Europe around the PHP. It will take place this year on October 26th and 27th at the Marriott Paris - Rive Gauche, located in the district of Denfert-Rochereau."
+"Depuis 15 ans, l'AFUP organise le Forum PHP, évènement majeur en Europe autour du PHP. Il se déroulera cette\n                année les 26 et 27 octobre au Marriott Paris - Rive Gauche, situé dans le quartier de Denfert-Rochereau.": "For 15 years, AFUP has organized the Forum PHP, a major event in Europe around the PHP. It will take place this year on October 26th and 27th at the Marriott Paris - Rive Gauche, located in the district of Denfert-Rochereau."
 "40 conférences et ateliers pratiques sont proposées à nos participants, dans un cadre exceptionnel.\n                2 tracks de conférences et un cycle d'ateliers ont lieu simultanément, permettant aux participants\n                de découvrir de nouvelles techniques en profondeur.": "40 talks and workshops are offered to our participants in an exceptional setting. 2 tracks and a series of workshops are held simultaneously, allowing participants to discover new techniques in depth."
-"Plus de 600 développeur·se·s, décideur·se·s, expert·e·s ou novices en PHP rejoindront cette année l'AFUP\n                pour cet événement exceptionnel. Comme lors de chaque édition, des conférencier·ère·s nationaux et\n                internationaux viendront présenter des conférences qui font référence.": "More than 600 developers, decision-makers, experts or novices in PHP will join this year's AFUP for this exceptional event. As in each edition, national and international speakers will be presenting talks that sets the standard."
-'De la startup au groupe du CAC 40, toutes les sociétés sont représentées lors de cet événement unique.': 'From the startup to the CAC 40 group, all companies are represented at this unique event.'
+"Plus de 600 développeur·se·s, décideur·se·s, expert·e·s ou novices en PHP rejoindront cette année l'AFUP\n                pour cet évènement exceptionnel. Comme lors de chaque édition, des conférencier·ère·s nationaux et\n                internationaux viendront présenter des conférences qui font référence.": "More than 600 developers, decision-makers, experts or novices in PHP will join this year's AFUP for this exceptional event. As in each edition, national and international speakers will be presenting talks that sets the standard."
+'De la startup au groupe du CAC 40, toutes les sociétés sont représentées lors de cet évènement unique.': 'From the startup to the CAC 40 group, all companies are represented at this unique event.'
 "Que vous ayez une offre à promouvoir, un produit à présenter ou que vous souhaitiez soutenir l'open source,\n                nous aurons une offre à vous proposer.": "Whether you have an offer to promote, a product to present or you want to support open source, we will have a sponsorship package to offer you."
-"Avec ou sans stand lors de l'événement, nos différents niveaux de sponsoring vous permettent de trouver\n                une offre qui correspond à vos attentes de visibilité tout en respectant votre budget.": "With or without a booth during the event, our different levels of sponsorship allow you to find an offer that meets your expectations of visibility while respecting your budget."
-"Pour les sponsors, cet événement est l'occasion unique à Paris de rencontrer autant de développeur·se·s\n                web dans un cadre convivial.": "For sponsors, this event is the unique opportunity in Paris to meet as many web developers in a friendly setting."
+"Avec ou sans stand lors de l'évènement, nos différents niveaux de sponsoring vous permettent de trouver\n                une offre qui correspond à vos attentes de visibilité tout en respectant votre budget.": "With or without a booth during the event, our different levels of sponsorship allow you to find an offer that meets your expectations of visibility while respecting your budget."
+"Pour les sponsors, cet évènement est l'occasion unique à Paris de rencontrer autant de développeur·se·s\n                web dans un cadre convivial.": "For sponsors, this event is the unique opportunity in Paris to meet as many web developers in a friendly setting."
 'mail.sponsoringfile.title': 'Sponsoring file %eventName%'
 'mail.sponsoringfile.text': |
   Hello,<br />
@@ -147,11 +147,18 @@ Nous vous hébergeons: "We accomodate you"
 "Vous ne nous avez pas indiqué d'informations à propos de votre venue au repas des speakers.": "You did not told us if you will attend the speakers diner."
 "Des nuits d'hôtel vous seront réservées ces nuits :": "Hôtel nights will be reserved those nights:"
 "Vous nous avez indiqué que n'avez pas besoin de nuit d'hotel.": "You've told us you have no need to any hotel night."
-"La nuit entre la veille de l'événement et le premier jour.": "The night between the day of the event the the event's first day."
+"La nuit entre la veille de l'évènement et le premier jour.": "The night between the day of the event the the event's first day."
 "La nuit entre le premier jour et le second jour.": "The night between the first and the second day of the event."
-"La nuit entre le deuxième jour de l'événement et le lendemain de l'événement.": "The night between the second day of the event and to day after the event."
+"La nuit entre le deuxième jour de l'évènement et le lendemain de l'évènement.": "The night between the second day of the event and to day after the event."
 "Nuit du %date_from% au %date_to%": "Night between the %date_from% and the %date_to%"
 "Vous disposez de deux nuits d'hôtel maximum. Donnez-nous les dates qui vous conviennent, nous nous chargeons de la réservation ! (les speakers intercontinentaux peuvent bénéficier de plus de nuités, si vous êtes dans ce cas, le pôle conférence vous aura contacté).": "You have two hotel nights maximum. Give us the dates, we will make the reservation ! (international speakerers may benefit from more nights, if you are in this case our speakers team will have contacted you)."
 "VOS PLACES GRATUITES": "YOUR FREE TICKETS"
-"Enregistrez vous-même vos invités avant le %date% dernier délai. Vos invités recevront leur convocation quelques jours avant l’événement.": "Register you guests yourself before %date%. Your guests will receive a convocation few days before the event."
+"Enregistrez vous-même vos invités avant le %date% dernier délai. Vos invités recevront leur convocation quelques jours avant l’évènement.": "Register you guests yourself before %date%. Your guests will receive a convocation few days before the event."
 "Pour rappel, les personnes en charge de l’animation de votre stand doivent bénéficier en priorité de ces places.": "As a reminder, the people in charge of your booth need to register those tickets in priority."
+"Moyen de contact": "Contact method"
+"speakers_contact_help": "Your contact details are important to us in order to reach you before and during the event if necessary. They will be used just in case the D day by our event team to guide you. Your data won't be ceased in any way to someone else."
+speaker_from_previous_event: "We filled the form with the profile you used on a past event. Feel free to edit it."
+"Personne référente": "Liaison"
+"sera votre personne de contact privilégiée dans les semaines menant à l’évènement tout comme durant l’évènement. N’hésitez pas à prendre contact pour toutes questions relatives à votre venue.": "will be your main contact person in the weeks leading up to the event as well as during the event. Please do not hesitate to contact us if you have any question about your visit."
+"Plusieurs évènements en ce moment !": "Several events at the moment!"
+"Évènements": "Events"

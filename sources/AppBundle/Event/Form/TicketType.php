@@ -89,7 +89,6 @@ class TicketType extends AbstractType
                 'label' => 'Civilité',
                 'choices' => [
                     'M.' => 'M.',
-                    'Mlle' => 'Mlle',
                     'Mme' => 'Mme'
                 ]
             ])
@@ -147,6 +146,7 @@ class TicketType extends AbstractType
                 'label' => 'Formule',
                 'choices' => $filteredEventTickets,
                 'choice_label' => 'ticketType.prettyName',
+                'error_bubbling' => false,
                 'choice_attr' => function (\AppBundle\Event\Model\TicketEventType $type, $key, $index) use ($options, $event) {
                     $attr = [
                         'data-description' => $type->getDescription(),

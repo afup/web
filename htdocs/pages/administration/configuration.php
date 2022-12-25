@@ -11,15 +11,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 $formulaire = instancierFormulaire();
 $defaults = $conf->exporter();
-if ($defaults['paybox_prod|site'] == $defaults['paybox|site'] &&
-    $defaults['paybox_prod|rang'] == $defaults['paybox|rang']) {
-	$type = 'prod';
-} else {
-	$type = 'test';
-}
-$defaults['paybox'] =  $type;
-unset($defaults['paybox|site']);
-unset($defaults['paybox|rang']);
+
 $formulaire->setDefaults($defaults);
 
 $formulaire->addElement('header', ''                , 'Base de données');
@@ -50,14 +42,6 @@ $formulaire->addElement('text'	  , 'afup|code_postal'   , 'Code postal'   , arra
 $formulaire->addElement('text'	  , 'afup|ville'         , 'Ville'         , array('size' => 20));
 $formulaire->addElement('text'	  , 'afup|email'         , 'Email'         , array('size' => 30));
 
-$formulaire->addElement('header'  , ''                , 'Paybox');
-$formulaire->addElement('text'    , 'paybox_prod|site', 'Prod. site', array('size' => 30));
-$formulaire->addElement('text'    , 'paybox_prod|rang', 'Prod. rang', array('size' => 5));
-$formulaire->addElement('text'    , 'paybox_test|site', 'Test site' , array('size' => 30));
-$formulaire->addElement('text'    , 'paybox_test|rang', 'Test rang' , array('size' => 5));
-$formulaire->addElement('radio'   , 'paybox', 'Production', null, 'prod');
-$formulaire->addElement('radio'   , 'paybox', 'Test'      , null, 'test');
-
 $formulaire->addElement('header'  , ''                       , 'Planète PHP FR');
 $formulaire->addElement('textarea', 'planete|pertinence'     , 'Critère de pertinence', array('cols' => 42, 'rows' => 7));
 
@@ -77,11 +61,6 @@ $formulaire->addRule('bdd|utilisateur', 'Utilisateur manquant', 'required');
 
 if ($formulaire->validate()) {
 	$valeurs = $formulaire->exportValues();
-	$cle     = 'paybox_' . $valeurs['paybox'];
-	unset($valeurs['paybox']);
-	$valeurs['paybox|site'] = $valeurs[$cle . '|site'];
-	$valeurs['paybox|rang'] = $valeurs[$cle . '|rang'];
-
     $conf->importer($valeurs);
     if ($conf->enregistrer()) {
         Logs::log('Modification de la configuration');

@@ -148,10 +148,21 @@ class TalkRepository extends Repository implements MetadataInitializer
             FROM afup_sessions sessions
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
-            AND asvg.id IS NULL
+            AND asvg.id IS NULL AND sessions.session_id NOT IN (
+                SELECT sessions.session_id
+                FROM afup_sessions sessions
+                LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
+                WHERE id_forum = :excluded_event AND cs.conferencier_id = :excluded_user
+            )
             ORDER BY RAND(:randomSeed)
             LIMIT ' . ((int) $page - 1)*$limit . ', ' . ((int) $limit + 1)
-        )->setParams(['event' => $event->getId(), 'user' => $user->getId(), 'randomSeed' => $randomSeed]);
+        )->setParams([
+            'event' => $event->getId(),
+            'user' => $user->getId(),
+            'excluded_event' => $event->getId(),
+            'excluded_user' => $user->getId(),
+            'randomSeed' => $randomSeed
+        ]);
 
         return $query->query();
     }
@@ -166,14 +177,15 @@ class TalkRepository extends Repository implements MetadataInitializer
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
         $query = $this->getPreparedQuery(
-            'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie,
+            'SELECT talk.session_id, talk.titre, skill, genre, abstract, talk.plannifie,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.biographie,
-            planning.debut, planning.fin, room.id, room.nom
+            planning.debut, planning.fin, room.id, room.nom, event.date_annonce_planning
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
+            LEFT JOIN afup_forum event ON talk.id_forum = event.id
             WHERE talk.session_id = :talk AND plannifie = 1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)
             ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC '
         )->setParams(['talk' => $talk->getId()]);
@@ -196,6 +208,24 @@ class TalkRepository extends Repository implements MetadataInitializer
      */
     public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true)
     {
+        return $this->getByEventsWithSpeakers([$event], $applyPublicationdateFilters);
+    }
+
+    /**
+     * @param Event $event
+     * @param bool $applyPublicationdateFilters
+     *
+     * @return CollectionInterface&list<array{
+     *      talk: Talk,
+     *      speaker: AppBundle\Event\Model\Speaker,
+     *      room: ??,
+     *      planning: ??,
+     *     .aggregation: array<string, mixed>
+     * }>
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
+    public function getByEventsWithSpeakers(array $events, $applyPublicationdateFilters = true)
+    {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
@@ -204,22 +234,36 @@ class TalkRepository extends Repository implements MetadataInitializer
             $publicationdateFilters = 'AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
         }
 
+        $params = [];
+
+        $inEventsKeys = [];
+        $cpt = 0;
+        foreach ($events as $event) {
+            $cpt++;
+            $key = 'event_id_' . $cpt;
+            $inEventsKeys[] = ':' . $key;
+            $params[$key] = $event->getId();
+        }
+
+        $inEvents = implode(',', $inEventsKeys);
+
         $query = $this->getPreparedQuery(
-            sprintf('SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
+            sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
             talk.joindin,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, 
+            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
             planning.debut, planning.fin, room.id, room.nom
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
-            WHERE talk.id_forum = :event AND plannifie = 1 %s
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $publicationdateFilters)
-        )->setParams(['event' => $event->getId()]);
+            WHERE talk.id_forum IN(%s) AND plannifie = 1 %s
+            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $inEvents, $publicationdateFilters)
+        )->setParams($params);
 
         return $query->query($this->getCollection($hydrator));
     }
+
 
     /**
      * @param Event $event
@@ -234,7 +278,7 @@ class TalkRepository extends Repository implements MetadataInitializer
 
         $query = $this->getPreparedQuery(
             'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes, talk.youtube_id,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.email, speaker.conferencier_id 
+            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.ville, speaker.societe, speaker.email, speaker.conferencier_id
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
@@ -365,6 +409,11 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'openfeedback_path',
+                'fieldName' => 'openfeedbackPath',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'language_code',
                 'fieldName' => 'languageCode',
                 'type' => 'string'
@@ -372,6 +421,16 @@ class TalkRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'tweets',
                 'fieldName' => 'tweets',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'transcript',
+                'fieldName' => 'transcript',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'verbatim',
+                'fieldName' => 'verbatim',
                 'type' => 'string'
             ])
             ->addField([

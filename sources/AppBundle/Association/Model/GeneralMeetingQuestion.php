@@ -73,11 +73,11 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $submittedOn
+     * @param \DateTimeInterface $date
      *
      * @return $this
      */
-    public function setDate(\DateTime $date)
+    public function setDate(\DateTimeInterface $date)
     {
         $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
@@ -196,5 +196,10 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     public function hasStatusClosed()
     {
         return self::STATUS_CLOSED === $this->getStatus();
+    }
+
+    public function hasVotes($results)
+    {
+        return 0 > $results[GeneralMeetingVote::VALUE_YES] + $results[GeneralMeetingVote::VALUE_NO] + $results[GeneralMeetingVote::VALUE_ABSTENTION];
     }
 }

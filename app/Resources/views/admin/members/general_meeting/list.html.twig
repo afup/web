@@ -65,6 +65,13 @@
         <h2 class="ui header">Liste des présences</h2>
         <div class="ui clearing divider"></div>
 
+        <div class="ui menu">
+            <a href="{{ path('admin_members_general_meeting_edit', {date: selectedDate|date('U')}) }}" class="item">
+                <i class="pencil alernate icon"></i>
+                Modifier la description
+            </a>
+        </div>
+
         <form method="GET" name="filtre">
             <input type="hidden" name="sort" value="{{ sort }}"/>
             <input type="hidden" name="direction" value="{{ direction }}"/>

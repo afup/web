@@ -67,6 +67,16 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Admin\Site\AddRubriqueAction:
+        autowire: true
+        arguments :
+            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
+
+    AppBundle\Controller\Admin\Site\EditRubriqueAction:
+        autowire: true
+        arguments :
+            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
+
     AppBundle\Controller\Admin\Members\BadgeNewAction:
         autowire: true
         arguments:
@@ -80,6 +90,9 @@ services:
     AppBundle\Controller\BlocksHandler: ~
 
     AppBundle\Security\MyGithubAuthenticator:
+        autowire: true
+
+    AppBundle\Security\TestGithubAuthenticator:
         autowire: true
 
     AppBundle\Controller\SpeakerSuggestionController:
@@ -98,6 +111,10 @@ services:
         autowire: true
 
     AppBundle\Event\Form\EventSelectType:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Event\Form\SpeakerType:
         autowire: true
         autoconfigure: true
 
@@ -186,6 +203,7 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
 
+
     AppBundle\Event\Model\Repository\TalkRepository:
         class: AppBundle\Event\Model\Repository\TalkRepository
         factory: ["@ting", get]
@@ -231,6 +249,7 @@ services:
 
     AppBundle\Payment\PayboxFactory:
         autowire: true
+        arguments: ["@router", "%paybox_domain_server%", "%paybox_secret_key%", "%paybox_site%", "%paybox_rang%", "%paybox_identifiant%"]
 
     slack_members_legacy_client:
         class: AppBundle\Slack\LegacyClient
@@ -426,6 +445,14 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Groups\Model\Repository\MailingListRepository]
 
+    AppBundle\Site\Model\Repository\RubriqueRepository:
+        class: AppBundle\Site\Model\Repository\RubriqueRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Site\Model\Repository\RubriqueRepository]
+
+
+
+
     AppBundle\Site\Model\Repository\ArticleRepository:
         class: AppBundle\Site\Model\Repository\ArticleRepository
         factory: ["@ting", get]
@@ -435,6 +462,11 @@ services:
         class: AppBundle\TechLetter\Model\Repository\SendingRepository
         factory: ["@ting", get]
         arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
+
+
+    AppBundle\Site\Form\RubriqueType:
+        autowire: true
+        autoconfigure: true
 
     AppBundle\Event\Ticket\SponsorTicketHelper:
         autowire: true
@@ -534,7 +566,7 @@ services:
         autowire: true
 
     AppBundle\Event\Sponsorship\SponsorshipLeadMail:
-        arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger", "%kernel.root_dir%/../htdocs/docs/"]
+        arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger"]
 
     Trello\Client:
         calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const Trello\Client::AUTH_URL_CLIENT_ID]]]
@@ -668,3 +700,13 @@ services:
     PlanetePHP\FeedCrawler:
         autowire: true
         public: true
+
+    app.github.http_client:
+        class: GuzzleHttp\Client
+        arguments:
+            $config:
+                base_uri: https://api.github.com/
+
+    AppBundle\Github\GithubClient:
+        arguments:
+            $githubClient: '@app.github.http_client'

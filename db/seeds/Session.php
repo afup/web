@@ -61,6 +61,28 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'joindin' => 24138,
                 'date_publication' => $date->format('Y-m-d H:i:s')
             ],
+            [
+                'session_id' => 3,
+                'id_forum' => Event::ID_FORUM,
+                'date_soumission' => $date->format('Y-m-d'),
+                'titre' => 'Révolutionons PHP',
+                'abstract' => 'Hey ! Viens changer PHP avec moi !',
+                'staff_notes' => null,
+                'journee' => 0,
+                'genre' => 1,
+                'skill' => 0,
+                'plannifie' => 1,
+                'needs_mentoring' => 0,
+                'youtube_id' => 'MseSkWbhxV8',
+                'video_has_fr_subtitles' => 0,
+                'video_has_en_subtitles' => 0,
+                'slides_url' => 'https://speakerdeck.com/caporaldead/jouons-tous-ensemble-a-un-petit-jeu',
+                'blog_post_url' => '',
+                'language_code' => 'fr',
+                'markdown' => 1,
+                'joindin' => 24041,
+                'date_publication' => $date->format('Y-m-d H:i:s')
+            ],
         ];
 
         $table = $this->table('afup_sessions');
@@ -78,6 +100,8 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'conferencier_id' => Conferenciers::ID_CONFERENCIER
             ];
         }
+
+        $conferenciers[2]['conferencier_id']= 2;
 
         $table = $this->table('afup_conferenciers_sessions');
         $table->truncate();

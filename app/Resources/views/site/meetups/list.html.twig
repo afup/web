@@ -1,5 +1,7 @@
 {% extends ':site:base.html.twig' %}
 
+{% block title %}Les meetups des antennes de l'AFUP{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
@@ -30,8 +32,8 @@
 
     <div class="mw1400p center" id="container">
         <div class="line" id="main">
-            <h1>Antennes</h1>
-            <p>Retrouvez ici toutes les meetups des antennes de l'AFUP.</p>
+            <h1>Meetups des antennes</h1>
+            <p>Retrouvez ici tous les meetups des antennes de l'AFUP.</p>
 
             {% if source == 'aperophp.net' %}
                 <blockquote>

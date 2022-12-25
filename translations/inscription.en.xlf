@@ -46,10 +46,6 @@
                 <source>Mme</source>
                 <target>Mrs</target>
             </trans-unit>
-            <trans-unit id="12">
-                <source>Mlle</source>
-                <target>Ms</target>
-            </trans-unit>
             <trans-unit id="13">
                 <source>2 jours en prévente :</source>
                 <target>2 days pre-sale ticket</target>

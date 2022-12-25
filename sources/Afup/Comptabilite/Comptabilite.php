@@ -915,7 +915,7 @@ SQL;
 
             // On tente les préaffectations
             $categorie = 26; // Catégorie 26 = "A déterminer"
-            $evenement = 8;  // Evénement 8 = "A déterminer"
+            $evenement = 8;  // Événement 8 = "A déterminer"
 
             $idModeReglement = 9;
             $attachmentRequired = 0;

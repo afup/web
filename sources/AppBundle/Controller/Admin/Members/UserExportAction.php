@@ -22,8 +22,15 @@ class UserExportAction
     {
         $isActive = $request->query->getBoolean('isActive');
         $isCompanyManager = $request->query->getBoolean('isCompanyManager');
-        $filename = tempnam(sys_get_temp_dir(), 'export_personnes_physiques_');
-        $file = new SplFileObject($filename, 'w');
+        $baseName = 'export_personnes_physiques';
+        if ($isActive) {
+            $baseName .= '_actives';
+        }
+        if ($isCompanyManager) {
+            $baseName .= '_managers';
+        }
+        $tmpFile = tempnam(sys_get_temp_dir(), $baseName);
+        $file = new SplFileObject($tmpFile, 'w');
         $users = $this->userRepository->search('lastname', 'asc', null, null, null, $isActive, $isCompanyManager);
         foreach ($users as $user) {
             $file->fputcsv([
@@ -33,7 +40,7 @@ class UserExportAction
             ]);
         }
         $response = new BinaryFileResponse($file);
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'export_personnes_physiques.csv');
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $baseName . '.csv');
 
         return $response;
     }

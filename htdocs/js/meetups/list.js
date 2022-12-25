@@ -38,7 +38,7 @@ search.addWidget(
                 ;
 
                 if ('undefined' !== typeof data.venue) {
-                    content += `${data.venue.name}<br />${data.venue.address_1}<br />${data.venue.city}<br />`;
+                    content += `${data.venue.name}<br />${data.venue.address_1 || ''}<br />${data.venue.city || ''}<br />`;
                 }
                 content += `<a href="#" class="description-toggler" data-toggled-html="Masquer la description">Voir la description</a>`;
 

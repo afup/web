@@ -1,5 +1,5 @@
 {if $action == 'lister'}
-    <h2>Factures d'événément</h2>
+    <h2>Factures d'évènement</h2>
 
     <div class="ui violet segment">
         <form method="GET" name="forum">
@@ -7,7 +7,7 @@
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
-                        <label>Événement</label>
+                        <label>Évènement</label>
                         <select name="id_forum" onchange="this.form.submit(); return false;">
                             {foreach from=$forums item=forum}
                             <option value="{$forum.id}"{if $id_forum == $forum.id} selected{/if}>{$forum.titre}</option>
@@ -69,12 +69,14 @@
                            data-position="left center"
                            data-tooltip="Télécharger le devis"
                            class="compact ui icon button"
+                           id="devis_{$facturation.reference}"
                         >
                             <i class="warehouse icon"></i>
                         </a>
         {if $facturation.facturation == 0}
                         <a href="index.php?page=forum_facturation&amp;action=facturer_facture&amp;ref={$facturation.reference}"
                            title="Passer à l'état facturée"
+                           id="facture_{$facturation.reference}"
                         >
                             <img src="{$chemin_template}images/famfamfam/cart_go.png" alt="Envoi de la facture par mail" />
                         </a>
@@ -84,6 +86,7 @@
                            data-position="left center"
                            data-tooltip="Envoyer la facture par mail"
                            class="compact ui icon button"
+                           id="email_{$facturation.reference}"
                         >
                             <i class="paper plane icon"></i>
                         </a>
@@ -92,6 +95,7 @@
                            data-position="left center"
                            data-tooltip="Télécharger la facture"
                            class="compact ui icon button"
+                           id="telecharger_{$facturation.reference}"
                         >
                             <i class="file pdf icon"></i>
                         </a>
@@ -101,6 +105,7 @@
                            data-tooltip="Supprimer la facture"
                            class="compact ui red icon button confirmable"
                            data-confirmable-label="Etes-vous certain de vouloir supprimer la facture de {$facturation.societe} ?"
+                           id="supprimer_{$facturation.reference}"
                         >
                             <i class="trash icon"></i>
                         </a>

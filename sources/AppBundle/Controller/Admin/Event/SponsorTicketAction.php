@@ -62,42 +62,36 @@ class SponsorTicketAction
     public function __invoke(Request $request)
     {
         $id = $request->query->get('id');
-        $form=null;
-        $event=null;
-        $tokens = [];
-        $edit = null;
 
-        if ($id !== null) {
-            $event = $this->eventActionHelper->getEventById($id);
-            $tokens = $this->sponsorTicketRepository->getByEvent($event);
-            $edit = $request->query->has('ticket');
-            if ($edit) {
-                $newToken = $this->sponsorTicketRepository->get($request->query->get('ticket'));
-                $newToken->setEditedOn(new DateTime());
-            } else {
-                /** @var User $user */
-                $user = $this->security->getUser();
-                Assertion::isInstanceOf($user, User::class);
-                $newToken = new SponsorTicket();
-                $newToken
-                    ->setToken(base64_encode(random_bytes(30)))
-                    ->setIdForum($event->getId())
-                    ->setCreatedOn(new DateTime())
-                    ->setEditedOn(new DateTime())
-                    ->setCreatorId($user->getId());
+        $event = $this->eventActionHelper->getEventById($id);
+        $tokens = $this->sponsorTicketRepository->getByEvent($event);
+        $edit = $request->query->has('ticket');
+        if ($edit) {
+            $newToken = $this->sponsorTicketRepository->get($request->query->get('ticket'));
+            $newToken->setEditedOn(new DateTime());
+        } else {
+            /** @var User $user */
+            $user = $this->security->getUser();
+            Assertion::isInstanceOf($user, User::class);
+            $newToken = new SponsorTicket();
+            $newToken
+                ->setToken(base64_encode(random_bytes(30)))
+                ->setIdForum($event->getId())
+                ->setCreatedOn(new DateTime())
+                ->setEditedOn(new DateTime())
+                ->setCreatorId($user->getId());
+        }
+        $form = $this->formFactory->create(SponsorTokenType::class, $newToken);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($newToken->getId() === null) {
+                $this->sponsorTokenMail->sendNotification($newToken);
             }
-            $form = $this->formFactory->create(SponsorTokenType::class, $newToken);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                if ($newToken->getId() === null) {
-                    $this->sponsorTokenMail->sendNotification($newToken);
-                }
-                $this->sponsorTicketRepository->save($newToken);
-                $this->flashBag->add('notice', 'Le token a été enregistré');
+            $this->sponsorTicketRepository->save($newToken);
+            $this->flashBag->add('notice', 'Le token a été enregistré');
 
-                return new RedirectResponse($this->urlGenerator->generate('admin_event_sponsor_ticket',
-                    ['id' => $event->getId()]));
-            }
+            return new RedirectResponse($this->urlGenerator->generate('admin_event_sponsor_ticket',
+                ['id' => $event->getId()]));
         }
 
         return new Response($this->twig->render('admin/event/sponsor_ticket.html.twig', [

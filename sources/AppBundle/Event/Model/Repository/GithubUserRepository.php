@@ -5,6 +5,7 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\GithubUser;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -75,6 +76,19 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
         ;
 
         return $metadata;
+    }
+
+    public function getAllOrderedByLogin()
+    {
+        $sql = "
+            SELECT u.*
+            FROM afup_user_github u
+            ORDER BY u.login ASC
+        ";
+
+        $query = $this->getQuery($sql);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**

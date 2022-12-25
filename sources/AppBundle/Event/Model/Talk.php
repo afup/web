@@ -124,12 +124,27 @@ class Talk implements NotifyPropertyInterface
     /**
      * @var string|null
      */
+    private $openfeedbackPath;
+
+    /**
+     * @var string|null
+     */
     private $languageCode;
 
     /**
      * @var string|null
      */
     private $tweets;
+
+    /**
+     * @var string|null
+     */
+    private $transcript;
+
+    /**
+     * @var string|null
+     */
+    private $verbatim;
 
     /**
      * @var bool
@@ -476,6 +491,44 @@ class Talk implements NotifyPropertyInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getOpenfeedbackPath()
+    {
+        return $this->openfeedbackPath;
+    }
+
+    /**
+     * @param string|null $openfeedbackPath
+     */
+    public function setOpenfeedbackPath($openfeedbackPath)
+    {
+        $this->openfeedbackPath = $openfeedbackPath;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasOpenfeedbackPath()
+    {
+        return null !== $this->getOpenfeedbackPath();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getOpenfeedbackUrl()
+    {
+        if (!$this->hasOpenfeedbackPath()) {
+            return null;
+        }
+
+        return 'https://openfeedback.io/' . $this->getOpenfeedbackPath();
+    }
+
+    /**
      * @return int
      */
     public function getBlogPostUrl()
@@ -734,6 +787,47 @@ class Talk implements NotifyPropertyInterface
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getTranscript()
+    {
+        return $this->transcript;
+    }
+
+    /**
+     * @param string|null $transcript
+     *
+     * @return $this
+     */
+    public function setTranscript($transcript)
+    {
+        $this->transcript = $transcript;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVerbatim()
+    {
+        return $this->verbatim;
+    }
+
+    /**
+     * @param string|null $transcript
+     *
+     * @return $this
+     */
+    public function setVerbatim($verbatim)
+    {
+        $this->verbatim = $verbatim;
+
+        return $this;
+    }
+
 
     /**
      * @return array

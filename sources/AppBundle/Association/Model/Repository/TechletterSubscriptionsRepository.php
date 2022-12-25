@@ -80,6 +80,7 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
               GROUP BY afup_techletter_unsubscriptions.email
             ) as latest_unsubscriptions ON (app.email = latest_unsubscriptions.email AND latest_unsubscriptions.max_unsubscriptions_date > ats.subscription_date) 
             WHERE latest_unsubscriptions.email IS NULL
+            AND ac.date_fin > UNIX_TIMESTAMP()
             GROUP BY app.id
           ';
     }

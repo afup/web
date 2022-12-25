@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo 'DROP DATABASE IF EXISTS web' | /opt/mysql_no_db
+echo 'CREATE DATABASE web' | /opt/mysql_no_db

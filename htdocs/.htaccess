@@ -19,8 +19,6 @@
 
 RewriteEngine On
 
-RewriteRule ^become-sponsor$  "/event/forumphp2019/sponsor/become-sponsor" [L,R=302]
-RewriteRule ^association/super-apero$  "/news/1090-annulation-super-apero-php-2020" [L,R=302]
 RewriteRule ^super-apero$  "/association/super-apero" [L,R=302]
 RewriteRule ^superapero$  "/association/super-apero" [L,R=302]
 RewriteRule ^association/super-apero-8-mars-2018$ "/super-apero" [L,R=302]

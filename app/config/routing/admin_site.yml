@@ -1,0 +1,22 @@
+admin_site_rubriques_list:
+  path: /rubriques
+  defaults: {_controller: AppBundle\Controller\Admin\Site\ListRubriquesAction}
+
+admin_site_rubriques_add:
+  path: /rubriques/add
+  defaults: {_controller: AppBundle\Controller\Admin\Site\AddRubriqueAction}
+  
+admin_site_rubriques_edit:
+  path: /rubriques/edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Site\EditRubriqueAction}
+  requirements:
+    id: '\d+'
+
+admin_site_rubriques_delete:
+  path: /rubriques/delete/{id}/{token}
+  defaults: {_controller: AppBundle\Controller\Admin\Site\DeleteRubriqueAction}
+  requirements:
+    id: '\d+'
+    token: '[a-zA-Z0-9_-]+'
+
+  

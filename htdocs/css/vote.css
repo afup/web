@@ -891,7 +891,8 @@ div.photo-container{
     margin: auto;
     margin-top: 2rem;
     padding-top: 2rem;
-    width: 75%
+    width: 75%;
+    font-size: 1.3em;
 }
 
 #date {

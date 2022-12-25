@@ -50,7 +50,7 @@
                                         {% set hasConf = hasConf|merge({(room.name|trim):numberOfRowForThisSlot}) %}
                                         <td rowspan="{{ numberOfRowForThisSlot }}" width="21%" class="conf {{ cycle(['conf_odd', 'conf_even'], loop.index0) }}">
                                         <p>
-                                            <a href="{{ programPagePrefix }}#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
+                                            <a href="{{ row.program_page_prefix }}#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
                                                 {{ row.talk.title }}
                                                 <div class="conferencier">
                                             {% for speaker in row[".aggregation"].speaker %}
@@ -94,6 +94,8 @@
     {% endfor %}
 </div>
 
-<a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/calendar">Créer mon planning personnalisé</a>
-<a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/planning.ics">Télécharger le planning au format Ical</a>
+    {% for event in events %}
+        <a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/calendar">Créer mon planning personnalisé{% if events|length > 1 %} ({{ event.title }}){% endif %}</a>
+        <a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/planning.ics">Télécharger le planning au format Ical{% if events|length > 1 %} ({{ event.title }}){% endif %}</a>
+    {% endfor %}
 {% endif %}

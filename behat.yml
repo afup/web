@@ -1,0 +1,17 @@
+default:
+  suites:
+    web_features:
+      paths:
+        - %paths.base%/tests/behat
+      contexts:
+        - FeatureContext:
+        - Behat\MinkExtension\Context\MinkContext
+  extensions:
+    Behat\MinkExtension:
+      base_url:  'https://apachephptest:80'
+      files_path: '%paths.base%/tests/behat/files'
+      sessions:
+        default:
+          goutte:
+            guzzle_parameters:
+              verify: false

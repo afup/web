@@ -1,7 +1,7 @@
 {if $action == 'ajouter'}
-<h2>Ajouter un événément</h2>
+<h2>Ajouter un évènement</h2>
 {else}
-<h2>Modifier un événément</h2>
+<h2>Modifier un évènement</h2>
 {/if}
 
 {if $action != 'ajouter'}
@@ -20,6 +20,7 @@
             <a class="item" href="/event/{$forum_path}">CFP</a>
             <a class="item" href="/event/{$forum_path}/tickets">Billeterie</a>
             <a class="item" href="/event/{$forum_path}/sponsor/become-sponsor">Devenir sponsor</a>
+            <a class="item" href="/event/{$forum_path}/openfeedback.json">Export vers Openfeedback</a>
         </div>
     </div>
 </div>

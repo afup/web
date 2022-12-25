@@ -93,8 +93,14 @@ class RegistrationsExportGenerator
         $tickets = $this->ticketRepository->getByEvent($event);
 
         foreach ($tickets as $ticket) {
-            if ($ticket->getStatus() == Ticket::STATUS_CANCELLED) {
+            $status = $ticket->getStatus();
+            if (
+                $status == Ticket::STATUS_CANCELLED
+                ||  $status == Ticket::STATUS_ERROR
+                ||  $status == Ticket::STATUS_DECLINED
+            ) {
                 // On n'exporte pas les billets inscriptions annulées
+                // ou en erreur de paiement / refusées
                 continue;
             }
 
@@ -172,10 +178,12 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_2:
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_3:
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_4:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_1:
                 return 'PASS JOUR 1';
                 break;
             case AFUP_FORUM_DEUXIEME_JOURNEE:
             case AFUP_FORUM_LATE_BIRD_DEUXIEME_JOURNEE:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_2:
                 return 'PASS JOUR 2';
                 break;
             case AFUP_FORUM_2_JOURNEES:
@@ -199,6 +207,8 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_4:
             case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_5:
             case Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_6:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_3:
+            case Ticket::TYPE_AFUP_DAY_2021_LIVE_4:
                 return 'PASS 2 JOURS';
                 break;
             case AFUP_FORUM_ORGANISATION:

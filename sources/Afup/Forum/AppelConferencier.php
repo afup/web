@@ -102,6 +102,8 @@ class AppelConferencier
 
     function obtenirSession($id = 0, $champs = '*', $complement = true)
     {
+        $this->_bdd->executer("SET NAMES utf8mb4");
+
         $requete = ' SELECT ';
         $requete .= '  ' . $champs . ' ';
         $requete .= ' FROM ';
@@ -412,6 +414,7 @@ class AppelConferencier
         $joindin = null,
         $youtubeId = null,
         $slidesUrl = null,
+        $openfeedbackPath = null,
         $blogPostUrl = null,
         $interviewUrl = null,
         $languageCode = null,
@@ -421,8 +424,12 @@ class AppelConferencier
         $video_has_fr_subtitles = null,
         $video_has_en_subtitles = null,
         $date_publication = null,
-        $tweets = null
+        $tweets = null,
+        $transcript = null,
+        $verbatim = null
     ) {
+        $this->_bdd->executer("SET NAMES utf8mb4");
+
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
         $requete .= ' date_soumission = ' . $this->_bdd->echapper($date_soumission) . ', ';
@@ -437,6 +444,9 @@ class AppelConferencier
         }
         if ($slidesUrl !== null) {
             $requete .= ' slides_url = ' . $this->_bdd->echapper($slidesUrl) . ', ';
+        }
+        if ($openfeedbackPath !== null) {
+            $requete .= ' openfeedback_path = ' . $this->_bdd->echapper($openfeedbackPath) . ', ';
         }
         if ($blogPostUrl !== null) {
             $requete .= ' blog_post_url = ' . $this->_bdd->echapper($blogPostUrl) . ', ';
@@ -467,6 +477,12 @@ class AppelConferencier
         }
         if ($tweets !== null) {
             $requete .= 'tweets = ' . $this->_bdd->echapper($tweets) . ', ';
+        }
+        if ($transcript !== null) {
+            $requete .= 'transcript = ' . $this->_bdd->echapper($transcript) . ', ';
+        }
+        if ($verbatim !== null) {
+            $requete .= 'verbatim = ' . $this->_bdd->echapper($verbatim) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int)$id;

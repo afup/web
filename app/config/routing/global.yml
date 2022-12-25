@@ -3,3 +3,7 @@ home:
   defaults: {_controller: AppBundle:Home:display}
   options:
     sitemap: true
+
+become_sponsor_latest:
+  path: /become-sponsor
+  defaults: {_controller: AppBundle:Lead:becomeSponsorLatest}

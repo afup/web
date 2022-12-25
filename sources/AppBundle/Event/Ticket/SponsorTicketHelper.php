@@ -45,9 +45,13 @@ class SponsorTicketHelper
         try {
             $this->invoiceRepository->startTransaction();
             $this->invoiceRepository->save($invoice);
-            $this->ticketRepository->save($ticket);
 
-            $sponsorTicket->setUsedInvitations($sponsorTicket->getUsedInvitations()+1);
+            if ($ticket->getId() === null) {
+                // This is a new ticket, so we update the number of tickets created for this sponsor
+                $sponsorTicket->setUsedInvitations($sponsorTicket->getUsedInvitations()+1);
+            }
+
+            $this->ticketRepository->save($ticket);
             $this->sponsorTicketRepository->save($sponsorTicket);
             $this->invoiceRepository->commit();
         } catch (Exception $e) {

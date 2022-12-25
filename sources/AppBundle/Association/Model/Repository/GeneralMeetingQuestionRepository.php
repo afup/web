@@ -114,6 +114,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['format' => 'U'],
                 ],
             ])
             ->addField([

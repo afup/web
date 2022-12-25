@@ -65,6 +65,10 @@ admin_members_general_meeting_prepare:
   path: /members/general_meeting/prepare
   defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\PrepareAction}
 
+admin_members_general_meeting_edit:
+  path: /members/general_meeting/edit
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\EditAction}
+
 admin_members_general_meeting_listing:
   path: /members/general_meeting/listing
   defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\ListingAction}
@@ -72,6 +76,18 @@ admin_members_general_meeting_listing:
 admin_members_general_vote_list:
   path: /members/general_meeting_vote
   defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingVote\ListAction}
+
+admin_members_general_question_add:
+  path: /members/general_meeting_question/{date}/add
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingQuestion\AddAction}
+
+admin_members_general_question_edit:
+  path: /members/general_meeting_question/{id}/edit
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingQuestion\EditAction}
+
+admin_members_general_question_delete:
+  path: /members/general_meeting_question/{id}/delete
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingQuestion\DeleteAction}
 
 admin_members_general_vote_open:
   path: /members/general_meeting_vote/open
@@ -88,3 +104,11 @@ admin_techletter:
 admin_slack_members_check:
   path: /slackmembers/check
   defaults: {_controller: AppBundle\Controller\Admin\SlackMembers\CheckMembersAction }
+
+admin_site:
+  resource: "admin_site.yml"
+  prefix: /site
+
+admin_github_user_routes:
+  resource: "admin_github_user.yml"
+  prefix: /event/github-user

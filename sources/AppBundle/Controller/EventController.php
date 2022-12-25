@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AppBundle\Controller;
 
 use AppBundle\Calendar\IcsPLanningGenerator;
@@ -8,6 +7,7 @@ use AppBundle\Calendar\JsonPlanningGenerator;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
+use AppBundle\Openfeedback\OpenfeedbackJsonGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,14 +18,20 @@ class EventController extends EventBaseController
     {
         /**
          * @var $eventRepository EventRepository
+         *
+         * @return Response
          */
         $eventRepository = $this->get('ting')->get(EventRepository::class);
-        $event = $eventRepository->getNextEvent();
+        $events = $eventRepository->getNextEvents();
 
-        if ($event === null) {
+        if ($events === null) {
             return $this->render(':event:none.html.twig');
+        } elseif ($events->count() === 1) {
+            $event = $events->first();
+            return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
         }
-        return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
+
+        return $this->render(':event:switch.html.twig', ['events' => $events]);
     }
 
     public function speakerInfosIndexAction()
@@ -126,5 +132,25 @@ class EventController extends EventBaseController
         $event = $this->get('ting')->get(EventRepository::class)->getCurrentEvent();
 
         return new RedirectResponse($this->generateUrl('event_calendar', ['eventSlug' => $event->getPath()]));
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function openfeedbackJsonAction($eventSlug)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+
+        $photoStorage = $this->get(\AppBundle\CFP\PhotoStorage::class);
+        $ting = $this->get('ting');
+        $talkRepository = $ting->get(TalkRepository::class);
+
+        $generator = new OpenfeedbackJsonGenerator($talkRepository, $photoStorage);
+
+        $response =  new JsonResponse($generator->generate($event));
+
+        $response->headers->set('Access-Control-Allow-Origin', 'https://openfeedback.io');
+
+        return $response;
     }
 }

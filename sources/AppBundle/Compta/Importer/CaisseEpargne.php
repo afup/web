@@ -40,7 +40,7 @@ class CaisseEpargne implements Importer
         }
 
         // On vérifie la première ligne
-        if ('Code de la banque' === !substr($firstLine[0], 0, 17)) {
+        if (0 !== strpos($firstLine[0], 'Code de la banque')) {
             return false;
         }
 

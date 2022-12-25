@@ -11,6 +11,27 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '315',
+                width: '530',
+                videoId: '{{ talk.youtubeId }}'
+            });
+        }
+
+        $('.transcript p').on('click', function(e) {
+            location.hash = "#player";
+            player.seekTo($(e.target).data('cueStart'));
+        })
+    </script>
 {% endblock %}
 
 {% block title %}{{ talk.title }} - {{ event.title }} - {{ parent() }}{% endblock %}
@@ -57,12 +78,12 @@
                 </div>
                 <div class="container talk-date-container">
                     <div class="col-md-12">
-                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>, ayant eut lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et {{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM YYYY') }}.
+                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>, ayant eu lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et {{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM YYYY') }}.
                     </div>
 
                 </div>
 
-                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId or talk.getVideoHasEnSubtitles or talk.getVideoHasFrSubtitles %}
+                {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId or talk.getVideoHasEnSubtitles or talk.getVideoHasFrSubtitles or talk.hasOpenfeedbackPath %}
                 <div class="container">
                     <div class="col-md-12">
                         <h2>Informations complémentaires</h2>
@@ -76,7 +97,7 @@
 
                         {% if talk.hasBlogPostUrl %}
                             <li>
-                                <a class="talk-info-link" href="{{ talk.getBlogPostUrl }}"><i class="fa fa-rss"></i> Transcript</a>
+                                <a class="talk-info-link" href="{{ talk.getBlogPostUrl }}"><i class="fa fa-rss"></i> Article de blog</a>
                             </li>
                         {% endif %}
 
@@ -89,6 +110,12 @@
                         {% if talk.hasJoindinId %}
                             <li>
                                 <a class="talk-info-link" href="{{ talk.getJoindinUrl }}"><i class="fa fa-comments"></i> Fiche joind.in</a>
+                            </li>
+                        {% endif %}
+
+                        {% if talk.hasOpenfeedbackPath %}
+                            <li>
+                                <a class="talk-info-link" href="{{ talk.getOpenfeedbackUrl }}"><i class="fa fa-comments"></i> Fiche openfeedback.io</a>
                             </li>
                         {% endif %}
 
@@ -110,7 +137,7 @@
             <div class="col-md-6">
                 <h2>Vidéo</h2>
                 <div class="responsive-video-container">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ talk.youtubeId }}" frameborder="0" allowfullscreen></iframe>
+                    <div id="player"></div>
                 </div>
             </div>
             {% endif %}
@@ -139,7 +166,7 @@
                     </div>
                     <div class="container">
                         <div class="col-md-2 speaker-photo-container">
-                            <img src="{{ photo_storage.getUrl(speaker) }}" class="speaker-photo" />
+                            <img src="{{ photo_storage.getUrl(speaker) }}" class="speaker-photo" alt="" />
                             <div class="speaker-talks-link">
                                 <a href="{{ url('talks_list', {"fR": { "speakers.label" : [ speaker.label ]}}) }}">Voir tous ses talks</a>
                             </div>
@@ -213,6 +240,46 @@
                 </div>
             </div>
         {% endif %}
+
+
+        {% if transcript %}
+        <div class="container">
+            <div class="col-md-12">
+                <div class="container comments-title-container">
+                    <div class="col-md-12">
+                        <h2>Transcript</h2>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="col-md-12 talk-comment-container transcript">
+
+                    {% for cue in transcript %}
+                        <p data-cue-start="{{ cue.start }}" style="cursor:pointer;">{{ cue.text }}</p>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+
+        {% if talk.verbatim %}
+        <div class="container">
+            <div class="col-md-12">
+                <div class="container comments-title-container">
+                    <div class="col-md-12">
+                        <h2>Verbatim</h2>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="col-md-12">
+                        {{ talk.verbatim|markdown }}
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
 
     </div>
 {% endblock %}
