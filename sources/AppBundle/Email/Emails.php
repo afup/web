@@ -15,9 +15,19 @@ class Emails
     /** @var Mailer */
     private $mailer;
 
+    private $tempFiles = [];
+
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
+    }
+
+    public function __destruct()
+    {
+        // Suppression des fichiers temporaires
+        foreach ($this->tempFiles as $file) {
+            unlink($file);
+        }
     }
 
     public function sendInscription(Event $event, MailUser $recipient)
@@ -48,6 +58,11 @@ class Emails
         $this->mailer->send($message);
     }
 
+    private function format($date)
+    {
+        return $date->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\THis\Z');
+    }
+
     private function getAttachementIcsInscription(Event $event, MailUser $recipient)
     {
         $uid = md5($event->getId());
@@ -55,7 +70,7 @@ class Emails
         $organizerEmail = MailUserFactory::afup()->getEmail();
         $attendeeCN = $recipient->getName();
         $attendeeEmail = $recipient->getEmail();
-        $created = (new \DateTime())->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\THis\Z');
+        $created = $this->format(new \DateTime());
 
         $content = <<<EOF
 BEGIN:VCALENDAR
@@ -64,8 +79,8 @@ VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:REQUEST
 BEGIN:VEVENT
-DTSTART:{$event->getDateStart()->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\T000000\Z')}
-DTEND:{$event->getDateEnd()->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\T000000\Z')}
+DTSTART:{$this->format($event->getDateStart())}
+DTEND:{$this->format($event->getDateEnd())}
 DTSTAMP:{$created}
 ORGANIZER:CN={$organizerCN}:mailto:{$organizerEmail}
 ATTENDEE:CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;CN=
@@ -83,9 +98,10 @@ END:VEVENT
 END:VCALENDAR
 EOF;
 
-        $path = tempnam(sys_get_temp_dir(), 'afup');
+        $path = tempnam(sys_get_temp_dir(), 'inscr');
         file_put_contents($path, str_replace("\n", "\r\n", $content));
 
+        $this->tempFiles[] = $path;
         return new Attachment($path, $event->getTitle() . '.ics', 'base64', 'text/calendar');
     }
 }

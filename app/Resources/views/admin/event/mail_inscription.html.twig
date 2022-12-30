@@ -23,8 +23,8 @@
                 </div>
             </div>
             <meta itemprop="name" content="{{ event.title }}" />
-            <meta itemprop="startDate" content="{{ event.dateStart|date("Y-m-d\\T00:00:00P") }}" />
-            <meta itemprop="endDate" content="{{ event.dateEnd|date("Y-m-d\\T00:00:00P") }}" />
+            <meta itemprop="startDate" content="{{ event.dateStart|date("Y-m-d\\TH:i:sP") }}" />
+            <meta itemprop="endDate" content="{{ event.dateEnd|date("Y-m-d\\TH:i:sP") }}" />
         </div>
     </div>
 </div>
