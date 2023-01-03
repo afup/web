@@ -58,11 +58,6 @@ class Emails
         $this->mailer->send($message);
     }
 
-    private function format($date)
-    {
-        return $date->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\THis\Z');
-    }
-
     private function getAttachementIcsInscription(Event $event, MailUser $recipient)
     {
         $uid = md5($event->getId());
@@ -70,7 +65,10 @@ class Emails
         $organizerEmail = MailUserFactory::afup()->getEmail();
         $attendeeCN = $recipient->getName();
         $attendeeEmail = $recipient->getEmail();
-        $created = $this->format(new \DateTime());
+        $created = (new \DateTime())->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\THis\Z');
+
+        $dtStart = $event->getDateStart()->format('Ymd');
+        $dtEnd = $event->getDateEnd()->add(new \DateInterval('P1D'))->format('Ymd');
 
         $content = <<<EOF
 BEGIN:VCALENDAR
@@ -79,8 +77,8 @@ VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:REQUEST
 BEGIN:VEVENT
-DTSTART:{$this->format($event->getDateStart())}
-DTEND:{$this->format($event->getDateEnd())}
+DTSTART;VALUE=DATE:{$dtStart}
+DTEND;VALUE=DATE:{$dtEnd}
 DTSTAMP:{$created}
 ORGANIZER:CN={$organizerCN}:mailto:{$organizerEmail}
 ATTENDEE:CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;CN=
