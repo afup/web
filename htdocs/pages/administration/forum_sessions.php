@@ -127,7 +127,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('header', null, 'Présentation');
 
-    $formulaire->addElement('date'    , 'date_soumission', 'Soumission', array('language' => 'fr', 'minYear' => date('Y'), 'maxYear' => date('Y')));
+    $formulaire->addElement('date'    , 'date_soumission', 'Soumission', array('language' => 'fr', 'minYear' => date('Y') -5, 'maxYear' => date('Y') +5));
     $formulaire->addElement('text'    , 'titre'          , 'Titre' , array('size' => 40, 'maxlength' => 150));
 
     $abstractClass = 'simplemde';
