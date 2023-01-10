@@ -10,6 +10,8 @@ use AppBundle\Event\Model\Talk;
 use AppBundle\SpeakerInfos\Form\HotelReservationType;
 use AppBundle\SpeakerInfos\Form\SpeakersContactType;
 use AppBundle\SpeakerInfos\Form\SpeakersDinerType;
+use AppBundle\SpeakerInfos\Form\SpeakersExpensesType;
+use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
 use DateTime;
 use DateTimeImmutable;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -34,6 +36,8 @@ class SpeakerPage
     private $urlGenerator;
     /** @var Environment */
     private $twig;
+    /** @var SpeakersExpensesStorage */
+    private $speakersExpensesStorage;
 
     public function __construct(
         TalkRepository $talkRepository,
@@ -41,7 +45,8 @@ class SpeakerPage
         FormFactoryInterface $formFactory,
         FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator,
-        Environment $twig
+        Environment $twig,
+        SpeakersExpensesStorage $speakersExpensesStorage
     ) {
         $this->talkRepository = $talkRepository;
         $this->speakerRepository = $speakerRepository;
@@ -49,6 +54,7 @@ class SpeakerPage
         $this->flashBag = $flashBag;
         $this->urlGenerator = $urlGenerator;
         $this->twig = $twig;
+        $this->speakersExpensesStorage = $speakersExpensesStorage;
     }
 
     public function handleRequest(Request $request, Event $event, Speaker $speaker)
@@ -73,7 +79,7 @@ class SpeakerPage
             $this->speakerRepository->save($speaker);
             $this->flashBag->add('notice', 'Informations de contact enregistrées');
 
-            return new RedirectResponse($this->urlGenerator->generate('speaker-infos', ['eventSlug' => $event->getPath()]));
+            return $this->redirect($request);
         }
 
         $speakersDinerDefaults = [
@@ -94,7 +100,7 @@ class SpeakerPage
             $this->speakerRepository->save($speaker);
             $this->flashBag->add('notice', 'Informations sur votre venue au restaurant des speakers enregistrées');
 
-            return new RedirectResponse($this->urlGenerator->generate('speaker-infos', ['eventSlug' => $event->getPath()]));
+            return $this->redirect($request);
         }
 
         $nights = $speaker->getHotelNightsArray();
@@ -117,9 +123,28 @@ class SpeakerPage
             $speaker->setHotelNightsArray($hotelReservationData['nights']);
 
             $this->speakerRepository->save($speaker);
-            $this->flashBag->add('notice', "Informations sur votre venue à l'hotel enregistrées");
+            $this->flashBag->add('notice', "Informations sur votre venue à l'hôtel enregistrées");
 
-            return new RedirectResponse($this->urlGenerator->generate('speaker-infos', ['eventSlug' => $event->getPath()]));
+            return $this->redirect($request);
+        }
+
+        $speakersExpensesType = $this->formFactory->create(SpeakersExpensesType::class);
+        $speakersExpensesType->handleRequest($request);
+        if ($speakersExpensesType->isValid()) {
+            $speakersExpensesData = $speakersExpensesType->getData();
+            foreach ($speakersExpensesData['files'] as $file) {
+                $this->speakersExpensesStorage->store($file, $speaker);
+            }
+            $this->flashBag->add('notice', 'Fichiers ajoutés');
+
+            return $this->redirect($request);
+        }
+
+        if ($request->query->has('delete_file')) {
+            $this->speakersExpensesStorage->delete($request->query->get('delete_file'), $speaker);
+            $request->query->remove('delete_file');
+
+            return $this->redirect($request);
         }
 
         $description = '';
@@ -137,6 +162,8 @@ class SpeakerPage
             'speaker' => $speaker,
             'should_display_speakers_diner_form' => $shouldDisplaySpeakersDinerForm,
             'should_display_hotel_reservation_form' => $shouldDisplayHotelReservationForm,
+            'speakers_expenses_form' => $speakersExpensesType->createView(),
+            'speakers_expenses_files' => $this->speakersExpensesStorage->getFiles($speaker),
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
             'speakers_contact_form' => $speakersContactType->createView(),
@@ -166,5 +193,11 @@ class SpeakerPage
         }
 
         return $speakerTalks;
+    }
+
+    private function redirect(Request $request)
+    {
+        $params = array_merge($request->attributes->get('_route_params'), $request->query->all());
+        return new RedirectResponse($this->urlGenerator->generate($request->attributes->get('_route'), $params));
     }
 }

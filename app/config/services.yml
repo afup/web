@@ -187,6 +187,11 @@ services:
           - "/uploads/speakers"
           - "%kernel.root_dir%/../htdocs"
 
+    AppBundle\SpeakerInfos\SpeakersExpensesStorage:
+        arguments:
+            - "%kernel.root_dir%/../htdocs/uploads/speaker_expenses"
+            - "/uploads/speaker_expenses"
+
     AppBundle\Event\Form\SpeakerFormDataFactory:
       autowire: true
 

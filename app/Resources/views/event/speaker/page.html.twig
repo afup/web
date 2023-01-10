@@ -5,6 +5,11 @@
     {{ parent() }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/glyphicons.css') }}" media="screen" />
+{% endblock %}
+
 {% form_theme speakers_diner_form 'bootstrap_3_layout.html.twig' %}
 {% form_theme hotel_reservation_form 'bootstrap_3_layout.html.twig' %}
 
@@ -31,8 +36,13 @@
             margin: 0;
         }
 
-        .speakers-infos-form .list-unstyled {
+        .speakers-infos-form .list-unstyled,
+        .speakers-infos-form .error {
             color: red;
+        }
+        .speakers-infos-form .submit-container {
+            text-align: right;
+            padding: 0 15px 0 0;
         }
     </style>
 
@@ -64,16 +74,16 @@
             </ul>
 
             {% if speaker.referentPerson %}
-            <h2>🧭 {% trans %}Personne référente{% endtrans %}</h2>
+            <h2><a id="referent-person" href="#referent-person">🧭 {% trans %}Personne référente{% endtrans %}</a></h2>
 
             <b>{{ speaker.referentPerson }}</b>, {% trans %}sera votre personne de contact privilégiée dans les semaines menant à l’évènement tout comme durant l’évènement. N’hésitez pas à prendre contact pour toutes questions relatives à votre venue.{% endtrans %}
                 {% if speaker.referentPersonEmail %}Son adresse email est <a href="mailto:{{ speaker.referentPersonEmail }}">{{ speaker.referentPersonEmail }}</a>.{% endif %}
             {% endif %}
 
-            <h2>📞 {% trans %}Moyen de contact{% endtrans %}</h2>
+            <h2><a id="contact" href="#contact">📞 {% trans %}Moyen de contact{% endtrans %}</a></h2>
             <p>{{ 'speakers_contact_help'|trans }}</p>
 
-            {{ form_start(speakers_contact_form, { attr: { class: "speakers-infos-form" }}) }}
+            {{ form_start(speakers_contact_form, { attr: { class: "speakers-infos-form" }, action: '#contact'}) }}
             <div class="container">
                 <div class="col-md-6">
                     {{ form_label(speakers_contact_form.phone_number) }}
@@ -82,21 +92,21 @@
                 </div>
             </div>
 
-            <div style="text-align: right; padding: 0 15px 0 0">
+            <div class="submit-container">
                 {{ form_widget(speakers_contact_form.submit) }}
             </div>
 
             {{ form_end(speakers_contact_form) }}
 
             {% if event.speakersDinerEnabled %}
-            <h2>🍽️ {% trans %}Nous vous invitons au restaurant{% endtrans %}</h2>
+            <h2><a id="diner" href="#diner">🍽️ {% trans %}Nous vous invitons au restaurant{% endtrans %}</a></h2>
 
             <p>{{ "Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du %date%." | trans({"%date%": day_before_event|date('d/m/Y')}) }}</p>
 
             {% if should_display_speakers_diner_form %}
                 <p>{% trans %}Si vous avez un régime alimentaire spécifique, n'hésitez pas à nous en faire part pour prévenir le chef.{% endtrans %}</p>
 
-                {{ form_start(speakers_diner_form, { attr: { class: "speakers-infos-form" }}) }}
+                {{ form_start(speakers_diner_form, { attr: { class: "speakers-infos-form" }, action: '#diner'}) }}
 
                 <div class="container">
                     <div class="col-md-6">
@@ -116,7 +126,7 @@
                     </div>
                 </div>
 
-                <div style="text-align: right; padding: 0 15px 0 0">
+                <div class="submit-container">
                     {{ form_widget(speakers_diner_form.submit) }}
                 </div>
 
@@ -145,10 +155,10 @@
             {% endif %}
 
             {% if event.accomodationEnabled %}
-            <h2>🛎️ {% trans %}Nous vous hébergeons{% endtrans %}</h2>
+            <h2><a id="hotel" href="#hotel">🛎️ {% trans %}Nous vous hébergeons{% endtrans %}</a></h2>
 
             {% if should_display_hotel_reservation_form %}
-                {{ form_start(hotel_reservation_form, { attr: { class: 'speakers-infos-form'}}) }}
+                {{ form_start(hotel_reservation_form, { attr: { class: 'speakers-infos-form'}, action: '#hotel'}) }}
 
                 <div class="container">
                     <div class="col-md-6">
@@ -162,7 +172,7 @@
                     </div>
                 </div>
 
-                <div style="text-align: right; padding: 0 15px 0 0">
+                <div class="submit-container">
                     {{ form_widget(hotel_reservation_form.submit) }}
                 </div>
 
@@ -186,6 +196,57 @@
                 {% endif %}
             {% endif %}
             {% endif %}
+
+            <h2><a id="expenses" href="#expenses">💶 {% trans %}Nous vous défrayons{% endtrans %}</a></h2>
+
+            <div class="container">
+                <p>
+                    Si vous en avez, nous vous rembourserons vos frais de transport.<br />
+                    Pour cela, nous avons besoin d'un justificatif (par exemple une facture de train) ainsi qu'un
+                    RIB/IBAN.<br />
+                    Utilisez le formulaire ci-dessous pour nous envoyer ces informations (au format PDF). Vous pouvez
+                    nous envoyer plusieurs fichiers.
+                </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Liste des fichiers envoyés</strong>
+                        </p>
+                        {% if speakers_expenses_files|length %}
+                            <ul>
+                                {% for file in speakers_expenses_files %}
+                                    {% set queryParams = app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'delete_file': file.basename}) %}
+                                    <li>
+                                        <a href="{{ file.path }}" target="_blank" title="Télécharger le fichier {{ file.basename }}">
+                                            {{ file.basename }}
+                                        </a>
+                                        <a href="{{ path(app.request.attributes.get('_route'), queryParams) }}#expenses"
+                                           onclick="window.confirm('Êtes-vous sûr(e) de vouloir supprimer ce fichier ?')"
+                                           title="Supprimer le fichier {{ file.basename }}">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Aucun fichier de défraiement</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+
+                        {{ form_start(speakers_expenses_form, { attr: { class: 'speakers-infos-form'}, action: '#expenses' }) }}
+                        <div class="error">
+                            {{ form_errors(speakers_expenses_form.files) }}
+                        </div>
+                        {{ form_widget(speakers_expenses_form.files) }}
+                        <div class="submit-container">
+                            {{ form_row(speakers_expenses_form.submit) }}
+                        </div>
+                        {{ form_end(speakers_expenses_form) }}
+
+                    </div>
+                </div>
+            </div>
 
         </div>
 
