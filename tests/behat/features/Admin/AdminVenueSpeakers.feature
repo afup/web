@@ -15,9 +15,4 @@ Feature: Administration - Partie Venue Speakers
     And I should see "Nous vous hébergeons"
     When I fill in "speakers_contact[phone_number]" with "0606060607"
     And I press "Enregistrer"
-    # Quand on clique sur Enregistrer, on est redirigé vers l'authentification github
-    # car le formulaire renvoie vers la partie publique (/event/forum/speaker-infos) qui ne contient aucune conférence ouverte
-    # et pas la partie admin (/admin/event/speaker-infos) qui nous permet d'aller sur n'importe quel évènement.
-    # Pour palier à ce problème, on navigue manuellement vers la partie admin pour revenir à la bonne page
-    And I am on "/admin/event/speaker-infos?speaker_id=1&id=1"
     Then I should see "Informations de contact enregistrées"
