@@ -92,6 +92,7 @@ if ($action == 'lister') {
         $sheet->setCellValue('H3', 'Commentaire');
         $sheet->setCellValue('I3', 'Justificatif');
         $sheet->setCellValue('J3', 'Nom du justificatif');
+        $sheet->setCellValue('K3', 'Nom du compte');
     }
     foreach ($journal as $ecriture) {
         $sheet = $workbook->getSheet($ecriture['mois']);
@@ -108,6 +109,7 @@ if ($action == 'lister') {
         $sheet->setCellValue('H' . $compteurLigne[$ecriture['mois']], $ecriture['comment']);
         $sheet->setCellValue('I' . $compteurLigne[$ecriture['mois']], $ecriture['attachment_required'] ? 'Oui' : 'Non');
         $sheet->setCellValue('J' . $compteurLigne[$ecriture['mois']], $ecriture['attachment_filename']);
+        $sheet->setCellValue('K' . $compteurLigne[$ecriture['mois']], $ecriture['compta_compte_nom_compte']);
         $compteurLigne[$ecriture['mois']]++;
     }
     for ($i = 1; $i < 13; $i++) {
@@ -120,7 +122,7 @@ if ($action == 'lister') {
                 'name' => 'Ubuntu'
             )
         ));
-        $sheet->getStyle('A3:J3')->applyFromArray(array(
+        $sheet->getStyle('A3:K3')->applyFromArray(array(
             'font' => array(
                 'size' => 10,
                 'bold' => true,
@@ -134,7 +136,7 @@ if ($action == 'lister') {
                 )
             )
         ));
-        $sheet->getStyle('A4:J' . ($compteurLigne[$i] + 1))->applyFromArray(array(
+        $sheet->getStyle('A4:K' . ($compteurLigne[$i] + 1))->applyFromArray(array(
             'font' => array(
                 'size' => 10,
                 'name' => 'Ubuntu'
