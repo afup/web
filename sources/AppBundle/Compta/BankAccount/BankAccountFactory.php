@@ -16,10 +16,14 @@ class BankAccountFactory
         $this->configuration = $configuration;
     }
 
-    public function createApplyableAt(\DateTimeInterface $applicationDate)
+    public function createApplyableAt(\DateTimeInterface $applicationDate = null)
     {
-        $comparisonDate = \DateTime::createFromFormat('Y-m-d', $this->configuration->obtenir('rib_ce|valid_until'));
-        $configKey = $applicationDate <= $comparisonDate ? 'rib_ce' : 'rib';
+        if (null === $applicationDate) {
+            $configKey = 'rib';
+        } else {
+            $comparisonDate = \DateTime::createFromFormat('Y-m-d', $this->configuration->obtenir('rib_ce|valid_until'));
+            $configKey = $applicationDate <= $comparisonDate ? 'rib_ce' : 'rib';
+        }
 
         return new BankAccount(
             $this->configuration->obtenir($configKey . '|etablissement'),
