@@ -62,7 +62,6 @@ class Emails
     {
         $uid = md5($event->getId());
         $organizerCN = MailUserFactory::afup()->getName();
-        $organizerEmail = MailUserFactory::afup()->getEmail();
         $attendeeCN = $recipient->getName();
         $attendeeEmail = $recipient->getEmail();
         $created = (new \DateTime())->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\THis\Z');
@@ -80,7 +79,7 @@ BEGIN:VEVENT
 DTSTART;VALUE=DATE:{$dtStart}
 DTEND;VALUE=DATE:{$dtEnd}
 DTSTAMP:{$created}
-ORGANIZER:CN={$organizerCN}:mailto:{$organizerEmail}
+ORGANIZER:CN={$organizerCN}
 ATTENDEE:CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;CN=
 {$attendeeEmail};X-NUM-GUESTS=0:mailto:{$attendeeCN}
 UID:{$uid}
