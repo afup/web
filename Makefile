@@ -29,7 +29,7 @@ docker-compose.override.yml:
 vendors: vendor node_modules
 
 vendor: composer.phar composer.lock
-	php composer.phar install
+	php composer.phar install --no-scripts
 
 node_modules:
 	yarn install
