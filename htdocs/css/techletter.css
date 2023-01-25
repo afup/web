@@ -32,7 +32,7 @@ div.techletter-subscription{
         flex-direction: column;
         color: white;
     }
-    div.techletter-subscription--header div.techletter-subscription-header-content h2{
+    div.techletter-subscription--header div.techletter-subscription-header-content h1{
         color: white;
         margin-top: 1.5em;
     }

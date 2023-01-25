@@ -8,9 +8,9 @@
 {% block content %}
     <div class="row">
         <div class="col-md-6">
-            <h2>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h2>
+            <h1>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h1>
 
-            <h3>{% trans %}VOS PLACES GRATUITES{% endtrans %}</h3>
+            <h2 class="h3-like">{% trans %}VOS PLACES GRATUITES{% endtrans %}</h2>
 
             {% if sold_out %}
                 <p>Désolé, la billetterie n'est plus disponible pour cet évènement.</p>

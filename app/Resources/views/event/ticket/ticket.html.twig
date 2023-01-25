@@ -60,7 +60,7 @@
     {% endfor %}
 
     <div class="col-md-8">
-        <h2>{{ 'Billetterie'|trans }}: {{ event.title }}</h2>
+        <h1>{{ 'Billetterie'|trans }}: {{ event.title }}</h1>
 
         {% if allTicketsSold and event.getWaitingListUrl %}
             Tous les billets ont été vendus. Nous vous invitons à vous inscrire sur  <a href="{{ event.getWaitingListUrl }}">liste d'attente</a> pour le cas où des places viendraient à se libérer.
