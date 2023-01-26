@@ -1,7 +1,7 @@
 {% extends ':event:base.html.twig' %}
 
 {% block header %}
-    {% set menu = {'main': {'route' : 'event', 'title': 'Ma page speaker : ' ~ event.title }, 'items': []} %}
+    {% set menu = {'main': {'route' : 'event', 'title': 'Ma page speaker : %title%'|trans({'%title%': event.title}) }, 'items': []} %}
     {{ parent() }}
 {% endblock %}
 
@@ -201,16 +201,12 @@
 
             <div class="container">
                 <p>
-                    Si vous en avez, nous vous rembourserons vos frais de transport.<br />
-                    Pour cela, nous avons besoin d'un justificatif (par exemple une facture de train) ainsi qu'un
-                    RIB/IBAN.<br />
-                    Utilisez le formulaire ci-dessous pour nous envoyer ces informations (au format PDF). Vous pouvez
-                    nous envoyer plusieurs fichiers.
+                    {% trans %}venue_speaker.expenses.intro{% endtrans %}
                 </p>
                 <div class="row">
                     <div class="col-md-6">
                         <p>
-                            <strong>Liste des fichiers envoyés</strong>
+                            <strong>{% trans %}Liste des fichiers envoyés{% endtrans %}</strong>
                         </p>
                         {% if speakers_expenses_files|length %}
                             <ul>
@@ -221,15 +217,15 @@
                                             {{ file.basename }}
                                         </a>
                                         <a href="{{ path(app.request.attributes.get('_route'), queryParams) }}#expenses"
-                                           onclick="window.confirm('Êtes-vous sûr(e) de vouloir supprimer ce fichier ?')"
-                                           title="Supprimer le fichier {{ file.basename }}">
+                                           onclick="window.confirm('{% trans %}Êtes-vous sûr(e) de vouloir supprimer ce fichier ?{% endtrans %}')"
+                                           title="{% trans with {'%filename%': file.basename} %}Supprimer le fichier %filename%{% endtrans %}">
                                             <i class="glyphicon glyphicon-remove"></i>
                                         </a>
                                     </li>
                                 {% endfor %}
                             </ul>
                         {% else %}
-                            <p>Aucun fichier de défraiement</p>
+                            <p>{% trans %}Aucun fichier de défraiement{% endtrans %}</p>
                         {% endif %}
                     </div>
                     <div class="col-md-6">

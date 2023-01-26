@@ -128,6 +128,7 @@ Votre conférence: "Your talk"
 "Vos conférences": "Your talks"
 "Oui": "Yes"
 "Non": "No"
+"Ma page speaker : %title%": "My speaker page : %title%"
 Nous vous invitons au restaurant: We invite you to the restaurant
 Nous vous hébergeons: "We accomodate you"
 "Le repas des conférenciers, réunissant l'équipe d'organisation, les bénévoles, les sponsors et les speakers, se tiendra le soir du %date%.": "The speakers diner, that brings together the staff, the crew, the sponsors and the speaker will take place on the night of the %date%."
@@ -152,6 +153,16 @@ Nous vous hébergeons: "We accomodate you"
 "La nuit entre le deuxième jour de l'évènement et le lendemain de l'évènement.": "The night between the second day of the event and to day after the event."
 "Nuit du %date_from% au %date_to%": "Night between the %date_from% and the %date_to%"
 "Vous disposez de deux nuits d'hôtel maximum. Donnez-nous les dates qui vous conviennent, nous nous chargeons de la réservation ! (les speakers intercontinentaux peuvent bénéficier de plus de nuités, si vous êtes dans ce cas, le pôle conférence vous aura contacté).": "You have two hotel nights maximum. Give us the dates, we will make the reservation ! (international speakerers may benefit from more nights, if you are in this case our speakers team will have contacted you)."
+"Nous vous défrayons": "We refund you the costs"
+"venue_speaker.expenses.intro": |
+  If you have any, we will refund your transport costs.<br />
+  To do this, we need a receipt (e.g. a train bill) and a bank account number (RIB/IBAN).<br />
+  Use the form below to send us this information (in PDF format). You can send us several files.
+"Liste des fichiers envoyés": "List of sent files"
+"Êtes-vous sûr(e) de vouloir supprimer ce fichier ?": "Are you sure you want to delete this file?"
+"Supprimer le fichier %filename%": "Delete the file %filename%"
+"Aucun fichier de défraiement": "No refund file"
+"Ajouter des fichiers": "Add files"
 "VOS PLACES GRATUITES": "YOUR FREE TICKETS"
 "Enregistrez vous-même vos invités avant le %date% dernier délai. Vos invités recevront leur convocation quelques jours avant l’évènement.": "Register you guests yourself before %date%. Your guests will receive a convocation few days before the event."
 "Pour rappel, les personnes en charge de l’animation de votre stand doivent bénéficier en priorité de ces places.": "As a reminder, the people in charge of your booth need to register those tickets in priority."
