@@ -95,6 +95,9 @@ services:
     AppBundle\Security\TestGithubAuthenticator:
         autowire: true
 
+    AppBundle\Controller\LeadController:
+        autowire: true
+
     AppBundle\Controller\SpeakerSuggestionController:
         autowire: true
 
