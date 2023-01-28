@@ -14,7 +14,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class LeadController extends EventBaseController
 {
-
     /** @var Mailer */
     private $mailer;
 
@@ -82,8 +81,8 @@ class LeadController extends EventBaseController
     {
         $subject = sprintf('%s - Nouvelle demande de dossier de sponsoring', $event->getTitle());
 
-        $content = 
-            sprintf( 
+        $content =
+            sprintf(
                 "Une nouvelle demande de dosssier de sponsoring vient d'être effectuée sur le site. Voici les informations saisies :
                 
                 - Société: %s
@@ -92,16 +91,16 @@ class LeadController extends EventBaseController
                 - Email: %s
                 - Téléphone: %s
                 - Website: %s
-                - Langue: %s", 
+                - Langue: %s",
                 $lead->getCompany(),
-                $lead->getFirstname(), 
-                $lead->getLastname(), 
-                $lead->getEmail(), 
-                $lead->getPhone(), 
-                $lead->getWebsite(), 
-                $lead->getLanguage() 
+                $lead->getFirstname(),
+                $lead->getLastname(),
+                $lead->getEmail(),
+                $lead->getPhone(),
+                $lead->getWebsite(),
+                $lead->getLanguage()
             );
 
-        $this->mailer->sendSimpleMessage($subject, $content, MailUserFactory::sponsors());       
+        $this->mailer->sendSimpleMessage($subject, $content, MailUserFactory::sponsors());
     }
 }
