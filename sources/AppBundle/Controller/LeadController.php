@@ -90,7 +90,7 @@ class LeadController extends EventBaseController
                 - Prénom: %s
                 - Email: %s
                 - Téléphone: %s
-                - Website: %s
+                - Site web: %s
                 - Langue: %s",
                 $lead->getCompany(),
                 $lead->getFirstname(),
