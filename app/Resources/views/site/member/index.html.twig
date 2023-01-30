@@ -27,6 +27,14 @@
 
     <h2>Mon compte</h2>
 
+    <style>
+        .member-index-item--description {
+            margin: 15px 0 0 0;
+            padding: 0 30px 0 0;
+            font-style: italic;
+        }
+    </style>
+
     <div class="member-index">
 
         <div class="container">
@@ -40,7 +48,11 @@
                     <div class="member-index-item--link">
                         <a class="button-inverted button__medium" href="{{ href }}">Modifier</a>
                     </div>
+                    <div class="member-index-item--description">
+                        Modifiez votre adresse de facturation et votre adresse email, changez votre mot de passe
+                    </div>
                 </div>
+
             </div>
 
             <div class="col-md-6 col-sm-12">
@@ -66,6 +78,9 @@
                             {% if has_up_to_date_membership_fee %}Consulter{% else %}Se mettre à jour{% endif %}
                         </a>
                     </div>
+                    <div class="member-index-item--description">
+                        Renouvelez votre adhésion, retrouvez l’historique de vos cotisations, téléchargez vos factures.
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,6 +98,9 @@
                         <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ href }}">
                             {% if has_member_subscribed_to_techletter %}Consulter{% else %}Gérer mon abonnement{% endif %}
                         </a>
+                    </div>
+                    <div class="member-index-item--description">
+                        Profitez de cet avantage exclusif réservé à nos membres : recevez 2 fois par mois notre veille dédiée à PHP, effectuée par notre pôle d’experts.
                     </div>
                 </div>
             </div>
@@ -116,6 +134,9 @@
                             <a class="button-inverted button__medium" href="{{ href }}">Comptes-rendus</a>
                         {% endif %}
                     </div>
+                    <div class="member-index-item--description">
+                        L’AG annuelle de l’association se tient chaque mois de février. Le moment venu, indiquez votre présence ou donnez votre pouvoir à un·e autre membre.
+                    </div>
                 </div>
             </div>
 
@@ -134,6 +155,9 @@
                     <div class="member-index-item--link">
                         <a class="button-inverted button__medium {% if not office_label %}button--call-to-action{% endif %}" href="{{ href }}">{% if office_label %}Modifier{% else %}Définir{% endif %}</a>
                     </div>
+                    <div class="member-index-item--description">
+                        Indiquez l’antenne AFUP la plus proche de chez vous : une information qui sera notamment utile pour votre badge lors du Forum PHP !
+                    </div>
                 </div>
             </div>
         </div>
@@ -149,6 +173,9 @@
                         {% elseif user.slackInviteRequested %}
                             <a class="button-inverted button__medium" href="http://afup-membres.slack.com/" target="afup-slack">Accéder</a>
                         {% endif %}
+                    </div>
+                    <div class="member-index-item--description">
+                        Rejoignez notre Slack réservé à nos membres, pour discuter PHP, poster vos recherches d’emploi et profiter d’un espace privilégié pour échanger avec la communauté.
                     </div>
                 </div>
             </div>
@@ -205,6 +232,19 @@
         </div>
         {% endif %}
 
+    </div>
+
+
+    <h2>Restons en contact</h2>
+
+    <div class="container">
+        Plusieurs façons de rester au fait des activités de l’association et ainsi, de profiter au mieux de votre adhésion :
+        <ul>
+            <li>La newsletter des activités de l’AFUP sort le premier mardi de chaque mois. Assurez-vous qu’elle ne parte pas dans vos spams ;</li>
+            <li>Visitez régulièrement <a href="/">notre site</a> ou vous abonner à <a href="/rss.xml">nos flux RSS</a> ;</li>
+            <li>Nous suivre sur les réseaux sociaux <a href="https://twitter.com/afup">Twitter</a> et/ou <a href="https://mastodon.online/@afup">Mastodon</a> ; </li>
+            <li>Consulter la <a href="/association/antennes">liste des antennes</a> afin de suivre leur activité.</li>
+        </ul>
     </div>
 
 
