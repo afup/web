@@ -108,11 +108,28 @@ class BadgesComputer
         }
 
         foreach ($this->getEventsInfos($user) as $eventInfo) {
-            $badgesCodes[] = [
+            // First use afup_forum.path as is
+            $badgesCode = [
                 'date' => $eventInfo['date']->format('Y-m-d'),
                 'code' => 'jy-etais-' . $eventInfo['path'],
                 'tooltip' => 'Participation à l\'évènement ' . $eventInfo['title'],
             ];
+            $badgesCodes[] = $badgesCode;
+
+            // Since 2022 events remove the town in the event path to match new image names
+            $isolateTownPattern = '/(?P<name>[a-z]+[0-9]{4})(?P<afteryear>[a-z]*)/';
+            if (preg_match($isolateTownPattern, $eventInfo['path'], $pathMatches)) {
+                $badgesCode['code'] = 'jy-etais-' . $pathMatches['name'];
+
+                // Now add 'enligne' if it was present after a town name
+                if (!empty($pathMatches['afteryear'])
+                    && strpos($pathMatches['afteryear'], 'enligne') !== false
+                    && $pathMatches['afteryear'] !== 'enligne'
+                ) {
+                    $badgesCode['code'] .= 'enligne';
+                }
+                $badgesCodes[] = $badgesCode;
+            }
         }
 
         foreach ($this->getGeneralMeetingYears($user) as $date) {
