@@ -1,5 +1,10 @@
 {% extends ':event/ticket:base.html.twig' %}
 
+{% block metas %}
+    {{ parent() }}
+    <meta name="robots" content="noindex">
+{% endblock %}
+
 {% block content %}
     <div class="col-md-12">
         <h1>{{ 'Billetterie sponsor'|trans }}: {{ event.title }}</h1>
