@@ -58,7 +58,7 @@ class SpeakersExpensesStorage
             $basename = str_replace(sprintf('%d_', $speaker->getId()), '', $file->getBasename());
             $files[] = [
                 'basename' => $basename,
-                'path' => $path . $file->getBasename()
+                'path' => $directory . '/' . $file->getBasename()
             ];
         }
         return $files;

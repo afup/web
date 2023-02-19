@@ -212,8 +212,9 @@
                             <ul>
                                 {% for file in speakers_expenses_files %}
                                     {% set queryParams = app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'delete_file': file.basename}) %}
+                                    {% set queryParams = app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'delete_file': file.basename}) %}
                                     <li>
-                                        <a href="{{ file.path }}" target="_blank" title="Télécharger le fichier {{ file.basename }}">
+                                        <a href="{{ path('speaker-infos-files', {speakerId: speaker.id, eventSlug: event.path, filename: file.basename}) }}" target="_blank" title="Télécharger le fichier {{ file.basename }}">
                                             {{ file.basename }}
                                         </a>
                                         <a href="{{ path(app.request.attributes.get('_route'), queryParams) }}#expenses"
@@ -234,7 +235,9 @@
                         <div class="error">
                             {{ form_errors(speakers_expenses_form.files) }}
                         </div>
-                        {{ form_widget(speakers_expenses_form.files) }}
+                        <div style="margin-bottom: 2rem;">
+                            {{ form_widget(speakers_expenses_form.files) }}
+                        </div>
                         <div class="submit-container">
                             {{ form_row(speakers_expenses_form.submit) }}
                         </div>
