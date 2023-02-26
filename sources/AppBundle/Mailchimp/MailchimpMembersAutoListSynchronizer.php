@@ -102,12 +102,13 @@ class MailchimpMembersAutoListSynchronizer
             try {
                 $this->mailchimp->subscribeAddressWithoutConfirmation($this->listId, $email);
             } catch (\Exception $e) {
+                $this->logger->error('Error subscribing {address} to techletter', ['address' => $email, 'message' => $e->getMessage()]);
                 $errors[$email] = $email . ' : ' . $e->getMessage();
             }
         }
 
         if (count($errors)) {
-            throw new \RuntimeException('Errors during subscribeAddresses : '. implode($errors, PHP_EOL));
+            throw new \RuntimeException('Errors during subscribeAddresses : ' . implode($errors, PHP_EOL));
         }
     }
 
