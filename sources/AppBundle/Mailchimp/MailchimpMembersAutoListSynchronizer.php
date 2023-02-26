@@ -94,9 +94,21 @@ class MailchimpMembersAutoListSynchronizer
      */
     private function subscribeAddresses(array $emails)
     {
+        $errors = [];
+
         foreach ($emails as $email) {
             $this->logger->info('Subscribe {address} to techletter', ['address' => $email]);
-            $this->mailchimp->subscribeAddressWithoutConfirmation($this->listId, $email);
+
+            try {
+                $this->mailchimp->subscribeAddressWithoutConfirmation($this->listId, $email);
+            } catch (\Exception $e) {
+                $this->logger->error('Error subscribing {address} to techletter', ['address' => $email, 'message' => $e->getMessage()]);
+                $errors[$email] = $email . ' : ' . $e->getMessage();
+            }
+        }
+
+        if (count($errors)) {
+            throw new \RuntimeException('Errors during subscribeAddresses : ' . implode($errors, PHP_EOL));
         }
     }
 
