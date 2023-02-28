@@ -104,6 +104,10 @@ speaker-infos:
   path: /{eventSlug}/speaker-infos
   defaults: {_controller: AppBundle\Controller\Event\SpeakerPageAction }
 
+speaker-infos-files:
+  path: /{eventSlug}/speaker-infos/files/{speakerId}/{filename}
+  defaults: {_controller: AppBundle\Controller\Event\SpeakerFilesAction }
+
 planning_ics:
   path: /{eventSlug}/planning.ics
   defaults: {_controller: AppBundle:Event:planningIcs}
