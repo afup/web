@@ -41,8 +41,26 @@
             color: red;
         }
         .speakers-infos-form .submit-container {
-            text-align: right;
             padding: 0 15px 0 0;
+        }
+
+        .speakers-infos-form--phone label {
+            border: 0;
+            margin: 0;
+            min-width: auto;
+            padding-right: 15px;
+        }
+
+        .speakers-infos-form--phone input[type="text"] {
+            min-height: 3em;
+        }
+
+        .speakers-infos-form--diner textarea {
+            width: 100%;
+        }
+
+        .speakers-infos-form--diner .submit-container {
+            text-align: center;
         }
     </style>
 
@@ -83,17 +101,18 @@
             <h2><a id="contact" href="#contact">📞 {% trans %}Moyen de contact{% endtrans %}</a></h2>
             <p>{{ 'speakers_contact_help'|trans }}</p>
 
-            {{ form_start(speakers_contact_form, { attr: { class: "speakers-infos-form" }, action: '#contact'}) }}
+            {{ form_start(speakers_contact_form, { attr: { class: "speakers-infos-form speakers-infos-form--phone" }, action: '#contact'}) }}
             <div class="container">
-                <div class="col-md-6">
+                <span>
                     {{ form_label(speakers_contact_form.phone_number) }}
-                    {{ form_errors(speakers_contact_form.phone_number) }}
+                </span>
+                <span>
                     {{ form_widget(speakers_contact_form.phone_number) }}
-                </div>
-            </div>
-
-            <div class="submit-container">
-                {{ form_widget(speakers_contact_form.submit) }}
+                    {{ form_errors(speakers_contact_form.phone_number) }}
+                </span>
+                <span>
+                    {{ form_widget(speakers_contact_form.submit) }}
+                </span>
             </div>
 
             {{ form_end(speakers_contact_form) }}
@@ -106,7 +125,7 @@
             {% if should_display_speakers_diner_form %}
                 <p>{% trans %}Si vous avez un régime alimentaire spécifique, n'hésitez pas à nous en faire part pour prévenir le chef.{% endtrans %}</p>
 
-                {{ form_start(speakers_diner_form, { attr: { class: "speakers-infos-form" }, action: '#diner'}) }}
+                {{ form_start(speakers_diner_form, { attr: { class: "speakers-infos-form speakers-infos-form--diner" }, action: '#diner'}) }}
 
                 <div class="container">
                     <div class="col-md-6">
@@ -119,7 +138,11 @@
                         {{ form_label(speakers_diner_form.has_special_diet) }}
                         {{ form_errors(speakers_diner_form.has_special_diet) }}
                         {{ form_widget(speakers_diner_form.has_special_diet) }}
+                    </div>
+                </div>
 
+                <div class="container">
+                    <div class="col-md-12">
                         {{ form_label(speakers_diner_form.special_diet_description) }}
                         {{ form_errors(speakers_diner_form.special_diet_description) }}
                         {{ form_widget(speakers_diner_form.special_diet_description) }}
