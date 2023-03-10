@@ -46,7 +46,6 @@ class SpeakersExpensesStorage
 
     public function getFiles(Speaker $speaker)
     {
-        $path = $this->getPath($speaker);
         $directory = $this->getDir($speaker);
         $this->createDirectory($directory);
 

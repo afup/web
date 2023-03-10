@@ -37,6 +37,10 @@ admin_event_speakers_management:
   path: /speakers-management
   defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakersManagementAction}
 
+admin_event_speakers_expenses:
+  path: /speakers-expenses
+  defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakersExpensesAction}
+
 admin_event_special_price:
   path: /special_price
   defaults: {_controller: AppBundle\Controller\Admin\Event\SpecialPriceAction}

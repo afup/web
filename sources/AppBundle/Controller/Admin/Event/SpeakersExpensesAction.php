@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class SpeakersManagementAction extends Controller
+class SpeakersExpensesAction extends Controller
 {
     /** @var EventActionHelper */
     private $eventActionHelper;
@@ -50,12 +50,11 @@ class SpeakersManagementAction extends Controller
             $speakers = iterator_to_array($speakers->getIterator());
             foreach ($speakers as $k => $speaker) {
                 $files = $this->speakersExpensesStorage->getFiles($speaker['speaker']);
-                $speakers[$k]['hasExpensesFiles'] = count($files) >= 1;
+                $speakers[$k]['hasExpensesFiles'] = $files;
             }
         }
 
-
-        return new Response($this->twig->render('admin/event/speakers_management.html.twig', [
+        return new Response($this->twig->render('admin/event/speakers_expenses.html.twig', [
             'event' => $event,
             'speakers' => $speakers,
             'event_select_form' => $this->formFactory->create(EventSelectType::class, $event)->createView(),
