@@ -204,3 +204,7 @@ The password fields must match: Les mots de passe doivent correspondre
 country: Pays
 speakers_contact_help: Vos informations de contact sont importantes pour pouvoir vous joindre avant et pendant l'évènement en cas de nécessité. Elles seront utilisées notamment le jour J par l'équipe organisatrice pour vous accompagner ou vous guider en cas de problème. En aucun cas ces informations ne sont cédées à un tiers.
 speaker_from_previous_event: Nous avons prérempli ce formulaire avec les informations de votre précédente soumission. Vous pouvez les éditer ou non selon votre souhait.
+venue_speaker.expenses.intro: |
+  Le package speaker prend en charge le remboursement des frais de transport, sur base d'un trajet en 2nde classe ou classe économique.<br />
+  Envoyez-nous vos justificatifs (par exemple, une facture de billet de train ou une copie du billet), ainsi que votre RIB/IBAN.<br />
+  Utilisez le formulaire ci-dessous pour nous envoyer ces informations (au format PDF). Vous pouvez nous envoyer plusieurs fichiers.

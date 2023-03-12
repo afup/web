@@ -19,11 +19,11 @@
             }
         }
     </style>
-    <meta property="og:title" content="AFUP - Super-apéro PHP - 23 juin" />
+    <meta property="og:title" content="AFUP - Super-apéro PHP" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ app.request.getSchemeAndHttpHost() }}{{ path('superapero') }}" />
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() }}/images/super_apero_php-300x213.png" />
-    <meta property="og:description" content="Les 16 antennes AFUP vous attendent pour célébrer PHP le soir du jeudi 23 juin" />
+    <meta property="og:description" content="Super Apéro PHP, l’apéro avec une cape organisé dans les antennes AFUP" />
     <meta property="og:site_name" content="AFUP" />
 {% endblock %}
 
@@ -39,10 +39,10 @@
             <h2 style="text-align: center">Des apéros PHP le même jour dans toutes les antennes !</h2>
 
             <blockquote>
-                <p>Cette fois-ci c’est la bonne ! Le Super Apéro PHP revient enfin en présentiel, et en force, puisque le rendez-vous communautaire organisé le même soir dans l’ensemble des antennes AFUP est cette année couplé aux élections, visant à renouveler la composition des équipes des dites-antennes.</p>
+                <p>Le Super Apéro PHP fait enfin son retour dans son format d'origine, c'est à dire organisé en mars et en présentiel ! Bloquez votre soirée du jeudi 16 mars et rendez-vous dans votre antenne locale pour une soirée de conférences et d'échanges, où toute la communauté PHP sera invitée à lever son verre pour célébrer le langage !</p>
             </blockquote>
 
-            <p>Rendez-vous donc le soir du jeudi 23 juin dans votre antenne AFUP locale, pour assister à des talks passionnants, jouer en compétition avec les autres antennes, élire vos coordinateurs et coordinatrices locaux et lever votre verre à PHP. Retrouvez l’ensemble des rendez-vous ci-dessous et assistez à une soirée qui boostera toute la communauté PHP !</p>
+            <p>Cette année, le concours inter-antennes sera organisé autour d'un concours photo : suivez <a href="https://twitter.com/search?q=%23SuperAperoPHP2023">#SuperAperoPHP2023</a> sur Twitter pour découvrir les soumissions aux titres de "photo la plus peuplée" et "photo la plus originale" au cours de la soirée, et bien sûr soumettez celles de votre antenne.</p>
 
             {% for apero in aperos %}
                 {% if loop.index is odd %}

@@ -50,7 +50,8 @@ class Comptabilite
         $requete .= 'compta_reglement.reglement, ';
         $requete .= 'compta_evenement.evenement, compta.idevenement, ';
         $requete .= 'compta_categorie.categorie, compta.idcategorie, ';
-        $requete .= 'compta.attachment_required, compta.attachment_filename ';
+        $requete .= 'compta.attachment_required, compta.attachment_filename, ';
+        $requete .= 'compta_compte.nom_compte as compta_compte_nom_compte ';
         $requete .= 'FROM  ';
         $requete .= 'compta  ';
         $requete .= 'LEFT JOIN ';
@@ -59,6 +60,8 @@ class Comptabilite
         $requete .= 'compta_reglement on compta_reglement.id=compta.idmode_regl ';
         $requete .= 'LEFT JOIN ';
         $requete .= 'compta_evenement on compta_evenement.id=compta.idevenement ';
+        $requete .= 'LEFT JOIN ';
+        $requete .= 'compta_compte on compta_compte.id=compta.idcompte ';
         $requete .= 'WHERE  ';
         $requete .= 'compta.date_regl >= \'' . $periode_debut . '\' ';
         $requete .= 'AND compta.date_regl <= \'' . $periode_fin . '\'  ';

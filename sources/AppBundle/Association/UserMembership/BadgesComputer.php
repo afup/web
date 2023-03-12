@@ -108,12 +108,26 @@ class BadgesComputer
         }
 
         foreach ($this->getEventsInfos($user) as $eventInfo) {
-            $badgesCodes[] = [
+            // First use afup_forum.path as is
+            $code = 'jy-etais-' . $eventInfo['path'];
+
+            // a partir de 2022 les badges pour l'AFUP Day ne sont plus par ville mais
+            // identiques pour toutes les villes (cela permet de les créer en amont et
+            // en simplifie la maintenance).
+            $isolateTownPattern = '/afupday(?P<year>[0-9]{4})/';
+            if (preg_match($isolateTownPattern, $eventInfo['path'], $pathMatches)) {
+                if ($pathMatches['year'] >= 2022) {
+                    $code = 'jy-etais-afupday' . $pathMatches['year'];
+                }
+            }
+
+            $badgesCodes[$code] = [
                 'date' => $eventInfo['date']->format('Y-m-d'),
-                'code' => 'jy-etais-' . $eventInfo['path'],
+                'code' => $code,
                 'tooltip' => 'Participation à l\'évènement ' . $eventInfo['title'],
             ];
         }
+
 
         foreach ($this->getGeneralMeetingYears($user) as $date) {
             $badgesCodes[] = [

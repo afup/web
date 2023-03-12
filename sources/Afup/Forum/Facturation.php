@@ -4,6 +4,7 @@ use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
+use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
@@ -127,13 +128,17 @@ class Facturation
 
         $pays = new Pays($this->_bdd);
 
-        // Construction du PDF
+        $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
+            ? \DateTimeImmutable::createFromFormat('U', $facture['date_facture'])
+            : new \DateTimeImmutable();
 
-        $pdf = new PDF_Facture($configuration);
+        $bankAccountFactory = new BankAccountFactory($configuration);
+        // Construction du PDF
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture']) ? $facture['date_facture'] : time())));
+        $pdf->Cell(60, 5, 'Le ' . $dateFacture->format('d/m/Y'));
 
         $pdf->Ln();
         $pdf->Ln();
@@ -223,11 +228,17 @@ class Facturation
 
         // Construction du PDF
 
-        $pdf = new PDF_Facture($configuration);
+        $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
+            ? \DateTimeImmutable::createFromFormat('U', $facture['date_facture'])
+            : new \DateTimeImmutable();
+
+        $bankAccountFactory = new BankAccountFactory($configuration);
+        // Construction du PDF
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', (isset($facture['date_facture']) && !empty($facture['date_facture']) ? $facture['date_facture'] : time())));
+        $pdf->Cell(60, 5, 'Le ' . $dateFacture->format('d/m/Y'));
 
         $pdf->Ln();
         $pdf->Ln();

@@ -43,19 +43,16 @@ class PayboxFactory
 
         $now = new \DateTime();
 
-        $returnUrl = $this->router->generate('membership_payment_redirect', [], RouterInterface::ABSOLUTE_URL);
-        $ipnUrl = $this->router->generate('membership_payment', [], RouterInterface::ABSOLUTE_URL);
-
         $paybox
             ->setTotal($montant * 100) // Total de la commande, en centimes d'euros
             ->setCmd($facture) // Référence de la commande
             ->setPorteur($email) // Email du client final (Le porteur de la carte)
-            ->setUrlRetourEffectue($returnUrl)
-            ->setUrlRetourRefuse($returnUrl)
-            ->setUrlRetourAnnule($returnUrl)
-            ->setUrlRepondreA($ipnUrl)
+            ->setUrlRetourEffectue($this->router->generate('membership_payment_redirect', ['type'=>'success'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourRefuse($this->router->generate('membership_payment_redirect', ['type'=>'refused'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourAnnule($this->router->generate('membership_payment_redirect', ['type'=>'canceled'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourErreur($this->router->generate('membership_payment_redirect', ['type'=>'error'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRepondreA($this->router->generate('membership_payment', [], RouterInterface::ABSOLUTE_URL))
         ;
-
 
         return $paybox->generate($now);
     }

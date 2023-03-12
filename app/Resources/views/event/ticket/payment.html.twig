@@ -11,7 +11,7 @@
 {% block content %}
     <div class="col-md-8">
         {% if not invoice.isFree %}
-        <h2>Paiement de vos billets</h2>
+        <h1>Paiement de vos billets</h1>
         <div>
             <p>
                 Nous avons bien re&ccedil;u votre inscription et nous vous en remercions !
@@ -29,7 +29,7 @@
                         <th>IBAN</th><th>BIC/SWIFT</th>
                     </tr>
                     <tr>
-                        <td>{{ rib.iban }}</td><td>{{ rib.bic }}</td>
+                        <td>{{ bankAccount.getIban }}</td><td>{{ bankAccount.getBic }}</td>
                     </tr>
                 </table>
                 <p>Pensez à indiquer dans le libellé du virement la référence suivante: {{ invoice.reference }}</p>

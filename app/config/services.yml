@@ -95,6 +95,9 @@ services:
     AppBundle\Security\TestGithubAuthenticator:
         autowire: true
 
+    AppBundle\Controller\LeadController:
+        autowire: true
+
     AppBundle\Controller\SpeakerSuggestionController:
         autowire: true
 
@@ -186,6 +189,11 @@ services:
           - "%kernel.root_dir%/../htdocs/uploads/speakers"
           - "/uploads/speakers"
           - "%kernel.root_dir%/../htdocs"
+
+    AppBundle\SpeakerInfos\SpeakersExpensesStorage:
+        arguments:
+            - "%kernel.root_dir%/../htdocs/uploads/speaker_expenses"
+            - "/uploads/speaker_expenses"
 
     AppBundle\Event\Form\SpeakerFormDataFactory:
       autowire: true

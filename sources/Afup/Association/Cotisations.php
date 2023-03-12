@@ -7,6 +7,7 @@ use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
@@ -338,13 +339,14 @@ class Cotisations
 
         $configuration = $GLOBALS['AFUP_CONF'];
 
+        $dateCotisation = \DateTimeImmutable::createFromFormat('U', $cotisation['date_debut']);
+        $bankAccountFactory = new BankAccountFactory($configuration);
         // Construction du PDF
-
-        $pdf = new PDF_Facture($configuration);
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateCotisation));
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Le ' . date('d/m/Y', $cotisation['date_debut']));
+        $pdf->Cell(60, 5, 'Le ' . $dateCotisation->format('d/m/Y'));
 
         $pdf->Ln();
         $pdf->Ln();
