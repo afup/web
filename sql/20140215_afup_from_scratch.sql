@@ -933,6 +933,76 @@ CREATE TABLE IF NOT EXISTS `afup_presences_assemblee_generale` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `afup_rendezvous`
+--
+
+CREATE TABLE IF NOT EXISTS `afup_rendezvous` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `titre` varchar(255) DEFAULT NULL,
+  `accroche` mediumtext,
+  `theme` mediumtext,
+  `debut` int(11) DEFAULT NULL,
+  `fin` int(11) DEFAULT NULL,
+  `lieu` varchar(255) DEFAULT NULL,
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `plan` varchar(255) NOT NULL DEFAULT '',
+  `adresse` mediumtext NOT NULL,
+  `capacite` mediumint(9) DEFAULT NULL,
+  `id_antenne` int(11) NOT NULL,
+  `inscription` tinyint(1) NOT NULL DEFAULT '1',
+  `url_externe` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+
+--
+-- Contenu de la table `afup_rendezvous`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `afup_rendezvous_inscrits`
+--
+
+CREATE TABLE IF NOT EXISTS `afup_rendezvous_inscrits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_rendezvous` int(11) DEFAULT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `prenom` varchar(100) NOT NULL,
+  `entreprise` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `telephone` varchar(255) DEFAULT NULL,
+  `presence` tinyint(4) DEFAULT NULL,
+  `confirme` tinyint(4) DEFAULT '0',
+  `creation` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1423 ;
+
+--
+-- Contenu de la table `afup_rendezvous_inscrits`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `afup_rendezvous_slides`
+--
+
+CREATE TABLE IF NOT EXISTS `afup_rendezvous_slides` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_rendezvous` int(11) NOT NULL,
+  `fichier` int(255) DEFAULT NULL,
+  `url` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
+
+--
+-- Contenu de la table `afup_rendezvous_slides`
+--
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `afup_sessions`
 --
 
