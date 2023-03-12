@@ -1,0 +1,37 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Venue speakers</h2>
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+
+    <table class="ui table striped compact celled afup-tab-filterable">
+        <thead>
+            <tr>
+                <th data-tf-filter-type="input">Speaker</th>
+                <th data-tf-filter-type="input" class="center aligned">Justificatifs</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for speaker in speakers %}
+            <tr>
+                <td>{{ speaker.speaker.label }}</td>
+                <td  class="center aligned">
+                {% for file in speaker.hasExpensesFiles %}
+                    <a href="{{ path('speaker-infos-files', {speakerId: speaker.speaker.id, eventSlug: event.path, filename: file.basename}) }}" target="_blank" title="Télécharger le fichier {{ file.basename }}">
+                        {{ file.basename }}
+                    </a>{%- if not loop.last -%},{% endif %}
+                {% endfor %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="2" style="text-align: center;">
+                    <div class="ui icon header">
+                        <i class="meh outline icon"></i>
+                        Aucune information. {% if event == null %}Essayez de changez d'évènement !{% endif %}
+                    </div>
+                </td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

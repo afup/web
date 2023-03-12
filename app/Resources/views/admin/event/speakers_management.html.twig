@@ -17,6 +17,7 @@
                 <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel entre les deux jours ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel après l'évènement ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Pas de nuit d'hotel ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Justificatifs envoyés ?</th>
                 <th></th>
             </tr>
         </thead>
@@ -118,6 +119,15 @@
                     {% endif %}
                     </span>
                 </td>
+                <td  class="center aligned">
+                    <span class="ui label">
+                    {% if speaker.hasExpensesFiles %}
+                        oui
+                    {% else %}
+                        non
+                    {% endif %}
+                    </span>
+                </td>
                 <td>
                     <a href="{{ path('admin_event_speaker_infos', {speaker_id: speaker.speaker.id, id: event.id }) }}"
                        data-position="left center"
@@ -129,7 +139,7 @@
                 </td>
             </tr>
             {% else %}
-            <tr><td colspan="9" style="text-align: center;">
+            <tr><td colspan="12" style="text-align: center;">
                     <div class="ui icon header">
                         <i class="meh outline icon"></i>
                         Aucune information. {% if event == null %}Essayez de changez d'évènement !{% endif %}

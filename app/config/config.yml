@@ -199,6 +199,12 @@ parameters:
                     url: '/admin/event/speakers-management'
                     extra_routes:
                         - admin_event_speakers_management
+                admin_event_speakers_expenses:
+                    nom: 'Justificatifs speakers'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/speakers-expenses'
+                    extra_routes:
+                        - admin_event_speakers_expenses
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
