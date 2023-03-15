@@ -89,7 +89,7 @@ class HomeAction
             }
         }
 
-        if ($this->security->isGranted(('ROLE_VEILLE'))) {
+        if ($this->security->isGranted(('ROLE_ADMIN'))) {
             $cards[] = [
                 'title' => 'Abonnements à la veille',
                 'statistics' => ['Abonnements' => $this->techletterSubscriptionsRepository->countAllSubscriptionsWithUser()],
