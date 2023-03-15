@@ -29,6 +29,6 @@ Feature: Administration - Veille - Campagnes
 
     When I follow "Campagnes"
     Then the ".content h2" element should contain "Campagnes"
-    And I should see "3" in the "tbody > tr:last-child > td:nth-child(1)" element
-    And I should see "01/02/2023" in the "tbody > tr:last-child > td:nth-child(2)" element
-    And I should see "non" in the "tbody > tr:last-child > td:nth-child(3)" element
+    And I should see "3" in the "tbody > tr:first-child > td:nth-child(1)" element
+    And I should see "01/02/2023" in the "tbody > tr:first-child > td:nth-child(2)" element
+    And I should see "non" in the "tbody > tr:first-child > td:nth-child(3)" element
