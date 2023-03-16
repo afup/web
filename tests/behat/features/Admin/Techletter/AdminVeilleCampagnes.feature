@@ -6,7 +6,7 @@ Feature: Administration - Veille - Campagnes
   Scenario: Créer une campagne pour la veille tech
     Given I am logged in as admin and on the Administration
     And I follow "Campagnes"
-    Then the ".content h2" element should contain "Campagnes"
+    Then the ".content h2:nth-child(2)" element should contain "Campagnes"
     And I should see "ID" in the "thead > tr:first-child > th:nth-child(1)" element
     And I should see "Date d'envoi planifiée" in the "thead > tr:first-child > th:nth-child(2)" element
     And I should see "Envoyée à mailchimp ?" in the "thead > tr:first-child > th:nth-child(3)" element
@@ -28,7 +28,7 @@ Feature: Administration - Veille - Campagnes
     And the ".content .header" element should contain "Date mise à jour"
 
     When I follow "Campagnes"
-    Then the ".content h2" element should contain "Campagnes"
-    And I should see "3" in the "tbody > tr:last-child > td:nth-child(1)" element
-    And I should see "01/02/2023" in the "tbody > tr:last-child > td:nth-child(2)" element
-    And I should see "non" in the "tbody > tr:last-child > td:nth-child(3)" element
+    Then the ".content h2:nth-child(2)" element should contain "Campagnes"
+    And I should see "3" in the "tbody > tr:first-child > td:nth-child(1)" element
+    And I should see "01/02/2023" in the "tbody > tr:first-child > td:nth-child(2)" element
+    And I should see "non" in the "tbody > tr:first-child > td:nth-child(3)" element

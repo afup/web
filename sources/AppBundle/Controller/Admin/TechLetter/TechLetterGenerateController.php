@@ -47,7 +47,7 @@ class TechLetterGenerateController extends SiteBaseController
 
     public function indexAction(Request $request)
     {
-        $techLetters = $this->sendingRepository->getAll();
+        $techLetters = $this->sendingRepository->getAllOrderedByDateDesc();
         $form = $this->formFactory->create(SendingType::class);
         $form->handleRequest($request);
 

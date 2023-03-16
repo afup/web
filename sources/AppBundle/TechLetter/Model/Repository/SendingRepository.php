@@ -13,6 +13,17 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class SendingRepository extends Repository implements MetadataInitializer
 {
+    public function getAllOrderedByDateDesc()
+    {
+        $sql = <<<SQL
+SELECT afup_techletter.*
+FROM afup_techletter
+ORDER BY afup_techletter.sending_date DESC
+SQL;
+        $query = $this->getQuery($sql);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
     public function getAllPastSent()
     {
         $sql = <<<SQL

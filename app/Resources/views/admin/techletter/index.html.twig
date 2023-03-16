@@ -1,6 +1,25 @@
 {% extends ':admin:base_with_header.html.twig' %}
 
 {% block content %}
+
+    <div class="ui segment">
+        <h2 class="ui header">Nouvelle campagne</h2>
+        <div class="ui clearing divider"></div>
+        {{ form_start(form) }}
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    {{ form_label(form.sendingDate) }}
+                    {{ form_widget(form.sendingDate, {"attr": { "class": "inline fields"} }) }}
+                    {{ form_errors(form.sendingDate) }}
+
+                    {{ form_row(form.save, { attr: { class : "ui blue button" }}) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
     <h2>Campagnes</h2>
 
     <table class="ui table striped compact celled">
@@ -37,23 +56,5 @@
             {% endfor %}
         </tbody>
     </table>
-
-    <div class="ui segment">
-        <h2 class="ui header">Nouvelle campagne</h2>
-        <div class="ui clearing divider"></div>
-        {{ form_start(form) }}
-        <div class="ui form">
-            <div class="inline fields">
-                <div class="field">
-                    {{ form_label(form.sendingDate) }}
-                    {{ form_widget(form.sendingDate, {"attr": { "class": "inline fields"} }) }}
-                    {{ form_errors(form.sendingDate) }}
-
-                    {{ form_row(form.save, { attr: { class : "ui blue button" }}) }}
-                </div>
-            </div>
-        </div>
-        {{ form_end(form) }}
-    </div>
 
 {% endblock %}
