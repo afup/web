@@ -47,6 +47,10 @@ class SpeakerFormData
      */
     public $twitter;
     /**
+     * @var string
+     */
+    public $mastodon;
+    /**
      * @Assert\File(mimeTypes={"image/jpeg","image/png"})
      * @var UploadedFile|null
      */

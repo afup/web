@@ -822,7 +822,9 @@ form[name="speaker"] textarea, form[name="talk"] textarea{
     width: calc(100% - 220px - 1em);
     min-height:200px;
 }
-
+form[name="speaker"] label.required:after {
+    content: " *";
+}
 #talk_staffNotes {
     min-height: 100px;
 }

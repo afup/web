@@ -247,6 +247,11 @@ SQL
                 'type' => 'string'
             ])
             ->addField([
+                'columnName' => 'mastodon',
+                'fieldName' => 'mastodon',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'user_github',
                 'fieldName' => 'user',
                 'type' => 'int'
