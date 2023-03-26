@@ -65,7 +65,7 @@
 {if $ecriture.numero_facture == ''}
                <a href="index.php?page=compta_devis&amp;action=modifier&amp;id={$ecriture.id}"
                   data-position="left center"
-                  data-tooltip="Modifier le devis {$ecriture.description}"
+                  data-tooltip="Modifier le devis {$ecriture.societe}"
                   class="compact ui icon button"
                >
                    <i class="pencil alernate icon"></i>
@@ -73,7 +73,7 @@
 {else}
                <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}"
                   data-position="left center"
-                  data-tooltip="Modifier la facture {$ecriture.description}"
+                  data-tooltip="Modifier la facture {$ecriture.societe}"
                   class="compact ui icon button"
                >
                    <i class="pencil alernate icon"></i>
@@ -89,7 +89,7 @@
 {if $ecriture.numero_facture == ''}
                <a href="index.php?page=compta_devis&amp;action=transfert&amp;ref={$ecriture.numero_devis}"
                   data-position="left center"
-                  data-tooltip="Transférer la ligne {$ecriture.description} en facture"
+                  data-tooltip="Transférer la ligne {$ecriture.societe} en facture"
                   class="compact ui icon button"
                >
                    <i class="cart icon"></i>
