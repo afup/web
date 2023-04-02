@@ -515,12 +515,6 @@ services:
         arguments:
           - 'Afup\Site\Forum\Forum'
 
-    Afup\Site\Rendez_Vous:
-        class: Afup\Site\Rendez_Vous
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Rendez_Vous'
-
     Afup\Site\Utils\Pays:
         class: Afup\Site\Utils\Pays
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
@@ -694,10 +688,6 @@ services:
     Symfony\Component\Routing\Generator\UrlGeneratorInterface:
         alias: 'router'
         public: true
-
-    AppBundle\Controller\RendezVous\:
-        resource: '../../sources/AppBundle/Controller/RendezVous/*'
-        autowire: true
 
     PlanetePHP\FeedRepository:
         autowire: true

@@ -61,26 +61,3 @@ legacy_event:
   requirements:
     year: '200[5-9]'
     page: '[a-z0-9-_]+.php'
-
-legacy_rendezvous:
-  path: /pages/rendezvous/{page}
-  defaults:
-    _controller: AppBundle\Controller\RendezVous\RendezVousIndexAction
-    page: index.php
-  requirements:
-    page: 'index.php'
-
-legacy_rendezvous_archive:
-  path: /pages/rendezvous/archive.php
-  defaults:
-    _controller: AppBundle\Controller\RendezVous\RendezVousArchiveAction
-
-legacy_rendezvous_archives:
-  path: /pages/rendezvous/archives.php
-  defaults:
-    _controller: AppBundle\Controller\RendezVous\RendezVousArchivesAction
-
-legacy_rendezvous_confirmation:
-  path: /pages/rendezvous/confirmation.php
-  defaults:
-    _controller: AppBundle\Controller\RendezVous\RendezVousConfirmationAction
