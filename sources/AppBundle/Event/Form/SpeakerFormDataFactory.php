@@ -17,6 +17,7 @@ class SpeakerFormDataFactory
         $data->locality = $speaker->getLocality();
         $data->biography = $speaker->getBiography();
         $data->twitter = $speaker->getTwitter();
+        $data->mastodon = $speaker->getMastodon();
         $data->githubUser = $speaker->getUser();
         $data->phoneNumber = $speaker->getPhoneNumber();
         $data->referentPerson = $speaker->getReferentPerson();

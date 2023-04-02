@@ -7,7 +7,9 @@
         {% if form.isFromPreviousEvent is defined %}
             <p>{{ 'speaker_from_previous_event'|trans }}</p>
         {% endif %}
-        {{ form(form) }}
+        <p>
+            <span class="required">*</span>&nbsp; Indique un champ obligatoire
+        </p>        {{ form(form) }}
 
         {% if photo != null %}
             <h3>{{ 'Ma photo de profil'|trans }}</h3>

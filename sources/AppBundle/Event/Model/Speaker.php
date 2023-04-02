@@ -82,6 +82,11 @@ class Speaker implements NotifyPropertyInterface
     private $twitter;
 
     /**
+     * @var string
+     */
+    private $mastodon;
+
+    /**
      * @var GithubUser
      */
     private $githubUser;
@@ -393,6 +398,14 @@ class Speaker implements NotifyPropertyInterface
     }
 
     /**
+     * @return string
+     */
+    public function getMastodon()
+    {
+        return $this->mastodon;
+    }
+
+    /**
      * @return bool|string
      */
     public function getCleanedTwitter()
@@ -416,6 +429,17 @@ class Speaker implements NotifyPropertyInterface
     {
         $this->propertyChanged('twitter', $this->twitter, $twitter);
         $this->twitter = $twitter;
+        return $this;
+    }
+
+    /**
+     * @param string $mastodon
+     * @return Speaker
+     */
+    public function setMastodon($mastodon)
+    {
+        $this->propertyChanged('mastodon', $this->mastodon, $mastodon);
+        $this->mastodon = $mastodon;
         return $this;
     }
 

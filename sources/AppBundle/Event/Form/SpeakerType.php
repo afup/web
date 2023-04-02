@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -56,6 +57,7 @@ class SpeakerType extends AbstractType
             ->add('phone_number', TextType::class, ['required' => false, 'property_path' => 'phoneNumber', 'label' => 'Phone', 'help' => 'Utilisé uniquement pour vous contacter avant et durant de l\'évènement.'])
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
+            ->add('mastodon', UrlType::class, ['required' => false, 'help' => 'Exemple https://mastodon.online/@afup', 'default_protocol' => 'https'])
         ;
 
         if (true === $options[self::OPT_USER_GITHUB]) {
@@ -106,6 +108,7 @@ class SpeakerType extends AbstractType
                     $speaker->setPhoneNumber($previousSpeakerInfos->getPhoneNumber());
                     $speaker->setBiography($previousSpeakerInfos->getBiography());
                     $speaker->setTwitter($previousSpeakerInfos->getTwitter());
+                    $speaker->setMastodon($previousSpeakerInfos->getMastodon());
                     $speaker->setPhoto($previousSpeakerInfos->getPhoto());
 
                     $formEvent->getForm()->add('isFromPreviousEvent', HiddenType::class, ['mapped' => false]);
