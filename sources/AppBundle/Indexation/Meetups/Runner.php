@@ -4,7 +4,6 @@ namespace AppBundle\Indexation\Meetups;
 
 use AlgoliaSearch\Client;
 use AppBundle\Offices\OfficesCollection;
-use DMS\Service\Meetup\MeetupKeyAuthClient;
 use DMS\Service\Meetup\MeetupOAuthClient;
 
 class Runner
@@ -15,24 +14,20 @@ class Runner
     protected $algoliaClient;
 
     /**
-     * @var MeetupKeyAuthClient
+     * @var MeetupOAuthClient
      */
     protected $meetupClient;
 
     /**
      * @var OfficesCollection
      */
-    protected $officesCollection;
+    protected $officiesCollection;
 
     /**
      * @var Transformer
      */
     protected $transformer;
 
-    /**
-     * @param Client $algoliaClient
-     * @param MeetupKeyAuthClient $meetupClient
-     */
     public function __construct(Client $algoliaClient, MeetupOAuthClient $meetupClient)
     {
         $this->algoliaClient = $algoliaClient;

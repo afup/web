@@ -26,6 +26,7 @@ class Paybox
     private $porteur = null;
     private $urlRetourEffectue = null;
     private $urlRetourRefuse = null;
+    private $urlRetourErreur = null;
     private $urlRetourAnnule = null;
     private $urlRepondreA = null;
 
