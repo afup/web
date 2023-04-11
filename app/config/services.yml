@@ -194,6 +194,7 @@ services:
         arguments:
             - "%kernel.root_dir%/../htdocs/uploads/speaker_expenses"
             - "/uploads/speaker_expenses"
+            - '@AppBundle\Event\Model\Repository\EventRepository'
 
     AppBundle\Event\Form\SpeakerFormDataFactory:
       autowire: true

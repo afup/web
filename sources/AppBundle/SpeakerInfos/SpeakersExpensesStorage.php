@@ -3,7 +3,10 @@
 
 namespace AppBundle\SpeakerInfos;
 
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Speaker;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -15,12 +18,17 @@ class SpeakersExpensesStorage
     private $basePath;
     private $publicPath;
     private $filesystem;
+    /** @var EventRepository */
+    private $eventRepository;
+    /** @var LoggerInterface */
+    private $logger;
 
-    public function __construct($basePath, $publicPath)
+    public function __construct($basePath, $publicPath, $eventRepository)
     {
         $this->basePath = $basePath;
         $this->publicPath = $publicPath;
         $this->filesystem = new Filesystem();
+        $this->eventRepository = $eventRepository;
     }
 
     public function store(UploadedFile $file, Speaker $speaker)
@@ -61,6 +69,49 @@ class SpeakersExpensesStorage
             ];
         }
         return $files;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     *
+     * @return $this
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+
+        return $this;
+    }
+
+    public function cleanFiles($duration = 'P12M')
+    {
+        $beforeDate = new \DateTime();
+        $beforeDate->sub(new \DateInterval($duration));
+
+        $this->logInfo(sprintf('Speakers Expenses Storages clean before "%s"', $beforeDate->format('Y-m-d')));
+
+        $events = $this->eventRepository->getPreviousEventsBefore($beforeDate);
+
+        /** @var Event $event */
+        foreach ($events as $event) {
+            $this->logInfo(sprintf('Event "%s" #%d [%s]: ', $event->getTitle(), $event->getId(), $event->getDateStart()->format('Y-m-d')));
+
+            $directory = $this->basePath . '/' . $event->getId();
+
+            if ($this->filesystem->exists($directory)) {
+                $this->filesystem->remove($directory);
+                $this->logInfo(sprintf('Removing "%s" directory OK', $directory));
+            } else {
+                $this->logInfo(sprintf('Directory "%s" does not exists', $directory));
+            }
+        }
+    }
+
+    private function logInfo($message)
+    {
+        if ($this->logger) {
+            $this->logger->info($message);
+        }
     }
 
     private function createDirectory($directory)
