@@ -229,6 +229,20 @@ SQL;
     }
 
     /**
+     * @param \DateTimeInterface $beforeDatetime
+     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @throws \CCMBenchmark\Ting\Exception
+     * @throws \CCMBenchmark\Ting\Query\QueryException
+     */
+    public function getPreviousEventsBefore($beforeDatetime)
+    {
+        $query = $this->getQuery('SELECT * FROM afup_forum WHERE date_debut <= :before_date ORDER BY date_debut DESC');
+        $query->setParams(['before_date' => $beforeDatetime->format('Y-m-d')]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
      * @param $path
      *
      * @return Event|null

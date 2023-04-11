@@ -5,7 +5,10 @@ declare(strict_types=1);
 
 namespace AppBundle\SpeakerInfos;
 
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Speaker;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -14,13 +17,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SpeakersExpensesStorage
 {
-    private $basePath;
+    private string $basePath;
     private Filesystem $filesystem;
+    private EventRepository $eventRepository;
 
-    public function __construct($basePath)
+    public function __construct(string $basePath, EventRepository $eventRepository)
     {
         $this->basePath = $basePath;
         $this->filesystem = new Filesystem();
+        $this->eventRepository = $eventRepository;
     }
 
     public function store(UploadedFile $file, Speaker $speaker): string
@@ -64,6 +69,30 @@ class SpeakersExpensesStorage
             ];
         }
         return $files;
+    }
+
+    public function cleanFiles(LoggerInterface $logger, $duration = 'P12M'): void
+    {
+        $beforeDate = new \DateTime();
+        $beforeDate->sub(new \DateInterval($duration));
+
+        $logger->info(sprintf('Speakers Expenses Storages clean before "%s"', $beforeDate->format('Y-m-d')));
+
+        $events = $this->eventRepository->getPreviousEventsBefore($beforeDate);
+
+        /** @var Event $event */
+        foreach ($events as $event) {
+            $logger->info(sprintf('Event "%s" #%d [%s]: ', $event->getTitle(), $event->getId(), $event->getDateStart()->format('Y-m-d')));
+
+            $directory = $this->basePath . '/' . $event->getId();
+
+            if ($this->filesystem->exists($directory)) {
+                $this->filesystem->remove($directory);
+                $logger->info(sprintf('Removing "%s" directory OK', $directory));
+            } else {
+                $logger->info(sprintf('Directory "%s" does not exists', $directory));
+            }
+        }
     }
 
     private function createDirectory(string $directory): void

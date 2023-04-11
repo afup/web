@@ -263,7 +263,7 @@ services:
     AppBundle\SpeakerInfos\SpeakersExpensesStorage:
         arguments:
             - "%kernel.project_dir%/../htdocs/uploads/speaker_expenses"
-            - "/uploads/speaker_expenses"
+            - '@AppBundle\Event\Model\Repository\EventRepository'
 
     Twig_Extensions_Extension_Intl:
         class: Twig_Extensions_Extension_Intl
