@@ -53,6 +53,17 @@ class TalkType extends AbstractType
                 ]
             )
             ->add(
+                'withWorkshop',
+                CheckboxType::class,
+                [
+                    'label' => "Je propose de faire un atelier",
+                    'required' => false,
+                ]
+            )
+            ->add('workshopAbstract', TextareaType::class, ['label' => 'Résumé de l\'atelier',
+                'required' => false,
+            ])
+            ->add(
                 'needsMentoring',
                 CheckboxType::class,
                 [
