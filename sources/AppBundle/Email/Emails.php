@@ -41,7 +41,6 @@ class Emails
         $eventPath = $event->getPath();
 
         $message = new Message(sprintf('[%s] Merci !', $event->getTitle()), MailUserFactory::afup(), $recipient);
-        $message->addBcc(MailUserFactory::tresorier());
 
         if (Event::hasInscriptionAttachment($eventPath)) {
             $message->addAttachment(new Attachment(Event::getInscriptionAttachmentFilepath($eventPath), $event->getTitle() . '.pdf', 'base64', 'application/pdf'));
