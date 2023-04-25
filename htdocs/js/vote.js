@@ -126,7 +126,7 @@ var setFormSuccess = function(form) {
 // Gestion de la case à cocher pour la proposition d'atelier à un CFP
 var textareaContainer = document.getElementById('talk_workshopAbstract');
 textareaContainer = textareaContainer.closest('div');
-console.log(textareaContainer);
+
 var checkbox = document.getElementById('talk_withWorkshop');
 checkbox.addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
