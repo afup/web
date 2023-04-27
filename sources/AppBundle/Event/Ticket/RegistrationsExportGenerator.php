@@ -35,6 +35,11 @@ class RegistrationsExportGenerator
     private $ticketRepository;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * @param OfficeFinder $officeFinder
      * @param SeniorityComputer $seniorityComputer
      * @param TicketRepository $ticketRepository

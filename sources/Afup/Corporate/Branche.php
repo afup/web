@@ -10,6 +10,11 @@ class Branche
      */
     protected $bdd;
 
+    /**
+     * @var mixed
+     */
+    private $conf;
+
     function __construct($bdd = false, $conf = false)
     {
         if ($bdd) {

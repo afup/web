@@ -27,6 +27,11 @@ class SponsorTicketHelper
      */
     private $ticketRepository;
 
+    /**
+     * @var SponsorTicketRepository
+     */
+    private $sponsorTicketRepository;
+
     public function __construct(
         InvoiceFactory $invoiceFactory,
         InvoiceRepository $invoiceRepository,
