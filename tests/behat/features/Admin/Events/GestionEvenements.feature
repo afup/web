@@ -133,8 +133,8 @@ Feature: Administration - Évènements - Gestions Évènements
     When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
     When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
     And I should only receive the following emails:
-      | to                                     | subject         |
-      | <bureau@afup.org>,<tresorier@afup.org> | [forum] Merci ! |
+      | to                | subject         |
+      | <bureau@afup.org> | [forum] Merci ! |
 
   Scenario: On arrive bien à ajouter un fichier au mail d'inscription
     Given I am logged in as admin and on the Administration
@@ -163,6 +163,6 @@ Feature: Administration - Évènements - Gestions Évènements
     When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
     When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
     And I should only receive the following emails:
-      | to                                     | subject         |
-      | <bureau@afup.org>,<tresorier@afup.org> | [forum] Merci ! |
+      | to                | subject         |
+      | <bureau@afup.org> | [forum] Merci ! |
     Then the checksum of the attachment "forum.pdf" of the message of id "1" should be "27df44e78e2f3c9a7f331275a4c5b304"
