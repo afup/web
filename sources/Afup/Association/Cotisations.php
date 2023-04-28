@@ -260,6 +260,7 @@ class Cotisations
     {
         $reference = substr($cmd, 0, strlen($cmd) - 4);
         $verif = substr($cmd, strlen($cmd) - 3, strlen($cmd));
+        $result = false;
 
         if (substr($cmd, 0, 1) === 'F') {
             // This is an invoice ==> we dont have to create a new cotisation, just update the existing one
@@ -292,8 +293,6 @@ class Cotisations
                 $date_debut,
                 $date_fin,
                 "autorisation : " . $autorisation . " / transaction : " . $transaction);
-        } else {
-            $result = false;
         }
 
         return $result;

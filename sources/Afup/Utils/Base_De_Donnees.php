@@ -67,6 +67,7 @@ class Base_De_Donnees
         $in_string = FALSE;
         $nothing = TRUE;
         $time0 = time();
+        $ret = [];
 
         for ($i = 0; $i < $sql_len; ++$i) {
             $char = $sql[$i];

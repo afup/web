@@ -808,6 +808,7 @@ SQL;
 
     function obtenirSousTotalBalance($evenement, $periode_debut, $periode_fin)
     {
+        $tableau = [];
 //	    	echo $evenement."*".$periode_debut."*".$periode_fin;
         $data = $this->obtenirBalanceDetails($evenement, $periode_debut, $periode_fin);
 

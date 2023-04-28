@@ -210,6 +210,7 @@ class Facturation
      */
     function genererFacture($reference, $chemin = null)
     {
+        $type = '';
         $requete = 'SELECT aff.*, af.titre AS event_name
         FROM afup_facturation_forum aff
         LEFT JOIN afup_forum af ON af.id = aff.id_forum
