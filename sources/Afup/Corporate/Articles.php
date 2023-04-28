@@ -36,7 +36,7 @@ class Articles
         }
         $requete .= ' ORDER BY ' . $ordre;
 
-        if ($agssociatif) {
+        if ($associatif) {
             return $this->bdd->obtenirAssociatif($requete);
         } else {
             return $this->bdd->obtenirTous($requete);
