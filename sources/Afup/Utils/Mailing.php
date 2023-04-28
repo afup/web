@@ -60,7 +60,7 @@ class Mailing
     {
         $blacklist_sql = $blacklist ? '1' : '0';
         $requete = 'SELECT';
-        $requete .= '  ' . $champs;
+        $requete .= '  ';
         $requete .= 'FROM';
         $requete .= '  afup_email ';
         $requete .= 'WHERE blacklist = ' . $blacklist_sql;
