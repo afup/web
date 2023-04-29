@@ -163,6 +163,8 @@ if ($action == 'lister') {
     $formulaire->addGroup($groupe, 'groupe_skill', "Niveau", '<br />', false);
 
     $formulaire->addElement('checkbox'    , 'needs_mentoring'          , "Demande a bénéficier du programme d'accompagnement des jeunes speakers");
+    $formulaire->addElement('checkbox', 'with_workshop', "Propose un atelier");
+    $formulaire->addElement('textarea', 'workshop_abstract', 'Résumé de l\'atelier', array('cols' => 40, 'rows' => 15));
 
 
     if ($action != 'ajouter') {
