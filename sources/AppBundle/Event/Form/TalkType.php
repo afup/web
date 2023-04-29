@@ -58,6 +58,7 @@ class TalkType extends AbstractType
                 [
                     'label' => "Je propose de faire un atelier",
                     'required' => false,
+                    'help' => 'Lors de l’événement, nous souhaitons proposer des ateliers d’une durée de 2 heures avec une vingtaine de participant(e)s qui se seront inscrit(e)s préalablement. Seulement les speakers sélectionné(e)s effectueraient un atelier. Cochez cette case et renseignez la zone de texte ci-dessous si vous souhaitez proposer un atelier.',
                 ]
             )
             ->add('workshopAbstract', TextareaType::class, ['label' => 'Résumé de l\'atelier',
