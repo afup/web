@@ -41,6 +41,9 @@ services:
     AppBundle\GeneralMeeting\GeneralMeetingRepository:
         autowire: true
 
+    AppBundle\Indexation\Meetup\Repository:
+        autowire: true
+
     AppBundle\Controller\Admin\SlackMembers\CheckMembersAction:
         autowire: true
         autoconfigure: true

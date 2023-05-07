@@ -3,3 +3,7 @@ meetups_list:
   defaults: {_controller: AppBundle:Meetups:list}
   options:
     sitemap: true
+
+meetups_scrapper:
+  path: /scrapping/{antenne}/
+  defaults: {_controller: AppBundle:Meetups:scrapMeetup}
