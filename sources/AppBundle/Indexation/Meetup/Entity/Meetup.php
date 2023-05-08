@@ -32,7 +32,7 @@ class Meetup
     /**
      * @var int
      */
-    private $antenne_id;
+    private $antenneId;
 
     /**
      * Meetup constructor.
@@ -41,15 +41,15 @@ class Meetup
      * @param string $title
      * @param ?string $description
      * @param string $location
-     * @param ?int $antenne_id
+     * @param ?int $antenneId
      */
-    public function __construct($date, $title, $location, $description, $antenne_id = null)
+    public function __construct($date, $title, $location, $description, $antenneId = null)
     {
         $this->date = $date;
         $this->title = $title;
         $this->location = $location;
         $this->description = $description;
-        $this->antenne_id = $antenne_id;
+        $this->antenneId = $antenneId;
     }
 
     /**
@@ -137,14 +137,14 @@ class Meetup
      */
     public function getAntenneId()
     {
-        return $this->antenne_id;
+        return $this->antenneId;
     }
 
     /**
-     * @param int $antenne_id
+     * @param int $antenneId
      */
-    public function setAntenneId($antenne_id)
+    public function setAntenneId($antenneId)
     {
-        $this->antenne_id = $antenne_id;
+        $this->antenneId = $antenneId;
     }
 }
