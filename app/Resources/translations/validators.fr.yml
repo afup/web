@@ -7,3 +7,4 @@
 'You must be connected with a valid membership to order this ticket.': "Vous devez être connecté et avoir une adhésion en cours de validité pour commander ce billet"
 'Please, upload a photo.': "Veuillez ajouter une photo de profil."
 'You can only order one ticket "{{ ticket_pretty_name }}".': Vous ne pouvez commander qu'un seul billet "{{ ticket_pretty_name }}"
+'You can only order one early bird ticket "{{ ticket_pretty_name }}".': Vous ne pouvez commander qu'un seul billet early bird "{{ ticket_pretty_name }}"
