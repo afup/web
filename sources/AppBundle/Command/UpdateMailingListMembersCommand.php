@@ -42,7 +42,7 @@ class UpdateMailingListMembersCommand extends ContainerAwareCommand
             $emails[] = $groupsRepository->cleanEmail($member->getEmail());
         }
 
-        $filter = function (\Google_Service_Directory_Member $member) use ($groupsRepository, $emails) {
+        $filter = function (\Google_Service_Directory_Member $member) use ($emails) {
             // Remove every mail if not a member
             return !in_array($member->getEmail(), $emails);
         };

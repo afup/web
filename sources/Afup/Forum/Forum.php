@@ -197,6 +197,7 @@ class Forum
     {
         $slots = array();
         $salles = array();
+        $debuts = array();
         foreach ($sessions as $session) {
             $jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
             $slots[$jour][$session['nom_salle']][$session['debut']] = $session;
@@ -264,7 +265,7 @@ class Forum
      */
     function obtenirAgenda($annee = null, $forum_id = null)
     {
-        $sWhere = array();
+        $aWhere = array();
         if (isset($annee)) {
             $tdebut = mktime(0, 0, 0, 1, 1, $annee);
             $tfin = mktime(0, 0, 0, 1, 1, ($annee + 1));
@@ -350,6 +351,7 @@ class Forum
 
     function genAgenda($annee, $for_bo = false, $only_data = false, $forum_id = null, $linkFormat = null)
     {
+        $aProgrammeData = [];
         $aAgenda = $this->obtenirAgenda($annee, $forum_id);
         if (isset($aAgenda) && count($aAgenda) > 0) {
             $nbConf = count($aAgenda);
