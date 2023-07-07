@@ -31,6 +31,9 @@
                 <div class="col-md-1">
                 </div>
                 <div class="col-md-10">
+                    {% if preview %}
+                        <div class="flash flash-notice"><strong>En attente</strong> : article non publié</div>
+                    {% endif %}
 
                     <h1>{{ article.getTitle }}</h1>
 

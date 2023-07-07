@@ -17,13 +17,16 @@ class NewsController extends SiteBaseController
         $articleRepository = $this->getArticleRepository();
 
         $article = $articleRepository->findNewsBySlug($code);
-
         if (null === $article) {
             throw $this->createNotFoundException();
         }
-
-        if (!($article->getPublishedAt() <= new \DateTime())) {
-            throw $this->createNotFoundException();
+        $preview = false;
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $preview = true;
+        } else {
+            if ($article->getState() === 0 || !($article->getPublishedAt() <= new \DateTime())) {
+                throw $this->createNotFoundException();
+            }
         }
 
         $this->getHeaderImageUrl($article);
@@ -31,6 +34,7 @@ class NewsController extends SiteBaseController
         return $this->render(
             ':site:news/display.html.twig',
             [
+                'preview' => $preview,
                 'article' => $article,
                 'header_image' => $this->getHeaderImageUrl($article),
                 'previous' => $articleRepository->findPrevious($article),
