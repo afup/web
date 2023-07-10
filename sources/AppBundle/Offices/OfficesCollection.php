@@ -11,7 +11,7 @@ class OfficesCollection
                 'label' => 'Bordeaux',
                 'latitude' => '44.837912',
                 'longitude' => '-0.579541',
-                'meetup_urlname' => 'Bordeaux-PHP-Meetup',
+                'meetup_urlname' => 'bordeaux-php-meetup',
                 'meetup_id' => '18197674',
                 'logo_url' => '/images/offices/bordeaux.svg',
                 'twitter' => 'AFUP_Bordeaux',
