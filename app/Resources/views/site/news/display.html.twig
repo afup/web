@@ -31,7 +31,10 @@
                 <div class="col-md-1">
                 </div>
                 <div class="col-md-10">
-                    {% if preview %}
+
+                    {% if article.state == -1 %}
+                        <div class="flash flash-error"><strong>Hors ligne</strong> : article supprimé</div>
+                    {% elseif article.state == 0 %}
                         <div class="flash flash-notice"><strong>En attente</strong> : article non publié</div>
                     {% endif %}
 

@@ -20,10 +20,8 @@ class NewsController extends SiteBaseController
         if (null === $article) {
             throw $this->createNotFoundException();
         }
-        $preview = false;
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            $preview = true;
-        } else {
+
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             if ($article->getState() === 0 || !($article->getPublishedAt() <= new \DateTime())) {
                 throw $this->createNotFoundException();
             }
@@ -34,7 +32,6 @@ class NewsController extends SiteBaseController
         return $this->render(
             ':site:news/display.html.twig',
             [
-                'preview' => $preview,
                 'article' => $article,
                 'header_image' => $this->getHeaderImageUrl($article),
                 'previous' => $articleRepository->findPrevious($article),
