@@ -32,6 +32,12 @@
                 </div>
                 <div class="col-md-10">
 
+                    {% if article.state == -1 %}
+                        <div class="flash flash-error"><strong>Hors ligne</strong> : article supprimé</div>
+                    {% elseif article.state == 0 %}
+                        <div class="flash flash-notice"><strong>En attente</strong> : article non publié</div>
+                    {% endif %}
+
                     <h1>{{ article.getTitle }}</h1>
 
                     <h4>{{ article.publishedAt|localizeddate('long', 'none') }}</h4>
