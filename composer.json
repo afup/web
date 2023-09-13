@@ -5,6 +5,7 @@
   "require": {
     "ext-gd": "*",
     "ext-json": "*",
+    "ext-dom": "*",
     "beberlei/assert": "^2.9",
     "league/oauth2-github": "^0.2.1",
     "symfony/symfony": "^3.4",
@@ -43,7 +44,7 @@
     "sensio/generator-bundle": "^3.0",
     "symfony/phpunit-bridge": "^3.1",
     "guzzlehttp/guzzle": "^6.5",
-    "ekino/newrelic-bundle": "^1.4"
+    "ekino/newrelic-bundle": "^1.4",
   },
   "scripts": {
     "post-install-cmd": [

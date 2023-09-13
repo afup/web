@@ -1,16 +1,22 @@
 <?php
 
-namespace AppBundle\Indexation\Meetup\Entity;
+namespace AppBundle\Event\Model;
 
-class Meetup
+use CCMBenchmark\Ting\Entity\NotifyProperty;
+use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use DateTime;
+
+class Meetup implements NotifyPropertyInterface
 {
+    use NotifyProperty;
+
     /**
      * @var int
      */
     private $id;
 
     /**
-     * @var string
+     * @var DateTime
      */
     private $date;
 
@@ -20,6 +26,11 @@ class Meetup
     private $title;
 
     /**
+     * @var string
+     */
+    private $location;
+
+    /**
      * @var ?string
      */
     private $description;
@@ -27,30 +38,7 @@ class Meetup
     /**
      * @var string
      */
-    private $location;
-
-    /**
-     * @var int
-     */
-    private $antenneId;
-
-    /**
-     * Meetup constructor.
-     *
-     * @param string $date
-     * @param string $title
-     * @param ?string $description
-     * @param string $location
-     * @param ?int $antenneId
-     */
-    public function __construct($date, $title, $location, $description, $antenneId = null)
-    {
-        $this->date = $date;
-        $this->title = $title;
-        $this->location = $location;
-        $this->description = $description;
-        $this->antenneId = $antenneId;
-    }
+    private $antenneName;
 
     /**
      * @return int
@@ -62,14 +50,19 @@ class Meetup
 
     /**
      * @param int $id
+     *
+     * @return Meetup
      */
     public function setId($id)
     {
+        $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getDate()
     {
@@ -77,11 +70,16 @@ class Meetup
     }
 
     /**
-     * @param string $date
+     * @param DateTime $date
+     *
+     * @return Meetup
      */
     public function setDate($date)
     {
+        $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
+
+        return $this;
     }
 
     /**
@@ -94,10 +92,15 @@ class Meetup
 
     /**
      * @param string $title
+     *
+     * @return Meetup
      */
     public function setTitle($title)
     {
+        $this->propertyChanged('title', $this->title, $title);
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -110,10 +113,15 @@ class Meetup
 
     /**
      * @param string $location
+     *
+     * @return Meetup
      */
     public function setLocation($location)
     {
+        $this->propertyChanged('location', $this->location, $location);
         $this->location = $location;
+
+        return $this;
     }
 
     /**
@@ -126,25 +134,35 @@ class Meetup
 
     /**
      * @param ?string $description
+     *
+     * @return Meetup
      */
     public function setDescription($description)
     {
+        $this->propertyChanged('description', $this->description, $description);
         $this->description = $description;
+
+        return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getAntenneId()
+    public function getAntenneName()
     {
-        return $this->antenneId;
+        return $this->antenneName;
     }
 
     /**
-     * @param int $antenneId
+     * @param string $antenneName
+     *
+     * @return Meetup
      */
-    public function setAntenneId($antenneId)
+    public function setAntenneName($antenneName)
     {
-        $this->antenneId = $antenneId;
+        $this->propertyChanged('antenneName', $this->antenneName, $antenneName);
+        $this->antenneName = $antenneName;
+
+        return $this;
     }
 }

@@ -5,5 +5,5 @@ meetups_list:
     sitemap: true
 
 meetups_scrapper:
-  path: /scrapping/{antenne}/
+  path: /scrapping/
   defaults: {_controller: AppBundle:Meetups:scrapMeetup}
