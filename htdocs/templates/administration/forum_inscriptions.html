@@ -219,7 +219,7 @@
                         </td>
                     {elseif $inscription.lastsubscription < $finForum}
                         <td class="single line">
-                            <span class="ui orange label">
+                            <span class="ui {if $inscription.etat != 1}orange{/if} label">
                                 Expire le {$inscription.lastsubscription|date_format:'%d/%m/%Y'}
                             </span>
                             <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{$inscription.id}&forum={$id_forum}">
