@@ -7,7 +7,7 @@ class AfupMeetup extends AbstractMigration
     public function up()
     {
         $this->execute('CREATE TABLE IF NOT EXISTS `afup_meetup` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `id` int(11) NOT NULL,
             `date` datetime NOT NULL,
             `title` varchar(255) NOT NULL,
             `location` varchar(255) NOT NULL,
