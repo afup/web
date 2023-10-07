@@ -49,10 +49,8 @@ class MeetupScraper
 
                             $title = $xpath->query(".//span[contains(@class, 'cardTitle')]", $event)->item(0)->nodeValue;
 
-                            $venueNode = $xpath->query(".//div[@class='venueDisplay venueDisplay-venue padding--left-half text--secondary text--small']", $event)->item(0);
-                            $location = $xpath->query(".//p", $venueNode)->item(0)->nodeValue;
+                            $descriptionElements = $xpath->query("//div[contains(@class, 'utils_cardDescription__alO8K')]");
 
-                            $descriptionElements = $xpath->query(".//p[contains(@class, 'description-markdown--p')]", $event);
                             $description = '';
                             foreach ($descriptionElements as $descriptionElement) {
                                 $description .= ' ' . $descriptionElement->nodeValue;
@@ -62,7 +60,6 @@ class MeetupScraper
                                 ->setId($id)
                                 ->setDate($dateTime)
                                 ->setTitle($title)
-                                ->setLocation($location)
                                 ->setDescription($description)
                                 ->setAntenneName($meetupAntenneName);
                         } catch (Exception $e) {
