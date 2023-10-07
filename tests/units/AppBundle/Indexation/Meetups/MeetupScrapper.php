@@ -55,6 +55,16 @@ class MeetupScraper extends atoum
         $this
             ->integer($eventLength)
             ->isGreaterThan(0);
+
+        foreach ($events as $antenneEvents){
+            foreach ($antenneEvents as $event) {
+                $title = $event->getTitle();
+                $date = $event->getDate();
+
+                $this->string($title)->isNotEmpty();
+                $this->dateTime($date)->isInstanceOf(\DateTime::class);
+            }
+        }
     }
 
     /**
