@@ -26,9 +26,9 @@ class Meetup implements NotifyPropertyInterface
     private $title;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $location;
+    private $location = null;
 
     /**
      * @var ?string
@@ -112,11 +112,11 @@ class Meetup implements NotifyPropertyInterface
     }
 
     /**
-     * @param string $location
+     * @param string|null $location
      *
      * @return Meetup
      */
-    public function setLocation($location)
+    public function setLocation($location = null)
     {
         $this->propertyChanged('location', $this->location, $location);
         $this->location = $location;
