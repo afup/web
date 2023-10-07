@@ -45,7 +45,7 @@
     "sensio/generator-bundle": "^3.0",
     "symfony/phpunit-bridge": "^3.1",
     "guzzlehttp/guzzle": "^6.5",
-    "ekino/newrelic-bundle": "^1.4",
+    "ekino/newrelic-bundle": "^1.4"
   },
   "scripts": {
     "post-install-cmd": [
