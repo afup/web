@@ -15,7 +15,7 @@ class MeetupScraper
 
     /**
      *
-     * @return array
+     * @return array<Meetup>
      *
      * @throws Exception
      * @throws InvalidArgumentException
