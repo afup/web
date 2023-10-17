@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{{ asset('/css/tickets.css') }}" />
 {% endblock %}
 
+{% block google_analytics %}
+    {% include 'google_analytics.html.twig' %}
+{% endblock %}
+
 {% block content %}
     <div class="col-md-8">
         {% if not invoice.isFree %}
@@ -45,70 +49,59 @@
             <p>
                 Nous avons bien re&ccedil;u votre inscription et nous vous en remercions !
             </p>
-            Si vous avez la moindre question, n'hésitez pas à contacter <a href="mailto:bonjour@afup.org">bonjour@afup.org</a>.
+            <p>
+                Si vous avez la moindre question, n'hésitez pas à contacter <a href="mailto:bonjour@afup.org">bonjour@afup.org</a>.
             </p>
             <p>Vous allez recevoir dans quelques instants la facture à l'adresse email de facturation.</p>
         </div>
         {% endif %}
     </div>
+
     {% autoescape 'js' %}
-        <script type="text/javascript">
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-67701567-1']);
-			_gaq.push(['_trackPageview']);
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-        </script>
         <!-- Google Code for Inscription evenement Conversion Page -->
         <script type="text/javascript">
             /* <![CDATA[ */
-			var google_conversion_id = 878368884;
-			var google_conversion_language = "fr";
-			var google_conversion_format = "3";
-			var google_conversion_color = "ffffff";
-			var google_conversion_label = "HBjSCKivn2oQ9LDrogM";
-			var google_conversion_value = {{ invoice.amount }};
-			var google_conversion_currency = "EUR";
-			var google_remarketing_only = false;
+            var google_conversion_id = 878368884;
+            var google_conversion_language = "fr";
+            var google_conversion_format = "3";
+            var google_conversion_color = "ffffff";
+            var google_conversion_label = "HBjSCKivn2oQ9LDrogM";
+            var google_conversion_value = {{ invoice.amount }};
+            var google_conversion_currency = "EUR";
+            var google_remarketing_only = false;
             /* ]]> */
         </script>
         <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
         </script>
         <noscript>
             <div style="display:inline;">
-                <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/878368884/?value=250.00&amp;currency_code=EUR&amp;label=HBjSCKivn2oQ9LDrogM&amp;guid=ON&amp;script=0"/>
+                <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/878368884/?value={{ invoice.amount }}&amp;currency_code=EUR&amp;label=HBjSCKivn2oQ9LDrogM&amp;guid=ON&amp;script=0"/>
             </div>
         </noscript>
 
         <script>
-			_gaq = _gaq || [];
-			_gaq.push(['_addTrans',
-				'{{ invoice.reference }}',// transaction ID - required
-				'{{ event.title }}',     // affiliation or store name
-				'{{ invoice.amount }}', // total - required; Shown as "Revenue" in the
-										 // Transactions report. Does not include Tax and Shipping.
-				'0',                     // tax
-				'0',                     // shipping
-				'{{ invoice.city }}',   // city
-				'',                      // state or province
-				'{{ invoice.countryId }}'  // country
-			]);
-
-            {% for ticket in tickets %}
-			_gaq.push(['_addItem',
-				'{{ invoice.reference }}',            // transaction ID - necessary to associate item with transaction
-				'{{ ticket.ticketTypeId }}', // SKU/code - required
-				'{{ ticket.ticketEventType.ticketType.prettyName }}',        // product name
-				'',                                   // category or variation
-				'{{ ticket.amount }}',          // unit price - required
-				'1'                                   // quantity - required
-			]);
-            {% endfor %}
-
-			_gaq.push(['_trackTrans']);
+            // This purchase event uses a different transaction ID
+            // from the previous purchase event so Analytics
+            // doesn't deduplicate the events.
+            // Learn more: https://support.google.com/analytics/answer/12313109
+            gtag("event", "purchase", {
+                transaction_id: "{{ invoice.reference }}",
+                value: {{ invoice.amount }},
+                tax: 0,
+                shipping: 0,
+                currency: "EUR",
+                items: [
+                    {% for ticket in tickets %}
+                    {
+                        item_id: "{{ invoice.reference }}",
+                        item_name: "{{ ticket.ticketEventType.ticketType.prettyName }}",
+                        index: {{ loop.index }},
+                        price: {{ ticket.amount }},
+                        quantity: 1
+                    },
+                    {% endfor %}
+                ]
+            });
         </script>
     {% endautoescape %}
 {% endblock %}

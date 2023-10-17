@@ -51,7 +51,7 @@ parameters:
     super_apero_csv_url: ""
 
     google_analytics_enabled: false
-    google_analytics_id: "UA-192127-3"
+    google_analytics_id: "G-CHPWDR3C1M"
 
     techletter_test_email_address: "pole-veille@afup.org"
 
