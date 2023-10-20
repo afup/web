@@ -6,11 +6,14 @@ class Compta extends AbstractSeed
 {
     public function run()
     {
-        if (!is_dir('htdocs/uploads/202310/')) {
-            mkdir('htdocs/uploads/202310/');
+        $dir = 'htdocs/uploads/202310/';
+        if (!is_dir($dir)) {
+            if (!mkdir($dir) && !is_dir($dir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+            }
         }
 
-        copy('tests/behat/files/test_file1.pdf', 'htdocs/uploads/202310/test_file1.pdf');
+        copy('tests/behat/files/test_file1.pdf', $dir.'test_file1.pdf');
 
         $data = [
             [
