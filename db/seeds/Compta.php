@@ -6,6 +6,12 @@ class Compta extends AbstractSeed
 {
     public function run()
     {
+        if (!is_dir('htdocs/uploads/202310/')) {
+            mkdir('htdocs/uploads/202310/');
+        }
+
+        copy('tests/behat/files/test_file1.pdf', 'htdocs/uploads/202310/test_file1.pdf');
+
         $data = [
             [
                 'idoperation' => 2,
@@ -15,6 +21,7 @@ class Compta extends AbstractSeed
                 'date_regl' => '2023-10-16',
                 'date_ecriture' => '2023-10-17',
                 'description' => 'Une recette qui rapporte',
+                'attachment_filename' => '202310/test_file1.pdf',
                 'idevenement' => 5,
                 'idcompte' => 1
             ],

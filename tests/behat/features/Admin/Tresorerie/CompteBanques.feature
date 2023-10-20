@@ -11,14 +11,16 @@ Feature: Administration - Trésorerie - Compte banques
     Then I should see "1 000,00 Total crédit"
     Then I should see "500,00 solde"
 
+  @reloadDbWithTestData
   Scenario: Compte banques Export Excel
     Given I am logged in as admin and on the Administration
     When I follow "Compte banques"
     And I follow "Export XLSX"
     Then the response header "Content-disposition" should match '#filename="compta_afup_(.*).xlsx"#'
 
-#  Scenario: Compte banques Télécharger les justificatifs triés par mois
-#    Given I am logged in as admin and on the Administration
-#    When I follow "Compte banques"
-#    And I follow "Télécharger les justificatifs triés par mois"
-#    Then the response header "Content-disposition" should match '#???#'
+  @reloadDbWithTestData
+  Scenario: Compte banques Télécharger les justificatifs triés par mois
+    Given I am logged in as admin and on the Administration
+    When I follow "Compte banques"
+    And I follow "Télécharger les justificatifs triés par mois"
+    Then the response header "Content-disposition" should match '#filename="afup_justificatifs-(.*).zip"#'
