@@ -83,8 +83,10 @@
                     {% if feed.status == 1 %}
                         {% if testFeeds and feed.id in feedResults|keys %}
                             {% set color = feedResults[feed.id] ? 'green' : 'red' %}
+                            {% set text = feedResults[feed.id] ? 'validé' : 'erreur' %}
                         {% endif %}
                         <i class="flag {{ color|default('blue') }} checkered icon"></i>
+                        {{ text|default('non testé') }}
                     {% endif %}
                 </td>
                 <td style="text-align: right">
