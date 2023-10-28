@@ -139,6 +139,14 @@ class Users extends AbstractSeed
                 'montant' => 150,
                 'date_fin' => $dateDebutUserExpire + $oneMonthInSeconds * 12,
                 'numero_facture' => 'COTIS-2018-201',
+            ],
+            [
+                'date_debut' => $dateDebutUserExpire,
+                'type_personne' => 0, // AFUP_COTISATION_MORALE
+                'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
+                'montant' => 25,
+                'date_fin' => $now + $oneMonthInSeconds * 12,
+                'numero_facture' => 'COTIS-'.date('Y').'-201',
             ]
         ];
 
