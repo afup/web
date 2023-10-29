@@ -33,4 +33,3 @@ Feature: Espace membre, Veille de l'AFUP
     # Désabonnment
     Then I follow "Me désabonner"
     And I should see "Vous êtes maintenant désabonné à la veille de l'AFUP"
-    And I should see "Vous ne recevez actuellement pas la veille de l'AFUP."

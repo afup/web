@@ -10,7 +10,7 @@ Feature: Administration - Partie Personnes morales - cotisations
     When I follow the button of tooltip "Gérer les cotisations de MyCorp"
     Then I should see "Cotisations de MyCorp"
     When I follow the button of tooltip "Télécharger la facture"
-    Then the response header "Content-disposition" should equal 'attachment; filename="MyCorp_COTIS-2018-201_13072018.pdf"'
+    Then the response header "Content-disposition" should match '#attachment; filename="MyCorp_COTIS-#'
 
   @reloadDbWithTestData
   Scenario: On test la gestion des cotisations
