@@ -277,7 +277,7 @@ parameters:
             icon: "tag"
             elements:
                 configuration:
-                    nom: 'Configuration'
+                    nom: 'Configuration du site'
                     niveau: 'ROLE_ADMIN'
                 membre_administrateur:
                     nom: 'Administrateurs du site'
