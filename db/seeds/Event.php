@@ -28,7 +28,8 @@ class Event extends AbstractSeed
                     'fr' => 'François le français',
                     'en' => 'Henri l\'anglais',
                     'sponsor_management_fr' => '**Sponsors**, venez, vous serez très visible !',
-                    'sponsor_management_en' => '**Sponsors**, come, you will be very visible!'
+                    'sponsor_management_en' => '**Sponsors**, come, you will be very visible!',
+                    'mail_inscription_content' => 'Contenu email',
                 ]),
                 'date_fin_appel_projet' => $now + $oneMonthInSeconds,
                 'date_fin_appel_conferencier' => $event - $oneMonthInSeconds * 2,
