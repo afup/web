@@ -68,11 +68,15 @@ Lancement des tests unitaires :
 ```
 - Une alternative est d'utiliser la commande `make test` qui effectuer la même action.
 
-Lancement des tests unitaires : 
+Lancement des tests fonctionnels : 
 - Se connecter dans le conteneur php `docker/bin/bash`
-- Lancer les tests :
+- Lancer les tests pour le site web :
 ```
 	./bin/behat
+```
+- Lancer les tests pour le site Planete PHP :
+```
+	./bin/behat -c behat-planete.yml
 ```
 - Une alternative est d'utiliser la commande `make test-functional`, attention cette commande arrête les containeurs de tests à la fin de l'exécution de la suite de test. Si par la suite vous souhaitez lancer un test, il faut bien penser à les allumer de nouveau.
 
@@ -84,7 +88,7 @@ Il est possible de tester les paiements Paybox en environnement de développemen
 Pour cela, les identifiant, site et rang [de test](https://www.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier parameters.yml par défaut.
 
 Ensuite pour le paiement il faut utiliser ces informations [de carte](https://www.paybox.com/espace-integrateur-documentation/cartes-de-tests/) (celle _"Carte participant au programme 3-D Secure (enrôlée)"_) : 
-* Numéro de carte : `1111 2222 3333 4444`
+* Numéro de carte : `1111222233334444`
 * Validité : `12/25`
 * CVV : `123`
  

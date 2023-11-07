@@ -82,6 +82,15 @@ class TestGithubAuthenticator extends SocialAuthenticator
             'avatar_url' => 'http://test2.com',
         ];
 
+        $testUsers['agallou'] = [
+            'id' => 320372,
+            'name' => 'agallou',
+            'login' => 'agallou',
+            'company' => 'AFUP',
+            'html_url' => 'http://test2.com',
+            'avatar_url' => 'http://test2.com',
+        ];
+
         return $testUsers;
     }
 

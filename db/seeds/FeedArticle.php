@@ -21,7 +21,7 @@ class FeedArticle extends AbstractSeed
 
         $data = [
             [
-                'afup_planete_flux_id' => 2,
+                'afup_planete_flux_id' => 1,
                 'clef' => '0482a33e-7370-11ee-b962-0242ac120002',
                 'titre' => 'Un titre',
                 'url' => 'https://afup.org/url.html',
@@ -30,6 +30,28 @@ class FeedArticle extends AbstractSeed
                 'resume' => 'Un super article',
                 'contenu' => 'Le contenu du super article',
                 'etat' => 1
+            ],
+            [
+                'afup_planete_flux_id' => 1,
+                'clef' => '460d0a22-78bd-11ee-b962-0242ac120002',
+                'titre' => 'Un 2e titre',
+                'url' => 'https://afup.org/url-2.html',
+                'maj' => time(),
+                'auteur' => 'Toujours un super auteur',
+                'resume' => 'Un article qui déchire',
+                'contenu' => 'Le contenu de l\'article qui déchire',
+                'etat' => 1
+            ],
+            [
+                'afup_planete_flux_id' => 1,
+                'clef' => '4d5cf2e2-78bd-11ee-b962-0242ac120002',
+                'titre' => 'Un titre désactivé',
+                'url' => 'https://afup.org/url-out.html',
+                'maj' => time(),
+                'auteur' => 'Un super désactivé',
+                'resume' => 'Un super désactivé',
+                'contenu' => 'Le contenu du super désactivé',
+                'etat' => 0
             ],
         ];
 

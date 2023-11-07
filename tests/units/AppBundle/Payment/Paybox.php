@@ -40,7 +40,7 @@ class Paybox extends \atoum
   <input type="hidden" name="PBX_TYPEPAIEMENT" value="CARTE">
   <input type="hidden" name="PBX_TYPECARTE" value="CB">
   <input type="hidden" name="PBX_HMAC" value="39EE89FB543A226318139335D24074868FA5912418045813F225572BD1FE069AC88C6B70D0BA1B84B2A974F0D22572D2FFFA3D309E2F2192CEF12E44931CA88C">
-  <INPUT TYPE=SUBMIT class="button button--call-to-action" VALUE="R&eacute;gler par carte">
+  <button type="submit" class="button button--call-to-action paiement">Régler par carte</button>
 </form>
 EOF;
 
@@ -65,7 +65,7 @@ EOF;
   <input type="hidden" name="PBX_TYPECARTE" value="CB">
   <input type="hidden" name="PBX_REPONDRE_A" value="http://reponseA">
   <input type="hidden" name="PBX_HMAC" value="8E5F8C3C052D64606288F3C55C502153CA1D424F7C25CAD4057100897F95E481F155DBD349495FD4C327F5389BA6C98C3DB43A3CF5394378F4276EB53A1C0245">
-  <INPUT TYPE=SUBMIT class="button button--call-to-action" VALUE="R&eacute;gler par carte">
+  <button type="submit" class="button button--call-to-action paiement">Régler par carte</button>
 </form>
 EOF;
 
