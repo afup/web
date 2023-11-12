@@ -5,6 +5,7 @@ namespace AppBundle\Indexation\Meetups;
 use AlgoliaSearch\Client;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\MeetupRepository;
+use AppBundle\Offices\OfficesCollection;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
@@ -21,10 +22,22 @@ class Runner
      */
     protected $meetupRepository;
 
+    /**
+     * @var OfficesCollection
+     */
+    protected $officiesCollection;
+
+    /**
+     * @var Transformer
+     */
+    protected $transformer;
+
     public function __construct(Client $algoliaClient, MeetupRepository $meetupRepository)
     {
         $this->algoliaClient = $algoliaClient;
         $this->meetupRepository = $meetupRepository;
+        $this->officiesCollection = new OfficesCollection();
+        $this->transformer = new Transformer($this->officiesCollection);
     }
 
     /**
@@ -80,18 +93,21 @@ class Runner
     {
         $meetupsCollection = $this->meetupRepository->getAll();
 
-        return $this->fromCollectionInterfaceToArray($meetupsCollection);
+        return $this->transformMeetupsForIndexation($meetupsCollection);
     }
 
     /**
      * @param CollectionInterface $meetupsCollection
      * @return array<Meetup>
      */
-    public function fromCollectionInterfaceToArray($meetupsCollection)
+    public function transformMeetupsForIndexation($meetupsCollection)
     {
         $meetupsArray = [];
         foreach ($meetupsCollection as $meetup) {
-            $meetupsArray[] = $meetup;
+            if (null === ($transformedMeetup = $this->transformer->transform($meetup))) {
+                continue;
+            }
+            $meetupsArray[] = $transformedMeetup;
         }
         return $meetupsArray;
     }
