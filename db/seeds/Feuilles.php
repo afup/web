@@ -76,6 +76,18 @@ class Feuilles extends AbstractSeed
                 'patterns' => null,
             ],
             [
+                'id' => 89,
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Membres',
+                'lien' => '/profile/company',
+                'alt' => '',
+                'position' => 8,
+                'date' => 1700077154,
+                'etat' => 1,
+                'image' => null,
+                'patterns' => null,
+            ],
+            [
                 'id' => Feuille::ID_FEUILLE_ANTENNES,
                 'id_parent' =>null,
                 'nom' => 'Second Menu Antennes',
