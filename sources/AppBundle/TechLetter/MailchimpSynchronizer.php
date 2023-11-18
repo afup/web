@@ -80,7 +80,7 @@ class MailchimpSynchronizer
     {
         foreach ($emails as $email) {
             $this->logger->info('Subscribe {address} to techletter', ['address' => $email]);
-            $this->mailchimp->subscribeAddress($this->listId, $email);
+            $this->mailchimp->subscribeAddressWithoutConfirmation($this->listId, $email);
         }
     }
 
