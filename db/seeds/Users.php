@@ -28,7 +28,8 @@ class Users extends AbstractSeed
                 'code_postal' => '69001',
                 'ville' => 'LYON',
                 'id_pays' => 'FR',
-                'etat' => 0,
+                'etat' => 1,
+                'public_profile_enabled' => 1,
                 'max_members' => 3
             ],
         ];
