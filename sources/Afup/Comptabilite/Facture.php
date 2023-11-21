@@ -179,17 +179,19 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function ajouter_details($ref, $designation, $quantite, $pu)
+    function ajouter_details($ref, $designation, $quantite, $pu, $tva = 0)
     {
         $requete = 'INSERT INTO ';
         $requete .= 'afup_compta_facture_details (';
-        $requete .= 'idafup_compta_facture,ref,designation,quantite,pu) ';
+        $requete .= 'idafup_compta_facture,ref,designation,quantite,pu,tva) ';
         $requete .= 'VALUES (';
         $requete .= $this->obtenirDernier() . ',';
         $requete .= $this->_bdd->echapper($ref) . ',';
         $requete .= $this->_bdd->echapper($designation) . ',';
         $requete .= $this->_bdd->echapper($quantite) . ',';
-        $requete .= $this->_bdd->echapper($pu) . ' ';
+        $requete .= $this->_bdd->echapper($pu) . ',';
+        $requete .= $this->_bdd->echapper($tva) . ' ';
+
         $requete .= ');';
 
         return $this->_bdd->executer($requete);
@@ -233,7 +235,7 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function modifier_details($id, $ref, $designation, $quantite, $pu)
+    function modifier_details($id, $ref, $designation, $quantite, $pu, $tva = 0)
     {
         $requete = 'UPDATE ';
         $requete .= 'afup_compta_facture_details ';
@@ -241,7 +243,8 @@ class Facture
         $requete .= 'ref=' . $this->_bdd->echapper($ref) . ',';
         $requete .= 'designation=' . $this->_bdd->echapper($designation) . ',';
         $requete .= 'quantite=' . $this->_bdd->echapper($quantite) . ',';
-        $requete .= 'pu=' . $this->_bdd->echapper($pu) . ' ';
+        $requete .= 'pu=' . $this->_bdd->echapper($pu) . ',';
+        $requete .= 'tva=' . $this->_bdd->echapper($tva) . ' ';
         $requete .= 'WHERE ';
         $requete .= 'id=' . $id . ' ';
 

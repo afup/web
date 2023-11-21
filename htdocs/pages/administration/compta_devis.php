@@ -88,6 +88,7 @@ if ($action == 'lister') {
             $champs['designation'.$i]          = $row['designation'];
             $champs['quantite'.$i]          = $row['quantite'];
             $champs['pu'.$i]          = $row['pu'];
+            $champs['tva'.$i]          = $row['tva'];
             $i++;
         }
 
@@ -183,9 +184,11 @@ if ($action == 'lister') {
     $formulaire->addElement('static'  , 'note'     , ''  , 'Ligne '.$i.'<br /><br />');
   $formulaire->addElement('hidden'    , 'id'.$i    , 'id'        );
   $formulaire->addElement('text'    , 'ref'.$i    , 'Référence'        , array('size' => 50, 'maxlength' => 100));
+   $formulaire->addElement('static'  , 'note'     , ''  , 'Rappel : sponsoring 20%, place supplémentaire 10%.<br />');
+   $formulaire->addElement('select'    , 'tva' . $i    , 'Taux de TVA'        , array('0' => 'Non soumis', '5.50' => '5.5%', '10.00' => '10%', '20.00' => '20%'));
   $formulaire->addElement('textarea', 'designation'.$i  , 'Désignation', array('cols' => 42, 'rows' => 5));
     $formulaire->addElement('text'    , 'quantite'.$i    , 'Quantite'        , array('size' => 50, 'maxlength' => 100));
-    $formulaire->addElement('text'    , 'pu'.$i    , 'Prix Unitaire'        , array('size' => 50, 'maxlength' => 100));
+    $formulaire->addElement('text'    , 'pu'.$i    , 'Prix Unitaire HT'        , array('size' => 50, 'maxlength' => 100));
    }
 
 
@@ -236,7 +239,8 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
                                     $valeur['ref'.$i],
                                     $valeur['designation'.$i],
                                     $valeur['quantite'.$i],
-                                    $valeur['pu'.$i]
+                                    $valeur['pu'.$i],
+                                    $valeur['tva'.$i]
                                     );
             }
         } else {
@@ -270,7 +274,8 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
                                     $valeur['ref'.$i],
                                     $valeur['designation'.$i],
                                     $valeur['quantite'.$i],
-                                    $valeur['pu'.$i]
+                                    $valeur['pu'.$i],
+                                    $valeur['tva'.$i]
                                     );
             }
 
