@@ -99,6 +99,13 @@ class PDF_Facture extends \FPDF
         return $this->configuration;
     }
 
+    function _putinfo()
+    {
+        // on surcharge le _putinfo pour ne rien faire
+        // cela permet entre-autres de ne pas indiquer en métadonnées la datetime de génération du PDF
+        // ainsi les PDFs générées à des moments différents sont identiques, et donc comparables
+    }
+
     /**
      * Overrides the parent Footer method
      *
