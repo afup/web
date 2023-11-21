@@ -4,6 +4,7 @@
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Utils;
 
 /** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -30,7 +31,7 @@ $comptaFact = new Facture($bdd);
 if ($action == 'lister') {
 	$ecritures = $comptaFact->obtenirFacture();
   foreach ($ecritures as &$e) {
-    $e['link'] = urlencode(base64_encode(mcrypt_cbc(MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', $e['id'], MCRYPT_ENCRYPT, '@PaiFact')));;
+    $e['link'] = urlencode(Utils::cryptFromText($e['id']));
   }
 	$smarty->assign('ecritures', $ecritures);
 } elseif ($action == 'telecharger_facture') {
