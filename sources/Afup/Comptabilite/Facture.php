@@ -286,7 +286,7 @@ class Facture
         $requete .= 'WHERE';
         $requete .= '  LEFT(numero_facture, 4)=' . $this->_bdd->echapper(date('Y'));
         $index = $this->_bdd->obtenirUn($requete);
-        return date('Y') . '-' . (is_null($index) ? 1 : $index);
+        return dump(date('Y') . '-' . (is_null($index) ? 1 : $index));
     }
 
     function genererNumeroDevis()
