@@ -77,3 +77,4 @@ Feature: Site Public - Register
     And I should only receive the following emails:
       | to                         | subject                                                        |
       | <registeredUser@gmail.com> | Une société vous invite à profiter de son compte "Membre AFUP" |
+      | <tresorier@afup.org>       | Paiement cotisation AFUP                                       |
