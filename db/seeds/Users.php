@@ -149,7 +149,7 @@ class Users extends AbstractSeed
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
-                'numero_facture' => 'COTIS-'.date('Y').'-201',
+                'numero_facture' => 'COTIS-'.date('Y').'-'.(date('Hi')+200),
             ]
         ];
 

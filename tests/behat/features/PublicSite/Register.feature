@@ -36,8 +36,9 @@ Feature: Site Public - Register
     # Simuler l'appel de callback Paybox
     And simulate the Paybox callback
     And I should only receive the following emails:
-      | to                         | subject               |
-      | <registeredUser@gmail.com> | Votre compte afup.org |
+      | to                         | subject                  |
+      | <registeredUser@gmail.com> | Votre compte afup.org    |
+      | <tresorier@afup.org>       | Paiement cotisation AFUP |
 
   @reloadDbWithTestData
   @clearEmails
