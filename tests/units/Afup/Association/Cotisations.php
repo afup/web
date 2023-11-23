@@ -27,8 +27,8 @@ class Cotisations extends \atoum
             ],
             [
                 'case' => 'La cotisation précédente expire dans 1 mois, la nouvelle cotisation doit expirer dans 13 mois',
-                'date_fin' => (new \DateTime('+1 month')),
-                'expected' => (new \DateTime('+1 month'))->add(new \DateInterval('P1Y')),
+                'date_fin' => (new \DateTimeImmutable('+1 month'))->setTime(14, 0),
+                'expected' => (new \DateTimeImmutable('+1 month'))->setTime(14, 0)->add(new \DateInterval('P1Y')),
             ],
         ];
     }
