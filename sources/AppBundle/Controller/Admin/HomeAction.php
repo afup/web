@@ -62,7 +62,7 @@ class HomeAction
     {
         $nextevents = $this->eventRepository->getNextEvents();
         $cards = [];
-        if ($this->security->isGranted('ROLE_FORUM')) {
+        if ($this->security->isGranted('ROLE_FORUM') && $nextevents) {
             foreach ($nextevents as $event) {
                 $stats = $this->eventStatsRepository->getStats($event->getId());
                 $info = [];

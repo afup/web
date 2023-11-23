@@ -8,15 +8,16 @@
         <p>Il faut obligatoirement passer par la saisie d'un devis.</p>
     </div>
 
-    <table class="ui table striped compact celled">
+    <table class="ui table striped compact celled afup-tab-filterable">
         <thead>
             <tr>
+                <th data-tf-filter-type="select">Année</th>
                 <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
                 <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
                 <th>Ville</th>
                 <th class="right aligned">Numero facture</th>
                 <th>Référence client</th>
-                <th class="center aligned">Etat paiement</th>
+                <th data-tf-filter-type="select" class="center aligned">Etat paiement</th>
                 <th class="right aligned">Prix</th>
                 <th></th>
            </tr>
@@ -24,6 +25,7 @@
         <tbody>
     {foreach from=$ecritures item=ecriture}
          <tr>
+            <td nowrap="nowrap">{$ecriture.date_facture|date_format:"%Y"}</td>
             <td nowrap="nowrap">{$ecriture.date_facture|date_format:"%d/%m/%Y"}</td>
              <td>{$ecriture.societe}</td>
              <td>{$ecriture.ville}</td>

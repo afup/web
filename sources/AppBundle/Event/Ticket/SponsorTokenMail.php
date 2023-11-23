@@ -77,7 +77,7 @@ class SponsorTokenMail
                     ['eventSlug' => $event->getPath()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
-                '%endDate%' => $event->getDateEndSales()->format('d/m/Y')
+                '%endDate%' => $event->getDateEndSalesSponsorToken()->format('d/m/Y')
             ]
         );
 

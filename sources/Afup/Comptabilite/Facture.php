@@ -589,7 +589,7 @@ class Facture
     function envoyerFacture($reference)
     {
         $configuration = $GLOBALS['AFUP_CONF'];
-        $personne = $this->obtenirParNumeroFacture($reference, 'email, nom, prenom');
+        $personne = $this->obtenirParNumeroFacture($reference);
 
         $sujet = "Facture AFUP\n";
 

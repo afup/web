@@ -70,9 +70,9 @@ class BadgesComputer
 
         $badgesInfos = $this->sortBadgesInfos($badgesInfos);
 
-        $badgesCodes = $this->mapBadgesCodes($badgesInfos);
+        $badges = $this->filterExistingBadges($badgesInfos);
 
-        $badges = $this->filterExistingBadges($badgesCodes);
+        $badges = $this->mapBadgesCodes($badges);
 
         return $badges;
     }

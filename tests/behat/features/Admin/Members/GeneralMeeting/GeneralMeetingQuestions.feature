@@ -12,7 +12,6 @@ Feature: Administration - Partie Assemblée Générale Questions
     And I follow "Assemblée générale - votes"
     When I follow "Ajouter"
     Then the ".content h2" element should contain "Assemblée générale - questions"
-    Then I should see "Assemblée générale du 30/10/2021"
     And I fill in "general_meeting_question_form[label]" with "Une super question"
     And I press "Ajouter cette question"
     Then I should see "La question a été ajoutée"

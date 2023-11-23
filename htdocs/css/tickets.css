@@ -38,8 +38,9 @@ fieldset div.fieldset--inner {
     padding: 15px 10px;
     width: 100%;
 }
-fieldset div.fieldset--inner > div{
-    padding: 0.4em 0;
+fieldset div#fieldset--optin > div{
+    display: flex;
+    gap: 10px;
 }
 
 fieldset p {
@@ -111,16 +112,11 @@ form[name=purchase] .boutons .input td{
     border-left: 1px solid #7d7d7d;
 }
 ul.tickets--type-list hr{
-    width:600px;
     margin-left: 0;
-}
-ul.tickets--type-list{
-    margin-left:150px;
 }
 ul.tickets--type-list li {
     padding: 1em 0;
     border-top: 1px #4c6eaf solid;
-    width: 600px;
 }
 
 ul.tickets--type-list li:first-child{
@@ -131,6 +127,10 @@ ul.tickets--type-list li.tickets--type-list-emphasis {
     border-top-color: black;
     margin-top:2em;
     padding-top:2em;
+}
+
+fieldset div.fieldset--inner > div{
+    padding: 0.4em 0;
 }
 
 ul.tickets--type-list label{
@@ -145,12 +145,14 @@ ul.tickets--type-list input{
     display:inline-block;
     width: 20px;
     position: relative;
-    top: 12px;
+    top: 49px;
+    left: -7px;
 }
 ul.tickets--type-list span.tickets--type-details{
-    padding-left: 42px;
+    padding-left: 20px;
     font-style: italic;
 }
+
 .tickets--type-list .tickets--type-description{
     padding-left: 42px;
     padding-top: .5em;
@@ -179,17 +181,10 @@ div.tickets--errors ul.tickets--errors{
     margin-left: 1em;
 }
 
-ul.tickets--errors, #fieldset--optin div{
-    margin-left:200px;
-}
 .tickets--errors{
     font-weight: bold;
     color: #B0413E;
 }
-p.tickets--type-stock-limit{
-    margin-left:200px;
-}
-
 .tickets--type-stock-close-to-sold-out {
     font-weight: bold;
 }
@@ -216,4 +211,50 @@ div.sponsor--become-form label {
 }
 div.tickets--errors{
     border-color: #B0413E;
+}
+
+
+@media(min-width: 460px) {
+    
+    ul.tickets--type-list{
+        margin-left:150px;
+    }
+    
+    ul.tickets--type-list li {
+        width: 600px;
+    }
+    
+    ul.tickets--type-list hr{
+        width:600px;
+    }
+
+    ul.tickets--type-list span.tickets--type-details{
+        padding-left: 42px;
+    }
+
+    ul.tickets--type-list input {
+        top: 12px;
+        left: -7px;
+    }
+    
+    p.tickets--type-stock-limit{
+        margin-left:200px;
+    }
+    
+    ul.tickets--errors, #fieldset--optin div{
+        margin-left:200px;
+    }
+
+}
+
+@media(max-width:460px) {
+    form label{
+        min-width: 0;
+        text-align:left;
+        font-size: 16px;
+    }
+    form {
+        font-size:16px;
+    }
+    
 }

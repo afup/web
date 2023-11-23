@@ -6,7 +6,7 @@ jobs:
 
   unit:
     name: "Unit tests"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
  
     strategy:
       fail-fast: false
@@ -44,7 +44,7 @@ jobs:
 
   lint:
     name: "Linter"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
@@ -80,7 +80,7 @@ jobs:
 
   functional:
     name: "Functional tests"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2

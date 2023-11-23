@@ -76,6 +76,7 @@ class SpeakerAddAction
             $speaker->setLastname($data->lastname);
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
+            $speaker->setMastodon($data->mastodon);
             $speaker->setEmail($data->email);
             $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);

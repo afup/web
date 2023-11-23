@@ -16,6 +16,11 @@ class Page
      */
     public $conf;
 
+    /**
+     * @var _Site_Base_De_Donnees
+     */
+    private $bdd;
+
     function __construct($bdd = false)
     {
         if ($bdd) {

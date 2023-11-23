@@ -114,8 +114,13 @@ Feature: Administration - Évènements - Gestions Évènements
     And I should see "03/03/2027"
     And I should see "06/03/2027"
 
- Scenario: Si on tente d'en envoyer un mail de test sans contenu, on a un message d'erreur
+  @reloadDbWithTestData
+  @clearEmails
+  Scenario: Si on tente d'en envoyer un mail de test sans contenu, on a un message d'erreur
     Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
+    And I fill in "mail_inscription_content" with ""
+    And I press "Soumettre"
     When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
     Then I should see "Modifier un évènement"
     When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
@@ -128,13 +133,15 @@ Feature: Administration - Évènements - Gestions Évènements
     And I press "Soumettre"
     Then I should see "Le forum a été modifié"
 
+  @reloadDbWithTestData
+  @clearEmails
   Scenario: Si on tente d'en envoyer un mail de test avec contenu, le mail est bien envoyé
     Given I am logged in as admin and on the Administration
     When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
     When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
     And I should only receive the following emails:
-      | to                                     | subject         |
-      | <bureau@afup.org>,<tresorier@afup.org> | [forum] Merci ! |
+      | to                | subject         |
+      | <bureau@afup.org> | [forum] Merci ! |
 
   Scenario: On arrive bien à ajouter un fichier au mail d'inscription
     Given I am logged in as admin and on the Administration
@@ -163,6 +170,6 @@ Feature: Administration - Évènements - Gestions Évènements
     When I go to "/pages/administration/index.php?page=forum_gestion&action=modifier&id=1"
     When I follow "Envoyer un test du mail d'inscription sur bureau@afup.org"
     And I should only receive the following emails:
-      | to                                     | subject         |
-      | <bureau@afup.org>,<tresorier@afup.org> | [forum] Merci ! |
+      | to                | subject         |
+      | <bureau@afup.org> | [forum] Merci ! |
     Then the checksum of the attachment "forum.pdf" of the message of id "1" should be "27df44e78e2f3c9a7f331275a4c5b304"

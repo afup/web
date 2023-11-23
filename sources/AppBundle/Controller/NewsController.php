@@ -17,13 +17,14 @@ class NewsController extends SiteBaseController
         $articleRepository = $this->getArticleRepository();
 
         $article = $articleRepository->findNewsBySlug($code);
-
         if (null === $article) {
             throw $this->createNotFoundException();
         }
 
-        if (!($article->getPublishedAt() <= new \DateTime())) {
-            throw $this->createNotFoundException();
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            if ($article->getState() === 0 || !($article->getPublishedAt() <= new \DateTime())) {
+                throw $this->createNotFoundException();
+            }
         }
 
         $this->getHeaderImageUrl($article);

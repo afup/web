@@ -156,15 +156,23 @@ class JsonLd
 
     private function getDescription(Event $event)
     {
-        $description = sprintf(
-            'Le %s aura lieu les %s et %s au %s.',
+        if ($event->getDateStart()->format('Y-m-d') === $event->getDateEnd()->format('Y-m-d')) {
+            return sprintf(
+                'Le %s aura lieu le %s %s au %s.',
                 $event->getTitle(),
                 $event->getDateStart()->format('d'),
-                $event->getDateEnd()->format('d'),
                 $event->getDateEnd()->format('M'),
                 $event->getPlaceName()
             );
+        }
 
-        return $description;
+        return sprintf(
+            'Le %s aura lieu les %s et %s %s au %s.',
+            $event->getTitle(),
+            $event->getDateStart()->format('d'),
+            $event->getDateEnd()->format('d'),
+            $event->getDateEnd()->format('M'),
+            $event->getPlaceName()
+        );
     }
 }

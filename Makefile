@@ -72,10 +72,11 @@ test:
 
 
 test-functional: data config htdocs/uploads
-	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest mailcatcher
-	CURRENT_UID=$(CURRENT_UID) docker-compose up -d dbtest apachephptest mailcatcher
+	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest planetetest mailcatcher
+	CURRENT_UID=$(CURRENT_UID) docker-compose up -d dbtest apachephptest planetetest mailcatcher
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp ./bin/behat
-	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest mailcatcher
+	CURRENT_UID=$(CURRENT_UID) docker-compose run --no-deps --rm cliphp ./bin/behat -c behat-planete.yml
+	CURRENT_UID=$(CURRENT_UID) docker-compose stop dbtest apachephptest planetetest mailcatcher
 
 data:
 	mkdir data

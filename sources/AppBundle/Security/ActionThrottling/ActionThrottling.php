@@ -26,10 +26,17 @@ class ActionThrottling
         }
 
         $delay = $limitations[$action]['delay'];
-        $interval = new \DateInterval($delay);
-        if (isset($interval) === false) { // Si le delay est invalide alors le dateinterval n'est pas créé et une warning générée mais pas d'exception
-            throw new \RuntimeException(sprintf('Sorry, I could not understand the delay "%s" for the action "%s"', $delay, $action));
+
+        try {
+            $interval = new \DateInterval($delay);
+        } catch (\Exception $dateIntervalException) {
+            throw new \RuntimeException(
+                sprintf('Sorry, I could not understand the delay "%s" for the action "%s"', $delay, $action),
+                0,
+                $dateIntervalException
+            );
         }
+
         $logs = $this->logRepository->getApplicableLogs($action, $ip, $objectId, $interval);
 
         if ($logs['ip'] > $limitations[$action]['limit'] || $logs['object'] > $limitations[$action]['limit']) {

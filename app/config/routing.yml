@@ -29,10 +29,6 @@ blog:
     resource: "routing/blog.yml"
     prefix: /blog
 
-groups:
-    resource: "routing/groups.yml"
-    prefix: /admin/groups
-
 cms_page:
     resource: "routing/cms_page.yml"
     prefix: /p

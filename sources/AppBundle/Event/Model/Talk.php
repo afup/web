@@ -84,6 +84,16 @@ class Talk implements NotifyPropertyInterface
     /**
      * @var bool
      */
+    private $withWorkshop = false;
+
+    /**
+     * @var string
+     */
+    private $workshopAbstract;
+
+    /**
+     * @var bool
+     */
     private $needsMentoring = false;
 
     /**
@@ -344,6 +354,46 @@ class Talk implements NotifyPropertyInterface
     public function getTypeTranslationKey()
     {
         return 'type.' . $this->type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getWithWorkshop()
+    {
+        return $this->withWorkshop;
+    }
+
+    /**
+     * @param bool $withWorkshop
+     *
+     * @return $this
+     */
+    public function setWithWorkshop($withWorkshop)
+    {
+        $this->propertyChanged('withWorkshop', $this->withWorkshop, $withWorkshop);
+        $this->withWorkshop = $withWorkshop;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkshopAbstract()
+    {
+        return $this->workshopAbstract;
+    }
+
+    /**
+     * @param string $workshopAbstract
+     * @return Talk
+     */
+    public function setWorkshopAbstract($workshopAbstract)
+    {
+        $this->propertyChanged('workshopAbstract', $this->workshopAbstract, $workshopAbstract);
+        $this->workshopAbstract = $workshopAbstract;
+        return $this;
     }
 
     /**

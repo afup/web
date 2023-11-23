@@ -26,6 +26,7 @@ class Paybox
     private $porteur = null;
     private $urlRetourEffectue = null;
     private $urlRetourRefuse = null;
+    private $urlRetourErreur = null;
     private $urlRetourAnnule = null;
     private $urlRepondreA = null;
 
@@ -96,7 +97,7 @@ class Paybox
         foreach ($sanitizedInputs as $inputKey => $inputValue) {
             $htmlForm .= '  <input type="hidden" name="' . $inputKey . '" value="' . $inputValue . '">' . PHP_EOL;
         }
-        $htmlForm .= '  <INPUT TYPE=SUBMIT class="button button--call-to-action" VALUE="R&eacute;gler par carte">' . PHP_EOL;
+        $htmlForm .= '  <button type="submit" class="button button--call-to-action paiement">Régler par carte</button>' . PHP_EOL;
         $htmlForm .= '</form>';
 
         return $htmlForm;

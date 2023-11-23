@@ -111,7 +111,7 @@
                     {{ form_errors(speakers_contact_form.phone_number) }}
                 </span>
                 <span>
-                    {{ form_widget(speakers_contact_form.submit) }}
+                    {{ form_widget(speakers_contact_form.submit, {attr: {title: "Enregistrer le contact"}}) }}
                 </span>
             </div>
 
@@ -150,7 +150,7 @@
                 </div>
 
                 <div class="submit-container">
-                    {{ form_widget(speakers_diner_form.submit) }}
+                    {{ form_widget(speakers_diner_form.submit, {attr: {title: "Enregistrer mes préférences pour le restaurant"}}) }}
                 </div>
 
                 {{ form_end(speakers_diner_form) }}
@@ -196,7 +196,7 @@
                 </div>
 
                 <div class="submit-container">
-                    {{ form_widget(hotel_reservation_form.submit) }}
+                    {{ form_widget(hotel_reservation_form.submit, {attr: {title: "Enregistrer les nuitées"}}) }}
                 </div>
 
                 {{ form_end(hotel_reservation_form) }}

@@ -60,6 +60,11 @@ class Article implements NotifyPropertyInterface
     private $publishedAt;
 
     /**
+     * @var int
+     */
+    private $state;
+
+    /**
      * @return int
      */
     public function getId()
@@ -331,5 +336,25 @@ class Article implements NotifyPropertyInterface
     public function getSlug()
     {
         return $this->getId() . '-' . $this->getPath();
+    }
+    /**
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param int $state
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $state = (int) $state;
+        $this->propertyChanged('state', $this->state, $state);
+        $this->state = $state;
+        return $this;
     }
 }

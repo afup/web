@@ -4,6 +4,11 @@ namespace Afup\Site\Corporate;
 
 class Accueil
 {
+    /**
+     * @var _Site_Base_De_Donnees|mixed
+     */
+    private $bdd;
+
     function __construct($bdd = false)
     {
         if ($bdd) {

@@ -13,9 +13,10 @@ if (!defined('AFUP_GLOBAL_MENU_PREFIX')) {
 }
 
 $isDevEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'dev';
+$isTestEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'test';
 
-if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv) {
-    if (!$isDevEnv
+if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
+    if (!($isDevEnv || $isTestEnv)
         &&
         (
             isset($_SERVER['HTTP_CLIENT_IP'])
@@ -33,7 +34,11 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv) {
     $loader = require __DIR__.'/../../../vendor/autoload.php';
     Debug::enable();
 
-    $kernel = new PlaneteAppKernel('dev', true);
+    if ($isDevEnv) {
+        $kernel = new PlaneteAppKernel('dev', true);
+    } else {
+        $kernel = new PlaneteAppKernel('test', true);
+    }
 } else {
     /** @var ClassLoader $loader */
     $loader = require __DIR__.'/../../../vendor/autoload.php';

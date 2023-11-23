@@ -12,5 +12,9 @@ web_profiler:
     toolbar: false
     intercept_redirects: false
 
-swiftmailer:
-    disable_delivery: true
+parameters:
+    database_host: dbtest
+    database_port: 3306
+    database_name: web
+    database_user: afup
+    database_password: afup

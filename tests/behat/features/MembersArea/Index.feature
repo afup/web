@@ -52,17 +52,17 @@ Feature: Espace membre, accueil
     Given I am logged-in with the user "edmonddupont" and the password "edmonddupont"
     And I follow "Espace membre"
     Then I should see "Cotisations"
-    When I follow "Se mettre à jour"
+    When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
-    Then the response header "Content-disposition" should equal 'attachment; filename="MyCorp_COTIS-2018-201_13072018.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename="MyCorp_COTIS-2023-200_13072018.pdf"'
 
   @reloadDbWithTestData
   Scenario: Si on est pas company manager de la personne morale, on ne peux pas télécharger la facture
     Given I am logged-in with the user "raoul" and the password "raoul"
     And I follow "Espace membre"
     Then I should see "Cotisations"
-    When I follow "Se mettre à jour"
+    When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     Then I should not see "Télécharger la facture"
     When I am on "/member/membership-fee/download?id=3"

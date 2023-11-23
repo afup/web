@@ -28,7 +28,9 @@ class Users extends AbstractSeed
                 'code_postal' => '69001',
                 'ville' => 'LYON',
                 'id_pays' => 'FR',
-                'etat' => 0,
+                'etat' => 1,
+                'public_profile_enabled' => 1,
+                'max_members' => 3
             ],
         ];
 
@@ -87,6 +89,7 @@ class Users extends AbstractSeed
                 'roles' => '[]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'niveau_modules' => '00000',
+                'etat' => 1
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_PHYSIQUE,
@@ -137,8 +140,16 @@ class Users extends AbstractSeed
                 'type_personne' => 1, // AFUP_COTISATION_MORALE
                 'id_personne' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'montant' => 150,
-                'date_fin' => $dateDebutUserExpire + $oneMonthInSeconds * 12,
-                'numero_facture' => 'COTIS-2018-201',
+                'date_fin' => $now + $oneMonthInSeconds * 12,
+                'numero_facture' => 'COTIS-'.date('Y').'-200',
+            ],
+            [
+                'date_debut' => $dateDebutUserExpire,
+                'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
+                'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
+                'montant' => 25,
+                'date_fin' => $now + $oneMonthInSeconds * 12,
+                'numero_facture' => 'COTIS-'.date('Y').'-'.(date('Hi')+200),
             ]
         ];
 

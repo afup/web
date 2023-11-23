@@ -362,6 +362,17 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'int'
             ])
             ->addField([
+                'columnName' => 'with_workshop',
+                'fieldName' => 'withWorkshop',
+                'type' => 'bool',
+                'serializer' => Boolean::class
+            ])
+            ->addField([
+                'columnName' => 'workshop_abstract',
+                'fieldName' => 'workshopAbstract',
+                'type' => 'string'
+            ])
+            ->addField([
                 'columnName' => 'plannifie',
                 'fieldName' => 'scheduled',
                 'type' => 'bool',

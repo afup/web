@@ -35,7 +35,7 @@ class Session extends AbstractSeed
                 'language_code' => 'fr',
                 'markdown' => 1,
                 'joindin' => 24041,
-                'date_publication' => $date->format('Y-m-d H:i:s')
+                'date_publication' => null
             ],
             [
                 'session_id' => self::ID_SESSIONS[1],
@@ -59,7 +59,7 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'language_code' => 'fr',
                 'markdown' => 0,
                 'joindin' => 24138,
-                'date_publication' => $date->format('Y-m-d H:i:s')
+                'date_publication' => (new \DateTime())->modify('-1 days')->format('Y-m-d H:i:s')
             ],
             [
                 'session_id' => 3,
@@ -81,7 +81,7 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'language_code' => 'fr',
                 'markdown' => 1,
                 'joindin' => 24041,
-                'date_publication' => $date->format('Y-m-d H:i:s')
+                'date_publication' => (new \DateTime())->modify('+5 days')->format('Y-m-d H:i:s')
             ],
         ];
 
@@ -111,6 +111,16 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
             ->save()
         ;
 
+        $table = $this->table('afup_forum_salle');
+        $table->truncate();
+
+        $table
+            ->insert([
+                'id' => 1,
+                'nom' => 'La salle T',
+                'id_forum' => Event::ID_FORUM,
+            ])
+            ->save();
 
         $i = 1;
         $plannings = [];
@@ -120,7 +130,7 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'id_session' => $session['session_id'],
                 'debut' => $dateDebut->format('U'),
                 'fin' => $date->format('U'),
-                'id_salle' => 0,
+                'id_salle' => 1,
                 'id_forum' => Event::ID_FORUM,
                 'keynote' => ''
             ];

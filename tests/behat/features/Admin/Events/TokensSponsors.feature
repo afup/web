@@ -40,6 +40,9 @@ Feature: Administration - Évènements - Tokens Sponsors
     Then I follow "Envoyer le mail de rappel"
     And I should see "1 mails de relance ont été envoyés"
     And I should only receive the following emails:
-      | to                    | subject                                                      |
-      | <testToken1@mail.com> | Toutes les informations concernant votre sponsoring du forum |
-      | <testToken1@mail.com> | Sponsor: enregistrez-vous pour le forum                      |
+      | to                              | subject                                                      |
+      | <testToken1@mail.com>           | Toutes les informations concernant votre sponsoring du forum |
+      | <personneinvitee@masociete.com> | [forum] Merci !                                              |
+      | <personneinvitee@masociete.com> | [forum] Merci !                                              |
+      | <testToken1@mail.com>           | Sponsor: enregistrez-vous pour le forum                      |
+

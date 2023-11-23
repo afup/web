@@ -56,3 +56,12 @@ input[type="submit"].button--call-to-action {
     font-weight: bold;
     color: #fff;
 }
+
+button[type="submit"].button--call-to-action.paiement {
+    background-color: #ed0678 !important;
+    border-color: #ed0678 !important;
+    font-weight: bold !important;
+    color: #fff !important;
+    height: auto !important;
+}
+

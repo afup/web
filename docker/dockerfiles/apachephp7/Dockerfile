@@ -1,5 +1,7 @@
 FROM php:7.0-apache
 
+RUN echo 'deb http://archive.debian.org/debian stretch main' > /etc/apt/sources.list
+
 ARG ENABLE_XDEBUG=false
 
 ## Update system

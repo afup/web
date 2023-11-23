@@ -75,6 +75,7 @@ class TicketType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $eventTickets = null;
+        $event = null;
         if ($options['event_id'] !== null) {
             $event = $this->eventRepository->get($options['event_id']);
             $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS);

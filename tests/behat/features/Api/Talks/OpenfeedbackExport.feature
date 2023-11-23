@@ -10,4 +10,5 @@ Feature: Export talks Openfeedback - API
     Given I am on "/event/forum/openfeedback.json"
     Then the response status code should be 200
     And the response header "Content-Type" should match "#^application/json#"
-    And the response header "Content-Length" should match "#^1018#"
+    And the response should contain "Jouons tous ensemble \u00e0 un petit jeu"
+    And the response should contain "REST ou GraphQL ? Exemples illustr\u00e9s avec Symfony et API Platform"

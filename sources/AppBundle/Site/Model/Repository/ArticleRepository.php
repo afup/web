@@ -206,7 +206,8 @@ class ArticleRepository extends Repository implements MetadataInitializer
     {
         $query = $this
             ->getPreparedQuery(
-                'SELECT * FROM afup_site_article WHERE id_site_rubrique = :rubricId AND etat = 1 AND CONCAT(id, "-", raccourci) = :slug'
+                'SELECT * FROM afup_site_article
+         WHERE id_site_rubrique = :rubricId AND CONCAT(id, "-", raccourci) = :slug'
             )
             ->setParams(['rubricId' => Rubrique::ID_RUBRIQUE_ACTUALITES, 'slug' => $slug]);
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
@@ -285,6 +286,11 @@ class ArticleRepository extends Repository implements MetadataInitializer
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
                 ]
+            ])
+            ->addField([
+                'columnName' => 'etat',
+                'fieldName' => 'state',
+                'type' => 'int'
             ])
         ;
 
