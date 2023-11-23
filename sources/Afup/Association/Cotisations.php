@@ -222,13 +222,13 @@ class Cotisations
          */
         $configuration = $GLOBALS['AFUP_CONF'];
 
-        list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
+        $account = $this->getAccountFromCmd($cmd);
 
-        if (AFUP_PERSONNES_MORALES == $type_personne) {
+        if (AFUP_PERSONNES_MORALES == $account['type']) {
             $personnes = new Personnes_Morales($this->_bdd);
-            $infos = $personnes->obtenir($id_personne, 'nom, prenom, email');
+            $infos = $personnes->obtenir($account['id'], 'nom, prenom, email');
         } else {
-            $user = $userRepository->get($id_personne);
+            $user = $userRepository->get($account['id']);
             Assertion::notNull($user);
             $infos = [
                 'nom' => $user->getLastName(),
@@ -242,7 +242,7 @@ class Cotisations
         $corps = "Bonjour, \n\n";
         $corps .= "Une cotisation annuelle AFUP a été réglée.\n\n";
         $corps .= "Personne : " . $infos['nom'] . " " . $infos['prenom'] . " (" . $infos['email'] . ")\n";
-        $corps .= "URL : " . $configuration->obtenir('web|path') . "pages/administration/index.php?page=cotisations&type_personne=" . $type_personne . "&id_personne=" . $id_personne . "\n";
+        $corps .= "URL : " . $configuration->obtenir('web|path') . "pages/administration/index.php?page=cotisations&type_personne=" . $account['type'] . "&id_personne=" . $account['id'] . "\n";
         $corps .= "Commande : " . $cmd . "\n";
         $corps .= "Total : " . $total . "\n";
         $corps .= "Autorisation : " . $autorisation . "\n";
@@ -300,7 +300,14 @@ class Cotisations
 
     public function getAccountFromCmd($cmd)
     {
-        list($ref, $date, $memberType, $memberId, $stuff) = explode('-', $cmd, 5);
+        $arr = explode('-', $cmd, 5);
+        // Personne morale : $cmd=FCOTIS-2023-202
+        if (3 === count($arr)) {
+            return ['type' => UserRepository::USER_TYPE_COMPANY, 'id' => $arr[2]];
+        }
+
+        // Personne physique : $cmd=C2023-211120232237-0-5-PAUL-431
+        list($ref, $date, $memberType, $memberId, $stuff) = $arr;
 
         return ['type' => $memberType, 'id' => $memberId];
     }

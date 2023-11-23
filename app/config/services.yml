@@ -451,11 +451,6 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\TicketSpecialPriceRepository]
 
-    AppBundle\Groups\Model\Repository\MailingListRepository:
-        class: AppBundle\Groups\Model\Repository\MailingListRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Groups\Model\Repository\MailingListRepository]
-
     AppBundle\Site\Model\Repository\RubriqueRepository:
         class: AppBundle\Site\Model\Repository\RubriqueRepository
         factory: ["@ting", get]
@@ -596,27 +591,6 @@ services:
 
     AppBundle\Event\JsonLd:
         autowire: true
-
-    Google_Client:
-        class: Google_Client
-        calls:
-          - ["setAuthConfig", ["%google_groups_api_key%"]]
-          - ["setScopes", [[!php/const Google_Service_Directory::ADMIN_DIRECTORY_GROUP, !php/const Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY]]]
-          - ["setSubject", ['admin-mailing-listes-api@afup.org']]
-
-    Google_Service_Directory:
-        class: Google_Service_Directory
-        arguments: ["@Google_Client"]
-
-    AppBundle\Groups\GroupRepository:
-        autowire: true
-
-    AppBundle\Association\Listener\MembersGroupsListener:
-        arguments:
-            $logger: "@logger"
-        autowire: true
-        tags:
-          - { name: kernel.event_listener, event: member.new, method: onNewMemberEvent }
 
     AppBundle\Offices\OfficeFinder:
         arguments: ['@Geocoder\Provider\GoogleMaps']
