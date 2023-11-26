@@ -2,10 +2,14 @@
 
 namespace AppBundle\Indexation\Meetups;
 
+use AppBundle\Event\Model\Meetup;
 use AppBundle\Offices\OfficesCollection;
+use Exception;
 
 class Transformer
 {
+    const MEETUP_URL = 'https://www.meetup.com/fr-FR/';
+
     /**
      * @var OfficesCollection
      */
@@ -20,17 +24,18 @@ class Transformer
     }
 
     /**
-     * @param array $meetup
+     * @param Meetup $meetup
      *
      * @return array
+     * @throws Exception
      */
-    public function transform(array $meetup)
+    public function transform(Meetup $meetup)
     {
-        $office = $this->officesCollection->findByMeetupId($meetup['group']['id']);
+        $codeOffice = $meetup->getAntenneName();
+        $office = $this->officesCollection->findByCode($codeOffice);
+        $datetime = $meetup->getDate();
 
-        $datetime = new \DateTime('@' . ($meetup['time'] / 1000));
-
-        $isUpcoming = $meetup['status'] == 'upcoming';
+        $isUpcoming = null;
 
         if (isset($office['meetup_filter'])) {
             $matches = [];
@@ -41,10 +46,11 @@ class Transformer
             $meetup['name'] = $matches[1];
         }
 
+        $eventUrl = $this->getEventUrl($office, $meetup);
         $item = [
-            'meetup_id' => $meetup['id'],
-            'label' => $meetup['name'],
-            'event_url' => $meetup['event_url'],
+            'meetup_id' => $meetup->getId(),
+            'label' => $meetup->getTitle(),
+            'event_url' => $eventUrl,
             'timestamp' => $datetime->format('U'),
             'year' => $datetime->format('Y'),
             'datetime' => $datetime->format('Y-m-d H:i:s'),
@@ -53,23 +59,25 @@ class Transformer
                 'label' => $office['label'],
                 'logo_url' => $office['logo_url'],
             ],
-            'description' => $meetup['description'],
+            'description' => $meetup->getDescription(),
             'is_upcoming' => $isUpcoming,
-            'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup['time'] : $meetup['time'],
+            'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup->getDate()->getTimestamp() : $meetup->getDate()->getTimestamp(),
         ];
 
         if (isset($office['twitter'])) {
             $item['twitter'] = $office['twitter'];
         }
 
-        if (isset($meetup['venue'])) {
-            $item['venue'] = [
-                'name' => $meetup['venue']['name'],
-                'address_1' => $meetup['venue']['address_1'],
-                'city' => $meetup['venue']['city'],
-            ];
-        }
-
         return $item;
+    }
+
+    /**
+     * @param array $office
+     * @param Meetup $meetup
+     * @return string
+     */
+    public function getEventUrl($office, Meetup $meetup)
+    {
+        return self::MEETUP_URL . $office['meetup_urlname'] . '/events/' . $meetup->getId();
     }
 }
