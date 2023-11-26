@@ -2,9 +2,15 @@
 
 namespace AppBundle\Indexation\Meetups;
 
+use AlgoliaSearch\AlgoliaException;
 use AlgoliaSearch\Client;
+use AlgoliaSearch\Index;
+use AppBundle\Event\Model\Meetup;
+use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Offices\OfficesCollection;
-use DMS\Service\Meetup\MeetupOAuthClient;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class Runner
 {
@@ -14,9 +20,9 @@ class Runner
     protected $algoliaClient;
 
     /**
-     * @var MeetupOAuthClient
+     * @var MeetupRepository
      */
-    protected $meetupClient;
+    protected $meetupRepository;
 
     /**
      * @var OfficesCollection
@@ -28,61 +34,54 @@ class Runner
      */
     protected $transformer;
 
-    public function __construct(Client $algoliaClient, MeetupOAuthClient $meetupClient)
+    public function __construct(Client $algoliaClient, MeetupRepository $meetupRepository)
     {
         $this->algoliaClient = $algoliaClient;
-        $this->meetupClient = $meetupClient;
+        $this->meetupRepository = $meetupRepository;
         $this->officiesCollection = new OfficesCollection();
         $this->transformer = new Transformer($this->officiesCollection);
     }
 
     /**
      *
+     * @throws AlgoliaException
      */
     public function run()
     {
         $index = $this->initIndex();
+        $command = ['./bin/console', 'scrapping-meetup-event'];
+        $process = new Process($command);
 
-        $command = $this->meetupClient->getCommand(
-            'GetEvents',
-            [
-                'group_id' => implode(',', $this->getGroupIds()),
-                'status' => 'upcoming,past',
-                'order' => 'time',
-                'desc' => 'true',
-            ]
-        );
+        try {
+            $process->start();
 
-        $command->prepare();
-
-        $meetups = [];
-
-        foreach ($command->execute() as $meetup) {
-            if (null === ($transformedMeetup = $this->transformer->transform($meetup))) {
-                continue;
+            while ($process->isRunning()) {
+                echo "En cours de scrapping des meetups...\n";
+                usleep(500000);
             }
-            $meetups[] = $transformedMeetup;
+
+            echo $process->getOutput();
+        } catch (ProcessFailedException $exception) {
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
         }
+
+        echo "Indexation des meetups en cours ...\n\n";
+
+
+        $meetups = $this->getTransformedMeetupsFromDatabase();
+
 
         $index->clearIndex();
         $index->addObjects($meetups, 'meetup_id');
-    }
 
-    protected function getGroupIds()
-    {
-        $groupIds = [];
-        foreach ($this->officiesCollection->getAll() as $office) {
-            if (!isset($office['meetup_id'])) {
-                continue;
-            }
-            $groupIds[] = $office['meetup_id'];
-        }
-
-        return $groupIds;
+        echo "Indexation des meetups terminée avec succès !\n";
     }
 
     /**
-     * @return \AlgoliaSearch\Index
+     * @return Index
+     * @throws AlgoliaException
      */
     protected function initIndex()
     {
@@ -105,5 +104,33 @@ class Runner
         ]);
 
         return $index;
+    }
+
+    /**
+     * @return array
+     */
+    private function getTransformedMeetupsFromDatabase()
+    {
+        $meetupsCollection = $this->meetupRepository->getAll();
+
+        return $this->transformMeetupsForIndexation($meetupsCollection);
+    }
+
+    /**
+     * @param CollectionInterface $meetupsCollection
+     * @return array<Meetup>
+     */
+    public function transformMeetupsForIndexation($meetupsCollection)
+    {
+        $meetupsArray = [];
+        /** @var Meetup $meetup */
+        foreach ($meetupsCollection as $meetup) {
+            if (null === ($transformedMeetup = $this->transformer->transform($meetup))) {
+                continue;
+            }
+            $meetupsArray[] = $transformedMeetup;
+        }
+
+        return $meetupsArray;
     }
 }

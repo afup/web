@@ -2,6 +2,9 @@
 
 namespace AppBundle\Command;
 
+use AlgoliaSearch\AlgoliaException;
+use AlgoliaSearch\Client;
+use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\Runner;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,18 +23,19 @@ class IndexMeetupsCommand extends ContainerAwareCommand
     }
 
     /**
+     * @throws AlgoliaException
      * @see Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
+        $ting = $this->getContainer()->get('ting');
 
-        $meetupClient = \DMS\Service\Meetup\MeetupOAuthClient::factory([
-            'consumer_key' => $container->getParameter('meetup_api_consumer_key'),
-            'consumer_secret' => $container->getParameter('meetup_api_consumer_secret'),
-        ]);
+        /** @var Client $algoliaClient */
+        $algoliaClient = $container->get(Client::class);
+        $meetupRepository = $ting->get(MeetupRepository::class);
 
-        $runner = new Runner($container->get(\AlgoliaSearch\Client::class), $meetupClient);
+        $runner = new Runner($algoliaClient, $meetupRepository);
         $runner->run();
     }
 }
