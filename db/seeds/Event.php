@@ -28,7 +28,8 @@ class Event extends AbstractSeed
                     'fr' => 'François le français',
                     'en' => 'Henri l\'anglais',
                     'sponsor_management_fr' => '**Sponsors**, venez, vous serez très visible !',
-                    'sponsor_management_en' => '**Sponsors**, come, you will be very visible!'
+                    'sponsor_management_en' => '**Sponsors**, come, you will be very visible!',
+                    'mail_inscription_content' => 'Contenu email',
                 ]),
                 'date_fin_appel_projet' => $now + $oneMonthInSeconds,
                 'date_fin_appel_conferencier' => $event - $oneMonthInSeconds * 2,
@@ -39,7 +40,8 @@ class Event extends AbstractSeed
                 'date_fin_saisie_repas_speakers' => $event - $oneDayInSeconds * 7,
                 'date_fin_saisie_nuites_hotel' => $event - $oneDayInSeconds * 7,
                 'place_name' => 'Paris',
-                'place_address' => 'Marriott Rive Gauche'
+                'place_address' => 'Marriott Rive Gauche',
+                'date_annonce_planning' => date('Y-m-d', $event),
             ],
         ];
 

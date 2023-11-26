@@ -24,7 +24,7 @@ class EventTarif extends AbstractSeed
             [
                 'id_tarif' => 3,
                 'id_event' => Event::ID_FORUM,
-                'price' => 150,
+                'price' => 15,
                 'date_start' => '2010-01-01 10:00:00',
                 'date_end' => '2099-12-31 23:59:59',
             ],

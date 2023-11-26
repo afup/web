@@ -9,7 +9,7 @@ Feature: Administration - Évènements - Salles
     When I press "Ajouter"
     And I should see "La salle \"La salle ronde\" a été ajoutée."
     And I should see "Liste des salles pour forum"
-    And I fill in "edit_room_53_name" with "La grande salle ronde"
+    And I fill in "edit_room_1_name" with "La grande salle ronde"
     When I press "Sauvegarder"
     And I should see "La salle \"La grande salle ronde\" a été sauvegardée."
     And I should see "Liste des salles pour forum"

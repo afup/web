@@ -28,7 +28,8 @@ class Users extends AbstractSeed
                 'code_postal' => '69001',
                 'ville' => 'LYON',
                 'id_pays' => 'FR',
-                'etat' => 0,
+                'etat' => 1,
+                'public_profile_enabled' => 1,
                 'max_members' => 3
             ],
         ];
@@ -148,7 +149,7 @@ class Users extends AbstractSeed
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
-                'numero_facture' => 'COTIS-'.date('Y').'-201',
+                'numero_facture' => 'COTIS-'.date('Y').'-'.(date('Hi')+200),
             ]
         ];
 

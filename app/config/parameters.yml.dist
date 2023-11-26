@@ -43,8 +43,6 @@ parameters:
     meetup_api_consumer_key: ""
     meetup_api_consumer_secret: ""
 
-    google_groups_api_key: ""
-
     techno_watch_calendar_url: "https://docs.google.com/spreadsheets/d/2cUeAk86Ov7BLYyn0Ad9ge3ecbsdboeQH64wIU9a9Zzp/export?format=csv"
     techno_watch_calendar_key: "9Yt0feebMyMrUWx"
 

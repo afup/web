@@ -4,6 +4,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -105,6 +106,34 @@ class FeatureContext implements Context
         $this->minkContext->fillField("mot_de_passe", $password);
         $this->minkContext->pressButton("Se connecter");
         $this->minkContext->assertPageContainsText("Espace membre");
+    }
+
+    /**
+     * @Then I submit the form with name :formName
+     */
+    public function submitFormWithName($formName)
+    {
+        $form = $this->minkContext->getSession()->getPage()->find('xpath', "//form[@name='$formName']");
+
+        if (null === $form) {
+            throw new ExpectationException(sprintf('The form named "%s" not found', $formName), null);
+        }
+
+        $form->submit();
+    }
+
+    /**
+     * @Then simulate the Paybox callback
+     */
+    public function simulateThePayboxCallback()
+    {
+        $url = $this->minkContext->getSession()->getCurrentUrl();
+        $url = str_replace('paybox-redirect', 'paybox-callback', $url);
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_exec($curl);
     }
 
     /**

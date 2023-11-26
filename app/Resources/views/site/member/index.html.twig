@@ -46,7 +46,8 @@
                     </a>
                     <span class="member-index-item--title">Mes coordonnées</span> : {{ user.label }}
                     <div class="member-index-item--link">
-                        <a class="button-inverted button__medium" href="{{ href }}">Modifier</a>
+                        <a class="button-inverted button__medium" href="{{ href }}"
+                           title="Modifier les coordonnées">Modifier</a>
                     </div>
                     <div class="member-index-item--description">
                         Modifiez votre adresse de facturation et votre adresse email, changez votre mot de passe
@@ -101,18 +102,6 @@
                     </div>
                     <div class="member-index-item--description">
                         Profitez de cet avantage exclusif réservé à nos membres : recevez 2 fois par mois notre veille dédiée à PHP, effectuée par notre pôle d’expert·e·s.
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <div class="member-index-item">
-                    {% set href = path('my_groups') %}
-                    <a href="{{ href }}">
-                        <i class="fa fa-envelope"></i>
-                    </a>
-                    <span class="member-index-item--title">Listes de diffusion</span>
-                    <div class="member-index-item--link">
-                        <a class="button-inverted button__medium" href="{{ href }}">Gérer mes abonnements</a>
                     </div>
                 </div>
             </div>

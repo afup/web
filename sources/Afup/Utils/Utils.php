@@ -54,6 +54,30 @@ class Utils
         }
         return $url;
     }
-}
 
-?>
+    public static function cryptFromText($text)
+    {
+        // return base64_encode(mcrypt_cbc(MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', $text, MCRYPT_ENCRYPT, '@PaiFact'));
+
+        if (strlen($text) % 8) {
+            $text = str_pad($text, strlen($text) + 8 - strlen($text) % 8, "\0");
+        }
+
+        $key = 'PaiementFactureAFUP_AFUP';
+        $iv = '@PaiFact';
+
+        return base64_encode(openssl_encrypt($text, 'des-ede3-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv));
+    }
+
+    public static function decryptFromText($text)
+    {
+        // return trim(mcrypt_cbc(MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', base64_decode(str_replace(' ', '+', $text)), MCRYPT_DECRYPT, '@PaiFact'));
+
+        $ref = base64_decode(str_replace(' ', '+', $text));
+
+        $key = 'PaiementFactureAFUP_AFUP';
+        $iv = '@PaiFact';
+
+        return trim(openssl_decrypt($ref, 'des-ede3-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv));
+    }
+}

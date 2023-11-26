@@ -380,13 +380,6 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
-        groups:
-            namespace : AppBundle\Groups\Model\Repository
-            directory : "@AppBundle/Groups/Model/Repository"
-            options:
-                default:
-                    connection: main
-                    database: '%database_name%'
         throttling:
             namespace : AppBundle\Security\ActionThrottling
             directory : "@AppBundle/Security/ActionThrottling"

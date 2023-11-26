@@ -1,3 +1,0 @@
-my_groups:
-  path: /
-  defaults: {_controller: AppBundle:Groups:myGroups}

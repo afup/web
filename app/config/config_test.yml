@@ -25,3 +25,6 @@ services:
     AppBundle\Offices\OfficeFinder:
         class: AppBundle\Offices\NullOfficeFinder
         arguments: [ '@Geocoder\Provider\GoogleMaps' ]
+
+ewz_recaptcha:
+    enabled: false
