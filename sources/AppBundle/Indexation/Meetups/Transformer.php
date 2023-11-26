@@ -35,7 +35,7 @@ class Transformer
         $office = $this->officesCollection->findByCode($codeOffice);
         $datetime = $meetup->getDate();
 
-        $isUpcoming = null;
+        $isUpcoming = new \DateTime() < $datetime;
 
         if (isset($office['meetup_filter'])) {
             $matches = [];
