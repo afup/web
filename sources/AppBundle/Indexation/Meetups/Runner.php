@@ -2,7 +2,9 @@
 
 namespace AppBundle\Indexation\Meetups;
 
+use AlgoliaSearch\AlgoliaException;
 use AlgoliaSearch\Client;
+use AlgoliaSearch\Index;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Offices\OfficesCollection;
@@ -42,26 +44,44 @@ class Runner
 
     /**
      *
+     * @throws AlgoliaException
      */
     public function run()
     {
         $index = $this->initIndex();
+        $command = ['./bin/console', 'scrapping-meetup-event'];
+        $process = new Process($command);
 
-        $process = new Process(['php', 'bin/console', 'scraping:meetup:event']);
-        $process->run();
+        try {
+            $process->start();
 
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+            while ($process->isRunning()) {
+                echo "En cours de scrapping des meetups...\n";
+                usleep(500000);
+            }
+
+            echo $process->getOutput();
+        } catch (ProcessFailedException $exception) {
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
         }
 
-        $meetups = $this->getMeetupsFromDatabase();
+        echo "Indexation des meetups en cours ...\n\n";
+
+
+        $meetups = $this->getTransformedMeetupsFromDatabase();
+
 
         $index->clearIndex();
         $index->addObjects($meetups, 'meetup_id');
+
+        echo "Indexation des meetups terminée avec succès !\n";
     }
 
     /**
-     * @return \AlgoliaSearch\Index
+     * @return Index
+     * @throws AlgoliaException
      */
     protected function initIndex()
     {
@@ -89,7 +109,7 @@ class Runner
     /**
      * @return array
      */
-    private function getMeetupsFromDatabase()
+    private function getTransformedMeetupsFromDatabase()
     {
         $meetupsCollection = $this->meetupRepository->getAll();
 
@@ -103,12 +123,14 @@ class Runner
     public function transformMeetupsForIndexation($meetupsCollection)
     {
         $meetupsArray = [];
+        /** @var Meetup $meetup */
         foreach ($meetupsCollection as $meetup) {
             if (null === ($transformedMeetup = $this->transformer->transform($meetup))) {
                 continue;
             }
             $meetupsArray[] = $transformedMeetup;
         }
+
         return $meetupsArray;
     }
 }
