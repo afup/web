@@ -112,6 +112,11 @@ elseif ($action == 'credit') {
         $champs['obs_regl']          = $champsRecup['obs_regl'];
         $champs['idevenement']          = $champsRecup['idevenement'];
         $champs['comment'] = $champsRecup['comment'];
+        $champs['montant_ht_soumis_tva_0'] = $champsRecup['montant_ht_soumis_tva_0'];
+        $champs['montant_ht_soumis_tva_5_5'] = $champsRecup['montant_ht_soumis_tva_5_5'];
+        $champs['montant_ht_soumis_tva_10'] = $champsRecup['montant_ht_soumis_tva_10'];
+        $champs['montant_ht_soumis_tva_20'] = $champsRecup['montant_ht_soumis_tva_20'];
+
 
 
 		//$formulaire->setDefaults($champsRecup);
@@ -144,6 +149,13 @@ elseif ($action == 'credit') {
    	$formulaire->addElement('textarea', 'description', 'Description', array('cols' => 42, 'rows' => 5));
 	$formulaire->addElement('text', 'montant', 'Montant' , array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text', 'comment', 'Commentaire' , array('size' => 30, 'maxlength' => 255));
+
+    $formulaire->addElement('header'  , ''                         , 'TVA');
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_5_5', 'Montant HT soumis à TVA 5.5%' , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_10', 'Montant HT soumis à TVA 10%' , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_20', 'Montant HT soumis à TVA 20%' , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_0', 'Montant HT non soumis à TVA' , array('size' => 30, 'maxlength' => 40));
+
 
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
@@ -207,7 +219,12 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 									$date_regl,
 									$valeur['obs_regl'],
 									$valeur['idevenement'],
-                                    $valeur['comment']
+                                    $valeur['comment'],
+                                    0,
+                                    $valeur['montant_ht_soumis_tva_0'],
+                                    $valeur['montant_ht_soumis_tva_5_5'],
+                                    $valeur['montant_ht_soumis_tva_10'],
+                                    $valeur['montant_ht_soumis_tva_20']
             						);
         } else {
    			$ok = $compta->modifier(
@@ -224,10 +241,15 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
 									$date_regl,
 									$valeur['obs_regl'],
 									$valeur['idevenement'],
-                                    $valeur['comment']
+                                    $valeur['comment'],
+                                    null,
+                                    0,
+                                    $valeur['montant_ht_soumis_tva_0'],
+                                    $valeur['montant_ht_soumis_tva_5_5'],
+                                    $valeur['montant_ht_soumis_tva_10'],
+                                    $valeur['montant_ht_soumis_tva_20']
             						);
         }
-
         if ($ok) {
             if ($action == 'ajouter') {
                 Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
