@@ -168,7 +168,7 @@ class TicketController extends EventBaseController
         $purchaseForm->handleRequest($request);
 
         /**
-         * @var User $user
+         * @var User|null $user
          */
         $user = $this->getUser();
 
