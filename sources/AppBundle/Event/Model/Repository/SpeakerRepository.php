@@ -18,7 +18,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
 {
     /**
      * @param Talk $talk
-     * @return CollectionInterface&Speaker[]
+     * @return CollectionInterface&iterable<Speaker>
      */
     public function getSpeakersByTalk(Talk $talk)
     {
@@ -136,7 +136,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     /**
      * @param string|null $filter
      *
-     * @return CollectionInterface&Speaker[]
+     * @return CollectionInterface&iterable<Speaker>
      */
     public function searchSpeakers(Event $event, $sort = 'name', $direction = 'asc', $filter = null)
     {

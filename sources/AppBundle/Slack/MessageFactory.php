@@ -3,7 +3,6 @@
 
 namespace AppBundle\Slack;
 
-use Afup\Site\Forum\Inscriptions;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
@@ -189,11 +188,6 @@ class MessageFactory
     }
 
     /**
-     * @param Event $event
-     * @param Inscriptions $inscriptions
-     * @param TicketTypeRepository $ticketRepository
-     * @param \DateTime $date
-     *
      * @return Message
      */
     public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, \DateTime $date = null)

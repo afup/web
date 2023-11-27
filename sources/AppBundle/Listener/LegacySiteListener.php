@@ -44,7 +44,7 @@ class LegacySiteListener
         if (!is_array($controller) || [] === $controller || !$controller[0] instanceof SiteControllerInterface) {
             return;
         }
-        /** @var $controller SiteControllerInterface */
+        /** @var SiteControllerInterface $controller */
         $controller = $controller[0];
         $controller->setDefaultBlocks($blocks);
         $controller->setConfiguration($GLOBALS['AFUP_CONF']);

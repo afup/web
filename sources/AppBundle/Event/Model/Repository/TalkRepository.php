@@ -44,7 +44,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param Event $event
      * @param Speaker $speaker
-     * @return CollectionInterface&Talk[]
+     * @return CollectionInterface&iterable<Talk>
      */
     public function getTalksBySpeaker(Event $event, Speaker $speaker)
     {
@@ -168,7 +168,6 @@ class TalkRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param Event $event
      * @return CollectionInterface
      */
     public function getByTalkWithSpeakers(Talk $talk)
@@ -197,12 +196,12 @@ class TalkRepository extends Repository implements MetadataInitializer
      * @param Event $event
      * @param bool $applyPublicationdateFilters
      *
-     * @return CollectionInterface&list<array{
+     * @return CollectionInterface&iterable<array{
      *      talk: Talk,
-     *      speaker: AppBundle\Event\Model\Speaker,
-     *      room: ??,
-     *      planning: ??,
-     *     .aggregation: array<string, mixed>
+     *      speaker: \AppBundle\Event\Model\Speaker,
+     *      room: mixed,
+     *      planning: mixed,
+     *     aggregation: array<string, mixed>
      * }>
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
@@ -212,15 +211,15 @@ class TalkRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param Event $event
+     * @param list<Event> $events
      * @param bool $applyPublicationdateFilters
      *
-     * @return CollectionInterface&list<array{
+     * @return CollectionInterface&iterable<array{
      *      talk: Talk,
-     *      speaker: AppBundle\Event\Model\Speaker,
-     *      room: ??,
-     *      planning: ??,
-     *     .aggregation: array<string, mixed>
+     *      speaker: \AppBundle\Event\Model\Speaker,
+     *      room: mixed,
+     *      planning: mixed,
+     *     aggregation: array<string, mixed>
      * }>
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
@@ -267,7 +266,6 @@ class TalkRepository extends Repository implements MetadataInitializer
 
     /**
      * @param Event $event
-     * @param bool $applyPublicationdateFilters
      * @return CollectionInterface
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */

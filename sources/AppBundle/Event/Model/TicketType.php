@@ -179,7 +179,7 @@ class TicketType implements NotifyPropertyInterface
     }
 
     /**
-     * @param bool isRestrictedToCfpSubmitter
+     * @param bool $isRestrictedToCfpSubmitter
      *
      * @return TicketType
      */

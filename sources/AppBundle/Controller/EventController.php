@@ -17,9 +17,7 @@ class EventController extends EventBaseController
     public function indexAction()
     {
         /**
-         * @var $eventRepository EventRepository
-         *
-         * @return Response
+         * @var EventRepository $eventRepository
          */
         $eventRepository = $this->get('ting')->get(EventRepository::class);
         $events = $eventRepository->getNextEvents();
@@ -37,7 +35,7 @@ class EventController extends EventBaseController
     public function speakerInfosIndexAction()
     {
         /**
-         * @var $eventRepository EventRepository
+         * @var EventRepository $eventRepository
          */
         $eventRepository = $this->get('ting')->get(EventRepository::class);
         $event = $eventRepository->getNextEventForGithubUser($this->getUser());

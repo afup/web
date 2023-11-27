@@ -121,7 +121,7 @@ WHERE s.id_forum = :event');
     public function upsert(Vote $vote)
     {
         /**
-         * @var $previousVote Vote|null
+         * @var Vote|null $previousVote
          */
         $previousVote = $this->getOneBy(['user' => $vote->getUser(), 'sessionId' => $vote->getSessionId()]);
         if ($previousVote !== null) {

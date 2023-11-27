@@ -179,8 +179,6 @@ class SpeakerSuggestion implements NotifyPropertyInterface
     }
 
     /**
-     * @param mixed $createdAt
-     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)

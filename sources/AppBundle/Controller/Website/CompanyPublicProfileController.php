@@ -34,7 +34,7 @@ class CompanyPublicProfileController extends SiteBaseController
     private function checkAndGetCompanyMember($id, $slug)
     {
         /**
-         * @var $companyRepository CompanyMemberRepository
+         * @var CompanyMemberRepository $companyRepository
          */
         $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
         $companyMember = $companyRepository->findById($id);

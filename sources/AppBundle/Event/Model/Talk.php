@@ -867,7 +867,7 @@ class Talk implements NotifyPropertyInterface
     }
 
     /**
-     * @param string|null $transcript
+     * @param string|null $verbatim
      *
      * @return $this
      */

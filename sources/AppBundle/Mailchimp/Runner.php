@@ -46,7 +46,7 @@ class Runner
     {
         $errors = [];
         /**
-         * @var $users User[]
+         * @var User[] $users
          */
         $users = $this->userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL);
         foreach ($users as $user) {
@@ -71,7 +71,7 @@ class Runner
         // First - delete expired members
         $dateUnsubscribe = new \DateTimeImmutable('-15 day');
         /**
-         * @var $users User[]
+         * @var User[] $users
          */
         $users = $this->userRepository->getUsersByEndOfMembership($dateUnsubscribe, UserRepository::USER_TYPE_ALL);
         foreach ($users as $user) {

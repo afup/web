@@ -56,7 +56,7 @@ class TalkFormHandler
         if (!$form->isSubmitted() || !$form->isValid()) {
             return false;
         }
-        /** @var $talk Talk */
+        /** @var Talk $talk */
         $talk = $form->getData();
         $talk->setSubmittedOn(new DateTime());
         $this->speakerRepository->save($speaker);

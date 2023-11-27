@@ -14,7 +14,7 @@ class BlocksHandler
      *     sidebar: string,
      *     social: string,
      *     footer: string
-     *     }
+     * } $blocks
      *
      * @return void
      */

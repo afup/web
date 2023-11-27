@@ -2,7 +2,6 @@
 
 namespace AppBundle\Mailchimp;
 
-use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -30,8 +29,6 @@ class MailchimpMembersAutoListSynchronizer
     private $logger;
 
     /**
-     * @param \AppBundle\Mailchimp\Mailchimp $mailchimp
-     * @param TechletterSubscriptionsRepository $subscriptionsRepository
      * @param string $listId
      */
     public function __construct(\AppBundle\Mailchimp\Mailchimp $mailchimp, UserRepository $userRepository, $listId)

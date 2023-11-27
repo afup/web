@@ -64,12 +64,12 @@ class MemberShipController extends SiteBaseController
 
         if ($subscribeForm->isSubmitted() && $subscribeForm->isValid()) {
             /**
-             * @var $member CompanyMember
+             * @var CompanyMember $member
              */
             $member = $subscribeForm->getData();
             $this->get('ting')->get(CompanyMemberRepository::class)->save($member);
             /**
-             * @var $invitationRepository CompanyMemberInvitationRepository
+             * @var CompanyMemberInvitationRepository $invitationRepository
              */
             $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
 
@@ -108,12 +108,12 @@ class MemberShipController extends SiteBaseController
     public function paymentAction($invoiceNumber, $token)
     {
         /**
-         * @var $subscription Cotisations
+         * @var Cotisations $subscription
          */
         $subscription = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
         $invoice = $subscription->getByInvoice($invoiceNumber, $token);
         /**
-         * @var $company CompanyMember
+         * @var CompanyMember $company
          */
         $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($invoice['id_personne']);
 
@@ -140,7 +140,7 @@ class MemberShipController extends SiteBaseController
     public function invoiceAction($invoiceNumber, $token)
     {
         /**
-         * @var $subscription Cotisations
+         * @var Cotisations $subscription
          */
         $subscription = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
         $invoice = $subscription->getByInvoice($invoiceNumber, $token);
@@ -162,18 +162,18 @@ class MemberShipController extends SiteBaseController
     public function memberInvitationAction(Request $request, $invitationId, $token)
     {
         /**
-         * @var $invitationRepository CompanyMemberInvitationRepository
+         * @var CompanyMemberInvitationRepository $invitationRepository
          */
         $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
 
         /**
-         * @var $invitation CompanyMemberInvitation
+         * @var CompanyMemberInvitation $invitation
          */
         $invitation = $invitationRepository->getOneBy(['id' => $invitationId, 'token' => $token, 'status' => CompanyMemberInvitation::STATUS_PENDING]);
         $company = null;
         if ($invitation) {
             /**
-             * @var $company CompanyMember
+             * @var CompanyMember $company
              */
             $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($invitation->getCompanyId());
         }
@@ -187,7 +187,7 @@ class MemberShipController extends SiteBaseController
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             /**
-             * @var $user User
+             * @var User $user
              */
             $user = $userForm->getData();
             $user->setCivility('');
@@ -241,7 +241,7 @@ class MemberShipController extends SiteBaseController
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
         $userRepository = $this->get(UserRepository::class);
         /**
-         * @var $cotisations Cotisations
+         * @var Cotisations $cotisations
          */
         $cotisations = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
         $logs = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Logs::class);

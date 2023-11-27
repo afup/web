@@ -396,7 +396,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @return \string[]
+     * @return string[]
      */
     public function getCFP()
     {
@@ -404,7 +404,7 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param \string[] $CFP language indexed array of strings
+     * @param string[] $CFP language indexed array of strings
      * @return Event
      */
     public function setCFP($CFP)
