@@ -7,6 +7,7 @@ use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AvailableTicketValidator extends ConstraintValidator
 {
@@ -28,16 +29,14 @@ class AvailableTicketValidator extends ConstraintValidator
 
     public function validate($ticket, Constraint $constraint)
     {
-        /**
-         * @var $ticket Ticket
-         */
+        if (!$constraint instanceof AvailableTicket) {
+            throw new UnexpectedTypeException($constraint, AvailableTicket::class);
+        }
+
         if (!($ticket instanceof Ticket) || $ticket->getTicketEventType() === null) {
             return ;
         }
 
-        /**
-         * @var $constraint AvailableTicket
-         */
         $event = $this->eventRepository->get($ticket->getTicketEventType()->getEventId());
         if (
             $ticket->getTicketEventType()->getDateEnd() < new \DateTime()

@@ -10,6 +10,7 @@ use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class CorporateMemberValidator extends ConstraintValidator
 {
@@ -40,9 +41,9 @@ class CorporateMemberValidator extends ConstraintValidator
 
     public function validate($tickets, Constraint $constraint)
     {
-        /**
-         * @var $tickets Ticket[]
-         */
+        if (!$constraint instanceof CorporateMember) {
+            throw new UnexpectedTypeException($constraint, CorporateMember::class);
+        }
 
         $restrictedTickets = 0;
         $eventId = null;
@@ -63,9 +64,6 @@ class CorporateMemberValidator extends ConstraintValidator
 
         $token = $this->tokenStorage->getToken();
 
-        /**
-         * @var $constraint CorporateMember
-         */
         if ($token === null) {
             // Il faut etre connecté pour avoir accès aux tickets membre
             $this->context->buildViolation($constraint->messageNotLoggedIn)
@@ -75,7 +73,7 @@ class CorporateMemberValidator extends ConstraintValidator
         }
 
         /**
-         * @var $company CompanyMember
+         * @var CompanyMember $company
          */
         $company = $this->companyMemberRepository->get($token->getUser()->getCompanyId());
 
@@ -97,7 +95,6 @@ class CorporateMemberValidator extends ConstraintValidator
                 ->atPath('tickets')
                 ->addViolation()
             ;
-            return;
         }
     }
 }

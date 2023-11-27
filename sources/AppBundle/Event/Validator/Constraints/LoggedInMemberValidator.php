@@ -6,6 +6,7 @@ use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class LoggedInMemberValidator extends ConstraintValidator
 {
@@ -21,16 +22,14 @@ class LoggedInMemberValidator extends ConstraintValidator
 
     public function validate($ticket, Constraint $constraint)
     {
-        /**
-         * @var $ticket Ticket
-         */
+        if (!$constraint instanceof LoggedInMember) {
+            throw new UnexpectedTypeException($constraint, LoggedInMember::class);
+        }
+
         if (!($ticket instanceof Ticket) || $ticket->getTicketEventType() === null || $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() === false) {
             return ;
         }
 
-        /**
-         * @var $constraint LoggedInMember
-         */
         $token = $this->tokenStorage->getToken();
         $message = null;
         if ($token === null) {
