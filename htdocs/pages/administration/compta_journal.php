@@ -311,7 +311,14 @@ elseif ($action === 'export') {
         'Justificatif',
         'Nom justificatif',
         'Montant HT',
-        'TVA'
+        'TVA',
+        'Montant HT non soumis à TVA',
+        'Montant HT soumis à TVA 5,5',
+        'TVA 5,5',
+        'Montant HT soumis à TVA 10',
+        'TVA 10',
+        'Montant HT soumis à TVA 20',
+        'TVA 20'
     ];
     fputcsv($fp, $columns, $csvDelimiter, $csvEnclosure);
 
@@ -336,7 +343,14 @@ elseif ($action === 'export') {
                 $line['attachment_required'] ? 'Oui' : 'Non',
                 $line['attachment_filename'],
                 $line['montant_ht'],
-                $line['montant_tva']
+                $line['montant_tva'],
+                $line['montant_ht_0'],
+                $line['montant_ht_5_5'],
+                $line['montant_tva_5_5'],
+                $line['montant_ht_10'],
+                $line['montant_tva_10'],
+                $line['montant_ht_20'],
+                $line['montant_tva_20']
             ],
             $csvDelimiter,
             $csvEnclosure
