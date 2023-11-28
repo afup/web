@@ -281,15 +281,21 @@ class Facture
 
     function genererNumeroFacture()
     {
-        // afup_cotisations
-        $requete = 'SELECT';
-        $requete .= "  MAX(CAST(SUBSTRING_INDEX(numero_facture, '-', -1) AS UNSIGNED)) + 1 ";
-        $requete .= 'FROM';
-        $requete .= ' afup_compta_facture ';
-        $requete .= 'WHERE';
-        $requete .= '  LEFT(numero_facture, 4)=' . $this->_bdd->echapper(date('Y'));
-        $index = $this->_bdd->obtenirUn($requete);
-        return date('Y') . '-' . (is_null($index) ? 1 : $index);
+        $year = (int) date('Y');
+
+        $sql = "SELECT MAX(CAST(SUBSTRING_INDEX(numero_facture, '-', -1) AS UNSIGNED)) + 1
+            FROM afup_compta_facture
+            WHERE LEFT(numero_facture, 4)=";
+        $index = $this->_bdd->obtenirUn($sql.$year);
+
+        // index null = changement d'année
+        // on va chercher l'index de l'année dernière
+        if (null === $index) {
+            $index = $this->_bdd->obtenirUn($sql.($year-1));
+            $index = (int) (is_null($index) ? 1 : $index);
+        }
+
+        return "$year-$index";
     }
 
     function genererNumeroDevis()
