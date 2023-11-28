@@ -311,6 +311,7 @@ elseif ($action === 'export') {
         'Justificatif',
         'Nom justificatif',
         'Montant HT',
+        'TVA'
     ];
     fputcsv($fp, $columns, $csvDelimiter, $csvEnclosure);
 
@@ -334,7 +335,8 @@ elseif ($action === 'export') {
                 $line['comment'],
                 $line['attachment_required'] ? 'Oui' : 'Non',
                 $line['attachment_filename'],
-                $line['montant_ht']
+                $line['montant_ht'],
+                $line['montant_tva']
             ],
             $csvDelimiter,
             $csvEnclosure
