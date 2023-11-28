@@ -171,7 +171,8 @@ class Comptabilite
         $requete .= 'compta_reglement.reglement, ';
         $requete .= 'compta_evenement.evenement, ';
         $requete .= 'compta_categorie.categorie, ';
-        $requete .= 'compta_compte.nom_compte    ';
+        $requete .= 'compta_compte.nom_compte,    ';
+        $requete .= '(compta.montant_ht_soumis_tva_0 + compta.montant_ht_soumis_tva_5_5 + compta.montant_ht_soumis_tva_10 + compta.montant_ht_soumis_tva_20) as montant_ht   ';
         $requete .= 'FROM ';
         $requete .= 'compta ';
         $requete .= 'LEFT JOIN ';
