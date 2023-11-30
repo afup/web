@@ -308,6 +308,8 @@ elseif ($action === 'export') {
         'Crédit',
         'Règlement',
         'Commentaire',
+        'Justificatif',
+        'Nom justificatif'
     ];
     fputcsv($fp, $columns, $csvDelimiter, $csvEnclosure);
 
@@ -329,6 +331,8 @@ elseif ($action === 'export') {
                 $line['idoperation'] != 1 ? $total : '',
                 $line['reglement'],
                 $line['comment'],
+                $line['attachment_required'] ? 'Oui' : 'Non',
+                $line['attachment_filename']
             ],
             $csvDelimiter,
             $csvEnclosure
