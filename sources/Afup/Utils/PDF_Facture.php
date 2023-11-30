@@ -33,7 +33,7 @@ class PDF_Facture extends \FPDF
      */
     function __construct($configuration, BankAccount $bankAccount, $orientation = 'P', $unit = 'mm', $format = 'A4')
     {
-        parent::FPDF($orientation, $unit, $format);
+        parent::__construct($orientation, $unit, $format);
         $this->bankAccount = $bankAccount;
 
         $this->setAFUPConfiguration($configuration);
