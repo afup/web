@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
+use Smalot\PdfParser\Parser;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use AppBundle\Event\Model\Event;
@@ -16,6 +17,8 @@ class FeatureContext implements Context
 
     /** @var MinkContext */
     private $minkContext;
+
+    private $pdfPages = [];
 
     /** @BeforeScenario */
     public function gatherContexts(BeforeScenarioScope $scope)
@@ -299,6 +302,57 @@ class FeatureContext implements Context
         if ($content != $expectedContentString) {
             throw new \Exception(sprintf("The content \n%s\nis not the expected one \n%s\n", var_export($content, true), var_export($expectedContentString, true)));
         }
+    }
+
+    /**
+     * @When I parse the pdf downloaded content
+     */
+    public function iParseThePdfContent()
+    {
+        $pageContent = $this->minkContext->getSession()->getPage()->getContent();
+
+        $parser = new Parser();
+        $pdf    = $parser->parseContent($pageContent);
+        $pages  = $pdf->getPages();
+
+        $this->pdfPages = [];
+        foreach ($pages as $i => $page) {
+            $this->pdfPages[++$i] = $page->getText();
+        }
+    }
+
+    /**
+     * @Then The page :page of the PDF should contain :content
+     */
+    public function thePageOfThePdfShouldContain($page, $expectedContent)
+    {
+        $pageContent = isset($this->pdfPages[$page]) ? $this->pdfPages[$page] : null;
+
+        if (false === strpos($pageContent, $expectedContent)) {
+            throw new \Exception(sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent));
+        }
+    }
+
+    /**
+     * @Then The page :page of the PDF should not contain :content
+     */
+    public function thePageOfThePdfShouldNotContain($page, $expectedContent)
+    {
+        $pageContent = isset($this->pdfPages[$page]) ? $this->pdfPages[$page] : null;
+
+        if (false !== strpos($pageContent, $expectedContent)) {
+            throw new \Exception(sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent));
+        }
+    }
+
+    /**
+     * @Then print last PDF content
+     */
+    public function printLastResponse()
+    {
+        echo (
+            implode("######\n", $this->pdfPages)
+        );
     }
 
 }
