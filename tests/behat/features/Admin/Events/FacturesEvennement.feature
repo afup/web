@@ -17,6 +17,15 @@ Feature: Administration - Évènements - Factures d'évènement
     And the ".content table" element should contain "REF-TEST-002"
     When I follow "telecharger_REF-TEST-002"
     Then the response header "Content-disposition" should match '#attachment; filename="Facture - Jean Maurice - 2023-06-25_00-00.pdf"#'
+    When I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-002"
+    Then The page "1" of the PDF should contain "4 allée des platanes"
+    Then The page "1" of the PDF should contain "TOTAL 250 €"
+    Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-002"
+    Then The page "1" of the PDF should contain "Payé par CB le 25/06/2023"
+    Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then The page "1" of the PDF should not contain "TOTAL TTC 250 €"
+
 
   @reloadDbWithTestData
   @clearEmails
