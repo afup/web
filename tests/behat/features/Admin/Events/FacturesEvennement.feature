@@ -10,6 +10,15 @@ Feature: Administration - Évènements - Factures d'évènement
     Then the response header "Content-disposition" should match '#attachment; filename="Devis - Michu Bernadette - (.*).pdf"#'
 
   @reloadDbWithTestData
+  Scenario: Test d'une facture d'événement avant 2024
+    Given I am logged in as admin and on the Administration
+    And I follow "Factures d'évènement"
+    Then the ".content h2" element should contain "Factures d'évènement"
+    And the ".content table" element should contain "REF-TEST-002"
+    When I follow "telecharger_REF-TEST-002"
+    Then the response header "Content-disposition" should match '#attachment; filename="Facture - Jean Maurice - 2023-06-25_00-00.pdf"#'
+
+  @reloadDbWithTestData
   @clearEmails
   Scenario: On passe à l'état facturée
     Given I am logged in as admin and on the Administration

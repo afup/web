@@ -23,6 +23,21 @@ class Inscriptions extends AbstractSeed
                 'id_forum' => Event::ID_FORUM,
                 'etat' => AFUP_FORUM_ETAT_REGLE,
             ],
+            [
+                'reference' => 'REF-TEST-002',
+                'type_inscription' => AFUP_FORUM_2_JOURNEES,
+                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
+                'civilite' => 'Mme',
+                'nom' => 'Jean',
+                'prenom' => 'Maurice',
+                'email' => 'jean@yahoo.fr',
+                'telephone' => '0102030405',
+                'citer_societe' => '1',
+                'newsletter_afup' => '1',
+                'newsletter_nexen' => '0',
+                'id_forum' => Event::ID_FORUM,
+                'etat' => AFUP_FORUM_ETAT_REGLE,
+            ],
         ];
 
         $table = $this->table('afup_inscription_forum');
@@ -53,6 +68,25 @@ class Inscriptions extends AbstractSeed
                 'facturation' => 0,
                 'id_forum' => Event::ID_FORUM,
                 'date_facture' => time(),
+            ],
+            [
+                'reference' => 'REF-TEST-002',
+                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
+                'date_reglement' => (new \DateTime("2023-06-25"))->getTimestamp(),
+                'type_reglement' => AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE,
+                'email' => 'jean@yahoo.fr',
+                'nom' => 'Jean',
+                'prenom' => 'Maurice',
+                'adresse' => '4 allée des platanes',
+                'code_postal' => '29000',
+                'ville' => 'Quimper',
+                'id_pays' => 'FR',
+                'autorisation' => 'otzbfksgvz',
+                'transaction' => 'taedskem',
+                'etat' => AFUP_FORUM_ETAT_REGLE,
+                'facturation' => 1,
+                'id_forum' => Event::ID_FORUM,
+                'date_facture' => (new \DateTime("2023-06-25"))->getTimestamp(),
             ],
         ];
 
