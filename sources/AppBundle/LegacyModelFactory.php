@@ -13,6 +13,13 @@ class LegacyModelFactory
      */
     private $bdd;
 
+    /**
+     * @template T of object
+     *
+     * @param class-string<T> $type
+     *
+     * @return T
+     */
     public function createObject($type)
     {
         if (class_exists($type) === false) {

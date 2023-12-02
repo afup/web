@@ -56,7 +56,6 @@ class StatsAction
 
         $event = $this->eventActionHelper->getEventById($id);
 
-        /** @var $legacyInscriptions Inscriptions */
         $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
 
         $stats = $legacyInscriptions->obtenirSuivi($event->getId());
