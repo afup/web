@@ -29,7 +29,7 @@
     "erusev/parsedown": "^1.6",
     "robmorgan/phinx": "^0.9.2",
     "presta/sitemap-bundle": "^1.5",
-    "setasign/fpdf": "1.53",
+    "setasign/fpdf": "^1.8",
     "ezyang/htmlpurifier": "^4.10",
     "phpoffice/phpspreadsheet": "^1.6",
     "phpmailer/phpmailer": "5.2.9",
@@ -106,22 +106,6 @@
     "behat/mink-goutte-driver": "^1.2"
   },
   "repositories": [
-    {
-      "type": "package",
-      "package": {
-        "name": "setasign/fpdf",
-        "version": "1.53",
-        "dist": {
-          "url": "http://www.fpdf.org/en/dl.php?v=153&f=zip",
-          "type": "zip"
-        },
-        "autoload": {
-          "files": [
-            "fpdf.php"
-          ]
-        }
-      }
-    },
     {
       "type": "package",
       "package": {

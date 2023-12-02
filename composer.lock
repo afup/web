@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b02a5bda029a7c3d77208e67833d4254",
+    "content-hash": "febe7f0243722c670ef43ef351ca557f",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4038,17 +4038,49 @@
         },
         {
             "name": "setasign/fpdf",
-            "version": "1.53",
+            "version": "1.8.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Setasign/FPDF.git",
+                "reference": "0838e0ee4925716fcbbc50ad9e1799b5edfae0a0"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://www.fpdf.org/en/dl.php?v=153&f=zip"
+                "url": "https://api.github.com/repos/Setasign/FPDF/zipball/0838e0ee4925716fcbbc50ad9e1799b5edfae0a0",
+                "reference": "0838e0ee4925716fcbbc50ad9e1799b5edfae0a0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "ext-zlib": "*"
             },
             "type": "library",
             "autoload": {
-                "files": [
+                "classmap": [
                     "fpdf.php"
                 ]
-            }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Olivier Plathey",
+                    "email": "oliver@fpdf.org",
+                    "homepage": "http://fpdf.org/"
+                }
+            ],
+            "description": "FPDF is a PHP class which allows to generate PDF files with pure PHP. F from FPDF stands for Free: you may use it for any kind of usage and modify it to suit your needs.",
+            "homepage": "http://www.fpdf.org",
+            "keywords": [
+                "fpdf",
+                "pdf"
+            ],
+            "support": {
+                "source": "https://github.com/Setasign/FPDF/tree/1.8.6"
+            },
+            "time": "2023-06-26T14:44:25+00:00"
         },
         {
             "name": "smarty/smarty",
@@ -6101,6 +6133,7 @@
         "ext-json": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
+        "ext-openssl": "*",
         "ext-curl": "*"
     },
     "platform-dev": [],
