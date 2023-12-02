@@ -80,4 +80,9 @@ class Utils
 
         return trim(openssl_decrypt($ref, 'des-ede3-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv));
     }
+
+    public static function isSubjectedToVat(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d') >= '2024-01-01';
+    }
 }
