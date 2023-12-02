@@ -355,4 +355,17 @@ class FeatureContext implements Context
         );
     }
 
+    /**
+     * @Then the checksum of the response content should be :md5
+     */
+    public function checksumOfTheResponseContentShouldBe($expectedChecksum)
+    {
+        $content = $this->minkContext->getSession()->getPage()->getContent();
+
+        $foundChecksum = md5($content);
+
+        if ($expectedChecksum !== $foundChecksum) {
+            throw new \Exception(sprintf("The checksum %s is not the expected checksum %s", $foundChecksum, $expectedChecksum));
+        }
+    }
 }
