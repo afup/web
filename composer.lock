@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "febe7f0243722c670ef43ef351ca557f",
+    "content-hash": "65e4bf820e70259a09636de09a64f6ed",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -6121,6 +6121,60 @@
                 "diff"
             ],
             "time": "2018-02-15T16:58:55+00:00"
+        },
+        {
+            "name": "smalot/pdfparser",
+            "version": "v0.19.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smalot/pdfparser.git",
+                "reference": "1895c17417aefa4508e35836c46da61988d61f26"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/1895c17417aefa4508e35836c46da61988d61f26",
+                "reference": "1895c17417aefa4508e35836c46da61988d61f26",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zlib": "*",
+                "php": ">=5.6",
+                "symfony/polyfill-mbstring": "^1.18"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "symfony/phpunit-bridge": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Smalot\\PdfParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastien MALOT",
+                    "email": "sebastien@malot.fr"
+                }
+            ],
+            "description": "Pdf parser library. Can read and extract information from pdf file.",
+            "homepage": "https://www.pdfparser.org",
+            "keywords": [
+                "extract",
+                "parse",
+                "parser",
+                "pdf",
+                "text"
+            ],
+            "support": {
+                "issues": "https://github.com/smalot/pdfparser/issues",
+                "source": "https://github.com/smalot/pdfparser/tree/v0.19.0"
+            },
+            "time": "2021-04-13T08:27:56+00:00"
         }
     ],
     "aliases": [],
