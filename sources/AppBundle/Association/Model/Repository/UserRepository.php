@@ -34,7 +34,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
 
     /**
      * @param string $username
-     * @return User|UserInterface
+     * @return User
      * @throws \CCMBenchmark\Ting\Query\QueryException
      */
     public function loadUserByUsername($username)

@@ -21,7 +21,7 @@ class TicketRepository extends Repository implements MetadataInitializer
     /**
      * @param string $reference
      *
-     * @return CollectionInterface&Ticket[]
+     * @return CollectionInterface&iterable<Ticket>
      */
     public function getByReference($reference)
     {

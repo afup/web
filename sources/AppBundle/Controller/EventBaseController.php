@@ -19,7 +19,7 @@ abstract class EventBaseController extends Controller
     protected function checkEventSlug($eventSlug)
     {
         /**
-         * @var $eventRepository EventRepository
+         * @var EventRepository $eventRepository
          */
         $eventRepository = $this->get('ting')->get(EventRepository::class);
         $event = $eventRepository->getOneBy(['path' => $eventSlug]);

@@ -24,7 +24,7 @@ class BlogController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
 
         /**
-         * @var $talkRepository TalkRepository
+         * @var TalkRepository $talkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
@@ -59,7 +59,7 @@ class BlogController extends EventBaseController
         }
 
         /**
-         * @var $talkRepository TalkRepository
+         * @var TalkRepository $talkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         $applyPublicationDateFilters = $request->query->getBoolean('apply-publication-date-filters', true);
@@ -80,17 +80,17 @@ class BlogController extends EventBaseController
 
         foreach ($talks as $talkWithData) {
             /**
-             * @var $talk Talk
+             * @var Talk $talk
              */
             $talk = $talkWithData['talk'];
 
             /**
-             * @var $planning Planning
+             * @var Planning $planning
              */
             $planning = $talkWithData['planning'];
 
             /**
-             * @var $room Room
+             * @var Room $room
              */
             $room = $talkWithData['room'];
 
@@ -162,7 +162,7 @@ class BlogController extends EventBaseController
     public function talkWidgetAction(Request $request)
     {
         /**
-         * @var $talkRepository TalkRepository
+         * @var TalkRepository $talkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
 
@@ -200,7 +200,7 @@ class BlogController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
 
         /**
-         * @var $speakerRepository SpeakerRepository
+         * @var SpeakerRepository $speakerRepository
          */
         $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
         $speakers = $speakerRepository->getScheduledSpeakersByEvent($event, !$request->query->getBoolean('apply-publication-date-filters', true));

@@ -41,7 +41,7 @@ class TicketController extends EventBaseController
             } else {
                 $token = $request->request->get('sponsor_token');
                 /**
-                 * @var $sponsorTicket SponsorTicket
+                 * @var SponsorTicket $sponsorTicket
                  */
                 $sponsorTicket = $this->get('ting')->get(SponsorTicketRepository::class)->getOneBy(['token' => $token]);
                 if (
@@ -80,7 +80,7 @@ class TicketController extends EventBaseController
         }
 
         /**
-         * @var $sponsorTicket SponsorTicket
+         * @var SponsorTicket $sponsorTicket
          */
         $sponsorTicket = $this->get('ting')->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
@@ -94,7 +94,7 @@ class TicketController extends EventBaseController
         $edit = false;
         if ($request->query->has('ticket')) {
             /**
-             * @var $ticket Ticket
+             * @var Ticket $ticket
              */
             $ticket = $this->get('ting')->get(TicketRepository::class)->get($request->query->get('ticket'));
 
@@ -123,7 +123,7 @@ class TicketController extends EventBaseController
             return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
         } elseif ($request->isMethod(Request::METHOD_POST) && $request->request->has('delete')) {
             /**
-             * @var $ticket Ticket
+             * @var Ticket $ticket
              */
             $ticket = $this->get('ting')->get(TicketRepository::class)->get($request->request->get('delete'));
 
@@ -168,19 +168,19 @@ class TicketController extends EventBaseController
         $purchaseForm->handleRequest($request);
 
         /**
-         * @var $user User
+         * @var User $user
          */
         $user = $this->getUser();
 
         if ($purchaseForm->isSubmitted() && $purchaseForm->isValid()) {
             $invoiceRepository = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
             /**
-             * @var $invoice Invoice
+             * @var Invoice $invoice
              */
             $invoice = $purchaseForm->getData();
 
             /**
-             * @var $tickets Ticket[]
+             * @var Ticket[] $tickets
              */
             $tickets = array_slice($invoice->getTickets(), 0, $purchaseForm->get('nbPersonnes')->getData());
             $tickets[0]
@@ -350,7 +350,7 @@ class TicketController extends EventBaseController
 
         if ($paymentStatus === Ticket::STATUS_PAID) {
             /**
-             * @var $forumFacturation Facturation
+             * @var Facturation $forumFacturation
              */
             $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);
             $forumFacturation->envoyerFacture($invoice->getReference());

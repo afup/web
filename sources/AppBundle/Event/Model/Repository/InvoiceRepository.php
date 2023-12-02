@@ -64,7 +64,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
     public function getPendingBankwires(Event $event)
     {
         /**
-         * @var $queryBuilder Select
+         * @var Select $queryBuilder
          */
         $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
         $queryBuilder

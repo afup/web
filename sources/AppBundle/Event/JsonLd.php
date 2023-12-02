@@ -60,7 +60,7 @@ class JsonLd
     public function getDataForEvent(Event $event)
     {
         /**
-         * @var $talks Talk[]
+         * @var Talk[] $talks
          */
         $talks = $this->talkRepository->getByEventWithSpeakers($event);
 
@@ -102,7 +102,7 @@ class JsonLd
 
         $offers = [];
         /**
-         * @var $eventTickets TicketEventType[]
+         * @var TicketEventType[] $eventTickets
          */
         $eventTickets = $this->ticketEventTypeRepository->getTicketsByEvent($event, true, TicketEventTypeRepository::ACTUAL_TICKETS_ONLY);
 

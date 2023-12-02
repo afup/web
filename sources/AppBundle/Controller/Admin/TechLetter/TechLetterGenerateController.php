@@ -121,7 +121,7 @@ class TechLetterGenerateController extends SiteBaseController
     public function generateAction($techletterId, Request $request)
     {
         /**
-         * @var $sending Techletter\Sending
+         * @var Techletter\Sending $sending
          */
         $sending = $this->sendingRepository->get($techletterId);
         if ($sending === null) {
@@ -231,7 +231,7 @@ class TechLetterGenerateController extends SiteBaseController
     {
         $sendingId = $request->request->getInt('techletterId');
         /**
-         * @var $sending Techletter\Sending
+         * @var Techletter\Sending $sending
          */
         $sending = $this->sendingRepository->get($sendingId);
 
@@ -263,7 +263,7 @@ class TechLetterGenerateController extends SiteBaseController
     {
         $sendingId = $request->query->getInt('techletterId');
         /**
-         * @var $sending Techletter\Sending
+         * @var Techletter\Sending $sending
          */
         $sending = $this->sendingRepository->get($sendingId);
 

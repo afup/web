@@ -65,9 +65,9 @@ class InviteAction
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         $token = $request->attributes->get('token');
         $talkId = (int) $request->attributes->get('talkId');
-        /** @var $invitation TalkInvitation */
+        /** @var TalkInvitation $invitation */
         $invitation = $this->talkInvitationRepository->get(['talk_id' => $talkId, 'token' => $token]);
-        /** @var $talk Talk */
+        /** @var Talk $talk */
         $talk = $this->talkRepository->get($talkId);
         if ($invitation === null || $talk === null || $talk->getForumId() !== $event->getId()) {
             throw new NotFoundHttpException('Invitation or talk not found');

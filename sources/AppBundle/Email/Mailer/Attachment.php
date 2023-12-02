@@ -14,7 +14,6 @@ class Attachment
     private $type;
 
     /**
-     * @param string $email
      * @param string $name
      */
     public function __construct($path, $name, $encoding, $type)

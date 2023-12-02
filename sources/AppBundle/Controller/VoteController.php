@@ -36,7 +36,7 @@ class VoteController extends EventBaseController
         }
 
         /**
-         * @var $talkRepository TalkRepository
+         * @var TalkRepository $talkRepository
          */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
 
@@ -135,9 +135,9 @@ class VoteController extends EventBaseController
             return new JsonResponse(['errors' => ['Talk does not exists']], Response::HTTP_BAD_REQUEST);
         }
 
-        /** @var $voteRepository VoteRepository */
+        /** @var VoteRepository $voteRepository */
         $voteRepository = $this->get('ting')->get(VoteRepository::class);
-        /** @var $vote Vote */
+        /** @var Vote $vote */
         $vote = $form->getData();
         $vote->setSubmittedOn(new \DateTime());
 
@@ -175,7 +175,7 @@ class VoteController extends EventBaseController
      */
     private function findTalk($talkId)
     {
-        /** @var $talkRepository TalkRepository */
+        /** @var TalkRepository $talkRepository */
         $talkRepository = $this->get('ting')->get(TalkRepository::class);
         /** @var Talk $talk */
         $talk = $talkRepository->getOneBy(['id' => $talkId]);

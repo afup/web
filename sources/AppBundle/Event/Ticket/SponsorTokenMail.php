@@ -53,7 +53,7 @@ class SponsorTokenMail
     public function sendNotification(SponsorTicket $sponsorTicket, $lastCall = false)
     {
         /**
-         * @var $event Event
+         * @var Event $event
          */
         $event = $this->eventRepository->get($sponsorTicket->getIdForum());
 

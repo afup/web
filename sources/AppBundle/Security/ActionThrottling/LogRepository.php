@@ -26,9 +26,8 @@ class LogRepository extends Repository implements MetadataInitializer
             throw new \RuntimeException('I need at least an ip or an object Id to get logs');
         }
         /**
-         * @var $query Select
+         * @var Select $query
          */
-
         $query = $this->getQueryBuilder(self::QUERY_SELECT);
         $query
             ->cols(['COUNT(ip) AS ip', 'COUNT(object_id) AS object'])

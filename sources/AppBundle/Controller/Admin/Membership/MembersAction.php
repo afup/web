@@ -104,7 +104,7 @@ class MembersAction
             Assertion::isInstanceOf($user, User::class);
             $companyId = $user->getCompanyId();
         }
-        /** @var $company CompanyMember */
+        /** @var CompanyMember $company */
         $company = $this->companyMemberRepository->get($companyId);
         if ($company === null) {
             throw new NotFoundHttpException('Company not found');
@@ -199,7 +199,7 @@ class MembersAction
 
     private function resendInvitation($emailToSend, CollectionInterface $pendingInvitations, CompanyMember $company)
     {
-        /** @var $invitationToSend CompanyMemberInvitation */
+        /** @var CompanyMemberInvitation $invitationToSend */
         $invitationToSend = $this->collectionFilter->findOne($pendingInvitations, 'getEmail', $emailToSend);
         if ($invitationToSend !== null) {
             $this->invitationMail->sendInvitation($company, $invitationToSend);
@@ -223,7 +223,7 @@ class MembersAction
 
     private function disproveUser($emailToDisapprove, CollectionInterface $users)
     {
-        /** @var $user User */
+        /** @var User $user */
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToDisapprove);
         /** @var User $connectedUser */
         $connectedUser = $this->security->getUser();
@@ -241,7 +241,7 @@ class MembersAction
 
     private function removeUser($emailToRemove, CollectionInterface $users)
     {
-        /** @var $user User */
+        /** @var User $user */
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToRemove);
         /** @var User $connectedUser */
         $connectedUser = $this->security->getUser();

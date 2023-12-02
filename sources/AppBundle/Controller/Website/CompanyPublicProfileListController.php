@@ -11,7 +11,7 @@ class CompanyPublicProfileListController extends SiteBaseController
     public function indexAction()
     {
         /**
-         * @var $companyRepository CompanyMemberRepository
+         * @var CompanyMemberRepository $companyRepository
          */
         $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
 
