@@ -368,4 +368,19 @@ class FeatureContext implements Context
             throw new \Exception(sprintf("The checksum %s is not the expected checksum %s", $foundChecksum, $expectedChecksum));
         }
     }
+
+    /**
+     * @Then print last reponse headers
+     */
+    public function printLastResponseHeaders()
+    {
+        $headers = [];
+        foreach ($this->minkContext->getSession()->getResponseHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                $headers[] = sprintf("%s : %s", $name, $value);
+            }
+        }
+
+        echo implode("\n", $headers);
+    }
 }
