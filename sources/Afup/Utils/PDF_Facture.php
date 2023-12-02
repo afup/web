@@ -21,6 +21,11 @@ class PDF_Facture extends \FPDF
     private $bankAccount;
 
     /**
+     * @var bool
+     */
+    private $isSubjectedToVat;
+
+    /**
      * Constructor
      *
      * @param Configuration $configuration The Afup\Site\Utils\Configuration object
@@ -31,10 +36,11 @@ class PDF_Facture extends \FPDF
      * @return void
      * @throws \Exception
      */
-    function __construct($configuration, BankAccount $bankAccount, $orientation = 'P', $unit = 'mm', $format = 'A4')
+    function __construct($configuration, BankAccount $bankAccount, $isSubjectedToVat = false, $orientation = 'P', $unit = 'mm', $format = 'A4')
     {
         parent::__construct($orientation, $unit, $format);
         $this->bankAccount = $bankAccount;
+        $this->isSubjectedToVat = $isSubjectedToVat;
 
         $this->setAFUPConfiguration($configuration);
     }
@@ -171,6 +177,15 @@ class PDF_Facture extends \FPDF
         $this->Cell(110, 3, 'BIC', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
         $this->Cell(-90, 3, $this->bankAccount->getBic(), 0, 0, 'C');
+
+        if ($this->isSubjectedToVat) {
+            $this->Ln();
+
+            $this->SetFont('Arial', 'B', 6);
+            $this->Cell(145, 3, utf8_decode('Numéro de TVA intercommunautaire'), 0, 0, 'C');
+            $this->SetFont('Arial', null, 6);
+            $this->Cell(-60, 3, $this->configuration->obtenir('afup|numero_tva'), 0, 0, 'C');
+        }
 
         $this->Ln();
 
