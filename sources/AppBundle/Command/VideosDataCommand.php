@@ -33,12 +33,12 @@ class VideosDataCommand extends ContainerAwareCommand
         $ting = $this->getContainer()->get('ting');
 
         /**
-         * @var TalkRepository
+         * @var TalkRepository $talkRepository
          */
         $talkRepository = $ting->get(TalkRepository::class);
 
         /**
-         * @var EventRepository
+         * @var EventRepository $eventRepository
          */
         $eventRepository = $ting->get(EventRepository::class);
 
@@ -54,17 +54,17 @@ class VideosDataCommand extends ContainerAwareCommand
 
         foreach ($talks as $talkWithData) {
             /**
-             * @var $talk Talk
+             * @var Talk $talk
              */
             $talk = $talkWithData['talk'];
 
             /**
-             * @var $planning Planning
+             * @var Planning $planning
              */
             $planning = $talkWithData['planning'];
 
             /**
-             * @var $speakers Speaker[]
+             * @var Speaker[] $speakers
              */
             $speakers = $talkWithData['.aggregation']['speaker'];
 

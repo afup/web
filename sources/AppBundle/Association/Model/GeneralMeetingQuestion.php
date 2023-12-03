@@ -113,8 +113,6 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $submittedOn
-     *
      * @return $this
      */
     public function setOpenedAt(\DateTime $openedAt = null)
@@ -134,8 +132,6 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $submittedOn
-     *
      * @return $this
      */
     public function setClosedAt(\DateTime $closedAt = null)

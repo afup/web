@@ -334,9 +334,6 @@ class Base_De_Donnees
      * Exécute une requête SQL et retourne les enregistrements correspondant
      *
      * @param string $requete Requête à exécuter
-     * @param int $type Type de résultat souhaité. Les valeurs possibles sont MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH.
-     *                              Elles permettent respectivement de récupérer les valeurs sous forme d'un tableau associatif, indexé ou les deux.
-     *                              La valeur par défaut est MYSQLI_ASSOC.
      * @access public
      * @return mixed    Les enregistrements correspondant dans un tableau ou false si la requête échoue
      */

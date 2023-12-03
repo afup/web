@@ -15,7 +15,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class CompanyMemberInvitationRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @return CollectionInterface&CompanyMemberInvitation[]
+     * @return CollectionInterface&iterable<CompanyMemberInvitation>
      */
     public function loadPendingInvitationsByCompany(CompanyMember $companyMember)
     {

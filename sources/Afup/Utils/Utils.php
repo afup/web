@@ -33,7 +33,7 @@ class Utils
      * Get either a Gravatar URL or complete image tag for a specified email address.
      *
      * @param string $email The email address
-     * @param string $s Size in pixels, defaults to 80px [ 1 - 512 ]
+     * @param int $s Size in pixels, defaults to 80px [ 1 - 512 ]
      * @param string $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
      * @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
      * @param boolean $img True to return a complete IMG tag False for just the URL

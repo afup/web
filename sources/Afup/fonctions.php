@@ -35,7 +35,7 @@ function instancierFormulaire($url = null, $nom = 'formulaire') {
 /**
  * Renvoit un tableau contenant les éléments d'un formulaire
  *
- * @param   object  $formulaire     Formulaire à traiter
+ * @param   HTML_QuickForm  $formulaire     Formulaire à traiter
  * @return  array
  */
 function genererFormulaire(HTML_QuickForm &$formulaire) {

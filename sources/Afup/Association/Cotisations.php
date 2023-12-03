@@ -218,7 +218,7 @@ class Cotisations
     function notifierRegelementEnLigneAuTresorier($cmd, $total, $autorisation, $transaction, UserRepository $userRepository)
     {
         /**
-         * @var $configuration Configuration
+         * @var Configuration $configuration
          */
         $configuration = $GLOBALS['AFUP_CONF'];
 

@@ -21,9 +21,6 @@ class SubscriptionManagement
 
     public function createInvoiceForInscription(CompanyMember $company, $numberOfMembers)
     {
-        /**
-         * @var $subscription Cotisations
-         */
         $subscription = $this->legacyModelFactory->createObject(Cotisations::class);
 
         $endSubscription = $subscription->finProchaineCotisation(false);

@@ -43,7 +43,6 @@ class Pays
      * Renvoit le nom du pays à partir du code ISO
      *
      * @param  string $id Identifiant ISO 2a du pays
-     * @param  string $champs Champs à renvoyer
      * @return string
      */
     function obtenirNom($id)

@@ -37,7 +37,7 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
         );
 
         /**
-         * @var $repository Association\Model\Repository\UserRepository
+         * @var Association\Model\Repository\UserRepository $repository
          */
         $repository = $this->getContainer()->get('ting')->get(Association\Model\Repository\UserRepository::class);
 

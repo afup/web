@@ -84,8 +84,6 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
     }
 
     /**
-     * @param \DateTime $submittedOn
-     *
      * @return $this
      */
     public function setDate(\DateTime $date)

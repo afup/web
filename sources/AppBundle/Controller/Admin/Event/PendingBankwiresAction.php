@@ -108,7 +108,7 @@ class PendingBankwiresAction
             ->setPaymentDate(new DateTime());
         $this->invoiceRepository->save($invoice);
         $tickets = $this->ticketRepository->getByReference($invoice->getReference());
-        /** @var $forumFacturation Facturation */
+
         $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
         $forumFacturation->envoyerFacture($invoice->getReference());
         $this->flashBag->add('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));

@@ -22,7 +22,7 @@ class StatisticsComputer
     public function computeStatistics()
     {
         $statistics = new Statistics();
-        /** @var $users User[] */
+        /** @var User[] $users */
         $users = $this->userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL);
         foreach ($users as $user) {
             $statistics->usersCount++;
