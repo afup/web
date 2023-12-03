@@ -25,9 +25,6 @@ class DeleteRubriqueAction
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
 
-    /** @var Environment */
-    private $twig;
-
     /** @var RubriqueRepository */
     private $rubriqueRepository;
 

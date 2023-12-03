@@ -5,6 +5,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Ticket;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
