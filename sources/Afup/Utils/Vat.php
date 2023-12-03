@@ -4,9 +4,11 @@ namespace Afup\Site\Utils;
 
 class Vat
 {
+    const VAT_APPLICATION_DATE = "2024-01-01";
+
     public static function isSubjectedToVat(\DateTimeInterface $date)
     {
-        return $date->format('Y-m-d') >= '2024-01-01';
+        return $date->format('Y-m-d') >= self::VAT_APPLICATION_DATE;
     }
 
     public static function getRoundedWithoutVatPriceFromPriceWithVat($priceWithVat, $vatRate)
