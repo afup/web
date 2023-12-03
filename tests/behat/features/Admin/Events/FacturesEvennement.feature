@@ -10,6 +10,7 @@ Feature: Administration - Évènements - Factures d'évènement
     Then the response header "Content-disposition" should match '#attachment; filename="Devis - Michu Bernadette - (.*).pdf"#'
 
   @reloadDbWithTestData
+  @vat
   Scenario: Test d'une facture d'événement avant 2024
     Given I am logged in as admin and on the Administration
     And I follow "Factures d'évènement"
