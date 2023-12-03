@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class Utils
 {
+    const TICKETING_VAT_RATE = 0.1;
+
     /**
      * Recupere un objet de type Afup\Site\Droits
      *
@@ -84,5 +86,10 @@ class Utils
     public static function isSubjectedToVat(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d') >= '2024-01-01';
+    }
+
+    public static function getRoundedWithoutVatPriceFromPriceWithVat($priceWithVat, $vatRate)
+    {
+        return round($priceWithVat / (1 + $vatRate), 2);
     }
 }

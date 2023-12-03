@@ -27,6 +27,22 @@ Feature: Administration - Évènements - Factures d'évènement
     Then The page "1" of the PDF should not contain "TOTAL TTC 250 €"
     Then the checksum of the response content should be "bc22d5485b29a7e4258cf40ca24af67f"
 
+  @reloadDbWithTestData
+  @vat
+  Scenario: Test d'une facture d'événement après 2024
+    Given I am logged in as admin and on the Administration
+    And I follow "Factures d'évènement"
+    Then the ".content h2" element should contain "Factures d'évènement"
+    And the ".content table" element should contain "REF-TEST-003"
+    When I follow "telecharger_REF-TEST-003"
+    Then the response header "Content-disposition" should match '#attachment; filename="Facture - Kirk James Tiberius - 2024-01-02_00-00.pdf"#'
+    When I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-003"
+    Then The page "1" of the PDF should contain "3 avenue de l'enterprise"
+    Then The page "1" of the PDF should contain "TOTAL TTC 250 €"
+    Then The page "1" of the PDF should contain "Payé par CB le 02/01/2024"
+    Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
+    Then the checksum of the response content should be "3da9fab1e1e394a75b7b228a89c1fada"
 
   @reloadDbWithTestData
   @clearEmails
