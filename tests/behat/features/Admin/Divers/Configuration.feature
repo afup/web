@@ -15,4 +15,4 @@ Feature: Administration - Configuration
     # et que les infos pertinentes à modifier le soient en base et le reste soit dans de la conf statique
     And I fill in "afup|adresse" with "32, Boulevard de Strasbourg CS 30108"
     When I press "Enregistrer"
-    And I should see "32, Boulevard de Strasbourg CS 30108"
+    And I should see "32, Boulevard de Strasbourg\nCS 30108"
