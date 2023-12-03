@@ -21,7 +21,6 @@ Feature: Administration - Évènements - Factures d'évènement
     Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-002"
     Then The page "1" of the PDF should contain "4 allée des platanes"
     Then The page "1" of the PDF should contain "TOTAL 250 €"
-    Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-002"
     Then The page "1" of the PDF should contain "Payé par CB le 25/06/2023"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should not contain "TOTAL TTC 250 €"
