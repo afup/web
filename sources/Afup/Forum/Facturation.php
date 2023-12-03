@@ -280,10 +280,10 @@ class Facturation
         $pdf->SetFillColor(200, 200, 200);
         $pdf->Cell(50, 5, 'Type', 1, 0, 'L', 1);
         $pdf->Cell(100 - ($isSubjectedToVat ? 35 : 0), 5, 'Personne inscrite', 1, 0, 'L', 1);
-        $pdf->Cell($isSubjectedToVat ? 30 : 40, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, 'L', 1);
+        $pdf->Cell($isSubjectedToVat ? 30 : 40, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
         if ($isSubjectedToVat) {
-            $pdf->Cell(15, 5, 'TVA', 1, 0,  'L', 1);
-            $pdf->Cell(30, 5, 'Prix TTC', 1, 0, 'L', 1);
+            $pdf->Cell(15, 5, 'TVA', 1, 0,  'C', 1);
+            $pdf->Cell(30, 5, 'Prix TTC', 1, 0, 'R', 1);
         }
 
 
@@ -298,11 +298,11 @@ class Facturation
 
             $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
             $pdf->Cell(100 - ($isSubjectedToVat ? 35 : 0), 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
-            $pdf->Cell($isSubjectedToVat ? 30 : 40, 5, utf8_decode($isSubjectedToVat ? $montantHt : $montant) . utf8_decode(' '), 1);
+            $pdf->Cell($isSubjectedToVat ? 30 : 40, 5, utf8_decode($isSubjectedToVat ? $montantHt : $montant) . utf8_decode(' '), 1, 0, $isSubjectedToVat ? 'R' : '');
 
             if ($isSubjectedToVat) {
-                $pdf->Cell(15, 5, utf8_decode('10%'), 1);
-                $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1);
+                $pdf->Cell(15, 5, utf8_decode('10%'), 1, 0, 'C');
+                $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1, 0, 'R');
             }
 
             $totalHt = $montantHt;
@@ -325,19 +325,19 @@ class Facturation
         if ($isSubjectedToVat) {
             $pdf->Ln();
             $pdf->SetFillColor(225, 225, 225);
-            $pdf->Cell(160, 5, 'Total HT', 1, 0, 'L', 1);
-            $pdf->Cell(30, 5, $totalHt . utf8_decode(' '), 1, 0, 'L', 1);
+            $pdf->Cell(160, 5, 'Total HT', 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $totalHt . utf8_decode(' '), 1, 0, 'R', 1);
 
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
-            $pdf->Cell(160, 5, 'Total TVA 10%', 1, 0, 'L', 1);
-            $pdf->Cell(30, 5, $total - $totalHt . utf8_decode(' '), 1, 0, 'L', 1);
+            $pdf->Cell(160, 5, 'Total TVA 10%', 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $total - $totalHt . utf8_decode(' '), 1, 0, 'R', 1);
         }
 
         $pdf->Ln();
         $pdf->SetFillColor(225, 225, 225);
-        $pdf->Cell(150 + ($isSubjectedToVat ? 10 : 0), 5, $totalLabel, 1, 0, 'L', 1);
-        $pdf->Cell(40 - ($isSubjectedToVat ? 10 : 0), 5, $total . utf8_decode(' '), 1, 0, 'L', 1);
+        $pdf->Cell(150 + ($isSubjectedToVat ? 10 : 0), 5, $totalLabel, 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        $pdf->Cell(40 - ($isSubjectedToVat ? 10 : 0), 5, $total . utf8_decode(' '), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
 
 
         $pdf->Ln(15);
