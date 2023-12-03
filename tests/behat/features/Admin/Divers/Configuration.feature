@@ -13,6 +13,6 @@ Feature: Administration - Configuration
     # on remet la valeur d'origine vu qu'on modifie un fichier
     # ce n'est pas idéal, mais à terme il faudrait plutôt qu'on ne modifie pas le fichier
     # et que les infos pertinentes à modifier le soient en base et le reste soit dans de la conf statique
-    And I fill in "afup|adresse" with "32, Boulevard de Strasbourg CS 30108"
+    And I fill in "afup|adresse" with "32, Boulevard de Strasbourg\nCS 30108"
     When I press "Enregistrer"
-    And I should see "32, Boulevard de Strasbourg\nCS 30108"
+    And I should see "32, Boulevard de Strasbourg CS 30108"
