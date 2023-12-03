@@ -3,7 +3,7 @@
 CURRENT_UID ?= $(shell id -u)
 DOCKER_UP_OPTIONS ?=
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console
+.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console phpstan
 
 install: vendors
 
@@ -109,3 +109,6 @@ db-seed:
 
 console:
 	CURRENT_UID=$(CURRENT_UID) docker-compose run --rm cliphp bash
+
+phpstan:
+	docker run -v $(shell pwd):/app --rm ghcr.io/phpstan/phpstan

@@ -1,0 +1,27 @@
+parameters:
+    phpVersion: 70400 # PHP 7.4
+    level: 1
+    paths:
+        - sources
+    scanFiles:
+        - dependencies/magpierss/extlib/Snoopy.class.inc
+        - dependencies/magpierss/rss_cache.inc
+        - dependencies/magpierss/rss_fetch.inc
+        - dependencies/magpierss/rss_parse.inc
+        - dependencies/magpierss/rss_utils.inc
+    excludePaths:
+        analyse:
+            # Ces fichiers utilisent des alias de classes
+            - sources/AppBundle/Twig/AssetsExtension.php
+            - sources/AppBundle/Twig/TwigExtension.php
+            # Ce fichier est impossible à analyser, des variables globales, du eval, etc.
+            - sources/Afup/Utils/Configuration.php
+    ignoreErrors:
+        # Variable globale
+        -
+            message: '#Undefined variable: \$configuration#'
+            path: sources/Afup/Utils/SymfonyKernel.php
+        # Variable globale
+        -
+            message: '#Undefined variable: \$smarty#'
+            path: sources/AppBundle/Controller/LegacyController.php
