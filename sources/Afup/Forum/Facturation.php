@@ -298,11 +298,17 @@ class Facturation
 
             $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
             $pdf->Cell(100 - ($isSubjectedToVat ? 35 : 0), 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
-            $pdf->Cell($isSubjectedToVat ? 30 : 40, 5, utf8_decode($isSubjectedToVat ? $montantHt : $montant) . utf8_decode(' '), 1, 0, $isSubjectedToVat ? 'R' : '');
+            $pdf->Cell(
+                $isSubjectedToVat ? 30 : 40, 5,
+                utf8_decode($this->formatFactureValue($isSubjectedToVat ? $montantHt : $montant, $isSubjectedToVat)) . utf8_decode(' '),
+                1,
+                0,
+                $isSubjectedToVat ? 'R' : ''
+            );
 
             if ($isSubjectedToVat) {
                 $pdf->Cell(15, 5, utf8_decode('10%'), 1, 0, 'C');
-                $pdf->Cell(30, 5, utf8_decode($montant) . utf8_decode(' '), 1, 0, 'R');
+                $pdf->Cell(30, 5, utf8_decode($this->formatFactureValue($montant, $isSubjectedToVat)) . utf8_decode(' '), 1, 0, 'R');
             }
 
             $totalHt = $montantHt;
@@ -326,19 +332,33 @@ class Facturation
             $pdf->Ln();
             $pdf->SetFillColor(225, 225, 225);
             $pdf->Cell(160, 5, 'Total HT', 1, 0, 'R', 1);
-            $pdf->Cell(30, 5, $totalHt . utf8_decode(' '), 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($totalHt, $isSubjectedToVat) . utf8_decode(' '), 1, 0, 'R', 1);
 
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
             $pdf->Cell(160, 5, 'Total TVA 10%', 1, 0, 'R', 1);
-            $pdf->Cell(30, 5, $total - $totalHt . utf8_decode(' '), 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($total - $totalHt, $isSubjectedToVat) . utf8_decode(' '), 1, 0, 'R', 1);
         }
 
         $pdf->Ln();
         $pdf->SetFillColor(225, 225, 225);
-        $pdf->Cell(150 + ($isSubjectedToVat ? 10 : 0), 5, $totalLabel, 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
-        $pdf->Cell(40 - ($isSubjectedToVat ? 10 : 0), 5, $total . utf8_decode(' '), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
-
+        $pdf->Cell(
+            150 + ($isSubjectedToVat ? 10 : 0),
+            5,
+            $totalLabel,
+            1,
+            0,
+            $isSubjectedToVat ? 'R' : 'L',
+            1
+        );
+        $pdf->Cell(
+            40 - ($isSubjectedToVat ? 10 : 0), 5,
+            $this->formatFactureValue($total, $isSubjectedToVat) . utf8_decode(' '),
+            1,
+            0,
+            $isSubjectedToVat ? 'R' : 'L',
+            1
+        );
 
         $pdf->Ln(15);
         if ($facture['etat'] == 4) {
@@ -372,6 +392,15 @@ class Facturation
         }
 
         return $reference;
+    }
+
+    private function formatFactureValue($value, $isSubjectedToVat)
+    {
+        if (false === $isSubjectedToVat) {
+            return $value;
+        }
+
+        return number_format($value, 2, ',', ' ');
     }
 
     /**

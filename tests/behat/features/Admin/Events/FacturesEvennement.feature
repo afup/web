@@ -45,14 +45,14 @@ Feature: Administration - Évènements - Factures d'évènement
     Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-003"
     Then The page "1" of the PDF should contain "3 avenue de l'enterprise"
     Then The page "1" of the PDF should contain "Type Personne inscrite Prix HT TVA Prix TTC"
-    Then The page "1" of the PDF should contain "2 Jours James Tiberius Kirk 227.27 € 10% 250 €"
-    Then The page "1" of the PDF should contain "Total HT 227.27 €"
-    Then The page "1" of the PDF should contain "Total TVA 10% 22.73 €"
-    Then The page "1" of the PDF should contain "TOTAL TTC 250 €"
+    Then The page "1" of the PDF should contain "2 Jours James Tiberius Kirk 227,27 € 10% 250,00 €"
+    Then The page "1" of the PDF should contain "Total HT 227,27 €"
+    Then The page "1" of the PDF should contain "Total TVA 10% 22,73 €"
+    Then The page "1" of the PDF should contain "TOTAL TTC 250,00 €"
     Then The page "1" of the PDF should contain "Payé par CB le 02/01/2024"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUER"
-    Then the checksum of the response content should be "4a2b05094539b71a70f47d6d25430942"
+    Then the checksum of the response content should be "97d326e73d3f9096414de2774a5ed130"
 
   @reloadDbWithTestData
   @clearEmails
