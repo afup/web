@@ -338,7 +338,11 @@ class FeatureContext implements Context
      */
     public function thePageOfThePdfShouldNotContain($page, $expectedContent)
     {
-        $pageContent = isset($this->pdfPages[$page]) ? $this->pdfPages[$page] : null;
+        if (!isset($this->pdfPages[$page])) {
+            throw new \Exception(sprintf("The page %d does not exists", $page));
+        }
+
+        $pageContent = $this->pdfPages[$page];
 
         if (false !== strpos($pageContent, $expectedContent)) {
             throw new \Exception(sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent));
