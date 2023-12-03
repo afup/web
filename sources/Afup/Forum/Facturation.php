@@ -5,6 +5,7 @@ use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
 use Afup\Site\Utils\Utils;
+use Afup\Site\Utils\Vat;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
@@ -235,7 +236,7 @@ class Facturation
             : new \DateTimeImmutable();
 
 
-        $isSubjectedToVat = Utils::isSubjectedToVat($dateFacture);
+        $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
 
         $bankAccountFactory = new BankAccountFactory($configuration);
         // Construction du PDF
@@ -293,7 +294,7 @@ class Facturation
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            $montantHt = Utils::getRoundedWithoutVatPriceFromPriceWithVat($inscription['montant'], Utils::TICKETING_VAT_RATE);
+            $montantHt = Vat::getRoundedWithoutVatPriceFromPriceWithVat($inscription['montant'], Utils::TICKETING_VAT_RATE);
             $montant = $inscription['montant'];
 
             $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
