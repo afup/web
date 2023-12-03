@@ -28,5 +28,7 @@ class SynchMembersCommand extends ContainerAwareCommand
            ->setLogger($container->get('logger'))
            ->synchronize()
         ;
+
+        return 0;
     }
 }

@@ -63,5 +63,7 @@ class UpdateMailchimpMembersCommand extends ContainerAwareCommand
         } else {
             $output->writeln("Pas d'erreur durant le traitement");
         }
+
+        return 0;
     }
 }

@@ -50,5 +50,7 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
 
             $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
         }
+
+        return 0;
     }
 }

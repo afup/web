@@ -35,5 +35,7 @@ class RegistrationsExporterCommand extends ContainerAwareCommand
         $file = new \SplFileObject($input->getArgument('file'), 'w+');
 
         $container->get(\AppBundle\Event\Ticket\RegistrationsExportGenerator::class)->export($event, $file);
+
+        return 0;
     }
 }

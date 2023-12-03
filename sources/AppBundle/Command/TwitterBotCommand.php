@@ -42,6 +42,8 @@ class TwitterBotCommand extends ContainerAwareCommand
             $container->get(\TwitterAPIExchange::class)
         );
         $runner->execute($this->getEventFilter($input));
+
+        return 0;
     }
 
     /**

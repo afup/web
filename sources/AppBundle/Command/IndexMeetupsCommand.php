@@ -37,5 +37,7 @@ class IndexMeetupsCommand extends ContainerAwareCommand
 
         $runner = new Runner($algoliaClient, $meetupRepository);
         $runner->run();
+
+        return 0;
     }
 }

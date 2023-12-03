@@ -36,6 +36,8 @@ class TwitterListCreateCommand extends ContainerAwareCommand
 
         $twitterListCreator = new ListCreator($container->get(\TwitterAPIExchange::class), $ting->get(SpeakerRepository::class));
         $twitterListCreator->create($event, $input->getOption('custom-name'));
+
+        return 0;
     }
 
     /**
