@@ -58,14 +58,13 @@ if ($action == 'lister') {
         $champs['date_devis'] = $champsRecup['date_devis'];
         $champs['date_facture'] = $champsRecup['date_facture'];
         $champs['societe'] = $champsRecup['societe'];
-        $champs['numero_devis'] = $champsRecup['numero_devis'];
-        $champs['societe'] = $champsRecup['societe'];
         $champs['service'] = $champsRecup['service'];
         $champs['adresse'] = $champsRecup['adresse'];
         $champs['code_postal'] = $champsRecup['code_postal'];
         $champs['ville'] = $champsRecup['ville'];
         $champs['id_pays'] = $champsRecup['id_pays'];
         $champs['email'] = $champsRecup['email'];
+        $champs['tva_intra'] = $champsRecup['tva_intra'];
         $champs['observation'] = $champsRecup['observation'];
         $champs['ref_clt1'] = $champsRecup['ref_clt1'];
         $champs['ref_clt2'] = $champsRecup['ref_clt2'];
@@ -149,6 +148,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'prenom'     , 'Prénom'            , array('size' => 30, 'maxlength' => 40));
     $formulaire->addElement('text'    , 'tel'        , 'tel'            , array('size' => 30, 'maxlength' => 40));
     $formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
+    $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intercommunautaire (facture)', array('size' => 30, 'maxlength' => 100));
 
     if (isset($champs['numero_devis']) || isset($champs['numero_facture']) )
     {
@@ -224,6 +224,7 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
                                     $valeur['prenom'],
                                     $valeur['tel'],
                                     $valeur['email'],
+                                    $valeur['tva_intra'],
                                     $valeur['observation'],
                                     $valeur['ref_clt1'],
                                     $valeur['ref_clt2'],
@@ -257,6 +258,7 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
                                     $valeur['prenom'],
                                     $valeur['tel'],
                                     $valeur['email'],
+                                    $valeur['tva_intra'],
                                     $valeur['observation'],
                                     $valeur['ref_clt1'],
                                     $valeur['ref_clt2'],

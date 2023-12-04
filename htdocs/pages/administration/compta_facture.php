@@ -69,6 +69,7 @@ if ($action == 'lister') {
         $champs['ville']          = $champsRecup['ville'];
         $champs['id_pays']          = $champsRecup['id_pays'];
         $champs['email']          = $champsRecup['email'];
+        $champs['tva_intra']          = $champsRecup['tva_intra'];
         $champs['observation']          = $champsRecup['observation'];
         $champs['ref_clt1']          = $champsRecup['ref_clt1'];
         $champs['ref_clt2']          = $champsRecup['ref_clt2'];
@@ -137,6 +138,7 @@ if ($action == 'lister') {
 	$formulaire->addElement('text'    , 'prenom'     , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text'    , 'tel'        , 'Numero de tél'	, array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
+	$formulaire->addElement('text'    , 'tva_intra'  , 'TVA intercommunautaire (facture)', array('size' => 30, 'maxlength' => 100));
 
 	if ($champs['numero_devis'] || $champs['numero_facture'] )
 	{
@@ -212,42 +214,43 @@ if ($action == 'lister') {
 
 $date_ecriture= $valeur['date_facture']['Y']."-".$valeur['date_facture']['F']."-".$valeur['date_facture']['d'] ;
 $date_paiement= $valeur['date_paiement']['Y']."-".$valeur['date_paiement']['F']."-".$valeur['date_paiement']['d'] ;
-
     	if ($action == 'ajouter') {
- // il faut passser obligatoirement par un devis
+ 			// il faut passser obligatoirement par un devis
     	} else {
    			$ok = $comptaFact->modifier(
-									$_GET['id'],
-   									$date_ecriture,
-            						$valeur['societe'],
-            						$valeur['service'],
-            						$valeur['adresse'],
-									$valeur['code_postal'],
-									$valeur['ville'],
-									$valeur['id_pays'],
-									$valeur['nom'],
-									$valeur['prenom'],
-									$valeur['tel'],
-									$valeur['email'],
-									$valeur['observation'],
-									$valeur['ref_clt1'],
-									$valeur['ref_clt2'],
-									$valeur['ref_clt3'],
-									$valeur['numero_devis'],
-                  $valeur['numero_facture'],
-                  $valeur['etat_paiement'],
-                  $date_paiement,
-									$valeur['devise_facture']
-									);
-       		for ($i=1;$i<6;$i++)
-   			{
-					$ok = $comptaFact->modifier_details(
-									$valeur['id'.$i],
-   				    				$valeur['ref'.$i],
-            						$valeur['designation'.$i],
-            						$valeur['quantite'.$i],
-									$valeur['pu'.$i]
-            						);
+				$_GET['id'],
+				$date_ecriture,
+				$valeur['societe'],
+				$valeur['service'],
+				$valeur['adresse'],
+				$valeur['code_postal'],
+				$valeur['ville'],
+				$valeur['id_pays'],
+				$valeur['nom'],
+				$valeur['prenom'],
+				$valeur['tel'],
+				$valeur['email'],
+				$valeur['tva_intra'],
+				$valeur['observation'],
+				$valeur['ref_clt1'],
+				$valeur['ref_clt2'],
+				$valeur['ref_clt3'],
+				$valeur['numero_devis'],
+				$valeur['numero_facture'],
+				$valeur['etat_paiement'],
+				$date_paiement,
+				$valeur['devise_facture']
+			);
+
+       		for ($i=1;$i<6;$i++) {
+				$ok = $comptaFact->modifier_details(
+					$valeur['id'.$i],
+					$valeur['ref'.$i],
+					$valeur['designation'.$i],
+					$valeur['quantite'.$i],
+					$valeur['pu'.$i],
+					$valeur['tva'.$i]
+				);
    			}
 
 

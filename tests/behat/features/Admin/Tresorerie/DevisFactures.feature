@@ -30,6 +30,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I fill in "quantite2" with "1"
     And I fill in "pu2" with "12000"
     When I press "Ajouter"
+    And print last response
     Then I should see "L'écriture a été ajoutée"
     And I should see "ESN dev en folie"
     And I should see "Paris"
