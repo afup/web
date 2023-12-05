@@ -59,5 +59,7 @@ class GeneralMeetupNotificationCommand extends Command
                 $this->urlGenerator
             ));
         }
+
+        return 0;
     }
 }

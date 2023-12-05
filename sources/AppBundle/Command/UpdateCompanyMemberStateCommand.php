@@ -35,5 +35,7 @@ class UpdateCompanyMemberStateCommand extends ContainerAwareCommand
             $companyMember->setStatus($hasUptoDateMembershipFee ? 1 : 0);
             $companyMemberRepository->save($companyMember);
         }
+
+        return 0;
     }
 }

@@ -55,5 +55,7 @@ EOF;
         curl_exec($curl);
 
         $output->writeln("Appel au callback de paiement de cotisation effectué");
+
+        return 0;
     }
 }

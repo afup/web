@@ -34,5 +34,7 @@ class UpdateUserStateCommand extends ContainerAwareCommand
             $user->setStatus($hasUptoDateMembershipFee ? User::STATUS_ACTIVE : User::STATUS_INACTIVE);
             $userRepository->save($user);
         }
+
+        return 0;
     }
 }

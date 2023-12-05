@@ -30,5 +30,7 @@ class SlackMemberNotificationCommand extends ContainerAwareCommand
             $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForMemberNotification($nbResults);
             $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
         }
+
+        return 0;
     }
 }

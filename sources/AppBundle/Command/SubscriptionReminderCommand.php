@@ -83,6 +83,8 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
             $output->writeln(sprintf('<info>%s entreprises</info>', $users->count()));
             $this->handleReminders($output, $reminder, $users, $dryRun);
         }
+
+        return 0;
     }
 
     private function handleReminders(
