@@ -22,12 +22,6 @@ class UpdateMailchimpMembersCommand extends ContainerAwareCommand
         ;
     }
 
-
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
@@ -36,7 +30,7 @@ class UpdateMailchimpMembersCommand extends ContainerAwareCommand
         $membersListId = $this->getContainer()->getParameter('mailchimp_members_list');
 
         /**
-         * @var $userRepository UserRepository
+         * @var UserRepository $userRepository
          */
         $userRepository = $ting->get(UserRepository::class);
 

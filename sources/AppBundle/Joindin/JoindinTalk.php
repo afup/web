@@ -38,8 +38,6 @@ class JoindinTalk
      * @param int $joindinId
      *
      * @return string
-     *
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     private function callJoindInApi($joindinId)
     {

@@ -75,7 +75,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
     private function getQueryBuilderWithSubscriptions()
     {
         /**
-         * @var $queryBuilder SelectInterface
+         * @var SelectInterface $queryBuilder
          */
         $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
         $queryBuilder

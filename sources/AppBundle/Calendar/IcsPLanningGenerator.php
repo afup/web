@@ -35,17 +35,17 @@ class IcsPLanningGenerator
         $vcalendar->add('X-WR-CALNAME', $event->getTitle());
         foreach ($talks as $talkWithData) {
             /**
-             * @var $talk Talk
+             * @var Talk $talk
              */
             $talk = $talkWithData['talk'];
 
             /**
-             * @var $planning Planning
+             * @var Planning $planning
              */
             $planning = $talkWithData['planning'];
 
             /**
-             * @var $room Room
+             * @var Room $room
              */
             $room = $talkWithData['room'];
 

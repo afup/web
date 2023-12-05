@@ -45,22 +45,22 @@ class JsonPlanningGenerator
 
         foreach ($talks as $talkWithData) {
             /**
-             * @var $talk Talk
+             * @var Talk $talk
              */
             $talk = $talkWithData['talk'];
 
             /**
-             * @var $planning Planning
+             * @var Planning $planning
              */
             $planning = $talkWithData['planning'];
 
             /**
-             * @var $room Room
+             * @var Room $room
              */
             $room = $talkWithData['room'];
 
             /**
-             * @var $speakers Speaker[]
+             * @var Speaker[] $speakers
              */
             $speakers = $talkWithData['.aggregation']['speaker'];
 

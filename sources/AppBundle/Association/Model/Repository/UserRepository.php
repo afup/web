@@ -155,7 +155,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
      * @param string    $sort Tri des enregistrements
      * @param int|int[] $userId
      *
-     * @return CollectionInterface&User[]
+     * @return CollectionInterface&iterable<User>
      */
     public function search(
         $sort = 'lastname',
@@ -287,7 +287,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     }
 
     /**
-     * @return CollectionInterface&User[]
+     * @return CollectionInterface&iterable<User>
      */
     public function getAdministrators()
     {
@@ -345,7 +345,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     private function getQueryBuilderWithSubscriptions()
     {
         /**
-         * @var $queryBuilder SelectInterface
+         * @var SelectInterface $queryBuilder
          */
         $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
         $queryBuilder

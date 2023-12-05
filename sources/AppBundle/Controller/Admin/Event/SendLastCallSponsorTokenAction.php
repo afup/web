@@ -41,7 +41,7 @@ class SendLastCallSponsorTokenAction
     public function __invoke(Request $request)
     {
         $event = $this->eventActionHelper->getEventById($request->query->get('id'), false);
-        /** @var $tokens SponsorTicket[] */
+        /** @var SponsorTicket[] $tokens */
         $tokens = $this->sponsorTicketRepository->getByEvent($event);
         $mailSent = 0;
 

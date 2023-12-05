@@ -11,7 +11,6 @@ class PDF_AG extends \FPDF
 
     /**
      * @param Attendee[] $attendees
-     * @param int[]      $validAttendees
      */
     public function prepareContent(array $attendees)
     {

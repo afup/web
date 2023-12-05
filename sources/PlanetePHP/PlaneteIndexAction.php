@@ -8,7 +8,7 @@ use Twig\Environment;
 
 class PlaneteIndexAction
 {
-    /** @var */
+    /** @var FeedArticleRepository */
     private $billetRepository;
     /** @var FeedRepository */
     private $feedRepository;

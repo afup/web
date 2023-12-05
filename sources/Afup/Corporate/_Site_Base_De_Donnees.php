@@ -9,7 +9,7 @@ class _Site_Base_De_Donnees extends Base_De_Donnees
     function __construct()
     {
         /**
-         * @var $conf Configuration
+         * @var Configuration $conf
          */
         $conf = $GLOBALS['AFUP_CONF'];
         parent::__construct($conf->obtenir('bdd|hote'),
