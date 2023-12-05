@@ -17,6 +17,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I fill in "prenom" with "Martine"
     And I fill in "tel" with "0101010101"
     And I fill in "email" with "martine@ens-en-folie.biz"
+    And I fill in "tva_intra" with "FR7612345"
     And I fill in "ref_clt1" with "CLIENT-AFGD5S"
     And I fill in "ref_clt2" with "AFGD5S"
     And I fill in "ref_clt3" with "000AFGD5S"
@@ -30,7 +31,6 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I fill in "quantite2" with "1"
     And I fill in "pu2" with "12000"
     When I press "Ajouter"
-    And print last response
     Then I should see "L'écriture a été ajoutée"
     And I should see "ESN dev en folie"
     And I should see "Paris"
@@ -48,6 +48,8 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Téléchargement du devis
     And I follow the button of tooltip "Télécharger le devis"
     Then the response header "Content-disposition" should match '#attachment; filename="Devis - ESN dev en folie - (.*).pdf"#'
+    When I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "ESN dev en folie"
     # Transformation du devis en facture
     When I go to "/admin/"
     And I follow "Devis"
@@ -80,3 +82,5 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I follow "Factures"
     And I follow the button of tooltip "Télécharger la facture"
     Then the response header "Content-disposition" should match '#attachment; filename="Facture - ESN dev en folie - (.*).pdf"#'
+    When I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "TVA : FR7612345"
