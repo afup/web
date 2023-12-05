@@ -10,6 +10,51 @@ Feature: Administration - Évènements - Factures d'évènement
     Then the response header "Content-disposition" should match '#attachment; filename="Devis - Michu Bernadette - (.*).pdf"#'
 
   @reloadDbWithTestData
+  @vat
+  Scenario: Test d'une facture d'événement avant 2024
+    Given I am logged in as admin and on the Administration
+    And I follow "Factures d'évènement"
+    Then the ".content h2" element should contain "Factures d'évènement"
+    And the ".content table" element should contain "REF-TEST-002"
+    When I follow "telecharger_REF-TEST-002"
+    Then the response header "Content-disposition" should match '#attachment; filename="Facture - Jean Maurice - 2023-06-25_00-00.pdf"#'
+    When I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-002"
+    Then The page "1" of the PDF should contain "4 allée des platanes"
+    Then The page "1" of the PDF should contain "Type Personne inscrite Prix"
+    Then The page "1" of the PDF should contain "2 Jours Maurice Jean 250 €"
+    Then The page "1" of the PDF should not contain "Total HT"
+    Then The page "1" of the PDF should not contain "Total TVA"
+    Then The page "1" of the PDF should contain "TOTAL 250 €"
+    Then The page "1" of the PDF should not contain "Total TTC"
+    Then The page "1" of the PDF should contain "Payé par CB le 25/06/2023"
+    Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then The page "1" of the PDF should not contain "TOTAL TTC 250 €"
+    Then the checksum of the response content should be "bc22d5485b29a7e4258cf40ca24af67f"
+
+  @reloadDbWithTestData
+  @vat
+  Scenario: Test d'une facture d'événement après 2024
+    Given I am logged in as admin and on the Administration
+    And I follow "Factures d'évènement"
+    Then the ".content h2" element should contain "Factures d'évènement"
+    And the ".content table" element should contain "REF-TEST-003"
+    When I follow "telecharger_REF-TEST-003"
+    Then the response header "Content-disposition" should match '#attachment; filename="Facture - Kirk James Tiberius - 2024-01-02_00-00.pdf"#'
+    When I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-003"
+    Then The page "1" of the PDF should contain "3 avenue de l'enterprise"
+    Then The page "1" of the PDF should contain "Type Personne inscrite Prix HT TVA Prix TTC"
+    Then The page "1" of the PDF should contain "2 Jours James Tiberius Kirk 227,27 € 10% 250,00 €"
+    Then The page "1" of the PDF should contain "Total HT 227,27 €"
+    Then The page "1" of the PDF should contain "Total TVA 10% 22,73 €"
+    Then The page "1" of the PDF should contain "TOTAL TTC 250,00 €"
+    Then The page "1" of the PDF should contain "Payé par CB le 02/01/2024"
+    Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
+    Then The page "1" of the PDF should contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
+    Then the checksum of the response content should be "291937b30581aff285caba857e470013"
+
+  @reloadDbWithTestData
   @clearEmails
   Scenario: On passe à l'état facturée
     Given I am logged in as admin and on the Administration

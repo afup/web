@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
+use Smalot\PdfParser\Parser;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use AppBundle\Event\Model\Event;
@@ -16,6 +17,8 @@ class FeatureContext implements Context
 
     /** @var MinkContext */
     private $minkContext;
+
+    private $pdfPages = [];
 
     /** @BeforeScenario */
     public function gatherContexts(BeforeScenarioScope $scope)
@@ -301,4 +304,87 @@ class FeatureContext implements Context
         }
     }
 
+    /**
+     * @When I parse the pdf downloaded content
+     */
+    public function iParseThePdfContent()
+    {
+        $pageContent = $this->minkContext->getSession()->getPage()->getContent();
+
+        $parser = new Parser();
+        $pdf    = $parser->parseContent($pageContent);
+        $pages  = $pdf->getPages();
+
+        $this->pdfPages = [];
+        foreach ($pages as $i => $page) {
+            $this->pdfPages[++$i] = $page->getText();
+        }
+    }
+
+    /**
+     * @Then The page :page of the PDF should contain :content
+     */
+    public function thePageOfThePdfShouldContain($page, $expectedContent)
+    {
+        $pageContent = isset($this->pdfPages[$page]) ? $this->pdfPages[$page] : null;
+
+        if (false === strpos($pageContent, $expectedContent)) {
+            throw new \Exception(sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent));
+        }
+    }
+
+    /**
+     * @Then The page :page of the PDF should not contain :content
+     */
+    public function thePageOfThePdfShouldNotContain($page, $expectedContent)
+    {
+        if (!isset($this->pdfPages[$page])) {
+            throw new \Exception(sprintf("The page %d does not exists", $page));
+        }
+
+        $pageContent = $this->pdfPages[$page];
+
+        if (false !== strpos($pageContent, $expectedContent)) {
+            throw new \Exception(sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent));
+        }
+    }
+
+    /**
+     * @Then print last PDF content
+     */
+    public function printLastResponse()
+    {
+        echo (
+            implode("######\n", $this->pdfPages)
+        );
+    }
+
+    /**
+     * @Then the checksum of the response content should be :md5
+     */
+    public function checksumOfTheResponseContentShouldBe($expectedChecksum)
+    {
+        $content = $this->minkContext->getSession()->getPage()->getContent();
+
+        $foundChecksum = md5($content);
+
+        if ($expectedChecksum !== $foundChecksum) {
+            throw new \Exception(sprintf("The checksum %s is not the expected checksum %s", $foundChecksum, $expectedChecksum));
+        }
+    }
+
+    /**
+     * @Then print last reponse headers
+     */
+    public function printLastResponseHeaders()
+    {
+        $headers = [];
+        foreach ($this->minkContext->getSession()->getResponseHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                $headers[] = sprintf("%s : %s", $name, $value);
+            }
+        }
+
+        echo implode("\n", $headers);
+    }
 }

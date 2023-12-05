@@ -56,6 +56,8 @@ if ($action == 'lister') {
 	$forum_facturation->genererDevis($_GET['ref']);
 } elseif ($action == 'telecharger_facture') {
 	$forum_facturation->genererFacture($_GET['ref']);
+    // on évite de renvoyer du html en fin de PDF
+    exit(0);
 } elseif ($action == 'envoyer_facture'){
 	if($forum_facturation->envoyerFacture($_GET['ref'])){
 		Logs::log('Envoi par email de la facture n°' . $_GET['ref']);

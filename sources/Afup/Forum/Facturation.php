@@ -4,6 +4,8 @@ use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
+use Afup\Site\Utils\Utils;
+use Afup\Site\Utils\Vat;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
@@ -233,9 +235,12 @@ class Facturation
             ? \DateTimeImmutable::createFromFormat('U', $facture['date_facture'])
             : new \DateTimeImmutable();
 
+
+        $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
+
         $bankAccountFactory = new BankAccountFactory($configuration);
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -275,18 +280,40 @@ class Facturation
         $pdf->Ln(10);
         $pdf->SetFillColor(200, 200, 200);
         $pdf->Cell(50, 5, 'Type', 1, 0, 'L', 1);
-        $pdf->Cell(100, 5, 'Personne inscrite', 1, 0, 'L', 1);
-        $pdf->Cell(40, 5, 'Prix', 1, 0, 'L', 1);
+        $pdf->Cell(100 - ($isSubjectedToVat ? 35 : 0), 5, 'Personne inscrite', 1, 0, 'L', 1);
+        $pdf->Cell($isSubjectedToVat ? 30 : 40, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        if ($isSubjectedToVat) {
+            $pdf->Cell(15, 5, 'TVA', 1, 0,  'C', 1);
+            $pdf->Cell(30, 5, 'Prix TTC', 1, 0, 'R', 1);
+        }
+
 
         $total = 0;
+        $totalHt = 0;
         foreach ($inscriptions as $inscription) {
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
+            $montantHt = Vat::getRoundedWithoutVatPriceFromPriceWithVat($inscription['montant'], Utils::TICKETING_VAT_RATE);
+            $montant = $inscription['montant'];
+
             $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
-            $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
-            $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
-            $total += $inscription['montant'];
+            $pdf->Cell(100 - ($isSubjectedToVat ? 35 : 0), 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
+            $pdf->Cell(
+                $isSubjectedToVat ? 30 : 40, 5,
+                utf8_decode($this->formatFactureValue($isSubjectedToVat ? $montantHt : $montant, $isSubjectedToVat)) . utf8_decode(' '),
+                1,
+                0,
+                $isSubjectedToVat ? 'R' : ''
+            );
+
+            if ($isSubjectedToVat) {
+                $pdf->Cell(15, 5, utf8_decode('10%'), 1, 0, 'C');
+                $pdf->Cell(30, 5, utf8_decode($this->formatFactureValue($montant, $isSubjectedToVat)) . utf8_decode(' '), 1, 0, 'R');
+            }
+
+            $totalHt = $montantHt;
+            $total += $montant;
         }
 
         if ($facture['type_reglement'] == 1) { // Paiement par chèque
@@ -297,10 +324,42 @@ class Facturation
             $total += 25;
         }
 
+        $totalLabel = 'TOTAL';
+        if ($isSubjectedToVat) {
+            $totalLabel .= ' TTC';
+        }
+
+        if ($isSubjectedToVat) {
+            $pdf->Ln();
+            $pdf->SetFillColor(225, 225, 225);
+            $pdf->Cell(160, 5, 'Total HT', 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($totalHt, $isSubjectedToVat) . utf8_decode(' '), 1, 0, 'R', 1);
+
+            $pdf->Ln();
+            $pdf->SetFillColor(255, 255, 255);
+            $pdf->Cell(160, 5, 'Total TVA 10%', 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($total - $totalHt, $isSubjectedToVat) . utf8_decode(' '), 1, 0, 'R', 1);
+        }
+
         $pdf->Ln();
         $pdf->SetFillColor(225, 225, 225);
-        $pdf->Cell(150, 5, 'TOTAL', 1, 0, 'L', 1);
-        $pdf->Cell(40, 5, $total . utf8_decode(' '), 1, 0, 'L', 1);
+        $pdf->Cell(
+            150 + ($isSubjectedToVat ? 10 : 0),
+            5,
+            $totalLabel,
+            1,
+            0,
+            $isSubjectedToVat ? 'R' : 'L',
+            1
+        );
+        $pdf->Cell(
+            40 - ($isSubjectedToVat ? 10 : 0), 5,
+            $this->formatFactureValue($total, $isSubjectedToVat) . utf8_decode(' '),
+            1,
+            0,
+            $isSubjectedToVat ? 'R' : 'L',
+            1
+        );
 
         $pdf->Ln(15);
         if ($facture['etat'] == 4) {
@@ -323,7 +382,9 @@ class Facturation
             $pdf->SetTextColor(0, 0, 0);
         }
         $pdf->Ln();
-        $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+        if (false === $isSubjectedToVat) {
+            $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+        }
 
         if (is_null($chemin)) {
             $pdf->Output('Facture - ' . ($facture['societe'] ? $facture['societe'] : $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
@@ -332,6 +393,15 @@ class Facturation
         }
 
         return $reference;
+    }
+
+    private function formatFactureValue($value, $isSubjectedToVat)
+    {
+        if (false === $isSubjectedToVat) {
+            return $value;
+        }
+
+        return number_format($value, 2, ',', ' ');
     }
 
     /**
