@@ -169,7 +169,7 @@ HERE;
         $requete .= ' SET ';
         $requete .= ' source = ' . $this->_bdd->echapper($source) . ',';
         $requete .= ' id_source = ' . $this->_bdd->echapper($id_source) . ',';
-        $requete .= ' tag = ' . $this->_bdd->echapper($tag, true) . ',';
+        $requete .= ' tag = ' . $this->_bdd->echapper($tag) . ',';
         $requete .= ' id_personne_physique = ' . $this->_bdd->echapper($id_personne_physique) . ',';
         $requete .= ' date = ' . $this->_bdd->echapper($date);
         if ($id > 0) {
