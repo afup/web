@@ -148,7 +148,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'prenom'     , 'Prénom'            , array('size' => 30, 'maxlength' => 40));
     $formulaire->addElement('text'    , 'tel'        , 'tel'            , array('size' => 30, 'maxlength' => 40));
     $formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
-    $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intercommunautaire (facture)', array('size' => 30, 'maxlength' => 100));
+    $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intracommunautaire (facture)', array('size' => 30, 'maxlength' => 100));
 
     if (isset($champs['numero_devis']) || isset($champs['numero_facture']) )
     {
