@@ -104,6 +104,7 @@ elseif ($action == 'credit') {
         $champs['idoperation']          = $champsRecup['idoperation'];
         $champs['idcategorie']          = $champsRecup['idcategorie'];
         $champs['nom_frs']          = $champsRecup['nom_frs'];
+        $champs['tva_intra']        = $champsRecup['tva_intra'];
         $champs['montant']          = $champsRecup['montant'];
         $champs['description']          = $champsRecup['description'];
         $champs['numero']          = $champsRecup['numero'];
@@ -145,7 +146,8 @@ elseif ($action == 'credit') {
 
   $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
   $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , array('size' => 30, 'maxlength' => 40));
-   	$formulaire->addElement('text', 'numero', 'Numero facture' , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intracommunautaire (facture)', array('size' => 30, 'maxlength' => 100));
+    $formulaire->addElement('text', 'numero', 'Numero facture' , array('size' => 30, 'maxlength' => 40));
    	$formulaire->addElement('textarea', 'description', 'Description', array('cols' => 42, 'rows' => 5));
 	$formulaire->addElement('text', 'montant', 'Montant' , array('size' => 30, 'maxlength' => 40));
 	$formulaire->addElement('text', 'comment', 'Commentaire' , array('size' => 30, 'maxlength' => 255));
@@ -212,6 +214,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
             						$valeur['idcategorie'],
             						$date_ecriture,
             						$valeur['nom_frs'],
+            						$valeur['tva_intra'],
             						$valeur['montant'],
             						$valeur['description'],
 									$valeur['numero'],
@@ -234,6 +237,7 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
             						$valeur['idcategorie'],
             						$date_ecriture,
             						$valeur['nom_frs'],
+                                    $valeur['tva_intra'],
             						$valeur['montant'],
             						$valeur['description'],
 									$valeur['numero'],
@@ -650,6 +654,7 @@ elseif ($action == 'supprimer') {
             26, // A déterminer
             $ligneCompta['date_ecriture'],
             $ligneCompta['nom_frs'],
+            $ligneCompta['tva_intra'],
             $montant,
             $ligneCompta['description'],
             $ligneCompta['numero'],
@@ -668,6 +673,7 @@ elseif ($action == 'supprimer') {
                       $ligneCompta['idcategorie'],
                       $ligneCompta['date_ecriture'],
                       $ligneCompta['nom_frs'],
+                      $ligneCompta['tva_intra'],
                       $ligneCompta['montant'] - $montantTotal,
                       $ligneCompta['description'],
                       $ligneCompta['numero'],
