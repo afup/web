@@ -479,8 +479,7 @@ class Facture
             utf8_decode($coordonnees['code_postal']) . "\n" .
             utf8_decode($coordonnees['ville']) . "\n" .
             utf8_decode($pays->obtenirNom($coordonnees['id_pays'])) .
-            $coordonnees['tva_intra'] ? ("\nTVA : ".utf8_decode($coordonnees['tva_intra'])) : null
-        );
+            ($coordonnees['tva_intra'] ? ("\n" . utf8_decode('N° TVA Intracommunautaire : ' . $coordonnees['tva_intra'])) : null)        );
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);

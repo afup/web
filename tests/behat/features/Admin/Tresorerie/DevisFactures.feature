@@ -83,4 +83,4 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I follow the button of tooltip "Télécharger la facture"
     Then the response header "Content-disposition" should match '#attachment; filename="Facture - ESN dev en folie - (.*).pdf"#'
     When I parse the pdf downloaded content
-    Then The page "1" of the PDF should contain "TVA : FR7612345"
+    Then The page "1" of the PDF should contain "N° TVA Intracommunautaire : FR7612345"
