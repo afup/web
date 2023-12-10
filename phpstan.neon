@@ -16,12 +16,3 @@ parameters:
             - sources/AppBundle/Twig/TwigExtension.php
             # Ce fichier est impossible à analyser, des variables globales, du eval, etc.
             - sources/Afup/Utils/Configuration.php
-    ignoreErrors:
-        # Variable globale
-        -
-            message: '#Undefined variable: \$configuration#'
-            path: sources/Afup/Utils/SymfonyKernel.php
-        # Variable globale
-        -
-            message: '#Undefined variable: \$smarty#'
-            path: sources/AppBundle/Controller/LegacyController.php
