@@ -13,6 +13,8 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
+use Afup\Site\Utils\Vat;
+use Afup\Site\Utils\Utils;
 use Assert\Assertion;
 use DateInterval;
 use DateTime;
@@ -347,8 +349,9 @@ class Cotisations
 
         $dateCotisation = \DateTimeImmutable::createFromFormat('U', $cotisation['date_debut']);
         $bankAccountFactory = new BankAccountFactory($configuration);
+        $isSubjectedToVat = Vat::isSubjectedToVat($dateCotisation);
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateCotisation));
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateCotisation), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -384,21 +387,65 @@ class Cotisations
         $pdf->Ln(15);
 
         $pdf->MultiCell(180, 5, utf8_decode("Facture concernant votre adhésion à l'Association Française des Utilisateurs de PHP (AFUP)."));
-        // Cadre
-        $pdf->Ln(10);
-        $pdf->SetFillColor(200, 200, 200);
-        $pdf->Cell(50, 5, 'Code', 1, 0, 'L', 1);
-        $pdf->Cell(100, 5, utf8_decode('Désignation'), 1, 0, 'L', 1);
-        $pdf->Cell(40, 5, 'Prix', 1, 0, 'L', 1);
 
-        $pdf->Ln();
-        $pdf->SetFillColor(255, 255, 255);
-        $pdf->Cell(50, 5, 'ADH', 1);
-        $pdf->Cell(100, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin'])), 1);
-        $pdf->Cell(40, 5, utf8_decode($cotisation['montant'] . ' '), 1);
+        if (false === $isSubjectedToVat) {
+            // Cadre
+            $pdf->Ln(10);
+            $pdf->SetFillColor(200, 200, 200);
+            $pdf->Cell(50, 5, 'Code', 1, 0, 'L', 1);
+            $pdf->Cell(100, 5, utf8_decode('Désignation'), 1, 0, 'L', 1);
+            $pdf->Cell(40, 5, 'Prix', 1, 0, 'L', 1);
 
-        $pdf->Ln(15);
-        $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+            $pdf->Ln();
+            $pdf->SetFillColor(255, 255, 255);
+            $pdf->Cell(50, 5, 'ADH', 1);
+            $pdf->Cell(100, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin'])), 1);
+            $pdf->Cell(40, 5, utf8_decode($cotisation['montant'] . ' '), 1);
+
+            $pdf->Ln(15);
+            $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+        } else {
+            // Cadre
+            $pdf->Ln(10);
+            $pdf->SetFillColor(200, 200, 200);
+            $pdf->Cell(20, 5, 'Code', 1, 0, 'L', 1);
+            $pdf->Cell(95, 5, utf8_decode('Désignation'), 1, 0, 'L', 1);
+            $pdf->Cell(25, 5, 'Prix HT', 1, 0, 'R', 1);
+            $pdf->Cell(25, 5, 'Taux TVA', 1, 0, 'R', 1);
+            $pdf->Cell(25, 5, 'Prix TTC', 1, 0, 'R', 1);
+
+            if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+                $pdf->Ln();
+                $pdf->SetFillColor(255, 255, 255);
+                $pdf->Cell(20, 5, 'ADH', 1);
+                $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin'])), 1);
+                $pdf->Cell(25, 5, utf8_decode($cotisation['montant'] . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode(($cotisation['montant'] * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE)) . ' '), 1, 0, 'R');
+            } else {
+                $montantFixeHt = 5 / 100 * $cotisation['montant'];
+                $montantFixeTTc = $montantFixeHt * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
+                $montantVariable = $cotisation['montant'] - $montantFixeTTc;
+
+                $pdf->Ln();
+                $pdf->SetFillColor(255, 255, 255);
+                $pdf->Cell(20, 5, 'ADH-fixe', 1);
+                $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin']) . ' - part fixe'), 1);
+                $pdf->Cell(25, 5, utf8_decode($montantFixeHt . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($montantFixeTTc . ' '), 1, 0, 'R');
+
+                $pdf->Ln();
+                $pdf->SetFillColor(255, 255, 255);
+                $pdf->Cell(20, 5, 'ADH-var', 1);
+                $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin']) . ' - part variable'), 1);
+                $pdf->Cell(25, 5, utf8_decode($montantVariable . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode('0' . ' %'), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($montantVariable . ' '), 1, 0, 'R');
+            }
+
+        }
+
         $pdf->Ln(15);
         $pdf->Cell(10, 5, utf8_decode('Lors de votre règlement, merci de préciser la mention : "Facture n°' . $cotisation['numero_facture']) . '"');
 
