@@ -87,6 +87,46 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then the checksum of the response content should be "497f1ba3cc712bbe7070291d08d81106"
 
+  @reloadDbWithTestData @vat
+  Scenario: Test d'une facture de cotisation de personne physique avant 2024
+    Given I am logged-in with the user "dayesa" and the password "dayesa"
+    And I follow "Espace membre"
+    Then I should see "Cotisations"
+    When I follow "Consulter"
+    Then I should see "Payer ma cotisation"
+    When I follow "Télécharger la facture pour la cotisation COTIS-2023-2"
+    Then the response header "Content-disposition" should equal 'attachment; filename="HeliosAerospace_COTIS-2023-2_02012023.pdf"'
+    Given I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2023-2"
+    Then The page "1" of the PDF should contain "Helios Aerospace"
+    Then The page "1" of the PDF should contain "8, main road"
+    Then The page "1" of the PDF should contain "77201"
+    Then The page "1" of the PDF should contain "Houston, TX"
+    Then The page "1" of the PDF should contain "Code Désignation Prix"
+    Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 02/01/2024 150.00 €"
+    Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then the checksum of the response content should be "7feed06ea4905cb0bf198c4f1cf6d211"
+
+  @reloadDbWithTestData @vat
+  Scenario: Test d'une facture de cotisation de personne physique à partir de 2024
+    Given I am logged-in with the user "dayesa" and the password "dayesa"
+    And I follow "Espace membre"
+    Then I should see "Cotisations"
+    When I follow "Consulter"
+    Then I should see "Payer ma cotisation"
+    When I follow "Télécharger la facture pour la cotisation COTIS-2024-249"
+    Then the response header "Content-disposition" should equal 'attachment; filename="HeliosAerospace_COTIS-2024-249_02012024.pdf"'
+    Given I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2024-249"
+    Then The page "1" of the PDF should contain "Helios Aerospace"
+    Then The page "1" of the PDF should contain "8, main road"
+    Then The page "1" of the PDF should contain "77201"
+    Then The page "1" of the PDF should contain "Houston, TX"
+    Then The page "1" of the PDF should contain "Code Désignation Prix"
+    Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 02/01/2025 150.00 €"
+    Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then the checksum of the response content should be "15221d31bd121a16f5edf28b82adc76d"
+
   @reloadDbWithTestData
   Scenario: On peux télécharger la facture de cotisation pour une personne morale
     Given I am logged-in with the user "edmonddupont" and the password "edmonddupont"
