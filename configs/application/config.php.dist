@@ -59,3 +59,4 @@ $configuration['sympa']['mot_de_passe']='sympa';
 $configuration['sympa']['directory']='http://127.0.0.1/sympa.php';
 $configuration['sympa']['config_url']='http://127.0.0.1/sympa.php';
 $configuration['sympa']['host'] = 'old.afup.org';
+return $configuration;
