@@ -90,7 +90,7 @@ Feature: Espace membre, accueil
     Then the checksum of the response content should be "f3c953196f966bf99c385957bb38bd83"
 
   @reloadDbWithTestData @vat
-  Scenario: Test d'une facture de cotisation de personne physique avant 2024
+  Scenario: Test d'une facture de cotisation de personne morale avant 2024
     Given I am logged-in with the user "dayesa" and the password "dayesa"
     And I follow "Espace membre"
     Then I should see "Cotisations"
@@ -111,7 +111,7 @@ Feature: Espace membre, accueil
     Then the checksum of the response content should be "7feed06ea4905cb0bf198c4f1cf6d211"
 
   @reloadDbWithTestData @vat
-  Scenario: Test d'une facture de cotisation de personne physique à partir de 2024
+  Scenario: Test d'une facture de cotisation de personne morale à partir de 2024
     Given I am logged-in with the user "dayesa" and the password "dayesa"
     And I follow "Espace membre"
     Then I should see "Cotisations"
