@@ -65,6 +65,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Code Désignation Prix"
     Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 01/01/2024 30.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then The page "1" of the PDF should not contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
     Then the checksum of the response content should be "e869bc7f6406b276ba4a7ac845aabafc"
 
   @reloadDbWithTestData @vat
@@ -85,6 +86,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Code Désignation Prix"
     Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 01/01/2025 30.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then The page "1" of the PDF should not contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
     Then the checksum of the response content should be "f3c953196f966bf99c385957bb38bd83"
 
   @reloadDbWithTestData @vat
@@ -105,6 +107,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Code Désignation Prix"
     Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 02/01/2024 150.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then The page "1" of the PDF should not contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
     Then the checksum of the response content should be "7feed06ea4905cb0bf198c4f1cf6d211"
 
   @reloadDbWithTestData @vat
@@ -125,6 +128,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Code Désignation Prix"
     Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 02/01/2025 150.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then The page "1" of the PDF should not contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
     Then the checksum of the response content should be "15221d31bd121a16f5edf28b82adc76d"
 
   @reloadDbWithTestData
