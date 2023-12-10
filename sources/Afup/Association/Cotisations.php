@@ -415,13 +415,16 @@ class Cotisations
             $pdf->Cell(25, 5, 'Prix TTC', 1, 0, 'R', 1);
 
             if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+                $montantTtc = $cotisation['montant'] * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
                 $pdf->Ln();
                 $pdf->SetFillColor(255, 255, 255);
                 $pdf->Cell(20, 5, 'ADH', 1);
                 $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin'])), 1);
                 $pdf->Cell(25, 5, utf8_decode($cotisation['montant'] . ' '), 1, 0, 'R');
                 $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode(($cotisation['montant'] * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE)) . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($montantTtc . ' '), 1, 0, 'R');
+                $totalHt = $cotisation['montant'];
+                $total = $montantTtc;
             } else {
                 $montantFixeHt = 5 / 100 * $cotisation['montant'];
                 $montantFixeTTc = $montantFixeHt * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
@@ -442,7 +445,26 @@ class Cotisations
                 $pdf->Cell(25, 5, utf8_decode($montantVariable . ' '), 1, 0, 'R');
                 $pdf->Cell(25, 5, utf8_decode('0' . ' %'), 1, 0, 'R');
                 $pdf->Cell(25, 5, utf8_decode($montantVariable . ' '), 1, 0, 'R');
+
+                $totalHt = $montantFixeHt + $montantVariable;
+                $total = $montantFixeTTc + $montantVariable;
             }
+
+            $pdf->Ln();
+            $pdf->SetFillColor(225, 225, 225);
+            $pdf->Cell(165, 5, 'Total HT', 1, 0, 'R', 1);
+            $pdf->Cell(25, 5, $this->formatFactureValue($totalHt) . utf8_decode(' '), 1, 0, 'R', 1);
+
+            $pdf->Ln();
+            $pdf->SetFillColor(255, 255, 255);
+            $pdf->Cell(165, 5, 'Total TVA 20%', 1, 0, 'R', 1);
+            $pdf->Cell(25, 5, $this->formatFactureValue($total - $totalHt) . utf8_decode(' '), 1, 0, 'R', 1);
+
+            $pdf->Ln();
+            $pdf->SetFillColor(225, 225, 225);
+            $pdf->Cell(165, 5, 'Total TTC', 1, 0, 'R', 1);
+            $pdf->Cell(25, 5, $this->formatFactureValue($total) . utf8_decode(' '), 1, 0, 'R', 1);
+
 
         }
 
@@ -458,6 +480,11 @@ class Cotisations
         }
 
         return $cotisation['numero_facture'];
+    }
+
+    private function formatFactureValue($value)
+    {
+        return number_format($value, 2, ',', ' ');
     }
 
     /**
