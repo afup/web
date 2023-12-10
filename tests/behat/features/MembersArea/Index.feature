@@ -67,6 +67,25 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then the checksum of the response content should be "4c03c55ace929611f56e6f4d00ea5836"
 
+  @reloadDbWithTestData @vat
+  Scenario: Test d'une facture de cotisation de personne physique à partir de 2024
+    Given I am logged-in with the user "cpike" and the password "cpike"
+    And I follow "Espace membre"
+    Then I should see "Cotisations"
+    When I follow "Consulter"
+    Then I should see "Payer ma cotisation"
+    When I follow "Télécharger la facture pour la cotisation COTIS-2024-245"
+    Then the response header "Content-disposition" should equal 'attachment; filename="Pike_COTIS-2024-245_01012024.pdf"'
+    Given I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2024-245"
+    Then The page "1" of the PDF should contain "Christopher Pike"
+    Then The page "1" of the PDF should contain "15, main road"
+    Then The page "1" of the PDF should contain "93501-1100"
+    Then The page "1" of the PDF should contain "Mojave, CA"
+    Then The page "1" of the PDF should contain "Adhésion AFUP jusqu'au 01/01/2025"
+    Then The page "1" of the PDF should contain "25.00 €"
+    Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then the checksum of the response content should be "497f1ba3cc712bbe7070291d08d81106"
 
   @reloadDbWithTestData
   Scenario: On peux télécharger la facture de cotisation pour une personne morale
