@@ -62,10 +62,10 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "15, main road"
     Then The page "1" of the PDF should contain "93501-1100"
     Then The page "1" of the PDF should contain "Mojave, CA"
-    Then The page "1" of the PDF should contain "Adhésion AFUP jusqu'au 01/01/2024"
-    Then The page "1" of the PDF should contain "25.00 €"
+    Then The page "1" of the PDF should contain "Code Désignation Prix"
+    Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 01/01/2024 25.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
-    Then the checksum of the response content should be "4c03c55ace929611f56e6f4d00ea5836"
+    Then the checksum of the response content should be "0a0489dfc11c37f35319b693c9ec5877"
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne physique à partir de 2024
@@ -82,8 +82,8 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "15, main road"
     Then The page "1" of the PDF should contain "93501-1100"
     Then The page "1" of the PDF should contain "Mojave, CA"
-    Then The page "1" of the PDF should contain "Adhésion AFUP jusqu'au 01/01/2025"
-    Then The page "1" of the PDF should contain "25.00 €"
+    Then The page "1" of the PDF should contain "Code Désignation Prix"
+    Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 01/01/2025 25.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then the checksum of the response content should be "497f1ba3cc712bbe7070291d08d81106"
 
