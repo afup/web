@@ -86,9 +86,12 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Code Désignation Prix"
     Then The page "1" of the PDF should contain "ADH-fixe Adhésion AFUP jusqu'au 01/01/2025 - part fixe 1.5 € 20 % 1.8 €"
     Then The page "1" of the PDF should contain "ADH-var Adhésion AFUP jusqu'au 01/01/2025 - part variable 28.2 € 0 % 28.2 €"
-    Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
-    Then The page "1" of the PDF should not contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
-    Then the checksum of the response content should be "f3c953196f966bf99c385957bb38bd83"
+    Then The page "1" of the PDF should contain "Total HT 29,70 €"
+    Then The page "1" of the PDF should contain "Total TVA 20% 0,30 €"
+    Then The page "1" of the PDF should contain "Total TTC 30,00 €"
+    Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
+    Then The page "1" of the PDF should contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
+    Then the checksum of the response content should be "0f2e77535de084cc982688f6caba8535"
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne morale avant 2024
@@ -128,9 +131,12 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Houston, TX"
     Then The page "1" of the PDF should contain "Code Désignation Prix"
     Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 02/01/2025 150.00 € 20 % 180 €"
+    Then The page "1" of the PDF should contain "Total HT 150,00 €"
+    Then The page "1" of the PDF should contain "Total TVA 20% 30,00 €"
+    Then The page "1" of the PDF should contain "Total TTC 180,00 €"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
-    Then the checksum of the response content should be "80f4bcf1b94a6593c11a5a67e93bb250"
+    Then the checksum of the response content should be "8b1656ac2e5d6cfd8011aec9b56a35a5"
 
   @reloadDbWithTestData
   Scenario: On peux télécharger la facture de cotisation pour une personne morale
