@@ -54,7 +54,7 @@ Feature: Espace membre, accueil
     Then I should see "Cotisations"
     When I follow "Consulter"
     Then I should see "Payer ma cotisation"
-    When I follow "Télécharger la facture"
+    When I follow "Télécharger la facture pour la cotisation COTIS-2023-1"
     Then the response header "Content-disposition" should equal 'attachment; filename="Pike_COTIS-2023-1_01012023.pdf"'
     Given I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2023-1"
