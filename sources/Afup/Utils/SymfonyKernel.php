@@ -44,9 +44,7 @@ class SymfonyKernel
     private function getLegacyConfig()
     {
         // $configuration comes from this file
-        include(__DIR__ . '/../../../configs/application/config.php');
-
-        return $configuration;
+        return include(__DIR__ . '/../../../configs/application/config.php');
     }
 
     /**

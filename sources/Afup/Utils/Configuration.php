@@ -177,7 +177,7 @@ class Configuration
         foreach ($valeurs as $valeur) {
             $contenu .= '$configuration' . $valeur . "\n";
         }
-        $contenu .= '?>';
+        $contenu .= 'return $configuration;';
 
         if (!is_writable($this->_chemin_fichier)) {
             return false;
