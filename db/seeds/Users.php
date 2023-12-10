@@ -200,7 +200,7 @@ class Users extends AbstractSeed
                 'date_debut' => mktime(16, 10, 10, 1, 1, 2023),
                 'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
-                'montant' => 25,
+                'montant' => 30,
                 'date_fin' => mktime(16, 10, 10, 1, 1, 2024),
                 'numero_facture' => 'COTIS-2023-1',
             ],
@@ -208,7 +208,7 @@ class Users extends AbstractSeed
                 'date_debut' => mktime(16, 10, 10, 1, 1, 2024),
                 'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
-                'montant' => 25,
+                'montant' => 30,
                 'date_fin' => mktime(16, 10, 10, 1, 1, 2025),
                 'numero_facture' => 'COTIS-2024-245',
             ],
