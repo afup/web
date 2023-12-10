@@ -47,6 +47,27 @@ Feature: Espace membre, accueil
     When I follow "Télécharger la facture"
     Then the response header "Content-disposition" should equal 'attachment; filename="Maurice_COTIS-2018-198_13072018.pdf"'
 
+  @reloadDbWithTestData @vat
+  Scenario: Test d'une facture de cotisation de personne physique avant 2024
+    Given I am logged-in with the user "cpike" and the password "cpike"
+    And I follow "Espace membre"
+    Then I should see "Cotisations"
+    When I follow "Consulter"
+    Then I should see "Payer ma cotisation"
+    When I follow "Télécharger la facture"
+    Then the response header "Content-disposition" should equal 'attachment; filename="Pike_COTIS-2023-1_01012023.pdf"'
+    Given I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2023-1"
+    Then The page "1" of the PDF should contain "Christopher Pike"
+    Then The page "1" of the PDF should contain "15, main road"
+    Then The page "1" of the PDF should contain "93501-1100"
+    Then The page "1" of the PDF should contain "Mojave, CA"
+    Then The page "1" of the PDF should contain "Adhésion AFUP jusqu'au 04/12/2024"
+    Then The page "1" of the PDF should contain "25.00 €"
+    Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then the checksum of the response content should be "9f2184461d41739b4238c5cd90ac0fe2"
+
+
   @reloadDbWithTestData
   Scenario: On peux télécharger la facture de cotisation pour une personne morale
     Given I am logged-in with the user "edmonddupont" and the password "edmonddupont"

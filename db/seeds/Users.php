@@ -10,6 +10,7 @@ class Users extends AbstractSeed
     const ID_USER_PERSONNE_MORALE = 3;
     const ID_USER_PERSONNE_MORALE_NON_MANAGER = 4;
     const ID_USER_PERSONNE_PHYSIQUE = 5;
+    const ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS = 6;
 
     const ID_PERSONNE_MORALE_MY_CORP = 1;
 
@@ -66,6 +67,20 @@ class Users extends AbstractSeed
                 'email' => 'userexpire@yahoo.fr',
                 'niveau_modules' => '00000',
             ],
+            // utilisateur avec  pour les tests
+            [
+                'id'    => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
+                'login' => 'cpike',
+                'mot_de_passe' => md5('cpike'),
+                'nom' => 'Pike',
+                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
+                'prenom' => 'Christopher',
+                'email' => 'cpike@strafleet.fr',
+                'niveau_modules' => '00000',
+                'adresse' => '15, main road',
+                'code_postal' => '93501-1100',
+                'ville' => 'Mojave, CA'
+            ],
             [
                 'id'    => self::ID_USER_PERSONNE_MORALE,
                 'login' => 'edmonddupont',
@@ -119,6 +134,9 @@ class Users extends AbstractSeed
 
         $dateDebutUserExpire = mktime(17, 32, 15, 7, 13,2018);
 
+        $dateDebutUserFixedCotisations = mktime(16, 10, 10, 1, 1, 2023);
+
+
         $data = [
             [
                 'date_debut' => $now - $oneMonthInSeconds,
@@ -150,6 +168,22 @@ class Users extends AbstractSeed
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
                 'numero_facture' => 'COTIS-'.date('Y').'-'.(date('Hi')+200),
+            ],
+            [
+                'date_debut' => $dateDebutUserFixedCotisations,
+                'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
+                'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
+                'montant' => 25,
+                'date_fin' => $now + $oneMonthInSeconds * 12,
+                'numero_facture' => 'COTIS-2023-1',
+            ],
+            [
+                'date_debut' => $dateDebutUserFixedCotisations + ($oneMonthInSeconds * 12),
+                'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
+                'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
+                'montant' => 25,
+                'date_fin' => $now + $oneMonthInSeconds * 12,
+                'numero_facture' => 'COTIS-2024-245',
             ]
         ];
 
