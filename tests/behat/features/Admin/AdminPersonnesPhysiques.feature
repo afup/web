@@ -73,4 +73,4 @@ Feature: Administration - Partie Personnes physiques
     Then I should see "Ajouter une personne physique"
     When I press "Ajouter"
     Then I should see "Cette valeur ne doit pas être vide"
-    And the "user_edit[companyId]" field should only contain the follow values '["","My Corp (id : 2)","My Corp (id : 3)","MyCorp (id : 1)"]'
+    And the "user_edit[companyId]" field should only contain the follow values '["","Helios Aerospace (id : 2)","My Corp (id : 3)","My Corp (id : 4)","MyCorp (id : 1)"]'
