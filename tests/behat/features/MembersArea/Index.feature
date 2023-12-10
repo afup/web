@@ -62,10 +62,10 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "15, main road"
     Then The page "1" of the PDF should contain "93501-1100"
     Then The page "1" of the PDF should contain "Mojave, CA"
-    Then The page "1" of the PDF should contain "Adhésion AFUP jusqu'au 04/12/2024"
+    Then The page "1" of the PDF should contain "Adhésion AFUP jusqu'au 01/01/2024"
     Then The page "1" of the PDF should contain "25.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
-    Then the checksum of the response content should be "9f2184461d41739b4238c5cd90ac0fe2"
+    Then the checksum of the response content should be "4c03c55ace929611f56e6f4d00ea5836"
 
 
   @reloadDbWithTestData
