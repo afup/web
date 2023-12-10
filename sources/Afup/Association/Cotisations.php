@@ -420,9 +420,9 @@ class Cotisations
                 $pdf->SetFillColor(255, 255, 255);
                 $pdf->Cell(20, 5, 'ADH', 1);
                 $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin'])), 1);
-                $pdf->Cell(25, 5, utf8_decode($cotisation['montant'] . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($cotisation['montant']) . ' '), 1, 0, 'R');
                 $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode($montantTtc . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantTtc) . ' '), 1, 0, 'R');
                 $totalHt = $cotisation['montant'];
                 $total = $montantTtc;
             } else {
@@ -434,17 +434,17 @@ class Cotisations
                 $pdf->SetFillColor(255, 255, 255);
                 $pdf->Cell(20, 5, 'ADH-fixe', 1);
                 $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin']) . ' - part fixe'), 1);
-                $pdf->Cell(25, 5, utf8_decode($montantFixeHt . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeHt) . ' '), 1, 0, 'R');
                 $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode($montantFixeTTc . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeTTc) . ' '), 1, 0, 'R');
 
                 $pdf->Ln();
                 $pdf->SetFillColor(255, 255, 255);
                 $pdf->Cell(20, 5, 'ADH-var', 1);
                 $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin']) . ' - part variable'), 1);
-                $pdf->Cell(25, 5, utf8_decode($montantVariable . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
                 $pdf->Cell(25, 5, utf8_decode('0' . ' %'), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode($montantVariable . ' '), 1, 0, 'R');
+                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
 
                 $totalHt = $montantFixeHt + $montantVariable;
                 $total = $montantFixeTTc + $montantVariable;
