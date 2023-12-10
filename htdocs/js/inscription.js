@@ -4,6 +4,32 @@ $(document).ready(function(){
     'use strict';
 
     var nbMaxPersonnes = $('#divPersonne').data('nb-max-personnes');
+    var isSubjectedToVat = $('#ticketing').data('is-subjected-to-vat') == 1;
+
+
+    var computeWithoutTaxesPriceFromPriceWithTaxes = function (price) {
+        return price / (1 + 0.1); // on a 10% sur la billeterie
+    }
+
+    var computeWithoutTaxesPriceFromPriceWithTaxesConditionally = function (price) {
+        if (!isSubjectedToVat) {
+            return price;
+        }
+
+        return computeWithoutTaxesPriceFromPriceWithTaxes(price);
+    }
+
+    var formatPrice = function (price) {
+        let formatter = Intl.NumberFormat(
+            'fr-FR',
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }
+        )
+
+        return formatter.format(price);
+    }
 
     // Check if there is some saved data in LocalStorage
 	var storageAvailable = function (type) {
@@ -95,6 +121,35 @@ $(document).ready(function(){
 
         var df = document.createDocumentFragment();
 
+        if (isSubjectedToVat) {
+            var trClone = tr.cloneNode();
+            trClone.classList.add('registration')
+            var thClone = th.cloneNode();
+            thClone.appendChild(document.createTextNode("Type"));
+            trClone.appendChild(thClone);
+
+            var tdClone = td.cloneNode();
+            tdClone.setAttribute('class', 'text-align-right');
+            tdClone.appendChild(document.createTextNode("Prix HT Unitaire"));
+            trClone.appendChild(tdClone);
+
+            var tdClone = td.cloneNode();
+            tdClone.setAttribute('class', 'text-align-right');
+            tdClone.appendChild(document.createTextNode("Quantité"));
+            trClone.appendChild(tdClone);
+
+            var tdClone = td.cloneNode();
+            tdClone.setAttribute('class', 'text-align-right');
+            tdClone.appendChild(document.createTextNode("Prix HT"));
+            trClone.appendChild(tdClone);
+
+            var tdClone = td.cloneNode();
+            tdClone.appendChild(document.createTextNode("Prix TTC"));
+            trClone.appendChild(tdClone);
+
+            df.appendChild(trClone);
+        }
+
         for (var i in inscriptions) {
             var trClone = tr.cloneNode();
             trClone.classList.add('registration')
@@ -103,16 +158,25 @@ $(document).ready(function(){
             trClone.appendChild(thClone);
 
             var tdClone = td.cloneNode();
-            tdClone.appendChild(document.createTextNode(inscriptions[i].price + '€'));
+            tdClone.setAttribute('class', 'text-align-right');
+            tdClone.appendChild(document.createTextNode(formatPrice(computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[i].price)) + '€'));
             trClone.appendChild(tdClone);
 
             var tdClone = td.cloneNode();
+            tdClone.setAttribute('class', 'text-align-right');
             tdClone.appendChild(document.createTextNode('x' + inscriptions[i].quantity));
             trClone.appendChild(tdClone);
 
             var tdClone = td.cloneNode();
-            tdClone.appendChild(document.createTextNode(inscriptions[i].subtotal + '€'));
+            tdClone.setAttribute('class', 'text-align-right');
+            tdClone.appendChild(document.createTextNode(formatPrice(computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[i].subtotal)) + '€'));
             trClone.appendChild(tdClone);
+
+            if (isSubjectedToVat) {
+                var tdClone = td.cloneNode();
+                tdClone.appendChild(document.createTextNode(formatPrice(inscriptions[i].subtotal) + '€'));
+                trClone.appendChild(tdClone);
+            }
 
             df.appendChild(trClone);
             numberOfTickets += inscriptions[i].quantity;
@@ -129,12 +193,21 @@ $(document).ready(function(){
         trClone.appendChild(tdClone);
 
         var tdClone = td.cloneNode();
+        tdClone.setAttribute('class', 'text-align-right');
         tdClone.appendChild(document.createTextNode('x' + numberOfTickets));
         trClone.appendChild(tdClone);
 
         var tdClone = td.cloneNode();
-        tdClone.appendChild(document.createTextNode(total + '€'));
+        tdClone.setAttribute('class', 'text-align-right');
+        tdClone.appendChild(document.createTextNode(formatPrice(computeWithoutTaxesPriceFromPriceWithTaxesConditionally(total)) + '€'));
         trClone.appendChild(tdClone);
+
+        if (isSubjectedToVat) {
+            var tdClone = td.cloneNode();
+            tdClone.setAttribute('class', 'text-align-right');
+            tdClone.appendChild(document.createTextNode(formatPrice(total) + '€'));
+            trClone.appendChild(tdClone);
+        }
 
         df.appendChild(trClone);
 
@@ -162,7 +235,7 @@ $(document).ready(function(){
 		} else {
 			var price = fieldset.find('ul.tickets--type-list input[type=radio]:checked').data('price');
 			if (typeof price !== 'undefined') {
-                $(fieldset).find('legend span.fieldset--legend--price').html(price + '€');
+                $(fieldset).find('legend span.fieldset--legend--price').html(price + '€' + (isSubjectedToVat ? ' TTC ' : ''));
             }
 		}
     }

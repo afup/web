@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Forum\Facturation;
+use Afup\Site\Utils\Vat;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
@@ -234,6 +235,7 @@ class TicketController extends EventBaseController
             'ticketForm' => $purchaseForm->createView(),
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
             'maxNbPersonnes' => count($purchaseForm->getData()->getTickets()),
+            'isSubjectedToVat' => Vat::isSubjectedToVat(new \DateTime('now')),
             'soldTicketsForMember' => $totalOfSoldTicketsByMember,
             'hasMembersTickets' => $this->get('ting')->get(TicketEventTypeRepository::class)->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
 

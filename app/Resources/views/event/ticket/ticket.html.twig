@@ -59,7 +59,7 @@
         {% endfor %}
     {% endfor %}
 
-    <div class="col-md-8">
+    <div class="col-md-8" id="ticketing" data-is-subjected-to-vat="{{ isSubjectedToVat ? '1' : '0' }}">
         <h1>{{ 'Billetterie'|trans }}: {{ event.title }}</h1>
 
         {% if allTicketsSold and event.getWaitingListUrl %}
@@ -139,6 +139,9 @@
                                                 OFFERT
                                             {% else %}
                                                 {{ type.vars.attr['data-price'] }}€
+                                            {% endif %}
+                                            {% if isSubjectedToVat %}
+                                                TTC
                                             {% endif %}
                                         </span>
                                         <br />
