@@ -490,14 +490,14 @@ class Comptabilite
         return $reglements;
     }
 
-    function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $montant, $description,
+    function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
                      $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $numero_operation = null,
                      $attachmentRequired = 0, $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null)
     {
 
         $requete = 'INSERT INTO ';
         $requete .= 'compta (';
-        $requete .= 'idoperation,idcategorie,date_ecriture,nom_frs,montant,description,';
+        $requete .= 'idoperation,idcategorie,date_ecriture,nom_frs,tva_intra,montant,description,';
         $requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation,idcompte, attachment_required,
         montant_ht_soumis_tva_0, montant_ht_soumis_tva_5_5, montant_ht_soumis_tva_10, montant_ht_soumis_tva_20
         ) ';
@@ -506,6 +506,7 @@ class Comptabilite
         $requete .= $this->_bdd->echapper($idcategorie) . ',';
         $requete .= $this->_bdd->echapper($date_ecriture) . ',';
         $requete .= $this->_bdd->echapper($nom_frs) . ',';
+        $requete .= $this->_bdd->echapper($tva_intra) . ',';
         $requete .= $this->_bdd->echapper($montant) . ',';
         $requete .= $this->_bdd->echapper($description) . ',';
         $requete .= $this->_bdd->echapper($numero) . ',';
@@ -529,7 +530,7 @@ class Comptabilite
         return $resultat;
     }
 
-    function modifier($id, $idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $montant, $description,
+    function modifier($id, $idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
                       $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $comment, $numero_operation = null, $attachmentRequired = 0,
                       $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null
     )
@@ -542,6 +543,7 @@ class Comptabilite
         $requete .= 'idcategorie=' . $this->_bdd->echapper($idcategorie) . ',';
         $requete .= 'date_ecriture=' . $this->_bdd->echapper($date_ecriture) . ',';
         $requete .= 'nom_frs=' . $this->_bdd->echapper($nom_frs) . ',';
+        $requete .= 'tva_intra=' . $this->_bdd->echapper($tva_intra) . ',';
         $requete .= 'montant=' . $this->_bdd->echapper($montant) . ',';
         $requete .= 'description=' . $this->_bdd->echapper($description) . ',';
         $requete .= 'numero=' . $this->_bdd->echapper($numero) . ',';
@@ -1073,6 +1075,7 @@ SQL;
                         $enregistrement['idcategorie'],
                         $enregistrement['date_ecriture'],
                         $enregistrement['nom_frs'],
+                        $enregistrement['tva_intra'],
                         $enregistrement['montant'],
                         $enregistrement['description'],
                         $enregistrement['numero'],
