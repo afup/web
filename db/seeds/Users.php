@@ -167,14 +167,14 @@ class Users extends AbstractSeed
         $data = [
             [
                 'date_debut' => $now - $oneMonthInSeconds,
-                'type_personne' => 0, // AFUP_PERSONNE_PHYSIQUE
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_ADMIN,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => 0, // AFUP_PERSONNE_PHYSIQUE
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_EXPIRIE,
                 'montant' => 25,
                 'date_fin' => $dateDebutUserExpire + $oneMonthInSeconds * 12,
@@ -182,7 +182,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => 1, // AFUP_COTISATION_MORALE
+                'type_personne' => AFUP_PERSONNES_MORALES,
                 'id_personne' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'montant' => 150,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
@@ -190,7 +190,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
@@ -198,7 +198,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 1, 2023),
-                'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
                 'montant' => 30,
                 'date_fin' => mktime(16, 10, 10, 1, 1, 2024),
@@ -206,7 +206,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 1, 2024),
-                'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
                 'montant' => 30,
                 'date_fin' => mktime(16, 10, 10, 1, 1, 2025),
@@ -214,7 +214,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 2, 2023),
-                'type_personne' => 1, // AFUP_COTISATION_MORALE
+                'type_personne' => AFUP_PERSONNES_MORALES,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'montant' => 150,
                 'date_fin' => mktime(16, 10, 10, 1, 2, 2024),
@@ -222,7 +222,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 2, 2024),
-                'type_personne' => 1, // AFUP_COTISATION_MORALE
+                'type_personne' => AFUP_PERSONNES_MORALES,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'montant' => 150,
                 'date_fin' => mktime(16, 10, 10, 1, 2, 2025),
