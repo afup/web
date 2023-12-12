@@ -415,39 +415,9 @@ class Cotisations
             $pdf->Cell(25, 5, 'Prix TTC', 1, 0, 'R', 1);
 
             if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
-                $montantTtc = $cotisation['montant'] * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
-                $pdf->Ln();
-                $pdf->SetFillColor(255, 255, 255);
-                $pdf->Cell(20, 5, 'ADH', 1);
-                $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin'])), 1);
-                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($cotisation['montant']) . ' '), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantTtc) . ' '), 1, 0, 'R');
-                $totalHt = $cotisation['montant'];
-                $total = $montantTtc;
+                list($totalHt, $total) = $this->buildDetailsPersonneMorale($pdf, $cotisation['montant'], $cotisation['date_fin']);
             } else {
-                $montantFixeHt = 5 / 100 * $cotisation['montant'];
-                $montantFixeTTc = $montantFixeHt * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
-                $montantVariable = $cotisation['montant'] - $montantFixeTTc;
-
-                $pdf->Ln();
-                $pdf->SetFillColor(255, 255, 255);
-                $pdf->Cell(20, 5, 'ADH-fixe', 1);
-                $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin']) . ' - part fixe'), 1);
-                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeHt) . ' '), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeTTc) . ' '), 1, 0, 'R');
-
-                $pdf->Ln();
-                $pdf->SetFillColor(255, 255, 255);
-                $pdf->Cell(20, 5, 'ADH-var', 1);
-                $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin']) . ' - part variable'), 1);
-                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode('0' . ' %'), 1, 0, 'R');
-                $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
-
-                $totalHt = $montantFixeHt + $montantVariable;
-                $total = $montantFixeTTc + $montantVariable;
+                list($totalHt, $total) = $this->buildDetailsPersonnePhysique($pdf, $cotisation['montant'], $cotisation['date_fin']);
             }
 
             $pdf->Ln();
@@ -464,8 +434,6 @@ class Cotisations
             $pdf->SetFillColor(225, 225, 225);
             $pdf->Cell(165, 5, 'Total TTC', 1, 0, 'R', 1);
             $pdf->Cell(25, 5, $this->formatFactureValue($total) . utf8_decode(' '), 1, 0, 'R', 1);
-
-
         }
 
         $pdf->Ln(15);
@@ -480,6 +448,50 @@ class Cotisations
         }
 
         return $cotisation['numero_facture'];
+    }
+
+    private function buildDetailsPersonneMorale(PDF_Facture $pdf, $montant, $dateFin)
+    {
+        $montantTtc = $montant * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
+        $pdf->Ln();
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Cell(20, 5, 'ADH', 1);
+        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin)), 1);
+        $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montant) . ' '), 1, 0, 'R');
+        $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
+        $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantTtc) . ' '), 1, 0, 'R');
+        $totalHt = $montant;
+        $total = $montantTtc;
+
+        return [$totalHt, $total];
+    }
+
+    private function buildDetailsPersonnePhysique(PDF_Facture $pdf, $montant, $dateFin)
+    {
+        $montantFixeHt = 5 / 100 * $montant;
+        $montantFixeTTc = $montantFixeHt * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
+        $montantVariable = $montant - $montantFixeTTc;
+
+        $pdf->Ln();
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Cell(20, 5, 'ADH-fixe', 1);
+        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin) . ' - part fixe'), 1);
+        $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeHt) . ' '), 1, 0, 'R');
+        $pdf->Cell(25, 5, utf8_decode('20' . ' %'), 1, 0, 'R');
+        $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeTTc) . ' '), 1, 0, 'R');
+
+        $pdf->Ln();
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Cell(20, 5, 'ADH-var', 1);
+        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin) . ' - part variable'), 1);
+        $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
+        $pdf->Cell(25, 5, utf8_decode('0' . ' %'), 1, 0, 'R');
+        $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
+
+        $totalHt = $montantFixeHt + $montantVariable;
+        $total = $montantFixeTTc + $montantVariable;
+
+        return [$totalHt, $total];
     }
 
     private function formatFactureValue($value)
