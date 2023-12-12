@@ -2,6 +2,7 @@
 
 namespace AppBundle\Event\Validator\Constraints;
 
+use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -31,14 +32,21 @@ class LoggedInMemberValidator extends ConstraintValidator
         }
 
         $token = $this->tokenStorage->getToken();
+        $user = null;
         $message = null;
-        if ($token === null) {
+
+        if ($token !== null) {
+            $user = $token->getUser();
+        }
+
+        if (!$user instanceof User) {
             $message = $constraint->messageNotLoggedIn;
-        } elseif ($token->getUser()->hasRole('ROLE_MEMBER_EXPIRED')) {
+        } elseif ($user->hasRole('ROLE_MEMBER_EXPIRED')) {
             $message = $constraint->messageFeeOutOfDate;
-        } elseif ($token->getUser()->getEmail() !== $ticket->getEmail()) {
+        } elseif ($user->getEmail() !== $ticket->getEmail()) {
             $message = $constraint->messageBadMail;
         }
+
         if ($message !== null) {
             $this->context->buildViolation($message)
                 ->atPath('email')
