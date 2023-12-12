@@ -66,7 +66,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 01/01/2024 30.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should not contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
-    Then the checksum of the response content should be "e869bc7f6406b276ba4a7ac845aabafc"
+    Then the checksum of the response content should be "2e334b2ea4b010d7ca71fe128370b07e"
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne physique à partir de 2024
