@@ -145,7 +145,7 @@ class Facture
     }
 
     function ajouter($date_devis, $societe, $service, $adresse, $code_postal, $ville, $id_pays,
-                     $nom, $prenom, $tel, $email, $observation, $ref_clt1, $ref_clt2, $ref_clt3,
+                     $nom, $prenom, $tel, $email, $tva_intra, $observation, $ref_clt1, $ref_clt2, $ref_clt3,
                      $etat_paiement = 0, $date_paiement = null, $devise = 'EUR')
     {
 
@@ -153,7 +153,7 @@ class Facture
         $requete .= 'afup_compta_facture (';
         $requete .= 'date_devis,societe,service,adresse,code_postal,ville,id_pays,';
         $requete .= 'nom,prenom,tel,';
-        $requete .= 'email,observation,ref_clt1,ref_clt2,ref_clt3,etat_paiement,date_paiement,numero_devis,devise_facture) ';
+        $requete .= 'email,tva_intra,observation,ref_clt1,ref_clt2,ref_clt3,etat_paiement,date_paiement,numero_devis,devise_facture) ';
         $requete .= 'VALUES (';
         $requete .= $this->_bdd->echapper($date_devis) . ',';
         $requete .= $this->_bdd->echapper($societe) . ',';
@@ -166,6 +166,7 @@ class Facture
         $requete .= $this->_bdd->echapper($prenom) . ',';
         $requete .= $this->_bdd->echapper($tel) . ',';
         $requete .= $this->_bdd->echapper($email) . ',';
+        $requete .= $this->_bdd->echapper($tva_intra) . ',';
         $requete .= $this->_bdd->echapper($observation) . ',';
         $requete .= $this->_bdd->echapper($ref_clt1) . ',';
         $requete .= $this->_bdd->echapper($ref_clt2) . ',';
@@ -198,7 +199,7 @@ class Facture
     }
 
     function modifier($id, $date_devis, $societe, $service, $adresse, $code_postal, $ville, $id_pays,
-                      $nom, $prenom, $tel, $email, $observation, $ref_clt1, $ref_clt2, $ref_clt3,
+                      $nom, $prenom, $tel, $email, $tva_intra, $observation, $ref_clt1, $ref_clt2, $ref_clt3,
                       $numero_devis, $numero_facture, $etat_paiement, $date_paiement, $devise)
     {
 
@@ -216,6 +217,7 @@ class Facture
         $requete .= 'prenom=' . $this->_bdd->echapper($prenom) . ',';
         $requete .= 'tel=' . $this->_bdd->echapper($tel) . ',';
         $requete .= 'email=' . $this->_bdd->echapper($email) . ',';
+        $requete .= 'tva_intra=' . $this->_bdd->echapper($tva_intra) . ',';
         $requete .= 'observation=' . $this->_bdd->echapper($observation) . ', ';
         $requete .= 'ref_clt1=' . $this->_bdd->echapper($ref_clt1) . ',';
         $requete .= 'ref_clt2=' . $this->_bdd->echapper($ref_clt2) . ',';
@@ -467,7 +469,7 @@ class Facture
         $pdf->Ln();
 
 
-        // A l'attention du client [adresse]
+        // À l'attention du client [adresse]
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
@@ -476,7 +478,8 @@ class Facture
             utf8_decode($coordonnees['adresse']) . "\n" .
             utf8_decode($coordonnees['code_postal']) . "\n" .
             utf8_decode($coordonnees['ville']) . "\n" .
-            utf8_decode($pays->obtenirNom($coordonnees['id_pays'])));
+            utf8_decode($pays->obtenirNom($coordonnees['id_pays'])) .
+            ($coordonnees['tva_intra'] ? ("\n" . utf8_decode('N° TVA Intracommunautaire : ' . $coordonnees['tva_intra'])) : null)        );
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);

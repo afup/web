@@ -19,6 +19,8 @@ class Compta extends AbstractSeed
             [
                 'idoperation' => 2,
                 'idcategorie' => 34,
+                'nom_frs' => 'Prestabox',
+                'tva_intra' => 'FR5512345',
                 'montant' => 1000,
                 'idmode_regl' => 2,
                 'date_regl' => '2023-10-16',
@@ -31,6 +33,8 @@ class Compta extends AbstractSeed
             [
                 'idoperation' => 1,
                 'idcategorie' => 34,
+                'nom_frs' => 'Un fournisseur',
+                'tva_intra' => 'FR9912345',
                 'montant' => 500,
                 'idmode_regl' => 2,
                 'date_regl' => '2023-10-17',
