@@ -10,8 +10,11 @@ class Users extends AbstractSeed
     const ID_USER_PERSONNE_MORALE = 3;
     const ID_USER_PERSONNE_MORALE_NON_MANAGER = 4;
     const ID_USER_PERSONNE_PHYSIQUE = 5;
+    const ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS = 6;
+    const ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS = 7;
 
     const ID_PERSONNE_MORALE_MY_CORP = 1;
+    const ID_PERSONNE_MORALE_HELIOS_AEROSPACE = 2;
 
     public function run()
     {
@@ -27,6 +30,22 @@ class Users extends AbstractSeed
                 'adresse' => '12 cours Hopper',
                 'code_postal' => '69001',
                 'ville' => 'LYON',
+                'id_pays' => 'FR',
+                'etat' => 1,
+                'public_profile_enabled' => 1,
+                'max_members' => 3
+            ],
+            [
+                'id'    => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
+                'civilite' => '1',
+                'nom' => 'Ayesa',
+                'prenom' => 'Dev',
+                'email' => 'dev.ayesa@helios-aerospace.com',
+                'raison_sociale' => 'Helios Aerospace',
+                'siret' => '789456123',
+                'adresse' => '8, main road',
+                'code_postal' => '77201',
+                'ville' => 'Houston, TX',
                 'id_pays' => 'FR',
                 'etat' => 1,
                 'public_profile_enabled' => 1,
@@ -64,6 +83,32 @@ class Users extends AbstractSeed
                 'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'prenom' => 'Jean',
                 'email' => 'userexpire@yahoo.fr',
+                'niveau_modules' => '00000',
+            ],
+            // utilisateurs avec des cotisations à dates fixes pour les tests
+            [
+                'id'    => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
+                'login' => 'cpike',
+                'mot_de_passe' => md5('cpike'),
+                'nom' => 'Pike',
+                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
+                'prenom' => 'Christopher',
+                'email' => 'cpike@strafleet.fr',
+                'niveau_modules' => '00000',
+                'adresse' => '15, main road',
+                'code_postal' => '93501-1100',
+                'ville' => 'Mojave, CA'
+            ],
+            [
+                'id'    => self::ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS,
+                'login' => 'dayesa',
+                'mot_de_passe' => md5('dayesa'),
+                'nom' => 'Ayesa',
+                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
+                'prenom' => 'Dev',
+                'email' => 'dev.ayesa@helios-aerospace.com',
+                'roles' => '["ROLE_COMPANY_MANAGER"]',
+                'id_personne_morale' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'niveau_modules' => '00000',
             ],
             [
@@ -122,14 +167,14 @@ class Users extends AbstractSeed
         $data = [
             [
                 'date_debut' => $now - $oneMonthInSeconds,
-                'type_personne' => 0, // AFUP_PERSONNE_PHYSIQUE
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_ADMIN,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => 0, // AFUP_PERSONNE_PHYSIQUE
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_EXPIRIE,
                 'montant' => 25,
                 'date_fin' => $dateDebutUserExpire + $oneMonthInSeconds * 12,
@@ -137,7 +182,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => 1, // AFUP_COTISATION_MORALE
+                'type_personne' => AFUP_PERSONNES_MORALES,
                 'id_personne' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'montant' => 150,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
@@ -145,12 +190,44 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => 0, // AFUP_COTISATION_PHYSIQUE
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
                 'numero_facture' => 'COTIS-'.date('Y').'-'.(date('Hi')+200),
-            ]
+            ],
+            [
+                'date_debut' => mktime(16, 10, 10, 1, 1, 2023),
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
+                'montant' => 30,
+                'date_fin' => mktime(16, 10, 10, 1, 1, 2024),
+                'numero_facture' => 'COTIS-2023-1',
+            ],
+            [
+                'date_debut' => mktime(16, 10, 10, 1, 1, 2024),
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
+                'montant' => 30,
+                'date_fin' => mktime(16, 10, 10, 1, 1, 2025),
+                'numero_facture' => 'COTIS-2024-245',
+            ],
+            [
+                'date_debut' => mktime(16, 10, 10, 1, 2, 2023),
+                'type_personne' => AFUP_PERSONNES_MORALES,
+                'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
+                'montant' => 150,
+                'date_fin' => mktime(16, 10, 10, 1, 2, 2024),
+                'numero_facture' => 'COTIS-2023-2',
+            ],
+            [
+                'date_debut' => mktime(16, 10, 10, 1, 2, 2024),
+                'type_personne' => AFUP_PERSONNES_MORALES,
+                'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
+                'montant' => 150,
+                'date_fin' => mktime(16, 10, 10, 1, 2, 2025),
+                'numero_facture' => 'COTIS-2024-249',
+            ],
         ];
 
         $table = $this->table('afup_cotisations');

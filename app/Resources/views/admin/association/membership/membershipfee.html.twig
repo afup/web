@@ -49,7 +49,7 @@
                     <td class="txtright">{{ cotisation.montant|number_format(2, ',') }} &euro;</td>
                     <td style="text-align: right; white-space: nowrap">
                         {% if cotisation.telecharger_facture %}
-                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la cotisation">
+                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la facture pour la cotisation {{ cotisation.numero_facture }}">
                             <i class="fa fa-file"></i>
                             Télécharger la facture
                         </a>
