@@ -84,14 +84,14 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "93501-1100"
     Then The page "1" of the PDF should contain "Mojave, CA"
     Then The page "1" of the PDF should contain "Code Désignation Prix"
-    Then The page "1" of the PDF should contain "ADH-fixe Adhésion AFUP jusqu'au 01/01/2025 - part fixe 1,50 € 20 % 1,80 €"
-    Then The page "1" of the PDF should contain "ADH-var Adhésion AFUP jusqu'au 01/01/2025 - part variable 28,20 € 0 % 28,20 €"
+    Then The page "1" of the PDF should contain "ADH-var Adhésion AFUP jusqu'au 01/01/2025 - part variable 1,50 € 20 % 1,80 €"
+    Then The page "1" of the PDF should contain "ADH-fixe Adhésion AFUP jusqu'au 01/01/2025 - part fixe 28,20 € 0 % 28,20 €"
     Then The page "1" of the PDF should contain "Total HT 29,70 €"
     Then The page "1" of the PDF should contain "Total TVA 20% 0,30 €"
     Then The page "1" of the PDF should contain "Total TTC 30,00 €"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
-    Then the checksum of the response content should be "a488ad0a135e3154acb0b31abb66b473"
+    Then the checksum of the response content should be "71b3236befcc99a25155b9388cce90f9"
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne morale avant 2024

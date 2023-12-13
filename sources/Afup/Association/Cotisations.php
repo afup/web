@@ -474,16 +474,16 @@ class Cotisations
 
         $pdf->Ln();
         $pdf->SetFillColor(255, 255, 255);
-        $pdf->Cell(20, 5, 'ADH-fixe', 1);
-        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin) . ' - part fixe'), 1);
+        $pdf->Cell(20, 5, 'ADH-var', 1);
+        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin) . ' - part variable'), 1);
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeHt) . ' '), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode((Utils::MEMBERSHIP_FEE_VAT_RATE * 100) . ' %'), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeTTc) . ' '), 1, 0, 'R');
 
         $pdf->Ln();
         $pdf->SetFillColor(255, 255, 255);
-        $pdf->Cell(20, 5, 'ADH-var', 1);
-        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin) . ' - part variable'), 1);
+        $pdf->Cell(20, 5, 'ADH-fixe', 1);
+        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin) . ' - part fixe'), 1);
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode('0' . ' %'), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
