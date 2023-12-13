@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class Utils
 {
     const TICKETING_VAT_RATE = 0.1;
+    const MEMBERSHIP_FEE_VAT_RATE = 0.2;
 
     /**
      * Recupere un objet de type Afup\Site\Droits
