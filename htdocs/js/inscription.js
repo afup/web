@@ -5,9 +5,10 @@ $(document).ready(function(){
 
     let nbMaxPersonnes = $('#divPersonne').data('nb-max-personnes');
     let isSubjectedToVat = $('#ticketing').data('is-subjected-to-vat') == 1;
+    let vatRate = parseFloat($('#ticketing').data('vat-rate'))
 
     let computeWithoutTaxesPriceFromPriceWithTaxes = function (price) {
-        return price / (1 + 0.1); // on a 10% sur la billeterie
+        return price / (1 + vatRate);
     }
 
     let computeWithoutTaxesPriceFromPriceWithTaxesConditionally = function (price) {

@@ -59,7 +59,7 @@
         {% endfor %}
     {% endfor %}
 
-    <div class="col-md-8" id="ticketing" data-is-subjected-to-vat="{{ isSubjectedToVat ? '1' : '0' }}">
+    <div class="col-md-8" id="ticketing" data-is-subjected-to-vat="{{ isSubjectedToVat ? '1' : '0' }}" data-vat-rate="{{ constant('Afup\\Site\\Utils\\Utils::TICKETING_VAT_RATE') }}">
         <h1>{{ 'Billetterie'|trans }}: {{ event.title }}</h1>
 
         {% if allTicketsSold and event.getWaitingListUrl %}
