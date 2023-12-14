@@ -3,15 +3,14 @@ $ = jQuery;
 $(document).ready(function(){
     'use strict';
 
-    var nbMaxPersonnes = $('#divPersonne').data('nb-max-personnes');
-    var isSubjectedToVat = $('#ticketing').data('is-subjected-to-vat') == 1;
+    let nbMaxPersonnes = $('#divPersonne').data('nb-max-personnes');
+    let isSubjectedToVat = $('#ticketing').data('is-subjected-to-vat') == 1;
 
-
-    var computeWithoutTaxesPriceFromPriceWithTaxes = function (price) {
+    let computeWithoutTaxesPriceFromPriceWithTaxes = function (price) {
         return price / (1 + 0.1); // on a 10% sur la billeterie
     }
 
-    var computeWithoutTaxesPriceFromPriceWithTaxesConditionally = function (price) {
+    let computeWithoutTaxesPriceFromPriceWithTaxesConditionally = function (price) {
         if (!isSubjectedToVat) {
             return price;
         }
@@ -19,7 +18,7 @@ $(document).ready(function(){
         return computeWithoutTaxesPriceFromPriceWithTaxes(price);
     }
 
-    var formatPrice = function (price) {
+    let formatPrice = function (price) {
         let formatter = Intl.NumberFormat(
             'fr-FR',
             {
