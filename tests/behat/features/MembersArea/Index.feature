@@ -135,8 +135,9 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Total TVA 20% 30,00 €"
     Then The page "1" of the PDF should contain "Total TTC 180,00 €"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
-    Then The page "1" of the PDF should contain "Numéro de TVA intercommunautaire NUMERO_A_AJOUTER"
-    Then the checksum of the response content should be "43316d1e84385a340db546c4b5cbbf34"
+    Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire NUMERO_A_AJOUTER"
+    Then the checksum of the response content should be "5c9f09899fdd3525e31b8a4c7183cfd4"
+
 
   @reloadDbWithTestData
   Scenario: On peux télécharger la facture de cotisation pour une personne morale
