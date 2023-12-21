@@ -22,6 +22,7 @@ class BankAccountFactory
             $configKey = 'rib';
         } else {
             $comparisonDate = \DateTime::createFromFormat('Y-m-d', $this->configuration->obtenir('rib_ce|valid_until'));
+            $comparisonDate->setTime(0, 0, 1);
             $configKey = $applicationDate <= $comparisonDate ? 'rib_ce' : 'rib';
         }
 

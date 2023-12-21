@@ -106,11 +106,9 @@ class TestGithubAuthenticator extends SocialAuthenticator
         return new JsonResponse($data, 403);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        return null;
     }
 
     /**
