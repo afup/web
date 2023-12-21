@@ -1048,6 +1048,7 @@ SQL;
                     $categorie,
                     $date_ecriture,
                     '',
+                    '',
                     $montant,
                     $description,
                     '',
