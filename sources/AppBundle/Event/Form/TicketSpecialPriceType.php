@@ -38,7 +38,7 @@ class TicketSpecialPriceType extends AbstractType
                 ]
             ])
             ->add('price', IntegerType::class, [
-                'label' => 'Prix',
+                'label' => 'Prix (TTC)',
                 'constraints' => [
                     new GreaterThan(['value' => 0])
                 ]
