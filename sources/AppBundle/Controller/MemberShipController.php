@@ -6,6 +6,7 @@ use Afup\Site\Association\Cotisations;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
+use Afup\Site\Utils\Vat;
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\ContactDetailsType;
@@ -36,7 +37,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Afup\Site\Utils\Vat;
 
 class MemberShipController extends SiteBaseController
 {
