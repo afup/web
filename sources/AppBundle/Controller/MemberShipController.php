@@ -36,6 +36,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Afup\Site\Utils\Vat;
 
 class MemberShipController extends SiteBaseController
 {
@@ -346,6 +347,8 @@ class MemberShipController extends SiteBaseController
         $user = $userRepository->get($identifiant);
         Assertion::notNull($user);
         $cotisation = $userService->getLastSubscription($user);
+        $now = new \DateTime('now');
+        $isSubjectedToVat = Vat::isSubjectedToVat($now);
 
         if (!$cotisation) {
             $message = '';
@@ -384,6 +387,9 @@ class MemberShipController extends SiteBaseController
             $type_personne = AFUP_PERSONNES_MORALES;
             $prefixe = 'Personne morale';
             $montant = $personne_morale->getMembershipFee($id_personne);
+            if ($isSubjectedToVat) {
+                $montant = $montant * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
+            }
         } else {
             $id_personne = $identifiant;
             $type_personne = AFUP_PERSONNES_PHYSIQUES;
@@ -407,6 +413,7 @@ class MemberShipController extends SiteBaseController
         return $this->render(
             ':admin/association/membership:membershipfee.html.twig',
             [
+                'isSubjectedToVat' => $isSubjectedToVat,
                 'title' => 'Ma cotisation',
                 'cotisations' => $liste_cotisations,
                 'time' => time(),
