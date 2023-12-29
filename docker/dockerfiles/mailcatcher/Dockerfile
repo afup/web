@@ -16,10 +16,12 @@ RUN apk add --no-cache --virtual .build-deps \
         ruby-dev \
         make g++ \
         sqlite-dev \
+    && gem install -v 0.4.0 timeout --no-ri --no-rdoc \
     && gem install -v 0.1.2 net-protocol --no-ri --no-rdoc \
     && gem install -v 0.3.0 net-smtp --no-ri --no-rdoc \
     && gem install -v 0.2.2 net-imap --no-ri --no-rdoc \
     && gem install -v 1.1.2 mini_mime --no-ri --no-rdoc \
+    && gem install -v 1.6.7 sqlite3 --no-ri --no-rdoc \
     && gem install -v $MAILCATCHER_VERSION mailcatcher --no-ri --no-rdoc \
     && apk del .build-deps
 
