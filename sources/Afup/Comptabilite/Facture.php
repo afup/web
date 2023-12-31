@@ -542,6 +542,8 @@ class Facture
             $columns = [0, 30, 110, 130, 160, 190];
         }
 
+        $vatAmounts = [];
+
         foreach ($details as $detail) {
             if ($detail['quantite'] != 0) {
                 $montantHt = $detail['quantite'] * $detail['pu'];
@@ -567,6 +569,7 @@ class Facture
                     $x += 20;
                     $pdf->SetXY($x, $y);
                     $pdf->MultiCell(20, 5, utf8_decode($detail['tva']), 'T', 0, "C");
+                    $vatAmounts[$detail['tva']] = ($detail['tva'] / 100) * $montantTtc;
                     $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
                 }
 
@@ -595,6 +598,13 @@ class Facture
             $pdf->Cell(160, 5, 'TOTAL HT', 1, 0, 'R', 1);
             $pdf->Cell(30, 5, $this->formatFactureValue($totalHt, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
             $pdf->Ln(5);
+
+            foreach ($vatAmounts as $vat => $amount) {
+                $pdf->SetFillColor(255, 255, 255);
+                $pdf->Cell(160, 5, 'Total TVA ' . $vat . '%', 1, 0, 'R', 1);
+                $pdf->Cell(30, 5, $this->formatFactureValue($amount, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
+                $pdf->Ln(5);
+            }
         }
 
         $pdf->SetFillColor(225, 225, 225);
