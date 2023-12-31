@@ -127,5 +127,6 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should contain "Type Description Quantite TVA Prix HT Total TTC"
     Then The page "1" of the PDF should contain "forum_php_2024 Forum PHP 2024 - Sponsoring"
     Then The page "1" of the PDF should contain "Bronze 1.00 20.00 1000.00 € 1000 €"
-    Then The page "1" of the PDF should contain "TOTAL 1000 €"
+    Then The page "1" of the PDF should contain "TOTAL HT 1000 €"
+    Then The page "1" of the PDF should contain "TOTAL TTC 1000 €"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"

@@ -586,8 +586,15 @@ class Facture
             $pdf->Line($pdf->GetX() + $column, $yInitial, $pdf->GetX() + $column, $pdf->GetY());
         }
 
+        if ($isSubjectedToVat) {
+            $pdf->SetFillColor(225, 225, 225);
+            $pdf->Cell(160, 5, 'TOTAL HT', 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
+            $pdf->Ln(5);
+        }
+
         $pdf->SetFillColor(225, 225, 225);
-        $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
+        $pdf->Cell(160, 5, 'TOTAL' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
         $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
         $pdf->Ln(15);
 
