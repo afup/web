@@ -627,7 +627,7 @@ class Facture
         }
 
         if (is_null($chemin)) {
-            $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_facture'] . '.pdf', 'I');
+            $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_facture'] . '.pdf', 'D');
             exit(0);
         } else {
             $pdf->Output($chemin, 'F');
