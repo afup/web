@@ -31,7 +31,7 @@ class Facture extends AbstractSeed
                 'date_devis' => '2024-01-03',
                 'numero_devis' => '2024-02',
                 'date_facture' => '2024-01-04',
-                'numero_facture' => '2023-02',
+                'numero_facture' => '2024-02',
                 'societe' => 'Krampouz',
                 'adresse' => '3, rue du port',
                 'code_postal' => '29000',
