@@ -517,12 +517,12 @@ class Facture
         $pdf->SetFillColor(200, 200, 200);
         $pdf->Cell(30, 5, 'Type', 1, 0, 'L', 1);
         $pdf->Cell($isSubjectedToVat ? 60 : 80, 5, 'Description', 1, 0, 'L', 1);
-        $pdf->Cell(20, 5, 'Quantite', 1, 0, 'L', 1);
+        $pdf->Cell(20, 5, 'Quantite', 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
         if ($isSubjectedToVat) {
-            $pdf->Cell(20, 5, 'TVA', 1, 0, 'L', 1);
+            $pdf->Cell(20, 5, 'TVA', 1, 0, 'C', 1);
         }
-        $pdf->Cell(30, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, 'Total' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, 'L', 1);
+        $pdf->Cell(30, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        $pdf->Cell(30, 5, 'Total' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
 
         $totalTtc = 0;
         $totalHt = 0;
@@ -568,7 +568,7 @@ class Facture
                 if ($isSubjectedToVat) {
                     $x += 20;
                     $pdf->SetXY($x, $y);
-                    $pdf->MultiCell(20, 5, utf8_decode($detail['tva']), 'T', 0, "C");
+                    $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
                     $vatAmounts[$detail['tva']] = ($detail['tva'] / 100) * $montantTtc;
                     $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
                 }

@@ -126,7 +126,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should contain "Comme convenu, nous vous prions de trouver votre facture"
     Then The page "1" of the PDF should contain "Type Description Quantite TVA Prix HT Total TTC"
     Then The page "1" of the PDF should contain "forum_php_2024 Forum PHP 2024 - Sponsoring"
-    Then The page "1" of the PDF should contain "Bronze 1.00 20.00 1 000,00 € 1 200,00 €"
+    Then The page "1" of the PDF should contain "Bronze 1.00 20.00% 1 000,00 € 1 200,00 €"
     Then The page "1" of the PDF should contain "TOTAL HT 1 000,00 €"
     Then The page "1" of the PDF should contain "Total TVA 20.00% 200,00 €"
     Then The page "1" of the PDF should contain "TOTAL TTC 1 200,00 €"
