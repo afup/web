@@ -405,6 +405,13 @@ class Cotisations
             $pdf->Ln(15);
             $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
         } else {
+            // On stocke le montant de la cotisation TTC, pour les personnes physiques c'est le même, par contre pour les personnes morales
+            // ce n'est pas le même, afin d'éviter d'appliquer deux fois la TVA, on applique ce hotfix
+            if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+                $cotisation['montant'] = Vat::getRoundedWithoutVatPriceFromPriceWithVat($cotisation['montant'], Utils::MEMBERSHIP_FEE_VAT_RATE);
+            }
+
+
             // Cadre
             $pdf->Ln(10);
             $pdf->SetFillColor(200, 200, 200);
