@@ -6,6 +6,7 @@ namespace Afup\Site\Comptabilite;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
+use Afup\Site\Utils\Vat;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
@@ -457,8 +458,11 @@ class Facture
             : new \DateTimeImmutable();
 
         $bankAccountFactory = new BankAccountFactory($configuration);
+
+        $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
+
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -570,9 +574,12 @@ class Facture
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
         $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
-
         $pdf->Ln(15);
-        $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+
+        if (!$isSubjectedToVat) {
+            $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+        }
+
         $pdf->Ln();
         $pdf->Cell(10, 5, utf8_decode('Payable à réception'));
         $pdf->Ln(10);
