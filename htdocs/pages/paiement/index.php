@@ -17,7 +17,7 @@ if ($facture) {
         $details = $comptaFact->obtenir_details($ref);
         $prix = 0;
         foreach ($details as $d) {
-            $prix += $d['quantite'] * $d['pu'];
+            $prix += $d['quantite'] * $d['pu'] * (1 + ($d['tva'] / 100));
         }
 
         $symfonyKernel = new SymfonyKernel();
