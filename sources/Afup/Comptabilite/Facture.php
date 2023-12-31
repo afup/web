@@ -524,7 +524,8 @@ class Facture
         $pdf->Cell(30, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, 'L', 1);
         $pdf->Cell(30, 5, 'Total' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, 'L', 1);
 
-        $total = 0;
+        $totalTtc = 0;
+        $totalHt = 0;
         switch ($coordonnees['devise_facture']) {
             case 'DOL':
                 $devise = ' $';
@@ -543,7 +544,8 @@ class Facture
 
         foreach ($details as $detail) {
             if ($detail['quantite'] != 0) {
-                $montant = $detail['quantite'] * $detail['pu'];
+                $montantHt = $detail['quantite'] * $detail['pu'];
+                $montantTtc = $montantHt;
 
                 $pdf->Ln();
                 $pdf->SetFillColor(255, 255, 255);
@@ -565,6 +567,7 @@ class Facture
                     $x += 20;
                     $pdf->SetXY($x, $y);
                     $pdf->MultiCell(20, 5, utf8_decode($detail['tva']), 'T', 0, "C");
+                    $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
                 }
 
                 $x += 20;
@@ -574,9 +577,10 @@ class Facture
 
                 $x += 30;
                 $pdf->SetXY($x, $y);
-                $pdf->MultiCell(30, 5, utf8_decode($montant) . $devise, 'T', 0, "R");
+                $pdf->MultiCell(30, 5, utf8_decode($montantTtc) . $devise, 'T', 0, "R");
 
-                $total += $montant;
+                $totalHt += $montantHt;
+                $totalTtc += $montantTtc;
             }
         }
 
@@ -589,13 +593,13 @@ class Facture
         if ($isSubjectedToVat) {
             $pdf->SetFillColor(225, 225, 225);
             $pdf->Cell(160, 5, 'TOTAL HT', 1, 0, 'R', 1);
-            $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $totalHt . $devise, 1, 0, 'R', 1);
             $pdf->Ln(5);
         }
 
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
-        $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
+        $pdf->Cell(30, 5, $totalTtc . $devise, 1, 0, 'R', 1);
         $pdf->Ln(15);
 
         if (!$isSubjectedToVat) {
