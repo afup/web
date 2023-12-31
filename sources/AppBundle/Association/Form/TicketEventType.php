@@ -33,7 +33,7 @@ class TicketEventType extends AbstractType
                     new GreaterThanOrEqual(0),
                     new NotBlank()
                 ],
-                'label' => 'Montant'
+                'label' => 'Montant TTC'
             ])
             ->add('dateStart', DateTimeType::class, [
                 'widget' => 'choice',
