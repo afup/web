@@ -516,10 +516,13 @@ class Facture
         $pdf->Ln(5);
         $pdf->SetFillColor(200, 200, 200);
         $pdf->Cell(30, 5, 'Type', 1, 0, 'L', 1);
-        $pdf->Cell(80, 5, 'Description', 1, 0, 'L', 1);
+        $pdf->Cell($isSubjectedToVat ? 60 : 80, 5, 'Description', 1, 0, 'L', 1);
         $pdf->Cell(20, 5, 'Quantite', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, 'Prix', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, 'Total', 1, 0, 'L', 1);
+        if ($isSubjectedToVat) {
+            $pdf->Cell(20, 5, 'TVA', 1, 0, 'L', 1);
+        }
+        $pdf->Cell(30, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, 'L', 1);
+        $pdf->Cell(30, 5, 'Total' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, 'L', 1);
 
         $total = 0;
         switch ($coordonnees['devise_facture']) {
@@ -532,7 +535,12 @@ class Facture
                 break;
         }
         $yInitial = $pdf->getY();
-        $columns = [0, 30, 110, 130, 160, 190];
+        if ($isSubjectedToVat) {
+            $columns = [0, 30, 90, 110, 130, 160, 190];
+        } else {
+            $columns = [0, 30, 110, 130, 160, 190];
+        }
+
         foreach ($details as $detail) {
             if ($detail['quantite'] != 0) {
                 $montant = $detail['quantite'] * $detail['pu'];
@@ -546,11 +554,18 @@ class Facture
                 $pdf->MultiCell(30, 5, $detail['ref'], 'T');
                 $x += 30;
                 $pdf->SetXY($x, $y);
-                $pdf->MultiCell(80, 5, utf8_decode($detail['designation']), 'T');
+                $designationLength = $isSubjectedToVat ? 60 : 80;
+                $pdf->MultiCell($designationLength, 5, utf8_decode($detail['designation']), 'T');
 
-                $x += 80;
+                $x += $designationLength;
                 $pdf->SetXY($x, $y);
                 $pdf->MultiCell(20, 5, utf8_decode($detail['quantite']), 'T', 0, "C");
+
+                if ($isSubjectedToVat) {
+                    $x += 20;
+                    $pdf->SetXY($x, $y);
+                    $pdf->MultiCell(20, 5, utf8_decode($detail['tva']), 'T', 0, "C");
+                }
 
                 $x += 20;
                 $pdf->SetXY($x, $y);
