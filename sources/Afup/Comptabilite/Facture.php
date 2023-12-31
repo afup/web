@@ -573,11 +573,11 @@ class Facture
                 $x += 20;
                 $pdf->SetXY($x, $y);
 
-                $pdf->MultiCell(30, 5, utf8_decode($detail['pu']) . $devise, 'T', 0, "R");
+                $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($detail['pu'], $isSubjectedToVat)) . $devise, 'T', 0, "R");
 
                 $x += 30;
                 $pdf->SetXY($x, $y);
-                $pdf->MultiCell(30, 5, utf8_decode($montantTtc) . $devise, 'T', 0, "R");
+                $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($montantTtc, $isSubjectedToVat)) . $devise, 'T', 0, "R");
 
                 $totalHt += $montantHt;
                 $totalTtc += $montantTtc;
@@ -593,13 +593,13 @@ class Facture
         if ($isSubjectedToVat) {
             $pdf->SetFillColor(225, 225, 225);
             $pdf->Cell(160, 5, 'TOTAL HT', 1, 0, 'R', 1);
-            $pdf->Cell(30, 5, $totalHt . $devise, 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($totalHt, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
             $pdf->Ln(5);
         }
 
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
-        $pdf->Cell(30, 5, $totalTtc . $devise, 1, 0, 'R', 1);
+        $pdf->Cell(30, 5, $this->formatFactureValue($totalTtc, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
         $pdf->Ln(15);
 
         if (!$isSubjectedToVat) {
@@ -617,11 +617,20 @@ class Facture
         }
 
         if (is_null($chemin)) {
-            $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_facture'] . '.pdf', 'D');
+            $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_facture'] . '.pdf', 'I');
+            exit(0);
         } else {
             $pdf->Output($chemin, 'F');
         }
+    }
 
+    private function formatFactureValue($value, $isSubjectedToVat)
+    {
+        if (!$isSubjectedToVat) {
+            return $value;
+        }
+
+        return number_format($value, 2, ',', ' ');
     }
 
     /**
