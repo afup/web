@@ -6,6 +6,7 @@ use Afup\Site\Association\Cotisations;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
+use Afup\Site\Utils\Vat;
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\ContactDetailsType;
@@ -346,6 +347,8 @@ class MemberShipController extends SiteBaseController
         $user = $userRepository->get($identifiant);
         Assertion::notNull($user);
         $cotisation = $userService->getLastSubscription($user);
+        $now = new \DateTime('now');
+        $isSubjectedToVat = Vat::isSubjectedToVat($now);
 
         if (!$cotisation) {
             $message = '';
@@ -384,6 +387,9 @@ class MemberShipController extends SiteBaseController
             $type_personne = AFUP_PERSONNES_MORALES;
             $prefixe = 'Personne morale';
             $montant = $personne_morale->getMembershipFee($id_personne);
+            if ($isSubjectedToVat) {
+                $montant = $montant * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
+            }
         } else {
             $id_personne = $identifiant;
             $type_personne = AFUP_PERSONNES_PHYSIQUES;
@@ -407,6 +413,7 @@ class MemberShipController extends SiteBaseController
         return $this->render(
             ':admin/association/membership:membershipfee.html.twig',
             [
+                'isSubjectedToVat' => $isSubjectedToVat,
                 'title' => 'Ma cotisation',
                 'cotisations' => $liste_cotisations,
                 'time' => time(),

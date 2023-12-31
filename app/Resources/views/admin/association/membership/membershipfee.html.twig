@@ -18,7 +18,7 @@
     <div class="container">
         <div class="col-md-12 col-sm-12">
             <div class="form-reset txtcenter">
-                <strong>{{ libelle|raw }}</strong><br />
+                <strong>{{ libelle|raw }}{% if isSubjectedToVat %} TTC{% endif %}</strong><br />
                 <p>{{ paybox|raw }}</p>
             </div>
         </div>
