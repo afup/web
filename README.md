@@ -3,14 +3,14 @@
 ## Applications
 
 On accède aux applications via docker et les différents ports des applications.
-Vous retrouverez les ports dans le fichier `docker-compose.override.yml`
+Vous retrouverez les ports dans le fichier `compose.override.yml`
 
 Par défaut:
 * Site AFUP : <https://localhost:9205/>
 * Planète PHP : <https://localhost:9215/>
 * Mailcatcher: <http://localhost:1181/>
 
-_Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.override.yml`._
+_Les ports utilisés peuvent être modifiés dans le fichier `compose.override.yml`._
 
 ## Mise en place avec docker
 
