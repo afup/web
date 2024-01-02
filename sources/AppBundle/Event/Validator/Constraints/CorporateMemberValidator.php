@@ -5,6 +5,7 @@ namespace AppBundle\Event\Validator\Constraints;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -72,10 +73,20 @@ class CorporateMemberValidator extends ConstraintValidator
             return ;
         }
 
+        $user = $token->getUser();
+
+        if (!$user instanceof User) {
+            // Il faut etre connecté pour avoir accès aux tickets membre
+            $this->context->buildViolation($constraint->messageNotLoggedIn)
+                ->addViolation()
+            ;
+            return;
+        }
+
         /**
          * @var CompanyMember $company
          */
-        $company = $this->companyMemberRepository->get($token->getUser()->getCompanyId());
+        $company = $this->companyMemberRepository->get($user->getCompanyId());
 
         if ($company === null) {
             // Il faut etre connecté pour avoir accès aux tickets membre
