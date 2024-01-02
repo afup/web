@@ -133,7 +133,6 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
 
   @reloadDbWithTestData
-  @clearEmails
   @vat
   Scenario: Test du PDF de facture avant 2024
     Given I am logged in as admin and on the Administration
@@ -156,7 +155,6 @@ Feature: Administration - Trésorerie - Devis/Facture
 
 
   @reloadDbWithTestData
-  @clearEmails
   @vat
   Scenario: Test du PDF de facture après 2024
     Given I am logged in as admin and on the Administration
