@@ -169,7 +169,7 @@ class TechLetterGenerateController extends SiteBaseController
             $template = $this->get('app.mailchimp_techletter_api')->createTemplate($subject . ' - Template', $mailContent);
 
             $response = $this->get('app.mailchimp_techletter_api')->createCampaign(
-                $this->container->getParameter('mailchimp_techletter_list'),
+                $this->getParameter('mailchimp_techletter_list'),
                 [
                     'template_id' => $template->get('id'),
                     'from_name' => "Pôle Veille de l'AFUP",

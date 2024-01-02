@@ -52,7 +52,7 @@ class StaticController extends SiteBaseController
 
     public function superAperoAction()
     {
-        $aperos = $this->getAperos($this->container->getParameter('super_apero_csv_url'));
+        $aperos = $this->getAperos($this->getParameter('super_apero_csv_url'));
         return $this->render(':site:superapero.html.twig', ['aperos' => $aperos]);
     }
 
