@@ -486,7 +486,7 @@ class Facture
 
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(160, 5, 'TOTAL' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
-        $pdf->Cell(30, 5, $totalTtc . $devise, 1, 0, 'R', 1);
+        $pdf->Cell(30, 5, $this->formatFactureValue($totalTtc, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
 
         $pdf->Ln(15);
         if (!$isSubjectedToVat) {
