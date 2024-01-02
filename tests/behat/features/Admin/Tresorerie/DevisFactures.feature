@@ -46,7 +46,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see "CLIENT-AFGD5S"
     And I should see "19 920,00"
     # Téléchargement du devis
-    And I follow the button of tooltip "Télécharger le devis"
+    And I follow the button of tooltip "Télécharger le devis ESN dev en folie"
     Then the response header "Content-disposition" should match '#attachment; filename="Devis - ESN dev en folie - (.*).pdf"#'
     When I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "ESN dev en folie"
@@ -68,7 +68,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see "Paris Cedex 7"
     And I should see "Payé"
     # Envoi de la facture par email
-    Then I follow the button of tooltip "Envoyer la facture 2023-2 par mail"
+    Then I follow the button of tooltip "Envoyer la facture 2024-3 par mail"
     And I should only receive the following emails:
       | from               | to                         | subject      |
       | <bonjour@afup.org> | <martine@ens-en-folie.biz> | Facture AFUP |
@@ -80,7 +80,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Téléchargement de la facture
     When I go to "/admin/"
     And I follow "Factures"
-    And I follow the button of tooltip "Télécharger la facture 2023-2"
+    And I follow the button of tooltip "Télécharger la facture 2024-3"
     Then the response header "Content-disposition" should match '#attachment; filename="Facture - ESN dev en folie - (.*).pdf"#'
     When I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "N° TVA Intracommunautaire : FR7612345"

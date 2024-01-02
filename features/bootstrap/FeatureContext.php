@@ -374,7 +374,7 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then print last reponse headers
+     * @Then print last response headers
      */
     public function printLastResponseHeaders()
     {
