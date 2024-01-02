@@ -434,6 +434,7 @@ class Facture
 
         if (is_null($chemin)) {
             $pdf->Output('Devis - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_devis'] . '.pdf', 'D');
+            exit(0);
         } else {
             $pdf->Output($chemin, 'F');
         }
