@@ -18,7 +18,6 @@ deps.lock
 .php_cs.cache
 
 /htdocs/cache
-/htdocs/tmp/twig
 /tmp/
 node_modules
 /configs/application/config.php
@@ -58,7 +57,3 @@ js_dist
 /composer.phar
 /data
 
-/event/vendor
-/event/wp
-/event/composer-setup.php
-/event/composer-temp.phar

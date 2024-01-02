@@ -32,9 +32,7 @@ class Configuration
     public function __construct($chemin_fichier)
     {
         $this->_chemin_fichier = $chemin_fichier;
-        include $this->_chemin_fichier;
-        $this->_valeurs = $configuration;
-        unset($configuration);
+        $this->_valeurs = include($this->_chemin_fichier);
     }
 
     /**
@@ -117,9 +115,7 @@ class Configuration
      */
     function obtenir($cle)
     {
-
-        eval('$valeur=$this->_valeurs["' . str_replace('|', '"]["', $cle) . '"];');
-        return $valeur;
+        return eval('return $this->_valeurs["' . str_replace('|', '"]["', $cle) . '"];');
     }
 
     /**

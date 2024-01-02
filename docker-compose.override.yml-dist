@@ -21,3 +21,7 @@ services:
       - "9235:80"
    # environment:
    #   XDEBUG_CONFIG: "remote_connect_back=1 profiler_enable=1 remote_autostart=0 remote_enable=1"
+  mailcatcher:
+    ports:
+      - "1080:1080"
+      - "1025:1025"

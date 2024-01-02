@@ -145,5 +145,4 @@ services:
     command: "false"
 
   mailcatcher:
-    build:
-      context: ./docker/dockerfiles/mailcatcher
+    image: dockage/mailcatcher:0.9.0

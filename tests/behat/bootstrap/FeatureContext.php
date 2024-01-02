@@ -47,12 +47,12 @@ class FeatureContext implements Context
 
     private function migrateDb()
     {
-        $this->runCommand( ["./bin/phinx", "migrate", "-e", "test"]);
+        $this->runCommand(["./bin/phinx", "migrate", "-e", "test"]);
     }
 
     private function seedRun()
     {
-        $this->runCommand( ["./bin/phinx", "seed:run", "-e", "test"]);
+        $this->runCommand(["./bin/phinx", "seed:run", "-e", "test"]);
     }
 
     /**
@@ -155,7 +155,13 @@ class FeatureContext implements Context
         }
 
         if ($foundValues != $expectedValues) {
-            throw new \Exception(sprintf('The select has the following values %s (expected %s)', json_encode($foundValues, JSON_UNESCAPED_UNICODE), $expectedValuesJson));
+            throw new \Exception(
+                sprintf(
+                    'The select has the following values %s (expected %s)',
+                    json_encode($foundValues, JSON_UNESCAPED_UNICODE),
+                    $expectedValuesJson
+                )
+            );
         }
     }
 
@@ -176,7 +182,9 @@ class FeatureContext implements Context
         }
 
         if ($selectedValue != $expectedValue) {
-            throw new \Exception(sprintf('The select has the following value "%s" (expected "%s")', $selectedValue, $expectedValue));
+            throw new \Exception(
+                sprintf('The select has the following value "%s" (expected "%s")', $selectedValue, $expectedValue)
+            );
         }
     }
 
@@ -205,12 +213,11 @@ class FeatureContext implements Context
         $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
 
         if (null === $link) {
-            throw new \Exception(sprintf('Link of tooltip "%s" not found',$tooltip));
+            throw new \Exception(sprintf('Link of tooltip "%s" not found', $tooltip));
         }
 
         $link->click();
     }
-
 
 
     /**
@@ -220,13 +227,13 @@ class FeatureContext implements Context
     {
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, self::MAILCATCHER_URL . '/messages');
+        curl_setopt($ch, CURLOPT_URL, self::MAILCATCHER_URL.'/messages');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
-            throw new \RuntimeException(sprintf('Error : ' . curl_error($ch)));
+            throw new \RuntimeException(sprintf('Error : '.curl_error($ch)));
         }
 
         curl_close($ch);
@@ -247,7 +254,7 @@ class FeatureContext implements Context
         }
 
 
-        $content = file_get_contents(self::MAILCATCHER_URL . '/messages');
+        $content = file_get_contents(self::MAILCATCHER_URL.'/messages');
         $decodedContent = json_decode($content, true);
 
         $foundEmails = [];
@@ -259,7 +266,13 @@ class FeatureContext implements Context
         }
 
         if ($foundEmails != $expectedEmailsArray) {
-            throw new \Exception(sprintf('The emails are not the expected ones "%s" (expected "%s")', var_export($foundEmails, true), var_export($expectedEmailsArray, true)));
+            throw new \Exception(
+                sprintf(
+                    'The emails are not the expected ones "%s" (expected "%s")',
+                    var_export($foundEmails, true),
+                    var_export($expectedEmailsArray, true)
+                )
+            );
         }
     }
 
@@ -268,7 +281,7 @@ class FeatureContext implements Context
      */
     public function theChecksumOfTheAttachmntOfTheMessagOfIdShouldBe($filename, $id, $md5sum)
     {
-        $infos = json_decode(file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.json'), true);
+        $infos = json_decode(file_get_contents(self::MAILCATCHER_URL.'/messages/'.$id.'.json'), true);
 
         $cid = null;
         foreach ($infos['attachments'] as $attachment) {
@@ -278,10 +291,10 @@ class FeatureContext implements Context
         }
 
         if (null === $cid) {
-          throw new \Exception(sprintf("Attachment with name %s not found", $filename));
+            throw new \Exception(sprintf("Attachment with name %s not found", $filename));
         }
 
-        $attachmentContent = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '/parts/' . $cid);
+        $attachmentContent = file_get_contents(self::MAILCATCHER_URL.'/messages/'.$id.'/parts/'.$cid);
         $actualMd5sum = md5($attachmentContent);
 
         if ($actualMd5sum != $md5sum) {
@@ -294,13 +307,19 @@ class FeatureContext implements Context
      */
     public function thePlainTextContentOfTheMessageOfIdShouldBe($id, PyStringNode $expectedContent)
     {
-        $content = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.plain');
+        $content = file_get_contents(self::MAILCATCHER_URL.'/messages/'.$id.'.plain');
         $expectedContentString = $expectedContent->getRaw();
 
         $content = str_replace("\r\n", "\n", $content);
 
         if ($content != $expectedContentString) {
-            throw new \Exception(sprintf("The content \n%s\nis not the expected one \n%s\n", var_export($content, true), var_export($expectedContentString, true)));
+            throw new \Exception(
+                sprintf(
+                    "The content \n%s\nis not the expected one \n%s\n",
+                    var_export($content, true),
+                    var_export($expectedContentString, true)
+                )
+            );
         }
     }
 
@@ -312,8 +331,8 @@ class FeatureContext implements Context
         $pageContent = $this->minkContext->getSession()->getPage()->getContent();
 
         $parser = new Parser();
-        $pdf    = $parser->parseContent($pageContent);
-        $pages  = $pdf->getPages();
+        $pdf = $parser->parseContent($pageContent);
+        $pages = $pdf->getPages();
 
         $this->pdfPages = [];
         foreach ($pages as $i => $page) {
@@ -329,7 +348,9 @@ class FeatureContext implements Context
         $pageContent = isset($this->pdfPages[$page]) ? $this->pdfPages[$page] : null;
 
         if (false === strpos($pageContent, $expectedContent)) {
-            throw new \Exception(sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent));
+            throw new \Exception(
+                sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent)
+            );
         }
     }
 
@@ -345,7 +366,9 @@ class FeatureContext implements Context
         $pageContent = $this->pdfPages[$page];
 
         if (false !== strpos($pageContent, $expectedContent)) {
-            throw new \Exception(sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent));
+            throw new \Exception(
+                sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent)
+            );
         }
     }
 
@@ -354,8 +377,8 @@ class FeatureContext implements Context
      */
     public function printLastResponse()
     {
-        echo (
-            implode("######\n", $this->pdfPages)
+        echo(
+        implode("######\n", $this->pdfPages)
         );
     }
 
@@ -369,7 +392,9 @@ class FeatureContext implements Context
         $foundChecksum = md5($content);
 
         if ($expectedChecksum !== $foundChecksum) {
-            throw new \Exception(sprintf("The checksum %s is not the expected checksum %s", $foundChecksum, $expectedChecksum));
+            throw new \Exception(
+                sprintf("The checksum %s is not the expected checksum %s", $foundChecksum, $expectedChecksum)
+            );
         }
     }
 
