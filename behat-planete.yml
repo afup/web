@@ -1,4 +1,6 @@
 default:
+  autoload:
+    '': %paths.base%/tests/behat/bootstrap
   suites:
     features:
       paths:

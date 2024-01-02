@@ -145,5 +145,7 @@ services:
     command: "false"
 
   mailcatcher:
-    build:
-      context: ./docker/dockerfiles/mailcatcher
+    image: dockage/mailcatcher:0.9.0
+    ports:
+      - "1080:1080"
+      - "1025:1025"

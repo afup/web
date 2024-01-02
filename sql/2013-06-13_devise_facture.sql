@@ -1,1 +1,0 @@
-ALTER TABLE  `afup_compta_facture` ADD  `devise_facture` ENUM(  'EUR',  'DOL' ) NULL DEFAULT  'EUR';

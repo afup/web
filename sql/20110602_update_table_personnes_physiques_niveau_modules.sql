@@ -1,1 +1,0 @@
-alter table `afup_personnes_physiques` modify column `niveau_modules` char(10) not null default '' AFTER `niveau`;
