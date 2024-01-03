@@ -76,7 +76,9 @@ class PayboxFactory
             ->setUrlRepondreA($ipnUrl)
         ;
 
-        return $paybox->generate($now);
+        $billing = new PayboxBilling($invoice->getFirstname(), $invoice->getLastname(), $invoice->getAddress(), $invoice->getZipcode(), $invoice->getCity(), $invoice->getCountryIso3166Numeric());
+
+        return $paybox->generate($now, $billing);
     }
 
     public function getPaybox()
