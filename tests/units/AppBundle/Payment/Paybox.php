@@ -3,20 +3,21 @@
 namespace AppBundle\Payment\tests\units;
 
 use AppBundle\Payment\Paybox as TestedClass;
+use AppBundle\Payment\PayboxBilling;
 
 class Paybox extends \atoum
 {
     /**
      * @dataProvider generateDateProvider
      */
-    public function testGenerate($case, $domainServer, $secretKey, $site, $rang, $identifiant, $currentDate, $callback, $expected)
+    public function testGenerate($case, $domainServer, $secretKey, $site, $rang, $identifiant, $currentDate, $callback, $billing, $expected)
     {
         $this
             ->assert($case)
             ->when($paybox = new TestedClass($domainServer, $secretKey, $site, $rang, $identifiant))
             ->and($callback($paybox))
             ->then
-            ->string($paybox->generate($currentDate))
+            ->string($paybox->generate($currentDate, $billing))
                 ->isEqualTo($expected, $case)
         ;
     }
@@ -39,7 +40,9 @@ class Paybox extends \atoum
   <input type="hidden" name="PBX_SOURCE" value="HTML">
   <input type="hidden" name="PBX_TYPEPAIEMENT" value="CARTE">
   <input type="hidden" name="PBX_TYPECARTE" value="CB">
-  <input type="hidden" name="PBX_HMAC" value="39EE89FB543A226318139335D24074868FA5912418045813F225572BD1FE069AC88C6B70D0BA1B84B2A974F0D22572D2FFFA3D309E2F2192CEF12E44931CA88C">
+  <input type="hidden" name="PBX_SHOPPINGCART" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shoppingcart&gt;&lt;total&gt;&lt;totalQuantity&gt;1&lt;/totalQuantity&gt;&lt;/total&gt;&lt;/shoppingcart&gt;">
+  <input type="hidden" name="PBX_BILLING" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;Billing&gt;&lt;Address&gt;&lt;FirstName&gt;Inconnu&lt;/FirstName&gt;&lt;LastName&gt;Inconnu&lt;/LastName&gt;&lt;Address1&gt;Inconnu&lt;/Address1&gt;&lt;ZipCode&gt;Inconnu&lt;/ZipCode&gt;&lt;City&gt;Inconnu&lt;/City&gt;&lt;CountryCode&gt;250&lt;/CountryCode&gt;&lt;/Address&gt;&lt;/Billing&gt;">
+  <input type="hidden" name="PBX_HMAC" value="6391DD0A5051FEC38C0B5C2A016FB98B3423BF40FDA30213752F07F1AC4FB79F9B19BFF4C797736F7B8796DDBEFC8EAF63BE47B0F337C28D11CABA4280FF3FE0">
   <button type="submit" class="button button--call-to-action paiement">Régler par carte</button>
 </form>
 EOF;
@@ -64,7 +67,9 @@ EOF;
   <input type="hidden" name="PBX_TYPEPAIEMENT" value="CARTE">
   <input type="hidden" name="PBX_TYPECARTE" value="CB">
   <input type="hidden" name="PBX_REPONDRE_A" value="http://reponseA">
-  <input type="hidden" name="PBX_HMAC" value="8E5F8C3C052D64606288F3C55C502153CA1D424F7C25CAD4057100897F95E481F155DBD349495FD4C327F5389BA6C98C3DB43A3CF5394378F4276EB53A1C0245">
+  <input type="hidden" name="PBX_SHOPPINGCART" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shoppingcart&gt;&lt;total&gt;&lt;totalQuantity&gt;1&lt;/totalQuantity&gt;&lt;/total&gt;&lt;/shoppingcart&gt;">
+  <input type="hidden" name="PBX_BILLING" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;Billing&gt;&lt;Address&gt;&lt;FirstName&gt;Inconnu&lt;/FirstName&gt;&lt;LastName&gt;Inconnu&lt;/LastName&gt;&lt;Address1&gt;Inconnu&lt;/Address1&gt;&lt;ZipCode&gt;Inconnu&lt;/ZipCode&gt;&lt;City&gt;Inconnu&lt;/City&gt;&lt;CountryCode&gt;250&lt;/CountryCode&gt;&lt;/Address&gt;&lt;/Billing&gt;">
+  <input type="hidden" name="PBX_HMAC" value="7D2F79EDA8203C787342BE63218D208F490646877100E7EDCFDE9ACC4757BCC21C2BA634A1E48E00C5F4999FB1347E44C7A3D7367A23E33B0C5147CDF6FC95DE">
   <button type="submit" class="button button--call-to-action paiement">Régler par carte</button>
 </form>
 EOF;
@@ -74,6 +79,8 @@ EOF;
         $testSite = '1999888';
         $testRang = '32';
         $testIdentifiant = '110647233';
+
+        $billingEmpty = new PayboxBilling('', '', '', '', '', '');
 
         return [
             [
@@ -89,6 +96,7 @@ EOF;
                     $paybox->setCmd('TEST Paybox');
                     $paybox->setPorteur('test@paybox.com');
                 },
+                'paybox_billing' => $billingEmpty,
                 'expected' => $casGeneral,
             ],
             [
@@ -109,6 +117,7 @@ EOF;
                     $paybox->setUrlRetourEffectue('http://test4.com');
                     $paybox->setUrlRepondreA('http://reponseA');
                 },
+                'paybox_billing' => $billingEmpty,
                 'expected' => $urlRetour,
             ],
         ];
