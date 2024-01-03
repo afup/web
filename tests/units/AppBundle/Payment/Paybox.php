@@ -47,6 +47,29 @@ class Paybox extends \atoum
 </form>
 EOF;
 
+        $avecBilling = <<<EOF
+<form method="POST" action="https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi">
+  <input type="hidden" name="PBX_SITE" value="1999888">
+  <input type="hidden" name="PBX_RANG" value="32">
+  <input type="hidden" name="PBX_IDENTIFIANT" value="110647233">
+  <input type="hidden" name="PBX_TOTAL" value="2500">
+  <input type="hidden" name="PBX_DEVISE" value="978">
+  <input type="hidden" name="PBX_LANGUE" value="FRA">
+  <input type="hidden" name="PBX_CMD" value="TEST Paybox">
+  <input type="hidden" name="PBX_PORTEUR" value="test@paybox.com">
+  <input type="hidden" name="PBX_RETOUR" value="total:M;cmd:R;autorisation:A;transaction:T;status:E">
+  <input type="hidden" name="PBX_HASH" value="SHA512">
+  <input type="hidden" name="PBX_TIME" value="2018-03-02T20:20:19+01:00">
+  <input type="hidden" name="PBX_SOURCE" value="HTML">
+  <input type="hidden" name="PBX_TYPEPAIEMENT" value="CARTE">
+  <input type="hidden" name="PBX_TYPECARTE" value="CB">
+  <input type="hidden" name="PBX_SHOPPINGCART" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shoppingcart&gt;&lt;total&gt;&lt;totalQuantity&gt;1&lt;/totalQuantity&gt;&lt;/total&gt;&lt;/shoppingcart&gt;">
+  <input type="hidden" name="PBX_BILLING" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;Billing&gt;&lt;Address&gt;&lt;FirstName&gt;Jean&lt;/FirstName&gt;&lt;LastName&gt;Maurice&lt;/LastName&gt;&lt;Address1&gt;20 rue des fleurs&lt;/Address1&gt;&lt;ZipCode&gt;75003&lt;/ZipCode&gt;&lt;City&gt;Paris&lt;/City&gt;&lt;CountryCode&gt;250&lt;/CountryCode&gt;&lt;/Address&gt;&lt;/Billing&gt;">
+  <input type="hidden" name="PBX_HMAC" value="FAC38D4D5393F54D5AB200CF37A87CAA086BBEBD424236A78DDF8006A57CF0E105E2C54F5365794E1B412B9D56ADE614D0ED709C146FCAE6F5F3A304B7394ADE">
+  <button type="submit" class="button button--call-to-action paiement">Régler par carte</button>
+</form>
+EOF;
+
         $urlRetour = <<<EOF
 <form method="POST" action="https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi">
   <input type="hidden" name="PBX_SITE" value="1999888">
@@ -81,6 +104,7 @@ EOF;
         $testIdentifiant = '110647233';
 
         $billingEmpty = new PayboxBilling('', '', '', '', '', '');
+        $billing = new PayboxBilling('Jean', 'Maurice', '20 rue des fleurs', '75003', 'Paris', 250);
 
         return [
             [
@@ -98,6 +122,22 @@ EOF;
                 },
                 'paybox_billing' => $billingEmpty,
                 'expected' => $casGeneral,
+            ],
+            [
+                'case' => 'Avec un billing',
+                'domain_server' => $preprodDomainServer,
+                'secret_key' => $preprodTestSecretKey,
+                'site' => $testSite,
+                'rang' => $testRang,
+                'identifiant' => $testIdentifiant,
+                'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
+                'callback' => function(TestedClass $paybox) {
+                    $paybox->setTotal(2500);
+                    $paybox->setCmd('TEST Paybox');
+                    $paybox->setPorteur('test@paybox.com');
+                },
+                'paybox_billing' => $billing,
+                'expected' => $avecBilling,
             ],
             [
                 'case' => 'URL de retour',
