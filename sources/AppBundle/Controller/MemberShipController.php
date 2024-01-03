@@ -27,6 +27,7 @@ use AppBundle\Association\UserMembership\UserService;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\LegacyModelFactory;
+use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxResponseFactory;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use Assert\Assertion;
@@ -122,10 +123,13 @@ class MemberShipController extends SiteBaseController
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
+        $payboxBilling = new PayboxBilling($company->getFirstName(), $company->getLastName(), $company->getAddress(), $company->getZipCode(), $company->getCity(), $company->getCountryIso3166Numeric());
+
         $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
             'F' . $invoiceNumber,
             (float) $invoice['montant'],
-            $company->getEmail()
+            $company->getEmail(),
+            $payboxBilling
         );
 
         $bankAccountFactory = new BankAccountFactory($this->legacyConfiguration);
@@ -344,6 +348,7 @@ class MemberShipController extends SiteBaseController
         $cotisations = $this->getCotisations();
 
         $identifiant = $this->getDroits()->obtenirIdentifiant();
+        /** @var User $user */
         $user = $userRepository->get($identifiant);
         Assertion::notNull($user);
         $cotisation = $userService->getLastSubscription($user);
@@ -402,10 +407,13 @@ class MemberShipController extends SiteBaseController
 
         $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
 
+        $payboxBilling = new PayboxBilling($user->getFirstName(), $user->getLastName(), $user->getAddress(), $user->getZipCode(), $user->getCity(), $user->getCountryIso3166Numeric());
+
         $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
             $reference,
             (float) $montant,
-            $user->getEmail()
+            $user->getEmail(),
+            $payboxBilling
         );
 
         $paybox = str_replace('INPUT TYPE=SUBMIT', 'INPUT TYPE=SUBMIT class="button button--call-to-action"', $paybox);

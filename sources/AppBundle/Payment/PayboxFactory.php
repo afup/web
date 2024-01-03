@@ -37,7 +37,7 @@ class PayboxFactory
      *
      * @return string html with payment button
      */
-    public function createPayboxForSubscription($facture, $montant, $email)
+    public function createPayboxForSubscription($facture, $montant, $email, PayboxBilling $billing)
     {
         $paybox = $this->getPaybox();
 
@@ -54,7 +54,7 @@ class PayboxFactory
             ->setUrlRepondreA($this->router->generate('membership_payment', [], RouterInterface::ABSOLUTE_URL))
         ;
 
-        return $paybox->generate($now);
+        return $paybox->generate($now, $billing);
     }
 
     public function createPayboxForTicket(Invoice $invoice, Event $event)
