@@ -2,6 +2,8 @@
 
 namespace AppBundle\Payment;
 
+use AppBundle\Event\Model\Invoice;
+
 class PayboxBilling
 {
     private $firstName;
@@ -67,5 +69,10 @@ class PayboxBilling
     public function getCountryCode()
     {
         return $this->countryCode;
+    }
+
+    public static function createFromInvoice(Invoice $invoice)
+    {
+        return new PayboxBilling($invoice->getFirstname(), $invoice->getLastname(), $invoice->getAddress(), $invoice->getZipcode(), $invoice->getCity(), $invoice->getCountryIso3166Numeric());
     }
 }
