@@ -37,8 +37,17 @@ if ($facture) {
             ->setUrlRetourErreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php')
         ;
 
+        try {
+            $data = (new \League\ISO3166\ISO3166)->alpha2($facture['id_pays']);
+            $codePays = $data['numeric'];
+        } catch (\Exception $exception) {
+            $codePays = null;
+        }
+
+        $payboxBilling = new \AppBundle\Payment\PayboxBilling($facture['prenom'], $facture['nom'], $facture['adresse'], $facture['code_postal'], $facture['ville'], $codePays);
+
         $now = new \DateTime();
-        $smarty->assign('paybox', $paybox->generate($now));
+        $smarty->assign('paybox', $paybox->generate($now, $payboxBilling));
 
         $smarty->assign('facture', $facture);
         $smarty->assign('details_facture', $details);
