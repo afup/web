@@ -332,7 +332,6 @@ class CompanyMember implements NotifyPropertyInterface
 
             return $data['numeric'];
         } catch (\Exception $exception) {
-
             return null;
         }
     }

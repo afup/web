@@ -73,6 +73,6 @@ class PayboxBilling
 
     public static function createFromInvoice(Invoice $invoice)
     {
-        return new PayboxBilling($invoice->getFirstname(), $invoice->getLastname(), $invoice->getAddress(), $invoice->getZipcode(), $invoice->getCity(), $invoice->getCountryIso3166Numeric());
+        return new self($invoice->getFirstname(), $invoice->getLastname(), $invoice->getAddress(), $invoice->getZipcode(), $invoice->getCity(), $invoice->getCountryIso3166Numeric());
     }
 }

@@ -483,7 +483,6 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
             return $data['numeric'];
         } catch (\Exception $exception) {
-
             return null;
         }
     }
