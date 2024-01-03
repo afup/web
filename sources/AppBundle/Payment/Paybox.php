@@ -6,6 +6,15 @@ class Paybox
 {
     const DEVISE_EURO = 978;
 
+    const SPECIAL_CHARS_INPUTS = [
+        'PBX_SHOPPINGCART',
+        'PBX_BILLING',
+    ];
+
+    const PAYBOX_SHOPPING_MAX_QUANTITY = 99;
+    const PAYBOX_DEFAULT_STRING = 'Inconnu';
+    const PAYBOX_DEFAULT_COUNTRY = 250; // correspond à la France en iso3166
+
     /**
      * cf http://www.paybox.com/espace-integrateur-documentation/dictionnaire-des-donnees/paybox-system/
      */
@@ -40,7 +49,7 @@ class Paybox
         $this->identifiant = $identifiant;
     }
 
-    public function generate(\DateTimeInterface $now)
+    public function generate(\DateTimeInterface $now, PayboxBilling $payboxBilling, $quantity = 1)
     {
         // On récupère la date au format ISO-8601
         $dateTime = $now->format('c');
@@ -64,6 +73,8 @@ class Paybox
             'PBX_TYPEPAIEMENT' => self::TYPE_PAIEMENT,
             'PBX_TYPECARTE' => self::TYPECARTE,
             'PBX_REPONDRE_A' => $this->urlRepondreA,
+            'PBX_SHOPPINGCART' => $this->generatePbxShoppingcart($quantity),
+            'PBX_BILLING' => $this->generatePbxBiling($payboxBilling),
         ];
 
         // ici on utilise pas http_build_query, on ne veux pas encoder les caractères
@@ -95,12 +106,76 @@ class Paybox
 
         $htmlForm = '<form method="POST" action="https://' . $this->domainServer . '/cgi/MYchoix_pagepaiement.cgi">' . PHP_EOL;
         foreach ($sanitizedInputs as $inputKey => $inputValue) {
+            if (in_array($inputKey, self::SPECIAL_CHARS_INPUTS)) {
+                $inputValue = htmlspecialchars($inputValue);
+            }
             $htmlForm .= '  <input type="hidden" name="' . $inputKey . '" value="' . $inputValue . '">' . PHP_EOL;
         }
         $htmlForm .= '  <button type="submit" class="button button--call-to-action paiement">Régler par carte</button>' . PHP_EOL;
         $htmlForm .= '</form>';
 
         return $htmlForm;
+    }
+
+    private function generatePbxShoppingcart($quantity = 1)
+    {
+        if ($quantity > self::PAYBOX_SHOPPING_MAX_QUANTITY) {
+            $quantity = self::PAYBOX_SHOPPING_MAX_QUANTITY;
+        }
+
+        return sprintf('<?xml version="1.0" encoding="utf-8"?><shoppingcart><total><totalQuantity>%d</totalQuantity></total></shoppingcart>', $quantity);
+    }
+
+    private function generatePbxBiling(PayboxBilling $payboxBilling)
+    {
+        $domDocument = new \DOMDocument('1.0', 'utf-8');
+        $billing = $domDocument->createElement('Billing');
+        $domDocument->appendChild($billing);
+
+        $address = $domDocument->createElement('Address');
+        $billing->appendChild($address);
+
+        $firstName = $domDocument->createElement('FirstName');
+        $firstName->nodeValue = $this->preparePbxBillingValue($payboxBilling->getFirstName(), 30, self::PAYBOX_DEFAULT_STRING);
+
+        $lastName = $domDocument->createElement('LastName');
+        $lastName->nodeValue = $this->preparePbxBillingValue($payboxBilling->getLastName(), 30, self::PAYBOX_DEFAULT_STRING);
+
+        $address1 = $domDocument->createElement('Address1');
+        $address1->nodeValue = $this->preparePbxBillingValue($payboxBilling->getAddress1(), 50, self::PAYBOX_DEFAULT_STRING);
+
+        $zipCode = $domDocument->createElement('ZipCode');
+        $zipCode->nodeValue = $this->preparePbxBillingValue($payboxBilling->getZipCode(), 16, self::PAYBOX_DEFAULT_STRING);
+
+        $city = $domDocument->createElement('City');
+        $city->nodeValue = $this->preparePbxBillingValue($payboxBilling->getCity(), 50, self::PAYBOX_DEFAULT_STRING);
+
+        $countryCode = $domDocument->createElement('CountryCode');
+        $countryCode->nodeValue = $this->preparePbxBillingValue($payboxBilling->getCountryCode(), 3, self::PAYBOX_DEFAULT_COUNTRY);
+
+        $address->appendChild($firstName);
+        $address->appendChild($lastName);
+        $address->appendChild($address1);
+        $address->appendChild($zipCode);
+        $address->appendChild($city);
+        $address->appendChild($countryCode);
+
+        return str_replace(["\n", "\r"], "", $domDocument->saveXML());
+    }
+
+    private function preparePbxBillingValue($value, $maxLength, $default)
+    {
+        $value = trim($value);
+
+        if (0 === strlen($value)) {
+            $value = $default;
+        }
+
+        if (strlen($value) > $maxLength) {
+            $value = substr($value, 0, $maxLength);
+        }
+
+        return $value;
     }
 
     /**
