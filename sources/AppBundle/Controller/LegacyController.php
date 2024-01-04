@@ -130,10 +130,28 @@ class LegacyController extends Controller
 
         $formulaire->addElement('password', 'mot_de_passe', 'Mot de passe', ['size' => 30, 'maxlength' => 30]);
         $formulaire->addElement('password', 'confirmation_mot_de_passe', '', ['size' => 30, 'maxlength' => 30]);
+        $formulaire->addElement('hidden', 'csrf'); // CSRF token
+        $formulaire->addElement('text', 'lastname', '', ['style' => 'display:none']);   // Pot de miel, doit être vide
         $formulaire->addElement('header', 'boutons', '');
         $formulaire->addElement('submit', 'soumettre', 'Ajouter');
 
         $formulaire->addRule('nom', 'Nom manquant', 'required');
+
+        // CSRF validation
+        $lastCsrf = $this->get('session')->get('csrf');
+        $formulaire->addRule('csrf', 'csrf validation', 'callback', static function ($value) use ($lastCsrf) {
+            return $lastCsrf === $value;
+        });
+
+        // CSRF generation
+        $csrf = md5(uniqid(mt_rand(), true));
+        $this->get('session')->set('csrf', $csrf);
+        $formulaire->getElement('csrf')->setValue($csrf);
+
+        $formulaire->addRule('lastname', 'Lastname manquant', 'callback', static function ($value) {
+            return empty($value);
+        });
+
         $formulaire->addRule('prenom', 'Prénom manquant', 'required');
         $formulaire->addRule('login', 'Login manquant', 'required');
         $formulaire->addRule('login', 'Login déjà existant', 'callback', static function ($value) use ($userRepository) {
