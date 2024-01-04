@@ -438,7 +438,7 @@ class Facture
                     $x += 20;
                     $pdf->SetXY($x, $y);
                     $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
-                    $vatAmounts[$detail['tva']] = ($detail['tva'] / 100) * $montantTtc;
+                    $vatAmounts[$detail['tva']] += ($detail['tva'] / 100) * $montantTtc;
                     $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
 
                     $x += 20;
@@ -636,7 +636,7 @@ class Facture
                     $x += 20;
                     $pdf->SetXY($x, $y);
                     $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
-                    $vatAmounts[$detail['tva']] = ($detail['tva'] / 100) * $montantTtc;
+                    $vatAmounts[$detail['tva']] += ($detail['tva'] / 100) * $montantTtc;
                     $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
                 }
 
