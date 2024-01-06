@@ -3,14 +3,14 @@
 ## Applications
 
 On accède aux applications via docker et les différents ports des applications.
-Vous retrouverez les ports dans le fichier `docker-compose.override.yml`
+Vous retrouverez les ports dans le fichier `compose.override.yml`
 
 Par défaut:
 * Site AFUP : <https://localhost:9205/>
 * Planète PHP : <https://localhost:9215/>
 * Mailcatcher: <http://localhost:1181/>
 
-_Les ports utilisés peuvent être modifiés dans le fichier `docker-compose.override.yml`._
+_Les ports utilisés peuvent être modifiés dans le fichier `compose.override.yml`._
 
 ## Mise en place avec docker
 
@@ -30,8 +30,7 @@ Vous pouvez aussi y accéder directement via la commande: `docker/bin/mysql`
 * `make docker-stop` : éteint les containers en fonctionnement.
 * `make docker-down` : détruit les containers existants.
 * `docker/bin/mysql` : connexion à la base de données.
-* `docker/bin/bash` : PHP 5.6 cli.
-* `docker/bin/bashphp7` : PHP 7.0 cli.
+* `docker/bin/bash` : PHP cli.
 
 ### Configuration avancée
 
@@ -42,7 +41,7 @@ Ce fichier contient la liste des options disponibles.
 
 #### `DOCKER_UP_OPTIONS`
 
-liste des options à passer à la commande `docker-composer up`. 
+liste des options à passer à la commande `docker composer up`. 
 
 ## Base de données
 
