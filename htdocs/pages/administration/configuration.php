@@ -14,21 +14,6 @@ $defaults = $conf->exporter();
 
 $formulaire->setDefaults($defaults);
 
-$formulaire->addElement('header'  , ''                                      , 'Mails');
-$formulaire->addElement('text'    , 'mails|email_expediteur'                , 'Email expediteur'                , array('size' => 30));
-$formulaire->addElement('text'    , 'mails|nom_expediteur'                  , 'Nom expediteur'                  , array('size' => 30));
-$formulaire->addElement('textarea', 'mails|texte_adhesion_personne_physique', 'Texte adhesion personne physique', array('cols' => 42, 'rows' => 7));
-$formulaire->addElement('text'    , 'mails|force_destinataire'              , 'Force le destinaire du mail pour test'                  , array('size' => 30));
-$formulaire->addElement('text'    , 'mails|bcc'                             , 'Ajout un email en bcc à tout les emailss'                  , array('size' => 30));
-
-
-$formulaire->addElement('header'  , ''                                      , 'Config SMTP');
-$formulaire->addElement('text'    , 'mails|serveur_smtp'                    , 'Serveur SMTP'                , array('size' => 30));
-$formulaire->addElement('advcheckbox', 'mails|tls'                          , 'Use TLS'                     , null, null, array(0, 1));
-$formulaire->addElement('text'    , 'mails|port'                            , 'Port'                        , array('size' => 30));
-$formulaire->addElement('text'    , 'mails|username'                        , 'Username'                    , array('size' => 30));
-$formulaire->addElement('text'    , 'mails|password'                        , 'Password'                    , array('size' => 30));
-
 $formulaire->addElement('header'  , ''                   , 'AFUP');
 $formulaire->addElement('text'    , 'afup|raison_sociale', 'Raison Sociale', array('size' => 30));
 $formulaire->addElement('textarea', 'afup|adresse'       , 'Adresse'       , array('cols' => 42, 'rows' => 7));

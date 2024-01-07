@@ -2,8 +2,6 @@
 
 namespace Afup\Site\Utils;
 
-use Symfony\Component\Yaml\Yaml;
-
 define('EURO', '€');
 
 /**
@@ -37,24 +35,21 @@ class Configuration
         $this->_chemin_fichier = $chemin_fichier;
         $this->_valeurs = include($this->_chemin_fichier);
 
-        $parametersFile = dirname(__FILE__).'/../../../app/config/parameters.yml';
-        if (is_file($parametersFile)) {
-            $parameters = Yaml::parseFile($parametersFile)['parameters'];
+        $kernel = new SymfonyKernel();
+        $container = $kernel->getKernel()->getContainer();
 
-            $this->_valeurs['bdd']['hote'] = $parameters['database_host'];
-            $this->_valeurs['bdd']['base'] = $parameters['database_name'];
-            $this->_valeurs['bdd']['utilisateur'] = $parameters['database_user'];
-            $this->_valeurs['bdd']['mot_de_passe'] = $parameters['database_password'];
+        $this->_valeurs['bdd']['hote'] = $container->getParameter('database_host');
+        $this->_valeurs['bdd']['base'] = $container->getParameter('database_name');
+        $this->_valeurs['bdd']['utilisateur'] = $container->getParameter('database_user');
+        $this->_valeurs['bdd']['mot_de_passe'] = $container->getParameter('database_password');
 
-            $this->_valeurs['mails']['serveur_smtp'] = $parameters['mails_serveur_smtp'];
-            $this->_valeurs['mails']['tls'] = $parameters['mails_tls'];
-            $this->_valeurs['mails']['username'] = $parameters['mails_username'];
-            $this->_valeurs['mails']['password'] = $parameters['mails_password'];
-            $this->_valeurs['mails']['port'] = $parameters['mails_port'];
-
-            $this->_valeurs['mails']['force_destinataire'] = $parameters['mails_force_destinataire'];
-            $this->_valeurs['mails']['bcc'] = $parameters['mails_bcc'];
-        }
+        $this->_valeurs['mails']['serveur_smtp'] = $container->getParameter('mails_serveur_smtp');
+        $this->_valeurs['mails']['tls'] = $container->getParameter('mails_tls');
+        $this->_valeurs['mails']['username'] = $container->getParameter('mails_username');
+        $this->_valeurs['mails']['password'] = $container->getParameter('mails_password');
+        $this->_valeurs['mails']['port'] = $container->getParameter('mails_port');
+        $this->_valeurs['mails']['force_destinataire'] = $container->getParameter('mails_force_destinataire');
+        $this->_valeurs['mails']['bcc'] = $container->getParameter('mails_bcc');
     }
 
     /**

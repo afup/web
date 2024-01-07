@@ -21,7 +21,7 @@ class SymfonyKernel
         $env = 'prod';
         $debug = false;
 
-        if ($_ENV['SYMFONY_ENV'] === 'dev') {
+        if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'dev') {
             Debug::enable(E_WARNING);
             $debug = true;
             $env = 'dev';

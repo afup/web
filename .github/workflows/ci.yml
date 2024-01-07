@@ -39,6 +39,12 @@ jobs:
       - name: Composer install
         run: composer install --no-scripts
 
+      - name: Config file
+        run: make configs/application/config.php
+
+      - name: Parameters file
+        run: make app/config/parameters.yml
+
       - name: Tests - Unit
         run: ./bin/atoum
 
@@ -66,10 +72,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: CS fixer prerequisites config
+      - name: Config file
         run: make configs/application/config.php
 
-      - name: CS fixer prerequisites parameters
+      - name: Parameters file
         run: make app/config/parameters.yml
 
       - name: Composer install
@@ -103,8 +109,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Prerequisites
+      - name: Config file
         run: make configs/application/config.php
+
+      - name: Parameters file
+        run: make app/config/parameters.yml
 
       - name: Composer install
         run: composer install --no-scripts --ignore-platform-req=php
