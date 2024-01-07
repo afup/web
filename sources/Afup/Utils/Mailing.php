@@ -6,6 +6,9 @@ use AppBundle\Email\Mailer\Message;
 
 class Mailing
 {
+    const EMAIL_EXPEDITEUR = 'bureau@afup.org';
+    const NOM_EXPEDITEUR = 'Bureau AFUP';
+
     /**
      * @param Message $message
      * @param string $body

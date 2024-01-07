@@ -72,3 +72,11 @@ parameters:
     paybox_identifiant: "110647233"
 
     blog_api_key: 123456
+
+    mails_serveur_smtp: "mailcatcher"
+    mails_tls: 0
+    mails_username: ""
+    mails_password: ""
+    mails_port: 1025
+    mails_force_destinataire: []
+    mails_bcc: []

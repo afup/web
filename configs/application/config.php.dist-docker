@@ -1,15 +1,6 @@
 <?php
 $configuration['web']['path']='/';
 
-$configuration['mails']['serveur_smtp']='mailcatcher';
-$configuration['mails']['email_expediteur']='bureau@afup.org';
-$configuration['mails']['nom_expediteur']='Bureau AFUP';
-$configuration['mails']['force_destinataire']='';
-$configuration['mails']['bcc']='tresorier@afup.org';
-$configuration['mails']['tls']='0';
-$configuration['mails']['port']='1025';
-$configuration['mails']['username']='';
-$configuration['mails']['password']='';
 $configuration['afup']['raison_sociale']='AFUP';
 $configuration['afup']['adresse']='32, Boulevard de Strasbourg
 CS 30108';
