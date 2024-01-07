@@ -1,8 +1,4 @@
 <?php
-$configuration['bdd']['hote']='dbtest';
-$configuration['bdd']['base']='web';
-$configuration['bdd']['utilisateur']='afup';
-$configuration['bdd']['mot_de_passe']='afup';
 $configuration['web']['path']='/';
 
 $configuration['mails']['serveur_smtp']='mailcatcher';

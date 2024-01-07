@@ -1,8 +1,4 @@
 <?php
-$configuration['bdd']['hote']='127.0.0.1';
-$configuration['bdd']['base']='afup_dev';
-$configuration['bdd']['utilisateur']='afup_dev';
-$configuration['bdd']['mot_de_passe']='p455w0rd';
 $configuration['web']['path']='http://.dev/';
 
 $configuration['mails']['serveur_smtp']='';

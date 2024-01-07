@@ -1,5 +1,8 @@
 <?php
+
 namespace Afup\Site\Utils;
+
+use Symfony\Component\Yaml\Yaml;
 
 define('EURO', '€');
 
@@ -33,6 +36,16 @@ class Configuration
     {
         $this->_chemin_fichier = $chemin_fichier;
         $this->_valeurs = include($this->_chemin_fichier);
+
+        $parametersFile = dirname(__FILE__).'/../../../app/config/parameters.yml';
+        if (is_file($parametersFile)) {
+            $parameters = Yaml::parseFile($parametersFile)['parameters'];
+
+            $this->_valeurs['bdd']['hote'] = $parameters['database_host'];
+            $this->_valeurs['bdd']['base'] = $parameters['database_name'];
+            $this->_valeurs['bdd']['utilisateur'] = $parameters['database_user'];
+            $this->_valeurs['bdd']['mot_de_passe'] = $parameters['database_password'];
+        }
     }
 
     /**

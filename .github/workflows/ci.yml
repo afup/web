@@ -66,8 +66,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: CS fixer prerequisites
+      - name: CS fixer prerequisites config
         run: make configs/application/config.php
+
+      - name: CS fixer prerequisites parameters
+        run: make app/config/parameters.yml
 
       - name: Composer install
         run: composer install --no-scripts
