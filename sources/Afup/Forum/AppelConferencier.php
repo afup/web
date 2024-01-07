@@ -2,7 +2,12 @@
 
 namespace Afup\Site\Forum;
 
+use Afup\Site\Utils\Configuration;
+use Afup\Site\Utils\Mailing;
+use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Talk;
+use Symfony\Component\Translation\Translator;
 
 class AppelConferencier
 {

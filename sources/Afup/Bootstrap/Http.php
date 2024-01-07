@@ -31,12 +31,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // mise à jour des paramétrages PHP en fonction de la configuration
-if ($_ENV['SYMFONY_ENV'] === 'dev') {
-    ini_set('error_reporting', E_ALL);
-    ini_set('display_errors', 1);
-} else {
+if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'prod') {
     ini_set('error_reporting', E_ALL ^ E_WARNING);
     ini_set('display_errors', 0);
+} else {
+    ini_set('error_reporting', E_ALL);
+    ini_set('display_errors', 1);
 }
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__).'/../../../dependencies/PEAR/');
 
