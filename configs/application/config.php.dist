@@ -5,8 +5,6 @@ $configuration['bdd']['utilisateur']='afup_dev';
 $configuration['bdd']['mot_de_passe']='p455w0rd';
 $configuration['web']['path']='http://.dev/';
 
-$configuration['divers']['niveau_erreur']='6143';
-$configuration['divers']['afficher_erreurs']='1';
 $configuration['mails']['serveur_smtp']='';
 $configuration['mails']['email_expediteur']='bureau@afup.org';
 $configuration['mails']['nom_expediteur']='Bureau AFUP';

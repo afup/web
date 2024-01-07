@@ -21,9 +21,7 @@ class SymfonyKernel
         $env = 'prod';
         $debug = false;
 
-        $configuration = $this->getLegacyConfig();
-
-        if ($configuration['divers']['afficher_erreurs']) {
+        if ($_ENV['SYMFONY_ENV'] === 'dev') {
             Debug::enable(E_WARNING);
             $debug = true;
             $env = 'dev';

@@ -18,7 +18,7 @@
 
 // racine de l'application (pas du document root !)
 
-use Afup\Site\Utils\Base_De_Donnees;
+use Afup\Site\Corporate\_Site_Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 
 $root = realpath(dirname(__FILE__) . '/../../..');
@@ -67,12 +67,7 @@ $GLOBALS['AFUP_CONF'] = $conf;
 
 // initialisation de la couche d'abstraction de la base de données
 
-$bdd = new Base_De_Donnees(
-    $conf->obtenir('bdd|hote'),
-    $conf->obtenir('bdd|base'),
-    $conf->obtenir('bdd|utilisateur'),
-    $conf->obtenir('bdd|mot_de_passe')
-);
+$bdd = new _Site_Base_De_Donnees();
 
 // mets la connexion db dans une 'clé de registre' accessible à tout moment
 
