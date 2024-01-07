@@ -7,8 +7,8 @@ parameters:
     database_name:     symfony
     database_user:     root
     database_password: ~
-
-    slack_url: ""
+    # You should uncomment this if you want use pdo_sqlite
+    # database_path: "%kernel.root_dir%/data.db3"
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
@@ -22,6 +22,9 @@ parameters:
     algolia_frontend_api_key: 74e71e5r5c2Rb353f5a03376gb9878777
 
     home_algolia_enabled: false
+
+    # Slack url for notifications
+    slack_url: 'http://yolo'
 
     twitter_oauth_access_token: ""
     twitter_oauth_access_token_secret: ""
@@ -69,3 +72,11 @@ parameters:
     paybox_identifiant: "110647233"
 
     blog_api_key: 123456
+
+    mails_serveur_smtp: "mailcatcher"
+    mails_tls: 0
+    mails_username: ""
+    mails_password: ""
+    mails_port: 1025
+    mails_force_destinataire: []
+    mails_bcc: []

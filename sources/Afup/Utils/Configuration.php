@@ -45,6 +45,15 @@ class Configuration
             $this->_valeurs['bdd']['base'] = $parameters['database_name'];
             $this->_valeurs['bdd']['utilisateur'] = $parameters['database_user'];
             $this->_valeurs['bdd']['mot_de_passe'] = $parameters['database_password'];
+
+            $this->_valeurs['mails']['serveur_smtp'] = $parameters['mails_serveur_smtp'];
+            $this->_valeurs['mails']['tls'] = $parameters['mails_tls'];
+            $this->_valeurs['mails']['username'] = $parameters['mails_username'];
+            $this->_valeurs['mails']['password'] = $parameters['mails_password'];
+            $this->_valeurs['mails']['port'] = $parameters['mails_port'];
+
+            $this->_valeurs['mails']['force_destinataire'] = $parameters['mails_force_destinataire'];
+            $this->_valeurs['mails']['bcc'] = $parameters['mails_bcc'];
         }
     }
 

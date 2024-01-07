@@ -3,6 +3,7 @@
 
 namespace Afup\Site\Comptabilite;
 
+use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
@@ -735,8 +736,7 @@ class Facture
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
 
-        $expediteur = $GLOBALS['AFUP_CONF']->obtenir('mails|email_expediteur');
-        $message = new Message($sujet, new MailUser($expediteur), new MailUser($personne['email'], $personne['nom']));
+        $message = new Message($sujet, new MailUser(Mailing::EMAIL_EXPEDITEUR, Mailing::NOM_EXPEDITEUR), new MailUser($personne['email'], $personne['nom']));
         $message->addAttachment(new Attachment(
             $chemin_facture,
             'facture-'.$reference.'.pdf',
