@@ -4,20 +4,20 @@ services:
   db:
     build: ./docker/dockerfiles/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: afup
-      MYSQL_PASSWORD: afup
-      MYSQL_DATABASE: web
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=afup
+      - MYSQL_PASSWORD=afup
+      - MYSQL_DATABASE=web
     volumes:
       - ./data/mysql:/var/lib/mysql
 
   dbtest:
     build: ./docker/dockerfiles/mysqltest
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: afup
-      MYSQL_PASSWORD: afup
-      MYSQL_DATABASE: web
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=afup
+      - MYSQL_PASSWORD=afup
+      - MYSQL_DATABASE=web
     volumes:
       - ./data/mysqltest:/var/lib/mysql
     healthcheck:
@@ -33,7 +33,7 @@ services:
         gid: "1001"
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
-      SYMFONY_ENV: "dev"
+      - SYMFONY_ENV=dev
     volumes:
       - ./:/var/www/html
     links:
@@ -48,7 +48,7 @@ services:
         gid: "1001"
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
-      SYMFONY_ENV: "test"
+      - SYMFONY_ENV=test
     volumes:
       - ./:/var/www/html
     healthcheck:
@@ -67,7 +67,7 @@ services:
         uid: ${CURRENT_UID:-1001}
         gid: "1001"
     environment:
-      SYMFONY_ENV: "dev"
+      - SYMFONY_ENV=dev
     volumes:
       - ./:/var/www/html
     links:
@@ -82,7 +82,7 @@ services:
         gid: "1001"
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
-      SYMFONY_ENV: "test"
+      - SYMFONY_ENV=test
     volumes:
       - ./:/var/www/html
     healthcheck:
