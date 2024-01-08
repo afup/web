@@ -58,7 +58,7 @@ jobs:
       - name: Setup PHP with tools
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '5.6'
+          php-version: '7.0'
 
       - name: Get Composer Cache Directory
         id: composer-cache
