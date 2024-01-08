@@ -46,10 +46,7 @@ $smarty->assign('chemin_template', $serveur.$conf->obtenir('web|path').'template
 $smarty->assign('chemin_javascript', $serveur.$conf->obtenir('web|path').'javascript/');
 
 // Initialisation de la couche d'abstraction de la base de données
-$bdd = new \Afup\Site\Utils\Base_De_Donnees($conf->obtenir('bdd|hote'),
-                                $conf->obtenir('bdd|base'),
-                                $conf->obtenir('bdd|utilisateur'),
-                                $conf->obtenir('bdd|mot_de_passe'));
+$bdd = new \Afup\Site\Corporate\_Site_Base_De_Donnees();
 $bdd->executer("SET NAMES 'utf8'");
 
 require_once(dirname(__FILE__) . '/../../sources/Afup/Bootstrap/commonStart.php');

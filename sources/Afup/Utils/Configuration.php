@@ -1,5 +1,8 @@
 <?php
+
 namespace Afup\Site\Utils;
+
+use Symfony\Component\Yaml\Yaml;
 
 define('EURO', '€');
 
@@ -33,6 +36,38 @@ class Configuration
     {
         $this->_chemin_fichier = $chemin_fichier;
         $this->_valeurs = include($this->_chemin_fichier);
+
+        $sfParameters = $this->loadSymfonyParameters();
+        if ([] !== $sfParameters) {
+            $this->_valeurs['database_host'] = $sfParameters['database_host'];
+            $this->_valeurs['database_name'] = $sfParameters['database_name'];
+            $this->_valeurs['database_user'] = $sfParameters['database_user'];
+            $this->_valeurs['database_password'] = $sfParameters['database_password'];
+        }
+    }
+
+    private function loadSymfonyParameters()
+    {
+        $basePath = dirname(__FILE__) . '/../../../app/config';
+
+        $parameters = [];
+        $this->mergeSymfonyParametersFromFile($basePath . '/parameters.yml', $parameters);
+        $this->mergeSymfonyParametersFromFile($basePath . '/config.yml', $parameters);
+        if (isset($_ENV['SYMFONY_ENV'])) {
+            $this->mergeSymfonyParametersFromFile($basePath . '/config_' . $_ENV['SYMFONY_ENV'] . '.yml', $parameters);
+        }
+
+        return $parameters;
+    }
+
+    private function mergeSymfonyParametersFromFile($file, &$parameters)
+    {
+        if (is_file($file)) {
+            $values = Yaml::parseFile($file);
+            if (isset($values['parameters'])) {
+                $parameters = array_merge($parameters, $values['parameters']);
+            }
+        }
     }
 
     /**

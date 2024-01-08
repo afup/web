@@ -14,12 +14,6 @@ $defaults = $conf->exporter();
 
 $formulaire->setDefaults($defaults);
 
-$formulaire->addElement('header', ''                , 'Base de données');
-$formulaire->addElement('text'  , 'bdd|hote'        , 'Hote'           , array('size' => 30));
-$formulaire->addElement('text'  , 'bdd|base'        , 'Base'           , array('size' => 30));
-$formulaire->addElement('text'  , 'bdd|utilisateur' , 'Utilisateur'    , array('size' => 30));
-$formulaire->addElement('text'  , 'bdd|mot_de_passe', 'Mot de passe'   , array('size' => 30));
-
 $formulaire->addElement('header'  , ''                                      , 'Mails');
 $formulaire->addElement('text'    , 'mails|email_expediteur'                , 'Email expediteur'                , array('size' => 30));
 $formulaire->addElement('text'    , 'mails|nom_expediteur'                  , 'Nom expediteur'                  , array('size' => 30));
@@ -54,10 +48,6 @@ $formulaire->addElement('advcheckbox', 'divers|afficher_erreurs', 'Afficher erre
 
 $formulaire->addElement('header', 'boutons'  , '');
 $formulaire->addElement('submit', 'soumettre', 'Enregistrer');
-
-$formulaire->addRule('bdd|hote'       , 'Hote manquant'       , 'required');
-$formulaire->addRule('bdd|base'       , 'Base manquante'      , 'required');
-$formulaire->addRule('bdd|utilisateur', 'Utilisateur manquant', 'required');
 
 if ($formulaire->validate()) {
 	$valeurs = $formulaire->exportValues();

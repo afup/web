@@ -99,7 +99,7 @@ hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 
 reset-db:
 	echo 'DROP DATABASE IF EXISTS web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
-	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) -T --rm db /opt/mysql_no_db
+	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
 db-migrations:
 	php bin/phinx migrate

@@ -21,9 +21,7 @@ class SymfonyKernel
         $env = 'prod';
         $debug = false;
 
-        $configuration = $this->getLegacyConfig();
-
-        if ($configuration['divers']['afficher_erreurs']) {
+        if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'dev') {
             Debug::enable(E_WARNING);
             $debug = true;
             $env = 'dev';
@@ -39,12 +37,6 @@ class SymfonyKernel
             $request = Request::createFromGlobals();
         }
         $this->request = $request;
-    }
-
-    private function getLegacyConfig()
-    {
-        // $configuration comes from this file
-        return include(__DIR__ . '/../../../configs/application/config.php');
     }
 
     /**
