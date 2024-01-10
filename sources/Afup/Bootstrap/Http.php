@@ -30,10 +30,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// mise à jour des paramètrage PHP en fonction de la configuration
+// mise à jour des paramétrages PHP en fonction de la configuration
 
-ini_set('error_reporting', $GLOBALS['AFUP_CONF']->obtenir('divers|niveau_erreur'));
-ini_set('display_errors',  $GLOBALS['AFUP_CONF']->obtenir('divers|afficher_erreurs'));
+if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'prod') {
+    ini_set('error_reporting', E_ALL ^ E_WARNING);
+    ini_set('display_errors', 0);
+} else {
+    ini_set('error_reporting', E_ALL);
+    ini_set('display_errors', 1);
+}
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__).'/../../../dependencies/PEAR/');
 
 header('Content-type: text/html; charset=UTF-8');

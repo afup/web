@@ -39,13 +39,6 @@ $formulaire->addElement('text'	  , 'afup|email'         , 'Email'         , arra
 $formulaire->addElement('header'  , ''                       , 'Planète PHP FR');
 $formulaire->addElement('textarea', 'planete|pertinence'     , 'Critère de pertinence', array('cols' => 42, 'rows' => 7));
 
-$formulaire->addElement('header'     , ''                       , 'Divers');
-$formulaire->addElement('select'     , 'divers|niveau_erreur'   , 'Niveau erreur'   , array(E_ALL     => 'Toutes',
-                                                                                            E_NOTICE  => 'Informations',
-                                                                                            E_WARNING => 'Avertissements',
-                                                                                            0         => 'Aucune'));
-$formulaire->addElement('advcheckbox', 'divers|afficher_erreurs', 'Afficher erreurs', null, null, array(0, 1));
-
 $formulaire->addElement('header', 'boutons'  , '');
 $formulaire->addElement('submit', 'soumettre', 'Enregistrer');
 

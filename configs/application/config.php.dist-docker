@@ -1,8 +1,6 @@
 <?php
 $configuration['web']['path']='/';
 
-$configuration['divers']['niveau_erreur']='6143';
-$configuration['divers']['afficher_erreurs']='1';
 $configuration['mails']['serveur_smtp']='mailcatcher';
 $configuration['mails']['email_expediteur']='bureau@afup.org';
 $configuration['mails']['nom_expediteur']='Bureau AFUP';
