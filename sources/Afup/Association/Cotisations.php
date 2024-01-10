@@ -250,8 +250,7 @@ class Cotisations
         $corps .= "Autorisation : " . $autorisation . "\n";
         $corps .= "Transaction : " . $transaction . "\n\n";
 
-        $expediteur = $GLOBALS['AFUP_CONF']->obtenir('mails|email_expediteur');
-        $ok = Mailing::envoyerMail(new Message($sujet, new MailUser($expediteur), MailUserFactory::tresorier()), $corps);
+        $ok = Mailing::envoyerMail(new Message($sujet, new MailUser(MailUser::DEFAULT_SENDER_EMAIL, MailUser::DEFAULT_SENDER_NAME), MailUserFactory::tresorier()), $corps);
 
         if (false === $ok) {
             return false;

@@ -741,8 +741,7 @@ class Facture
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
 
-        $expediteur = $GLOBALS['AFUP_CONF']->obtenir('mails|email_expediteur');
-        $message = new Message($sujet, new MailUser($expediteur), new MailUser($personne['email'], $personne['nom']));
+        $message = new Message($sujet, new MailUser(MailUser::DEFAULT_SENDER_EMAIL, MailUser::DEFAULT_SENDER_NAME), new MailUser($personne['email'], $personne['nom']));
         $message->addAttachment(new Attachment(
             $chemin_facture,
             'facture-'.$reference.'.pdf',

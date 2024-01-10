@@ -21,6 +21,14 @@ parameters:
     github_authenticator: "AppBundle\\Security\\TestGithubAuthenticator"
     slack_url: null
 
+    smtp_host: "mailcatcher"
+    smtp_tls: 0
+    smtp_username: ""
+    smtp_password: ""
+    smtp_port: 1025
+    mailer_force_recipients: []
+    mailer_bcc: []
+
 services:
     AppBundle\Offices\OfficeFinder:
         class: AppBundle\Offices\NullOfficeFinder
