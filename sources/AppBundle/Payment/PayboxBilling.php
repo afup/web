@@ -71,8 +71,21 @@ class PayboxBilling
         return $this->countryCode;
     }
 
+    public function getCountryCodeIso3166Numeric()
+    {
+        $country = $this->getCountryCode();
+
+        try {
+            $data = (new \League\ISO3166\ISO3166)->alpha2($country);
+
+            return $data['numeric'];
+        } catch (\Exception $exception) {
+            return null;
+        }
+    }
+
     public static function createFromInvoice(Invoice $invoice)
     {
-        return new self($invoice->getFirstname(), $invoice->getLastname(), $invoice->getAddress(), $invoice->getZipcode(), $invoice->getCity(), $invoice->getCountryIso3166Numeric());
+        return new self($invoice->getFirstname(), $invoice->getLastname(), $invoice->getAddress(), $invoice->getZipcode(), $invoice->getCity(), $invoice->getCountryId());
     }
 }

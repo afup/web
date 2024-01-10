@@ -151,7 +151,7 @@ class Paybox
         $city->nodeValue = $this->preparePbxBillingValue($payboxBilling->getCity(), 50, self::PAYBOX_DEFAULT_STRING);
 
         $countryCode = $domDocument->createElement('CountryCode');
-        $countryCode->nodeValue = $this->preparePbxBillingValue($payboxBilling->getCountryCode(), 3, self::PAYBOX_DEFAULT_COUNTRY);
+        $countryCode->nodeValue = $this->preparePbxBillingValue($payboxBilling->getCountryCodeIso3166Numeric(), 3, self::PAYBOX_DEFAULT_COUNTRY);
 
         $address->appendChild($firstName);
         $address->appendChild($lastName);

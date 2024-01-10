@@ -104,7 +104,7 @@ EOF;
         $testIdentifiant = '110647233';
 
         $billingEmpty = new PayboxBilling('', '', '', '', '', '');
-        $billing = new PayboxBilling('Jean', 'Maurice', '20 rue des fleurs', '75003', 'Paris', 250);
+        $billing = new PayboxBilling('Jean', 'Maurice', '20 rue des fleurs', '75003', 'Paris', 'FR');
 
         return [
             [

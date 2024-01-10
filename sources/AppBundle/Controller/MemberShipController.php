@@ -123,7 +123,7 @@ class MemberShipController extends SiteBaseController
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
-        $payboxBilling = new PayboxBilling($company->getFirstName(), $company->getLastName(), $company->getAddress(), $company->getZipCode(), $company->getCity(), $company->getCountryIso3166Numeric());
+        $payboxBilling = new PayboxBilling($company->getFirstName(), $company->getLastName(), $company->getAddress(), $company->getZipCode(), $company->getCity(), $company->getCountry());
 
         $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
             'F' . $invoiceNumber,
@@ -407,7 +407,7 @@ class MemberShipController extends SiteBaseController
 
         $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
 
-        $payboxBilling = new PayboxBilling($user->getFirstName(), $user->getLastName(), $user->getAddress(), $user->getZipCode(), $user->getCity(), $user->getCountryIso3166Numeric());
+        $payboxBilling = new PayboxBilling($user->getFirstName(), $user->getLastName(), $user->getAddress(), $user->getZipCode(), $user->getCity(), $user->getCountry());
 
         $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
             $reference,

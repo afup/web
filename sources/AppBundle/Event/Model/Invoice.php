@@ -384,19 +384,6 @@ class Invoice implements NotifyPropertyInterface
         return $this->countryId;
     }
 
-    public function getCountryIso3166Numeric()
-    {
-        $country = $this->getCountryId();
-
-        try {
-            $data = (new \League\ISO3166\ISO3166)->alpha2($country);
-
-            return $data['numeric'];
-        } catch (\Exception $exception) {
-            return null;
-        }
-    }
-
     /**
      * @param string $countryId
      * @return Invoice
