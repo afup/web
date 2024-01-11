@@ -1,14 +1,6 @@
 <?php
 $configuration['web']['path']='http://.dev/';
 
-$configuration['afup']['raison_sociale']='AFUP';
-$configuration['afup']['adresse']='32, Boulevard de Strasbourg
-CS 30108';
-$configuration['afup']['code_postal']='75468';
-$configuration['afup']['ville']='Paris Cedex 10';
-$configuration['afup']['email']='bureau@afup.org';
-$configuration['afup']['siret']='500 869 011 00014';
-$configuration['afup']['numero_tva']='NUMERO_A_AJOUTER';
 $configuration['rib']['etablissement']='10278';
 $configuration['rib']['guichet']='06076';
 $configuration['rib']['compte']='00020707701';

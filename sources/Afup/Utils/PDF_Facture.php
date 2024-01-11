@@ -67,7 +67,7 @@ class PDF_Facture extends \FPDF
         $this->SetFont('Arial', 'B', 20);
         $this->Cell(130, 5, 'AFUP');
         $this->SetFont('Arial', '', 12);
-        $this->Cell(60, 5, $this->configuration->obtenir('afup|raison_sociale'));
+        $this->Cell(60, 5, AFUP_RAISON_SOCIALE);
         $this->Ln();
         $this->SetFont('Arial', '', 10);
         $this->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
@@ -75,20 +75,20 @@ class PDF_Facture extends \FPDF
 
 
         $this->SetFont('Arial', '', 12);
-        $this->MultiCell(60, 5, utf8_decode($this->configuration->obtenir('afup|adresse')));
+        $this->MultiCell(60, 5, utf8_decode(AFUP_ADRESSE));
         $this->Ln();
         $this->SetFont('Arial', '', 10);
         $this->Cell(130, 5, 'https://afup.org');
         $this->Ln();
         $this->Ln();
-        $this->Cell(130, 5, 'SIRET : ' . $this->configuration->obtenir('afup|siret'));
+        $this->Cell(130, 5, 'SIRET : ' . AFUP_SIRET);
         $this->SetFont('Arial', '', 12);
         $this->SetY($yFinAdresse);
         $this->Ln();
-        $this->Cell(60, 5, $this->configuration->obtenir('afup|code_postal') . ' ' . utf8_decode($this->configuration->obtenir('afup|ville')));
+        $this->Cell(60, 5, AFUP_CODE_POSTAL . ' ' . utf8_decode(AFUP_VILLE));
         $this->Ln();
         $this->Cell(130, 5);
-        $this->Cell(60, 5, 'Email : ' . $this->configuration->obtenir('afup|email'));
+        $this->Cell(60, 5, 'Email : ' . AFUP_EMAIL);
 
         $this->Ln();
         $this->Ln();
@@ -125,10 +125,10 @@ class PDF_Facture extends \FPDF
     {
         $address = sprintf(
             '%s - %u %s - %s - %s',
-            $this->configuration->obtenir('afup|adresse'),
-            $this->configuration->obtenir('afup|code_postal'),
-            $this->configuration->obtenir('afup|ville'),
-            $this->configuration->obtenir('afup|email'),
+            AFUP_ADRESSE,
+            AFUP_CODE_POSTAL,
+            AFUP_VILLE,
+            AFUP_EMAIL,
             'https://afup.org'
         );
 
@@ -143,7 +143,7 @@ class PDF_Facture extends \FPDF
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(170, 3, utf8_decode('N°') . ' SIRET', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-140, 3, $this->configuration->obtenir('afup|siret'), 0, 0, 'C');
+        $this->Cell(-140, 3, AFUP_SIRET, 0, 0, 'C');
         $this->Ln();
 
         $this->SetFont('Arial', 'B', 6);
@@ -184,7 +184,7 @@ class PDF_Facture extends \FPDF
             $this->SetFont('Arial', 'B', 6);
             $this->Cell(155, 3, utf8_decode('Numéro de TVA intracommunautaire'), 0, 0, 'C');
             $this->SetFont('Arial', null, 6);
-            $this->Cell(-95, 3, $this->configuration->obtenir('afup|numero_tva'), 0, 0, 'C');
+            $this->Cell(-60, 3, AFUP_NUMERO_TVA, 0, 0, 'C');
         }
 
         $this->Ln();

@@ -734,9 +734,9 @@ class Facture
         $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";
         $corps .= "Nous restons à votre disposition pour toute demande complémentaire.\n\n";
         $corps .= "Le bureau\n\n";
-        $corps .= $configuration->obtenir('afup|raison_sociale') . "\n";
-        $corps .= $configuration->obtenir('afup|adresse') . "\n";
-        $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "\n";
+        $corps .= AFUP_RAISON_SOCIALE . "\n";
+        $corps .= AFUP_ADRESSE . "\n";
+        $corps .= AFUP_CODE_POSTAL . " " . AFUP_VILLE . "\n";
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);

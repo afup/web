@@ -432,9 +432,9 @@ class Facturation
         );
         $mailer = Mail::createMailer();
         $mailer->renderTemplate($message,'mail_templates/facture-forum.html.twig', [
-            'raison_sociale' => $configuration->obtenir('afup|raison_sociale'),
-            'adresse' => $configuration->obtenir('afup|adresse'),
-            'ville' => $configuration->obtenir('afup|code_postal').' '.$configuration->obtenir('afup|ville'),
+            'raison_sociale' => AFUP_RAISON_SOCIALE,
+            'adresse' => AFUP_ADRESSE,
+            'ville' => AFUP_CODE_POSTAL.' '.AFUP_VILLE,
         ]);
         $message->addAttachment(new Attachment(
             $cheminFacture,

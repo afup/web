@@ -537,9 +537,9 @@ class Cotisations
         $corps .= "<p>Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.</p>";
         $corps .= "<p>Nous restons à votre disposition pour toute demande complémentaire.</p>";
         $corps .= "<p>Le bureau</p>";
-        $corps .= $configuration->obtenir('afup|raison_sociale') . "<br />";
-        $corps .= $configuration->obtenir('afup|adresse') . "<br />";
-        $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "<br />";
+        $corps .= AFUP_RAISON_SOCIALE . "<br />";
+        $corps .= AFUP_ADRESSE . "<br />";
+        $corps .= AFUP_CODE_POSTAL . " " . AFUP_VILLE . "<br />";
 
         $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $numeroFacture = $this->genererFacture($id_cotisation, $cheminFacture);

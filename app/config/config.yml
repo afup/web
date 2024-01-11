@@ -276,9 +276,6 @@ parameters:
             niveau: 'ROLE_ADMIN'
             icon: "tag"
             elements:
-                configuration:
-                    nom: 'Configuration du site'
-                    niveau: 'ROLE_ADMIN'
                 membre_administrateur:
                     nom: 'Administrateurs du site'
                     niveau: 'ROLE_ADMIN'
