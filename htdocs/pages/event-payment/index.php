@@ -58,7 +58,17 @@ $paybox
     ->setUrlRetourErreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php')
 ;
 
-$smarty->assign('paybox', $paybox->generate(new \DateTime()));
+$invoiceRepository = $symfonyKernel->getKernel()->getContainer()->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
+/** @var \AppBundle\Event\Model\Invoice $invoice */
+$invoice = $invoiceRepository->getByReference($inscription['reference']);
+
+if (null === $invoice) {
+    throw new \RuntimeException(sprintf("Invoice %s not found", $inscription['reference']));
+}
+
+$payboxBilling = \AppBundle\Payment\PayboxBilling::createFromInvoice($invoice);
+
+$smarty->assign('paybox', $paybox->generate(new \DateTime(), $payboxBilling));
 $smarty->assign('inscription', $inscription);
 $smarty->assign('original_ref', urlencode($_GET['ref']));
 $smarty->assign('forum', $forumData);

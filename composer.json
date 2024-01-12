@@ -25,6 +25,7 @@
     "j7mbo/twitter-api-php": "^1.0",
     "jms/serializer-bundle": "^1.1",
     "knpuniversity/oauth2-client-bundle": "^1.4",
+    "league/iso3166": "^2.1",
     "league/oauth2-github": "^0.2.1",
     "nojimage/twitter-text-php": "1.1.*",
     "pacely/mailchimp-apiv3": "^1.0",
