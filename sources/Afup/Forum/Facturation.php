@@ -134,7 +134,7 @@ class Facturation
             ? \DateTimeImmutable::createFromFormat('U', $facture['date_facture'])
             : new \DateTimeImmutable();
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
         $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
         $pdf->AddPage();
@@ -238,7 +238,7 @@ class Facturation
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
         $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();

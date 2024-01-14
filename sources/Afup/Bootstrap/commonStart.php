@@ -88,7 +88,7 @@ define('AFUP_CODE_POSTAL', '75468');
 define('AFUP_VILLE', 'Paris Cedex 10');
 define('AFUP_EMAIL', 'bureau@afup.org');
 define('AFUP_SIRET', '500 869 011 00022');
-define('AFUP_NUMERO_TVA', 'NUMERO_A_AJOUTER');
+define('AFUP_NUMERO_TVA', 'FR27 500 869 011');
 
 $AFUP_Tarifs_Forum = array(
     AFUP_FORUM_INVITATION => 0,

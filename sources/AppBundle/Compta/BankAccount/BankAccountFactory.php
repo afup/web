@@ -2,38 +2,33 @@
 
 namespace AppBundle\Compta\BankAccount;
 
-use Afup\Site\Utils\Configuration;
-
 class BankAccountFactory
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
-
     public function createApplyableAt(\DateTimeInterface $applicationDate = null)
     {
-        if (null === $applicationDate) {
-            $configKey = 'rib';
-        } else {
-            $comparisonDate = \DateTime::createFromFormat('Y-m-d', $this->configuration->obtenir('rib_ce|valid_until'));
-            $comparisonDate->setTime(0, 0, 1);
-            $configKey = $applicationDate <= $comparisonDate ? 'rib_ce' : 'rib';
+        $comparisonDate = new \Datetime('2021-01-01');
+        $comparisonDate->setTime(0, 0, 1);
+
+        if (null === $applicationDate || $applicationDate > $comparisonDate) {
+            return new BankAccount(
+                '06076',
+                '00020707701',
+                '00020707701',
+                '70',
+                "CCM PARIS MAGENTA GARE DE L'EST",
+                'CMCIFR2A',
+                'FR76 1027 8060 7600 0207 0770 170'
+            );
         }
 
         return new BankAccount(
-            $this->configuration->obtenir($configKey . '|etablissement'),
-            $this->configuration->obtenir($configKey . '|guichet'),
-            $this->configuration->obtenir($configKey . '|compte'),
-            $this->configuration->obtenir($configKey . '|cle'),
-            $this->configuration->obtenir($configKey . '|domiciliation'),
-            $this->configuration->obtenir($configKey . '|bic'),
-            $this->configuration->obtenir($configKey . '|iban')
+            '17515',
+            '90000',
+            '04045168667',
+            '70',
+            'CE ILE DE FRANCE PARIS',
+            'CEPAFRPP751',
+            'FR76 1751 5900 0004 0451 6866 770'
         );
     }
 }

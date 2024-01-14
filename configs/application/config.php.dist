@@ -1,21 +1,6 @@
 <?php
 $configuration['web']['path']='http://.dev/';
 
-$configuration['rib']['etablissement']='10278';
-$configuration['rib']['guichet']='06076';
-$configuration['rib']['compte']='00020707701';
-$configuration['rib']['cle']='70';
-$configuration['rib']['domiciliation']="CCM PARIS MAGENTA GARE DE L'EST";
-$configuration['rib']['bic']='CMCIFR2A';
-$configuration['rib']['iban']='FR76 1027 8060 7600 0207 0770 170';
-$configuration['rib_ce']['valid_until']='2023-01-01';
-$configuration['rib_ce']['etablissement']='17515';
-$configuration['rib_ce']['guichet']='90000';
-$configuration['rib_ce']['compte']='04045168667';
-$configuration['rib_ce']['cle']='70';
-$configuration['rib_ce']['domiciliation']='CE ILE DE FRANCE PARIS';
-$configuration['rib_ce']['bic']='CEPAFRPP751';
-$configuration['rib_ce']['iban']='FR76 1751 5900 0004 0451 6866 770';
 $configuration['bureau']['0']='MaximeTeneur';
 $configuration['bureau']['1']='JacquesBodinHullin';
 $configuration['bureau']['2']='ThierryMarianne';

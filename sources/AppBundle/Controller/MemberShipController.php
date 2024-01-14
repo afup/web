@@ -132,7 +132,7 @@ class MemberShipController extends SiteBaseController
             $payboxBilling
         );
 
-        $bankAccountFactory = new BankAccountFactory($this->legacyConfiguration);
+        $bankAccountFactory = new BankAccountFactory();
 
         return $this->render(':site/company_membership:payment.html.twig', [
             'paybox' => $paybox,

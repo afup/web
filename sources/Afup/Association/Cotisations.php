@@ -347,7 +347,7 @@ class Cotisations
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $dateCotisation = \DateTimeImmutable::createFromFormat('U', $cotisation['date_debut']);
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
         $isSubjectedToVat = Vat::isSubjectedToVat($dateCotisation);
         // Construction du PDF
         $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateCotisation), $isSubjectedToVat);

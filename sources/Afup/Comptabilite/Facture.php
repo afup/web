@@ -333,7 +333,7 @@ class Facture
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateDevis);
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
         $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateDevis), $isSubjectedToVat);
         $pdf->AddPage();
@@ -527,7 +527,7 @@ class Facture
             ? \DateTimeImmutable::createFromFormat('Y-m-d', $coordonnees['date_facture'])
             : new \DateTimeImmutable();
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
 
