@@ -24,6 +24,8 @@ class UpdateIndexationAction
 
     public function __invoke(Request $request)
     {
+        set_time_limit(240);
+
         $this->runner->run();
         $this->flashBag->add('notice', 'Indexation effectuée');
 
