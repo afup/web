@@ -1,5 +1,4 @@
 <?php
-$configuration['web']['path']='/';
 
 $configuration['bureau']['0']='MaximeTeneur';
 $configuration['bureau']['1']='JacquesBodinHullin';
@@ -8,8 +7,6 @@ $configuration['bureau']['3']='paxal';
 $configuration['bureau']['4']='ChristopheVilleneuve';
 $configuration['bureau']['5']='LaurenceHoizey';
 
-$configuration['site']['prefix']='pages/site/';
-$configuration['site']['query_prefix']='?route=';
 $configuration['git']['deployed_branch']='master';
 $configuration['git']['local_repo']='/home/afup/git.afup.org';
 $configuration['git']['local_export']='/home/afup/afup.org/';

@@ -1,6 +1,7 @@
 <?php
 
 namespace Afup\Site\Association;
+use Afup\Site\Corporate\Site;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
@@ -244,7 +245,7 @@ class Cotisations
         $corps = "Bonjour, \n\n";
         $corps .= "Une cotisation annuelle AFUP a été réglée.\n\n";
         $corps .= "Personne : " . $infos['nom'] . " " . $infos['prenom'] . " (" . $infos['email'] . ")\n";
-        $corps .= "URL : " . $configuration->obtenir('web|path') . "pages/administration/index.php?page=cotisations&type_personne=" . $account['type'] . "&id_personne=" . $account['id'] . "\n";
+        $corps .= "URL : " . Site::WEB_PATH . "pages/administration/index.php?page=cotisations&type_personne=" . $account['type'] . "&id_personne=" . $account['id'] . "\n";
         $corps .= "Commande : " . $cmd . "\n";
         $corps .= "Total : " . $total . "\n";
         $corps .= "Autorisation : " . $autorisation . "\n";

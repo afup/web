@@ -20,6 +20,8 @@
 
 // chargement des paramétrages génériques / multi-contextuels de l'application
 
+use Afup\Site\Corporate\Site;
+
 require_once dirname(__FILE__) . '/_Common.php';
 
 // initialisation de la session / requête
@@ -73,8 +75,8 @@ $smarty->compile_check = true;
 $smarty->php_handling  = SMARTY_PHP_ALLOW;
 
 $smarty->assign('url_base',          'http://' . $_SERVER['HTTP_HOST'] . '/');
-$smarty->assign('chemin_template',   $serveur.$GLOBALS['AFUP_CONF']->obtenir('web|path').'templates/' . $sous_site . '/');
-$smarty->assign('chemin_javascript', $serveur.$GLOBALS['AFUP_CONF']->obtenir('web|path').'javascript/');
+$smarty->assign('chemin_template',   $serveur.Site::WEB_PATH.'templates/' . $sous_site . '/');
+$smarty->assign('chemin_javascript', $serveur.Site::WEB_PATH.'javascript/');
 
 $GLOBALS['AFUP_DB']->executer("SET NAMES 'utf8'");
 require_once(dirname(__FILE__) . '/commonStart.php');
