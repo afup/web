@@ -7,14 +7,4 @@ $configuration['bureau']['3']='paxal';
 $configuration['bureau']['4']='ChristopheVilleneuve';
 $configuration['bureau']['5']='LaurenceHoizey';
 
-$configuration['git']['deployed_branch']='master';
-$configuration['git']['local_repo']='/home/afup/git.afup.org';
-$configuration['git']['local_export']='/home/afup/afup.org/';
-$configuration['sympa']['hote']='localhost';
-$configuration['sympa']['base']='sympa';
-$configuration['sympa']['utilisateur']='sympa';
-$configuration['sympa']['mot_de_passe']='sympa';
-$configuration['sympa']['directory']='http://127.0.0.1/sympa.php';
-$configuration['sympa']['config_url']='http://127.0.0.1/sympa.php';
-$configuration['sympa']['host'] = 'old.afup.org';
 return $configuration;
