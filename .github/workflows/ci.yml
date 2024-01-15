@@ -63,9 +63,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Config file
-        run: make configs/application/config.php
-
       - name: Parameters file
         run: make app/config/parameters.yml
 
@@ -99,9 +96,6 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-
-      - name: Prerequisites
-        run: make configs/application/config.php
 
       - name: Composer install
         run: composer install --no-scripts --ignore-platform-req=php

@@ -47,9 +47,6 @@ assets:
 watch:
 	./node_modules/.bin/webpack --progress --colors --watch
 
-configs/application/config.php:
-	cp configs/application/config.php.dist-docker configs/application/config.php
-
 app/config/parameters.yml:
 	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
 
@@ -62,7 +59,7 @@ init-db:
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-migrations
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-seed
 
-config: configs/application/config.php app/config/parameters.yml
+config: app/config/parameters.yml
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make vendors
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make assets
 

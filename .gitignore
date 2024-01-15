@@ -20,7 +20,6 @@ deps.lock
 /htdocs/cache
 /tmp/
 node_modules
-/configs/application/config.php
 /tests/simpletest
 /tests/unitaires/config.php
 

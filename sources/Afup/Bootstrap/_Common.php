@@ -54,12 +54,7 @@ require_once 'Afup/fonctions.php';
 
 
 // chargement de la configuration
-if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'test') {
-    $conf = new Configuration($root . '/configs/application/config-test.php');
-} else {
-    $conf = new Configuration($root . '/configs/application/config.php');
-}
-
+$conf = new Configuration();
 
 // mets la configuration dans une 'clé de registre' accessible à tout moment
 
