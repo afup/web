@@ -182,9 +182,9 @@ class PDF_Facture extends \FPDF
             $this->Ln();
 
             $this->SetFont('Arial', 'B', 6);
-            $this->Cell(145, 3, utf8_decode('Numéro de TVA intracommunautaire'), 0, 0, 'C');
+            $this->Cell(155, 3, utf8_decode('Numéro de TVA intracommunautaire'), 0, 0, 'C');
             $this->SetFont('Arial', null, 6);
-            $this->Cell(-60, 3, $this->configuration->obtenir('afup|numero_tva'), 0, 0, 'C');
+            $this->Cell(-95, 3, $this->configuration->obtenir('afup|numero_tva'), 0, 0, 'C');
         }
 
         $this->Ln();
