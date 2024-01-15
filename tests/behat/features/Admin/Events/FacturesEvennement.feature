@@ -52,7 +52,7 @@ Feature: Administration - Évènements - Factures d'évènement
     Then The page "1" of the PDF should contain "Payé par CB le 02/01/2024"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire NUMERO_A_AJOUTER"
-    Then the checksum of the response content should be "e0ea03688103cc03fd9c507c1cf30dab"
+    Then the checksum of the response content should be "7502fd1912dbaed009c06339f96f0780"
 
   @reloadDbWithTestData
   @clearEmails

@@ -91,7 +91,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Total TTC 30,00 €"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire NUMERO_A_AJOUTER"
-    Then the checksum of the response content should be "ad8d0c5660f0c201c4d9112fd237c3f5"
+    Then the checksum of the response content should be "fd8220147402cc643abd87528e637f9b"
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne morale avant 2024
@@ -136,7 +136,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Total TTC 180,00 €"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire NUMERO_A_AJOUTER"
-    Then the checksum of the response content should be "5c9f09899fdd3525e31b8a4c7183cfd4"
+    Then the checksum of the response content should be "fc5995251eec12adb62c2783039fb041"
 
 
   @reloadDbWithTestData
