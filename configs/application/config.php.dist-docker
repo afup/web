@@ -8,7 +8,6 @@ $configuration['bureau']['3']='paxal';
 $configuration['bureau']['4']='ChristopheVilleneuve';
 $configuration['bureau']['5']='LaurenceHoizey';
 
-$configuration['planete']['pertinence']='php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
 $configuration['site']['prefix']='pages/site/';
 $configuration['site']['query_prefix']='?route=';
 $configuration['git']['deployed_branch']='master';
