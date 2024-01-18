@@ -312,7 +312,7 @@ class Facturation
                 $pdf->Cell(30, 5, utf8_decode($this->formatFactureValue($montant, $isSubjectedToVat)) . utf8_decode(' '), 1, 0, 'R');
             }
 
-            $totalHt = $montantHt;
+            $totalHt += $montantHt;
             $total += $montant;
         }
 
