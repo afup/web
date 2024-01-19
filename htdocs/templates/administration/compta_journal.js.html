@@ -175,3 +175,25 @@
     {/literal}
 
 {/if}
+
+{if $action == 'modifier' }
+    {literal}
+    <script>
+        $(document).ready(function () {
+            let vatFields = [
+                {link: 'apply-vat-5-5', input: 'compta_journal_ht_5_5', rate: 0.055},
+                {link: 'apply-vat-10', input: 'compta_journal_ht_10', rate: 0.1},
+                {link: 'apply-vat-20', input: 'compta_journal_ht_20', rate: 0.2},
+                {link: 'apply-vat-0', input: 'compta_journal_ht_0', rate: 0}
+            ];
+            for (let i = 0; i< vatFields.length; i++) {
+                document.getElementById(vatFields[i].link).addEventListener('click', function (event) {
+                    document.getElementById(vatFields[i].input).value = Math.round(document.getElementById('compta_journal_montant').value / ( 1 + vatFields[i].rate) * 100) / 100;
+                    event.preventDefault();
+                    return false;
+                });
+            }
+        });
+    </script>
+    {/literal}
+{/if}
