@@ -1217,5 +1217,71 @@ SQL;
         return $results;
     }
 
+    function obtenirListRegles($filtre = '', $where = '')
+    {
+        $requete = 'SELECT ';
+        $requete .= '`id`, `label`, `condition`, `vat`, `category_id`, `event_id`, `attachment_required` ';
+        $requete .= 'FROM ';
+        $requete .= 'compta_regle ';
+        $wheres = [];
+        if ($where) {
+            $wheres[] = 'id=' . intval($where) . ' ';
+        }
+
+        if (count($wheres)) {
+            $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
+        }
+
+        $requete .= 'ORDER BY ';
+        $requete .= 'label ';
+
+        if ($where) {
+            return $this->_bdd->obtenirEnregistrement($requete);
+        } elseif ($filtre) {
+            return $this->_bdd->obtenirTous($requete);
+        } else {
+            $data = $this->_bdd->obtenirTous($requete);
+            $result[] = "";
+            foreach ($data as $row) {
+                $result[$row['id']] = $row['label'];
+            }
+            return $result;
+        }
+    }
+
+    function ajouterRegle($label, $condition, $is_credit, $tva, $category_id, $event_id)
+    {
+        $requete = 'INSERT INTO ';
+        $requete .= 'compta_regle (';
+        $requete .= '`label`, `condition`, `is_credit`, `vat`, `category_id`, `event_id`) ';
+        $requete .= 'VALUES (';
+        $requete .= $this->_bdd->echapper($label) . ', ';
+        $requete .= $this->_bdd->echapper($condition) . ', ';
+        $requete .= $this->_bdd->echapper($is_credit) . ', ';
+        $requete .= $this->_bdd->echapper($tva) . ', ';
+        $requete .= $this->_bdd->echapper($category_id) . ', ';
+        $requete .= $this->_bdd->echapper($event_id) . ' ';
+        $requete .= ');';
+
+        return $this->_bdd->executer($requete);
+    }
+
+    function modifierRegle($id, $label, $condition, $is_credit, $tva, $category_id, $event_id)
+    {
+
+        $requete = 'UPDATE ';
+        $requete .= 'compta_regle ';
+        $requete .= 'SET ';
+        $requete .= '`label` = ' . $this->_bdd->echapper($label) . ', ';
+        $requete .= '`condition` = ' . $this->_bdd->echapper($condition) . ', ';
+        $requete .= '`is_credit` = ' . $this->_bdd->echapper($is_credit) . ', ';
+        $requete .= '`vat` = ' . $this->_bdd->echapper($tva) . ', ';
+        $requete .= '`category_id` = ' . $this->_bdd->echapper($category_id) . ', ';
+        $requete .= '`event_id` = ' . $this->_bdd->echapper($event_id) . ' ';
+        $requete .= 'WHERE ';
+        $requete .= 'id = ' . intval($id) . ' ';
+
+        return $this->_bdd->executer($requete);
+    }
 }
 

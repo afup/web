@@ -1,12 +1,12 @@
 {if $action == 'lister' }
-    <h2>Configuration</h2>
+    <h2>Configuration des règles</h2>
 
-    {include file="compta_conf_menu.html" page=compta_conf_categorie}
+    {include file="compta_conf_menu.html" page=compta_conf_regle}
 
     <div class="ui bottom attached segment">
         <div class="ui menu">
-            <a href="index.php?page=compta_conf_categorie&amp;action=ajouter" class="item">
-                <div data-tooltip="Ajouter une catégorie" data-position="bottom left">
+            <a href="index.php?page=compta_conf_regle&amp;action=ajouter" class="item">
+                <div data-tooltip="Ajouter une règle" data-position="bottom left">
                     <i class="icon plus square"></i>
                     Ajouter
                 </div>
@@ -16,18 +16,18 @@
         <table class="ui table striped compact celled">
             <thead>
             <tr>
-                <th>Categorie</th>
-                <th>&nbsp</th>
+                <th>Règle</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            {foreach from=$data item=ecriture}
+            {foreach from=$data item=regle}
             <tr>
-                <td>{$ecriture.categorie}</td>
+                <td>{$regle.label}</td>
                 <td style="text-align: right">
-                    <a href="index.php?page=compta_conf_categorie&amp;action=modifier&amp;id={$ecriture.id}"
+                    <a href="index.php?page=compta_conf_regle&amp;action=modifier&amp;id={$regle.id}"
                        data-position="left center"
-                       data-tooltip="Modifier la ligne {$ecriture.description}"
+                       data-tooltip="Modifier la règle {$regle.label}"
                        class="compact ui icon button"
                     >
                         <i class="pencil alernate icon"></i>
@@ -36,7 +36,7 @@
             </tr>
             {foreachelse}
             <tr>
-                <td><em>Aucune ecriture actuellement</em></td>
+                <td><em>Aucune règle actuellement</em></td>
             </tr>
             {/foreach}
             </tbody>
@@ -45,9 +45,9 @@
 
 {else}
     {if $action == 'ajouter'}
-        <h2>Ajouter une categorie</h2>
+        <h2>Ajouter une règle</h2>
     {else}
-        <h2>Modifier une categorie</h2>
+        <h2>Modifier une règle</h2>
     {/if}
     {include file="formulaire.html"}
 {/if}
