@@ -618,7 +618,8 @@ elseif ($action == 'supprimer') {
     $formulaire->addElement('file', 'fichiercsv', 'Fichier banque'     );
     $formulaire->addElement('select', 'banque', 'Banque', [
         Importer\CaisseEpargne::CODE => "Caisse d'Épargne",
-        Importer\CreditMutuel::CODE => 'Crédit Mutuel',
+        Importer\CreditMutuel::CODE => 'Crédit Mutuel - Compte Courant',
+        Importer\CreditMutuelLivret::CODE => 'Crédit Mutuel - Livret',
     ]);
 
 	$formulaire->addElement('header', 'boutons'  , '');
