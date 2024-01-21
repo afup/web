@@ -3,6 +3,7 @@
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Utils\Logs;
 use AppBundle\Controller\LegacyController;
+use AppBundle\Model\ComptaModeReglement;
 
 /** @var LegacyController $this */
 
@@ -35,10 +36,12 @@ if ($action == 'lister') {
     $formulaire->addElement('header', '', '');
     $formulaire->addElement('text', 'label', 'Nom de la règle', array('size' => 30, 'maxlength' => 255));
     $formulaire->addElement('text', 'condition', 'Condition', array('size' => 30, 'maxlength' => 255));
-    $formulaire->addElement('select', 'is_credit', 'Sens', array(null => 'Les deux', '1' => 'Crédit', '0' => 'Débit'));
-    $formulaire->addElement('select', 'vat', 'Taux de TVA', array('0' => 'Non soumis', '5.50' => '5.5%', '10.00' => '10%', '20.00' => '20%'));
+    $formulaire->addElement('select', 'is_credit', 'Crédit/débit ?', array(null => 'Les deux', '1' => 'Crédit', '0' => 'Débit'));
+    $formulaire->addElement('select', 'mode_regl_id', 'Mode de règlement', array_merge([null => 'N.C.'], ComptaModeReglement::list()));
+    $formulaire->addElement('select', 'vat', 'Taux de TVA', array('0' => 'N.C.', '5_5' => '5.5%', '10' => '10%', '20' => '20%'));
     $formulaire->addElement('select', 'category_id', 'Catégorie', $compta->obtenirListCategories());
     $formulaire->addElement('select', 'event_id', 'Évènement', $compta->obtenirListEvenements());
+    $formulaire->addElement('select', 'attachment_required', 'Justificatif obligatoire ?', array(null => 'N.C.', '1' => 'Oui', '0' => 'Non'));
 
     $formulaire->addRule('label' , 'Nom manquant' , 'required');
     $formulaire->addRule('condition' , 'Condition manquante' , 'required');

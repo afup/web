@@ -17,6 +17,7 @@
             <thead>
             <tr>
                 <th>Règle</th>
+                <th>Condition</th>
                 <th></th>
             </tr>
             </thead>
@@ -24,6 +25,9 @@
             {foreach from=$data item=regle}
             <tr>
                 <td>{$regle.label}</td>
+                <td>
+                    <code>{$regle.condition}</code>
+                </td>
                 <td style="text-align: right">
                     <a href="index.php?page=compta_conf_regle&amp;action=modifier&amp;id={$regle.id}"
                        data-position="left center"
@@ -42,7 +46,6 @@
             </tbody>
         </table>
     </div>
-
 {else}
     {if $action == 'ajouter'}
         <h2>Ajouter une règle</h2>
@@ -51,3 +54,18 @@
     {/if}
     {include file="formulaire.html"}
 {/if}
+
+{literal}
+<style>
+    code {
+        font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+        background: #EEE;
+        border: 1px solid #999;
+        line-height: 1;
+        word-wrap: break-word;
+        padding: .1rem .2rem;
+        border-radius: .2rem;
+        font-size: 10px;
+    }
+</style>
+{/literal}

@@ -60,3 +60,28 @@ Feature: Administration - Trésorerie - Configuration
     Then the ".content .message" element should contain "L'écriture a été ajoutée"
     And I should see "Un super compte"
 
+
+  Scenario: Création/liste des règles
+    Given I am logged in as admin and on the Administration
+    When I follow "Configuration"
+    Then the ".content h2" element should contain "Configuration"
+    When I follow "Règles"
+    When I follow "Ajouter"
+    Then the ".content h2" element should contain "Ajouter une règle"
+    When I fill in "label" with "Une nouvelle règle"
+    When I fill in "condition" with "REM INSCRIPTION"
+    When I fill in "is_credit" with "1"
+    # CB
+    When I fill in "mode_regl_id" with "2"
+    # TVA à 5.5%
+    When I fill in "vat" with "5_5"
+    # À determiner
+    When I fill in "category_id" with "26"
+    # Association AFUP
+    When I fill in "event_id" with "27"
+    # Justification obligatoire
+    When I fill in "attachment_required" with "1"
+    And I press "soumettre"
+    Then the ".content .message" element should contain "La règle a été ajoutée"
+    And I should see "Une nouvelle règle REM INSCRIPTION"
+

@@ -8,6 +8,7 @@ namespace Afup\Site\Comptabilite;
 
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Base_De_Donnees;
+use AppBundle\Compta\Importer\AutoQualifier;
 use AppBundle\Compta\Importer\Importer;
 use AppBundle\Compta\Importer\Operation;
 use AppBundle\Model\ComptaCategorie;
@@ -935,138 +936,34 @@ SQL;
             // On vérife si l'enregistrement existe déjà
             $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
 
-            $date_ecriture = $operation->getDateEcriture();
-            $description = $operation->getDescription();
-            $idoperation = $operation->isCredit() ? 2 : 1;
-            $montant = $operation->getMontant();
-
-            // On tente les préaffectations
-            $categorie = 26; // Catégorie 26 = "A déterminer"
-            $evenement = 8;  // Événement 8 = "A déterminer"
-
-            $idModeReglement = 9;
-            $attachmentRequired = 0;
-
-            $firstPartDescription = strtoupper(explode(' ', $description)[0]);
-            switch ($firstPartDescription) {
-                case 'CB':
-                    $idModeReglement = ComptaModeReglement::CB;
-                    break;
-                case 'VIR':
-                    $idModeReglement = ComptaModeReglement::VIREMENT;
-                    break;
-                case 'CHE':
-                case 'REM':
-                    $idModeReglement = ComptaModeReglement::CHEQUE;
-                    break;
-                case 'PRLV':
-                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
-                    break;
-            }
-
-            if ($operation->isCredit()) {
-                if (0 === strpos($description, 'VIR SEPA sprd.net AG')) {
-                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
-                    $categorie = ComptaCategorie::GOODIES;
-                    $attachmentRequired = 1;
-                }
-            } else {
-                if (0 === strpos($description, '*CB COM AFUP ')) {
-                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
-                    $evenement = ComptaEvenement::GESTION;
-                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
-                }
-
-                if (0 === strpos($description, '* COTIS ASSOCIATIS ESSENTIEL')) {
-                    $idModeReglement = ComptaModeReglement::PRELEVEMENT;
-                    $evenement = ComptaEvenement::GESTION;
-                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
-                }
-
-                if (0 === strpos(strtoupper($description), 'PRLV URSSAF')) {
-                    $evenement = ComptaEvenement::GESTION;
-                    $categorie = ComptaCategorie::CHARGES_SOCIALES;
-                }
-
-                if ($description === 'PRLV B2B DGFIP') {
-                    $evenement = ComptaEvenement::GESTION;
-                    $categorie = ComptaCategorie::PRELEVEMENT_SOURCE;
-                }
-
-                if (0 === strpos($description, 'PRLV A3M - RETRAITE - MALAKOFF HUMANIS')) {
-                    $evenement = ComptaEvenement::GESTION;
-                    $categorie = ComptaCategorie::CHARGES_SOCIALES;
-                }
-
-                if (0 === strpos($description, 'PRLV Online SAS -')) {
-                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
-                    $categorie = ComptaCategorie::OUTILS;
-                    $attachmentRequired = 1;
-                }
-
-                if (0 === strpos($description, 'CB MEETUP ORG')) {
-                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
-                    $categorie = ComptaCategorie::MEETUP;
-                    $attachmentRequired = 1;
-                }
-
-                if (0 === strpos($description, 'PRLV POINT TRANSACTION SYSTEM -')) {
-                    $evenement = ComptaEvenement::GESTION;
-                    $categorie = ComptaCategorie::FRAIS_DE_COMPTE;
-                    $attachmentRequired = 1;
-                }
-
-                if (0 === strpos(strtoupper($description), 'CB MAILCHIMP FACT')) {
-                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
-                    $categorie = ComptaCategorie::MAILCHIMP;
-                    $attachmentRequired = 1;
-                }
-
-                if (0 === strpos($description, 'CB AWS EMEA FACT')) {
-                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
-                    $categorie = ComptaCategorie::OUTILS;
-                    $attachmentRequired = 1;
-                }
-
-                if (0 === strpos($description, 'CB GANDI FACT')) {
-                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
-                    $categorie = ComptaCategorie::GANDI;
-                    $attachmentRequired = 1;
-                }
-
-                if (0 === strpos($description, 'CB Twilio')) {
-                    $evenement = ComptaEvenement::ASSOCIATION_AFUP;
-                    $categorie = ComptaCategorie::OUTILS;
-                    $attachmentRequired = 1;
-                }
-            }
+            $operationQualified = AutoQualifier::qualify($operation);
 
             if (!is_array($enregistrement)) {
                 $this->ajouter(
-                    $idoperation,
+                    $operationQualified['idoperation'],
                     $importer->getCompteId(),
-                    $categorie,
-                    $date_ecriture,
+                    $operationQualified['categorie'],
+                    $operationQualified['date_ecriture'],
                     '',
                     '',
-                    $montant,
-                    $description,
+                    $operationQualified['montant'],
+                    $operationQualified['description'],
                     '',
-                    $idModeReglement,
-                    $date_ecriture,
+                    $operationQualified['idModeReglement'],
+                    $operationQualified['date_ecriture'],
                     '',
-                    $evenement,
-                    $numero_operation,
-                    $attachmentRequired
+                    $operationQualified['evenement'],
+                    $operationQualified['numero_operation'],
+                    $operationQualified['attachmentRequired']
                 );
             } else {
                 $modifier = false;
-                if ($enregistrement['idcategorie'] == 26 && $categorie != 26) {
-                    $enregistrement['idcategorie'] = $categorie;
+                if ($enregistrement['idcategorie'] == AutoQualifier::DEFAULT_CATEGORIE && $operationQualified['categorie'] != AutoQualifier::DEFAULT_CATEGORIE) {
+                    $enregistrement['idcategorie'] = $operationQualified['categorie'];
                     $modifier = true;
                 }
-                if ($enregistrement['idevenement'] == 8 && $evenement != 8) {
-                    $enregistrement['idevenement'] = $evenement;
+                if ($enregistrement['idevenement'] == AutoQualifier::DEFAULT_EVENEMENT && $operationQualified['evenement'] != AutoQualifier::DEFAULT_EVENEMENT) {
+                    $enregistrement['idevenement'] = $operationQualified['evenement'];
                     $modifier = true;
                 }
                 if ($modifier) {
@@ -1085,7 +982,7 @@ SQL;
                         $enregistrement['obs_regl'],
                         $enregistrement['idevenement'],
                         $enregistrement['numero_operation'],
-                        $attachmentRequired
+                        $operationQualified['attachmentRequired']
                     );
                 }
             }

@@ -16,6 +16,7 @@ CREATE TABLE compta_regle
     `vat`                 VARCHAR(7)   NULL,
     `category_id`         TINYINT(5)   NULL,
     `event_id`            TINYINT(5)   NULL,
+    `mode_regl_id`        TINYINT(5)   NULL,
     `attachment_required` TINYINT(2)   NULL,
     PRIMARY KEY (`id`)
 );
