@@ -149,14 +149,18 @@ elseif ($action == 'credit') {
     $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intracommunautaire (facture)', array('size' => 30, 'maxlength' => 100));
     $formulaire->addElement('text', 'numero', 'Numero facture' , array('size' => 30, 'maxlength' => 40));
    	$formulaire->addElement('textarea', 'description', 'Description', array('cols' => 42, 'rows' => 5));
-	$formulaire->addElement('text', 'montant', 'Montant' , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text', 'montant', 'Montant' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_montant'));
 	$formulaire->addElement('text', 'comment', 'Commentaire' , array('size' => 30, 'maxlength' => 255));
 
     $formulaire->addElement('header'  , ''                         , 'TVA');
-    $formulaire->addElement('text', 'montant_ht_soumis_tva_5_5', 'Montant HT soumis à TVA 5.5%' , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text', 'montant_ht_soumis_tva_10', 'Montant HT soumis à TVA 10%' , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text', 'montant_ht_soumis_tva_20', 'Montant HT soumis à TVA 20%' , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text', 'montant_ht_soumis_tva_0', 'Montant HT non soumis à TVA' , array('size' => 30, 'maxlength' => 40));
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_5_5', 'Montant HT soumis à TVA 5.5%' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_5_5'));
+    $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-5-5">Calculer le montant HT soumis à TVA 5.5% sur la base de l\'intégralité du montant TTC</a><br /><br />');
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_10', 'Montant HT soumis à TVA 10%' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_10'));
+    $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-10">Calculer le montant HT soumis à TVA 10% sur la base de l\'intégralité du montant TTC</a><br /><br />');
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_20', 'Montant HT soumis à TVA 20%' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_20'));
+    $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-20">Calculer le montant HT soumis à TVA 20% sur la base de l\'intégralité du montant TTC</a><br /><br />');
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_0', 'Montant HT non soumis à TVA' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_0'));
+    $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-0">Calculer le montant non soumis à TVA sur la base de l\'intégralité du montant TTC</a><br /><br />');
 
 
 //reglement
