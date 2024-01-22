@@ -956,7 +956,11 @@ SQL;
                     '',
                     $operationQualified['evenement'],
                     $operationQualified['numero_operation'],
-                    $operationQualified['attachmentRequired']
+                    $operationQualified['attachmentRequired'],
+                    $operationQualified['montant_ht_soumis_tva_0'],
+                    $operationQualified['montant_ht_soumis_tva_5_5'],
+                    $operationQualified['montant_ht_soumis_tva_10'],
+                    $operationQualified['montant_ht_soumis_tva_20']
                 );
             } else {
                 $modifier = false;

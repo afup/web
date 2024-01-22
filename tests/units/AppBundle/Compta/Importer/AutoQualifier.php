@@ -57,31 +57,31 @@ class AutoQualifier extends \atoum
     {
         return [
             'sprd.net' => ['VIR SEPA sprd.net AG blablabla', Operation::CREDIT,
-                ComptaModeReglement::VIREMENT, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::GOODIES, 1],
+                ComptaModeReglement::VIREMENT, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::GOODIES, 1, 100, 'montant_ht_soumis_tva_0'],
             'COM AFUP' => ['*CB COM AFUP blablabla', Operation::DEBIT,
-                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, TestedClass::DEFAULT_ATTACHMENT],
+                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, TestedClass::DEFAULT_ATTACHMENT, 94.79, 'montant_ht_soumis_tva_5_5'],
             'COTIS ASSOCIATIS' => ['* COTIS ASSOCIATIS ESSENTIEL blablabla', Operation::DEBIT,
-                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, TestedClass::DEFAULT_ATTACHMENT],
+                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, TestedClass::DEFAULT_ATTACHMENT, 90.91, 'montant_ht_soumis_tva_10'],
             'URSSAF' => ['PRLV URSSAF blablabla', Operation::DEBIT,
-                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::CHARGES_SOCIALES, TestedClass::DEFAULT_ATTACHMENT],
+                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::CHARGES_SOCIALES, TestedClass::DEFAULT_ATTACHMENT, 83.33, 'montant_ht_soumis_tva_20'],
             'DGFIP' => ['PRLV B2B DGFIP', Operation::DEBIT,
-                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::PRELEVEMENT_SOURCE, TestedClass::DEFAULT_ATTACHMENT],
+                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::PRELEVEMENT_SOURCE, TestedClass::DEFAULT_ATTACHMENT, null, null],
             'RETRAITE' => ['PRLV A3M - RETRAITE - MALAKOFF HUMANIS blablabla', Operation::DEBIT,
-                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::CHARGES_SOCIALES, TestedClass::DEFAULT_ATTACHMENT],
+                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::CHARGES_SOCIALES, TestedClass::DEFAULT_ATTACHMENT, null, null],
             'Online.net' => ['PRLV Online SAS - blablabla', Operation::DEBIT,
-                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1],
+                ComptaModeReglement::PRELEVEMENT, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1, null, null],
             'meetup.org' => ['CB MEETUP ORG blablabla', Operation::DEBIT,
-                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::MEETUP, 1],
+                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::MEETUP, 1, null, null],
             'POINT TRANSACTION' => ['PRLV POINT TRANSACTION SYSTEM - blablabla',
-                Operation::DEBIT, ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, 1],
+                Operation::DEBIT, ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, 1, null, null],
             'Mailchimp' => ['CB MAILCHIMP FACT blablabla', Operation::DEBIT,
-                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::MAILCHIMP, 1],
+                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::MAILCHIMP, 1, null, null],
             'AWS' => ['CB AWS EMEA FACT blablabla', Operation::DEBIT,
-                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1],
+                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1, null, null],
             'gandi.net' => ['CB GANDI FACT blablabla', Operation::DEBIT,
-                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::GANDI, 1],
+                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::GANDI, 1, null, null],
             'Twilio' => ['CB Twilio blablabla', Operation::DEBIT,
-                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1],
+                ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1, null, null],
         ];
     }
 
@@ -89,9 +89,9 @@ class AutoQualifier extends \atoum
      * @dataProvider qualifierData
      */
     public function testQualifier($operationDescription, $operationType,
-        $expectedIdModeReglement, $expectedEvenement, $expectedCategorie, $expectedAttachment)
+        $expectedIdModeReglement, $expectedEvenement, $expectedCategorie, $expectedAttachment, $expectedHT, $expectedHTKey)
     {
-        $operation = new Operation('2022-02-22', $operationDescription, '123', $operationType, '1234');
+        $operation = new Operation('2022-02-22', $operationDescription, '100', $operationType, '1234');
         $qualifier = new TestedClass($this->fakeBD());
         $actual = $qualifier->qualify($operation);
 
@@ -99,6 +99,10 @@ class AutoQualifier extends \atoum
         $this->integer($actual['evenement'])->isEqualTo($expectedEvenement);
         $this->integer($actual['idModeReglement'])->isEqualTo($expectedIdModeReglement);
         $this->integer($actual['attachmentRequired'])->isEqualTo($expectedAttachment);
+        if ($expectedHTKey) {
+            $this->float($actual[$expectedHTKey])->isEqualTo($expectedHT);
+        }
+
     }
 
     private function fakeBD():array {
@@ -109,7 +113,7 @@ class AutoQualifier extends \atoum
                 'condition' => 'VIR SEPA sprd.net AG',
                 'is_credit' => '1',
                 'mode_regl_id' => ComptaModeReglement::VIREMENT,
-                'vat' => null,
+                'vat' => '0',
                 'category_id' => ComptaCategorie::GOODIES,
                 'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
                 'attachment_required' => 1,
@@ -120,7 +124,7 @@ class AutoQualifier extends \atoum
                 'condition' => '*CB COM AFUP ',
                 'is_credit' => 0,
                 'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => null,
+                'vat' => '5_5',
                 'category_id' => ComptaCategorie::FRAIS_DE_COMPTE,
                 'event_id' => ComptaEvenement::GESTION,
                 'attachment_required' => null,
@@ -131,7 +135,7 @@ class AutoQualifier extends \atoum
                 'condition' => '* COTIS ASSOCIATIS ESSENTIEL',
                 'is_credit' => 0,
                 'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => null,
+                'vat' => '10',
                 'category_id' => ComptaCategorie::FRAIS_DE_COMPTE,
                 'event_id' => ComptaEvenement::GESTION,
                 'attachment_required' => null,
@@ -142,7 +146,7 @@ class AutoQualifier extends \atoum
                 'condition' => 'PRLV URSSAF',
                 'is_credit' => 0,
                 'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => null,
+                'vat' => '20',
                 'category_id' => ComptaCategorie::CHARGES_SOCIALES,
                 'event_id' => ComptaEvenement::GESTION,
                 'attachment_required' => null,
