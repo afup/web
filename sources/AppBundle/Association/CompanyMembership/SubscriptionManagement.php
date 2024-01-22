@@ -4,6 +4,7 @@
 namespace AppBundle\Association\CompanyMembership;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Utils\Utils;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\LegacyModelFactory;
 
@@ -29,7 +30,7 @@ class SubscriptionManagement
         $subscription->ajouter(
             AFUP_PERSONNES_MORALES,
             $company->getId(),
-            ceil($numberOfMembers / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE,
+            ceil($numberOfMembers / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE),
             null,
             null,
             (new \DateTime())->format('U'),
