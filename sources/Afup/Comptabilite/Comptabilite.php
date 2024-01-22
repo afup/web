@@ -931,12 +931,14 @@ SQL;
             return false;
         }
 
+        $qualifier = new AutoQualifier($this->obtenirListRegles());
+
         foreach ($importer->extract() as $operation) {
             $numero_operation = $operation->getNumeroOperation();
             // On vérife si l'enregistrement existe déjà
             $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
 
-            $operationQualified = AutoQualifier::qualify($operation);
+            $operationQualified = $qualifier->qualify($operation);
 
             if (!is_array($enregistrement)) {
                 $this->ajouter(

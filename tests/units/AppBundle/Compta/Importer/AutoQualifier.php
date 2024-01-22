@@ -7,13 +7,15 @@ use AppBundle\Compta\Importer\AutoQualifier as TestedClass;
 use AppBundle\Model\ComptaCategorie;
 use AppBundle\Model\ComptaEvenement;
 use AppBundle\Model\ComptaModeReglement;
+use Phinx\Console\Command\Test;
 
 class AutoQualifier extends \atoum
 {
     public function testDefaultOperation()
     {
         $operation = new Operation('2022-02-22', 'DESCRIPTION', '123', Operation::CREDIT, '1234');
-        $actual = TestedClass::qualify($operation);
+        $qualifier = new TestedClass([]);
+        $actual = $qualifier->qualify($operation);
 
         $this->string($actual['date_ecriture'])->isEqualTo('2022-02-22');
         $this->integer($actual['idoperation'])->isEqualTo(2);
@@ -44,7 +46,8 @@ class AutoQualifier extends \atoum
     public function testIdModeReglement($description, $idModeReglement)
     {
         $operation = new Operation('2022-02-22', $description, '123', Operation::CREDIT, '1234');
-        $actual = TestedClass::qualify($operation);
+        $qualifier = new TestedClass([]);
+        $actual = $qualifier->qualify($operation);
 
         $this->integer($actual['idModeReglement'])->isEqualTo($idModeReglement);
     }
@@ -89,11 +92,160 @@ class AutoQualifier extends \atoum
         $expectedIdModeReglement, $expectedEvenement, $expectedCategorie, $expectedAttachment)
     {
         $operation = new Operation('2022-02-22', $operationDescription, '123', $operationType, '1234');
-        $actual = TestedClass::qualify($operation);
+        $qualifier = new TestedClass($this->fakeBD());
+        $actual = $qualifier->qualify($operation);
 
         $this->integer($actual['categorie'])->isEqualTo($expectedCategorie);
         $this->integer($actual['evenement'])->isEqualTo($expectedEvenement);
         $this->integer($actual['idModeReglement'])->isEqualTo($expectedIdModeReglement);
         $this->integer($actual['attachmentRequired'])->isEqualTo($expectedAttachment);
+    }
+
+    private function fakeBD():array {
+        return [
+            [
+                'id' => 1,
+                'label' => 'VIR sprd.net',
+                'condition' => 'VIR SEPA sprd.net AG',
+                'is_credit' => '1',
+                'mode_regl_id' => ComptaModeReglement::VIREMENT,
+                'vat' => null,
+                'category_id' => ComptaCategorie::GOODIES,
+                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
+                'attachment_required' => 1,
+            ],
+            [
+                'id' => 2,
+                'label' => 'CB COM AFUP',
+                'condition' => '*CB COM AFUP ',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
+                'vat' => null,
+                'category_id' => ComptaCategorie::FRAIS_DE_COMPTE,
+                'event_id' => ComptaEvenement::GESTION,
+                'attachment_required' => null,
+            ],
+            [
+                'id' => 3,
+                'label' => 'COTIS ASSOCIATIS ESSENTIEL',
+                'condition' => '* COTIS ASSOCIATIS ESSENTIEL',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
+                'vat' => null,
+                'category_id' => ComptaCategorie::FRAIS_DE_COMPTE,
+                'event_id' => ComptaEvenement::GESTION,
+                'attachment_required' => null,
+            ],
+            [
+                'id' => 4,
+                'label' => 'URSSAF',
+                'condition' => 'PRLV URSSAF',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
+                'vat' => null,
+                'category_id' => ComptaCategorie::CHARGES_SOCIALES,
+                'event_id' => ComptaEvenement::GESTION,
+                'attachment_required' => null,
+            ],
+            [
+                'id' => 5,
+                'label' => 'DGFIP',
+                'condition' => 'PRLV B2B DGFIP',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
+                'vat' => null,
+                'category_id' => ComptaCategorie::PRELEVEMENT_SOURCE,
+                'event_id' => ComptaEvenement::GESTION,
+                'attachment_required' => null,
+            ],
+            [
+                'id' => 6,
+                'label' => 'MALAKOFF HUMANIS',
+                'condition' => 'PRLV A3M - RETRAITE - MALAKOFF HUMANIS',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
+                'vat' => null,
+                'category_id' => ComptaCategorie::CHARGES_SOCIALES,
+                'event_id' => ComptaEvenement::GESTION,
+                'attachment_required' => null,
+            ],
+            [
+                'id' => 7,
+                'label' => 'Online SAS',
+                'condition' => 'PRLV Online SAS -',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
+                'vat' => null,
+                'category_id' => ComptaCategorie::OUTILS,
+                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
+                'attachment_required' => 1,
+            ],
+            [
+                'id' => 8,
+                'label' => 'meetup.org',
+                'condition' => 'CB MEETUP ORG',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::CB,
+                'vat' => null,
+                'category_id' => ComptaCategorie::MEETUP,
+                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
+                'attachment_required' => 1,
+            ],
+            [
+                'id' => 9,
+                'label' => 'POINT TRANSACTION SYSTEM',
+                'condition' => 'PRLV POINT TRANSACTION SYSTEM -',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
+                'vat' => null,
+                'category_id' => ComptaCategorie::FRAIS_DE_COMPTE,
+                'event_id' => ComptaEvenement::GESTION,
+                'attachment_required' => 1,
+            ],
+            [
+                'id' => 10,
+                'label' => 'Mailchimp',
+                'condition' => 'CB MAILCHIMP FACT',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::CB,
+                'vat' => null,
+                'category_id' => ComptaCategorie::MAILCHIMP,
+                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
+                'attachment_required' => 1,
+            ],
+            [
+                'id' => 11,
+                'label' => 'AWS',
+                'condition' => 'CB AWS EMEA FACT',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::CB,
+                'vat' => null,
+                'category_id' => ComptaCategorie::OUTILS,
+                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
+                'attachment_required' => 1,
+            ],
+            [
+                'id' => 12,
+                'label' => 'gandi.net',
+                'condition' => 'CB GANDI FACT',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::CB,
+                'vat' => null,
+                'category_id' => ComptaCategorie::GANDI,
+                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
+                'attachment_required' => 1,
+            ],
+            [
+                'id' => 13,
+                'label' => 'Twilio',
+                'condition' => 'CB Twilio',
+                'is_credit' => 0,
+                'mode_regl_id' => ComptaModeReglement::CB,
+                'vat' => null,
+                'category_id' => ComptaCategorie::OUTILS,
+                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
+                'attachment_required' => 1,
+            ],
+        ];
     }
 }
