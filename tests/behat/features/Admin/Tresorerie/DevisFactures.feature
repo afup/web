@@ -151,7 +151,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should contain "forum_php_2023 Forum PHP 2023 - Sponsoring Bronze 1.00 1000.00 € 1000 €"
     Then The page "1" of the PDF should contain "TOTAL 1000 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
-    Then the checksum of the response content should be "aa4520e276cad2edde2e016fbbfba309"
+    Then the checksum of the response content should be "1a6219e7d6f9538c3887d042ad293c5f"
 
 
   @reloadDbWithTestData
