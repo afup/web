@@ -6,7 +6,7 @@ class BankAccountFactory
 {
     public function createApplyableAt(\DateTimeInterface $applicationDate = null)
     {
-        $comparisonDate = new \Datetime('2021-01-01');
+        $comparisonDate = new \Datetime('2023-01-01');
         $comparisonDate->setTime(0, 0, 1);
 
         if (null === $applicationDate || $applicationDate > $comparisonDate) {
