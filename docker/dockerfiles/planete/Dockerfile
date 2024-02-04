@@ -1,6 +1,4 @@
-FROM php:7.0-apache
-
-RUN echo 'deb http://archive.debian.org/debian stretch main' > /etc/apt/sources.list
+FROM php:7.4-apache
 
 # Install required php extensions for afup website and other management package
 RUN apt-get update && \
