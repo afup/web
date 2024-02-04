@@ -9,7 +9,6 @@ class ComptaRegle extends AbstractSeed
 {
     public function run()
     {
-
         $data = [
             [
                 'id' => 1,

@@ -2,10 +2,7 @@
 
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Utils\Logs;
-use AppBundle\Controller\LegacyController;
 use AppBundle\Model\ComptaModeReglement;
-
-/** @var LegacyController $this */
 
 // Impossible to access the file itself
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -19,17 +16,17 @@ $smarty->assign('action', $action);
 
 $compta = new Comptabilite($bdd);
 
-if ($action == 'lister') {
+if ($action === 'lister') {
     $data = $compta->obtenirListRegles(true);
     $smarty->assign('data', $data);
-} elseif ($action == 'ajouter' || $action == 'modifier') {
+} elseif ($action === 'ajouter' || $action === 'modifier') {
     $formulaire = instancierFormulaire();
 
-    if ($action == 'modifier') {
-        $champs = $compta->obtenirListRegles('', intval($_GET['id']));
+    if ($action === 'modifier') {
+        $champs = $compta->obtenirListRegles('', (int)$_GET['id']);
         $formulaire->setDefaults($champs);
 
-        $formulaire->addElement('hidden', 'id', intval($_GET['id']));
+        $formulaire->addElement('hidden', 'id', (int)$_GET['id']);
     }
 
     // partie saisie
@@ -54,26 +51,26 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $valeur = $formulaire->exportValues();
 
-        if ($action == 'ajouter') {
+        if ($action === 'ajouter') {
             $ok = $compta->ajouterRegle($valeur['label'], $valeur['condition'], $valeur['is_credit'], $valeur['vat'], $valeur['category_id'], $valeur['event_id']);
         } else {
             $ok = $compta->modifierRegle($valeur['id'], $valeur['label'], $valeur['condition'], $valeur['is_credit'], $valeur['vat'], $valeur['category_id'], $valeur['event_id']);
         }
 
         if ($ok) {
-            if ($action == 'ajouter') {
+            if ($action === 'ajouter') {
                 Logs::log('Ajout une règle '.$formulaire->exportValue('label'));
             } else {
                 Logs::log('Modification une règle '.$formulaire->exportValue('label').' ('.$_GET['id'].')');
             }
             afficherMessage(
-                'La règle a été '.(($action == 'ajouter') ? 'ajoutée' : 'modifiée'),
+                'La règle a été '.(($action === 'ajouter') ? 'ajoutée' : 'modifiée'),
                 'index.php?page=compta_conf_regle&action=lister'
             );
         } else {
             $smarty->assign(
                 'erreur',
-                'Une erreur est survenue lors de '.(($action == 'ajouter') ? "l'ajout" : 'la modification').' de la règle'
+                'Une erreur est survenue lors de '.(($action === 'ajouter') ? "l'ajout" : 'la modification').' de la règle'
             );
         }
     }
