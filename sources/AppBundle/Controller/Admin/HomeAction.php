@@ -82,7 +82,7 @@ class HomeAction
                     }
                 }
 
-                $info['statistics']['montant total'] = number_format($montantTotal, 0, 0, ' ') . ' €';
+                $info['statistics']['montant total'] = number_format($montantTotal, 0, ',', ' ') . ' €';
                 $info['url'] = '/pages/administration/index.php?page=forum_inscriptions&id_forum=' . $event->getId();
 
                 $cards[] = $info;

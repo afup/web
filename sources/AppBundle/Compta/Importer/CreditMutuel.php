@@ -51,7 +51,7 @@ class CreditMutuel implements Importer
                 continue;
             }
 
-            if (count($data) !== 6) {
+            if (!$data || count($data) !== 6) {
                 continue;
             }
 

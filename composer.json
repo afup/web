@@ -3,6 +3,7 @@
   "description": "Main repository for afup website",
   "type": "project",
   "require": {
+    "php": "7.4.* | 8.2.*",
     "ext-curl": "*",
     "ext-dom": "*",
     "ext-gd": "*",
@@ -12,7 +13,7 @@
     "algolia/algoliasearch-client-php": "^1.12",
     "beberlei/assert": "^2.9",
     "captioning/captioning": "^2.6",
-    "ccmbenchmark/ting_bundle": "^3.0",
+    "ccmbenchmark/ting_bundle": "3.4.1",
     "cocur/slugify": "^2.3",
     "doctrine/dbal": "^2.5",
     "ekino/newrelic-bundle": "^1.4",
@@ -24,7 +25,7 @@
     "j7mbo/twitter-api-php": "^1.0",
     "jms/serializer-bundle": "^1.1",
     "knpuniversity/oauth2-client-bundle": "^1.4",
-    "league/iso3166": "^2.1",
+    "league/iso3166": "^4.0",
     "league/oauth2-github": "^0.2.1",
     "nojimage/twitter-text-php": "1.1.*",
     "pacely/mailchimp-apiv3": "^1.0",
@@ -90,12 +91,12 @@
   ],
   "minimum-stability": "stable",
   "require-dev": {
-    "atoum/atoum": "^2.8",
+    "atoum/atoum": "^4.0",
     "atoum/stubs": "^2.5",
-    "friendsofphp/php-cs-fixer": "~2",
     "behat/behat": "^3.7",
     "behat/mink-extension": "^2.3",
     "behat/mink-goutte-driver": "^1.2",
+    "friendsofphp/php-cs-fixer": "~2",
     "smalot/pdfparser": "^0.19.0"
   },
   "repositories": [

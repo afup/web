@@ -258,7 +258,7 @@ class Speaker implements NotifyPropertyInterface
      */
     public function getLabel()
     {
-        return $this->getFirstname() . " " . mb_strtoupper($this->getLastname());
+        return $this->getFirstname() . " " . ($this->getLastname() ? mb_strtoupper($this->getLastname()) : null);
     }
 
     /**
