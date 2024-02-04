@@ -51,7 +51,7 @@ class FeedListAction
     private function testFeeds(array $feeds)
     {
         // on n'affiche rien du tout
-        ini_set('display_errors', 0);
+        ini_set('display_errors', '0');
         set_time_limit(240);
         $results = [];
         foreach ($feeds as $f) {
