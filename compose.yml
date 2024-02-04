@@ -1,5 +1,3 @@
-version: "2.2"
-
 services:
   db:
     build: ./docker/dockerfiles/mysql

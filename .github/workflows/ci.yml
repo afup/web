@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.0", "7.4"]
+        php: ["7.4", "8.2"]
 
     steps:
       - uses: actions/checkout@v4
@@ -33,8 +33,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Composer install
-        run: composer install --no-scripts
+      - name: Composer update/install
+        run: composer update --no-scripts
 
       - name: Tests - Unit
         run: ./bin/atoum
