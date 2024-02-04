@@ -81,10 +81,12 @@ SQL;
         return $registrations;
     }
 
-    function obtenirSuivi($id_forum)
+    function obtenirSuivi($id_forum, $id_forum_precedent = null)
     {
         $forum = new Forum($this->_bdd);
-        $id_forum_precedent = $forum->obtenirForumPrecedent($id_forum);
+        if (null === $id_forum_precedent) {
+            $id_forum_precedent = $forum->obtenirForumPrecedent($id_forum);
+        }
 
         $now = new \DateTime();
         $dateForum = \DateTime::createFromFormat('U', $forum->obtenir($id_forum)['date_fin_vente']);
