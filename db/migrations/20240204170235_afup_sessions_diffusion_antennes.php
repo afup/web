@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class AfupConferenciersDiffusionAntennes extends AbstractMigration
+class AfupSessionsDiffusionAntennes extends AbstractMigration
 {
     public function change()
     {
