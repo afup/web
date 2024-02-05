@@ -4,6 +4,7 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\JoinHydrator;
+use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketSpecialPrice;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -28,6 +29,7 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
             LEFT JOIN (
               SELECT DISTINCT afup_inscription_forum.special_price_token as used_token
               FROM afup_inscription_forum
+              WHERE afup_inscription_forum.etat <> :etat_annule
             ) as used_tokens ON (afup_forum_special_price.token = used_tokens.used_token)
             WHERE afup_forum_special_price.token = :token
               AND used_tokens.used_token IS NULL
@@ -36,7 +38,7 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
               AND afup_forum_special_price.id_event = :id_event
             LIMIT 1
             ')
-            ->setParams(['token' => $token, 'id_event' => $event->getId()])
+            ->setParams(['token' => $token, 'id_event' => $event->getId(), 'etat_annule' => Ticket::STATUS_CANCELLED])
         ;
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
     }
@@ -54,12 +56,12 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
         $query = $this->getPreparedQuery(
             'SELECT special_price.*, inscription.*, creator.*
             FROM afup_forum_special_price as special_price
-            LEFT JOIN afup_inscription_forum as inscription ON (special_price.token = inscription.special_price_token)
+            LEFT JOIN afup_inscription_forum as inscription ON (special_price.token = inscription.special_price_token AND inscription.etat <> :etat_annule)
             LEFT JOIN afup_personnes_physiques as creator ON (special_price.creator_id = creator.id)
             WHERE special_price.id_event = :id_event
             ORDER BY special_price.id_event, special_price.id DESC, inscription.id DESC
             '
-        )->setParams(['id_event' => $event->getId()]);
+        )->setParams(['id_event' => $event->getId(), 'etat_annule' => Ticket::STATUS_CANCELLED]);
 
         return $query->query($this->getCollection($hydrator));
     }
