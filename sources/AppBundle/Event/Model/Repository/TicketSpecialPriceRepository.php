@@ -29,6 +29,7 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
             LEFT JOIN (
               SELECT DISTINCT afup_inscription_forum.special_price_token as used_token
               FROM afup_inscription_forum
+              WHERE afup_inscription_forum.etat <> :etat_annule
             ) as used_tokens ON (afup_forum_special_price.token = used_tokens.used_token)
             WHERE afup_forum_special_price.token = :token
               AND used_tokens.used_token IS NULL
@@ -37,7 +38,7 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
               AND afup_forum_special_price.id_event = :id_event
             LIMIT 1
             ')
-            ->setParams(['token' => $token, 'id_event' => $event->getId()])
+            ->setParams(['token' => $token, 'id_event' => $event->getId(), 'etat_annule' => Ticket::STATUS_CANCELLED])
         ;
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
     }
