@@ -34,6 +34,8 @@ services:
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
       SYMFONY_ENV: "dev"
+    env_file:
+      .env
     volumes:
       - ./:/var/www/html
     links:
@@ -49,6 +51,8 @@ services:
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
       SYMFONY_ENV: "test"
+    env_file:
+      .env
     volumes:
       - ./:/var/www/html
     links:
@@ -70,6 +74,8 @@ services:
         gid: "1001"
     environment:
       SYMFONY_ENV: "dev"
+    env_file:
+      .env
     volumes:
       - ./:/var/www/html
     links:
@@ -85,6 +91,8 @@ services:
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
       SYMFONY_ENV: "test"
+    env_file:
+      .env
     volumes:
       - ./:/var/www/html
     healthcheck:
@@ -102,6 +110,8 @@ services:
       args:
         uid: ${CURRENT_UID:-1001}
         gid: "1001"
+    env_file:
+      .env
     user: localUser
     volumes:
         - ./data/composer:/home/localUser/.composer

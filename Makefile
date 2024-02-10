@@ -22,7 +22,7 @@ var/logs/.docker-build: compose.yml compose.override.yml $(shell find docker -ty
 	touch var/logs/.docker-build
 
 .env:
-	cp .env-dist .env
+	cp .env.dist .env
 
 compose.override.yml:
 	cp compose.override.yml-dist compose.override.yml
