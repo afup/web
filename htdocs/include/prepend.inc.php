@@ -3,6 +3,8 @@
 // Initialisation
 ob_start();
 
+session_start();
+
 // Inclusion de l'autoload de composer
 require_once dirname(__FILE__) . '/../../vendor/autoload.php';
 
