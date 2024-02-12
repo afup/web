@@ -330,7 +330,9 @@ framework:
     trusted_hosts:   ~
     session:
         # https://symfony.com/doc/4.x/session/database.html#store-sessions-in-a-relational-database-mariadb-mysql-postgresql
-        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        #handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        storage_id: session.storage.php_bridge
+        handler_id: ~
     fragments:       ~
     http_method_override: true
     assets: ~
