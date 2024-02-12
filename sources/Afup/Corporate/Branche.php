@@ -101,12 +101,12 @@ class Branche
                         $route = $feuille['lien'];
                         break;
                     default:
-                        $route = $this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').$feuille['lien'];
+                        $route = Site::WEB_PATH.Site::WEB_PREFIX.Site::WEB_QUERY_PREFIX.$feuille['lien'];
                         break;
                 }
                 $extraction .= '<li'.$class.'>';
                 if ($this->navigation == 'image' && $feuille['image'] !== null) {
-                    $extraction .= '<a href="'.$route.'"><img alt="'.$feuille['alt'].'" src="'.$this->conf->obtenir('web|path').'/templates/site/images/'.$feuille['image'].'" /><br>';
+                    $extraction .= '<a href="'.$route.'"><img alt="'.$feuille['alt'].'" src="'.Site::WEB_PATH.'templates/site/images/'.$feuille['image'].'" /><br>';
                     $extraction .= $feuille['nom'] . '</a><br>';
                     $extraction .= $feuille['alt'];
                 } else {

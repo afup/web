@@ -21,4 +21,4 @@ services:
             - '@Doctrine\DBAL\Configuration'
 
     Afup\Site\Utils\Configuration:
-        arguments: ['%kernel.project_dir%/configs/application/config.php']
+        autowire: true

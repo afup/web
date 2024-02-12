@@ -1,5 +1,8 @@
 <?php
+
 namespace Afup\Site\Utils;
+
+use Symfony\Component\Yaml\Yaml;
 
 define('EURO', '€');
 
@@ -9,182 +12,63 @@ define('EURO', '€');
 class Configuration
 {
     /**
-     * Chemin vers le fichier de configuration
-     * @var     string
-     * @access  private
-     */
-    var $_chemin_fichier;
-
-    /**
      * Valeurs de configuration
-     * @var     array
-     * @access  private
      */
-    var $_valeurs;
+    private $_valeurs;
 
     /**
-     * Constructeur. Charge les valeurs depuis le fichier de configuration
-     *
-     * @param string $chemin_fichier Chemin vers le fichier de configuration
-     * @access public
-     * @return void
+     * Charge les valeurs depuis le fichier de configuration
      */
-    public function __construct($chemin_fichier)
+    public function __construct()
     {
-        $this->_chemin_fichier = $chemin_fichier;
-        $this->_valeurs = include($this->_chemin_fichier);
-    }
+        $sfParameters = $this->loadSymfonyParameters();
+        if ([] !== $sfParameters) {
+            $this->_valeurs['database_host'] = $sfParameters['database_host'];
+            $this->_valeurs['database_name'] = $sfParameters['database_name'];
+            $this->_valeurs['database_user'] = $sfParameters['database_user'];
+            $this->_valeurs['database_password'] = $sfParameters['database_password'];
 
-    /**
-     * Transforme un tableau associatif en un tableau de chemins.
-     *
-     * Cette méthode effectue la transformation inverse de celle effectuée par la méthode Afup\Site\Utils\Configuration::_genererValeurs.
-     *
-     * Exemple de fonctionnement :
-     * $tableau = array('a' => 'pomme',
-     *                  'b' => array('ba' => 'poire'),
-     *                               'bb' => 'fraise');
-     *
-     * $chemins = array('a'    => 'pomme',
-     *                  'b|ba' => 'poire',
-     *                  'b|bb' => 'fraise');
-     *
-     * @param array     $tableau     Tableau associatif à transformer
-     * @param array     $chemins     Tableau associatif contenant les chemins générés
-     * @param string    $parent      Chemin du parent. Cette information est utilisée lors de l'appel récursif de cette méthode.
-     * @access private
-     * @return void
-     * @see AFUP_Configuration::_genererValeurs
-     */
-    public function _genererChemins($tableau, &$chemins, $parent = '')
-    {
-        foreach ($tableau as $cle => $valeur) {
-            if (is_array($valeur)) {
-                $this->_genererChemins($valeur, $chemins, $parent . '|' . $cle);
-            } else {
-                if ($parent == '') {
-                    $chemins[$cle] = $valeur;
-                } else {
-                    $chemins[substr($parent, 1) . '|' . $cle] = $valeur;
-                }
-            }
+            $this->_valeurs['smtp_host'] = $sfParameters['smtp_host'];
+            $this->_valeurs['smtp_port'] = $sfParameters['smtp_port'];
+            $this->_valeurs['smtp_tls'] = $sfParameters['smtp_tls'];
+            $this->_valeurs['smtp_username'] = $sfParameters['smtp_username'];
+            $this->_valeurs['smtp_password'] = $sfParameters['smtp_password'];
+
+            $this->_valeurs['mailer_force_recipients'] = $sfParameters['mailer_force_recipients'];
+            $this->_valeurs['mailer_bcc'] = $sfParameters['mailer_bcc'];
         }
     }
 
-    /**
-     * Transforme un tableau de chemins en un tableau associatif.
-     *
-     * Cette méthode effectue la transformation inverse de celle effectuée par la méthode Afup\Site\Utils\Configuration::_genererChemins.
-     *
-     * Exemple de fonctionnement :
-     * $chemins = array('a'    => 'pomme',
-     *                  'b|ba' => 'poire',
-     *                  'b|bb' => 'fraise');
-     *
-     * $tableau = array('a' => 'pomme',
-     *                  'b' => array('ba' => 'poire'),
-     *                               'bb' => 'fraise');
-     *
-     * @param array     $tableau     Tableau associatif à transformer
-     * @param array     $valeurs     Tableau associatif contenant les valeurs
-     * @param string    $parent      Chemin du parent. Cette information est utilisée lors de l'appel récursif de cette méthode.
-     * @access private
-     * @return void
-     * @see AFUP_Configuration::_genererChemins
-     */
-    function _genererValeurs($tableau, &$valeurs, $parent = '')
+    private function loadSymfonyParameters(): array
     {
-        foreach ($tableau as $cle => $valeur) {
-            if (is_array($valeur)) {
-                $this->_genererValeurs($valeur, $valeurs, $parent . "['{$cle}']");
-            } else {
-                if (is_string($valeur)) {
-                    $valeur = "'" . str_replace("'", "\'", $valeur) . "'";
-                }
-                $valeurs[] = $parent . "['{$cle}']={$valeur};";
+        $basePath = __DIR__ . '/../../../app/config';
+
+        $parameters = [];
+        $this->mergeSymfonyParametersFromFile($basePath . '/parameters.yml', $parameters);
+        $this->mergeSymfonyParametersFromFile($basePath . '/config.yml', $parameters);
+        if (isset($_ENV['SYMFONY_ENV'])) {
+            $this->mergeSymfonyParametersFromFile($basePath . '/config_' . $_ENV['SYMFONY_ENV'] . '.yml', $parameters);
+        }
+
+        return $parameters;
+    }
+
+    private function mergeSymfonyParametersFromFile($file, &$parameters)
+    {
+        if (is_file($file)) {
+            $values = Yaml::parseFile($file);
+            if (isset($values['parameters'])) {
+                $parameters = array_merge($parameters, $values['parameters']);
             }
         }
     }
 
     /**
      * Renvoie la valeur correspondant à la clé
-     *
-     * @param string $cle Clé
-     * @access public
-     * @return mixed    Valeur correspondant à la clé
      */
-    function obtenir($cle)
+    public function obtenir($cle)
     {
-        return eval('return $this->_valeurs["' . str_replace('|', '"]["', $cle) . '"];');
+        return $this->_valeurs[$cle];
     }
 
-    /**
-     * Renvoit les valeurs de configuration sous la forme d'un tableau de ce type :
-     *
-     * $chemins = array('a'    => 'pomme',
-     *                  'b|ba' => 'poire',
-     *                  'b|bb' => 'fraise');
-     *
-     * @access public
-     * @return array    Tableau contenant les valeurs de configuration
-     */
-    function exporter()
-    {
-        $chemins = array();
-        $this->_genererChemins($this->_valeurs, $chemins);
-        return $chemins;
-    }
-
-    /**
-     * Met à jour les valeurs de configuration depuis un tableau de ce type :
-     *
-     * $chemins = array('a'    => 'pomme',
-     *                  'b|ba' => 'poire',
-     *                  'b|bb' => 'fraise');
-     *
-     * @param   array $valeurs Valeurs à importer
-     * @access public
-     * @return void
-     */
-    function importer($valeurs)
-    {
-        foreach ($valeurs as $cle => $valeur) {
-            $code = '$this->_valeurs';
-            $etages = explode('|', $cle);
-            foreach ($etages as $etage) {
-                $code .= "['{$etage}']";
-            }
-            $code .= "='" . str_replace("'", "\'", $valeur) . "';";
-            eval($code);
-        }
-    }
-
-    /**
-     * Enregistre les valeurs dans le fichier de configuration
-     *
-     * @access public
-     * @return bool
-     */
-    function enregistrer()
-    {
-        $valeurs = array();
-        $this->_genererValeurs($this->_valeurs, $valeurs);
-        $contenu = "<?php\n";
-        foreach ($valeurs as $valeur) {
-            $contenu .= '$configuration' . $valeur . "\n";
-        }
-        $contenu .= 'return $configuration;';
-
-        if (!is_writable($this->_chemin_fichier)) {
-            return false;
-        }
-        if (!$pointeur = fopen($this->_chemin_fichier, 'w')) {
-            return false;
-        }
-        if (fwrite($pointeur, $contenu) === false) {
-            return false;
-        }
-        fclose($pointeur);
-        return true;
-    }
 }

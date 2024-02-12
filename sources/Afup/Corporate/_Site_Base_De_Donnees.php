@@ -12,10 +12,10 @@ class _Site_Base_De_Donnees extends Base_De_Donnees
          * @var Configuration $conf
          */
         $conf = $GLOBALS['AFUP_CONF'];
-        parent::__construct($conf->obtenir('bdd|hote'),
-            $conf->obtenir('bdd|base'),
-            $conf->obtenir('bdd|utilisateur'),
-            $conf->obtenir('bdd|mot_de_passe'));
+        parent::__construct($conf->obtenir('database_host'),
+            $conf->obtenir('database_name'),
+            $conf->obtenir('database_user'),
+            $conf->obtenir('database_password'));
 
     }
 }

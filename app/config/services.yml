@@ -332,7 +332,7 @@ services:
         arguments: ['@AppBundle\Mailchimp\Mailchimp', '@AppBundle\Association\Model\Repository\UserRepository', "%mailchimp_members_list%"]
 
     Afup\Site\Utils\Configuration:
-      arguments: ['%kernel.project_dir%/configs/application/config.php']
+        autowire: true
 
     AppBundle\Email\Mailer\Mailer:
         autowire: true
