@@ -82,20 +82,20 @@ SQL;
     }
 
     /**
-     * @param int $id_forum
-     * @param int $id_forum_precedent
+     * @param int $idForum
+     * @param int $idForumPrecedent
      *
      * @return array
      */
-    function obtenirSuivi($id_forum, $id_forum_precedent = null)
+    function obtenirSuivi($idForum, $idForumPrecedent = null)
     {
         $forum = new Forum($this->_bdd);
-        if (null === $id_forum_precedent) {
-            $id_forum_precedent = $forum->obtenirForumPrecedent($id_forum);
+        if (null === $idForumPrecedent) {
+            $idForumPrecedent = $forum->obtenirForumPrecedent($idForum);
         }
 
         $now = new \DateTime();
-        $dateForum = \DateTime::createFromFormat('U', $forum->obtenir($id_forum)['date_fin_vente']);
+        $dateForum = \DateTime::createFromFormat('U', $forum->obtenir($idForum)['date_fin_vente']);
 
         $daysToEndOfSales = 0;
         if ($dateForum >= $now) {
@@ -111,7 +111,7 @@ SQL;
         RIGHT JOIN afup_forum_tarif aft ON (aft.id = i.type_inscription AND aft.default_price > 0)
         LEFT JOIN afup_forum af ON af.id = i.id_forum
         WHERE
-          i.id_forum IN (' . (int)$id_forum . ', ' . (int)$id_forum_precedent . ') 
+          i.id_forum IN (' . (int)$idForum . ', ' . (int)$idForumPrecedent . ') 
         AND 
           etat <> 1 
         GROUP BY jour, i.id_forum 
@@ -126,14 +126,14 @@ SQL;
         $suivis = [];
 
         for($i = $nombre_par_date[0]['jour']; $i <= 0; $i++) {
-            $infoForum = array_sum(array_map(function ($info) use ($i, $id_forum) {
-                if ($info['id_forum'] == $id_forum && $info['jour'] <= $i) {
+            $infoForum = array_sum(array_map(function ($info) use ($i, $idForum) {
+                if ($info['id_forum'] == $idForum && $info['jour'] <= $i) {
                     return $info['nombre'];
                 }
                 return 0;
             }, $nombre_par_date));
-            $infoN1 = array_sum(array_map(function ($info) use ($i, $id_forum_precedent) {
-                if ($info['id_forum'] == $id_forum_precedent && $info['jour'] <= $i) {
+            $infoN1 = array_sum(array_map(function ($info) use ($i, $idForumPrecedent) {
+                if ($info['id_forum'] == $idForumPrecedent && $info['jour'] <= $i) {
                     return $info['nombre'];
                 }
                 return 0;
