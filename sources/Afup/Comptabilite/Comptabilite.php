@@ -173,7 +173,7 @@ class Comptabilite
         $requete .= 'compta_categorie.categorie, ';
         $requete .= 'compta_compte.nom_compte,    ';
         $requete .= '(COALESCE(compta.montant_ht_soumis_tva_0,0) + COALESCE(compta.montant_ht_soumis_tva_5_5,0) + COALESCE(compta.montant_ht_soumis_tva_10, 0) + COALESCE(compta.montant_ht_soumis_tva_20, 0)) as montant_ht,   ';
-        $requete .= '((COALESCE(compta.montant_ht_soumis_tva_5_5, 0)*0.055) + (COALESCE(compta.montant_ht_soumis_tva_10, 0)*0.1) + (compta.montant_ht_soumis_tva_20*0.2)) as montant_tva,   ';
+        $requete .= '((COALESCE(compta.montant_ht_soumis_tva_5_5, 0)*0.055) + (COALESCE(compta.montant_ht_soumis_tva_10, 0)*0.1) + (COALESCE(compta.montant_ht_soumis_tva_20, 0)*0.2)) as montant_tva,   ';
         $requete .= 'compta.montant_ht_soumis_tva_0 as montant_ht_0,   ';
         $requete .= 'compta.montant_ht_soumis_tva_5_5 as montant_ht_5_5,   ';
         $requete .= 'compta.montant_ht_soumis_tva_5_5*0.055 as montant_tva_5_5,   ';
