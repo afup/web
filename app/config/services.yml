@@ -20,7 +20,7 @@ services:
             - 'mysql:host=%database_host%;port=%database_port%;dbname=%database_name%'
             - db_username: '%database_user%'
               db_password: '%database_password%'
-              lock_mode: !php/const:Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
+              lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
 
 
     AppBundle\Controller\Event\:
