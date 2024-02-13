@@ -81,6 +81,12 @@ SQL;
         return $registrations;
     }
 
+    /**
+     * @param int $id_forum
+     * @param int $id_forum_precedent
+     *
+     * @return array
+     */
     function obtenirSuivi($id_forum, $id_forum_precedent = null)
     {
         $forum = new Forum($this->_bdd);
