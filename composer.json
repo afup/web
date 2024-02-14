@@ -47,12 +47,12 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "./bin/console cache:clear --no-warmup",
-      "./bin/console assets:install --relative htdocs"
+      "@php bin/console cache:clear --no-warmup",
+      "@php bin/console assets:install --relative htdocs"
     ],
     "post-update-cmd": [
-      "./bin/console cache:clear --no-warmup",
-      "./bin/console assets:install --relative htdocs"
+      "@php bin/console cache:clear --no-warmup",
+      "@php bin/console assets:install --relative htdocs"
     ]
   },
   "config": {
