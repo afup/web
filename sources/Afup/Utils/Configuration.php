@@ -23,19 +23,19 @@ class Configuration
     {
         $sfParameters = $this->loadSymfonyParameters();
         if ([] !== $sfParameters) {
-            $this->_valeurs['database_host'] = $sfParameters['database_host'];
-            $this->_valeurs['database_name'] = $sfParameters['database_name'];
-            $this->_valeurs['database_user'] = $sfParameters['database_user'];
-            $this->_valeurs['database_password'] = $sfParameters['database_password'];
+            $this->_valeurs['database_host'] = $sfParameters['database_host'] ?? '';
+            $this->_valeurs['database_name'] = $sfParameters['database_name'] ?? '';
+            $this->_valeurs['database_user'] = $sfParameters['database_user'] ?? '';
+            $this->_valeurs['database_password'] = $sfParameters['database_password'] ?? '';
 
-            $this->_valeurs['smtp_host'] = $sfParameters['smtp_host'];
-            $this->_valeurs['smtp_port'] = $sfParameters['smtp_port'];
-            $this->_valeurs['smtp_tls'] = $sfParameters['smtp_tls'];
-            $this->_valeurs['smtp_username'] = $sfParameters['smtp_username'];
-            $this->_valeurs['smtp_password'] = $sfParameters['smtp_password'];
+            $this->_valeurs['smtp_host'] = $sfParameters['smtp_host'] ?? '';
+            $this->_valeurs['smtp_port'] = $sfParameters['smtp_port'] ?? '';
+            $this->_valeurs['smtp_tls'] = $sfParameters['smtp_tls'] ?? '';
+            $this->_valeurs['smtp_username'] = $sfParameters['smtp_username'] ?? '';
+            $this->_valeurs['smtp_password'] = $sfParameters['smtp_password'] ?? '';
 
-            $this->_valeurs['mailer_force_recipients'] = $sfParameters['mailer_force_recipients'];
-            $this->_valeurs['mailer_bcc'] = $sfParameters['mailer_bcc'];
+            $this->_valeurs['mailer_force_recipients'] = $sfParameters['mailer_force_recipients'] ?? '';
+            $this->_valeurs['mailer_bcc'] = $sfParameters['mailer_bcc'] ?? '';
         }
     }
 
