@@ -35,7 +35,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // mise à jour des paramétrages PHP en fonction de la configuration
 
 if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'prod') {
-    ini_set('error_reporting', E_ALL ^ E_WARNING);
+    ini_set('error_reporting', E_ALL ^ E_WARNING ^ E_NOTICE);
     ini_set('display_errors', 0);
 } else {
     ini_set('error_reporting', E_ALL);
