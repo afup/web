@@ -28,9 +28,6 @@ require_once dirname(__FILE__) . '/_Common.php';
 if (ob_get_level() === 0) {
     ob_start();
 }
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 // mise à jour des paramétrages PHP en fonction de la configuration
 
