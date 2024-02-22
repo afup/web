@@ -29,23 +29,29 @@ class LeadRepository
     {
         $this->logger->info(sprintf('Lead collected and sent to trello: %s', json_encode($lead)));
 
+        $listId = $lead->getEvent()->getTrelloListId();
+        if (null === $listId) {
+            return;
+        }
+
         $card = $this->manager->getCard();
         $card
             ->setDueDate((new \DateTime())->add(new \DateInterval('P1W')))
             ->setName($lead->getCompany())
             ->setDescription(
                 sprintf(
-                    "%s %s (%s) \n%s \n %s - %s \n %s",
+                    "%s %s (%s) \n%s - %s \n %s - %s \n %s",
                     $lead->getFirstname(),
                     $lead->getLastname(),
                     $lead->getEmail(),
                     $lead->getCompany(),
+                    $lead->getPoste(),
                     $lead->getPhone(),
                     $lead->getWebsite(),
                     $lead->getLanguage()
                 )
             )
-            ->setListId($lead->getEvent()->getTrelloListId())
+            ->setListId($listId)
             ->save()
         ;
     }

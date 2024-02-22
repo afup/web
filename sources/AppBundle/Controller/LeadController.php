@@ -86,6 +86,7 @@ class LeadController extends EventBaseController
                 "Une nouvelle demande de dosssier de sponsoring vient d'être effectuée sur le site. Voici les informations saisies :
                 
                 - Société: %s
+                - Intitulé du poste: %s
                 - Nom: %s
                 - Prénom: %s
                 - Email: %s
@@ -93,6 +94,7 @@ class LeadController extends EventBaseController
                 - Site web: %s
                 - Langue: %s",
                 $lead->getCompany(),
+                $lead->getPoste(),
                 $lead->getFirstname(),
                 $lead->getLastname(),
                 $lead->getEmail(),
