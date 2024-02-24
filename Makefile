@@ -36,10 +36,8 @@ node_modules:
 	yarn install
 
 composer.phar:
-	php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-	php -r "if (hash_file('sha384', 'composer-setup.php') === 'edb40769019ccf227279e3bdd1f5b2e9950eb000c3233ee85148944e555d97be3ea4f40c3c2fe73b22f875385f6a5155') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-	php composer-setup.php --2.2
-	php -r "unlink('composer-setup.php');"
+    # You may replace the commit hash by whatever the last commit hash is on https://github.com/composer/getcomposer.org/commits/main
+	wget https://raw.githubusercontent.com/composer/getcomposer.org/46c42b8248e157b4f77acf5150dacba6aeb60901/web/installer -O - -q | php -- --2.2
 
 assets:
 	./node_modules/.bin/webpack -p
