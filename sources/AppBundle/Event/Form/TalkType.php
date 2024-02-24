@@ -69,9 +69,10 @@ class TalkType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Autoriser l\'AFUP à transmettre ma proposition de conférence aux antennes locales de 
-                    l\'AFUP ? Elles peuvent être intéressées aussi par votre conférence
-                    pour un événement local si vous avez l\'occasion de vous en rapprocher. *'
+                'label' => "Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ? 
+                    Les équipes des antennes AFUP peuvent être intéressées par votre sujet en vue d’un événement local 
+                    (meetup, Super Apéro PHP, soirée d’élection dans l’antenne...) 
+                    et pourrait aimer vous inviter dans leur ville."
             ])
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
     }
