@@ -284,7 +284,7 @@ class Article
             $rubrique->raccourci = 'rubrique';
         }
 
-        return $this->conf->obtenir('web|path') . $this->conf->obtenir('site|prefix') . $this->conf->obtenir('site|query_prefix') . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
+        return Site::WEB_PATH.Site::WEB_PREFIX.Site::WEB_QUERY_PREFIX . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
     }
 
     function fil_d_ariane()

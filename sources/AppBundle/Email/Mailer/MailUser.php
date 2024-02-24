@@ -4,6 +4,9 @@ namespace AppBundle\Email\Mailer;
 
 class MailUser
 {
+    const DEFAULT_SENDER_NAME = 'Bureau AFUP';
+    const DEFAULT_SENDER_EMAIL = 'bureau@afup.org';
+
     /** @var string */
     private $email;
     /** @var string */

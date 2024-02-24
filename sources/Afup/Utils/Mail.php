@@ -14,7 +14,7 @@ class Mail
 
     public static function createMailer()
     {
-        $configuration = new Configuration(self::PROJECT_DIR.'/configs/application/config.php');
+        $configuration = new Configuration();
 
         return new Mailer(
             new NullLogger(),

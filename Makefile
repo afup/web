@@ -36,19 +36,14 @@ node_modules:
 	yarn install
 
 composer.phar:
-	php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-	php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-	php composer-setup.php --2.2
-	php -r "unlink('composer-setup.php');"
+    # You may replace the commit hash by whatever the last commit hash is on https://github.com/composer/getcomposer.org/commits/main
+	wget https://raw.githubusercontent.com/composer/getcomposer.org/46c42b8248e157b4f77acf5150dacba6aeb60901/web/installer -O - -q | php -- --2.2
 
 assets:
 	./node_modules/.bin/webpack -p
 
 watch:
 	./node_modules/.bin/webpack --progress --colors --watch
-
-configs/application/config.php:
-	cp configs/application/config.php.dist-docker configs/application/config.php
 
 app/config/parameters.yml:
 	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
@@ -62,7 +57,7 @@ init-db:
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-migrations
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-seed
 
-config: configs/application/config.php app/config/parameters.yml
+config: app/config/parameters.yml
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make vendors
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make assets
 
@@ -99,7 +94,7 @@ hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 
 reset-db:
 	echo 'DROP DATABASE IF EXISTS web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
-	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) -T --rm db /opt/mysql_no_db
+	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
 db-migrations:
 	php bin/phinx migrate

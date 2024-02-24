@@ -132,13 +132,18 @@ class MemberShipController extends SiteBaseController
             $payboxBilling
         );
 
-        $bankAccountFactory = new BankAccountFactory($this->legacyConfiguration);
+        $bankAccountFactory = new BankAccountFactory();
 
         return $this->render(':site/company_membership:payment.html.twig', [
             'paybox' => $paybox,
             'invoice' => $invoice,
             'bankAccount' => $bankAccountFactory->createApplyableAt(\DateTimeImmutable::createFromFormat('U', $invoice['date_debut'])),
-            'afup' => $this->legacyConfiguration->obtenir('afup')
+            'afup' => [
+                'raison_sociale' => AFUP_RAISON_SOCIALE,
+                'adresse' => AFUP_ADRESSE,
+                'code_postal' => AFUP_CODE_POSTAL,
+                'ville' => AFUP_VILLE
+            ]
         ]);
     }
 

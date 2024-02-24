@@ -93,8 +93,7 @@ class Rubrique
 
     function image_sous_navigation()
     {
-        $conf = $GLOBALS['AFUP_CONF'];
-        return '<img src="' . $conf->obtenir('web|path') . '/templates/site/images/' . $this->icone . '" />';
+        return '<img src="' . Site::WEB_PATH . 'templates/site/images/' . $this->icone . '" />';
     }
 
     function titre()
@@ -263,7 +262,7 @@ class Rubrique
 
     function route()
     {
-        return $this->conf->obtenir('web|path') . $this->conf->obtenir('site|prefix') . $this->conf->obtenir('site|query_prefix') . $this->raccourci . '/' . $this->id;
+        return Site::WEB_PATH.Site::WEB_PREFIX.Site::WEB_QUERY_PREFIX . $this->raccourci . '/' . $this->id;
     }
 
     function nom()
