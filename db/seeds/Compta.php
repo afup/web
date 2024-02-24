@@ -18,6 +18,7 @@ class Compta extends AbstractSeed
 
         $data = [
             [
+                'id'    => '1',
                 'idoperation' => 2,
                 'idcategorie' => 34,
                 'nom_frs' => 'Prestabox',
@@ -32,6 +33,7 @@ class Compta extends AbstractSeed
                 'idcompte' => 1
             ],
             [
+                'id'    => '2',
                 'idoperation' => 1,
                 'idcategorie' => 34,
                 'nom_frs' => 'Un fournisseur',
@@ -43,6 +45,29 @@ class Compta extends AbstractSeed
                 'description' => 'Une dépense très utile',
                 'idevenement' => 5,
                 'idcompte' => 1
+            ],
+            [
+                'id'    => '3',
+                'date_ecriture' => '2023-11-12',
+                'numero_operation' => 'NTU-342',
+                'nom_frs' => '',
+                'montant' => 15.8,
+                'description' => 'PRLV SEPA ONLINE SAS SCW SCALEWAY',
+                'comment' => null,
+                'attachment_required' => 1,
+                'idcompte' => 1,
+            ],
+            [
+                'id'    => '4',
+                'date_ecriture' => '2024-02-16',
+                'numero_operation' => 'NTU-344',
+                'nom_frs' => '',
+                'montant' => 15.6,
+                'description' => 'PRLV SEPA ONLINE SAS SCW SCALEWAY',
+                'comment' => null,
+                'attachment_required' => 1,
+                'idcompte' => 1,
+                'montant_ht_soumis_tva_20' => 13,
             ],
         ];
 
