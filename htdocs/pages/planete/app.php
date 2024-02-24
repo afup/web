@@ -28,8 +28,6 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
         exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
     }
 
-    session_start();
-
     /** @var ClassLoader $loader */
     $loader = require __DIR__.'/../../../vendor/autoload.php';
     Debug::enable();
@@ -42,8 +40,6 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
 } else {
     /** @var ClassLoader $loader */
     $loader = require __DIR__.'/../../../vendor/autoload.php';
-
-    session_start();
 
     $kernel = new PlaneteAppKernel('prod', false);
 }

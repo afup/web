@@ -6,6 +6,7 @@ namespace Afup\Site\Comptabilite;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
+use Afup\Site\Utils\Vat;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
@@ -330,9 +331,11 @@ class Facture
             ? \DateTimeImmutable::createFromFormat('Y-m-d', $coordonnees['date_devis'])
             : new \DateTimeImmutable();
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $isSubjectedToVat = Vat::isSubjectedToVat($dateDevis);
+
+        $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateDevis));
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateDevis), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -386,12 +389,16 @@ class Facture
         $pdf->Ln(5);
         $pdf->SetFillColor(200, 200, 200);
         $pdf->Cell(30, 5, 'Type', 1, 0, 'L', 1);
-        $pdf->Cell(80, 5, 'Description', 1, 0, 'L', 1);
-        $pdf->Cell(20, 5, 'Quantite', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, 'Prix', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, 'Total', 1, 0, 'L', 1);
+        $pdf->Cell($isSubjectedToVat ? 60 : 80, 5, 'Description', 1, 0, 'L', 1);
+        $pdf->Cell(20, 5, 'Quantite', 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        if ($isSubjectedToVat) {
+            $pdf->Cell(20, 5, 'TVA', 1, 0, 'C', 1);
+        }
+        $pdf->Cell(30, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        $pdf->Cell(30, 5, 'Total' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
 
-        $total = 0;
+        $totalTtc = 0;
+        $totalHt = 0;
         switch ($coordonnees['devise_facture']) {
             case 'DOL':
                 $devise = ' $';
@@ -401,30 +408,93 @@ class Facture
                 $devise = utf8_decode(' ');
                 break;
         }
+
+        $yInitial = $pdf->getY();
+
+        $vatAmounts = [];
+
         foreach ($details as $detail) {
             if ($detail['quantite'] != 0) {
-                $montant = $detail['quantite'] * $detail['pu'];
+                $montantHt = $detail['quantite'] * $detail['pu'];
+                $montantTtc = $montantHt;
 
                 $pdf->Ln();
                 $pdf->SetFillColor(255, 255, 255);
 
-                $pdf->Cell(30, 5, $detail['ref'], 1);
-                $pdf->Cell(80, 5, utf8_decode($detail['designation']), 1);
-                $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1, 0, "C");
-                $pdf->Cell(30, 5, utf8_decode($detail['pu']) . $devise, 1, 0, "R");
-                $pdf->Cell(30, 5, utf8_decode($montant) . $devise, 1, 0, "R");
+                if ($isSubjectedToVat) {
+                    $x = $pdf->GetX();
+                    $y = $pdf->GetY();
 
-                $total += $montant;
+                    $pdf->MultiCell(30, 5, $detail['ref'], 'T');
+                    $x += 30;
+                    $pdf->SetXY($x, $y);
 
+                    $pdf->MultiCell(60, 5, utf8_decode($detail['designation']), 'T');
+
+                    $x += 60;
+                    $pdf->SetXY($x, $y);
+                    $pdf->MultiCell(20, 5, utf8_decode($detail['quantite']), 'T', 0, "C");
+
+                    $x += 20;
+                    $pdf->SetXY($x, $y);
+                    $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
+                    if (!isset($vatAmounts[$detail['tva']])) {
+                        $vatAmounts[$detail['tva']] = 0;
+                    }
+                    $vatAmounts[$detail['tva']] += ($detail['tva'] / 100) * $montantTtc;
+                    $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
+
+                    $x += 20;
+                    $pdf->SetXY($x, $y);
+
+                    $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($detail['pu'], $isSubjectedToVat)) . $devise, 'T', 0, "R");
+
+                    $x += 30;
+                    $pdf->SetXY($x, $y);
+                    $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($montantTtc, $isSubjectedToVat)) . $devise, 'T', 0, "R");
+                } else {
+                    $pdf->Cell(30, 5, $detail['ref'], 1);
+                    $pdf->Cell(80, 5, utf8_decode($detail['designation']), 1);
+                    $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1, 0, "C");
+                    $pdf->Cell(30, 5, utf8_decode($detail['pu']) . $devise, 1, 0, "R");
+                    $pdf->Cell(30, 5, utf8_decode($montantHt) . $devise, 1, 0, "R");
+                }
+
+                $totalHt += $montantHt;
+                $totalTtc += $montantTtc;
             }
         }
-        $pdf->Ln();
+
+        if ($isSubjectedToVat) {
+            $columns = [0, 30, 90, 110, 130, 160, 190];
+
+            foreach ($columns as $column) {
+                $pdf->Line($pdf->GetX() + $column, $yInitial, $pdf->GetX() + $column, $pdf->GetY());
+            }
+
+            $pdf->SetFillColor(225, 225, 225);
+            $pdf->Cell(160, 5, 'TOTAL HT', 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($totalHt, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
+            $pdf->Ln(5);
+
+            foreach ($vatAmounts as $vat => $amount) {
+                $pdf->SetFillColor(255, 255, 255);
+                $pdf->Cell(160, 5, 'Total TVA ' . $vat . '%', 1, 0, 'R', 1);
+                $pdf->Cell(30, 5, $this->formatFactureValue($amount, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
+                $pdf->Ln(5);
+            }
+        } else {
+            $pdf->ln();
+        }
+
         $pdf->SetFillColor(225, 225, 225);
-        $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
+        $pdf->Cell(160, 5, 'TOTAL' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        $pdf->Cell(30, 5, $this->formatFactureValue($totalTtc, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
 
         $pdf->Ln(15);
-        $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+        if (!$isSubjectedToVat) {
+            $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+        }
         $pdf->Ln(10);
         $pdf->Cell(10, 5, 'Observations : ');
         $pdf->Ln(5);
@@ -433,6 +503,7 @@ class Facture
 
         if (is_null($chemin)) {
             $pdf->Output('Devis - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_devis'] . '.pdf', 'D');
+            exit(0);
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -456,9 +527,12 @@ class Facture
             ? \DateTimeImmutable::createFromFormat('Y-m-d', $coordonnees['date_facture'])
             : new \DateTimeImmutable();
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
+
+        $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
+
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
+        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -512,12 +586,16 @@ class Facture
         $pdf->Ln(5);
         $pdf->SetFillColor(200, 200, 200);
         $pdf->Cell(30, 5, 'Type', 1, 0, 'L', 1);
-        $pdf->Cell(80, 5, 'Description', 1, 0, 'L', 1);
-        $pdf->Cell(20, 5, 'Quantite', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, 'Prix', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, 'Total', 1, 0, 'L', 1);
+        $pdf->Cell($isSubjectedToVat ? 60 : 80, 5, 'Description', 1, 0, 'L', 1);
+        $pdf->Cell(20, 5, 'Quantite', 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        if ($isSubjectedToVat) {
+            $pdf->Cell(20, 5, 'TVA', 1, 0, 'C', 1);
+        }
+        $pdf->Cell(30, 5, 'Prix' . ($isSubjectedToVat ? ' HT' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        $pdf->Cell(30, 5, 'Total' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
 
-        $total = 0;
+        $totalTtc = 0;
+        $totalHt = 0;
         switch ($coordonnees['devise_facture']) {
             case 'DOL':
                 $devise = ' $';
@@ -528,10 +606,18 @@ class Facture
                 break;
         }
         $yInitial = $pdf->getY();
-        $columns = [0, 30, 110, 130, 160, 190];
+        if ($isSubjectedToVat) {
+            $columns = [0, 30, 90, 110, 130, 160, 190];
+        } else {
+            $columns = [0, 30, 110, 130, 160, 190];
+        }
+
+        $vatAmounts = [];
+
         foreach ($details as $detail) {
             if ($detail['quantite'] != 0) {
-                $montant = $detail['quantite'] * $detail['pu'];
+                $montantHt = $detail['quantite'] * $detail['pu'];
+                $montantTtc = $montantHt;
 
                 $pdf->Ln();
                 $pdf->SetFillColor(255, 255, 255);
@@ -542,22 +628,35 @@ class Facture
                 $pdf->MultiCell(30, 5, $detail['ref'], 'T');
                 $x += 30;
                 $pdf->SetXY($x, $y);
-                $pdf->MultiCell(80, 5, utf8_decode($detail['designation']), 'T');
+                $designationLength = $isSubjectedToVat ? 60 : 80;
+                $pdf->MultiCell($designationLength, 5, utf8_decode($detail['designation']), 'T');
 
-                $x += 80;
+                $x += $designationLength;
                 $pdf->SetXY($x, $y);
                 $pdf->MultiCell(20, 5, utf8_decode($detail['quantite']), 'T', 0, "C");
+
+                if ($isSubjectedToVat) {
+                    $x += 20;
+                    $pdf->SetXY($x, $y);
+                    $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
+                    if (!isset($vatAmounts[$detail['tva']])) {
+                        $vatAmounts[$detail['tva']] = 0;
+                    }
+                    $vatAmounts[$detail['tva']] += ($detail['tva'] / 100) * $montantTtc;
+                    $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
+                }
 
                 $x += 20;
                 $pdf->SetXY($x, $y);
 
-                $pdf->MultiCell(30, 5, utf8_decode($detail['pu']) . $devise, 'T', 0, "R");
+                $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($detail['pu'], $isSubjectedToVat)) . $devise, 'T', 0, "R");
 
                 $x += 30;
                 $pdf->SetXY($x, $y);
-                $pdf->MultiCell(30, 5, utf8_decode($montant) . $devise, 'T', 0, "R");
+                $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($montantTtc, $isSubjectedToVat)) . $devise, 'T', 0, "R");
 
-                $total += $montant;
+                $totalHt += $montantHt;
+                $totalTtc += $montantTtc;
             }
         }
 
@@ -567,12 +666,29 @@ class Facture
             $pdf->Line($pdf->GetX() + $column, $yInitial, $pdf->GetX() + $column, $pdf->GetY());
         }
 
-        $pdf->SetFillColor(225, 225, 225);
-        $pdf->Cell(160, 5, 'TOTAL', 1, 0, 'L', 1);
-        $pdf->Cell(30, 5, $total . $devise, 1, 0, 'R', 1);
+        if ($isSubjectedToVat) {
+            $pdf->SetFillColor(225, 225, 225);
+            $pdf->Cell(160, 5, 'TOTAL HT', 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($totalHt, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
+            $pdf->Ln(5);
 
+            foreach ($vatAmounts as $vat => $amount) {
+                $pdf->SetFillColor(255, 255, 255);
+                $pdf->Cell(160, 5, 'Total TVA ' . $vat . '%', 1, 0, 'R', 1);
+                $pdf->Cell(30, 5, $this->formatFactureValue($amount, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
+                $pdf->Ln(5);
+            }
+        }
+
+        $pdf->SetFillColor(225, 225, 225);
+        $pdf->Cell(160, 5, 'TOTAL' . ($isSubjectedToVat ? ' TTC' : ''), 1, 0, $isSubjectedToVat ? 'R' : 'L', 1);
+        $pdf->Cell(30, 5, $this->formatFactureValue($totalTtc, $isSubjectedToVat) . $devise, 1, 0, 'R', 1);
         $pdf->Ln(15);
-        $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+
+        if (!$isSubjectedToVat) {
+            $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
+        }
+
         $pdf->Ln();
         $pdf->Cell(10, 5, utf8_decode('Payable à réception'));
         $pdf->Ln(10);
@@ -585,10 +701,19 @@ class Facture
 
         if (is_null($chemin)) {
             $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_facture'] . '.pdf', 'D');
+            exit(0);
         } else {
             $pdf->Output($chemin, 'F');
         }
+    }
 
+    private function formatFactureValue($value, $isSubjectedToVat)
+    {
+        if (!$isSubjectedToVat) {
+            return $value;
+        }
+
+        return number_format($value, 2, ',', ' ');
     }
 
     /**
@@ -609,15 +734,14 @@ class Facture
         $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";
         $corps .= "Nous restons à votre disposition pour toute demande complémentaire.\n\n";
         $corps .= "Le bureau\n\n";
-        $corps .= $configuration->obtenir('afup|raison_sociale') . "\n";
-        $corps .= $configuration->obtenir('afup|adresse') . "\n";
-        $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "\n";
+        $corps .= AFUP_RAISON_SOCIALE . "\n";
+        $corps .= AFUP_ADRESSE . "\n";
+        $corps .= AFUP_CODE_POSTAL . " " . AFUP_VILLE . "\n";
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
 
-        $expediteur = $GLOBALS['AFUP_CONF']->obtenir('mails|email_expediteur');
-        $message = new Message($sujet, new MailUser($expediteur), new MailUser($personne['email'], $personne['nom']));
+        $message = new Message($sujet, new MailUser(MailUser::DEFAULT_SENDER_EMAIL, MailUser::DEFAULT_SENDER_NAME), new MailUser($personne['email'], $personne['nom']));
         $message->addAttachment(new Attachment(
             $chemin_facture,
             'facture-'.$reference.'.pdf',

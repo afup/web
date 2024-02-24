@@ -4,6 +4,10 @@ namespace Afup\Site\Corporate;
 
 class Site
 {
+    const WEB_PATH = '/';
+    const WEB_PREFIX = 'pages/site/';
+    const WEB_QUERY_PREFIX = '?route=';
+
     /**
      * @var \Afup\Site\Utils\Base_De_Donnees
      */

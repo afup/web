@@ -134,7 +134,7 @@ class Facturation
             ? \DateTimeImmutable::createFromFormat('U', $facture['date_facture'])
             : new \DateTimeImmutable();
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
         $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
         $pdf->AddPage();
@@ -238,7 +238,7 @@ class Facturation
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
         $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
@@ -312,7 +312,7 @@ class Facturation
                 $pdf->Cell(30, 5, utf8_decode($this->formatFactureValue($montant, $isSubjectedToVat)) . utf8_decode(' '), 1, 0, 'R');
             }
 
-            $totalHt = $montantHt;
+            $totalHt += $montantHt;
             $total += $montant;
         }
 
@@ -432,9 +432,9 @@ class Facturation
         );
         $mailer = Mail::createMailer();
         $mailer->renderTemplate($message,'mail_templates/facture-forum.html.twig', [
-            'raison_sociale' => $configuration->obtenir('afup|raison_sociale'),
-            'adresse' => $configuration->obtenir('afup|adresse'),
-            'ville' => $configuration->obtenir('afup|code_postal').' '.$configuration->obtenir('afup|ville'),
+            'raison_sociale' => AFUP_RAISON_SOCIALE,
+            'adresse' => AFUP_ADRESSE,
+            'ville' => AFUP_CODE_POSTAL.' '.AFUP_VILLE,
         ]);
         $message->addAttachment(new Attachment(
             $cheminFacture,

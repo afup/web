@@ -276,9 +276,6 @@ parameters:
             niveau: 'ROLE_ADMIN'
             icon: "tag"
             elements:
-                configuration:
-                    nom: 'Configuration du site'
-                    niveau: 'ROLE_ADMIN'
                 membre_administrateur:
                     nom: 'Administrateurs du site'
                     niveau: 'ROLE_ADMIN'
@@ -332,9 +329,8 @@ framework:
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:
-        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        storage_id: session.storage.php_bridge
-        handler_id: ~
+        # https://symfony.com/doc/4.x/session/database.html#store-sessions-in-a-relational-database-mariadb-mysql-postgresql
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
     fragments:       ~
     http_method_override: true
     assets: ~

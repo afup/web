@@ -1,0 +1,117 @@
+version: "2.2"
+
+services:
+  db:
+    build: ./docker/dockerfiles/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: afup
+      MYSQL_PASSWORD: afup
+      MYSQL_DATABASE: web
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  dbtest:
+    build: ./docker/dockerfiles/mysqltest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: afup
+      MYSQL_PASSWORD: afup
+      MYSQL_DATABASE: web
+    volumes:
+      - ./data/mysqltest:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  apachephp:
+    build:
+      context: ./docker/dockerfiles/apachephp
+      args:
+        uid: ${CURRENT_UID:-1001}
+        gid: "1001"
+        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
+    environment:
+      SYMFONY_ENV: "dev"
+    volumes:
+      - ./:/var/www/html
+    links:
+      - db
+      - mailcatcher
+
+  apachephptest:
+    build:
+      context: ./docker/dockerfiles/apachephp
+      args:
+        uid: ${CURRENT_UID:-1001}
+        gid: "1001"
+        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
+    environment:
+      SYMFONY_ENV: "test"
+    volumes:
+      - ./:/var/www/html
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://apachephptest:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      dbtest:
+        condition: service_healthy
+
+  planete:
+    build:
+      context: ./docker/dockerfiles/planete
+      args:
+        uid: ${CURRENT_UID:-1001}
+        gid: "1001"
+    environment:
+      SYMFONY_ENV: "dev"
+    volumes:
+      - ./:/var/www/html
+    links:
+      - db
+      - mailcatcher
+
+  planetetest:
+    build:
+      context: ./docker/dockerfiles/planete
+      args:
+        uid: ${CURRENT_UID:-1001}
+        gid: "1001"
+        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
+    environment:
+      SYMFONY_ENV: "test"
+    volumes:
+      - ./:/var/www/html
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://planetetest:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      dbtest:
+        condition: service_healthy
+
+  cliphp:
+    build:
+      context: ./docker/dockerfiles/apachephp
+      args:
+        uid: ${CURRENT_UID:-1001}
+        gid: "1001"
+    user: localUser
+    volumes:
+        - ./data/composer:/home/localUser/.composer
+        - ./:/var/www/html
+    links:
+      - db
+      - apachephp
+      - mailcatcher
+      - apachephptest
+      - planetetest
+      - dbtest
+    command: "false"
+
+  mailcatcher:
+    image: dockage/mailcatcher:0.9.0

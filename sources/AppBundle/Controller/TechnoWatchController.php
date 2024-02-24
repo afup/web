@@ -10,14 +10,14 @@ class TechnoWatchController extends SiteBaseController
 {
     public function calendarAction(Request $request)
     {
-        if ($request->query->get('key') != $this->container->getParameter('techno_watch_calendar_key')) {
+        if ($request->query->get('key') != $this->getParameter('techno_watch_calendar_key')) {
             throw $this->createNotFoundException();
         }
 
         $generator = new TechnoWatchCalendarGenerator("Veille de l'AFUP", new \DateTime());
 
         $calendar = $generator->generate(
-            $this->container->getParameter('techno_watch_calendar_url'),
+            $this->getParameter('techno_watch_calendar_url'),
             $request->query->getBoolean('display_prefix', true),
             $request->query->get('filter', '')
         );

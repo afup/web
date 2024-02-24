@@ -46,7 +46,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see "CLIENT-AFGD5S"
     And I should see "19 920,00"
     # Téléchargement du devis
-    And I follow the button of tooltip "Télécharger le devis"
+    And I follow the button of tooltip "Télécharger le devis ESN dev en folie"
     Then the response header "Content-disposition" should match '#attachment; filename="Devis - ESN dev en folie - (.*).pdf"#'
     When I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "ESN dev en folie"
@@ -68,7 +68,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see "Paris Cedex 7"
     And I should see "Payé"
     # Envoi de la facture par email
-    Then I follow the button of tooltip "Envoyer la facture 2023-2 par mail"
+    Then I follow the button of tooltip "Envoyer la facture 2024-3 par mail"
     And I should only receive the following emails:
       | from               | to                         | subject      |
       | <bonjour@afup.org> | <martine@ens-en-folie.biz> | Facture AFUP |
@@ -80,7 +80,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Téléchargement de la facture
     When I go to "/admin/"
     And I follow "Factures"
-    And I follow the button of tooltip "Télécharger la facture 2023-2"
+    And I follow the button of tooltip "Télécharger la facture 2024-3"
     Then the response header "Content-disposition" should match '#attachment; filename="Facture - ESN dev en folie - (.*).pdf"#'
     When I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "N° TVA Intracommunautaire : FR7612345"
@@ -124,7 +124,55 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should contain "Facture n° 2024-02"
     Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2024"
     Then The page "1" of the PDF should contain "Comme convenu, nous vous prions de trouver votre facture"
+    Then The page "1" of the PDF should contain "Type Description Quantite TVA Prix HT Total TTC"
+    Then The page "1" of the PDF should contain "forum_php_2024 Forum PHP 2024 - Sponsoring"
+    Then The page "1" of the PDF should contain "Bronze 1.00 20.00% 1 000,00 € 1 200,00 €"
+    Then The page "1" of the PDF should contain "TOTAL HT 1 000,00 €"
+    Then The page "1" of the PDF should contain "Total TVA 20.00% 200,00 €"
+    Then The page "1" of the PDF should contain "TOTAL TTC 1 200,00 €"
+    Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
+
+  @reloadDbWithTestData
+  @vat
+  Scenario: Test du PDF de facture avant 2024
+    Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=compta_devis&id_periode=14"
+    Then the ".content h2" element should contain "Liste devis"
+    When I follow the button of tooltip "Télécharger le devis Krampouz"
+    Then the response header "Content-disposition" should equal 'attachment; filename="Devis - Krampouz - 2023-06-10.pdf"'
+    Given I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Le 10/06/2023"
+    Then The page "1" of the PDF should contain "Krampouz"
+    Then The page "1" of the PDF should contain "3, rue du port"
+    Then The page "1" of the PDF should contain "Devis n° 2023-01"
+    Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2023"
+    Then The page "1" of the PDF should contain "Comme convenu, nous vous prions de trouver votre devis"
     Then The page "1" of the PDF should contain "Type Description Quantite Prix Total"
-    Then The page "1" of the PDF should contain "forum_php_2024 Forum PHP 2024 - Sponsoring Bronze 1.00 1000.00 € 1000 €"
+    Then The page "1" of the PDF should contain "forum_php_2023 Forum PHP 2023 - Sponsoring Bronze 1.00 1000.00 € 1000 €"
     Then The page "1" of the PDF should contain "TOTAL 1000 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
+    Then the checksum of the response content should be "1a6219e7d6f9538c3887d042ad293c5f"
+
+
+  @reloadDbWithTestData
+  @vat
+  Scenario: Test du PDF de facture après 2024
+    Given I am logged in as admin and on the Administration
+    When I go to "/pages/administration/index.php?page=compta_devis"
+    Then the ".content h2" element should contain "Liste devis"
+    When I follow the button of tooltip "Télécharger le devis Krampouz"
+    Then the response header "Content-disposition" should equal 'attachment; filename="Devis - Krampouz - 2024-01-03.pdf"'
+    Given I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "Le 03/01/2024"
+    Then The page "1" of the PDF should contain "Krampouz"
+    Then The page "1" of the PDF should contain "3, rue du port"
+    Then The page "1" of the PDF should contain "Devis n° 2024-02"
+    Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2024"
+    Then The page "1" of the PDF should contain "Comme convenu, nous vous prions de trouver votre devis"
+    Then The page "1" of the PDF should contain "Type Description Quantite TVA Prix HT Total TTC"
+    Then The page "1" of the PDF should contain "forum_php_2024 Forum PHP 2024 - Sponsoring"
+    Then The page "1" of the PDF should contain "Bronze 1.00 20.00% 1 000,00 € 1 200,00 €"
+    Then The page "1" of the PDF should contain "TOTAL HT 1 000,00 €"
+    Then The page "1" of the PDF should contain "Total TVA 20.00% 200,00 €"
+    Then The page "1" of the PDF should contain "TOTAL TTC 1 200,00 €"
+    Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"

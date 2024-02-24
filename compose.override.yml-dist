@@ -1,0 +1,18 @@
+version: "2.2"
+services:
+  db:
+    ports:
+      - "3606:3306"
+  apachephp:
+    ports:
+      - "9205:80"
+   # environment:
+   #   XDEBUG_CONFIG: "remote_connect_back=1 profiler_enable=1 remote_autostart=0 remote_enable=1"
+  planete:
+    ports:
+      - "9215:80"
+    environment:
+      AFUP_GLOBAL_MENU_PREFIX: 'https://localhost:9205'
+  mailcatcher:
+    ports:
+      - "1181:1080"

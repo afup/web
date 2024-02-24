@@ -58,7 +58,7 @@ class NewsController extends SiteBaseController
 
         $image = '/images/news/' . $theme . '.png';
 
-        $url = $this->container->getParameter('kernel.project_dir') . '/htdocs' . $image ;
+        $url = $this->getParameter('kernel.project_dir') . '/htdocs' . $image ;
 
         if (false === is_file($url)) {
             return null;

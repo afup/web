@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["5.6", "7.0"]
+        php: ["7.0"]
 
     steps:
       - uses: actions/checkout@v2
@@ -21,20 +21,17 @@ jobs:
         with:
           php-version: '${{ matrix.php }}'
 
-      - name: Composer - Get Cache Directory
+      - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - uses: actions/cache@v1
-        id: cache-composer
+      - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-php.${{ matrix.php }}-${{ github.sha }}
-          restore-keys: composer-php.${{ matrix.php }}-
-
-      - name: Composer - Create cache directory
-        run: mkdir -p /home/runner/.composer/cache
-        if: steps.cache-composer.outputs.cache-hit != 'true'
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Composer install
         run: composer install --no-scripts
@@ -52,7 +49,7 @@ jobs:
       - name: Setup PHP with tools
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '5.6'
+          php-version: '7.0'
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -66,8 +63,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: CS fixer prerequisites
-        run: make configs/application/config.php
+      - name: Parameters file
+        run: make app/config/parameters.yml
 
       - name: Composer install
         run: composer install --no-scripts
@@ -99,9 +96,6 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-
-      - name: Prerequisites
-        run: make configs/application/config.php
 
       - name: Composer install
         run: composer install --no-scripts --ignore-platform-req=php

@@ -1,6 +1,7 @@
 <?php
 
 namespace Afup\Site\Association;
+use Afup\Site\Corporate\Site;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
@@ -244,14 +245,13 @@ class Cotisations
         $corps = "Bonjour, \n\n";
         $corps .= "Une cotisation annuelle AFUP a été réglée.\n\n";
         $corps .= "Personne : " . $infos['nom'] . " " . $infos['prenom'] . " (" . $infos['email'] . ")\n";
-        $corps .= "URL : " . $configuration->obtenir('web|path') . "pages/administration/index.php?page=cotisations&type_personne=" . $account['type'] . "&id_personne=" . $account['id'] . "\n";
+        $corps .= "URL : " . Site::WEB_PATH . "pages/administration/index.php?page=cotisations&type_personne=" . $account['type'] . "&id_personne=" . $account['id'] . "\n";
         $corps .= "Commande : " . $cmd . "\n";
         $corps .= "Total : " . $total . "\n";
         $corps .= "Autorisation : " . $autorisation . "\n";
         $corps .= "Transaction : " . $transaction . "\n\n";
 
-        $expediteur = $GLOBALS['AFUP_CONF']->obtenir('mails|email_expediteur');
-        $ok = Mailing::envoyerMail(new Message($sujet, new MailUser($expediteur), MailUserFactory::tresorier()), $corps);
+        $ok = Mailing::envoyerMail(new Message($sujet, new MailUser(MailUser::DEFAULT_SENDER_EMAIL, MailUser::DEFAULT_SENDER_NAME), MailUserFactory::tresorier()), $corps);
 
         if (false === $ok) {
             return false;
@@ -348,7 +348,7 @@ class Cotisations
         $configuration = $GLOBALS['AFUP_CONF'];
 
         $dateCotisation = \DateTimeImmutable::createFromFormat('U', $cotisation['date_debut']);
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
         $isSubjectedToVat = Vat::isSubjectedToVat($dateCotisation);
         // Construction du PDF
         $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateCotisation), $isSubjectedToVat);
@@ -405,6 +405,13 @@ class Cotisations
             $pdf->Ln(15);
             $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
         } else {
+            // On stocke le montant de la cotisation TTC, pour les personnes physiques c'est le même, par contre pour les personnes morales
+            // ce n'est pas le même, afin d'éviter d'appliquer deux fois la TVA, on applique ce hotfix
+            if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+                $cotisation['montant'] = Vat::getRoundedWithoutVatPriceFromPriceWithVat($cotisation['montant'], Utils::MEMBERSHIP_FEE_VAT_RATE);
+            }
+
+
             // Cadre
             $pdf->Ln(10);
             $pdf->SetFillColor(200, 200, 200);
@@ -531,9 +538,9 @@ class Cotisations
         $corps .= "<p>Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.</p>";
         $corps .= "<p>Nous restons à votre disposition pour toute demande complémentaire.</p>";
         $corps .= "<p>Le bureau</p>";
-        $corps .= $configuration->obtenir('afup|raison_sociale') . "<br />";
-        $corps .= $configuration->obtenir('afup|adresse') . "<br />";
-        $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "<br />";
+        $corps .= AFUP_RAISON_SOCIALE . "<br />";
+        $corps .= AFUP_ADRESSE . "<br />";
+        $corps .= AFUP_CODE_POSTAL . " " . AFUP_VILLE . "<br />";
 
         $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $numeroFacture = $this->genererFacture($id_cotisation, $cheminFacture);

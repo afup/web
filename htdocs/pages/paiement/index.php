@@ -17,7 +17,7 @@ if ($facture) {
         $details = $comptaFact->obtenir_details($ref);
         $prix = 0;
         foreach ($details as $d) {
-            $prix += $d['quantite'] * $d['pu'];
+            $prix += $d['quantite'] * $d['pu'] * (1 + ($d['tva'] / 100));
         }
 
         $symfonyKernel = new SymfonyKernel();
@@ -37,8 +37,10 @@ if ($facture) {
             ->setUrlRetourErreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php')
         ;
 
+        $payboxBilling = new \AppBundle\Payment\PayboxBilling($facture['prenom'], $facture['nom'], $facture['adresse'], $facture['code_postal'], $facture['ville'], $facture['id_pays']);
+
         $now = new \DateTime();
-        $smarty->assign('paybox', $paybox->generate($now));
+        $smarty->assign('paybox', $paybox->generate($now, $payboxBilling));
 
         $smarty->assign('facture', $facture);
         $smarty->assign('details_facture', $details);

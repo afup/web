@@ -14,5 +14,3 @@ parameters:
             # Ces fichiers utilisent des alias de classes
             - sources/AppBundle/Twig/AssetsExtension.php
             - sources/AppBundle/Twig/TwigExtension.php
-            # Ce fichier est impossible à analyser, des variables globales, du eval, etc.
-            - sources/Afup/Utils/Configuration.php

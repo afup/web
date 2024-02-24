@@ -3,6 +3,7 @@
 namespace AppBundle\Security;
 
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\Model\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -58,6 +59,10 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
+        if (!$user instanceof User) {
+            return false;
+        }
+
         return (
             ($credentials['login'] === $user->getUsername() || $credentials['login'] === $user->getEmail())
             && $credentials['password'] === $user->getPassword()

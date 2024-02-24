@@ -224,7 +224,7 @@ class Users extends AbstractSeed
                 'date_debut' => mktime(16, 10, 10, 1, 2, 2024),
                 'type_personne' => AFUP_PERSONNES_MORALES,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
-                'montant' => 150,
+                'montant' => 180,
                 'date_fin' => mktime(16, 10, 10, 1, 2, 2025),
                 'numero_facture' => 'COTIS-2024-249',
             ],

@@ -71,7 +71,7 @@ class Facture extends AbstractSeed
                 'designation' => 'Forum PHP 2024 - Sponsoring Bronze',
                 'quantite' => '1',
                 'pu' =>  '1000',
-                'tva' => '0.00',
+                'tva' => '20',
             ],
         ];
 
