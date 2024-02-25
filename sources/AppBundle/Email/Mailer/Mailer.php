@@ -32,8 +32,8 @@ class Mailer
         $this->logger = $logger;
         $this->twig = $twig;
         $this->adapter = $adapter;
-        $this->forcedRecipient = $configuration->obtenir('mails|force_destinataire');
-        $defaultBccs = $configuration->obtenir('mails|bcc');
+        $this->forcedRecipient = $configuration->obtenir('mailer_force_recipients');
+        $defaultBccs = $configuration->obtenir('mailer_bcc');
         $this->defaultBccs = is_array($defaultBccs) ? $defaultBccs : [$defaultBccs];
     }
 

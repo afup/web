@@ -53,12 +53,19 @@ class StatsAction
     public function __invoke(Request $request)
     {
         $id = $request->query->get('id');
+        $comparedEventId = $request->query->get('compared_event_id');
 
         $event = $this->eventActionHelper->getEventById($id);
 
         $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
 
-        $stats = $legacyInscriptions->obtenirSuivi($event->getId());
+        $comparedSerieName = 'n-1';
+        if ($comparedEventId) {
+            $comparedEvent = $this->eventActionHelper->getEventById($comparedEventId, false);
+            $comparedSerieName = $comparedEvent->getTitle();
+        }
+
+        $stats = $legacyInscriptions->obtenirSuivi($event->getId(), $comparedEventId);
         $ticketsDayOne = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
         $ticketsDayTwo = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
 
@@ -93,7 +100,7 @@ class StatsAction
                     }, $stats['suivi'])),
                 ],
                 [
-                    'name' => 'n-1',
+                    'name' => $comparedSerieName,
                     'data' => array_values(array_map(static function ($item) {
                         return $item['n_1'];
                     }, $stats['suivi'])),

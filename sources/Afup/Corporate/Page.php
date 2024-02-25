@@ -156,7 +156,7 @@ class Page
         return
             '<ul id="menufooter-share">
                 <li>
-                    <a href="'.$this->conf->obtenir('web|path').$this->conf->obtenir('site|prefix').$this->conf->obtenir('site|query_prefix').'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
+                    <a href="'.Site::WEB_PATH.Site::WEB_PREFIX.Site::WEB_QUERY_PREFIX.'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
                 </li>
                 <li>
                     <a href="http://www.facebook.com/fandelafup" class="spriteshare spriteshare-facebook">L\'AFUP sur Facebook</a>

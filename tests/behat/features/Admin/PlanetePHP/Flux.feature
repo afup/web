@@ -1,5 +1,6 @@
 Feature: Administration - Planète PHP - Flux
 
+  @reloadDbWithTestData
   Scenario: Gestion des flux
     Given I am logged in as admin and on the Administration
     When I follow "Flux"
@@ -9,7 +10,7 @@ Feature: Administration - Planète PHP - Flux
     Then the ".content h2" element should contain "Ajouter un flux"
     When I fill in "feed_form[name]" with "Site web les-tilleuls.coop"
     And I fill in "feed_form[url]" with "https://les-tilleuls.coop"
-    And I fill in "feed_form[feed]" with "https://les-tilleuls.coop/feed.xml"
+    And I fill in "feed_form[feed]" with "http://statictestresources/feed.xml"
     And I press "Ajouter"
     Then the ".content .message" element should contain "Le flux a été ajouté"
     # Liste des flux

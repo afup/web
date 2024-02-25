@@ -32,11 +32,11 @@ class PhpMailerAdapter implements MailerAdapter
     public static function createFromConfiguration(Configuration $configuration)
     {
         return new self(
-            $configuration->obtenir('mails|serveur_smtp'),
-            $configuration->obtenir('mails|tls'),
-            $configuration->obtenir('mails|username'),
-            $configuration->obtenir('mails|password'),
-            $configuration->obtenir('mails|port')
+            $configuration->obtenir('smtp_host'),
+            (string) $configuration->obtenir('smtp_tls'),
+            $configuration->obtenir('smtp_username'),
+            $configuration->obtenir('smtp_password'),
+            (string) $configuration->obtenir('smtp_port')
         );
     }
 

@@ -333,7 +333,7 @@ class Facture
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateDevis);
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
         $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateDevis), $isSubjectedToVat);
         $pdf->AddPage();
@@ -438,6 +438,9 @@ class Facture
                     $x += 20;
                     $pdf->SetXY($x, $y);
                     $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
+                    if (!isset($vatAmounts[$detail['tva']])) {
+                        $vatAmounts[$detail['tva']] = 0;
+                    }
                     $vatAmounts[$detail['tva']] += ($detail['tva'] / 100) * $montantTtc;
                     $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
 
@@ -524,7 +527,7 @@ class Facture
             ? \DateTimeImmutable::createFromFormat('Y-m-d', $coordonnees['date_facture'])
             : new \DateTimeImmutable();
 
-        $bankAccountFactory = new BankAccountFactory($configuration);
+        $bankAccountFactory = new BankAccountFactory();
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
 
@@ -636,6 +639,9 @@ class Facture
                     $x += 20;
                     $pdf->SetXY($x, $y);
                     $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
+                    if (!isset($vatAmounts[$detail['tva']])) {
+                        $vatAmounts[$detail['tva']] = 0;
+                    }
                     $vatAmounts[$detail['tva']] += ($detail['tva'] / 100) * $montantTtc;
                     $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
                 }
@@ -728,15 +734,14 @@ class Facture
         $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";
         $corps .= "Nous restons à votre disposition pour toute demande complémentaire.\n\n";
         $corps .= "Le bureau\n\n";
-        $corps .= $configuration->obtenir('afup|raison_sociale') . "\n";
-        $corps .= $configuration->obtenir('afup|adresse') . "\n";
-        $corps .= $configuration->obtenir('afup|code_postal') . " " . $configuration->obtenir('afup|ville') . "\n";
+        $corps .= AFUP_RAISON_SOCIALE . "\n";
+        $corps .= AFUP_ADRESSE . "\n";
+        $corps .= AFUP_CODE_POSTAL . " " . AFUP_VILLE . "\n";
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);
 
-        $expediteur = $GLOBALS['AFUP_CONF']->obtenir('mails|email_expediteur');
-        $message = new Message($sujet, new MailUser($expediteur), new MailUser($personne['email'], $personne['nom']));
+        $message = new Message($sujet, new MailUser(MailUser::DEFAULT_SENDER_EMAIL, MailUser::DEFAULT_SENDER_NAME), new MailUser($personne['email'], $personne['nom']));
         $message->addAttachment(new Attachment(
             $chemin_facture,
             'facture-'.$reference.'.pdf',

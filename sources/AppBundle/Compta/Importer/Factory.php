@@ -18,6 +18,9 @@ class Factory
             case CaisseEpargne::CODE:
                 $importer = new CaisseEpargne();
                 break;
+            case CreditMutuelLivret::CODE:
+                $importer = new CreditMutuelLivret();
+                break;
             default:
                 throw new \InvalidArgumentException("Unknown importer for code '$code'");
         }

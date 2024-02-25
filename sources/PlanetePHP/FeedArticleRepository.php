@@ -2,7 +2,6 @@
 
 namespace PlanetePHP;
 
-use Afup\Site\Utils\Configuration;
 use Assert\Assertion;
 use Doctrine\DBAL\Connection;
 use HTMLPurifier;
@@ -13,17 +12,15 @@ class FeedArticleRepository
 {
     const RELEVANT = 1;
     const IRRELEVANT = 0;
+    const PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
     /** @var Connection */
     private $connection;
     /** @var string */
     private $pertinenceRegex;
 
-    public function __construct(
-        Connection $connection,
-        Configuration $configuration
-    ) {
+    public function __construct(Connection $connection) {
         $this->connection = $connection;
-        $this->pertinenceRegex = '/'.$configuration->obtenir('planete|pertinence').'/i';
+        $this->pertinenceRegex = '/'.self::PERTINENCE_LIST.'/i';
     }
 
     /**

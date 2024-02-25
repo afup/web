@@ -55,6 +55,11 @@ class Lead implements \JsonSerializable
     private $event;
 
     /**
+     * @var string|null
+     */
+    private $poste = null;
+
+    /**
      * @return string
      */
     public function getFirstname()
@@ -220,5 +225,21 @@ class Lead implements \JsonSerializable
             'language' => $this->language,
             'email' => $this->email
         ];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPoste()
+    {
+        return $this->poste;
+    }
+
+    /**
+     * @param string|null $poste
+     */
+    public function setPoste($poste)
+    {
+        $this->poste = $poste;
     }
 }

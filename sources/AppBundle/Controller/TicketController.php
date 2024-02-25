@@ -299,7 +299,7 @@ class TicketController extends EventBaseController
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
             $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event);
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
-            $bankAccountFactory = new BankAccountFactory($GLOBALS['AFUP_CONF']);
+            $bankAccountFactory = new BankAccountFactory();
             $params['bankAccount'] = $bankAccountFactory->createApplyableAt($invoice->getinvoiceDate());
 
             // For bankwire, companies need to retrieve the invoice

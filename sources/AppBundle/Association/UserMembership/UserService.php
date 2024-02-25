@@ -3,7 +3,6 @@
 namespace AppBundle\Association\UserMembership;
 
 use Afup\Site\Association\Cotisations;
-use Afup\Site\Utils\Configuration;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Email\Mailer\Mailer;
@@ -29,14 +28,13 @@ class UserService
         UserRepository $userRepository,
         Mailer $mailer,
         UrlGeneratorInterface $urlGenerator,
-        Configuration $configuration,
         Cotisations $cotisations
     ) {
         $this->userRepository = $userRepository;
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->cotisations = $cotisations;
-        $this->sender = $configuration->obtenir('mails|email_expediteur');
+        $this->sender = MailUser::DEFAULT_SENDER_EMAIL;
     }
 
     public function generateRandomPassword()
