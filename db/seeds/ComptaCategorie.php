@@ -198,6 +198,11 @@ class ComptaCategorie extends AbstractSeed
                 'idevenement'=>0,
                 'categorie'=>'Seminaire',
             ],
+            [
+                'id'=>48,
+                'idevenement'=>0,
+                'categorie'=>'Outils',
+            ],
         ];
 
         $table = $this->table('compta_categorie');

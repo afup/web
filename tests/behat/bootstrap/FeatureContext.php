@@ -188,6 +188,29 @@ class FeatureContext implements Context
         }
     }
 
+    /**
+     * @Then The :field field should has the following selected text :expectedValue
+     */
+    public function selectHasForCurrentSelectedText($field, $expectedValue)
+    {
+        $node = $this->minkContext->assertSession()->fieldExists($field);
+        $options = $node->findAll('css', 'option');
+
+        $selectedValue = null;
+        foreach ($options as $option) {
+            if ($option->isSelected()) {
+                $selectedValue = $option->getText();
+                break;
+            }
+        }
+
+        if ($selectedValue != $expectedValue) {
+            throw new \Exception(
+                sprintf('The select has the following text "%s" (expected "%s")', $selectedValue, $expectedValue)
+            );
+        }
+    }
+
 
     /**
      * @Then the response header :arg1 should equal :arg2
@@ -203,6 +226,19 @@ class FeatureContext implements Context
     public function assertResponseHeaderMatch($headerName, $regExpExpectedValue)
     {
         $this->minkContext->assertSession()->responseHeaderMatches($headerName, $regExpExpectedValue);
+    }
+
+    /**
+     * @Then the current URL should match :arg1
+     */
+    public function assertCurrentUrlContains($regex)
+    {
+        $currentUrl = $this->minkContext->getSession()->getCurrentUrl();
+
+        if (!preg_match($regex, $currentUrl)) {
+            throw new \Exception(sprintf('The current URL "%s" does not matches "%s"', $currentUrl, $regex));
+        }
+
     }
 
     /**
