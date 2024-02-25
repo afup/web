@@ -66,7 +66,7 @@ test:
 	./bin/php-cs-fixer fix --dry-run -vv
 
 
-test-functional: data config htdocs/uploads
+test-functional: data config htdocs/uploads tmp
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest planetetest mailcatcher
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest planetetest mailcatcher
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp ./bin/behat
@@ -79,6 +79,9 @@ data:
 
 htdocs/uploads:
 	mkdir htdocs/uploads
+
+tmp:
+	mkdir -p tmp
 
 hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 
