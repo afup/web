@@ -94,7 +94,7 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
             return new RedirectResponse($target_path);
         }
 
-        return new RedirectResponse('/member');
+        return new RedirectResponse('/member/');
     }
 
     /**
