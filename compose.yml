@@ -51,6 +51,8 @@ services:
       SYMFONY_ENV: "test"
     volumes:
       - ./:/var/www/html
+    links:
+      - statictestresources
     healthcheck:
       test: ["CMD", "curl", "-f", "https://apachephptest:80"]
       interval: 30s
@@ -111,7 +113,13 @@ services:
       - apachephptest
       - planetetest
       - dbtest
+      - statictestresources
     command: "false"
 
   mailcatcher:
     image: dockage/mailcatcher:0.9.0
+
+  statictestresources:
+    image: nginx:1.25.4
+    volumes:
+      - ./docker/dockerfiles/statictestresources:/usr/share/nginx/html:ro
