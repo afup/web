@@ -1,0 +1,1449 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet href="https://jolicode.com/feed.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="fr-FR">
+    <id>https://jolicode.com/blog</id>
+    <link type="text/html" rel="alternate" href="https://jolicode.com/blog"/>
+    <link type="application/rss+xml" rel="self" href="https://jolicode.com/feed" />
+
+            <title>JoliCode blog - les derniers articles</title>
+        <updated>2024-02-25T12:15:10+01:00</updated>    <entry>
+        <id>https://jolicode.com/blog/comment-ecrire-une-regle-rector</id>
+        <published>2024-02-21T09:42:00+01:00</published>
+        <updated>2024-02-21T09:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/comment-ecrire-une-regle-rector"/>
+        <title>Comment écrire une règle Rector</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="php" />            <category term="rector" />        <summary><![CDATA[Afin de mettre à jour Symfony sur l’application d&#039;un client, nous avons dû corriger quelques usages de Doctrine au préalable. Il y a quelques années de cela, il était commun d&#039;écrire ce genre de code…]]></summary>
+        <content type="html">
+            &lt;p&gt;Afin de mettre à jour Symfony sur l’application d&#039;un client, nous avons dû corriger quelques usages de Doctrine au préalable. Il y a quelques années de cela, il était commun d&#039;écrire ce genre de code dans un contrôleur :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$order = $this-&amp;gt;getDoctrine()-&amp;gt;getRepository(&#039;App:Order&#039;)-&amp;gt;find($id);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La syntaxe &lt;code&gt;&amp;lt;Namespace&amp;gt;:&amp;lt;EntityName&amp;gt;&lt;/code&gt; étant &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/doctrine/orm/pull/8820&quot;&gt;dépréciée&lt;/a&gt;, il faut mettre à jour en utilisant la syntaxe &lt;abbr title=&quot;Fully Qualified Class Name&quot;&gt;FQCN&lt;/abbr&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;use App\Entity\Order;
+
+$order = $this-&amp;gt;getDoctrine()-&amp;gt;getRepository(Order::class)-&amp;gt;find($id);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A travers cet article, nous verrons comment créer une règle custom Rector, qui répondra à ce besoin.&lt;/p&gt;
+&lt;p&gt;Mais quitte à écrire une règle, ne pouvons-nous pas corriger le code ci-dessus pour qu&#039;il ne transgresse pas la &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://en.wikipedia.org/wiki/Law_of_Demeter&quot;&gt;loi de Demeter&lt;/a&gt; ?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;use App\Repository\OrderRepository;
+
+class OrderController
+{
+    public function __construct(
+        private readonly OrderRepository $orderRepository,
+    ) {
+    }
+
+    public function show(string $id)
+    {
+        $order = $this-&amp;gt;orderRepository-&amp;gt;find($id);
+        //...
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Mise en place de rector&lt;/h2&gt;
+&lt;p&gt;À JoliCode, nous n&#039;aimons pas ajouter les outils directement aux applications Symfony :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ils peuvent mettre en conflit certaines dépendances ;&lt;/li&gt;
+&lt;li&gt;Ils alourdissent le projet ;&lt;/li&gt;
+&lt;li&gt;Pour des projets avec plusieurs applications (micro ou macro services), il faut installer N fois les outils ;&lt;/li&gt;
+&lt;li&gt;&amp;quot;Ce n&#039;est pas bien rangé&amp;quot;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nous avons l&#039;habitude de les mettre dans le dossier &lt;code&gt;tools/&amp;lt;outils&amp;gt;&lt;/code&gt; :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tools
+├─ rector
+│  ├─ composer.json
+│  └─ composer.lock
+├─ phpstan
+│  ├─ composer.json
+│  └─ composer.lock
+└─ php-cs-fixer
+   ├─ composer.json
+   └─ composer.lock
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Dans le dossier &lt;code&gt;tools/rector&lt;/code&gt;, nous avons le fichier &lt;code&gt;composer.json&lt;/code&gt; suivant :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+    &amp;quot;type&amp;quot;: &amp;quot;project&amp;quot;,
+    &amp;quot;license&amp;quot;: &amp;quot;proprietary&amp;quot;,
+    &amp;quot;require&amp;quot;: {
+        &amp;quot;rector/rector&amp;quot;: &amp;quot;^1.0.1&amp;quot;
+    },
+    &amp;quot;require-dev&amp;quot;: {
+        &amp;quot;phpunit/phpunit&amp;quot;: &amp;quot;^9.6.16&amp;quot;,
+        &amp;quot;symfony/var-dumper&amp;quot;: &amp;quot;^5.4.35&amp;quot;
+    },
+    &amp;quot;autoload&amp;quot;: {
+        &amp;quot;psr-4&amp;quot;: {
+            &amp;quot;App\\&amp;quot;: &amp;quot;src/&amp;quot;
+        }
+    },
+    &amp;quot;autoload-dev&amp;quot;: {
+        &amp;quot;psr-4&amp;quot;: {
+            &amp;quot;App\\Tests\\&amp;quot;: &amp;quot;tests/&amp;quot;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vous noterez que nous avons pris un peu d&#039;avance en ajoutant :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;code&gt;symfony/var-dumper&lt;/code&gt; pour pouvoir utiliser &lt;code&gt;dump()&lt;/code&gt; dans les tests et lors du debug ;&lt;/li&gt;
+&lt;li&gt;
+&lt;code&gt;phpunit/phpunit&lt;/code&gt; pour pouvoir tester nos règles ;&lt;/li&gt;
+&lt;li&gt;l&#039;autoloading de notre &amp;quot;application&amp;quot;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Une fois les dépendances installées, nous pouvons créer la configuration de base.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-console&quot;&gt;$ cd tools/rector
+$ vendor/bin/rector
+
+ No &amp;quot;rector.php&amp;quot; config found. Should we generate it for you? [yes]:
+ &amp;gt; yes
+
+
+ [OK] The config is added now. Re-run command to make Rector do the work!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nous n&#039;allons pas nous attarder sur la configuration de Rector, mais la configuration de base est la suivante :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;&amp;lt;?php
+
+declare(strict_types=1);
+
+use Rector\Config\RectorConfig;
+use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
+
+return RectorConfig::configure()
+    -&amp;gt;withPaths([
+        __DIR__ . &#039;/src&#039;,
+        __DIR__ . &#039;/tests&#039;,
+    ])
+    // uncomment to reach your current PHP version
+    // -&amp;gt;withPhpSets()
+    -&amp;gt;withRules([
+        AddVoidReturnTypeWhereNoReturnRector::class,
+    ]);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nous allons néanmoins changer le dossier de base de notre application, et adapter l&#039;autoloading pour que Rector puisse trouver nos classes.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;$base = __DIR__ . &#039;/../..&#039;;
+
+return RectorConfig::configure()
+    -&amp;gt;autoloadPaths([
+        __DIR__ . &#039;/vendor/autoload.php&#039;,
+        $base . &#039;/vendor/autoload.php&#039;,
+    ]);
+    -&amp;gt;paths([
+        $base . &#039;/src&#039;,
+    ]);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note : Nous aurions aussi pu mettre le fichier &lt;code&gt;rector.php&lt;/code&gt; à la racine de notre application, mais nous avons choisi de le mettre dans le dossier &lt;code&gt;tools/rector&lt;/code&gt; pour des raisons de clarté.&lt;/p&gt;
+&lt;h2&gt;Création de la règle&lt;/h2&gt;
+&lt;p&gt;Il existe une commande pour créer une règle :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;vendor/bin/rector custom-rule
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Cependant, à l&#039;heure où nous écrivons ces lignes, cette commande ne fonctionne pas. Nous allons donc créer la règle à la main.&lt;/p&gt;
+&lt;h3&gt;Initialisation de la règle&lt;/h3&gt;
+&lt;p&gt;Nous allons créer le fichier suivant :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;&amp;lt;?php
+// src/Rector/RepositoryRector.php
+
+namespace App\Rector;
+
+use Rector\Rector\AbstractRector;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use PhpParser\Node;
+use PhpParser\Node\Stmt\Class_;
+
+final class RepositoryRector extends AbstractRector
+{
+    /**
+     * @return array&amp;lt;class-string&amp;lt;Node&amp;gt;&amp;gt;
+     */
+    public function getNodeTypes(): array
+    {
+        return [Class_::class];
+    }
+
+    /**
+     * @param Class_ $node
+     */
+    public function refactor(Node $node): ?Node
+    {
+        return $node;
+    }
+
+    public function getRuleDefinition(): RuleDefinition
+    {
+        throw new \LogicException(&#039;Not implemented yet&#039;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ce code est la version minimal d&#039;une règle Rector :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Elle doit étendre &lt;code&gt;AbstractRector&lt;/code&gt; ;&lt;/li&gt;
+&lt;li&gt;Elle doit implémenter la méthode &lt;code&gt;getNodeTypes()&lt;/code&gt; qui retourne un tableau de classes de nœuds que la règle va traiter ;&lt;/li&gt;
+&lt;li&gt;Elle doit implémenter la méthode &lt;code&gt;refactor()&lt;/code&gt; qui va effectuer le traitement ;&lt;/li&gt;
+&lt;li&gt;Elle doit implémenter la méthode &lt;code&gt;getRuleDefinition()&lt;/code&gt; qui retourne un objet &lt;code&gt;RuleDefinition&lt;/code&gt; qui permet de documenter la règle. Mais ici, nous sommes fainéants, nous allons lever une exception.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;&amp;quot;une classe de nœud que la règle va traiter&amp;quot; ?&lt;/h3&gt;
+&lt;p&gt;Rector utilise un parseur PHP pour analyser et transformer le code. Ce parseur va traduire le code en un arbre de nœud. Chaque nœud représente une partie du code. Par exemple, une classe, une méthode, une variable, un appel de méthode, etc.&lt;/p&gt;
+&lt;p&gt;Le parseur dont nous parlons ici est présent dans PHPStan, Symfony, PHP-CS-Fixer, &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/janephp/janephp&quot;&gt;Jane&lt;/a&gt;, etc. Vous l&#039;avez devinez, il s&#039;agit de &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/nikic/PHP-Parser&quot;&gt;nikic/PHP-Parser&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Pour utiliser convenablement Rector, il est important de comprendre comment fonctionne ce parseur. Nous vous conseillons de vous familiariser un peu avec avant de continuer, par exemple en jetant un œil à notre article sur les &lt;a href=&quot;https://jolicode.com/blog/l-analyse-statique-dans-le-monde-php&quot;&gt;grands principes de l&#039;analyse statique en PHP et la manipulation de l&#039;&lt;abbr title=&quot;Abstract Syntax Tree&quot;&gt;AST&lt;/abbr&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Petite aparté :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reactor &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://twitter.com/VotrubaT/status/1759354858610844137&quot;&gt;va bientôt sortir un playground&lt;/a&gt; pour jouer avec l’AST ;&lt;/li&gt;
+&lt;li&gt;Il existe aussi un &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/matthiasnoback/php-ast-inspector&quot;&gt;inspecteur intéractif en ligne de commande&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Dans notre exemple, nous voulons changer des appels de méthode. Cependant, nous voulons aussi changer le constructeur d&#039;une classe. Nous allons donc écouter la plus grande unité possible pour notre cas d&#039;usage: la classe.&lt;/p&gt;
+&lt;h3&gt;Initialisation des tests&lt;/h3&gt;
+&lt;p&gt;Lancer Rector avec notre règle ne va pas être très pratique pour débugger. Nous allons donc écrire des tests pour notre règle.&lt;/p&gt;
+&lt;p&gt;Nous allons suivre le format mis en avant par Rector pour architecturer nos tests :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tests
+└─ Rector
+   └─ RepositoryRector
+      ├─ RepositoryRectorTest.php
+      ├─ config
+      │  └─ config.php
+      └─ Fixture
+         └─ php8.php.inc
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Le fichier &lt;code&gt;config.php&lt;/code&gt; retourne la config de rector :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;&amp;lt;?php
+
+use App\Rector\RepositoryRector;
+use Rector\Config\RectorConfig;
+
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig-&amp;gt;rule(RepositoryRector::class);
+    $rectorConfig-&amp;gt;importNames();
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Dans le dossier &lt;code&gt;Fixture&lt;/code&gt;, nous allons mettre des fichiers PHP qui vont être transformés par notre règle. Dans chaque fichier, il y a en haut la version &amp;quot;avant&amp;quot;, et en bas la version &amp;quot;après&amp;quot;.&lt;/p&gt;
+&lt;p&gt;Ici, &lt;code&gt;php8.php.inc&lt;/code&gt; :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;&amp;lt;?php
+
+namespace App\FooBar;
+
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Bar;
+
+class Service
+{
+    private EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this-&amp;gt;em = $em;
+    }
+
+    public function doSomething()
+    {
+        $this-&amp;gt;em-&amp;gt;getRepository(\App\Entity\Foo::class);
+        $this-&amp;gt;em-&amp;gt;getRepository(Bar::class);
+        $this-&amp;gt;em-&amp;gt;getRepository(&#039;App:Baz&#039;);
+    }
+}
+?&amp;gt;
+-----
+&amp;lt;?php
+
+namespace App\FooBar;
+
+use App\Repository\FooRepository;
+use App\Repository\BarRepository;
+use App\Repository\BazRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Bar;
+
+class Service
+{
+    private EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em, private FooRepository $fooRepository, private BarRepository $barRepository, private BazRepository $bazRepository)
+    {
+        $this-&amp;gt;em = $em;
+    }
+
+    public function doSomething()
+    {
+        $this-&amp;gt;fooRepository;
+        $this-&amp;gt;barRepository;
+        $this-&amp;gt;bazRepository;
+    }
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Et pour finir, le fichier de test :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;&amp;lt;?php
+
+namespace App\Tests\Rector\RepositoryRector;
+
+use PHPUnit\Framework\Attributes\DataProvider;
+use Rector\Testing\PHPUnit\AbstractRectorTestCase;
+
+final class RepositoryRectorTest extends AbstractRectorTestCase
+{
+    /** @dataProvider provideData */
+    public function test(string $filePath): void
+    {
+        $this-&amp;gt;doTestFile($filePath);
+    }
+
+    public static function provideData(): iterable
+    {
+        return self::yieldFilesFromDirectory(__DIR__ . &#039;/Fixture&#039;);
+    }
+
+    public function provideConfigFilePath(): string
+    {
+        return __DIR__ . &#039;/config/config.php&#039;;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Écriture de la règle&lt;/h3&gt;
+&lt;p&gt;Nous n&#039;allons pas détailler tout le code de la règle, car ce n&#039;est pas le but de l’article. À la place, nous allons juste mettre en avant quelques points importants.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;&amp;lt;?php
+
+namespace App\Rector;
+
+use PHPStan\Type\ObjectType;
+use PhpParser\Node;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\Expression;
+use Rector\NodeManipulator\ClassDependencyManipulator;
+use Rector\PostRector\ValueObject\PropertyMetadata;
+use Rector\Rector\AbstractRector;
+use Rector\Symfony\NodeAnalyzer\DependencyInjectionMethodCallAnalyzer;
+use Rector\ValueObject\MethodName;
+use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+
+final class RepositoryRector extends AbstractRector
+{
+    // Nous n’utilisons pas CPP, car le code doit fonctionner avec PHP 7.4
+    private ClassDependencyManipulator $classDependencyManipulator;
+    private DependencyInjectionMethodCallAnalyzer $dependencyInjectionMethodCallAnalyzer;
+
+    public function __construct(
+        ClassDependencyManipulator $classDependencyManipulator,
+        DependencyInjectionMethodCallAnalyzer $dependencyInjectionMethodCallAnalyzer
+    ) {
+        $this-&amp;gt;classDependencyManipulator = $classDependencyManipulator;
+        $this-&amp;gt;dependencyInjectionMethodCallAnalyzer = $dependencyInjectionMethodCallAnalyzer;
+    }
+
+    /**
+     * @return array&amp;lt;class-string&amp;lt;Node&amp;gt;&amp;gt;
+     */
+    public function getNodeTypes(): array
+    {
+        return [Class_::class];
+    }
+
+    /**
+     * @param Class_ $node
+     */
+    public function refactor(Node $node): ?Node
+    {
+        // Nous sauvegardons la classe, pour un future usage
+        $class = $node;
+
+        // Nous créons un tableau de propriétés qui seront injectées dans le constructeur
+        $propertyMetadatas = [];
+
+        // Méthode très pratique pour traverser l’arbre de noeuds
+        $this-&amp;gt;traverseNodesWithCallable($class, function (Node $node) use ($class, &amp;amp;$propertyMetadatas): ?Node {
+            // Nous ne voulons que l&#039;appel de méthode
+            if (!$node instanceof MethodCall) {
+                return null;
+            }
+            // qui sont nommé &amp;quot;getRepository&amp;quot;
+            if (!$this-&amp;gt;isName($node-&amp;gt;name, &#039;getRepository&#039;)) {
+                return null;
+            }
+            // et qui sont appelées via Doctrine
+            if (!$this-&amp;gt;isCallerDoctrine($node, $class)) {
+                return null;
+            }
+
+            // Nous prenons la valeur du premier arguments
+            $arg = $node-&amp;gt;args[0]-&amp;gt;value;
+            if ($arg instanceof String_) {
+                // Et si c’est une string, nous la  remplacons par son FQCN
+                $entity = str_replace(&#039;App:&#039;, &#039;App\\Entity\\&#039;, $arg-&amp;gt;value);
+                $newValue = $this-&amp;gt;nodeFactory-&amp;gt;createClassConstFetch($entity, &#039;class&#039;);
+                $node-&amp;gt;args[0]-&amp;gt;value = $newValue;
+            }
+
+            // Nous calculons le remplacement de l’appel de méthode par un appel de propriété.
+            $propertyMetadata = $this-&amp;gt;dependencyInjectionMethodCallAnalyzer-&amp;gt;replaceMethodCallWithPropertyFetchAndDependency(
+                $class,
+                $node
+            );
+
+            if (!$propertyMetadata instanceof PropertyMetadata) {
+                return null;
+            }
+
+            // Mais nous remplaçons la propriété et sa classe par le Repository associé
+            // Note : On suppose que le repo existe, et qu’il est situé dans App\Repository\&amp;lt;Entity&amp;gt;Repository
+            $propertyMetadata = new PropertyMetadata(
+                $propertyMetadata-&amp;gt;getName() . &amp;quot;Repository&amp;quot;,
+                new ObjectType(&#039;App\Repository\\&#039; . ucfirst($propertyMetadata-&amp;gt;getName()) . &#039;Repository&#039;)
+            );
+
+            $propertyMetadatas[] = $propertyMetadata;
+
+            // Nous remplaçons l’appel de méthode par un appel de propriété
+            return $this-&amp;gt;nodeFactory-&amp;gt;createPropertyFetch(&#039;this&#039;, $propertyMetadata-&amp;gt;getName());
+        });
+
+        if ($propertyMetadatas === []) {
+            return null;
+        }
+
+        // Nous ajoutons les dépendances au constructeur
+        foreach ($propertyMetadatas as $propertyMetadata) {
+            $this-&amp;gt;classDependencyManipulator-&amp;gt;addConstructorDependency($class, $propertyMetadata);
+        }
+
+        // Cas spécial pour les Command qui doivent appeler le constructeur parent
+        $this-&amp;gt;decorateCommandConstructor($class);
+
+        return $node;
+    }
+
+    public function getRuleDefinition(): RuleDefinition
+    {
+        throw new \LogicException(&#039;Not implemented yet&#039;);
+    }
+
+
+    private function isCallerDoctrine(MethodCall $node, Class_ $class): bool
+    {
+        // Nous regardons si l’appelant est une instance de Doctrine\ORM\EntityManagerInterface
+        if ($this-&amp;gt;isObjectType($node-&amp;gt;var, new ObjectType(&amp;quot;Doctrine\ORM\EntityManagerInterface&amp;quot;))) {
+            return true;
+        }
+
+        // Nous regardons si l’appelant est une instance de Doctrine\Persistence\ManagerRegistry
+        if ($this-&amp;gt;isObjectType($node-&amp;gt;var, new ObjectType(&amp;quot;Doctrine\Persistence\ManagerRegistry&amp;quot;))) {
+            return true;
+        }
+
+        // Gestion du manque de return type sur Symfony\Bundle\FrameworkBundle\Controller\AbstractController::getDoctrine()
+        if ($node-&amp;gt;var instanceof MethodCall &amp;amp;&amp;amp; $this-&amp;gt;isName($node-&amp;gt;var-&amp;gt;name, &#039;getDoctrine&#039;)) {
+            if (!$this-&amp;gt;isObjectType($class, new ObjectType(&amp;quot;Symfony\Bundle\FrameworkBundle\Controller\AbstractController&amp;quot;))) {
+                // Does not work, WTF? =&amp;gt; looks like there is a bug somewhere in rector
+                // return false;
+                return true;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    // Cas spécial pour les Command qui doivent appeler le constructeur parent
+    private function decorateCommandConstructor(Class_ $class): void
+    {
+        if (!$this-&amp;gt;isObjectType($class, new ObjectType(&#039;Symfony\Component\Console\Command\Command&#039;))) {
+            return;
+        }
+
+        $constructClassMethod = $class-&amp;gt;getMethod(MethodName::CONSTRUCT);
+        if (!$constructClassMethod instanceof ClassMethod) {
+            return;
+        }
+
+        if ((array) $constructClassMethod-&amp;gt;stmts === []) {
+            $parentConstructStaticCall = new StaticCall(new Name(&#039;parent&#039;), &#039;__construct&#039;);
+            $constructClassMethod-&amp;gt;stmts[] = new Expression($parentConstructStaticCall);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Pour rappel, l&#039;architecture de notre projet est la suivante :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tools/rector
+├─ phpunit.xml
+├─ composer.json
+├─ src
+│  └─ Rector
+│     └─ RepositoryRector.php
+├─ composer.lock
+├─ tests
+│  └─ Rector
+│     └─ RepositoryRector
+│        ├─ RepositoryRectorTest.php
+│        ├─ config
+│        │  └─ config.php
+│        └─ Fixture
+│           └─ php8.php.inc
+└─ rector.php
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Il faut maintenant lancer les tests :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-console&quot;&gt;$ vendor/bin/phpunit
+PHPUnit 9.6.16 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.2-1+ubuntu22.04.1+deb.sury.org+1
+Configuration: /home/gregoire/dev/my-project/tools/rector/phpunit.xml
+
+.                                                                   1 / 1 (100%)
+
+Time: 00:01.026, Memory: 32.00 MB
+
+OK (1 test, 2 assertions)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;🎉🎉🎉 Tout marche bien ! 🎉🎉🎉&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Nous devons ajouter notre rule à la configuration de rector :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;-&amp;gt;rules([
+    App\Rector\RepositoryRector::class,
+])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Et voilà !&lt;/p&gt;
+&lt;p&gt;Avec ce petit guide, vous pouvez constater comme il est simple de créer vos propres règles Rector. Vous pouvez aussi les partager avec la communauté, ou les garder pour vous. C&#039;est à vous de voir. D&#039;ailleurs, si vous pensez que cette règle pourrait être utile à d&#039;autres, n&#039;hésitez pas à la partager ou à nous demander de créer un package Composer.&lt;/p&gt;
+&lt;p&gt;Rector est vraiment très puissant et permet de refactorer une grosse base de code très rapidement. C&#039;est un outil que nous utilisons au quotidien chez JoliCode et nous ne pouvons que vous le recommander. Par contre, il n&#039;est pas impossible que certaines règles cassent votre code. Nous espérons que vous avez fait des tests pour vous en rendre compte rapidement. Mais rassurez-vous, c&#039;est vraiment de plus en plus rare !&lt;/p&gt;
+&lt;p&gt;Cependant, il y a (avait ?) très souvent des changements de formats de configuration, des BC breaks, des suppressions de règles, des changements de comportement, etc. Nous espérons que grâce à la très récente release de la version 1, les choses vont se stabiliser.&lt;/p&gt;
+&lt;p&gt;Enfin, vous vous demandez peut-être s&#039;il vaut mieux écrire une règle ou changer le code à la main ? Et bien comme d’habitude, ça dépend. Nous avons mis environ 4 heures pour découvrir les règles personnalisées, et écrire celle-ci. Ce fut peut-être un peu plus long que de le faire à la main, mais beaucoup plus intéressant et fun. Et pour l’avoir fait sur d&#039;autres projets, nous regrettons de ne pas l’avoir écrite plus tôt, car elle aurait déjà été largement rentabilisée ! &lt;strong&gt;De plus, le fait d’automatiser les choses les rend moins sensibles aux erreurs humaines d&#039;inattention&lt;/strong&gt;. À l’avenir, si le besoin s’en fait ressentir, nous envisagerons très sérieusement l’ajout d’une règle personnalisée au projet.&lt;/p&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/snowcamp-2024-en-quelques-mots</id>
+        <published>2024-02-09T10:42:00+01:00</published>
+        <updated>2024-02-09T10:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/snowcamp-2024-en-quelques-mots"/>
+        <title>Snowcamp 2024 en quelques mots</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="conférence" />            <category term="cloud" />        <summary><![CDATA[JoliCode était présent à la 8ème édition de Snowcamp, une conférence tech généraliste où les intervenants, variés et pointus, partageaient leurs connaissances dans une ambiance très chaleureuse. Nous…]]></summary>
+        <content type="html">
+            &lt;p&gt;JoliCode était présent à la 8ème édition de Snowcamp, une conférence tech généraliste où les intervenants, variés et pointus, partageaient leurs connaissances dans une ambiance très chaleureuse. Nous avions d’ailleurs la chance d’y présenter un sujet 😎 !&lt;/p&gt;
+&lt;p&gt;C’est donc au WTC de Grenoble que nous avons posé nos valises, dans cette ville au téléphérique iconique et entourée de montagnes, pour assister à des conférences de tous horizons ! Première impression, le lieu est grand, propice aux échanges, et l&#039;organisation est au top (et il fait beau ☀️) !&lt;/p&gt;
+&lt;p&gt;Dès le début, le ton est donné sur la richesse des sujets, l’implication technique et humaine des intervenants. On y parlera autant de chaos engineering, d’ESI, que de migration vers le cloud. Il y en a pour tous les goûts, et ça tombe bien, nous avons faim de variété 😋&lt;/p&gt;
+&lt;p&gt;Nous commençons notre chemin par &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://static.sched.com/hosted_files/snowcamp2024/09/AViSTO-Chaos-Engineering-SnowCamp.pptx&quot;&gt;Chaos Engineering: REX d&#039;un DevOps ambitieux&lt;/a&gt; qui nuance la facilité de mise en pratique d’un chaos organisé, du point de vue du &amp;quot;casseur&amp;quot;, et en parallèle de celui qui a la charge de remettre la stack en état. Au final, pas si facile de créer le chaos !&lt;/p&gt;
+&lt;p&gt;On enchaîne avec &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://presentations.verchere.fr/Migration_Cloud_ETI_Snowcamp_2024/&quot;&gt;2 ans de migrations en environnement &amp;quot;cloud native&amp;quot; quand on n&#039;est ni une startup, ni dans le CAC 40&lt;/a&gt; : un retour d&#039;expérience plutôt chouette, très complet, qui vient nous questionner sur nos stratégies de migration, et sur les précautions et difficultés qui peuvent survenir. On peut y voir un plan réaliste de migration, mais on y apprend surtout les pièges à éviter, comme par exemple l’utilisation de Terraform pour l’intégralité du déploiement au profit de solutions plus nuancées et complémentaires comme Terraform + Helm + Gitops, etc. Une bonne base de travail pour quiconque souhaiterait migrer d’un hébergement classique vers le cloud.&lt;/p&gt;
+&lt;p&gt;Vient ensuite dans un autre registre &lt;strong&gt;L’Art Génératif Dévoilé : Plongez dans l’univers créatif de l’IA&lt;/strong&gt; qui pointe du doigt les concepts clé de l’art génératif et nous fait partager les avancées de la révolution IA, toujours plus impressionnante.&lt;/p&gt;
+&lt;p&gt;&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://docs.google.com/presentation/d/1XnojusQZKgNuT-l72luyVVsSZG5SmIZW2BTpI_bd6Lk/mobilepresent#slide=id.p&quot;&gt;Devenez des orfèvres de la CI&lt;/a&gt; nous (ré)apprends les bases d’un bon workflow de développement jusqu’à la mise en production. Attention à l’ordre des tâches, aux check inutiles, à la périodicité de certains tests, à la gestion de son cache, etc. au niveau micro, on apprendra à bien profiler, aller chercher les micro optimisations, pour obtenir finalement de grands gains.&lt;/p&gt;
+&lt;p&gt;&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/Kehrlann/sso-live-coding&quot;&gt;OAuth2, OpenID: le SSO en live-coding et sans framework&lt;/a&gt; quant lui nous invite en live coding à développer étape par étape un flow d’authentification, de manière très didactique et intéressante, et nous met en garde au passage contre les pièges à éviter.&lt;/p&gt;
+&lt;p&gt;Sans oublier, &lt;strong&gt;Web dans le cloud, piloter ses décisions par les coûts&lt;/strong&gt;, impossible à rater, puisque qu’il s’agit de notre sujet ! On y découvre les pièges à éviter et les optimisations possibles des coûts lors d’une migration d’une architecture bare metal vers une architecture cloud, accompagné de quelques tweaks et infos/outils utiles.&lt;/p&gt;
+&lt;p&gt;Au lendemain d’un dîner des speakers, particulièrement copieux, on reprend le fil avec Bertrand, agriculteur, et Mathieu, développeur, qui nous dévoilent l’envers du décor d’un monde méconnu (en ce qui me concerne), celui de l’agriculture de pointe (et c’est vraiment fou). On y découvre une industrie aux technologies délirantes, notamment du point de vue de la géolocalisation et des optimisations de semis/récoltes mais aussi l’existence de trucs comme ça : &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.youtube.com/shorts/zLBKLEcy4lg&quot;&gt;https://www.youtube.com/shorts/zLBKLEcy4lg&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;On aura par ailleurs la chance d’assister à une conférence animée par Julie Francois-Franco, CNIL et Iris Naudin, Designer à propos de la protection des données personnelles dans le e-commerce, autour d’un cas concret d’achat de legging, amusant, mais pas que, puisqu’il questionne chacun sur son usage et sa perception de l’achat en ligne.&lt;/p&gt;
+&lt;p&gt;On termine sur &lt;strong&gt;Ajouter facilement des animations dans sa navigation Web avec la &lt;em&gt;Transition view API&lt;/em&gt; !&lt;/strong&gt; et &lt;strong&gt;Adoptez la clean archigonale&lt;/strong&gt;, un talk très intéressant sur les performances des Edge Functions (dont certains usages m’ont paru plutôt astucieux), autant de choses qui contribuent à ouvrir nos chakra aux différentes approches d’un travail qu’on prend plaisir à re-découvrir chaque jour.&lt;/p&gt;
+&lt;p&gt;On sort de Snowcamp avec beaucoup d’infos, certaines applicables au quotidien, d’autres au contraire qui en sont très loin, mais si je dois ne retenir qu’une chose, c’est qu’on fait tous un très beau métier.&lt;/p&gt;
+&lt;p&gt;Merci à eux pour leur accueil, et à l’année prochaine !&lt;/p&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/heberger-un-projet-php-sans-serveur-avec-webassembly</id>
+        <published>2024-02-08T14:42:00+01:00</published>
+        <updated>2024-02-08T14:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/heberger-un-projet-php-sans-serveur-avec-webassembly"/>
+        <title>Héberger un projet PHP sans serveur avec WebAssembly</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="php" />            <category term="wasm" />        <summary><![CDATA[D&#039;après Wikipedia :
+
+WebAssembly, abrégé wasm, est un standard du World Wide Web pour le développement d’applications. Il est conçu pour remplacer JavaScript avec des performances supérieures. Le standard…]]></summary>
+        <content type="html">
+            &lt;p&gt;D&#039;après &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://fr.wikipedia.org/wiki/WebAssembly&quot;&gt;Wikipedia&lt;/a&gt; :&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;WebAssembly, abrégé wasm, est un standard du World Wide Web pour le développement d’applications. Il est conçu pour remplacer JavaScript avec des performances supérieures. Le standard consiste en un bytecode, sa représentation textuelle et un environnement d&#039;exécution dans un bac à sable compatible avec JavaScript. Il peut être exécuté dans un navigateur Web et en dehors. WebAssembly est standardisé dans le cadre du World Wide Web Consortium.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Ce qu&#039;il ne faut pas retenir, c&#039;est que wasm est conçu pour remplacer JavaScript.&lt;/p&gt;
+&lt;p&gt;Ce qu&#039;il faut retenir, c&#039;est que WebAssembly est un langage de bas niveau qui est conçu pour être exécuté dans un contexte sécurisé. On le retrouve aussi bien dans un navigateur, que dans des workers @edge (comme chez fastly) ou dans les blockchains/smart contracts. Sa force est sa sandbox qui, par défaut ne permet pas d’interagir avec l&#039;extérieur : pas de réseau, pas de système de fichier, etc.&lt;/p&gt;
+&lt;p&gt;Il existe cependant une interface WebAssembly System Interface (WASI) qui permet de communiquer avec l&#039;extérieur. C&#039;est dans celle-ci qu&#039;il est possible de définir et configurer les fonctions qui permettent d&#039;interagir avec d’autres systèmes.&lt;/p&gt;
+&lt;p&gt;Wasm est un langage qui est ensuite exécuté par un Runtime Environment. C&#039;est une machine virtuelle qui va interpréter le bytecode wasm. Ce n&#039;est ni plus ni moins qu&#039;un &amp;quot;&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://fr.wikipedia.org/wiki/Processeur_bas%C3%A9_sur_la_pile&quot;&gt;Processeur basé sur la pile&lt;/a&gt;&amp;quot; (Stack Machine en Anglais).&lt;/p&gt;
+&lt;p&gt;Mais ne vous méprenez pas, nous n&#039;écrivons jamais du wasm a la main. Nous utilisons des langages de plus haut niveau, comme Rust, C, C++, etc. qui sont ensuite compilés en wasm.&lt;/p&gt;
+&lt;h2&gt;Notre projet en quelques mots&lt;/h2&gt;
+&lt;p&gt;À JoliCode, nous maintenons une librairie qui &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/jolicode/jolitypo&quot;&gt;corrige automatiquement les problèmes de micro-typographie&lt;/a&gt; sur les contenus Web. Nous proposons aussi une &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://jolitypo.jolicode.com/&quot;&gt;demo en ligne&lt;/a&gt;. Cependant, cette démo est en PHP. Cela veut dire que nous avons besoin &lt;del&gt;d&#039;un cluster Kubernetes avec 80 nodes&lt;/del&gt; d&#039;un serveur pour la faire tourner. Cela implique une dépense d&#039;argent, de la maintenance, un serveur allumé en permanence, etc. Nous aimerions donc la migrer en wasm. Reste à savoir si c&#039;est possible !&lt;/p&gt;
+&lt;h3&gt;Le code&lt;/h3&gt;
+&lt;p&gt;Le code à faire tourner dans le navigateur est le suivant :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;require &#039;/app/vendor/autoload.php&#039;;
+
+use JoliTypo\Fixer;
+
+$fixer = new Fixer(&#039;fr&#039;);
+$fixer-&amp;gt;setLocale([&#039;Dash&#039;, &#039;Dimension&#039;, /*...*/ &#039;Unit&#039;]);
+
+echo $fixer-&amp;gt;fix(&#039;Merci de fixer ce texte.&#039;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Rien de spécialement compliqué ?! Sauf qu&#039;il y a quand même un &lt;code&gt;require&lt;/code&gt;, et donc des fichiers à charger… (les dépendances Composer).&lt;/p&gt;
+&lt;h2&gt;PHP et WebAssembly&lt;/h2&gt;
+&lt;p&gt;PHP étant écrit en C et C++, il est possible de le compiler en wasm. Nous n&#039;allons pas réinventer la roue. Plusieurs personnes ont déjà essayé et ont publié leur travail. Nous allons nous baser sur le travail de &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/soyuka/php-wasm&quot;&gt;soyuka avec php-wasm&lt;/a&gt;, merci à lui !&lt;/p&gt;
+&lt;h2&gt;Le build&lt;/h2&gt;
+&lt;p&gt;L&#039;objectif est de compiler PHP en wasm. Pour se simplifier la vie, Docker est notre ami ! Nous n&#039;allons pas détailler tout le &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/soyuka/php-wasm/blob/main/Dockerfile&quot;&gt;Dockerfile&lt;/a&gt; ici, mais les grandes lignes sont les suivantes :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Il utilise une image de base &lt;code&gt;emscripten/emsdk&lt;/code&gt;. &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://emscripten.org/&quot;&gt;Emscripten&lt;/a&gt; qui est un compilateur pour wasm et qui est optimisé pour la compilation de C et C++ (ou autre langage utilisant LLVM). Certains autres langages, comme rust, savent compiler directement en wasm. Ils n&#039;ont donc pas besoin d&#039;emscripten ;&lt;/li&gt;
+&lt;li&gt;Il faut ensuite télécharger PHP, et le compiler avec emscripten en version embarqué (embed) ;&lt;/li&gt;
+&lt;li&gt;Il faut écrire une série de fonctions (&lt;code&gt;source/phpw.c&lt;/code&gt;) qui permettent de faire le lien entre le code PHP (en C) et le code wasm. Ces fonctions seront disponibles dans le binaire wasm, et donc exposées en JavaScript ;&lt;/li&gt;
+&lt;li&gt;Et pour finir, il faut compiler le tout avec emscripten.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Notons au passage qu&#039;on active le support de &lt;code&gt;lidbfs&lt;/code&gt;, un système de fichier virtuel qui permet de lire ou écrire des fichiers depuis le navigateur. Il nous permettra de charger nos fichiers en PHP.&lt;/p&gt;
+&lt;p&gt;Une fois la compilation terminée, nous avons besoin d&#039;embarquer nos fichiers PHP. Pour cela, nous utilisons &lt;code&gt;file_packager&lt;/code&gt; (un outil fourni par emscripten) qui va créer un fichier &lt;code&gt;php-web.data.js&lt;/code&gt; qui contient nos fichiers PHP. Ce fichier sera ensuite chargé dans le navigateur.&lt;/p&gt;
+&lt;p&gt;Et voilà 🎉&lt;/p&gt;
+&lt;p&gt;Maintenant que nous avons les fichiers suivants, que faire avec ?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;build (20.54 MiB)
+├─ php-web.data (13.40 MiB)
+├─ php-web.wasm (6.66 MiB)
+├─ php-web.data.js (224.91 KiB)
+└─ php-web.mjs (270.59 KiB)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Intégration en JavaScript&lt;/h2&gt;
+&lt;p&gt;Pour intégrer notre wasm dans notre application, nous allons utiliser le module &lt;code&gt;php-web.mjs&lt;/code&gt;. Ce module est un module ES6, qui est le standard pour les modules JavaScript. Il est donc possible de l&#039;importer dans notre application :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// Importe le point d&#039;entrée du module WASM
+import phpBinary from &amp;quot;./build/php-web.mjs&amp;quot;;
+
+// Buffer qui contiendra la sortie de PHP
+const buffer = [];
+
+// Initialise notre module, et bind la fonction `print()`
+// qui permet de récupérer la sortie de PHP
+const {ccall, FS} = await phpBinary({
+    print(data) {
+        buffer.push(data);
+    },
+})
+
+// Exemple qui affiche la version de PHP
+console.log(ccall(&amp;quot;phpw_exec&amp;quot;, &amp;quot;string&amp;quot;, [&amp;quot;string&amp;quot;], [&amp;quot;phpversion();&amp;quot;]));
+
+// Exécute un fichier PHP
+ccall(&amp;quot;phpw&amp;quot;, null, [&amp;quot;string&amp;quot;], [&amp;quot;/app/src/index.php&amp;quot;]);
+console.log(buffer.join(&#039;&#039;));
+buffer.length = 0;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Détaillons un peu ce code nouveau :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;code&gt;ccall()&lt;/code&gt; est une fonction qui permet d&#039;appeler une fonction wasm depuis JavaScript. Elle prend en paramètre le nom de la fonction, le type de retour, les types des paramètres et les paramètres. C&#039;est une fonction qui est fournie par emscripten ;&lt;/li&gt;
+&lt;li&gt;
+&lt;code&gt;phpw_exec&lt;/code&gt; et &lt;code&gt;phpw&lt;/code&gt; sont des fonctions que nous avons défini dans le code C publié dans &lt;code&gt;soyuka/php-wasm&lt;/code&gt;. Elles permettent respectivement d&#039;exécuter du code PHP et d&#039;exécuter un fichier PHP.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;What a time to be alive!&lt;/h2&gt;
+&lt;p&gt;Et maintenant que nous avons un POC qui tourne dans le browser, nous n&#039;avons plus qu&#039;à tout automatiser avec notre task runner préféré &lt;a href=&quot;https://jolicode.com//castor&quot;&gt;Castor&lt;/a&gt; et GitHub Actions pour deployer tout ça sur GitHub Pages.&lt;/p&gt;
+&lt;p&gt;Les plus curieux pourront aller voir la &lt;strong&gt;pull request numéro 100&lt;/strong&gt; sur &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/jolicode/JoliTypo/pull/100&quot;&gt;github&lt;/a&gt; ou directement &lt;strong&gt;&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://jolicode.github.io/JoliTypo&quot;&gt;la démo&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;wasm est vraiment un sujet d&#039;étude très intéressant, et permet de faire beaucoup de choses fun. Nous l&#039;avions déjà utilisé pour exécuter du code rust dans des workers fastly, mais c&#039;est la première fois que nous l&#039;utilisons pour exécuter du PHP dans le navigateur.&lt;/p&gt;
+&lt;p&gt;Il y a un vrai engouement autour de wasm et il est fort probable que nous en entendions parler de plus en plus dans les années à venir.&lt;/p&gt;
+&lt;p&gt;Solomon Hykes, un co-fondateur de Docker, a écrit en 2019 :&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If WASM+WASI existed in 2008, we wouldn&#039;t have needed to create Docker. WebAssembly on the server is the future of computing.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Et maintenant que faire ? Et bien le système d&#039;exécution du code n&#039;est pas optimal. En effet, on génère le code PHP en JS, pour l&#039;écrire dans le système de fichier virtuel, pour ensuite le lire et l&#039;exécuter.
+Il serait bien plus intéressant de pouvoir exécuter une fonction JavaScript, bindée à une fonction PHP directement. C&#039;est ce que nous allons essayer de faire dans la prochaine version de ce projet.&lt;/p&gt;
+&lt;p&gt;Quelques ressources pour aller plus loin :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://seanmorris.github.io/php-wasm&quot;&gt;seanmorris.github.io/php-wasm/&lt;/a&gt; :  un bac a sable avec plein de démo PHP ;&lt;/li&gt;
+&lt;li&gt;
+&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/seanmorris/vrzno&quot;&gt;seanmorris/vrzno&lt;/a&gt; : un project qui permet d’accèder à des fonction JS depuis PHP 🤯 ;&lt;/li&gt;
+&lt;li&gt;
+&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/WordPress/wordpress-playground&quot;&gt;WordPress/wordpress-playground&lt;/a&gt; : un bac à sable pour tester Wordpress.&lt;/li&gt;
+&lt;/ul&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/donner-sa-premiere-conference-le-guide-presque-integral</id>
+        <published>2024-01-22T16:42:00+01:00</published>
+        <updated>2024-01-22T16:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/donner-sa-premiere-conference-le-guide-presque-integral"/>
+        <title>Donner sa première conférence : le guide (presque) intégral ✨</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="php" />            <category term="conférence" />            <category term="symfony" />            <category term="conférences" />            <category term="afup" />            <category term="forumphp" />        <summary><![CDATA[Quand j’ai commencé à travailler chez JoliCode, c’est avec beaucoup d’admiration que je regardais les différents conférenciers de la boîte. Et un jour, avec leurs encouragements, j’ai réalisé que moi…]]></summary>
+        <content type="html">
+            &lt;p&gt;Quand j’ai commencé à travailler chez JoliCode, c’est avec beaucoup d’admiration que je regardais &lt;a href=&quot;https://jolicode.com//nos-metiers/conferences&quot;&gt;les différents conférenciers de la boîte&lt;/a&gt;. Et un jour, avec leurs encouragements, j’ai réalisé que moi aussi, je pouvais être conférencière. Pourquoi pas ? Le &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.youtube.com/watch?v=O1-YHj5gUq0&amp;amp;ab_channel=AFUPPHP&quot;&gt;syndrôme de l’imposteur&lt;/a&gt; était bien présent, et je sais qu’il empêche beaucoup de gens de se lancer, même s’ils aimeraient beaucoup.&lt;/p&gt;
+&lt;p&gt;Si vous faites partie de ces personnes, voici quelques retours d’expérience et conseils, afin que vous sachiez à quoi vous attendre et puissiez vous préparer !&lt;/p&gt;
+&lt;h2&gt;&amp;quot;Je n’ai pas d’idées&amp;quot; 😥&lt;/h2&gt;
+&lt;p&gt;Chez JoliCode, nous avons un repo GitHub dédié aux idées en général et notamment aux sujets de conférences. Certains ont parfois des idées mais pas de temps à consacrer à la rédaction d’une conférence ; mais sont toujours prêts à aider.&lt;/p&gt;
+&lt;p&gt;Nous trouvons aussi pertinent de parfois reprendre un article de notre blog dont le sujet nous intéresse – que nous en soyons l’auteur ou non – et de le transformer en conférence.&lt;/p&gt;
+&lt;p&gt;Vous pouvez aussi choisir de parler d’une technologie que vous utilisez au quotidien, d’une librairie, d’un composant ou n’importe quel outil qui vous intéresse et partager vos conseils de pro. Les retours d’expérience sont aussi très appréciés et permettent de raconter des erreurs commises en conditions réelles et les solutions trouvées, et ce que vous ou votre équipe en a tiré.&lt;/p&gt;
+&lt;h2&gt;&amp;quot;Où dois-je soumettre mon sujet ?&amp;quot; 🧐&lt;/h2&gt;
+&lt;p&gt;Vous n’êtes pas obligés de donner votre première conférence sur un créneau de 50 minutes devant 800 personnes lors d’une conférence internationale (sauf si vous aimez les défis).
+Des groupes Meetup sont présents dans de nombreuses villes en France, et dédiés à de nombreuses technologies. Je pense par exemple aux &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://afup.org/meetups/&quot;&gt;antennes de l’Afup&lt;/a&gt; ou aux &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.meetup.com/afsy-sfpot/&quot;&gt;pots de l’Afsy&lt;/a&gt;. Les équipes d’organisation sont accueillantes et toujours heureuses de recevoir de nouveaux conférenciers ! Ces évènements se déroulent tous les mois et les créneaux sont généralement de 20 minutes (mais on en voit parfois jusqu’à 45 minutes) avec un public plus restreint, de 10 à 50 personnes, ou plus selon les groupes. Ces formats plus intimistes peuvent être un bon moyen de mettre le pied à l’étrier.&lt;/p&gt;
+&lt;p&gt;Une autre option est de proposer un &amp;quot;lightning talk&amp;quot; durant une plus grosse conférence : il s’agit de proposer, pendant la conférence, un sujet qui n’était pas prévu et avec un format très court, de 5 à 10 minutes.&lt;/p&gt;
+&lt;p&gt;Et puis vous pouvez viser de plus grosses conférences : dans le milieu du PHP, je pense notamment aux &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://event.afup.org/&quot;&gt;évènements de l’Afup&lt;/a&gt;, comme l’Afup Day ou le Forum PHP, à &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.paris-web.fr/&quot;&gt;Paris Web&lt;/a&gt; ou aux divers &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://live.symfony.com/&quot;&gt;évènements de Symfony&lt;/a&gt; – en ligne ou en physique.&lt;/p&gt;
+&lt;p&gt;Les &lt;abbr title=&quot;Call For Papers&quot;&gt;CFP&lt;/abbr&gt;, c’est à dire la période pendant laquelle on peut soumettre des sujets accompagnés d’un résumé, de ces conférences ont lieu environ six mois en amont de la conférence et les sélections sont annoncées quelques mois avant la conférence. Pour les Meetups, c’est un peu plus informel et on contacte généralement l’organisation directement sur le site de Meetup ou sur les réseaux sociaux.&lt;/p&gt;
+&lt;h2&gt;Mon sujet a été accepté 🎉 ou pas 💔&lt;/h2&gt;
+&lt;p&gt;Lorsque vous êtes sélectionné, l’équipe d’organisation de l’évènement va vous contacter afin que vous confirmiez votre présence, et parfois vous proposer de vous offrir une nuit d’hôtel ou vos billets de train.&lt;/p&gt;
+&lt;p&gt;Si vous n’êtes pas sélectionné, pas de panique ! Continuez de proposer votre sujet à différentes conférences, et n’hésitez pas à vous éloigner de votre cœur de métier et à proposer à des conférences plus variées.&lt;/p&gt;
+&lt;h2&gt;Un mois ou deux avant 🗓️&lt;/h2&gt;
+&lt;p&gt;Si vous ne l’avez pas déjà, vous devriez finir votre plan. Commencez à faire vos slides, à écrire vos notes… On ne citera pas ici tous les conseils pour faire de bonnes slides, cela demanderait un article à part entière, voire un livre complet ! On vous recommande &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://votre-premiere-conference.fr/&quot;&gt;celui de Pascal Martin&lt;/a&gt; sur le sujet 😉&lt;/p&gt;
+&lt;p&gt;Pour l’outil de création de slides en lui même, nous utilisons souvent &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://slides.new/&quot;&gt;Google Slides&lt;/a&gt; ou &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://sli.dev/&quot;&gt;Sli.dev&lt;/a&gt; pour une meilleure gestion du code.&lt;/p&gt;
+&lt;p&gt;Vous ne savez vraiment pas par où commencer ? Beaucoup de groupes (Duchess, Symfony, Afup…) proposent du mentorat afin de vous accompagner tout au long des différentes étapes de création d’une conférence, de l’écriture à la répétition.&lt;/p&gt;
+&lt;h2&gt;Une ou deux semaines avant 📆&lt;/h2&gt;
+&lt;p&gt;Répétez, répétez, répétez ! Demandez à vos collègues s’ils peuvent vous aider à répéter. Leurs retours sont précieux, surtout s’ils sont concernés par le sujet que vous abordez ; mais également s&#039;ils ne le sont pas. Vous entrainer devant des gens qui ne maîtrisent pas votre sujet permet aussi de cerner les points qui ne sont pas clairs ou les mots de vocabulaire qui pourraient ne pas être compris par tout le monde.&lt;/p&gt;
+&lt;p&gt;Partagez les diapositives avec votre équipe, dont les membres pourront vous aider à corriger des fautes d’orthographe ou vous indiquer s’il manque des informations, etc.&lt;/p&gt;
+&lt;h2&gt;La veille ⏳&lt;/h2&gt;
+&lt;p&gt;Sauvegardez vos slides ! Envoyez-les vous par mail, sauvez-les sur une clé USB, enregistrez-les où vous le souhaitez du moment que vous pouvez les récupérer facilement en cas de problème avec votre PC.&lt;/p&gt;
+&lt;p&gt;Téléchargez vos slides sur le site de Speakerdeck, et votre éventuel code de démo sur GitHub, et passez ce repo en public. Mettez les liens correspondants à la fin de vos slides, que tout soit prêt à être partagé !&lt;/p&gt;
+&lt;p&gt;Les organisateurs peuvent aussi vous demander la version .pdf de vos slides ou un transcript pour les personnes ayant des difficultés visuelles ou auditives.&lt;/p&gt;
+&lt;h2&gt;T-30mn ⌚&lt;/h2&gt;
+&lt;p&gt;Vos collègues – encore eux ! – sont ici encore un de vos meilleurs atouts. Je leur demande toujours de s&#039;asseoir au premier rang afin d’avoir des visages familiers vers lesquels me tourner en cas de stress. Ils sont aussi un bon indicateur du ressenti de la conférence et pourront vous faire des thumbsup 👍 ou vous faire signe de ralentir un peu !&lt;/p&gt;
+&lt;p&gt;Si vous en avez le temps, n’hésitez pas à tester votre matériel directement sur scène avant la conférence : tôt le matin ou durant la pause déjeuner. Est-ce que le HDMI fonctionne ? Est-ce que la résolution est bonne ? Arrivez-vous à passer en plein écran ? Si jamais vous jouez du son ou des vidéos, est-ce que les médias se lisent bien ? Est-ce que la sortie audio fonctionne et le volume est-il correct ?
+On prête parfois un pointeur laser, ou peut-être que vous avez le vôtre ? C’est aussi le moment de le tester !&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2024/guide_premiere_conf/marion_fullscreen.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2024/guide_premiere_conf/marion_fullscreen.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 4080px; height: auto; aspect-ratio: calc(4080 / 3072)&quot; src=&quot;https://jolicode.com//media/original/2024/guide_premiere_conf/marion_fullscreen.jpg&quot; alt=&quot;Marion qui a oublié le fullscreen&quot; /&gt;&lt;/picture&gt;
+&lt;em&gt;Rare photo d’une conférencière qui a oublié d’activer le plein écran&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Parfois, surtout lors de grosses conférences, la régie va vous équiper d’un micro qui passe autour de la tête et des oreilles. Si c’est le cas, prévoyez de ne pas mettre de grandes boucles d’oreilles qui, en tapant dans le fil, créent des sons parasites. Dans ce cas, je conseille aussi de porter un vêtement avec ceinture pour attacher le boîtier du micro.&lt;/p&gt;
+&lt;p&gt;Si vous prévoyez de faire une démonstration en direct, votre console ou votre éditeur de code devront être en thème clair, qui est bien plus lisible que les thèmes sombres lors d’une projection; apprenez aussi par cœur vos raccourcis pour zoomer sur votre code.&lt;/p&gt;
+&lt;p&gt;Prévoyez aussi un petit verre d’eau ou une bouteille !&lt;/p&gt;
+&lt;h2&gt;It&#039;s starting! 🎤&lt;/h2&gt;
+&lt;p&gt;Une personne de l’organisation sera présente avec des pancartes vous indiquant le temps restant et vous fera signe, par exemple 10 minutes puis 5 minutes avant la fin.&lt;/p&gt;
+&lt;p&gt;Gardez votre calme, parlez tranquillement. Le stress nous fait souvent parler plus vite ! Essayez de regarder un peu partout dans le public et de ne pas vous adresser à une seule personne. Lorsqu’il y a des choses à lire sur les slides, n’hésitez pas à boire un peu d’eau, ce qui laissera le temps à vos auditeurs de lire ce qui est à l’écran.&lt;/p&gt;
+&lt;p&gt;Il se peut qu’une personne parte, qu’une autre soit sur son téléphone, dites vous que la première avait un RDV important, et que la seconde prend des notes de votre conférence 🤓 et puis au pire, on ne peut pas plaire à tout le monde, et c’est pas grave, tous les autres sont là et vous écoutent attentivement 😉&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Nous avons toutes et tous des choses à dire et à apprendre aux autres, et nous sommes tous et toutes légitimes à proposer des sujets. Parfois nous ne nous imaginons pas sur scène car nous manquons de rôles modèles; cela doit et peut changer en montant nous même sur scène. De nouvelles personnes apportent de nouvelles idées, et un peu de fraîcheur qui sont toujours pertinentes dans un monde en constante évolution comme celui de l’informatique. Alors n’hésitez plus, ressortez cette idée qui traîne depuis des mois, et lancez-vous !&lt;/p&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/comment-faire-fonctionner-les-liens-dancrage-avec-un-en-tete-collant-sticky</id>
+        <published>2024-01-05T13:42:00+01:00</published>
+        <updated>2024-01-05T13:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/comment-faire-fonctionner-les-liens-dancrage-avec-un-en-tete-collant-sticky"/>
+        <title>Comment faire fonctionner les liens d&#039;ancrage avec un en-tête collant (sticky) ?</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="css" />        <summary><![CDATA[Facile à mettre en œuvre, apprécié par les clients et utile lorsqu&#039;un site contient beaucoup de contenu, l&#039;en-tête collant (sticky header) est devenu un élément incontournable de nos sites Web.
+Néanmoins,…]]></summary>
+        <content type="html">
+            &lt;p&gt;Facile à mettre en œuvre, apprécié par les clients et utile lorsqu&#039;un site contient beaucoup de contenu, l&#039;en-tête collant (sticky header) est devenu un élément incontournable de nos sites Web.&lt;/p&gt;
+&lt;p&gt;Néanmoins, il existe un problème auquel nous pouvons être confrontés si nous utilisons sur notre site un en-tête collant et des liens d’ancrage.&lt;/p&gt;
+&lt;p&gt;Les liens d&#039;ancrage permettent aux utilisateurs d&#039;accéder instantanément à ​​un endroit précis de la même page ou à une section spécifique d&#039;une autre page. Par défaut, la section ciblée s&#039;aligne en haut de la fenêtre. Toutefois, si un site dispose d&#039;un en-tête fixe, une partie du contenu de la section peut être masquée par cet en-tête :&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2024/article_1.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2024/article_1.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1489px; height: auto; aspect-ratio: calc(1489 / 719)&quot; src=&quot;https://jolicode.com//media/original/2024/article_1.png&quot; alt=&quot;La section d&#039;ancrage couverte par l’en-tête collant&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;Dans cet article, nous allons voir comment corriger ce problème, nous allons nous assurer que l’en-tête collant et les liens d&#039;ancrage fonctionnent bien ensemble.&lt;/p&gt;
+&lt;h2&gt;Comment faisions-nous avant ?&lt;/h2&gt;
+&lt;p&gt;Dans le passé, il y a eu toutes sortes d&#039;astuces, plus ou moins propres, pour contourner ce problème. Une approche courante consistait à appliquer une marge négative supérieure et une hauteur au pseudo-élément. Nous constatons encore son utilisation dans certains projets récents :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;header class=&amp;quot;header&amp;quot;&amp;gt;
+     &amp;lt;nav&amp;gt;
+          &amp;lt;ul&amp;gt;
+               &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;#section-one&amp;quot;&amp;gt;Menu link&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+               &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;#section-two&amp;quot;&amp;gt;Menu link&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+          &amp;lt;/ul&amp;gt;
+     &amp;lt;/nav&amp;gt;
+&amp;lt;/header&amp;gt;
+
+&amp;lt;section id=&amp;quot;section-one&amp;quot; class=&amp;quot;section&amp;quot;&amp;gt;
+     &amp;lt;h2 class=&amp;quot;title&amp;quot;&amp;gt;Lorem ipsum dolor sit amet consectetur, adipisicing elit.&amp;lt;/h2&amp;gt;
+&amp;lt;/section&amp;gt;
+&amp;lt;section id=&amp;quot;section-two&amp;quot; class=&amp;quot;section&amp;quot;&amp;gt;
+     &amp;lt;h2 class=&amp;quot;title&amp;quot;&amp;gt;Lorem ipsum dolor sit amet consectetur, adipisicing elit.&amp;lt;/h2&amp;gt;
+&amp;lt;/section&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;h2::before {
+     display: block;
+     margin-top: -30rem;
+     height: 30rem;
+     visibility: hidden;
+     pointer-events: none;
+     content: &#039; &#039;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Heureusement, depuis quelques années, nous n&#039;avons plus besoin d’utiliser ce genre d’astuce, car une nouvelle solution est disponible et elle tient en une seule ligne de code.&lt;/p&gt;
+&lt;h2&gt;La propriété CSS &lt;code&gt;scroll-margin-top&lt;/code&gt;&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;scroll-margin-top: &amp;lt;value&amp;gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La propriété CSS &lt;code&gt;scroll-margin-top&lt;/code&gt; permet de définir la marge supérieure de l&#039;élément ciblé par un lien que le navigateur utilisera lors du défilement.
+Les unités suivantes peuvent être utilisées : px, em, rem, vh, %, etc., ainsi que la valeur &lt;code&gt;auto&lt;/code&gt; (dans ce cas, le navigateur peut spécifier une marge de défilement, mais elle correspond généralement à 0px) :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;header class=&amp;quot;header&amp;quot;&amp;gt;
+     &amp;lt;nav&amp;gt;
+          &amp;lt;ul&amp;gt;
+               &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;#section-one&amp;quot;&amp;gt;Menu link&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+               &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;#section-two&amp;quot;&amp;gt;Menu link&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+          &amp;lt;/ul&amp;gt;
+     &amp;lt;/nav&amp;gt;
+&amp;lt;/header&amp;gt;
+
+&amp;lt;section id=&amp;quot;section-one&amp;quot; class=&amp;quot;section&amp;quot;&amp;gt;
+     Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+&amp;lt;/section&amp;gt;
+&amp;lt;section id=&amp;quot;section-two&amp;quot; class=&amp;quot;section&amp;quot;&amp;gt;
+     Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+&amp;lt;/section&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;:root {
+     --header-height: 10rem;
+}
+
+.header {
+     position: sticky;
+     top: 0;
+     z-index: 100;
+     height: var(--header-height);
+}
+
+.section {
+     scroll-margin-top: calc(var(--header-height) + 4rem);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;À présent, lorsqu&#039;un lien d&#039;ancrage est activé, le navigateur se déplace vers la section ciblée en lui attribuant une marge supérieure de 14rem. La section est donc espacée de 4rem de l&#039;en-tête, lequel mesure 10rem en hauteur. Cela garantit sa pleine visibilité.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2024/article_2.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2024/article_2.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1489px; height: auto; aspect-ratio: calc(1489 / 847)&quot; src=&quot;https://jolicode.com//media/original/2024/article_2.png&quot; alt=&quot;La section d&#039;ancrage espacée de l’en-tête collant&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;La propriété CSS &lt;code&gt;scroll-padding-top&lt;/code&gt;&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;scroll-padding-top: &amp;lt;value&amp;gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Il existe une méthode alternative qui peut être plus adaptée à certains projets. Elle consiste à utiliser &lt;code&gt;scroll-padding-top&lt;/code&gt; directement sur l&#039;élément &lt;code&gt;&amp;lt;html&amp;gt;&lt;/code&gt; :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;header class=&amp;quot;header&amp;quot;&amp;gt;
+     &amp;lt;nav&amp;gt;
+          &amp;lt;ul&amp;gt;
+               &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;#section-one&amp;quot;&amp;gt;Menu link&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+               &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;#section-two&amp;quot;&amp;gt;Menu link&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+          &amp;lt;/ul&amp;gt;
+     &amp;lt;/nav&amp;gt;
+&amp;lt;/header&amp;gt;
+
+&amp;lt;section id=&amp;quot;section-one&amp;quot; class=&amp;quot;section&amp;quot;&amp;gt;
+     Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+&amp;lt;/section&amp;gt;
+&amp;lt;section id=&amp;quot;section-two&amp;quot; class=&amp;quot;section&amp;quot;&amp;gt;
+     Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+&amp;lt;/section&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;:root {
+     --header-height: 10rem;
+}
+
+html {
+     scroll-padding-top: calc(var(--header-height) + 4rem);
+}
+
+.header {
+     position: sticky;
+     top: 0;
+     z-index: 100;
+     height: var(--header-height);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Le résultat final de l&#039;utilisation de la propriété &lt;code&gt;scroll-padding-top&lt;/code&gt; est exactement le même que celui de l&#039;utilisation de &lt;code&gt;scroll-margin-top&lt;/code&gt;. La section ciblée, éloignée du haut de la fenêtre par un espace supplémentaire, est entièrement visible.&lt;/p&gt;
+&lt;p&gt;Il est important de souligner que ces deux propriétés CSS ne modifient la marge que dans le cas d’un défilement. Ils n’ont donc pas d’impact sur les marges « normales » de l&#039;élément.&lt;/p&gt;
+&lt;h2&gt;Bonus : la propriété CSS &lt;code&gt;scroll-behavior: smooth&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;J&#039;aimerais mentionner une autre déclaration CSS qui améliore l&#039;expérience de défilement d’un site Web.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;scroll-behavior: smooth;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Cette déclaration CSS contrôle le comportement de défilement de la page web, sauf si l&#039;utilisateur fait défiler la page manuellement. Elle rend le défilement fluide et animé, plutôt que brusque. Elle peut être appliquée à l&#039;ensemble du contenu de la page ou à des éléments spécifiques.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;html {
+    scroll-behavior: smooth;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;La prise en charge de ces trois propriétés CSS par les navigateurs modernes est excellente, comme indiqué sur le site &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://caniuse.com/?search=scroll-&quot;&gt;Can I Use&lt;/a&gt;. Par conséquent, nous pouvons les appliquer immédiatement sur nos sites Web sans craindre d&#039;effets indésirables.&lt;/p&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/du-code-des-gaufres-et-des-bds-nous-etions-a-la-symfonycon-a-bruxelles</id>
+        <published>2023-12-12T13:42:00+01:00</published>
+        <updated>2023-12-12T13:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/du-code-des-gaufres-et-des-bds-nous-etions-a-la-symfonycon-a-bruxelles"/>
+        <title>Du code, des gaufres et des BDs, nous étions à la SymfonyCon à Bruxelles</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="conférence" />            <category term="symfony" />        <summary><![CDATA[Pour cette nouvelle édition, le rendez-vous était donné à Bruxelles, du mardi 5 au samedi 9 décembre. Après 2 jours de workshops et avant le hackday du samedi, les conférences se sont déroulées le jeudi…]]></summary>
+        <content type="html">
+            &lt;p&gt;Pour cette nouvelle édition, le rendez-vous était donné à Bruxelles, du mardi 5 au samedi 9 décembre. Après 2 jours de workshops et avant le hackday du samedi, les conférences se sont déroulées le jeudi et vendredi au Square Conference Center de Bruxelles avec 3 tracks parallèles dans les salles Symfony, SensioLabs et Platform.sh. Prêt(e) pour notre récap ? Laten we gaan !&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/couverture.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/couverture.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 678)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/couverture.jpg&quot; alt=&quot;L&#039;équipe JoliCode&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Une opportunité communautaire, dans une ville à l’aura européenne&lt;/h2&gt;
+&lt;p&gt;Une SymfonyCon c’est une expérience communautaire qui se vit. Entre les workshops, dont celui de &lt;a href=&quot;https://jolicode.com//qui-sommes-nous/equipe/mathieu-santostefano&quot;&gt;Mathieu&lt;/a&gt; sur la gestion des traductions, le diner des speakers, la soirée communautaire au musée de la bande dessinée du jeudi, la sortie running et le hackday du samedi, tout était pensé pour faire des rencontres, pour tisser des liens et renforcer la communauté.&lt;/p&gt;
+&lt;p&gt;Car un framework sans sa communauté n’est rien. Et c’est agréable de voir l’unité, la volonté de faire avancer les choses ensemble, qui se dégage de la communauté Symfony. La Core team se veut très accessible, coordonnant cet ensemble et prête à aider que ce soit sur Slack ou en direct comme nous avons pu le voir lors de la session Q&amp;amp;A dédiée.&lt;/p&gt;
+&lt;p&gt;Une SymfonyCon c’est aussi l’occasion de (re) découvrir une ville. Après Disneyland Paris l’an dernier, nous sommes allés chez nos voisins belges et n’avons pas résisté à goûter quelques unes de leurs spécialités : gaufres, chocolats, frites. Sans oublier notre passage éclair par la Grand-Place, le marché de Noël et le petit détour pour voir le Manneken-Pis sous toutes ses coutures. Littéralement.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/mannekenpis.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/mannekenpis.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1000px; height: auto; aspect-ratio: calc(1000 / 400)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/mannekenpis.jpg&quot; alt=&quot;Le Manneken-Pis&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;Où se déroulera la prochaine édition ? Réponse en fin d’article. 😌&lt;/p&gt;
+&lt;h2&gt;Keynote d’ouverture, façon fabpot&lt;/h2&gt;
+&lt;p&gt;Fabien Potencier ouvre les festivités de l’édition 2023 en présentant un sujet sur lequel il s’est investi ces derniers mois.&lt;/p&gt;
+&lt;p&gt;La keynote commence ainsi par un historique sur le composant Console. Il s’agit d’un des plus vieux composants de Symfony, qui trouve ses racines dans la version 1.1 sous le nom de &amp;quot;sfTask&amp;quot;. Depuis, ce composant a très peu évolué. Il est à ce jour le composant le plus téléchargé avec une moyenne de &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://symfony.com/stats/downloads&quot;&gt;650 000 téléchargements quotidiens&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Autant de raisons qui expliquent la volonté de se replonger dans les entrailles de ce composant afin de le faire évoluer, d&#039;en améliorer la &lt;abbr title=&quot;Developer eXperience&quot;&gt;DX&lt;/abbr&gt;, sans craindre de casser l’existant.&lt;/p&gt;
+&lt;p&gt;Welcome &lt;strong&gt;Symfony Terminal&lt;/strong&gt; !&lt;/p&gt;
+&lt;p&gt;Ce futur composant a pour but de fournir à terme une abstraction bas niveau avec des outils tels que &lt;code&gt;Cursor&lt;/code&gt;, &lt;code&gt;Color&lt;/code&gt;, &lt;code&gt;Style&lt;/code&gt;, &lt;code&gt;Widgets&lt;/code&gt;, &lt;code&gt;Pager&lt;/code&gt;. Fabien nous en fait une démonstration avec une &lt;abbr title=&quot;Terminal User Interface&quot;&gt;TUI&lt;/abbr&gt; riche, comportant des sections, des marges, des bordures, et même des assemblages de styles façon Bootstrap et des styles utilitaires inspirés de Tailwind CSS.&lt;/p&gt;
+&lt;p&gt;Actuellement, le composant n&#039;est pas sorti. Il s’agit d’un travail de longue haleine et il reste beaucoup d’efforts à fournir pour espérer le voir dans Symfony 8.0 en novembre 2025.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/keynote.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/keynote.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 640)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/keynote.jpg&quot; alt=&quot;Keynote de Fabien Potencier&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Stop firefighting with Blackfire!&lt;/h2&gt;
+&lt;p&gt;Thomas Di Luccio poursuit avec sa présentation de Blackfire. L’objectif de cet outil est de se préparer de manière proactive à tout incident en production, et de supprimer le stress induit lors de la résolution de ceux-ci. Il présente les solutions qu’offre Blackfire à ce sujet :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;monitoring de l’activité, des temps et des statuts de réponse, des méthodes PHP et des services les plus utilisés et leur impact ;&lt;/li&gt;
+&lt;li&gt;alerting, pour être averti par email ou dans Slack dès qu’un seuil d’alerte (à configurer) est dépassé ;&lt;/li&gt;
+&lt;li&gt;health report à consulter 5 minutes par jour pour s&#039;imprégner des performances de sa production et ainsi détecter plus rapidement les anomalies.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Malgré cela, parfois, l’incident se produit. Il faut alors être réactif et utiliser les outils à notre disposition. Thomas nous propose dans ce cas d’utiliser le profiler de Blackfire, qui permet d’explorer à travers un arbre où le code est le plus gourmand en ressources ou en temps d&#039;exécution (opacité plus foncée).&lt;/p&gt;
+&lt;p&gt;N’hésitez pas à jeter un œil à &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://demo.blackfire.io/&quot;&gt;la démo de Blackfire&lt;/a&gt; pour vous faire votre propre avis.&lt;/p&gt;
+&lt;p&gt;Enfin, il rappelle l’importance des tests unitaires, d’acceptation, de performances et leur automatisation au sein de nos pipelines CI/CD. Il conseille l’utilisation du &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://docs.blackfire.io/builds-cookbooks/player&quot;&gt;Blackfire Player&lt;/a&gt;, outil permettant de tester son application, d’évaluer la performance des parcours utilisateurs critiques, et bien d’autres choses.&lt;/p&gt;
+&lt;p&gt;A JoliCode, nous aimons beaucoup Blackfire. Dépendant de nos projets, nous l’utilisons en complément d’autres outils tels que &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.datadoghq.com/&quot;&gt;Datadog&lt;/a&gt; ou &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://redirection.io/&quot;&gt;redirection.io&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;I did it! I broke production!&lt;/h2&gt;
+&lt;p&gt;Sur la même thématique des incidents en production, Sofia Lescano nous fait profiter de son retour d’expérience sur l’un des incidents qu&#039;elle a vécu. Elle nous confie comment, avec ses collègues, ils ont réagi et quels sont les processus mis en place pour prévenir ces incidents.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Seuls ceux qui ne font rien ne cassent rien. Bonne chance !
+William, un développeur sénior&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Mais alors que faire quand cela nous arrive ? S’y préparer ! Via un processus clair. Par exemple, Sofia explique que dans son entreprise à la suite d’un événement &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.pagerduty.com/&quot;&gt;PagerDuty&lt;/a&gt;, ils s’organisent en équipe, un channel Slack dédié est disponible ainsi qu’un Google Meet ouvert à tous pour centraliser les discussions. La communication est primordiale, autant en interne, avec ses collègues, qu’en externe avec ses clients : mise en place d’une &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.atlassian.com/software/statuspage&quot;&gt;status page&lt;/a&gt;, support et enfin rédaction d&#039;un post-mortem.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Gérer les incidents c’est bien, les prévenir c’est mieux.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Sofia rejoint Thomas dans l’idée d’être toujours proactif, de tester son code et de surveiller, de mettre en place de l’alerting. Elle précise aussi l’intérêt des revues de code, servant au partage de connaissance sur le code et recommande par ailleurs de toujours déployer durant les heures de travail.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/i-broke-production.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/i-broke-production.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 640)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/i-broke-production.jpg&quot; alt=&quot;Talk de  Sofia Lescano&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Strings usage: so many tools are already in your hands!&lt;/h2&gt;
+&lt;p&gt;Dans &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://speakerdeck.com/marionleherisson/string-usage-so-many-tools-are-already-in-your-hands&quot;&gt;un talk plein d&#039;anecdotes farfelues&lt;/a&gt;, Marion Hurteau nous explique comment les chaînes de caractères se comportent derrière nos écrans. L’histoire de l’encoding jusqu’à nos jours nous permet de comprendre les bugs d’aujourd’hui et comment y remédier : notamment en étant cohérent sur l’encodage utilisé dans nos systèmes. Faire appel à la normalisation et aux différentes méthodes de translittération permet aussi par exemple de faire une recherche de caractères spéciaux même lorsque ceux-ci ne sont pas présents sur notre clavier.&lt;/p&gt;
+&lt;p&gt;Marion continue par un rappel sur les différences d’encodages au sein de nos bases de données : encore une fois, PostgreSQL n’offre aucune mauvaise surprise, contrairement à MySQL. Toujours dans la base de données, on retient la nécessité de normaliser nos données avant de les indexer afin de ne pas avoir de mauvaises surprises si notre jeu de données contient des caractères provenant de différents alphabets.&lt;/p&gt;
+&lt;p&gt;Elle nous présente également le trop peu utilisé &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://symfony.com/doc/current/components/string.html&quot;&gt;composant String&lt;/a&gt; de Symfony, ses méthodes les plus pratiques, mais aussi celles qui permettent de jouer un peu avec les emojis : on peut en mettre dans nos urls, dans nos moteurs de recherche, dans nos bases de données, même dans le nom de nos classes PHP ; tout est possible ! 🦄&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/string-usage.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/string-usage.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 640)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/string-usage.jpg&quot; alt=&quot;Talk de  Marion Hurteau&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Need to search through your data? Heard about Meilisearch?&lt;/h2&gt;
+&lt;p&gt;Direction les moteurs de recherche avec la présentation de &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.meilisearch.com/&quot;&gt;Meilisearch&lt;/a&gt;, alternative à Elasticsearch, OpenSearch et Algolia, par Guillaume Loulier, développeur à SensioLabs.&lt;/p&gt;
+&lt;p&gt;Meilisearch est une solution d’indexation, de recherche et d’analyse orientée document et développée en Rust. Ses atouts ? Il s’agit d’une solution open-source, française, et son équipe fournit et maintient un &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/meilisearch/meilisearch-php&quot;&gt;SDK PHP&lt;/a&gt; et un &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/meilisearch/meilisearch-symfony&quot;&gt;bundle Symfony&lt;/a&gt; ! Nous l&#039;utilisons déjà sur certains projets et ce talk nous conforte dans ce choix.&lt;/p&gt;
+&lt;p&gt;Elle dispose de fonctionnalités avancées inhérentes aux meilleures solutions d’indexation et de recherche, à savoir :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;une architecture schemaless ;&lt;/li&gt;
+&lt;li&gt;la détection de la langue / le support du multi-langue par défaut ;&lt;/li&gt;
+&lt;li&gt;un bundle très complet, avec des Live Components fournis (mais très lié à Doctrine).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;De plus, &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/long2ice/meilisync&quot;&gt;meilisync&lt;/a&gt; étend les possibilités de Meilisearch en permettant de synchroniser un stockage primaire comme MySQL, PostgreSQL, ou MongoDB vers Meilisearch. Il suffit de quelques étapes de configuration pour que l&#039;outil écoute les logs émis par la base de données et les réplique.&lt;/p&gt;
+&lt;p&gt;Guillaume souligne également que &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://symfony.com/blog/migrating-symfony-com-search-engine-to-meilisearch&quot;&gt;toute la documentation de Symfony est désormais indexée avec Meilisearch&lt;/a&gt; !&lt;/p&gt;
+&lt;p&gt;Le talk se termine sur les limitations actuelles de Meilisearch. Notamment lorsque l&#039;on souhaite s&#039;en servir à grande échelle. En effet, &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.meilisearch.com/pricing&quot;&gt;l’offre commerciale Meilisearch Cloud&lt;/a&gt; est à ce jour le seul moyen d&#039;avoir de la haute disponibilité sans devoir bricoler. Autre point de vigilance, la solution n&#039;offre pas de sharding comme peut le faire Elasticsearch. Néanmoins, ces fonctionnalités sont &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://roadmap.meilisearch.com/tabs/1-under-consideration&quot;&gt;à l’étude dans la roadmap&lt;/a&gt; de l&#039;équipe produit. Il n&#039;est donc pas impossible d&#039;y avoir accès un jour dans la version open-source.&lt;/p&gt;
+&lt;p&gt;Les slides de Guillaume sont disponibles sur &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://speakerdeck.com/guikingone/need-to-search-through-your-data-heard-about-meilisearch&quot;&gt;Speaker Deck&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/meilisearch.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/meilisearch.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 640)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/meilisearch.jpg&quot; alt=&quot;Talk de  Guillaume Loulier&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;A serverless Symfony playground&lt;/h2&gt;
+&lt;p&gt;Exécuter un binaire PHP dans le navigateur en WebAssembly (wasm), l’idée vous tente ? Antoine Bluchet, aka s0yuka, l’a fait. Et il nous présente pourquoi et comment.&lt;/p&gt;
+&lt;p&gt;À l’origine, Antoine souhaitait offrir une manière plus interactive et accessible d’explorer la documentation d’API Platform. A l’instar de &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://3v4l.org&quot;&gt;3v4l.org&lt;/a&gt;, il décide que la meilleure option est d’exécuter du code en ligne, avec un écran scindé en 2, d’un côté un fichier PHP éditable (basé sur un exemple) et de l’autre le rendu en temps réel. Le &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://api-platform.com/playground&quot;&gt;playground d’API Platform&lt;/a&gt; est né. Problème, la plupart des solutions qui exécutent du PHP dans le navigateur s&#039;appuient sur un serveur, et cela peut vite devenir coûteux. Solution, mettre le serveur dans le navigateur.&lt;/p&gt;
+&lt;p&gt;Antoine détaille ensuite ses tâtonnements jusqu’à la solution finale. En s’inspirant de la lib &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/oraoto/pib&quot;&gt;oraoto/pib&lt;/a&gt;, il retravaille la partie Docker, installe les extensions manquantes (SQLite, libxml), compresse le tout avec LZ4 (particulièrement utile pour les &lt;code&gt;vendors&lt;/code&gt; !), ajoute une bonne dose de magie… Et tada !&lt;/p&gt;
+&lt;p&gt;Pour les sceptiques, il nous invite à ouvrir la console et à constater par nous-même : aucun appel réseau n’est fait. Autre possibilité, faire un &lt;code&gt;phpinfo()&lt;/code&gt; et observer la valeur du système : &lt;code&gt;Emscripten emscripten 3.1.35 #1 wasm32&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Antoine termine en évoquant le futur : il souhaite maintenant faire pareil pour le Symfony Book. On a hâte de voir ça !&lt;/p&gt;
+&lt;p&gt;Si ce sujet vous intéresse, sachez que ce talk rejoint et complète un autre talk qu’Antoine a donné il y a quelques mois à &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://api-platform.com/fr/con/2023/&quot;&gt;l’API Platform Conference 2023&lt;/a&gt;, à Lille, et dont &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.youtube.com/watch?v=jVUDgp05gKg&quot;&gt;le replay est disponible sur YouTube&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/serverless-symfony.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/serverless-symfony.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 640)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/serverless-symfony.jpg&quot; alt=&quot;Talk de Antoine Bluchet&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Task scheduling can be boring, but not with Symfony scheduler&lt;/h2&gt;
+&lt;p&gt;Nous retrouvons dans la grande salle Allison Guilhem, lead developer chez Les-Tilleuls, pour son talk très attendu sur le composant &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://symfony.com/blog/new-in-symfony-6-3-scheduler-component&quot;&gt;Symfony Scheduler&lt;/a&gt; (disponible depuis Symfony 6.3).&lt;/p&gt;
+&lt;p&gt;Allison commence par un état de l’art. Qu’est-ce que le task scheduling (ou planification de tâches) ? C’est l&#039;automatisation des tâches basées sur un calendrier, et répétées à intervalles réguliers. Dans le monde Unix, nous appelons cela des crons. De nombreuses intégrations PHP existent. Mais les crons souffrent de plusieurs limitations : manque de support de TimeZone, intervalle minimum d’une minute, aucun système de récupération pour les tâches manquées. Des lacunes qui peuvent être compensées par des outils comme Anacron ou Celery, au prix de la complexité et de la maintenabilité.&lt;/p&gt;
+&lt;p&gt;Symfony Scheduler à la rescousse ! Allison passe ensuite à une présentation exhaustive de Symfony Scheduler, alternative complète au cronjob. Elle expose les nombreux moyens de déclarer une tâche planifiée : avec les méthodes statiques de la classe &lt;code&gt;RecurringMessage&lt;/code&gt;, ou avec les attributs &lt;code&gt;#[AsPeriodicTask]&lt;/code&gt;, &lt;code&gt;#[AsCronTask]&lt;/code&gt; et également &lt;code&gt;#[AsSchedule]&lt;/code&gt;. Pour finir, Allison explique les raisons qui l’ont amenée &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/symfony/symfony/pull/51805&quot;&gt;à contribuer l’ajout d’événements&lt;/a&gt; &lt;code&gt;pre_run_event&lt;/code&gt;, &lt;code&gt;post_run_event&lt;/code&gt; et &lt;code&gt;failure_event&lt;/code&gt; : séparer la vérification qu&#039;un message doit être traité de son traitement.&lt;/p&gt;
+&lt;p&gt;Les slides d’Allison sont disponibles sur &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://speakerdeck.com/alli83/task-scheduling-can-be-boring-but-not-with-symfony-scheduler&quot;&gt;Speaker Deck&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Envie d’en savoir plus ? &lt;a href=&quot;https://jolicode.com//qui-sommes-nous/equipe/baptiste-leduc&quot;&gt;Baptiste Leduc&lt;/a&gt; a écrit &lt;a href=&quot;https://jolicode.com//blog/master-task-scheduling-with-symfony-scheduler&quot;&gt;un article à ce sujet sur notre blog&lt;/a&gt; il y a quelques jours. 🤓&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/symfony-scheduler.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/symfony-scheduler.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 640)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/symfony-scheduler.jpg&quot; alt=&quot;Talk de Allison Guilhem&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;How to use GPT with your Symfony app&lt;/h2&gt;
+&lt;p&gt;Depuis un an, le mot est sur toutes les bouches. Chat GPT s&#039;immisce partout, jusqu’à provoquer pour certains une lassitude. Mais combien sommes-nous à vraiment comprendre les concepts derrière ? C’est le défi que s’est lancé Christopher Hertel : nous expliquer les &lt;abbr title=&quot;Large Language Models&quot;&gt;LLM&lt;/abbr&gt; et &lt;abbr title=&quot;Generative Pre-Trained Transformer&quot;&gt;GPT&lt;/abbr&gt; puis en faire une démonstration pratique avec Symfony.&lt;/p&gt;
+&lt;p&gt;Le concept est assez simple, un modèle pré-entraîné sur un dataset conséquent génère des réponses via des calculs de distances entre vecteurs pour trouver la suite de mots attendue la plus probable. Ainsi, la qualité de l’entrée utilisateur, ou &amp;quot;prompt&amp;quot;, est capitale pour orienter le plus précisément le modèle. De la même manière, le &amp;quot;contexte&amp;quot;, permet au modèle de tenir compte de l’historique d’une conversation dans ses réponses. De nombreuses options permettent de moduler le modèle selon nos besoins. Citons par exemple la température, qui est une valeur comprise entre 0 (réponse plus déterministe) et 2 (réponse plus aléatoire).&lt;/p&gt;
+&lt;p&gt;Place aux cas pratiques ! Christopher présente d’abord &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://decomplex.me/&quot;&gt;deComplex&lt;/a&gt;, un site web pour simplifier un bout de code via un appel à l’API d’OpenAI et l’utilisation du bundle &lt;code&gt;openapi-php/symfony&lt;/code&gt;. Une seule consigne système est donnée au modèle : &amp;quot;Tu es un développeur PHP expérimenté et assiste les développeurs à réduire la complexité de leur code. Tu reçois un code PHP et tu dois le simplifier. Réponds avec du code seulement&amp;quot;. L’autre cas pratique est celui d’un bot SymfonyCon qui utilise la génération augmentée de récupération (utilisant une base de donnée vectorielle, comme &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.pinecone.io/&quot;&gt;Pinecone&lt;/a&gt; par exemple) pour répondre spécifiquement à des questions sur la conférence.&lt;/p&gt;
+&lt;p&gt;Les slides de Christopher sont disponibles sur &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://speakerdeck.com/el_stoffel/how-to-use-gpt-and-symfony-with-your-app-de&quot;&gt;Speaker Deck&lt;/a&gt;. Si vous souhaitez expérimenter avec l’IA, &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://huggingface.co/&quot;&gt;huggingface.co&lt;/a&gt; et &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://replicate.com/&quot;&gt;replicate.com&lt;/a&gt; sont d’excellentes ressources.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/gpt.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/gpt.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 640)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/gpt.jpg&quot; alt=&quot;Talk de  Christopher Hertel&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Hands-on with LiveComponents, AssetMapper, Turbo &amp;amp; Stimulus&lt;/h2&gt;
+&lt;p&gt;Ryan Weaver en clôture, que demander de mieux ? Passionné et énergique comme à son habitude, il a choisi cette année de nous parler de la &lt;abbr title=&quot;L for Live Components | A for AssetMapper | S for Stimulus | T for Turbo&quot;&gt;LAST&lt;/abbr&gt; Stack et de son approche #nobuild.&lt;/p&gt;
+&lt;p&gt;Le sujet tombe à point. Il a récemment fait débat au sein de JoliCode entre développeurs front et back.&lt;/p&gt;
+&lt;p&gt;En s’appuyant sur des exemples concrets (la naissance du &lt;code&gt;border-radius&lt;/code&gt;, la démocratisation du HTTP/2), Ryan insiste sur l’importance de remplacer la complexité de nos anciennes habitudes par plus de simplicité. Simplicité qui selon lui rime avec Symfony UX.&lt;/p&gt;
+&lt;p&gt;Piqûre de rappel, les &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://symfony.com/bundles/ux-twig-component/current/index.html&quot;&gt;Twig Components&lt;/a&gt; sont des composants d&#039;interface simples et réutilisables. Ils sont chacun constitué d’une classe PHP et de son template associé.&lt;/p&gt;
+&lt;p&gt;Les &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://symfony.com/bundles/ux-live-component/current/index.html&quot;&gt;Live Components&lt;/a&gt; ont quant à eux pour vocation de rendre les Twig Components dynamiques en fonction des interactions (front) utilisateurs.&lt;/p&gt;
+&lt;p&gt;Parallèlement, l’&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://symfony.com/doc/current/frontend/asset_mapper.html&quot;&gt;AssetMapper&lt;/a&gt; est un nouveau composant (depuis Symfony 6.3) qui propose une alternative à Webpack Encore en utilisant la nouvelle propriété &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap&quot;&gt;importmap&lt;/a&gt; des navigateurs pour faire de la résolution de modules, sans avoir besoin de builder et de compiler les assets !&lt;/p&gt;
+&lt;p&gt;Une révolution ? À JoliCode, nous sommes enthousiastes à l’idée de tester Symfony UX sur des projets simples, mais nos développeurs frontend émettent des réserves : si le projet est complexe, il est préférable d’utiliser un build system. Avis partagé par Ryan dans &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://symfonycasts.com/screencast/asset-mapper/setup#is-this-for-every-project&quot;&gt;l’introduction du Screencast dédié&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/symfonycon-brussels-2023/last-stack.webp&quot; /&gt;&lt;source type=&quot;image/jpeg&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/symfonycon-brussels-2023/last-stack.jpg&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1200px; height: auto; aspect-ratio: calc(1200 / 640)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/symfonycon-brussels-2023/last-stack.jpg&quot; alt=&quot;Talk de Ryan Weaver&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Les replays à ne pas manquer&lt;/h2&gt;
+&lt;p&gt;D’autres talks ont retenu notre attention par leur qualité, leur clarté et leur accessibilité aux débutants et à tous ceux souhaitant reprendre les bases en douceur. Ce sont d’excellentes ressources, et nous vous encourageons à les visionner dès qu’elles seront disponibles.&lt;/p&gt;
+&lt;h3&gt;Github Actions 101: your 1st action&lt;/h3&gt;
+&lt;p&gt;Vous n’avez jamais mis en place une intégration continue avec Github Actions ? Pas de panique ! C’est le sujet du talk de Paul Gilzow. A travers des cas pratiques, Paul propose une vue d’ensemble de la CI/CD de GitHub et vous donne les clefs pour démarrer : de la création d’un &lt;code&gt;workflow&lt;/code&gt; basique jusqu’à la création de &lt;code&gt;custom action&lt;/code&gt; de type &lt;code&gt;docker container&lt;/code&gt;, &lt;code&gt;javascript&lt;/code&gt; ou &lt;code&gt;composite&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;En attendant le replay, rien de tel que &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://docs.github.com/fr/actions/quickstart&quot;&gt;le quickstart de GitHub Actions&lt;/a&gt; pour commencer.&lt;/p&gt;
+&lt;h3&gt;PHPUnit 10 for Symfony Developers&lt;/h3&gt;
+&lt;p&gt;Voilà plus de 23 ans que PHPUnit existe. 👴 Sebastian Bergmann, son créateur et mainteneur, nous présente sa version 10. Sortie en ce début d’année, elle est peut-être la plus grosse release de l’histoire de PHPUnit, incluant un refactoring en profondeur et une modernisation qui pose les bases pour les développements futurs. Durant son talk, Sebastian retrace l’évolution des tests unitaires avec PHPUnit puis réalise un tour d’horizon de ses fonctionnalités.&lt;/p&gt;
+&lt;p&gt;En attendant le replay, pourquoi ne pas &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://phpunit.de/documentation.html&quot;&gt;faire un tour sur la documentation&lt;/a&gt; ? Bonne lecture !&lt;/p&gt;
+&lt;h2&gt;Clap de fin&lt;/h2&gt;
+&lt;p&gt;L’arc bruxellois se termine sur les traditionnels remerciements, aux speakers, à l’organisation, aux nombreux contributeurs et à la core team. Puis vient l’annonce tant attendue : quelle sera la ville hôte de l’édition 2024 ? Suspense… Rendez-vous à Vienne, en Autriche, les 5 et 6 décembre ! 🇦🇹&lt;/p&gt;
+&lt;p&gt;En espérant vous y retrouver, pour continuer les échanges, le partage d’idées, les découvertes et pour faire grandir ensemble, le framework PHP de demain.&lt;/p&gt;
+&lt;p&gt;Vous avez un sujet qui vous passionne et souhaitez en parler ? Stay tuned, le CFP arrive bientôt ! Et en attendant, vous pouvez toujours soumettre un sujet à un autre des nombreux événements PHP : SymfonyLive, AFUP Day, Forum PHP, etc. Merci 💛&lt;/p&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/master-task-scheduling-with-symfony-scheduler</id>
+        <published>2023-12-06T13:42:00+01:00</published>
+        <updated>2023-12-06T13:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/master-task-scheduling-with-symfony-scheduler"/>
+        <title>Master task scheduling with Symfony Scheduler</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="php" />            <category term="symfony" />        <summary><![CDATA[Introduction
+Nowadays, using a crontab for our recurring tasks is quite common, but not very practical because it&#039;s completely disconnected from our application. The Scheduler component is an excellent…]]></summary>
+        <content type="html">
+            &lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Nowadays, using a crontab for our recurring tasks is quite common, but not very practical because it&#039;s completely disconnected from our application. The Scheduler component is an excellent alternative. It was introduced in 6.3 by Fabien Potencier during his opening keynote at &lt;a href=&quot;https://jolicode.com//blog/notre-retour-sur-le-symfonylive-paris-2023&quot;&gt;SymfonyLive Paris 2023&lt;/a&gt; (french publication). The component is now considered stable since the release of Symfony 6.4.
+Let&#039;s take a look at how to use it!&lt;/p&gt;
+&lt;h2&gt;Installation&lt;/h2&gt;
+&lt;p&gt;Let&#039;s install the component:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;composer require symfony/messenger symfony/scheduler
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As all the component&#039;s functionalities are  based on Messenger, we need to install it too.&lt;/p&gt;
+&lt;h2&gt;The first task&lt;/h2&gt;
+&lt;p&gt;Let&#039;s create a first message to schedule:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;// src/Message/Foo.php
+readonly final class Foo {}
+
+// src/Handler/FooHandler.php
+#[AsMessageHandler]
+readonly final class FooHandler
+{
+	public function __invoke(Foo $foo): void
+	{
+    	sleep(5);
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the same way as a Message dispatched in Messenger, here we&#039;re dispatching a Message, which Scheduler will process in a similar way to Messenger, except that processing will be triggered on a time basis.&lt;/p&gt;
+&lt;p&gt;In addition to the Message/Handler pair, we need to define a Schedule:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;#[AsSchedule(name: &#039;default&#039;)]
+class Scheduler implements ScheduleProviderInterface
+{
+	public function getSchedule(): Schedule
+	{
+    	return (new Schedule())-&amp;gt;add(
+        	RecurringMessage::every(&#039;2 days&#039;, new Foo())
+    	);
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will indicate to our application that we have a &amp;quot;default&amp;quot; schedule containing a message launched every two days. Here, the frequency is simple, but it&#039;s entirely possible to configure it more finely:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;RecurringMessage::every(&#039;1 second&#039;, $msg)
+RecurringMessage::every(&#039;15 day&#039;, $msg)
+
+# relative format
+RecurringMessage::every(&#039;next friday&#039;, $msg)
+RecurringMessage::every(&#039;first sunday of next month&#039;, $msg)
+
+# run at a very specific time every day
+RecurringMessage::every(&#039;1 day&#039;, $msg, from: &#039;14:42&#039;)
+# you can pass full date/time objects too
+RecurringMessage::every(&#039;1 day&#039;, $msg,
+	from: new \DateTimeImmutable(&#039;14:42&#039;, new \DateTimeZone(&#039;Europe/Paris&#039;))
+)
+
+# define the end of the handling too
+RecurringMessage::every(&#039;1 day&#039;, $msg, until: &#039;2023-09-21&#039;)
+
+# you can even use cron expressions
+RecurringMessage::cron(&#039;42 14 * * 2&#039;, $msg) // every Tuesday at 14:42
+RecurringMessage::cron(&#039;#midnight&#039;, $msg)
+RecurringMessage::cron(&#039;#weekly&#039;, $msg)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here you can see relative formats; more information on this format in PHP can be found on the &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative&quot;&gt;documentation page&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For &lt;code&gt;cron&lt;/code&gt; syntaxes, you&#039;ll need to install a third-party library that allows Scheduler to interpret them:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;composer require dragonmantank/cron-expression
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once you&#039;ve defined your Schedule, just as you would for a Messenger transport, you&#039;ll need a worker to listen in on the Schedule as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;bin/console messenger:consume -v scheduler_default
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;scheduler_&lt;/code&gt; prefix is the generic name of the transport for all Schedules, to which we add the name of the Schedule created.&lt;/p&gt;
+&lt;h2&gt;Collisions&lt;/h2&gt;
+&lt;p&gt;The more tasks you have, the more likely you are to have tasks arriving at the same time. But if a collision occurs, how will Scheduler handle it? Let&#039;s imagine the following case:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;(new Schedule())-&amp;gt;add(
+	RecurringMessage::every(&#039;2 days&#039;, new Foo()),
+	RecurringMessage::every(&#039;3 days&#039;, new Foo())
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Every 6 days, the two messages will collide:&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/scheduler/image_1_en.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/scheduler/image_1_en.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1311px; height: auto; aspect-ratio: calc(1311 / 468)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/scheduler/image_1_en.png&quot; alt=&quot;Schedule collision&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;If you only have one worker, then it will take the first task configured in the Schedule &lt;strong&gt;and&lt;/strong&gt;, once the first task is finished, it will execute the second task. In other words, the execution time of the 2nd task depends on the execution time of the 1st.&lt;/p&gt;
+&lt;p&gt;We often want our tasks to be executed at a precise time.  Here  are two solutions to this problem:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Good practice would be to specify the date and time of execution of our task using the &lt;code&gt;from&lt;/code&gt; parameter: &lt;code&gt;RecurringMessage::every(&#039;1 day&#039;, $msg, from: &#039;14:42&#039;)&lt;/code&gt; for one of the messages and set it to &lt;code&gt;15:42&lt;/code&gt; for the other task (also possible with &lt;code&gt;cron&lt;/code&gt; syntax);&lt;/li&gt;
+&lt;li&gt;Have several workers running: if you have 2 workers, then it can handle 2 tasks at the same time!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Multiple workers?&lt;/h2&gt;
+&lt;p&gt;But today, if we run 2 workers, our task will be executed twice!&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/scheduler/image_2_en.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/scheduler/image_2_en.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1315px; height: auto; aspect-ratio: calc(1315 / 720)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/scheduler/image_2_en.png&quot; alt=&quot;Schedule workers&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;Scheduler provides the tools to avoid this! Let&#039;s update our Schedule a little:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;#[AsSchedule(name: &#039;default&#039;)]
+class Scheduler implements ScheduleProviderInterface
+{
+	public function __construct(
+    	private readonly CacheInterface $cache,
+    	private readonly LockFactory $lockFactory,
+	) {
+	}
+
+	public function getSchedule(): Schedule
+	{
+    	return (new Schedule())
+        	-&amp;gt;add(RecurringMessage::every(&#039;2 days&#039;, new Foo(), from: &#039;04:05&#039;))
+        	-&amp;gt;add(RecurringMessage::cron(&#039;15 4 */3 * *&#039;, new Foo()))
+        	-&amp;gt;stateful($this-&amp;gt;cache)
+        	-&amp;gt;lock($this-&amp;gt;lockFactory-&amp;gt;createLock(&#039;scheduler-default&#039;))
+    	;
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We retrieve a service to manage its cache and create locks (remember to install &lt;code&gt;symfony/lock&lt;/code&gt; beforehand). Then we indicate that our schedule can now benefit from a state and has a lock thanks to these new elements.&lt;/p&gt;
+&lt;p&gt;And that&#039;s it 🎉 now we can have as many workers as we want, they won&#039;t launch the same message several times :)&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/scheduler/image_3_en.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/scheduler/image_3_en.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1295px; height: auto; aspect-ratio: calc(1295 / 702)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/scheduler/image_3_en.png&quot; alt=&quot;Schedule stateful workers&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Tooling!&lt;/h2&gt;
+&lt;h3&gt;Debugging our Schedules&lt;/h3&gt;
+&lt;p&gt;A console command has been added since &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/symfony/symfony/pull/51795&quot;&gt;this PR&lt;/a&gt;, which lists all the tasks in the Schedules you&#039;ve created!&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;$ bin/console debug:scheduler
+
+Scheduler
+=========
+
+default
+-------
+
+ -------------- -------------------------------------------------- ---------------------------------
+  Trigger   	 Provider                                  		 Next Run               		
+ -------------- -------------------------------------------------- ---------------------------------
+  every 2 days   App\Messenger\Foo(O:17:&amp;quot;App\Messenger\Foo&amp;quot;:0:{})   Sun, 03 Dec 2023 04:05:00 +0000
+  15 4 */3 * *   App\Messenger\Foo(O:17:&amp;quot;App\Messenger\Foo&amp;quot;:0:{})   Mon, 04 Dec 2023 04:15:00 +0000
+ -------------- -------------------------------------------------- ---------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In addition to seeing the tasks in your Schedules, you&#039;ll also see the next execution date.&lt;/p&gt;
+&lt;h3&gt;Change the transport of your tasks&lt;/h3&gt;
+&lt;p&gt;Sometimes a message can take a long time to process. We can therefore say in our Schedule that our message must be processed by a given transport. For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;(new Schedule())-&amp;gt;add(
+	RecurringMessage::cron(&#039;15 4 */3 * *&#039;, new RedispatchMessage(new Foo(), &#039;async&#039;)))
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here, when the message is to be dispatched, the worker will send it to the &lt;code&gt;async&lt;/code&gt; transport, which will then process it. This is very useful for heavy tasks, as it frees up the &lt;code&gt;scheduler_default&lt;/code&gt; worker to process the next messages.&lt;/p&gt;
+&lt;h3&gt;Error handling&lt;/h3&gt;
+&lt;p&gt;Scheduler allows you to listen to several events via the &lt;code&gt;EventDispatcher&lt;/code&gt; component. There are 3 listenable events: &lt;code&gt;PreRunEvent&lt;/code&gt;, &lt;code&gt;PostRunEvent&lt;/code&gt; and &lt;code&gt;FailureEvent&lt;/code&gt;. The first two will be triggered, respectively, before and after each task executed. The latter will be triggered in the event of a task exception. This can be very useful for efficient error monitoring:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;#[AsEventListener(event: FailureEvent::class)]
+final class ScheduleListener
+{
+	public function __invoke(FailureEvent $event): void
+	{
+    	// triggers email to yourself when your schedules have issues
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With this code, when a &lt;code&gt;FailureEvent&lt;/code&gt; occurs, you can send yourself an email or add logs to better understand the problem.&lt;/p&gt;
+&lt;h3&gt;Console as Scheduler&lt;/h3&gt;
+&lt;p&gt;One of the most interesting features of Scheduler in my opinion: the &lt;code&gt;AsCronTask&lt;/code&gt; and &lt;code&gt;AsPeriodicTask&lt;/code&gt; attributes! They allow you to transform a console command into a Scheduler task in a very simple way! &lt;code&gt;AsPeriodicTask&lt;/code&gt; to define a task via a simple recurrence: &lt;code&gt;2 days&lt;/code&gt; for example, and &lt;code&gt;AsCronTask&lt;/code&gt; to do the same thing via a cron expression.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;#[AsCommand(name: &#039;app:foo&#039;)]
+#[AsPeriodicTask(&#039;2 days&#039;, schedule: &#039;default&#039;)]
+final class FooCommand extends Command
+{
+	public function execute(InputInterface $input, OutputInterface $output): int
+	{
+    	// run you command
+
+    	return Command::SUCCESS;
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And that&#039;s it, the command will be executed in Schedule &lt;code&gt;default&lt;/code&gt; every 2 days!&lt;/p&gt;
+&lt;p&gt;There are often duplicates between console commands and your recurring tasks, so this is the perfect feature to link the two!&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;The Scheduler component is an essential tool to efficiently integrate recurring tasks into Symfony. Its ease of use, flexibility, cron expression management and seamless integration with console commands make it an essential choice.&lt;/p&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/maitrisez-la-planification-des-taches-avec-symfony-scheduler</id>
+        <published>2023-12-05T14:42:00+01:00</published>
+        <updated>2023-12-05T14:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/maitrisez-la-planification-des-taches-avec-symfony-scheduler"/>
+        <title>Maîtrisez la planification des tâches avec Symfony Scheduler</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="php" />            <category term="symfony" />        <summary><![CDATA[Introduction
+Aujourd’hui, utiliser une crontab pour nos tâches récurrentes est assez courant mais pas très pratique car complètement déconnecté de notre application. Le composant Scheduler se présente…]]></summary>
+        <content type="html">
+            &lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Aujourd’hui, utiliser une crontab pour nos tâches récurrentes est assez courant mais pas très pratique car complètement déconnecté de notre application. Le composant Scheduler se présente comme une excellente alternative. Il a été introduit en 6.3 par Fabien Potencier lors de sa keynote d’ouverture du &lt;a href=&quot;https://jolicode.com//blog/notre-retour-sur-le-symfonylive-paris-2023&quot;&gt;SymfonyLive Paris 2023&lt;/a&gt;. Le composant est maintenant réputé comme stable depuis la sortie de Symfony 6.4.
+Regardons comment l’utiliser !&lt;/p&gt;
+&lt;h2&gt;Installation&lt;/h2&gt;
+&lt;p&gt;Installons le composant :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;composer require symfony/messenger symfony/scheduler
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Comme toutes les fonctionnalités du composant se basent sur Messenger, il est nécessaire de l’installer aussi.&lt;/p&gt;
+&lt;h2&gt;Une première tâche&lt;/h2&gt;
+&lt;p&gt;Créons un premier message à planifier :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;// src/Message/Foo.php
+readonly final class Foo {}
+
+// src/Handler/FooHandler.php
+#[AsMessageHandler]
+readonly final class FooHandler
+{
+    public function __invoke(Foo $foo): void
+    {
+        sleep(5);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;De la même manière qu&#039;un Message dispatché dans Messenger, nous dispatchons ici un Message, que Scheduler traitera de façon similaire à Messenger, excepté que le déclenchement du traitement se fera sur une base temporelle&lt;/p&gt;
+&lt;p&gt;En plus du couple Message/Handler, nous avons besoin de définir un &amp;quot;Schedule&amp;quot; :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;#[AsSchedule(name: &#039;default&#039;)]
+class Scheduler implements ScheduleProviderInterface
+{
+    public function getSchedule(): Schedule
+    {
+        return (new Schedule())-&amp;gt;add(
+            RecurringMessage::every(&#039;2 days&#039;, new Foo())
+        );
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Il va permettre d’indiquer à notre application que nous avons un Schedule &amp;quot;default&amp;quot; qui contient un message lancé tous les deux jours. Ici, la fréquence est simple, mais il est tout à fait possible de configurer cela plus finement :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;RecurringMessage::every(&#039;1 second&#039;, $msg)
+RecurringMessage::every(&#039;15 day&#039;, $msg)
+
+# format relatif
+RecurringMessage::every(&#039;next friday&#039;, $msg)
+RecurringMessage::every(&#039;first sunday of next month&#039;, $msg)
+
+# se lance à un horaire spécifique tous les jours
+RecurringMessage::every(&#039;1 day&#039;, $msg, from: &#039;14:42&#039;)
+# vous pouvez donner un objet DateTime aussi
+RecurringMessage::every(&#039;1 day&#039;, $msg,
+    from: new \DateTimeImmutable(&#039;14:42&#039;, new \DateTimeZone(&#039;Europe/Paris&#039;))
+)
+
+# définir la fin de la récurrence
+RecurringMessage::every(&#039;1 day&#039;, $msg, until: &#039;2023-09-21&#039;)
+
+# vous pouvez aussi utiliser des expressions cron
+RecurringMessage::cron(&#039;42 14 * * 2&#039;, $msg) // every Tuesday at 14:42
+RecurringMessage::cron(&#039;#midnight&#039;, $msg)
+RecurringMessage::cron(&#039;#weekly&#039;, $msg)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ici, nous pouvons voir des formats relatifs; vous trouverez plus d’informations sur ce format en PHP sur la &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.php.net/manual/fr/datetime.formats.php#datetime.formats.relative&quot;&gt;page de documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Pour les syntaxes &lt;code&gt;cron&lt;/code&gt;, il vous faudra installer une librairie tierce qui permet à Scheduler de les interpréter :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;composer require dragonmantank/cron-expression
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Une fois votre Schedule défini, comme pour un transport Messenger, il vous faudra un worker qui va écouter sur le Schedule de la façon suivante:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;bin/console messenger:consume -v scheduler_default
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Le préfix &lt;code&gt;scheduler_&lt;/code&gt; est le nom générique du transport pour tous les Schedule, auquel nous ajoutons le nom du Schedule créé.&lt;/p&gt;
+&lt;h2&gt;Les collisions&lt;/h2&gt;
+&lt;p&gt;Plus nous avons de tâches, plus nous avons de chances d’avoir des tâches qui vont arriver au même moment. Mais si une collision arrive, comment Scheduler va-t-il gérer ça ? Imaginons le cas suivant :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;(new Schedule())-&amp;gt;add(
+    RecurringMessage::every(&#039;2 days&#039;, new Foo()),
+    RecurringMessage::every(&#039;3 days&#039;, new Foo())
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tous les 6 jours, les deux messages vont entrer en collision :&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/scheduler/image_1_fr.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/scheduler/image_1_fr.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1280px; height: auto; aspect-ratio: calc(1280 / 465)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/scheduler/image_1_fr.png&quot; alt=&quot;Schedule collision&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;Si nous avons qu&#039;un seul worker, alors il prendra la première tâche configurée dans le Schedule &lt;strong&gt;puis&lt;/strong&gt;, une fois la première tâche finie, il exécutera la seconde tâche. Autrement dit, l&#039;heure d&#039;exécution de la 2ème tâche est dépendante de la durée d&#039;exécution de la 1ère.&lt;/p&gt;
+&lt;p&gt;Souvent nous voulons que nos tâches soient exécutées à un moment précis, pour régler ce soucis il existe deux solutions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;La bonne pratique serait de préciser la date et heure d&#039;exécution de notre tâche grâce au paramètre &lt;code&gt;from&lt;/code&gt;, par exemple: &lt;code&gt;RecurringMessage::every(&#039;1 day&#039;, $msg, from: &#039;14:42&#039;)&lt;/code&gt; pour un des messages et fixer à &lt;code&gt;15:42&lt;/code&gt; pour l’autre tâche (aussi possible avec une syntaxe &lt;code&gt;cron&lt;/code&gt;) ;&lt;/li&gt;
+&lt;li&gt;Avoir plusieurs workers qui tournent: si vous avez 2 workers, alors il pourra gérer 2 tâches en même temps !&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Plusieurs workers ?&lt;/h2&gt;
+&lt;p&gt;Mais aujourd&#039;hui, si nous lançons 2 workers, notre tâche sera exécutée deux fois !&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/scheduler/image_2_fr.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/scheduler/image_2_fr.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1303px; height: auto; aspect-ratio: calc(1303 / 710)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/scheduler/image_2_fr.png&quot; alt=&quot;Schedule workers&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;Scheduler fournit les outils pour éviter ça ! Mettons un peu à jour notre Schedule :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;#[AsSchedule(name: &#039;default&#039;)]
+class Scheduler implements ScheduleProviderInterface
+{
+    public function __construct(
+        private readonly CacheInterface $cache,
+        private readonly LockFactory $lockFactory,
+    ) {
+    }
+
+    public function getSchedule(): Schedule
+    {
+        return (new Schedule())
+            -&amp;gt;add(RecurringMessage::every(&#039;2 days&#039;, new Foo(), from: &#039;04:05&#039;))
+            -&amp;gt;add(RecurringMessage::cron(&#039;15 4 */3 * *&#039;, new Foo()))
+            -&amp;gt;stateful($this-&amp;gt;cache)
+            -&amp;gt;lock($this-&amp;gt;lockFactory-&amp;gt;createLock(&#039;scheduler-default&#039;))
+        ;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nous récupèrons un service pour gérer son cache et pour créer des locks (penser à installer &lt;code&gt;symfony/lock&lt;/code&gt; auparavant). Puis nous indiquons que notre schedule peut maintenant bénéficier d’un état et possède un lock grâce à ces nouveaux éléments.&lt;/p&gt;
+&lt;p&gt;Et voilà 🎉, maintenant nous pouvons avoir autant de workers que nous voulons, ils ne lanceront pas plusieurs fois le même message :)&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/scheduler/image_3_fr.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/scheduler/image_3_fr.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1319px; height: auto; aspect-ratio: calc(1319 / 697)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/scheduler/image_3_fr.png&quot; alt=&quot;Schedule stateful workers&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Du tooling !&lt;/h2&gt;
+&lt;h3&gt;Debug de nos Schedules&lt;/h3&gt;
+&lt;p&gt;Une commande console a été ajoutée depuis &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/symfony/symfony/pull/51795&quot;&gt;cette PR&lt;/a&gt;, elle permet de lister toutes les tâches des Schedules que vous avez créé !&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;$ bin/console debug:scheduler
+
+Scheduler
+=========
+
+default
+-------
+
+ -------------- -------------------------------------------------- ---------------------------------
+  Trigger    	Provider                                       	Next Run                    	
+ -------------- -------------------------------------------------- ---------------------------------
+  every 2 days   App\Messenger\Foo(O:17:&amp;quot;App\Messenger\Foo&amp;quot;:0:{})   Sun, 03 Dec 2023 04:05:00 +0000
+  15 4 */3 * *   App\Messenger\Foo(O:17:&amp;quot;App\Messenger\Foo&amp;quot;:0:{})   Mon, 04 Dec 2023 04:15:00 +0000
+ -------------- -------------------------------------------------- ---------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En plus de voir les tâches de vos Schedules, vous aurez aussi la prochaine date d&#039;exécution.&lt;/p&gt;
+&lt;h3&gt;Changer le transport de vos tâches&lt;/h3&gt;
+&lt;p&gt;Parfois un message peut prendre du temps à être traité. Il est donc possible de dire dans son Schedule que notre message doit être traité par un transport donné. Par exemple :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;(new Schedule())-&amp;gt;add(
+    RecurringMessage::cron(&#039;15 4 */3 * *&#039;, new RedispatchMessage(new Foo(), ‘async’)))
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ici, quand le message doit être distribué, le worker va le renvoyer vers le transport &lt;code&gt;async&lt;/code&gt; qui s’occupera alors de le traiter. Très pratique pour les tâches lourdes car cela libérera le worker &lt;code&gt;scheduler_default&lt;/code&gt; pour traiter les prochains messages.&lt;/p&gt;
+&lt;h3&gt;Gérer les erreurs&lt;/h3&gt;
+&lt;p&gt;Scheduler permet d’écouter plusieurs événements via le composant &lt;code&gt;EventDispatcher&lt;/code&gt;. Il existe 3 événements écoutables: &lt;code&gt;PreRunEvent&lt;/code&gt;, &lt;code&gt;PostRunEvent&lt;/code&gt; et &lt;code&gt;FailureEvent&lt;/code&gt;. Les deux premiers seront déclenchés, respectivement, avant et après chaque tâche exécutée. Le dernier, quant à lui, sera lancé en cas d’exception dans une tâche. Cela peut être très pratique pour monitorer de façon efficace vos erreurs :&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;#[AsEventListener(event: FailureEvent::class)]
+final class ScheduleListener
+{
+    public function __invoke(FailureEvent $event): void
+    {
+        // triggers email to yourself when your schedules have issues
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Avec ce code, lorsqu’un événement &lt;code&gt;FailureEvent&lt;/code&gt; arrive, vous pourrez vous envoyer un email ou rajouter des logs pour mieux comprendre le soucis.&lt;/p&gt;
+&lt;h3&gt;Console as Scheduler&lt;/h3&gt;
+&lt;p&gt;Une des fonctionnalités les plus intéressantes de Scheduler selon moi : les attributs &lt;code&gt;AsCronTask&lt;/code&gt; et &lt;code&gt;AsPeriodicTask&lt;/code&gt; ! Ceux-ci permettent de transformer une commande console en une tâche périodique de façon très simple ! &lt;code&gt;AsPeriodicTask&lt;/code&gt; permet de définir une tâche via une récurrence simple: &lt;code&gt;2 days&lt;/code&gt; par exemple, et &lt;code&gt;AsCronTask&lt;/code&gt; permet de faire la même chose via une expression cron.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;#[AsCommand(name: &#039;app:foo&#039;)]
+#[AsPeriodicTask(&#039;2 days&#039;, schedule: &#039;default&#039;)]
+final class FooCommand extends Command
+{
+    public function execute(InputInterface $input, OutputInterface $output): int
+    {
+        // run you command
+
+        return Command::SUCCESS;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Et voilà, la commande sera exécutée dans le Schedule &lt;code&gt;default&lt;/code&gt; tous les 2 jours !&lt;/p&gt;
+&lt;p&gt;Nous retrouvons souvent des doublons entre les commandes console et vos tâches récurrentes, c’est la fonctionnalité parfaite pour faire le lien entre les deux !&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Le composant Scheduler s&#039;impose comme un outil essentiel pour intégrer efficacement les tâches récurrentes dans Symfony. Sa simplicité d&#039;utilisation, sa flexibilité, la gestion des expressions cron, ainsi que son intégration transparente avec les commandes console en font un choix incontournable.&lt;/p&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/introducing-secret-santa-for-webex-by-cisco</id>
+        <published>2023-12-01T10:00:00+01:00</published>
+        <updated>2023-12-01T10:00:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/introducing-secret-santa-for-webex-by-cisco"/>
+        <title>Introducing Secret Santa for Webex by Cisco</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="symfony" />            <category term="open-source" />            <category term="webex" />        <summary><![CDATA[A new way to spread joy in the hybrid work experience 🎅
+The holiday season is here, and we know how challenging it can be to celebrate with your coworkers. That&#039;s why we are excited to announce the launch…]]></summary>
+        <content type="html">
+            &lt;p&gt;&lt;em&gt;A new way to spread joy in the hybrid work experience&lt;/em&gt; 🎅&lt;/p&gt;
+&lt;p&gt;The holiday season is here, and we know how challenging it can be to celebrate with your coworkers. That&#039;s why we are excited to announce the launch of &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://secret-santa.team/landing/webex&quot;&gt;Secret Santa for Webex&lt;/a&gt;, a fun and easy way to run a Secret Santa with your team, no matter where they are.&lt;/p&gt;
+&lt;h2&gt;A free application for all&lt;/h2&gt;
+&lt;p&gt;Secret Santa for Webex is a free application - no account needed except &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://www.webex.com/&quot;&gt;Webex&lt;/a&gt; - that you can install from the &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://apphub.webex.com/applications/secret-santa-jolicode&quot;&gt;Webex App Hub&lt;/a&gt;. It allows you to create a Secret Santa group with your coworkers, and let our secret algorithm randomly assign and notify each participant of their gift recipient.&lt;/p&gt;
+&lt;p&gt;You are free to set a budget, a deadline, and a delivery method for your gifts - it even allows to add gift hint to each participant to help finding the perfect gift.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/webex-secret-santa-border.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/webex-secret-santa-border.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;width: 988px; height: auto; aspect-ratio: calc(988 / 724)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/webex-secret-santa-border.png&quot; alt=&quot;Secret Santa for Webex&quot; /&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;How to use&lt;/h2&gt;
+&lt;p&gt;To use Secret Santa for Webex, you only need a Webex account (free or paid), and the willingness to share some joy with your team 😋&lt;/p&gt;
+&lt;p&gt;You can invite anyone from your organization. You can also create multiple Secret Santa groups, if you want to include different teams or circles of friends.&lt;/p&gt;
+&lt;p class=&quot;u-ta(center)&quot;&gt;&lt;a class=&quot;c-button c-img-link&quot; target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://apphub.webex.com/applications/secret-santa-jolicode&quot;&gt;Start a Secret Santa here!&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;The developer experience&lt;/h2&gt;
+&lt;p&gt;We also want to share how nice the developer experience was. Cisco is really doing great to help the community, and the tools, documentation are of great quality.&lt;/p&gt;
+&lt;p&gt;We found the Webex APIs and SDKs very easy to use and well-documented. We also appreciated the support and feedback from the Webex team and the developer community. There is a &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://developer.webex.com&quot;&gt;whole developer portal&lt;/a&gt; with examples and guides to get you started.&lt;/p&gt;
+&lt;p&gt;You can see how simple the implementation is with &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/jolicode/secret-santa/pull/273&quot;&gt;the following Pull Request&lt;/a&gt; - as Secret Santa is an open-source project based on Symfony.&lt;/p&gt;
+&lt;h2&gt;Final word&lt;/h2&gt;
+&lt;p&gt;We are proud to deliver this kind of integration that fosters a sense of community and belonging among Webex users. We hope you will enjoy using Secret Santa for Webex as much as we enjoyed creating it.&lt;/p&gt;
+&lt;p&gt;Happy holidays!&lt;/p&gt;
+
+        </content>
+    </entry>    <entry>
+        <id>https://jolicode.com/blog/introducing-jolimarkdown-for-a-more-robust-and-rigorous-markdown-content</id>
+        <published>2023-11-27T13:42:00+01:00</published>
+        <updated>2023-11-27T13:42:00+01:00</updated>
+        <link type="text/html" rel="alternate" href="https://jolicode.com/blog/introducing-jolimarkdown-for-a-more-robust-and-rigorous-markdown-content"/>
+        <title>Introducing JoliMarkdown, for a more robust and rigorous markdown content</title>
+        <author>
+            <name>JoliCode Team</name>
+            <uri>https://jolicode.com/</uri>
+        </author>            <category term="php" />            <category term="markdown" />            <category term="library" />        <summary><![CDATA[This blog post has been written using Markdown, a simple text syntax for writing structured documents. Markdown is frequently used in the development world (documentation in the form of a markdown README…]]></summary>
+        <content type="html">
+            &lt;p&gt;This blog post has been written using &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://daringfireball.net/projects/markdown/&quot;&gt;Markdown&lt;/a&gt;, a simple text syntax for writing structured documents. Markdown is frequently used in the development world (documentation in the form of a markdown README files, adoption by many publishing platforms) and is often also employed for Web publishing. It was, for example, the syntax chosen when the &lt;a href=&quot;https://jolicode.com//&quot;&gt;JoliCode website&lt;/a&gt; was created in 2012, and is still used today to structure the various bodies of content (blog posts, customer references, technologies, team sheets, etc.).&lt;/p&gt;
+&lt;h2&gt;Some context and markdown history&lt;/h2&gt;
+&lt;p&gt;Since its creation in 2004, this syntax has aimed to offer an alternative, faster and more human way of writing HTML documents for Web publishing. Over the ensuing years, Markdown syntax has evolved iteratively, without any formal, perfectly standardized specification. Various variants (or &amp;quot;flavors&amp;quot;) have emerged, but none has become a de facto standard.&lt;/p&gt;
+&lt;p&gt;One of the most robust alternatives, however, is &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://commonmark.org/&quot;&gt;CommonMark&lt;/a&gt;, a Markdown variant that was formally specified in 2014 and has been evolving ever since.&lt;/p&gt;
+&lt;p&gt;Over the last 12 years, our way of transforming Markdown content into HTML has changed. Back in 2012, we started writing a few articles in pure HTML, then we began using a &lt;em&gt;client-side&lt;/em&gt; javascript Markdown pre-processor, and finally, over the last few years, we have migrated to the excellent &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://commonmark.thephpleague.com/&quot;&gt;&lt;code&gt;league/commonmark&lt;/code&gt;&lt;/a&gt; library, which allows you to transform Markdown into HTML on the server side, in PHP. This library was chosen because it is particularly complete, well-maintained, extensible and robust.&lt;/p&gt;
+&lt;p&gt;During the development of &lt;code&gt;league/commonmark&lt;/code&gt;, extension mechanisms were added, to support different Markdown &amp;quot;extensions&amp;quot;, i.e. to support syntax elements that are not part of the CommonMark standard, but bring syntactic flexibility to writers. For example, the &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://commonmark.thephpleague.com/2.4/extensions/tables/#syntax&quot;&gt;tables extension&lt;/a&gt; makes it possible to write tables in Markdown, with a lighter, more readable syntax, which is not possible in &amp;quot;standard&amp;quot; CommonMark.&lt;/p&gt;
+&lt;h2&gt;A great feature and its downsides&lt;/h2&gt;
+&lt;p&gt;One of the founding features of Markdown is its compatibility with HTML: in Markdown, it&#039;s perfectly valid to insert HTML tags into text, and these will simply be passed on as they are in the final HTML document. For example, you can write:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-markdown&quot;&gt;# A Markdown document
+
+&amp;lt;p&amp;gt;An HTML paragraph.&amp;lt;/p&amp;gt;
+
+A paragraph in Markdown.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Such a document will be rendered, in HTML, as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;h1&amp;gt;A Markdown document&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;An HTML paragraph.&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;A paragraph in Markdown.&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;CommonMark&#039;s extension mechanism is therefore interesting, as it allows syntactic elements to be added that the extension will be able to interpret to generate rich, complex HTML output, without the end user (the editor) having to write HTML. This notion of extension is provided for in CommonMark (the &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://spec.commonmark.org/0.30/&quot;&gt;CommonMark specification&lt;/a&gt; is itself &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/commonmark/commonmark-spec/blob/master/spec.txt&quot;&gt;written in CommonMark&lt;/a&gt; and uses an extension to generate side-by-side rendering of Markdown syntax and the corresponding HTML output, as can be seen, for example, in the &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://spec.commonmark.org/0.30/#tabs&quot;&gt;tabs&lt;/a&gt; section).&lt;/p&gt;
+&lt;p&gt;On the JoliCode site, we&#039;ve taken advantage of the flexibility of &lt;code&gt;league/commonmark&lt;/code&gt; to enrich HTML rendering, over the years, so that we can write richer, more expressive, more visual Markdown documents. For example, we&#039;ve added an extension to write footnotes, HTML tables, strikethrough text, add HTML attributes to external links, automatically add attributes to &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tags, and so on.&lt;/p&gt;
+&lt;p&gt;In spite of this, over the past twelve years we have frequently written HTML code within Markdown articles, in order to meet certain needs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;add CSS classes to HTML elements, to be able to style them differently (centering an image on the page, for example);&lt;/li&gt;
+&lt;li&gt;insert code with CSS classes, to use a syntax highlighting library;&lt;/li&gt;
+&lt;li&gt;create the HTML structure to position two images side by side;&lt;/li&gt;
+&lt;li&gt;etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Sometimes HTML code has been added because the author of an article was uncomfortable with certain arcana of markdown, and chose the most direct approach to be able to publish his content. The use of HTML may have been appropriate at the time, but as the possibilities offered by HTML change, so do its limits: whereas for elements written in markdown, we can now make the program in charge of HTML rendering evolve to take on board new HTML functionalities, we can&#039;t do this for elements written directly in HTML, which will remain frozen in time in the form their author has chosen.&lt;/p&gt;
+&lt;p&gt;For example, we&#039;d like to be able to offer images in modern, higher-performance formats (such as &lt;strong&gt;webp&lt;/strong&gt;, which is both smaller and of better quality) than those used just a few years ago. For these images, we also want to move away from the use of the &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tag, and take advantage of &lt;code&gt;&amp;lt;picture&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;source&amp;gt;&lt;/code&gt; tags, and attributes like &lt;code&gt;srcset&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For images that have been inserted into articles using Markdown syntax, we can upgrade the HTML rendering program to support these new formats and tags.&lt;/p&gt;
+&lt;p&gt;For images that have been inserted in HTML, we can&#039;t do this, and so have to replace them manually - or leave them as they are, with the inconvenience of having to accept that the articles concerned use dated, less efficient technologies, which have an impact on both speed and the comfort offered to site users.&lt;/p&gt;
+&lt;p&gt;So we&#039;re looking for an approach to &lt;em&gt;correct&lt;/em&gt; existing Markdown articles, replacing the HTML elements they contain with equivalent Markdown elements wherever possible without distorting the final HTML rendering.&lt;/p&gt;
+&lt;h2&gt;A Commonmark extensions to the rescue&lt;/h2&gt;
+&lt;p&gt;An extension, available in &lt;code&gt;league/commonmark&lt;/code&gt; &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/thephpleague/commonmark/pull/489&quot;&gt;for a few years now&lt;/a&gt;, can specifically help us with this task: it&#039;s the &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://commonmark.thephpleague.com/2.4/extensions/attributes/&quot;&gt;Attributes extension&lt;/a&gt;, which lets you add HTML attributes to Markdown elements. For example, you can write:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-markdown&quot;&gt;{.block-class}
+![An image](/path/to/image.jpg)
+
+![Another image](/path/to/image.jpg){.image-class}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;...which will be rendered in HTML as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;p class=&amp;quot;block-class&amp;quot;&amp;gt;&amp;lt;img src=&amp;quot;/path/to/image.jpg&amp;quot; alt=&amp;quot;An image&amp;quot;&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;p&amp;gt;&amp;lt;img src=&amp;quot;/path/to/image.jpg&amp;quot; alt=&amp;quot;Another image&amp;quot; class=&amp;quot;image-class&amp;quot;&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With the help of this extension, we have written the JoliMarkdown library which is able to analyze some markdown content and output a better version of it, by replacing unnecessary HTML tags with their Markdown equivalent when possible.&lt;/p&gt;
+&lt;p&gt;In a few words, it works in a couple of steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;analyze the Markdown content of the article;&lt;/li&gt;
+&lt;li&gt;identify HTML elements that could be replaced by equivalent Markdown elements;&lt;/li&gt;
+&lt;li&gt;replace these HTML elements with Markdown elements, adding the necessary HTML attributes (using the Attributes extension) so that the final HTML rendering is identical to that of the original article.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Writing JoliMarkdown was quite enjoyable and helped us find issues in the &lt;a href=&quot;https://jolicode.com//blog/&quot;&gt;~300 blog posts that we have written since the JoliCode&#039;s blog exists&lt;/a&gt;: unclosed HTML tags, malformed HTML sequences, many externals links without the &lt;code&gt;nofollow&lt;/code&gt; or &lt;code&gt;noopener&lt;/code&gt; attributes, etc. Also, we have transformed many HTML blocks into their pure markdown equivalent, which in turn allows us to correctly use all the markdown renderers that we use (responsive images in place of plain &lt;code&gt;&amp;lt;img&lt;/code&gt; tags, etc.).&lt;/p&gt;
+&lt;h2&gt;Limitations, opportunities, perspectives&lt;/h2&gt;
+&lt;p&gt;The library &amp;quot;as is&amp;quot; works quite well, but it can be a bit disturbing to modify any articles at once, that you have spent a lot of time writing.&lt;/p&gt;
+&lt;p&gt;There are tests in JoliMarkdown, but it is still a quite new (and sometimes complicated) piece of software. Before &amp;quot;fixing&amp;quot; all our markdown content with this fixer, we first wanted to be able to preview the changes that would be made to each article, and to be able to validate them before applying them.&lt;/p&gt;
+&lt;p&gt;To do this, we have developed a small Symfony console command, which allows us to preview the changes that would be made to a given article, using a diff (💌 to the &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://dandavison.github.io/delta/&quot;&gt;Delta differ&lt;/a&gt;) between the original and modified Markdown content. This command also allows us to apply the changes to the article, if we are satisfied with the result.&lt;/p&gt;
+&lt;p&gt;Here are some example of what it can achieve:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;Capture&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;HTML tables&lt;/td&gt;
+&lt;td&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/jolimarkdown/table.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/jolimarkdown/table.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1711px; height: auto; aspect-ratio: calc(1711 / 995)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/jolimarkdown/table.png&quot; alt=&quot;An HTML table that is transformed into Commonmark, for a greater readability&quot; /&gt;&lt;/picture&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HTML div and with nested image tags&lt;/td&gt;
+&lt;td&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/jolimarkdown/img.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/jolimarkdown/img.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1703px; height: auto; aspect-ratio: calc(1703 / 95)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/jolimarkdown/img.png&quot; alt=&quot;An HTML div with a nested image are transformed into Commonmark&quot; /&gt;&lt;/picture&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(broken) HTML code&lt;/td&gt;
+&lt;td&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/jolimarkdown/broken-code.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/jolimarkdown/broken-code.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1704px; height: auto; aspect-ratio: calc(1704 / 125)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/jolimarkdown/broken-code.png&quot; alt=&quot;Some misformatted HTML code is correctly fixed&quot; /&gt;&lt;/picture&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HTML unordered lists&lt;/td&gt;
+&lt;td&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/jolimarkdown/unordered-list.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/jolimarkdown/unordered-list.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1708px; height: auto; aspect-ratio: calc(1708 / 139)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/jolimarkdown/unordered-list.png&quot; alt=&quot;An HTML unordered list gets transformed to Commonmark&quot; /&gt;&lt;/picture&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;However, there are some edge-cases when it is simply not possible to safely transform HTML back to markdown - because the associated CSS could be based on the way HTML elements are nested, for examples, which would result in a different rendering if we were to transform the HTML into Markdown.&lt;/p&gt;
+&lt;p&gt;There&#039;s another thing we are not satisfied with: the fact that this library indeed owes many features to other projects, which we would prefer to contribute back to these projects. The &lt;code&gt;league/commonmark&lt;/code&gt; library has &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/thephpleague/commonmark/issues/719&quot;&gt;an issue opened about transforming HTML to markdown&lt;/a&gt; and we think that pieces of JoliMarkdown could serve as inspiration to solve this issue. JoliMarkdown itself uses some (extensively) modified code from &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/stefanzweifel/commonmark-markdown-renderer&quot;&gt;Stefan Zweifel&#039;s Commonmark Markdown Renderer&lt;/a&gt;. If you want to improve on JoliMarkdown, a good way to do it could be to contribute back to these projects!&lt;/p&gt;
+&lt;p&gt;Therefore, JoliMarkdown is an exploratory work, which we are sharing with you today, and which we hope may help others go further in this direction 😀&lt;/p&gt;
+&lt;h2&gt;Enough talk, let me test it&lt;/h2&gt;
+&lt;p&gt;If you want to test JoliMarkdown on your own markdown content, you can install it using composer:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;composer require jolicode/jolimarkdown
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And read the rest of the documentation on &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://github.com/jolicode/JoliMarkdown&quot;&gt;the GitHub repository&lt;/a&gt; of the project.&lt;/p&gt;
+&lt;h2&gt;Try it online&lt;/h2&gt;
+&lt;p&gt;&lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://jolimarkdown.jolicode.com&quot;&gt;&lt;picture&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://jolicode.com/media/cache/content/media/original/2023/articles/jolimarkdown/jolimarkdown-demo.webp&quot; /&gt;&lt;source type=&quot;image/png&quot; srcset=&quot;https://jolicode.com/media/cache/content_standard/media/original/2023/articles/jolimarkdown/jolimarkdown-demo.png&quot; /&gt;&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; class=&quot;c-dialog__target c-dialog__image js-dialog-target&quot; style=&quot;width: 1186px; height: auto; aspect-ratio: calc(1186 / 927)&quot; src=&quot;https://jolicode.com//media/original/2023/articles/jolimarkdown/jolimarkdown-demo.png&quot; alt=&quot;The JoliMarkdown demo website&quot; /&gt;&lt;/picture&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;You can also use JoliMarkdown on a demo website: &lt;a rel=&quot;nofollow noopener noreferrer&quot; href=&quot;https://jolimarkdown.jolicode.com&quot;&gt;https://jolimarkdown.jolicode.com&lt;/a&gt;. This website is a simple Symfony sandbox application that uses JoliMarkdown to render the content of a given Markdown text.&lt;/p&gt;
+
+        </content>
+    </entry></feed>
