@@ -48,7 +48,7 @@ watch:
 app/config/parameters.yml:
 	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
 
-init:
+init: htdocs/uploads
 	make config
 	make init-db
 

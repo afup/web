@@ -53,6 +53,7 @@ security:
         - { path: ^/admin/techletter, roles: ROLE_VEILLE }
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
         - { path: ^/admin/members/badges, roles: ROLE_ADMIN }
+        - { path: ^/admin/members/users, roles: ROLE_ADMIN }
         - { path: ^/admin/event/speakers-management, roles: ROLE_FORUM }
         - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check), roles: ROLE_ADMIN}
         - { path: ^/member, roles: [ROLE_USER, ROLE_MEMBER_EXPIRED]}
