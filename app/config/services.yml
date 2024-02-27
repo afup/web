@@ -685,6 +685,11 @@ services:
         autowire: true
         public: true
 
+    AppBundle\Controller\Planete\:
+        resource: '../../sources/AppBundle/Controller/Planete/*'
+        autowire: true
+        autoconfigure: true
+
     app.github.http_client:
         class: GuzzleHttp\Client
         arguments:

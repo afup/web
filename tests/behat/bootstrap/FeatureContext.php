@@ -229,6 +229,14 @@ class FeatureContext implements Context
     }
 
     /**
+     * @Then /^the json response has the key "(?P<key>[^"]*)" with value "(?P<value>(?:[^"]|\\")*)"$/
+     */
+    public function assertResponseHasJsonKeyAndValue($key, $value)
+    {
+        $this->minkContext->assertResponseContains(sprintf('"%s":"%s"', $key, $value));
+    }
+
+    /**
      * @Then the current URL should match :arg1
      */
     public function assertCurrentUrlContains($regex)

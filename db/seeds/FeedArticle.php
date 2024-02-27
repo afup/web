@@ -10,7 +10,7 @@ class FeedArticle extends AbstractSeed
             'nom' => 'Un super site PHP',
             'url' => 'https://afup.org',
             'feed' => 'https://afup.org/rss.xml',
-            'etat' => 0,
+            'etat' => 1,
         ];
         $table = $this->table('afup_planete_flux');
         $table->truncate();
@@ -54,6 +54,20 @@ class FeedArticle extends AbstractSeed
                 'etat' => 0
             ],
         ];
+
+        for ($i = 0; $i < 20; $i++) {
+            $data[] = [
+                'afup_planete_flux_id' => 1,
+                'clef' => '4d5cf2e2-78bd-11ee-b962-0242ac13000' . $i,
+                'titre' => 'Un titre ' . $i,
+                'url' => 'https://afup.org/url-' . $i . '.html',
+                'maj' => time(),
+                'auteur' => 'Un super auteur ' . $i,
+                'resume' => 'Un super article ' . $i,
+                'contenu' => 'Le contenu du super article ' . $i,
+                'etat' => 1
+            ];
+        }
 
         $table = $this->table('afup_planete_billet');
         $table->truncate();
