@@ -45,6 +45,10 @@ techletter:
     resource: "routing/techletter.yml"
     prefix: /techno_watch
 
+planete_php_api:
+    resource: "routing/planete_php_api.yml"
+    prefix: /planete-php-api
+
 badge_image:
     path: /profile/badge/{id}
     defaults: {_controller: AppBundle:Website\Badge:badge }

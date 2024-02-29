@@ -1,0 +1,7 @@
+planete_php_api_articles:
+  path: /articles
+  defaults: {_controller: AppBundle\Controller\Planete\ArticlesController}
+
+planete_php_api_feeds:
+  path: /feeds
+  defaults: {_controller: AppBundle\Controller\Planete\FeedsController}
