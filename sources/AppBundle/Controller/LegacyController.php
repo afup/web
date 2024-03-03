@@ -28,7 +28,7 @@ class LegacyController extends Controller
          * All global variables (as defined in commonStart and others) should be declared here
          */
         global $smarty, $bdd, $conf, $droits, $AFUP_Tarifs_Forum_Lib, $AFUP_Tarifs_Forum, $debug, $translator, $services;
-        $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
+        $droits = Utils::fabriqueDroits($this->get('security.token_storage'), $this->get('security.authorization_checker'));
         $pages = $this->getParameter('app.pages_backoffice');
 
         $flashBag = $this->get('session')->getFlashBag();
@@ -84,7 +84,7 @@ class LegacyController extends Controller
         /** @var UserService $userService */
         $userService = $this->get(UserService::class);
         $_SERVER = $server;
-        $droits = Utils::fabriqueDroits($bdd, $this->get('security.token_storage'), $this->get('security.authorization_checker'));
+        $droits = Utils::fabriqueDroits($this->get('security.token_storage'), $this->get('security.authorization_checker'));
         Logs::initialiser($bdd, $droits->obtenirIdentifiant());
         $pays = new Pays($bdd);
 
