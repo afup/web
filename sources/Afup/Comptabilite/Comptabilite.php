@@ -931,7 +931,7 @@ SQL;
             return false;
         }
 
-        $qualifier = new AutoQualifier($this->obtenirListRegles());
+        $qualifier = new AutoQualifier($this->obtenirListRegles(true));
 
         foreach ($importer->extract() as $operation) {
             $numero_operation = $operation->getNumeroOperation();
@@ -1123,7 +1123,7 @@ SQL;
     function obtenirListRegles($filtre = '', $where = '')
     {
         $requete = 'SELECT ';
-        $requete .= '`id`, `label`, `condition`, `vat`, `category_id`, `event_id`, `attachment_required` ';
+        $requete .= '`id`, `label`, `condition`, `is_credit`, `vat`, `category_id`, `event_id`, `mode_regl_id`, `attachment_required` ';
         $requete .= 'FROM ';
         $requete .= 'compta_regle ';
         $wheres = [];
@@ -1142,34 +1142,29 @@ SQL;
             return $this->_bdd->obtenirEnregistrement($requete);
         } elseif ($filtre) {
             return $this->_bdd->obtenirTous($requete);
-        } else {
-            $data = $this->_bdd->obtenirTous($requete);
-            $result[] = "";
-            foreach ($data as $row) {
-                $result[$row['id']] = $row['label'];
-            }
-            return $result;
         }
     }
 
-    function ajouterRegle($label, $condition, $is_credit, $tva, $category_id, $event_id)
+    function ajouterRegle($label, $condition, $is_credit, $tva, $category_id, $event_id, $mode_regl_id, $attachment_required)
     {
         $requete = 'INSERT INTO ';
         $requete .= 'compta_regle (';
-        $requete .= '`label`, `condition`, `is_credit`, `vat`, `category_id`, `event_id`) ';
+        $requete .= '`label`, `condition`, `is_credit`, `vat`, `category_id`, `event_id`, `mode_regl_id`, `attachment_required`) ';
         $requete .= 'VALUES (';
         $requete .= $this->_bdd->echapper($label) . ', ';
         $requete .= $this->_bdd->echapper($condition) . ', ';
         $requete .= $this->_bdd->echapper($is_credit) . ', ';
         $requete .= $this->_bdd->echapper($tva) . ', ';
         $requete .= $this->_bdd->echapper($category_id) . ', ';
-        $requete .= $this->_bdd->echapper($event_id) . ' ';
+        $requete .= $this->_bdd->echapper($event_id) . ', ';
+        $requete .= $this->_bdd->echapper($mode_regl_id) . ', ';
+        $requete .= $this->_bdd->echapper($attachment_required) . ' ';
         $requete .= ');';
 
         return $this->_bdd->executer($requete);
     }
 
-    function modifierRegle($id, $label, $condition, $is_credit, $tva, $category_id, $event_id)
+    function modifierRegle($id, $label, $condition, $is_credit, $tva, $category_id, $event_id, $mode_regl_id, $attachment_required)
     {
 
         $requete = 'UPDATE ';
@@ -1180,7 +1175,9 @@ SQL;
         $requete .= '`is_credit` = ' . $this->_bdd->echapper($is_credit) . ', ';
         $requete .= '`vat` = ' . $this->_bdd->echapper($tva) . ', ';
         $requete .= '`category_id` = ' . $this->_bdd->echapper($category_id) . ', ';
-        $requete .= '`event_id` = ' . $this->_bdd->echapper($event_id) . ' ';
+        $requete .= '`event_id` = ' . $this->_bdd->echapper($event_id) . ', ';
+        $requete .= '`mode_regl_id` = ' . $this->_bdd->echapper($mode_regl_id) . ', ';
+        $requete .= '`attachment_required` = ' . $this->_bdd->echapper($attachment_required) . ' ';
         $requete .= 'WHERE ';
         $requete .= 'id = ' . intval($id) . ' ';
 

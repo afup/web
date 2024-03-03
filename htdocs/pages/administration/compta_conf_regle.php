@@ -52,9 +52,9 @@ if ($action === 'lister') {
         $valeur = $formulaire->exportValues();
 
         if ($action === 'ajouter') {
-            $ok = $compta->ajouterRegle($valeur['label'], $valeur['condition'], $valeur['is_credit'], $valeur['vat'], $valeur['category_id'], $valeur['event_id']);
+            $ok = $compta->ajouterRegle($valeur['label'], $valeur['condition'], $valeur['is_credit'], $valeur['vat'], $valeur['category_id'], $valeur['event_id'], $valeur['mode_regl_id'], $valeur['attachment_required']);
         } else {
-            $ok = $compta->modifierRegle($valeur['id'], $valeur['label'], $valeur['condition'], $valeur['is_credit'], $valeur['vat'], $valeur['category_id'], $valeur['event_id']);
+            $ok = $compta->modifierRegle($valeur['id'], $valeur['label'], $valeur['condition'], $valeur['is_credit'], $valeur['vat'], $valeur['category_id'], $valeur['event_id'], $valeur['mode_regl_id'], $valeur['attachment_required']);
         }
 
         if ($ok) {

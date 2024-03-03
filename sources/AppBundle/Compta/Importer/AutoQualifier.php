@@ -2,6 +2,7 @@
 
 namespace AppBundle\Compta\Importer;
 
+use Afup\Site\Utils\Vat;
 use AppBundle\Model\ComptaModeReglement;
 
 class AutoQualifier
@@ -57,7 +58,7 @@ class AutoQualifier
 
         foreach ($this->rules as $rule) {
             if (($operation->isCredit() === (bool) $rule['is_credit']) || is_null($rule['is_credit'])) {
-                if (0 === strpos($operationQualified['description'], $rule['condition'])) {
+                if (false !== strpos($operationQualified['description'], $rule['condition'])) {
                     if (null !== $rule['event_id']) {
                         $operationQualified['evenement'] = $rule['event_id'];
                     }
@@ -72,7 +73,7 @@ class AutoQualifier
                     }
                     if (null !== $rule['vat']) {
                         $tx = ['0' => 0, '5_5' => 0.055, '10' => 0.1, '20' => 0.2];
-                        $operationQualified['montant_ht_soumis_tva_' . $rule['vat']] = round($operationQualified['montant'] / (1+$tx[$rule['vat']]), 2);
+                        $operationQualified['montant_ht_soumis_tva_' . $rule['vat']] = Vat::getRoundedWithoutVatPriceFromPriceWithVat($operationQualified['montant'], $tx[$rule['vat']]);
                     }
                     break;
                 }

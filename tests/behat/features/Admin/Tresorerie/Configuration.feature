@@ -60,7 +60,6 @@ Feature: Administration - Trésorerie - Configuration
     Then the ".content .message" element should contain "L'écriture a été ajoutée"
     And I should see "Un super compte"
 
-
   Scenario: Création/liste des règles
     Given I am logged in as admin and on the Administration
     When I follow "Configuration"
@@ -85,3 +84,12 @@ Feature: Administration - Trésorerie - Configuration
     Then the ".content .message" element should contain "La règle a été ajoutée"
     And I should see "Une nouvelle règle REM INSCRIPTION"
 
+    When I follow the button of tooltip "Modifier la règle Une nouvelle règle"
+    And The "label" field should only contain the follow values "Une nouvelle règle"
+    And The "condition" field should only contain the follow values "REM INSCRIPTION"
+    And The "is_credit" field should has the following selected value "1"
+    And The "mode_regl_id" field should has the following selected value "2"
+    And The "vat" field should has the following selected value "5_5"
+    And The "category_id" field should has the following selected value "26"
+    And The "event_id" field should has the following selected value "27"
+    And The "attachment_required" field should has the following selected value "1"
