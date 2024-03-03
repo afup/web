@@ -448,7 +448,12 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'type' => 'bool',
                 'serializer' => Boolean::class
             ])
-        ;
+            ->addField([
+                'columnName' => 'has_allowed_to_sharing_with_local_offices',
+                'fieldName' => 'hasAllowedToSharingWithLocalOffices',
+                'type' => 'bool',
+                'serializer' => Boolean::class
+            ]);
 
         return $metadata;
     }

@@ -162,6 +162,12 @@ class Talk implements NotifyPropertyInterface
     private $useMarkdown = true;
 
     /**
+     * @var bool|null
+     * @Assert\NotNull()
+     */
+    private $hasAllowedToSharingWithLocalOffices = null;
+
+    /**
      * @return int
      */
     public function getId()
@@ -896,5 +902,21 @@ class Talk implements NotifyPropertyInterface
         }
 
         return $returnedTweets;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getHasAllowedToSharingWithLocalOffices()
+    {
+        return $this->hasAllowedToSharingWithLocalOffices;
+    }
+
+    public function setHasAllowedToSharingWithLocalOffices(bool $hasAllowedToSharingWithLocalOffices): self
+    {
+        $this->propertyChanged('hasAllowedToSharingWithLocalOffices', $this->hasAllowedToSharingWithLocalOffices, $hasAllowedToSharingWithLocalOffices);
+        $this->hasAllowedToSharingWithLocalOffices = $hasAllowedToSharingWithLocalOffices;
+
+        return $this;
     }
 }
