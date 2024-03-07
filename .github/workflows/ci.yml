@@ -63,9 +63,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Parameters file
-        run: make app/config/parameters.yml
-
       - name: Composer install
         run: composer install --no-scripts
 

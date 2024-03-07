@@ -22,7 +22,7 @@ var/logs/.docker-build: compose.yml compose.override.yml $(shell find docker -ty
 	touch var/logs/.docker-build
 
 .env:
-	cp .env-dist .env
+	cp .env.dist .env
 
 compose.override.yml:
 	cp compose.override.yml-dist compose.override.yml
@@ -45,9 +45,6 @@ assets:
 watch:
 	./node_modules/.bin/webpack --progress --colors --watch
 
-app/config/parameters.yml:
-	cp app/config/parameters.yml.dist-docker app/config/parameters.yml
-
 init: htdocs/uploads
 	make config
 	make init-db
@@ -57,7 +54,7 @@ init-db:
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-migrations
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-seed
 
-config: app/config/parameters.yml
+config:
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make vendors
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make assets
 

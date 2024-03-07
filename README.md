@@ -84,7 +84,7 @@ Dans chacun des cas, il est possible de spécifier un test dans la ligne de comm
 # Paiements avec Paybox
 
 Il est possible de tester les paiements Paybox en environnement de développement.
-Pour cela, les identifiant, site et rang [de test](https://www.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier parameters.yml par défaut.
+Pour cela, les identifiant, site et rang [de test](https://www.paybox.com/espace-integrateur-documentation/comptes-de-tests/) sont déjà configurés dans le fichier .env par défaut.
 
 Ensuite pour le paiement il faut utiliser ces informations [de carte](https://www.paybox.com/espace-integrateur-documentation/cartes-de-tests/) (celle _"Carte participant au programme 3-D Secure (enrôlée)"_) : 
 * Numéro de carte : `1111222233334444`
@@ -116,17 +116,11 @@ Valider avec le bouton `Register application`
 
 Récupérer le `Client ID`et le `Client secret`
 
-Mettre ces 2 informations dans le fichier
-```yaml
-# app/config/parameters.yml
-
-parameters:
-
-    # ...
-
-    # GitHub's connection details
-    github_client_id: <Client ID GitHub>
-    github_client_secret: <Client secret GitHub>
+Mettre ces 2 informations dans le fichier .env
+```dotenv
+# .env
+GITHUB_CLIENT_ID=<Client ID GitHub>
+GITHUB_CLIENT_SECRET=<Client secret GitHub>
 ```
 
 ## Connection Google Map Geocoding (pour les exports des Inscriptions)
@@ -140,11 +134,9 @@ Créer un projet avec ces paramètres :
 Puis dans `Identifiants`, `Créer des identifiants`, récupérer la clé
 
 Mettre cette information dans le fichier
-```yaml
-# app/config/parameters.yml
-parameters:
-    # ...
-    google_maps_api_key: <Clé API Google>
+```dotenv
+# .env
+GOOGLE_MAPS_API_KEY=<Clé API Google>
 ```
 
 Puis dans `API et services` activer l'API `Geocoding API`.

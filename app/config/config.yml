@@ -1,5 +1,5 @@
 imports:
-    - { resource: parameters.yml }
+    - { resource: config.php }
     - { resource: security.yml }
     - { resource: services.yml }
 
