@@ -41,13 +41,16 @@ class Configuration
 
     private function loadSymfonyParameters(): array
     {
-        $basePath = __DIR__ . '/../../../app/config';
+        static $parameters = [];
 
-        $parameters = [];
-        $this->mergeSymfonyParametersFromFile($basePath . '/parameters.yml', $parameters);
-        $this->mergeSymfonyParametersFromFile($basePath . '/config.yml', $parameters);
-        if (isset($_ENV['SYMFONY_ENV'])) {
-            $this->mergeSymfonyParametersFromFile($basePath . '/config_' . $_ENV['SYMFONY_ENV'] . '.yml', $parameters);
+        if ([] === $parameters) {
+            $basePath = __DIR__ . '/../../../app/config';
+
+            $this->mergeSymfonyParametersFromFile($basePath . '/parameters.yml', $parameters);
+            $this->mergeSymfonyParametersFromFile($basePath . '/config.yml', $parameters);
+            if (isset($_ENV['SYMFONY_ENV'])) {
+                $this->mergeSymfonyParametersFromFile($basePath . '/config_' . $_ENV['SYMFONY_ENV'] . '.yml', $parameters);
+            }
         }
 
         return $parameters;
