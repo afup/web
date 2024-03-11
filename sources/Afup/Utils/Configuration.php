@@ -11,56 +11,67 @@ define('EURO', '€');
  */
 class Configuration
 {
-    static private $values;
+    /**
+     * Valeurs de configuration
+     */
+    private $_valeurs;
 
+    /**
+     * Charge les valeurs depuis le fichier de configuration
+     */
     public function __construct()
     {
-        if (self::$values) {
-            return;
-        }
-
         $sfParameters = $this->loadSymfonyParameters();
-        $parameters = [
-            'database_host', 'database_name', 'database_user', 'database_password',
-            'smtp_host', 'smtp_port', 'smtp_tls', 'smtp_username', 'smtp_password',
-            'mailer_force_recipients', 'mailer_bcc'
-        ];
+        if ([] !== $sfParameters) {
+            $this->_valeurs['database_host'] = $sfParameters['database_host'] ?? '';
+            $this->_valeurs['database_name'] = $sfParameters['database_name'] ?? '';
+            $this->_valeurs['database_user'] = $sfParameters['database_user'] ?? '';
+            $this->_valeurs['database_password'] = $sfParameters['database_password'] ?? '';
 
-        foreach($parameters as $param) {
+            $this->_valeurs['smtp_host'] = $sfParameters['smtp_host'] ?? '';
+            $this->_valeurs['smtp_port'] = $sfParameters['smtp_port'] ?? '';
+            $this->_valeurs['smtp_tls'] = $sfParameters['smtp_tls'] ?? '';
+            $this->_valeurs['smtp_username'] = $sfParameters['smtp_username'] ?? '';
+            $this->_valeurs['smtp_password'] = $sfParameters['smtp_password'] ?? '';
 
-            // env var exist ?
-            if (false !== $value = getenv(strtoupper($param))) {
-                self::$values[$param] = $value;
-            }
-
-            // override by parameter_ENV.yaml ?
-            if (isset($sfParameters[$param])) {
-                self::$values[$param] = $sfParameters[$param];
-            }
+            $this->_valeurs['mailer_force_recipients'] = $sfParameters['mailer_force_recipients'] ?? '';
+            $this->_valeurs['mailer_bcc'] = $sfParameters['mailer_bcc'] ?? '';
         }
-
     }
 
     private function loadSymfonyParameters(): array
     {
-        $parameters = [];
-        $basePath = __DIR__ . '/../../../app/config';
+        static $parameters = [];
 
-        if (isset($_ENV['SYMFONY_ENV'])) {
-            $file = $basePath . '/config_' . $_ENV['SYMFONY_ENV'] . '.yml';
-            if (is_file($file)) {
-                $values = Yaml::parseFile($file);
-                if (isset($values['parameters'])) {
-                    $parameters = array_merge($parameters, $values['parameters']);
-                }
+        if ([] === $parameters) {
+            $basePath = __DIR__ . '/../../../app/config';
+
+            $this->mergeSymfonyParametersFromFile($basePath . '/parameters.yml', $parameters);
+            $this->mergeSymfonyParametersFromFile($basePath . '/config.yml', $parameters);
+            if (isset($_ENV['SYMFONY_ENV'])) {
+                $this->mergeSymfonyParametersFromFile($basePath . '/config_' . $_ENV['SYMFONY_ENV'] . '.yml', $parameters);
             }
         }
 
         return $parameters;
     }
 
+    private function mergeSymfonyParametersFromFile($file, &$parameters)
+    {
+        if (is_file($file)) {
+            $values = Yaml::parseFile($file);
+            if (isset($values['parameters'])) {
+                $parameters = array_merge($parameters, $values['parameters']);
+            }
+        }
+    }
+
+    /**
+     * Renvoie la valeur correspondant à la clé
+     */
     public function obtenir($cle)
     {
-        return self::$values[$cle];
+        return $this->_valeurs[$cle];
     }
+
 }
