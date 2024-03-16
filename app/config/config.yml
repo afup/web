@@ -248,6 +248,7 @@ parameters:
                         - compta_conf_operation
                         - compta_conf_reglement
                         - compta_conf_compte
+                        - compta_conf_regle
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'

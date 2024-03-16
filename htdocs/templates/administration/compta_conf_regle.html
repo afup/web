@@ -1,0 +1,71 @@
+{if $action == 'lister' }
+    <h2>Configuration des règles</h2>
+
+    {include file="compta_conf_menu.html" page=compta_conf_regle}
+
+    <div class="ui bottom attached segment">
+        <div class="ui menu">
+            <a href="index.php?page=compta_conf_regle&amp;action=ajouter" class="item">
+                <div data-tooltip="Ajouter une règle" data-position="bottom left">
+                    <i class="icon plus square"></i>
+                    Ajouter
+                </div>
+            </a>
+        </div>
+
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th>Règle</th>
+                <th>Condition</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach from=$data item=regle}
+            <tr>
+                <td>{$regle.label}</td>
+                <td>
+                    <code>{$regle.condition}</code>
+                </td>
+                <td style="text-align: right">
+                    <a href="index.php?page=compta_conf_regle&amp;action=modifier&amp;id={$regle.id}"
+                       data-position="left center"
+                       data-tooltip="Modifier la règle {$regle.label}"
+                       class="compact ui icon button"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
+                </td>
+            </tr>
+            {foreachelse}
+            <tr>
+                <td><em>Aucune règle actuellement</em></td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+{else}
+    {if $action == 'ajouter'}
+        <h2>Ajouter une règle</h2>
+    {else}
+        <h2>Modifier une règle</h2>
+    {/if}
+    {include file="formulaire.html"}
+{/if}
+
+{literal}
+<style>
+    code {
+        font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+        background: #EEE;
+        border: 1px solid #999;
+        line-height: 1;
+        word-wrap: break-word;
+        padding: .1rem .2rem;
+        border-radius: .2rem;
+        font-size: 10px;
+    }
+</style>
+{/literal}
