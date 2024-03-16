@@ -47,11 +47,11 @@ $(document).ready(function(){
 
     var manageFieldSet = function (nbInscriptions) {
         for (var i = 1; i < (nbMaxPersonnes - 1); i++) {
-            $('fieldset.tickets--fieldset').hide();
+            $('fieldset.tickets--fieldset').attr('style','display:none !important');
         }
 
         for (var i = 1; i < (nbInscriptions + 1); i++) {
-            $('fieldset.f' + i).show();
+            $('fieldset.f' + i).attr('style','display:block !important');
             $('fieldset.f' + i).find('input[data-required=true]').attr('required', true);
 			if (typeof $('input[name="purchase[tickets][' + i +'][ticketType]"]:checked').val() === "undefined") {
 			    $('fieldset.f' + i).find('ul.tickets--type-list input[type=radio]:not(:disabled):first').attr('checked', true);
