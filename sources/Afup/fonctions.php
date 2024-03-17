@@ -21,7 +21,7 @@ function afficherMessage($message, $url, $erreur = false) {
  *
  * @param   string  $url        URL pour l'attribut "action" du formulaire
  * @param   string  $nom        Nom du formulaire
- * @return  HTML_QuickForm
+ * @return  \AppBundle\Association\Form\HTML_QuickForm
  */
 function instancierFormulaire($url = null, $nom = 'formulaire') {
     if (is_null($url)) {
@@ -35,10 +35,10 @@ function instancierFormulaire($url = null, $nom = 'formulaire') {
 /**
  * Renvoit un tableau contenant les éléments d'un formulaire
  *
- * @param   HTML_QuickForm  $formulaire     Formulaire à traiter
+ * @param   \AppBundle\Association\Form\HTML_QuickForm  $formulaire     Formulaire à traiter
  * @return  array
  */
-function genererFormulaire(HTML_QuickForm &$formulaire) {
+function genererFormulaire(\AppBundle\Association\Form\HTML_QuickForm &$formulaire) {
     foreach ($formulaire->getElements() as $el) {
         $attrs = $el->getAttributes();
         if ($el instanceof HTML_QuickForm_submit) {
