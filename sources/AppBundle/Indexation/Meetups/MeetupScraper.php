@@ -37,6 +37,10 @@ class MeetupScraper
                     $events = $xpath->query("//*[contains(@id, 'event-card')]");
                     foreach ($events as $event) {
                         try {
+                            if (!$event instanceof \DOMElement) {
+                                throw new \Exception('Élement DOM de type invalide');
+                            }
+
                             $eventUrl = $event->getAttribute('href');
                             if (preg_match('/\/(\d+)\/$/', $eventUrl, $matches)) {
                                 $id = (int) $matches[1];
