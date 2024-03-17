@@ -15,21 +15,9 @@ class Utils
     const TICKETING_VAT_RATE = 0.1;
     const MEMBERSHIP_FEE_VAT_RATE = 0.2;
 
-    /**
-     * Recupere un objet de type Afup\Site\Droits
-     *
-     * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
-     * @return object    Afup\Site\Droits
-     */
-    public static function fabriqueDroits($bdd, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
+    public static function fabriqueDroits(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker): Droits
     {
-        // Gestion de l'authentification spécifique au Wiki
-        $authentificationWiki = new AuthentificationWiki();
-
-        $droits = new Droits($bdd, $tokenStorage, $authorizationChecker);
-
-        return $droits;
+        return new Droits($tokenStorage, $authorizationChecker);
     }
 
     /**

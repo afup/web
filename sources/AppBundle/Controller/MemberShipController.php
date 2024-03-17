@@ -342,7 +342,7 @@ class MemberShipController extends SiteBaseController
 
     private function getDroits()
     {
-        return Utils::fabriqueDroits($GLOBALS['AFUP_DB'], $this->get('security.token_storage'), $this->get('security.authorization_checker'));
+        return Utils::fabriqueDroits($this->get('security.token_storage'), $this->get('security.authorization_checker'));
     }
 
     public function membershipFeeAction()
