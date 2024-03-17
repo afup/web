@@ -35,7 +35,7 @@ if ($action === 'lister') {
     $formulaire->addElement('text', 'condition', 'Condition', array('size' => 30, 'maxlength' => 255));
     $formulaire->addElement('select', 'is_credit', 'Crédit/débit ?', array(null => 'Les deux', '1' => 'Crédit', '0' => 'Débit'));
     $formulaire->addElement('select', 'mode_regl_id', 'Mode de règlement', array_merge([null => 'N.C.'], ComptaModeReglement::list()));
-    $formulaire->addElement('select', 'vat', 'Taux de TVA', array('0' => 'N.C.', '5_5' => '5.5%', '10' => '10%', '20' => '20%'));
+    $formulaire->addElement('select', 'vat', 'Taux de TVA', array(null => 'N.C.', '0' => '0%', '5_5' => '5.5%', '10' => '10%', '20' => '20%'));
     $formulaire->addElement('select', 'category_id', 'Catégorie', $compta->obtenirListCategories());
     $formulaire->addElement('select', 'event_id', 'Évènement', $compta->obtenirListEvenements());
     $formulaire->addElement('select', 'attachment_required', 'Justificatif obligatoire ?', array(null => 'N.C.', '1' => 'Oui', '0' => 'Non'));
