@@ -5,17 +5,17 @@ namespace AppBundle\Github;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Github\Exception\UnableToFindGithubUserException;
 use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
 class GithubClient
 {
     /**
-     * @var ClientInterface
+     * @var Client
      */
     private $githubClient;
 
-    public function __construct(ClientInterface $githubClient)
+    public function __construct(Client $githubClient)
     {
         $this->githubClient = $githubClient;
     }
