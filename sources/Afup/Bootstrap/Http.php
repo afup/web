@@ -31,7 +31,7 @@ if (ob_get_level() === 0) {
 
 // mise à jour des paramétrages PHP en fonction de la configuration
 
-if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'prod') {
+if (getenv('SYMFONY_ENV') === 'prod') {
     ini_set('error_reporting', E_ALL ^ E_WARNING ^ E_NOTICE);
     ini_set('display_errors', 0);
 } else {
