@@ -23,6 +23,14 @@ class FeedArticleRepository
         $this->pertinenceRegex = '/'.self::PERTINENCE_LIST.'/i';
     }
 
+    public function count(): int
+    {
+        $query = $this->connection->prepare('SELECT COUNT(b.id) FROM afup_planete_billet b');
+        $query->execute();
+
+        return intval($query->fetchColumn());
+    }
+
     /**
      * @param string $sort
      * @param string $direction
