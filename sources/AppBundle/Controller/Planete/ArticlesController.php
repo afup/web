@@ -21,13 +21,15 @@ final class ArticlesController
 
     public function __invoke(Request $request): Response
     {
+        $perPage = 20;
         $page = (int) $request->query->get("page", 1);
 
         if ($page < 1) {
             $page = 1;
         }
 
-        $articles = $this->feedArticleRepository->findLatest($page - 1, DATE_RSS, 20);
+        $totalCount = $this->feedArticleRepository->count();
+        $articles = $this->feedArticleRepository->findLatest($page - 1, DATE_RSS, $perPage);
 
         $data = [];
 
@@ -38,9 +40,21 @@ final class ArticlesController
                 'date' => $article->getUpdate(),
                 'author' => $article->getAuthor(),
                 'content' => $article->getContent(),
+                'feed' => [
+                    'name' => $article->getFeedName(),
+                    'url' => $article->getFeedUrl(),
+                ],
             ];
         }
 
-        return new Response(json_encode($data), 200, ['Content-Type' => 'application/json']);
+        return new Response(
+            json_encode($data),
+            200,
+            [
+                'Content-Type' => 'application/json',
+                'X-Pagination-Total' => $totalCount,
+                'X-Pagination-Per-Page' => $perPage,
+            ]
+        );
     }
 }
