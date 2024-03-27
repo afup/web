@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f62fc5ab3bb05e512af3577ad7f6f11f",
+    "content-hash": "ceedc373b1defc24da357bc6aacb84b0",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -5866,32 +5866,35 @@
     "packages-dev": [
         {
             "name": "atoum/atoum",
-            "version": "2.9.1",
+            "version": "3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "b02598b4aa2f915d792c7a49589766fca04a4870"
+                "reference": "e90606b89e62c5c18c5d02596078edf55f35b3c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/b02598b4aa2f915d792c7a49589766fca04a4870",
-                "reference": "b02598b4aa2f915d792c7a49589766fca04a4870",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/e90606b89e62c5c18c5d02596078edf55f35b3c3",
+                "reference": "e90606b89e62c5c18c5d02596078edf55f35b3c3",
                 "shasum": ""
             },
             "require": {
                 "ext-hash": "*",
                 "ext-json": "*",
-                "ext-session": "*",
                 "ext-tokenizer": "*",
                 "ext-xml": "*",
-                "php": ">=5.3.3"
+                "php": "^5.6.0 || ^7.0.0 <7.5.0"
             },
             "replace": {
                 "mageekguy/atoum": "*"
             },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2"
+            },
             "suggest": {
                 "atoum/stubs": "Provides IDE support (like autocompletion) for atoum",
-                "ext-mbstring": "Provides support for UTF-8 strings"
+                "ext-mbstring": "Provides support for UTF-8 strings",
+                "ext-xdebug": "Provides code coverage report (>= 2.3)"
             },
             "bin": [
                 "bin/atoum"
@@ -5899,7 +5902,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -5944,9 +5947,9 @@
             ],
             "support": {
                 "issues": "https://github.com/atoum/atoum/issues",
-                "source": "https://github.com/atoum/atoum/tree/2.9.1"
+                "source": "https://github.com/atoum/atoum/tree/3.4.2"
             },
-            "time": "2017-07-19T21:06:17+00:00"
+            "time": "2020-03-04T10:29:09+00:00"
         },
         {
             "name": "atoum/stubs",
