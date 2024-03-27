@@ -97,6 +97,10 @@ admin_members_general_vote_close:
   path: /members/general_meeting_vote/close
   defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeetingVote\CloseAction}
 
+admin_members_general_meeting_reports:
+  path: /members/general_meeting/reports
+  defaults: {_controller: AppBundle\Controller\Admin\Members\GeneralMeeting\ReportsAction}
+
 admin_techletter:
   resource: "techletter_admin.yml"
   prefix: /techletter

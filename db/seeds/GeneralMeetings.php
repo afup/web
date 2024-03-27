@@ -6,6 +6,15 @@ class GeneralMeetings extends AbstractSeed
 {
     public function run()
     {
+        $dir = 'htdocs/uploads/general_meetings_reports/';
+        if (!is_dir($dir)) {
+            if (!mkdir($dir) && !is_dir($dir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+            }
+        }
+        copy('tests/behat/files/test_file1.pdf', $dir.'2014-02-15_CR AG AFUP 2013-2014.pdf');
+        copy('tests/behat/files/test_file2.pdf', $dir.'2013-01-30_CR AG AFUP 2012-2013.pdf');
+
         $timestamp = strtotime(date("Y-m-d") . "+2 months");
 
         // Assemblées générales
