@@ -180,10 +180,14 @@ class Feuilles extends AbstractSeed
 
         $preparedFeuiles = [];
         foreach ($items as $item) {
+            $lien = null;
+            if (isset($item['lien'])) {
+                $lien = $item['lien'];
+            }
             $preparedFeuiles[$currentId] = [
                 'id' => ($currentId = ++$baseId),
                 'nom' => $item['nom'],
-                'lien' => $item['lien'],
+                'lien' => $lien,
                 'id_parent' => $parentId,
                 'etat' => 1,
             ];

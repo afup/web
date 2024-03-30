@@ -40,7 +40,7 @@ class Event extends AbstractSeed
                 'date_fin_saisie_nuites_hotel' => $event - $oneDayInSeconds * 7,
                 'place_name' => 'Paris',
                 'place_address' => 'Marriott Rive Gauche',
-                'date_annonce_planning' => date('Y-m-d', $event),
+                'date_annonce_planning' => date('U', $event),
                 'transport_information_enabled' => 1,
                 'has_prices_defined_with_vat' => 1,
             ],
