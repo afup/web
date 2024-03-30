@@ -15,7 +15,8 @@ class _Site_Base_De_Donnees extends Base_De_Donnees
         parent::__construct($conf->obtenir('database_host'),
             $conf->obtenir('database_name'),
             $conf->obtenir('database_user'),
-            $conf->obtenir('database_password'));
-
+            $conf->obtenir('database_password'),
+            $conf->obtenir('database_port')
+        );
     }
 }
