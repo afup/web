@@ -26,20 +26,21 @@ class Base_De_Donnees
      * @access public
      * @return void
      */
-    public function __construct($host, $database, $user, $password)
+    public function __construct($host, $database, $user, $password, $port = null)
     {
         $this->config = [
             'host' => $host,
             'database' => $database,
             'user' => $user,
-            'password' => $password
+            'password' => $password,
+            'port' => $port,
         ];
     }
 
     function getDbLink()
     {
         if ($this->link === null) {
-            $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['password']) or die('Connexion à la base de données impossible');
+            $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['password'], null, $this->config['port']) or die('Connexion à la base de données impossible');
             mysqli_set_charset($this->link, "utf8mb4");
             $this->selectionnerBase($this->config['database']);
         }
