@@ -72,7 +72,9 @@ class Users extends AbstractSeed
                 'niveau' => 2, // AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
                 'prenom' => 'Admin',
                 'email' => 'admin@admin.fr',
-                'niveau_modules' => '00000'
+                'niveau_modules' => '00000',
+                'roles' => '',
+                'adresse' => '',
             ],
             // utilisateur ayant expiré, avec une date de cotisation fixe, utile pour les tests
             [
@@ -84,6 +86,8 @@ class Users extends AbstractSeed
                 'prenom' => 'Jean',
                 'email' => 'userexpire@yahoo.fr',
                 'niveau_modules' => '00000',
+                'roles' => '',
+                'adresse' => '',
             ],
             // utilisateurs avec des cotisations à dates fixes pour les tests
             [
@@ -97,7 +101,9 @@ class Users extends AbstractSeed
                 'niveau_modules' => '00000',
                 'adresse' => '15, main road',
                 'code_postal' => '93501-1100',
-                'ville' => 'Mojave, CA'
+                'ville' => 'Mojave, CA',
+                'roles' => '',
+                'adresse' => '',
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS,
@@ -110,6 +116,8 @@ class Users extends AbstractSeed
                 'roles' => '["ROLE_COMPANY_MANAGER"]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'niveau_modules' => '00000',
+                'roles' => '',
+                'adresse' => '',
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_MORALE,
@@ -122,6 +130,8 @@ class Users extends AbstractSeed
                 'roles' => '["ROLE_COMPANY_MANAGER"]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'niveau_modules' => '00000',
+                'roles' => '',
+                'adresse' => '',
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_MORALE_NON_MANAGER,
@@ -134,7 +144,9 @@ class Users extends AbstractSeed
                 'roles' => '[]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'niveau_modules' => '00000',
-                'etat' => 1
+                'etat' => 1,
+                'roles' => '',
+                'adresse' => '',
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_PHYSIQUE,
@@ -147,6 +159,7 @@ class Users extends AbstractSeed
                 'roles' => '[]',
                 'etat' => User::STATUS_ACTIVE,
                 'niveau_modules' => '00000',
+                'adresse' => '',
             ],
         ];
 

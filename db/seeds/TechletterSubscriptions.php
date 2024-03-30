@@ -6,7 +6,7 @@ class TechletterSubscriptions extends AbstractSeed
 {
     public function run()
     {
-        $subscriptionDate = (new DateTime())->format(DateTime::ATOM);
+        $subscriptionDate = (new DateTime())->format('Y-m-d H:i:s');
         $data = [
             [
                 'user_id' => Users::ID_USER_ADMIN,

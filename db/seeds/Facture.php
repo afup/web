@@ -24,7 +24,12 @@ class Facture extends AbstractSeed
                 'prenom' => 'Yan',
                 'etat_paiement' => 1,
                 'devise_facture' => 'EUR',
-                'ref_clt1' => 'Forum PHP 2023'
+                'ref_clt1' => 'Forum PHP 2023',
+                'service' => '',
+                'observation' => '',
+                'ref_clt2' => '',
+                'ref_clt3' => '',
+                'tel' => '',
             ],
             [
                 'id'    => '2',
@@ -43,7 +48,13 @@ class Facture extends AbstractSeed
                 'prenom' => 'Yan',
                 'etat_paiement' => 1,
                 'devise_facture' => 'EUR',
-                'ref_clt1' => 'Forum PHP 2024'
+                'ref_clt1' => 'Forum PHP 2024',
+                'service' => '',
+                'observation' => '',
+                'ref_clt2' => '',
+                'ref_clt3' => '',
+                'tel' => '',
+
             ],
         ];
 
