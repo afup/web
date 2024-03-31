@@ -623,7 +623,7 @@ CODE_HTML;
         $requete .= (int)$date_debut['Y'] . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
-        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vote, true) . ',';
+        $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vote, false) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_prevente, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vente_token_sponsor, true) . ',';
