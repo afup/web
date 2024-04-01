@@ -17,6 +17,12 @@ use AppBundle\Model\ComptaModeReglement;
 
 class Comptabilite
 {
+    const TVA_ZONES = [
+        'france' => 'France',
+        'ue' => 'Union Européenne hors France',
+        'hors_ue' => 'Hors Union Européenne',
+    ];
+
     /**
      * @var Base_De_Donnees
      */
@@ -1186,6 +1192,15 @@ SQL;
         $requete .= 'id = ' . intval($id) . ' ';
 
         return $this->_bdd->executer($requete);
+    }
+
+    public static function getTvaZoneLabel($tvaZoneCode, $defaultValue = null)
+    {
+        if (!isset(self::TVA_ZONES[$tvaZoneCode])) {
+            return $defaultValue;
+        }
+
+        return self::TVA_ZONES[$tvaZoneCode];
     }
 }
 

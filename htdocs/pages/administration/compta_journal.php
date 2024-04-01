@@ -163,7 +163,7 @@ elseif ($action == 'credit') {
     $formulaire->addElement('text', 'montant_ht_soumis_tva_0', 'Montant HT non soumis à TVA' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_0'));
     $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-0">Calculer le montant non soumis à TVA sur la base de l\'intégralité du montant TTC</a><br /><br />');
 
-    $formulaire->addElement('select'  , 'tva_zone', 'Zone TVA', ['' => 'Non définie', 'france' => 'France', 'ue' => 'Union Européenne hors France', 'hors_ue' => 'Hors Union Européenne']);
+    $formulaire->addElement('select'  , 'tva_zone', 'Zone TVA', array_merge(['' => 'Non définie'], Comptabilite::TVA_ZONES));
 
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
@@ -365,7 +365,7 @@ elseif ($action === 'export') {
                 $line['montant_tva_10'],
                 $line['montant_ht_20'],
                 $line['montant_tva_20'],
-                $line['tva_zone']
+                Comptabilite::getTvaZoneLabel($line['tva_zone'], 'Non définie')
             ],
             $csvDelimiter,
             $csvEnclosure
