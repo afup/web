@@ -493,14 +493,14 @@ class Comptabilite
 
     function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
                      $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $numero_operation = null,
-                     $attachmentRequired = 0, $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null)
+                     $attachmentRequired = 0, $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null, $tvaZone = null)
     {
 
         $requete = 'INSERT INTO ';
         $requete .= 'compta (';
         $requete .= 'idoperation,idcategorie,date_ecriture,nom_frs,tva_intra,montant,description,';
         $requete .= 'numero,idmode_regl,date_regl,obs_regl,idevenement, numero_operation,idcompte, attachment_required,
-        montant_ht_soumis_tva_0, montant_ht_soumis_tva_5_5, montant_ht_soumis_tva_10, montant_ht_soumis_tva_20
+        montant_ht_soumis_tva_0, montant_ht_soumis_tva_5_5, montant_ht_soumis_tva_10, montant_ht_soumis_tva_20, tva_zone
         ) ';
         $requete .= 'VALUES (';
         $requete .= $this->_bdd->echapper($idoperation) . ',';
@@ -521,7 +521,8 @@ class Comptabilite
         $requete .= (!$montantHtSoumisTva0 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva0)) . ',';
         $requete .= (!$montantHtSoumisTva55 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva55)) . ',';
         $requete .= (!$montantHtSoumisTva10 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva10)) . ',';
-        $requete .= (!$montantHtSoumisTva20 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva20)) . '';
+        $requete .= (!$montantHtSoumisTva20 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva20)) . ',';
+        $requete .= (!$tvaZone ? 'NULL' : $this->_bdd->echapper($tvaZone)) . '';
         $requete .= ');';
 
         $resultat = $this->_bdd->executer($requete);
@@ -533,7 +534,8 @@ class Comptabilite
 
     function modifier($id, $idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
                       $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $comment, $numero_operation = null, $attachmentRequired = 0,
-                      $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null
+                      $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null,
+                      $tvaZone = null
     )
     {
 
@@ -556,6 +558,7 @@ class Comptabilite
         $requete .= 'montant_ht_soumis_tva_5_5=' . (!$montantHtSoumisTva55 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva55)) . ',';
         $requete .= 'montant_ht_soumis_tva_10=' . (!$montantHtSoumisTva10 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva10)) . ',';
         $requete .= 'montant_ht_soumis_tva_20=' . (!$montantHtSoumisTva20 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva20)) . ',';
+        $requete .= 'tva_zone=' . (!$tvaZone ? 'NULL' : $this->_bdd->echapper($tvaZone)) . ',';
         $requete .= 'comment=' . (!$comment ? 'NULL' : $this->_bdd->echapper($comment)) . ',';
         if ($numero_operation) {
             $requete .= 'numero_operation=' . $this->_bdd->echapper($numero_operation) . ',';
