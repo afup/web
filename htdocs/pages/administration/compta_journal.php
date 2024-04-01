@@ -331,7 +331,8 @@ elseif ($action === 'export') {
         'Montant HT soumis à TVA 10',
         'TVA 10',
         'Montant HT soumis à TVA 20',
-        'TVA 20'
+        'TVA 20',
+        "Zone de TVA",
     ];
     fputcsv($fp, $columns, $csvDelimiter, $csvEnclosure);
 
@@ -363,7 +364,8 @@ elseif ($action === 'export') {
                 $line['montant_ht_10'],
                 $line['montant_tva_10'],
                 $line['montant_ht_20'],
-                $line['montant_tva_20']
+                $line['montant_tva_20'],
+                $line['tva_zone']
             ],
             $csvDelimiter,
             $csvEnclosure

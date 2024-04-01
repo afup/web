@@ -181,7 +181,8 @@ class Comptabilite
         $requete .= 'compta.montant_ht_soumis_tva_10 as montant_ht_10,   ';
         $requete .= 'compta.montant_ht_soumis_tva_10*0.1 as montant_tva_10,   ';
         $requete .= 'compta.montant_ht_soumis_tva_20 as montant_ht_20,   ';
-        $requete .= 'compta.montant_ht_soumis_tva_20*0.2 as montant_tva_20   ';
+        $requete .= 'compta.montant_ht_soumis_tva_20*0.2 as montant_tva_20,   ';
+        $requete .= 'compta.tva_zone   ';
         $requete .= 'FROM ';
         $requete .= 'compta ';
         $requete .= 'LEFT JOIN ';
