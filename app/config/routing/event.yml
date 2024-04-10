@@ -102,15 +102,15 @@ sponsor_leads_post:
 
 sponsor_scan:
   path: /{eventSlug}/sponsor/scan
-  defaults: {_controller: AppBundle:Sponsor:scan}
+  defaults: {_controller: AppBundle:SponsorScan:index}
 
 sponsor_scan_new:
   path: /{eventSlug}/sponsor/scan/new
-  defaults: {_controller: AppBundle:Sponsor:newScan}
+  defaults: {_controller: AppBundle:SponsorScan:new}
 
 sponsor_scan_flash:
   path: /{eventSlug}/sponsor/scan/flash/{code}
-  defaults: {_controller: AppBundle:Sponsor:flash}
+  defaults: {_controller: AppBundle:SponsorScan:flash}
 
 speaker-infos:
   path: /{eventSlug}/speaker-infos

@@ -22,6 +22,7 @@ class SponsorScanRepository extends Repository implements MetadataInitializer
                 FROM afup_forum_sponsor_scan
                     INNER JOIN afup_inscription_forum ON afup_inscription_forum.id = afup_forum_sponsor_scan.ticket_id
                         AND afup_forum_sponsor_scan.sponsor_ticket_id = :sponsorTicketId
+                        AND afup_forum_sponsor_scan.deleted_on IS NULL
                 ORDER BY afup_forum_sponsor_scan.created_on DESC';
 
         return $this->getPreparedQuery($sql)
@@ -62,6 +63,11 @@ class SponsorScanRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'created_on',
                 'fieldName' => 'createdOn',
+                'type' => 'datetime'
+            ])
+            ->addField([
+                'columnName' => 'deleted_on',
+                'fieldName' => 'deletedOn',
                 'type' => 'datetime'
             ])
         ;

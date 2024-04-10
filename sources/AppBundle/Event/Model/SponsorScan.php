@@ -31,6 +31,11 @@ class SponsorScan implements NotifyPropertyInterface
     private $createdOn;
 
     /**
+     * @var \DateTime|null
+     */
+    private $deletedOn;
+
+    /**
      * @return int
      */
     public function getId()
@@ -80,10 +85,29 @@ class SponsorScan implements NotifyPropertyInterface
      * @param \DateTime $createdOn
      * @return $this
      */
-    public function setCreatedOn(\DateTime $createdOn)
+    public function setCreatedOn($createdOn)
     {
         $this->propertyChanged('createdOn', $this->createdOn, $createdOn);
         $this->createdOn = $createdOn;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getDeletedOn()
+    {
+        return $this->deletedOn;
+    }
+
+    /**
+     * @param \DateTime|null $deletedOn
+     * @return $this
+     */
+    public function setDeletedOn($deletedOn)
+    {
+        $this->propertyChanged('deletedOn', $this->deletedOn, $deletedOn);
+        $this->deletedOn = $deletedOn;
         return $this;
     }
 
