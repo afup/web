@@ -13,9 +13,9 @@ use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\HttpFoundation\Request;
 
-class SponsorController extends EventBaseController
+class SponsorScanController extends EventBaseController
 {
-    public function scanAction(Request $request, $eventSlug)
+    public function indexAction(Request $request, $eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
 
@@ -37,7 +37,7 @@ class SponsorController extends EventBaseController
         ]);
     }
 
-    public function newScanAction(Request $request, $eventSlug)
+    public function newAction(Request $request, $eventSlug)
     {
         $event = $this->checkEventSlug($eventSlug);
 
@@ -120,6 +120,10 @@ class SponsorController extends EventBaseController
         $sponsorTicket = $this->get('ting')->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
             throw new \Exception('Token invalide.');
+        }
+
+        if (!$sponsorTicket->getQrCodesScanner()) {
+            throw new \Exception('Accès non autorisé.');
         }
 
         return $sponsorTicket;
