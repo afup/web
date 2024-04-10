@@ -69,6 +69,11 @@ class SponsorTicket implements NotifyPropertyInterface
     private $creatorId;
 
     /**
+     * @var bool
+     */
+    private $qrCodesScanner = false;
+
+    /**
      * @return int
      */
     public function getId()
@@ -264,5 +269,24 @@ class SponsorTicket implements NotifyPropertyInterface
     public function getPendingInvitations()
     {
         return $this->maxInvitations - $this->usedInvitations;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getQrCodesScanner()
+    {
+        return $this->qrCodesScanner;
+    }
+
+    /**
+     * @param bool $qrCodesScanner
+     * @return SponsorTicket
+     */
+    public function setQrCodesScanner($qrCodesScanner)
+    {
+        $this->propertyChanged('qrCodesScanner', $this->qrCodesScanner, $qrCodesScanner);
+        $this->qrCodesScanner = $qrCodesScanner;
+        return $this;
     }
 }
