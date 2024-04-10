@@ -2,6 +2,11 @@
 
 {% block title %}{{ 'Espace sponsor'|trans }} - Afup{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/sponsor_scan.css') }}">
+{% endblock %}
+
 {% if menu is not defined %}
     {% set menu = {'main': {'route' : 'sponsor_ticket_form', 'title': 'Billetterie sponsors'}} %}
 {% endif %}

@@ -208,3 +208,4 @@ venue_speaker.expenses.intro: |
   Le package speaker prend en charge le remboursement des frais de transport, sur base d'un trajet en 2nde classe ou classe économique.<br />
   Envoyez-nous vos justificatifs (par exemple, une facture de billet de train ou une copie du billet), ainsi que votre RIB/IBAN.<br />
   Utilisez le formulaire ci-dessous pour nous envoyer ces informations (au format PDF). Vous pouvez nous envoyer plusieurs fichiers.
+sponsor.qr_code_scanner.disclaimer: Merci de valider avec le ou la participante qu'il ou elle accepte que vous scanniez son badge !
