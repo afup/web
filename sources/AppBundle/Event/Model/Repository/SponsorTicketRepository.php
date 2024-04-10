@@ -4,6 +4,7 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\SponsorTicket;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -84,6 +85,12 @@ class SponsorTicketRepository extends Repository implements MetadataInitializer
                 'columnName' => 'creator_id',
                 'fieldName' => 'creatorId',
                 'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'qr_codes_scanner',
+                'fieldName' => 'qrCodesScanner',
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
         ;
 

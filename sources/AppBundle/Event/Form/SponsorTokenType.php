@@ -4,6 +4,7 @@ namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\SponsorTicket;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,6 +25,10 @@ class SponsorTokenType extends AbstractType
             ->add('token', TextType::class)
             ->add('maxInvitations', IntegerType::class, [
                 'label' => 'Nombre d\'invitations'
+            ])
+            ->add('qrCodesScanner', CheckboxType::class, [
+                'label' => 'Autoriser le scan de QR Codes',
+                'required' => false
             ])
         ;
     }
