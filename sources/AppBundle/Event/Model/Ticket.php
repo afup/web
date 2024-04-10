@@ -263,6 +263,11 @@ class Ticket implements NotifyPropertyInterface
     protected $transportDistance;
 
     /**
+     * @var null|string
+     */
+    protected $qrCode;
+
+    /**
      * @return int
      */
     public function getId()
@@ -821,6 +826,26 @@ class Ticket implements NotifyPropertyInterface
         $this->propertyChanged('transportDistance', $this->transportDistance, $transportDistance);
 
         $this->transportDistance = $transportDistance;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getQrCode()
+    {
+        return $this->qrCode;
+    }
+
+    /**
+     * @param null|string $qrCode
+     * @return $this
+     */
+    public function setQrCode($qrCode)
+    {
+        $this->propertyChanged('qrCode', $this->qrCode, $qrCode);
+        $this->qrCode = $qrCode;
 
         return $this;
     }

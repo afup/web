@@ -356,6 +356,11 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'transportDistance',
                 'type' => 'int'
             ])
+            ->addField([
+                'columnName' => 'qr_code',
+                'fieldName' => 'qrCode',
+                'type' => 'string',
+            ])
         ;
 
         return $metadata;

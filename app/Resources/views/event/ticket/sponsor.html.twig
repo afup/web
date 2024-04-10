@@ -10,6 +10,13 @@
         <div class="col-md-6">
             <h1>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h1>
 
+            {% if sponsorTicket.canScanQrCodes|default %}
+                <h2 class="h3-like">{% trans %}SCANNEUR DE QR CODES{% endtrans %}</h2>
+                <a class="button button__medium" href="{{ url('sponsor_scan', {eventSlug: event.path}) }}">
+                    {% trans %}Lancer l'outil de scan de QR Codes{% endtrans %}
+                </a>
+            {% endif %}
+
             <h2 class="h3-like">{% trans %}VOS PLACES GRATUITES{% endtrans %}</h2>
 
             {% if sold_out %}
