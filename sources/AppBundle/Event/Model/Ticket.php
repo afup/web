@@ -230,6 +230,11 @@ class Ticket implements NotifyPropertyInterface
     protected $nearestOffice;
 
     /**
+     * @var null|string
+     */
+    protected $qrCode;
+
+    /**
      * @return int
      */
     public function getId()
@@ -744,6 +749,26 @@ class Ticket implements NotifyPropertyInterface
         $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
 
         $this->nearestOffice = $nearestOffice;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getQrCode()
+    {
+        return $this->qrCode;
+    }
+
+    /**
+     * @param null|string $qrCode
+     * @return $this
+     */
+    public function setQrCode($qrCode)
+    {
+        $this->propertyChanged('qrCode', $this->qrCode, $qrCode);
+        $this->qrCode = $qrCode;
 
         return $this;
     }

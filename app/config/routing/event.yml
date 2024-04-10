@@ -100,6 +100,18 @@ sponsor_leads_post:
   path: /{eventSlug}/sponsor/thank-you
   defaults: {_controller: AppBundle:Lead:postLead}
 
+sponsor_scan:
+  path: /{eventSlug}/sponsor/scan
+  defaults: {_controller: AppBundle:Sponsor:scan}
+
+sponsor_scan_new:
+  path: /{eventSlug}/sponsor/scan/new
+  defaults: {_controller: AppBundle:Sponsor:newScan}
+
+sponsor_scan_flash:
+  path: /{eventSlug}/sponsor/scan/flash/{code}
+  defaults: {_controller: AppBundle:Sponsor:flash}
+
 speaker-infos:
   path: /{eventSlug}/speaker-infos
   defaults: {_controller: AppBundle\Controller\Event\SpeakerPageAction }
