@@ -1,0 +1,22 @@
+#bad-code, #success-code {
+    position: absolute;
+    margin: 10px;
+    z-index: 9999;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    display: none;
+}
+
+#success-code {
+    background: lightseagreen;
+    color: white;
+}
+#bad-code {
+    background: red;
+    color: white;
+}
+#cam-qr-result, #flash-url {
+    display: none;
+}

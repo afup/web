@@ -1,9 +1,30 @@
 {% extends ':event/sponsor:base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/qr_scanner.css') }}">
+{% endblock %}
+
 {% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <span id="success-code">Code valide ! Patientez...</span>
+            <span id="bad-code">QR Code incorrect !</span>
+            <span id="cam-qr-result">None</span>
+            <span id="flash-url">{{ path('sponsor_scan_flash', {eventSlug: event.path, code: '---code---'}) }}</span>
+
+            <video id="qr-video" style="width: 100%"></video>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-6">
             {{ form(form) }}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module" src="{{ asset('/js/qr-scanner/scanner.js') }}"></script>
 {% endblock %}
