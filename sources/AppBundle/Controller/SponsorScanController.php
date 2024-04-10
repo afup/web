@@ -11,7 +11,9 @@ use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorScan;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class SponsorScanController extends EventBaseController
 {
@@ -109,6 +111,40 @@ class SponsorScanController extends EventBaseController
         $this->addFlash('success', 'QR Code ajouté !');
 
         return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
+    }
+
+    public function exportAction(Request $request, $eventSlug)
+    {
+        $event = $this->checkEventSlug($eventSlug);
+        try {
+            $sponsorTicket = $this->checkSponsorTicket($request);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+            return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
+        }
+
+        $baseName = sprintf('afup_export_qr_codes_%s_%s', $eventSlug, $event->getDateStart()->format('Y'));
+        $tmpFile = tempnam(sys_get_temp_dir(), $baseName);
+        $file = new \SplFileObject($tmpFile, 'w');
+
+        $scanRepository = $this->get('ting')->get(SponsorScanRepository::class);
+        $scans = $scanRepository->getBySponsorTicket($sponsorTicket);
+
+        $file->fputcsv(['Nom', 'Prénom', 'Email', 'Date']);
+
+        foreach ($scans as $scan) {
+            $file->fputcsv([
+                $scan['nom'],
+                $scan['prenom'],
+                $scan['email'],
+                $scan['created_on'],
+            ]);
+        }
+
+        $response = new BinaryFileResponse($file);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $baseName . '.csv');
+
+        return $response;
     }
 
     private function checkSponsorTicket(Request $request)

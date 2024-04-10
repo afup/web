@@ -8,7 +8,7 @@
             <a class="button sponsor_scan" href="{{ url('sponsor_scan_new', {eventSlug: event.path}) }}">{% trans %}Scanner un QR Code{% endtrans %}</a>
 
             <h2 class="h3-like">{% trans %}QR CODES SCANNÉS{% endtrans %}</h2>
-            <a class="button button__medium" href="#">{% trans %}Télécharger en CSV{% endtrans %}</a>
+            <a class="button button__medium" href="{{ path('sponsor_scan_export', {eventSlug: event.path}) }}">{% trans %}Télécharger en CSV{% endtrans %}</a>
 
             <dl>
                 {% for scan in scans %}
