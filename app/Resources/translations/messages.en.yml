@@ -182,3 +182,4 @@ speaker_from_previous_event: "We filled the form with the profile you used on a 
 "Télécharger en CSV": "Download CSV"
 "Supprimer": "Delete"
 "Lancer l'outil de scan de QR Codes": "Run QR Code Scanner"
+"Confirmez-vous la suppression du QR Code de #prenom# #nom# ?": "Can you confirm that you want to remove the QR Code of #prenom# #nom#?"
