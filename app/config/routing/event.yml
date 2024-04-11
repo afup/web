@@ -116,6 +116,10 @@ sponsor_scan_flash:
   path: /{eventSlug}/sponsor/scan/flash/{code}
   defaults: {_controller: AppBundle:SponsorScan:flash}
 
+sponsor_scan_delete:
+  path: /{eventSlug}/sponsor/scan/delete/{scanId}
+  defaults: {_controller: AppBundle:SponsorScan:delete}
+
 speaker-infos:
   path: /{eventSlug}/speaker-infos
   defaults: {_controller: AppBundle\Controller\Event\SpeakerPageAction }
