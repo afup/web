@@ -117,6 +117,7 @@ elseif ($action == 'credit') {
         $champs['montant_ht_soumis_tva_5_5'] = $champsRecup['montant_ht_soumis_tva_5_5'];
         $champs['montant_ht_soumis_tva_10'] = $champsRecup['montant_ht_soumis_tva_10'];
         $champs['montant_ht_soumis_tva_20'] = $champsRecup['montant_ht_soumis_tva_20'];
+        $champs['tva_zone'] = $champsRecup['tva_zone'];
 
 
 
@@ -162,6 +163,7 @@ elseif ($action == 'credit') {
     $formulaire->addElement('text', 'montant_ht_soumis_tva_0', 'Montant HT non soumis à TVA' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_0'));
     $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-0">Calculer le montant non soumis à TVA sur la base de l\'intégralité du montant TTC</a><br /><br />');
 
+    $formulaire->addElement('select'  , 'tva_zone', 'Zone TVA', array_merge(['' => 'Non définie'], Comptabilite::TVA_ZONES));
 
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
@@ -231,7 +233,9 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                                     $valeur['montant_ht_soumis_tva_0'],
                                     $valeur['montant_ht_soumis_tva_5_5'],
                                     $valeur['montant_ht_soumis_tva_10'],
-                                    $valeur['montant_ht_soumis_tva_20']
+                                    $valeur['montant_ht_soumis_tva_20'],
+                                    $valeur['tva_zone']
+
             						);
         } else {
    			$ok = $compta->modifier(
@@ -255,7 +259,8 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                                     $valeur['montant_ht_soumis_tva_0'],
                                     $valeur['montant_ht_soumis_tva_5_5'],
                                     $valeur['montant_ht_soumis_tva_10'],
-                                    $valeur['montant_ht_soumis_tva_20']
+                                    $valeur['montant_ht_soumis_tva_20'],
+                                    $valeur['tva_zone']
             						);
         }
         if ($ok) {
@@ -326,7 +331,8 @@ elseif ($action === 'export') {
         'Montant HT soumis à TVA 10',
         'TVA 10',
         'Montant HT soumis à TVA 20',
-        'TVA 20'
+        'TVA 20',
+        "Zone de TVA",
     ];
     fputcsv($fp, $columns, $csvDelimiter, $csvEnclosure);
 
@@ -358,7 +364,8 @@ elseif ($action === 'export') {
                 $line['montant_ht_10'],
                 $line['montant_tva_10'],
                 $line['montant_ht_20'],
-                $line['montant_tva_20']
+                $line['montant_tva_20'],
+                Comptabilite::getTvaZoneLabel($line['tva_zone'], 'Non définie')
             ],
             $csvDelimiter,
             $csvEnclosure
