@@ -62,7 +62,7 @@
                 <td>{{ token.token }}</td>
                 <td class="right aligned">{{ token.maxInvitations }}</td>
                 <td class="right aligned">{{ token.usedInvitations }}</td>
-                <td class="right aligned">{% if token.qrCodesScanner %}OUI{% else %}-{% endif %}</td>
+                <td class="right aligned">{% if token.qrCodesScannerAvailable %}OUI{% else %}-{% endif %}</td>
                 <td class="right aligned">
                     <form class="sponsor--token-admin-view" method="post" action="{{ url('sponsor_ticket_home', {eventSlug: event.path}) }}">
                         <input type="hidden" name="sponsor_token" value="{{ token.token }}" />

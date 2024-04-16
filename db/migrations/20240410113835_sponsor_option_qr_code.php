@@ -7,10 +7,10 @@ class SponsorOptionQrCode extends AbstractMigration
 {
     public function change()
     {
-        $table = $this->table('afup_forum_sponsors_tickets');
-        $table->addColumn('qr_codes_scanner', 'boolean', [
-            'null' => false,
-            'default' => false,
-        ])->update();
+        $sql = <<<EOF
+ALTER TABLE afup_forum_sponsors_tickets
+    ADD qr_codes_scanner_available TINYINT(1) DEFAULT 0 NOT NULL;
+EOF;
+        $this->execute($sql);
     }
 }

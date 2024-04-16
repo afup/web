@@ -26,7 +26,7 @@ class SponsorTokenType extends AbstractType
             ->add('maxInvitations', IntegerType::class, [
                 'label' => 'Nombre d\'invitations'
             ])
-            ->add('qrCodesScanner', CheckboxType::class, [
+            ->add('qrCodesScannerAvailable', CheckboxType::class, [
                 'label' => 'Autoriser le scan de QR Codes',
                 'required' => false
             ])

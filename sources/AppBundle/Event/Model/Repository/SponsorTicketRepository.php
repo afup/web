@@ -87,8 +87,8 @@ class SponsorTicketRepository extends Repository implements MetadataInitializer
                 'type' => 'int'
             ])
             ->addField([
-                'columnName' => 'qr_codes_scanner',
-                'fieldName' => 'qrCodesScanner',
+                'columnName' => 'qr_codes_scanner_available',
+                'fieldName' => 'qrCodesScannerAvailable',
                 'type' => 'bool',
                 'serializer' => Boolean::class
             ])
