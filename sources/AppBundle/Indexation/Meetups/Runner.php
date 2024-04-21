@@ -9,8 +9,6 @@ use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Offices\OfficesCollection;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class Runner
 {
