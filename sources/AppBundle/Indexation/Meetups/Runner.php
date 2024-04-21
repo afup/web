@@ -49,29 +49,10 @@ class Runner
     public function run()
     {
         $index = $this->initIndex();
-        $command = ['./bin/console', 'scrapping-meetup-event'];
-        $process = new Process($command);
-
-        try {
-            $process->start();
-
-            while ($process->isRunning()) {
-                echo "En cours de scrapping des meetups...\n";
-                usleep(500000);
-            }
-
-            echo $process->getOutput();
-        } catch (ProcessFailedException $exception) {
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-        }
 
         echo "Indexation des meetups en cours ...\n\n";
 
-
         $meetups = $this->getTransformedMeetupsFromDatabase();
-
 
         $index->clearIndex();
         $index->addObjects($meetups, 'meetup_id');
