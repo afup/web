@@ -346,6 +346,16 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'nearestOffice',
                 'type' => 'string',
             ])
+            ->addField([
+                'columnName' => 'transport_mode',
+                'fieldName' => 'transportMode',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'transport_distance',
+                'fieldName' => 'transportDistance',
+                'type' => 'int'
+            ])
         ;
 
         return $metadata;

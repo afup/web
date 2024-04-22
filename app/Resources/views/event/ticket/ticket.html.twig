@@ -172,6 +172,15 @@
 
                         <p class="tickets--type-stock-limit"><em>{{ 'Dans la limite des stocks disponibles.'|trans }}</em></p>
 
+                        <p>
+                            Dans le cadre de la <a href="">certification LEAD</a> ,
+                            nous devons vous demandez des informations à propos de votre venue,
+                            et-ce afin d'établir notre bilan carbone.<br />
+                            Si vous n'êtes pas sûr·e de votre mode de transport, indiquez le plus probable.
+                        </p>
+                        {{ form_row(ticket.transportMode) }}
+                        {{ form_row(ticket.transportDistance) }}
+
                         <p>{{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}</p>
 
                         {{ form_widget(ticket.specialPriceToken) }}

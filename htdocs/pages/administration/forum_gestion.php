@@ -110,6 +110,7 @@ if (Event::hasInscriptionAttachment($forumPath)) {
 
 $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
 $formulaire->addElement('checkbox', 'accomodation_enabled', "Activer les nuits d'hôtel");
+$formulaire->addElement('checkbox', 'transport_information_enabled', "Activer la demande de transport");
 
 $formulaire->addElement('header', '', 'Sponsoring');
 $formulaire->addElement('textarea', 'become_sponsor_description', "Contenu page devenir sponsor",
@@ -210,7 +211,8 @@ if ($formulaire->validate()) {
             $formulaire->exportValue('vote_enabled'),
             $formulaire->exportValue('speakers_diner_enabled'),
             $formulaire->exportValue('accomodation_enabled'),
-            $formulaire->exportValue('waiting_list_url')
+            $formulaire->exportValue('waiting_list_url'),
+            $formulaire->exportValue('transport_information_enabled')
 
         );
         $id_forum = $forums->obtenirDernier();
@@ -249,7 +251,8 @@ if ($formulaire->validate()) {
             $formulaire->exportValue('vote_enabled'),
             $formulaire->exportValue('speakers_diner_enabled'),
             $formulaire->exportValue('accomodation_enabled'),
-            $formulaire->exportValue('waiting_list_url')
+            $formulaire->exportValue('waiting_list_url'),
+            $formulaire->exportValue('transport_information_enabled')
         );
     }
 
@@ -259,7 +262,7 @@ if ($formulaire->validate()) {
         $c = trim($c);
         $coupons->ajouter($id_forum, $c);
     }
-
+var_dump($ok);
     if ($ok) {
         if ($action == 'ajouter') {
             Logs::log('Ajout du forum ' . $formulaire->exportValue('titre'));

@@ -173,6 +173,40 @@ class TicketType extends AbstractType
             ;
         });
 
+        $builder->add('transportMode', ChoiceType::class, [
+            'label' => 'Quel est votre mode de transport ?',
+            'required' => true,
+            'choices' => [
+                '' => '',
+                'Voiture seul·e' => 'Voiture seul·e',
+                'Voiture seul·e électrique' => 'Voiture seul·e électrique',
+                'Voiture seul·e hybride' => 'Voiture seul·e hybride',
+                'Voiture avec passagers·ères' => 'Voiture avec passagers·ères',
+                'Voiture avec passagers·ères électrique' => 'Voiture avec passagers·ères électrique',
+                'Voiture avec passagers·ères hybride' => 'Voiture avec passagers·ères hybride',
+                'Bus' => 'Bus',
+                'Train' => 'Train',
+                'Avion classe économique' => 'Avion classe économique',
+                'Avion classe business' => 'Avion classe business',
+                'Transports en commun' => 'Transports en commun'
+            ],
+        ]);
+
+        $builder->add('transportDistance', ChoiceType::class, [
+            'label' => 'Quelle sera la distance parcourue ?',
+            'required' => true,
+            'choices' => [
+                '' => '',
+                '< 25 km' => AFUP_TRANSPORT_DISTANCE_0,
+                'entre 25 et 50 km' => AFUP_TRANSPORT_DISTANCE_25_50,
+                'entre 50 et 100 km' => AFUP_TRANSPORT_DISTANCE_50_100,
+                'entre 100 et 500 km' => AFUP_TRANSPORT_DISTANCE_100_500,
+                'entre 500 et 1000 km' => AFUP_TRANSPORT_DISTANCE_500_1000,
+                '> 1000 km' => AFUP_TRANSPORT_DISTANCE_1000,
+            ],
+        ]);
+
+
         $builder
             ->add('tag1', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 1 ou Id Twitter (ex: @afup)']])
             ->add('tag2', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 2']])

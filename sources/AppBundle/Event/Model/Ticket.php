@@ -230,6 +230,16 @@ class Ticket implements NotifyPropertyInterface
     protected $nearestOffice;
 
     /**
+     * @var null|string
+     */
+    protected $transportMode;
+
+    /**
+     * @var null|int
+     */
+    protected $transportDistance;
+
+    /**
      * @return int
      */
     public function getId()
@@ -744,6 +754,50 @@ class Ticket implements NotifyPropertyInterface
         $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
 
         $this->nearestOffice = $nearestOffice;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTransportMode()
+    {
+        return $this->transportMode;
+    }
+
+    /**
+     * @param null|string $transportMode
+     *
+     * @return $this
+     */
+    public function setTransportMode($transportMode)
+    {
+        $this->propertyChanged('transportMode', $this->transportMode, $transportMode);
+
+        $this->transportMode = $transportMode;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getTransportDistance()
+    {
+        return $this->transportDistance;
+    }
+
+    /**
+     * @param null|int $transportDistance
+     *
+     * @return $this
+     */
+    public function setTransportDistance($transportDistance)
+    {
+        $this->propertyChanged('transportDistance', $this->transportDistance, $transportDistance);
+
+        $this->transportDistance = $transportDistance;
 
         return $this;
     }

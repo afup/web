@@ -47,12 +47,12 @@ fieldset p {
     padding-top:15px;
 }
 
-input:invalid{
+input:invalid, select:invalid {
     border-color: #900;
     background-color: #FDD;
 }
 
-input:focus:invalid {
+input:focus:invalid, select:focus:invalid  {
     outline: none;
 }
 
