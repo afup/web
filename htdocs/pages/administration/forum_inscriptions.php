@@ -321,7 +321,11 @@ if ($action == 'lister') {
 	$groupe[] = $formulaire->createElement('radio', 'mail_partenaire', null, 'non', 0);
 	$formulaire->addGroup($groupe, 'groupe_mail_partenaire', null, '&nbsp;', false);
 
-	$formulaire->addElement('header', 'boutons'  , '');
+    $formulaire->addElement('header', null, 'Transport');
+    $formulaire->addElement('select', 'transport_mode', 'Quel est votre mode de transport ?', Ticket::TRANSPORT_MODES);
+    $formulaire->addElement('select', 'transport_distance', 'Quelle sera la distance parcourue ?', Ticket::TRANSPORT_DISTANCES);
+
+    $formulaire->addElement('header', 'boutons'  , '');
 	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
 
 	// On ajoute les règles
@@ -370,6 +374,8 @@ if ($action == 'lister') {
             $ticket->setComments($valeurs['commentaires']);
             $ticket->setStatus($valeurs['etat']);
             $ticket->setInvoiceStatus($valeurs['facturation']);
+            $ticket->setTransportMode($valeurs['transport_mode']);
+            $ticket->setTransportDistance($valeurs['transport_distance']);
             try {
                 $ticketRepository->save($ticket);
                 $ok = true;
@@ -392,7 +398,9 @@ if ($action == 'lister') {
         												   $valeurs['mail_partenaire'],
                                                            $valeurs['commentaires'],
         												   $valeurs['etat'],
-        												   $valeurs['facturation']);
+                                                           $valeurs['facturation'],
+                                                           $valeurs['transport_mode'],
+                                                           $valeurs['transport_distance']);
 
             /** @var \AppBundle\Event\Model\Ticket $ticket */
             $ticket = $ticketRepository->get($_GET['id']);

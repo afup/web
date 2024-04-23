@@ -349,7 +349,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'transport_mode',
                 'fieldName' => 'transportMode',
-                'type' => 'string',
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'transport_distance',

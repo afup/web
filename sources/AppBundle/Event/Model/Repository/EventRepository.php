@@ -348,6 +348,11 @@ SQL;
                 'fieldName' => 'waitingListUrl',
                 'type' => 'string',
             ])
+            ->addField([
+                'columnName' => 'transport_information_enabled',
+                'fieldName' => 'transportInformationEnabled',
+                'type' => 'boolean',
+            ])
         ;
 
         return $metadata;

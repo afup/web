@@ -369,6 +369,35 @@ $(document).ready(function(){
     $('#purchase_tickets_0_firstname').on('change', function(){copyValBetweenFields('purchase_tickets_0_firstname', 'purchase_firstname')});
     $('#purchase_tickets_0_email').on('change', function(){copyValBetweenFields('purchase_tickets_0_email', 'purchase_email')});
 
+
+    // Mode de transport
+    var cloneTransport = function (nbInscriptions) {
+        let $button = $('#clone_transport');
+
+        if (nbInscriptions <= 1) {
+            $button.hide();
+        }
+        $("#purchase_nbPersonnes").change(function () {
+            $button.show();
+            var nb = parseInt($("#purchase_nbPersonnes").val(), 10);
+            if (nb <= 1) {
+                $button.hide();
+            }
+        });
+
+        $button.on('click', function (e) {
+            e.preventDefault();
+            let mode = $('#purchase_tickets_0_transportMode').val();
+            let distance = $('#purchase_tickets_0_transportDistance').val();
+            for (let i = 1; i < nbInscriptions; i++) {
+                $('#purchase_tickets_'+i+'_transportMode').val(mode).change();
+                $('#purchase_tickets_'+i+'_transportDistance').val(distance).change();
+            }
+
+            return false;
+        });
+    }
+
     var init = function(){
 		if (storageAvailable('localStorage') && localStorage.getItem('tickets')) {
 			try {
@@ -400,6 +429,8 @@ $(document).ready(function(){
 		manageFieldSet(nbInscriptions);
 
 		updateSummary();
+
+        cloneTransport(nbInscriptions);
     };
     init();
 
