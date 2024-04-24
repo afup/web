@@ -492,6 +492,14 @@ services:
     AppBundle\Event\Ticket\TicketTypeAvailability:
         autowire: true
 
+    AppBundle\Event\Ticket\QrCodeGenerator:
+        autowire: true
+        arguments: ["%qr_code_salt%"]
+
+    AppBundle\Command\QrCodesGeneratorCommand:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Association\Form\UserEditType:
         autowire: true
         autoconfigure: true

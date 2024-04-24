@@ -179,6 +179,22 @@ class TicketRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @return Ticket[]
+     */
+    public function getByEmptyQrCodes()
+    {
+        $sql = 'SELECT afup_inscription_forum.*
+        FROM afup_inscription_forum
+        WHERE afup_inscription_forum.qr_code IS NULL
+        AND afup_inscription_forum.date > :date';
+
+        return $this->getPreparedQuery($sql)
+            ->setParams(['date' => (new \DateTime('2024-01-01 00:00:00'))->getTimestamp()]) //TODO
+            ->query($this->getCollection(new HydratorSingleObject()))
+            ;
+    }
+
+    /**
      * @return CollectionInterface
      */
     public function getAllTicketsForExport()
