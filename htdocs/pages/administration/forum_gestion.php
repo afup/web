@@ -262,7 +262,7 @@ if ($formulaire->validate()) {
         $c = trim($c);
         $coupons->ajouter($id_forum, $c);
     }
-var_dump($ok);
+
     if ($ok) {
         if ($action == 'ajouter') {
             Logs::log('Ajout du forum ' . $formulaire->exportValue('titre'));
