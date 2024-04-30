@@ -236,6 +236,7 @@ class TicketController extends EventBaseController
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
             'maxNbPersonnes' => count($purchaseForm->getData()->getTickets()),
             'isSubjectedToVat' => Vat::isSubjectedToVat(new \DateTime('now')),
+            'hasPricesDefinedWithVat' => $event->hasPricesDefinedWithVat(),
             'soldTicketsForMember' => $totalOfSoldTicketsByMember,
             'hasMembersTickets' => $this->get('ting')->get(TicketEventTypeRepository::class)->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
 
