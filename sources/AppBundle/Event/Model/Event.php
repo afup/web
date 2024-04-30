@@ -751,4 +751,9 @@ class Event implements NotifyPropertyInterface
     {
         return is_file(self::getSponsorFilePath($eventPath, $language));
     }
+
+    public function hasPricesDefinedWithVat()
+    {
+        return true;
+    }
 }
