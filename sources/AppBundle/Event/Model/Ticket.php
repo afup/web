@@ -16,7 +16,6 @@ class Ticket implements NotifyPropertyInterface
     use NotifyProperty;
 
     const TRANSPORT_MODES = [
-        null => null,
         AFUP_TRANSPORT_MODE_SEUL_THERMIQUE => 'Voiture seul·e',
         AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE => 'Voiture seul·e électrique',
         AFUP_TRANSPORT_MODE_SEUL_HYBRIDE => 'Voiture seul·e hybride',
@@ -31,7 +30,6 @@ class Ticket implements NotifyPropertyInterface
     ];
 
     const TRANSPORT_DISTANCES = [
-        null => null,
         AFUP_TRANSPORT_DISTANCE_0 => '< 25 km',
         AFUP_TRANSPORT_DISTANCE_25_50 => 'entre 25 et 50 km',
         AFUP_TRANSPORT_DISTANCE_50_100 => 'entre 50 et 100 km',

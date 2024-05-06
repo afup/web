@@ -177,13 +177,13 @@ class TicketType extends AbstractType
             $builder->add('transportMode', ChoiceType::class, [
                 'label' => 'Quel est votre mode de transport ?',
                 'required' => true,
-                'choices' => array_flip(Ticket::TRANSPORT_MODES),
+                'choices' => ['' => ''] + array_flip(Ticket::TRANSPORT_MODES),
             ]);
 
             $builder->add('transportDistance', ChoiceType::class, [
                 'label' => 'Quelle sera la distance parcourue ?',
                 'required' => true,
-                'choices' => array_flip(Ticket::TRANSPORT_DISTANCES),
+                'choices' => ['' => ''] + array_flip(Ticket::TRANSPORT_DISTANCES),
             ]);
         }
 
