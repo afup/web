@@ -371,25 +371,29 @@ $(document).ready(function(){
 
 
     // Mode de transport
-    var cloneTransport = function (nbInscriptions) {
+    var cloneTransport = function () {
         let $button = $('#clone_transport');
+        var getNbInscriptions = function() {
+            return parseInt($("#purchase_nbPersonnes").val(), 10);
+        }
 
-        if (nbInscriptions <= 1) {
+        if (getNbInscriptions() <= 1) {
             $button.hide();
         }
+
         $("#purchase_nbPersonnes").change(function () {
             $button.show();
-            var nb = parseInt($("#purchase_nbPersonnes").val(), 10);
-            if (nb <= 1) {
+            if (getNbInscriptions() <= 1) {
                 $button.hide();
             }
         });
 
+        $button.off("click");
         $button.on('click', function (e) {
             e.preventDefault();
             let mode = $('#purchase_tickets_0_transportMode').val();
             let distance = $('#purchase_tickets_0_transportDistance').val();
-            for (let i = 1; i < nbInscriptions; i++) {
+            for (let i = 1; i < nbMaxPersonnes; i++) {
                 $('#purchase_tickets_'+i+'_transportMode').val(mode).change();
                 $('#purchase_tickets_'+i+'_transportDistance').val(distance).change();
             }
@@ -430,7 +434,7 @@ $(document).ready(function(){
 
 		updateSummary();
 
-        cloneTransport(nbInscriptions);
+        cloneTransport();
     };
     init();
 
