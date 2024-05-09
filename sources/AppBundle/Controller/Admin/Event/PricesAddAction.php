@@ -70,7 +70,8 @@ class PricesAddAction
 
         $ticketTypes = $this->ticketTypeRepository->getAll();
         $form = $this->formFactory->create(TicketEventType::class, $ticketEventType, [
-            'ticketTypes' => $ticketTypes
+            'ticketTypes' => $ticketTypes,
+            'has_prices_defined_with_vat' => $event->hasPricesDefinedWithVat(),
         ]);
 
         $form->handleRequest($request);
