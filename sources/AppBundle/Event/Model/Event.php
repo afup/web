@@ -122,6 +122,11 @@ class Event implements NotifyPropertyInterface
     private $waitingListUrl;
 
     /**
+     * @var bool
+     */
+    private $hasPricesDefinedWithVat;
+
+    /**
      * @return int
      */
     public function getId()
@@ -712,6 +717,24 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
+    public function hasPricesDefinedWithVat()
+    {
+        return (bool) $this->hasPricesDefinedWithVat;
+    }
+
+    /**
+     * @param bool $hasPricesDefinedWithVat
+     *
+     * @return $this
+     */
+    public function setHasPricesDefinedWithVat($hasPricesDefinedWithVat)
+    {
+        $this->propertyChanged('hasPricesDefinedWithVat', $this->hasPricesDefinedWithVat, $hasPricesDefinedWithVat);
+        $this->hasPricesDefinedWithVat = $hasPricesDefinedWithVat;
+
+        return $this;
+    }
+
     public function isOnline()
     {
         return false !== strpos($this->getPath(), 'enligne');
@@ -750,10 +773,5 @@ class Event implements NotifyPropertyInterface
     public static function hasSponsorFile($eventPath, $language)
     {
         return is_file(self::getSponsorFilePath($eventPath, $language));
-    }
-
-    public function hasPricesDefinedWithVat()
-    {
-        return true;
     }
 }
