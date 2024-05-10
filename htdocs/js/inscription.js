@@ -194,7 +194,7 @@ $(document).ready(function(){
 
             df.appendChild(trClone);
             numberOfTickets += inscriptions[i].quantity;
-            total += inscriptions[i].subtotal;
+            total += hasPricesDefinedWithVat ? inscriptions[i].subtotal : computeWithTaxesPriceFromPriceWithoutTaxes(inscriptions[i].subtotal);
         }
 
         var trClone = tr.cloneNode();
