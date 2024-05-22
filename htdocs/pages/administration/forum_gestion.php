@@ -110,7 +110,7 @@ if (Event::hasInscriptionAttachment($forumPath)) {
 
 $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
 $formulaire->addElement('checkbox', 'accomodation_enabled', "Activer les nuits d'hôtel");
-$formulaire->addElement('checkbox', 'has_prices_defined_with_vat', "Prix définits en incluant la TVA (définits en TTC)");
+$formulaire->addElement('checkbox', 'has_prices_defined_with_vat', "Prix définis en incluant la TVA (définis en TTC)");
 
 
 $formulaire->addElement('header', '', 'Sponsoring');
