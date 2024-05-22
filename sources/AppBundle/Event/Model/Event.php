@@ -719,7 +719,7 @@ class Event implements NotifyPropertyInterface
 
     public function hasPricesDefinedWithVat(): bool
     {
-        return $this->hasPricesDefinedWithVat;
+        return (bool) $this->hasPricesDefinedWithVat;
     }
 
     /**
