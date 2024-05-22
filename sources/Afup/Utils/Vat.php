@@ -15,4 +15,9 @@ class Vat
     {
         return round($priceWithVat / (1 + $vatRate), 2);
     }
+
+    public static function getRoundedWithVatPriceFromPriceWithoutVat($priceWithoutVat, $vatRate)
+    {
+        return round($priceWithoutVat * (1 + $vatRate), 2);
+    }
 }

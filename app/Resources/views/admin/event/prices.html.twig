@@ -18,7 +18,7 @@
             <tr>
                 <th>Type - libellé</th>
                 <th>Type - libellé technique</th>
-                <th>Prix TTC</th>
+                <th>{% if has_prices_defined_with_vat %}Prix TTC{% else %}Prix HT{% endif %}</th>
                 <th>Date de début</th>
                 <th>Date de fin</th>
                 <th>Description</th>

@@ -213,7 +213,7 @@ class Facturation
     function genererFacture($reference, $chemin = null)
     {
         $type = '';
-        $requete = 'SELECT aff.*, af.titre AS event_name
+        $requete = 'SELECT aff.*, af.titre AS event_name, af.has_prices_defined_with_vat as event_has_prices_defined_with_vat
         FROM afup_facturation_forum aff
         LEFT JOIN afup_forum af ON af.id = aff.id_forum
         WHERE reference=' . $this->_bdd->echapper($reference);
@@ -294,8 +294,14 @@ class Facturation
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            $montantHt = Vat::getRoundedWithoutVatPriceFromPriceWithVat($inscription['montant'], Utils::TICKETING_VAT_RATE);
-            $montant = $inscription['montant'];
+            if ($facture['event_has_prices_defined_with_vat']) {
+                $montantHt = Vat::getRoundedWithoutVatPriceFromPriceWithVat($inscription['montant'], Utils::TICKETING_VAT_RATE);
+                $montant = $inscription['montant'];
+            } else {
+                $montantHt = $inscription['montant'];
+                $montant = Vat::getRoundedWithVatPriceFromPriceWithoutVat($inscription['montant'], Utils::TICKETING_VAT_RATE);
+            }
+
 
             $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
             $pdf->Cell(100 - ($isSubjectedToVat ? 35 : 0), 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);

@@ -63,7 +63,8 @@ class PricesEditAction
 
         $ticketTypes = $this->ticketTypeRepository->getAll();
         $form = $this->formFactory->create(TicketEventType::class, $ticketEventType, [
-            'ticketTypes' => $ticketTypes
+            'ticketTypes' => $ticketTypes,
+            'has_prices_defined_with_vat' => $event->hasPricesDefinedWithVat(),
         ]);
         // Pour qu'il ne soit pas modifiable dans le formulaire
         $form->remove('ticketType');

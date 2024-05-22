@@ -334,6 +334,11 @@ SQL;
                 'type' => 'boolean'
             ])
             ->addField([
+                'columnName' => 'has_prices_defined_with_vat',
+                'fieldName' => 'hasPricesDefinedWithVat',
+                'type' => 'boolean'
+            ])
+            ->addField([
                 'columnName' => 'speakers_diner_enabled',
                 'fieldName' => 'speakersDinerEnabled',
                 'type' => 'boolean'
