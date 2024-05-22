@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Forum\Facturation;
+use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
@@ -236,6 +237,7 @@ class TicketController extends EventBaseController
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
             'maxNbPersonnes' => count($purchaseForm->getData()->getTickets()),
             'isSubjectedToVat' => Vat::isSubjectedToVat(new \DateTime('now')),
+            'hasPricesDefinedWithVat' => $event->hasPricesDefinedWithVat(),
             'soldTicketsForMember' => $totalOfSoldTicketsByMember,
             'hasMembersTickets' => $this->get('ting')->get(TicketEventTypeRepository::class)->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
 
@@ -262,9 +264,16 @@ class TicketController extends EventBaseController
             return $this->render(':event/ticket:payment_already_done.html.twig', ['event' => $event]);
         }
 
+        $amount = $invoice->getAmount();
+        if (false === $event->hasPricesDefinedWithVat()) {
+            $amount = Vat::getRoundedWithVatPriceFromPriceWithoutVat($amount, Utils::TICKETING_VAT_RATE);
+        }
+
+
         $params = [
             'event' => $event,
             'invoice' => $invoice,
+            'amount' => $amount,
             'tickets' => $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByInvoiceWithDetail(
                 $invoice
             )
@@ -297,7 +306,7 @@ class TicketController extends EventBaseController
                 });
             }
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
-            $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event);
+            $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event, $amount);
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
             $bankAccountFactory = new BankAccountFactory();
             $params['bankAccount'] = $bankAccountFactory->createApplyableAt($invoice->getinvoiceDate());

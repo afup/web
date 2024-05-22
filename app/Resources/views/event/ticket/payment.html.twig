@@ -23,10 +23,10 @@
             {% if invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_CREDIT_CARD') %}
                 <p>Pour finaliser le paiement de votre facture, merci de cliquer sur le bouton suivant :</p>
                 {{ paybox|raw }}
-                <p>Vous serez redirigé vers notre partenaire paybox afin de procéder au paiement d'un montant de {{ invoice.amount }}€</p>
+                <p>Vous serez redirigé vers notre partenaire paybox afin de procéder au paiement d'un montant de {{ amount }}€</p>
             {% else %}
                 <p>
-                    Pour les paiements par virement, merci d'envoyer le virement d'un montant de {{ invoice.amount }}€ aux coordonnées suivantes :
+                    Pour les paiements par virement, merci d'envoyer le virement d'un montant de {{ amount }}€ aux coordonnées suivantes :
                 </p>
                 <table>
                     <tr>

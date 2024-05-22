@@ -124,6 +124,11 @@ class Event implements NotifyPropertyInterface
     private $waitingListUrl;
 
     /**
+     * @var bool
+     */
+    private $hasPricesDefinedWithVat;
+
+    /**
      * @return int
      */
     public function getId()
@@ -710,6 +715,24 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('waitingListUrl', $this->waitingListUrl, $waitingListUrl);
         $this->waitingListUrl = $waitingListUrl;
+
+        return $this;
+    }
+
+    public function hasPricesDefinedWithVat(): bool
+    {
+        return (bool) $this->hasPricesDefinedWithVat;
+    }
+
+    /**
+     * @param bool $hasPricesDefinedWithVat
+     *
+     * @return $this
+     */
+    public function setHasPricesDefinedWithVat(bool $hasPricesDefinedWithVat)
+    {
+        $this->propertyChanged('hasPricesDefinedWithVat', $this->hasPricesDefinedWithVat, $hasPricesDefinedWithVat);
+        $this->hasPricesDefinedWithVat = $hasPricesDefinedWithVat;
 
         return $this;
     }

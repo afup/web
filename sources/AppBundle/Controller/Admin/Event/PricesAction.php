@@ -41,6 +41,7 @@ class PricesAction
 
         return new Response($this->twig->render('admin/event/prices.html.twig', [
             'ticket_event_types' => $ticketEventTypes,
+            'has_prices_defined_with_vat' => $event->hasPricesDefinedWithVat(),
             'event' => $event,
             'title' => 'Liste des prix',
             'event_select_form' => $this->formFactory->create(EventSelectType::class, $event)->createView(),

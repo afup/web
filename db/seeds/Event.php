@@ -43,6 +43,7 @@ class Event extends AbstractSeed
                 'place_address' => 'Marriott Rive Gauche',
                 'date_annonce_planning' => date('Y-m-d', $event),
                 'transport_information_enabled' => 1
+                'has_prices_defined_with_vat' => 1,
             ],
         ];
 

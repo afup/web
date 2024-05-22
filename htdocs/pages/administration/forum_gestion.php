@@ -110,6 +110,7 @@ if (Event::hasInscriptionAttachment($forumPath)) {
 
 $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
 $formulaire->addElement('checkbox', 'accomodation_enabled', "Activer les nuits d'hôtel");
+$formulaire->addElement('checkbox', 'has_prices_defined_with_vat', "Prix définis en incluant la TVA (définis en TTC)");
 $formulaire->addElement('checkbox', 'transport_information_enabled', "Activer la demande de transport");
 
 $formulaire->addElement('header', '', 'Sponsoring');
@@ -212,6 +213,7 @@ if ($formulaire->validate()) {
             $formulaire->exportValue('speakers_diner_enabled'),
             $formulaire->exportValue('accomodation_enabled'),
             $formulaire->exportValue('waiting_list_url'),
+            $formulaire->exportValue('has_prices_defined_with_vat'),
             $formulaire->exportValue('transport_information_enabled')
 
         );
@@ -252,6 +254,7 @@ if ($formulaire->validate()) {
             $formulaire->exportValue('speakers_diner_enabled'),
             $formulaire->exportValue('accomodation_enabled'),
             $formulaire->exportValue('waiting_list_url'),
+            $formulaire->exportValue('has_prices_defined_with_vat'),
             $formulaire->exportValue('transport_information_enabled')
         );
     }

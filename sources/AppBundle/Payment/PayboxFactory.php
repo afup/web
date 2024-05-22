@@ -57,7 +57,7 @@ class PayboxFactory
         return $paybox->generate($now, $billing);
     }
 
-    public function createPayboxForTicket(Invoice $invoice, Event $event)
+    public function createPayboxForTicket(Invoice $invoice, Event $event, $amount)
     {
         $paybox = $this->getPaybox();
 
@@ -67,7 +67,7 @@ class PayboxFactory
         $ipnUrl = $this->router->generate('ticket_paybox_callback', ['eventSlug' => $event->getPath()], RouterInterface::ABSOLUTE_URL);
 
         $paybox
-            ->setTotal($invoice->getAmount() * 100) // Total de la commande, en centimes d'euros
+            ->setTotal($amount * 100) // Total de la commande, en centimes d'euros
             ->setCmd($invoice->getReference()) // Référence de la commande
             ->setPorteur($invoice->getEmail()) // Email du client final (Le porteur de la carte)
             ->setUrlRetourEffectue($returnUrl)
