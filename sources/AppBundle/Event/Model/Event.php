@@ -717,9 +717,9 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
-    public function hasPricesDefinedWithVat()
+    public function hasPricesDefinedWithVat(): bool
     {
-        return (bool) $this->hasPricesDefinedWithVat;
+        return $this->hasPricesDefinedWithVat;
     }
 
     /**
@@ -727,7 +727,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setHasPricesDefinedWithVat($hasPricesDefinedWithVat)
+    public function setHasPricesDefinedWithVat(bool $hasPricesDefinedWithVat)
     {
         $this->propertyChanged('hasPricesDefinedWithVat', $this->hasPricesDefinedWithVat, $hasPricesDefinedWithVat);
         $this->hasPricesDefinedWithVat = $hasPricesDefinedWithVat;
