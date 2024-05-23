@@ -36,8 +36,8 @@ class LeadController extends EventBaseController
         $leadForm->handleRequest($request);
 
         if ($leadForm->isSubmitted() && $leadForm->isValid()) {
-            $repository = $this->get(\AppBundle\Event\Model\Repository\LeadRepository::class);
-            $repository->save($lead);
+            //$repository = $this->get(\AppBundle\Event\Model\Repository\LeadRepository::class);
+            //$repository->save($lead);
 
             $sponsorshipLeadMail = $this->get(\AppBundle\Event\Sponsorship\SponsorshipLeadMail::class);
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($lead, $sponsorshipLeadMail) {
