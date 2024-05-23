@@ -47,12 +47,12 @@ fieldset p {
     padding-top:15px;
 }
 
-input:invalid{
+input:invalid, select:invalid {
     border-color: #900;
     background-color: #FDD;
 }
 
-input:focus:invalid {
+input:focus:invalid, select:focus:invalid  {
     outline: none;
 }
 
@@ -212,18 +212,34 @@ div.sponsor--become-form label {
 div.tickets--errors{
     border-color: #B0413E;
 }
-
+fieldset div.fieldset--inner > div.transport {
+    padding: 1em;
+    border: 1px #50a0dd solid;
+    background-color: #FEFEFE;
+}
+fieldset div.fieldset--inner > div.transport p {
+    padding-top: 0;
+}
+fieldset div.fieldset--inner > div.transport button {
+    color: rgb(76, 110, 175);
+    text-decoration: underline;
+    background-color: transparent;
+    border: 0;
+}
+fieldset div.fieldset--inner > div.transport button:hover {
+    text-decoration: none;
+}
 
 @media(min-width: 460px) {
-    
+
     ul.tickets--type-list{
         margin-left:150px;
     }
-    
+
     ul.tickets--type-list li {
         width: 600px;
     }
-    
+
     ul.tickets--type-list hr{
         width:600px;
     }
@@ -236,11 +252,11 @@ div.tickets--errors{
         top: 12px;
         left: -7px;
     }
-    
+
     p.tickets--type-stock-limit{
         margin-left:200px;
     }
-    
+
     ul.tickets--errors, #fieldset--optin div{
         margin-left:200px;
     }
@@ -256,5 +272,5 @@ div.tickets--errors{
     form {
         font-size:16px;
     }
-    
+
 }

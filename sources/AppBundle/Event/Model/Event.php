@@ -116,6 +116,8 @@ class Event implements NotifyPropertyInterface
 
     private $accomodationEnabled;
 
+    private $transportInformationEnabled;
+
     /**
      * @var string
      */
@@ -731,6 +733,29 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('hasPricesDefinedWithVat', $this->hasPricesDefinedWithVat, $hasPricesDefinedWithVat);
         $this->hasPricesDefinedWithVat = $hasPricesDefinedWithVat;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getTransportInformationEnabled()
+    {
+        return $this->transportInformationEnabled;
+    }
+
+    /**
+     * @param bool $transportInformationEnabled
+     *
+     * @return $this
+     */
+    public function setTransportInformationEnabled($transportInformationEnabled)
+    {
+        $transportInformationEnabled = (bool) $transportInformationEnabled;
+
+        $this->propertyChanged('transportInformationEnabled', $this->transportInformationEnabled, $transportInformationEnabled);
+        $this->transportInformationEnabled = $transportInformationEnabled;
 
         return $this;
     }
