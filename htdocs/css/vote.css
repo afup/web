@@ -780,6 +780,10 @@ a {
 div.event--vote-form form{
     width: auto;
 }
+div.event--vote-form textarea{
+    width: 100%;
+    font-size: 13px;
+}
 div.event--vote-form label{
     min-width: 150px;
     display:block
@@ -806,6 +810,11 @@ div.event--vote-abstract{
 }
 div.event--vote-abstract h1{
     font-size:1.9em;
+}
+.event--vote-warning {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fae8cc;
 }
 
 @media (max-width: 767px) {
@@ -838,6 +847,7 @@ button[type=submit] {
     background-color: #3e3d40 !important;
     color: white;
     font-weight: bold;
+    width: 100%;
 }
 
 button[type=submit].error {
@@ -1022,10 +1032,6 @@ div.photo-container{
     }
 
     div.event--vote-details {
-        width: 100%;
-    }
-
-    .event--vote-form textarea {
         width: 100%;
     }
 }
