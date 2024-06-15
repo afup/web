@@ -99,7 +99,6 @@ class SpeakerType extends AbstractType
             $user = $this->tokenStorage->getToken()->getUser();
 
             if ($speaker instanceof Speaker && $speaker->getId() === null && $user instanceof GithubUser) {
-
                 $previousSpeakerInfos = $this->speakerRepository->getFromLastEventAndUserId($speaker->getEventId(), $user->getId());
                 if ($previousSpeakerInfos instanceof Speaker) {
                     $speaker->setCivility($previousSpeakerInfos->getCivility());
