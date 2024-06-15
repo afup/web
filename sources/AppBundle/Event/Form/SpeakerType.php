@@ -3,7 +3,6 @@
 
 namespace AppBundle\Event\Form;
 
-use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\GithubUserRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
