@@ -44,27 +44,8 @@ $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode );
 
 
-	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
-	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
-
-// Function added to Smarty in order to add the paybox link if possible
-function paybox_link($description)
-{
-    $matches = array();
-    if (preg_match('`CB\s+AFUP\s+([0-9]{2})([0-9]{2})([0-9]{2})\s+CONTRAT`', $description, $matches)) {
-        $date = $matches[1] . "/" . $matches[2] . "/" . (2000 + (int) $matches[3]);
-
-        $url  = sprintf('https://admin.paybox.com/cgi/CBDCum.cgi?lg=FR&amp;SelDate=%1$s&amp;SelDateAu=%1$s', $date);
-        $html = sprintf('<a href="%2$s" class="js-paybox-link">%1$s</a>', $description, $url);
-
-        $urlTelecolectes = strtr("https://admin.paybox.com/cgi/Remises.cgi?SelDateFrom={date}&SelDateTo={date}&Ok=Ok", ['{date}' => $date]);
-        $html .= sprintf('<br /><br /><a href="%2$s" class="js-paybox-link">%1$s</a>', "(Voir les télécollectes du jour)", $urlTelecolectes);
-
-        return $html;
-    }
-    return $description;
-}
-$smarty->register_modifier('paybox_link', 'paybox_link');
+$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
+$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 
 if ($action == 'lister' || $action == 'debit' || $action == 'credit' || $action == 'export') {
     $alsoDisplayClassifed = isset($_GET['also_display_classifed_entries']) && $_GET['also_display_classifed_entries'];
