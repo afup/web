@@ -107,7 +107,7 @@ class TicketController extends EventBaseController
         } else {
             $ticket = $ticketFactory->createTicketFromSponsorTicket($sponsorTicket);
         }
-        $ticketForm = $this->createForm(SponsorTicketType::class, $ticket);
+        $ticketForm = $this->createForm(SponsorTicketType::class, $ticket, ['with_transport' => $event->getTransportInformationEnabled()]);
         $ticketForm->handleRequest($request);
 
         if ($ticketForm->isSubmitted() && $ticketForm->isValid() && $sponsorTicket->getPendingInvitations() > 0) {
@@ -148,6 +148,7 @@ class TicketController extends EventBaseController
             'event' => $event,
             'sponsors_infos' => $event->getSponsorInfos($request->getLocale()),
             'sponsorTicket' => $sponsorTicket,
+            'with_transport' => $event->getTransportInformationEnabled(),
             'ticketForm' => $ticketForm->createView(),
             'registeredTickets' => $sponsorTicketHelper->getRegisteredTickets($sponsorTicket),
             'edit' => $edit,

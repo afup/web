@@ -74,6 +74,16 @@ class SponsorTicket implements NotifyPropertyInterface
     private $qrCodesScannerAvailable = false;
 
     /**
+     * @var null|string
+     */
+    protected $transportMode;
+
+    /**
+     * @var null|int
+     */
+    protected $transportDistance;
+
+    /**
      * @return int
      */
     public function getId()
@@ -287,6 +297,50 @@ class SponsorTicket implements NotifyPropertyInterface
     {
         $this->propertyChanged('qrCodesScannerAvailable', $this->qrCodesScannerAvailable, $qrCodesScannerAvailable);
         $this->qrCodesScannerAvailable = $qrCodesScannerAvailable;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTransportMode()
+    {
+        return $this->transportMode;
+    }
+
+    /**
+     * @param null|string $transportMode
+     *
+     * @return $this
+     */
+    public function setTransportMode($transportMode)
+    {
+        $this->propertyChanged('transportMode', $this->transportMode, $transportMode);
+
+        $this->transportMode = $transportMode;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getTransportDistance()
+    {
+        return $this->transportDistance;
+    }
+
+    /**
+     * @param null|int $transportDistance
+     *
+     * @return $this
+     */
+    public function setTransportDistance($transportDistance)
+    {
+        $this->propertyChanged('transportDistance', $this->transportDistance, $transportDistance);
+
+        $this->transportDistance = $transportDistance;
+
         return $this;
     }
 }
