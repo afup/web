@@ -11,8 +11,8 @@
 
     <div class="row">
         <div class="col-md-6">
-            <span id="success-code">Code valide ! Patientez...</span>
-            <span id="bad-code">QR Code incorrect !</span>
+            <span id="success-code">{{ 'sponsor.qr_code_scanner.valid_code'|trans }}</span>
+            <span id="bad-code">{{ 'sponsor.qr_code_scanner.invalid_code'|trans }}</span>
             <span id="cam-qr-result">None</span>
             <span id="flash-url">{{ path('sponsor_scan_flash', {eventSlug: event.path, code: '---code---'}) }}</span>
 
