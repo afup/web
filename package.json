@@ -18,6 +18,7 @@
     "jquery": "^1.11.3",
     "node-sass": "^4.11.0",
     "notyf": "^2.0.1",
+    "qr-scanner": "^1.4.2",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "tablefilter": "^0.5.42",
