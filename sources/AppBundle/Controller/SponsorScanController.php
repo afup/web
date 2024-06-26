@@ -154,7 +154,7 @@ class SponsorScanController extends EventBaseController
         $this->checkEventSlug($eventSlug);
         try {
             $sponsorTicket = $this->checkSponsorTicket($request);
-        } catch (\Exception $e) {
+        } catch (InvalidSponsorTokenException $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
