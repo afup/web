@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Exception\InvalidSponsorTokenException;
 use AppBundle\Event\Form\SponsorScanType;
 use AppBundle\Event\Model\Repository\SponsorScanRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
@@ -23,7 +24,7 @@ class SponsorScanController extends EventBaseController
 
         try {
             $sponsorTicket = $this->checkSponsorTicket($request);
-        } catch (\Exception $e) {
+        } catch (InvalidSponsorTokenException $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
@@ -45,7 +46,7 @@ class SponsorScanController extends EventBaseController
 
         try {
             $this->checkSponsorTicket($request);
-        } catch (\Exception $e) {
+        } catch (InvalidSponsorTokenException $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
@@ -74,7 +75,7 @@ class SponsorScanController extends EventBaseController
 
         try {
             $sponsorTicket = $this->checkSponsorTicket($request);
-        } catch (\Exception $e) {
+        } catch (InvalidSponsorTokenException $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
@@ -118,7 +119,7 @@ class SponsorScanController extends EventBaseController
         $event = $this->checkEventSlug($eventSlug);
         try {
             $sponsorTicket = $this->checkSponsorTicket($request);
-        } catch (\Exception $e) {
+        } catch (InvalidSponsorTokenException $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
@@ -150,7 +151,7 @@ class SponsorScanController extends EventBaseController
     private function checkSponsorTicket(Request $request)
     {
         if ($request->getSession()->has('sponsor_ticket_id') === false) {
-            throw new \Exception('Merci de renseigner votre token.');
+            throw new InvalidSponsorTokenException('Merci de renseigner votre token.');
         }
 
         /**
@@ -158,11 +159,11 @@ class SponsorScanController extends EventBaseController
          */
         $sponsorTicket = $this->get('ting')->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
-            throw new \Exception('Token invalide.');
+            throw new InvalidSponsorTokenException('Token invalide.');
         }
 
         if (!$sponsorTicket->getQrCodesScannerAvailable()) {
-            throw new \Exception('Accès non autorisé.');
+            throw new InvalidSponsorTokenException('Accès non autorisé.');
         }
 
         return $sponsorTicket;
