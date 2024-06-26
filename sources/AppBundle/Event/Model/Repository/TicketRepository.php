@@ -185,11 +185,9 @@ class TicketRepository extends Repository implements MetadataInitializer
     {
         $sql = 'SELECT afup_inscription_forum.*
         FROM afup_inscription_forum
-        WHERE afup_inscription_forum.qr_code IS NULL
-        AND afup_inscription_forum.date > :date';
+        WHERE afup_inscription_forum.qr_code IS NULL';
 
-        return $this->getPreparedQuery($sql)
-            ->setParams(['date' => (new \DateTime('2024-01-01 00:00:00'))->getTimestamp()]) //TODO
+        return $this->getQuery($sql)
             ->query($this->getCollection(new HydratorSingleObject()))
             ;
     }
