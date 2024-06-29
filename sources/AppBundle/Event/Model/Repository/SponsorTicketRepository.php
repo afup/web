@@ -92,16 +92,6 @@ class SponsorTicketRepository extends Repository implements MetadataInitializer
                 'type' => 'bool',
                 'serializer' => Boolean::class
             ])
-            ->addField([
-                'columnName' => 'transport_mode',
-                'fieldName' => 'transportMode',
-                'type' => 'int',
-            ])
-            ->addField([
-                'columnName' => 'transport_distance',
-                'fieldName' => 'transportDistance',
-                'type' => 'int'
-            ])
         ;
 
         return $metadata;
