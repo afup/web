@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SponsorTicketType extends AbstractType
 {
@@ -30,14 +31,35 @@ class SponsorTicketType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email'
-            ])
-        ;
+            ]);
+
+        if ($options['with_transport']) {
+            $transportMode = Ticket::TRANSPORT_MODES;
+            asort($transportMode);
+
+            $builder
+                ->add('transport_mode', ChoiceType::class, [
+                    'label' => 'Votre mode de transport ?',
+                    'placeholder' => '',
+                    'required' => true,
+                    'constraints' => [new NotBlank()],
+                    'choices' => array_flip($transportMode),
+                ])
+                ->add('transport_distance', ChoiceType::class, [
+                    'label' => 'La distance parcourue ?',
+                    'placeholder' => '',
+                    'required' => true,
+                    'constraints' => [new NotBlank()],
+                    'choices' => array_flip(Ticket::TRANSPORT_DISTANCES)
+                ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Ticket::class
+            'data_class' => Ticket::class,
+            'with_transport' => false
         ]);
     }
 }
