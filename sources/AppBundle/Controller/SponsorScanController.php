@@ -144,6 +144,7 @@ class SponsorScanController extends EventBaseController
 
         $response = new BinaryFileResponse($file);
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $baseName . '.csv');
+        $response->deleteFileAfterSend(true);
 
         return $response;
     }
