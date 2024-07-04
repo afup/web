@@ -1,0 +1,8 @@
+/* en mobile */
+@media (max-width: 460px) {
+    .button.sponsor_scan {
+        display: block;
+        margin: 0 auto;
+        width: 80%;
+    }
+}
