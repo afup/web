@@ -182,3 +182,6 @@ speaker_from_previous_event: "We filled the form with the profile you used on a 
 "Télécharger en CSV": "Download CSV"
 "Supprimer": "Delete"
 "Lancer l'outil de scan de QR Codes": "Run QR Code Scanner"
+sponsor.qr_code_scanner.disclaimer: Please confirm that the participant agrees for you to scan their badge!
+sponsor.qr_code_scanner.valid_code: Code valid! Please wait...
+sponsor.qr_code_scanner.invalid_code: Incorrect QR Code!
