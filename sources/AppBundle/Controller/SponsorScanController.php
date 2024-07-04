@@ -149,6 +149,29 @@ class SponsorScanController extends EventBaseController
         return $response;
     }
 
+    public function deleteAction(Request $request, $eventSlug, $scanId)
+    {
+        $this->checkEventSlug($eventSlug);
+        try {
+            $sponsorTicket = $this->checkSponsorTicket($request);
+        } catch (InvalidSponsorTokenException $e) {
+            $this->addFlash('error', $e->getMessage());
+            return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
+        }
+
+        /** @var SponsorScanRepository $scanRepository */
+        $scanRepository = $this->get('ting')->get(SponsorScanRepository::class);
+        $scan = $scanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'id' => $scanId]);
+
+        if ($scan instanceof SponsorScan) {
+            $scan->setDeletedOn(new \DateTime('now'));
+            $scanRepository->save($scan);
+            $this->addFlash('success', "QR Code supprimé !");
+        }
+
+        return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
+    }
+
     private function checkSponsorTicket(Request $request)
     {
         if ($request->getSession()->has('sponsor_ticket_id') === false) {
