@@ -104,6 +104,10 @@ sponsor_scan:
   path: /{eventSlug}/sponsor/scan
   defaults: {_controller: AppBundle:SponsorScan:index}
 
+sponsor_scan_export:
+  path: /{eventSlug}/sponsor/scan/export
+  defaults: {_controller: AppBundle:SponsorScan:export}
+
 sponsor_scan_new:
   path: /{eventSlug}/sponsor/scan/new
   defaults: {_controller: AppBundle:SponsorScan:new}
