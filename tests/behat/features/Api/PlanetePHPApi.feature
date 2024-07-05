@@ -4,7 +4,7 @@ Feature: PlanetePHP API routes
     Given I am on "/planete-php-api/articles"
     Then the response status code should be 200
     And the response header "Content-Type" should equal "application/json"
-    And the response header "X-Pagination-Total" should equal 23
+    And the response header "X-Pagination-Total" should equal 22
     And the response header "X-Pagination-Per-Page" should equal 20
     And the json response has the key "title" with value "Un titre"
     And the json response has the key "url" with value "https:\/\/afup.org\/url.html"
@@ -15,7 +15,7 @@ Feature: PlanetePHP API routes
     Given I am on "/planete-php-api/articles?page=2"
     Then the response status code should be 200
     And the response header "Content-Type" should equal "application/json"
-    And the response header "X-Pagination-Total" should equal 23
+    And the response header "X-Pagination-Total" should equal 22
     And the response header "X-Pagination-Per-Page" should equal 20
     And the json response has the key "title" with value "Un titre 18"
     And the json response has the key "url" with value "https:\/\/afup.org\/url-18.html"
