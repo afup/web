@@ -54,6 +54,7 @@ final class ArticlesController
                 'Content-Type' => 'application/json',
                 'X-Pagination-Total' => $totalCount,
                 'X-Pagination-Per-Page' => $perPage,
+                'X-Pagination-Has-Next-Page' => json_encode($totalCount > $page * $perPage),
             ]
         );
     }
