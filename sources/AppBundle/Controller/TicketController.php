@@ -110,8 +110,11 @@ class TicketController extends EventBaseController
         $ticketForm = $this->createForm(SponsorTicketType::class, $ticket, ['with_transport' => $event->getTransportInformationEnabled()]);
         $ticketForm->handleRequest($request);
 
-        if ($ticketForm->isSubmitted() && $ticketForm->isValid() && $sponsorTicket->getPendingInvitations() > 0) {
-            if ($event->getDateEndSalesSponsorToken() < new \DateTime()) {
+        if ($ticketForm->isSubmitted() && $ticketForm->isValid()) {
+            // Si c'est l'ajout d'un ticket
+            // Et qu'il n'y a plus d'invitation
+            // ou que la date du sponsoring est pas passée
+            if ($ticket->getId() === null && ($sponsorTicket->getPendingInvitations() <= 0 || $event->getDateEndSalesSponsorToken() < new \DateTime())) {
                 return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
             }
 
