@@ -28,7 +28,7 @@ final class ArticlesController
             $page = 1;
         }
 
-        $totalCount = $this->feedArticleRepository->count();
+        $totalCount = $this->feedArticleRepository->countRelevant();
         $articles = $this->feedArticleRepository->findLatest($page - 1, DATE_RSS, $perPage);
 
         $data = [];
@@ -54,6 +54,7 @@ final class ArticlesController
                 'Content-Type' => 'application/json',
                 'X-Pagination-Total' => $totalCount,
                 'X-Pagination-Per-Page' => $perPage,
+                'X-Pagination-Has-Next-Page' => json_encode($totalCount > $page * $perPage),
             ]
         );
     }
