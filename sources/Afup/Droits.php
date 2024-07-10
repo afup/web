@@ -20,6 +20,8 @@ define('AFUP_DROITS_ETAT_ACTIF', 1);
  */
 class Droits
 {
+    const AFUP_DROITS_NIVEAU_MEMBRE = AFUP_DROITS_NIVEAU_MEMBRE;
+    const AFUP_DROITS_ETAT_ACTIF = AFUP_DROITS_ETAT_ACTIF;
     /**
      * Liste structurée avec toutes les pages référencées dans l'application
      *
