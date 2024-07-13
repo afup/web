@@ -102,7 +102,7 @@ class FeatureContext implements Context
     public function iAmLoggedInWithTheUserAndThePassword($user, $password)
     {
         $this->minkContext->iAmOnHomepage();
-        $this->minkContext->assertPageContainsText("Tous les deux mois, des nouvelles de L'AFUP");
+        $this->minkContext->assertPageContainsText("Tous les trois mois, des nouvelles de L'AFUP");
         $this->minkContext->clickLink("Se connecter");
         $this->minkContext->assertPageContainsText("Email ou nom d'utilisateur");
         $this->minkContext->fillField("utilisateur", $user);
