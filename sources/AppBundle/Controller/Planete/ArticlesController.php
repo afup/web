@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Planete;
 
+use PlanetePHP\DisplayableFeedArticle;
 use PlanetePHP\FeedArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +37,7 @@ final class ArticlesController
         foreach ($articles as $article) {
             $data[] = [
                 'title' => $article->getTitle(),
-                'url' => $article->getUrl(),
+                'url' => $this->getArticleUrl($article),
                 'date' => $article->getUpdate(),
                 'author' => $article->getAuthor(),
                 'content' => $article->getContent(),
@@ -57,5 +58,17 @@ final class ArticlesController
                 'X-Pagination-Has-Next-Page' => json_encode($totalCount > $page * $perPage),
             ]
         );
+    }
+
+    private function getArticleUrl(DisplayableFeedArticle $article): string
+    {
+        if (substr($article->getUrl(), 0, 4) !== 'http') {
+            $feedUrl = rtrim($article->getFeedUrl(), '/');
+            $articleUrl = ltrim($article->getUrl(), '/');
+
+            return implode('/', [$feedUrl, $articleUrl]);
+        }
+
+        return $article->getUrl();
     }
 }
