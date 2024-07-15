@@ -62,13 +62,19 @@ final class ArticlesController
 
     private function getArticleUrl(DisplayableFeedArticle $article): string
     {
-        if (substr($article->getUrl(), 0, 4) !== 'http') {
+        $url = $article->getUrl();
+
+        if ($url === null) {
+            return '';
+        }
+
+        if (substr($url, 0, 4) !== 'http') {
             $feedUrl = rtrim($article->getFeedUrl(), '/');
-            $articleUrl = ltrim($article->getUrl(), '/');
+            $articleUrl = ltrim($url, '/');
 
             return implode('/', [$feedUrl, $articleUrl]);
         }
 
-        return $article->getUrl();
+        return $url;
     }
 }
