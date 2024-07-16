@@ -1,5 +1,7 @@
 <?php
+
 namespace Afup\Site\Forum;
+
 class Coupon
 {
     /**
@@ -7,7 +9,7 @@ class Coupon
      * @var     object
      * @access  private
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * Constructeur.

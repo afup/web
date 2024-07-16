@@ -1,6 +1,7 @@
 <?php
+
 namespace Afup\Site\Forum;
-use Afup\Site\Utils\Logs;
+
 use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
@@ -11,7 +12,6 @@ use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
-use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
 
 class Facturation
@@ -21,7 +21,7 @@ class Facturation
      * @var     object
      * @access  private
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * Constructeur.
