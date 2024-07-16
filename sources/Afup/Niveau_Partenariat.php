@@ -1,5 +1,7 @@
 <?php
+
 namespace Afup\Site;
+
 class Niveau_Partenariat
 {
     /**
@@ -7,7 +9,7 @@ class Niveau_Partenariat
      * @var     object
      * @access  private
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * Constructeur.
