@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\Mailchimp\SubscriberType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +21,7 @@ class NewsletterController extends SiteBaseController
 
         if ($subscribeForm->isSubmitted() && $subscribeForm->isValid()) {
             try {
-                $this->get(\AppBundle\Mailchimp\Mailchimp::class)->subscribeAddress(
+                $this->get(Mailchimp::class)->subscribeAddress(
                     $this->getParameter('mailchimp_subscribers_list'),
                     $subscribeForm->getData()['email']
                 );
