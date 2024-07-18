@@ -7,7 +7,6 @@ Vous retrouverez les ports dans le fichier `compose.override.yml`
 
 Par défaut:
 * Site AFUP : <https://localhost:9205/>
-* Planète PHP : <https://localhost:9215/>
 * Mailcatcher: <http://localhost:1181/>
 
 _Les ports utilisés peuvent être modifiés dans le fichier `compose.override.yml`._
@@ -73,10 +72,7 @@ Lancement des tests fonctionnels :
 ```
 	./bin/behat
 ```
-- Lancer les tests pour le site Planete PHP :
-```
-	./bin/behat -c behat-planete.yml
-```
+
 - Une alternative est d'utiliser la commande `make test-functional`, attention cette commande arrête les containeurs de tests à la fin de l'exécution de la suite de test. Si par la suite vous souhaitez lancer un test, il faut bien penser à les allumer de nouveau.
 
 Dans chacun des cas, il est possible de spécifier un test dans la ligne de commande. Exemple: `./bin/behat tests/behat/features/Admin/AdminFeuilles.feature`
