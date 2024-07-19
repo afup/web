@@ -11,7 +11,7 @@ company_membership:
     sitemap: true
 
 member_membership:
-  path: /adherer/member
+  path: /adherer/particulier
   defaults: {_controller: AppBundle:MemberShip:member}
   options:
     sitemap: true
