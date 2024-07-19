@@ -69,9 +69,7 @@ class MemberShipController extends SiteBaseController
             $user->setPlainPassword($user->getPassword());
             $this->get(UserRepository::class)->save($user);
 
-            global $droits;
-            $droits = Utils::fabriqueDroits($this->get('security.token_storage'), $this->get('security.authorization_checker'));
-            Logs::initialiser($GLOBALS['AFUP_DB'], $droits->obtenirIdentifiant());
+            Logs::initialiser($GLOBALS['AFUP_DB'], $user->getId());
             Logs::log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
 
             $this->get(UserService::class)->sendWelcomeEmail($user);
