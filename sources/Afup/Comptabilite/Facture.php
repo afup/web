@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Afup\Site\Comptabilite;
 
 use Afup\Site\Utils\Mailing;
@@ -17,7 +16,7 @@ class Facture
     /**
      * @var \Afup\Site\Utils\Base_De_Donnees
      */
-    var $_bdd;
+    private $_bdd;
 
     function __construct(&$bdd)
     {

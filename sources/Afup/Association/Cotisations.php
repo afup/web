@@ -1,6 +1,7 @@
 <?php
 
 namespace Afup\Site\Association;
+
 use Afup\Site\Corporate\Site;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
@@ -40,7 +41,7 @@ class Cotisations
      * Instance de la couche d'abstraction à la base de données
      * @var Base_De_Donnees
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * @var Droits|null
