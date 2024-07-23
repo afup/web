@@ -93,11 +93,6 @@ class Event implements NotifyPropertyInterface
     /**
      * @var string
      */
-    private $trelloListId;
-
-    /**
-     * @var string
-     */
     private $logoUrl;
 
     /**
@@ -459,25 +454,6 @@ class Event implements NotifyPropertyInterface
         }
 
         return $cfp[$key];
-    }
-
-    /**
-     * @return string
-     */
-    public function getTrelloListId()
-    {
-        return $this->trelloListId;
-    }
-
-    /**
-     * @param string $trelloListId
-     * @return Event
-     */
-    public function setTrelloListId($trelloListId)
-    {
-        $this->propertyChanged('trelloListId', $this->trelloListId, $trelloListId);
-        $this->trelloListId = $trelloListId;
-        return $this;
     }
 
     /**
