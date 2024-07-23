@@ -309,11 +309,6 @@ SQL;
                 'type' => 'string'
             ])
             ->addField([
-                'columnName' => 'trello_list_id',
-                'fieldName' => 'trelloListId',
-                'type' => 'string'
-            ])
-            ->addField([
                 'columnName' => 'logo_url',
                 'fieldName' => 'logoUrl',
                 'type' => 'string'
