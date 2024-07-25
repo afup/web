@@ -52,4 +52,4 @@ Feature: Administration - Partie Site
     When I follow "Ajouter"
     And I fill in "raccourci" with "un mauvais raccourci"
     And I press "Ajouter"
-    Then the ".negative.message" element should contain "Ne doit pas contenir d'espace"
+    Then I should see "Ne doit pas contenir d'espace"

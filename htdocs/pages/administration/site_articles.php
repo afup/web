@@ -31,7 +31,7 @@ foreach ($forum->obtenirListe(null, '*', 'date_debut DESC') as $forum) {
     $forumLabelsById[$forum['id']] = $forum['titre'];
 }
 
-function checkSpaceValidation($value): bool
+function checkNoSpace($value): bool
 {
     return !preg_match('/(\s)/', $value);
 }
@@ -126,10 +126,9 @@ if ($action == 'lister') {
     $formulaire->addRule('titre'       , 'Titre manquant'       , 'required');
     $formulaire->addRule('contenu'     , 'Contenu manquant'     , 'required');
     $formulaire->addRule('raccourci'   , 'Raccourci manquant'   , 'required');
-    $formulaire->addRule('raccourci'   , 'Ne doit pas contenir d\'espace'   , 'regex', '/(?!\s)/');
 
-    $formulaire->registerRule('checkSpace', 'callback', 'checkSpaceValidation');
-    $formulaire->addRule('raccourci', 'Ne doit pas contenir d\'espace', 'checkSpace', true);
+    $formulaire->registerRule('checkNoSpace', 'callback', 'checkNoSpace');
+    $formulaire->addRule('raccourci', 'Ne doit pas contenir d\'espace', 'checkNoSpace', true);
 
 
     if ($formulaire->validate()) {
