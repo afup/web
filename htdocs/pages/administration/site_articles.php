@@ -31,6 +31,11 @@ foreach ($forum->obtenirListe(null, '*', 'date_debut DESC') as $forum) {
     $forumLabelsById[$forum['id']] = $forum['titre'];
 }
 
+function checkSpaceValidation($value): bool
+{
+    return !preg_match('/(\s)/', $value);
+}
+
 if ($action == 'lister') {
     $list_champs     = '*';
     $list_ordre      = 'date';
@@ -121,6 +126,11 @@ if ($action == 'lister') {
     $formulaire->addRule('titre'       , 'Titre manquant'       , 'required');
     $formulaire->addRule('contenu'     , 'Contenu manquant'     , 'required');
     $formulaire->addRule('raccourci'   , 'Raccourci manquant'   , 'required');
+    $formulaire->addRule('raccourci'   , 'Ne doit pas contenir d\'espace'   , 'regex', '/(?!\s)/');
+
+    $formulaire->registerRule('checkSpace', 'callback', 'checkSpaceValidation');
+    $formulaire->addRule('raccourci', 'Ne doit pas contenir d\'espace', 'checkSpace', true);
+
 
     if ($formulaire->validate()) {
         $article->id_site_rubrique = $formulaire->exportValue('id_site_rubrique');

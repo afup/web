@@ -44,3 +44,12 @@ Feature: Administration - Partie Site
     And I follow "supprimer_2"
     Then I should see "Liste des articles"
     But the ".content table" element should not contain "Le titre de l'article modifié"
+
+  Scenario: Le raccourci ne doit pas contenir d'espace
+    Given I am logged in as admin and on the Administration
+    And I follow "Articles"
+    Then I should see "Liste des articles"
+    When I follow "Ajouter"
+    And I fill in "raccourci" with "un mauvais raccourci"
+    And I press "Ajouter"
+    Then the ".negative.message" element should contain "Ne doit pas contenir d'espace"
