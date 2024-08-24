@@ -23,7 +23,6 @@ Feature: Administration - Évènements - Gestions Évènements
 
     Then I fill in "titre" with "Forum AFUP 2027"
     And I fill in "path" with "afup-2027"
-    And I fill in "trello_list_id" with "4242"
     And I fill in "logo_url" with "https://www.fillmurray.com/640/360"
     And I fill in "nb_places" with "999"
     And I fill in "place_name" with "Paris"

@@ -63,8 +63,6 @@ $formulaire->addElement('text', 'titre', "Titre de l'évènement", ['size' => 30
 $formulaire->addElement('text', 'path', 'Chemin du template', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('static', 'info', '',
     '<i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>');
-$formulaire->addElement('text', 'trello_list_id', 'Liste trello pour les leads',
-    ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'logo_url', "URL du logo de l'évènement", ['size' => 30, 'maxlength' => 255]);
 $formulaire->addElement('text', 'nb_places', 'Nombre de places', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'place_name', 'Nom du lieu', ['size' => 30, 'maxlength' => 255]);
@@ -205,7 +203,6 @@ if ($formulaire->validate()) {
                 'mail_inscription_content' => $formulaire->exportValue('mail_inscription_content'),
                 'become_sponsor_description' => $formulaire->exportValue('become_sponsor_description'),
             ],
-            $formulaire->exportValue('trello_list_id'),
             $formulaire->exportValue('logo_url'),
             $formulaire->exportValue('place_name'),
             $formulaire->exportValue('place_address'),
@@ -246,7 +243,6 @@ if ($formulaire->validate()) {
                 'mail_inscription_content' => $formulaire->exportValue('mail_inscription_content'),
                 'become_sponsor_description' => $formulaire->exportValue('become_sponsor_description'),
             ],
-            $formulaire->exportValue('trello_list_id'),
             $formulaire->exportValue('logo_url'),
             $formulaire->exportValue('place_name'),
             $formulaire->exportValue('place_address'),
