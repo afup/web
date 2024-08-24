@@ -7,3 +7,9 @@ home:
 become_sponsor_latest:
   path: /become-sponsor
   defaults: {_controller: AppBundle:Lead:becomeSponsorLatest}
+
+sitemap:
+  path: /plan-du-site
+  defaults: { _controller: AppBundle:Sitemap:display }
+  options:
+    sitemap: true
