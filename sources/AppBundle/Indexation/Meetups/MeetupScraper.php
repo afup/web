@@ -42,7 +42,8 @@ class MeetupScraper
                             }
 
                             $eventUrl = $event->getAttribute('href');
-                            if (preg_match('/\/(\d+)\/$/', $eventUrl, $matches)) {
+
+                            if (preg_match('/\/events\/(\d+)\//', $eventUrl, $matches)) {
                                 $id = (int) $matches[1];
                             } else {
                                 throw new Exception(sprintf('Pas d\'id pour cet évent de l\'antenne %s', $antenne));
