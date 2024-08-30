@@ -261,7 +261,8 @@ SQL;
 
     function modifierInscription($id, $reference, $type_inscription, $civilite, $nom, $prenom,
                                  $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
-                                 $newsletter_nexen, $mail_partenaire, $commentaires, $etat, $facturation)
+                                 $newsletter_nexen, $mail_partenaire, $commentaires, $etat, $facturation,
+                                 $transportMode, $transportDistance)
     {
         $requete = 'UPDATE ';
         $requete .= '  afup_inscription_forum ';
@@ -281,7 +282,9 @@ SQL;
         $requete .= '  mail_partenaire=' . $this->_bdd->echapper($mail_partenaire) . ',';
         $requete .= '  commentaires=' . $this->_bdd->echapper($commentaires) . ',';
         $requete .= '  etat=' . $this->_bdd->echapper($etat) . ',';
-        $requete .= '  facturation=' . $this->_bdd->echapper($facturation);
+        $requete .= '  facturation=' . $this->_bdd->echapper($facturation) . ',';
+        $requete .= '  transport_mode=' . $this->_bdd->echapper($transportMode) . ',';
+        $requete .= '  transport_distance=' . $this->_bdd->echapper($transportDistance);
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
 

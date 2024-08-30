@@ -208,3 +208,14 @@ venue_speaker.expenses.intro: |
   Le package speaker prend en charge le remboursement des frais de transport, sur base d'un trajet en 2nde classe ou classe économique.<br />
   Envoyez-nous vos justificatifs (par exemple, une facture de billet de train ou une copie du billet), ainsi que votre RIB/IBAN.<br />
   Utilisez le formulaire ci-dessous pour nous envoyer ces informations (au format PDF). Vous pouvez nous envoyer plusieurs fichiers.
+certification_lead.info: |
+  <p>
+    Dans le cadre de la <a href="https://event.afup.org/forum-php-2024/certification-lead/"
+                           target="_blank">certification LEAD</a>,
+    nous devons vous demander des informations à propos de votre venue,
+    afin d'établir notre bilan carbone.<br />
+    Si vous n'êtes pas sûr·e de votre mode de transport, indiquez le plus probable.
+  </p>
+sponsor.qr_code_scanner.disclaimer: Merci de valider que la personne accepte que vous scanniez son badge !
+sponsor.qr_code_scanner.valid_code: Code valide ! Patientez...
+sponsor.qr_code_scanner.invalid_code: QR Code incorrect !

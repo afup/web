@@ -100,6 +100,26 @@ sponsor_leads_post:
   path: /{eventSlug}/sponsor/thank-you
   defaults: {_controller: AppBundle:Lead:postLead}
 
+sponsor_scan:
+  path: /{eventSlug}/sponsor/scan
+  defaults: {_controller: AppBundle:SponsorScan:index}
+
+sponsor_scan_export:
+  path: /{eventSlug}/sponsor/scan/export
+  defaults: {_controller: AppBundle:SponsorScan:export}
+
+sponsor_scan_new:
+  path: /{eventSlug}/sponsor/scan/new
+  defaults: {_controller: AppBundle:SponsorScan:new}
+
+sponsor_scan_flash:
+  path: /{eventSlug}/sponsor/scan/flash/{code}
+  defaults: {_controller: AppBundle:SponsorScan:flash}
+
+sponsor_scan_delete:
+  path: /{eventSlug}/sponsor/scan/delete/{scanId}
+  defaults: {_controller: AppBundle:SponsorScan:delete}
+
 speaker-infos:
   path: /{eventSlug}/speaker-infos
   defaults: {_controller: AppBundle\Controller\Event\SpeakerPageAction }

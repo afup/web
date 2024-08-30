@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f62fc5ab3bb05e512af3577ad7f6f11f",
+    "content-hash": "03816d6d464ea00585772c2ffd1f31df",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -348,57 +348,6 @@
                 "source": "https://github.com/ccmbenchmark/ting_bundle/tree/3.3.2"
             },
             "time": "2019-01-15T13:41:44+00:00"
-        },
-        {
-            "name": "cdaguerre/php-trello-api",
-            "version": "0.9.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cdaguerre/php-trello-api.git",
-                "reference": "b1205d9ac9b24df03c2db5aa9a8c7418d28c0b78"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cdaguerre/php-trello-api/zipball/b1205d9ac9b24df03c2db5aa9a8c7418d28c0b78",
-                "reference": "b1205d9ac9b24df03c2db5aa9a8c7418d28c0b78",
-                "shasum": ""
-            },
-            "require": {
-                "guzzle/guzzle": "~3.7",
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=4.1"
-            },
-            "suggest": {
-                "symfony/http-foundation": "Needed for the Trello webhook service"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Trello\\": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christian Daguerre",
-                    "email": "christian@daguer.re"
-                }
-            ],
-            "description": "Trello API v1 client",
-            "homepage": "https://github.com/cdaguerre/php-trello-api",
-            "keywords": [
-                "trello"
-            ],
-            "support": {
-                "issues": "https://github.com/cdaguerre/php-trello-api/issues",
-                "source": "https://github.com/cdaguerre/php-trello-api/tree/master"
-            },
-            "time": "2015-06-16T14:25:56+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -1630,103 +1579,6 @@
                 "source": "https://github.com/google/recaptcha"
             },
             "time": "2020-03-31T17:50:54+00:00"
-        },
-        {
-            "name": "guzzle/guzzle",
-            "version": "v3.8.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
-                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3.3",
-                "symfony/event-dispatcher": ">=2.1"
-            },
-            "replace": {
-                "guzzle/batch": "self.version",
-                "guzzle/cache": "self.version",
-                "guzzle/common": "self.version",
-                "guzzle/http": "self.version",
-                "guzzle/inflection": "self.version",
-                "guzzle/iterator": "self.version",
-                "guzzle/log": "self.version",
-                "guzzle/parser": "self.version",
-                "guzzle/plugin": "self.version",
-                "guzzle/plugin-async": "self.version",
-                "guzzle/plugin-backoff": "self.version",
-                "guzzle/plugin-cache": "self.version",
-                "guzzle/plugin-cookie": "self.version",
-                "guzzle/plugin-curlauth": "self.version",
-                "guzzle/plugin-error-response": "self.version",
-                "guzzle/plugin-history": "self.version",
-                "guzzle/plugin-log": "self.version",
-                "guzzle/plugin-md5": "self.version",
-                "guzzle/plugin-mock": "self.version",
-                "guzzle/plugin-oauth": "self.version",
-                "guzzle/service": "self.version",
-                "guzzle/stream": "self.version"
-            },
-            "require-dev": {
-                "doctrine/cache": "*",
-                "monolog/monolog": "1.*",
-                "phpunit/phpunit": "3.7.*",
-                "psr/log": "1.0.*",
-                "symfony/class-loader": "*",
-                "zendframework/zend-cache": "<2.3",
-                "zendframework/zend-log": "<2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Guzzle": "src/",
-                    "Guzzle\\Tests": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                },
-                {
-                    "name": "Guzzle Community",
-                    "homepage": "https://github.com/guzzle/guzzle/contributors"
-                }
-            ],
-            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http client",
-                "rest",
-                "web service"
-            ],
-            "support": {
-                "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/master"
-            },
-            "abandoned": "guzzlehttp/guzzle",
-            "time": "2014-01-28T22:29:15+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

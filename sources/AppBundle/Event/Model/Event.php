@@ -93,11 +93,6 @@ class Event implements NotifyPropertyInterface
     /**
      * @var string
      */
-    private $trelloListId;
-
-    /**
-     * @var string
-     */
     private $logoUrl;
 
     /**
@@ -116,10 +111,17 @@ class Event implements NotifyPropertyInterface
 
     private $accomodationEnabled;
 
+    private $transportInformationEnabled;
+
     /**
      * @var string
      */
     private $waitingListUrl;
+
+    /**
+     * @var bool
+     */
+    private $hasPricesDefinedWithVat;
 
     /**
      * @return int
@@ -457,25 +459,6 @@ class Event implements NotifyPropertyInterface
     /**
      * @return string
      */
-    public function getTrelloListId()
-    {
-        return $this->trelloListId;
-    }
-
-    /**
-     * @param string $trelloListId
-     * @return Event
-     */
-    public function setTrelloListId($trelloListId)
-    {
-        $this->propertyChanged('trelloListId', $this->trelloListId, $trelloListId);
-        $this->trelloListId = $trelloListId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getLogoUrl()
     {
         return $this->logoUrl;
@@ -708,6 +691,47 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('waitingListUrl', $this->waitingListUrl, $waitingListUrl);
         $this->waitingListUrl = $waitingListUrl;
+
+        return $this;
+    }
+
+    public function hasPricesDefinedWithVat(): bool
+    {
+        return (bool) $this->hasPricesDefinedWithVat;
+    }
+
+    /**
+     * @param bool $hasPricesDefinedWithVat
+     *
+     * @return $this
+     */
+    public function setHasPricesDefinedWithVat(bool $hasPricesDefinedWithVat)
+    {
+        $this->propertyChanged('hasPricesDefinedWithVat', $this->hasPricesDefinedWithVat, $hasPricesDefinedWithVat);
+        $this->hasPricesDefinedWithVat = $hasPricesDefinedWithVat;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getTransportInformationEnabled()
+    {
+        return $this->transportInformationEnabled;
+    }
+
+    /**
+     * @param bool $transportInformationEnabled
+     *
+     * @return $this
+     */
+    public function setTransportInformationEnabled($transportInformationEnabled)
+    {
+        $transportInformationEnabled = (bool) $transportInformationEnabled;
+
+        $this->propertyChanged('transportInformationEnabled', $this->transportInformationEnabled, $transportInformationEnabled);
+        $this->transportInformationEnabled = $transportInformationEnabled;
 
         return $this;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Planete;
 
+use PlanetePHP\DisplayableFeedArticle;
 use PlanetePHP\FeedArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,7 @@ final class ArticlesController
             $page = 1;
         }
 
-        $totalCount = $this->feedArticleRepository->count();
+        $totalCount = $this->feedArticleRepository->countRelevant();
         $articles = $this->feedArticleRepository->findLatest($page - 1, DATE_RSS, $perPage);
 
         $data = [];
@@ -36,7 +37,7 @@ final class ArticlesController
         foreach ($articles as $article) {
             $data[] = [
                 'title' => $article->getTitle(),
-                'url' => $article->getUrl(),
+                'url' => $this->getArticleUrl($article),
                 'date' => $article->getUpdate(),
                 'author' => $article->getAuthor(),
                 'content' => $article->getContent(),
@@ -54,7 +55,26 @@ final class ArticlesController
                 'Content-Type' => 'application/json',
                 'X-Pagination-Total' => $totalCount,
                 'X-Pagination-Per-Page' => $perPage,
+                'X-Pagination-Has-Next-Page' => json_encode($totalCount > $page * $perPage),
             ]
         );
+    }
+
+    private function getArticleUrl(DisplayableFeedArticle $article): string
+    {
+        $url = $article->getUrl();
+
+        if ($url === null) {
+            return '';
+        }
+
+        if (substr($url, 0, 4) !== 'http') {
+            $feedUrl = rtrim($article->getFeedUrl(), '/');
+            $articleUrl = ltrim($url, '/');
+
+            return implode('/', [$feedUrl, $articleUrl]);
+        }
+
+        return $url;
     }
 }

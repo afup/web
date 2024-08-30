@@ -157,7 +157,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'montant',
                 'fieldName' => 'amount',
-                'type' => 'int'
+                'type' => 'float'
             ])
             ->addField([
                 'columnName' => 'type_reglement',

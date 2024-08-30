@@ -13,7 +13,6 @@
     "beberlei/assert": "^2.9",
     "captioning/captioning": "^2.6",
     "ccmbenchmark/ting_bundle": "^3.0",
-    "cdaguerre/php-trello-api": "^0.9.3",
     "cocur/slugify": "^2.3",
     "doctrine/dbal": "^2.5",
     "ekino/newrelic-bundle": "^1.4",
@@ -75,8 +74,7 @@
     },
     "classmap": [
       "app/AppKernel.php",
-      "app/AppCache.php",
-      "planete/app/PlaneteAppKernel.php"
+      "app/AppCache.php"
     ],
     "files": [
       "sources/Afup/Bootstrap/_Common.php",

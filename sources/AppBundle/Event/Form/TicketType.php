@@ -173,6 +173,24 @@ class TicketType extends AbstractType
             ;
         });
 
+        if ($event->getTransportInformationEnabled()) {
+            $transportMode = Ticket::TRANSPORT_MODES;
+            asort($transportMode);
+
+            $builder->add('transportMode', ChoiceType::class, [
+                'label' => 'Quel est votre mode de transport ?',
+                'required' => true,
+                'choices' => ['' => ''] + array_flip($transportMode),
+            ]);
+
+            $builder->add('transportDistance', ChoiceType::class, [
+                'label' => 'Quelle sera la distance parcourue ?',
+                'required' => true,
+                'choices' => ['' => ''] + array_flip(Ticket::TRANSPORT_DISTANCES),
+            ]);
+        }
+
+
         $builder
             ->add('tag1', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 1 ou Id Twitter (ex: @afup)']])
             ->add('tag2', TextType::class, ['required' => false, 'attr' => ['placeholder' => 'Tag 2']])

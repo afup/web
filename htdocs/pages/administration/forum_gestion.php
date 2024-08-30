@@ -63,8 +63,6 @@ $formulaire->addElement('text', 'titre', "Titre de l'évènement", ['size' => 30
 $formulaire->addElement('text', 'path', 'Chemin du template', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('static', 'info', '',
     '<i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>');
-$formulaire->addElement('text', 'trello_list_id', 'Liste trello pour les leads',
-    ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'logo_url', "URL du logo de l'évènement", ['size' => 30, 'maxlength' => 255]);
 $formulaire->addElement('text', 'nb_places', 'Nombre de places', ['size' => 30, 'maxlength' => 100]);
 $formulaire->addElement('text', 'place_name', 'Nom du lieu', ['size' => 30, 'maxlength' => 255]);
@@ -110,6 +108,8 @@ if (Event::hasInscriptionAttachment($forumPath)) {
 
 $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
 $formulaire->addElement('checkbox', 'accomodation_enabled', "Activer les nuits d'hôtel");
+$formulaire->addElement('checkbox', 'has_prices_defined_with_vat', "Prix définis en incluant la TVA (définis en TTC)");
+$formulaire->addElement('checkbox', 'transport_information_enabled', "Activer la demande de transport");
 
 $formulaire->addElement('header', '', 'Sponsoring');
 $formulaire->addElement('textarea', 'become_sponsor_description', "Contenu page devenir sponsor",
@@ -203,14 +203,15 @@ if ($formulaire->validate()) {
                 'mail_inscription_content' => $formulaire->exportValue('mail_inscription_content'),
                 'become_sponsor_description' => $formulaire->exportValue('become_sponsor_description'),
             ],
-            $formulaire->exportValue('trello_list_id'),
             $formulaire->exportValue('logo_url'),
             $formulaire->exportValue('place_name'),
             $formulaire->exportValue('place_address'),
             $formulaire->exportValue('vote_enabled'),
             $formulaire->exportValue('speakers_diner_enabled'),
             $formulaire->exportValue('accomodation_enabled'),
-            $formulaire->exportValue('waiting_list_url')
+            $formulaire->exportValue('waiting_list_url'),
+            $formulaire->exportValue('has_prices_defined_with_vat'),
+            $formulaire->exportValue('transport_information_enabled')
 
         );
         $id_forum = $forums->obtenirDernier();
@@ -242,14 +243,15 @@ if ($formulaire->validate()) {
                 'mail_inscription_content' => $formulaire->exportValue('mail_inscription_content'),
                 'become_sponsor_description' => $formulaire->exportValue('become_sponsor_description'),
             ],
-            $formulaire->exportValue('trello_list_id'),
             $formulaire->exportValue('logo_url'),
             $formulaire->exportValue('place_name'),
             $formulaire->exportValue('place_address'),
             $formulaire->exportValue('vote_enabled'),
             $formulaire->exportValue('speakers_diner_enabled'),
             $formulaire->exportValue('accomodation_enabled'),
-            $formulaire->exportValue('waiting_list_url')
+            $formulaire->exportValue('waiting_list_url'),
+            $formulaire->exportValue('has_prices_defined_with_vat'),
+            $formulaire->exportValue('transport_information_enabled')
         );
     }
 

@@ -10,6 +10,13 @@
         <div class="col-md-6">
             <h1>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h1>
 
+            {% if sponsorTicket.qrCodesScannerAvailable %}
+                <h2 class="h3-like">{% trans %}SCANNEUR DE QR CODES{% endtrans %}</h2>
+                <a class="button button__medium" href="{{ url('sponsor_scan', {eventSlug: event.path}) }}">
+                    {% trans %}Lancer l'outil de scan de QR Codes{% endtrans %}
+                </a>
+            {% endif %}
+
             <h2 class="h3-like">{% trans %}VOS PLACES GRATUITES{% endtrans %}</h2>
 
             {% if sold_out %}
@@ -36,6 +43,11 @@
                         <th>
                             Email
                         </th>
+                        {% if with_transport %}
+                        <th>
+                            Mode de transport
+                        </th>
+                        {% endif %}
                         <th>
                             ¤
                         </th>
@@ -51,6 +63,12 @@
                         <td>
                             {{ ticket.email }}
                         </td>
+                        {% if with_transport %}
+                        <td>
+                            {{ constant('AppBundle\\Event\\Model\\Ticket::TRANSPORT_MODES')[ticket.transportMode] }}<br />
+                            {{ constant('AppBundle\\Event\\Model\\Ticket::TRANSPORT_DISTANCES')[ticket.transportDistance] }}
+                        </td>
+                        {% endif %}
                         <td>
                             <form method="post" class="sponsor--ticket">
                                 <a href="{{ url('sponsor_ticket_form', {ticket: ticket.id, eventSlug: event.path}) }}" class="button">Modifier</a>
@@ -60,7 +78,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4"><em>Aucun ticket enregistré pour le moment.</em></td>
+                        <td colspan="{{ with_transport ? 5 : 4 }}"><em>Aucun ticket enregistré pour le moment.</em></td>
                     </tr>
 
                 {% endfor %}
@@ -76,6 +94,17 @@
                     <p>Vous avez utilisé toutes vos invitations. Nous avons hâte de vous retrouver lors de cet évènement !</p>
                 {% else %}
                     {{ form_start(ticketForm, {attr: {class: 'sponsor--ticket-edit'}}) }}
+                    {{ form_row(ticketForm.civility) }}
+                    {{ form_row(ticketForm.firstname) }}
+                    {{ form_row(ticketForm.lastname) }}
+                    {{ form_row(ticketForm.email) }}
+
+                    {% if with_transport %}
+                        {{ 'certification_lead.info'|trans|raw }}
+                        {{ form_row(ticketForm.transport_mode) }}
+                        {{ form_row(ticketForm.transport_distance) }}
+                    {% endif %}
+
                     {{ form_errors(ticketForm) }}
                     {{ form_widget(ticketForm) }}
                     <input type="submit" value="Enregistrer" />

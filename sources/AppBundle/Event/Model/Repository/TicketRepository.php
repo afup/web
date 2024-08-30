@@ -179,6 +179,20 @@ class TicketRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @return Ticket[]
+     */
+    public function getByEmptyQrCodes()
+    {
+        $sql = 'SELECT afup_inscription_forum.*
+        FROM afup_inscription_forum
+        WHERE afup_inscription_forum.qr_code IS NULL';
+
+        return $this->getQuery($sql)
+            ->query($this->getCollection(new HydratorSingleObject()))
+            ;
+    }
+
+    /**
      * @return CollectionInterface
      */
     public function getAllTicketsForExport()
@@ -344,6 +358,21 @@ class TicketRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'nearest_office',
                 'fieldName' => 'nearestOffice',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'transport_mode',
+                'fieldName' => 'transportMode',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'transport_distance',
+                'fieldName' => 'transportDistance',
+                'type' => 'int'
+            ])
+            ->addField([
+                'columnName' => 'qr_code',
+                'fieldName' => 'qrCode',
                 'type' => 'string',
             ])
         ;

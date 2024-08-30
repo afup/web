@@ -1,0 +1,69 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Assemblée générale - Comptes rendus</h2>
+    <div class="ui segment">
+        <h3 class="ui header">Ajouter un compte rendu</h3>
+        <div class="ui grid">
+            <div class="six wide column">
+                {{ form_start(form) }}
+                <div class="ui form">
+                    <div class="field">
+                        {{ form_row(form.file) }}
+                    </div>
+                    <div class="field">
+                        {{ form_row(form.submit, {attr: {class: "ui primary button"}}) }}
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+            <div class="ten wide column">
+                <ul>
+                    <li>Fichiers PDF uniquement</li>
+                    <li>Format de nommage : <code>YYYY-MM-JJ_CR AG AFUP YYYY-YYYY.pdf</code><br />
+                    Exemple : <code>2014-02-15_CR AG AFUP 2013-2014.pdf</code></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <h3 class="ui header">Liste des comptes rendus</h3>
+    <table class="ui table striped compact celled">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Type</th>
+            <th>Poids</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for report in reports %}
+            <tr>
+                <td>{{ report.filename }}</td>
+                <td>
+                    {{ report.extension }}
+                </td>
+                <td>
+                    {{ report.size }}
+                </td>
+                <td>
+                    {{ report.mtime|date('d/m/y H:i') }}
+                </td>
+                <td>
+                    <a href="{{ path('admin_members_general_meeting_reports', {file: report.basename}) }}"
+                       data-position="left center"
+                       data-tooltip="Supprimer le CR {{ report.filename }}"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Êtes-vous sûr de vouloir supprimer le CR {{ report.basename }} ?"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

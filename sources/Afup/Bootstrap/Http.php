@@ -54,9 +54,6 @@ $position  = strrpos($url, '/');
 $url       = substr($_SERVER['REQUEST_URI'], 0, $position);
 $parties   = explode('/', $url);
 $sous_site = array_pop($parties);
-if (empty($sous_site) and strpos($_SERVER['HTTP_HOST'], "planete") !== false) {
-	$sous_site = "planete";
-}
 
 // initialisation de Smarty, le moteur de template (html)
 

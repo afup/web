@@ -33,7 +33,7 @@ class TicketEventType extends AbstractType
                     new GreaterThanOrEqual(0),
                     new NotBlank()
                 ],
-                'label' => 'Montant TTC'
+                'label' => $options['has_prices_defined_with_vat'] ? 'Montant TTC' : 'Montant HT',
             ])
             ->add('dateStart', DateTimeType::class, [
                 'widget' => 'choice',
@@ -65,7 +65,8 @@ class TicketEventType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ModelTicketEventType::class
+            'data_class' => ModelTicketEventType::class,
+            'has_prices_defined_with_vat' => true,
         ]);
         $resolver->setRequired([
             'ticketTypes'

@@ -5,10 +5,16 @@ $(document).ready(function(){
 
     let nbMaxPersonnes = $('#divPersonne').data('nb-max-personnes');
     let isSubjectedToVat = $('#ticketing').data('is-subjected-to-vat') == 1;
+    let hasPricesDefinedWithVat = $('#ticketing').data('has-prices-defined-with-vat') == 1;
+
     let vatRate = parseFloat($('#ticketing').data('vat-rate'))
 
     let computeWithoutTaxesPriceFromPriceWithTaxes = function (price) {
         return price / (1 + vatRate);
+    }
+
+    let computeWithTaxesPriceFromPriceWithoutTaxes = function (price) {
+        return price * (1 + vatRate);
     }
 
     let computeWithoutTaxesPriceFromPriceWithTaxesConditionally = function (price) {
@@ -17,6 +23,14 @@ $(document).ready(function(){
         }
 
         return computeWithoutTaxesPriceFromPriceWithTaxes(price);
+    }
+
+    let computeWithTaxesPriceFromPriceWithoutTaxesConditionally = function (price) {
+        if (!isSubjectedToVat) {
+            return price;
+        }
+
+        return computeWithTaxesPriceFromPriceWithoutTaxes(price);
     }
 
     let formatPrice = function (price) {
@@ -159,7 +173,7 @@ $(document).ready(function(){
 
             var tdClone = td.cloneNode();
             tdClone.setAttribute('class', 'text-align-right');
-            tdClone.appendChild(document.createTextNode(formatPrice(computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[i].price)) + '€'));
+            tdClone.appendChild(document.createTextNode(formatPrice(hasPricesDefinedWithVat ? computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[i].price) : inscriptions[i].price) + '€'));
             trClone.appendChild(tdClone);
 
             var tdClone = td.cloneNode();
@@ -169,18 +183,18 @@ $(document).ready(function(){
 
             var tdClone = td.cloneNode();
             tdClone.setAttribute('class', 'text-align-right');
-            tdClone.appendChild(document.createTextNode(formatPrice(computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[i].subtotal)) + '€'));
+            tdClone.appendChild(document.createTextNode(formatPrice(hasPricesDefinedWithVat ? computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[i].subtotal) : inscriptions[i].subtotal) + '€'));
             trClone.appendChild(tdClone);
 
             if (isSubjectedToVat) {
                 var tdClone = td.cloneNode();
-                tdClone.appendChild(document.createTextNode(formatPrice(inscriptions[i].subtotal) + '€'));
+                tdClone.appendChild(document.createTextNode(formatPrice(hasPricesDefinedWithVat ? inscriptions[i].subtotal : computeWithTaxesPriceFromPriceWithoutTaxes(inscriptions[i].subtotal)) + '€'));
                 trClone.appendChild(tdClone);
             }
 
             df.appendChild(trClone);
             numberOfTickets += inscriptions[i].quantity;
-            total += inscriptions[i].subtotal;
+            total += hasPricesDefinedWithVat ? inscriptions[i].subtotal : computeWithTaxesPriceFromPriceWithoutTaxes(inscriptions[i].subtotal);
         }
 
         var trClone = tr.cloneNode();
@@ -235,7 +249,8 @@ $(document).ready(function(){
 		} else {
 			var price = fieldset.find('ul.tickets--type-list input[type=radio]:checked').data('price');
 			if (typeof price !== 'undefined') {
-                $(fieldset).find('legend span.fieldset--legend--price').html(price + '€' + (isSubjectedToVat ? ' TTC ' : ''));
+                var vatSuffix = hasPricesDefinedWithVat ? 'TTC': 'HT';
+                $(fieldset).find('legend span.fieldset--legend--price').html(price + '€' + (isSubjectedToVat ? ' ' + vatSuffix : ''));
             }
 		}
     }
@@ -369,6 +384,39 @@ $(document).ready(function(){
     $('#purchase_tickets_0_firstname').on('change', function(){copyValBetweenFields('purchase_tickets_0_firstname', 'purchase_firstname')});
     $('#purchase_tickets_0_email').on('change', function(){copyValBetweenFields('purchase_tickets_0_email', 'purchase_email')});
 
+
+    // Mode de transport
+    var cloneTransport = function () {
+        let $button = $('#clone_transport');
+        var getNbInscriptions = function() {
+            return parseInt($("#purchase_nbPersonnes").val(), 10);
+        }
+
+        if (getNbInscriptions() <= 1) {
+            $button.hide();
+        }
+
+        $("#purchase_nbPersonnes").change(function () {
+            $button.show();
+            if (getNbInscriptions() <= 1) {
+                $button.hide();
+            }
+        });
+
+        $button.off("click");
+        $button.on('click', function (e) {
+            e.preventDefault();
+            let mode = $('#purchase_tickets_0_transportMode').val();
+            let distance = $('#purchase_tickets_0_transportDistance').val();
+            for (let i = 1; i < nbMaxPersonnes; i++) {
+                $('#purchase_tickets_'+i+'_transportMode').val(mode).change();
+                $('#purchase_tickets_'+i+'_transportDistance').val(distance).change();
+            }
+
+            return false;
+        });
+    }
+
     var init = function(){
 		if (storageAvailable('localStorage') && localStorage.getItem('tickets')) {
 			try {
@@ -400,6 +448,8 @@ $(document).ready(function(){
 		manageFieldSet(nbInscriptions);
 
 		updateSummary();
+
+        cloneTransport();
     };
     init();
 

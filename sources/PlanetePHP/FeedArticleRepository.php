@@ -31,6 +31,15 @@ class FeedArticleRepository
         return intval($query->fetchColumn());
     }
 
+    public function countRelevant(): int
+    {
+        $query = $this->connection->prepare('SELECT COUNT(b.id) FROM afup_planete_billet b WHERE b.etat = :status');
+        $query->bindValue('status', self::RELEVANT);
+        $query->execute();
+
+        return intval($query->fetchColumn());
+    }
+
     /**
      * @param string $sort
      * @param string $direction

@@ -36,9 +36,6 @@ class LeadController extends EventBaseController
         $leadForm->handleRequest($request);
 
         if ($leadForm->isSubmitted() && $leadForm->isValid()) {
-            $repository = $this->get(\AppBundle\Event\Model\Repository\LeadRepository::class);
-            $repository->save($lead);
-
             $sponsorshipLeadMail = $this->get(\AppBundle\Event\Sponsorship\SponsorshipLeadMail::class);
             $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($lead, $sponsorshipLeadMail) {
                 $sponsorshipLeadMail->sendSponsorshipFile($lead);
@@ -84,7 +81,7 @@ class LeadController extends EventBaseController
         $content =
             sprintf(
                 "Une nouvelle demande de dosssier de sponsoring vient d'être effectuée sur le site. Voici les informations saisies :
-                
+
                 - Société: %s
                 - Intitulé du poste: %s
                 - Nom: %s

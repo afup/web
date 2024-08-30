@@ -253,7 +253,7 @@ class MembersAction
             $this->flashBag->add('error', 'Vous ne pouvez pas supprimer votre propre compte');
         } else {
             $this->userCompany->disableUser($user);
-            $this->flashBag->add('notice', 'Le compte a été supprimer de votre adhésion entreprise.');
+            $this->flashBag->add('notice', 'Le compte a été supprimé de votre adhésion entreprise.');
         }
     }
 }

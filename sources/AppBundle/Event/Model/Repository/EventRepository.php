@@ -309,11 +309,6 @@ SQL;
                 'type' => 'string'
             ])
             ->addField([
-                'columnName' => 'trello_list_id',
-                'fieldName' => 'trelloListId',
-                'type' => 'string'
-            ])
-            ->addField([
                 'columnName' => 'logo_url',
                 'fieldName' => 'logoUrl',
                 'type' => 'string'
@@ -334,6 +329,11 @@ SQL;
                 'type' => 'boolean'
             ])
             ->addField([
+                'columnName' => 'has_prices_defined_with_vat',
+                'fieldName' => 'hasPricesDefinedWithVat',
+                'type' => 'boolean'
+            ])
+            ->addField([
                 'columnName' => 'speakers_diner_enabled',
                 'fieldName' => 'speakersDinerEnabled',
                 'type' => 'boolean'
@@ -347,6 +347,11 @@ SQL;
                 'columnName' => 'waiting_list_url',
                 'fieldName' => 'waitingListUrl',
                 'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'transport_information_enabled',
+                'fieldName' => 'transportInformationEnabled',
+                'type' => 'boolean',
             ])
         ;
 

@@ -26,6 +26,8 @@ Feature: Administration - Évènements - Tokens Sponsors
     When I fill in "sponsor_ticket[firstname]" with "Nom personne invitée"
     And I fill in "sponsor_ticket[lastname]" with "Prénom personne invitée"
     And I fill in "sponsor_ticket[email]" with "personneinvitee@masociete.com"
+    And I fill in "sponsor_ticket[transport_mode]" with "70"
+    And I fill in "sponsor_ticket[transport_distance]" with "50"
     And I press "Enregistrer"
     # Listing des invitations renseignées
     Then I should see "personneinvitee@masociete.com"

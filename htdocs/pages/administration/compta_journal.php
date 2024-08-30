@@ -44,27 +44,8 @@ $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode );
 
 
-	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
-	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
-
-// Function added to Smarty in order to add the paybox link if possible
-function paybox_link($description)
-{
-    $matches = array();
-    if (preg_match('`CB\s+AFUP\s+([0-9]{2})([0-9]{2})([0-9]{2})\s+CONTRAT`', $description, $matches)) {
-        $date = $matches[1] . "/" . $matches[2] . "/" . (2000 + (int) $matches[3]);
-
-        $url  = sprintf('https://admin.paybox.com/cgi/CBDCum.cgi?lg=FR&amp;SelDate=%1$s&amp;SelDateAu=%1$s', $date);
-        $html = sprintf('<a href="%2$s" class="js-paybox-link">%1$s</a>', $description, $url);
-
-        $urlTelecolectes = strtr("https://admin.paybox.com/cgi/Remises.cgi?SelDateFrom={date}&SelDateTo={date}&Ok=Ok", ['{date}' => $date]);
-        $html .= sprintf('<br /><br /><a href="%2$s" class="js-paybox-link">%1$s</a>', "(Voir les télécollectes du jour)", $urlTelecolectes);
-
-        return $html;
-    }
-    return $description;
-}
-$smarty->register_modifier('paybox_link', 'paybox_link');
+$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
+$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 
 if ($action == 'lister' || $action == 'debit' || $action == 'credit' || $action == 'export') {
     $alsoDisplayClassifed = isset($_GET['also_display_classifed_entries']) && $_GET['also_display_classifed_entries'];
@@ -117,6 +98,7 @@ elseif ($action == 'credit') {
         $champs['montant_ht_soumis_tva_5_5'] = $champsRecup['montant_ht_soumis_tva_5_5'];
         $champs['montant_ht_soumis_tva_10'] = $champsRecup['montant_ht_soumis_tva_10'];
         $champs['montant_ht_soumis_tva_20'] = $champsRecup['montant_ht_soumis_tva_20'];
+        $champs['tva_zone'] = $champsRecup['tva_zone'];
 
 
 
@@ -162,6 +144,7 @@ elseif ($action == 'credit') {
     $formulaire->addElement('text', 'montant_ht_soumis_tva_0', 'Montant HT non soumis à TVA' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_0'));
     $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-0">Calculer le montant non soumis à TVA sur la base de l\'intégralité du montant TTC</a><br /><br />');
 
+    $formulaire->addElement('select'  , 'tva_zone', 'Zone TVA', array_merge(['' => 'Non définie'], Comptabilite::TVA_ZONES));
 
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
@@ -231,7 +214,9 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                                     $valeur['montant_ht_soumis_tva_0'],
                                     $valeur['montant_ht_soumis_tva_5_5'],
                                     $valeur['montant_ht_soumis_tva_10'],
-                                    $valeur['montant_ht_soumis_tva_20']
+                                    $valeur['montant_ht_soumis_tva_20'],
+                                    $valeur['tva_zone']
+
             						);
         } else {
    			$ok = $compta->modifier(
@@ -255,7 +240,8 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                                     $valeur['montant_ht_soumis_tva_0'],
                                     $valeur['montant_ht_soumis_tva_5_5'],
                                     $valeur['montant_ht_soumis_tva_10'],
-                                    $valeur['montant_ht_soumis_tva_20']
+                                    $valeur['montant_ht_soumis_tva_20'],
+                                    $valeur['tva_zone']
             						);
         }
         if ($ok) {
@@ -326,7 +312,8 @@ elseif ($action === 'export') {
         'Montant HT soumis à TVA 10',
         'TVA 10',
         'Montant HT soumis à TVA 20',
-        'TVA 20'
+        'TVA 20',
+        "Zone de TVA",
     ];
     fputcsv($fp, $columns, $csvDelimiter, $csvEnclosure);
 
@@ -358,7 +345,8 @@ elseif ($action === 'export') {
                 $line['montant_ht_10'],
                 $line['montant_tva_10'],
                 $line['montant_ht_20'],
-                $line['montant_tva_20']
+                $line['montant_tva_20'],
+                Comptabilite::getTvaZoneLabel($line['tva_zone'], 'Non définie')
             ],
             $csvDelimiter,
             $csvEnclosure

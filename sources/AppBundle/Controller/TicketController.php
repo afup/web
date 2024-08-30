@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Afup\Site\Forum\Facturation;
+use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
@@ -106,11 +107,14 @@ class TicketController extends EventBaseController
         } else {
             $ticket = $ticketFactory->createTicketFromSponsorTicket($sponsorTicket);
         }
-        $ticketForm = $this->createForm(SponsorTicketType::class, $ticket);
+        $ticketForm = $this->createForm(SponsorTicketType::class, $ticket, ['with_transport' => $event->getTransportInformationEnabled()]);
         $ticketForm->handleRequest($request);
 
-        if ($ticketForm->isSubmitted() && $ticketForm->isValid() && $sponsorTicket->getPendingInvitations() > 0) {
-            if ($event->getDateEndSalesSponsorToken() < new \DateTime()) {
+        if ($ticketForm->isSubmitted() && $ticketForm->isValid()) {
+            // Si c'est l'ajout d'un ticket
+            // Et qu'il n'y a plus d'invitation
+            // ou que la date du sponsoring est pas passée
+            if ($ticket->getId() === null && ($sponsorTicket->getPendingInvitations() <= 0 || $event->getDateEndSalesSponsorToken() < new \DateTime())) {
                 return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
             }
 
@@ -147,6 +151,7 @@ class TicketController extends EventBaseController
             'event' => $event,
             'sponsors_infos' => $event->getSponsorInfos($request->getLocale()),
             'sponsorTicket' => $sponsorTicket,
+            'with_transport' => $event->getTransportInformationEnabled(),
             'ticketForm' => $ticketForm->createView(),
             'registeredTickets' => $sponsorTicketHelper->getRegisteredTickets($sponsorTicket),
             'edit' => $edit,
@@ -236,6 +241,7 @@ class TicketController extends EventBaseController
             'nbPersonnes' => $purchaseForm->get('nbPersonnes')->getData(), // If there is an error, this will open all fields
             'maxNbPersonnes' => count($purchaseForm->getData()->getTickets()),
             'isSubjectedToVat' => Vat::isSubjectedToVat(new \DateTime('now')),
+            'hasPricesDefinedWithVat' => $event->hasPricesDefinedWithVat(),
             'soldTicketsForMember' => $totalOfSoldTicketsByMember,
             'hasMembersTickets' => $this->get('ting')->get(TicketEventTypeRepository::class)->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
 
@@ -262,9 +268,16 @@ class TicketController extends EventBaseController
             return $this->render(':event/ticket:payment_already_done.html.twig', ['event' => $event]);
         }
 
+        $amount = $invoice->getAmount();
+        if (false === $event->hasPricesDefinedWithVat()) {
+            $amount = Vat::getRoundedWithVatPriceFromPriceWithoutVat($amount, Utils::TICKETING_VAT_RATE);
+        }
+
+
         $params = [
             'event' => $event,
             'invoice' => $invoice,
+            'amount' => $amount,
             'tickets' => $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByInvoiceWithDetail(
                 $invoice
             )
@@ -297,7 +310,7 @@ class TicketController extends EventBaseController
                 });
             }
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
-            $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event);
+            $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event, $amount);
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
             $bankAccountFactory = new BankAccountFactory();
             $params['bankAccount'] = $bankAccountFactory->createApplyableAt($invoice->getinvoiceDate());

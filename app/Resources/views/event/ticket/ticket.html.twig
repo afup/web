@@ -59,7 +59,7 @@
         {% endfor %}
     {% endfor %}
 
-    <div class="col-md-8" id="ticketing" data-is-subjected-to-vat="{{ isSubjectedToVat ? '1' : '0' }}" data-vat-rate="{{ constant('Afup\\Site\\Utils\\Utils::TICKETING_VAT_RATE') }}">
+    <div class="col-md-8" id="ticketing" data-is-subjected-to-vat="{{ isSubjectedToVat ? '1' : '0' }}" data-vat-rate="{{ constant('Afup\\Site\\Utils\\Utils::TICKETING_VAT_RATE') }}" data-has-prices-defined-with-vat="{{ hasPricesDefinedWithVat ? '1' : '0' }}">
         <h1>{{ 'Billetterie'|trans }}: {{ event.title }}</h1>
 
         {% if allTicketsSold and event.getWaitingListUrl %}
@@ -141,7 +141,11 @@
                                                 {{ type.vars.attr['data-price'] }}€
                                             {% endif %}
                                             {% if isSubjectedToVat %}
-                                                TTC
+                                                {% if hasPricesDefinedWithVat %}
+                                                    TTC
+                                                {% else %}
+                                                    HT
+                                                {% endif %}
                                             {% endif %}
                                         </span>
                                         <br />
@@ -171,6 +175,21 @@
                         </ul>
 
                         <p class="tickets--type-stock-limit"><em>{{ 'Dans la limite des stocks disponibles.'|trans }}</em></p>
+
+                        {% if ticket.transportMode is defined %}
+                            <div class="transport">
+                                {{ 'certification_lead.info'|trans|raw }}
+                                {{ form_row(ticket.transportMode) }}
+                                {{ form_row(ticket.transportDistance) }}
+
+                                {% if key == 0 %}
+                                    <button id="clone_transport" class="btn-link">
+                                        Recopier les informations de transport pour toutes les personnes
+                                    </button>
+                                {% endif %}
+
+                            </div>
+                        {%  endif %}
 
                         <p>{{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}</p>
 

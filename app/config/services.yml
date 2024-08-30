@@ -492,6 +492,14 @@ services:
     AppBundle\Event\Ticket\TicketTypeAvailability:
         autowire: true
 
+    AppBundle\Event\Ticket\QrCodeGenerator:
+        autowire: true
+        arguments: ["%qr_code_salt%"]
+
+    AppBundle\Command\QrCodesGeneratorCommand:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Association\Form\UserEditType:
         autowire: true
         autoconfigure: true
@@ -576,17 +584,6 @@ services:
 
     AppBundle\Event\Sponsorship\SponsorshipLeadMail:
         arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger"]
-
-    Trello\Client:
-        calls: [["authenticate", ["%trello_api_key%", "%trello_token%", !php/const Trello\Client::AUTH_URL_CLIENT_ID]]]
-
-    Trello\Manager:
-        arguments: ['@Trello\Client']
-
-    AppBundle\Event\Model\Repository\LeadRepository:
-        arguments:
-            $logger: "@logger"
-        autowire: true
 
     AppBundle\Event\AnonymousExport:
         autowire: true

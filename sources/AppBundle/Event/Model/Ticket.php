@@ -15,6 +15,29 @@ class Ticket implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
+    const TRANSPORT_MODES = [
+        AFUP_TRANSPORT_MODE_SEUL_THERMIQUE => 'Voiture seul·e',
+        AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE => 'Voiture seul·e électrique',
+        AFUP_TRANSPORT_MODE_SEUL_HYBRIDE => 'Voiture seul·e hybride',
+        AFUP_TRANSPORT_MODE_PASSAGERS_THERMIQUE=> 'Voiture avec passagers·ères',
+        AFUP_TRANSPORT_MODE_PASSAGERS_ELECTRIQUE => 'Voiture avec passagers·ères électrique',
+        AFUP_TRANSPORT_MODE_PASSAGERS_HYBRIDE => 'Voiture avec passagers·ères hybride',
+        AFUP_TRANSPORT_MODE_BUS => 'Bus',
+        AFUP_TRANSPORT_MODE_TRAIN => 'Train',
+        AFUP_TRANSPORT_MODE_AVION_ECO => 'Avion classe économique',
+        AFUP_TRANSPORT_MODE_AVION_BUSINESS => 'Avion classe business',
+        AFUP_TRANSPORT_MODE_COMMUN => 'Transports en commun'
+    ];
+
+    const TRANSPORT_DISTANCES = [
+        AFUP_TRANSPORT_DISTANCE_0 => '< 25 km',
+        AFUP_TRANSPORT_DISTANCE_25_50 => 'entre 25 et 50 km',
+        AFUP_TRANSPORT_DISTANCE_50_100 => 'entre 50 et 100 km',
+        AFUP_TRANSPORT_DISTANCE_100_500 => 'entre 100 et 500 km',
+        AFUP_TRANSPORT_DISTANCE_500_1000 => 'entre 500 et 1000 km',
+        AFUP_TRANSPORT_DISTANCE_1000 => '> 1000 km',
+    ];
+
     const STATUS_CREATED = AFUP_FORUM_ETAT_CREE;
     const STATUS_CANCELLED = AFUP_FORUM_ETAT_ANNULE;
     const STATUS_ERROR = AFUP_FORUM_ETAT_ERREUR;
@@ -228,6 +251,21 @@ class Ticket implements NotifyPropertyInterface
      * @var null|string
      */
     protected $nearestOffice;
+
+    /**
+     * @var null|string
+     */
+    protected $transportMode;
+
+    /**
+     * @var null|int
+     */
+    protected $transportDistance;
+
+    /**
+     * @var null|string
+     */
+    protected $qrCode;
 
     /**
      * @return int
@@ -744,6 +782,70 @@ class Ticket implements NotifyPropertyInterface
         $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
 
         $this->nearestOffice = $nearestOffice;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTransportMode()
+    {
+        return $this->transportMode;
+    }
+
+    /**
+     * @param null|string $transportMode
+     *
+     * @return $this
+     */
+    public function setTransportMode($transportMode)
+    {
+        $this->propertyChanged('transportMode', $this->transportMode, $transportMode);
+
+        $this->transportMode = $transportMode;
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getTransportDistance()
+    {
+        return $this->transportDistance;
+    }
+
+    /**
+     * @param null|int $transportDistance
+     *
+     * @return $this
+     */
+    public function setTransportDistance($transportDistance)
+    {
+        $this->propertyChanged('transportDistance', $this->transportDistance, $transportDistance);
+
+        $this->transportDistance = $transportDistance;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getQrCode()
+    {
+        return $this->qrCode;
+    }
+
+    /**
+     * @param null|string $qrCode
+     * @return $this
+     */
+    public function setQrCode($qrCode)
+    {
+        $this->propertyChanged('qrCode', $this->qrCode, $qrCode);
+        $this->qrCode = $qrCode;
 
         return $this;
     }

@@ -18,7 +18,6 @@ class Event extends AbstractSeed
                 'id' => self::ID_FORUM,
                 'titre' => 'forum',
                 'path' => 'forum',
-                'trello_list_id' => null,
                 'logo_url' => 'http://78.media.tumblr.com/tumblr_lgkqc0mz9d1qfyzelo1_1280.jpg', // oui, c'est un chat
                 'nb_places' => 500,
                 'date_debut' => date('Y-m-d', $event),
@@ -42,6 +41,8 @@ class Event extends AbstractSeed
                 'place_name' => 'Paris',
                 'place_address' => 'Marriott Rive Gauche',
                 'date_annonce_planning' => date('U', $event),
+                'transport_information_enabled' => 1,
+                'has_prices_defined_with_vat' => 1,
             ],
         ];
 

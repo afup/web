@@ -3,7 +3,6 @@
 
 namespace AppBundle\Event\Form;
 
-use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\GithubUserRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
@@ -99,7 +98,7 @@ class SpeakerType extends AbstractType
             $speaker = $formEvent->getData();
             $user = $this->tokenStorage->getToken()->getUser();
 
-            if ($speaker instanceof Speaker && $speaker->getId() === null && $user instanceof User) {
+            if ($speaker instanceof Speaker && $speaker->getId() === null && $user instanceof GithubUser) {
                 $previousSpeakerInfos = $this->speakerRepository->getFromLastEventAndUserId($speaker->getEventId(), $user->getId());
                 if ($previousSpeakerInfos instanceof Speaker) {
                     $speaker->setCivility($previousSpeakerInfos->getCivility());
