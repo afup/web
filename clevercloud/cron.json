@@ -1,0 +1,3 @@
+[
+  "02 * * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh $ROOT/htdocs/robots/planete/explorateur.php"
+]
