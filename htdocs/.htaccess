@@ -39,8 +39,6 @@ RewriteRule ^enquete$ "https://docs.google.com/forms/d/e/1FAIpQLSdtPRqp7AL73RhUS
 
 # If the requested filename exists, simply serve it.
 # We only want to let Apache serve files and not directories.
-RewriteCond %{HTTPS} off
-RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
