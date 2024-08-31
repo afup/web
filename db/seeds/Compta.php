@@ -34,9 +34,6 @@ class Compta extends AbstractSeed
                 'idcompte' => 1,
                 'numero' => '',
                 'obs_regl' => '',
-                'idoperation' => 0,
-                'idmode_regl' => 0,
-                'date_regl' => '0000-00-00',
             ],
             [
                 'id'    => '2',
@@ -55,10 +52,6 @@ class Compta extends AbstractSeed
                 'idclef' => 2,
                 'numero' => '',
                 'obs_regl' => '',
-                'idoperation' => 0,
-
-                'idmode_regl' => 0,
-                'date_regl' => '0000-00-00',
             ],
             [
                 'id'    => '3',
