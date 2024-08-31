@@ -103,7 +103,6 @@ class Users extends AbstractSeed
                 'code_postal' => '93501-1100',
                 'ville' => 'Mojave, CA',
                 'roles' => '',
-                'adresse' => '',
             ],
             [
                 'id'    => self::ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS,
@@ -116,7 +115,6 @@ class Users extends AbstractSeed
                 'roles' => '["ROLE_COMPANY_MANAGER"]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'niveau_modules' => '00000',
-                'roles' => '',
                 'adresse' => '',
             ],
             [
@@ -130,7 +128,6 @@ class Users extends AbstractSeed
                 'roles' => '["ROLE_COMPANY_MANAGER"]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'niveau_modules' => '00000',
-                'roles' => '',
                 'adresse' => '',
             ],
             [
@@ -145,7 +142,6 @@ class Users extends AbstractSeed
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'niveau_modules' => '00000',
                 'etat' => 1,
-                'roles' => '',
                 'adresse' => '',
             ],
             [
