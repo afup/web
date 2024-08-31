@@ -1,5 +1,7 @@
 <?php
+
 namespace Afup\Site\Forum;
+
 use Afup\Site\Utils\Base_De_Donnees;
 
 class Partenaires
@@ -9,7 +11,7 @@ class Partenaires
      * @var     Base_De_Donnees
      * @access  private
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * Constructeur.

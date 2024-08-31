@@ -1,4 +1,5 @@
 <?php
+
 namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Base_De_Donnees;
@@ -10,7 +11,7 @@ class Inscriptions
      * @var     Base_De_Donnees
      * @access  private
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * Constructeur.
