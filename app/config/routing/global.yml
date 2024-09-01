@@ -10,6 +10,6 @@ become_sponsor_latest:
 
 sitemap:
   path: /plan-du-site
-  defaults: { _controller: AppBundle:Sitemap:display }
+  defaults: { _controller: AppBundle:HtmlSitemap:display }
   options:
     sitemap: true

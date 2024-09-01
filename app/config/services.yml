@@ -110,7 +110,7 @@ services:
     AppBundle\Controller\LeadController:
         autowire: true
 
-    AppBundle\Controller\SitemapController:
+    AppBundle\Controller\HtmlSitemapController:
         autowire: true
 
     AppBundle\Controller\SpeakerSuggestionController:

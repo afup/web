@@ -5,10 +5,12 @@ namespace AppBundle\Controller;
 use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SitemapController extends SiteBaseController
+class HtmlSitemapController extends SiteBaseController
 {
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
@@ -29,6 +31,7 @@ class SitemapController extends SiteBaseController
                 'association' => $this->buildLeafs($branche, Feuille::ID_FEUILLE_ANTENNES),
                 'members' => $this->members(),
                 'news' => $this->news(),
+                'talks' => $this->talks(),
             ]
         );
     }
@@ -97,5 +100,28 @@ class SitemapController extends SiteBaseController
         } while (count($newsList) >= $itemPerPage);
 
         return $news;
+    }
+
+    private function talks(): array
+    {
+        $repository = $this->get('ting')->get(TalkRepository::class);
+
+        $talks = [];
+        $talkList = $repository->getAllPastTalks((new \DateTime())->setTime(29,59,59));
+
+        /** @var Talk $talk */
+        foreach ($talkList as $talk) {
+            $url = $this->urlGenerator->generate(
+                'talks_show',
+                ['id' => $talk->getId(), 'slug' => $talk->getSlug()]
+            );
+
+            $talks[] = [
+                'name' => $talk->getTitle(),
+                'url' => $url
+            ];
+        }
+
+        return $talks;
     }
 }

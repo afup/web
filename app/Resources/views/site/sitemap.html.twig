@@ -18,12 +18,15 @@
                 <div class="col-md-6">
                     {{ _self.list(pages) }}
 
-                    <h2><a href="{{ path('become_member') }}">Adhérer</a></h2>
+                    <h2><a href="{{ path('become_member') }}">Adhérer à l'AFUP</a></h2>
                     <ul>
                         <li><a href="{{ path('legacy_inscription') }}">Adhérer en tant que particulier</a></li>
                         <li><a href="{{ path('company_membership') }}">Adhérer en tant qu'entreprise</a></li>
                         <li><a href="{{ path('admin_login') }}">Se connecter</a></li>
                     </ul>
+
+                    <h2><a href="{{ path('talks_list') }}">Historique des conférences</a></h2>
+                    {{ _self.list(talks) }}
                 </div>
                 <div class="col-md-6">
                     <h2>Association</h2>
