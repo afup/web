@@ -30,7 +30,10 @@ class Compta extends AbstractSeed
                 'description' => 'Une recette qui rapporte',
                 'attachment_filename' => $path.'/test_file1.pdf',
                 'idevenement' => 5,
-                'idcompte' => 1
+                'idclef' => '',
+                'idcompte' => 1,
+                'numero' => '',
+                'obs_regl' => '',
             ],
             [
                 'id'    => '2',
@@ -44,7 +47,11 @@ class Compta extends AbstractSeed
                 'date_ecriture' => date('Y-10-18'),
                 'description' => 'Une dépense très utile',
                 'idevenement' => 5,
-                'idcompte' => 1
+
+                'idcompte' => 1,
+                'idclef' => 2,
+                'numero' => '',
+                'obs_regl' => '',
             ],
             [
                 'id'    => '3',
@@ -56,6 +63,14 @@ class Compta extends AbstractSeed
                 'comment' => null,
                 'attachment_required' => 1,
                 'idcompte' => 1,
+                'idclef' => 3,
+                'numero' => '',
+                'obs_regl' => '',
+                'idoperation' => 0,
+                'idcategorie' => 0,
+                'idmode_regl' => 0,
+                'date_regl' => '0000-00-00',
+                'idevenement' => 0,
             ],
             [
                 'id'    => '4',
@@ -68,6 +83,14 @@ class Compta extends AbstractSeed
                 'attachment_required' => 1,
                 'idcompte' => 1,
                 'montant_ht_soumis_tva_20' => 13,
+                'idclef' => 4,
+                'numero' => '',
+                'obs_regl' => '',
+                'idoperation' => 0,
+                'idcategorie' => 0,
+                'idmode_regl' => 0,
+                'date_regl' => '0000-00-00',
+                'idevenement' => 0,
             ],
         ];
 
