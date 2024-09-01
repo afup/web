@@ -35,7 +35,8 @@ class Session extends AbstractSeed
                 'language_code' => 'fr',
                 'markdown' => 1,
                 'joindin' => 24041,
-                'date_publication' => null
+                'date_publication' => null,
+                'has_allowed_to_sharing_with_local_offices' => 1,
             ],
             [
                 'session_id' => self::ID_SESSIONS[1],
@@ -59,7 +60,8 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'language_code' => 'fr',
                 'markdown' => 0,
                 'joindin' => 24138,
-                'date_publication' => (new \DateTime())->modify('-1 days')->format('Y-m-d H:i:s')
+                'date_publication' => (new \DateTime())->modify('-1 days')->format('Y-m-d H:i:s'),
+                'has_allowed_to_sharing_with_local_offices' => 1,
             ],
             [
                 'session_id' => 3,
@@ -81,7 +83,8 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'language_code' => 'fr',
                 'markdown' => 1,
                 'joindin' => 24041,
-                'date_publication' => (new \DateTime())->modify('+5 days')->format('Y-m-d H:i:s')
+                'date_publication' => (new \DateTime())->modify('+5 days')->format('Y-m-d H:i:s'),
+                'has_allowed_to_sharing_with_local_offices' => 1,
             ],
         ];
 
@@ -132,7 +135,7 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'fin' => $date->format('U'),
                 'id_salle' => 1,
                 'id_forum' => Event::ID_FORUM,
-                'keynote' => ''
+                'keynote' => 0,
             ];
             ++$i;
         }

@@ -39,8 +39,6 @@ RewriteRule ^enquete$ "https://docs.google.com/forms/d/e/1FAIpQLSdtPRqp7AL73RhUS
 
 # If the requested filename exists, simply serve it.
 # We only want to let Apache serve files and not directories.
-RewriteCond %{HTTPS} off
-RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
@@ -51,6 +49,9 @@ RewriteRule ^ - [END]
 RewriteRule ^m/ /event/latest/calendar [R=301,L]
 RewriteRule ^calendrier/?(index.php)? /event/latest/calendar [R=301,L]
 RewriteRule ^forumphp/? https://event.afup.org [R=301,L]
+RewriteRule ^ask/barometre/? https://barometre.afup.org [R=301,L]
+RewriteRule ^ask/forum/? https://event.afup.org [R=301,L]
+RewriteRule ^ask/? / [R=301,L]
 
 ## This url are handled by symfony
 RewriteRule (event|connect|_|association|talks|meetups|blog|admin|p|home|news|techno_watch|member|rss.xml)/? /app.php [END]

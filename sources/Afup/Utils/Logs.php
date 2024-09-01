@@ -1,6 +1,7 @@
 <?php
 
 namespace Afup\Site\Utils;
+
 /**
  * Classe de gestion des logs
  */
@@ -11,21 +12,21 @@ class Logs
      * @var     object
      * @access  private
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * Identifiant de l'utilisateur connecté
      * @var     int
      * @access  private
      */
-    var $_id_utilisateur;
+    private $_id_utilisateur;
 
     /**
      * Nombre de logs affichés par page
      * @var     int
      * @access  private
      */
-    var $_nombre_logs_par_page = 15; // TODO : Utiliser une constante en PHP5
+    private $_nombre_logs_par_page = 15; // TODO : Utiliser une constante en PHP5
 
     /**
      * Renvoit l'instance unique de la classe Afup\Site\Utils\Logs

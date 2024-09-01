@@ -16,7 +16,7 @@ class Personnes_Morales
      * @var     Base_De_Donnees
      * @access  private
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * Constructeur.
