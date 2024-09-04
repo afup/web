@@ -6,6 +6,13 @@
 
     {% if pendingBankwires|length > 0 %}
     <form method="post" style="width:auto;">
+        <div class="ui message info">
+            <p>
+                Au clic sur le bouton "Virement reçu", la facture sera indiquée comme payée,
+                le contact de facturation recevra par mail la facture, et toutes les personnes
+                inscrites recevront par mail leur confirmation d'inscription.
+            </p>
+        </div>
         <table class="ui table striped compact celled">
             <thead>
                 <tr>
