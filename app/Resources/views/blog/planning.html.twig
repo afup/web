@@ -1,29 +1,29 @@
 {% if not planningDisplayable %}
     Le planning est en cours d'élaboration, il sera dévoilé sous peu.
 {% else %}
-<script type="application/ld+json">
-    {{ jsonld|json_encode|raw }}
-</script>
+    <script type="application/ld+json">
+      {{ jsonld|json_encode|raw }}
+    </script>
 
-<div class="bloc_jour">
-    {% for date, planningForADay in planning %}
-        <table class="planning_agenda">
-            <caption>Jour {{ loop.index }} : {{ date }}</caption>
-            <thead>
-            <tr>
-                <th class="horaire" colspan="2">&nbsp;</th>
-                {% for room in rooms %}
-                    <th class="activite">{{ room.name }}</th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
+    <div class="bloc_jour">
+        {% for date, planningForADay in planning %}
+            <table class="planning_agenda">
+                <caption>Jour {{ loop.index }} : {{ date }}</caption>
+                <thead>
+                <tr>
+                    <th class="horaire" colspan="2">&nbsp;</th>
+                    {% for room in rooms %}
+                        <th class="activite">{{ room.name }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
                 {#
-                    Le tableau hasConf contiens pour chaque salle le nombre d'itérations à ignorer pour les td vides
-                    Ce tableau est indexé selon les *noms* des salles car si on l'index par id, le merge va réindexer
-                    les valeurs. Le merge étant le seul moyen de modifier l'entrée d'un tableau dans twig, ce tableau
-                    serait alors inutile
-                 #}
+                Le tableau hasConf contiens pour chaque salle le nombre d'itérations à ignorer pour les td vides
+                Ce tableau est indexé selon les *noms* des salles car si on l'index par id, le merge va réindexer
+                les valeurs. Le merge étant le seul moyen de modifier l'entrée d'un tableau dans twig, ce tableau
+                serait alors inutile
+                #}
                 {% set hasConf = {} %}
                 {% for hour in hourMin..hourMax %}
                     {% set hour = "%02d"|format(hour) %}
@@ -88,12 +88,11 @@
                         </tr>
                     {% endfor %}
                 {% endfor %}
-
-            </tbody>
-        </table>
-        <br class="page_break">
-    {% endfor %}
-</div>
+                </tbody>
+            </table>
+            <br class="page_break">
+        {% endfor %}
+    </div>
 
     {% for event in events %}
         <a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/calendar">Créer mon planning personnalisé{% if events|length > 1 %} ({{ event.title }}){% endif %}</a>
