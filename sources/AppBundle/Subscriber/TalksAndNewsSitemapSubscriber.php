@@ -4,6 +4,8 @@ namespace AppBundle\Subscriber;
 
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Site\Model\Article;
+use AppBundle\Site\Model\Repository\ArticleRepository;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\UrlContainerInterface;
@@ -11,7 +13,7 @@ use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class TalksSitemapSubscriber implements EventSubscriberInterface
+class TalksAndNewsSitemapSubscriber implements EventSubscriberInterface
 {
     /** @var RepositoryFactory */
     private $ting;
@@ -35,6 +37,7 @@ class TalksSitemapSubscriber implements EventSubscriberInterface
     public function populate(SitemapPopulateEvent $event)
     {
         $this->registerTalksUrls($event->getUrlContainer());
+        $this->registerNewsUrls($event->getUrlContainer());
     }
 
     public function registerTalksUrls(UrlContainerInterface $urls)
@@ -56,6 +59,26 @@ class TalksSitemapSubscriber implements EventSubscriberInterface
                     'talks'
                 );
             }
+        }
+    }
+
+    public function registerNewsUrls(UrlContainerInterface $urls)
+    {
+        $news = $this->ting->get(ArticleRepository::class)->findAllPublishedNews();
+
+        /** @var Article $article */
+        foreach ($news as $article) {
+            $urls->addUrl(
+                new UrlConcrete(
+                    $this->urlGenerator->generate(
+                        'news_display',
+                        ['code' => $article->getSlug(),],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    ),
+                    $article->getPublishedAt()
+                ),
+                'news'
+            );
         }
     }
 }
