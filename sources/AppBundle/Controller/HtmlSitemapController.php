@@ -79,25 +79,20 @@ class HtmlSitemapController extends SiteBaseController
 
     private function news(): array
     {
-        $itemPerPage = 100;
-        $page = 1;
-
         $repository = $this->get('ting')->get(ArticleRepository::class);
 
         $news = [];
-        do {
-            $newsList = $repository->findPublishedNews($page++, $itemPerPage, []);
-            foreach ($newsList as $newsItem) {
-                $url = $this->urlGenerator->generate('news_display', [
-                    'code' => $newsItem->getSlug(),
-                ]);
+        $newsList = $repository->findAllPublishedNews();
+        foreach ($newsList as $newsItem) {
+            $url = $this->urlGenerator->generate('news_display', [
+                'code' => $newsItem->getSlug(),
+            ]);
 
-                $news[] = [
-                    'name' => $newsItem->getTitle(),
-                    'url' => $url
-                ];
-            }
-        } while (count($newsList) >= $itemPerPage);
+            $news[] = [
+                'name' => $newsItem->getTitle(),
+                'url' => $url
+            ];
+        }
 
         return $news;
     }
