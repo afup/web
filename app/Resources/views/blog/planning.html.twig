@@ -44,7 +44,7 @@
                                 {% for room in rooms %}
                                     {% if slot[room.id] is defined %}
                                         {% set rows = slot[room.id] %}
-                                        {% set numberOfRowForThisSlot = rows|first.length / prevision %}
+                                        {% set numberOfRowForThisSlot = rows[0].length / prevision %}
 
                                         {% set hasConf = hasConf|merge({(room.name|trim):numberOfRowForThisSlot}) %}
                                         {# Boucle pour afficher chaque événement dans la salle #}
