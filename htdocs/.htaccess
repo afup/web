@@ -49,6 +49,9 @@ RewriteRule ^ - [END]
 RewriteRule ^m/ /event/latest/calendar [R=301,L]
 RewriteRule ^calendrier/?(index.php)? /event/latest/calendar [R=301,L]
 RewriteRule ^forumphp/? https://event.afup.org [R=301,L]
+RewriteRule ^ask/barometre/? https://barometre.afup.org [R=301,L]
+RewriteRule ^ask/forum/? https://event.afup.org [R=301,L]
+RewriteRule ^ask/? / [R=301,L]
 
 ## This url are handled by symfony
 RewriteRule (event|connect|_|association|talks|meetups|blog|admin|p|home|news|techno_watch|member|rss.xml)/? /app.php [END]

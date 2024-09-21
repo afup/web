@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Partenaires AFUP"
-AuthUserFile /var/www/afup.org/htdocs/pages/partenaires/.htpasswd
-Require valid-user

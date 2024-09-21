@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Afup\Site\Comptabilite;
 
 use Afup\Site\Utils\Mailing;
@@ -17,7 +16,7 @@ class Facture
     /**
      * @var \Afup\Site\Utils\Base_De_Donnees
      */
-    var $_bdd;
+    private $_bdd;
 
     function __construct(&$bdd)
     {
@@ -355,7 +354,9 @@ class Facture
             utf8_decode($coordonnees['adresse']) . "\n" .
             utf8_decode($coordonnees['code_postal']) . " " .
             utf8_decode($coordonnees['ville']) . "\n" .
-            utf8_decode($pays->obtenirNom($coordonnees['id_pays'])));
+            utf8_decode($pays->obtenirNom($coordonnees['id_pays'])) .
+            ($coordonnees['tva_intra'] ? ("\n" . utf8_decode('N° TVA Intracommunautaire : ' . $coordonnees['tva_intra'])) : null)
+        );
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);

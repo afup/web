@@ -1,4 +1,5 @@
 <?php
+
 namespace Afup\Site\Forum;
 
 class Forum
@@ -8,7 +9,7 @@ class Forum
      * @var     object
      * @access  private
      */
-    var $_bdd;
+    private $_bdd;
 
     /**
      * Constructeur.

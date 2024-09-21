@@ -1,69 +1,70 @@
 {% if not planningDisplayable %}
     Le planning est en cours d'élaboration, il sera dévoilé sous peu.
 {% else %}
-<script type="application/ld+json">
-    {{ jsonld|json_encode|raw }}
-</script>
+    <script type="application/ld+json">
+      {{ jsonld|json_encode|raw }}
+    </script>
 
-<div class="bloc_jour">
-    {% for date, planningForADay in planning %}
-        <table class="planning_agenda">
-            <caption>Jour {{ loop.index }} : {{ date }}</caption>
-            <thead>
-            <tr>
-                <th class="horaire" colspan="2">&nbsp;</th>
-                {% for room in rooms %}
-                    <th class="activite">{{ room.name }}</th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
+    <div class="bloc_jour">
+        {% for date, planningForADay in planning %}
+            <table class="planning_agenda">
+                <caption>Jour {{ loop.index }} : {{ date }}</caption>
+                <thead>
+                <tr>
+                    <th class="horaire" colspan="2">&nbsp;</th>
+                    {% for room in rooms %}
+                        <th class="activite">{{ room.name }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
                 {#
-                    Le tableau hasConf contiens pour chaque salle le nombre d'itérations à ignorer pour les td vides
-                    Ce tableau est indexé selon les *noms* des salles car si on l'index par id, le merge va réindexer
-                    les valeurs. Le merge étant le seul moyen de modifier l'entrée d'un tableau dans twig, ce tableau
-                    serait alors inutile
-                 #}
+                Le tableau hasConf contiens pour chaque salle le nombre d'itérations à ignorer pour les td vides
+                Ce tableau est indexé selon les *noms* des salles car si on l'index par id, le merge va réindexer
+                les valeurs. Le merge étant le seul moyen de modifier l'entrée d'un tableau dans twig, ce tableau
+                serait alors inutile
+                #}
                 {% set hasConf = {} %}
                 {% for hour in hourMin..hourMax %}
                     {% set hour = "%02d"|format(hour) %}
                     {% set numberOfRows = 60/precision %}
-                    {% for row in 1..numberOfRows %}
-                        {% set minutes = "%02d"|format(precision*loop.index0) %}
+                    {% for _ in 1..numberOfRows %}
+                        {% set minutes = "%02d"|format(precision*(loop.index-1)) %}
                         {# On crée une ligne pour chaque espace de 5 minutes mais on affiche les heures que les 1/4h #}
                         <tr>
-                            {% if loop.index0 * precision % 60 == 0 %}
+                            {% if loop.index == 1 %}
                                 <td class="col_heure" rowspan="{{ 60 / precision }}" nowrap="nowrap">
-                                    {# @TODO Meilleur affichage heures et minutes #}
                                     {{ hour }}h
                                 </td>
                             {% endif %}
-                            <td class="col_heure">{{ "%02d"|format(precision*loop.index0) }}</td>
+                            <td class="col_heure">{{ minutes }}</td>
 
                             {% if planningForADay[date ~ " " ~ hour ~ ":" ~ minutes] is defined %}
                                 {% set slot = planningForADay[date ~ " " ~ hour ~ ":" ~ minutes] %}
                                 {% for room in rooms %}
                                     {% if slot[room.id] is defined %}
-                                        {% set row = slot[room.id] %}
-                                        {% set numberOfRowForThisSlot = row.length / precision %}
+                                        {% set rows = slot[room.id] %}
+                                        {% set numberOfRowForThisSlot = rows|first.length / precision %}
 
                                         {% set hasConf = hasConf|merge({(room.name|trim):numberOfRowForThisSlot}) %}
+                                        {# Boucle pour afficher chaque événement dans la salle #}
                                         <td rowspan="{{ numberOfRowForThisSlot }}" width="21%" class="conf {{ cycle(['conf_odd', 'conf_even'], loop.index0) }}">
-                                        <p>
-                                            <a href="{{ row.program_page_prefix }}#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
-                                                {{ row.talk.title }}
-                                                <div class="conferencier">
-                                            {% for speaker in row[".aggregation"].speaker %}
-                                                {% if loop.index > 1 %} / {% endif %}
-                                                {{ speaker.label }}
-                                                {% if speaker.company %}
-                                                    - {{ speaker.company }}
-                                                {% endif %}
+                                            {% for row in rows %}
+                                                <p>
+                                                    <a href="{{ row.program_page_prefix }}#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
+                                                        {{ row.talk.title }}
+                                                        <div class="conferencier">
+                                                            {% for speaker in row[".aggregation"].speaker %}
+                                                                {% if loop.index > 1 %} / {% endif %}
+                                                                {{ speaker.label }}
+                                                                {% if speaker.company %}
+                                                                    - {{ speaker.company }}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </a>
+                                                </p>
                                             {% endfor %}
-                                                </div>
-                                            </a>
-                                        </p>
-
                                         </td>
                                     {% else %}
                                         {% if hasConf[room.name] is defined and hasConf[room.name] > 0 %}
@@ -87,12 +88,11 @@
                         </tr>
                     {% endfor %}
                 {% endfor %}
-
-            </tbody>
-        </table>
-        <br class="page_break">
-    {% endfor %}
-</div>
+                </tbody>
+            </table>
+            <br class="page_break">
+        {% endfor %}
+    </div>
 
     {% for event in events %}
         <a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/calendar">Créer mon planning personnalisé{% if events|length > 1 %} ({{ event.title }}){% endif %}</a>

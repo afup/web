@@ -187,7 +187,7 @@ class Feuilles extends AbstractSeed
             $preparedFeuiles[$currentId] = [
                 'id' => ($currentId = ++$baseId),
                 'nom' => $item['nom'],
-                'lien' => $lien,
+                'lien' => $item['lien'] ?? null,
                 'id_parent' => $parentId,
                 'etat' => 1,
             ];

@@ -85,6 +85,15 @@ class ArticleRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    public function findAllPublishedNews(array $filters = [])
+    {
+        list($sql, $params) = $this->getSqlPublishedNews($filters);
+
+        return $this->getPreparedQuery($sql)
+            ->setParams($params)
+            ->query($this->getCollection(new HydratorSingleObject()));
+    }
+
     public function findPrevious(Article $article)
     {
         if (null === ($publishedAt = $article->getPublishedAt())) {
