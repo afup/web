@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\SpeakerInfos\Form;
 
 use Symfony\Component\Form\AbstractType;

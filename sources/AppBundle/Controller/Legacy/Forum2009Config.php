@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Legacy;
 
 interface Forum2009Config

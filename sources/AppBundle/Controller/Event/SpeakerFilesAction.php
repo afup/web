@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Event\Model\Repository\SpeakerRepository;

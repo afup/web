@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Github\Exception;
 
 class UnableToGetGithubUserInfosException extends \Exception

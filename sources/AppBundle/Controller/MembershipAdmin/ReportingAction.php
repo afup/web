@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\MembershipAdmin;
 
 use AppBundle\Association\UserMembership\StatisticsComputer;

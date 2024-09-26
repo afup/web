@@ -23,6 +23,7 @@ return PhpCsFixer\Config::create()
         'no_unused_imports' => true,
         'no_whitespace_in_blank_line' => true,
         'method_argument_space' => false,
+        'declare_strict_types' => true,
     ])
     ->setFinder($finder)
 ;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Legacy;
 
 use Afup\Site\Forum\AppelConferencier;

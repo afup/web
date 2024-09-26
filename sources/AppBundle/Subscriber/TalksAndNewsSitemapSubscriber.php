@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Subscriber;
 
 use AppBundle\Event\Model\Repository\TalkRepository;
