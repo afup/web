@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;

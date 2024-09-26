@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Twig;
 
@@ -29,5 +31,10 @@ class AssetsExtension extends \Twig_Extension implements \Twig_Extension_Globals
     public function getName()
     {
         return 'assets';
+    }
+
+    public function getGlobals()
+    {
+        return [];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Invoice;
 
 use AppBundle\Event\Model\Invoice;

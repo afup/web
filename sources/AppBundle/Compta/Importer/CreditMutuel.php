@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Compta\Importer;
 
 use AppBundle\Model\ComptaCompte;
@@ -51,7 +53,7 @@ class CreditMutuel implements Importer
                 continue;
             }
 
-            if (count($data) !== 6) {
+            if (!$data || count($data) !== 6) {
                 continue;
             }
 

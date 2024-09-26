@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
