@@ -1,9 +1,5 @@
 {% extends ':admin/association/membership:_base.html.twig' %}
 
-{% form_theme form with [
-    'form_theme_errors.html.twig'
-] %}
-
 {% block submenu %}
     {% include ':admin/association/membership:_company_menu.html.twig' with {
         current: "public_profile"
