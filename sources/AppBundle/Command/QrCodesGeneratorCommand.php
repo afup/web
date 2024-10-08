@@ -7,6 +7,7 @@ use AppBundle\Event\Ticket\QrCodeGenerator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -30,6 +31,8 @@ class QrCodesGeneratorCommand extends ContainerAwareCommand
             ->setName('generate-qr-codes')
             ->setAliases(['g-q-c'])
             ->setDescription('Génère les QR codes pour les badges des participant.e.s pour les évènements.')
+            ->addOption('inscription-id-min', null, InputOption::VALUE_REQUIRED, 'Inscription ID minimum.')
+            ->addOption('inscription-id-max', null, InputOption::VALUE_REQUIRED, 'Inscription ID maximum.')
         ;
     }
 
@@ -57,6 +60,14 @@ class QrCodesGeneratorCommand extends ContainerAwareCommand
 
             $io->progressStart(count($tickets));
             foreach ($tickets as $ticket) {
+                if (null !== ($inscriptionIdMin = $input->getOption('inscription-id-min')) && $inscriptionIdMin > $ticket->getId()) {
+                    continue;
+                }
+
+                if (null !== ($inscriptionIdMax = $input->getOption('inscription-id-max')) && $inscriptionIdMax < $ticket->getId()) {
+                    continue;
+                }
+
                 $io->progressAdvance();
                 $ticket->setQrCode($this->qrCodeGenerator->generate($ticket->getId()));
                 $ticketRepository->save($ticket);
