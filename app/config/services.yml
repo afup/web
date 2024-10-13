@@ -360,6 +360,9 @@ services:
     AppBundle\Association\Form\UserEditFormDataFactory:
         autowire: true
 
+    AppBundle\Association\Factory\UserFactory:
+        autowire: true
+
     AppBundle\Offices\OfficesCollection:
         autowire: true
 

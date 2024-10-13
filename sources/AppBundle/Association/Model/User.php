@@ -28,6 +28,9 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     const SLACK_INVITE_STATUS_NONE = 0;
     const SLACK_INVITE_STATUS_REQUESTED = 1;
 
+    const CIVILITE_M = 0;
+    const CIVILITE_MME = 1;
+
     /**
      * @var int
      */
@@ -813,11 +816,13 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->levelModules[1];
     }
 
-    public function setDirectoryLevel($level)
+    public function setDirectoryLevel($level): self
     {
         $oldLevelModules = $this->levelModules;
         $this->levelModules[1] = $level;
         $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
+
+        return $this;
     }
 
     public function getWebsiteLevel()
