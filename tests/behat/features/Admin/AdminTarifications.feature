@@ -1,5 +1,10 @@
 Feature: Administration - Partie Tarifications
 
+  Scenario: Un membre ne peut pas accéder à la tarification
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/prices"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Ajout d'une tarification
     Given I am logged in as admin and on the Administration

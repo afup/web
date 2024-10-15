@@ -1,5 +1,12 @@
 Feature: Administration - Partie Site
 
+  Scenario: Un membre ne peut pas accéder à la gestion du site
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/site/rubriques"
+    Then the response status code should be 403
+    And I am on "/admin/site/rubriques/add"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Ajout/modification/suppression d'une rubrique
     Given I am logged in as admin and on the Administration

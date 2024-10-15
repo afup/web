@@ -1,5 +1,11 @@
 Feature: Administration - Partie Speakers
 
+
+  Scenario: Un membre ne peut pas accéder à la gestion des Speakers
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/speakers-management"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Ajout/modification/suppression d'un speaker
     Given I am logged in as admin and on the Administration

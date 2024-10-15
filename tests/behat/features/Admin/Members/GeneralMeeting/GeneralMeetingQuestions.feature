@@ -1,5 +1,10 @@
 Feature: Administration - Partie Assemblée Générale Questions
 
+  Scenario: Un membre ne peut pas accéder aux questions de l'assemblée générale
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/members/general_meeting_vote"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Accès à la liste des questions
     Given I am logged in as admin and on the Administration

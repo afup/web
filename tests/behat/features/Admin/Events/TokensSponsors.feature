@@ -1,5 +1,10 @@
 Feature: Administration - Évènements - Tokens Sponsors
 
+  Scenario: Un membre ne peut pas accéder aux tokens Sponsors
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/sponsor"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   @clearEmails
   Scenario: Tickets sponsors

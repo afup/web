@@ -1,5 +1,10 @@
 Feature: Administration - Évènements - Suivi
 
+  Scenario: Un membre ne peut pas accéder aux stats
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/stats"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: On vérifie la page du suivi
     Given I am logged in as admin and on the Administration

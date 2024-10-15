@@ -1,5 +1,16 @@
 Feature: Administration - Planète PHP - Flux
 
+  Scenario: Un membre ne peut pas accéder à la gestion de planète PHP
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/planete/feeds"
+    Then the response status code should be 403
+    And I am on "/admin/planete/feeds/add"
+    Then the response status code should be 403
+    And I am on "/admin/planete/feeds/edit"
+    Then the response status code should be 403
+    And I am on "/admin/planete/feeds/delete"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Gestion des flux
     Given I am logged in as admin and on the Administration

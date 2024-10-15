@@ -1,5 +1,10 @@
 Feature: Administration - Évènements - Gestions Évènements
 
+  Scenario: Un membre ne peut pas accéder à la liste des événements
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/list"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   @clearEmails
   @clearAllMailInscriptionAttachments
@@ -112,6 +117,19 @@ Feature: Administration - Évènements - Gestions Évènements
     And I should see "999"
     And I should see "03/03/2027"
     And I should see "06/03/2027"
+
+  Scenario: Supression d'un évènement vide
+    Given I am logged in as admin and on the Administration
+    And I follow "Gestion évènements"
+    Then the ".content h2" element should contain "Liste des évènements"
+    When I follow "Ajouter"
+    Then I fill in "titre" with "SUPP"
+    And I fill in "nb_places" with "3"
+    And I press "Soumettre"
+    Then I should see "Le forum a été ajouté"
+    And I should see "Liste des évènements"
+    When I follow the button of tooltip "Supprimer le forum SUPP"
+    And I should see "Événement supprimé"
 
   @reloadDbWithTestData
   @clearEmails

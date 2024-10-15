@@ -1,5 +1,10 @@
 Feature: Administration - Évènements - Salles
 
+  Scenario: Un membre ne peut pas accéder aux Salles
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/room"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: On crée une nouvelle salle vide
     Given I am logged in as admin and on the Administration

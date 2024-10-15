@@ -1,5 +1,10 @@
 Feature: Administration - Partie GitHub Users
 
+  Scenario: Un membre ne peut pas accéder aux utilisateurs GitHub
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/github-user/"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario Outline: Accès à la liste des utilisateurs GitHub
     Given I am logged in as admin and on the Administration

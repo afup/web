@@ -1,5 +1,10 @@
 Feature: Administration - Partie Assemblée Générale CR
 
+  Scenario: Un membre ne peut pas accéder aux comptes rendus de l'ssemblée générale
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/members/general_meeting/reports"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Accède à la liste des CR
     Given I am logged in as admin and on the Administration
