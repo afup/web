@@ -1,5 +1,15 @@
 Feature: Administration - Partie Assemblée Générale
 
+  Scenario: Un membre ne peut pas accéder à la gestion de l'assemblée générale
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/members/general_meeting"
+    Then the response status code should be 403
+
+  Scenario: Un membre ne peut pas accéder à la préparation de l'assemblée générale
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/members/general_meeting/prepare"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Créer une assemblée générale
     Given I am logged in as admin and on the Administration

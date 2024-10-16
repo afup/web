@@ -1,5 +1,10 @@
 Feature: Administration - Évènements - Tokens Visiteurs
 
+  Scenario: Un membre ne peut pas accéder aux tokens visiteurs
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/special_price"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Création d'un token visiteurs
     Given I am logged in as admin and on the Administration

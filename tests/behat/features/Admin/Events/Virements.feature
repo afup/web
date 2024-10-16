@@ -1,5 +1,10 @@
 Feature: Administration - Évènements - Virements en attente
 
+  Scenario: Un membre ne peut pas accéder aux virements en attente
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/event/bankwires"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Accès à la liste des virements
     Given I am logged in as admin and on the Administration
