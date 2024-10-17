@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\CompanyMembership;
 
 use AppBundle\Association\Event\UserDisabledEvent;

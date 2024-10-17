@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Speaker;
 
 use Afup\Site\Logger\DbLoggerTrait;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingQuestion;
 
 use AppBundle\Association\Model\GeneralMeetingQuestion;

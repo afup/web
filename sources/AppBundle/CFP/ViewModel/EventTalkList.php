@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\CFP\ViewModel;
 
 use AppBundle\Event\Model\Event;

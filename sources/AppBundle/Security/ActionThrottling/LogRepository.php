@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Security\ActionThrottling;
 
 use Aura\SqlQuery\Mysql\Select;
