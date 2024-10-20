@@ -8,8 +8,10 @@ use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
 use AppBundle\Association\Event\NewMemberEvent;
+use AppBundle\Association\Factory\UserFactory;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\ContactDetailsType;
+use AppBundle\Association\Form\RegisterUserType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
@@ -29,6 +31,7 @@ use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxResponseFactory;
+use AppBundle\Security\LegacyAuthenticator;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use Assert\Assertion;
 use Symfony\Component\Finder\Finder;
@@ -52,6 +55,38 @@ class MemberShipController extends SiteBaseController
                 'membership_fee_legal_entity' => AFUP_COTISATION_PERSONNE_MORALE
             ]
         );
+    }
+
+    public function memberAction(Request $request): Response
+    {
+        $user = $this->get(UserFactory::class)->createForRegister();
+
+        $form = $this->createForm(RegisterUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Nécessaire pour md5 le mdp qui est fait dans le setPlainPassword => a terme, utiliser les cryptages de sf
+            $user->setPlainPassword($user->getPassword());
+            $this->get(UserRepository::class)->save($user);
+
+            Logs::initialiser($GLOBALS['AFUP_DB'], $user->getId());
+            Logs::log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
+
+            $this->get(UserService::class)->sendWelcomeEmail($user);
+            $this->addFlash('notice', 'Merci pour votre inscription. Il ne reste plus qu\'à régler votre cotisation.');
+
+            return $this->get('security.authentication.guard_handler')
+                ->authenticateUserAndHandleSuccess(
+                    $user,
+                    $request,
+                    $this->get(LegacyAuthenticator::class),
+                    'legacy_secured_area'
+                );
+        }
+
+        return $this->render('admin/association/membership/register.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     public function companyAction(Request $request)

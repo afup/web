@@ -10,6 +10,12 @@ company_membership:
   options:
     sitemap: true
 
+member_membership:
+  path: /adherer/particulier
+  defaults: {_controller: AppBundle:MemberShip:member}
+  options:
+    sitemap: true
+
 company_membership_payment:
   path: /adherer/entreprise/paiement-{invoiceNumber}-{token}
   defaults: {_controller: AppBundle:MemberShip:payment}
