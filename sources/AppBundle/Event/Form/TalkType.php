@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TalkType extends AbstractType
 {
     const OPT_COC_CHECKED = 'codeOfConductChecked';
+    const IS_AFUP_DAY = 'isAfupDay';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -43,16 +44,20 @@ class TalkType extends AbstractType
                 'Avancé' => Talk::SKILL_SENIOR,
                 'N/A' => Talk::SKILL_NA
             ]
-            ])
-            ->add('withWorkshop', CheckboxType::class, [
+            ]);
+
+        if (!$options[self::IS_AFUP_DAY]) {
+            $builder->add('withWorkshop', CheckboxType::class, [
                 'label' => "Je propose de faire un atelier",
                 'required' => false,
                 'help' => 'Lors de l’événement, nous souhaitons proposer des ateliers d’une durée de 2 heures avec une vingtaine de participant(e)s qui se seront inscrit(e)s préalablement. Seulement les speakers sélectionné(e)s effectueraient un atelier. Cochez cette case et renseignez la zone de texte ci-dessous si vous souhaitez proposer un atelier.',
             ])
             ->add('workshopAbstract', TextareaType::class, ['label' => 'Résumé de l\'atelier',
                 'required' => false,
-            ])
-            ->add('needsMentoring', CheckboxType::class, [
+            ]);
+        }
+
+        $builder->add('needsMentoring', CheckboxType::class, [
                 'label' => "Je souhaite profiter du programme d'accompagnement des jeunes speakers",
                 'required' => false
             ])
@@ -83,7 +88,8 @@ class TalkType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            self::OPT_COC_CHECKED => false
+            self::OPT_COC_CHECKED => false,
+            self::IS_AFUP_DAY => false,
         ]);
     }
 }
