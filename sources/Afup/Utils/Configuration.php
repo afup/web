@@ -61,6 +61,6 @@ class Configuration
 
     public function obtenir($cle)
     {
-        return self::$values[$cle];
+        return self::$values[$cle] ?? null;
     }
 }
