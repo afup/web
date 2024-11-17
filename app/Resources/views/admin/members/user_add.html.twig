@@ -10,6 +10,7 @@
         <div class="ui clearing divider"></div>
         <div>
             <div class="ui form">
+                {{ form_errors(form) }}
                 {{ form_row(form.companyId) }}
                 {{ form_row(form.civility) }}
                 {{ form_row(form.lastname, {attr: {'data-role': 'field-lastname'}}) }}
@@ -19,9 +20,9 @@
                 {{ form_row(form.address) }}
                 {{ form_row(form.zipcode) }}
                 {{ form_row(form.city) }}
-                {{ form_row(form.countryId) }}
+                {{ form_row(form.country) }}
                 {{ form_row(form.phone) }}
-                {{ form_row(form.cellphone) }}
+                {{ form_row(form.mobilephone) }}
             </div>
         </div>
         <h2 class="ui header">Paramètres</h2>
@@ -34,14 +35,14 @@
                 {{ form_row(form.websiteLevel) }}
                 {{ form_row(form.officeLevel) }}
                 {{ form_row(form.status) }}
-                {{ form_row(form.login, {attr: {'data-role': 'field-login'}}) }}
+                {{ form_row(form.username, {attr: {'data-role': 'field-login'}}) }}
                 <div class="inline fields ui grid">
                     <div class="three wide column"></div>
                     <div class="field nine wide column">
                         Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le définir
                     </div>
                 </div>
-                {{ form_row(form.password) }}
+                {{ form_row(form.plainPassword) }}
                 {{ form_row(form.roles) }}
                 {{ form_row(form.needsUpToDateMembership) }}
 

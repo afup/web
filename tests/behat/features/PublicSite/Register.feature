@@ -1,5 +1,25 @@
 Feature: Site Public - Register
 
+  Scenario: Je ne peux pas adhérer comme particulier avec un email existant
+    Given I am on the homepage
+    When I follow "Adhérer"
+    Then I should see "Devenir membre de l'AFUP"
+    When I follow "Adhérer en tant que particulier"
+    Then I should see "Formulaire d'inscription à l'AFUP"
+    And I fill in "register_user_userCommonInfo_email" with "admin@admin.fr"
+    And I press "Créer mon compte"
+    And I should see "Un autre compte existe avec cette information: admin@admin.fr"
+
+  Scenario: Je ne peux pas adhérer comme particulier avec un login existant
+    Given I am on the homepage
+    When I follow "Adhérer"
+    Then I should see "Devenir membre de l'AFUP"
+    When I follow "Adhérer en tant que particulier"
+    Then I should see "Formulaire d'inscription à l'AFUP"
+    And I fill in "register_user_userCommonInfo_username" with "admin"
+    And I press "Créer mon compte"
+    And I should see "Un autre compte existe avec cette information: admin"
+
   @reloadDbWithTestData
   @clearEmails
   Scenario: Accès à l'adhésion particulier

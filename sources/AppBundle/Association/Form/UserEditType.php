@@ -6,6 +6,7 @@ use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Utils\Pays;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -15,6 +16,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserEditType extends AbstractType
 {
@@ -47,7 +52,9 @@ class UserEditType extends AbstractType
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'Nom',
-                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 40,
@@ -55,7 +62,9 @@ class UserEditType extends AbstractType
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
-                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 40,
@@ -63,7 +72,9 @@ class UserEditType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
-                'required' => true,
+                'constraints' => [
+                    new Email(),
+                ],
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 100,
@@ -79,7 +90,9 @@ class UserEditType extends AbstractType
             ])
             ->add('address', TextareaType::class, [
                 'label' => 'Adresse',
-                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 'attr' => [
                     'cols' => 42,
                     'rows' => 10,
@@ -87,7 +100,9 @@ class UserEditType extends AbstractType
             ])
             ->add('zipcode', TextType::class, [
                 'label' => 'Code postal',
-                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 'attr' => [
                     'size' => 6,
                     'maxlength' => 10,
@@ -95,28 +110,39 @@ class UserEditType extends AbstractType
             ])
             ->add('city', TextType::class, [
                 'label' => 'Ville',
-                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 50,
                 ],
             ])
-            ->add('countryId', ChoiceType::class, [
+            ->add('country', ChoiceType::class, [
                 'label' => 'Pays',
-                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ],
+                'preferred_choices' => ['FR'],
                 'choices' => array_flip($this->pays->obtenirPays()),
             ])
             ->add('phone', TextType::class, [
                 'label' => 'Tél. fixe',
                 'required' => false,
+                'constraints' => [
+                    new Length(['max' => 20]),
+                ],
                 'attr' => [
                     'size' => 20,
                     'maxlength' => 20,
                 ],
             ])
-            ->add('cellphone', TextType::class, [
+            ->add('mobilephone', TextType::class, [
                 'label' => 'Tél. portable',
                 'required' => false,
+                'constraints' => [
+                    new Length(['max' => 20]),
+                ],
                 'attr' => [
                     'size' => 20,
                     'maxlength' => 20,
@@ -166,31 +192,24 @@ class UserEditType extends AbstractType
                     'Inactif' => User::STATUS_INACTIVE,
                 ],
             ])
-            ->add('login', TextType::class, [
+            ->add('username', TextType::class, [
                 'label' => 'Login',
-                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['max' => 30]),
+                ],
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 30,
                 ],
             ])
-            ->add('password', RepeatedType::class, [
-                'required' => false,
+            ->add('plainPassword', RepeatedType::class, [
+                'mapped' => false,
                 'type' => PasswordType::class,
-                'first_options' => [
-                    'label' => 'Mot de passe',
-                    'attr' => [
-                        'size' => 30,
-                        'maxlength' => 30,
-                    ],
-                ],
-                'second_options' => [
-                    'label' => 'Confirmation mot de passe',
-                    'attr' => [
-                        'size' => 30,
-                        'maxlength' => 30,
-                    ],
-                ],
+                'required' => false,
+                'invalid_message' => 'The password fields must match',
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => 'Repeat Password'],
             ])
             ->add('roles', TextareaType::class, [
                 'label' => 'Rôles',
@@ -204,5 +223,31 @@ class UserEditType extends AbstractType
                 'required' => false,
             ])
             ->add('save', SubmitType::class, ['label' => 'Ajouter']);
+
+        $builder->get('roles')->addModelTransformer(new CallbackTransformer(
+            function ($rolesAsArray): string {
+                return json_encode($rolesAsArray);
+            },
+            function ($rolesAsString): array {
+                return json_decode($rolesAsString);
+            }
+        ));
+
+        $builder
+            ->get('companyId')->addModelTransformer(new CallbackTransformer(
+                function ($value): string {
+                    return $value;
+                },
+                function ($value): int {
+                    return (int) $value;
+                }
+            ));
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => User::class,
+        ]);
     }
 }

@@ -4,6 +4,7 @@
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
+use AppBundle\Association\Model\User;
 use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -42,6 +43,7 @@ class ContactDetailsType extends AbstractType
                 ]
             ])
             ->add('zipcode', TextType::class, [
+                'label' => 'Zip code',
                 'constraints' => [
                     new NotBlank(),
                 ]
@@ -52,7 +54,9 @@ class ContactDetailsType extends AbstractType
                 ]
             ])
             ->add('country', ChoiceType::class, [
+                'label' => 'Pays',
                 'choices' => $this->getCountyChoices(),
+                'preferred_choices' => ['FR']
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
@@ -61,6 +65,7 @@ class ContactDetailsType extends AbstractType
                 ],
             ])
             ->add('mobilephone', TextType::class, [
+                'label' => 'Portable',
                 'required' => false,
                 'constraints' => [
                     new Length(['max' => 20]),
@@ -78,10 +83,13 @@ class ContactDetailsType extends AbstractType
                     new Length(['max' => 30]),
                 ]
             ])
-            ->add('password', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
+                'mapped' => false,
                 'type' => PasswordType::class,
                 'required' => false,
                 'invalid_message' => 'The password fields must match',
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => 'Repeat Password'],
             ])
             ->add('save', SubmitType::class, ['label' => 'Update'])
         ;
@@ -89,7 +97,9 @@ class ContactDetailsType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([]);
+        $resolver->setDefaults([
+            'data_class' => User::class,
+        ]);
     }
 
     private function getOfficesList()
