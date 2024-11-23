@@ -3,13 +3,14 @@
 namespace AppBundle\TechLetter;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
+use AppBundle\Mailchimp\Mailchimp;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 class MailchimpSynchronizer
 {
     /**
-     * @var \AppBundle\Mailchimp\Mailchimp
+     * @var Mailchimp
      */
     private $mailchimp;
 
@@ -28,12 +29,7 @@ class MailchimpSynchronizer
      */
     private $logger;
 
-    /**
-     * @param \AppBundle\Mailchimp\Mailchimp $mailchimp
-     * @param TechletterSubscriptionsRepository $subscriptionsRepository
-     * @param string $listId
-     */
-    public function __construct(\AppBundle\Mailchimp\Mailchimp $mailchimp, TechletterSubscriptionsRepository $subscriptionsRepository, $listId)
+    public function __construct(Mailchimp $mailchimp, TechletterSubscriptionsRepository $subscriptionsRepository, string $listId)
     {
         $this->mailchimp = $mailchimp;
         $this->subscriptionsRepository = $subscriptionsRepository;
@@ -50,60 +46,49 @@ class MailchimpSynchronizer
         $this->subscribeAddresses(array_diff($subscribdedEmailsOnWebsite, $subscribdedEmailsOnMailchimp));
     }
 
-    /**
-     * @param LoggerInterface $logger
-     *
-     * @return $this
-     */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): self
     {
         $this->logger = $logger;
 
         return $this;
     }
 
-    /**
-     * @param array $emails
-     */
     private function unsubscribeAddresses(array $emails)
     {
         foreach ($emails as $email) {
             $this->logger->info('Unsubscribe {address} to techletter', ['address' => $email]);
-            $this->mailchimp->unSubscribeAddress($this->listId, $email);
+            try {
+                $this->mailchimp->unSubscribeAddress($this->listId, $email);
+            } catch (\Exception $e) {
+                $this->logger->error('Failed with message: {message}', ['message' => $e->getMessage()]);
+            }
         }
     }
 
-    /**
-     * @param array $emails
-     */
     private function subscribeAddresses(array $emails)
     {
         foreach ($emails as $email) {
             $this->logger->info('Subscribe {address} to techletter', ['address' => $email]);
-            $this->mailchimp->subscribeAddressWithoutConfirmation($this->listId, $email);
+            try {
+                $this->mailchimp->subscribeAddressWithoutConfirmation($this->listId, $email);
+            } catch (\Exception $e) {
+                $this->logger->error('Failed with message: {message}', ['message' => $e->getMessage()]);
+            }
         }
     }
 
-    /**
-     * @return array
-     */
-    private function getSubscribedEmailsOnWebsite()
+    private function getSubscribedEmailsOnWebsite(): array
     {
-        $subscribdedEmails =  [];
+        $emails =  [];
         foreach ($this->subscriptionsRepository->getSubscribedEmails() as $row) {
-            $subscribdedEmails[] = $row['email'];
+            $emails[] = $row['email'];
         }
 
-        return $subscribdedEmails;
+        return $emails;
     }
 
-    /**
-     * @return array
-     */
-    private function getSubscribedEmailsOnMailchimp()
+    private function getSubscribedEmailsOnMailchimp(): array
     {
-        $mailsOnMailchimp = $this->mailchimp->getAllSubscribedMembersAddresses($this->listId);
-
-        return $mailsOnMailchimp;
+        return $this->mailchimp->getAllSubscribedMembersAddresses($this->listId);
     }
 }
