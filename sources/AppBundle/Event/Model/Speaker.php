@@ -421,6 +421,17 @@ class Speaker implements NotifyPropertyInterface
         return $twitter;
     }
 
+    public function getCleanedMastodon(): string
+    {
+        $mastodon = $this->getMastodon();
+        if (strpos($mastodon, '@') === false) {
+            return '';
+        }
+
+        list(,$username) = explode('@', $mastodon);
+        return trim($username);
+    }
+
     /**
      * @param string $twitter
      * @return Speaker
