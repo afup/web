@@ -329,36 +329,16 @@ class MemberShipController extends SiteBaseController
         $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
         $repo = $this->get('ting')->get(UserRepository::class);
 
+        /** @var User $user */
         $user = $repo->get($this->getUserId());
-        $data = [
-            'email' => $user->getEmail(),
-            'address' => $user->getAddress(),
-            'username' => $user->getUsername(),
-            'zipcode' => $user->getZipCode(),
-            'city' => $user->getCity(),
-            'phone' => $user->getPhone(),
-            'mobilephone' => $user->getMobilePhone(),
-            'country' => $user->getCountry(),
-            'nearest_office' => $user->getNearestOffice(),
-        ];
 
-        $userForm = $this->createForm(ContactDetailsType::class, $data);
+        $userForm = $this->createForm(ContactDetailsType::class, $user);
         $userForm->handleRequest($request);
-        if ($userForm->isValid()) {
-            $data = $userForm->getData();
-
-            $user->setEmail($data['email']);
-            $user->setAddress($data['address']);
-            $user->setZipCode($data['zipcode']);
-            $user->setCity($data['city']);
-            $user->setUsername($data['username']);
-            $user->setPhone($data['phone']);
-            $user->setMobilePhone($data['mobilephone']);
-            $user->setCountry($data['country']);
-            $user->setNearestOffice($data['nearest_office']);
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
             // Save password if not empty
-            if (! empty($data['password'])) {
-                $user->setPassword(md5($data['password'])); /** @TODO We should change that */
+            $newPassword = $request->request->get($userForm->getName())['plainPassword']['first'];
+            if ($newPassword) {
+                $user->setPlainPassword($newPassword);
             }
 
             $repo->save($user);

@@ -4,12 +4,9 @@ namespace AppBundle\Controller\Admin\Members;
 
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Association\Form\UserBadgeType;
-use AppBundle\Association\Form\UserEditFormDataFactory;
 use AppBundle\Association\Form\UserEditType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Repository\UserBadgeRepository;
-use Assert\Assertion;
-use Exception;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +23,6 @@ class UserEditAction
     private $userRepository;
     /** @var UserBadgeRepository */
     private $userBadgeRepository;
-    /** @var UserEditFormDataFactory */
-    private $userEditFormDataFactory;
     /** @var FormFactoryInterface */
     private $formFactory;
     /** @var UrlGeneratorInterface */
@@ -40,7 +35,6 @@ class UserEditAction
     public function __construct(
         UserRepository $userRepository,
         UserBadgeRepository $userBadgeRepository,
-        UserEditFormDataFactory $userEditFormDataFactory,
         FormFactoryInterface $formFactory,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
@@ -48,7 +42,6 @@ class UserEditAction
     ) {
         $this->userRepository = $userRepository;
         $this->userBadgeRepository = $userBadgeRepository;
-        $this->userEditFormDataFactory = $userEditFormDataFactory;
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
@@ -58,22 +51,24 @@ class UserEditAction
     public function __invoke(Request $request)
     {
         $user = $this->userRepository->get($request->query->get('id'));
-        Assertion::notNull($user);
-        $data = $this->userEditFormDataFactory->fromUser($user);
-        $form = $this->formFactory->create(UserEditType::class, $data);
+        if (!$user) {
+            $this->flashBag->add('error', 'Utilisateur non trouvé');
+            return new RedirectResponse($this->urlGenerator->generate('admin_members_user_list'));
+        }
+        $form = $this->formFactory->create(UserEditType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->userEditFormDataFactory->toUser($data, $user);
-            try {
-                $this->userRepository->edit($user);
-                $this->log('Modification de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName() . ' (' . $user->getId() . ')');
-                // Redirection sur la liste filtrée
-                $this->flashBag->add('notice', 'La personne physique a été modifiée');
-
-                return new RedirectResponse($this->urlGenerator->generate('admin_members_user_list', ['filter' => $user->getEmail()]));
-            } catch (Exception $e) {
-                $this->flashBag->add('error', 'Une erreur est survenue lors de la modification de la personne physique');
+            // Save password if not empty
+            $newPassword = $request->request->get($form->getName())['plainPassword']['first'];
+            if ($newPassword) {
+                $user->setPlainPassword($newPassword);
             }
+            $this->userRepository->edit($user);
+            $this->log('Modification de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName() . ' (' . $user->getId() . ')');
+            // Redirection sur la liste filtrée
+            $this->flashBag->add('notice', 'La personne physique a été modifiée');
+
+            return new RedirectResponse($this->urlGenerator->generate('admin_members_user_list', ['filter' => $user->getEmail()]));
         }
 
         $userBadges = iterator_to_array($this->userBadgeRepository->findByUserId($user->getId()));

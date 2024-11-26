@@ -3,9 +3,14 @@
 namespace AppBundle\Association\Form;
 
 use AppBundle\Association\Model\User;
+use AppBundle\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * @AppAssert\UniqueEntity(fields={"username"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
+ * @AppAssert\UniqueEntity(fields={"email"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
+ */
 class UserEditFormData
 {
     public $companyId;
@@ -85,7 +90,7 @@ class UserEditFormData
      * @Assert\NotBlank()
      * @Assert\Length(max=30)
      */
-    public $login;
+    public $username;
     /**
      * @Assert\Length(max=30)
      */

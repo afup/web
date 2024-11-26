@@ -357,9 +357,6 @@ services:
     AppBundle\Association\UserMembership\UserService:
         autowire: true
 
-    AppBundle\Association\Form\UserEditFormDataFactory:
-        autowire: true
-
     AppBundle\Association\Factory\UserFactory:
         autowire: true
 

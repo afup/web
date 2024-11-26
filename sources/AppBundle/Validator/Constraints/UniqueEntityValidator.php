@@ -35,7 +35,7 @@ class UniqueEntityValidator extends ConstraintValidator
 
         $myEntity = $repository->getOneBy($criteria);
 
-        if ($myEntity !== null) {
+        if ($myEntity !== null && $myEntity->getId() !== $entity->getId()) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ data }}', implode(', ', $criteria))
                 ->addViolation();
