@@ -37,6 +37,20 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
 
 $kernel->loadClassCache();
 $request = Request::createFromGlobals();
+
+$proxies = [
+    '127.0.0.1',
+];
+$ccReverseProxyIps = getenv('CC_REVERSE_PROXY_IPS');
+if (false !== $ccReverseProxyIps) {
+    $proxies[] = $ccReverseProxyIps;
+}
+
+Request::setTrustedProxies(
+    $proxies,
+    Request::HEADER_X_FORWARDED_ALL
+);
+
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
