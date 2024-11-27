@@ -43,7 +43,7 @@ $proxies = [
 ];
 $ccReverseProxyIps = getenv('CC_REVERSE_PROXY_IPS');
 if (false !== $ccReverseProxyIps) {
-    $proxies[] = $ccReverseProxyIps;
+    $proxies = array_merge($proxies, explode(',', $ccReverseProxyIps));
 }
 
 Request::setTrustedProxies(
