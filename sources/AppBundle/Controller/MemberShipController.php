@@ -8,8 +8,10 @@ use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
 use AppBundle\Association\Event\NewMemberEvent;
+use AppBundle\Association\Factory\UserFactory;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\ContactDetailsType;
+use AppBundle\Association\Form\RegisterUserType;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
@@ -29,6 +31,7 @@ use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxResponseFactory;
+use AppBundle\Security\LegacyAuthenticator;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use Assert\Assertion;
 use Symfony\Component\Finder\Finder;
@@ -52,6 +55,38 @@ class MemberShipController extends SiteBaseController
                 'membership_fee_legal_entity' => AFUP_COTISATION_PERSONNE_MORALE
             ]
         );
+    }
+
+    public function memberAction(Request $request): Response
+    {
+        $user = $this->get(UserFactory::class)->createForRegister();
+
+        $form = $this->createForm(RegisterUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Nécessaire pour md5 le mdp qui est fait dans le setPlainPassword => a terme, utiliser les cryptages de sf
+            $user->setPlainPassword($user->getPassword());
+            $this->get(UserRepository::class)->save($user);
+
+            Logs::initialiser($GLOBALS['AFUP_DB'], $user->getId());
+            Logs::log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
+
+            $this->get(UserService::class)->sendWelcomeEmail($user);
+            $this->addFlash('notice', 'Merci pour votre inscription. Il ne reste plus qu\'à régler votre cotisation.');
+
+            return $this->get('security.authentication.guard_handler')
+                ->authenticateUserAndHandleSuccess(
+                    $user,
+                    $request,
+                    $this->get(LegacyAuthenticator::class),
+                    'legacy_secured_area'
+                );
+        }
+
+        return $this->render('admin/association/membership/register.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     public function companyAction(Request $request)
@@ -294,36 +329,16 @@ class MemberShipController extends SiteBaseController
         $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
         $repo = $this->get('ting')->get(UserRepository::class);
 
+        /** @var User $user */
         $user = $repo->get($this->getUserId());
-        $data = [
-            'email' => $user->getEmail(),
-            'address' => $user->getAddress(),
-            'username' => $user->getUsername(),
-            'zipcode' => $user->getZipCode(),
-            'city' => $user->getCity(),
-            'phone' => $user->getPhone(),
-            'mobilephone' => $user->getMobilePhone(),
-            'country' => $user->getCountry(),
-            'nearest_office' => $user->getNearestOffice(),
-        ];
 
-        $userForm = $this->createForm(ContactDetailsType::class, $data);
+        $userForm = $this->createForm(ContactDetailsType::class, $user);
         $userForm->handleRequest($request);
-        if ($userForm->isValid()) {
-            $data = $userForm->getData();
-
-            $user->setEmail($data['email']);
-            $user->setAddress($data['address']);
-            $user->setZipCode($data['zipcode']);
-            $user->setCity($data['city']);
-            $user->setUsername($data['username']);
-            $user->setPhone($data['phone']);
-            $user->setMobilePhone($data['mobilephone']);
-            $user->setCountry($data['country']);
-            $user->setNearestOffice($data['nearest_office']);
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
             // Save password if not empty
-            if (! empty($data['password'])) {
-                $user->setPassword(md5($data['password'])); /** @TODO We should change that */
+            $newPassword = $request->request->get($userForm->getName())['plainPassword']['first'];
+            if ($newPassword) {
+                $user->setPlainPassword($newPassword);
             }
 
             $repo->save($user);

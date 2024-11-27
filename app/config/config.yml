@@ -343,7 +343,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
       photo_storage: '@AppBundle\CFP\PhotoStorage'
-    form_themes: ['form_theme_help.html.twig']
+    form_themes: ['form_theme.html.twig']
 
 ting:
     connections:

@@ -25,9 +25,6 @@ abstract class SiteBaseController extends Controller implements SiteControllerIn
         $this->defaultBlocks = $blocks;
     }
 
-    /**
-     * @param Configuration $conf
-     */
     public function setConfiguration(Configuration $conf)
     {
         $this->legacyConfiguration = $conf;

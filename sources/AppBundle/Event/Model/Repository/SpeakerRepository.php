@@ -50,7 +50,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         }
 
         $query = $this->getPreparedQuery('SELECT speaker.conferencier_id, speaker.id_forum, speaker.civilite, speaker.nom, speaker.prenom, speaker.email, speaker.societe,
-        speaker.biographie, speaker.twitter, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
+        speaker.biographie, speaker.twitter, speaker.mastodon, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
         speaker.will_attend_speakers_diner,
         speaker.has_special_diet,
         speaker.referent_person,

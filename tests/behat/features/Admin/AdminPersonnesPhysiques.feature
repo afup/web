@@ -17,7 +17,7 @@ Feature: Administration - Partie Personnes physiques
     And I fill in "user_edit[address]" with "32 rue des lilas"
     And I fill in "user_edit[zipcode]" with "69001"
     And I fill in "user_edit[city]" with "LYON"
-    And I fill in "user_edit[login]" with "monlogin"
+    And I fill in "user_edit[username]" with "monlogin"
     And I press "Ajouter"
     Then I should not see "Cette valeur ne doit pas être vide"
     # on vérifie qu'il est dans la liste

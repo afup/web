@@ -12,83 +12,36 @@
 
     <div class="afup-form">
         {{ form_start(form) }}
-
+        <p class="note">
+            *&nbsp;Indique un champ obligatoire
+        </p>
         <fieldset>
             <legend>Informations</legend>
             <div class="afup-form-container">
-                <div>
-                    {{ form_errors(form.email) }}
-                    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.email, {'attr': {'size': '30', 'maxlength': '100'}}) }}
-                </div>
-                <div>
-                    {{ form_errors(form.address) }}
-                    {{ form_label(form.address, 'Address', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.address, {'attr': {'rows': '4', 'cols': '42'}}) }}
-                </div>
-                <div>
-                    {{ form_errors(form.zipcode) }}
-                    {{ form_label(form.zipcode, 'Zip code', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.zipcode, {'attr': {'size': '6', 'maxlength': '10'}}) }}
-                </div>
-                <div>
-                    {{ form_errors(form.city) }}
-                    {{ form_label(form.city, 'City', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.city, {'attr': {'size': '30', 'maxlength': '50'}}) }}
-                </div>
-                <div>
-                    {{ form_errors(form.country) }}
-                    {{ form_label(form.country, 'country', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.country) }}
-                </div>
-                <div>
-                    {{ form_errors(form.phone) }}
-                    {{ form_label(form.phone, 'Landline phone', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.phone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
-                </div>
-                <div>
-                    {{ form_errors(form.mobilephone) }}
-                    {{ form_label(form.mobilephone, 'Mobile phone', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.mobilephone, {'attr': {'size': '20', 'maxlength': '20'}}) }}
-                </div>
-                <div>
-                    {{ form_errors(form.nearest_office) }}
-                    {{ form_label(form.nearest_office, 'Nearest office', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.nearest_office) }}
-                </div>
+                {{ form_errors(form) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.zipcode) }}
+                {{ form_row(form.city) }}
+                {{ form_row(form.country) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.mobilephone) }}
+                {{ form_row(form.nearest_office) }}
             </div>
         </fieldset>
 
         <fieldset>
-            <legend>Paramètres</legend>
-
+            <legend>Identifiants de connexion</legend>
             <div class="afup-form-container">
-                <div>
-                    {{ form_errors(form.username) }}
-                    {{ form_label(form.username, 'Login', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.username, {'attr': {'size': '30', 'maxlength': '30'}}) }}
-                </div>
-                <div class="afup-form--row">
-                    <p class="note">
-                        Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
-                    </p>
-                </div>
-                <div>
-                    {{ form_errors(form.password.first) }}
-                    {{ form_label(form.password.first, 'Password', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.password.first, {'attr': {'size': '30'}}) }}
-                </div>
-                <div>
-                    {{ form_errors(form.password.second) }}
-                    {{ form_label(form.password.second, 'Repeat Password', {'label_attr': {'class': 'libelle'}}) }}
-                    {{ form_widget(form.password.second, {'attr': {'size': '30'}}) }}
-                </div>
+                {{ form_row(form.username) }}
+
+                <p class="note">
+                    Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
+                </p>
+                {{ form_row(form.plainPassword.first) }}
+                {{ form_row(form.plainPassword.second) }}
             </div>
         </fieldset>
-
-        <p>
-            <span class="obligatoire">*</span>&nbsp; Indique un champ obligatoire
-        </p>
 
         <div class="right">
             {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}

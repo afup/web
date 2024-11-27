@@ -125,15 +125,17 @@ var setFormSuccess = function(form) {
 
 // Gestion de la case à cocher pour la proposition d'atelier à un CFP
 var textareaContainer = document.getElementById('talk_workshopAbstract');
-textareaContainer = textareaContainer.closest('div');
+if (textareaContainer) {
+    textareaContainer = textareaContainer.closest('div');
 
-var checkbox = document.getElementById('talk_withWorkshop');
-checkbox.addEventListener('change', (event) => {
-    if (event.currentTarget.checked) {
-        textareaContainer.style.display = 'block';
-    } else {
-        textareaContainer.style.display = 'none';
-    }
-});
+    var checkbox = document.getElementById('talk_withWorkshop');
+    checkbox.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+            textareaContainer.style.display = 'block';
+        } else {
+            textareaContainer.style.display = 'none';
+        }
+    });
 
-checkbox.dispatchEvent(new Event('change'));
+    checkbox.dispatchEvent(new Event('change'));
+}

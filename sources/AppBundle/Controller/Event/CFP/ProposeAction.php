@@ -75,7 +75,9 @@ class ProposeAction
 
         $talk = new Talk();
         $talk->setForumId($event->getId());
-        $form = $this->formFactory->create(TalkType::class, $talk);
+        $form = $this->formFactory->create(TalkType::class, $talk, [
+            TalkType::IS_AFUP_DAY => $event->isAfupDay()
+        ]);
         if ($this->talkFormHandler->handle($request, $event, $form, $speaker)) {
             $this->flashBag->add('success', $this->translator->trans('Proposition enregistrée !'));
 
