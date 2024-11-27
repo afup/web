@@ -392,36 +392,31 @@ class Speaker implements NotifyPropertyInterface
     /**
      * @return string
      */
-    public function getTwitter()
+    public function getTwitter(): string
     {
-        return $this->twitter;
+        return (string) $this->twitter;
     }
 
-    /**
-     * @return string
-     */
-    public function getMastodon()
+    public function getMastodon(): string
     {
-        return $this->mastodon;
+        return (string) $this->mastodon;
     }
 
-    /**
-     * @return bool|string
-     */
-    public function getCleanedTwitter()
+    public function getUsernameTwitter(): string
     {
         $twitter = $this->getTwitter();
         $twitter = trim($twitter, '@');
-        $twitter = preg_replace('!^https?://twitter.com/!', '', $twitter);
+        $twitter = preg_replace('!^(https?://(twitter|x).com/)!', '', $twitter);
 
-        if (0 === strlen(trim($twitter))) {
-            return null;
-        }
-
-        return $twitter;
+        return trim($twitter);
     }
 
-    public function getCleanedMastodon(): string
+    public function getUrlTwitter(): string
+    {
+        return $this->getUsernameTwitter() ? sprintf('https://x.com/%s', $this->getUsernameTwitter()) : '';
+    }
+
+    public function getUsernameMastodon(): string
     {
         $mastodon = $this->getMastodon();
         if (strpos($mastodon, '@') === false) {
@@ -430,6 +425,19 @@ class Speaker implements NotifyPropertyInterface
 
         list(,$username) = explode('@', $mastodon);
         return trim($username);
+    }
+
+    public function getUrlMastodon(): string
+    {
+        if (!$this->getUsernameMastodon()) {
+            return '';
+        }
+        $mastodon = $this->getMastodon();
+        if (preg_match('#https?://@(.+)@(.+)#', $mastodon, $matches)) {
+            return sprintf('https://%s/@%s', $matches[2], $matches[1]);
+        }
+
+        return trim($mastodon);
     }
 
     /**
