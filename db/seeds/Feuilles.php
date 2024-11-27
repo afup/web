@@ -106,6 +106,13 @@ class Feuilles extends AbstractSeed
                 'lien' => '/association/antennes',
                 'etat' => 1,
             ],
+            [
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Plan du site',
+                'lien' => '/plan-du-site',
+                'date' => 1732710484,
+                'etat' => 1,
+            ],
         ];
 
         $data = array_merge($data, $this->prepareFeuilles($this->getFooter(), Feuille::ID_FEUILLE_FOOTER));
@@ -132,6 +139,10 @@ class Feuilles extends AbstractSeed
                     [
                         'nom' => 'Actualités',
                         'lien' => '/news',
+                    ],
+                    [
+                        'nom' => 'Plan du site',
+                        'lien' => '/plan-du-site',
                     ],
                 ]
             ],

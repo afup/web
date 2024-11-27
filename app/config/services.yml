@@ -640,7 +640,7 @@ services:
         tags:
             - {name: form.type}
 
-    AppBundle\Subscriber\TalksAndNewsSitemapSubscriber:
+    AppBundle\Subscriber\SitemapXmlSubscriber:
         arguments:
             - "@router"
             - "@ting"
