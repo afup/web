@@ -16,7 +16,7 @@ Feature: Administration - Partie Site
     Then I should see "Liste des feuilles"
     And the ".content table" element should contain "Feuille test"
     # modification d'une feuille
-    When I follow "modifier_1012"
+    When I follow "modifier_1013"
     Then I should see "Modifier une feuille"
     And I should see "Feuille test"
     And the "lien" field should contain "http://lien"
@@ -27,6 +27,6 @@ Feature: Administration - Partie Site
     And the ".content table" element should contain "Feuille modifiée"
     # suppression d'une feuille
     When I follow "Feuilles"
-    And I follow "supprimer_1012"
+    And I follow "supprimer_1013"
     Then I should see "Liste des feuilles"
     But the ".content table" element should not contain "Feuille test"

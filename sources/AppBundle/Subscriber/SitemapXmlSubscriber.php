@@ -2,6 +2,7 @@
 
 namespace AppBundle\Subscriber;
 
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Article;
@@ -13,7 +14,7 @@ use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class TalksAndNewsSitemapSubscriber implements EventSubscriberInterface
+class SitemapXmlSubscriber implements EventSubscriberInterface
 {
     /** @var RepositoryFactory */
     private $ting;
@@ -27,7 +28,7 @@ class TalksAndNewsSitemapSubscriber implements EventSubscriberInterface
         $this->ting = $ting;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SitemapPopulateEvent::ON_SITEMAP_POPULATE => 'populate',
@@ -38,6 +39,7 @@ class TalksAndNewsSitemapSubscriber implements EventSubscriberInterface
     {
         $this->registerTalksUrls($event->getUrlContainer());
         $this->registerNewsUrls($event->getUrlContainer());
+        $this->registerMembers($event->getUrlContainer());
     }
 
     public function registerTalksUrls(UrlContainerInterface $urls)
@@ -78,6 +80,31 @@ class TalksAndNewsSitemapSubscriber implements EventSubscriberInterface
                     $article->getPublishedAt()
                 ),
                 'news'
+            );
+        }
+    }
+
+    private function registerMembers(UrlContainerInterface $urls)
+    {
+        /**
+         * @var CompanyMemberRepository $companyRepository
+         */
+        $companyRepository = $this->ting->get(CompanyMemberRepository::class);
+        $displayableCompanies = $companyRepository->findDisplayableCompanies();
+
+        foreach ($displayableCompanies as $member) {
+            $urls->addUrl(
+                new UrlConcrete(
+                    $this->urlGenerator->generate(
+                        'company_public_profile',
+                        [
+                            'id' => $member->getId(),
+                            'slug' => $member->getSlug(),
+                        ],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    )
+                ),
+                'members'
             );
         }
     }
