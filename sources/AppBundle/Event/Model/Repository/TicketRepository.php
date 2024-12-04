@@ -294,7 +294,8 @@ class TicketRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'citer_societe',
                 'fieldName' => 'companyCitation',
-                'type' => 'string'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'newsletter_afup',
