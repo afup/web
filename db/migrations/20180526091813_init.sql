@@ -394,8 +394,8 @@ CREATE TABLE `afup_forum` (
   `trello_list_id` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `logo_url` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `nb_places` int(11) unsigned NOT NULL DEFAULT '0',
-  `date_debut` date NOT NULL DEFAULT '0000-00-00',
-  `date_fin` date NOT NULL DEFAULT '0000-00-00',
+  `date_debut` date NULL,
+  `date_fin` date NULL,
   `annee` int(11) DEFAULT NULL,
   `text` text,
   `date_fin_appel_projet` int(11) DEFAULT NULL,
@@ -935,7 +935,7 @@ DROP TABLE IF EXISTS `afup_sessions`;
 CREATE TABLE `afup_sessions` (
   `session_id` int(11) NOT NULL AUTO_INCREMENT,
   `id_forum` smallint(6) NOT NULL DEFAULT '0',
-  `date_soumission` date NOT NULL DEFAULT '0000-00-00',
+  `date_soumission` date NULL,
   `titre` varchar(255) NOT NULL DEFAULT '',
   `abstract` text NOT NULL,
   `staff_notes` text,
@@ -985,7 +985,7 @@ CREATE TABLE `afup_sessions_note` (
   `session_id` int(11) NOT NULL DEFAULT '0',
   `note` tinyint(4) NOT NULL DEFAULT '0',
   `salt` char(32) NOT NULL DEFAULT '',
-  `date_soumission` date NOT NULL DEFAULT '0000-00-00',
+  `date_soumission` date NULL,
   PRIMARY KEY (`note`,`session_id`,`salt`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1441,7 +1441,7 @@ CREATE TABLE `compta` (
   `attachment_filename` varchar(255) DEFAULT NULL,
   `numero` varchar(50) NOT NULL,
   `idmode_regl` tinyint(5) NOT NULL,
-  `date_regl` date NOT NULL,
+  `date_regl` date NULL,
   `obs_regl` varchar(255) NOT NULL,
   `idevenement` tinyint(5) NOT NULL,
   `idcompte` tinyint(2) NOT NULL DEFAULT '1',
