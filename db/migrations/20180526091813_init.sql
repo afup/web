@@ -935,7 +935,7 @@ DROP TABLE IF EXISTS `afup_sessions`;
 CREATE TABLE `afup_sessions` (
   `session_id` int(11) NOT NULL AUTO_INCREMENT,
   `id_forum` smallint(6) NOT NULL DEFAULT '0',
-  `date_soumission` date NULL,
+  `date_soumission` date NOT NULL,
   `titre` varchar(255) NOT NULL DEFAULT '',
   `abstract` text NOT NULL,
   `staff_notes` text,
@@ -985,7 +985,7 @@ CREATE TABLE `afup_sessions_note` (
   `session_id` int(11) NOT NULL DEFAULT '0',
   `note` tinyint(4) NOT NULL DEFAULT '0',
   `salt` char(32) NOT NULL DEFAULT '',
-  `date_soumission` date NULL,
+  `date_soumission` date NOT NULL,
   PRIMARY KEY (`note`,`session_id`,`salt`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
