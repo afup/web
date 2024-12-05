@@ -390,12 +390,14 @@ class TalkRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'video_has_fr_subtitles',
                 'fieldName' => 'videoHasFrSubtitles',
-                'type' => 'bool'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'video_has_en_subtitles',
                 'fieldName' => 'videoHasEnSubtitles',
-                'type' => 'bool'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'slides_url',

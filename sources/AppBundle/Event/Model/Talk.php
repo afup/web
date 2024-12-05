@@ -162,10 +162,10 @@ class Talk implements NotifyPropertyInterface
     private $useMarkdown = true;
 
     /**
-     * @var bool|null
+     * @var bool
      * @Assert\NotNull()
      */
-    private $hasAllowedToSharingWithLocalOffices = null;
+    private $hasAllowedToSharingWithLocalOffices = false;
 
     /**
      * @return int

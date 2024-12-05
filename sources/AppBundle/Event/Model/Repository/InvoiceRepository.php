@@ -32,6 +32,8 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                     continue;
                 }
                 $ticket
+                    ->setTransportMode(null)
+                    ->setTransportDistance(null)
                     ->setReference($invoice->getReference())
                     ->setDate(new \DateTime())
                     ->setAmount($ticket->getTicketEventType()->getPrice())
