@@ -1,4 +1,4 @@
-FROM mariadb:10.0.29
+FROM mysql:5.7
 
 COPY my.cnf /etc/mysql/my.cnf
 COPY mysql /opt/mysql
