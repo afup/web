@@ -131,7 +131,7 @@ node_modules:
 
 composer.phar:
     # You may replace the commit hash by whatever the last commit hash is on https://github.com/composer/getcomposer.org/commits/main
-	wget https://raw.githubusercontent.com/composer/getcomposer.org/46c42b8248e157b4f77acf5150dacba6aeb60901/web/installer -O - -q | php -- --2.2
+	curl https://raw.githubusercontent.com/composer/getcomposer.org/46c42b8248e157b4f77acf5150dacba6aeb60901/web/installer | php -- --2.2
 
 init-db:
 	make reset-db

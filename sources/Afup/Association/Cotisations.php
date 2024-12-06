@@ -221,16 +221,13 @@ class Cotisations
 
     function notifierRegelementEnLigneAuTresorier($cmd, $total, $autorisation, $transaction, UserRepository $userRepository)
     {
-        /**
-         * @var Configuration $configuration
-         */
-        $configuration = $GLOBALS['AFUP_CONF'];
-
         $account = $this->getAccountFromCmd($cmd);
 
         if (AFUP_PERSONNES_MORALES == $account['type']) {
+            $invoiceNumber = substr($cmd, 1);
+            $cotisation = $this->getByInvoice($invoiceNumber);
             $personnes = new Personnes_Morales($this->_bdd);
-            $infos = $personnes->obtenir($account['id'], 'nom, prenom, email');
+            $infos = $personnes->obtenir($cotisation['id_personne'], 'nom, prenom, email');
         } else {
             $user = $userRepository->get($account['id']);
             Assertion::notNull($user);
@@ -281,7 +278,7 @@ class Cotisations
             $date_debut = mktime(0, 0, 0, substr($date, 2, 2), substr($date, 0, 2), substr($date, 4, 4));
 
             $cotisation = $this->obtenirDerniere($type_personne, $id_personne);
-            $date_fin_precedente = $cotisation['date_fin'];
+            $date_fin_precedente = $cotisation === false ? 0 : $cotisation['date_fin'];
 
             if ($date_fin_precedente > 0) {
                 $date_debut = strtotime('+1day', $date_fin_precedente);
@@ -569,7 +566,7 @@ class Cotisations
      *
      * @param    int $id_personne Identifiant de la personne
      * @access    public
-     * @return    array
+     * @return    array|false
      */
     function obtenirDerniere($type_personne, $id_personne)
     {

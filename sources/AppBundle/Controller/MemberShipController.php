@@ -382,9 +382,9 @@ class MemberShipController extends SiteBaseController
             $message = sprintf(
                 'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
         Si vous renouvelez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
-                number_format($cotisation['montant'], 2, ',', ' '),
+                number_format((float) $cotisation['montant'], 2, ',', ' '),
                 EURO,
-                date("d/m/Y", $cotisation['date_fin']),
+                date("d/m/Y", (int) $cotisation['date_fin']),
                 $endSubscription->format('d/m/Y')
             );
         }
@@ -486,7 +486,7 @@ class MemberShipController extends SiteBaseController
             $patternPrefix = $user->getLastName();
         }
 
-        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', (int) $cotisation['date_debut']) . '.pdf';
 
         $response = new BinaryFileResponse($tempfile, 200, [], false);
         $response->deleteFileAfterSend(true);
@@ -532,7 +532,7 @@ class MemberShipController extends SiteBaseController
         $generalMeetingPlanned = $generalMeetingRepository->hasGeneralMeetingPlanned();
 
         $cotisation = $userService->getLastSubscription($user);
-        $needsMembersheepFeePayment = $latestDate->getTimestamp() > strtotime("+14 day", $cotisation['date_fin']);
+        $needsMembersheepFeePayment = $latestDate->getTimestamp() > strtotime("+14 day", (int) $cotisation['date_fin']);
 
         if ($needsMembersheepFeePayment) {
             return $this->render('admin/association/membership/generalmeeting_membersheepfee.html.twig', [
