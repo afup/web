@@ -126,6 +126,7 @@ if ($action == 'lister') {
     $formulaire->addRule('titre'       , 'Titre manquant'       , 'required');
     $formulaire->addRule('contenu'     , 'Contenu manquant'     , 'required');
     $formulaire->addRule('raccourci'   , 'Raccourci manquant'   , 'required');
+    $formulaire->addRule('id_site_rubrique'   , 'Rubrique manquante'   , 'required');
 
     $formulaire->registerRule('checkNoSpace', 'callback', 'checkNoSpace');
     $formulaire->addRule('raccourci', 'Ne doit pas contenir d\'espace', 'checkNoSpace', true);

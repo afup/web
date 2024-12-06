@@ -230,7 +230,7 @@ class Article
         $requete = 'UPDATE afup_site_article
         			SET
         			id_site_rubrique      = ' . $this->bdd->echapper($this->id_site_rubrique) . ',
-        			id_personne_physique  = ' . $this->bdd->echapper($this->id_personne_physique) . ',
+        			id_personne_physique  = ' . $this->bdd->echapper($this->id_personne_physique ?: null) . ',
         			titre                 = ' . $this->bdd->echapper($this->titre) . ',
         			raccourci             = ' . $this->bdd->echapper($this->raccourci) . ',
         			chapeau               = ' . $this->bdd->echapper($this->chapeau) . ',
@@ -238,8 +238,8 @@ class Article
         			type_contenu               = ' . $this->bdd->echapper($this->type_contenu) . ',
         			position              = ' . $this->bdd->echapper($this->position) . ',
         			date                  = ' . $this->bdd->echapper($this->date) . ',
-        			theme                 = ' . $this->bdd->echapper($this->theme) . ',
-        			id_forum              = ' . $this->bdd->echapper($this->id_forum) . ',
+        			theme                 = ' . $this->bdd->echapper($this->theme ?: null) . ',
+        			id_forum              = ' . $this->bdd->echapper($this->id_forum ?: null) . ',
         			etat                  = ' . $this->bdd->echapper($this->etat) . '
                     WHERE
                     id = ' . $this->bdd->echapper($this->id);
@@ -252,7 +252,7 @@ class Article
         $requete = 'INSERT INTO afup_site_article
         			SET
         			id_site_rubrique      = ' . $this->bdd->echapper($this->id_site_rubrique) . ',
-        			id_personne_physique  = ' . $this->bdd->echapper($this->id_personne_physique) . ',
+        			id_personne_physique  = ' . $this->bdd->echapper($this->id_personne_physique ?: null) . ',
         			titre                 = ' . $this->bdd->echapper($this->titre) . ',
         			raccourci             = ' . $this->bdd->echapper($this->raccourci) . ',
         			chapeau               = ' . $this->bdd->echapper($this->chapeau) . ',
@@ -260,8 +260,8 @@ class Article
         			type_contenu               = ' . $this->bdd->echapper($this->type_contenu) . ',
         			position              = ' . $this->bdd->echapper($this->position) . ',
         			date                  = ' . $this->bdd->echapper($this->date) . ',
-        			theme                 = ' . $this->bdd->echapper($this->theme) . ',
-        			id_forum              = ' . $this->bdd->echapper($this->id_forum) . ',
+        			theme                 = ' . $this->bdd->echapper($this->theme ?: null) . ',
+        			id_forum              = ' . $this->bdd->echapper($this->id_forum ?: null) . ',
         			etat                  = ' . $this->bdd->echapper($this->etat);
         if ($this->id > 0) {
             $requete .= ', id = ' . $this->bdd->echapper($this->id);
