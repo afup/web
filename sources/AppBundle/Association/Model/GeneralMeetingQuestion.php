@@ -163,10 +163,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getStatus()
+    public function getStatus(): string
     {
         if (null !== $this->getClosedAt()) {
             return self::STATUS_CLOSED;
@@ -179,22 +176,25 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
         return self::STATUS_WAITING;
     }
 
-    public function hasStatusWaiting()
+    public function hasStatusWaiting(): bool
     {
         return self::STATUS_WAITING === $this->getStatus();
     }
 
-    public function hasStatusOpened()
+    public function hasStatusOpened(): bool
     {
         return self::STATUS_OPENED === $this->getStatus();
     }
 
-    public function hasStatusClosed()
+    public function hasStatusClosed(): bool
     {
         return self::STATUS_CLOSED === $this->getStatus();
     }
 
-    public function hasVotes($results)
+    /**
+     * @param array<string, int> $results
+     */
+    public function hasVotes(array $results): bool
     {
         return 0 > $results[GeneralMeetingVote::VALUE_YES] + $results[GeneralMeetingVote::VALUE_NO] + $results[GeneralMeetingVote::VALUE_ABSTENTION];
     }

@@ -11,7 +11,7 @@ class HtmlParser
     private $dom;
 
     /**
-     * @var \DOMNodeList
+     * @var \DOMNodeList&iterable<\DOMElement>
      */
     private $meta;
 
@@ -57,9 +57,6 @@ class HtmlParser
     private function getOpenGraphMeta($property)
     {
         foreach ($this->meta as $meta) {
-            /**
-             * @var $meta \DOMElement
-             */
             if ($meta->hasAttribute('property') === true) {
                 if ($meta->getAttribute('property') === self::OPEN_GRAPH_PREFIX . ':' . $property) {
                     return $meta->getAttribute('content');
@@ -72,9 +69,6 @@ class HtmlParser
     private function getTwitterMeta($name)
     {
         foreach ($this->meta as $meta) {
-            /**
-             * @var $meta \DOMElement
-             */
             if ($meta->hasAttribute('name') === true) {
                 if ($meta->getAttribute('name') === self::TWITTER_PREFIX . ':' . $name) {
                     return $meta->getAttribute('content');
@@ -91,9 +85,6 @@ class HtmlParser
     private function getStandardMeta($name)
     {
         foreach ($this->meta as $meta) {
-            /**
-             * @var $meta \DOMElement
-             */
             if ($meta->hasAttribute('name') === true) {
                 if ($meta->getAttribute('name') === $name) {
                     return $meta->getAttribute('content');
