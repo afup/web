@@ -45,6 +45,9 @@ SQL;
         return $collection->first();
     }
 
+    /**
+     * @return iterable<GeneralMeetingQuestion>
+     */
     public function loadClosedQuestions(\DateTimeInterface $generalMeetingDate)
     {
         $sql = <<<SQL
@@ -61,14 +64,16 @@ SQL;
             'general_meeting_date' => $generalMeetingDate->format('U'),
         ];
 
+        /** @var iterable<GeneralMeetingQuestion> */
         return $this->getPreparedQuery($sql)->setParams($params)->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return iterable<GeneralMeetingQuestion>
      */
     public function loadByDate(\DateTimeInterface $generalMeetingDate)
     {
+        /** @var iterable<GeneralMeetingQuestion> */
         return $this->getBy([
             'date' => $generalMeetingDate->format('U'),
         ]);

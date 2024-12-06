@@ -1,0 +1,14 @@
+<?php
+
+namespace CCMBenchmark\Ting\Repository;
+
+class RepositoryFactory
+{
+    /**
+     * @param class-string<R> $repositoryName
+     * @return R
+     * @template T of object
+     * @template R of Repository<T>
+     */
+    public function get($repositoryName) {}
+}

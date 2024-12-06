@@ -1,0 +1,7 @@
+<?php
+namespace CCMBenchmark\Ting\Repository;
+
+/**
+ * @template T
+ */
+abstract class Repository {}

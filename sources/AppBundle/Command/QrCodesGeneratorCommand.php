@@ -60,11 +60,14 @@ class QrCodesGeneratorCommand extends ContainerAwareCommand
 
             $io->progressStart(count($tickets));
             foreach ($tickets as $ticket) {
-                if (null !== ($inscriptionIdMin = $input->getOption('inscription-id-min')) && $inscriptionIdMin > $ticket->getId()) {
+                $inscriptionIdMin = (int) $input->getOption('inscription-id-min');
+                $inscriptionIdMax = (int) $input->getOption('inscription-id-max');
+
+                if ($inscriptionIdMin > $ticket->getId()) {
                     continue;
                 }
 
-                if (null !== ($inscriptionIdMax = $input->getOption('inscription-id-max')) && $inscriptionIdMax < $ticket->getId()) {
+                if ($inscriptionIdMax < $ticket->getId()) {
                     continue;
                 }
 
