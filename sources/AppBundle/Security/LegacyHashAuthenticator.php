@@ -7,6 +7,8 @@ use AppBundle\Association\Model\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -66,7 +68,9 @@ class LegacyHashAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $request->getSession()->getFlashBag()->add('error', "Utilisateur et/ou mot de passe incorrect");
+        /** @var SessionInterface&Session $session */
+        $session = $request->getSession();
+        $session->getFlashBag()->add('error', "Utilisateur et/ou mot de passe incorrect");
 
         return null;
     }
