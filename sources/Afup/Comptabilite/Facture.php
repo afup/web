@@ -180,7 +180,7 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function ajouter_details($ref, $designation, $quantite, $pu, $tva = 0)
+    function ajouter_details($ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
         $requete = 'INSERT INTO ';
         $requete .= 'afup_compta_facture_details (';
@@ -237,7 +237,7 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function modifier_details($id, $ref, $designation, $quantite, $pu, $tva = 0)
+    function modifier_details($id, $ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
         $requete = 'UPDATE ';
         $requete .= 'afup_compta_facture_details ';

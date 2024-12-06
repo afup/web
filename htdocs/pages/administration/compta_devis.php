@@ -239,9 +239,9 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
                 $ok = $comptaFact->ajouter_details(
                                     $valeur['ref'.$i],
                                     $valeur['designation'.$i],
-                                    $valeur['quantite'.$i],
-                                    $valeur['pu'.$i],
-                                    $valeur['tva'.$i]
+                                    (int)$valeur['quantite'.$i],
+                                    (float)$valeur['pu'.$i],
+                                    (int)$valeur['tva'.$i]
                                     );
             }
         } else {
@@ -264,7 +264,7 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
                                     $valeur['ref_clt2'],
                                     $valeur['ref_clt3'],
                                     $valeur['numero_devis'],
-                  $valeur['numero_facture'],
+                  $valeur['numero_facture'] ?? null,
                   0,
                   null,
                                     $valeur['devise_facture']
@@ -275,9 +275,9 @@ $date_devis= $valeur['date_devis']['Y']."-".$valeur['date_devis']['F']."-".$vale
                                     $valeur['id'.$i],
                                     $valeur['ref'.$i],
                                     $valeur['designation'.$i],
-                                    $valeur['quantite'.$i],
-                                    $valeur['pu'.$i],
-                                    $valeur['tva'.$i]
+                                    (int)$valeur['quantite'.$i],
+                                    (float)$valeur['pu'.$i],
+                                    (int)$valeur['tva'.$i]
                                     );
             }
 

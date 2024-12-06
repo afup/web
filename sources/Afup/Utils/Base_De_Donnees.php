@@ -234,6 +234,10 @@ class Base_De_Donnees
     function executer($requete)
     {
         $result = mysqli_query($this->getDbLink(), $requete);
+        if (!$result) {
+            throw new \RuntimeException(mysqli_error($this->getDbLink()));
+        }
+
         return $result;
     }
 

@@ -5,6 +5,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Ticket;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
@@ -326,22 +327,26 @@ SQL;
             ->addField([
                 'columnName' => 'vote_enabled',
                 'fieldName' => 'voteEnabled',
-                'type' => 'boolean'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'has_prices_defined_with_vat',
                 'fieldName' => 'hasPricesDefinedWithVat',
-                'type' => 'boolean'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'speakers_diner_enabled',
                 'fieldName' => 'speakersDinerEnabled',
-                'type' => 'boolean'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'accomodation_enabled',
                 'fieldName' => 'accomodationEnabled',
-                'type' => 'boolean'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'waiting_list_url',
@@ -351,7 +356,8 @@ SQL;
             ->addField([
                 'columnName' => 'transport_information_enabled',
                 'fieldName' => 'transportInformationEnabled',
-                'type' => 'boolean',
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
         ;
 

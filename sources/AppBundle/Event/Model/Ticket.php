@@ -253,7 +253,7 @@ class Ticket implements NotifyPropertyInterface
     protected $nearestOffice;
 
     /**
-     * @var null|string
+     * @var null|int
      */
     protected $transportMode;
 
@@ -787,7 +787,7 @@ class Ticket implements NotifyPropertyInterface
     }
 
     /**
-     * @return null|string
+     * @return null|int
      */
     public function getTransportMode()
     {
@@ -795,7 +795,7 @@ class Ticket implements NotifyPropertyInterface
     }
 
     /**
-     * @param null|string $transportMode
+     * @param null|int $transportMode
      *
      * @return $this
      */

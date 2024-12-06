@@ -4,6 +4,7 @@ namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\CompanyMember;
 use Aura\SqlQuery\Common\SelectInterface;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -170,7 +171,8 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'public_profile_enabled',
                 'fieldName' => 'publicProfileEnabled',
-                'type' => 'boolean',
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'description',

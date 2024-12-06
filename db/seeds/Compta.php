@@ -69,7 +69,7 @@ class Compta extends AbstractSeed
                 'idoperation' => 0,
                 'idcategorie' => 0,
                 'idmode_regl' => 0,
-                'date_regl' => '0000-00-00',
+                'date_regl' => null,
                 'idevenement' => 0,
             ],
             [
@@ -89,7 +89,7 @@ class Compta extends AbstractSeed
                 'idoperation' => 0,
                 'idcategorie' => 0,
                 'idmode_regl' => 0,
-                'date_regl' => '0000-00-00',
+                'date_regl' => null,
                 'idevenement' => 0,
             ],
         ];

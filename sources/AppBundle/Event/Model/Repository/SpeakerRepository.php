@@ -7,6 +7,7 @@ use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use Assert\Assertion;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -264,12 +265,14 @@ SQL
             ->addField([
                 'columnName' => 'will_attend_speakers_diner',
                 'fieldName' => 'willAttendSpeakersDiner',
-                'type' => 'bool'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'has_special_diet',
                 'fieldName' => 'hasSpecialDiet',
-                'type' => 'bool'
+                'type' => 'bool',
+                'serializer' => Boolean::class
             ])
             ->addField([
                 'columnName' => 'special_diet_description',

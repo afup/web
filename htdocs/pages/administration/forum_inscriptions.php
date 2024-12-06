@@ -399,8 +399,8 @@ if ($action == 'lister') {
                                                            $valeurs['commentaires'],
         												   $valeurs['etat'],
                                                            $valeurs['facturation'],
-                                                           $valeurs['transport_mode'],
-                                                           $valeurs['transport_distance']);
+                                                           (int)$valeurs['transport_mode'],
+                                                           (int)$valeurs['transport_distance']);
 
             /** @var \AppBundle\Event\Model\Ticket $ticket */
             $ticket = $ticketRepository->get($_GET['id']);

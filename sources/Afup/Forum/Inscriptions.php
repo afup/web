@@ -263,7 +263,7 @@ SQL;
     function modifierInscription($id, $reference, $type_inscription, $civilite, $nom, $prenom,
                                  $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
                                  $newsletter_nexen, $mail_partenaire, $commentaires, $etat, $facturation,
-                                 $transportMode, $transportDistance)
+                                 int $transportMode, int $transportDistance)
     {
         $requete = 'UPDATE ';
         $requete .= '  afup_inscription_forum ';

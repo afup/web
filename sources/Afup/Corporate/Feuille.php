@@ -45,7 +45,7 @@ class Feuille
         }
         $requete = 'INSERT INTO afup_site_feuille
         			SET
-        			id_parent = ' . $this->bdd->echapper($this->id_parent) . ',
+        			id_parent = ' . $this->bdd->echapper(!$this->id_parent ? null : $this->id_parent) . ',
         			nom       = ' . $this->bdd->echapper($this->nom) . ',
         			lien      = ' . $this->bdd->echapper($this->lien) . ',
         			alt       = ' . $this->bdd->echapper($this->alt) . ',
@@ -66,7 +66,7 @@ class Feuille
     {
         $requete = 'UPDATE afup_site_feuille
         			SET
-        			id_parent = ' . $this->bdd->echapper($this->id_parent) . ',
+        			id_parent = ' . $this->bdd->echapper(!$this->id_parent ? null : $this->id_parent) . ',
         			nom       = ' . $this->bdd->echapper($this->nom) . ',
         			lien      = ' . $this->bdd->echapper($this->lien) . ',
         			alt       = ' . $this->bdd->echapper($this->alt) . ',
