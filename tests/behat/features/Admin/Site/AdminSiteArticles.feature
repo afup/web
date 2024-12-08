@@ -1,5 +1,21 @@
 Feature: Administration - Partie Site
 
+  Scenario: Ajout d'un article avec le minimum d'info
+    Given I am logged in as admin and on the Administration
+    And I follow "Articles"
+    Then I should see "Liste des articles"
+    And I should see "Actualités"
+    When I follow "Ajouter"
+    Then I should see "Ajouter un article"
+    And I fill in "titre" with "Le titre mini"
+    And I fill in "contenu" with "Le contenu mini"
+    And I fill in "raccourci" with "url-article-mini"
+    And I select "Actualités" from "id_site_rubrique"
+    And I select "9" from "position"
+    And I press "Ajouter"
+    When I should see "Liste des articles"
+    Then the ".content table" element should contain "Le titre mini"
+
   @reloadDbWithTestData
   Scenario: Ajout/modification/suppression d'un article
     Given I am logged in as admin and on the Administration

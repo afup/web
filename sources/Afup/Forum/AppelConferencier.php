@@ -404,8 +404,8 @@ class AppelConferencier
         $date_soumission,
         $titre,
         $abstract,
-        $genre,
-        $plannifie,
+        int $genre,
+        int $plannifie,
         $joindin = null,
         $youtubeId = null,
         $slidesUrl = null,
@@ -413,8 +413,8 @@ class AppelConferencier
         $blogPostUrl = null,
         $interviewUrl = null,
         $languageCode = null,
-        $skill = null,
-        $needs_mentoring = null,
+        int $skill = null,
+        int $needs_mentoring = null,
         $use_markdown = null,
         $video_has_fr_subtitles = null,
         $video_has_en_subtitles = null,
@@ -499,10 +499,10 @@ class AppelConferencier
         $date_soumission,
         $titre,
         $abstract,
-        $genre,
-        $plannifie = 0,
-        $needs_mentoring = 0,
-        $level = Talk::SKILL_NA,
+        int $genre,
+        int $plannifie = 0,
+        int $needs_mentoring = 0,
+        int $level = Talk::SKILL_NA,
         $useMarkdown = false
     ) {
 
@@ -541,6 +541,9 @@ class AppelConferencier
 
     public function lierConferencierSession($conferencier_id, $session_id)
     {
+        if (!$conferencier_id) {
+            return true;
+        }
         $donnees = array(
             $this->_bdd->echapper($conferencier_id),
             $this->_bdd->echapper($session_id),

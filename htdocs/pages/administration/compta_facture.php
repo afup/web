@@ -247,9 +247,9 @@ $date_paiement= $valeur['date_paiement']['Y']."-".$valeur['date_paiement']['F'].
 					$valeur['id'.$i],
 					$valeur['ref'.$i],
 					$valeur['designation'.$i],
-					$valeur['quantite'.$i],
-					$valeur['pu'.$i],
-					$valeur['tva'.$i]
+					(int)$valeur['quantite'.$i],
+					(float)$valeur['pu'.$i],
+					(int)$valeur['tva'.$i]
 				);
    			}
 

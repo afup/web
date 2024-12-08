@@ -73,8 +73,8 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
             'id_tarif' => $ticketEventType->getTicketTypeId(),
             'id_event' => $ticketEventType->getEventId(),
             'price' => $ticketEventType->getPrice(),
-            'date_start' => $ticketEventType->getDateStart()->format(\DateTime::ATOM),
-            'date_end' => $ticketEventType->getDateEnd()->format(\DateTime::ATOM),
+            'date_start' => $ticketEventType->getDateStart()->format('Y-m-d H:i:s'),
+            'date_end' => $ticketEventType->getDateEnd()->format('Y-m-d H:i:s'),
             'description' => $ticketEventType->getDescription(),
             'max_tickets' => $ticketEventType->getMaxTickets()
         ]);
