@@ -286,7 +286,7 @@ SQL;
         $requete .= '  facturation=' . $this->_bdd->echapper($facturation) . ',';
         $requete .= '  transport_mode=' . $this->_bdd->echapper($transportMode) . ',';
         $requete .= '  transport_distance=' . $this->_bdd->echapper($transportDistance);
-        $requete .= 'WHERE';
+        $requete .= ' WHERE';
         $requete .= '  id=' . $id;
 
         $this->modifierEtatInscription($reference, $etat);
