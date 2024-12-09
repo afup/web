@@ -36,7 +36,7 @@ class LoginAction
         $lastUsername = $this->authenticationUtils->getLastUsername();
 
         $actualUrl = $request->getSchemeAndHttpHost() . $request->getRequestUri();
-        $targetUri = $request->query->get('target');
+        $targetUri = $request->query->get('target', '');
         $noDomain = parse_url($targetUri, PHP_URL_HOST) === null;
         $targetPath = $targetUri !== $actualUrl && $noDomain ? $targetUri : null;
 

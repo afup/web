@@ -6,7 +6,7 @@ class TechLetterFactory
 {
     public static function createTechLetterFromJson($json)
     {
-        $array = json_decode($json, true);
+        $array = json_decode((string) $json, true);
 
         $articles = $projects = [];
         if (isset($array['projects'])) {

@@ -70,6 +70,7 @@ services:
       args:
         uid: ${CURRENT_UID:-1001}
         gid: "1001"
+        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     env_file:
       .env
     user: localUser
