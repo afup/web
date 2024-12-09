@@ -19,7 +19,10 @@ class GeneralMeetingVoteRepository extends Repository implements MetadataInitial
         ]);
     }
 
-    public function getResultsForQuestionId($questionId)
+    /**
+     * @return array<string, int>
+     */
+    public function getResultsForQuestionId(int $questionId): array
     {
         $results = [
             GeneralMeetingVote::VALUE_YES => 0,
