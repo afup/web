@@ -19,6 +19,7 @@ Feature: Administration - Partie Personnes physiques
     And I fill in "user_edit[city]" with "LYON"
     And I fill in "user_edit[username]" with "monlogin"
     And I press "Ajouter"
+
     Then I should not see "Cette valeur ne doit pas être vide"
     # on vérifie qu'il est dans la liste
     When I follow "Personnes physiques"

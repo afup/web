@@ -43,7 +43,7 @@ class GithubClient
         }
 
         if ($response->getStatusCode() === 200) {
-            return GithubUser::fromApi(json_decode($response->getBody(), true));
+            return GithubUser::fromApi(json_decode($response->getBody()->getContents(), true));
         }
 
         throw new UnableToGetGithubUserInfosException(

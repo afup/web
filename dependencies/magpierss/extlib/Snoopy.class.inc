@@ -645,7 +645,7 @@ class Snoopy
             $cmdline_params .= " -m " . $this->read_timeout;
         }
 
-        $headerfile = uniqid(time());
+        $headerfile = uniqid((string) time(), true);
 
         # accept self-signed certs
         $cmdline_params .= " -k";
@@ -857,7 +857,7 @@ class Snoopy
                 break;
 
             case "multipart/form-data":
-                $this->_mime_boundary = "Snoopy" . md5(uniqid(microtime()));
+                $this->_mime_boundary = "Snoopy" . md5(uniqid((string) microtime()));
 
                 reset($formvars);
 

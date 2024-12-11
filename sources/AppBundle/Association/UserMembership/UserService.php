@@ -37,9 +37,9 @@ class UserService
         $this->sender = MailUser::DEFAULT_SENDER_EMAIL;
     }
 
-    public function generateRandomPassword()
+    public function generateRandomPassword(): string
     {
-        return substr(md5(uniqid(mt_rand(), true)), 0, 10);
+        return bin2hex(random_bytes(8));
     }
 
     public function resetPassword(User $user)
