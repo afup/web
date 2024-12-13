@@ -431,8 +431,10 @@ class AppelConferencier
         $requete .= ' titre = ' . $this->_bdd->echapper($titre) . ', ';
         $requete .= ' abstract = ' . $this->_bdd->echapper($abstract) . ', ';
         $requete .= ' genre = ' . $this->_bdd->echapper($genre) . ', ';
-        if ($joindin !== null) {
+        if (strlen(trim($joindin)) > 0) {
             $requete .= ' joindin = ' . $this->_bdd->echapper($joindin) . ', ';
+        } else {
+            $requete .= ' joindin = NULL, ';
         }
         if ($youtubeId !== null) {
             $requete .= ' youtube_id = ' . $this->_bdd->echapper($youtubeId) . ', ';
