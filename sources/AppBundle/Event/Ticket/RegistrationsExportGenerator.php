@@ -148,6 +148,9 @@ class RegistrationsExportGenerator
      */
     private function extractAndCleanTags($comments)
     {
+        if (!$comments) {
+            return null;
+        }
         preg_match('@\<tag\>(.*)\</tags?\>@i', $comments, $matches);
         $tags =  isset($matches[1]) ? $matches[1] : '';
         $tags = explode(';', $tags);

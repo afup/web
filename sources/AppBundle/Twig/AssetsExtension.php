@@ -30,4 +30,9 @@ class AssetsExtension extends \Twig_Extension implements \Twig_Extension_Globals
     {
         return 'assets';
     }
+
+    public function getGlobals()
+    {
+        return [];
+    }
 }

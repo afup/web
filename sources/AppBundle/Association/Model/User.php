@@ -577,7 +577,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->lastSubscription;
     }
 
-    public function setLastSubscription($sub)
+    public function setLastSubscription(?string $sub)
     {
         if ($sub !== null) {
             $this->lastSubscription = \DateTimeImmutable::createFromFormat('U', $sub);
@@ -680,9 +680,6 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return ($this->companyId !== null && $this->companyId > 0);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getRoles()
     {
         $defaultRoles = ['ROLE_USER'];
@@ -773,24 +770,15 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getSalt()
     {
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function eraseCredentials()
     {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function serialize()
     {
         return serialize([
@@ -800,9 +788,6 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function unserialize($serialized)
     {
         $array = unserialize($serialized);
