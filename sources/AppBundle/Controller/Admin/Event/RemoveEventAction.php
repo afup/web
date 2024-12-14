@@ -59,7 +59,7 @@ class RemoveEventAction
             return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
         }
 
-        if ($result->first()['est_supprimable'] !== '1') {
+        if ($result->first()['est_supprimable'] !== 1) {
             $this->flashBag->add('error', 'Impossible de supprimer un évènement utilisé');
             return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
         }

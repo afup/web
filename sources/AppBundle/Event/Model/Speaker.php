@@ -258,7 +258,7 @@ class Speaker implements NotifyPropertyInterface
      */
     public function getLabel()
     {
-        return $this->getFirstname() . " " . mb_strtoupper($this->getLastname());
+        return $this->getFirstname() . " " . ($this->getLastname() ? mb_strtoupper($this->getLastname()) : null);
     }
 
     /**
@@ -438,6 +438,17 @@ class Speaker implements NotifyPropertyInterface
         }
 
         return trim($mastodon);
+    }
+
+    public function getCleanedMastodon(): string
+    {
+        $mastodon = $this->getMastodon();
+        if (strpos($mastodon, '@') === false) {
+            return '';
+        }
+
+        list(,$username) = explode('@', $mastodon);
+        return trim($username);
     }
 
     /**
