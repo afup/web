@@ -217,7 +217,7 @@ class OfficesCollection
                 'meetup_id' => '19629965',
                 'logo_url' => '/images/offices/paris.svg',
                 'twitter' => 'afup_paris',
-
+                'bluesky' => 'afup-paris.bsky.social',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/paris/workadventure',
                 'map' => [
                     "legend-first-point-x" => "460",
