@@ -41,6 +41,7 @@ class OfficesCollection
                 'twitter' => 'AFUP_Limoges',
                 'youtube' => 'https://www.youtube.com/channel/UCPYMUpcC3b5zd-hVNGEWHAA',
                 'blog_url' => 'http://limoges.afup.org/',
+                'linkedin' => 'afup-limoges',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/limoges/workadventure',
                 'map' => [
                     "legend-first-point-x" => "410",
