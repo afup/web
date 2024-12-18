@@ -65,6 +65,8 @@ class OfficesCollection
                 'logo_url' => '/images/offices/hdf.svg',
                 'twitter' => 'afup_hdf',
                 'youtube' => 'https://www.youtube.com/channel/UCkMGtNcB-VeqMlQ9p2JMIKg',
+                'linkedin' => 'afup-hdf',
+                'bluesky' => 'afup-hdf.bsky.social',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/hautsdefrance/workadventure',
                 'map' => [
                     "legend-first-point-x" => "490",
