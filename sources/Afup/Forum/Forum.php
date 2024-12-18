@@ -316,8 +316,8 @@ class Forum
         $aHeures = explode("-", $heures);
         $aDebut = explode(":", $aHeures[0]);
         $aFin = explode(":", $aHeures[1]);
-        $iDebut = ($aDebut[0] * 60) + $aDebut[1];
-        $iFin = ($aFin[0] * 60) + $aFin[1];
+        $iDebut = ((int)$aDebut[0] * 60) + (int)$aDebut[1];
+        $iFin = ((int)$aFin[0] * 60) + (int)$aFin[1];
         $duree = ($iFin - $iDebut) / 5;
         return $duree;
     }
