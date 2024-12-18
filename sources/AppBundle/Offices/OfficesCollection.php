@@ -288,6 +288,7 @@ class OfficesCollection
                 'blog_url' => 'https://rennes.afup.org/',
                 'youtube' => 'https://www.youtube.com/channel/UCv1VGfqKhygjTOZkdVUWfpQ',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/rennes/workadventure',
+                'linkedin' => 'afup-rennes',
                 'map' => [
                     "legend-first-point-x" => "285",
                     "legend-first-point-y" => "220",
