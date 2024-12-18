@@ -122,6 +122,8 @@ class OfficesCollection
                 'twitter' => 'AFUP_Lyon',
                 'blog_url' => 'http://lyon.afup.org',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/lyon/workadventure',
+                'linkedin' => 'afup-lyon',
+                'bluesky' => 'lyon.afup.org',
                 'map' => [
                     "legend-first-point-x" => "570",
                     "legend-first-point-y" => "380",
