@@ -334,6 +334,8 @@ class OfficesCollection
                 'departements' => ['54', '55', '57', '88'],
                 'meetup_urlname' => 'afup-lorraine-php',
                 'meetup_id' => '26854931',
+                'bluesky' => 'afup-lorraine.bsky.social',
+                'linkedin' => 'afup-lorraine',
                 'map' => [
                     "legend-first-point-x" => "650",
                     "legend-first-point-y" => "160",
