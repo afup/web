@@ -230,7 +230,8 @@ class OfficesCollection
                 'meetup_id' => '23106095',
                 'logo_url' => '/images/offices/poitiers.svg',
                 'twitter' => 'afup_poitiers',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/poitiers/workadventure',
+                'linkedin' => 'afup-poitiers',
+                'bluesky' => 'afup-poitiers.bsky.social',
                 'map' => [
                     "legend-first-point-x" => "365",
                     "legend-first-point-y" => "330",
