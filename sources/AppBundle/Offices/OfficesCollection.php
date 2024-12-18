@@ -194,6 +194,7 @@ class OfficesCollection
                 'logo_url' => '/images/offices/nantes.svg',
                 'twitter' => 'afup_nantes',
                 'blog_url' => 'http://nantes.afup.org/',
+                'linkedin' => 'afup-nantes',
                 'map' => [
                     "legend-first-point-x" => "285",
                     "legend-first-point-y" => "290",
