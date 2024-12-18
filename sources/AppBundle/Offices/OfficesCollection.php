@@ -367,6 +367,7 @@ class OfficesCollection
                 'meetup_id' => '28638984',
                 'youtube' => 'https://www.youtube.com/channel/UCtKhGIofgKM9ecrdZNyn_pA',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/tours/workadventure',
+                'linkedin' => 'afup-tours',
                 'map' => [
                     "legend-first-point-x" => "380",
                     "legend-first-point-y" => "270",
