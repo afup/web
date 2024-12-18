@@ -16,6 +16,8 @@ class OfficesCollection
                 'logo_url' => '/images/offices/bordeaux.svg',
                 'twitter' => 'AFUP_Bordeaux',
                 'blog_url' => 'http://bordeaux.afup.org/',
+                'linkedin' => 'afup-bordeaux',
+                'bluesky' => 'afup-bordeaux.bsky.social',
                 'map' => [
                     "legend-first-point-x" => "330",
                     "legend-first-point-y" => "440",
