@@ -170,6 +170,8 @@ class OfficesCollection
                 'logo_url' => '/images/offices/montpellier.svg',
                 'twitter' => 'afup_mtp',
                 'youtube' => 'https://www.youtube.com/channel/UCr9f4-DksVhdv45q2245HeQ',
+                'bluesky' => 'afup-montpellier.bsky.social',
+                'linkedin' => 'montpellier-afup',
                 'map' => [
                     "legend-first-point-x" => "530",
                     "legend-first-point-y" => "520",
