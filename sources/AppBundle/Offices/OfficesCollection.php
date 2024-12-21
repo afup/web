@@ -17,7 +17,7 @@ class OfficesCollection
                 'twitter' => 'AFUP_Bordeaux',
                 'blog_url' => 'http://bordeaux.afup.org/',
                 'linkedin' => 'afup-bordeaux',
-                'bluesky' => 'afup-bordeaux.bsky.social',
+                'bluesky' => 'bordeaux.afup.org',
                 'map' => [
                     "legend-first-point-x" => "330",
                     "legend-first-point-y" => "440",
@@ -66,7 +66,7 @@ class OfficesCollection
                 'twitter' => 'afup_hdf',
                 'youtube' => 'https://www.youtube.com/channel/UCkMGtNcB-VeqMlQ9p2JMIKg',
                 'linkedin' => 'afup-hdf',
-                'bluesky' => 'afup-hdf.bsky.social',
+                'bluesky' => 'hdf.afup.org',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/hautsdefrance/workadventure',
                 'map' => [
                     "legend-first-point-x" => "490",
@@ -170,7 +170,7 @@ class OfficesCollection
                 'logo_url' => '/images/offices/montpellier.svg',
                 'twitter' => 'afup_mtp',
                 'youtube' => 'https://www.youtube.com/channel/UCr9f4-DksVhdv45q2245HeQ',
-                'bluesky' => 'afup-montpellier.bsky.social',
+                'bluesky' => 'montpellier.afup.org',
                 'linkedin' => 'montpellier-afup',
                 'map' => [
                     "legend-first-point-x" => "530",
@@ -217,7 +217,7 @@ class OfficesCollection
                 'meetup_id' => '19629965',
                 'logo_url' => '/images/offices/paris.svg',
                 'twitter' => 'afup_paris',
-                'bluesky' => 'afup-paris.bsky.social',
+                'bluesky' => 'paris.afup.org',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/paris/workadventure',
                 'map' => [
                     "legend-first-point-x" => "460",
@@ -241,7 +241,7 @@ class OfficesCollection
                 'logo_url' => '/images/offices/poitiers.svg',
                 'twitter' => 'afup_poitiers',
                 'linkedin' => 'afup-poitiers',
-                'bluesky' => 'afup-poitiers.bsky.social',
+                'bluesky' => 'poitiers.afup.org',
                 'map' => [
                     "legend-first-point-x" => "365",
                     "legend-first-point-y" => "330",
@@ -334,7 +334,7 @@ class OfficesCollection
                 'departements' => ['54', '55', '57', '88'],
                 'meetup_urlname' => 'afup-lorraine-php',
                 'meetup_id' => '26854931',
-                'bluesky' => 'afup-lorraine.bsky.social',
+                'bluesky' => 'lorraine.afup.org',
                 'linkedin' => 'afup-lorraine',
                 'map' => [
                     "legend-first-point-x" => "650",
