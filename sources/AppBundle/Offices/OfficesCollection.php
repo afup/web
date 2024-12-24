@@ -15,7 +15,8 @@ class OfficesCollection
                 'meetup_id' => '18197674',
                 'logo_url' => '/images/offices/bordeaux.svg',
                 'twitter' => 'AFUP_Bordeaux',
-                'blog_url' => 'http://bordeaux.afup.org/',
+                'linkedin' => 'afup-bordeaux',
+                'bluesky' => 'bordeaux.afup.org',
                 'map' => [
                     "legend-first-point-x" => "330",
                     "legend-first-point-y" => "440",
@@ -39,6 +40,7 @@ class OfficesCollection
                 'twitter' => 'AFUP_Limoges',
                 'youtube' => 'https://www.youtube.com/channel/UCPYMUpcC3b5zd-hVNGEWHAA',
                 'blog_url' => 'http://limoges.afup.org/',
+                'linkedin' => 'afup-limoges',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/limoges/workadventure',
                 'map' => [
                     "legend-first-point-x" => "410",
@@ -62,6 +64,8 @@ class OfficesCollection
                 'logo_url' => '/images/offices/hdf.svg',
                 'twitter' => 'afup_hdf',
                 'youtube' => 'https://www.youtube.com/channel/UCkMGtNcB-VeqMlQ9p2JMIKg',
+                'linkedin' => 'afup-hdf',
+                'bluesky' => 'hdf.afup.org',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/hautsdefrance/workadventure',
                 'map' => [
                     "legend-first-point-x" => "490",
@@ -117,6 +121,8 @@ class OfficesCollection
                 'twitter' => 'AFUP_Lyon',
                 'blog_url' => 'http://lyon.afup.org',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/lyon/workadventure',
+                'linkedin' => 'afup-lyon',
+                'bluesky' => 'lyon.afup.org',
                 'map' => [
                     "legend-first-point-x" => "570",
                     "legend-first-point-y" => "380",
@@ -163,6 +169,8 @@ class OfficesCollection
                 'logo_url' => '/images/offices/montpellier.svg',
                 'twitter' => 'afup_mtp',
                 'youtube' => 'https://www.youtube.com/channel/UCr9f4-DksVhdv45q2245HeQ',
+                'bluesky' => 'montpellier.afup.org',
+                'linkedin' => 'montpellier-afup',
                 'map' => [
                     "legend-first-point-x" => "530",
                     "legend-first-point-y" => "520",
@@ -185,6 +193,7 @@ class OfficesCollection
                 'logo_url' => '/images/offices/nantes.svg',
                 'twitter' => 'afup_nantes',
                 'blog_url' => 'http://nantes.afup.org/',
+                'linkedin' => 'afup-nantes',
                 'map' => [
                     "legend-first-point-x" => "285",
                     "legend-first-point-y" => "290",
@@ -207,7 +216,7 @@ class OfficesCollection
                 'meetup_id' => '19629965',
                 'logo_url' => '/images/offices/paris.svg',
                 'twitter' => 'afup_paris',
-
+                'bluesky' => 'paris.afup.org',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/paris/workadventure',
                 'map' => [
                     "legend-first-point-x" => "460",
@@ -230,7 +239,8 @@ class OfficesCollection
                 'meetup_id' => '23106095',
                 'logo_url' => '/images/offices/poitiers.svg',
                 'twitter' => 'afup_poitiers',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/poitiers/workadventure',
+                'linkedin' => 'afup-poitiers',
+                'bluesky' => 'poitiers.afup.org',
                 'map' => [
                     "legend-first-point-x" => "365",
                     "legend-first-point-y" => "330",
@@ -277,6 +287,7 @@ class OfficesCollection
                 'blog_url' => 'https://rennes.afup.org/',
                 'youtube' => 'https://www.youtube.com/channel/UCv1VGfqKhygjTOZkdVUWfpQ',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/rennes/workadventure',
+                'linkedin' => 'afup-rennes',
                 'map' => [
                     "legend-first-point-x" => "285",
                     "legend-first-point-y" => "220",
@@ -322,6 +333,8 @@ class OfficesCollection
                 'departements' => ['54', '55', '57', '88'],
                 'meetup_urlname' => 'afup-lorraine-php',
                 'meetup_id' => '26854931',
+                'bluesky' => 'lorraine.afup.org',
+                'linkedin' => 'afup-lorraine',
                 'map' => [
                     "legend-first-point-x" => "650",
                     "legend-first-point-y" => "160",
@@ -353,6 +366,7 @@ class OfficesCollection
                 'meetup_id' => '28638984',
                 'youtube' => 'https://www.youtube.com/channel/UCtKhGIofgKM9ecrdZNyn_pA',
                 'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/tours/workadventure',
+                'linkedin' => 'afup-tours',
                 'map' => [
                     "legend-first-point-x" => "380",
                     "legend-first-point-y" => "270",
