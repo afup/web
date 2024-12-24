@@ -165,12 +165,13 @@ class Paybox
 
     private function preparePbxBillingValue($value, $maxLength, $default)
     {
-        $value = trim($value);
+        $value = $value ? trim($value) : '';
 
-        if (0 === strlen($value)) {
+        if ($value === '') {
             $value = $default;
         }
 
+        $value = (string) $value;
         if (strlen($value) > $maxLength) {
             $value = substr($value, 0, $maxLength);
         }

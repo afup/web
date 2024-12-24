@@ -33,8 +33,7 @@ class Emails
     public function sendInscription(Event $event, MailUser $recipient)
     {
         $mailContent = $event->getMailInscriptionContent();
-
-        if ('' === trim($mailContent)) {
+        if (!$mailContent) {
             throw new InvalidArgumentException("Contenu du mail d'inscription non trouvé pour le forum " . $event->getTitle());
         }
 
@@ -59,7 +58,7 @@ class Emails
 
     private function getAttachementIcsInscription(Event $event, MailUser $recipient)
     {
-        $uid = md5($event->getId());
+        $uid = md5((string) $event->getId());
         $organizerCN = MailUserFactory::afup()->getName();
         $attendeeCN = $recipient->getName();
         $attendeeEmail = $recipient->getEmail();
