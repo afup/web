@@ -15,7 +15,6 @@ class OfficesCollection
                 'meetup_id' => '18197674',
                 'logo_url' => '/images/offices/bordeaux.svg',
                 'twitter' => 'AFUP_Bordeaux',
-                'blog_url' => 'http://bordeaux.afup.org/',
                 'linkedin' => 'afup-bordeaux',
                 'bluesky' => 'bordeaux.afup.org',
                 'map' => [
