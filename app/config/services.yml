@@ -164,6 +164,10 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Event\Form\EventCompareSelectType:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Event\Form\SpeakerType:
         autowire: true
         autoconfigure: true
