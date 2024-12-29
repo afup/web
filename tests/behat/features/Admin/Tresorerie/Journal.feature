@@ -83,3 +83,10 @@ Feature: Administration - Trésorerie - Journal
     # Export Excel
     When I follow "Exporter la période en CSV"
     Then the response header "Content-disposition" should match '#^attachment; filename="AFUP_(.*)_journal_from(.*).csv"#'
+
+  @reloadDbWithTestData
+  Scenario: Compte journal Télécharger les justificatifs groupés par mois
+    Given I am logged in as admin and on the Administration
+    When I follow "Journal"
+    And I follow "Télécharger les justificatifs groupés par mois"
+    Then the response header "Content-disposition" should match '#filename="afup_justificatifs-(.*).zip"#'

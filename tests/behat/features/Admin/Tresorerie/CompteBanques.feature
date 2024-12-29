@@ -17,10 +17,3 @@ Feature: Administration - Trésorerie - Compte banques
     When I follow "Compte banques"
     And I follow "Export XLSX"
     Then the response header "Content-disposition" should match '#filename="compta_afup_(.*).xlsx"#'
-
-  @reloadDbWithTestData
-  Scenario: Compte banques Télécharger les justificatifs triés par mois
-    Given I am logged in as admin and on the Administration
-    When I follow "Compte banques"
-    And I follow "Télécharger les justificatifs triés par mois"
-    Then the response header "Content-disposition" should match '#filename="afup_justificatifs-(.*).zip"#'
