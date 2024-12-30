@@ -1,0 +1,12 @@
+<div class="ui violet segment">
+    {{ form_start(form) }}
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    {{ form_label(form.compared_event_id, 'Comparer à') }}
+                    {{ form_widget(form.compared_event_id, {attr: {onchange:'this.form.submit(); return false;'}}) }}
+                </div>
+            </div>
+        </div>
+    {{ form_end(form) }}
+</div>

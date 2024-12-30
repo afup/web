@@ -88,13 +88,9 @@ SQL;
      *
      * @return array
      */
-    function obtenirSuivi($idForum, $idForumPrecedent = null)
+    function obtenirSuivi($idForum, $idForumPrecedent)
     {
         $forum = new Forum($this->_bdd);
-        if (null === $idForumPrecedent) {
-            $idForumPrecedent = $forum->obtenirForumPrecedent($idForum);
-        }
-
         $now = new \DateTime();
         $dateForum = \DateTime::createFromFormat('U', $forum->obtenir($idForum)['date_fin_vente']);
 
