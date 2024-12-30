@@ -96,8 +96,11 @@ if ($action == 'lister') {
         $smarty->assign('personnes_physiques_associees', $users);
     }
     $formulaire->addElement('header'  , ''                   , 'Paramètres');
-    $formulaire->addElement('select'  , 'etat'               , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',
-                                                                                   AFUP_DROITS_ETAT_INACTIF => 'Inactif'));
+    $formulaire->addElement('select'  , 'etat'               , 'État'        , [
+        AFUP_DROITS_ETAT_NON_FINALISE => 'Non finalisé',
+        AFUP_DROITS_ETAT_ACTIF   => 'Actif',
+        AFUP_DROITS_ETAT_INACTIF => 'Inactif'
+    ]);
     $formulaire->addElement('select'  , 'max_members'        , 'Membres maximums', array_combine($maxMembers = range(3, 18, 3), $maxMembers));
     $formulaire->addElement('static', 'info' , '    '        , 'Nombre de membres rattachés autorisé par la cotisation');
 
