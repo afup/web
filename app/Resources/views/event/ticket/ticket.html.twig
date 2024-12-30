@@ -77,7 +77,7 @@
                 {% endif %}
 
                 {% if app.user.lastSubscription < date() %}
-                    <p><strong>{{ "Attention votre cotisation est expirée. Pour souscrire des places au tarif afup, renouvelez votre cotisation dans le <a href='%url%'>back-office</a>."|trans({'%url%': url('admin_login' ) })|raw }}</strong></p>
+                    <p><strong>{{ "Attention votre cotisation est expirée. Pour souscrire des places au tarif afup, renouvelez votre cotisation dans le <a href='%url%'>back-office</a>."|trans({'%url%': url('member_membership_fee' ) })|raw }}</strong></p>
                 {% elseif app.user.lastSubscription < event.dateEnd %}
                     <p><strong>{{ "Attention votre cotisation ne sera plus valable le jour de l'évènement. Vous pouvez commander des billets au tarif AFUP mais vous devrez renouveler votre cotisation pour pouvoir accéder à l'évènement."|trans }}</strong></p>
                 {% endif %}
