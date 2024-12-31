@@ -94,8 +94,8 @@ class SpeakerPage
 
         if ($shouldDisplaySpeakersDinerForm && $speakersDinerType->isValid()) {
             $speakersDinerData = $speakersDinerType->getData();
-            $speaker->setWillAttendSpeakersDiner($speakersDinerData['will_attend']);
-            $speaker->setHasSpecialDiet($speakersDinerData['has_special_diet']);
+            $speaker->setWillAttendSpeakersDiner($speakersDinerData['will_attend'] === 1);
+            $speaker->setHasSpecialDiet($speakersDinerData['has_special_diet'] === 1);
             $speaker->setSpecialDietDescription($speakersDinerData['special_diet_description']);
             $this->speakerRepository->save($speaker);
             $this->flashBag->add('notice', 'Informations sur votre venue au restaurant des speakers enregistrées');

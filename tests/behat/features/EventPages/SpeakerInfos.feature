@@ -20,7 +20,11 @@ Feature: Event > Profil speaker
     Then I fill in "speakers_diner[special_diet_description]" with "Je suis végétarien"
     And I press "Enregistrer mes préférences pour le restaurant"
     Then I should see "Informations sur votre venue au restaurant des speakers enregistrées"
-    Then I should see "Je suis végétarien"
+    And the "speakers_diner_will_attend_0" checkbox should be checked
+    And the "speakers_diner_will_attend_1" checkbox should be unchecked
+    And the "speakers_diner_has_special_diet_0" checkbox should be unchecked
+    And the "speakers_diner_has_special_diet_1" checkbox should be checked
+    And I should see "Je suis végétarien"
 
     When I check "hotel_reservation_nights_0"
     And I press "Enregistrer les nuitées"
