@@ -1,6 +1,9 @@
 {% extends ':site:base.html.twig' %}
 
 {% block title %}Les actualités de l'AFUP, page {{ current_page }}{% endblock %}
+{% block canonical %}
+    <link rel="canonical" href="{{ url('news_list', {page: current_page}) }}" />
+{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}

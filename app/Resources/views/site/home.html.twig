@@ -1,5 +1,9 @@
 {% extends ':site:base.html.twig' %}
 
+{% block canonical %}
+    <link rel="canonical" href="{{ url('home') }}" />
+{% endblock %}
+
 {% import _self as home_macros %}
 
 {% macro home_feuille(feuille) %}
