@@ -24,7 +24,7 @@ class Feuilles extends AbstractSeed
                 'id' => 24,
                 'id_parent' => Feuille::ID_FEUILLE_HEADER,
                 'nom' => 'Actualités',
-                'lien' => '/news',
+                'lien' => '/news/',
                 'alt' => '',
                 'position' => 0,
                 'date' => 1254002400,
@@ -48,7 +48,7 @@ class Feuilles extends AbstractSeed
                 'id' => 44,
                 'id_parent' => Feuille::ID_FEUILLE_HEADER,
                 'nom' => 'Vidéos',
-                'lien' => '/talks',
+                'lien' => '/talks/',
                 'alt' => '',
                 'position' => 5,
                 'date' => 1418770800,
@@ -67,7 +67,7 @@ class Feuilles extends AbstractSeed
                 'id' => 88,
                 'id_parent' => Feuille::ID_FEUILLE_HEADER,
                 'nom' => 'Boutique',
-                'lien' => 'http://shop.afup.org',
+                'lien' => 'https://shop.afup.org',
                 'alt' => '',
                 'position' => 7,
                 'date' => 1539727200,
@@ -176,7 +176,7 @@ class Feuilles extends AbstractSeed
                     ],
                     [
                         'nom' => 'Planète PHP',
-                        'lien' => 'http://www.planete-php.fr',
+                        'lien' => 'https://www.planete-php.fr',
                     ],
                 ]
             ]

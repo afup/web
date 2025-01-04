@@ -13,7 +13,7 @@ EOF;
 
         $contenu = <<<EOF
 <p>&nbsp;Fid&egrave;le &agrave; notre mission de diffusion du savoir aupr&egrave;s des d&eacute;veloppeurs PHP, nous mettons en ligne les captations vid&eacute;o des conf&eacute;rences donn&eacute;es il y a &agrave; peine trois semaines lors du Forum PHP 2018.</p>
-<p>Hormis la conf&eacute;rence "Cessons les estimations" de Fr&eacute;d&eacute;ric Legu&eacute;dois, qui n'&eacute;tait pas capt&eacute;e <a href="http://www.leguedois.fr/pourquoi-les-conferences-ne-sont-pas-filmees/">&agrave; sa demande</a>, tous les talks sont disponibles sur notre page "<a href="../../talks/">vid&eacute;os</a>". Faites passer &agrave; vos voisins et coll&egrave;gues, visionnez les sujets que vous avez manqu&eacute;s, revoyez ce talk qui vous a fascin&eacute;, et surtout, surtout, imaginez le plaisir de les voir en live : <strong>venez nous voir en octobre au Forum PHP 2019 ou en mai &agrave; l'AFUP Day !&nbsp;</strong></p>
+<p>Hormis la conf&eacute;rence "Cessons les estimations" de Fr&eacute;d&eacute;ric Legu&eacute;dois, qui n'&eacute;tait pas capt&eacute;e <a href="https://www.leguedois.fr/pourquoi-les-conferences-ne-sont-pas-filmees/">&agrave; sa demande</a>, tous les talks sont disponibles sur notre page "<a href="../../talks/">vid&eacute;os</a>". Faites passer &agrave; vos voisins et coll&egrave;gues, visionnez les sujets que vous avez manqu&eacute;s, revoyez ce talk qui vous a fascin&eacute;, et surtout, surtout, imaginez le plaisir de les voir en live : <strong>venez nous voir en octobre au Forum PHP 2019 ou en mai &agrave; l'AFUP Day !&nbsp;</strong></p>
 EOF;
 
 
