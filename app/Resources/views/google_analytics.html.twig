@@ -1,9 +1,9 @@
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_id }}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<script src="{{ asset('/assets/tarteaucitron/tarteaucitron.js') }}"></script>
+<script src="{{ asset('/js/tarteaucitron.js') }}"></script>
 
-  gtag('config', '{{ google_analytics_id }}');
+<script type="text/javascript">
+    tarteaucitron.user.gtagUa = '{{ google_analytics_id }}';
+    // tarteaucitron.user.gtagCrossdomain = ['example.com', 'example2.com'];
+    tarteaucitron.user.gtagMore = function () { /* add here your optionnal gtag() */ };
+    (tarteaucitron.job = tarteaucitron.job || []).push('gtag');
 </script>
