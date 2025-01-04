@@ -172,6 +172,7 @@ class Users extends AbstractSeed
         $oneMonthInSeconds = 60*60*24*30;
 
         $dateDebutUserExpire = mktime(17, 32, 15, 7, 13,2018);
+        $year = date('Y');
 
         $data = [
             [
@@ -222,6 +223,14 @@ class Users extends AbstractSeed
                 'numero_facture' => 'COTIS-2024-245',
             ],
             [
+                'date_debut' => mktime(16, 10, 10, 1, 1, $year),
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
+                'montant' => 30,
+                'date_fin' => mktime(16, 10, 10, 1, 1, $year+1),
+                'numero_facture' => "COTIS-$year-245",
+            ],
+            [
                 'date_debut' => mktime(16, 10, 10, 1, 2, 2023),
                 'type_personne' => AFUP_PERSONNES_MORALES,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
@@ -236,6 +245,14 @@ class Users extends AbstractSeed
                 'montant' => 180,
                 'date_fin' => mktime(16, 10, 10, 1, 2, 2025),
                 'numero_facture' => 'COTIS-2024-249',
+            ],
+            [
+                'date_debut' => mktime(16, 10, 10, 1, 2, $year),
+                'type_personne' => AFUP_PERSONNES_MORALES,
+                'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
+                'montant' => 180,
+                'date_fin' => mktime(16, 10, 10, 1, 2, $year+1),
+                'numero_facture' => "COTIS-$year-249",
             ],
         ];
 
