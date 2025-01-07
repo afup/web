@@ -72,7 +72,7 @@ class Transformer extends \atoum
             ->then
                 ->array($transformer->transform($planning, $talk, $event, $speakers))
                     ->isEqualTo([
-                        'planning_id' => "266",
+                        'planning_id' => 266,
                         'talk_id' => 1007,
                         'url_key' => '1007-utiliser-postgresql-en-2014',
                         'title' => "Utiliser PostgreSQL en 2014",

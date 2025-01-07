@@ -112,7 +112,7 @@ class Personnes_Morales
      * @param  int $id Identifiant de la personne
      * @param  string $champs Champs à renvoyer
      * @access public
-     * @return array
+     * @return array|false
      */
     function obtenir($id, $champs = '*')
     {

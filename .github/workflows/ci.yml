@@ -1,6 +1,6 @@
 name: CI
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
 
@@ -8,18 +8,13 @@ jobs:
     name: "Unit tests"
     runs-on: ubuntu-22.04
 
-    strategy:
-      fail-fast: false
-      matrix:
-        php: ["7.0"]
-
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup PHP with tools
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '${{ matrix.php }}'
+          php-version: '7.4'
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -49,7 +44,7 @@ jobs:
       - name: Setup PHP with tools
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.0'
+          php-version: '7.4'
 
       - name: Get Composer Cache Directory
         id: composer-cache
