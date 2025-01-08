@@ -22,6 +22,7 @@
     "sass-loader": "^7.1",
     "style-loader": "^0.23",
     "tablefilter": "^0.5",
+    "tarteaucitronjs": "^1.19",
     "webpack": "^3.6"
   },
   "scripts": {

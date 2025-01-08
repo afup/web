@@ -30,6 +30,11 @@ const adminConfig = {
       { from: path.resolve(__dirname, 'node_modules/notyf/dist/'), to: path.resolve(__dirname, 'htdocs/assets/techletter/') },
       { from: path.resolve(__dirname, 'node_modules/qr-scanner/qr-scanner.min.js'), to: path.resolve(__dirname, 'htdocs/assets/qr-scanner/qr-scanner.min.js') },
       { from: path.resolve(__dirname, 'node_modules/qr-scanner/qr-scanner-worker.min.js'), to: path.resolve(__dirname, 'htdocs/assets/qr-scanner/qr-scanner-worker.min.js') },
+      { from: path.resolve(__dirname, 'node_modules/tarteaucitronjs/tarteaucitron.js'), to: path.resolve(__dirname, 'htdocs/assets/tarteaucitron/tarteaucitron.js') },
+      { from: path.resolve(__dirname, 'node_modules/tarteaucitronjs/advertising.js'), to: path.resolve(__dirname, 'htdocs/assets/tarteaucitron/advertising.js') },
+      { from: path.resolve(__dirname, 'node_modules/tarteaucitronjs/tarteaucitron.services.js'), to: path.resolve(__dirname, 'htdocs/assets/tarteaucitron/tarteaucitron.services.js') },
+      { from: path.resolve(__dirname, 'node_modules/tarteaucitronjs/css/tarteaucitron.css'), to: path.resolve(__dirname, 'htdocs/assets/tarteaucitron/css/tarteaucitron.css') },
+      { from: path.resolve(__dirname, 'node_modules/tarteaucitronjs/lang/tarteaucitron.fr.js'), to: path.resolve(__dirname, 'htdocs/assets/tarteaucitron/lang/tarteaucitron.fr.js') },
     ])
   ],
   module: {
