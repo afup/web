@@ -17,7 +17,7 @@ tarteaucitron.init({
 
     "closePopup": false, /* Show a close X on the banner */
 
-    "showIcon": true, /* Show cookie icon to manage cookies */
+    "showIcon": false, /* Show cookie icon to manage cookies */
     //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
     "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
 
