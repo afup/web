@@ -7,9 +7,6 @@
 {% endblock %}
 
 {% block page_title %}{{ company_member.companyName }}{% endblock %}
-{% block canonical %}
-    <link rel="canonical" href="{{ url('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}" />
-{% endblock %}
 
 {% block title %}{{ company_member.companyName }} est adhérente à l'AFUP{% endblock %}
 

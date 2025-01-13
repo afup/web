@@ -1,10 +1,5 @@
 {% extends ':event:base.html.twig' %}
 
-{% block canonical %}
-    <link rel="canonical" href="{{ url('event', {eventSlug: event.path, _locale: app.request.locale}) }}" />
-{% endblock %}
-
-
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('/js/countdown.min.js') }}"></script>

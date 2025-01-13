@@ -1,9 +1,5 @@
 {% extends ':site:base.html.twig' %}
 
-{% block canonical %}
-    <link rel="canonical" href="{{ url('talks_show', {id: talk.id, slug: talk.slug }) }}" />
-{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="/css/grid.css">

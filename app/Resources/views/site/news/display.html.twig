@@ -1,9 +1,6 @@
 {% extends ':site:base.html.twig' %}
 
 {% block title %}{{ article.getTitle }} - AFUP{% endblock %}
-{% block canonical %}
-    <link rel="canonical" href="{{ url('news_display', {code: article.getSlug }) }}" />
-{% endblock %}
 
 {% block metas %}
     {{ parent() }}
