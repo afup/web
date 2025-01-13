@@ -651,8 +651,10 @@ class MemberShipController extends SiteBaseController
             throw $this->createNotFoundException('Vote manquant');
         }
 
-        /** @var $question GeneralMeetingQuestion */
-        if (null === ($question = $generalMeetingQuestionRepository->get($questionId))) {
+        /** @var GeneralMeetingQuestion $question */
+        $question = $generalMeetingQuestionRepository->get($questionId);
+
+        if (null === $question) {
             throw $this->createNotFoundException('QuestionId missing');
         }
 

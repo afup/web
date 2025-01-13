@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Environment;
 
@@ -19,7 +20,7 @@ class ListAction
      */
     private $twig;
     /**
-     * @var SessionInterface
+     * @var SessionInterface&Session
      */
     private $session;
 

@@ -56,7 +56,7 @@ class ReportsAction
         // add
         $form = $this->buildForm();
         if ($form->handleRequest($request) && $form->isValid()) {
-            /** @var UploadedFile $uploadedFile */
+            /** @var UploadedFile $reportFile */
             $reportFile = $form->get('file')->getData();
             if ($reportFile->move($basePath, $reportFile->getClientOriginalName())) {
                 $this->flashBag->add('notice', 'Le compte rendu a correctement été ajouté.');

@@ -524,7 +524,7 @@ class Speaker implements NotifyPropertyInterface
      * @param UploadedFile|null $photoFile
      * @return Speaker
      */
-    public function setPhotoFile(UploadedFile $photoFile)
+    public function setPhotoFile(?UploadedFile $photoFile)
     {
         $this->photoFile = $photoFile;
         return $this;

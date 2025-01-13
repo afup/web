@@ -617,7 +617,7 @@ class Cotisations
 
     /**
      * @param array $cotisation from Afup_Personnes_Physiques::obtenirDerniereCotisation
-     * @return DateTime: Date of end of next subscription
+     * @return DateTime Date of end of next subscription
      */
     public function finProchaineCotisation($cotisation)
     {
