@@ -160,7 +160,7 @@
                         {% if user.canRequestSlackInvite %}
                             <a class="button-inverted button__medium button--call-to-action" href="{{ path('member_slack_invite') }}">Recevoir l'invitation</a>
                         {% elseif user.slackInviteRequested %}
-                            <a class="button-inverted button__medium" href="http://afup-membres.slack.com/" target="afup-slack">Accéder</a>
+                            <a class="button-inverted button__medium" href="https://afup-membres.slack.com/" target="afup-slack">Accéder</a>
                         {% endif %}
                     </div>
                     <div class="member-index-item--description">
@@ -233,7 +233,7 @@
         Plusieurs façons de rester au fait des activités de l’association et ainsi, de profiter au mieux de votre adhésion :
         <ul>
             <li>La newsletter des activités de l’AFUP sort le premier mardi de chaque mois. Assurez-vous qu’elle ne parte pas dans vos spams ;</li>
-            <li>Visitez régulièrement <a href="/">notre site</a> ou vous abonner à <a href="/rss.xml">nos flux RSS</a> ;</li>
+            <li>Visitez régulièrement <a href="{{ path('home') }}">notre site</a> ou vous abonner à <a href="{{ path('feed_rss') }}">nos flux RSS</a> ;</li>
             <li>Nous suivre sur les réseaux sociaux <a href="https://twitter.com/afup">Twitter</a> et/ou <a href="https://mastodon.online/@afup">Mastodon</a> ; </li>
             <li>Consulter la <a href="/association/antennes">liste des antennes</a> afin de suivre leur activité.</li>
         </ul>

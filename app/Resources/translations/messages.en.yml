@@ -78,8 +78,9 @@ type.1: '40 mn'
 type.2: Workshop
 type.3: '20 mn'
 'Ce commentaire a été déposé par un membre du staff': 'This comment was filed by a member of staff'
-'Le code de conduite est <a href="http://event.afup.org/code-de-conduite/" target="_blank">disponible en ligne</a>.': 'The code of conduct is <a href="http://event.afup.org/code-de-conduite/?lang=en" target="_blank">available online</a>.'
-'En tant que conférencier, j''accepte d''être filmé et photographié gratuitement au profit exclusif de l''AFUP, pour diffusion sur internet ou sur tout autre support de communication diffusé notamment en Europe, pour une durée de 10 ans après ma conférence.': 'As a speaker, I agree to be filmed and photographed free of charge for the exclusive benefit of AFUP, for distribution on the Internet or on any other communication medium distributed in particular in Europe, for a period of 10 years after my conference.'
+code_of_conduct_warning: |
+  The code of conduct is <a href="https://afup.org/p/985-code-of-conduct" target="_blank">available online</a>.<br />
+  As a speaker, I agree to be filmed and photographed free of charge for the exclusive benefit of AFUP, for distribution on the Internet or on any other communication medium distributed in particular in Europe, for a period of 10 years after my conference.
 Phone: Phone
 Position: Position
 Language: Language

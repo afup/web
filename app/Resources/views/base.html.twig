@@ -1,11 +1,14 @@
 <!doctype html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}">
     <head>
         {% block metas %}
         <meta charset="UTF-8">
         <meta name="viewport"
               content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        {% endblock %}
+        {% block canonical %}
+            <link rel="canonical" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
         {% endblock %}
         <title>{% block title %}Afup{% endblock %}</title>
         {% block stylesheets %}
@@ -28,7 +31,7 @@
             <a href="https://afup.org" class="lien-entete lien-entete__active" tabindex="-1">AFUP</a>
             <a href="https://event.afup.org" class="lien-entete" tabindex="-1">AFUP Day 2025</a>
             <a href="https://barometre.afup.org" class="lien-entete" tabindex="-1">Baromètre</a>
-            <a href="http://www.planete-php.fr" class="lien-entete" tabindex="-1">Planète PHP</a>
+            <a href="https://www.planete-php.fr" class="lien-entete" tabindex="-1">Planète PHP</a>
             <a href="https://pufa.afup.org" class="lien-entete" tabindex="-1">PUFA</a>
         </div>
         {% block header '' %}
