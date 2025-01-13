@@ -8,7 +8,9 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         {% endblock %}
         {% block canonical %}
+            {% if app.request.attributes.get('_route') %}
             <link rel="canonical" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+            {% endif %}
         {% endblock %}
         <title>{% block title %}Afup{% endblock %}</title>
         {% block stylesheets %}
