@@ -17,7 +17,7 @@ parameters:
     database_user: afup
     database_password: afup
     github_authenticator: "AppBundle\\Security\\TestGithubAuthenticator"
-    slack_url: null
+    slack_url: "http://fake-slack-url"
 
     smtp_host: "mailcatcher"
     smtp_tls: 0

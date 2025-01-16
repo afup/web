@@ -23,7 +23,7 @@
     "friendsofpear/pear_exception": "0.0.*",
     "guzzlehttp/guzzle": "^6.5",
     "j7mbo/twitter-api-php": "^1.0",
-    "jms/serializer-bundle": "^1.1",
+    "jms/serializer-bundle": "5.*",
     "knpuniversity/oauth2-client-bundle": "^1.4",
     "league/iso3166": "^4.0",
     "league/oauth2-github": "^0.2.1",
