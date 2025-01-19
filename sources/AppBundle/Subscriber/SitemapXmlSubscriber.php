@@ -13,6 +13,7 @@ use AppBundle\Site\Model\Repository\ArticleRepository;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\UrlContainerInterface;
+use Presta\SitemapBundle\Sitemap\Url\GoogleVideoUrlDecorator;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -49,18 +50,29 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         $talks = $this->ting->get(TalkRepository::class)->getAllPastTalks(new \DateTime());
 
         foreach ($talks as $talk) {
-            if ($talk->isDisplayedOnHistory()) {
-                $urls->addUrl(
-                    new UrlConcrete(
-                        $this->urlGenerator->generate(
-                            'talks_show',
-                            ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
-                            UrlGeneratorInterface::ABSOLUTE_URL
-                        ),
-                        $talk->getSubmittedOn()
-                    ),
-                    'talks'
+            if (!$talk->isDisplayedOnHistory()) {
+                continue;
+            }
+
+            $url = new UrlConcrete(
+                $this->urlGenerator->generate(
+                    'talks_show',
+                    ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+                $talk->getSubmittedOn()
+            );
+            $urls->addUrl($url,'talks');
+
+            if ($talk->hasYoutubeId()) {
+                $urlVideo = new GoogleVideoUrlDecorator(
+                    $url,
+                    sprintf('https://img.youtube.com/vi/%s/0.jpg', $talk->getYoutubeId()),
+                    $talk->getTitle(),
+                    strip_tags(html_entity_decode($talk->getDescription())),
+                    ['content_loc' => $talk->getYoutubeUrl()]
                 );
+                $urls->addUrl($urlVideo,'video');
             }
         }
     }
