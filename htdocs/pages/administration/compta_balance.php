@@ -9,7 +9,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 	exit;
 }
 
-$action = verifierAction(array('lister', 'editer','raccourci','view'));
+$action = verifierAction(['lister', 'editer','raccourci','view']);
 //$compte = verifierAction(array('espece','paypal','courant','livreta'));
 
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');

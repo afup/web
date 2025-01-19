@@ -12,14 +12,14 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array(
+$action = verifierAction([
                     'lister',
                     'devis',
                     'ajouter',
                     'modifier',
                     'telecharger_devis',
                     'transfert',
-                    ));
+                    ]);
 $smarty->assign('action', $action);
 
 
@@ -123,59 +123,59 @@ if ($action == 'lister') {
 //$mois=10;
    if ($action == 'modifier')
    {
-    $formulaire->addElement('date'    , 'date_devis'     , 'Date devis', array('language' => 'fr',
+    $formulaire->addElement('date'    , 'date_devis'     , 'Date devis', ['language' => 'fr',
                                                                                 'format'   => 'd F Y',
                                                                                 'minYear' => date('Y')-3,
-                                                                                'maxYear' => date('Y')));
+                                                                                'maxYear' => date('Y')]);
    } else {
-    $formulaire->addElement('date'    , 'date_devis'     , 'Date devis', array('language' => 'fr',
+    $formulaire->addElement('date'    , 'date_devis'     , 'Date devis', ['language' => 'fr',
                                                                                 'format'   => 'd F Y',
                                                                                 'minYear' => date('Y'),
-                                                                                'maxYear' => date('Y')));
+                                                                                'maxYear' => date('Y')]);
 
    }
     $formulaire->addElement('header'  , ''                       , 'Facturation');
     $formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
-    $formulaire->addElement('text'    , 'societe'    , 'Société'        , array('size' => 50, 'maxlength' => 100));
-    $formulaire->addElement('text'    , 'service'        , 'Service'            , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('textarea', 'adresse'    , 'Adresse'        , array('cols' => 42, 'rows'      => 10));
-    $formulaire->addElement('text'    , 'code_postal', 'Code postal'    , array('size' =>  6, 'maxlength' => 10));
-    $formulaire->addElement('text'    , 'ville'      , 'Ville'          , array('size' => 30, 'maxlength' => 50));
+    $formulaire->addElement('text'    , 'societe'    , 'Société'        , ['size' => 50, 'maxlength' => 100]);
+    $formulaire->addElement('text'    , 'service'        , 'Service'            , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('textarea', 'adresse'    , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
+    $formulaire->addElement('text'    , 'code_postal', 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
+    $formulaire->addElement('text'    , 'ville'      , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
     $formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $pays->obtenirPays());
 
     $formulaire->addElement('header', null          , 'Contact');
-    $formulaire->addElement('text'    , 'nom'        , 'Nom'            , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'prenom'     , 'Prénom'            , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'tel'        , 'tel'            , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'email'      , 'Email (facture)', array('size' => 30, 'maxlength' => 100));
-    $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intracommunautaire (facture)', array('size' => 30, 'maxlength' => 100));
+    $formulaire->addElement('text'    , 'nom'        , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'prenom'     , 'Prénom'            , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'tel'        , 'tel'            , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'email'      , 'Email (facture)', ['size' => 30, 'maxlength' => 100]);
+    $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intracommunautaire (facture)', ['size' => 30, 'maxlength' => 100]);
 
     if (isset($champs['numero_devis']) || isset($champs['numero_facture']) )
     {
         $formulaire->addElement('header', null          , 'Réservé à l\'administration');
         $formulaire->addElement('static'  , 'note'                   , ''               , 'Numéro généré automatiquement et affiché en automatique');
         if ($champs['numero_devis'])
-            $formulaire->addElement('text'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
+            $formulaire->addElement('text'  , 'numero_devis'   , 'Numéro devis'   , ['size' => 50, 'maxlength' => 100]);
         if ($champs['numero_facture'])
-            $formulaire->addElement('text'  , 'numero_facture'   , 'Numéro facture'   , array('size' => 50, 'maxlength' => 100));
+            $formulaire->addElement('text'  , 'numero_facture'   , 'Numéro facture'   , ['size' => 50, 'maxlength' => 100]);
     } else {
-        $formulaire->addElement('hidden'  , 'numero_devis'   , 'Numéro devis'   , array('size' => 50, 'maxlength' => 100));
-        $formulaire->addElement('hidden'  , 'numero_facture'   , 'Numéro facture'   , array('size' => 50, 'maxlength' => 100));
+        $formulaire->addElement('hidden'  , 'numero_devis'   , 'Numéro devis'   , ['size' => 50, 'maxlength' => 100]);
+        $formulaire->addElement('hidden'  , 'numero_facture'   , 'Numéro facture'   , ['size' => 50, 'maxlength' => 100]);
     }
 
     $formulaire->addElement('header', null          , 'Référence client');
     $formulaire->addElement('static'  , 'note'  , '', 'Possible d\'avoir plusieurs références à mettre (obligation client)<br /><br />');
-    $formulaire->addElement('text'  , 'ref_clt1'   , 'Référence client'   , array('size' => 50, 'maxlength' => 100));
-    $formulaire->addElement('text'  , 'ref_clt2' , 'Référence client 2', array('size' => 50, 'maxlength' => 100));
-    $formulaire->addElement('text'  , 'ref_clt3' , 'Référence client 3' , array('size' => 50, 'maxlength' => 100));
+    $formulaire->addElement('text'  , 'ref_clt1'   , 'Référence client'   , ['size' => 50, 'maxlength' => 100]);
+    $formulaire->addElement('text'  , 'ref_clt2' , 'Référence client 2', ['size' => 50, 'maxlength' => 100]);
+    $formulaire->addElement('text'  , 'ref_clt3' , 'Référence client 3' , ['size' => 50, 'maxlength' => 100]);
 
    $formulaire->addElement('header'  , '', 'Observation');
     $formulaire->addElement('static'  , 'note'     , ''  , 'Ces informations seront écrites à la fin du document<br /><br />');
-   $formulaire->addElement('textarea', 'observation'  , 'Observation', array('cols' => 42, 'rows' => 5));
+   $formulaire->addElement('textarea', 'observation'  , 'Observation', ['cols' => 42, 'rows' => 5]);
 
    $formulaire->addElement('header'  , '', 'Devise');
-   $formulaire->addElement('select', 'devise_facture'  , 'Monnaie de la facture', array('EUR' => 'Euro',
-                                                                                        'DOL' => 'Dollar'), array('size' => 2));
+   $formulaire->addElement('select', 'devise_facture'  , 'Monnaie de la facture', ['EUR' => 'Euro',
+                                                                                        'DOL' => 'Dollar'], ['size' => 2]);
 
 
    for ($i=1;$i<6;$i++)
@@ -183,12 +183,12 @@ if ($action == 'lister') {
   $formulaire->addElement('header'  , '', 'Contenu');
     $formulaire->addElement('static'  , 'note'     , ''  , 'Ligne '.$i.'<br /><br />');
   $formulaire->addElement('hidden'    , 'id'.$i    , 'id'        );
-  $formulaire->addElement('text'    , 'ref'.$i    , 'Référence'        , array('size' => 50, 'maxlength' => 100));
+  $formulaire->addElement('text'    , 'ref'.$i    , 'Référence'        , ['size' => 50, 'maxlength' => 100]);
    $formulaire->addElement('static'  , 'note'     , ''  , 'Rappel : sponsoring 20%, place supplémentaire 10%.<br />');
-   $formulaire->addElement('select'    , 'tva' . $i    , 'Taux de TVA'        , array('0' => 'Non soumis', '5.50' => '5.5%', '10.00' => '10%', '20.00' => '20%'));
-  $formulaire->addElement('textarea', 'designation'.$i  , 'Désignation', array('cols' => 42, 'rows' => 5));
-    $formulaire->addElement('text'    , 'quantite'.$i    , 'Quantite'        , array('size' => 50, 'maxlength' => 100));
-    $formulaire->addElement('text'    , 'pu'.$i    , 'Prix Unitaire HT'        , array('size' => 50, 'maxlength' => 100));
+   $formulaire->addElement('select'    , 'tva' . $i    , 'Taux de TVA'        , ['0' => 'Non soumis', '5.50' => '5.5%', '10.00' => '10%', '20.00' => '20%']);
+  $formulaire->addElement('textarea', 'designation'.$i  , 'Désignation', ['cols' => 42, 'rows' => 5]);
+    $formulaire->addElement('text'    , 'quantite'.$i    , 'Quantite'        , ['size' => 50, 'maxlength' => 100]);
+    $formulaire->addElement('text'    , 'pu'.$i    , 'Prix Unitaire HT'        , ['size' => 50, 'maxlength' => 100]);
    }
 
 

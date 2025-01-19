@@ -9,23 +9,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class SiteBaseController extends Controller implements SiteControllerInterface
 {
-    protected $defaultBlocks = [];
+    protected array $defaultBlocks = [];
 
-    /**
-     * @var Configuration
-     */
-    protected $legacyConfiguration;
+    protected Configuration $legacyConfiguration;
 
     /**
      * @inheritDoc
      * @deprecated use BlocksHandler
      */
-    public function setDefaultBlocks(array $blocks)
+    public function setDefaultBlocks(array $blocks): void
     {
         $this->defaultBlocks = $blocks;
     }
 
-    public function setConfiguration(Configuration $conf)
+    public function setConfiguration(Configuration $conf): void
     {
         $this->legacyConfiguration = $conf;
     }
@@ -33,7 +30,7 @@ abstract class SiteBaseController extends Controller implements SiteControllerIn
     /**
      * @inheritDoc
      */
-    protected function render($view, array $parameters = [], Response $response = null)
+    protected function render($view, array $parameters = [], Response $response = null): Response
     {
         return parent::render($view, $parameters + $this->defaultBlocks, $response);
     }

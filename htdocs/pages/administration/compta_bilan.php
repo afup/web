@@ -10,7 +10,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 	exit;
 }
 
-$action = verifierAction(array('lister', 'editer','view'));
+$action = verifierAction(['lister', 'editer','view']);
 $smarty->assign('action', $action);
 
 //$compte=$_GET['compte'];

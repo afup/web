@@ -13,7 +13,7 @@ foreach ($lines as $line) {
         continue;
     }
 
-    list($name, $default) = explode('=', $line, 2);
+    [$name, $default] = explode('=', $line, 2);
     // On va chercher dans les variables d'env en premier
     if (!$value = getenv($name)) {
         $value = $default;

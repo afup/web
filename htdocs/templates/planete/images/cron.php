@@ -12,7 +12,7 @@ echo $img;
 ob_implicit_flush(false);
 ob_start();
 
-$robot = dirname(__FILE__)."/../../../robots/planete/explorateur.php";
+$robot = __DIR__."/../../../robots/planete/explorateur.php";
 if (fileatime($robot) < time() - 3600) {
 	require($robot);
 }

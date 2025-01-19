@@ -17,9 +17,9 @@ $invoiceRepository = $this->get(InvoiceRepository::class);
 /** @var InvoiceService $invoiceService */
 $invoiceService = $this->get(InvoiceService::class);
 
-$action = verifierAction(array('lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'facturer_facture', 'supprimer_facture', 'changer_date_reglement'));
-$tris_valides = array('date_facture', 'email', 'societe', 'etat');
-$sens_valides = array('asc' , 'desc');
+$action = verifierAction(['lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'facturer_facture', 'supprimer_facture', 'changer_date_reglement']);
+$tris_valides = ['date_facture', 'email', 'societe', 'etat'];
+$sens_valides = ['asc' , 'desc'];
 $smarty->assign('action', $action);
 
 

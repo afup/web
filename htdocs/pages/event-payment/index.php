@@ -4,7 +4,7 @@ use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\SymfonyKernel;
 use AppBundle\Payment\PayboxFactory;
 
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once __DIR__ .'/../../../sources/Afup/Bootstrap/Http.php';
 
 if (
     !isset($_GET['ref'])
