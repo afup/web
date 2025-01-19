@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
@@ -11,7 +12,6 @@ use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketEventType;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
-use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -39,7 +39,7 @@ class TicketType extends AbstractType
 
     private TicketTypeRepository $ticketTypeRepository;
 
-    protected OfficesCollection $officesCollection;
+    private AntennesCollection $antennesCollection;
 
     public function __construct(
         EventRepository $eventRepository,
@@ -53,7 +53,7 @@ class TicketType extends AbstractType
         $this->ticketTypeAvailability = $ticketTypeAvailability;
         $this->ticketSpecialPriceRepository = $ticketSpecialPriceRepository;
         $this->ticketTypeRepository = $ticketTypeRepository;
-        $this->officesCollection = new OfficesCollection();
+        $this->antennesCollection = new AntennesCollection();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -93,7 +93,7 @@ class TicketType extends AbstractType
             ->add('nearestOffice', ChoiceType::class, [
                 'label' => 'Antenne de prédilection',
                 'required' => false,
-                'choices' => array_flip($this->officesCollection->getOrderedLabelsByKey()),
+                'choices' => array_flip($this->antennesCollection->getOrderedLabelsByKey()),
             ])
         ;
 

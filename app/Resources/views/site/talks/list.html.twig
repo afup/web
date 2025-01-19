@@ -72,19 +72,19 @@
 
             <div class="super-apero-officies">
                 <div class="container">
-                    {% for office_code, office in offices %}
-                     {% if office.youtube is defined %}
+                    {% for antenne in antennes %}
+                     {% if antenne.socials.youtube is not null %}
                         <div class="col-md-6 afup-office">
                             <div class="container">
                                 <div class="col-sm-12 col-md-2 txtcenter">
-                                    <img src="{{ office.logo_url }}" alt="" />
+                                    <img src="{{ antenne.logoUrl }}" alt="" />
                                 </div>
                                 <div class="col-sm-12 col-md-5 txtcenter">
-                                    <h3 style="line-height: 4em; vertical-align: center">{{ office.label }}</h3>
+                                    <h3 style="line-height: 4em; vertical-align: center">{{ antenne.label }}</h3>
                                 </div>
                                 <div class="col-sm-12 col-md-5 txtcenter">
-                                    <a class="button-inverted" href="{{ office.youtube }}">
-                                        <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
+                                    <a class="button-inverted" href="{{ antenne.socials.youtube }}">
+                                        <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;YouTube
                                     </a>
                                 </div>
                             </div>

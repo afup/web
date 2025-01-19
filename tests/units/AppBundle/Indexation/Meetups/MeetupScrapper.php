@@ -82,17 +82,6 @@ class MeetupScraper extends atoum
             ->isNotEmpty();
     }
 
-    public function testGetArrayValueByKey(): void
-    {
-        $meetupScraper = new TestedClass();
-        $array = ['key' => 'value'];
-        $result = $meetupScraper->getArrayValueByKey('key', $array);
-
-        $this
-            ->string($result)
-            ->isEqualTo('value');
-    }
-
     // Provide valid Meetup URLs for testing
     protected function validMeetupUrlProvider()
     {

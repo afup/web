@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups;
 
+use AppBundle\Antennes\Antenne;
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Event\Model\Meetup;
-use AppBundle\Offices\OfficesCollection;
 use Exception;
 
 class Transformer
 {
     const MEETUP_URL = 'https://www.meetup.com/fr-FR/';
 
-    private OfficesCollection $officesCollection;
+    private AntennesCollection $antennesCollection;
 
-    public function __construct(OfficesCollection $officesCollection)
+    public function __construct(AntennesCollection $antennesCollection)
     {
-        $this->officesCollection = $officesCollection;
+        $this->antennesCollection = $antennesCollection;
     }
 
     /**
@@ -27,21 +28,12 @@ class Transformer
     public function transform(Meetup $meetup): ?array
     {
         $codeOffice = $meetup->getAntenneName();
-        $office = $this->officesCollection->findByCode($codeOffice);
+        $antenne = $this->antennesCollection->findByCode($codeOffice);
         $datetime = $meetup->getDate();
 
         $isUpcoming = new \DateTime() < $datetime;
 
-        if (isset($office['meetup_filter'])) {
-            $matches = [];
-            if (!preg_match($office['meetup_filter'], $meetup['name'], $matches)) {
-                return null;
-            }
-
-            $meetup['name'] = $matches[1];
-        }
-
-        $eventUrl = $this->getEventUrl($office, $meetup);
+        $eventUrl = $this->getEventUrl($antenne, $meetup);
         $item = [
             'meetup_id' => $meetup->getId(),
             'label' => $meetup->getTitle(),
@@ -51,23 +43,23 @@ class Transformer
             'datetime' => $datetime->format('Y-m-d H:i:s'),
             'day_month' => $datetime->format('d M'),
             'office' => [
-                'label' => $office['label'],
-                'logo_url' => $office['logo_url'],
+                'label' => $antenne->label,
+                'logo_url' => $antenne->logoUrl,
             ],
             'description' => $meetup->getDescription(),
             'is_upcoming' => $isUpcoming,
             'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup->getDate()->getTimestamp() : $meetup->getDate()->getTimestamp(),
         ];
 
-        if (isset($office['twitter'])) {
-            $item['twitter'] = $office['twitter'];
+        if ($antenne->socials->twitter !== null) {
+            $item['twitter'] = $antenne->socials->twitter;
         }
 
         return $item;
     }
 
-    public function getEventUrl(array $office, Meetup $meetup): string
+    private function getEventUrl(Antenne $antenne, Meetup $meetup): string
     {
-        return self::MEETUP_URL . $office['meetup_urlname'] . '/events/' . $meetup->getId();
+        return self::MEETUP_URL . $antenne->meetup->urlName . '/events/' . $meetup->getId();
     }
 }

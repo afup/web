@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members;
 
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -13,16 +13,16 @@ use Twig\Environment;
 class UserListAction
 {
     private UserRepository $userRepository;
-    private OfficesCollection $officesCollection;
+    private AntennesCollection $antennesCollection;
     private Environment $twig;
 
     public function __construct(
         UserRepository $userRepository,
-        OfficesCollection $officesCollection,
+        AntennesCollection $antennesCollection,
         Environment $twig
     ) {
         $this->userRepository = $userRepository;
-        $this->officesCollection = $officesCollection;
+        $this->antennesCollection = $antennesCollection;
         $this->twig = $twig;
     }
 
@@ -36,7 +36,7 @@ class UserListAction
         $onlyDisplayActive = !$request->query->getBoolean('alsoDisplayInactive');
 
         return new Response($this->twig->render('admin/members/user_list.html.twig', [
-            'offices' => $this->officesCollection->getAll(),
+            'antennes' => $this->antennesCollection->getAll(),
             'users' => $this->userRepository->search(
                 $sort,
                 $direction,

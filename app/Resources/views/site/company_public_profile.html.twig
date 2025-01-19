@@ -65,10 +65,10 @@
 
             <h2>Présente dans les antennes</h2>
             <div class="container">
-                {% for local_office in offices %}
+                {% for antenne in antennes %}
                     <div class="col-md-3 col-sm-12 member-badge">
-                        <img src="{{ local_office.logo_url }}" alt="" /><br />
-                        {{ local_office.label }}
+                        <img src="{{ antenne.logoUrl }}" alt="" /><br />
+                        {{ antenne.label }}
                     </div>
                 {% else %}
                     <div class="col-md-12">

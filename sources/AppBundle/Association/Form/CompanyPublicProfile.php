@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
-use AppBundle\Offices\OfficesCollection;
+use AppBundle\Antennes\AntennesCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -29,11 +29,11 @@ class CompanyPublicProfile extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $officesCollection = new OfficesCollection();
+        $antennesCollection = new AntennesCollection();
 
-        $officesInfos = [];
-        foreach ($officesCollection->getAll() as $code => $office) {
-            $officesInfos[$office['label']] = $code;
+        $antennesInfos = [];
+        foreach ($antennesCollection->getAll() as $antenne) {
+            $antennesInfos[$antenne->label] = $antenne->code;
         }
 
         $logoConstraints = [
@@ -134,13 +134,13 @@ class CompanyPublicProfile extends AbstractType
             ->add('related_afup_offices',
                 ChoiceType::class,
                 [
-                    'choices' => $officesInfos,
+                    'choices' => $antennesInfos,
                     'multiple' => true,
                     'required' => false,
                     'label' => "Présence dans ces antennes AFUP",
                     'constraints' => [
                         new Choice([
-                            'choices' => array_values($officesInfos),
+                            'choices' => array_values($antennesInfos),
                             'multiple' => true,
                         ]),
                     ]
