@@ -288,8 +288,15 @@ services:
     AppBundle\Slack\MessageFactory:
         autowire: true
 
+    app.slack.http_client:
+        class: GuzzleHttp\Client
+
     AppBundle\Notifier\SlackNotifier:
-        arguments: ["%slack_url%", '@AppBundle\Slack\MessageFactory', "@jms_serializer.serializer"]
+        arguments:
+            $postUrl: "%slack_url%"
+            $messageFactory: '@AppBundle\Slack\MessageFactory'
+            $serializer: '@jms_serializer.serializer'
+            $httpClient: '@app.slack.http_client'
 
     AppBundle\Routing\LegacyRouter:
         autowire: true
