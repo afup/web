@@ -1,0 +1,85 @@
+# OpenAI’s web crawler: GPT3.5, GPT4, ChatGPT
+# https://platform.openai.com/docs/bots
+User-agent: GPTBot
+
+# ChatGPT plugins
+# https://platform.openai.com/docs/bots
+User-agent: ChatGPT-User
+
+# OpenAI Search bot
+# https://platform.openai.com/docs/bots
+User-agent: OAI-SearchBot
+
+# Google's AI crawler
+# https://blog.google/technology/ai/an-update-on-web-publisher-controls/
+User-agent: Google-Extended
+
+# Apple's AI crawler
+# https://support.apple.com/en-us/119829
+User-agent: Applebot-Extended
+
+# Anthropic AI (Claude)
+# https://darkvisitors.com/operators/anthropic
+User-agent: anthropic-ai
+User-agent: ClaudeBot
+User-agent: Claude-Web
+
+# Amazonbot
+# https://developer.amazon.com/amazonbot
+User-agent: Amazonbot
+
+# Cohere
+User-agent: Cohere-ai
+
+# Perplexity
+User-agent: PerplexityBot
+
+# You
+# https://about.you.com/fr/youbot/
+User-agent: YouBot
+
+# Common Crawl
+# https://commoncrawl.org/ccbot
+User-agent: CCBot
+
+# Omglibot: webz.io
+# https://webz.io/blog/web-data/what-is-the-omgili-bot-and-why-is-it-crawling-your-website/
+User-agent: Omgilibot
+User-agent: Omgili
+User-agent: Webzio-Extended
+
+# Facebook: Llama
+# https://developers.facebook.com/docs/sharing/bot/
+User-agent: FacebookBot
+
+# Facebook
+# https://developers.facebook.com/docs/sharing/webmasters/web-crawlers/
+User-agent: Meta-ExternalAgent
+
+# ByteDance: Duobao
+# https://darkvisitors.com/operators/bytedance
+User-agent: Bytespider
+
+# Ai2
+# https://allenai.org/crawler
+User-agent: Ai2bot
+User-agent: Ai2Bot-Dolma
+
+# Diffbot
+# https://darkvisitors.com/agents/diffbot
+User-agent: Diffbot
+
+# Huawei
+# https://darkvisitors.com/agents/pangubot
+User-agent: PanguBot
+
+# Petal Search
+# https://datadome.co/learning-center/how-to-block-petal-bot/
+User-agent: PetalBot
+
+# Timpibot
+# https://darkvisitors.com/agents/timpibot
+User-agent: Timpibot
+
+# Target
+Disallow: /
