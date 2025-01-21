@@ -552,7 +552,13 @@ class MemberShipController extends SiteBaseController
         }
 
         $form = $this->createFormBuilder()
-            ->add('presence', ChoiceType::class, ['expanded' => true, 'choices' => ['Oui' => 1, 'Non' => 2, 'Je ne sais pas encore' => 0]])
+            ->add('presence', ChoiceType::class, [
+                'expanded' => true,
+                'choices' => [
+                    'Je participe' => 1,
+                    'Je ne participe pas' => 2
+                ]
+            ])
             ->add(
                 'id_personne_avec_pouvoir',
                 ChoiceType::class,

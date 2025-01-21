@@ -150,11 +150,6 @@
 }
 
 
-.afup-form label.required:before {
-    content: "* ";
-}
-
-
 .afup-form--miniform {
     max-width: 600px;
     margin: 0 auto;
