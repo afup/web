@@ -15,7 +15,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 $userRepository = $this->get(UserRepository::class);
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer', 'telecharger_facture', 'envoyer_facture'));
+$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer', 'telecharger_facture', 'envoyer_facture']);
 $smarty->assign('action', $action);
 
 // Personne
@@ -61,8 +61,8 @@ if ($action == 'lister') {
 
     if ($action == 'ajouter') {
         $date_debut = $cotisations->obtenirDateDebut($_GET['type_personne'], $_GET['id_personne']);
-        $formulaire->setDefaults(array('date_debut' => $date_debut,
-                                       'date_fin'   => strtotime('+1year', $date_debut)));
+        $formulaire->setDefaults(['date_debut' => $date_debut,
+                                       'date_fin'   => strtotime('+1year', $date_debut)]);
     } elseif ($action == 'modifier') {
         $formulaire->setDefaults($cotisations->obtenir($_GET['id']));
     }
@@ -71,24 +71,24 @@ if ($action == 'lister') {
     $formulaire->addElement('hidden', 'id_personne'  , $_GET['id_personne']);
 
     $formulaire->addElement('header' , ''                      , '');
-    $formulaire->addElement('text'   , 'montant'               , 'Montant', array('size' => 5, 'maxlength' => 5));
-    $formulaire->addElement('select' , 'type_reglement'        , 'Type règlement', array(null                                => '',
+    $formulaire->addElement('text'   , 'montant'               , 'Montant', ['size' => 5, 'maxlength' => 5]);
+    $formulaire->addElement('select' , 'type_reglement'        , 'Type règlement', [null                                => '',
                                                                                          AFUP_COTISATIONS_REGLEMENT_ESPECES  => 'Espèces',
                                                                                          AFUP_COTISATIONS_REGLEMENT_CHEQUE   => 'Chèques',
                                                                                          AFUP_COTISATIONS_REGLEMENT_VIREMENT => 'Virement',
                                                                                          AFUP_COTISATIONS_REGLEMENT_ENLIGNE  => 'En ligne',
-                                                                                         AFUP_COTISATIONS_REGLEMENT_AUTRE    => 'Autre'));
-    $formulaire->addElement('text'   , 'informations_reglement', 'Informations', array('size' => 50, 'maxlength' => 255));
-    $formulaire->addElement('text', 'reference_client', 'Référence client', array('size' => 50, 'maxlength' => 255));
-    $formulaire->addElement('date'   , 'date_debut'            , 'Date début', array('language' => 'fr',
+                                                                                         AFUP_COTISATIONS_REGLEMENT_AUTRE    => 'Autre']);
+    $formulaire->addElement('text'   , 'informations_reglement', 'Informations', ['size' => 50, 'maxlength' => 255]);
+    $formulaire->addElement('text', 'reference_client', 'Référence client', ['size' => 50, 'maxlength' => 255]);
+    $formulaire->addElement('date'   , 'date_debut'            , 'Date début', ['language' => 'fr',
                                                                                      'format'   => 'd F Y',
                                                                                      'minYear'  => 2002,
-                                                                                     'maxYear'  => date('Y') + 5));
-    $formulaire->addElement('date'   , 'date_fin'              , 'Date fin', array('language' => 'fr',
+                                                                                     'maxYear'  => date('Y') + 5]);
+    $formulaire->addElement('date'   , 'date_fin'              , 'Date fin', ['language' => 'fr',
                                                                                    'format'   => 'd F Y',
                                                                                    'minYear'  => 2002,
-                                                                                   'maxYear'  => date('Y') + 5));
-    $formulaire->addElement('textarea', 'commentaires'         , 'Commentaires', array('cols' => 42, 'rows' => 5));
+                                                                                   'maxYear'  => date('Y') + 5]);
+    $formulaire->addElement('textarea', 'commentaires'         , 'Commentaires', ['cols' => 42, 'rows' => 5]);
 
     $formulaire->addElement('header', 'boutons'          , '');
     $formulaire->addElement('submit', 'soumettre'        , ucfirst($action));

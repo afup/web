@@ -10,7 +10,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier'));
+$action = verifierAction(['lister', 'ajouter', 'modifier']);
 $smarty->assign('action', $action);
 
 $compta = new Comptabilite($bdd);
@@ -39,7 +39,7 @@ if ($action == 'lister') {
 
 // partie saisie
    $formulaire->addElement('header'  , ''                         , '');
-	$formulaire->addElement('text', 'categorie', 'Categorie' , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text', 'categorie', 'Categorie' , ['size' => 30, 'maxlength' => 40]);
 
 
 // boutons

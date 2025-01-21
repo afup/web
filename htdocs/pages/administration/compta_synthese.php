@@ -9,7 +9,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 	exit;
 }
 
-$action = verifierAction(array('lister', 'editer'));
+$action = verifierAction(['lister', 'editer']);
 $smarty->assign('action', $action);
 
 $compta = new Comptabilite($bdd);

@@ -121,27 +121,27 @@ elseif ($action == 'credit') {
    $formulaire->addElement('header'  , ''                         , 'Détail Facture');
 
 //$mois=10;
-   $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', array('language' => 'fr',
+   $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', ['language' => 'fr',
                                                                                 'format'   => 'd F Y',
   																				'minYear' => date('Y')-5,
-  																				'maxYear' => date('Y')+1));
+  																				'maxYear' => date('Y')+1]);
 
   $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
-  $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intracommunautaire (facture)', array('size' => 30, 'maxlength' => 100));
-    $formulaire->addElement('text', 'numero', 'Numero facture' , array('size' => 30, 'maxlength' => 40));
-   	$formulaire->addElement('textarea', 'description', 'Description', array('cols' => 42, 'rows' => 5));
-	$formulaire->addElement('text', 'montant', 'Montant' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_montant'));
-	$formulaire->addElement('text', 'comment', 'Commentaire' , array('size' => 30, 'maxlength' => 255));
+  $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intracommunautaire (facture)', ['size' => 30, 'maxlength' => 100]);
+    $formulaire->addElement('text', 'numero', 'Numero facture' , ['size' => 30, 'maxlength' => 40]);
+   	$formulaire->addElement('textarea', 'description', 'Description', ['cols' => 42, 'rows' => 5]);
+	$formulaire->addElement('text', 'montant', 'Montant' , ['size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_montant']);
+	$formulaire->addElement('text', 'comment', 'Commentaire' , ['size' => 30, 'maxlength' => 255]);
 
     $formulaire->addElement('header'  , ''                         , 'TVA');
-    $formulaire->addElement('text', 'montant_ht_soumis_tva_5_5', 'Montant HT soumis à TVA 5.5%' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_5_5'));
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_5_5', 'Montant HT soumis à TVA 5.5%' , ['size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_5_5']);
     $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-5-5">Calculer le montant HT soumis à TVA 5.5% sur la base de l\'intégralité du montant TTC</a><br /><br />');
-    $formulaire->addElement('text', 'montant_ht_soumis_tva_10', 'Montant HT soumis à TVA 10%' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_10'));
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_10', 'Montant HT soumis à TVA 10%' , ['size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_10']);
     $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-10">Calculer le montant HT soumis à TVA 10% sur la base de l\'intégralité du montant TTC</a><br /><br />');
-    $formulaire->addElement('text', 'montant_ht_soumis_tva_20', 'Montant HT soumis à TVA 20%' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_20'));
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_20', 'Montant HT soumis à TVA 20%' , ['size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_20']);
     $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-20">Calculer le montant HT soumis à TVA 20% sur la base de l\'intégralité du montant TTC</a><br /><br />');
-    $formulaire->addElement('text', 'montant_ht_soumis_tva_0', 'Montant HT non soumis à TVA' , array('size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_0'));
+    $formulaire->addElement('text', 'montant_ht_soumis_tva_0', 'Montant HT non soumis à TVA' , ['size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_0']);
     $formulaire->addElement('static'  , 'note', '', '<a href="#" id="apply-vat-0">Calculer le montant non soumis à TVA sur la base de l\'intégralité du montant TTC</a><br /><br />');
 
     $formulaire->addElement('select'  , 'tva_zone', 'Zone TVA', array_merge(['' => 'Non définie'], Comptabilite::TVA_ZONES));
@@ -149,11 +149,11 @@ elseif ($action == 'credit') {
 //reglement
    $formulaire->addElement('header'  , ''                         , 'Réglement');
    $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
-   $formulaire->addElement('date'    , 'date_reglement'     , 'Date', array('language' => 'fr',
+   $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr',
                                                                             'format'   => 'd F Y',
    																			'minYear' => date('Y')-5,
-   																			'maxYear' => date('Y')+1));
-   $formulaire->addElement('text', 'obs_regl', 'Info reglement' , array('size' => 30, 'maxlength' => 40));
+   																			'maxYear' => date('Y')+1]);
+   $formulaire->addElement('text', 'obs_regl', 'Info reglement' , ['size' => 30, 'maxlength' => 40]);
 
 
 // boutons
@@ -512,11 +512,11 @@ elseif ($action === 'upload_attachment') {
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         if (false === $ext = array_search(
                 $finfo->file($_FILES['file']['tmp_name']),
-                array(
+                [
                     'jpg' => 'image/jpeg',
                     'png' => 'image/png',
                     'pdf' => 'application/pdf',
-                ),
+                ],
                 true
         )) {
             throw new RuntimeException('Invalid file format. Only jpg/png/pdf allowed.');
@@ -616,7 +616,7 @@ elseif ($action == 'supprimer') {
     if ($formulaire->validate()) {
         $valeurs = $formulaire->exportValues();
         $file =& $formulaire->getElement('fichiercsv');
-        $tmpDir = dirname(__FILE__) . '/../../../tmp';
+        $tmpDir = __DIR__ . '/../../../tmp';
         if ($file->isUploadedFile()) {
             $file->moveUploadedFile($tmpDir, 'banque.csv');
             $importerFactory = new Importer\Factory();

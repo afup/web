@@ -12,9 +12,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 	exit;
 }
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'commenter', 'supprimer', 'voter'));
-$tris_valides = array();
-$sens_valides = array('asc' , 'desc');
+$action = verifierAction(['lister', 'ajouter', 'modifier', 'commenter', 'supprimer', 'voter']);
+$tris_valides = [];
+$sens_valides = ['asc' , 'desc'];
 $smarty->assign('action', $action);
 
 
@@ -71,7 +71,7 @@ if ($action == 'lister') {
 	}
 
 	$formulaire->setDefaults($champs);
-	$id = isset($_GET['id']) ? $_GET['id'] : 0;
+	$id = $_GET['id'] ?? 0;
 
 	$formulaire->addElement('hidden', 'id'	  , null);
 	$formulaire->addElement('hidden', 'id_session', $_GET['id_session']);
@@ -86,10 +86,10 @@ if ($action == 'lister') {
 	}
 
 	$formulaire->addElement('header', null, 'Plannification');
-	$formulaire->addElement('date'	, 'debut'   , 'Début', array('language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'minHour' => 8, 'maxHour' => 18, 'optionIncrement' => array('i' => 5)));
-	$formulaire->addElement('date'	, 'fin'	 , 'Fin'  , array('language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'optionIncrement' => array('i' => 5), 'minHour' => 8, 'maxHour' => 18));
-	$formulaire->addElement('select'  , 'id_salle', 'Salle', array(null => '' ) + $forum_appel->obtenirListeSalles($champs['id_forum'], true));
-    $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
+	$formulaire->addElement('date'	, 'debut'   , 'Début', ['language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'minHour' => 8, 'maxHour' => 18, 'optionIncrement' => ['i' => 5]]);
+	$formulaire->addElement('date'	, 'fin'	 , 'Fin'  , ['language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'optionIncrement' => ['i' => 5], 'minHour' => 8, 'maxHour' => 18]);
+	$formulaire->addElement('select'  , 'id_salle', 'Salle', [null => '' ] + $forum_appel->obtenirListeSalles($champs['id_forum'], true));
+    $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , ['size' => 40, 'maxlength' => 10]);
 
 	$formulaire->addElement('header', 'boutons'  , '');
 	$formulaire->addElement('submit', 'soumettre', 'Soumettre');

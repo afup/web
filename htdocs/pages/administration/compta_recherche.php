@@ -37,7 +37,7 @@ switch ($action) {
         // No search param?
         if (!isset($_GET['q']) || !($q = trim($_GET['q']))) {
             $smarty->assign('action', $defaultAction);
-            continue;
+            break;
         }
 
         $smarty->assign('q', htmlspecialchars($q));

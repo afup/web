@@ -17,9 +17,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
-$tris_valides = array('s.titre', 's.date_soumission');
-$sens_valides = array('asc' , 'desc');
+$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer']);
+$tris_valides = ['s.titre', 's.date_soumission'];
+$sens_valides = ['asc' , 'desc'];
 $smarty->assign('action', $action);
 
 $eventRepository = $this->get(EventRepository::class);
@@ -121,14 +121,14 @@ if ($action == 'lister') {
     	}
     }
 
-    $id = isset($_GET['id']) ? $_GET['id'] : 0;
+    $id = $_GET['id'] ?? 0;
 	$formulaire->addElement('hidden', 'id'      , $id);
 	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
 
     $formulaire->addElement('header', null, 'Présentation');
 
-    $formulaire->addElement('date'    , 'date_soumission', 'Soumission', array('language' => 'fr', 'minYear' => date('Y') -5, 'maxYear' => date('Y') +5));
-    $formulaire->addElement('text'    , 'titre'          , 'Titre' , array('size' => 40, 'maxlength' => 150));
+    $formulaire->addElement('date'    , 'date_soumission', 'Soumission', ['language' => 'fr', 'minYear' => date('Y') -5, 'maxYear' => date('Y') +5]);
+    $formulaire->addElement('text'    , 'titre'          , 'Titre' , ['size' => 40, 'maxlength' => 150]);
 
     $abstractClass = 'simplemde';
     $useMarkdown = true;
@@ -137,24 +137,24 @@ if ($action == 'lister') {
         $abstractClass = 'tinymce';
     }
 
-    $formulaire->addElement('textarea', 'abstract'       , 'Résumé', array('cols' => 40, 'rows' => 15,'class'=> $abstractClass));
+    $formulaire->addElement('textarea', 'abstract'       , 'Résumé', ['cols' => 40, 'rows' => 15,'class'=> $abstractClass]);
     $formulaire->addElement('hidden', 'use_markdown', (int)$useMarkdown);
 
 
     $typesLabelsByKey = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
     asort($typesLabelsByKey);
-    $groupe = array();
+    $groupe = [];
     foreach ($typesLabelsByKey as $genreKey => $genreLabel) {
         $groupe[] = $formulaire->createElement('radio', 'genre', null, $genreLabel, $genreKey);
     }
     $formulaire->addGroup($groupe, 'groupe_type_pres', "Type de session", '<br />', false);
 
-    $groupe = array();
+    $groupe = [];
     $groupe[] = $formulaire->createElement('radio', 'plannifie', null, 'Oui', 1);
     $groupe[] = $formulaire->createElement('radio', 'plannifie', null, 'Non', 0);
     $formulaire->addGroup($groupe, 'groupe_plannifie', "Plannifi&eacute;", '<br />', false);
 
-    $groupe = array();
+    $groupe = [];
 
     $groupe[] = $formulaire->createElement('radio', 'skill', null, 'N/A', Talk::SKILL_NA);
     $groupe[] = $formulaire->createElement('radio', 'skill', null, 'Junior', Talk::SKILL_JUNIOR);
@@ -164,21 +164,21 @@ if ($action == 'lister') {
 
     $formulaire->addElement('checkbox'    , 'needs_mentoring'          , "Demande a bénéficier du programme d'accompagnement des jeunes speakers");
     $formulaire->addElement('checkbox', 'with_workshop', "Propose un atelier");
-    $formulaire->addElement('textarea', 'workshop_abstract', 'Résumé de l\'atelier', array('cols' => 40, 'rows' => 15));
+    $formulaire->addElement('textarea', 'workshop_abstract', 'Résumé de l\'atelier', ['cols' => 40, 'rows' => 15]);
 
 
     if ($action != 'ajouter') {
-        $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , array('size' => 40, 'maxlength' => 10));
-        $formulaire->addElement('text'    , 'youtube_id'          , 'Id de la conférence sur youtube' , array('size' => 40, 'maxlength' => 30));
-        $formulaire->addElement('text'    , 'slides_url'          , 'URL où trouver les slides' , array('size' => 80, 'maxlength' => 255));
-        $formulaire->addElement('text'    , 'openfeedback_path'          , 'Chemin la conférence sur openfeedback' , array('size' => 80, 'maxlength' => 255));
-        $formulaire->addElement('text'    , 'blog_post_url'          , 'URL de la version  article de blog de la conférence' , array('size' => 80, 'maxlength' => 255));
-        $formulaire->addElement('text'    , 'interview_url'          , "URL de l'interview" , array('size' => 80, 'maxlength' => 255));
+        $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , ['size' => 40, 'maxlength' => 10]);
+        $formulaire->addElement('text'    , 'youtube_id'          , 'Id de la conférence sur youtube' , ['size' => 40, 'maxlength' => 30]);
+        $formulaire->addElement('text'    , 'slides_url'          , 'URL où trouver les slides' , ['size' => 80, 'maxlength' => 255]);
+        $formulaire->addElement('text'    , 'openfeedback_path'          , 'Chemin la conférence sur openfeedback' , ['size' => 80, 'maxlength' => 255]);
+        $formulaire->addElement('text'    , 'blog_post_url'          , 'URL de la version  article de blog de la conférence' , ['size' => 80, 'maxlength' => 255]);
+        $formulaire->addElement('text'    , 'interview_url'          , "URL de l'interview" , ['size' => 80, 'maxlength' => 255]);
         $formulaire->addElement('select', 'language_code', 'Langue', Talk::getLanguageLabelsByKey());
 
         $formulaire->addElement('checkbox'    , 'video_has_fr_subtitles'          , "Sous titres FR présents");
         $formulaire->addElement('checkbox'    , 'video_has_en_subtitles'          , "Sous titres EN présents");
-        $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5));
+        $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
         $formulaire->addElement('textarea'    , 'tweets'          , "Tweets", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea'    , 'transcript'          , "Sous titres en français (format SRT)", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea', 'verbatim', 'Verbatim', ['cols' => 40, 'rows' => 15,'class'=> 'simplemde']);

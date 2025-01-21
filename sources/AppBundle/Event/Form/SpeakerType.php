@@ -21,31 +21,28 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SpeakerType extends AbstractType
 {
-    const OPT_PHOTO_REQUIRED = 'photo_required';
-    const OPT_USER_GITHUB = 'user_github';
+    public const OPT_PHOTO_REQUIRED = 'photo_required';
+    public const OPT_USER_GITHUB = 'user_github';
 
-    /** @var GithubUserRepository */
-    private $githubUserRepository;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var TokenStorage */
-    private $tokenStorage;
+    private GithubUserRepository $githubUserRepository;
+    private SpeakerRepository $speakerRepository;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         GithubUserRepository $githubUserRepository,
         SpeakerRepository $speakerRepository,
-        TokenStorage $tokenStorage
+        TokenStorageInterface $tokenStorage
     ) {
         $this->githubUserRepository = $githubUserRepository;
         $this->speakerRepository = $speakerRepository;
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('civility', ChoiceType::class, ['choices' => ['M' => 'M', 'Mme' => 'Mme']])
@@ -61,7 +58,7 @@ class SpeakerType extends AbstractType
         ;
 
         if (true === $options[self::OPT_USER_GITHUB]) {
-            // mieux vaudrait passer par un option référeent ou "saisie dans le BO", mais le bug
+            // il vaudrait mieux passer par une option référent ou "saisie dans le BO", mais le bug
             // a été vu lors du Forum PHP 2022, on est pragmatique et le corrige au plus vite.
             $builder
                 ->add('referent_person', TextType::class, ['required' => false, 'property_path' => 'referentPerson', 'label' => 'Personne référente'])
@@ -119,7 +116,7 @@ class SpeakerType extends AbstractType
         });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

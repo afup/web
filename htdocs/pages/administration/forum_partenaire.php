@@ -12,7 +12,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
+$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer']);
 $smarty->assign('action', $action);
 
 
@@ -36,7 +36,7 @@ if ($action == 'lister') {
 } else {
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
-		$formulaire->setDefaults(array('ranking' => 1));
+		$formulaire->setDefaults(['ranking' => 1]);
     } else {
         $champs = $partenaires->obtenir($_GET['id']);
         $forum = $forums->obtenir($champs['id_forum']);
@@ -53,10 +53,10 @@ if ($action == 'lister') {
     $formulaire->addElement('header'  , ''            , 'Partenaire de forum');
     $formulaire->addElement('select'  , 'id_forum'    , 'Forum'          , $forums->obtenirListe(null,'id, titre', 'titre', true));
     $formulaire->addElement('select'  , 'id_niveau_partenariat' , 'Partenariat' , $niveauPartenariat->obtenirListe());
-    $formulaire->addElement('text'    , 'ranking'     , 'Rang'           , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'nom'         , 'Nom'            , array('size' => 30, 'maxlength' => 100));
-    $formulaire->addElement('textarea', 'presentation', 'Présentation'   , array('cols' => 42, 'rows'      => 15, 'class' => 'tinymce'));
-    $formulaire->addElement('text'    , 'site'        , 'Site'           , array('size' => 30));
+    $formulaire->addElement('text'    , 'ranking'     , 'Rang'           , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'nom'         , 'Nom'            , ['size' => 30, 'maxlength' => 100]);
+    $formulaire->addElement('textarea', 'presentation', 'Présentation'   , ['cols' => 42, 'rows'      => 15, 'class' => 'tinymce']);
+    $formulaire->addElement('text'    , 'site'        , 'Site'           , ['size' => 30]);
     $formulaire->addElement('static'  , 'note'                           , '', 'Faire attention à la taille');
     $formulaire->addElement('file'    , 'logo'        , 'Logo');
     if ($action == 'modifier') {

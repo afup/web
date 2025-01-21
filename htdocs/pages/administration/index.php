@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once __DIR__ .'/../../../sources/Afup/Bootstrap/Http.php';
 /*
  * Define LOADED_USING_INDEX to true
  * See compta_journal.php first lines as example for security check.

@@ -11,9 +11,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 	exit;
 }
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
-$tris_valides = array('titre', 'date');
-$sens_valides = array('asc', 'desc');
+$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer']);
+$tris_valides = ['titre', 'date'];
+$sens_valides = ['asc', 'desc'];
 $smarty->assign('action', $action);
 
 
@@ -21,7 +21,7 @@ $smarty->assign('action', $action);
 $feuilles = new Feuilles($bdd);
 
 if ($action == 'lister') {
-	$f = array();
+	$f = [];
 	$list_champs = '*';
 	$list_ordre  = 'date';
 	$list_sens   = 'desc';
@@ -54,27 +54,27 @@ if ($action == 'lister') {
 
 	$formulaire = instancierFormulaire();
 	if ($action == 'ajouter') {
-		$formulaire->setDefaults(array('date' => time(),
+		$formulaire->setDefaults(['date' => time(),
 									   'position' => 0,
 									   'id_personne_physique' => $droits->obtenirIdentifiant(),
-									   'etat' => 0));
+									   'etat' => 0]);
 	} else {
 		$feuille->charger();
 		$formulaire->setDefaults($feuille->exportable());
 	}
 
 	$formulaire->addElement('header'  , ''                     , 'feuille');
-	$formulaire->addElement('select'  , 'id_parent'            , 'Parent'    , array(null => '' ) + $feuilles->obtenirListe('id, nom', 'nom', true));
-	$formulaire->addElement('text'	  , 'nom'                  , 'Nom'       , array('size' => 60, 'maxlength' => 255));
-	$formulaire->addElement('text'	  , 'lien'                 , 'Lien'      , array('size' => 60, 'maxlength' => 255));
-	$formulaire->addElement('text'	  , 'alt'                  , 'Description', array('size' => 60, 'maxlength' => 255));
+	$formulaire->addElement('select'  , 'id_parent'            , 'Parent'    , [null => '' ] + $feuilles->obtenirListe('id, nom', 'nom', true));
+	$formulaire->addElement('text'	  , 'nom'                  , 'Nom'       , ['size' => 60, 'maxlength' => 255]);
+	$formulaire->addElement('text'	  , 'lien'                 , 'Lien'      , ['size' => 60, 'maxlength' => 255]);
+	$formulaire->addElement('text'	  , 'alt'                  , 'Description', ['size' => 60, 'maxlength' => 255]);
     $file =& $formulaire->addElement('file', 'nouvelle-image'  , 'Image');
     $formulaire->addElement('static'  , 'note'                 , ''          , '<img src="../../templates/site/images/'.$feuille->image.'" />');
-	$formulaire->addElement('text'	  , 'image_alt'            , 'Texte alternatif pour l\'image', array('size' => 60, 'maxlength' => 255));
+	$formulaire->addElement('text'	  , 'image_alt'            , 'Texte alternatif pour l\'image', ['size' => 60, 'maxlength' => 255]);
     $formulaire->addElement('hidden'  , 'image');
-    $formulaire->addElement('date'    , 'date'                 , 'Date'      , array('language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')));
+    $formulaire->addElement('date'    , 'date'                 , 'Date'      , ['language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')]);
 	$formulaire->addElement('select'  , 'position'             , 'Position'  , $feuille->positionable());
-	$formulaire->addElement('select'  , 'etat'                 , 'Etat'      , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
+	$formulaire->addElement('select'  , 'etat'                 , 'Etat'      , [-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne']);
     $formulaire->addElement('textarea'  , 'patterns'                 , 'Patterns URL');
 	$formulaire->addElement('header'  , 'boutons'              , '');
 	$formulaire->addElement('submit'  , 'soumettre'            , ucfirst($action));
@@ -82,7 +82,7 @@ if ($action == 'lister') {
 	$formulaire->addRule('nom'        , 'Nom manquant'         , 'required');
 	$formulaire->addRule('contenu'    , 'Contenu manquant'     , 'required');
 	$formulaire->addRule('lien'       , 'Lien manquant'        , 'required');
-    $formulaire->addRule('image'      , 'Mimetype'             , 'mimetype', array('jpg','jpeg','gif','png'));
+    $formulaire->addRule('image'      , 'Mimetype'             , 'mimetype', ['jpg','jpeg','gif','png']);
 
 	if ($file->isUploadedFile()) {
 	    $values = $file->getValue();

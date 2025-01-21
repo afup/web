@@ -16,8 +16,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class TestGithubAuthenticator extends SocialAuthenticator
 {
-    private $githubUserRepository;
-    private $router;
+    private GithubUserRepository $githubUserRepository;
+    private RouterInterface $router;
 
     public function __construct(GithubUserRepository $githubUserRepository, RouterInterface $router)
     {
@@ -33,7 +33,6 @@ class TestGithubAuthenticator extends SocialAuthenticator
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $githubUsers = $this->getTestUsersDetails();
-
 
         if (!isset($githubUsers[$credentials])) {
             throw new \RuntimeException('Test user not found');
@@ -60,7 +59,7 @@ class TestGithubAuthenticator extends SocialAuthenticator
         return $user;
     }
 
-    private function getTestUsersDetails()
+    private function getTestUsersDetails(): array
     {
         $testUsers = [];
 
@@ -124,5 +123,10 @@ class TestGithubAuthenticator extends SocialAuthenticator
             $body .= sprintf('<a href="%s">Connect as %s</a><br />', $uri, $name);
         }
         return new Response($body);
+    }
+
+    public function supports(Request $request): bool
+    {
+        return true;
     }
 }

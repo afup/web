@@ -10,7 +10,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier'));
+$action = verifierAction(['lister', 'ajouter', 'modifier']);
 //$tris_valides = array('Date', 'Evenement', 'catégorie', 'Description');
 //$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
@@ -40,7 +40,7 @@ if ($action == 'lister') {
 
 // partie saisie
    $formulaire->addElement('header'  , ''                         , '');
-	$formulaire->addElement('text', 'operation', 'Operation' , array('size' => 30, 'maxlength' => 40));
+	$formulaire->addElement('text', 'operation', 'Operation' , ['size' => 30, 'maxlength' => 40]);
 
 
 // boutons

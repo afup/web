@@ -97,6 +97,7 @@
     "behat/mink-extension": "^2.3",
     "behat/mink-goutte-driver": "^1.2",
     "friendsofphp/php-cs-fixer": "~2",
+    "rector/rector": "^2.0",
     "smalot/pdfparser": "^0.19.0"
   },
   "repositories": [

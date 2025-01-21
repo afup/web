@@ -9,9 +9,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('telecharger_joindin'));
-$tris_valides = array();
-$sens_valides = array('asc' , 'desc');
+$action = verifierAction(['telecharger_joindin']);
+$tris_valides = [];
+$sens_valides = ['asc' , 'desc'];
 $smarty->assign('action', $action);
 
 

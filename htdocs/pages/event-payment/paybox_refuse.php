@@ -1,3 +1,3 @@
 <?php
-require_once dirname(__FILE__) .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once __DIR__ .'/../../../sources/Afup/Bootstrap/Http.php';
 $smarty->display('paybox_refuse.html');

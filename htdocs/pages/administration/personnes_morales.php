@@ -14,9 +14,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 $userRepository = $this->get(UserRepository::class);
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
-$tris_valides = array('raison_sociale', 'etat');
-$sens_valides = array('asc', 'desc');
+$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer']);
+$tris_valides = ['raison_sociale', 'etat'];
+$sens_valides = ['asc', 'desc'];
 $smarty->assign('action', $action);
 
 $personnes_morales = new Personnes_Morales($bdd);
@@ -67,31 +67,31 @@ if ($action == 'lister') {
 
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
-        $formulaire->setDefaults(array('civilite' => 'M.',
+        $formulaire->setDefaults(['civilite' => 'M.',
                                        'id_pays' => 'FR',
                                        'niveau'  => AFUP_DROITS_NIVEAU_REDACTEUR,
                                        'etat'    => AFUP_DROITS_ETAT_ACTIF,
-                                        'max_members' => 3));
+                                        'max_members' => 3]);
     } else {
         $champs = $personnes_morales->obtenir($_GET['id']);
         $formulaire->setDefaults($champs);
     }
 
     $formulaire->addElement('header'  , ''                   , 'Informations');
-    $formulaire->addElement('text'    , 'raison_sociale'     , 'Raison sociale' , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'siret'              , 'Siret'          , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('textarea', 'adresse'            , 'Adresse'        , array('cols' => 42, 'rows'      => 10));
-    $formulaire->addElement('text'    , 'code_postal'        , 'Code postal'    , array('size' =>  6, 'maxlength' => 10));
-    $formulaire->addElement('text'    , 'ville'              , 'Ville'          , array('size' => 30, 'maxlength' => 50));
+    $formulaire->addElement('text'    , 'raison_sociale'     , 'Raison sociale' , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'siret'              , 'Siret'          , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('textarea', 'adresse'            , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
+    $formulaire->addElement('text'    , 'code_postal'        , 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
+    $formulaire->addElement('text'    , 'ville'              , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
     $formulaire->addElement('select'  , 'id_pays'            , 'Pays'           , $pays->obtenirPays());
 
     $formulaire->addElement('header'  , ''                   , 'Contact administratif');
-    $formulaire->addElement('select'  , 'civilite'           , 'Civilité'       , array('M.', 'Mme'));
-    $formulaire->addElement('text'    , 'nom'                , 'Nom'            , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'prenom'             , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
-    $formulaire->addElement('text'    , 'email'              , 'Email'          , array('size' => 30, 'maxlength' => 100));
-    $formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , array('size' => 20, 'maxlength' => 20));
-    $formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , array('size' => 20, 'maxlength' => 20));
+    $formulaire->addElement('select'  , 'civilite'           , 'Civilité'       , ['M.', 'Mme']);
+    $formulaire->addElement('text'    , 'nom'                , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'prenom'             , 'Prénom'         , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'email'              , 'Email'          , ['size' => 30, 'maxlength' => 100]);
+    $formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , ['size' => 20, 'maxlength' => 20]);
+    $formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , ['size' => 20, 'maxlength' => 20]);
     if($action != 'ajouter') {
         $smarty->assign('personnes_physiques_associees', $users);
     }

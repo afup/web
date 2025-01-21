@@ -16,7 +16,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$action = verifierAction(array('lister', 'exporter', 'download_attachments'));
+$action = verifierAction(['lister', 'exporter', 'download_attachments']);
 
 $smarty->assign('action', $action);
 
@@ -115,40 +115,40 @@ if ($action == 'lister') {
     for ($i = 1; $i < 13; $i++) {
         $sheet = $workbook->getSheet($i);
 
-        $sheet->getStyle('A1')->applyFromArray(array(
-            'font' => array(
+        $sheet->getStyle('A1')->applyFromArray([
+            'font' => [
                 'size' => 12,
                 'bold' => true,
                 'name' => 'Ubuntu'
-            )
-        ));
-        $sheet->getStyle('A3:K3')->applyFromArray(array(
-            'font' => array(
+            ]
+        ]);
+        $sheet->getStyle('A3:K3')->applyFromArray([
+            'font' => [
                 'size' => 10,
                 'bold' => true,
                 'name' => 'Ubuntu'
-            ),
-            'alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER),
-            'borders' => array(
-                'allborders' => array(
+            ],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
+            'borders' => [
+                'allborders' => [
                     'style' => Border::BORDER_THIN,
-                    'color' => array('rgb' => 'FF666666')
-                )
-            )
-        ));
-        $sheet->getStyle('A4:K' . ($compteurLigne[$i] + 1))->applyFromArray(array(
-            'font' => array(
+                    'color' => ['rgb' => 'FF666666']
+                ]
+            ]
+        ]);
+        $sheet->getStyle('A4:K' . ($compteurLigne[$i] + 1))->applyFromArray([
+            'font' => [
                 'size' => 10,
                 'name' => 'Ubuntu'
-            ),
-            'borders' => array(
-                'allborders' => array(
+            ],
+            'borders' => [
+                'allborders' => [
                     'style' => Border::BORDER_THIN,
-                    'color' => array('rgb' => 'FF666666')
-                )
-            )
-        ));
-        $sheet->getStyle('J3:I200')->applyFromArray(array('alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER)));
+                    'color' => ['rgb' => 'FF666666']
+                ]
+            ]
+        ]);
+        $sheet->getStyle('J3:I200')->applyFromArray(['alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]]);
 
         $sheet->setCellValue('E' . $compteurLigne[$i], 'TOTAL');
         $sheet->setCellValue('F' . $compteurLigne[$i], $sousTotal[$i]['debit']);
@@ -157,16 +157,16 @@ if ($action == 'lister') {
         $sheet->setCellValue('F' . ($compteurLigne[$i] + 1), $sousTotal[$i]['dif']);
         $sheet->mergeCells('F' . ($compteurLigne[$i] + 1) . ':G' . ($compteurLigne[$i] + 1));
 
-        $sheet->getStyle('A' . $compteurLigne[$i] . ':J' . ($compteurLigne[$i] + 1))->applyFromArray(array(
-            'font' => array(
+        $sheet->getStyle('A' . $compteurLigne[$i] . ':J' . ($compteurLigne[$i] + 1))->applyFromArray([
+            'font' => [
                 'size' => 10,
                 'bold' => true,
                 'name' => 'Ubuntu'
-            )
-        ));
-        $sheet->getStyle('F' . ($compteurLigne[$i] + 1))->getAlignment()->applyFromArray(array('horizontal' => Alignment::HORIZONTAL_CENTER));
+            ]
+        ]);
+        $sheet->getStyle('F' . ($compteurLigne[$i] + 1))->getAlignment()->applyFromArray(['horizontal' => Alignment::HORIZONTAL_CENTER]);
 
-        $sheet->getStyle('F4:G200')->applyFromArray(array('numberformat' => array('code' => NumberFormat::FORMAT_NUMBER_00)));
+        $sheet->getStyle('F4:G200')->applyFromArray(['numberformat' => ['code' => NumberFormat::FORMAT_NUMBER_00]]);
 
         $sheet->getColumnDimension('A')->setWidth(8);
         $sheet->getColumnDimension('C')->setWidth(36);

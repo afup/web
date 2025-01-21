@@ -39,20 +39,20 @@ unset($champs['mot_de_passe']);
 $formulaire->setDefaults($champs);
 
 $formulaire->addElement('header'  , ''                   , 'Informations');
-$formulaire->addElement('text'    , 'raison_sociale'     , 'Raison sociale' , array('size' => 30, 'maxlength' => 40));
-$formulaire->addElement('text'    , 'siret'              , 'Siret'          , array('size' => 30, 'maxlength' => 40));
-$formulaire->addElement('textarea', 'adresse'            , 'Adresse'        , array('cols' => 42, 'rows'      => 10));
-$formulaire->addElement('text'    , 'code_postal'        , 'Code postal'    , array('size' =>  6, 'maxlength' => 10));
-$formulaire->addElement('text'    , 'ville'              , 'Ville'          , array('size' => 30, 'maxlength' => 50));
+$formulaire->addElement('text'    , 'raison_sociale'     , 'Raison sociale' , ['size' => 30, 'maxlength' => 40]);
+$formulaire->addElement('text'    , 'siret'              , 'Siret'          , ['size' => 30, 'maxlength' => 40]);
+$formulaire->addElement('textarea', 'adresse'            , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
+$formulaire->addElement('text'    , 'code_postal'        , 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
+$formulaire->addElement('text'    , 'ville'              , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
 $formulaire->addElement('select'  , 'id_pays'            , 'Pays'           , $pays->obtenirPays());
 
 $formulaire->addElement('header'  , ''                   , 'Contact administratif');
-$formulaire->addElement('select'  , 'civilite'           , 'Civilité'       , array('M.', 'Mme', 'Mlle'));
-$formulaire->addElement('text'    , 'nom'                , 'Nom'            , array('size' => 30, 'maxlength' => 40));
-$formulaire->addElement('text'    , 'prenom'             , 'Prénom'         , array('size' => 30, 'maxlength' => 40));
-$formulaire->addElement('text'    , 'email'              , 'Email'          , array('size' => 30, 'maxlength' => 100));
-$formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , array('size' => 20, 'maxlength' => 20));
-$formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , array('size' => 20, 'maxlength' => 20));
+$formulaire->addElement('select'  , 'civilite'           , 'Civilité'       , ['M.', 'Mme', 'Mlle']);
+$formulaire->addElement('text'    , 'nom'                , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
+$formulaire->addElement('text'    , 'prenom'             , 'Prénom'         , ['size' => 30, 'maxlength' => 40]);
+$formulaire->addElement('text'    , 'email'              , 'Email'          , ['size' => 30, 'maxlength' => 100]);
+$formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , ['size' => 20, 'maxlength' => 20]);
+$formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , ['size' => 20, 'maxlength' => 20]);
 
 $formulaire->addElement('header'  , ''                   , 'Membres associés');
 foreach ($users as $user) {
@@ -64,8 +64,8 @@ foreach ($users as $user) {
 }
 
 $formulaire->addElement('header'  , ''                   , 'Paramètres');
-$formulaire->addElement('select'  , 'etat'               , 'Etat'        , array(AFUP_DROITS_ETAT_ACTIF   => 'Actif',
-                                                                               AFUP_DROITS_ETAT_INACTIF => 'Inactif'));
+$formulaire->addElement('select'  , 'etat'               , 'Etat'        , [AFUP_DROITS_ETAT_ACTIF   => 'Actif',
+                                                                               AFUP_DROITS_ETAT_INACTIF => 'Inactif']);
 
 $formulaire->addElement('header'  , 'boutons'            , '');
 $formulaire->addElement('submit'  , 'soumettre'          , ucfirst($action));
