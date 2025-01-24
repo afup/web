@@ -579,6 +579,12 @@ class MemberShipController extends SiteBaseController
 
         if ($form->isValid()) {
             $data = $form->getData();
+
+            // Si participe ou ne sais pas on reset le pouvoir
+            if ($data['presence'] !== 2) {
+                $data['id_personne_avec_pouvoir'] = 0;
+            }
+
             if (null !== $attendee) {
                 $ok = $generalMeetingRepository->editAttendee(
                     $user->getUsername(),
