@@ -395,9 +395,7 @@ class OfficesCollection
 
         uasort(
             $offices,
-            function ($a, $b) {
-                return strcmp($a['label'], $b['label']);
-            }
+            fn ($a, $b) => strcmp($a['label'], $b['label'])
         );
 
 

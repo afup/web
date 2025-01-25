@@ -1,7 +1,7 @@
 <?php
 
 // Inclusion de l'autoload de composer
-require_once dirname(__FILE__) . '/../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // Configuration du composant de traduction
 $lang = 'fr';
@@ -11,9 +11,9 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], $langs)) {
 }
 $translator = new \Symfony\Component\Translation\Translator($lang);
 $translator->addLoader('xliff', new \Symfony\Component\Translation\Loader\XliffFileLoader());
-$translator->addResource('xliff', dirname(__FILE__) . '/../../../translations/inscription.en.xlf', 'en');
-$translator->addResource('xliff', dirname(__FILE__) . '/../../../translations/cfp.en.xlf', 'en');
-$translator->setFallbackLocales(array('fr'));
+$translator->addResource('xliff', __DIR__ . '/../../../translations/inscription.en.xlf', 'en');
+$translator->addResource('xliff', __DIR__ . '/../../../translations/cfp.en.xlf', 'en');
+$translator->setFallbackLocales(['fr']);
 if (isset($smarty)) {
     $smarty->register_modifier('trans', [$translator, 'trans']);
 }
@@ -111,7 +111,7 @@ define('AFUP_TRANSPORT_MODE_AVION_ECO', 90);
 define('AFUP_TRANSPORT_MODE_AVION_BUSINESS', 100);
 define('AFUP_TRANSPORT_MODE_COMMUN', 110);
 
-$AFUP_Tarifs_Forum = array(
+$AFUP_Tarifs_Forum = [
     AFUP_FORUM_INVITATION => 0,
     AFUP_FORUM_ORGANISATION => 0,
     AFUP_FORUM_SPONSOR => 0,
@@ -138,11 +138,11 @@ $AFUP_Tarifs_Forum = array(
     AFUP_FORUM_2_JOURNEES_SPONSOR => 200,
     AFUP_FORUM_SPECIAL_PRICE => 0,
 
-);
+];
 
 $GLOBALS['AFUP_Tarifs_Forum'] = $AFUP_Tarifs_Forum;
 
-$AFUP_Tarifs_Forum_Lib = array(
+$AFUP_Tarifs_Forum_Lib = [
     AFUP_FORUM_INVITATION => 'Invitation',
     AFUP_FORUM_ORGANISATION => 'Organisation',
     AFUP_FORUM_PROJET => 'Projet PHP',
@@ -168,7 +168,7 @@ $AFUP_Tarifs_Forum_Lib = array(
     AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => '',
     AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => '',
     AFUP_FORUM_SPECIAL_PRICE => 'Tarif Spécial',
-);
+];
 
 $GLOBALS['AFUP_Tarifs_Forum_Lib'] = $AFUP_Tarifs_Forum_Lib;
 
@@ -195,6 +195,4 @@ $services
         ['default' => ['database' => $GLOBALS['AFUP_CONF']->obtenir('database_name')]]
     )
 ;
-$services->set('security.csrf.token_manager', function(){
-    return new Symfony\Component\Security\Csrf\CsrfTokenManager();
-});
+$services->set('security.csrf.token_manager', fn() => new Symfony\Component\Security\Csrf\CsrfTokenManager());

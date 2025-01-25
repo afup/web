@@ -179,13 +179,13 @@ class AppelConferencier
                                         $fin,
                                         $id_salle)
     {
-        $donnees = array(
+        $donnees = [
             $this->_bdd->echapper($id_forum),
             $this->_bdd->echapper($id_session),
             $this->_bdd->echapper($debut),
             $this->_bdd->echapper($fin),
             $this->_bdd->echapper($id_salle),
-        );
+        ];
 
         $requete = ' INSERT INTO afup_forum_planning';
         $requete .= '  (id_forum, id_session, debut, fin, id_salle)';
@@ -216,12 +216,12 @@ class AppelConferencier
 
         $sessions = $this->_bdd->obtenirTous($requete);
 
-        $sessionsAvecId = array();
+        $sessionsAvecId = [];
         foreach ($sessions as $session) {
             $sessionsAvecId[$session['session_id']] = $session;
         }
 
-        $sessionsAvecResumes = array();
+        $sessionsAvecResumes = [];
 
 
         $forum = new Forum($this->_bdd);
@@ -289,7 +289,7 @@ class AppelConferencier
                                  $ordre = 's.date_soumission',
                                  $associatif = false,
                                  $filtre = false,
-                                 $only_ids = array())
+                                 $only_ids = [])
     {
         $requete = ' SELECT ';
         $requete .= '  COUNT(co.id) as commentaires_nombre, ';
@@ -376,7 +376,7 @@ class AppelConferencier
 
     function ajouterConferencier($id_forum, $civilite, $nom, $prenom, $email, $societe, $biographie, $twitter)
     {
-        $donnees = array(
+        $donnees = [
             $this->_bdd->echapper($id_forum),
             $this->_bdd->echapper($civilite),
             $this->_bdd->echapper($nom),
@@ -385,7 +385,7 @@ class AppelConferencier
             $this->_bdd->echapper($societe),
             $this->_bdd->echapper($biographie),
             $this->_bdd->echapper($twitter),
-        );
+        ];
 
         $requete = ' INSERT INTO afup_conferenciers';
         $requete .= '  (id_forum, civilite, nom, prenom, email, societe, biographie, twitter)';
@@ -508,7 +508,7 @@ class AppelConferencier
         $useMarkdown = false
     ) {
 
-        $donnees = array(
+        $donnees = [
             $this->_bdd->echapper($id_forum),
             $this->_bdd->echapper($date_soumission),
             $this->_bdd->echapper($titre),
@@ -519,7 +519,7 @@ class AppelConferencier
             $this->_bdd->echapper($needs_mentoring),
             $this->_bdd->echapper($level),
             (int)$useMarkdown
-        );
+        ];
 
         $requete = ' INSERT INTO afup_sessions
           (id_forum, date_soumission, titre, abstract, journee, genre, plannifie, needs_mentoring, skill, markdown)
@@ -546,10 +546,10 @@ class AppelConferencier
         if (!$conferencier_id) {
             return true;
         }
-        $donnees = array(
+        $donnees = [
             $this->_bdd->echapper($conferencier_id),
             $this->_bdd->echapper($session_id),
-        );
+        ];
 
         $requete = ' REPLACE INTO afup_conferenciers_sessions';
         $requete .= '  (conferencier_id, session_id) ';

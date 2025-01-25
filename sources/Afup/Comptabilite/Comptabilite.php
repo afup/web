@@ -100,12 +100,12 @@ class Comptabilite
         $dif_old = 0;
         for ($i = 1; $i <= 12; $i++) {
             $dif = $dif_old + $credit[$i] - $debit[$i];
-            $tableau[$i] = array("mois" => $i,
+            $tableau[$i] = ["mois" => $i,
                 "debit" => $debit[$i],
                 "credit" => $credit[$i],
                 "dif" => $dif,
                 "nligne" => $nligne[$i]
-            );
+            ];
             $dif_old = $dif;
         }
 
@@ -131,11 +131,11 @@ class Comptabilite
 //for ($i=1;$i<=12;$i++)
 //{
 //	$dif=$dif_old+$credit[$i]-$debit[$i];
-        $tableau = array(
+        $tableau = [
             "debit" => $debit,
             "credit" => $credit,
             "dif" => $credit - $debit
-        );
+        ];
 //	$dif_old=$dif;
 //}
 
@@ -862,11 +862,11 @@ SQL;
 
         for ($i = 1; $i <= 30; $i++) {
             if ($debit[$i] || $credit[$i]) {
-                $tableau[$i] = array("idevenement" => $i,
+                $tableau[$i] = ["idevenement" => $i,
                     "debit" => $debit[$i],
                     "credit" => $credit[$i],
                     "nligne" => $nligne[$i]
-                );
+                ];
             }
         }
 

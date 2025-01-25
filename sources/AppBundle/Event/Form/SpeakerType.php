@@ -69,18 +69,14 @@ class SpeakerType extends AbstractType
                         'property_path' => 'githubUser',
                         'label' => 'Utilisateur GitHub',
                         'required' => false,
-                        'choice_label' => function (GithubUser $user) {
-                            return $user->getLabel();
-                        },
+                        'choice_label' => fn (GithubUser $user) => $user->getLabel(),
                         'choice_value' => function ($choice) {
                             if ($choice instanceof GithubUser) {
                                 return $choice->getId();
                             }
                             return $choice;
                         },
-                        'choice_loader' => new CallbackChoiceLoader(function () {
-                            return $this->githubUserRepository->getAllOrderedByLogin();
-                        }),
+                        'choice_loader' => new CallbackChoiceLoader(fn () => $this->githubUserRepository->getAllOrderedByLogin()),
                     ]
                 )
             ;

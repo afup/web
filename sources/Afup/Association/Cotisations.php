@@ -153,7 +153,7 @@ class Cotisations
         $requete .= $type_personne . ',';
         $requete .= $id_personne . ',';
         $requete .= $montant . ',';
-        $requete .= ($type_reglement === null ? 'NULL' : $type_reglement) . ',';
+        $requete .= $this->_bdd->echapper($type_reglement) . ',';
         $requete .= $this->_bdd->echapper($informations_reglement) . ',';
         $requete .= $date_debut . ',';
         $requete .= $date_fin . ',';
@@ -274,7 +274,7 @@ class Cotisations
                 );
 
         } elseif (substr(md5($reference), -3) == strtolower($verif) and !$this->estDejaReglee($cmd)) {
-            list($ref, $date, $type_personne, $id_personne, $reste) = explode('-', $cmd, 5);
+            [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', $cmd, 5);
             $date_debut = mktime(0, 0, 0, substr($date, 2, 2), substr($date, 0, 2), substr($date, 4, 4));
 
             $cotisation = $this->obtenirDerniere($type_personne, $id_personne);
@@ -307,7 +307,7 @@ class Cotisations
         }
 
         // Personne physique : $cmd=C2023-211120232237-0-5-PAUL-431
-        list($ref, $date, $memberType, $memberId, $stuff) = $arr;
+        [$ref, $date, $memberType, $memberId, $stuff] = $arr;
 
         return ['type' => $memberType, 'id' => $memberId];
     }
@@ -420,9 +420,9 @@ class Cotisations
             $pdf->Cell(25, 5, 'Prix TTC', 1, 0, 'R', 1);
 
             if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
-                list($totalHt, $total) = $this->buildDetailsPersonneMorale($pdf, $cotisation['montant'], $cotisation['date_fin']);
+                [$totalHt, $total] = $this->buildDetailsPersonneMorale($pdf, $cotisation['montant'], $cotisation['date_fin']);
             } else {
-                list($totalHt, $total) = $this->buildDetailsPersonnePhysique($pdf, $cotisation['montant'], $cotisation['date_fin']);
+                [$totalHt, $total] = $this->buildDetailsPersonnePhysique($pdf, $cotisation['montant'], $cotisation['date_fin']);
             }
 
             $pdf->Ln();

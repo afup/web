@@ -32,7 +32,7 @@ class Utils
      * @return String containing either just a URL or a complete image tag
      * @source http://gravatar.com/site/implement/images/php/
      */
-    public static function get_gravatar($email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array())
+    public static function get_gravatar($email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = [])
     {
         $url = 'https://www.gravatar.com/avatar/';
         $url .= md5(strtolower(trim($email)));

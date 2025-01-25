@@ -21,7 +21,7 @@ class Pagination
         global $smarty;
 
         $page_max = ceil($this->nombre_elements_total / $this->nombre_elements_par_page);
-        $pages = array();
+        $pages = [];
         for ($i = 1; $i <= $page_max; $i++) {
             $pages[] = $i;
         }

@@ -206,34 +206,30 @@ class FeedArticleRepository
 
     private function hydrate(array $rows)
     {
-        return array_map(static function (array $row) {
-            return new FeedArticle(
-                $row['id'],
-                $row['afup_planete_flux_id'],
-                $row['clef'],
-                $row['titre'],
-                $row['url'],
-                $row['maj'],
-                $row['auteur'],
-                $row['resume'],
-                $row['contenu'],
-                $row['etat']
-            );
-        }, $rows);
+        return array_map(static fn(array $row) => new FeedArticle(
+            $row['id'],
+            $row['afup_planete_flux_id'],
+            $row['clef'],
+            $row['titre'],
+            $row['url'],
+            $row['maj'],
+            $row['auteur'],
+            $row['resume'],
+            $row['contenu'],
+            $row['etat']
+        ), $rows);
     }
 
     private function hydrateDisplayable(array $rows, $format = DATE_ATOM)
     {
-        return array_map(static function (array $row) use ($format) {
-            return new DisplayableFeedArticle(
-                $row['titre'],
-                $row['url'],
-                date($format, $row['maj']),
-                $row['auteur'],
-                $row['contenu'],
-                $row['feed_name'],
-                $row['feed_url']
-            );
-        }, $rows);
+        return array_map(static fn(array $row) => new DisplayableFeedArticle(
+            $row['titre'],
+            $row['url'],
+            date($format, $row['maj']),
+            $row['auteur'],
+            $row['contenu'],
+            $row['feed_name'],
+            $row['feed_url']
+        ), $rows);
     }
 }

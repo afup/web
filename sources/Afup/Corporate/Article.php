@@ -46,11 +46,7 @@ class Article
     {
         $themes = self::getThemesLabels();
 
-        if (isset($themes[$code])) {
-            return $themes[$code];
-        }
-
-        return '';
+        return $themes[$code] ?? '';
     }
 
     /**
@@ -149,7 +145,7 @@ class Article
 
     function positionable()
     {
-        $positions = array();
+        $positions = [];
         for ($i = 9; $i >= -9; $i--) {
             $positions[$i] = $i;
         }
@@ -159,7 +155,7 @@ class Article
 
     function exportable()
     {
-        return array(
+        return [
             'id' => $this->id,
             'id_site_rubrique' => $this->id_site_rubrique,
             'id_personne_physique' => $this->id_personne_physique,
@@ -173,7 +169,7 @@ class Article
             'theme' => $this->theme,
             'id_forum' => $this->id_forum,
             'etat' => $this->etat,
-        );
+        ];
     }
 
     function supprimer()

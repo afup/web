@@ -64,9 +64,7 @@ class DataExtractor
             }
         }
 
-        $data = array_map(function ($value) {
-            return trim($value);
-        }, $data);
+        $data = array_map(fn ($value) => trim($value), $data);
 
         return $data;
     }

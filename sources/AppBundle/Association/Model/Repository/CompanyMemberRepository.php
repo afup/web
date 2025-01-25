@@ -27,9 +27,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
 
         return array_filter(
             $companies,
-            function (CompanyMember $companyMember) {
-                return true === $companyMember->hasUpToDateMembershipFee();
-            }
+            fn (CompanyMember $companyMember) => true === $companyMember->hasUpToDateMembershipFee()
         );
     }
 

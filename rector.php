@@ -10,8 +10,8 @@ return RectorConfig::configure()
         __DIR__ . '/app',
         __DIR__ . '/db',
         __DIR__ . '/htdocs',
-        //__DIR__ . '/sources',
-        //__DIR__ . '/tests',
+        __DIR__ . '/sources',
+        __DIR__ . '/tests',
     ])
     ->withSkip([
         __DIR__ . '/htdocs/cache',

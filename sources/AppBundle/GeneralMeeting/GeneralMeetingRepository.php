@@ -30,9 +30,7 @@ ORDER BY apag.date DESC
 SQL
         );
 
-        return array_map(static function (array $row) {
-            return DateTimeImmutable::createFromFormat('U', $row['date']);
-        }, $query->fetchAll());
+        return array_map(static fn (array $row) => DateTimeImmutable::createFromFormat('U', $row['date']), $query->fetchAll());
     }
 
     /**
@@ -194,21 +192,19 @@ SQL
                 ->setParameter('pouvoir', $idPersonneAvecPouvoir);
         }
 
-        return array_map(static function (array $row) {
-            return new Attendee(
-                (int) $row['id'],
-                $row['email'],
-                $row['login'],
-                $row['nom'],
-                $row['prenom'],
-                $row['nearest_office'],
-                $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', $row['date_consultation']) : null,
-                (int) $row['presence'],
-                $row['power_id'] ? (int) $row['power_id'] : null,
-                $row['power_lastname'],
-                $row['power_firstname']
-            );
-        }, $query->execute()->fetchAll());
+        return array_map(static fn (array $row) => new Attendee(
+            (int) $row['id'],
+            $row['email'],
+            $row['login'],
+            $row['nom'],
+            $row['prenom'],
+            $row['nearest_office'],
+            $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', $row['date_consultation']) : null,
+            (int) $row['presence'],
+            $row['power_id'] ? (int) $row['power_id'] : null,
+            $row['power_lastname'],
+            $row['power_firstname']
+        ), $query->execute()->fetchAll());
     }
 
     /**
@@ -264,9 +260,7 @@ SQL
         $query->bindValue('date', $timestamp);
         $query->execute();
 
-        return array_map(static function (array $row) {
-            return (int) $row['id'];
-        }, $query->fetchAll());
+        return array_map(static fn (array $row) => (int) $row['id'], $query->fetchAll());
     }
 
     /**

@@ -95,15 +95,11 @@ class StatsAction
             'series' => [
                 [
                     'name' => $event->getTitle(),
-                    'data' => array_values(array_map(static function ($item) {
-                        return $item['n'];
-                    }, $stats['suivi'])),
+                    'data' => array_values(array_map(static fn ($item) => $item['n'], $stats['suivi'])),
                 ],
                 [
                     'name' => $comparedSerieName,
-                    'data' => array_values(array_map(static function ($item) {
-                        return $item['n_1'];
-                    }, $stats['suivi'])),
+                    'data' => array_values(array_map(static fn ($item) => $item['n_1'], $stats['suivi'])),
                 ],
             ],
         ];

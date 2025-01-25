@@ -75,7 +75,7 @@ class NewsController extends SiteBaseController
         $form->handleRequest($request);
 
         $formData = $form->getData();
-        $filters = null === $formData ? [] : $formData;
+        $filters = $formData ?? [];
 
         return $this->render(
             ':site:news/list.html.twig',

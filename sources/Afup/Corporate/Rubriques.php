@@ -28,7 +28,7 @@ class Rubriques
         $requete .= ' ORDER BY date ASC';
         $elements = $this->bdd->obtenirTous($requete);
 
-        $rubriques = array();
+        $rubriques = [];
         if (is_array($elements)) {
             foreach ($elements as $element) {
                 $rubrique = new Rubrique();

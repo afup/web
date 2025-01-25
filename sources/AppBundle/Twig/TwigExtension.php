@@ -59,12 +59,8 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('markdown', function ($text) {
-                return $this->parsedown->text($text);
-            }, ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('markdown_email', function ($text) {
-                return $this->emailParsedown->text($text);
-            }, ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('markdown', fn ($text) => $this->parsedown->text($text), ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('markdown_email', fn ($text) => $this->emailParsedown->text($text), ['is_safe' => ['html']]),
         ];
     }
 

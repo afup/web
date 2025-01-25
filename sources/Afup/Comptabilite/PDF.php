@@ -34,7 +34,7 @@ class PDF extends FPDF
         $this->SetFont('Times', 'B', 10);
         //En-tête
 //    $w=array(40,35,45,40);
-        $w = array(30, 85, 20);
+        $w = [30, 85, 20];
 
         //  Categorie","Description","Montant
         $this->SETXY($position, $y);

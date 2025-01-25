@@ -34,7 +34,7 @@ class HomeController extends SiteBaseController
                 'premiere_feuille' => $premiereFeuille,
                 'deuxieme_feuille' => $deuxiemeFeuille,
                 'autres_feuilles' => $enfants,
-                'talk' => null === $deuxiemeFeuille ? $this->getTalkOfTheDay() : $deuxiemeFeuille,
+                'talk' => $deuxiemeFeuille ?? $this->getTalkOfTheDay(),
             ]
         );
     }

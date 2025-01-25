@@ -152,7 +152,7 @@ class RegistrationsExportGenerator
             return null;
         }
         preg_match('@\<tag\>(.*)\</tags?\>@i', $comments, $matches);
-        $tags =  isset($matches[1]) ? $matches[1] : '';
+        $tags =  $matches[1] ?? '';
         $tags = explode(';', $tags);
 
         return implode(' - ', array_filter($tags));

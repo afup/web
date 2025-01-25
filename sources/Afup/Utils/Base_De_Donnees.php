@@ -81,7 +81,7 @@ class Base_De_Donnees
                     // No end of string found -> add the current substring to the
                     // returned array
                     if (!$i) {
-                        $ret[] = array('query' => $sql, 'empty' => $nothing);
+                        $ret[] = ['query' => $sql, 'empty' => $nothing];
                         return $ret;
                     }
                     // Backquotes or no backslashes before quotes: it's indeed the
@@ -124,7 +124,7 @@ class Base_De_Donnees
             } // We are not in a string, first check for delimiter...
             else if ($char == ';') {
                 // if delimiter found, add the parsed part to the returned array
-                $ret[] = array('query' => substr($sql, 0, $i), 'empty' => $nothing);
+                $ret[] = ['query' => substr($sql, 0, $i), 'empty' => $nothing];
                 $nothing = TRUE;
                 $sql = ltrim(substr($sql, min($i + 1, $sql_len)));
                 $sql_len = strlen($sql);
@@ -157,7 +157,7 @@ class Base_De_Donnees
 
         // add any rest to the returned array
         if (!empty($sql) && preg_match('@[^[:space:]]+@', $sql)) {
-            $ret[] = array('query' => $sql, 'empty' => $nothing);
+            $ret[] = ['query' => $sql, 'empty' => $nothing];
         }
 
         return $ret;
@@ -326,7 +326,7 @@ class Base_De_Donnees
             return false;
         }
 
-        $resultat = array();
+        $resultat = [];
         while ($enregistrement = mysqli_fetch_array($ressource, $type)) {
             $resultat[] = $enregistrement;
         }
@@ -349,7 +349,7 @@ class Base_De_Donnees
             return false;
         }
 
-        $resultat = array();
+        $resultat = [];
         while ($enregistrement = mysqli_fetch_array($ressource)) {
             $resultat[] = $enregistrement[0];
         }
@@ -381,7 +381,7 @@ class Base_De_Donnees
         // }
         $champs = mysqli_fetch_fields($ressource);
 
-        $resultat = array();
+        $resultat = [];
         if ($nombre_champs == 2) {
             while ($enregistrement = mysqli_fetch_array($ressource, MYSQLI_NUM)) {
                 $resultat[$enregistrement[0]] = $enregistrement[1];

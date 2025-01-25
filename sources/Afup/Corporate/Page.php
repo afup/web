@@ -36,7 +36,7 @@ class Page
         $this->route = $route;
         switch (true) {
             case preg_match("%\s*/[0-9]*/\s*%", $this->route):
-                list(, $id,) = explode("/", $this->route);
+                [, $id, ] = explode("/", $this->route);
                 $article = new Article($id, $this->bdd);
                 $article->charger();
                 $this->title = $article->titre;
@@ -44,7 +44,7 @@ class Page
                 break;
 
             case preg_match("%s*/[0-9]*%", $this->route):
-                list(, $id) = explode("/", $this->route);
+                [, $id] = explode("/", $this->route);
                 $rubrique = new Rubrique($id, $this->bdd);
                 $rubrique->charger();
                 $this->title = $rubrique->nom;
@@ -117,7 +117,7 @@ class Page
                 }
             }
 
-            if (false !== strpos($url, $feuille['lien'])) {
+            if (false !== strpos($url, (string) $feuille['lien'])) {
                 $isCurrent = true;
             }
 
@@ -125,7 +125,7 @@ class Page
                 $enfants = $branche->feuillesEnfants($feuille['id']);
                 foreach ($enfants as $feuilleEnfant) {
                     foreach ($branche->feuillesEnfants($feuilleEnfant['id']) as $feuillesEnfant2) {
-                        if (false !== strpos($url, $feuillesEnfant2['lien'])) {
+                        if (false !== strpos($url, (string) $feuillesEnfant2['lien'])) {
                             $isCurrent = true;
                         }
                     }
@@ -189,7 +189,7 @@ class Page
         return $branche;
 
         $content = '<aside id="sidebar-article" class="mod item left w33 m50 t100">';
-        $content .= '<h2>L\'afup<br>organise...</h2>' . $branche->naviguer(1, 2, "externe", "");
+        $content .= '<h2>L\'afup<br>organise...</h2>' . $branche->naviguer(1, 2, "externe");
         //twitter widget
         $content .= '<h2>Sur Twitter...</h2><a class="twitter-timeline" href="https://twitter.com/afup" data-widget-id="582135958075752448">Tweets by @afup</a>';
         $content .= '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';

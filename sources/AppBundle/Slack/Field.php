@@ -6,8 +6,8 @@ namespace AppBundle\Slack;
 
 final class Field
 {
-    private ?string $title;
-    private ?string $value;
+    private ?string $title = null;
+    private ?string $value = null;
     private bool $short = true;
 
     public function getTitle(): ?string

@@ -20,7 +20,7 @@ class Sympa
     public function getAllMailingList()
     {
         $curl = curl_init($this->_configUrl);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Host: ' . $this->configHost));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Host: ' . $this->configHost]);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         return unserialize(curl_exec($curl));

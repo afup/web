@@ -58,7 +58,7 @@ class Articles
         }
         $elements = $this->bdd->obtenirTous($requete);
 
-        $articles = array();
+        $articles = [];
         if (is_array($elements)) {
             foreach ($elements as $element) {
                 $article = new Article(null, $this->bdd);
@@ -88,7 +88,7 @@ class Articles
         $requete .= ' ORDER BY date DESC';
         $requete .= ' LIMIT 0, ' . (int)$rowcount;
 
-        $ajouts = array();
+        $ajouts = [];
         $elements = $this->bdd->obtenirTous($requete);
 
         if (false === $elements) {
@@ -114,7 +114,7 @@ class Articles
         $requete .= ' ORDER BY date DESC';
         $requete .= ' LIMIT 0, 10';
 
-        $questions = array();
+        $questions = [];
         $elements = $this->bdd->obtenirTous($requete);
         foreach ($elements as $element) {
             $article = new Article(null, $this->bdd);

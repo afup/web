@@ -75,7 +75,7 @@ class Partenaires
         $requete .= 'ORDER BY';
         $requete .= ' id_niveau_partenariat, ranking';
         $partenaires = $this->_bdd->obtenirTous($requete);
-        $parType = array();
+        $parType = [];
         foreach ($partenaires as $p) {
             $parType[$p['titre']][] = $p;
         }

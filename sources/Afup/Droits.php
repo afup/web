@@ -25,7 +25,7 @@ class Droits
      *
      * @var array
      */
-    private $_pages = array();
+    private $_pages = [];
 
     /**
      * @var TokenStorageInterface

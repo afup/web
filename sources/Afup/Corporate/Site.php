@@ -26,11 +26,11 @@ class Site
     {
         $texte = str_replace('�', 'e', $texte);
         $texte = iconv('ISO-8859-15', 'ASCII//TRANSLIT', trim($texte));
-        $pattern = array('/[^a-z0-9]/',
+        $pattern = ['/[^a-z0-9]/',
             '/' . $separator . $separator . '+/',
             '/^' . $separator . '/',
-            '/' . $separator . '$/');
-        $replacement = array($separator, $separator, '', '');
+            '/' . $separator . '$/'];
+        $replacement = [$separator, $separator, '', ''];
         return preg_replace($pattern, $replacement, strtolower($texte));
     }
 

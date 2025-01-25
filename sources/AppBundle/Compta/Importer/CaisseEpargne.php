@@ -64,7 +64,7 @@ class CaisseEpargne implements Importer
             $dateEcriture = '20' . implode('-', array_reverse(explode('/', $data[0])));
             if ('' === $data[5]) {
                 $description = $data[2];
-            } elseif (false === strpos($data[5], $data[2])) {
+            } elseif (false === strpos($data[5], (string) $data[2])) {
                 $description = $data[2] . ' - ' . $data[5];
             } else {
                 $description = $data[5];
