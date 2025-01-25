@@ -42,7 +42,7 @@ Feature: Administration - Partie Speakers
     # vérification association compte Github
     When I follow the button of tooltip "Modifier la fiche de Seguy Damien"
     Then I should see "Modifier un conférencier pour le forum"
-    And The "speaker[github_user]" field should has the following selected value "1"
+    And The "speaker[github_user]" field should have the following selected value "1"
     When I press "Sauvegarder"
     Then I should see "Le conférencier a été modifié"
     # suppression d'un speaker

@@ -1,5 +1,6 @@
 <?php
 
+use AppBundle\Event\Model\Event;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
@@ -9,19 +10,19 @@ use Behat\MinkExtension\Context\MinkContext;
 use Smalot\PdfParser\Parser;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
-use AppBundle\Event\Model\Event;
 
 class FeatureContext implements Context
 {
-    const MAILCATCHER_URL = 'http://mailcatcher:1080';
+    public const MAILCATCHER_URL = 'http://mailcatcher:1080';
 
-    /** @var MinkContext */
-    private $minkContext;
+    private MinkContext $minkContext;
 
-    private $pdfPages = [];
+    private array $pdfPages = [];
 
-    /** @BeforeScenario */
-    public function gatherContexts(BeforeScenarioScope $scope)
+    /**
+     * @BeforeScenario
+     */
+    public function gatherContexts(BeforeScenarioScope $scope): void
     {
         $environment = $scope->getEnvironment();
 
@@ -31,34 +32,17 @@ class FeatureContext implements Context
     /**
      * @BeforeScenario @reloadDbWithTestData
      */
-    public function beforeScenarioReloadDb()
+    public function beforeScenarioReloadDb(): void
     {
         $this->resetDb();
         $this->migrateDb();
         $this->seedRun();
     }
 
-    private function resetDb()
-    {
-        $pdo = new \PDO("mysql:host=dbtest", "root", "root");
-        $pdo->exec('DROP DATABASE IF EXISTS web');
-        $pdo->exec('CREATE DATABASE web');
-    }
-
-    private function migrateDb()
-    {
-        $this->runCommand(["./bin/phinx", "migrate", "-e", "test"]);
-    }
-
-    private function seedRun()
-    {
-        $this->runCommand(["./bin/phinx", "seed:run", "-e", "test"]);
-    }
-
     /**
      * @BeforeScenario @clearAllMailInscriptionAttachments
      */
-    public function beforeScenarioClearAllMailInscriptionAttachments()
+    public function beforeScenarioClearAllMailInscriptionAttachments(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove(Event::getInscriptionAttachmentDir());
@@ -67,13 +51,30 @@ class FeatureContext implements Context
     /**
      * @BeforeScenario @clearAllSponsorFiles
      */
-    public function beforeScenarioClearAllSponsorFiles()
+    public function beforeScenarioClearAllSponsorFiles(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove(Event::getSponsorFileDir());
     }
 
-    private function runCommand(array $command)
+    private function resetDb(): void
+    {
+        $pdo = new \PDO('mysql:host=dbtest', 'root', 'root');
+        $pdo->exec('DROP DATABASE IF EXISTS web');
+        $pdo->exec('CREATE DATABASE web');
+    }
+
+    private function migrateDb(): void
+    {
+        $this->runCommand(['./bin/phinx', 'migrate', '-e', 'test']);
+    }
+
+    private function seedRun(): void
+    {
+        $this->runCommand(['./bin/phinx', 'seed:run', '-e', 'test']);
+    }
+
+    private function runCommand(array $command): void
     {
         $process = new Process($command);
         $process->mustRun();
@@ -82,44 +83,45 @@ class FeatureContext implements Context
     /**
      * @Given I am logged in as admin and on the Administration
      */
-    public function iAmLoggedInAsAdminAndOnTheAdministration()
+    public function iAmLoggedInAsAdminAndOnTheAdministration(): void
     {
         $this->iAmLoggedInAsAdmin();
-        $this->minkContext->clickLink("Administration");
+        $this->minkContext->clickLink('Administration');
     }
 
     /**
      * @Given I am logged in as admin
      */
-    public function iAmLoggedInAsAdmin()
+    public function iAmLoggedInAsAdmin(): void
     {
         $this->iAmLoggedInWithTheUserAndThePassword('admin', 'admin');
     }
 
     /**
-     * @Given I am logged-in with the user :arg1 and the password :arg2
+     * @Given I am logged-in with the user :username and the password :password
      */
-    public function iAmLoggedInWithTheUserAndThePassword($user, $password)
+    public function iAmLoggedInWithTheUserAndThePassword(string $user, string $password): void
     {
-        $this->minkContext->iAmOnHomepage();
-        $this->minkContext->assertPageContainsText("Tous les trois mois, des nouvelles de L'AFUP");
-        $this->minkContext->clickLink("Se connecter");
-        $this->minkContext->assertPageContainsText("Email ou nom d'utilisateur");
-        $this->minkContext->fillField("utilisateur", $user);
-        $this->minkContext->fillField("mot_de_passe", $password);
-        $this->minkContext->pressButton("Se connecter");
-        $this->minkContext->assertPageContainsText("Espace membre");
+        $this->minkContext->visitPath('/admin/login');
+        $this->minkContext->fillField('utilisateur', $user);
+        $this->minkContext->fillField('mot_de_passe', $password);
+        $this->minkContext->pressButton('Se connecter');
+        $this->minkContext->assertPageContainsText('Espace membre');
     }
 
     /**
      * @Then I submit the form with name :formName
+     * @throws ExpectationException
      */
-    public function submitFormWithName($formName)
+    public function submitFormWithName(string $formName): void
     {
         $form = $this->minkContext->getSession()->getPage()->find('xpath', "//form[@name='$formName']");
 
         if (null === $form) {
-            throw new ExpectationException(sprintf('The form named "%s" not found', $formName), null);
+            throw new ExpectationException(
+                sprintf('The form named "%s" not found', $formName),
+                $this->minkContext->getSession()->getDriver()
+            );
         }
 
         $form->submit();
@@ -128,7 +130,7 @@ class FeatureContext implements Context
     /**
      * @Then simulate the Paybox callback
      */
-    public function simulateThePayboxCallback()
+    public function simulateThePayboxCallback(): void
     {
         $url = $this->minkContext->getSession()->getCurrentUrl();
         $url = str_replace('paybox-redirect', 'paybox-callback', $url);
@@ -141,8 +143,9 @@ class FeatureContext implements Context
 
     /**
      * @Then The :field field should only contain the follow values :expectedValuesJson
+     * @throws ExpectationException
      */
-    public function selectHasValues($field, $expectedValuesJson)
+    public function selectHasValues(string $field, string $expectedValuesJson): void
     {
         $node = $this->minkContext->assertSession()->fieldExists($field);
         $options = $node->findAll('css', 'option');
@@ -154,21 +157,23 @@ class FeatureContext implements Context
             $foundValues[] = $option->getText();
         }
 
-        if ($foundValues != $expectedValues) {
-            throw new \Exception(
+        if ($foundValues !== $expectedValues) {
+            throw new ExpectationException(
                 sprintf(
                     'The select has the following values %s (expected %s)',
                     json_encode($foundValues, JSON_UNESCAPED_UNICODE),
                     $expectedValuesJson
-                )
+                ),
+                $this->minkContext->getSession()->getDriver()
             );
         }
     }
 
     /**
-     * @Then The :field field should has the following selected value :expectedValue
+     * @Then The :field field should have the following selected value :expectedValue
+     * @throws ExpectationException
      */
-    public function selectHasForCurrentSelectedValue($field, $expectedValue)
+    public function selectHasForCurrentSelectedValue(string $field, string $expectedValue) :void
     {
         $node = $this->minkContext->assertSession()->fieldExists($field);
         $options = $node->findAll('css', 'option');
@@ -181,17 +186,19 @@ class FeatureContext implements Context
             }
         }
 
-        if ($selectedValue != $expectedValue) {
-            throw new \Exception(
-                sprintf('The select has the following value "%s" (expected "%s")', $selectedValue, $expectedValue)
+        if ($selectedValue !== $expectedValue) {
+            throw new ExpectationException(
+                sprintf('The select has the following value "%s" (expected "%s")', $selectedValue, $expectedValue),
+                $this->minkContext->getSession()->getDriver()
             );
         }
     }
 
     /**
-     * @Then The :field field should has the following selected text :expectedValue
+     * @Then The :field field should have the following selected text :expectedValue
+     * @throws ExpectationException
      */
-    public function selectHasForCurrentSelectedText($field, $expectedValue)
+    public function selectHasForCurrentSelectedText(string $field, string $expectedValue): void
     {
         $node = $this->minkContext->assertSession()->fieldExists($field);
         $options = $node->findAll('css', 'option');
@@ -204,9 +211,10 @@ class FeatureContext implements Context
             }
         }
 
-        if ($selectedValue != $expectedValue) {
-            throw new \Exception(
-                sprintf('The select has the following text "%s" (expected "%s")', $selectedValue, $expectedValue)
+        if ($selectedValue !== $expectedValue) {
+            throw new ExpectationException(
+                sprintf('The select has the following text "%s" (expected "%s")', $selectedValue, $expectedValue),
+                $this->minkContext->getSession()->getDriver()
             );
         }
     }
@@ -214,16 +222,18 @@ class FeatureContext implements Context
 
     /**
      * @Then the response header :arg1 should equal :arg2
+     * @throws ExpectationException
      */
-    public function assertResponseHeaderEquals($headerName, $expectedValue)
+    public function assertResponseHeaderEquals(string $headerName, string $expectedValue): void
     {
         $this->minkContext->assertSession()->responseHeaderEquals($headerName, $expectedValue);
     }
 
     /**
      * @Then the response header :arg1 should match :arg2
+     * @throws ExpectationException
      */
-    public function assertResponseHeaderMatch($headerName, $regExpExpectedValue)
+    public function assertResponseHeaderMatch(string $headerName, string $regExpExpectedValue): void
     {
         $this->minkContext->assertSession()->responseHeaderMatches($headerName, $regExpExpectedValue);
     }
@@ -231,33 +241,40 @@ class FeatureContext implements Context
     /**
      * @Then /^the json response has the key "(?P<key>[^"]*)" with value "(?P<value>(?:[^"]|\\")*)"$/
      */
-    public function assertResponseHasJsonKeyAndValue($key, $value)
+    public function assertResponseHasJsonKeyAndValue(string $key, string $value): void
     {
         $this->minkContext->assertResponseContains(sprintf('"%s":"%s"', $key, $value));
     }
 
     /**
      * @Then the current URL should match :arg1
+     * @throws ExpectationException
      */
-    public function assertCurrentUrlContains($regex)
+    public function assertCurrentUrlContains(string $regex): void
     {
         $currentUrl = $this->minkContext->getSession()->getCurrentUrl();
 
         if (!preg_match($regex, $currentUrl)) {
-            throw new \Exception(sprintf('The current URL "%s" does not matches "%s"', $currentUrl, $regex));
+            throw new ExpectationException(
+                sprintf('The current URL "%s" does not matches "%s"', $currentUrl, $regex),
+                $this->minkContext->getSession()->getDriver()
+            );
         }
-
     }
 
     /**
      * @When I follow the button of tooltip :arg1
+     * @throws ExpectationException
      */
-    public function clickLinkOfTooltip($tooltip)
+    public function clickLinkOfTooltip(string $tooltip): void
     {
         $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
 
         if (null === $link) {
-            throw new \Exception(sprintf('Link of tooltip "%s" not found', $tooltip));
+            throw new ExpectationException(
+                sprintf('Link of tooltip "%s" not found', $tooltip),
+                $this->minkContext->getSession()->getDriver()
+            );
         }
 
         $link->click();
@@ -267,17 +284,17 @@ class FeatureContext implements Context
     /**
      * @BeforeScenario @clearEmails
      */
-    public function clearEmails()
+    public function clearEmails(): void
     {
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, self::MAILCATCHER_URL.'/messages');
+        curl_setopt($ch, CURLOPT_URL, self::MAILCATCHER_URL . '/messages');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 
         $result = curl_exec($ch);
         if (curl_errno($ch)) {
-            throw new \RuntimeException(sprintf('Error : '.curl_error($ch)));
+            throw new \RuntimeException(sprintf('Error : ' . curl_error($ch)));
         }
 
         curl_close($ch);
@@ -286,8 +303,9 @@ class FeatureContext implements Context
 
     /**
      * @Then I should only receive the following emails:
+     * @throws ExpectationException
      */
-    public function theFollowingEmailsShoudBeReceived(TableNode $expectedEmails)
+    public function theFollowingEmailsShouldBeReceived(TableNode $expectedEmails): void
     {
         $expectedEmailsArray = [];
         foreach ($expectedEmails as $expectedEmail) {
@@ -298,7 +316,7 @@ class FeatureContext implements Context
         }
 
 
-        $content = file_get_contents(self::MAILCATCHER_URL.'/messages');
+        $content = file_get_contents(self::MAILCATCHER_URL . '/messages');
         $decodedContent = json_decode($content, true);
 
         $foundEmails = [];
@@ -309,60 +327,70 @@ class FeatureContext implements Context
             ];
         }
 
-        if ($foundEmails != $expectedEmailsArray) {
-            throw new \Exception(
+        if ($foundEmails !== $expectedEmailsArray) {
+            throw new ExpectationException(
                 sprintf(
                     'The emails are not the expected ones "%s" (expected "%s")',
                     var_export($foundEmails, true),
                     var_export($expectedEmailsArray, true)
-                )
+                ),
+                $this->minkContext->getSession()->getDriver()
             );
         }
     }
 
     /**
      * @Then the checksum of the attachment :filename of the message of id :id should be :md5sum
+     * @throws ExpectationException
      */
-    public function theChecksumOfTheAttachmntOfTheMessagOfIdShouldBe($filename, $id, $md5sum)
+    public function theChecksumOfTheAttachmentOfTheMessageOfIdShouldBe(string $filename, string $id, string $md5sum): void
     {
-        $infos = json_decode(file_get_contents(self::MAILCATCHER_URL.'/messages/'.$id.'.json'), true);
+        $infos = json_decode(file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.json'), true);
 
         $cid = null;
         foreach ($infos['attachments'] as $attachment) {
-            if ($attachment['filename'] == $filename) {
+            if ($attachment['filename'] === $filename) {
                 $cid = $attachment['cid'];
             }
         }
 
         if (null === $cid) {
-            throw new \Exception(sprintf("Attachment with name %s not found", $filename));
+            throw new ExpectationException(
+                sprintf('Attachment with name %s not found', $filename),
+                $this->minkContext->getSession()->getDriver()
+            );
         }
 
-        $attachmentContent = file_get_contents(self::MAILCATCHER_URL.'/messages/'.$id.'/parts/'.$cid);
+        $attachmentContent = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '/parts/' . $cid);
         $actualMd5sum = md5($attachmentContent);
 
-        if ($actualMd5sum != $md5sum) {
-            throw new \Exception(sprintf("The md5sum of %s, if not %s (found %s)", $filename, $md5sum, $actualMd5sum));
+        if ($actualMd5sum !== $md5sum) {
+            throw new ExpectationException(
+                sprintf('The md5sum of %s, if not %s (found %s)', $filename, $md5sum, $actualMd5sum),
+                $this->minkContext->getSession()->getDriver()
+            );
         }
     }
 
     /**
      * @Then the plain text content of the message of id :id should be :
+     * @throws ExpectationException
      */
-    public function thePlainTextContentOfTheMessageOfIdShouldBe($id, PyStringNode $expectedContent)
+    public function thePlainTextContentOfTheMessageOfIdShouldBe(string $id, PyStringNode $expectedContent): void
     {
-        $content = file_get_contents(self::MAILCATCHER_URL.'/messages/'.$id.'.plain');
+        $content = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.plain');
         $expectedContentString = $expectedContent->getRaw();
 
         $content = str_replace("\r\n", "\n", $content);
 
-        if ($content != $expectedContentString) {
-            throw new \Exception(
+        if ($content !== $expectedContentString) {
+            throw new ExpectationException(
                 sprintf(
                     "The content \n%s\nis not the expected one \n%s\n",
                     var_export($content, true),
                     var_export($expectedContentString, true)
-                )
+                ),
+                $this->minkContext->getSession()->getDriver()
             );
         }
     }
@@ -370,7 +398,7 @@ class FeatureContext implements Context
     /**
      * @When I parse the pdf downloaded content
      */
-    public function iParseThePdfContent()
+    public function iParseThePdfContent(): void
     {
         $pageContent = $this->minkContext->getSession()->getPage()->getContent();
 
@@ -386,32 +414,57 @@ class FeatureContext implements Context
 
     /**
      * @Then The page :page of the PDF should contain :content
+     * @throws ExpectationException
      */
-    public function thePageOfThePdfShouldContain($page, $expectedContent)
+    public function thePageOfThePdfShouldContain(string $page, string $expectedContent): void
     {
-        $pageContent = isset($this->pdfPages[$page]) ? $this->pdfPages[$page] : null;
+        $pageContent = $this->pdfPages[$page] ?? null;
 
         if (false === strpos($pageContent, $expectedContent)) {
-            throw new \Exception(
-                sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent)
+            throw new ExpectationException(
+                sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
+                $this->minkContext->getSession()->getDriver()
             );
         }
     }
 
     /**
      * @Then The page :page of the PDF should not contain :content
+     * @throws ExpectationException
      */
-    public function thePageOfThePdfShouldNotContain($page, $expectedContent)
+    public function thePageOfThePdfShouldNotContain(string $page, string $expectedContent): void
     {
         if (!isset($this->pdfPages[$page])) {
-            throw new \Exception(sprintf("The page %d does not exists", $page));
+            throw new ExpectationException(
+                sprintf('The page %d does not exists', $page),
+                $this->minkContext->getSession()->getDriver()
+            );
         }
 
         $pageContent = $this->pdfPages[$page];
 
         if (false !== strpos($pageContent, $expectedContent)) {
-            throw new \Exception(
-                sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent)
+            throw new ExpectationException(
+                sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
+                $this->minkContext->getSession()->getDriver()
+            );
+        }
+    }
+
+    /**
+     * @Then the checksum of the response content should be :md5
+     * @throws ExpectationException
+     */
+    public function checksumOfTheResponseContentShouldBe(string $expectedChecksum): void
+    {
+        $content = $this->minkContext->getSession()->getPage()->getContent();
+
+        $foundChecksum = md5($content);
+
+        if ($expectedChecksum !== $foundChecksum) {
+            throw new ExpectationException(
+                sprintf('The checksum %s is not the expected checksum %s', $foundChecksum, $expectedChecksum),
+                $this->minkContext->getSession()->getDriver()
             );
         }
     }
@@ -419,38 +472,20 @@ class FeatureContext implements Context
     /**
      * @Then print last PDF content
      */
-    public function printLastResponse()
+    public function printLastPDFResponse(): void
     {
-        echo(
-        implode("######\n", $this->pdfPages)
-        );
-    }
-
-    /**
-     * @Then the checksum of the response content should be :md5
-     */
-    public function checksumOfTheResponseContentShouldBe($expectedChecksum)
-    {
-        $content = $this->minkContext->getSession()->getPage()->getContent();
-
-        $foundChecksum = md5($content);
-
-        if ($expectedChecksum !== $foundChecksum) {
-            throw new \Exception(
-                sprintf("The checksum %s is not the expected checksum %s", $foundChecksum, $expectedChecksum)
-            );
-        }
+        echo implode("######\n", $this->pdfPages);
     }
 
     /**
      * @Then print last response headers
      */
-    public function printLastResponseHeaders()
+    public function printLastResponseHeaders(): void
     {
         $headers = [];
         foreach ($this->minkContext->getSession()->getResponseHeaders() as $name => $values) {
             foreach ($values as $value) {
-                $headers[] = sprintf("%s : %s", $name, $value);
+                $headers[] = sprintf('%s : %s', $name, $value);
             }
         }
 
