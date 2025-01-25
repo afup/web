@@ -82,27 +82,22 @@
 
                 <div class="afup-form-container">
                     <p>
-                        <span class="obligatoire">*</span>&nbsp; Indique un champ obligatoire
+                        <span class="obligatoire">*</span>&nbsp;Indique un champ obligatoire
                     </p>
 
-                    {{ form_errors(form.presence) }}
-
                     {% for key, presenceItem in form.presence.children %}
-                        <div class="rangee">
+                        <div>
                             {{ form_label(presenceItem, null, {"label_attr": {"class": "libelle"}}) }}
-                            <span class="element">
-                                {{ form_widget(presenceItem) }}
-                            </span>
+                            {{ form_widget(presenceItem) }}
                         </div>
                         {% if presenceItem.vars.value == '2' %}
+                            {{ form_errors(form.id_personne_avec_pouvoir) }}
                             <div id="pouvoir">
-                                {{ form_errors(form.id_personne_avec_pouvoir) }}
                                 {{ form_label(form.id_personne_avec_pouvoir) }}
                                 {{ form_widget(form.id_personne_avec_pouvoir) }}
                             </div>
                         {% endif %}
                     {% endfor %}
-
 
                     <div class="right">
                         {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}
@@ -111,9 +106,12 @@
                 </div>
                 <script>
                     const ABSENCE = '2';
+                    const hasError = {{ form.children.id_personne_avec_pouvoir.vars.errors|length >= 1 ? 'true' : 'false' }};
 
                     const pouvoirElement = document.getElementById('pouvoir');
-                    pouvoirElement.classList.add('sr-only');
+                    if (!hasError) {
+                        pouvoirElement.classList.add('sr-only');
+                    }
 
                     const presencesElement = document.getElementsByName('form[presence]');
                     presencesElement.forEach(function (presenceElement) {
