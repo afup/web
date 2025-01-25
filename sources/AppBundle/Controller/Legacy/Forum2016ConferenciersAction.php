@@ -47,13 +47,7 @@ class Forum2016ConferenciersAction
                 ];
             }
         }
-        uasort($conferenciers, static function ($a, $b) {
-            if ($a['prenom'] === $b['prenom']) {
-                return 0;
-            }
-
-            return ($a['prenom'] < $b['prenom']) ? -1 : 1;
-        });
+        uasort($conferenciers, static fn ($a, $b) => $a['prenom'] <=> $b['prenom']);
 
         return new Response($this->twig->render('legacy/forumphp2016/conferenciers.html.twig', [
             'conferenciers' => $conferenciers,

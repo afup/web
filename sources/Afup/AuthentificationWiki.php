@@ -15,7 +15,7 @@ class AuthentificationWiki implements AuthentificationInterface
      */
     public function seConnecter($event)
     {
-        $wikiUser = array();
+        $wikiUser = [];
         $wikiUser["show_comments"] = "Y";
         $wikiUser["name"] = ucfirst(strtolower($event["prenom"])) . ucfirst(strtolower($event["nom"]));
         $wikiUser["email"] = $event["email"];

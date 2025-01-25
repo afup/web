@@ -138,7 +138,7 @@ class Rubrique
         $this->icone = $rubrique['icone'];
         $this->date = $rubrique['date'];
         $this->etat = $rubrique['etat'];
-        $this->pagination = isset($rubrique['pagination']) ? $rubrique['pagination'] : null;
+        $this->pagination = $rubrique['pagination'] ?? null;
         $this->feuille_associee = $rubrique['feuille_associee'];
     }
 
@@ -183,7 +183,7 @@ class Rubrique
 
     function exportable()
     {
-        return array(
+        return [
             'id' => $this->id,
             'id_parent' => $this->id_parent,
             'id_personne_physique' => $this->id_personne_physique,
@@ -194,12 +194,12 @@ class Rubrique
             'date' => date('Y-m-d', $this->date),
             'etat' => $this->etat,
             'feuille_associee' => $this->feuille_associee,
-        );
+        ];
     }
 
     function positionable()
     {
-        $positions = array();
+        $positions = [];
         for ($i = 9; $i >= -9; $i--) {
             $positions[$i] = $i;
         }
@@ -328,7 +328,7 @@ class Rubrique
 
     function autres_articles()
     {
-        $autres = array();
+        $autres = [];
 
         $requete = ' SELECT';
         $requete .= '  * ';
@@ -379,7 +379,7 @@ class Rubrique
                 $this->page_courante,
                 $this->pagination,
                 $this->compte_autres_articles(),
-                array($this, 'genere_route')
+                [$this, 'genere_route']
             );
         } else {
             return '';
@@ -388,7 +388,7 @@ class Rubrique
 
     function genere_route($params)
     {
-        $page = isset($params['page']) ? $params['page'] : 1;
+        $page = $params['page'] ?? 1;
         $url = $this->route();
         if ($page != 1) {
             if (strpos($url, '?') === false) {

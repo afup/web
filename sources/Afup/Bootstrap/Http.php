@@ -22,7 +22,7 @@
 
 use Afup\Site\Corporate\Site;
 
-require_once dirname(__FILE__) . '/_Common.php';
+require_once __DIR__ . '/_Common.php';
 
 // initialisation de la session / requête
 if (ob_get_level() === 0) {
@@ -38,7 +38,7 @@ if (getenv('SYMFONY_ENV') === 'prod') {
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 1);
 }
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . dirname(__FILE__).'/../../../dependencies/PEAR/');
+ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . __DIR__.'/../../../dependencies/PEAR/');
 
 header('Content-type: text/html; charset=UTF-8');
 
@@ -58,10 +58,10 @@ $sous_site = array_pop($parties);
 // initialisation de Smarty, le moteur de template (html)
 
 $smarty = new Smarty;
-$smarty->template_dir  = array(
+$smarty->template_dir  = [
     AFUP_CHEMIN_RACINE . 'templates/' . $sous_site . '/',
     AFUP_CHEMIN_RACINE . 'templates/commun/',
-);
+];
 $smarty->compile_dir   = AFUP_CHEMIN_RACINE . 'cache/templates';
 $smarty->compile_id    = $sous_site;
 $smarty->use_sub_dirs  = true;
@@ -73,4 +73,4 @@ $smarty->assign('chemin_template',   $serveur.Site::WEB_PATH.'templates/' . $sou
 $smarty->assign('chemin_javascript', $serveur.Site::WEB_PATH.'javascript/');
 
 $GLOBALS['AFUP_DB']->executer("SET NAMES 'utf8'");
-require_once(dirname(__FILE__) . '/commonStart.php');
+require_once(__DIR__ . '/commonStart.php');

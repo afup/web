@@ -17,7 +17,7 @@ class TechLetterFactory
 
         if (isset($array['articles'])) {
             foreach ($array['articles'] as $article) {
-                $language = isset($article['language']) ? $article['language'] : 'en';
+                $language = $article['language'] ?? 'en';
                 $articles[] = new Article($article['url'], $article['title'], $article['host'], $article['readingTime'], $article['excerpt'], $language);
             }
         }

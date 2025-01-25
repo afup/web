@@ -165,17 +165,17 @@ SQL;
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
         $requete .= 'AND    i.type_inscription NOT IN (9, 10, 11, 12, 15) '; // pas orga, conférencier, sponsor, presse
         $requete .= 'ORDER BY i.nom ASC';
-        $liste_emargement = array();
+        $liste_emargement = [];
         $liste = $this->_bdd->obtenirTous($requete);
 
         $derniere_lettre = "";
         foreach ($liste as $inscrit) {
             $premiere_lettre = strtoupper($inscrit['nom'][0]);
             if ($derniere_lettre != $premiere_lettre) {
-                $liste_emargement[] = array(
+                $liste_emargement[] = [
                     'nom' => $premiere_lettre,
                     'etat' => -1,
-                );
+                ];
                 $derniere_lettre = $premiere_lettre;
             }
             $liste_emargement[] = $inscrit;
@@ -195,17 +195,17 @@ SQL;
         $requete .= 'WHERE  i.id_forum =' . $id_forum . ' ';
         $requete .= 'AND    i.type_inscription IN (9, 10, 11, 12, 15) '; // seulement orga, conférencier, sponsor, presse
         $requete .= 'ORDER BY i.nom ASC';
-        $liste_emargement = array();
+        $liste_emargement = [];
         $liste = $this->_bdd->obtenirTous($requete);
 
         $derniere_lettre = "";
         foreach ($liste as $inscrit) {
             $premiere_lettre = strtoupper($inscrit['nom'][0]);
             if ($derniere_lettre != $premiere_lettre) {
-                $liste_emargement[] = array(
+                $liste_emargement[] = [
                     'nom' => $premiere_lettre,
                     'etat' => -1,
-                );
+                ];
                 $derniere_lettre = $premiere_lettre;
             }
             $liste_emargement[] = $inscrit;
@@ -316,7 +316,7 @@ SQL;
     function ajouterRappel($email, $id_forum = null)
     {
         if ($id_forum == null) {
-            require_once dirname(__FILE__) . '/Forum.php';
+            require_once __DIR__ . '/Forum.php';
             $forum = new Forum($this->_bdd);
             $id_forum = $forum->obtenirDernier();
         }

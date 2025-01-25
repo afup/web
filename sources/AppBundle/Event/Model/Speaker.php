@@ -423,7 +423,7 @@ class Speaker implements NotifyPropertyInterface
             return '';
         }
 
-        list(,$username) = explode('@', $mastodon);
+        [, $username] = explode('@', $mastodon);
         return trim($username);
     }
 
@@ -447,7 +447,7 @@ class Speaker implements NotifyPropertyInterface
             return '';
         }
 
-        list(,$username) = explode('@', $mastodon);
+        [, $username] = explode('@', $mastodon);
         return trim($username);
     }
 

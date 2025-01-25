@@ -30,9 +30,7 @@ class RssFeedController extends SiteBaseController
             'author'        => 'AFUP',
             'date'          => date(DATE_RSS),
             'lastBuildDate' =>
-                isset($derniersArticles[0]['maj']) ?
-                    $derniersArticles[0]['maj']
-                    : date(DATE_RSS, time()),
+                $derniersArticles[0]['maj'] ?? date(DATE_RSS, time()),
             ],
             'billets' => $derniersArticles,
         ];

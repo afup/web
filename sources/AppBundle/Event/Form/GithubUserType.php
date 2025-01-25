@@ -46,9 +46,7 @@ class GithubUserType extends AbstractType
                 /**
                  * @param $githubUser null|GithubUser
                  */
-                function ($githubUser) {
-                    return $githubUser === null ? null : $githubUser->getLogin();
-                },
+                fn ($githubUser) => $githubUser === null ? null : $githubUser->getLogin(),
                 /**
                  * @param $githubUsername string
                  */
@@ -59,9 +57,7 @@ class GithubUserType extends AbstractType
 
                     try {
                         return $githubClient->getUserInfos($githubUsername);
-                    } catch (UnableToFindGithubUserException $e) {
-                        throw new TransformationFailedException($e->getMessage());
-                    } catch (UnableToGetGithubUserInfosException $e) {
+                    } catch (UnableToFindGithubUserException|UnableToGetGithubUserInfosException $e) {
                         throw new TransformationFailedException($e->getMessage());
                     }
                 }

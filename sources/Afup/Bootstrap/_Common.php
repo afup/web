@@ -21,7 +21,7 @@
 use Afup\Site\Corporate\_Site_Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 
-$root = realpath(dirname(__FILE__) . '/../../..');
+$root = realpath(__DIR__ . '/../../..');
 
 require_once $root . '/vendor/autoload.php';
 // définitions des constantes

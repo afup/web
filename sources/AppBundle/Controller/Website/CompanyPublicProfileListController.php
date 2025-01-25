@@ -20,12 +20,7 @@ class CompanyPublicProfileListController extends SiteBaseController
         usort($displayableCompanies, function (CompanyMember $companyMemberA, CompanyMember $companyMemberB) {
             $a = $companyMemberA->getCompanyName();
             $b = $companyMemberB->getCompanyName();
-
-            if ($a == $b) {
-                return 0;
-            }
-
-            return ($a < $b) ? -1 : 1;
+            return $a <=> $b;
         });
 
         return $this->render(

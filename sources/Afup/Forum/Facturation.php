@@ -187,7 +187,7 @@ class Facturation
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
         if (is_null($chemin)) {
-            $pdf->Output('Devis - ' . ($facture['societe'] ? $facture['societe'] : $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
+            $pdf->Output('Devis - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -393,7 +393,7 @@ class Facturation
         }
 
         if (is_null($chemin)) {
-            $pdf->Output('Facture - ' . ($facture['societe'] ? $facture['societe'] : $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
+            $pdf->Output('Facture - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }

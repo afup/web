@@ -117,11 +117,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         $valuesLabels = self::getVoteLabelsByValue();
         $value = $this->getValue();
 
-        if (isset($valuesLabels[$value])) {
-            return $valuesLabels[$value];
-        }
-
-        return null;
+        return $valuesLabels[$value] ?? null;
     }
 
     /**

@@ -82,9 +82,7 @@ class IndexAction
             }
         }
         // Remove events with no talks submitted
-        $previousEventTalkLists = array_filter($previousEventTalkLists, static function (EventTalkList $previousEventTalkList) {
-            return [] !== $previousEventTalkList->getTalks();
-        });
+        $previousEventTalkLists = array_filter($previousEventTalkLists, static fn (EventTalkList $previousEventTalkList) => [] !== $previousEventTalkList->getTalks());
 
         return new Response($this->twig->render('event/cfp/home.html.twig', [
             'event' => $event,

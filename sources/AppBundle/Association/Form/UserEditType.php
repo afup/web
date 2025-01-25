@@ -225,22 +225,14 @@ class UserEditType extends AbstractType
             ->add('save', SubmitType::class, ['label' => 'Ajouter']);
 
         $builder->get('roles')->addModelTransformer(new CallbackTransformer(
-            function ($rolesAsArray): string {
-                return json_encode($rolesAsArray);
-            },
-            function ($rolesAsString): array {
-                return json_decode($rolesAsString);
-            }
+            fn ($rolesAsArray): string => json_encode($rolesAsArray),
+            fn ($rolesAsString): array => json_decode($rolesAsString)
         ));
 
         $builder
             ->get('companyId')->addModelTransformer(new CallbackTransformer(
-                function ($value): string {
-                    return $value;
-                },
-                function ($value): int {
-                    return (int) $value;
-                }
+                fn ($value): string => $value,
+                fn ($value): int => (int) $value
             ));
     }
 

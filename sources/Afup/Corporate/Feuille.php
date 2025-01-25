@@ -98,7 +98,7 @@ class Feuille
 
     function exportable()
     {
-        return array(
+        return [
             'id' => $this->id,
             'id_parent' => $this->id_parent,
             'nom' => $this->nom,
@@ -110,7 +110,7 @@ class Feuille
             'date' => date('Y-m-d', $this->date),
             'etat' => $this->etat,
             'patterns' => $this->patterns,
-        );
+        ];
     }
 
     function charger()
@@ -130,7 +130,7 @@ class Feuille
 
     function positionable()
     {
-        $positions = array();
+        $positions = [];
         for ($i = 9; $i >= -9; $i--) {
             $positions[$i] = $i;
         }

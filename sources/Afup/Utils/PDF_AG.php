@@ -41,11 +41,7 @@ class PDF_AG extends \FPDF
             if ($triA !== $triB) {
                 return $triA < $triB ? -1 : 1;
             }
-            if ($a->getPresence() === $b->getPresence()) {
-                return 0;
-            }
-
-            return $a->getPresence() < $b->getPresence() ? -1 : 1;
+            return $a->getPresence() <=> $b->getPresence();
         });
 
         foreach ($attendees as $attendee) {

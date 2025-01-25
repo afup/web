@@ -55,7 +55,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
 
     public function countPublishedNews(array $filters)
     {
-        list($sql, $params) = $this->getSqlPublishedNews($filters);
+        [$sql, $params] = $this->getSqlPublishedNews($filters);
 
         $sql = sprintf("SELECT COUNT(*) as cnt FROM (%s) as req", $sql);
 
@@ -68,7 +68,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
 
     public function findPublishedNews($page, $itemsPerPage, array $filters)
     {
-        list($sql, $params) = $this->getSqlPublishedNews($filters);
+        [$sql, $params] = $this->getSqlPublishedNews($filters);
 
         $sql .= ' LIMIT :offset, :limit ';
 
@@ -87,7 +87,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
 
     public function findAllPublishedNews(array $filters = [])
     {
-        list($sql, $params) = $this->getSqlPublishedNews($filters);
+        [$sql, $params] = $this->getSqlPublishedNews($filters);
 
         return $this->getPreparedQuery($sql)
             ->setParams($params)
@@ -104,7 +104,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
             'before_date' => $publishedAt->getTimestamp(),
         ];
 
-        list($sql, $params) = $this->getSqlPublishedNews($filters, 'DESC');
+        [$sql, $params] = $this->getSqlPublishedNews($filters, 'DESC');
 
         $sql .= ' LIMIT 1';
 
@@ -125,7 +125,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
             'after_date' => $publishedAt->getTimestamp(),
         ];
 
-        list($sql, $params) = $this->getSqlPublishedNews($filters, 'ASC');
+        [$sql, $params] = $this->getSqlPublishedNews($filters, 'ASC');
 
         $sql .= ' LIMIT 1';
 

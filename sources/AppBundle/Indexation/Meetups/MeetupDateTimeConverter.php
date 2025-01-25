@@ -33,7 +33,7 @@ class MeetupDateTimeConverter
             throw new Exception('Abbréviation de mois invalide : ' . $monthAbbreviation);
         }
 
-        list($year, $day, $hour, $minute, $timezoneAbbreviation) = [
+        [$year, $day, $hour, $minute, $timezoneAbbreviation] = [
             $parsedDateTime['year'],
             $parsedDateTime['day'],
             $parsedDateTime['time'][0],
@@ -92,7 +92,7 @@ class MeetupDateTimeConverter
      */
     private function validateTime($time)
     {
-        list($hour, $minute) = $time;
+        [$hour, $minute] = $time;
 
         if ($hour >= 24 || $minute >= 60) {
             throw new Exception('Heure invalide : ' . implode(':', $time));

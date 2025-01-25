@@ -27,7 +27,7 @@ class LegacyController extends Controller
 
         $flashBag = $this->get('session')->getFlashBag();
 
-        if ($_GET['page'] == 'index' or !file_exists(dirname(__FILE__) . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
+        if ($_GET['page'] == 'index' or !file_exists(__DIR__ . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
             return $this->redirectToRoute('admin_home');
         }
 
@@ -41,7 +41,7 @@ class LegacyController extends Controller
         // Initialisation de AFUP_Log
         Logs::initialiser($bdd, $droits->obtenirIdentifiant());
 
-        require_once dirname(__FILE__) . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php';
+        require_once __DIR__ . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php';
 
         // On gère des infos popups
         if (isset($_SESSION['flash']['message'])) {

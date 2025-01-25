@@ -136,7 +136,7 @@ class Forum
                 $deroulement .= "<h3 class=\"horaire\">" . date("H\hi", $heure) . "</h3>";
             }
 
-            $classes = array("deroulement");
+            $classes = ["deroulement"];
             $classes[] = $session['journee'];
             if ($session['keynote'] == 1) {
                 $classes[] = "keynote";
@@ -173,7 +173,7 @@ class Forum
                 $deroulement .= "<h3 class=\"horaire\">" . date("H\hi", $heure) . "</h3>";
             }
 
-            $classes = array("deroulement");
+            $classes = ["deroulement"];
             $classes[] = $session['journee'];
             if ($session['keynote'] == 1) {
                 $classes[] = "keynote";
@@ -196,9 +196,9 @@ class Forum
 
     function afficherAgenda($sessions)
     {
-        $slots = array();
-        $salles = array();
-        $debuts = array();
+        $slots = [];
+        $salles = [];
+        $debuts = [];
         foreach ($sessions as $session) {
             $jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
             $slots[$jour][$session['nom_salle']][$session['debut']] = $session;
@@ -221,7 +221,7 @@ class Forum
             $agenda .= "<h2 style=\"position: absolute; width: 100%; top: " . round($passage_jour * 1600) . "px;\">" . date("d/m/Y", $jour) . "</h2>";
             foreach ($slots_avec_salle as $salle => $slots_avec_horaire) {
                 foreach ($slots_avec_horaire as $debut => $session) {
-                    $classes = array("slot");
+                    $classes = ["slot"];
                     $classes[] = $session['journee'];
 
                     $conferenciers = $session['conf1'];
@@ -229,7 +229,7 @@ class Forum
                         $conferenciers .= "<br />" . $session['conf2'];
                     }
 
-                    $styles = array("position: absolute;");
+                    $styles = ["position: absolute;"];
                     if ($session['keynote'] == 1) {
                         $classes[] = "keynote";
                         $styles[] = "width: 100%;";
@@ -266,7 +266,7 @@ class Forum
      */
     function obtenirAgenda($annee = null, $forum_id = null)
     {
-        $aWhere = array();
+        $aWhere = [];
         if (isset($annee)) {
             $tdebut = mktime(0, 0, 0, 1, 1, $annee);
             $tfin = mktime(0, 0, 0, 1, 1, ($annee + 1));
@@ -356,10 +356,10 @@ class Forum
         $aAgenda = $this->obtenirAgenda($annee, $forum_id);
         if (isset($aAgenda) && count($aAgenda) > 0) {
             $nbConf = count($aAgenda);
-            $nomSalles = array();
+            $nomSalles = [];
             $j = 0;
             $d = null;
-            $aProgramme = array();
+            $aProgramme = [];
             foreach ($aAgenda as $index => $session) {
                 if (!isset($nomSalles[$session['id_salle']])) {
                     $nomSalles[$session['id_salle']] = $session['nom'];
@@ -368,13 +368,13 @@ class Forum
                 if ($dj != $d) {
                     $j++;
                     $d = $dj;
-                    $aProgramme[$dj] = array();
+                    $aProgramme[$dj] = [];
                 }
                 if (!isset($aProgramme[$dj][$session['debut'] . "-" . $session['fin']])) {
-                    $aProgramme[$dj][$session['debut'] . "-" . $session['fin']] = array();
+                    $aProgramme[$dj][$session['debut'] . "-" . $session['fin']] = [];
                 }
                 if (!isset($aProgramme[$dj][$session['debut'] . "-" . $session['fin']][$session['nom']])) {
-                    $aProgramme[$dj][$session['debut'] . "-" . $session['fin']][$session['nom']] = array();
+                    $aProgramme[$dj][$session['debut'] . "-" . $session['fin']][$session['nom']] = [];
                 }
                 $aProgrammeData[$dj][$session['debut'] . "-" . $session['fin']][] = $session;
                 $aProgramme[$dj][$session['debut'] . "-" . $session['fin']][$session['nom']][] = $session['session_id'] . " : " . $session['titre'] . (' <span class="conferencier">' . $session['conf1'] . ($session['conf2'] ? (' / ' . $session['conf2']) : '') . '</span>');
@@ -390,7 +390,7 @@ class Forum
             //
             $sTable = '';
             $j = 1;
-            $aRowSpan = array();
+            $aRowSpan = [];
 
             /* On boucle sur chaque journée du programme. */
             foreach ($aProgramme as $journee => $aInfos) {
@@ -483,7 +483,7 @@ CODE_HTML;
                                         break;
                                     endif;
                                 endfor;
-                                if (in_array($sHeure . '_' . $m . '_' . $journee, array('17_00_12-11-2009', '10_30_12-11-2009'))) {
+                                if (in_array($sHeure . '_' . $m . '_' . $journee, ['17_00_12-11-2009', '10_30_12-11-2009'])) {
                                     $bKeynote = true;
                                 }
                                 if (false === $bSeance && !$bKeynote):
@@ -551,7 +551,7 @@ CODE_HTML;
             $description = str_replace('"', '\"', $description);
 
             // Gestion des conférenciers
-            $conferenciers = array();
+            $conferenciers = [];
             for ($i = 1; $i <= 2; $i++) {
                 if (!empty($conference['conferencier' . $i]) &&
                     'En cours de validation' != trim($conference['conferencier' . $i])

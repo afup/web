@@ -111,9 +111,7 @@ SQL
 
     private function hydrateAll(array $rows)
     {
-        return array_map(function (array $row) {
-            return $this->hydrate($row);
-        }, $rows);
+        return array_map(fn(array $row) => $this->hydrate($row), $rows);
     }
 
     private function hydrate(array $row)

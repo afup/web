@@ -33,7 +33,7 @@ class StaticController extends SiteBaseController
                 continue;
             }
 
-            list($code, $meeetupId, $content) = $row;
+            [$code, $meeetupId, $content] = $row;
 
             $apero = [
                 'code' => $code,

@@ -6,15 +6,15 @@ namespace AppBundle\Slack;
 
 final class Attachment
 {
-    private ?string $fallback;
-    private ?string $pretext;
-    private ?string $authorName;
-    private ?string $authorLink;
-    private ?string $authorIcon;
-    private ?string $title;
-    private ?string $titleLink;
-    private ?string $text;
-    private ?string $color;
+    private ?string $fallback = null;
+    private ?string $pretext = null;
+    private ?string $authorName = null;
+    private ?string $authorLink = null;
+    private ?string $authorIcon = null;
+    private ?string $title = null;
+    private ?string $titleLink = null;
+    private ?string $text = null;
+    private ?string $color = null;
 
     /** @var Field[] */
     private $fields = [];

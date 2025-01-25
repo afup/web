@@ -30,7 +30,7 @@ class Transformer extends \atoum
             ->when($transformer = new TestedClass(new OfficesCollection()))
             ->then
                 ->array($transformer->transform($meetup))
-                ->isEqualTo(array (
+                ->isEqualTo( [
                     'meetup_id' => '244992881',
                     'label' => 'Apéro PHP',
                     'event_url' => 'https://www.meetup.com/fr-FR/afup-reims-php/events/244992881',
@@ -39,15 +39,15 @@ class Transformer extends \atoum
                     'datetime' => '2050-12-14 17:30:00',
                     'day_month' => '14 Dec',
                     'office' =>
-                        array (
+                         [
                             'label' => 'Reims',
                             'logo_url' => '/images/offices/reims.svg',
-                        ),
+                        ],
                     'description' => 'Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d\'un verre.',
                     'twitter' => 'afup_reims',
                     'custom_sort' => 9223372034300127607,
                     'is_upcoming' => true,
-                ))
+                ])
         ;
     }
 }

@@ -20,4 +20,4 @@
 
 // chargement des paramétrages génériques / multi-contextuels de l'application
 
-require_once dirname(__FILE__) . '/_Common.php';
+require_once __DIR__ . '/_Common.php';

@@ -28,9 +28,7 @@ class LegacyEventAction
             Assertion::inArray($year, [2005, 2006, 2007, 2008, 2009]);
             Assertion::regex($page, '/[a-z0-9_]+/');
             $template = $this->twig->load(sprintf('legacy/forumphp%d/%s.html.twig', $year, $page));
-        } catch (AssertionFailedException $e) {
-            throw new NotFoundHttpException('Page introuvable');
-        } catch (LoaderError $e) {
+        } catch (AssertionFailedException|LoaderError $e) {
             throw new NotFoundHttpException('Page introuvable');
         }
 

@@ -81,11 +81,7 @@ class CompanyPublicProfileController extends SiteBaseController
         usort($offices, function ($a, $b) {
             $a = $a['label'];
             $b = $b['label'];
-
-            if ($a == $b) {
-                return 0;
-            }
-            return ($a < $b) ? -1 : 1;
+            return $a <=> $b;
         });
 
         return $offices;

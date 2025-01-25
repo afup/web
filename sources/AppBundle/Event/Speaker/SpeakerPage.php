@@ -61,9 +61,7 @@ class SpeakerPage
     {
         $talks = array_filter(
             iterator_to_array($this->talkRepository->getTalksBySpeaker($event, $speaker)),
-            static function (Talk $talk) {
-                return true === $talk->getScheduled();
-            }
+            static fn (Talk $talk) => true === $talk->getScheduled()
         );
 
         $now = new DateTime('now');

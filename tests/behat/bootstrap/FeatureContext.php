@@ -100,10 +100,10 @@ class FeatureContext implements Context
     /**
      * @Given I am logged-in with the user :username and the password :password
      */
-    public function iAmLoggedInWithTheUserAndThePassword(string $user, string $password): void
+    public function iAmLoggedInWithTheUserAndThePassword(string $username, string $password)
     {
         $this->minkContext->visitPath('/admin/login');
-        $this->minkContext->fillField('utilisateur', $user);
+        $this->minkContext->fillField('utilisateur', $username);
         $this->minkContext->fillField('mot_de_passe', $password);
         $this->minkContext->pressButton('Se connecter');
         $this->minkContext->assertPageContainsText('Espace membre');
