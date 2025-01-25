@@ -456,4 +456,84 @@ class FeatureContext implements Context
 
         echo implode("\n", $headers);
     }
+
+    /**
+     * @When I request a password reset for :arg1
+     */
+    public function iRequestAPasswordReset(string $arg1): void
+    {
+        $this->minkContext->iAmOnHomepage();
+        $this->minkContext->assertPageContainsText("Tous les trois mois, des nouvelles de L'AFUP");
+        $this->minkContext->clickLink("Se connecter");
+        $this->minkContext->assertPageContainsText("Email ou nom d'utilisateur");
+        $this->minkContext->clickLink("Mot de passe perdu");
+        $this->minkContext->assertPageContainsText("Mot de passe perdu");
+        $this->minkContext->fillField("form_email", $arg1);
+        $this->minkContext->pressButton("Demander un nouveau mot de passe");
+        $this->minkContext->assertPageContainsText("Votre demande a été prise en compte. Si un compte correspond à cet email vous recevez un nouveau mot de passe rapidement.");
+    }
+
+    /**
+     * @Then I should receive an email
+     */
+    public function iShouldReceiveAnEmail(): void
+    {
+        $content = file_get_contents(self::MAILCATCHER_URL.'/messages');
+        $decodedContent = json_decode($content, true);
+
+        $foundEmails = [];
+        foreach ($decodedContent as $mail) {
+            $foundEmails[] = [
+                'to' => $mail['to'],
+                'subject' => $mail['subject'],
+            ];
+        }
+
+        if (count($foundEmails) !== 1) {
+            throw new ExpectationException(
+                sprintf(
+                    'The email has not been received "%s" (expected "%s")',
+                    var_export($foundEmails, true),
+                )
+            );
+        }
+    }
+
+    /**
+     * @Then the email should contain a full URL starting with :arg1
+     */
+    public function theEmailShouldContainAFullUrlStartingWith(string $arg1): void
+    {
+        $content = file_get_contents(self::MAILCATCHER_URL.'/messages');
+        $decodedContent = json_decode($content, true);
+
+        $foundEmails = [];
+        foreach ($decodedContent as $mail) {
+            $foundEmails[] = [
+                'id' => $mail['id'],
+                'to' => $mail['to'],
+                'subject' => $mail['subject'],
+            ];
+        }
+
+        if (count($foundEmails) !== 1) {
+            throw new ExpectationException(
+                sprintf(
+                    'The email has not been received "%s" (expected "%s")',
+                    var_export($foundEmails, true),
+                )
+            );
+        }
+        
+        $content = file_get_contents(self::MAILCATCHER_URL.'/messages/'.$foundEmails[0]['id'].'.plain');
+        if (false === strpos($content, $arg1)) {
+            throw new ExpectationException(
+                sprintf(
+                    'The email content does not contain the expected URL "%s" (expected "%s")',
+                    $content,
+                    $arg1
+                )
+            );
+        }
+    }
 }
