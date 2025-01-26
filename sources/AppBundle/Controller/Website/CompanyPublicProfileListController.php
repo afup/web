@@ -4,7 +4,6 @@ namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Controller\SiteBaseController;
 
 class CompanyPublicProfileListController extends SiteBaseController
 {

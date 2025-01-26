@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\Mailchimp\SubscriberType;

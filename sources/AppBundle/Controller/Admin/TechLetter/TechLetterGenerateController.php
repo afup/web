@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
-use AppBundle\Controller\SiteBaseController;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\Message;
@@ -11,6 +10,7 @@ use AppBundle\TechLetter\DataExtractor;
 use AppBundle\TechLetter\Form\SendingType;
 use AppBundle\TechLetter\Model as Techletter;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class TechLetterGenerateController extends SiteBaseController
+class TechLetterGenerateController extends Controller
 {
     /** @var SendingRepository */
     private $sendingRepository;

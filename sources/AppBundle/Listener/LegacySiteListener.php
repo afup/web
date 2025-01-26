@@ -4,8 +4,8 @@
 namespace AppBundle\Listener;
 
 use Afup\Site\Corporate\Page;
-use AppBundle\Controller\BlocksHandler;
-use AppBundle\Controller\SiteControllerInterface;
+use AppBundle\Controller\Website\BlocksHandler;
+use AppBundle\Controller\Website\SiteControllerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Security\Core\Security;
 

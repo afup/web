@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Event;
 
 use AppBundle\Calendar\IcsPLanningGenerator;
 use AppBundle\Calendar\JsonPlanningGenerator;

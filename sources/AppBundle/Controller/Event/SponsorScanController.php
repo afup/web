@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Event;
 
 use AppBundle\Controller\Exception\InvalidSponsorTokenException;
 use AppBundle\Event\Form\SponsorScanType;

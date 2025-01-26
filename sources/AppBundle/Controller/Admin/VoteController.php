@@ -1,9 +1,9 @@
 <?php
 
-
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Admin;
 
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Controller\Event\EventBaseController;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\TalkRepository;

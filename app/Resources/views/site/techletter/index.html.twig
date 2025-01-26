@@ -10,7 +10,7 @@
 
 {% block content %}
 {{ render(controller(
-    'AppBundle\\Controller\\SecondaryMenuController::displayAction',
+    'AppBundle\\Controller\\Website\\SecondaryMenuController::displayAction',
     { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_NOS_ACTIONS') }
 )) }}
 

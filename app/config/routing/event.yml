@@ -1,149 +1,149 @@
 event_index:
   path: /
-  defaults: {_controller: AppBundle:Event:index}
+  defaults: { _controller: AppBundle:Event\Event:index }
   options:
     sitemap: true
 
 event_index_speaker_infos:
   path: /speaker-infos
-  defaults: {_controller: AppBundle:Event:speakerInfosIndex}
+  defaults: { _controller: AppBundle:Event\Event:speakerInfosIndex }
 
 event:
   path: /{eventSlug}
-  defaults: {_controller: AppBundle:Event:event}
+  defaults: { _controller: AppBundle:Event\Event:event }
 
 vote_index:
   path: /{eventSlug}/vote
-  defaults: {_controller: AppBundle:Vote:index, all: false, page: 1}
+  defaults: { _controller: AppBundle:Admin\Vote:index, all: false, page: 1 }
 
 vote_index_paginated:
   path: /{eventSlug}/vote/{page}
-  defaults: {_controller: AppBundle:Vote:index, all: false}
+  defaults: { _controller: AppBundle:Admin\Vote:index, all: false }
   requirements:
     page: '\d+'
 
 vote_all:
   path: /{eventSlug}/vote-all
-  defaults: {_controller: AppBundle:Vote:index, all: true, page: 1}
+  defaults: { _controller: AppBundle:Admin\Vote:index, all: true, page: 1 }
 
 speaker-suggestion:
   path: /{eventSlug}/speaker-suggestion
-  defaults: {_controller: AppBundle:SpeakerSuggestion:index }
+  defaults: { _controller: AppBundle:Event\SpeakerSuggestion:index }
 
 vote_all_paginated:
   path: /{eventSlug}/vote-all/{page}
-  defaults: {_controller: AppBundle:Vote:index, all: true}
+  defaults: { _controller: AppBundle:Admin\Vote:index, all: true }
   requirements:
     page: '\d+'
 
 vote_new:
   path: /{eventSlug}/vote/new/{talkId}
-  defaults: {_controller: AppBundle:Vote:new}
-  methods:  [POST]
+  defaults: { _controller: AppBundle:Event\Vote:new }
+  methods: [ POST ]
   requirements:
     talkId: '\d+'
 
 cfp:
   path: /{eventSlug}/cfp
-  defaults: {_controller: AppBundle\Controller\Event\CFP\IndexAction}
+  defaults: { _controller: AppBundle\Controller\Event\CFP\IndexAction }
 
 cfp_speaker:
   path: /{eventSlug}/cfp/speaker
-  defaults: {_controller: AppBundle\Controller\Event\CFP\SpeakerAction}
+  defaults: { _controller: AppBundle\Controller\Event\CFP\SpeakerAction }
 
 cfp_propose:
   path: /{eventSlug}/cfp/propose
-  defaults: {_controller: AppBundle\Controller\Event\CFP\ProposeAction}
+  defaults: { _controller: AppBundle\Controller\Event\CFP\ProposeAction }
 
 cfp_edit:
   path: /{eventSlug}/cfp/{talkId}
-  defaults: {_controller: AppBundle\Controller\Event\CFP\EditAction}
+  defaults: { _controller: AppBundle\Controller\Event\CFP\EditAction }
   requirements:
     talkId: '\d+'
 
 cfp_invite:
   path: /{eventSlug}/cfp/invite/{talkId}-{token}
-  defaults: {_controller: AppBundle\Controller\Event\CFP\InviteAction}
+  defaults: { _controller: AppBundle\Controller\Event\CFP\InviteAction }
   requirements:
     talkId: '\d+'
     token: '.+'
 
 sponsor_ticket_home:
   path: /{eventSlug}/tickets/sponsor
-  defaults: {_controller: AppBundle:Ticket:sponsorTicket}
+  defaults: { _controller: AppBundle:Event\Ticket:sponsorTicket }
 
 sponsor_ticket_form:
   path: /{eventSlug}/tickets/sponsor-form
-  defaults: {_controller: AppBundle:Ticket:sponsorTicketForm}
+  defaults: { _controller: AppBundle:Event\Ticket:sponsorTicketForm }
 
 ticket:
   path: /{eventSlug}/tickets
-  defaults: {_controller: AppBundle:Ticket:ticket}
+  defaults: { _controller: AppBundle:Event\Ticket:ticket }
 
 ticket_payment:
   path: /{eventSlug}/tickets/payment
-  defaults: {_controller: AppBundle:Ticket:payment}
+  defaults: { _controller: AppBundle:Event\Ticket:payment }
 
 ticket_paybox_callback:
   path: /{eventSlug}/tickets/paybox-callback
-  defaults: {_controller: AppBundle:Ticket:payboxCallback}
+  defaults: { _controller: AppBundle:Event\Ticket:payboxCallback }
 
 ticket_paybox_redirect:
   path: /{eventSlug}/tickets/paybox-redirect
-  defaults: {_controller: AppBundle:Ticket:payboxRedirect}
+  defaults: { _controller: AppBundle:Event\Ticket:payboxRedirect }
 
 sponsor_leads:
   path: /{eventSlug}/sponsor/become-sponsor
-  defaults: {_controller: AppBundle:Lead:becomeSponsor}
+  defaults: { _controller: AppBundle:Event\Lead:becomeSponsor }
 
 sponsor_leads_post:
   path: /{eventSlug}/sponsor/thank-you
-  defaults: {_controller: AppBundle:Lead:postLead}
+  defaults: { _controller: AppBundle:Event\Lead:postLead }
 
 sponsor_scan:
   path: /{eventSlug}/sponsor/scan
-  defaults: {_controller: AppBundle:SponsorScan:index}
+  defaults: { _controller: AppBundle:Event\SponsorScan:index }
 
 sponsor_scan_export:
   path: /{eventSlug}/sponsor/scan/export
-  defaults: {_controller: AppBundle:SponsorScan:export}
+  defaults: { _controller: AppBundle:Event\SponsorScan:export }
 
 sponsor_scan_new:
   path: /{eventSlug}/sponsor/scan/new
-  defaults: {_controller: AppBundle:SponsorScan:new}
+  defaults: { _controller: AppBundle:Event\SponsorScan:new }
 
 sponsor_scan_flash:
   path: /{eventSlug}/sponsor/scan/flash/{code}
-  defaults: {_controller: AppBundle:SponsorScan:flash}
+  defaults: { _controller: AppBundle:Event\SponsorScan:flash }
 
 sponsor_scan_delete:
   path: /{eventSlug}/sponsor/scan/delete/{scanId}
-  defaults: {_controller: AppBundle:SponsorScan:delete}
+  defaults: { _controller: AppBundle:Event\SponsorScan:delete }
 
 speaker-infos:
   path: /{eventSlug}/speaker-infos
-  defaults: {_controller: AppBundle\Controller\Event\SpeakerPageAction }
+  defaults: { _controller: AppBundle\Controller\Event\SpeakerPageAction }
 
 speaker-infos-files:
   path: /{eventSlug}/speaker-infos/files/{speakerId}/{filename}
-  defaults: {_controller: AppBundle\Controller\Event\SpeakerFilesAction }
+  defaults: { _controller: AppBundle\Controller\Event\SpeakerFilesAction }
 
 planning_ics:
   path: /{eventSlug}/planning.ics
-  defaults: {_controller: AppBundle:Event:planningIcs}
+  defaults: { _controller: AppBundle:Event\Event:planningIcs }
 
 event_calendar_latest:
   path: /latest/calendar
-  defaults: {_controller: AppBundle:Event:calendarLatest}
+  defaults: { _controller: AppBundle:Event\Event:calendarLatest }
 
 event_calendar:
   path: /{eventSlug}/calendar
-  defaults: {_controller: AppBundle:Event:calendar}
+  defaults: { _controller: AppBundle:Event\Event:calendar }
 
 planning_json:
   path: /{eventSlug}/planning.json
-  defaults: {_controller: AppBundle:Event:planningJson}
+  defaults: { _controller: AppBundle:Event\Event:planningJson }
 
 openfeedback_json:
   path: /{eventSlug}/openfeedback.json
-  defaults: {_controller: AppBundle:Event:openfeedbackJson}
+  defaults: { _controller: AppBundle:Event\Event:openfeedbackJson }

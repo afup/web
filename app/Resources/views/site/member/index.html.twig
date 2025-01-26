@@ -181,7 +181,7 @@
         <div class="container">
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    {% set href = path('admin_company') %}
+                    {% set href = path('member_company') %}
                     <a href="{{ href }}">
                         <i class="fa fa-building"></i>
                     </a>
@@ -195,21 +195,21 @@
 
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    {% set href = path('admin_company_members') %}
+                    {% set href = path('member_company_members') %}
                     <a href="{{ href }}">
                         <i class="fa fa-users"></i>
                     </a>
                     <span class="member-index-item--title">Personnes rattachées</span>
                     <div class="member-index-item--link">
                         <a class="button-inverted button__medium" title="Modifier les personnes rattachées"
-                           href="{{ path('admin_company_members') }}">Modifier</a>
+                           href="{{ path('member_company_members') }}">Modifier</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 col-sm-12">
                 <div class="member-index-item">
-                    {% set href = path('admin_company_public_profile') %}
+                    {% set href = path('member_company_public_profile') %}
                     <a href="">
                         <i class="fa fa-address-card"></i>
                     </a>

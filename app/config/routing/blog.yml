@@ -4,16 +4,16 @@
 
 program:
   path: /{eventSlug}/program
-  defaults: {_controller: AppBundle:Blog:program}
+  defaults: {_controller: AppBundle:Event\Blog:program}
 
 speakers:
   path: /{eventSlug}/speakers
-  defaults: {_controller: AppBundle:Blog:speakers}
+  defaults: {_controller: AppBundle:Event\Blog:speakers}
 
 planning:
   path: /{eventSlug}/planning
-  defaults: {_controller: AppBundle:Blog:planning}
+  defaults: {_controller: AppBundle:Event\Blog:planning}
 
 talk_widget:
   path: /talk_widget
-  defaults: {_controller: AppBundle:Blog:talkWidget}
+  defaults: {_controller: AppBundle:Event\Blog:talkWidget}

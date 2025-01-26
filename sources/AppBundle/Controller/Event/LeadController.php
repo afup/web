@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Event;
 
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUserFactory;

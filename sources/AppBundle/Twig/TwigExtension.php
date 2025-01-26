@@ -5,45 +5,30 @@ namespace AppBundle\Twig;
 
 use AppBundle\Routing\LegacyRouter;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
-class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+class TwigExtension extends AbstractExtension implements GlobalsInterface
 {
-    /**
-     * @var LegacyRouter
-     */
-    private $legacyRouter;
-
-    /**
-     * @var \Parsedown
-     */
-    private $parsedown;
-
-    /**
-     * @var Container
-     */
-    private $container;
-
-    /**
-     * @var \Parsedown
-     */
-    private $emailParsedown;
+    private LegacyRouter $legacyRouter;
+    private \Parsedown $parsedown;
+    private \Parsedown $emailParsedown;
+    private ContainerInterface $container;
 
     public function __construct(LegacyRouter $legacyRouter, \Parsedown $parsedown, \Parsedown $emailParsedown, ContainerInterface $container)
     {
         $this->legacyRouter = $legacyRouter;
         $this->parsedown = $parsedown;
-        $this->container = $container;
         $this->emailParsedown = $emailParsedown;
+        $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('render_curl', function ($url) {
+            new TwigFunction('render_curl', function ($url) {
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($ch);
@@ -56,15 +41,15 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
         ];
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('markdown', fn ($text) => $this->parsedown->text($text), ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('markdown_email', fn ($text) => $this->emailParsedown->text($text), ['is_safe' => ['html']]),
+            new TwigFilter('markdown', fn ($text) => $this->parsedown->text($text), ['is_safe' => ['html']]),
+            new TwigFilter('markdown_email', fn ($text) => $this->emailParsedown->text($text), ['is_safe' => ['html']]),
         ];
     }
 
-    public function getGlobals()
+    public function getGlobals(): array
     {
         return [
             'legacy_router' => $this->legacyRouter,
@@ -73,12 +58,7 @@ class TwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsIn
         ];
     }
 
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'app';
     }
