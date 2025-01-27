@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Email\Mailer\Mailer;
@@ -8,23 +10,35 @@ use AppBundle\Event\Form\LeadType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Lead;
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Sponsorship\SponsorshipLeadMail;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class LeadController extends EventBaseController
+class LeadController extends AbstractController
 {
-    /** @var Mailer */
-    private $mailer;
+    private Mailer $mailer;
+    private EventDispatcherInterface $eventDispatcher;
+    private SponsorshipLeadMail $sponsorshipLeadMail;
+    private RepositoryFactory $repositoryFactory;
+    private EventActionHelper $eventActionHelper;
 
-    public function __construct(Mailer $mailer)
+    public function __construct(Mailer $mailer, EventDispatcherInterface $eventDispatcher, SponsorshipLeadMail $sponsorshipLeadMail, RepositoryFactory $repositoryFactory, EventActionHelper $eventActionHelper)
     {
         $this->mailer = $mailer;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->sponsorshipLeadMail = $sponsorshipLeadMail;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->eventActionHelper = $eventActionHelper;
     }
 
-    public function becomeSponsorAction($eventSlug, Request $request)
+    public function becomeSponsor($eventSlug, Request $request)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         $lead = new Lead();
         $lead
@@ -36,8 +50,8 @@ class LeadController extends EventBaseController
         $leadForm->handleRequest($request);
 
         if ($leadForm->isSubmitted() && $leadForm->isValid()) {
-            $sponsorshipLeadMail = $this->get(\AppBundle\Event\Sponsorship\SponsorshipLeadMail::class);
-            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($lead, $sponsorshipLeadMail) {
+            $sponsorshipLeadMail = $this->sponsorshipLeadMail;
+            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($lead, $sponsorshipLeadMail): void {
                 $sponsorshipLeadMail->sendSponsorshipFile($lead);
             });
 
@@ -52,9 +66,9 @@ class LeadController extends EventBaseController
         ]);
     }
 
-    public function postLeadAction($eventSlug)
+    public function postLead($eventSlug): Response
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
         return $this->render(':event/sponsorship_file:thanks.html.twig', ['event' => $event]);
     }
 
@@ -63,18 +77,14 @@ class LeadController extends EventBaseController
      *
      * @return RedirectResponse
      */
-    public function becomeSponsorLatestAction()
+    public function becomeSponsorLatest()
     {
-        $event = $this->get('ting')->get(EventRepository::class)->getCurrentEvent();
+        $event = $this->repositoryFactory->get(EventRepository::class)->getCurrentEvent();
 
         return new RedirectResponse($this->generateUrl('sponsor_leads', ['eventSlug' => $event->getPath()]));
     }
 
-    /**
-     * @param Event $event
-     * @param Lead $lead
-     */
-    private function sendMailToTeamSponsor(Event $event, Lead $lead)
+    private function sendMailToTeamSponsor(Event $event, Lead $lead): void
     {
         $subject = sprintf('%s - Nouvelle demande de dossier de sponsoring', $event->getTitle());
 

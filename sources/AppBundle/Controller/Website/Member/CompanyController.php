@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Form\AdminCompanyMemberType;
@@ -19,17 +21,12 @@ use Symfony\Component\Security\Core\Security;
 
 class CompanyController
 {
-    /** @var CompanyMemberRepository */
-    private $companyMemberRepository;
+    private CompanyMemberRepository $companyMemberRepository;
     private ViewRenderer $view;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Security */
-    private $security;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Security $security;
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,

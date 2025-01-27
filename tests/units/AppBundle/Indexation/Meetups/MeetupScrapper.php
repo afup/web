@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Meetups\tests\units;
 
 use AppBundle\Indexation\Meetups\MeetupScraper as TestedClass;
@@ -12,15 +14,15 @@ class MeetupScraper extends atoum
      *
      * @dataProvider invalidMeetupUrlProvider
      */
-    public function testGetDomContentWithInvalidMeetupUrl($antenneUrl)
+    public function testGetDomContentWithInvalidMeetupUrl($antenneUrl): void
     {
         $meetupScraper = new TestedClass();
 
         $baseUrl = TestedClass::MEETUP_URL;
-        $url = $baseUrl. $antenneUrl;
+        $url = $baseUrl . $antenneUrl;
 
         $this
-            ->exception(function () use ($meetupScraper, $antenneUrl) {
+            ->exception(function () use ($meetupScraper, $antenneUrl): void {
                 $meetupScraper->getDomContent($antenneUrl);
             })
             ->isInstanceOf(\Exception::class)
@@ -32,7 +34,7 @@ class MeetupScraper extends atoum
      *
      * @dataProvider validMeetupUrlProvider
      */
-    public function testGetDomContentWithValidMeetupUrl($antenneUrl)
+    public function testGetDomContentWithValidMeetupUrl($antenneUrl): void
     {
         $meetupScraper = new TestedClass();
         $xpath = $meetupScraper->getDomContent($antenneUrl);
@@ -45,7 +47,7 @@ class MeetupScraper extends atoum
     /**
      * @throws \Exception
      */
-    public function testGetMeetupEvents()
+    public function testGetMeetupEvents(): void
     {
         $meetupScraper = new TestedClass();
         $events = $meetupScraper->getEvents();
@@ -56,7 +58,7 @@ class MeetupScraper extends atoum
             ->integer($eventLength)
             ->isGreaterThan(0);
 
-        foreach ($events as $antenneEvents){
+        foreach ($events as $antenneEvents) {
             foreach ($antenneEvents as $event) {
                 $title = $event->getTitle();
                 $date = $event->getDate();
@@ -70,7 +72,7 @@ class MeetupScraper extends atoum
     /**
      * @throws \Exception
      */
-    public function testGetAntennesFromOfficesCollection()
+    public function testGetAntennesFromOfficesCollection(): void
     {
         $meetupScraper = new TestedClass();
         $antennes = $meetupScraper->getAntennesFromOfficesCollection();
@@ -80,7 +82,7 @@ class MeetupScraper extends atoum
             ->isNotEmpty();
     }
 
-    public function testGetArrayValueByKey()
+    public function testGetArrayValueByKey(): void
     {
         $meetupScraper = new TestedClass();
         $array = ['key' => 'value'];

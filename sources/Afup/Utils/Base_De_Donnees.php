@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils;
 
 /**
@@ -10,11 +12,10 @@ class Base_De_Donnees
     /**
      * Lien de la connection vers le serveur
      * @var     \mysqli
-     * @access  private
      */
-    private $link = null;
+    private $link;
 
-    private $config;
+    private array $config;
 
     /**
      * Contructeur. Etablit une connexion au serveur et sélectionne la base de données indiquée
@@ -23,7 +24,6 @@ class Base_De_Donnees
      * @param string $database Nom de la base
      * @param string $user Nom de l'utilisateur
      * @param string $password Mot de passe
-     * @access public
      * @return void
      */
     public function __construct($host, $database, $user, $password, $port = null)
@@ -37,10 +37,10 @@ class Base_De_Donnees
         ];
     }
 
-    function getDbLink()
+    public function getDbLink()
     {
         if ($this->link === null) {
-            $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['password'], null, $this->config['port']) or die('Connexion à la base de données impossible');
+            $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['password'], null, (int) $this->config['port']) or die('Connexion à la base de données impossible');
             mysqli_set_charset($this->link, "utf8mb4");
             $this->selectionnerBase($this->config['database']);
         }
@@ -53,11 +53,10 @@ class Base_De_Donnees
      * ATTENTION    : Fonction importée depuis phpMyAdmin.
      * Nom original : PMA_splitSqlFile().
      *
-     * @access private
      * @param      string      $sql Requetes SQL à scinder
      * @return     array       Tableau contenant les requètes SQL
      */
-    function _scinderRequetesSql($sql)
+    public function _scinderRequetesSql($sql): array
     {
         // do not trim, see bug #1030644
         //$sql          = trim($sql);
@@ -65,8 +64,8 @@ class Base_De_Donnees
         $sql_len = strlen($sql);
         $char = '';
         $string_start = '';
-        $in_string = FALSE;
-        $nothing = TRUE;
+        $in_string = false;
+        $nothing = true;
         $time0 = time();
         $ret = [];
 
@@ -83,19 +82,15 @@ class Base_De_Donnees
                     if (!$i) {
                         $ret[] = ['query' => $sql, 'empty' => $nothing];
                         return $ret;
-                    }
-                    // Backquotes or no backslashes before quotes: it's indeed the
-                    // end of the string -> exit the loop
-                    else if ($string_start == '`' || $sql[$i - 1] != '\\') {
+                    } elseif ($string_start === '`' || $sql[$i - 1] !== '\\') {
                         $string_start = '';
-                        $in_string = FALSE;
+                        $in_string = false;
                         break;
-                    } // one or more Backslashes before the presumed end of string...
-                    else {
+                    } else {
                         // ... first checks for escaped backslashes
                         $j = 2;
-                        $escaped_backslash = FALSE;
-                        while ($i - $j > 0 && $sql[$i - $j] == '\\') {
+                        $escaped_backslash = false;
+                        while ($i - $j > 0 && $sql[$i - $j] === '\\') {
                             $escaped_backslash = !$escaped_backslash;
                             $j++;
                         }
@@ -103,48 +98,42 @@ class Base_De_Donnees
                         // string -> exit the loop
                         if ($escaped_backslash) {
                             $string_start = '';
-                            $in_string = FALSE;
+                            $in_string = false;
                             break;
                         } // ... else loop
                         else {
                             $i++;
                         }
                     } // end if...elseif...else
-                } // end for
-            } // end if (in string)
-
-            // lets skip comments (/*, -- and #)
-            else if (($char == '-' && $sql_len > $i + 2 && $sql[$i + 1] == '-' && $sql[$i + 2] <= ' ') || $char == '#' || ($char == '/' && $sql_len > $i + 1 && $sql[$i + 1] == '*')) {
-                $i = strpos($sql, $char == '/' ? '*/' : "\n", $i);
+                }
+                // end for
+            } elseif (($char === '-' && $sql_len > $i + 2 && $sql[$i + 1] === '-' && $sql[$i + 2] <= ' ') || $char === '#' || ($char === '/' && $sql_len > $i + 1 && $sql[$i + 1] === '*')) {
+                $i = strpos($sql, $char === '/' ? '*/' : "\n", $i);
                 // didn't we hit end of string?
-                if ($i === FALSE) {
+                if ($i === false) {
                     break;
                 }
-                if ($char == '/') $i++;
-            } // We are not in a string, first check for delimiter...
-            else if ($char == ';') {
+                if ($char === '/') {
+                    $i++;
+                }
+            } elseif ($char === ';') {
                 // if delimiter found, add the parsed part to the returned array
                 $ret[] = ['query' => substr($sql, 0, $i), 'empty' => $nothing];
-                $nothing = TRUE;
+                $nothing = true;
                 $sql = ltrim(substr($sql, min($i + 1, $sql_len)));
                 $sql_len = strlen($sql);
-                if ($sql_len) {
+                if ($sql_len !== 0) {
                     $i = -1;
                 } else {
                     // The submited statement(s) end(s) here
                     return $ret;
                 }
-            } // end else if (is delimiter)
-
-            // ... then check for start of a string,...
-            else if (($char == '"') || ($char == '\'') || ($char == '`')) {
-                $in_string = TRUE;
-                $nothing = FALSE;
+            } elseif (($char === '"') || ($char === '\'') || ($char === '`')) {
+                $in_string = true;
+                $nothing = false;
                 $string_start = $char;
-            } // end else if (is start of string)
-
-            elseif ($nothing) {
-                $nothing = FALSE;
+            } elseif ($nothing) {
+                $nothing = false;
             }
 
             // loic1: send a fake header each 30 sec. to bypass browser timeout
@@ -156,7 +145,7 @@ class Base_De_Donnees
         } // end for
 
         // add any rest to the returned array
-        if (!empty($sql) && preg_match('@[^[:space:]]+@', $sql)) {
+        if ($sql !== '' && $sql !== '0' && preg_match('@[^[:space:]]+@', $sql)) {
             $ret[] = ['query' => $sql, 'empty' => $nothing];
         }
 
@@ -168,10 +157,8 @@ class Base_De_Donnees
      * Sélectionne la base de données indiquée
      *
      * @param string $nom Nom de la base
-     * @access public
-     * @return bool
      */
-    function selectionnerBase($nom)
+    public function selectionnerBase($nom): bool
     {
         return mysqli_select_db($this->getDbLink(), $nom);
     }
@@ -180,17 +167,16 @@ class Base_De_Donnees
      * Prépare une valeur qui va être incorporée dans une requête SQL
      *
      * @param mixed $valeur Valeur à traiter
-     * @access public
      * @return string   La valeur traitée
      */
-    function echapper($valeur)
+    public function echapper($valeur): string
     {
         if (is_string($valeur)) {
             $valeur = "'" . mysqli_real_escape_string($this->getDbLink(), $valeur) . "'";
         } elseif (is_null($valeur)) {
             $valeur = 'NULL';
         }
-        return (string)$valeur;
+        return (string) $valeur;
     }
 
     /**
@@ -199,7 +185,7 @@ class Base_De_Donnees
      * @param boolean $timestamp
      * @return int|string
      */
-    function echapperSqlDateFromQuickForm($date, $timestamp = false)
+    public function echapperSqlDateFromQuickForm($date, $timestamp = false)
     {
         $dateChaine = $date['Y'] . '-' . $date['M'] . '-' . $date['d'];
         if (isset($date['H']) && isset($date['i'])) {
@@ -219,7 +205,7 @@ class Base_De_Donnees
      * Retrieve the last error message
      * @return string
      */
-    public function getLastErrorMessage()
+    public function getLastErrorMessage(): ?string
     {
         return mysqli_error($this->getDbLink());
     }
@@ -228,10 +214,9 @@ class Base_De_Donnees
      * Exécute une requête SQL
      *
      * @param string $requete Requête à exécuter
-     * @access public
      * @return bool
      */
-    function executer($requete)
+    public function executer($requete)
     {
         $result = mysqli_query($this->getDbLink(), $requete);
         if (!$result) {
@@ -246,10 +231,8 @@ class Base_De_Donnees
      * Exécute les requêtes SQL d'un fichier
      *
      * @param string $fichier Nom du fichier avec les requêtes à exécuter
-     * @access public
-     * @return bool
      */
-    function executerFichier($fichier)
+    public function executerFichier($fichier): bool
     {
         if (!file_exists($fichier)) {
             return false;
@@ -270,10 +253,9 @@ class Base_De_Donnees
      * Exécute une requête SQL et retourne le premier champ du premier enregistrement
      *
      * @param string $requete Requête à exécuter
-     * @access public
      * @return mixed    Le premier champ du premier enregistrement ou false si la requête échoue
      */
-    function obtenirUn($requete)
+    public function obtenirUn($requete)
     {
         $enregistrement = $this->obtenirEnregistrement($requete, MYSQLI_NUM);
         if ($enregistrement === false) {
@@ -290,10 +272,9 @@ class Base_De_Donnees
      * @param int $type Type de résultat souhaité. Les valeurs possibles sont MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH.
      *                              Elles permettent respectivement de récupérer les valeurs sous forme d'un tableau associatif, indexé ou les deux.
      *                              La valeur par défaut est MYSQLI_ASSOC.
-     * @access public
      * @return mixed    L'enregistrement correspondant dans un tableau ou false si la requête échoue
      */
-    function obtenirEnregistrement($requete, $type = MYSQLI_ASSOC)
+    public function obtenirEnregistrement($requete, $type = MYSQLI_ASSOC)
     {
         $ressource = mysqli_query($this->getDbLink(), $requete);
         if ($ressource === false) {
@@ -316,10 +297,9 @@ class Base_De_Donnees
      * @param int $type Type de résultat souhaité. Les valeurs possibles sont MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH.
      *                              Elles permettent respectivement de récupérer les valeurs sous forme d'un tableau associatif, indexé ou les deux.
      *                              La valeur par défaut est MYSQLI_ASSOC.
-     * @access public
      * @return mixed    Les enregistrements correspondant dans un tableau ou false si la requête échoue
      */
-    function obtenirTous($requete, $type = MYSQLI_ASSOC)
+    public function obtenirTous($requete, $type = MYSQLI_ASSOC)
     {
         $ressource = mysqli_query($this->getDbLink(), $requete);
         if ($ressource === false) {
@@ -339,10 +319,9 @@ class Base_De_Donnees
      * Exécute une requête SQL et retourne les enregistrements correspondant
      *
      * @param string $requete Requête à exécuter
-     * @access public
      * @return mixed    Les enregistrements correspondant dans un tableau ou false si la requête échoue
      */
-    function obtenirColonne($requete)
+    public function obtenirColonne($requete)
     {
         $ressource = mysqli_query($this->getDbLink(), $requete);
         if ($ressource === false) {
@@ -362,10 +341,9 @@ class Base_De_Donnees
      * Exécute une requête SQL et retourne les enregistrements correspondant dans un tableau associatif dont le premier champ est la clé
      *
      * @param string $requete Requête à exécuter
-     * @access public
      * @return mixed    Les enregistrements correspondant dans un tableau associatif ou false si la requête échoue
      */
-    function obtenirAssociatif($requete)
+    public function obtenirAssociatif($requete)
     {
         $ressource = mysqli_query($this->getDbLink(), $requete);
         $nombre_champs = mysqli_num_fields($ressource);
@@ -396,10 +374,8 @@ class Base_De_Donnees
         return $resultat;
     }
 
-    function obtenirDernierId()
+    public function obtenirDernierId()
     {
         return mysqli_insert_id($this->getDbLink());
     }
-
-
 }

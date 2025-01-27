@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Base_De_Donnees;
@@ -9,7 +11,6 @@ class Inscriptions
     /**
      * Instance de la couche d'abstraction ï¿½ la base de donnï¿½es
      * @var     Base_De_Donnees
-     * @access  private
      */
     private $_bdd;
 
@@ -17,10 +18,9 @@ class Inscriptions
      * Constructeur.
      *
      * @param  object $bdd Instance de la couche d'abstraction ï¿½ la base de donnï¿½es
-     * @access public
      * @return void
      */
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -30,10 +30,9 @@ class Inscriptions
      *$inscrits =
      * @param  int $id Identifiant de la personne
      * @param  string $champs Champs ï¿½ renvoyer
-     * @access public
      * @return array
      */
-    function obtenir($id, $champs = 'i.*')
+    public function obtenir($id, string $champs = 'i.*')
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -54,7 +53,7 @@ class Inscriptions
      * @param string $champs Liste des champs à récupérer en BD
      * @return array
      */
-    function obtenirInscription($code_md5, $champs = 'i.*')
+    public function obtenirInscription($code_md5, $champs = 'i.*')
     {
         $requete = "SELECT $champs FROM afup_inscription_forum i ";
         $requete .= "LEFT JOIN afup_facturation_forum f ON i.reference = f.reference ";
@@ -78,17 +77,14 @@ SELECT *
 FROM afup_inscription_forum
 WHERE reference = $ref;
 SQL;
-        $registrations = $this->_bdd->obtenirTous($sql);
-        return $registrations;
+        return $this->_bdd->obtenirTous($sql);
     }
 
     /**
      * @param int $idForum
      * @param int $idForumPrecedent
-     *
-     * @return array
      */
-    function obtenirSuivi($idForum, $idForumPrecedent = null)
+    public function obtenirSuivi($idForum, $idForumPrecedent = null): array
     {
         $forum = new Forum($this->_bdd);
         if (null === $idForumPrecedent) {
@@ -112,7 +108,7 @@ SQL;
         RIGHT JOIN afup_forum_tarif aft ON (aft.id = i.type_inscription AND aft.default_price > 0)
         LEFT JOIN afup_forum af ON af.id = i.id_forum
         WHERE
-          i.id_forum IN (' . (int)$idForum . ', ' . (int)$idForumPrecedent . ') 
+          i.id_forum IN (' . (int) $idForum . ', ' . (int) $idForumPrecedent . ') 
         AND 
           etat <> 1 
         GROUP BY jour, i.id_forum 
@@ -126,14 +122,14 @@ SQL;
 
         $suivis = [];
 
-        for($i = $nombre_par_date[0]['jour']; $i <= 0; $i++) {
-            $infoForum = array_sum(array_map(function ($info) use ($i, $idForum) {
+        for ($i = $nombre_par_date[0]['jour']; $i <= 0; $i++) {
+            $infoForum = array_sum(array_map(function (array $info) use ($i, $idForum) {
                 if ($info['id_forum'] == $idForum && $info['jour'] <= $i) {
                     return $info['nombre'];
                 }
                 return 0;
             }, $nombre_par_date));
-            $infoN1 = array_sum(array_map(function ($info) use ($i, $idForumPrecedent) {
+            $infoN1 = array_sum(array_map(function (array $info) use ($i, $idForumPrecedent) {
                 if ($info['id_forum'] == $idForumPrecedent && $info['jour'] <= $i) {
                     return $info['nombre'];
                 }
@@ -154,7 +150,10 @@ SQL;
         ];
     }
 
-    function obtenirListePourEmargement($id_forum = null)
+    /**
+     * @return mixed[]
+     */
+    public function obtenirListePourEmargement($id_forum = null): array
     {
         $requete = 'SELECT';
         $requete .= '  i.*, f.societe ';
@@ -171,7 +170,7 @@ SQL;
         $derniere_lettre = "";
         foreach ($liste as $inscrit) {
             $premiere_lettre = strtoupper($inscrit['nom'][0]);
-            if ($derniere_lettre != $premiere_lettre) {
+            if ($derniere_lettre !== $premiere_lettre) {
                 $liste_emargement[] = [
                     'nom' => $premiere_lettre,
                     'etat' => -1,
@@ -184,7 +183,10 @@ SQL;
         return $liste_emargement;
     }
 
-    function obtenirListePourEmargementConferencierOrga($id_forum = null)
+    /**
+     * @return mixed[]
+     */
+    public function obtenirListePourEmargementConferencierOrga($id_forum = null): array
     {
         $requete = 'SELECT';
         $requete .= '  i.*, f.societe ';
@@ -201,7 +203,7 @@ SQL;
         $derniere_lettre = "";
         foreach ($liste as $inscrit) {
             $premiere_lettre = strtoupper($inscrit['nom'][0]);
-            if ($derniere_lettre != $premiere_lettre) {
+            if ($derniere_lettre !== $premiere_lettre) {
                 $liste_emargement[] = [
                     'nom' => $premiere_lettre,
                     'etat' => -1,
@@ -220,12 +222,11 @@ SQL;
      * @param  string $champs Champs ï¿½ renvoyer
      * @param  string $ordre Tri des enregistrements
      * @param  bool $associatif Renvoyer un tableau associatif ?
-     * @access public
      * @return array
      */
-    function obtenirListe($id_forum = null,
-                          $champs = 'i.*',
-                          $ordre = 'i.date',
+    public function obtenirListe($id_forum = null,
+                          string $champs = 'i.*',
+                          string $ordre = 'i.date',
                           $associatif = false,
                           $filtre = false)
     {
@@ -260,7 +261,7 @@ SQL;
         }
     }
 
-    function modifierInscription($id, $reference, $type_inscription, $civilite, $nom, $prenom,
+    public function modifierInscription(string $id, $reference, $type_inscription, $civilite, $nom, $prenom,
                                  $email, $telephone, $coupon, $citer_societe, $newsletter_afup,
                                  $newsletter_nexen, $mail_partenaire, $commentaires, $etat, $facturation,
                                  int $transportMode, int $transportDistance)
@@ -294,13 +295,13 @@ SQL;
         return $this->_bdd->executer($requete);
     }
 
-    function supprimerInscription($id)
+    public function supprimerInscription(string $id)
     {
         $requete = 'DELETE FROM afup_inscription_forum WHERE id=' . $id;
         return $this->_bdd->executer($requete);
     }
 
-    function modifierEtatInscription($reference, $etat)
+    public function modifierEtatInscription($reference, string $etat)
     {
         $requete = 'UPDATE afup_inscription_forum ';
         $requete .= 'SET etat=' . $etat . ' ';
@@ -313,7 +314,7 @@ SQL;
         return $this->_bdd->executer($requete);
     }
 
-    function ajouterRappel($email, $id_forum = null)
+    public function ajouterRappel($email, $id_forum = null)
     {
         if ($id_forum == null) {
             require_once __DIR__ . '/Forum.php';
@@ -335,5 +336,3 @@ SQL;
         return $this->_bdd->obtenirUn($requete);
     }
 }
-
-?>

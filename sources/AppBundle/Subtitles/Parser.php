@@ -1,18 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Subtitles;
 
+use Captioning\Format\SubripCue;
 use Captioning\Format\SubripFile;
 
 class Parser
 {
-    public function parse($contentSrt)
+    /**
+     * @return array{start: (float | false | null), text: mixed}[]
+     */
+    public function parse($contentSrt): array
     {
         if (null === $contentSrt) {
             return [];
         }
 
-        if (0 === strlen(trim($contentSrt))) {
+        if (trim($contentSrt) === '') {
             return [];
         }
 
@@ -26,7 +32,7 @@ class Parser
         $currentText = null;
         $currentStart = null;
 
-        /** @var \Captioning\Format\SubripCue $cue */
+        /** @var SubripCue $cue */
         foreach ($subripFile->getCues() as $cue) {
             if (null === $currentText) {
                 $currentText = $cue->getText();

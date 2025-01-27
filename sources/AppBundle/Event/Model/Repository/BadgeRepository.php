@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Badge;
+use CCMBenchmark\Ting\Exception;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -11,12 +14,10 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class BadgeRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @param SerializerFactoryInterface $serializerFactory
-     * @param array $options
      *
      * @return Metadata
      *
-     * @throws \CCMBenchmark\Ting\Exception
+     * @throws Exception
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
     {

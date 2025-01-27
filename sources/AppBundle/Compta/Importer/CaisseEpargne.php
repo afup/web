@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Compta\Importer;
 
 use AppBundle\Model\ComptaCompte;
@@ -8,29 +10,16 @@ class CaisseEpargne implements Importer
 {
     const CODE = 'CE';
 
-    /**
-     * @var string
-     */
-    private $filePath;
+    private ?\SplFileObject $file = null;
 
-    /**
-     * @var \SplFileObject
-     */
-    private $file;
-
-    public function __construct()
-    {
-        $this->filePath;
-    }
-
-    public function initialize($filePath)
+    public function initialize($filePath): void
     {
         $this->file = new \SplFileObject($filePath, 'r');
         $this->file->setCsvControl(';');
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::SKIP_EMPTY);
     }
 
-    public function validate()
+    public function validate(): bool
     {
         $this->file->rewind();
         $firstLine = $this->file->current();
@@ -38,13 +27,8 @@ class CaisseEpargne implements Importer
         if (!is_array($firstLine)) {
             return false;
         }
-
         // On vérifie la première ligne
-        if (0 !== strpos($firstLine[0], 'Code de la banque')) {
-            return false;
-        }
-
-        return true;
+        return 0 === strpos($firstLine[0], 'Code de la banque');
     }
 
     /**
@@ -87,7 +71,7 @@ class CaisseEpargne implements Importer
         }
     }
 
-    public function getCompteId()
+    public function getCompteId(): int
     {
         return ComptaCompte::COURANT_CE;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Legacy;
 
 use Afup\Site\Forum\AppelConferencier;
@@ -9,10 +11,8 @@ use Twig\Environment;
 
 class Forum2009ProjetsPhpAction
 {
-    /** @var AppelConferencier */
-    private $appelConferencier;
-    /** @var Environment */
-    private $twig;
+    private AppelConferencier $appelConferencier;
+    private Environment $twig;
 
     public function __construct(AppelConferencier $appelConferencier, Environment $twig)
     {
@@ -20,7 +20,7 @@ class Forum2009ProjetsPhpAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $sessions = $this->appelConferencier->obtenirListeProjets(
             Forum2009Config::ID,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\Form;
 
@@ -22,6 +24,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ContactDetailsType extends AbstractType
 {
+    /**
+     * @var Pays
+     */
     public $countryService;
 
     public function __construct(Pays $countryService)
@@ -29,7 +34,7 @@ class ContactDetailsType extends AbstractType
         $this->countryService = $countryService;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
@@ -95,14 +100,17 @@ class ContactDetailsType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
     }
 
-    private function getOfficesList()
+    /**
+     * @return mixed[]
+     */
+    private function getOfficesList(): array
     {
         $officesCollection = new OfficesCollection();
         $offices = ['' => '-Aucune-'];
@@ -112,7 +120,10 @@ class ContactDetailsType extends AbstractType
         return $offices;
     }
 
-    private function getCountyChoices()
+    /**
+     * @return mixed[]
+     */
+    private function getCountyChoices(): array
     {
         $choices = [];
         foreach ($this->countryService->obtenirPays() as $id => $country) {

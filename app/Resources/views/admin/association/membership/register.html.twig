@@ -4,7 +4,7 @@
 
 {% block submenu %}
     {{ render(controller(
-        'AppBundle\\Controller\\Website\\SecondaryMenuController::displayAction',
+        'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
         { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') }
     )) }}
 {% endblock %}

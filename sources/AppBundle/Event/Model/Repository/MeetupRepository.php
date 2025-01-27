@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Meetup;
@@ -11,8 +13,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class MeetupRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @param SerializerFactoryInterface $serializerFactory
-     * @param array $options
      *
      * @return Metadata
      */

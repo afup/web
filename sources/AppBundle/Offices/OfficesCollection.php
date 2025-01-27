@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Offices;
 
 class OfficesCollection
 {
-    public function getAll()
+    public function getAll(): array
     {
         return [
             'bordeaux' => [
@@ -389,19 +391,18 @@ class OfficesCollection
         throw new \InvalidArgumentException('Office nout found');
     }
 
-    public function getAllSortedByLabels()
+    public function getAllSortedByLabels(): array
     {
         $offices = $this->getAll();
 
         uasort(
             $offices,
-            fn ($a, $b) => strcmp($a['label'], $b['label'])
+            fn ($a, $b): int => strcmp($a['label'], $b['label'])
         );
 
-
-        $offices = array_filter(
+        return array_filter(
             $offices,
-            function ($value) {
+            function ($value): bool {
                 if (!isset($value['hide_on_offices_page'])) {
                     return true;
                 }
@@ -409,8 +410,6 @@ class OfficesCollection
                 return !$value['hide_on_offices_page'];
             }
         );
-
-        return $offices;
     }
 
     public function findByCode($code)
@@ -424,7 +423,10 @@ class OfficesCollection
         return $all[$code];
     }
 
-    public function getOrderedLabelsByKey()
+    /**
+     * @return mixed[]
+     */
+    public function getOrderedLabelsByKey(): array
     {
         $labels = [];
         foreach ($this->getAllSortedByLabels() as $key => $office) {

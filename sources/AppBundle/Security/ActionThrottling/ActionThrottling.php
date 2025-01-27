@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Security\ActionThrottling;
 
 class ActionThrottling
 {
-    private $logRepository;
+    private LogRepository $logRepository;
 
     public function __construct(LogRepository $logRepository)
     {
@@ -15,10 +17,8 @@ class ActionThrottling
      * @param string|null $action
      * @param string|null $ip
      * @param int $objectId
-     *
-     * @return bool
      */
-    public function isActionBlocked($action, $ip = null, $objectId = null)
+    public function isActionBlocked($action, $ip = null, $objectId = null): bool
     {
         $limitations = Log::LIMITATIONS;
         if (isset($limitations[$action]) === false) {
@@ -38,15 +38,10 @@ class ActionThrottling
         }
 
         $logs = $this->logRepository->getApplicableLogs($action, $ip, $objectId, $interval);
-
-        if ($logs['ip'] > $limitations[$action]['limit'] || $logs['object'] > $limitations[$action]['limit']) {
-            return true;
-        }
-
-        return false;
+        return $logs['ip'] > $limitations[$action]['limit'] || $logs['object'] > $limitations[$action]['limit'];
     }
 
-    public function clearLogsForIp($action, $ip)
+    public function clearLogsForIp($action, $ip): void
     {
         $this->logRepository->removeLogs($action, $ip);
     }
@@ -56,7 +51,7 @@ class ActionThrottling
      * @param string|null $ip
      * @param string|null $objectId
      */
-    public function log($action, $ip = null, $objectId = null)
+    public function log($action, $ip = null, $objectId = null): void
     {
         $log = new Log();
         $log
@@ -68,7 +63,7 @@ class ActionThrottling
         $this->logRepository->save($log);
     }
 
-    public function clearOldLogs()
+    public function clearOldLogs(): void
     {
         $this->logRepository->clearOldLogs(new \DateInterval('P30D'));
     }

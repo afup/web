@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -10,15 +12,14 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class UserExportAction
 {
-    /** @var UserRepository */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): BinaryFileResponse
     {
         $isActive = $request->query->getBoolean('isActive');
         $isCompanyManager = $request->query->getBoolean('isCompanyManager');

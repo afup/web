@@ -1,35 +1,25 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Corporate;
+
+use Afup\Site\Utils\Base_De_Donnees;
 
 class Branche
 {
     public $navigation = 'nom';
 
     /**
-     * @var \Afup\Site\Utils\Base_De_Donnees
+     * @var Base_De_Donnees
      */
     protected $bdd;
 
-    /**
-     * @var mixed
-     */
-    private $conf;
-
-    function __construct($bdd = false, $conf = false)
+    public function __construct($bdd = false)
     {
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
-        if ($conf) {
-            $this->conf = $conf;
-        } else {
-            $this->conf = $GLOBALS['AFUP_CONF'];
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
     }
 
-    function navigation_avec_image($bool = false)
+    public function navigation_avec_image($bool = false): void
     {
         if ($bool) {
             $this->navigation = 'image';
@@ -40,7 +30,7 @@ class Branche
     {
         $requete = 'SELECT *
                     FROM afup_site_feuille
-                    WHERE id_parent = '.$this->bdd->echapper($id).'
+                    WHERE id_parent = ' . $this->bdd->echapper($id) . '
                     AND etat = 1
                     ORDER BY position';
         return $this->bdd->obtenirTous($requete);
@@ -61,7 +51,7 @@ class Branche
         return $enregistrement['nom'];
     }
 
-    function naviguer($id, $profondeur = 1, $identification = "")
+    public function naviguer($id, $profondeur = 1, string $identification = ""): string
     {
         $requete = 'SELECT *
                     FROM afup_site_feuille
@@ -70,7 +60,7 @@ class Branche
         $racine = $this->bdd->obtenirEnregistrement($requete);
 
         $feuilles = $this->extraireFeuilles($id, $profondeur);
-        if ($feuilles) {
+        if ($feuilles !== '' && $feuilles !== '0') {
             $navigation = '<ul id="' . $identification . '" class="' . Site::raccourcir($racine['nom']) . '">' . $feuilles . '</ul>';
         } else {
             $navigation = '';
@@ -79,12 +69,13 @@ class Branche
         return $navigation;
     }
 
-    function extraireFeuilles($id, $profondeur) {
+    public function extraireFeuilles($id, $profondeur): string
+    {
         $extraction = '';
 
         $requete = 'SELECT *
                     FROM afup_site_feuille
-                    WHERE id_parent = '.$this->bdd->echapper($id).'
+                    WHERE id_parent = ' . $this->bdd->echapper($id) . '
                     AND etat = 1
                     ORDER BY position';
         $feuilles = $this->bdd->obtenirTous($requete);
@@ -101,22 +92,21 @@ class Branche
                         $route = $feuille['lien'];
                         break;
                     default:
-                        $route = Site::WEB_PATH.Site::WEB_PREFIX.Site::WEB_QUERY_PREFIX.$feuille['lien'];
+                        $route = Site::WEB_PATH . Site::WEB_PREFIX . Site::WEB_QUERY_PREFIX . $feuille['lien'];
                         break;
                 }
-                $extraction .= '<li'.$class.'>';
+                $extraction .= '<li' . $class . '>';
                 if ($this->navigation == 'image' && $feuille['image'] !== null) {
-                    $extraction .= '<a href="'.$route.'"><img alt="'.$feuille['alt'].'" src="'.Site::WEB_PATH.'templates/site/images/'.$feuille['image'].'" /><br>';
+                    $extraction .= '<a href="' . $route . '"><img alt="' . $feuille['alt'] . '" src="' . Site::WEB_PATH . 'templates/site/images/' . $feuille['image'] . '" /><br>';
                     $extraction .= $feuille['nom'] . '</a><br>';
                     $extraction .= $feuille['alt'];
                 } else {
-                    $extraction .= '<a href="'.$route.'">' . $feuille['nom'] . '</a>';
+                    $extraction .= '<a href="' . $route . '">' . $feuille['nom'] . '</a>';
                 }
                 $extraction .= '</li>';
                 if ($profondeur > 0) {
                     $extraction .= $this->naviguer($feuille['id'], $profondeur - 1);
                 }
-
             }
         }
 

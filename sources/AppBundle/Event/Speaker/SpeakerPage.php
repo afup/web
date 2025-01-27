@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Speaker;
 
 use AppBundle\Event\Model\Event;
@@ -24,20 +26,13 @@ use Twig\Environment;
 
 class SpeakerPage
 {
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Environment */
-    private $twig;
-    /** @var SpeakersExpensesStorage */
-    private $speakersExpensesStorage;
+    private TalkRepository $talkRepository;
+    private SpeakerRepository $speakerRepository;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Environment $twig;
+    private SpeakersExpensesStorage $speakersExpensesStorage;
 
     public function __construct(
         TalkRepository $talkRepository,
@@ -61,7 +56,7 @@ class SpeakerPage
     {
         $talks = array_filter(
             iterator_to_array($this->talkRepository->getTalksBySpeaker($event, $speaker)),
-            static fn (Talk $talk) => true === $talk->getScheduled()
+            static fn (Talk $talk): bool => $talk->getScheduled()
         );
 
         $now = new DateTime('now');
@@ -174,7 +169,7 @@ class SpeakerPage
      *
      * @return Talk[]
      */
-    protected function addTalkInfos(Event $event, array $talks)
+    protected function addTalkInfos(Event $event, array $talks): array
     {
         $allTalks = $this->talkRepository->getByEventWithSpeakers($event, false);
         $allTalksById = [];
@@ -193,7 +188,7 @@ class SpeakerPage
         return $speakerTalks;
     }
 
-    private function redirect(Request $request)
+    private function redirect(Request $request): RedirectResponse
     {
         $params = array_merge($request->attributes->get('_route_params'), $request->query->all());
         return new RedirectResponse($this->urlGenerator->generate($request->attributes->get('_route'), $params));

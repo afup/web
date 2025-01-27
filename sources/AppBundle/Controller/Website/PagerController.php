@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class PagerController extends Controller
+class PagerController extends AbstractController
 {
     const PAGER_LINKS_COUNT = 6;
 
-    public function displayAction(Request $request)
+    public function display(Request $request): Response
     {
         $totalItems = $request->get('total_items');
         $currentPage = $request->get('current_page');

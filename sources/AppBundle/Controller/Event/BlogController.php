@@ -1,33 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Controller\Event;
 
+use AppBundle\Event\JsonLd;
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\Talk;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BlogController extends EventBaseController
+class BlogController extends AbstractController
 {
-    /**
-     * @param Request $request
-     * @param $eventSlug
-     *
-     * @return Response
-     */
-    public function programAction(Request $request, $eventSlug)
+    private RepositoryFactory $repositoryFactory;
+    private JsonLd $jsonLd;
+    private EventActionHelper $eventActionHelper;
+    public function __construct(RepositoryFactory $repositoryFactory, JsonLd $jsonLd, EventActionHelper $eventActionHelper)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $this->repositoryFactory = $repositoryFactory;
+        $this->jsonLd = $jsonLd;
+        $this->eventActionHelper = $eventActionHelper;
+    }
+
+    public function program(Request $request, $eventSlug): Response
+    {
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         /**
          * @var TalkRepository $talkRepository
          */
-        $talkRepository = $this->get('ting')->get(TalkRepository::class);
-        $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
+        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
+        $jsonld = $this->jsonLd->getDataForEvent($event);
         $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
         $now = new \DateTime();
 
@@ -43,25 +52,19 @@ class BlogController extends EventBaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @param $eventSlug
-     *
-     * @return Response
-     */
-    public function planningAction(Request $request, $eventSlug)
+    public function planning(Request $request, string $eventSlug): Response
     {
         $eventSlugs = explode(',', $eventSlug);
         $events = [];
         foreach ($eventSlugs as $eventSlug) {
-            $event = $this->checkEventSlug($eventSlug);
+            $event = $this->eventActionHelper->getEvent($eventSlug);
             $events[$event->getId()] = $event;
         }
 
         /**
          * @var TalkRepository $talkRepository
          */
-        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
         $applyPublicationDateFilters = $request->query->getBoolean('apply-publication-date-filters', true);
 
 
@@ -69,7 +72,7 @@ class BlogController extends EventBaseController
 
         $jsonld = [];
         foreach ($events as $event) {
-            $jsonld[] = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
+            $jsonld[] = $this->jsonLd->getDataForEvent($event);
         }
 
         $eventPlanning = [];
@@ -159,12 +162,12 @@ class BlogController extends EventBaseController
         );
     }
 
-    public function talkWidgetAction(Request $request)
+    public function talkWidget(Request $request): Response
     {
         /**
          * @var TalkRepository $talkRepository
          */
-        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
 
         $talks = $talkRepository->getBy(['id' => explode(',', $request->get('ids'))]);
 
@@ -189,22 +192,16 @@ class BlogController extends EventBaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @param $eventSlug
-     *
-     * @return Response
-     */
-    public function speakersAction(Request $request, $eventSlug)
+    public function speakers(Request $request, string $eventSlug): Response
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         /**
          * @var SpeakerRepository $speakerRepository
          */
-        $speakerRepository = $this->get('ting')->get(SpeakerRepository::class);
+        $speakerRepository = $this->repositoryFactory->get(SpeakerRepository::class);
         $speakers = $speakerRepository->getScheduledSpeakersByEvent($event, !$request->query->getBoolean('apply-publication-date-filters', true));
-        $jsonld = $this->get(\AppBundle\Event\JsonLd::class)->getDataForEvent($event);
+        $jsonld = $this->jsonLd->getDataForEvent($event);
 
         return $this->render(
             ':blog:speakers.html.twig',

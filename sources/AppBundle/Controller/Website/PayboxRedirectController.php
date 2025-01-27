@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Payment\PayboxResponseFactory;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class PayboxRedirectController extends Controller
+class PayboxRedirectController extends AbstractController
 {
     private ViewRenderer $view;
 
@@ -16,7 +19,7 @@ class PayboxRedirectController extends Controller
         $this->view = $view;
     }
 
-    public function indexAction(Request $request, $type = 'success')
+    public function index(Request $request, $type = 'success'): Response
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
 

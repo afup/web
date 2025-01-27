@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
@@ -12,14 +14,10 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 class SendTestInscriptionEmailAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var Emails */
-    private $emails;
-    /** @var LegacyRouter */
-    private $legacyRouter;
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private EventActionHelper $eventActionHelper;
+    private Emails $emails;
+    private LegacyRouter $legacyRouter;
+    private FlashBagInterface $flashBag;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -33,7 +31,7 @@ class SendTestInscriptionEmailAction
         $this->flashBag = $flashBag;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $event = $this->eventActionHelper->getEventById($request->query->get('id'), false);
         $this->emails->sendInscription($event, MailUserFactory::bureau());

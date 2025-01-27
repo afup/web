@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\GeneralMeetingQuestion;
@@ -79,13 +81,13 @@ SQL;
         ]);
     }
 
-    public function open(GeneralMeetingQuestion $question)
+    public function open(GeneralMeetingQuestion $question): void
     {
         $question->setOpenedAt(new \DateTime());
         $this->save($question);
     }
 
-    public function close(GeneralMeetingQuestion $question)
+    public function close(GeneralMeetingQuestion $question): void
     {
         $question->setClosedAt(new \DateTime());
         $this->save($question);

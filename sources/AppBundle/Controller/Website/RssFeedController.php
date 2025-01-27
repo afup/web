@@ -1,17 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class RssFeedController extends Controller
+class RssFeedController extends AbstractController
 {
-    public function __invoke()
+    private RepositoryFactory $repositoryFactory;
+    public function __construct(RepositoryFactory $repositoryFactory)
     {
-        $articles = $this->get('ting')->get(ArticleRepository::class)->findPublishedNews(1, 20, []);
+        $this->repositoryFactory = $repositoryFactory;
+    }
+    public function __invoke(): Response
+    {
+        $articles = $this->repositoryFactory->get(ArticleRepository::class)->findPublishedNews(1, 20, []);
         $derniersArticles = [];
         foreach ($articles as $article) {
             /** @var Article $article */

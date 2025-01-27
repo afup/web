@@ -1,7 +1,10 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Pagination;
+use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 
 class Rubrique
@@ -27,7 +30,7 @@ class Rubrique
     public $feuille_associee;
 
     /**
-     * @var \Afup\Site\Utils\Base_De_Donnees
+     * @var Base_De_Donnees
      */
     protected $bdd;
 
@@ -37,31 +40,23 @@ class Rubrique
     protected $conf;
     protected $page_courante;
 
-    function __construct($id = 0, $bdd = false, $conf = false)
+    public function __construct($id = 0, $bdd = false, $conf = false)
     {
         $this->id = $id;
 
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
 
-        if ($conf) {
-            $this->conf = $conf;
-        } else {
-            $this->conf = $GLOBALS['AFUP_CONF'];
-        }
+        $this->conf = $conf ?: $GLOBALS['AFUP_CONF'];
 
         if (isset($_GET['page_courante'])) {
-            $this->page_courante = (int)$_GET['page_courante'];
+            $this->page_courante = (int) $_GET['page_courante'];
         }
         if ($this->page_courante <= 0) {
             $this->page_courante = 1;
         }
     }
 
-    function afficher()
+    public function afficher(): string
     {
         $article = new Article(null, $this->bdd);
         $article->id_site_rubrique = $this->id;
@@ -79,7 +74,7 @@ class Rubrique
         '<div class="breadcrumbs">' . $this->fil_d_ariane() . '</div>';
     }
 
-    function rubrique()
+    public function rubrique(): string
     {
         return '<ul id="Header">' .
         '<li id="HeaderImg">' .
@@ -91,22 +86,22 @@ class Rubrique
         '</ul>';
     }
 
-    function image_sous_navigation()
+    public function image_sous_navigation(): string
     {
         return '<img src="' . Site::WEB_PATH . 'templates/site/images/' . $this->icone . '" />';
     }
 
-    function titre()
+    public function titre()
     {
         return $this->nom;
     }
 
-    function liste_sous_navigation()
+    public function liste_sous_navigation(): string
     {
         $liste = "";
 
         $sous_rubriques = $this->sous_rubriques();
-        if (count($sous_rubriques) > 0) {
+        if ($sous_rubriques !== []) {
             $liste .= '<ul class="Txt NavCategories">';
             foreach ($sous_rubriques as $rubrique) {
                 $liste .= '<li><a href="' . $rubrique->route() . '">' . $rubrique->nom . '</a></li>';
@@ -115,7 +110,7 @@ class Rubrique
         }
 
         $autres_articles = $this->autres_articles();
-        if (count($autres_articles) > 0) {
+        if ($autres_articles !== []) {
             $liste .= '<ul class="Txt">';
             foreach ($autres_articles as $article) {
                 $liste .= '<li><a href="' . $article->route() . '">' . $article->titre . '</a></li>';
@@ -126,7 +121,7 @@ class Rubrique
         return $liste;
     }
 
-    function remplir($rubrique)
+    public function remplir($rubrique): void
     {
         $this->id = $rubrique['id'];
         $this->id_parent = $rubrique['id_parent'];
@@ -142,7 +137,7 @@ class Rubrique
         $this->feuille_associee = $rubrique['feuille_associee'];
     }
 
-    function charger()
+    public function charger(): void
     {
         $requete = 'SELECT *
                     FROM afup_site_rubrique
@@ -151,23 +146,21 @@ class Rubrique
         $this->remplir($rubrique);
     }
 
-    function date()
+    public function date(): string
     {
         return date("d/m/Y", $this->date);
     }
 
-    function annexe()
+    public function annexe()
     {
         if ($this->etat <= 0) {
             return false;
         }
 
-        $annexe = '';
-
-        return $annexe;
+        return '';
     }
 
-    function corps()
+    public function corps()
     {
         if ($this->etat <= 0) {
             return false;
@@ -181,7 +174,7 @@ class Rubrique
         return $corps;
     }
 
-    function exportable()
+    public function exportable(): array
     {
         return [
             'id' => $this->id,
@@ -197,7 +190,10 @@ class Rubrique
         ];
     }
 
-    function positionable()
+    /**
+     * @return int[]
+     */
+    public function positionable(): array
     {
         $positions = [];
         for ($i = 9; $i >= -9; $i--) {
@@ -207,13 +203,13 @@ class Rubrique
         return $positions;
     }
 
-    function supprimer()
+    public function supprimer()
     {
         $requete = 'DELETE FROM afup_site_rubrique WHERE id = ' . $this->bdd->echapper($this->id);
         return $this->bdd->executer($requete);
     }
 
-    function modifier()
+    public function modifier()
     {
         $requete = 'UPDATE afup_site_rubrique
         			SET
@@ -233,7 +229,7 @@ class Rubrique
         return $this->bdd->executer($requete);
     }
 
-    function inserer()
+    public function inserer()
     {
         $requete = 'INSERT INTO afup_site_rubrique
         			SET
@@ -260,24 +256,24 @@ class Rubrique
         return $resultat;
     }
 
-    function route()
+    public function route(): string
     {
-        return Site::WEB_PATH.Site::WEB_PREFIX.Site::WEB_QUERY_PREFIX . $this->raccourci . '/' . $this->id;
+        return Site::WEB_PATH . Site::WEB_PREFIX . Site::WEB_QUERY_PREFIX . $this->raccourci . '/' . $this->id;
     }
 
-    function nom()
+    public function nom()
     {
         return $this->nom;
     }
 
-    function fil_d_ariane()
+    public function fil_d_ariane(): string
     {
         $fil = '/ <a href="' . $this->route() . '">' . $this->nom . '</a>';
 
         if ($this->id_parent > 0) {
             $id_parent = $this->id_parent;
             while ($id_parent > 0) {
-                $parent = new Rubrique($id_parent, $this->bdd, $this->conf);
+                $parent = new self($id_parent, $this->bdd, $this->conf);
                 $parent->charger();
                 $fil = '/ <a href="' . $parent->route() . '">' . $parent->nom . '</a> ' . $fil;
                 $id_parent = $parent->id_parent;
@@ -287,17 +283,17 @@ class Rubrique
         return $fil;
     }
 
-    function sous_rubriques()
+    public function sous_rubriques(): array
     {
         $rubriques = new Rubriques();
         return $rubriques->chargerSousRubriques($this->id);
     }
 
-    function rubriques_dans_la_rubrique()
+    public function rubriques_dans_la_rubrique(): string
     {
         $sous_rubriques = $this->sous_rubriques();
         $liste = "";
-        if (count($sous_rubriques) > 0) {
+        if ($sous_rubriques !== []) {
             $liste = '<ul class="Txt Rubriques">';
             foreach ($sous_rubriques as $rubrique) {
                 $liste .= '<li><a href="' . $rubrique->route() . '">' . $rubrique->nom . '</a></li>';
@@ -308,25 +304,26 @@ class Rubrique
         return $liste;
     }
 
-    function articles_dans_la_rubrique()
+    public function articles_dans_la_rubrique(): string
     {
         $autres_articles = $this->autres_articles();
         $articles = "";
 
-        if (count($autres_articles) > 0) {
-            foreach ($autres_articles as $article) {
-                $articles .= '<a class="article article-teaser" href="' . $article->route() . '">' .
-                    '<time datetime="' . date("Y-m-d", $article->date) . '">' . $article->date() . '</time>' .
-                    '<h2>' . $article->titre . '</h2>' .
-                    '<p>' . $article->teaser() . '</p>' .
-                    '</a>';
-            }
+        foreach ($autres_articles as $article) {
+            $articles .= '<a class="article article-teaser" href="' . $article->route() . '">' .
+                '<time datetime="' . date("Y-m-d", $article->date) . '">' . $article->date() . '</time>' .
+                '<h2>' . $article->titre . '</h2>' .
+                '<p>' . $article->teaser() . '</p>' .
+                '</a>';
         }
 
         return $articles;
     }
 
-    function autres_articles()
+    /**
+     * @return Article[]
+     */
+    public function autres_articles(): array
     {
         $autres = [];
 
@@ -336,13 +333,13 @@ class Rubrique
         $requete .= '  afup_site_article ';
         $requete .= ' WHERE ';
         $requete .= '  etat = 1 ';
-        $requete .= ' AND id_site_rubrique = ' . (int)$this->id;
+        $requete .= ' AND id_site_rubrique = ' . (int) $this->id;
         $requete .= ' ORDER BY date DESC';
 
         if ($this->pagination > 0) {
             $offset = ($this->page_courante - 1) * $this->pagination;
             $limit = $this->pagination;
-            $requete .= ' LIMIT ' . (int)$offset . ', ' . $limit;
+            $requete .= ' LIMIT ' . (int) $offset . ', ' . $limit;
         }
 
         $articles = $this->bdd->obtenirTous($requete);
@@ -358,7 +355,7 @@ class Rubrique
         return $autres;
     }
 
-    function compte_autres_articles()
+    public function compte_autres_articles()
     {
         $requete = ' SELECT';
         $requete .= '  COUNT(*) ';
@@ -366,13 +363,13 @@ class Rubrique
         $requete .= '  afup_site_article ';
         $requete .= ' WHERE ';
         $requete .= '  etat = 1 ';
-        $requete .= ' AND id_site_rubrique = ' . (int)$this->id;
+        $requete .= ' AND id_site_rubrique = ' . (int) $this->id;
         $requete .= ' ORDER BY date DESC';
 
         return $this->bdd->obtenirUn($requete);
     }
 
-    function pagination_html()
+    public function pagination_html()
     {
         if ($this->pagination) {
             return new Pagination(
@@ -386,7 +383,7 @@ class Rubrique
         }
     }
 
-    function genere_route($params)
+    public function genere_route($params): string
     {
         $page = $params['page'] ?? 1;
         $url = $this->route();

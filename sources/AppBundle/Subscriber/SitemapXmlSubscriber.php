@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Subscriber;
 
 use Afup\Site\Corporate\Branche;

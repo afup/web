@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Validator\Constraints;
 
 use AppBundle\Event\Model\Ticket;
@@ -11,9 +13,8 @@ class TicketsCfpSubmitterValidator extends ConstraintValidator
     /**
      * @param Ticket[] $value
      * @param TicketsCfpSubmitter $constraint
-     * @return void
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         $specialCFPSubmitter = 0;
 

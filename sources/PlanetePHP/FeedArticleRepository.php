@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PlanetePHP;
 
 use Assert\Assertion;
@@ -13,14 +15,13 @@ class FeedArticleRepository
     const RELEVANT = 1;
     const IRRELEVANT = 0;
     const PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
-    /** @var Connection */
-    private $connection;
-    /** @var string */
-    private $pertinenceRegex;
+    private Connection $connection;
+    private string $pertinenceRegex;
 
-    public function __construct(Connection $connection) {
+    public function __construct(Connection $connection)
+    {
         $this->connection = $connection;
-        $this->pertinenceRegex = '/'.self::PERTINENCE_LIST.'/i';
+        $this->pertinenceRegex = '/' . self::PERTINENCE_LIST . '/i';
     }
 
     public function count(): int
@@ -47,7 +48,7 @@ class FeedArticleRepository
      *
      * @return FeedArticle[]
      */
-    public function search($sort, $direction, $limit = 20)
+    public function search($sort, $direction, $limit = 20): array
     {
         $sorts = [
             'title' => 'b.titre',
@@ -114,16 +115,16 @@ class FeedArticleRepository
      *
      * @return DisplayableFeedArticle[]
      */
-    public function findLatestTruncated($page = 0, $format = DATE_ATOM)
+    public function findLatestTruncated($page = 0, $format = DATE_ATOM): array
     {
-        return array_map(function (DisplayableFeedArticle $article) {
+        return array_map(function (DisplayableFeedArticle $article): DisplayableFeedArticle {
             $article->setContent($this->truncateContent($article->getContent(), $article->getUrl()));
 
             return $article;
         }, $this->findLatest($page, $format));
     }
 
-    public function findLatest($page = 0, $format = DATE_ATOM, $nombre = 10)
+    public function findLatest($page = 0, $format = DATE_ATOM, $nombre = 10): array
     {
         $query = $this->connection->prepare('SELECT b.titre, b.url, b.maj, b.auteur, b.contenu, f.nom feed_name, f.url feed_url
             FROM afup_planete_billet b
@@ -140,7 +141,7 @@ class FeedArticleRepository
         return $this->hydrateDisplayable($query->fetchAll(), $format);
     }
 
-    public function isRelevant($content)
+    public function isRelevant($content): int
     {
         $content = strip_tags($content);
         $relevant = self::IRRELEVANT;
@@ -204,9 +205,9 @@ class FeedArticleRepository
         ]);
     }
 
-    private function hydrate(array $rows)
+    private function hydrate(array $rows): array
     {
-        return array_map(static fn(array $row) => new FeedArticle(
+        return array_map(static fn (array $row): FeedArticle => new FeedArticle(
             $row['id'],
             $row['afup_planete_flux_id'],
             $row['clef'],
@@ -220,12 +221,12 @@ class FeedArticleRepository
         ), $rows);
     }
 
-    private function hydrateDisplayable(array $rows, $format = DATE_ATOM)
+    private function hydrateDisplayable(array $rows, $format = DATE_ATOM): array
     {
-        return array_map(static fn(array $row) => new DisplayableFeedArticle(
+        return array_map(static fn (array $row): DisplayableFeedArticle => new DisplayableFeedArticle(
             $row['titre'],
             $row['url'],
-            date($format, $row['maj']),
+            date($format, (int) $row['maj']),
             $row['auteur'],
             $row['contenu'],
             $row['feed_name'],

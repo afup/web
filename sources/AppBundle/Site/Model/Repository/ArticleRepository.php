@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Site\Model\Repository;
 
 use Afup\Site\Corporate\Rubrique;
@@ -13,7 +15,10 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class ArticleRepository extends Repository implements MetadataInitializer
 {
-    public function getAllYears()
+    /**
+     * @return mixed[]
+     */
+    public function getAllYears(): array
     {
         $sql = "
         SELECT YEAR(FROM_UNIXTIME(afup_site_article.date)) as year
@@ -34,7 +39,10 @@ class ArticleRepository extends Repository implements MetadataInitializer
         return $years;
     }
 
-    public function getEventsLabelsById()
+    /**
+     * @return mixed[]
+     */
+    public function getEventsLabelsById(): array
     {
         $sql = "SELECT afup_forum.id, afup_forum.titre
         FROM afup_site_article
@@ -96,7 +104,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
 
     public function findPrevious(Article $article)
     {
-        if (null === ($publishedAt = $article->getPublishedAt())) {
+        if (!($publishedAt = $article->getPublishedAt()) instanceof \DateTime) {
             return null;
         }
 
@@ -117,7 +125,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
 
     public function findNext(Article $article)
     {
-        if (null === ($publishedAt = $article->getPublishedAt())) {
+        if (!($publishedAt = $article->getPublishedAt()) instanceof \DateTime) {
             return null;
         }
 
@@ -136,7 +144,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
         return $collection->first();
     }
 
-    private function getSqlPublishedNews(array $filters, $order = 'DESC')
+    private function getSqlPublishedNews(array $filters, string $order = 'DESC'): array
     {
         $yearParams = [];
         $themeParams = [];

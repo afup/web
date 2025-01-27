@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -29,25 +31,16 @@ class TicketSpecialPrice implements NotifyPropertyInterface
      */
     private $token;
 
-    /**
-     * @var \DateTime
-     */
-    private $dateStart;
+    private ?\DateTime $dateStart = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $dateEnd;
+    private ?\DateTime $dateEnd = null;
 
     /**
      * @var string
      */
     private $description;
 
-    /**
-     * @var TicketType
-     */
-    private $ticketType;
+    private ?TicketType $ticketType = null;
 
     /**
      * @var \DateTime
@@ -72,7 +65,7 @@ class TicketSpecialPrice implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -93,7 +86,7 @@ class TicketSpecialPrice implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setEventId($eventId)
+    public function setEventId($eventId): self
     {
         $this->propertyChanged('eventId', $this->eventId, $eventId);
         $this->eventId = $eventId;
@@ -114,7 +107,7 @@ class TicketSpecialPrice implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setPrice($price)
+    public function setPrice($price): self
     {
         $this->propertyChanged('price', $this->price, $price);
         $this->price = $price;
@@ -125,17 +118,15 @@ class TicketSpecialPrice implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getDateStart()
+    public function getDateStart(): ?\DateTime
     {
         return $this->dateStart;
     }
 
     /**
-     * @param \DateTime $dateStart
-     *
      * @return $this
      */
-    public function setDateStart(\DateTime $dateStart)
+    public function setDateStart(\DateTime $dateStart): self
     {
         $this->propertyChanged('dateStart', $this->dateStart, $dateStart);
         $this->dateStart = $dateStart;
@@ -146,17 +137,15 @@ class TicketSpecialPrice implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getDateEnd()
+    public function getDateEnd(): ?\DateTime
     {
         return $this->dateEnd;
     }
 
     /**
-     * @param \DateTime $dateEnd
-     *
      * @return $this
      */
-    public function setDateEnd(\DateTime $dateEnd)
+    public function setDateEnd(\DateTime $dateEnd): self
     {
         $this->propertyChanged('dateEnd', $this->dateEnd, $dateEnd);
         $this->dateEnd = $dateEnd;
@@ -177,7 +166,7 @@ class TicketSpecialPrice implements NotifyPropertyInterface
 
      * @return $this
      */
-    public function setDescription($description)
+    public function setDescription($description): self
     {
         $this->propertyChanged('description', $this->description, $description);
         $this->description = $description;
@@ -188,17 +177,15 @@ class TicketSpecialPrice implements NotifyPropertyInterface
     /**
      * @return TicketType
      */
-    public function getTicketType()
+    public function getTicketType(): ?TicketType
     {
         return $this->ticketType;
     }
 
     /**
-     * @param TicketType $ticketType
-     *
      * @return $this
      */
-    public function setTicketType(TicketType $ticketType)
+    public function setTicketType(TicketType $ticketType): self
     {
         $this->ticketType = $ticketType;
 
@@ -218,7 +205,7 @@ class TicketSpecialPrice implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setToken($token)
+    public function setToken($token): self
     {
         $this->propertyChanged('token', $this->token, $token);
         $this->token = $token;
@@ -239,7 +226,7 @@ class TicketSpecialPrice implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setCreatedOn($createdOn)
+    public function setCreatedOn($createdOn): self
     {
         $this->propertyChanged('createdOn', $this->createdOn, $createdOn);
         $this->createdOn = $createdOn;
@@ -260,7 +247,7 @@ class TicketSpecialPrice implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setCreatorId($creatorId)
+    public function setCreatorId($creatorId): self
     {
         $this->propertyChanged('creatorId', $this->creatorId, $creatorId);
         $this->creatorId = $creatorId;

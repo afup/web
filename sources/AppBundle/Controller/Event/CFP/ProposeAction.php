@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event\CFP;
 
 use AppBundle\CFP\SpeakerFactory;
@@ -19,24 +21,15 @@ use Twig_Environment;
 
 class ProposeAction
 {
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Twig_Environment */
-    private $twig;
-    /** @var SpeakerFactory */
-    private $speakerFactory;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var TranslatorInterface */
-    private $translator;
-    /** @var TalkFormHandler */
-    private $talkFormHandler;
-    /** @var SidebarRenderer */
-    private $sidebarRenderer;
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private \Twig_Environment $twig;
+    private SpeakerFactory $speakerFactory;
+    private FormFactoryInterface $formFactory;
+    private TranslatorInterface $translator;
+    private TalkFormHandler $talkFormHandler;
+    private SidebarRenderer $sidebarRenderer;
+    private EventActionHelper $eventActionHelper;
+    private FlashBagInterface $flashBag;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,

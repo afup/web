@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\TechLetter\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -14,10 +16,7 @@ class Sending implements NotifyPropertyInterface
      */
     private $id;
 
-    /**
-     * @var \DateTime
-     */
-    private $sendingDate;
+    private ?\DateTime $sendingDate = null;
 
     /**
      * @var bool
@@ -44,9 +43,8 @@ class Sending implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return Sending
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -56,16 +54,12 @@ class Sending implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getSendingDate()
+    public function getSendingDate(): ?\DateTime
     {
         return $this->sendingDate;
     }
 
-    /**
-     * @param \DateTime $sendingDate
-     * @return Sending
-     */
-    public function setSendingDate(\DateTime $sendingDate = null)
+    public function setSendingDate(\DateTime $sendingDate = null): self
     {
         $this->propertyChanged('sendingDate', $this->sendingDate, $sendingDate);
         $this->sendingDate = $sendingDate;
@@ -82,9 +76,8 @@ class Sending implements NotifyPropertyInterface
 
     /**
      * @param bool $sentToMailchimp
-     * @return Sending
      */
-    public function setSentToMailchimp($sentToMailchimp)
+    public function setSentToMailchimp($sentToMailchimp): self
     {
         $this->propertyChanged('sentToMailchimp', $this->sentToMailchimp, $sentToMailchimp);
         $this->sentToMailchimp = $sentToMailchimp;
@@ -101,9 +94,8 @@ class Sending implements NotifyPropertyInterface
 
     /**
      * @param string $techletter
-     * @return Sending
      */
-    public function setTechletter($techletter)
+    public function setTechletter($techletter): self
     {
         $this->propertyChanged('techletter', $this->techletter, $techletter);
         $this->techletter = $techletter;
@@ -123,7 +115,7 @@ class Sending implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setArchiveUrl($archiveUrl)
+    public function setArchiveUrl($archiveUrl): self
     {
         $this->propertyChanged('archiveUrl', $this->archiveUrl, $archiveUrl);
         $this->archiveUrl = $archiveUrl;

@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Forum\Facturation;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
+use AppBundle\Controller\LegacyController;
 use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -18,7 +21,7 @@ use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/** @var \AppBundle\Controller\LegacyController $this */
+/** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -43,7 +46,7 @@ function updateGlobalsForTarif(
     TicketTypeAvailability $ticketTypeAvailability,
     $forumId,
     &$membersTickets = []
-) {
+): array {
     global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
     $event = $eventRepository->get($forumId);
     $ticketTypes = $ticketEventTypeRepository->getTicketsByEvent($event, false);
@@ -123,7 +126,6 @@ if ($action == 'lister') {
     $smarty->assign('inscriptions', $forum_inscriptions->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
     $smarty->assign('finForum', (new \DateTime($forumData['date_fin']))->format('U'));
     $smarty->assign('now', (new \DateTime())->format('U'));
-
 } elseif ($action == 'supprimer') {
     /** @var Invoice|null $invoice */
     $invoice = $invoiceRepository->getByReference($_GET['id']);
@@ -173,8 +175,8 @@ if ($action == 'lister') {
 
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
-		$formulaire->setDefaults(
-		    [
+        $formulaire->setDefaults(
+            [
                 'civilite' => 'M.',
                 'id_pays_facturation' => 'FR',
                 'type_inscription' => -1,
@@ -207,7 +209,7 @@ if ($action == 'lister') {
         $champs['id_pays_facturation']     = $champs2['id_pays'];
         $champs['email_facturation']       = $champs2['email'];
 
-        /** @var \AppBundle\Event\Model\Ticket $ticket */
+        /** @var Ticket $ticket */
         $ticket = $ticketRepository->get($_GET['id']);
         if (null !== $ticket) {
             $champs['commentaires'] = $ticket->getComments();
@@ -215,70 +217,69 @@ if ($action == 'lister') {
 
         $formulaire->setDefaults($champs);
 
-    	if (isset($champs) && isset($champs['id_forum'])) {
-    	    $_GET['id_forum'] = $champs['id_forum'];
-    	}
+        if (isset($champs) && isset($champs['id_forum'])) {
+            $_GET['id_forum'] = $champs['id_forum'];
+        }
     }
     updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $ticketTypeAvailability, $_GET['id_forum']);
 
-	$formulaire->addElement('hidden', 'old_reference', (isset($champs) ? $champs['reference'] : ''));
-	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
+    $formulaire->addElement('hidden', 'old_reference', (isset($champs) ? $champs['reference'] : ''));
+    $formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
 
-	$formulaire->addElement('header', null, 'Informations');
-	$groupe = [];
-	foreach ($AFUP_Tarifs_Forum as $tarif_key => $tarifs)
-	{
-	  $groupe[] = $formulaire->createElement('radio', 'type_inscription', null, $AFUP_Tarifs_Forum_Lib[$tarif_key] . ' (<strong>' . $AFUP_Tarifs_Forum[$tarif_key] . ' €</strong>)' , $tarif_key);
-	}
-
-
-	$formulaire->addGroup($groupe, 'groupe_type_inscription', 'Formule', '<br />', false);
-
-	$formulaire->addElement('select', 'civilite'                 , 'Civilité'       , ['M.' => 'M.', 'Mme' => 'Mme']);
-	$formulaire->addElement('text'  , 'nom'                      , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
-	$formulaire->addElement('text'  , 'prenom'                   , 'Prénom'         , ['size' => 30, 'maxlength' => 40]);
-	$formulaire->addElement('text'  , 'email'                    , 'Email'          , ['size' => 30, 'maxlength' => 100]);
-	$formulaire->addElement('text'  , 'telephone'                , 'Tél.'           , ['size' => 20, 'maxlength' => 20]);
-
+    $formulaire->addElement('header', null, 'Informations');
     $groupe = [];
-
-	$formulaire->addElement('header', null          , 'Réservé à l\'administration');
-	$formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
-
-    if ($action != 'ajouter') {
-        $formulaire->addElement('static', 'html', '', '<a href="/pages/administration/index.php?' . http_build_query(['page' => 'forum_facturation', 'id_forum' => $_GET['id_forum'], 'filtre' => $champs['reference']]). '">Rechercher la facture</a>');
+    foreach ($AFUP_Tarifs_Forum as $tarif_key => $tarifs) {
+        $groupe[] = $formulaire->createElement('radio', 'type_inscription', null, $AFUP_Tarifs_Forum_Lib[$tarif_key] . ' (<strong>' . $AFUP_Tarifs_Forum[$tarif_key] . ' €</strong>)' , $tarif_key);
     }
 
 
-	$formulaire->addElement('text'  , 'reference'   , 'Référence'   , ['size' => 50, 'maxlength' => 100]);
+    $formulaire->addGroup($groupe, 'groupe_type_inscription', 'Formule', '<br />', false);
+
+    $formulaire->addElement('select', 'civilite'                 , 'Civilité'       , ['M.' => 'M.', 'Mme' => 'Mme']);
+    $formulaire->addElement('text'  , 'nom'                      , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'  , 'prenom'                   , 'Prénom'         , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'  , 'email'                    , 'Email'          , ['size' => 30, 'maxlength' => 100]);
+    $formulaire->addElement('text'  , 'telephone'                , 'Tél.'           , ['size' => 20, 'maxlength' => 20]);
+
+    $groupe = [];
+
+    $formulaire->addElement('header', null          , 'Réservé à l\'administration');
+    $formulaire->addElement('static'  , 'note'                   , ''               , 'La reference est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions...<br /><br />');
+
+    if ($action != 'ajouter') {
+        $formulaire->addElement('static', 'html', '', '<a href="/pages/administration/index.php?' . http_build_query(['page' => 'forum_facturation', 'id_forum' => $_GET['id_forum'], 'filtre' => $champs['reference']]) . '">Rechercher la facture</a>');
+    }
+
+
+    $formulaire->addElement('text'  , 'reference'   , 'Référence'   , ['size' => 50, 'maxlength' => 100]);
     $formulaire->addElement('text'  , 'autorisation', 'Autorisation', ['size' => 50, 'maxlength' => 100]);
     $formulaire->addElement('text'  , 'transaction' , 'Transaction' , ['size' => 50, 'maxlength' => 100]);
 
     $state = [AFUP_FORUM_ETAT_CREE          => 'Inscription créée',
-		AFUP_FORUM_ETAT_ANNULE            => 'Inscription annulée',
-		AFUP_FORUM_ETAT_ERREUR            => 'Paiement CB erreur',
-		AFUP_FORUM_ETAT_REFUSE            => 'Paiement CB refusé',
-		AFUP_FORUM_ETAT_REGLE             => 'Inscription réglée',
-		AFUP_FORUM_ETAT_INVITE            => 'Invitation',
-		AFUP_FORUM_ETAT_ATTENTE_REGLEMENT => 'Attente règlement',
-		AFUP_FORUM_ETAT_CONFIRME          => 'Inscription confirmée',
-		AFUP_FORUM_ETAT_A_POSTERIORI      => 'Inscription à posteriori',
-		];
-	$formulaire->addElement('select', 'etat'        , 'Etat'        , $state);
+        AFUP_FORUM_ETAT_ANNULE            => 'Inscription annulée',
+        AFUP_FORUM_ETAT_ERREUR            => 'Paiement CB erreur',
+        AFUP_FORUM_ETAT_REFUSE            => 'Paiement CB refusé',
+        AFUP_FORUM_ETAT_REGLE             => 'Inscription réglée',
+        AFUP_FORUM_ETAT_INVITE            => 'Invitation',
+        AFUP_FORUM_ETAT_ATTENTE_REGLEMENT => 'Attente règlement',
+        AFUP_FORUM_ETAT_CONFIRME          => 'Inscription confirmée',
+        AFUP_FORUM_ETAT_A_POSTERIORI      => 'Inscription à posteriori',
+        ];
+    $formulaire->addElement('select', 'etat'        , 'Etat'        , $state);
 
     $facturation = [AFUP_FORUM_FACTURE_A_ENVOYER => 'Facture à envoyer',
-		AFUP_FORUM_FACTURE_ENVOYEE                    => 'Facture envoyée',
-		AFUP_FORUM_FACTURE_RECUE                      => 'Facture reçue',
-		];
-	$formulaire->addElement('select', 'facturation' , 'Facturation'  , $facturation);
+        AFUP_FORUM_FACTURE_ENVOYEE                    => 'Facture envoyée',
+        AFUP_FORUM_FACTURE_RECUE                      => 'Facture reçue',
+        ];
+    $formulaire->addElement('select', 'facturation' , 'Facturation'  , $facturation);
 
-	$formulaire->addElement('header'  , ''                       , 'Règlement');
-	$groupe = [];
-	$groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
-	$groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
+    $formulaire->addElement('header'  , ''                       , 'Règlement');
+    $groupe = [];
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
     $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Virement'      , AFUP_FORUM_REGLEMENT_VIREMENT);
     $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Aucun'         , AFUP_FORUM_REGLEMENT_AUCUN);
-	$formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
+    $formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
     $formulaire->addElement('textarea'   , 'informations_reglement', 'Informations règlement', ['cols' => 42, 'rows' => 4]);
 
 
@@ -286,76 +287,75 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr', 'minYear' => $current['forum_annee']-2, 'maxYear' => $current['forum_annee']+2]);
 
 
-	$formulaire->addElement('header'  , ''                       , 'Facturation');
-	$formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
-	$formulaire->addElement('text'    , 'societe_facturation'    , 'Société'        , ['size' => 50, 'maxlength' => 100]);
-	$formulaire->addElement('text'    , 'nom_facturation'        , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
-	$formulaire->addElement('text'    , 'prenom_facturation'     , 'Prénom'         , ['size' => 30, 'maxlength' => 40]);
-	$formulaire->addElement('textarea', 'adresse_facturation'    , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
-	$formulaire->addElement('text'    , 'code_postal_facturation', 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
-	$formulaire->addElement('text'    , 'ville_facturation'      , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
-	$formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           , $pays->obtenirPays());
-	$formulaire->addElement('text'    , 'email_facturation'      , 'Email (facture)', ['size' => 30, 'maxlength' => 100]);
-	$formulaire->addElement('text'    , 'coupon'                 , 'Coupon'         , ['size' => 30, 'maxlength' => 200]);
+    $formulaire->addElement('header'  , ''                       , 'Facturation');
+    $formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
+    $formulaire->addElement('text'    , 'societe_facturation'    , 'Société'        , ['size' => 50, 'maxlength' => 100]);
+    $formulaire->addElement('text'    , 'nom_facturation'        , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('text'    , 'prenom_facturation'     , 'Prénom'         , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('textarea', 'adresse_facturation'    , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
+    $formulaire->addElement('text'    , 'code_postal_facturation', 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
+    $formulaire->addElement('text'    , 'ville_facturation'      , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
+    $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           , $pays->obtenirPays());
+    $formulaire->addElement('text'    , 'email_facturation'      , 'Email (facture)', ['size' => 30, 'maxlength' => 100]);
+    $formulaire->addElement('text'    , 'coupon'                 , 'Coupon'         , ['size' => 30, 'maxlength' => 200]);
 
-	$formulaire->addElement('header', null, 'Divers');
+    $formulaire->addElement('header', null, 'Divers');
     $formulaire->addElement('textarea', 'commentaires'           , 'Commentaires', ['cols' => 42, 'rows' => 5]);
-	$formulaire->addElement('static', 'label', null, "J'accepte que ma compagnie soit citée comme participant à la conférence");
-	$groupe = [];
-	$groupe[] = $formulaire->createElement('radio', 'citer_societe', null, 'oui', 1);
-	$groupe[] = $formulaire->createElement('radio', 'citer_societe', null, 'non', 0);
-	$formulaire->addGroup($groupe, 'groupe_citer_societe', null, '&nbsp;', false);
-	$formulaire->addElement('static', 'label', null, "Je souhaite être tenu au courant des rencontres de l'AFUP sur des sujets afférents à PHP");
-	$groupe = [];
-	$groupe[] = $formulaire->createElement('radio', 'newsletter_afup', null, 'oui', 1);
-	$groupe[] = $formulaire->createElement('radio', 'newsletter_afup', null, 'non', 0);
-	$formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
-	$formulaire->addElement('static', 'label', null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
+    $formulaire->addElement('static', 'label', null, "J'accepte que ma compagnie soit citée comme participant à la conférence");
+    $groupe = [];
+    $groupe[] = $formulaire->createElement('radio', 'citer_societe', null, 'oui', 1);
+    $groupe[] = $formulaire->createElement('radio', 'citer_societe', null, 'non', 0);
+    $formulaire->addGroup($groupe, 'groupe_citer_societe', null, '&nbsp;', false);
+    $formulaire->addElement('static', 'label', null, "Je souhaite être tenu au courant des rencontres de l'AFUP sur des sujets afférents à PHP");
+    $groupe = [];
+    $groupe[] = $formulaire->createElement('radio', 'newsletter_afup', null, 'oui', 1);
+    $groupe[] = $formulaire->createElement('radio', 'newsletter_afup', null, 'non', 0);
+    $formulaire->addGroup($groupe, 'groupe_newsletter_afup', null, '&nbsp;', false);
+    $formulaire->addElement('static', 'label', null, "Je souhaite être tenu au courant de l'actualité PHP via la newsletter de notre sponsor");
     $groupe = [];
     $groupe[] = $formulaire->createElement('radio', 'newsletter_nexen', null, 'oui', 1);
     $groupe[] = $formulaire->createElement('radio', 'newsletter_nexen', null, 'non', 0);
     $formulaire->addGroup($groupe, 'groupe_newsletter_nexen', null, '&nbsp;', false);
     $formulaire->addElement('static', 'label', null, "Je souhaite recevoir des informations de la part de vos partenaires presse/media");
-	$groupe = [];
-	$groupe[] = $formulaire->createElement('radio', 'mail_partenaire', null, 'oui', 1);
-	$groupe[] = $formulaire->createElement('radio', 'mail_partenaire', null, 'non', 0);
-	$formulaire->addGroup($groupe, 'groupe_mail_partenaire', null, '&nbsp;', false);
+    $groupe = [];
+    $groupe[] = $formulaire->createElement('radio', 'mail_partenaire', null, 'oui', 1);
+    $groupe[] = $formulaire->createElement('radio', 'mail_partenaire', null, 'non', 0);
+    $formulaire->addGroup($groupe, 'groupe_mail_partenaire', null, '&nbsp;', false);
 
     $formulaire->addElement('header', null, 'Transport');
     $formulaire->addElement('select', 'transport_mode', 'Quel est votre mode de transport ?', Ticket::TRANSPORT_MODES);
     $formulaire->addElement('select', 'transport_distance', 'Quelle sera la distance parcourue ?', Ticket::TRANSPORT_DISTANCES);
 
     $formulaire->addElement('header', 'boutons'  , '');
-	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
+    $formulaire->addElement('submit', 'soumettre', 'Soumettre');
 
-	// On ajoute les règles
-	$formulaire->addGroupRule('groupe_type_inscription', 'Formule non sélectionnée' , 'required', null, 1);
-	$formulaire->addGroupRule('groupe_type_reglement'  , 'Règlement non sélectionné', 'required', null, 1);
-	$formulaire->addRule('civilite'               , 'Civilité non sélectionnée', 'required');
-	$formulaire->addRule('nom'                    , 'Nom manquant'             , 'required');
-	$formulaire->addRule('prenom'                 , 'Prénom manquant'          , 'required');
-	$formulaire->addRule('email'                  , 'Email manquant'           , 'required');
-	$formulaire->addRule('email'                  , 'Email invalide'           , 'email');
+    // On ajoute les règles
+    $formulaire->addGroupRule('groupe_type_inscription', 'Formule non sélectionnée' , 'required', null, 1);
+    $formulaire->addGroupRule('groupe_type_reglement'  , 'Règlement non sélectionné', 'required', null, 1);
+    $formulaire->addRule('civilite'               , 'Civilité non sélectionnée', 'required');
+    $formulaire->addRule('nom'                    , 'Nom manquant'             , 'required');
+    $formulaire->addRule('prenom'                 , 'Prénom manquant'          , 'required');
+    $formulaire->addRule('email'                  , 'Email manquant'           , 'required');
+    $formulaire->addRule('email'                  , 'Email invalide'           , 'email');
 
     if ($formulaire->validate()) {
-		$valeurs = $formulaire->exportValues();
+        $valeurs = $formulaire->exportValues();
 
         // Date de réglement au 01/01 => non defini
-        if ($valeurs['date_reglement']['d'] == 1 && $valeurs['date_reglement']['M'] == 1)
-        {
+        if ($valeurs['date_reglement']['d'] == 1 && $valeurs['date_reglement']['M'] == 1) {
             $valeurs['date_reglement'] = null;
         } else {
-            $valeurs['date_reglement'] = mktime(0,0,0,$valeurs['date_reglement']['M'],$valeurs['date_reglement']['d'],$valeurs['date_reglement']['Y']);
+            $valeurs['date_reglement'] = mktime(0,0,0, (int) $valeurs['date_reglement']['M'], (int) $valeurs['date_reglement']['d'], (int) $valeurs['date_reglement']['Y']);
         }
 
         if ($action == 'ajouter') {
-			// On génére la référence si nécessaire
+            // On génére la référence si nécessaire
             if (empty($valeurs['reference'])) {
                 $label = (empty($valeurs['societe_facturation']) ? (empty($valeurs['nom_facturation']) ? $valeurs['nom'] : $valeurs['nom_facturation']) : $valeurs['societe_facturation']);
-    			$valeurs['reference'] = $forum_facturation->creerReference($valeurs['id_forum'], $label);
+                $valeurs['reference'] = $forum_facturation->creerReference($valeurs['id_forum'], $label);
             }
 
-			// On ajoute l'inscription dans la base de données
+            // On ajoute l'inscription dans la base de données
             $ticket = new Ticket();
             $ticket->setDate(new DateTime());
             $ticket->setAmount($GLOBALS['AFUP_Tarifs_Forum'][$valeurs['type_inscription']]);
@@ -384,25 +384,25 @@ if ($action == 'lister') {
             }
         } else {
             $ok = $forum_inscriptions->modifierInscription($_GET['id'],
-            											   $valeurs['reference'],
-            											   $valeurs['type_inscription'],
-            											   $valeurs['civilite'],
-        												   $valeurs['nom'],
-        												   $valeurs['prenom'],
-        												   $valeurs['email'],
-        												   $valeurs['telephone'],
-        												   $valeurs['coupon'],
-        												   $valeurs['citer_societe'],
-        												   $valeurs['newsletter_afup'],
+                                                           $valeurs['reference'],
+                                                           $valeurs['type_inscription'],
+                                                           $valeurs['civilite'],
+                                                           $valeurs['nom'],
+                                                           $valeurs['prenom'],
+                                                           $valeurs['email'],
+                                                           $valeurs['telephone'],
+                                                           $valeurs['coupon'],
+                                                           $valeurs['citer_societe'],
+                                                           $valeurs['newsletter_afup'],
                                                            $valeurs['newsletter_nexen'],
-        												   $valeurs['mail_partenaire'],
+                                                           $valeurs['mail_partenaire'],
                                                            $valeurs['commentaires'],
-        												   $valeurs['etat'],
+                                                           $valeurs['etat'],
                                                            $valeurs['facturation'],
-                                                           (int)$valeurs['transport_mode'],
-                                                           (int)$valeurs['transport_distance']);
+                                                           (int) $valeurs['transport_mode'],
+                                                           (int) $valeurs['transport_distance']);
 
-            /** @var \AppBundle\Event\Model\Ticket $ticket */
+            /** @var Ticket $ticket */
             $ticket = $ticketRepository->get($_GET['id']);
             if (null !== $ticket) {
                 $ticket->setComments($valeurs['commentaires']);
@@ -411,8 +411,13 @@ if ($action == 'lister') {
         }
 
         try {
-            $paymentDate = null !== $valeurs['date_reglement'] ? DateTime::createFromFormat('U', $valeurs['date_reglement']) : null;
-             $invoiceService->handleInvoicing($valeurs['reference'],
+            $paymentDate = null;
+            if (is_numeric($valeurs['date_reglement'])) {
+                $paymentDate = new DateTime('@' . $valeurs['date_reglement']);
+            } else {
+                $paymentDate = null !== $valeurs['date_reglement'] ? DateTime::createFromFormat('U', $valeurs['date_reglement']) : null;
+            }
+            $invoiceService->handleInvoicing($valeurs['reference'],
                                                     $valeurs['type_reglement'],
                                                     $valeurs['informations_reglement'],
                                                     $paymentDate,

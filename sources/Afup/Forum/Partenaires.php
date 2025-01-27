@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Base_De_Donnees;
@@ -9,7 +11,6 @@ class Partenaires
     /**
      * Instance de la couche d'abstraction à la base de données
      * @var     Base_De_Donnees
-     * @access  private
      */
     private $_bdd;
 
@@ -17,10 +18,9 @@ class Partenaires
      * Constructeur.
      *
      * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      * @return void
      */
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -30,10 +30,9 @@ class Partenaires
      *
      * @param  int $id Identifiant du forum
      * @param  string $champs Champs à renvoyer
-     * @access public
      * @return array
      */
-    function obtenir($id, $champs = '*')
+    public function obtenir($id, string $champs = '*')
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -43,7 +42,7 @@ class Partenaires
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    function obtenirListe($ordre = 'id_forum desc, id_niveau_partenariat asc, ranking asc', $associatif = false)
+    public function obtenirListe(string $ordre = 'id_forum desc, id_niveau_partenariat asc, ranking asc', $associatif = false)
     {
         $requete = 'SELECT';
         $requete .= '  afup_forum_partenaires.*, afup_forum.path, afup_forum.titre as nom_forum, afup_niveau_partenariat.titre as niveau_partenariat';
@@ -62,7 +61,10 @@ class Partenaires
         }
     }
 
-    function obtenirTousPartenairesForum($id_forum)
+    /**
+     * @return non-empty-list[]
+     */
+    public function obtenirTousPartenairesForum(string $id_forum): array
     {
         $requete = 'SELECT';
         $requete .= '  *, afup_forum_partenaires.id as partenaire_id  ';
@@ -82,33 +84,33 @@ class Partenaires
         return $parType;
     }
 
-    function ajouter($id_forum, $id_niveau_partenariat, $ranking,
+    public function ajouter($id_forum, $id_niveau_partenariat, $ranking,
                      $nom, $presentation, $site, $logo)
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum_partenaires (id, id_forum, id_niveau_partenariat, ranking,';
         $requete .= '  nom, presentation, site, logo) ';
         $requete .= 'VALUES (null,';
-        $requete .= (int)$id_forum . ',';
-        $requete .= (int)$id_niveau_partenariat . ',';
-        $requete .= (int)$ranking . ',';
+        $requete .= (int) $id_forum . ',';
+        $requete .= (int) $id_niveau_partenariat . ',';
+        $requete .= (int) $ranking . ',';
         $requete .= $this->_bdd->echapper($nom) . ',';
         $requete .= $this->_bdd->echapper($presentation) . ',';
         $requete .= $this->_bdd->echapper($site) . ',';
         $requete .= $this->_bdd->echapper($logo) . ')';
-//echo $requete;
+        //echo $requete;
         return $this->_bdd->executer($requete);
     }
 
-    function modifier($id, $id_forum, $id_niveau_partenariat, $ranking,
+    public function modifier(string $id, $id_forum, $id_niveau_partenariat, $ranking,
                       $nom, $presentation, $site, $logo)
     {
         $requete = 'UPDATE ';
         $requete .= '  afup_forum_partenaires ';
         $requete .= 'SET';
-        $requete .= '  id_forum=' . (int)$id_forum . ',';
-        $requete .= '  id_niveau_partenariat=' . (int)$id_niveau_partenariat . ',';
-        $requete .= '  ranking=' . (int)$ranking . ',';
+        $requete .= '  id_forum=' . (int) $id_forum . ',';
+        $requete .= '  id_niveau_partenariat=' . (int) $id_niveau_partenariat . ',';
+        $requete .= '  ranking=' . (int) $ranking . ',';
         $requete .= '  nom=' . $this->_bdd->echapper($nom) . ',';
         $requete .= '  presentation=' . $this->_bdd->echapper($presentation) . ',';
         $requete .= '  site=' . $this->_bdd->echapper($site) . ',';
@@ -119,7 +121,7 @@ class Partenaires
         return $this->_bdd->executer($requete);
     }
 
-    function supprimer($id)
+    public function supprimer(string $id)
     {
         $requete = 'DELETE FROM afup_forum_partenaires WHERE id=' . $id;
         return $this->_bdd->executer($requete);

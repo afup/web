@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
@@ -23,7 +25,7 @@ class TalkToSpeakersRepository extends Repository implements MetadataInitializer
                 WHERE id_forum = :event
         ';
         $params = ['event' => $event->getId()];
-        if (null !== $since) {
+        if ($since instanceof \DateTime) {
             $sql .= ' AND afup_sessions.date_soumission >= :since ';
             $params['since'] = $since->format('Y-m-d');
         }
@@ -34,11 +36,10 @@ class TalkToSpeakersRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param Talk $talk
      * @param Speaker[] $speakers
      * @throws QueryException
      */
-    public function replaceSpeakers(Talk $talk, array $speakers)
+    public function replaceSpeakers(Talk $talk, array $speakers): void
     {
         $this->startTransaction();
         try {
@@ -56,7 +57,7 @@ class TalkToSpeakersRepository extends Repository implements MetadataInitializer
         }
     }
 
-    public function addSpeakerToTalk(Talk $talk, Speaker $speaker)
+    public function addSpeakerToTalk(Talk $talk, Speaker $speaker): void
     {
         $insert = $this->getPreparedQuery('REPLACE INTO afup_conferenciers_sessions (conferencier_id, session_id) VALUES (:speaker, :talk)');
         $insert->setParams(['speaker' => $speaker->getId(), 'talk' => $talk->getId()])->execute();

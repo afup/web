@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Security;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -17,7 +19,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class LegacyHashAuthenticator extends AbstractGuardAuthenticator
 {
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {

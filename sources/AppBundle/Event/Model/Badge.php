@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -8,10 +10,7 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 class Badge implements NotifyPropertyInterface
 {
     use NotifyProperty;
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var string
@@ -26,7 +25,7 @@ class Badge implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -36,7 +35,7 @@ class Badge implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
@@ -58,7 +57,7 @@ class Badge implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setLabel($label)
+    public function setLabel($label): self
     {
         $this->propertyChanged('label', $this->label, $label);
         $this->label = $label;
@@ -79,7 +78,7 @@ class Badge implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setUrl($url)
+    public function setUrl($url): self
     {
         $this->propertyChanged('url', $this->url, $url);
         $this->url = $url;

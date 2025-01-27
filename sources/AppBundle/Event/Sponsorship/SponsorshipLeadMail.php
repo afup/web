@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Sponsorship;
 
 use AppBundle\Email\Mailer\Attachment;
@@ -14,25 +16,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class SponsorshipLeadMail
 {
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var string
-     */
-    private $sponsorshipFileDir;
+    private LoggerInterface $logger;
 
     public function __construct(
         Mailer $mailer,
@@ -44,7 +32,7 @@ class SponsorshipLeadMail
         $this->logger = $logger;
     }
 
-    public function sendSponsorshipFile(Lead $lead)
+    public function sendSponsorshipFile(Lead $lead): void
     {
         $file = Event::getSponsorFilePath($lead->getEvent()->getPath(), $lead->getLanguage());
         $subject = $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()]);

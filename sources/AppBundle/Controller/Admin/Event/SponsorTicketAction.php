@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Model\User;
@@ -22,22 +24,14 @@ use Twig\Environment;
 
 class SponsorTicketAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var SponsorTicketRepository */
-    private $sponsorTicketRepository;
-    /** @var SponsorTokenMail */
-    private $sponsorTokenMail;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var Security */
-    private $security;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var Environment */
-    private $twig;
+    private EventActionHelper $eventActionHelper;
+    private SponsorTicketRepository $sponsorTicketRepository;
+    private SponsorTokenMail $sponsorTokenMail;
+    private FlashBagInterface $flashBag;
+    private Security $security;
+    private UrlGeneratorInterface $urlGenerator;
+    private FormFactoryInterface $formFactory;
+    private Environment $twig;
 
     public function __construct(
         EventActionHelper $eventActionHelper,

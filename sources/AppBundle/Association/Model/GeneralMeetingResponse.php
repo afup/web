@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -18,10 +20,7 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
      */
     private $id;
 
-    /**
-     * @var \DateTime
-     */
-    private $date;
+    private ?\DateTime $date = null;
 
     /**
      * @var int
@@ -46,7 +45,7 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -67,7 +66,7 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setUserId($userid)
+    public function setUserId($userid): self
     {
         $this->propertyChanged('manager', $this->userId, $userid);
         $this->userId = $userid;
@@ -78,7 +77,7 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getDate()
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
@@ -86,7 +85,7 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setDate(\DateTime $date)
+    public function setDate(\DateTime $date): self
     {
         $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
@@ -107,7 +106,7 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->propertyChanged('status', $this->status, $status);
         $this->status = $status;
@@ -115,7 +114,7 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
         return $this;
     }
 
-    public function isPresent()
+    public function isPresent(): bool
     {
         return self::STATUS_PRESENT === $this->getStatus();
     }

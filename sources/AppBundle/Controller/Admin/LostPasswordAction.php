@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Association\UserMembership\UserService;
@@ -9,23 +11,21 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 class LostPasswordAction
 {
-    /** @var FormFactoryInterface */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
     private ViewRenderer $view;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UserService */
-    private $userPasswordService;
+    private FlashBagInterface $flashBag;
+    private UserService $userPasswordService;
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        UserService          $userPasswordService,
-        ViewRenderer         $view,
-        FlashBagInterface    $flashBag
+        UserService $userPasswordService,
+        ViewRenderer $view,
+        FlashBagInterface $flashBag
     ) {
         $this->formFactory = $formFactory;
         $this->userPasswordService = $userPasswordService;
@@ -33,7 +33,7 @@ class LostPasswordAction
         $this->flashBag = $flashBag;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('email', EmailType::class)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Mailchimp;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -7,15 +9,9 @@ use AppBundle\Association\Model\User;
 
 class Runner
 {
-    /**
-     * @var Mailchimp
-     */
-    private $mailchimp;
+    private Mailchimp $mailchimp;
 
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     /**
      * @var string id of the mailchimp list to use
@@ -24,8 +20,6 @@ class Runner
 
     /**
      * Runner constructor.
-     * @param Mailchimp $mailchimp
-     * @param UserRepository $userRepository
      * @param $membersListId
      */
     public function __construct(
@@ -42,7 +36,7 @@ class Runner
      * Add all active members to the list
      * @return array list of errors
      */
-    public function initList()
+    public function initList(): array
     {
         $errors = [];
         /**
@@ -65,7 +59,7 @@ class Runner
      * Add new users and remove old users
      * @return array list of errors
      */
-    public function updateList()
+    public function updateList(): array
     {
         $errors = [];
         // First - delete expired members

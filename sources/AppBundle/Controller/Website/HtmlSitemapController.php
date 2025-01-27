@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use Afup\Site\Corporate\Branche;
@@ -9,22 +11,25 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class HtmlSitemapController extends Controller
+class HtmlSitemapController extends AbstractController
 {
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
     private ViewRenderer $view;
+    private RepositoryFactory $repositoryFactory;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, ViewRenderer $view)
+    public function __construct(UrlGeneratorInterface $urlGenerator, ViewRenderer $view, RepositoryFactory $repositoryFactory)
     {
         $this->urlGenerator = $urlGenerator;
         $this->view = $view;
+        $this->repositoryFactory = $repositoryFactory;
     }
 
-    public function displayAction()
+    public function display(): Response
     {
         $branche = new Branche();
 
@@ -60,7 +65,7 @@ class HtmlSitemapController extends Controller
         /**
          * @var CompanyMemberRepository $companyRepository
          */
-        $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
+        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
         $displayableCompanies = $companyRepository->findDisplayableCompanies();
 
         $members = [];
@@ -80,7 +85,7 @@ class HtmlSitemapController extends Controller
 
     private function news(): array
     {
-        $repository = $this->get('ting')->get(ArticleRepository::class);
+        $repository = $this->repositoryFactory->get(ArticleRepository::class);
 
         $news = [];
         $newsList = $repository->findAllPublishedNews();
@@ -100,7 +105,7 @@ class HtmlSitemapController extends Controller
 
     private function talks(): array
     {
-        $repository = $this->get('ting')->get(TalkRepository::class);
+        $repository = $this->repositoryFactory->get(TalkRepository::class);
 
         $talks = [];
         $talkList = $repository->getAllPastTalks((new \DateTime())->setTime(29,59,59));

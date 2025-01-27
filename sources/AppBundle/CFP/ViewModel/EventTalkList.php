@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\CFP\ViewModel;
 
 use AppBundle\Event\Model\Event;
@@ -7,10 +9,9 @@ use AppBundle\Event\Model\Talk;
 
 class EventTalkList
 {
-    /** @var Event */
-    private $event;
+    private Event $event;
     /** @var Talk[] */
-    private $talks = [];
+    private array $talks = [];
 
     public function __construct(Event $event, Talk ...$talks)
     {
@@ -20,15 +21,12 @@ class EventTalkList
         }
     }
 
-    public function addTalk(Talk $talk)
+    public function addTalk(Talk $talk): void
     {
         $this->talks[$talk->getId()] = $talk;
     }
 
-    /**
-     * @return Event
-     */
-    public function getEvent()
+    public function getEvent(): Event
     {
         return $this->event;
     }
@@ -36,7 +34,7 @@ class EventTalkList
     /**
      * @return Talk[]
      */
-    public function getTalks()
+    public function getTalks(): array
     {
         return $this->talks;
     }

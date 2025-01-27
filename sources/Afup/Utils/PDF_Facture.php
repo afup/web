@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils;
 
 use AppBundle\Compta\BankAccount\BankAccount;
@@ -11,14 +13,10 @@ class PDF_Facture extends \FPDF
      *
      * @var Configuration
      *
-     * @access protected
      */
     public $configuration;
 
-    /**
-     * @var BankAccount
-     */
-    private $bankAccount;
+    private BankAccount $bankAccount;
 
     /**
      * @var bool
@@ -29,14 +27,13 @@ class PDF_Facture extends \FPDF
      * Constructor
      *
      * @param Configuration $configuration The Afup\Site\Utils\Configuration object
-     * @param BankAccount $bankAccount
      * @param string $orientation The page's orientation (portrait = P, landscape = L)
      * @param string $unit The page's units. Default is mm
      * @param string $format The page's format. Default is A4
      * @return void
      * @throws \Exception
      */
-    function __construct($configuration, BankAccount $bankAccount, $isSubjectedToVat = false, $orientation = 'P', $unit = 'mm', $format = 'A4')
+    public function __construct($configuration, BankAccount $bankAccount, $isSubjectedToVat = false, $orientation = 'P', $unit = 'mm', $format = 'A4')
     {
         parent::__construct($orientation, $unit, $format);
         $this->bankAccount = $bankAccount;
@@ -49,19 +46,18 @@ class PDF_Facture extends \FPDF
      * Set the Afup\Site\Utils\Configuration object
      *
      * @param Configuration $configuration The Afup\Site\Utils\Configuration object
-     * @return void
      * @throws \Exception
      */
-    function setAFUPConfiguration($configuration)
+    public function setAFUPConfiguration($configuration): void
     {
-        if (!is_object($configuration) || !($configuration instanceOf Configuration)) {
+        if (!is_object($configuration) || !($configuration instanceof Configuration)) {
             throw new \Exception('$configuration parameter must be an instance of Afup\Site\Utils\AFUP_Configuration class');
         }
 
         $this->configuration = $configuration;
     }
 
-    public function header()
+    public function header(): void
     {
         // Haut de page [afup]
         $this->SetFont('Arial', 'B', 20);
@@ -100,12 +96,12 @@ class PDF_Facture extends \FPDF
      *
      * @return Configuration
      */
-    function getAFUPConfiguration()
+    public function getAFUPConfiguration()
     {
         return $this->configuration;
     }
 
-    function _putinfo()
+    public function _putinfo(): void
     {
         // on surcharge le _putinfo pour ne rien faire
         // cela permet entre-autres de ne pas indiquer en métadonnées la datetime de génération du PDF
@@ -117,11 +113,10 @@ class PDF_Facture extends \FPDF
      *
      * Creates the PDF footer with RIB and IBAN informations
      *
-     * @access public
      *
      * @see FPDF::Footer()
      */
-    function Footer()
+    public function Footer(): void
     {
         $address = sprintf(
             '%s - %u %s - %s - %s',
@@ -188,7 +183,5 @@ class PDF_Facture extends \FPDF
         }
 
         $this->Ln();
-
     }
-
 }

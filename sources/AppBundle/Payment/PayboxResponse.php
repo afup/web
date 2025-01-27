@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Payment;
 
 class PayboxResponse
@@ -86,12 +88,12 @@ class PayboxResponse
         return $this->transactionId;
     }
 
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return $this->status === self::STATUS_SUCCESS;
     }
 
-    public function isErrorCode()
+    public function isErrorCode(): bool
     {
         return substr($this->status, 0, 3) === '001';
     }

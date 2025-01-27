@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Site;
 
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use AppBundle\Site\Model\Rubrique;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,21 +16,17 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-class AddRubriqueAction extends Controller
+class AddRubriqueAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private FlashBagInterface $flashBag;
 
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    /** @var Environment */
-    private $twig;
+    private Environment $twig;
 
-    /** @var RubriqueRepository */
-    private $rubriqueRepository;
+    private RubriqueRepository $rubriqueRepository;
 
     /** @var string */
     private $storageDir;

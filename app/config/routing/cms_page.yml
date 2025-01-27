@@ -1,3 +1,3 @@
 cms_page_display:
   path: /{code}
-  defaults: { _controller: AppBundle:Website\CmsPage:display }
+  defaults: { _controller: AppBundle\Controller\Website\CmsPageController::display }

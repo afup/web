@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils;
 
 /**
@@ -7,26 +9,7 @@ namespace Afup\Site\Utils;
  */
 class Logs
 {
-    /**
-     * Instance de la couche d'abstraction à la base de données
-     * @var     object
-     * @access  private
-     */
-    private $_bdd;
-
-    /**
-     * Identifiant de l'utilisateur connecté
-     * @var     int
-     * @access  private
-     */
-    private $_id_utilisateur;
-
-    /**
-     * Nombre de logs affichés par page
-     * @var     int
-     * @access  private
-     */
-    private $_nombre_logs_par_page = 15; // TODO : Utiliser une constante en PHP5
+    // TODO : Utiliser une constante en PHP5
 
     /**
      * Renvoit l'instance unique de la classe Afup\Site\Utils\Logs
@@ -34,14 +17,13 @@ class Logs
      * Cette fonction est une implémentation du pattern Singleton.
      * Cela permet d'appeller statiquement les méthodes de cette classe depuis n'importe où.
      *
-     * @access private
      * @return object   Instance de la classe Afup\Site\Utils\Logs
      */
-    static function &_obtenirInstance()
+    public static function &_obtenirInstance()
     {
         // TODO : Utiliser une propriété statique en PHP5
         if (!isset($GLOBALS['_afup_log'])) {
-            $GLOBALS['_afup_log'] = new Logs;
+            $GLOBALS['_afup_log'] = new self;
         }
         return $GLOBALS['_afup_log'];
     }
@@ -51,12 +33,10 @@ class Logs
      *
      * @param  object $bdd Instance de la couche d'abstraction à la base de données
      * @param  int $id_utilisateur Identifiant de l'utilisateur connecté
-     * @access public
-     * @return void
      */
-    static function initialiser(&$bdd, $id_utilisateur)
+    public static function initialiser(&$bdd, $id_utilisateur): void
     {
-        $instance =& Logs::_obtenirInstance();
+        $instance =& self::_obtenirInstance();
         $instance->_bdd =& $bdd;
         $instance->_id_utilisateur = $id_utilisateur;
     }
@@ -65,12 +45,10 @@ class Logs
      * Log le texte fourni
      *
      * @param  string $texte Texte à logger
-     * @access public
-     * @return void
      */
-    static function log($texte)
+    public static function log($texte): void
     {
-        $instance =& Logs::_obtenirInstance();
+        $instance =& self::_obtenirInstance();
         $requete = 'INSERT INTO';
         $requete .= '  afup_logs (id, date, id_personne_physique, texte) ';
         $requete .= 'VALUES (';
@@ -86,12 +64,11 @@ class Logs
      * Renvoit tous les logs de la page indiquée
      *
      * @param  int $numero_page Numéro de la page concernée
-     * @access public
      * @return array    Les logs correspondant à la page indiquée
      */
-    static function obtenirTous($numero_page)
+    public static function obtenirTous($numero_page)
     {
-        $instance =& Logs::_obtenirInstance();
+        $instance =& self::_obtenirInstance();
         $depart = ($numero_page - 1) * $instance->_nombre_logs_par_page;
         $requete = 'SELECT';
         $requete .= '  afup_logs.*,';
@@ -111,16 +88,16 @@ class Logs
     /**
      * Renvoit le nombre de pages de logs
      *
-     * @access public
      * @return int  Nombre de pages
      */
-    static function obtenirNombrePages()
+    public static function obtenirNombrePages(): int
     {
-        $instance =& Logs::_obtenirInstance();
+        $instance =& self::_obtenirInstance();
         $nombre = $instance->_bdd->obtenirUn('SELECT COUNT(*) FROM afup_logs');
+        if (!$instance->_nombre_logs_par_page) {
+            return 1;
+        }
         $nombre = ceil($nombre / $instance->_nombre_logs_par_page);
-        return ($nombre == 0) ? 1 : $nombre;
+        return $nombre === 0.0 ? 1 : (int) $nombre;
     }
 }
-
-?>

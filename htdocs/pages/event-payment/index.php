@@ -1,19 +1,20 @@
 <?php
-use Afup\Site\Forum\Inscriptions;
+
+declare(strict_types=1);
 use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Utils\SymfonyKernel;
+use AppBundle\Event\Model\Invoice;
+use AppBundle\Event\Model\Repository\InvoiceRepository;
+use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxFactory;
 
-require_once __DIR__ .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once __DIR__ . '/../../../sources/Afup/Bootstrap/Http.php';
 
 if (
     !isset($_GET['ref'])
     ||
-    !(
-        preg_match('`ins-([0-9]+)`', $_GET['ref'], $matches)
-        ||
-        preg_match('`elephpant-([0-9]+)`', $_GET['ref'], $matches)
-    )
+    !preg_match('`ins-([0-9]+)`', $_GET['ref'], $matches) && !preg_match('`elephpant-([0-9]+)`', $_GET['ref'], $matches)
 ) {
     die('Missing ref');
 }
@@ -58,15 +59,15 @@ $paybox
     ->setUrlRetourErreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php')
 ;
 
-$invoiceRepository = $symfonyKernel->getKernel()->getContainer()->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
-/** @var \AppBundle\Event\Model\Invoice $invoice */
+$invoiceRepository = $symfonyKernel->getKernel()->getContainer()->get(InvoiceRepository::class);
+/** @var Invoice $invoice */
 $invoice = $invoiceRepository->getByReference($inscription['reference']);
 
 if (null === $invoice) {
     throw new \RuntimeException(sprintf("Invoice %s not found", $inscription['reference']));
 }
 
-$payboxBilling = \AppBundle\Payment\PayboxBilling::createFromInvoice($invoice);
+$payboxBilling = PayboxBilling::createFromInvoice($invoice);
 
 $smarty->assign('paybox', $paybox->generate(new \DateTime(), $payboxBilling));
 $smarty->assign('inscription', $inscription);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -16,14 +18,10 @@ class UserResetPasswordAction
 {
     use DbLoggerTrait;
 
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var UserService */
-    private $userPasswordService;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private UserRepository $userRepository;
+    private UserService $userPasswordService;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         UserRepository $userRepository,
@@ -37,7 +35,7 @@ class UserResetPasswordAction
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $user = $this->userRepository->get($request->query->get('id'));
         if (null === $user) {

@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Email\Mailer;
 
 class Message
 {
-    /** @var MailUser|null */
-    private $from;
+    private ?MailUser $from;
     /** @var MailUser[] */
-    private $recipients;
+    private ?array $recipients = null;
     /** @var MailUser[] */
-    private $cc = [];
+    private array $cc = [];
     /** @var MailUser[] */
-    private $bcc = [];
+    private array $bcc = [];
     /** @var string */
     private $subject;
     /** @var string */
@@ -19,7 +20,7 @@ class Message
     /** @var bool */
     private $isHtml = false;
     /** @var Attachment[] */
-    private $attachments = [];
+    private array $attachments = [];
 
     /**
      * @param string $subject
@@ -33,22 +34,22 @@ class Message
         }
     }
 
-    public function addRecipient(MailUser $user)
+    public function addRecipient(MailUser $user): void
     {
         $this->recipients[$user->getEmail()] = $user;
     }
 
-    public function addCc(MailUser $user)
+    public function addCc(MailUser $user): void
     {
         $this->cc[$user->getEmail()] = $user;
     }
 
-    public function addBcc(MailUser $user)
+    public function addBcc(MailUser $user): void
     {
         $this->bcc[$user->getEmail()] = $user;
     }
 
-    public function setFrom(MailUser $user)
+    public function setFrom(MailUser $user): void
     {
         $this->from = $user;
     }
@@ -56,7 +57,7 @@ class Message
     /**
      * @param string $subject
      */
-    public function setSubject($subject)
+    public function setSubject($subject): void
     {
         $this->subject = $subject;
     }
@@ -64,7 +65,7 @@ class Message
     /**
      * @param string $content
      */
-    public function setContent($content)
+    public function setContent($content): void
     {
         $this->content = $content;
     }
@@ -72,20 +73,17 @@ class Message
     /**
      * @param bool $isHtml
      */
-    public function setHtml($isHtml = true)
+    public function setHtml($isHtml = true): void
     {
         $this->isHtml = $isHtml;
     }
 
-    public function addAttachment(Attachment $attachment)
+    public function addAttachment(Attachment $attachment): void
     {
         $this->attachments[] = $attachment;
     }
 
-    /**
-     * @return MailUser|null
-     */
-    public function getFrom()
+    public function getFrom(): ?MailUser
     {
         return $this->from;
     }
@@ -93,7 +91,7 @@ class Message
     /**
      * @return MailUser[]
      */
-    public function getRecipients()
+    public function getRecipients(): ?array
     {
         return $this->recipients;
     }
@@ -101,7 +99,7 @@ class Message
     /**
      * @return MailUser[]
      */
-    public function getCc()
+    public function getCc(): array
     {
         return $this->cc;
     }
@@ -109,7 +107,7 @@ class Message
     /**
      * @return MailUser[]
      */
-    public function getBcc()
+    public function getBcc(): array
     {
         return $this->bcc;
     }
@@ -141,7 +139,7 @@ class Message
     /**
      * @return Attachment[]
      */
-    public function getAttachments()
+    public function getAttachments(): array
     {
         return $this->attachments;
     }

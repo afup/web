@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Meetups\tests\units;
 
 use AppBundle\Indexation\Meetups\MeetupDateTimeConverter as TestedClass;
@@ -19,10 +21,9 @@ class MeetupDateTimeConverter extends \atoum
      * @param int $minute
      * @param int $seconds
      * @param string $timezoneName
-     * @return void
      * @throws Exception
      */
-    public function testConvertValidStringToDateTime($dateString, $year, $month, $day, $hour, $minute, $seconds, $timezoneName)
+    public function testConvertValidStringToDateTime($dateString, $year, $month, $day, $hour, $minute, $seconds, $timezoneName): void
     {
         $meetupDateTimeConverter = new TestedClass();
 
@@ -67,14 +68,12 @@ class MeetupDateTimeConverter extends \atoum
      * @dataProvider invalidDateStringProvider
      *
      * @param string $invalidDateString
-     *
-     * @return void
      */
-    public function testConvertInvalidStringToDateTime($invalidDateString)
+    public function testConvertInvalidStringToDateTime($invalidDateString): void
     {
         $this
             ->given($meetupDateTimeConverter = new TestedClass())
-            ->exception(function () use ($meetupDateTimeConverter, $invalidDateString) {
+            ->exception(function () use ($meetupDateTimeConverter, $invalidDateString): void {
                 $meetupDateTimeConverter->convertStringToDateTime($invalidDateString);
             })
             ->isInstanceOf(\Exception::class); // Remplacez par le type de l'exception personnalisée si nécessaire

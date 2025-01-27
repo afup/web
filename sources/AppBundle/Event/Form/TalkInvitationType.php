@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Event\Form;
 
@@ -10,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TalkInvitationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', TextType::class, ['label' => 'Email du co-conférencier'])

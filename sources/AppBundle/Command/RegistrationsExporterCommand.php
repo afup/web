@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
+use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Ticket\RegistrationsExportGenerator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,7 +16,7 @@ class RegistrationsExporterCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('export-registrations')
@@ -23,18 +27,18 @@ class RegistrationsExporterCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $container = $this->getContainer();
 
-        if (null === ($event = $container->get(\AppBundle\Event\Model\Repository\EventRepository::class)->getNextEvent())) {
+        if (null === ($event = $container->get(EventRepository::class)->getNextEvent())) {
             $output->writeln('No event found');
-            return;
+            return 0;
         }
 
         $file = new \SplFileObject($input->getArgument('file'), 'w+');
 
-        $container->get(\AppBundle\Event\Ticket\RegistrationsExportGenerator::class)->export($event, $file);
+        $container->get(RegistrationsExportGenerator::class)->export($event, $file);
 
         return 0;
     }

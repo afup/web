@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -7,21 +9,33 @@ use AppBundle\Site\Form\NewsFiltersType;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class NewsController extends Controller
+class NewsController extends AbstractController
 {
-    const ARTICLES_PER_PAGE = 5;
+    private const ARTICLES_PER_PAGE = 5;
 
     private ViewRenderer $view;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    private RepositoryFactory $repositoryFactory;
+    private string $projectDir;
 
-    public function __construct(ViewRenderer $view)
+    public function __construct(ViewRenderer $view,
+                                AuthorizationCheckerInterface $authorizationChecker,
+                                RepositoryFactory $repositoryFactory,
+                                string $projectDir)
     {
         $this->view = $view;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->projectDir = $projectDir;
     }
 
-    public function displayAction($code)
+    public function display($code): Response
     {
         $articleRepository = $this->getArticleRepository();
 
@@ -30,10 +44,8 @@ class NewsController extends Controller
             throw $this->createNotFoundException();
         }
 
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            if ($article->getState() === 0 || !($article->getPublishedAt() <= new \DateTime())) {
-                throw $this->createNotFoundException();
-            }
+        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') && ($article->getState() === 0 || $article->getPublishedAt() > new \DateTime())) {
+            throw $this->createNotFoundException();
         }
 
         $this->getHeaderImageUrl($article);
@@ -53,10 +65,10 @@ class NewsController extends Controller
             return null;
         }
 
-        return $this->get('ting')->get(EventRepository::class)->get($eventId);
+        return $this->repositoryFactory->get(EventRepository::class)->get($eventId);
     }
 
-    private function getHeaderImageUrl(Article $article)
+    private function getHeaderImageUrl(Article $article): ?string
     {
         if (null === ($theme = $article->getTheme())) {
             return null;
@@ -64,7 +76,7 @@ class NewsController extends Controller
 
         $image = '/images/news/' . $theme . '.png';
 
-        $url = $this->getParameter('kernel.project_dir') . '/htdocs' . $image ;
+        $url = $this->projectDir . '/htdocs' . $image ;
 
         if (false === is_file($url)) {
             return null;
@@ -73,7 +85,7 @@ class NewsController extends Controller
         return $image;
     }
 
-    public function listAction(Request $request)
+    public function list(Request $request): Response
     {
         $page = $request->get('page', 1);
 
@@ -98,6 +110,6 @@ class NewsController extends Controller
      */
     private function getArticleRepository()
     {
-        return $this->get('ting')->get(ArticleRepository::class);
+        return $this->repositoryFactory->get(ArticleRepository::class);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event;
 
 use Afup\Site\Forum\Facturation;
@@ -12,29 +14,79 @@ use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Form\SponsorTicketType;
 use AppBundle\Event\Model\Invoice;
+use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketFactory;
+use AppBundle\Event\Ticket\PurchaseTypeFactory;
+use AppBundle\Event\Ticket\SponsorTicketHelper;
+use AppBundle\LegacyModelFactory;
+use AppBundle\Payment\PayboxFactory;
 use AppBundle\Payment\PayboxResponse;
 use AppBundle\Payment\PayboxResponseFactory;
+use AppBundle\Security\ActionThrottling\ActionThrottling;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class TicketController extends EventBaseController
+class TicketController extends AbstractController
 {
-    public function sponsorTicketAction(Request $request, $eventSlug)
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    /** @var SessionInterface&Session $session */
+    private SessionInterface $session;
+    private EventDispatcherInterface $eventDispatcher;
+    /** @var LoggerInterface&Logger  */
+    private LoggerInterface $logger;
+    private RepositoryFactory $repositoryFactory;
+    private ActionThrottling $actionThrottling;
+    private TicketFactory $ticketFactory;
+    private SponsorTicketHelper $sponsorTicketHelper;
+    private Emails $emails;
+    private PurchaseTypeFactory $purchaseTypeFactory;
+    private InvoiceRepository $invoiceRepository;
+    private LegacyModelFactory $legacyModelFactory;
+    private TicketRepository $ticketRepository;
+    private PayboxFactory $payboxFactory;
+    private EventActionHelper $eventActionHelper;
+    public function __construct(CsrfTokenManagerInterface $csrfTokenManager, SessionInterface $session, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, RepositoryFactory $repositoryFactory, ActionThrottling $actionThrottling, TicketFactory $ticketFactory, SponsorTicketHelper $sponsorTicketHelper, Emails $emails, PurchaseTypeFactory $purchaseTypeFactory, InvoiceRepository $invoiceRepository, LegacyModelFactory $legacyModelFactory, TicketRepository $ticketRepository, PayboxFactory $payboxFactory, EventActionHelper $eventActionHelper)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->session = $session;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $logger;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->actionThrottling = $actionThrottling;
+        $this->ticketFactory = $ticketFactory;
+        $this->sponsorTicketHelper = $sponsorTicketHelper;
+        $this->emails = $emails;
+        $this->purchaseTypeFactory = $purchaseTypeFactory;
+        $this->invoiceRepository = $invoiceRepository;
+        $this->legacyModelFactory = $legacyModelFactory;
+        $this->ticketRepository = $ticketRepository;
+        $this->payboxFactory = $payboxFactory;
+        $this->eventActionHelper = $eventActionHelper;
+    }
+    public function sponsorTicket(Request $request, $eventSlug)
+    {
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         if ($request->getSession()->has('sponsor_ticket_id') === true) {
             $request->getSession()->remove('sponsor_ticket_id');
         }
 
         if ($request->isMethod(Request::METHOD_POST)) {
-            $csrf = $this->get('security.csrf.token_manager')->getToken('sponsor_ticket');
+            $csrf = $this->csrfTokenManager->getToken('sponsor_ticket');
             $errors = [];
             if ($csrf->getValue() !== $request->get('_csrf_token')) {
                 $errors[] = 'Jeton anti csrf invalide';
@@ -45,9 +97,9 @@ class TicketController extends EventBaseController
                 /**
                  * @var SponsorTicket $sponsorTicket
                  */
-                $sponsorTicket = $this->get('ting')->get(SponsorTicketRepository::class)->getOneBy(['token' => $token]);
+                $sponsorTicket = $this->repositoryFactory->get(SponsorTicketRepository::class)->getOneBy(['token' => $token]);
                 if (
-                    $this->get(\AppBundle\Security\ActionThrottling\ActionThrottling::class)->isActionBlocked('sponsor_token', $request->getClientIp(), null)
+                    $this->actionThrottling->isActionBlocked('sponsor_token', $request->getClientIp(), null)
                     ||
                     $sponsorTicket === null
                 ) {
@@ -55,26 +107,24 @@ class TicketController extends EventBaseController
                     // L'ip est bloquée pendant un temps mais il ne faut pas en informer celui qui tente - pour éviter
                     // qu'il ne change d'IP
                     $errors[] = 'Ce token n\'existe pas.';
-                    $this->get(\AppBundle\Security\ActionThrottling\ActionThrottling::class)->log('sponsor_token', $request->getClientIp(), null);
+                    $this->actionThrottling->log('sponsor_token', $request->getClientIp(), null);
                 } else {
                     $request->getSession()->set('sponsor_ticket_id', $sponsorTicket->getId());
-                    $this->get(\AppBundle\Security\ActionThrottling\ActionThrottling::class)->clearLogsForIp('sponsor_token', $request->getClientIp());
+                    $this->actionThrottling->clearLogsForIp('sponsor_token', $request->getClientIp());
 
                     return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
                 }
             }
-            if ($errors !== []) {
-                $this->get('session')->getFlashBag()->setAll(['error' => $errors]);
-                return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
-            }
+            $this->session->getFlashBag()->setAll(['error' => $errors]);
+            return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
         return $this->render(':event/ticket:sponsor_home.html.twig', ['event' => $event]);
     }
 
-    public function sponsorTicketFormAction(Request $request, $eventSlug)
+    public function sponsorTicketForm(Request $request, $eventSlug)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         if ($request->getSession()->has('sponsor_ticket_id') === false) {
             $this->addFlash('error', 'Merci de renseigner votre token');
@@ -84,21 +134,21 @@ class TicketController extends EventBaseController
         /**
          * @var SponsorTicket $sponsorTicket
          */
-        $sponsorTicket = $this->get('ting')->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
+        $sponsorTicket = $this->repositoryFactory->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
             $this->addFlash('error', 'Token invalide');
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        $ticketFactory = $this->get(\AppBundle\Event\Model\TicketFactory::class);
+        $ticketFactory = $this->ticketFactory;
 
-        $sponsorTicketHelper = $this->get(\AppBundle\Event\Ticket\SponsorTicketHelper::class);
+        $sponsorTicketHelper = $this->sponsorTicketHelper;
         $edit = false;
         if ($request->query->has('ticket')) {
             /**
              * @var Ticket $ticket
              */
-            $ticket = $this->get('ting')->get(TicketRepository::class)->get($request->query->get('ticket'));
+            $ticket = $this->repositoryFactory->get(TicketRepository::class)->get($request->query->get('ticket'));
 
             if ($ticket === null || $sponsorTicketHelper->doesTicketBelongsToSponsor($sponsorTicket, $ticket) === false) {
                 throw $this->createNotFoundException();
@@ -119,8 +169,8 @@ class TicketController extends EventBaseController
             }
 
             $sponsorTicketHelper->addTicketToSponsor($sponsorTicket, $ticket);
-            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket) {
-                $this->get(Emails::class)->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
+            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket): int {
+                $this->emails->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
                 return 1;
             });
 
@@ -130,7 +180,7 @@ class TicketController extends EventBaseController
             /**
              * @var Ticket $ticket
              */
-            $ticket = $this->get('ting')->get(TicketRepository::class)->get($request->request->get('delete'));
+            $ticket = $this->repositoryFactory->get(TicketRepository::class)->get($request->request->get('delete'));
 
             if ($ticket === null) {
                 $this->addFlash('error', 'Impossible de trouver ce ticket');
@@ -159,15 +209,15 @@ class TicketController extends EventBaseController
         ]);
     }
 
-    public function ticketAction($eventSlug, Request $request)
+    public function ticket($eventSlug, Request $request)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         if ($event->getDateEndSales() < new \DateTime()) {
             return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
         }
 
-        $purchaseFactory = $this->get(\AppBundle\Event\Ticket\PurchaseTypeFactory::class);
+        $purchaseFactory = $this->purchaseTypeFactory;
 
         $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $this->getUser(), $request->query->get('token', null));
 
@@ -179,7 +229,7 @@ class TicketController extends EventBaseController
         $user = $this->getUser();
 
         if ($purchaseForm->isSubmitted() && $purchaseForm->isValid()) {
-            $invoiceRepository = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
+            $invoiceRepository = $this->invoiceRepository;
             /**
              * @var Invoice $invoice
              */
@@ -204,13 +254,11 @@ class TicketController extends EventBaseController
             }
 
             foreach ($tickets as $ticket) {
-                if ($ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers()) {
-                    if (isset($memberId, $memberType)) {
-                        $ticket
-                            ->setMemberId($memberId)
-                            ->setMemberType($memberType)
-                        ;
-                    }
+                if ($ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() && isset($memberId, $memberType)) {
+                    $ticket
+                        ->setMemberId($memberId)
+                        ->setMemberType($memberType)
+                    ;
                 }
             }
 
@@ -219,7 +267,7 @@ class TicketController extends EventBaseController
             /**
              * @todo: voir où le mettre ça
              */
-            $reference = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class)->creerReference($event->getId(), $invoice->getLabel());
+            $reference = $this->legacyModelFactory->createObject(Facturation::class)->creerReference($event->getId(), $invoice->getLabel());
             $invoice->setReference($reference);
             $invoiceRepository->saveWithTickets($invoice);
 
@@ -228,7 +276,7 @@ class TicketController extends EventBaseController
 
         $totalOfSoldTicketsByMember = 0;
         if ($user !== null) {
-            $totalOfSoldTicketsByMember = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getTotalOfSoldTicketsByMember(
+            $totalOfSoldTicketsByMember = $this->ticketRepository->getTotalOfSoldTicketsByMember(
                 $user->isMemberForCompany() ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
                 $user->isMemberForCompany() ? $user->getCompanyId() : $user->getId(),
                 $event->getId()
@@ -243,15 +291,15 @@ class TicketController extends EventBaseController
             'isSubjectedToVat' => Vat::isSubjectedToVat(new \DateTime('now')),
             'hasPricesDefinedWithVat' => $event->hasPricesDefinedWithVat(),
             'soldTicketsForMember' => $totalOfSoldTicketsByMember,
-            'hasMembersTickets' => $this->get('ting')->get(TicketEventTypeRepository::class)->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
+            'hasMembersTickets' => $this->repositoryFactory->get(TicketEventTypeRepository::class)->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
 
         ]);
     }
 
-    public function paymentAction($eventSlug, Request $request)
+    public function payment($eventSlug, Request $request): Response
     {
-        $event = $this->checkEventSlug($eventSlug);
-        $invoiceRepository = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
+        $invoiceRepository = $this->invoiceRepository;
 
         $invoiceRef = $request->get('invoiceRef', $request->query->get('invoiceRef', null));
         /** @var Invoice $invoice */
@@ -262,7 +310,7 @@ class TicketController extends EventBaseController
         }
 
         if ($invoice->getStatus() === Ticket::STATUS_PAID) {
-            $this->get('logger')->addWarning(
+            $this->logger->addWarning(
                 sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef)
             );
             return $this->render(':event/ticket:payment_already_done.html.twig', ['event' => $event]);
@@ -278,7 +326,7 @@ class TicketController extends EventBaseController
             'event' => $event,
             'invoice' => $invoice,
             'amount' => $amount,
-            'tickets' => $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByInvoiceWithDetail(
+            'tickets' => $this->ticketRepository->getByInvoiceWithDetail(
                 $invoice
             )
         ];
@@ -292,10 +340,10 @@ class TicketController extends EventBaseController
 
             $invoiceRepository->save($invoice);
 
-            $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);
+            $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
             $forumFacturation->envoyerFacture($invoice->getReference());
 
-            $ticketRepository = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class);
+            $ticketRepository = $this->ticketRepository;
             $tickets = $ticketRepository->getByInvoiceWithDetail($invoice);
 
             /** @var Ticket $ticket */
@@ -304,19 +352,19 @@ class TicketController extends EventBaseController
                 $ticket->setInvoiceStatus(Ticket::INVOICE_SENT);
                 $ticketRepository->save($ticket);
 
-                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket) {
-                    $this->get(Emails::class)->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
+                $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket): int {
+                    $this->emails->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
                     return 1;
                 });
             }
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
-            $params['paybox'] = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForTicket($invoice, $event, $amount);
+            $params['paybox'] = $this->payboxFactory->createPayboxForTicket($invoice, $event, $amount);
         } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
             $bankAccountFactory = new BankAccountFactory();
             $params['bankAccount'] = $bankAccountFactory->createApplyableAt($invoice->getinvoiceDate());
 
             // For bankwire, companies need to retrieve the invoice
-            $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);
+            $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
             $forumFacturation->envoyerFacture($invoiceRef);
         }
 
@@ -327,13 +375,12 @@ class TicketController extends EventBaseController
      * Action vers laquelle paybox post les résultats du paiement en serveur à serveur
      *
      * @param $eventSlug
-     * @param Request $request
      * @return Response
      */
-    public function payboxCallbackAction($eventSlug, Request $request)
+    public function payboxCallback($eventSlug, Request $request)
     {
-        $event = $this->checkEventSlug($eventSlug);
-        $invoice = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->getByReference($request->get('cmd'));
+        $event = $this->eventActionHelper->getEvent($eventSlug);
+        $invoice = $this->invoiceRepository->getByReference($request->get('cmd'));
 
         if ($invoice === null) {
             throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->get('cmd')));
@@ -360,14 +407,14 @@ class TicketController extends EventBaseController
             ->setAuthorization($payboxResponse->getAuthorizationId())
             ->setTransaction($payboxResponse->getTransactionId())
         ;
-        $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->save($invoice);
-        $tickets = $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->getByReference($invoice->getReference());
+        $this->invoiceRepository->save($invoice);
+        $tickets = $this->ticketRepository->getByReference($invoice->getReference());
 
         if ($paymentStatus === Ticket::STATUS_PAID) {
             /**
              * @var Facturation $forumFacturation
              */
-            $forumFacturation = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Facturation::class);
+            $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
             $forumFacturation->envoyerFacture($invoice->getReference());
         }
 
@@ -379,11 +426,11 @@ class TicketController extends EventBaseController
                 ->setStatus($paymentStatus)
                 ->setInvoiceStatus($invoiceStatus)
             ;
-            $this->get(\AppBundle\Event\Model\Repository\TicketRepository::class)->save($ticket);
+            $this->ticketRepository->save($ticket);
 
             if ($paymentStatus === Ticket::STATUS_PAID) {
-                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket) {
-                    $this->get(Emails::class)->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
+                $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket): int {
+                    $this->emails->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
                     return 1;
                 });
             }
@@ -395,13 +442,11 @@ class TicketController extends EventBaseController
      * Action vers laquelle l'utilisateur est redirigé après paiement (ou tentative)
      *
      * @param $eventSlug
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function payboxRedirectAction($eventSlug, Request $request)
+    public function payboxRedirect($eventSlug, Request $request): Response
     {
-        $event = $this->checkEventSlug($eventSlug);
-        $invoice = $this->get(\AppBundle\Event\Model\Repository\InvoiceRepository::class)->getByReference($request->get('cmd'));
+        $event = $this->eventActionHelper->getEvent($eventSlug);
+        $invoice = $this->invoiceRepository->getByReference($request->get('cmd'));
 
         if ($invoice === null) {
             throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->get('cmd')));

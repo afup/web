@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Utils\Logs;
 use AppBundle\Model\ComptaModeReglement;
@@ -23,10 +25,10 @@ if ($action === 'lister') {
     $formulaire = instancierFormulaire();
 
     if ($action === 'modifier') {
-        $champs = $compta->obtenirListRegles('', (int)$_GET['id']);
+        $champs = $compta->obtenirListRegles('', (int) $_GET['id']);
         $formulaire->setDefaults($champs);
 
-        $formulaire->addElement('hidden', 'id', (int)$_GET['id']);
+        $formulaire->addElement('hidden', 'id', (int) $_GET['id']);
     }
 
     // partie saisie
@@ -59,18 +61,18 @@ if ($action === 'lister') {
 
         if ($ok) {
             if ($action === 'ajouter') {
-                Logs::log('Ajout une règle '.$formulaire->exportValue('label'));
+                Logs::log('Ajout une règle ' . $formulaire->exportValue('label'));
             } else {
-                Logs::log('Modification une règle '.$formulaire->exportValue('label').' ('.$_GET['id'].')');
+                Logs::log('Modification une règle ' . $formulaire->exportValue('label') . ' (' . $_GET['id'] . ')');
             }
             afficherMessage(
-                'La règle a été '.(($action === 'ajouter') ? 'ajoutée' : 'modifiée'),
+                'La règle a été ' . (($action === 'ajouter') ? 'ajoutée' : 'modifiée'),
                 'index.php?page=compta_conf_regle&action=lister'
             );
         } else {
             $smarty->assign(
                 'erreur',
-                'Une erreur est survenue lors de '.(($action === 'ajouter') ? "l'ajout" : 'la modification').' de la règle'
+                'Une erreur est survenue lors de ' . (($action === 'ajouter') ? "l'ajout" : 'la modification') . ' de la règle'
             );
         }
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Slack;
 
 class LegacyClient
@@ -11,7 +13,7 @@ class LegacyClient
         $this->token = $token;
     }
 
-    public function invite($email)
+    public function invite($email): void
     {
         $return = file_get_contents(sprintf("https://slack.com/api/users.admin.invite?token=%s&email=%s", $this->token, $email));
 

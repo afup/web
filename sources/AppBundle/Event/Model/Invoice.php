@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use Afup\Site\Utils\Pays;
@@ -17,15 +19,9 @@ class Invoice implements NotifyPropertyInterface
      */
     private $reference;
 
-    /**
-     * @var \DateTime
-     */
-    private $paymentDate;
+    private ?\DateTime $paymentDate = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $invoiceDate;
+    private ?\DateTime $invoiceDate = null;
 
     /**
      * @var int
@@ -121,7 +117,7 @@ class Invoice implements NotifyPropertyInterface
      * @AfupAssert\TicketsCfpSubmitter()
      * @AfupAssert\EarlyBirdTicket()
      */
-    private $tickets = [];
+    private array $tickets = [];
 
 
     /**
@@ -134,9 +130,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $reference
-     * @return Invoice
      */
-    public function setReference($reference)
+    public function setReference($reference): self
     {
         $this->propertyChanged('reference', $this->reference, $reference);
         $this->reference = $reference;
@@ -146,16 +141,12 @@ class Invoice implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getPaymentDate()
+    public function getPaymentDate(): ?\DateTime
     {
         return $this->paymentDate;
     }
 
-    /**
-     * @param \DateTime $paymentDate
-     * @return Invoice
-     */
-    public function setPaymentDate(\DateTime $paymentDate = null)
+    public function setPaymentDate(\DateTime $paymentDate = null): self
     {
         $this->propertyChanged('paymentDate', $this->paymentDate, $paymentDate);
         $this->paymentDate = $paymentDate;
@@ -165,16 +156,12 @@ class Invoice implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getInvoiceDate()
+    public function getInvoiceDate(): ?\DateTime
     {
         return $this->invoiceDate;
     }
 
-    /**
-     * @param \DateTime $invoiceDate
-     * @return Invoice
-     */
-    public function setInvoiceDate(\DateTime $invoiceDate = null)
+    public function setInvoiceDate(\DateTime $invoiceDate = null): self
     {
         $this->propertyChanged('invoiceDate', $this->invoiceDate, $invoiceDate);
         $this->invoiceDate = $invoiceDate;
@@ -191,9 +178,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param int $amount
-     * @return Invoice
      */
-    public function setAmount($amount)
+    public function setAmount($amount): self
     {
         $this->propertyChanged('amount', $this->amount, $amount);
         $this->amount = $amount;
@@ -208,16 +194,15 @@ class Invoice implements NotifyPropertyInterface
         return $this->paymentType;
     }
 
-    public function isFree()
+    public function isFree(): bool
     {
         return $this->getAmount() == 0;
     }
 
     /**
      * @param int $paymentType
-     * @return Invoice
      */
-    public function setPaymentType($paymentType)
+    public function setPaymentType($paymentType): self
     {
         $this->propertyChanged('paymentType', $this->paymentType, $paymentType);
         $this->paymentType = $paymentType;
@@ -234,9 +219,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $paymentInfos
-     * @return Invoice
      */
-    public function setPaymentInfos($paymentInfos)
+    public function setPaymentInfos($paymentInfos): self
     {
         $this->propertyChanged('paymentInfos', $this->paymentInfos, $paymentInfos);
         $this->paymentInfos = $paymentInfos;
@@ -253,9 +237,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $email
-     * @return Invoice
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -272,9 +255,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $company
-     * @return Invoice
      */
-    public function setCompany($company)
+    public function setCompany($company): self
     {
         $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
@@ -291,9 +273,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $lastname
-     * @return Invoice
      */
-    public function setLastname($lastname)
+    public function setLastname($lastname): self
     {
         $this->propertyChanged('lastname', $this->lastname, $lastname);
         $this->lastname = $lastname;
@@ -310,9 +291,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $firstname
-     * @return Invoice
      */
-    public function setFirstname($firstname)
+    public function setFirstname($firstname): self
     {
         $this->propertyChanged('firstname', $this->firstname, $firstname);
         $this->firstname = $firstname;
@@ -329,9 +309,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $address
-     * @return Invoice
      */
-    public function setAddress($address)
+    public function setAddress($address): self
     {
         $this->propertyChanged('address', $this->address, $address);
         $this->address = $address;
@@ -348,9 +327,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $zipcode
-     * @return Invoice
      */
-    public function setZipcode($zipcode)
+    public function setZipcode($zipcode): self
     {
         $this->propertyChanged('zipcode', $this->zipcode, $zipcode);
         $this->zipcode = $zipcode;
@@ -367,9 +345,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $city
-     * @return Invoice
      */
-    public function setCity($city)
+    public function setCity($city): self
     {
         $this->propertyChanged('city', $this->city, $city);
         $this->city = $city;
@@ -386,9 +363,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $countryId
-     * @return Invoice
      */
-    public function setCountryId($countryId)
+    public function setCountryId($countryId): self
     {
         $this->propertyChanged('countryId', $this->countryId, $countryId);
         $this->countryId = $countryId;
@@ -405,9 +381,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $authorization
-     * @return Invoice
      */
-    public function setAuthorization($authorization)
+    public function setAuthorization($authorization): self
     {
         $this->propertyChanged('authorization', $this->authorization, $authorization);
         $this->authorization = $authorization;
@@ -424,9 +399,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param string $transaction
-     * @return Invoice
      */
-    public function setTransaction($transaction)
+    public function setTransaction($transaction): self
     {
         $this->propertyChanged('transaction', $this->transaction, $transaction);
         $this->transaction = $transaction;
@@ -443,9 +417,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param int $status
-     * @return Invoice
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->propertyChanged('status', $this->status, $status);
         $this->status = $status;
@@ -462,9 +435,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param bool $invoice
-     * @return Invoice
      */
-    public function setInvoice($invoice)
+    public function setInvoice($invoice): self
     {
         $this->propertyChanged('invoice', $this->invoice, $invoice);
         $this->invoice = $invoice;
@@ -481,38 +453,26 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @param int $forumId
-     * @return Invoice
      */
-    public function setForumId($forumId)
+    public function setForumId($forumId): self
     {
         $this->propertyChanged('forumId', $this->forumId, $forumId);
         $this->forumId = $forumId;
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getTickets()
+    public function getTickets(): array
     {
         return $this->tickets;
     }
 
-    /**
-     * @param array $tickets
-     * @return Invoice
-     */
-    public function setTickets(array $tickets)
+    public function setTickets(array $tickets): self
     {
         $this->tickets = $tickets;
         return $this;
     }
 
-    /**
-     * @param Ticket $ticket
-     * @return Invoice
-     */
-    public function addTicket(Ticket $ticket)
+    public function addTicket(Ticket $ticket): self
     {
         $this->tickets[] = $ticket;
         return $this;
@@ -524,12 +484,10 @@ class Invoice implements NotifyPropertyInterface
      */
     public function getLabel()
     {
-        if ($this->company !== null) {
-            return $this->company;
+        $label = $this->company ?? $this->lastname ?? null;
+        if (!$label) {
+            throw new \RuntimeException('Could not generate label');
         }
-        if ($this->lastname !== null) {
-            return $this->lastname;
-        }
-        throw new \RuntimeException('Could not generate label');
+        return $label;
     }
 }

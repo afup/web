@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -69,10 +71,7 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
         return $label;
     }
 
-    /**
-     * @return GithubUser
-     */
-    public static function fromApi(array $apiData)
+    public static function fromApi(array $apiData): self
     {
         $githubUser = new self();
         $githubUser->setLogin($apiData['login']);
@@ -87,9 +86,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 
     /**
      * @param int $id
-     * @return GithubUser
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -106,9 +104,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 
     /**
      * @param int $githubId
-     * @return GithubUser
      */
-    public function setGithubId($githubId)
+    public function setGithubId($githubId): self
     {
         $this->propertyChanged('githubId', $this->githubId, $githubId);
         $this->githubId = $githubId;
@@ -125,9 +122,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 
     /**
      * @param string $login
-     * @return GithubUser
      */
-    public function setLogin($login)
+    public function setLogin($login): self
     {
         $this->propertyChanged('login', $this->login, $login);
         $this->login = $login;
@@ -144,9 +140,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 
     /**
      * @param string $name
-     * @return GithubUser
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->propertyChanged('name', $this->name, $name);
         $this->name = $name;
@@ -163,9 +158,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 
     /**
      * @param string $company
-     * @return GithubUser
      */
-    public function setCompany($company)
+    public function setCompany($company): self
     {
         $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
@@ -182,9 +176,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 
     /**
      * @param string $profileUrl
-     * @return GithubUser
      */
-    public function setProfileUrl($profileUrl)
+    public function setProfileUrl($profileUrl): self
     {
         $this->propertyChanged('profileUrl', $this->profileUrl, $profileUrl);
         $this->profileUrl = $profileUrl;
@@ -201,9 +194,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 
     /**
      * @param string $avatarUrl
-     * @return GithubUser
      */
-    public function setAvatarUrl($avatarUrl)
+    public function setAvatarUrl($avatarUrl): self
     {
         $this->propertyChanged('avatarUrl', $this->avatarUrl, $avatarUrl);
         $this->avatarUrl = $avatarUrl;
@@ -220,9 +212,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 
     /**
      * @param boolean $afupCrew
-     * @return GithubUser
      */
-    public function setAfupCrew($afupCrew)
+    public function setAfupCrew($afupCrew): self
     {
         $this->afupCrew = $afupCrew;
         return $this;
@@ -267,7 +258,7 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
     /**
      * @inheritDoc
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
     /***************
@@ -286,7 +277,7 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
     /**
      * @inheritDoc
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         $user = unserialize($serialized);
         $this->id = $user['id'];

@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Forum\Coupon;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
 use AppBundle\Event\Model\Event;
 
-/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -103,7 +104,7 @@ $formulaire->addElement('textarea', 'mail_inscription_content', 'Contenu mail in
 $fileMailInscriptionAttachment = $formulaire->addElement('file', 'mail_inscription_attachment', "Pièce jointe du mail d'inscription");
 if (Event::hasInscriptionAttachment($forumPath)) {
     $formulaire->addElement('static', 'info', '',
-        "Un fichier joint au mail d'inscription&nbsp;<a target='mail_inscription_attachment' href='/pages/administration/index.php?page=forum_gestion&action=get_mail_inscription_attachment&id=" . $_GET['id']. "'>est déjà présent</a>.");
+        "Un fichier joint au mail d'inscription&nbsp;<a target='mail_inscription_attachment' href='/pages/administration/index.php?page=forum_gestion&action=get_mail_inscription_attachment&id=" . $_GET['id'] . "'>est déjà présent</a>.");
 }
 
 $formulaire->addElement('checkbox', 'speakers_diner_enabled', "Activer le repas des speakers");
@@ -123,14 +124,14 @@ $fileSponsorFRAttachment = $formulaire->addElement('file', 'file_sponsor_fr', "D
 if (Event::hasSponsorFile($formulaire->exportValue('path'), 'fr')) {
     $publicPath = Event::getSponsorFilePublicPath($formulaire->exportValue('path'), 'fr');
     $formulaire->addElement('static', 'info', '',
-        "<a target='file_sponsor_fr' href='".$publicPath."'>Voir le dossier de sponsoring (FR)</a>");
+        "<a target='file_sponsor_fr' href='" . $publicPath . "'>Voir le dossier de sponsoring (FR)</a>");
 }
 
 $fileSponsorENAttachment = $formulaire->addElement('file', 'file_sponsor_en', "Dossier de sponsoring (EN)");
 if (Event::hasSponsorFile($formulaire->exportValue('path'), 'en')) {
     $publicPath = Event::getSponsorFilePublicPath($formulaire->exportValue('path'), 'en');
     $formulaire->addElement('static', 'info', '',
-        "<a target='file_sponsor_en' href='".$publicPath."'>Voir le dossier de sponsoring (EN)</a>");
+        "<a target='file_sponsor_en' href='" . $publicPath . "'>Voir le dossier de sponsoring (EN)</a>");
 }
 
 

@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Corporate;
+
+use Afup\Site\Utils\Base_De_Donnees;
 
 class Feuille
 {
@@ -24,28 +28,24 @@ class Feuille
     public $patterns;
 
     /**
-     * @var \Afup\Site\Utils\Base_De_Donnees
+     * @var Base_De_Donnees
      */
     protected $bdd;
 
-    function __construct($id = 0, $bdd = false)
+    public function __construct($id = 0, $bdd = false)
     {
         $this->id = $id;
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
     }
 
-    function inserer()
+    public function inserer()
     {
         if ($this->id > 0) {
             $this->supprimer();
         }
         $requete = 'INSERT INTO afup_site_feuille
         			SET
-        			id_parent = ' . $this->bdd->echapper(!$this->id_parent ? null : $this->id_parent) . ',
+        			id_parent = ' . $this->bdd->echapper($this->id_parent ?: null) . ',
         			nom       = ' . $this->bdd->echapper($this->nom) . ',
         			lien      = ' . $this->bdd->echapper($this->lien) . ',
         			alt       = ' . $this->bdd->echapper($this->alt) . ',
@@ -62,11 +62,11 @@ class Feuille
         return $this->bdd->executer($requete);
     }
 
-    function modifier()
+    public function modifier()
     {
         $requete = 'UPDATE afup_site_feuille
         			SET
-        			id_parent = ' . $this->bdd->echapper(!$this->id_parent ? null : $this->id_parent) . ',
+        			id_parent = ' . $this->bdd->echapper($this->id_parent ?: null) . ',
         			nom       = ' . $this->bdd->echapper($this->nom) . ',
         			lien      = ' . $this->bdd->echapper($this->lien) . ',
         			alt       = ' . $this->bdd->echapper($this->alt) . ',
@@ -76,12 +76,12 @@ class Feuille
         			date      = ' . $this->bdd->echapper($this->date) . ',
         			patterns  = ' . $this->bdd->echapper($this->patterns) . ',
         			etat      = ' . $this->bdd->echapper($this->etat) . '
-        			WHERE id  = ' . (int)$this->id;
+        			WHERE id  = ' . (int) $this->id;
 
         return $this->bdd->executer($requete);
     }
 
-    function remplir($f)
+    public function remplir(array $f): void
     {
         $this->id = $f['id'];
         $this->id_parent = $f['id_parent'];
@@ -96,7 +96,7 @@ class Feuille
         $this->patterns = $f['patterns'];
     }
 
-    function exportable()
+    public function exportable(): array
     {
         return [
             'id' => $this->id,
@@ -107,13 +107,13 @@ class Feuille
             'image' => $this->image,
             'image_alt' => $this->image_alt,
             'position' => $this->position,
-            'date' => date('Y-m-d', $this->date),
+            'date' => date('Y-m-d', (int) $this->date),
             'etat' => $this->etat,
             'patterns' => $this->patterns,
         ];
     }
 
-    function charger()
+    public function charger(): void
     {
         $requete = 'SELECT *
                     FROM afup_site_feuille
@@ -122,13 +122,16 @@ class Feuille
         $this->remplir($f);
     }
 
-    function supprimer()
+    public function supprimer()
     {
         $requete = 'DELETE FROM afup_site_feuille WHERE id = ' . $this->bdd->echapper($this->id);
         return $this->bdd->executer($requete);
     }
 
-    function positionable()
+    /**
+     * @return int[]
+     */
+    public function positionable(): array
     {
         $positions = [];
         for ($i = 9; $i >= -9; $i--) {
@@ -136,5 +139,4 @@ class Feuille
         }
         return $positions;
     }
-
 }

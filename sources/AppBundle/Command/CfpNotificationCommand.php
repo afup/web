@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
+use AppBundle\Notifier\SlackNotifier;
+use AppBundle\Slack\MessageFactory;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,10 +18,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CfpNotificationCommand extends ContainerAwareCommand
 {
+    private MessageFactory $messageFactory;
+    private SlackNotifier $slackNotifier;
+    private RepositoryFactory $ting;
+
+    public function __construct(MessageFactory $messageFactory,
+                                SlackNotifier $slackNotifier,
+                                RepositoryFactory $ting)
+    {
+        $this->messageFactory = $messageFactory;
+        $this->slackNotifier = $slackNotifier;
+        $this->ting = $ting;
+    }
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('cfp-stats-notification')
@@ -28,11 +45,9 @@ class CfpNotificationCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $ting = $this->getContainer()->get('ting');
-        $eventRepository = $this->getContainer()->get('ting')->get(EventRepository::class);
-
+        $eventRepository = $this->ting->get(EventRepository::class);
         $since = null;
 
         if ($input->getOption('display-diff')) {
@@ -48,15 +63,15 @@ class CfpNotificationCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForCfpStats(
+            $message = $this->messageFactory->createMessageForCfpStats(
                 $event,
-                $ting->get(TalkRepository::class),
-                $ting->get(TalkToSpeakersRepository::class),
+                $this->ting->get(TalkRepository::class),
+                $this->ting->get(TalkToSpeakersRepository::class),
                 $currentDate,
                 $since
             );
 
-            $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
+            $this->slackNotifier->sendMessage($message);
         }
 
         return 0;

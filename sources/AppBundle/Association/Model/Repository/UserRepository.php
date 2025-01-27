@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -8,6 +10,7 @@ use AppBundle\Event\Model\Badge;
 use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -35,7 +38,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     /**
      * @param string $username
      * @return User
-     * @throws \CCMBenchmark\Ting\Query\QueryException
+     * @throws QueryException
      */
     public function loadUserByUsername($username)
     {
@@ -119,7 +122,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     }
 
     /**
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface|User[]
+     * @return CollectionInterface|User[]
      *
      * @throws \CCMBenchmark\Ting\Exception
      */
@@ -176,7 +179,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         Assertion::keyExists($sorts, $sort);
 
         $queryBuilder = $this->getQueryBuilderWithCompleteUser()
-            ->orderBy(array_map(static fn ($field) => $field . ' ' . $direction, $sorts[$sort]));
+            ->orderBy(array_map(static fn ($field): string => $field . ' ' . $direction, $sorts[$sort]));
 
         // On filtre sur tous les mots possibles. Donc plus on a de mots dans la recherche plus on aura de résultats.
         // Mais ça peut aussi permettre de trouver des personnes en entrant par exemple "Prénom email" dans le champ de recherche :
@@ -224,7 +227,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     /**
      * Ajoute une personne physique
      */
-    public function create(User $user)
+    public function create(User $user): void
     {
         if ($this->loginExists($user->getUsername())) {
             throw new InvalidArgumentException('Il existe déjà un compte pour ce login.');
@@ -241,7 +244,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         try {
             $this->save($user);
         } catch (Exception $e) {
-            throw new RuntimeException("Impossible d'enregistrer l'utilisateur à cause d'une erreur SQL. Veuillez contacter le bureau !");
+            throw new RuntimeException("Impossible d'enregistrer l'utilisateur à cause d'une erreur SQL. Veuillez contacter le bureau !", $e->getCode(), $e);
         }
     }
 
@@ -251,14 +254,14 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
      *
      * @return bool Login in use (TRUE) or not (FALSE)
      */
-    public function loginExists($login, $id = 0)
+    public function loginExists($login, $id = 0): bool
     {
         return 0 < $this->getQuery('SELECT 1 FROM afup_personnes_physiques WHERE login = :login AND id <> :id')
                 ->setParams(['login' => $login, 'id' => $id])
                 ->query()->count();
     }
 
-    public function edit(User $user)
+    public function edit(User $user): void
     {
         if ($this->loginExists($user->getUsername(), $user->getId())) {
             throw new InvalidArgumentException('Il existe déjà un compte pour ce login.');
@@ -272,7 +275,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $this->save($user);
     }
 
-    public function remove(User $user)
+    public function remove(User $user): void
     {
         $nbCotisations = (int) $this->getQuery('SELECT COUNT(*) nb FROM afup_cotisations WHERE type_personne = :memberType AND id_personne = :id')
             ->setParams(['memberType' => AFUP_PERSONNES_PHYSIQUES, 'id' => $user->getId()])
@@ -306,7 +309,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
      *
      * @return bool TRUE if the email exists, FALSE otherwise
      */
-    private function emailExists($email, $id = 0)
+    private function emailExists($email, $id = 0): bool
     {
         return 0 < $this->getQuery('SELECT 1 FROM afup_personnes_physiques WHERE email = :email AND id <> :id')
                 ->setParams(['email' => $email, 'id' => $id])
@@ -318,7 +321,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
      *
      * @return bool TRUE if the company exists, FALSE otherwise
      */
-    private function companyExists($companyId)
+    private function companyExists($companyId): bool
     {
         return 0 < $this->getQuery('SELECT 1 FROM afup_personnes_morales WHERE id = :id')
                 ->setParams(['id' => $companyId])
@@ -330,7 +333,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
      *
      * @return bool TRUE if the country exists, FALSE otherwise
      */
-    private function countryExists($countryId)
+    private function countryExists($countryId): bool
     {
         return 0 < $this->getQuery('SELECT 1 FROM afup_pays WHERE id = :id')
                 ->setParams(['id' => $countryId])
@@ -379,10 +382,9 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     /**
      * Add a condition about the type of users: physical, legal or all
      *
-     * @param SelectInterface $queryBuilder
      * @param $userType
      */
-    private function addUserTypeCondition(SelectInterface $queryBuilder, $userType)
+    private function addUserTypeCondition(SelectInterface $queryBuilder, $userType): void
     {
         if ($userType === self::USER_TYPE_PHYSICAL) {
             $queryBuilder->where('id_personne_morale = 0');
@@ -406,7 +408,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
      * Retrieve all users by the date of end of membership.
      *
      * @param int $userType one of self::USER_TYPE_*
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getActiveMembers($userType = self::USER_TYPE_PHYSICAL)
     {
@@ -430,9 +432,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     /**
      * Retrieve all users by the date of end of membership.
      *
-     * @param \DateTimeImmutable $endOfSubscription
      * @param int $userType one of self::USER_TYPE_*
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getUsersByEndOfMembership(\DateTimeImmutable $endOfSubscription, $userType = self::USER_TYPE_PHYSICAL)
     {

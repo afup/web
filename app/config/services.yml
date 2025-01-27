@@ -6,6 +6,9 @@ parameters:
         oauth_access_token_secret: "%twitter_oauth_access_token_secret%"
         consumer_key: "%twitter_consumer_key%"
         consumer_secret: "%twitter_consumer_secret%"
+    app.badge_dir: "%kernel.project_dir%/htdocs/uploads/badges"
+    app.members_logo_dir: "%kernel.project_dir%/htdocs/uploads/members_logo"
+    app.general_meetings_dir: "%kernel.project_dir%/htdocs/uploads/general_meetings_reports"
 
 services:
 #    service_name:
@@ -23,64 +26,8 @@ services:
               lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
 
 
-    AppBundle\Controller\Event\:
-        resource: '../../sources/AppBundle/Controller/Event/*'
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Controller\Admin\Event\:
-        resource: '../../sources/AppBundle/Controller/Admin/Event/*'
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Controller\Admin\Membership\:
-        resource: '../../sources/AppBundle/Controller/Admin/Membership/*'
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Controller\Admin\Members\GeneralMeeting\:
-        resource: '../../sources/AppBundle/Controller/Admin/Members/GeneralMeeting/*'
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Controller\Website\:
-        resource: '../../sources/AppBundle/Controller/Website/*'
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Command\GeneralMeetupNotificationCommand:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\GeneralMeeting\GeneralMeetingRepository:
-        autowire: true
-
-    AppBundle\Indexation\Meetup\Repository:
-        autowire: true
-
-    AppBundle\Controller\Admin\SlackMembers\CheckMembersAction:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Controller\Admin\Speaker\ExportAction:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Controller\Admin\Talk\:
-        resource: '../../sources/AppBundle/Controller/Admin/Talk/*'
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Controller\MembershipAdmin\ReportingAction:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Command\IndexTalksCommand:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Controller\Admin\:
-        resource: '../../sources/AppBundle/Controller/Admin/*'
+    AppBundle\Controller\:
+        resource: '../../sources/AppBundle/Controller/*'
         autowire: true
         autoconfigure: true
 
@@ -97,20 +44,106 @@ services:
     AppBundle\Controller\Admin\Members\BadgeNewAction:
         autowire: true
         arguments:
-            $storageDir: '%kernel.project_dir%/htdocs/uploads/badges'
+            $storageDir: '%app.badge_dir%'
+
+    AppBundle\Controller\Website\BadgeController:
+        autowire: true
+        arguments:
+            $storageDir: '%app.badge_dir%'
+
+    AppBundle\Controller\Website\HomeController:
+        autowire: true
+        arguments:
+            $homeAlgoliaEnabled: '%home_algolia_enabled%'
+
+    AppBundle\Controller\Website\MeetupsController:
+        autowire: true
+        arguments:
+            $algoliaAppId: '%algolia_app_id%'
+            $algoliaFrontendApikey: '%algolia_frontend_api_key%'
+
+    AppBundle\Controller\Website\CompanyPublicProfileController:
+        autowire: true
+        arguments:
+            $storageDir: '%app.members_logo_dir%'
+
+    AppBundle\Controller\Website\Member\CompanyPublicProfileController:
+        autowire: true
+        arguments:
+            $storageDir: '%app.members_logo_dir%'
+
+    AppBundle\Controller\Website\MemberShipController:
+        autowire: true
+        arguments:
+            $storageDir: '%app.general_meetings_dir%'
+
+    AppBundle\Controller\Website\NewsController:
+        autowire: true
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    AppBundle\Controller\Website\NewsletterController:
+        autowire: true
+        arguments:
+            $mailchimpSubscribersList: '%mailchimp_subscribers_list%'
+
+    AppBundle\Controller\Website\StaticController:
+        autowire: true
+        arguments:
+            $superAperoCsvUrl: '%super_apero_csv_url%'
+
+    AppBundle\Controller\Website\TalksController:
+        autowire: true
+        arguments:
+            $algoliaAppId: '%algolia_app_id%'
+            $algoliaFrontendApikey: '%algolia_frontend_api_key%'
+
+    AppBundle\Controller\Website\TechletterController:
+        autowire: true
+        arguments:
+            $mailchimpTechletterWebhookKey: '%mailchimp_techletter_webhook_key%'
+
+    AppBundle\Controller\Website\TechnoWatchController:
+        autowire: true
+        arguments:
+            $technoWatchCalendarKey: '%techno_watch_calendar_key%'
+            $technoWatchCalendarUrl: '%techno_watch_calendar_url%'
 
     AppBundle\Controller\Admin\GetMenuAction:
         autowire: true
         arguments:
-          $backOfficePages: '%app.pages_backoffice%'
+            $backOfficePages: '%app.pages_backoffice%'
+
+    AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
+        autowire: true
+        arguments:
+            $techletterTestEmailAddress: '%techletter_test_email_address%'
+            $mailchimpTechletterList: '%mailchimp_techletter_list%'
+
+    AppBundle\Controller\LegacyController:
+        autowire: true
+        arguments:
+            $backOfficePages: '%app.pages_backoffice%'
+
+    AppBundle\Command\GeneralMeetupNotificationCommand:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Command\IndexTalksCommand:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Command\QrCodesGeneratorCommand:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\GeneralMeeting\GeneralMeetingRepository:
+        autowire: true
 
     AppBundle\Security\MyGithubAuthenticator:
         autowire: true
 
     AppBundle\Security\TestGithubAuthenticator:
-        autowire: true
-
-    AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
         autowire: true
 
     AppBundle\Indexation\Talks\Runner:
@@ -169,7 +202,7 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
-    AppBundle\Listener\LocaleListener:
+    AppBundle\Listener\LocaleEventSubscriber:
         arguments: [ "%kernel.default_locale%" ]
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 100 }
@@ -263,8 +296,7 @@ services:
         autowire: true
         arguments: ["@router", "%paybox_domain_server%", "%paybox_secret_key%", "%paybox_site%", "%paybox_rang%", "%paybox_identifiant%"]
 
-    slack_members_legacy_client:
-        class: AppBundle\Slack\LegacyClient
+    AppBundle\Slack\LegacyClient:
         arguments: ["%slack_members_legacy_token%"]
 
     AppBundle\Slack\UsersClient:
@@ -359,7 +391,7 @@ services:
     AppBundle\Offices\OfficesCollection:
         autowire: true
 
-    AppBundle\Mailchimp\EventListener:
+    AppBundle\Mailchimp\EventEventSubscriber:
         arguments: ['@AppBundle\Mailchimp\Mailchimp', "%mailchimp_members_list%"]
         tags:
           - { name: kernel.event_listener, event: user.disabled, method: onUserDisabled }
@@ -495,9 +527,6 @@ services:
         autowire: true
         arguments: ["%qr_code_salt%"]
 
-    AppBundle\Command\QrCodesGeneratorCommand:
-        autowire: true
-        autoconfigure: true
 
     AppBundle\Association\Form\UserEditType:
         autowire: true
@@ -659,9 +688,6 @@ services:
             - {url: 'mysql://%database_user%:%database_password%@%database_host%:%database_port%/%database_name%?charset=utf8mb4'}
             - '@Doctrine\DBAL\Configuration'
 
-    AppBundle\Controller\Legacy\:
-        resource: '../../sources/AppBundle/Controller/Legacy/*'
-        autowire: true
 
     Symfony\Component\HttpFoundation\Session\SessionInterface:
         alias: 'session'
@@ -681,10 +707,6 @@ services:
         autowire: true
         public: true
 
-    AppBundle\Controller\Planete\:
-        resource: '../../sources/AppBundle/Controller/Planete/*'
-        autowire: true
-        autoconfigure: true
 
     app.github.http_client:
         class: GuzzleHttp\Client

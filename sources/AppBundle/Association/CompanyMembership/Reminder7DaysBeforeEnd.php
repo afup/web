@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\CompanyMembership;
 
 class Reminder7DaysBeforeEnd extends AbstractCompanyReminder
 {
-    protected function getText()
+    protected function getText(): string
     {
         return '<p>Chère société membre de l’AFUP,</p>
 
@@ -32,12 +34,12 @@ L’équipe AFUP</p>
 ';
     }
 
-    protected function getSubject()
+    protected function getSubject(): string
     {
         return 'Votre adhésion à l’AFUP arrive à son terme : J-7 !';
     }
 
-    protected function getKey()
+    protected function getKey(): string
     {
         return '7DaysBefore';
     }

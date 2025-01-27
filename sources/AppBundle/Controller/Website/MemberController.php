@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
@@ -9,25 +11,37 @@ use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
-class MemberController extends Controller
+class MemberController extends AbstractController
 {
     const DAYS_BEFORE_CALL_TO_UPDATE = 15;
 
     private ViewRenderer $view;
+    private GeneralMeetingRepository $generalMeetingRepository;
+    private UserService $userService;
+    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
+    private BadgesComputer $badgesComputer;
+    private RepositoryFactory $repositoryFactory;
 
-    public function __construct(ViewRenderer $view)
+    public function __construct(ViewRenderer $view, GeneralMeetingRepository $generalMeetingRepository, UserService $userService, GeneralMeetingQuestionRepository $generalMeetingQuestionRepository, BadgesComputer $badgesComputer, RepositoryFactory $repositoryFactory)
     {
         $this->view = $view;
+        $this->generalMeetingRepository = $generalMeetingRepository;
+        $this->userService = $userService;
+        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
+        $this->badgesComputer = $badgesComputer;
+        $this->repositoryFactory = $repositoryFactory;
     }
 
-    public function indexAction()
+    public function index(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        $generalMeetingFactory = $this->get(GeneralMeetingRepository::class);
-        $userService = $this->get(UserService::class);
+        $generalMeetingFactory = $this->generalMeetingRepository;
+        $userService = $this->userService;
         $cotisation = $userService->getLastSubscription($user);
 
         $dateFinCotisation = null;
@@ -37,8 +51,8 @@ class MemberController extends Controller
 
         $daysBeforeMembershipExpiration = $user->getDaysBeforeMembershipExpiration();
 
-        $generalMeetingRepository = $this->get(GeneralMeetingRepository::class);
-        $generalMeetingQuestionRepository = $this->get(GeneralMeetingQuestionRepository::class);
+        $generalMeetingRepository = $this->generalMeetingRepository;
+        $generalMeetingQuestionRepository = $this->generalMeetingQuestionRepository;
 
         $latestDate = $generalMeetingRepository->getLatestDate();
         $hasGeneralMeetingPlanned = $generalMeetingFactory->hasGeneralMeetingPlanned($latestDate);
@@ -54,9 +68,9 @@ class MemberController extends Controller
         }
 
         return $this->view->render('site/member/index.html.twig', [
-            'badges' => $this->get(BadgesComputer::class)->getBadges($user),
+            'badges' => $this->badgesComputer->getBadges($user),
             'user' => $user,
-            'has_member_subscribed_to_techletter' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
+            'has_member_subscribed_to_techletter' => $this->repositoryFactory->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
             'membership_fee_call_to_update' => null === $daysBeforeMembershipExpiration || $daysBeforeMembershipExpiration < self::DAYS_BEFORE_CALL_TO_UPDATE,
             'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
             'office_label' => $user->getNearestOfficeLabel(),

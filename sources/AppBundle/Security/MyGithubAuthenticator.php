@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Security;
 
@@ -12,6 +14,7 @@ use League\OAuth2\Client\Provider\GithubResourceOwner;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -81,7 +84,7 @@ class MyGithubAuthenticator extends SocialAuthenticator
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
         ];
 
-        return new JsonResponse($data, 403);
+        return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }
 
     /**

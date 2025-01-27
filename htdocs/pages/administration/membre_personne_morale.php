@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use AppBundle\Controller\LegacyController;
 use Assert\Assertion;
 
 /** @var \Afup\Site\Droits $droits */
-/** @var \AppBundle\Controller\LegacyController $this */
+/** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -99,9 +102,9 @@ if ($formulaire->validate()) {
 
     if ($ok) {
         Logs::log('Modification de la personne morale ' . $formulaire->exportValue('raison_sociale') . ' (' . $_GET['id'] . ')');
-        afficherMessage('La personne morale a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=membre_personne_morale');
+        afficherMessage('La personne morale a été ' . (($action === 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=membre_personne_morale');
     } else {
-        $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de la personne morale');
+        $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action === 'ajouter') ? "l'ajout" : 'la modification') . ' de la personne morale');
     }
 }
 

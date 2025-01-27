@@ -11,8 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ArticlesController
 {
-    /** @var FeedArticleRepository */
-    private $feedArticleRepository;
+    private FeedArticleRepository $feedArticleRepository;
 
     public function __construct(
         FeedArticleRepository $feedArticleRepository
@@ -50,7 +49,7 @@ final class ArticlesController
 
         return new Response(
             json_encode($data),
-            200,
+            Response::HTTP_OK,
             [
                 'Content-Type' => 'application/json',
                 'X-Pagination-Total' => $totalCount,

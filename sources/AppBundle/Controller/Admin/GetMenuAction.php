@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin;
 
 use Assert\Assertion;
@@ -10,11 +12,9 @@ use Twig\Environment;
 class GetMenuAction
 {
     /** @var array<string, mixed> */
-    private $backOfficePages;
-    /** @var Environment */
-    private $twig;
-    /** @var RequestStack */
-    private $requestStack;
+    private array $backOfficePages;
+    private Environment $twig;
+    private RequestStack $requestStack;
 
     public function __construct(
         RequestStack $requestStack,
@@ -26,7 +26,7 @@ class GetMenuAction
         $this->twig = $twig;
     }
 
-    public function __invoke()
+    public function __invoke(): Response
     {
         $masterRequest = $this->requestStack->getMasterRequest();
         Assertion::notNull($masterRequest);

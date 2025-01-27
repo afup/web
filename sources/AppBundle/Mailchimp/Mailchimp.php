@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Mailchimp;
 
+use Illuminate\Support\Collection;
+
 class Mailchimp
 {
-    private $client;
+    private \Mailchimp\Mailchimp $client;
 
     public function __construct(\Mailchimp\Mailchimp $client)
     {
@@ -15,11 +19,10 @@ class Mailchimp
     /**
      * Subscribe an address to a list
      *
-     * @param string $list
      * @param string $email
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function subscribeAddress($list, $email)
+    public function subscribeAddress(string $list, $email)
     {
         return $this->client->put(
             'lists/' . $list . '/members/' . $this->getAddressId($email),
@@ -29,7 +32,7 @@ class Mailchimp
         );
     }
 
-    public function subscribeAddressWithoutConfirmation($list, $email)
+    public function subscribeAddressWithoutConfirmation(string $list, $email)
     {
         return $this->client->put(
             'lists/' . $list . '/members/' . $this->getAddressId($email),
@@ -39,42 +42,22 @@ class Mailchimp
 
     const MAX_MEMBERS_PER_PAGE = 50;
 
-    /**
-     * @param string $list
-     *
-     * @return array
-     */
-    public function getAllSubscribedMembersAddresses($list)
+    public function getAllSubscribedMembersAddresses(string $list): array
     {
         return $this->callMembersAddresses($list, 'subscribed');
     }
 
-    /**
-     * @param string $list
-     *
-     * @return array
-     */
-    public function getAllUnSubscribedMembersAddresses($list)
+    public function getAllUnSubscribedMembersAddresses(string $list): array
     {
         return $this->callMembersAddresses($list, 'unsubscribed');
     }
 
-    /**
-     * @param string $list
-     *
-     * @return array
-     */
-    public function getAllCleaneddMembersAddresses($list)
+    public function getAllCleaneddMembersAddresses(string $list): array
     {
         return $this->callMembersAddresses($list, 'cleaned');
     }
 
-    /**
-     * @param string $list
-     * @param string $status
-     * @return array
-     */
-    private function callMembersAddresses($list, $status)
+    private function callMembersAddresses(string $list, string $status): array
     {
         $response = $this->client->get(
             'lists/' . $list . '/members',
@@ -110,11 +93,10 @@ class Mailchimp
     /**
      * Unsubscribe an address from a list
      *
-     * @param string $list
      * @param string $email
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function unSubscribeAddress($list, $email)
+    public function unSubscribeAddress(string $list, $email)
     {
         return $this->client->put(
             'lists/' . $list . '/members/' . $this->getAddressId($email),
@@ -125,9 +107,9 @@ class Mailchimp
     /**
      * @param $list
      * @param $email
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function archiveAddress($list, $email)
+    public function archiveAddress(string $list, $email)
     {
         return $this->client->delete(
             'lists/' . $list . '/members/' . $this->getAddressId($email)
@@ -139,9 +121,8 @@ class Mailchimp
      * It's based on a hash of the email.
      *
      * @param string $email
-     * @return string
      */
-    private function getAddressId($email)
+    private function getAddressId($email): string
     {
         return md5(strtolower($email));
     }
@@ -160,7 +141,6 @@ class Mailchimp
 
     /**
      * @param string $list
-     * @param array $settings
      */
     public function createCampaign($list, array $settings)
     {

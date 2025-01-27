@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Controller\Event\EventBaseController;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\TalkRepository;
@@ -11,26 +12,43 @@ use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\Notifier\SlackNotifier;
-use CCMBenchmark\Ting;
+use CCMBenchmark\Ting\Exception;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class VoteController extends EventBaseController
+class VoteController extends AbstractController
 {
-    private $formBuilder;
+    private ?FormBuilderInterface $formBuilder = null;
+    private SessionInterface $session;
+    private EventDispatcherInterface $eventDispatcher;
+    private RepositoryFactory $repositoryFactory;
+    private SlackNotifier $slackNotifier;
+    private EventActionHelper $eventActionHelper;
+    public function __construct(SessionInterface $session, EventDispatcherInterface $eventDispatcher, RepositoryFactory $repositoryFactory, SlackNotifier $slackNotifier, EventActionHelper $eventActionHelper)
+    {
+        $this->session = $session;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->slackNotifier = $slackNotifier;
+        $this->eventActionHelper = $eventActionHelper;
+    }
 
     /**
      * @param $eventSlug
      * @param int $page
      * @param bool $all if true => show all talks to rate even if already rated by the current user
-     * @return Response
      */
-    public function indexAction($eventSlug, $page = 1, $all = false)
+    public function index($eventSlug, $page = 1, $all = false): Response
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
         if (!$event->isVoteAvailable()) {
             return $this->render(':event:cfp/closed.html.twig', ['event' => $event]);
         }
@@ -38,23 +56,19 @@ class VoteController extends EventBaseController
         /**
          * @var TalkRepository $talkRepository
          */
-        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
 
         // Get a random list of unrated talks
         if ($all === false) {
-            $talks = $talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->get('session')->getId()), $page);
+            $talks = $talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->session->getId()), $page);
         } else {
-            $talks = $talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->get('session')->getId()), $page);
+            $talks = $talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->session->getId()), $page);
         }
 
         $vote = new Vote();
         $forms = function () use ($talks, $vote, $eventSlug) {
             foreach ($talks as $talk) {
-                if (isset($talk['asvg'])) {
-                    $myVote = $talk['asvg'];
-                } else {
-                    $myVote = clone $vote;
-                }
+                $myVote = $talk['asvg'] ?? clone $vote;
                 /*
                  * By using a yield here, there will be only one iteration over the talks for the entire page
                  */
@@ -81,12 +95,11 @@ class VoteController extends EventBaseController
     /**
      * @param string $eventSlug
      * @param int $talkId
-     * @param Vote $vote
      * @return FormInterface
      */
     private function createVoteForm($eventSlug, $talkId, Vote $vote)
     {
-        if ($this->formBuilder === null) {
+        if (!$this->formBuilder instanceof FormBuilderInterface) {
             $this->formBuilder = $this->createFormBuilder();
         }
 
@@ -100,13 +113,13 @@ class VoteController extends EventBaseController
             )->setAction(
                 $this->generateUrl('vote_new', ['talkId' => $talkId, 'eventSlug' => $eventSlug])
             )
-            ->setMethod('POST')
+            ->setMethod(Request::METHOD_POST)
             ->getForm();
     }
 
-    public function newAction(Request $request, $eventSlug, $talkId)
+    public function new(Request $request, $eventSlug, $talkId)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
         if (!$event->isVoteAvailable()) {
             return new JsonResponse(['errors' => ['Cfp is closed !']], Response::HTTP_BAD_REQUEST);
         }
@@ -136,30 +149,30 @@ class VoteController extends EventBaseController
         }
 
         /** @var VoteRepository $voteRepository */
-        $voteRepository = $this->get('ting')->get(VoteRepository::class);
+        $voteRepository = $this->repositoryFactory->get(VoteRepository::class);
         /** @var Vote $vote */
         $vote = $form->getData();
         $vote->setSubmittedOn(new \DateTime());
 
         try {
             $vote->setTalk($talk);
-            $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($vote) {
-                $this->get(SlackNotifier::class)->notifyVote($vote);
+            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($vote): void {
+                $this->slackNotifier->notifyVote($vote);
             });
             $voteRepository->upsert($vote);
-        } catch (Ting\Exception $e) {
+        } catch (Exception $e) {
             return new JsonResponse(['errors' => [$e->getMessage()]], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return new JsonResponse(['errors' => []]);
     }
 
-    public function adminAction(Request $request)
+    public function admin(Request $request): Response
     {
         $eventId = $request->query->get('id');
-        $event = $this->get(EventActionHelper::class)->getEventById($eventId);
+        $event = $this->eventActionHelper->getEventById($eventId);
 
-        $votes = $event === null ? []:$this->get('ting')->get(VoteRepository::class)->getVotesByEvent($event->getId());
+        $votes = $event === null ? []:$this->repositoryFactory->get(VoteRepository::class)->getVotesByEvent($event->getId());
 
         return $this->render('admin/vote/liste.html.twig', [
             'votes' => $votes,
@@ -176,7 +189,7 @@ class VoteController extends EventBaseController
     private function findTalk($talkId)
     {
         /** @var TalkRepository $talkRepository */
-        $talkRepository = $this->get('ting')->get(TalkRepository::class);
+        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
         /** @var Talk $talk */
         $talk = $talkRepository->getOneBy(['id' => $talkId]);
         if ($talk) {

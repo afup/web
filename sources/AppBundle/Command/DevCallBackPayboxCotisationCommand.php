@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use function GuzzleHttp\Psr7\parse_query;
@@ -12,7 +14,7 @@ class DevCallBackPayboxCotisationCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $help = <<<EOF
 Cette commande simplifie l'appel au callback de paybox.
@@ -30,7 +32,7 @@ EOF;
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $parsedUrl = parse_url($input->getArgument('url_paiement_effectue'));
 

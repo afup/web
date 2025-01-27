@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Forum;
 
+use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Event\Model\Talk;
 
 class AppelConferencier
 {
     /**
      * Instance de la couche d'abstraction à la base de données
-     * @var     \Afup\Site\Utils\Base_De_Donnees
-     * @access  private
+     * @var Base_De_Donnees
      */
     private $_bdd;
 
@@ -19,7 +21,6 @@ class AppelConferencier
      * Constructeur.
      *
      * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      * @return void
      */
     public function __construct(&$bdd)
@@ -27,7 +28,7 @@ class AppelConferencier
         $this->_bdd = $bdd;
     }
 
-    function supprimerSession($id)
+    public function supprimerSession($id)
     {
         $this->delierSession($id);
 
@@ -37,7 +38,7 @@ class AppelConferencier
         return $this->_bdd->executer($requete);
     }
 
-    function obtenirCommentairesPourSession($id = 0)
+    public function obtenirCommentairesPourSession($id = 0)
     {
         $requete = ' SELECT ';
         $requete .= '  co.*, ';
@@ -53,10 +54,9 @@ class AppelConferencier
         $requete .= ' ORDER BY date ASC';
 
         return $this->_bdd->obtenirTous($requete);
-
     }
 
-    function obtenirConferenciersPourSession($id = 0)
+    public function obtenirConferenciersPourSession($id = 0)
     {
         $requete = ' SELECT ';
         $requete .= '  LOWER(CONCAT(SUBSTRING(c.prenom, 1, 1), c.nom)) as code, ';
@@ -72,7 +72,7 @@ class AppelConferencier
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirPlanningDeSession($id_session = 0)
+    public function obtenirPlanningDeSession($id_session = 0)
     {
         $requete = ' SELECT ';
         $requete .= '  se.*, ';
@@ -95,7 +95,7 @@ class AppelConferencier
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    function obtenirSession($id = 0, $champs = '*', $complement = true)
+    public function obtenirSession($id = 0, string $champs = '*', $complement = true)
     {
         $this->_bdd->executer("SET NAMES utf8mb4");
 
@@ -131,7 +131,7 @@ class AppelConferencier
         return $session;
     }
 
-    function obtenirListeSalles($id_forum = null,
+    public function obtenirListeSalles($id_forum = null,
                                 $associatif = false)
     {
         $requete = ' SELECT ';
@@ -144,10 +144,9 @@ class AppelConferencier
         } else {
             return $this->_bdd->obtenirTous($requete);
         }
-
     }
 
-    function supprimerSessionDuPlanning($id)
+    public function supprimerSessionDuPlanning($id)
     {
         $requete = ' DELETE FROM afup_forum_planning ';
         $requete .= ' WHERE id = ' . $this->_bdd->echapper($id);
@@ -155,7 +154,7 @@ class AppelConferencier
         return $this->_bdd->executer($requete);
     }
 
-    function modifierSessionDuPlanning($id,
+    public function modifierSessionDuPlanning($id,
                                        $id_forum,
                                        $id_session,
                                        $debut,
@@ -169,11 +168,11 @@ class AppelConferencier
         $requete .= ' fin = ' . $this->_bdd->echapper($fin) . ', ';
         $requete .= ' keynote = ' . $this->_bdd->echapper($keynote) . ', ';
         $requete .= ' id_salle = ' . $this->_bdd->echapper($id_salle) . ' ';
-        $requete .= ' WHERE id = ' . (int)$id;
+        $requete .= ' WHERE id = ' . (int) $id;
         return $this->_bdd->executer($requete);
     }
 
-    function ajouterSessionDansPlanning($id_forum,
+    public function ajouterSessionDansPlanning($id_forum,
                                         $id_session,
                                         $debut,
                                         $fin,
@@ -198,7 +197,10 @@ class AppelConferencier
         return $this->_bdd->obtenirUn('SELECT LAST_INSERT_ID()');
     }
 
-    function obtenirListeSessionsAvecResumes($id_forum)
+    /**
+     * @return mixed[]
+     */
+    public function obtenirListeSessionsAvecResumes($id_forum): array
     {
         $requete = ' SELECT ';
         $requete .= '  se.session_id, ';
@@ -229,7 +231,7 @@ class AppelConferencier
         if (!$forum_details) {
             return [];
         }
-        $directoryPath = __DIR__. "/../../../htdocs/templates/" . $forum_details['path'] . "/resumes/";
+        $directoryPath = __DIR__ . "/../../../htdocs/templates/" . $forum_details['path'] . "/resumes/";
         if (!is_dir($directoryPath)) {
             return [];
         }
@@ -237,7 +239,7 @@ class AppelConferencier
         $repertoire = new \DirectoryIterator($directoryPath);
         foreach ($repertoire as $file) {
             if (preg_match("/^[1-9]/", $file->getFilename())) {
-                $id = (int)$file->getFilename();
+                $id = (int) $file->getFilename();
                 if (isset($sessionsAvecId[$id])) {
                     $sessionsAvecResumes[$id] = $sessionsAvecId[$id];
                     $sessionsAvecResumes[$id]['file'] = $file->getFilename();
@@ -248,7 +250,7 @@ class AppelConferencier
         return $sessionsAvecResumes;
     }
 
-    function obtenirListeSessionsPlannifies($id_forum)
+    public function obtenirListeSessionsPlannifies($id_forum)
     {
         $requete = ' SELECT ';
         $requete .= " ( SELECT CONCAT(c.prenom, ' ', c.nom,' - ', c.societe )  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id order by c.conferencier_id asc limit 1) as conf1 ,
@@ -284,9 +286,9 @@ class AppelConferencier
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirListeProjets($id_forum = null,
-                                 $champs = 's.*',
-                                 $ordre = 's.date_soumission',
+    public function obtenirListeProjets($id_forum = null,
+                                 string $champs = 's.*',
+                                 string $ordre = 's.date_soumission',
                                  $associatif = false,
                                  $filtre = false,
                                  $only_ids = [])
@@ -307,7 +309,7 @@ class AppelConferencier
             $requete .= ' AND s.titre LIKE \'%' . $filtre . '%\' ';
         }
         if ($only_ids) {
-            $requete .= ' AND s.session_id IN (' . implode($only_ids, ', ') . ') ';
+            $requete .= ' AND s.session_id IN (' . implode(', ', $only_ids) . ') ';
         }
         $requete .= ' AND s.genre = 9 ';
         $requete .= ' GROUP BY s.session_id ';
@@ -320,16 +322,15 @@ class AppelConferencier
         }
     }
 
-    function obtenirListeSessions($id_forum = null,
-                                  $champs = 's.*',
-                                  $ordre = 's.date_soumission',
+    public function obtenirListeSessions($id_forum = null,
+                                  string $champs = 's.*',
+                                  string $ordre = 's.date_soumission',
                                   $associatif = false,
                                   $filtre = false,
                                   $type = 'session',
                                   $needsMentoring = null,
                                   $planned = null
-    )
-    {
+    ) {
         $requete = ' SELECT ';
         $requete .= '  COUNT(co.id) as commentaires_nombre, ';
         $requete .= ' (SELECT AVG(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = s.session_id) AS note, ';
@@ -362,7 +363,7 @@ class AppelConferencier
         }
 
         if (null !== $needsMentoring) {
-            $requete .= ' AND s.needs_mentoring = ' . ((int)$needsMentoring);
+            $requete .= ' AND s.needs_mentoring = ' . ((int) $needsMentoring);
         }
 
         $requete .= ' GROUP BY s.session_id ';
@@ -374,7 +375,7 @@ class AppelConferencier
         }
     }
 
-    function ajouterConferencier($id_forum, $civilite, $nom, $prenom, $email, $societe, $biographie, $twitter)
+    public function ajouterConferencier($id_forum, $civilite, $nom, $prenom, $email, $societe, $biographie, $twitter)
     {
         $donnees = [
             $this->_bdd->echapper($id_forum),
@@ -482,7 +483,7 @@ class AppelConferencier
             $requete .= 'verbatim = ' . $this->_bdd->echapper($verbatim) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
-        $requete .= ' WHERE session_id = ' . (int)$id;
+        $requete .= ' WHERE session_id = ' . (int) $id;
 
         return $this->_bdd->executer($requete);
     }
@@ -491,7 +492,7 @@ class AppelConferencier
     {
         $requete = 'UPDATE afup_sessions SET ';
         $requete .= ' joindin = ' . $this->_bdd->echapper($joindin);
-        $requete .= ' WHERE session_id = ' . (int)$id;
+        $requete .= ' WHERE session_id = ' . (int) $id;
 
         return $this->_bdd->executer($requete);
     }
@@ -507,7 +508,6 @@ class AppelConferencier
         int $level = Talk::SKILL_NA,
         $useMarkdown = false
     ) {
-
         $donnees = [
             $this->_bdd->echapper($id_forum),
             $this->_bdd->echapper($date_soumission),
@@ -518,7 +518,7 @@ class AppelConferencier
             $this->_bdd->echapper($plannifie),
             $this->_bdd->echapper($needs_mentoring),
             $this->_bdd->echapper($level),
-            (int)$useMarkdown
+            (int) $useMarkdown
         ];
 
         $requete = ' INSERT INTO afup_sessions
@@ -533,10 +533,10 @@ class AppelConferencier
         return $this->_bdd->obtenirUn('select LAST_INSERT_ID()');
     }
 
-    function delierSession($session_id)
+    public function delierSession($session_id)
     {
         $requete = ' DELETE FROM afup_conferenciers_sessions ';
-        $requete .= ' WHERE session_id = ' . (int)$session_id;
+        $requete .= ' WHERE session_id = ' . (int) $session_id;
 
         return $this->_bdd->executer($requete);
     }
@@ -559,20 +559,20 @@ class AppelConferencier
         return $this->_bdd->executer($requete);
     }
 
-    function dejaVote($id_user, $id_session)
+    public function dejaVote($id_user, $id_session): bool
     {
         $requete = 'SELECT count(*) FROM afup_sessions_vote
         WHERE id_personne_physique=' . $this->_bdd->echapper($id_user)
             . ' AND id_session=' . $this->_bdd->echapper($id_session);
 
-        return (bool)$this->_bdd->obtenirUn($requete);
+        return (bool) $this->_bdd->obtenirUn($requete);
     }
 
-    function nbVoteSession($id_session)
+    public function nbVoteSession($id_session): int
     {
         $requete = 'SELECT count(*) FROM afup_sessions_vote
         WHERE id_session=' . $this->_bdd->echapper($id_session);
 
-        return (int)$this->_bdd->obtenirUn($requete);
+        return (int) $this->_bdd->obtenirUn($requete);
     }
 }

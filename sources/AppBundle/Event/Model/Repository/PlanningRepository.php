@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Planning;
@@ -14,8 +16,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class PlanningRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @param Talk $talk
-     *
      * @return Planning|null
      */
     public function getByTalk(Talk $talk)
@@ -35,8 +35,6 @@ class PlanningRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param SerializerFactoryInterface $serializerFactory
-     * @param array $options
      * @return Metadata
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

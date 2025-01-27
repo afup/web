@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site;
 
 use AppBundle\Association\Model\User;
@@ -22,27 +24,16 @@ class Droits
 {
     /**
      * Liste structurée avec toutes les pages référencées dans l'application
-     *
-     * @var array
      */
-    private $_pages = [];
+    private array $_pages = [];
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * Constructeur. Vérifie si l'utilisateur est connecté
      *
-     * @param TokenStorageInterface $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @access public
      */
     public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
     {
@@ -66,7 +57,7 @@ class Droits
         return null;
     }
 
-    public function chargerToutesLesPages($pages)
+    public function chargerToutesLesPages($pages): void
     {
         if (is_array($pages)) {
             $this->_pages = $pages;
@@ -82,17 +73,13 @@ class Droits
             return true;
         }
         foreach ($this->_pages as $_page => $_page_details) {
-            if ($page == $_page) {
-                if (isset($_page_details['niveau']) && $this->authorizationChecker->isGranted($_page_details['niveau'])) {
-                    return true;
-                }
+            if ($page == $_page && (isset($_page_details['niveau']) && $this->authorizationChecker->isGranted($_page_details['niveau']))) {
+                return true;
             }
-            if (isset($_page_details['elements']) and is_array($_page_details['elements'])) {
+            if (isset($_page_details['elements']) && is_array($_page_details['elements'])) {
                 foreach ($_page_details['elements'] as $_element => $_element_details) {
-                    if ($page == $_element) {
-                        if (isset($_element_details['niveau']) && $this->authorizationChecker->isGranted($_element_details['niveau'])) {
-                            return true;
-                        }
+                    if ($page == $_element && (isset($_element_details['niveau']) && $this->authorizationChecker->isGranted($_element_details['niveau']))) {
+                        return true;
                     }
                 }
             }

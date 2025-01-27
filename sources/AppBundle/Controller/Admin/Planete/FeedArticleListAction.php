@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Planete;
 
 use PlanetePHP\FeedArticleRepository;
@@ -9,10 +11,8 @@ use Twig\Environment;
 
 class FeedArticleListAction
 {
-    /** @var FeedArticleRepository */
-    private $feedArticleRepository;
-    /** @var Environment */
-    private $twig;
+    private FeedArticleRepository $feedArticleRepository;
+    private Environment $twig;
 
     public function __construct(
         FeedArticleRepository $feedArticleRepository,
@@ -22,7 +22,7 @@ class FeedArticleListAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $sort = $request->query->get('sort', 'title');
         $direction = $request->query->get('direction', 'asc');

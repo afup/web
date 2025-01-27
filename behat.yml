@@ -1,10 +1,10 @@
 default:
   autoload:
-    '': %paths.base%/tests/behat/bootstrap
+    '': '%paths.base%/tests/behat/bootstrap'
   suites:
     web_features:
       paths:
-        - %paths.base%/tests/behat
+        - '%paths.base%/tests/behat'
       contexts:
         - FeatureContext
         - Behat\MinkExtension\Context\MinkContext

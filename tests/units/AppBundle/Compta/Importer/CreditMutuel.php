@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Compta\Importer\test\units;
 
 use AppBundle\Compta\Importer\CreditMutuel as TestedClass;
@@ -7,8 +9,7 @@ use AppBundle\Compta\Importer\Operation;
 
 class CreditMutuel extends \atoum
 {
-
-    public function testValidate()
+    public function testValidate(): void
     {
         $importerCmut = new TestedClass();
         $importerCmut->initialize(__DIR__ . '/_data/cmut.csv');
@@ -20,7 +21,7 @@ class CreditMutuel extends \atoum
         $this->boolean($importerCE->validate())->isFalse();
     }
 
-    public function testExtract()
+    public function testExtract(): void
     {
         $importer = new TestedClass();
         $importer->initialize(__DIR__ . '/_data/cmut.csv');

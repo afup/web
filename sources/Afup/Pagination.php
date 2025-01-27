@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site;
+
 class Pagination
 {
     private $page_courante;

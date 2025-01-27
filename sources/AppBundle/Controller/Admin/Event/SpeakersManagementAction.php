@@ -1,29 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class SpeakersManagementAction extends Controller
+class SpeakersManagementAction extends AbstractController
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var Environment */
-    private $twig;
-    /** @var SpeakersExpensesStorage */
-    private $speakersExpensesStorage;
+    private EventActionHelper $eventActionHelper;
+    private SpeakerRepository $speakerRepository;
+    private FormFactoryInterface $formFactory;
+    private Environment $twig;
+    private SpeakersExpensesStorage $speakersExpensesStorage;
 
     public function __construct(
         EventActionHelper $eventActionHelper,

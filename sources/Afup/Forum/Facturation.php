@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Forum;
 
 use Afup\Site\Utils\Mail;
@@ -19,7 +21,6 @@ class Facturation
     /**
      * Instance de la couche d'abstraction à la base de données
      * @var     object
-     * @access  private
      */
     private $_bdd;
 
@@ -27,10 +28,9 @@ class Facturation
      * Constructeur.
      *
      * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      * @return void
      */
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -40,10 +40,9 @@ class Facturation
      *
      * @param  string $reference Reference de la facturation
      * @param  string $champs Champs à renvoyer
-     * @access public
      * @return array
      */
-    function obtenir($reference, $champs = '*')
+    public function obtenir($reference, string $champs = '*')
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -60,12 +59,11 @@ class Facturation
      * @param  string $champs Champs à renvoyer
      * @param  string $ordre Tri des enregistrements
      * @param  bool $associatif Renvoyer un tableau associatif ?
-     * @access public
      * @return array
      */
-    function obtenirListe($id_forum = null,
-                          $champs = '*',
-                          $ordre = 'date_reglement',
+    public function obtenirListe($id_forum = null,
+                          string $champs = '*',
+                          string $ordre = 'date_reglement',
                           $associatif = false,
                           $filtre = false)
     {
@@ -87,14 +85,14 @@ class Facturation
         }
     }
 
-    function creerReference($id_forum, $label)
+    public function creerReference($id_forum, $label): string
     {
         $label = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', strtoupper(supprimerAccents($label)));
 
         return 'F' . date('Y') . sprintf('%02d', $id_forum) . '-' . date('dm') . '-' . substr($label, 0, 5) . '-' . substr(md5(date('r') . $label), -5);
     }
 
-    function estFacture($reference)
+    public function estFacture($reference)
     {
         $facture = $this->obtenir($reference, 'etat, facturation');
         if ($facture['facturation'] == AFUP_FORUM_FACTURE_A_ENVOYER) {
@@ -111,7 +109,7 @@ class Facturation
         return true;
     }
 
-    function genererDevis($reference, $chemin = null)
+    public function genererDevis(string $reference, $chemin = null): void
     {
         $requete = 'SELECT aff.*, af.titre AS event_name
         FROM afup_facturation_forum aff
@@ -187,7 +185,7 @@ class Facturation
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
         if (is_null($chemin)) {
-            $pdf->Output('Devis - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
+            $pdf->Output('Devis - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', (int) $facture['date_facture']) . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -207,10 +205,8 @@ class Facturation
      *
      * @param string $reference Reference de la facture
      * @param string $chemin Chemin du fichier PDF à générer. Si ce chemin est omi, le PDF est renvoyé au navigateur.
-     * @access public
-     * @return bool
      */
-    function genererFacture($reference, $chemin = null)
+    public function genererFacture(string $reference, $chemin = null): string
     {
         $type = '';
         $requete = 'SELECT aff.*, af.titre AS event_name, af.has_prices_defined_with_vat as event_has_prices_defined_with_vat
@@ -383,7 +379,7 @@ class Facturation
             $pdf->SetTextColor(255, 0, 0);
             $pdf->Cell(130, 5);
             if ($facture['type_reglement'] != Ticket::PAYMENT_NONE) {
-                $pdf->Cell(60, 5, utf8_decode('Payé ' . $type . ' le ' . date('d/m/Y', $facture['date_reglement'])));
+                $pdf->Cell(60, 5, utf8_decode('Payé ' . $type . ' le ' . date('d/m/Y', (int) $facture['date_reglement'])));
             }
             $pdf->SetTextColor(0, 0, 0);
         }
@@ -393,7 +389,7 @@ class Facturation
         }
 
         if (is_null($chemin)) {
-            $pdf->Output('Facture - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', $facture['date_facture']) . '.pdf', 'D');
+            $pdf->Output('Facture - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', (int) $facture['date_facture']) . '.pdf', 'D');
         } else {
             $pdf->Output($chemin, 'F');
         }
@@ -401,26 +397,23 @@ class Facturation
         return $reference;
     }
 
-    private function formatFactureValue($value, $isSubjectedToVat)
+    private function formatFactureValue($value, bool $isSubjectedToVat)
     {
         if (false === $isSubjectedToVat) {
             return $value;
         }
 
-        return number_format($value, 2, ',', ' ');
+        return number_format((float) $value, 2, ',', ' ');
     }
 
     /**
      * Envoi par mail d'une facture au format PDF
      *
      * @param string|array $reference Invoicing reference as string, or the invoice itself
-     * @access public
      * @return bool Succès de l'envoi
      */
-    function envoyerFacture($reference, $copyTresorier = true, $facturer = true)
+    public function envoyerFacture($reference, $copyTresorier = true, $facturer = true)
     {
-        $configuration = $GLOBALS['AFUP_CONF'];
-
         if (is_array($reference)) {
             $personne = $reference;
             $reference = $personne['reference'];
@@ -440,11 +433,11 @@ class Facturation
         $mailer->renderTemplate($message,'mail_templates/facture-forum.html.twig', [
             'raison_sociale' => AFUP_RAISON_SOCIALE,
             'adresse' => AFUP_ADRESSE,
-            'ville' => AFUP_CODE_POSTAL.' '.AFUP_VILLE,
+            'ville' => AFUP_CODE_POSTAL . ' ' . AFUP_VILLE,
         ]);
         $message->addAttachment(new Attachment(
             $cheminFacture,
-            'facture-'.$numeroFacture.'.pdf',
+            'facture-' . $numeroFacture . '.pdf',
             'base64',
             'application/pdf'
         ));

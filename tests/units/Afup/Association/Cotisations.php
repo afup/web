@@ -1,7 +1,8 @@
 <?php
 
-namespace Afup\Site\Association\tests\units;
+declare(strict_types=1);
 
+namespace Afup\Site\Association\tests\units;
 
 use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -37,7 +38,7 @@ class Cotisations extends \atoum
     /**
      * @dataProvider generateCotisationProvider
      */
-    public function testFinProchaineCotisation($case, $dateFin, $expected)
+    public function testFinProchaineCotisation($case, $dateFin, $expected): void
     {
         $bdd = $this->newMockInstance(Base_De_Donnees::class, null, null, [
             'hostname',
@@ -75,7 +76,7 @@ class Cotisations extends \atoum
     /**
      * @dataProvider accountCmdProvider
      */
-    public function testGetAccountFromCmd($case, $cmd, $expected)
+    public function testGetAccountFromCmd($case, $cmd, $expected): void
     {
         $bdd = $this->newMockInstance(Base_De_Donnees::class, null, null, [
             'hostname',

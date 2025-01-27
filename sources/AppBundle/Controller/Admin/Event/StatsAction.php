@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use Afup\Site\Forum\Inscriptions;
@@ -17,20 +19,13 @@ use Twig\Environment;
 
 class StatsAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var LegacyModelFactory */
-    private $legacyModelFactory;
-    /** @var TicketRepository */
-    private $ticketRepository;
-    /** @var TicketTypeRepository */
-    private $ticketTypeRepository;
-    /** @var EventStatsRepository */
-    private $eventStatsRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var Environment */
-    private $twig;
+    private EventActionHelper $eventActionHelper;
+    private LegacyModelFactory $legacyModelFactory;
+    private TicketRepository $ticketRepository;
+    private TicketTypeRepository $ticketTypeRepository;
+    private EventStatsRepository $eventStatsRepository;
+    private FormFactoryInterface $formFactory;
+    private Environment $twig;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -50,7 +45,7 @@ class StatsAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $id = $request->query->get('id');
         $comparedEventId = $request->query->get('compared_event_id');
@@ -106,7 +101,7 @@ class StatsAction
 
         $rawStatsByType = $this->eventStatsRepository->getStats($event->getId())->ticketType->paying;
         $totalInscrits = array_sum($rawStatsByType);
-        array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits) {
+        array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits): void {
             if (isset($ticketTypes[$key]) === false) {
                 $type = $this->ticketTypeRepository->get($key);
                 $ticketTypes[$key] = $type->getPrettyName();

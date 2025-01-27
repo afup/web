@@ -4,7 +4,7 @@ admin_home:
 
 admin_vote:
   path: /vote/
-  defaults: {_controller: AppBundle:Admin\Vote:admin}
+  defaults: {_controller: AppBundle\Controller\Admin\VoteController::admin}
 
 admin_relances:
   path: /association/relances/{page}
@@ -12,7 +12,7 @@ admin_relances:
 
 admin_void:
   path: /void
-  defaults: {_controller: AppBundle:Legacy:backOffice}
+  defaults: {_controller: AppBundle\Controller\LegacyController::backOffice}
 
 admin_login:
   path: /login

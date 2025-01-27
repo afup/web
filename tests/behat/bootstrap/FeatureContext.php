@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use AppBundle\Event\Model\Event;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
@@ -100,7 +102,7 @@ class FeatureContext implements Context
     /**
      * @Given I am logged-in with the user :username and the password :password
      */
-    public function iAmLoggedInWithTheUserAndThePassword(string $username, string $password)
+    public function iAmLoggedInWithTheUserAndThePassword(string $username, string $password): void
     {
         $this->minkContext->visitPath('/admin/login');
         $this->minkContext->fillField('utilisateur', $username);
@@ -292,9 +294,9 @@ class FeatureContext implements Context
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            throw new \RuntimeException(sprintf('Error : ' . curl_error($ch)));
+        curl_exec($ch);
+        if (curl_errno($ch) !== 0) {
+            throw new \RuntimeException('Error : ' . curl_error($ch));
         }
 
         curl_close($ch);
@@ -513,7 +515,7 @@ class FeatureContext implements Context
      */
     public function iShouldReceiveAnEmail(): void
     {
-        $content = file_get_contents(self::MAILCATCHER_URL.'/messages');
+        $content = file_get_contents(self::MAILCATCHER_URL . '/messages');
         $decodedContent = json_decode($content, true);
 
         $foundEmails = [];
@@ -539,7 +541,7 @@ class FeatureContext implements Context
      */
     public function theEmailShouldContainAFullUrlStartingWith(string $arg1): void
     {
-        $content = file_get_contents(self::MAILCATCHER_URL.'/messages');
+        $content = file_get_contents(self::MAILCATCHER_URL . '/messages');
         $decodedContent = json_decode($content, true);
 
         $foundEmails = [];
@@ -559,8 +561,8 @@ class FeatureContext implements Context
                 )
             );
         }
-        
-        $content = file_get_contents(self::MAILCATCHER_URL.'/messages/'.$foundEmails[0]['id'].'.plain');
+
+        $content = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $foundEmails[0]['id'] . '.plain');
         if (false === strpos($content, $arg1)) {
             throw new ExpectationException(
                 sprintf(

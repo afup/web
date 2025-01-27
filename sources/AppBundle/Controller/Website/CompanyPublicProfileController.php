@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -7,26 +9,37 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Offices\OfficesCollection;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-class CompanyPublicProfileController extends Controller
+class CompanyPublicProfileController extends AbstractController
 {
     private ViewRenderer $view;
+    private BadgesComputer $badgesComputer;
+    private RepositoryFactory $repositoryFactory;
+    private string $storageDir;
 
-    public function __construct(ViewRenderer $view)
+    public function __construct(ViewRenderer $view,
+                                BadgesComputer $badgesComputer,
+                                RepositoryFactory $repositoryFactory,
+                                string $storageDir)
     {
         $this->view = $view;
+        $this->badgesComputer = $badgesComputer;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->storageDir = $storageDir;
     }
 
-    public function indexAction($id, $slug)
+    public function index($id, $slug): Response
     {
         $companyMember = $this->checkAndGetCompanyMember($id, $slug);
 
         return $this->view->render('site/company_public_profile.html.twig', [
             'company_member' => $companyMember,
             'offices' => $this->getRelatedAfupOffices($companyMember),
-            'badges' => $this->get(BadgesComputer::class)->getCompanyBadges($companyMember),
+            'badges' => $this->badgesComputer->getCompanyBadges($companyMember),
         ]);
     }
 
@@ -41,7 +54,7 @@ class CompanyPublicProfileController extends Controller
         /**
          * @var CompanyMemberRepository $companyRepository
          */
-        $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
+        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
         $companyMember = $companyRepository->findById($id);
 
         if ($companyMember === null
@@ -55,13 +68,11 @@ class CompanyPublicProfileController extends Controller
         return $companyMember;
     }
 
-    public function logoAction($id, $slug)
+    public function logo($id, $slug)
     {
         $companyMember = $this->checkAndGetCompanyMember($id, $slug);
 
-        $dir = $this->getParameter('kernel.project_dir') . '/htdocs/uploads/members_logo';
-
-        $filepath = $dir . DIRECTORY_SEPARATOR . $companyMember->getLogoUrl();
+        $filepath = $this->storageDir . DIRECTORY_SEPARATOR . $companyMember->getLogoUrl();
 
         if (false === is_file($filepath)) {
             throw $this->createNotFoundException();
@@ -70,7 +81,10 @@ class CompanyPublicProfileController extends Controller
         return new BinaryFileResponse($filepath);
     }
 
-    private function getRelatedAfupOffices(CompanyMember $companyMember)
+    /**
+     * @return mixed[]
+     */
+    private function getRelatedAfupOffices(CompanyMember $companyMember): array
     {
         $officesCollection = new OfficesCollection();
         $offices = [];
@@ -83,7 +97,7 @@ class CompanyPublicProfileController extends Controller
             $offices[] = $office;
         }
 
-        usort($offices, function ($a, $b) {
+        usort($offices, function (array $a, array $b): int {
             $a = $a['label'];
             $b = $b['label'];
             return $a <=> $b;

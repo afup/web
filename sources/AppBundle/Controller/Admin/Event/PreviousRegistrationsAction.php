@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -11,10 +13,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class PreviousRegistrationsAction
 {
-    /** @var EventRepository */
-    private $eventRepository;
-    /** @var TicketRepository */
-    private $ticketRepository;
+    private EventRepository $eventRepository;
+    private TicketRepository $ticketRepository;
 
     public function __construct(
         EventRepository $eventRepository,
@@ -24,7 +24,7 @@ class PreviousRegistrationsAction
         $this->ticketRepository = $ticketRepository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): BinaryFileResponse
     {
         $file = new SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('inscrits_', true), 'w+');
         $events = $this->eventRepository->getPreviousEvents($request->query->getInt('event_count', 4));
