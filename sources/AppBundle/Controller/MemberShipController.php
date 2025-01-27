@@ -41,6 +41,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class MemberShipController extends SiteBaseController
 {
@@ -544,14 +546,30 @@ class MemberShipController extends SiteBaseController
         $attendee = $generalMeetingRepository->getAttendee($user->getUsername(), $latestDate);
         $lastGeneralMeetingDescription = $generalMeetingRepository->obtenirDescription($latestDate);
 
-        $defaultPresence = 0;
-        $defaultPowerId = null;
+        $data = [
+          'presence' => 0,
+          'id_personne_avec_pouvoir' => null,
+        ];
         if (null !== $attendee) {
-            $defaultPresence = $attendee->getPresence();
-            $defaultPowerId = $attendee->getPowerId();
+            $data['presence'] = $attendee->getPresence();
+            $data['id_personne_avec_pouvoir'] = $attendee->getPowerId();
         }
 
-        $form = $this->createFormBuilder()
+        $form = $this->createFormBuilder($data, [
+                'constraints' => [
+                    new Assert\Callback([
+                        'callback' => static function (array $data, ExecutionContextInterface $context) {
+                            if ($data['presence'] === 1 && $data['id_personne_avec_pouvoir']) {
+                                $context
+                                    ->buildViolation("Vous ne pouvez pas donner votre pouvoir et indiquer que vous participez en même temps.")
+                                    ->atPath('[id_personne_avec_pouvoir]')
+                                    ->addViolation()
+                                ;
+                            }
+                        }]
+                    )
+                ]
+            ])
             ->add('presence', ChoiceType::class, [
                 'expanded' => true,
                 'choices' => [
@@ -559,26 +577,20 @@ class MemberShipController extends SiteBaseController
                     'Je ne participe pas' => 2
                 ]
             ])
-            ->add(
-                'id_personne_avec_pouvoir',
-                ChoiceType::class,
-                [
-                    'choices' => array_flip($generalMeetingRepository->getPowerSelectionList($latestDate, $user->getUsername())),
-                    'label' => 'Je donne mon pouvoir à',
-                    'required' => false,
-                ]
-            )
-            ->add('save', SubmitType::class, ['label' => 'Confirmer'])
-            ->setData([
-                'presence' => $defaultPresence,
-                'id_personne_avec_pouvoir' => $defaultPowerId,
+            ->add('id_personne_avec_pouvoir', ChoiceType::class, [
+                'choices' => array_flip($generalMeetingRepository->getPowerSelectionList($latestDate, $user->getUsername())),
+                'label' => 'Je donne mon pouvoir à',
+                'required' => false,
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Confirmer'
             ])
             ->getForm();
 
         $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+
             if (null !== $attendee) {
                 $ok = $generalMeetingRepository->editAttendee(
                     $user->getUsername(),
