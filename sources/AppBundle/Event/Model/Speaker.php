@@ -493,6 +493,10 @@ class Speaker implements NotifyPropertyInterface
     {
         if ($bluesky !== null) {
             $bluesky = str_replace('https://bsky.app/profile/', '', $bluesky);
+
+            if (substr($bluesky, 0, 1) === '@') {
+                $bluesky = substr($bluesky, 1);
+            }
         }
 
         $this->propertyChanged('bluesky', $this->bluesky, $bluesky);
