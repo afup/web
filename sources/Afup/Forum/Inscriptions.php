@@ -95,7 +95,7 @@ SQL;
             $idForumPrecedent = $forum->obtenirForumPrecedent($idForum);
         }
 
-        $now = new \DateTime();
+        $now = \DateTime::createFromFormat('Y-m-d H:i:s', '2025-01-27 15:53:00');
         $dateForum = \DateTime::createFromFormat('U', $forum->obtenir($idForum)['date_fin_vente']);
 
         $daysToEndOfSales = 0;
