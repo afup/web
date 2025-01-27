@@ -5,7 +5,6 @@ namespace AppBundle\Controller\Website;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
-use AppBundle\Controller\SiteBaseController;
 use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 

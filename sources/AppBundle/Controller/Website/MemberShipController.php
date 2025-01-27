@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Logger\DbLoggerTrait;

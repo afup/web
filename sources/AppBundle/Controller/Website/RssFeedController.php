@@ -1,12 +1,13 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class RssFeedController extends SiteBaseController
+class RssFeedController extends Controller
 {
     public function __invoke()
     {

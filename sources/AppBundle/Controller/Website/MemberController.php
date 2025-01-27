@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;

@@ -5,7 +5,7 @@ namespace AppBundle\Controller\Website\Member;
 use AppBundle\Association\Form\CompanyPublicProfile;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Controller\SiteBaseController;
+use AppBundle\Controller\Website\SiteBaseController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -75,7 +75,7 @@ class CompanyPublicProfileController extends SiteBaseController
             $companyRepository->save($companyMember);
 
             $this->addFlash('success', 'Modifications enregistrées');
-            return $this->redirectToRoute('admin_company_public_profile');
+            return $this->redirectToRoute('member_company_public_profile');
         }
 
         return $this->render(

@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 
-class PayboxRedirectAction extends SiteBaseController
+class PayboxRedirectController extends SiteBaseController
 {
-    public function index(Request $request, $type = 'success')
+    public function indexAction(Request $request, $type = 'success')
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
 

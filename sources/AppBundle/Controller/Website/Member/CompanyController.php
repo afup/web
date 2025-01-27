@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\Admin\Membership;
+namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Form\AdminCompanyMemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\Controller\BlocksHandler;
+use AppBundle\Controller\Website\BlocksHandler;
 use Assert\Assertion;
 use Exception;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 
-class CompanyAction
+class CompanyController
 {
     /** @var CompanyMemberRepository */
     private $companyMemberRepository;
@@ -77,7 +77,7 @@ class CompanyAction
                 $this->flashBag->add('error', 'Une erreur est survenue. Merci de nous contacter.');
             }
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_company'));
+            return new RedirectResponse($this->urlGenerator->generate('member_company'));
         }
 
         return new Response($this->twig->render('admin/association/membership/company.html.twig', [

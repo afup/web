@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\HttpFoundation\Request;

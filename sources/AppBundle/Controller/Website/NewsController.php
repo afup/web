@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Form\NewsFiltersType;

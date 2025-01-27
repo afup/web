@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Event;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;

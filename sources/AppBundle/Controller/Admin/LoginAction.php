@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Controller\BlocksHandler;
+use AppBundle\Controller\Website\BlocksHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;

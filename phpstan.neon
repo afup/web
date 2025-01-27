@@ -21,7 +21,7 @@ parameters:
 
     ignoreErrors:
         -
-            message: '#^Method AppBundle\\Controller\\SiteBaseController\:\:render\(\) overrides @final method Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller\:\:render\(\)\.$#'
+            message: '#^Method AppBundle\\Controller\\Website\\SiteBaseController\:\:render\(\) overrides @final method Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller\:\:render\(\)\.$#'
             identifier: method.parentMethodFinalByPhpDoc
             count: 1
-            path: sources/AppBundle/Controller/SiteBaseController.php
+            path: sources/AppBundle/Controller/Website/SiteBaseController.php

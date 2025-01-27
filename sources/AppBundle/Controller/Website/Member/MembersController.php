@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Admin\Membership;
+namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\CompanyMembership\InvitationMail;
 use AppBundle\Association\CompanyMembership\UserCompany;
@@ -11,7 +11,7 @@ use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\Controller\BlocksHandler;
+use AppBundle\Controller\Website\BlocksHandler;
 use AppBundle\Model\CollectionFilter;
 use Assert\Assertion;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -30,7 +30,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 
-class MembersAction
+class MembersController
 {
     /** @var CompanyMemberRepository */
     private $companyMemberRepository;
@@ -124,7 +124,7 @@ class MembersAction
                 } else {
                     $this->flashBag->add('error', 'Vous avez atteint le nombre maximum de membres');
                 }
-            } elseif (!$this->csrfTokenManager->isTokenValid(new CsrfToken('admin_company_members', $request->request->get('token')))) {
+            } elseif (!$this->csrfTokenManager->isTokenValid(new CsrfToken('member_company_members', $request->request->get('token')))) {
                 $this->flashBag->add('error', 'Erreur lors de la soumission du formulaire (jeton CSRF invalide). Merci de réessayer.');
             } elseif ($request->request->has('delete_invitation')) {
                 $this->removeInvitation($request->request->get('delete_invitation'), $pendingInvitations);
@@ -138,7 +138,7 @@ class MembersAction
                 $this->removeUser($request->request->get('remove'), $users);
             }
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_company_members', [
+            return new RedirectResponse($this->urlGenerator->generate('member_company_members', [
                 'id' => $this->security->isGranted('ROLE_SUPER_ADMIN') ? $companyId : null,
             ]));
         }
@@ -150,7 +150,7 @@ class MembersAction
             'formInvitation' => $invitationForm->createView(),
             'company' => $company,
             'canAddUser' => $canAddUser,
-            'token' => $this->csrfTokenManager->getToken('admin_company_members'),
+            'token' => $this->csrfTokenManager->getToken('member_company_members'),
         ] + $this->blocksHandler->getDefaultBlocks()));
     }
 

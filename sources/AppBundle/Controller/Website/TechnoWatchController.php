@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use AppBundle\Calendar\TechnoWatchCalendarGenerator;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Event;
 
 use Afup\Site\Forum\Facturation;
 use Afup\Site\Utils\Utils;

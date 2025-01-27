@@ -43,6 +43,11 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Controller\Website\:
+        resource: '../../sources/AppBundle/Controller/Website/*'
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Command\GeneralMeetupNotificationCommand:
         autowire: true
         autoconfigure: true
@@ -99,24 +104,10 @@ services:
         arguments:
           $backOfficePages: '%app.pages_backoffice%'
 
-    AppBundle\Controller\BlocksHandler: ~
-
     AppBundle\Security\MyGithubAuthenticator:
         autowire: true
 
     AppBundle\Security\TestGithubAuthenticator:
-        autowire: true
-
-    AppBundle\Controller\LeadController:
-        autowire: true
-
-    AppBundle\Controller\HtmlSitemapController:
-        autowire: true
-
-    AppBundle\Controller\SpeakerSuggestionController:
-        autowire: true
-
-    AppBundle\Controller\PayboxRedirectAction:
         autowire: true
 
     AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:

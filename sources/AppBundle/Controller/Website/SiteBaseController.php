@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Website;
 
 use Afup\Site\Utils\Configuration;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
