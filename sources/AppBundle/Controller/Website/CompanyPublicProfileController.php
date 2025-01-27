@@ -6,22 +6,28 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Offices\OfficesCollection;
+use AppBundle\WebsiteBlocks;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class CompanyPublicProfileController extends SiteBaseController
+class CompanyPublicProfileController extends Controller
 {
+    private WebsiteBlocks $websiteBlocks;
+
+    public function __construct(WebsiteBlocks $websiteBlocks)
+    {
+        $this->websiteBlocks = $websiteBlocks;
+    }
+
     public function indexAction($id, $slug)
     {
         $companyMember = $this->checkAndGetCompanyMember($id, $slug);
 
-        return $this->render(
-            ':site:company_public_profile.html.twig',
-            [
-                'company_member' => $companyMember,
-                'offices' => $this->getRelatedAfupOffices($companyMember),
-                'badges' => $this->get(BadgesComputer::class)->getCompanyBadges($companyMember),
-            ]
-        );
+        return $this->websiteBlocks->render('site/company_public_profile.html.twig', [
+            'company_member' => $companyMember,
+            'offices' => $this->getRelatedAfupOffices($companyMember),
+            'badges' => $this->get(BadgesComputer::class)->getCompanyBadges($companyMember),
+        ]);
     }
 
     /**

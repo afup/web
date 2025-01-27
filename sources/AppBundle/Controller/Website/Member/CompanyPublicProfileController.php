@@ -5,11 +5,11 @@ namespace AppBundle\Controller\Website\Member;
 use AppBundle\Association\Form\CompanyPublicProfile;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Controller\Website\SiteBaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-class CompanyPublicProfileController extends SiteBaseController
+class CompanyPublicProfileController extends Controller
 {
     public function indexAction(Request $request)
     {

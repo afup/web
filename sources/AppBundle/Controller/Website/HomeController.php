@@ -7,36 +7,40 @@ use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
+use AppBundle\WebsiteBlocks;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends SiteBaseController
+class HomeController extends Controller
 {
-    const MAX_ARTICLES = 5;
-    const MAX_MEETUPS = 10;
+    public const MAX_ARTICLES = 5;
+    public const MAX_MEETUPS = 10;
+    private WebsiteBlocks $websiteBlocks;
 
-    public function displayAction()
+    public function __construct(WebsiteBlocks $websiteBlocks)
     {
-        $afupBdd = $GLOBALS['AFUP_DB'];
+        $this->websiteBlocks = $websiteBlocks;
+    }
 
+    public function displayAction(): Response
+    {
         $articles = new Articles();
         $derniers_articles = $articles->chargerDerniersAjouts(self::MAX_ARTICLES);
 
-        $branche = new Branche($afupBdd);
+        $branche = new Branche();
         $enfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_COLONNE_DROITE);
 
         $premiereFeuille = array_shift($enfants);
         $deuxiemeFeuille = array_shift($enfants);
 
-        return $this->render(
-            ':site:home.html.twig',
-            [
-                'actualites' => $derniers_articles,
-                'meetups' => $this->getLatestMeetups(),
-                'premiere_feuille' => $premiereFeuille,
-                'deuxieme_feuille' => $deuxiemeFeuille,
-                'autres_feuilles' => $enfants,
-                'talk' => $deuxiemeFeuille ?? $this->getTalkOfTheDay(),
-            ]
-        );
+        return $this->websiteBlocks->render('site/home.html.twig', [
+            'actualites' => $derniers_articles,
+            'meetups' => $this->getLatestMeetups(),
+            'premiere_feuille' => $premiereFeuille,
+            'deuxieme_feuille' => $deuxiemeFeuille,
+            'autres_feuilles' => $enfants,
+            'talk' => $deuxiemeFeuille ?? $this->getTalkOfTheDay(),
+        ]);
     }
 
     /**

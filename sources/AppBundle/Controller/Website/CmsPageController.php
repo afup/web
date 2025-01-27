@@ -4,9 +4,18 @@ namespace AppBundle\Controller\Website;
 
 use Afup\Site\Corporate\Article;
 use Afup\Site\Corporate\Rubrique;
+use AppBundle\WebsiteBlocks;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class CmsPageController extends SiteBaseController
+class CmsPageController extends Controller
 {
+    private WebsiteBlocks $websiteBlocks;
+
+    public function __construct(WebsiteBlocks $websiteBlocks)
+    {
+        $this->websiteBlocks = $websiteBlocks;
+    }
+
     public function displayAction($code)
     {
         $articleRepository = new Article(null, $GLOBALS['AFUP_DB']);
@@ -29,13 +38,10 @@ class CmsPageController extends SiteBaseController
             throw $this->createNotFoundException();
         }
 
-        return $this->render(
-            ':site:cms_page/display.html.twig',
-            [
-                'article' => $article,
-                'rubrique' => $rubrique,
-            ]
-        );
+        return $this->websiteBlocks->render('site/cms_page/display.html.twig', [
+            'article' => $article,
+            'rubrique' => $rubrique,
+        ]);
     }
 
     protected function isRubriqueAllowed($rubrique)

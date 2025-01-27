@@ -18,10 +18,3 @@ parameters:
     stubFiles:
             - tests/stubs/Ting/Repository/Repository.php.stub
             - tests/stubs/Ting/Repository/RepositoryFactory.php.stub
-
-    ignoreErrors:
-        -
-            message: '#^Method AppBundle\\Controller\\Website\\SiteBaseController\:\:render\(\) overrides @final method Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller\:\:render\(\)\.$#'
-            identifier: method.parentMethodFinalByPhpDoc
-            count: 1
-            path: sources/AppBundle/Controller/Website/SiteBaseController.php

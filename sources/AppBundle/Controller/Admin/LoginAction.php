@@ -2,29 +2,22 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Controller\Website\BlocksHandler;
+use AppBundle\WebsiteBlocks;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Twig\Environment;
 
 class LoginAction
 {
     /** @var AuthenticationUtils */
     private $authenticationUtils;
-    /** @var BlocksHandler */
-    private $blocksHandler;
-    /** @var Environment */
-    private $twig;
+    private WebsiteBlocks $websiteBlocks;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,
-        BlocksHandler $blocksHandler,
-        Environment $twig
+        WebsiteBlocks $websiteBlocks
     ) {
         $this->authenticationUtils = $authenticationUtils;
-        $this->blocksHandler = $blocksHandler;
-        $this->twig = $twig;
+        $this->websiteBlocks = $websiteBlocks;
     }
 
     public function __invoke(Request $request)
@@ -40,13 +33,13 @@ class LoginAction
         $noDomain = parse_url($targetUri, PHP_URL_HOST) === null;
         $targetPath = $targetUri !== $actualUrl && $noDomain ? $targetUri : null;
 
-        return new Response($this->twig->render('admin/login.html.twig', [
+        return $this->websiteBlocks->render('admin/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
             'target_path' => $targetPath,
             'title' => 'Connexion',
             'page' => 'connexion',
             'class' => 'panel-page',
-        ] + $this->blocksHandler->getDefaultBlocks()));
+        ]);
     }
 }

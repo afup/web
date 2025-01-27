@@ -11,8 +11,8 @@ use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\Controller\Website\BlocksHandler;
 use AppBundle\Model\CollectionFilter;
+use AppBundle\WebsiteBlocks;
 use Assert\Assertion;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use DateTime;
@@ -20,7 +20,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -28,7 +27,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Twig\Environment;
 
 class MembersController
 {
@@ -38,8 +36,7 @@ class MembersController
     private $userRepository;
     /** @var CompanyMemberInvitationRepository */
     private $companyMemberInvitationRepository;
-    /** @var BlocksHandler */
-    private $blocksHandler;
+    private WebsiteBlocks $websiteBlocks;
     /** @var FormFactoryInterface */
     private $formFactory;
     /** @var CollectionFilter */
@@ -58,14 +55,12 @@ class MembersController
     private $invitationMail;
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
-    /** @var Environment */
-    private $twig;
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,
         UserRepository $userRepository,
         CompanyMemberInvitationRepository $companyMemberInvitationRepository,
-        BlocksHandler $blocksHandler,
+        WebsiteBlocks $websiteBlocks,
         FormFactoryInterface $formFactory,
         CollectionFilter $collectionFilter,
         UserCompany $userCompany,
@@ -74,13 +69,12 @@ class MembersController
         CsrfTokenManagerInterface $csrfTokenManager,
         UrlGeneratorInterface $urlGenerator,
         InvitationMail $invitationMail,
-        EventDispatcherInterface $eventDispatcher,
-        Environment $twig
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->companyMemberRepository = $companyMemberRepository;
         $this->userRepository = $userRepository;
         $this->companyMemberInvitationRepository = $companyMemberInvitationRepository;
-        $this->blocksHandler = $blocksHandler;
+        $this->websiteBlocks = $websiteBlocks;
         $this->formFactory = $formFactory;
         $this->collectionFilter = $collectionFilter;
         $this->security = $security;
@@ -89,7 +83,6 @@ class MembersController
         $this->urlGenerator = $urlGenerator;
         $this->invitationMail = $invitationMail;
         $this->eventDispatcher = $eventDispatcher;
-        $this->twig = $twig;
         $this->flashBag = $flashBag;
     }
 
@@ -143,7 +136,7 @@ class MembersController
             ]));
         }
 
-        return new Response($this->twig->render('admin/association/membership/members_company.html.twig', [
+        return $this->websiteBlocks->render('admin/association/membership/members_company.html.twig', [
             'title' => 'Les membres de mon entreprise',
             'users' => $users,
             'invitations' => $pendingInvitations,
@@ -151,7 +144,7 @@ class MembersController
             'company' => $company,
             'canAddUser' => $canAddUser,
             'token' => $this->csrfTokenManager->getToken('member_company_members'),
-        ] + $this->blocksHandler->getDefaultBlocks()));
+        ]);
     }
 
     private function addUser(

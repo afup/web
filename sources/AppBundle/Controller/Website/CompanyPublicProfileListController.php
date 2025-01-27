@@ -4,9 +4,18 @@ namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\WebsiteBlocks;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class CompanyPublicProfileListController extends SiteBaseController
+class CompanyPublicProfileListController extends Controller
 {
+    private WebsiteBlocks $websiteBlocks;
+
+    public function __construct(WebsiteBlocks $websiteBlocks)
+    {
+        $this->websiteBlocks = $websiteBlocks;
+    }
+
     public function indexAction()
     {
         /**
@@ -22,11 +31,8 @@ class CompanyPublicProfileListController extends SiteBaseController
             return $a <=> $b;
         });
 
-        return $this->render(
-            ':site:company_public_profile_list.html.twig',
-            [
-                'company_member_list' => $displayableCompanies,
-            ]
-        );
+        return $this->websiteBlocks->render(':site:company_public_profile_list.html.twig', [
+            'company_member_list' => $displayableCompanies,
+        ]);
     }
 }
