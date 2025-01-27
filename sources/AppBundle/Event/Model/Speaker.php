@@ -86,6 +86,8 @@ class Speaker implements NotifyPropertyInterface
      */
     private $mastodon;
 
+    private ?string $bluesky = null;
+
     /**
      * @var GithubUser
      */
@@ -402,6 +404,20 @@ class Speaker implements NotifyPropertyInterface
         return (string) $this->mastodon;
     }
 
+    public function getBluesky(): ?string
+    {
+        return $this->bluesky;
+    }
+
+    public function getUrlBluesky(): ?string
+    {
+        if ($this->bluesky === null) {
+            return null;
+        }
+
+        return 'https://bsky.app/profile/' . $this->bluesky;
+    }
+
     public function getUsernameTwitter(): string
     {
         $twitter = $this->getTwitter();
@@ -470,6 +486,17 @@ class Speaker implements NotifyPropertyInterface
     {
         $this->propertyChanged('mastodon', $this->mastodon, $mastodon);
         $this->mastodon = $mastodon;
+        return $this;
+    }
+
+    public function setBluesky(?string $bluesky): self
+    {
+        if ($bluesky !== null) {
+            $bluesky = str_replace('https://bsky.app/profile/', '', $bluesky);
+        }
+
+        $this->propertyChanged('bluesky', $this->bluesky, $bluesky);
+        $this->bluesky = $bluesky;
         return $this;
     }
 

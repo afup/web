@@ -55,6 +55,7 @@ class SpeakerType extends AbstractType
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
             ->add('mastodon', UrlType::class, ['required' => false, 'help' => 'Exemple https://mastodon.online/@afup', 'default_protocol' => 'https'])
+            ->add('bluesky', TextType::class, ['required' => false, 'help' => 'Exemple acme.bsky.social'])
         ;
 
         if (true === $options[self::OPT_USER_GITHUB]) {
@@ -104,6 +105,7 @@ class SpeakerType extends AbstractType
                     $speaker->setBiography($previousSpeakerInfos->getBiography());
                     $speaker->setTwitter($previousSpeakerInfos->getTwitter());
                     $speaker->setMastodon($previousSpeakerInfos->getMastodon());
+                    $speaker->setBluesky($previousSpeakerInfos->getBluesky());
                     $speaker->setPhoto($previousSpeakerInfos->getPhoto());
 
                     $formEvent->getForm()->add('isFromPreviousEvent', HiddenType::class, ['mapped' => false]);
