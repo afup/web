@@ -35,7 +35,6 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
     $kernel = new AppKernel('prod', false);
 }
 
-$kernel->loadClassCache();
 $request = Request::createFromGlobals();
 
 $proxies = [

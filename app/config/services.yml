@@ -44,9 +44,12 @@ services:
         autoconfigure: true
 
     AppBundle\Controller\Website\:
-        resource: '../../sources/AppBundle/Controller/Website/*'
+        resource: '../../sources/AppBundle/Controller/Website/'
         autowire: true
         autoconfigure: true
+
+    AppBundle\WebsiteBlocks:
+        autowire: true
 
     AppBundle\Command\GeneralMeetupNotificationCommand:
         autowire: true
