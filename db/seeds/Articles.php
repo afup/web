@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use AppBundle\Site\Model\Rubrique;
 use Phinx\Seed\AbstractSeed;
 
 class Articles extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $chapeau = <<<EOF
 <p>Comme &agrave; chaque &eacute;dition du Forum PHP, les conf&eacute;rences ont &eacute;t&eacute; capt&eacute;es par notre partenaire dFusion. Elles sont d&eacute;sormais en ligne sur notre page "vid&eacute;os" !&nbsp;</p>

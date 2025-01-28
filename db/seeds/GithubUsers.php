@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class GithubUsers extends AbstractSeed
 {
     const ID_GITHUBUSER_UBERMUDA = 1;
 
-    public function run()
+    public function run(): void
     {
         $data = [
             [

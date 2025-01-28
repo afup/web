@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Migration\AbstractMigration;
 
 class EventWaitingListUrl extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<SQL
 ALTER TABLE `afup_forum`

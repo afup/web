@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class FeedArticle extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $table = $this->table('afup_planete_flux');
         $table->truncate();

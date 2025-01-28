@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 use Phinx\Migration\AbstractMigration;
 
 class HideInAccountingJournalEvent extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $this->execute('ALTER TABLE compta_evenement ADD COLUMN hide_in_accounting_journal_at DATETIME DEFAULT NULL');
         $this->execute('UPDATE compta_evenement SET hide_in_accounting_journal_at = NOW() WHERE evenement LIKE "AFUP Day 201%"');
@@ -22,6 +24,5 @@ class HideInAccountingJournalEvent extends AbstractMigration
         $this->execute('UPDATE compta_evenement SET hide_in_accounting_journal_at = NOW() WHERE evenement = "ZendCon 2013"');
         $this->execute('UPDATE compta_evenement SET hide_in_accounting_journal_at = NOW() WHERE evenement = "PHP TV"');
         $this->execute('UPDATE compta_evenement SET hide_in_accounting_journal_at = NOW() WHERE evenement = "RV AFUP"');
-
     }
 }

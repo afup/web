@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Afup\Site\Corporate\Feuille;
 use Phinx\Seed\AbstractSeed;
 
 class Feuilles extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             [
@@ -126,7 +128,7 @@ class Feuilles extends AbstractSeed
         ;
     }
 
-    private function getFooter()
+    private function getFooter(): array
     {
         return [
             [
@@ -183,7 +185,10 @@ class Feuilles extends AbstractSeed
         ];
     }
 
-    private function prepareFeuilles(array $items, $parentId, &$baseId = null)
+    /**
+     * @return mixed[]
+     */
+    private function prepareFeuilles(array $items, $parentId, &$baseId = null): array
     {
         if (null === $baseId) {
             $baseId = 1000;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use AppBundle\Model\ComptaCategorie;
 use AppBundle\Model\ComptaEvenement;
 use AppBundle\Model\ComptaModeReglement;
@@ -7,7 +9,7 @@ use Phinx\Seed\AbstractSeed;
 
 class ComptaRegle extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             [

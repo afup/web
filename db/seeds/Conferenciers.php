@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class Conferenciers extends AbstractSeed
 {
     const ID_CONFERENCIER = 1;
 
-    public function run()
+    public function run(): void
     {
         $data = [
             [

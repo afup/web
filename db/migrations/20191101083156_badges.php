@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Migration\AbstractMigration;
 
 class Badges extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<EOF
 CREATE TABLE `afup_badge` (
