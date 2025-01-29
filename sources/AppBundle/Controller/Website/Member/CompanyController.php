@@ -6,7 +6,7 @@ use AppBundle\Association\Form\AdminCompanyMemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Assert\Assertion;
 use Exception;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -21,7 +21,7 @@ class CompanyController
 {
     /** @var CompanyMemberRepository */
     private $companyMemberRepository;
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
     /** @var FormFactoryInterface */
     private $formFactory;
     /** @var FlashBagInterface */
@@ -33,14 +33,14 @@ class CompanyController
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,
-        WebsiteBlocks $websiteBlocks,
-        FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator,
-        Security $security
+        ViewRenderer            $view,
+        FormFactoryInterface    $formFactory,
+        FlashBagInterface       $flashBag,
+        UrlGeneratorInterface   $urlGenerator,
+        Security                $security
     ) {
         $this->companyMemberRepository = $companyMemberRepository;
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
         $this->urlGenerator = $urlGenerator;
@@ -73,7 +73,7 @@ class CompanyController
             return new RedirectResponse($this->urlGenerator->generate('member_company'));
         }
 
-        return $this->websiteBlocks->render('admin/association/membership/company.html.twig', [
+        return $this->view->render('admin/association/membership/company.html.twig', [
             'title' => 'Mon adhésion entreprise',
             'form' => $subscribeForm->createView(),
         ]);

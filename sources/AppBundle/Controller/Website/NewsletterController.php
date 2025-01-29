@@ -5,17 +5,17 @@ namespace AppBundle\Controller\Website;
 
 use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\Mailchimp\SubscriberType;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class NewsletterController extends Controller
 {
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
-    public function __construct(WebsiteBlocks $websiteBlocks)
+    public function __construct(ViewRenderer $view)
     {
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function subscribeFormAction()
@@ -40,7 +40,7 @@ class NewsletterController extends Controller
             } catch (\Exception $e) {
                 $success = false;
             }
-            return $this->websiteBlocks->render('site/newsletter/postsubscribe.html.twig', [
+            return $this->view->render('site/newsletter/postsubscribe.html.twig', [
                 'success' => $success
             ]);
         }

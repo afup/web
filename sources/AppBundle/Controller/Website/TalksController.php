@@ -8,22 +8,22 @@ use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Offices\OfficesCollection;
 use AppBundle\Subtitles\Parser;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class TalksController extends Controller
 {
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
-    public function __construct(WebsiteBlocks $websiteBlocks)
+    public function __construct(ViewRenderer $view)
     {
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function listAction()
     {
         $officesCollection = new OfficesCollection();
-        return $this->websiteBlocks->render('site/talks/list.html.twig', [
+        return $this->view->render('site/talks/list.html.twig', [
             'offices' => $officesCollection->getAllSortedByLabels(),
             'algolia_app_id' => $this->getParameter('algolia_app_id'),
             'algolia_api_key' => $this->getParameter('algolia_frontend_api_key'),
@@ -52,7 +52,7 @@ class TalksController extends Controller
         $parser = new Parser();
         $parsedContent = $parser->parse($talk->getTranscript());
 
-        return $this->websiteBlocks->render('site/talks/show.html.twig', [
+        return $this->view->render('site/talks/show.html.twig', [
             'talk' => $talk,
             'event' => $event,
             'speakers' => $speakers,

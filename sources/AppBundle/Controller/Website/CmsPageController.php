@@ -4,16 +4,16 @@ namespace AppBundle\Controller\Website;
 
 use Afup\Site\Corporate\Article;
 use Afup\Site\Corporate\Rubrique;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CmsPageController extends Controller
 {
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
-    public function __construct(WebsiteBlocks $websiteBlocks)
+    public function __construct(ViewRenderer $view)
     {
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function displayAction($code)
@@ -38,7 +38,7 @@ class CmsPageController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return $this->websiteBlocks->render('site/cms_page/display.html.twig', [
+        return $this->view->render('site/cms_page/display.html.twig', [
             'article' => $article,
             'rubrique' => $rubrique,
         ]);

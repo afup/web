@@ -44,12 +44,9 @@ services:
         autoconfigure: true
 
     AppBundle\Controller\Website\:
-        resource: '../../sources/AppBundle/Controller/Website/'
+        resource: '../../sources/AppBundle/Controller/Website/*'
         autowire: true
         autoconfigure: true
-
-    AppBundle\WebsiteBlocks:
-        autowire: true
 
     AppBundle\Command\GeneralMeetupNotificationCommand:
         autowire: true
@@ -163,6 +160,9 @@ services:
     AppBundle\Twig\OfficesExtension:
         tags:
             -  { name: twig.extension }
+
+    AppBundle\Twig\ViewRenderer:
+        autowire: true
 
     AppBundle\Association\Form\HelpMessageExtension:
         class: AppBundle\Association\Form\HelpMessageExtension

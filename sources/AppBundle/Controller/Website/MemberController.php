@@ -8,18 +8,18 @@ use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class MemberController extends Controller
 {
     const DAYS_BEFORE_CALL_TO_UPDATE = 15;
 
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
-    public function __construct(WebsiteBlocks $websiteBlocks)
+    public function __construct(ViewRenderer $view)
     {
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function indexAction()
@@ -53,7 +53,7 @@ class MemberController extends Controller
             $displayLinkToGeneralMeetingVote = true;
         }
 
-        return $this->websiteBlocks->render('site/member/index.html.twig', [
+        return $this->view->render('site/member/index.html.twig', [
             'badges' => $this->get(BadgesComputer::class)->getBadges($user),
             'user' => $user,
             'has_member_subscribed_to_techletter' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),

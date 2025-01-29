@@ -33,7 +33,7 @@ use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxResponseFactory;
 use AppBundle\Security\LegacyAuthenticator;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Finder\Finder;
@@ -50,16 +50,16 @@ class MemberShipController extends Controller
 {
     use DbLoggerTrait;
 
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
-    public function __construct(WebsiteBlocks $websiteBlocks)
+    public function __construct(ViewRenderer $view)
     {
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function becomeMemberAction()
     {
-        return $this->websiteBlocks->render('site/become_member.html.twig', [
+        return $this->view->render('site/become_member.html.twig', [
             'membership_fee_natural_person' => AFUP_COTISATION_PERSONNE_PHYSIQUE,
             'membership_fee_legal_entity' => AFUP_COTISATION_PERSONNE_MORALE
         ]);
@@ -92,7 +92,7 @@ class MemberShipController extends Controller
                 );
         }
 
-        return $this->websiteBlocks->render('admin/association/membership/register.html.twig', [
+        return $this->view->render('admin/association/membership/register.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -147,7 +147,7 @@ class MemberShipController extends Controller
             return $this->redirectToRoute('company_membership_payment', ['invoiceNumber' => $invoice['invoice'], 'token' => $invoice['token']]);
         }
 
-        return $this->websiteBlocks->render('site/company_membership/adhesion_entreprise.html.twig', [
+        return $this->view->render('site/company_membership/adhesion_entreprise.html.twig', [
             'form' => $subscribeForm->createView()
         ]);
     }
@@ -179,7 +179,7 @@ class MemberShipController extends Controller
 
         $bankAccountFactory = new BankAccountFactory();
 
-        return $this->websiteBlocks->render('site/company_membership/payment.html.twig', [
+        return $this->view->render('site/company_membership/payment.html.twig', [
             'paybox' => $paybox,
             'invoice' => $invoice,
             'bankAccount' => $bankAccountFactory->createApplyableAt(\DateTimeImmutable::createFromFormat('U', $invoice['date_debut'])),
@@ -268,7 +268,7 @@ class MemberShipController extends Controller
             return $this->redirectToRoute('member_index');
         }
 
-        return $this->websiteBlocks->render('site/company_membership/member_invitation.html.twig', [
+        return $this->view->render('site/company_membership/member_invitation.html.twig', [
             'company' => $company,
             'form' => $userForm->createView()
         ]);
@@ -360,7 +360,7 @@ class MemberShipController extends Controller
             $this->addFlash('success', 'Votre compte a été modifié !');
         }
 
-        return $this->websiteBlocks->render('admin/association/membership/member_contact_details.html.twig', [
+        return $this->view->render('admin/association/membership/member_contact_details.html.twig', [
             'title' => 'Mes coordonnées',
             'form' => $userForm->createView()
         ]);
@@ -454,7 +454,7 @@ class MemberShipController extends Controller
 
         $paybox = str_replace('INPUT TYPE=SUBMIT', 'INPUT TYPE=SUBMIT class="button button--call-to-action"', $paybox);
 
-        return $this->websiteBlocks->render('admin/association/membership/membershipfee.html.twig', [
+        return $this->view->render('admin/association/membership/membershipfee.html.twig', [
             'isSubjectedToVat' => $isSubjectedToVat,
             'title' => 'Ma cotisation',
             'cotisations' => $liste_cotisations,
@@ -548,7 +548,7 @@ class MemberShipController extends Controller
         $needsMembersheepFeePayment = $latestDate->getTimestamp() > strtotime("+14 day", (int) $cotisation['date_fin']);
 
         if ($needsMembersheepFeePayment) {
-            return $this->websiteBlocks->render('admin/association/membership/generalmeeting_membersheepfee.html.twig', [
+            return $this->view->render('admin/association/membership/generalmeeting_membersheepfee.html.twig', [
                 'title' => $title,
                 'latest_date' => $latestDate,
             ]);
@@ -651,7 +651,7 @@ class MemberShipController extends Controller
             ];
         }
 
-        return $this->websiteBlocks->render('admin/association/membership/generalmeeting.html.twig', [
+        return $this->view->render('admin/association/membership/generalmeeting.html.twig', [
             'question_results' => $questionResults,
             'question' => $currentQuestion,
             'vote_for_current_question' => $voteForCurrentQuestion,
@@ -761,7 +761,7 @@ class MemberShipController extends Controller
 
     public function techletterAction()
     {
-        return $this->websiteBlocks->render('site/member/techletter.html.twig', [
+        return $this->view->render('site/member/techletter.html.twig', [
             'subscribed' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($this->getUser()),
             'feeUpToDate' => ($this->getUser() !== null and $this->getUser()->getLastSubscription() > new \DateTime()),
             'token' => $this->get('security.csrf.token_manager')->getToken('techletter_subscription'),

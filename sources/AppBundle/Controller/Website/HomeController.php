@@ -7,7 +7,7 @@ use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,11 +15,11 @@ class HomeController extends Controller
 {
     public const MAX_ARTICLES = 5;
     public const MAX_MEETUPS = 10;
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
-    public function __construct(WebsiteBlocks $websiteBlocks)
+    public function __construct(ViewRenderer $view)
     {
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function displayAction(): Response
@@ -33,7 +33,7 @@ class HomeController extends Controller
         $premiereFeuille = array_shift($enfants);
         $deuxiemeFeuille = array_shift($enfants);
 
-        return $this->websiteBlocks->render('site/home.html.twig', [
+        return $this->view->render('site/home.html.twig', [
             'actualites' => $derniers_articles,
             'meetups' => $this->getLatestMeetups(),
             'premiere_feuille' => $premiereFeuille,

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle;
+namespace AppBundle\Twig;
 
 use Afup\Site\Corporate\Page;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 
-class WebsiteBlocks
+class ViewRenderer
 {
     private Security $security;
     private RequestStack $requestStack;
@@ -21,17 +21,7 @@ class WebsiteBlocks
         $this->twig = $twig;
     }
 
-
-    /**
-     * Renders a view.
-     *
-     * @param string        $view       The view name
-     * @param array         $parameters An array of parameters to pass to the view
-     * @param Response|null $response   A response instance
-     *
-     * @return Response A Response instance
-     */
-    public function render(string $view, array $parameters = [], Response $response = null): Response
+    public function render(string $view, array $parameters = []): Response
     {
         $blocks = [];
         if ($this->requestStack->getCurrentRequest()) {
@@ -48,10 +38,7 @@ class WebsiteBlocks
 
         $content = $this->twig->render($view, $parameters + $blocks);
 
-        if (null === $response) {
-            $response = new Response();
-        }
-
+        $response = new Response();
         return $response->setContent($content);
     }
 }

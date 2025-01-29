@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Association\UserMembership\UserService;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,7 +15,7 @@ class LostPasswordAction
 {
     /** @var FormFactoryInterface */
     private $formFactory;
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
     /** @var FlashBagInterface */
     private $flashBag;
     /** @var UserService */
@@ -23,13 +23,13 @@ class LostPasswordAction
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        UserService $userPasswordService,
-        WebsiteBlocks $websiteBlocks,
-        FlashBagInterface $flashBag
+        UserService          $userPasswordService,
+        ViewRenderer         $view,
+        FlashBagInterface    $flashBag
     ) {
         $this->formFactory = $formFactory;
         $this->userPasswordService = $userPasswordService;
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
         $this->flashBag = $flashBag;
     }
 
@@ -46,7 +46,7 @@ class LostPasswordAction
             $this->flashBag->add('notice', 'Votre demande a été prise en compte. Si un compte correspond à cet email vous recevez un nouveau mot de passe rapidement.');
         }
 
-        return $this->websiteBlocks->render('admin/lost_password.html.twig', [
+        return $this->view->render('admin/lost_password.html.twig', [
             'form' => $form->createView(),
             'title' => 'Mot de passe perdu',
             'page' => 'motdepasse_perdu',

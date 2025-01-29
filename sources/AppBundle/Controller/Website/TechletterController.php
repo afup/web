@@ -3,23 +3,23 @@
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TechletterController extends Controller
 {
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
-    public function __construct(WebsiteBlocks $websiteBlocks)
+    public function __construct(ViewRenderer $view)
     {
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function indexAction()
     {
-        return $this->websiteBlocks->render('site/techletter/index.html.twig');
+        return $this->view->render('site/techletter/index.html.twig');
     }
 
     /**

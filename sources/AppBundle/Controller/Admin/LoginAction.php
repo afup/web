@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -10,14 +10,14 @@ class LoginAction
 {
     /** @var AuthenticationUtils */
     private $authenticationUtils;
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,
-        WebsiteBlocks $websiteBlocks
+        ViewRenderer $view
     ) {
         $this->authenticationUtils = $authenticationUtils;
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function __invoke(Request $request)
@@ -33,7 +33,7 @@ class LoginAction
         $noDomain = parse_url($targetUri, PHP_URL_HOST) === null;
         $targetPath = $targetUri !== $actualUrl && $noDomain ? $targetUri : null;
 
-        return $this->websiteBlocks->render('admin/login.html.twig', [
+        return $this->view->render('admin/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
             'target_path' => $targetPath,

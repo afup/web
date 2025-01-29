@@ -6,7 +6,7 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Form\NewsFiltersType;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
-use AppBundle\WebsiteBlocks;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,11 +14,11 @@ class NewsController extends Controller
 {
     const ARTICLES_PER_PAGE = 5;
 
-    private WebsiteBlocks $websiteBlocks;
+    private ViewRenderer $view;
 
-    public function __construct(WebsiteBlocks $websiteBlocks)
+    public function __construct(ViewRenderer $view)
     {
-        $this->websiteBlocks = $websiteBlocks;
+        $this->view = $view;
     }
 
     public function displayAction($code)
@@ -38,7 +38,7 @@ class NewsController extends Controller
 
         $this->getHeaderImageUrl($article);
 
-        return $this->websiteBlocks->render('site/news/display.html.twig', [
+        return $this->view->render('site/news/display.html.twig', [
             'article' => $article,
             'header_image' => $this->getHeaderImageUrl($article),
             'previous' => $articleRepository->findPrevious($article),
@@ -83,7 +83,7 @@ class NewsController extends Controller
         $formData = $form->getData();
         $filters = $formData ?? [];
 
-        return $this->websiteBlocks->render('site/news/list.html.twig', [
+        return $this->view->render('site/news/list.html.twig', [
             'filters' => $filters,
             'articles' => $this->getArticleRepository()->findPublishedNews($page, self::ARTICLES_PER_PAGE, $filters),
             'total_items' => $this->getArticleRepository()->countPublishedNews($filters),
