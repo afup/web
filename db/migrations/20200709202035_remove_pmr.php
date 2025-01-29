@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 use Phinx\Migration\AbstractMigration;
 
@@ -26,7 +28,7 @@ class RemovePmr extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function change(): void
     {
         $this->table('afup_inscription_forum')->removeColumn('mobilite_reduite');
     }

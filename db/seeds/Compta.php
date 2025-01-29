@@ -1,20 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class Compta extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
-        $path = date('Y10').'/';
-        $dir = 'htdocs/uploads/'.$path;
-        if (!is_dir($dir)) {
-            if (!mkdir($dir) && !is_dir($dir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
-            }
+        $path = date('Y10') . '/';
+        $dir = 'htdocs/uploads/' . $path;
+        if (!is_dir($dir) && (!mkdir($dir) && !is_dir($dir))) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
 
-        copy('tests/behat/files/test_file1.pdf', $dir.'test_file1.pdf');
+        copy('tests/behat/files/test_file1.pdf', $dir . 'test_file1.pdf');
 
         $data = [
             [
@@ -28,7 +28,7 @@ class Compta extends AbstractSeed
                 'date_regl' => date('Y-10-16'),
                 'date_ecriture' => date('Y-10-17'),
                 'description' => 'Une recette qui rapporte',
-                'attachment_filename' => $path.'/test_file1.pdf',
+                'attachment_filename' => $path . '/test_file1.pdf',
                 'idevenement' => 5,
                 'idclef' => '',
                 'idcompte' => 1,

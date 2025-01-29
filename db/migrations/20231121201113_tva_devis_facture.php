@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Migration\AbstractMigration;
 
 class TvaDevisFacture extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<EOF
 ALTER TABLE `afup_compta_facture_details`

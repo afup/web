@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class NiveauPartenariat extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             ['titre' => 'Platine'],

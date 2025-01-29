@@ -2,7 +2,10 @@
 
 $finder = (new PhpCsFixer\Finder())
     ->name('*.php')
-    ->in(__DIR__ . "/sources/AppBundle")
+    ->in([
+        __DIR__ . '/db',
+        __DIR__ . '/sources/AppBundle',
+    ])
 ;
 
 return (new PhpCsFixer\Config())

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 use Phinx\Migration\AbstractMigration;
 
 class AfupCotisationCreateReferenceClient extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<SQL
 ALTER TABLE afup_cotisations
@@ -15,4 +17,3 @@ SQL;
         $this->execute($sql);
     }
 }
-

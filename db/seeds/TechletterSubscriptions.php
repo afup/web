@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class TechletterSubscriptions extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $subscriptionDate = (new DateTime())->format('Y-m-d H:i:s');
         $data = [

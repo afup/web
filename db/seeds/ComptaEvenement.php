@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 use Phinx\Seed\AbstractSeed;
 
 class ComptaEvenement extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             [
