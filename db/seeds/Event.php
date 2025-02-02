@@ -13,7 +13,10 @@ class Event extends AbstractSeed
         $now = time();
         $oneDayInSeconds = 60*60*24;
         $oneMonthInSeconds = $oneDayInSeconds*30;
-        $event = $now + $oneMonthInSeconds * 5;
+
+        $event = new DateTime('@' . ($now + $oneMonthInSeconds * 5));
+        $event->setTime(0, 0, 0);
+        $event = $event->getTimestamp();
 
         $data = [
             [
