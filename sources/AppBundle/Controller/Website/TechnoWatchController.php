@@ -3,10 +3,11 @@
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Calendar\TechnoWatchCalendarGenerator;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TechnoWatchController extends SiteBaseController
+class TechnoWatchController extends Controller
 {
     public function calendarAction(Request $request)
     {

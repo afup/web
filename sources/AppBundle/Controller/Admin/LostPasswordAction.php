@@ -3,24 +3,19 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Association\UserMembership\UserService;
-use AppBundle\Controller\Website\BlocksHandler;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Twig\Environment;
 
 class LostPasswordAction
 {
     /** @var FormFactoryInterface */
     private $formFactory;
-    /** @var BlocksHandler */
-    private $blocksHandler;
-    /** @var Environment */
-    private $twig;
+    private ViewRenderer $view;
     /** @var FlashBagInterface */
     private $flashBag;
     /** @var UserService */
@@ -28,15 +23,13 @@ class LostPasswordAction
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        UserService $userPasswordService,
-        BlocksHandler $blocksHandler,
-        Environment $twig,
-        FlashBagInterface $flashBag
+        UserService          $userPasswordService,
+        ViewRenderer         $view,
+        FlashBagInterface    $flashBag
     ) {
         $this->formFactory = $formFactory;
         $this->userPasswordService = $userPasswordService;
-        $this->blocksHandler = $blocksHandler;
-        $this->twig = $twig;
+        $this->view = $view;
         $this->flashBag = $flashBag;
     }
 
@@ -53,11 +46,11 @@ class LostPasswordAction
             $this->flashBag->add('notice', 'Votre demande a été prise en compte. Si un compte correspond à cet email vous recevez un nouveau mot de passe rapidement.');
         }
 
-        return new Response($this->twig->render('admin/lost_password.html.twig', [
-                'form' => $form->createView(),
-                'title' => 'Mot de passe perdu',
-                'page' => 'motdepasse_perdu',
-                'class' => 'panel-page',
-            ] + $this->blocksHandler->getDefaultBlocks()));
+        return $this->view->render('admin/lost_password.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Mot de passe perdu',
+            'page' => 'motdepasse_perdu',
+            'class' => 'panel-page',
+        ]);
     }
 }

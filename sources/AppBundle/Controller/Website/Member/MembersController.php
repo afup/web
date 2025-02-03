@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\CompanyMembership\InvitationMail;
@@ -11,8 +13,8 @@ use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\Controller\Website\BlocksHandler;
 use AppBundle\Model\CollectionFilter;
+use AppBundle\Twig\ViewRenderer;
 use Assert\Assertion;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use DateTime;
@@ -20,7 +22,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -28,7 +29,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Twig\Environment;
 
 class MembersController
 {
@@ -38,8 +38,7 @@ class MembersController
     private $userRepository;
     /** @var CompanyMemberInvitationRepository */
     private $companyMemberInvitationRepository;
-    /** @var BlocksHandler */
-    private $blocksHandler;
+    private ViewRenderer $view;
     /** @var FormFactoryInterface */
     private $formFactory;
     /** @var CollectionFilter */
@@ -58,29 +57,26 @@ class MembersController
     private $invitationMail;
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
-    /** @var Environment */
-    private $twig;
 
     public function __construct(
-        CompanyMemberRepository $companyMemberRepository,
-        UserRepository $userRepository,
+        CompanyMemberRepository           $companyMemberRepository,
+        UserRepository                    $userRepository,
         CompanyMemberInvitationRepository $companyMemberInvitationRepository,
-        BlocksHandler $blocksHandler,
-        FormFactoryInterface $formFactory,
-        CollectionFilter $collectionFilter,
-        UserCompany $userCompany,
-        Security $security,
-        FlashBagInterface $flashBag,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        UrlGeneratorInterface $urlGenerator,
-        InvitationMail $invitationMail,
-        EventDispatcherInterface $eventDispatcher,
-        Environment $twig
+        ViewRenderer                      $view,
+        FormFactoryInterface              $formFactory,
+        CollectionFilter                  $collectionFilter,
+        UserCompany                       $userCompany,
+        Security                          $security,
+        FlashBagInterface                 $flashBag,
+        CsrfTokenManagerInterface         $csrfTokenManager,
+        UrlGeneratorInterface             $urlGenerator,
+        InvitationMail                    $invitationMail,
+        EventDispatcherInterface          $eventDispatcher
     ) {
         $this->companyMemberRepository = $companyMemberRepository;
         $this->userRepository = $userRepository;
         $this->companyMemberInvitationRepository = $companyMemberInvitationRepository;
-        $this->blocksHandler = $blocksHandler;
+        $this->view = $view;
         $this->formFactory = $formFactory;
         $this->collectionFilter = $collectionFilter;
         $this->security = $security;
@@ -89,7 +85,6 @@ class MembersController
         $this->urlGenerator = $urlGenerator;
         $this->invitationMail = $invitationMail;
         $this->eventDispatcher = $eventDispatcher;
-        $this->twig = $twig;
         $this->flashBag = $flashBag;
     }
 
@@ -143,7 +138,7 @@ class MembersController
             ]));
         }
 
-        return new Response($this->twig->render('admin/association/membership/members_company.html.twig', [
+        return $this->view->render('admin/association/membership/members_company.html.twig', [
             'title' => 'Les membres de mon entreprise',
             'users' => $users,
             'invitations' => $pendingInvitations,
@@ -151,7 +146,7 @@ class MembersController
             'company' => $company,
             'canAddUser' => $canAddUser,
             'token' => $this->csrfTokenManager->getToken('member_company_members'),
-        ] + $this->blocksHandler->getDefaultBlocks()));
+        ]);
     }
 
     private function addUser(
@@ -159,7 +154,7 @@ class MembersController
         CompanyMemberInvitation $invitation,
         CollectionInterface $users,
         CollectionInterface $pendingInvitations
-    ) {
+    ): void {
         // Check if there is already a pending invitation for this email and this company
         $matchingUser = $this->collectionFilter->findOne($users, 'getEmail', $invitation->getEmail());
         $matchingInvitation = $this->collectionFilter->findOne($pendingInvitations, 'getEmail', $invitation->getEmail());
@@ -178,13 +173,13 @@ class MembersController
             ->setStatus(CompanyMemberInvitation::STATUS_PENDING);
         $this->companyMemberInvitationRepository->save($invitation);
         // Send mail to the other guy, begging for him to join the company
-        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($company, $invitation) {
+        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($company, $invitation): void {
             $this->invitationMail->sendInvitation($company, $invitation);
         });
         $this->flashBag->add('notice', sprintf('L\'invitation a été envoyée à l\'adresse %s.', $invitation->getEmail()));
     }
 
-    private function removeInvitation($emailToDelete, CollectionInterface $pendingInvitations)
+    private function removeInvitation($emailToDelete, CollectionInterface $pendingInvitations): void
     {
         /** @var CompanyMemberInvitation $invitationToDelete */
         $invitationToDelete = $this->collectionFilter->findOne($pendingInvitations, 'getEmail', $emailToDelete);
@@ -197,7 +192,7 @@ class MembersController
         }
     }
 
-    private function resendInvitation($emailToSend, CollectionInterface $pendingInvitations, CompanyMember $company)
+    private function resendInvitation($emailToSend, CollectionInterface $pendingInvitations, CompanyMember $company): void
     {
         /** @var CompanyMemberInvitation $invitationToSend */
         $invitationToSend = $this->collectionFilter->findOne($pendingInvitations, 'getEmail', $emailToSend);
@@ -209,7 +204,7 @@ class MembersController
         }
     }
 
-    private function promoteUser($emailToPromote, CollectionInterface $users)
+    private function promoteUser($emailToPromote, CollectionInterface $users): void
     {
         /** @var User $user */
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToPromote);
@@ -221,7 +216,7 @@ class MembersController
         }
     }
 
-    private function disproveUser($emailToDisapprove, CollectionInterface $users)
+    private function disproveUser($emailToDisapprove, CollectionInterface $users): void
     {
         /** @var User $user */
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToDisapprove);
@@ -239,7 +234,7 @@ class MembersController
         }
     }
 
-    private function removeUser($emailToRemove, CollectionInterface $users)
+    private function removeUser($emailToRemove, CollectionInterface $users): void
     {
         /** @var User $user */
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToRemove);

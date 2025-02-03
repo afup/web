@@ -6,25 +6,22 @@ use AppBundle\Association\Form\AdminCompanyMemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\Controller\Website\BlocksHandler;
+use AppBundle\Twig\ViewRenderer;
 use Assert\Assertion;
 use Exception;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
-use Twig\Environment;
 
 class CompanyController
 {
     /** @var CompanyMemberRepository */
     private $companyMemberRepository;
-    /** @var BlocksHandler */
-    private $blocksHandler;
+    private ViewRenderer $view;
     /** @var FormFactoryInterface */
     private $formFactory;
     /** @var FlashBagInterface */
@@ -33,25 +30,21 @@ class CompanyController
     private $urlGenerator;
     /** @var Security */
     private $security;
-    /** @var Environment */
-    private $twig;
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,
-        BlocksHandler $blocksHandler,
-        FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator,
-        Security $security,
-        Environment $twig
+        ViewRenderer            $view,
+        FormFactoryInterface    $formFactory,
+        FlashBagInterface       $flashBag,
+        UrlGeneratorInterface   $urlGenerator,
+        Security                $security
     ) {
         $this->companyMemberRepository = $companyMemberRepository;
-        $this->blocksHandler = $blocksHandler;
+        $this->view = $view;
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
         $this->urlGenerator = $urlGenerator;
         $this->security = $security;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request)
@@ -80,9 +73,9 @@ class CompanyController
             return new RedirectResponse($this->urlGenerator->generate('member_company'));
         }
 
-        return new Response($this->twig->render('admin/association/membership/company.html.twig', [
+        return $this->view->render('admin/association/membership/company.html.twig', [
             'title' => 'Mon adhésion entreprise',
             'form' => $subscribeForm->createView(),
-        ] + $this->blocksHandler->getDefaultBlocks()));
+        ]);
     }
 }

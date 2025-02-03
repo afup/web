@@ -4,19 +4,25 @@
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Offices\OfficesCollection;
+use AppBundle\Twig\ViewRenderer;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class StaticController extends SiteBaseController
+class StaticController extends Controller
 {
+    private ViewRenderer $view;
+
+    public function __construct(ViewRenderer $view)
+    {
+        $this->view = $view;
+    }
+
     public function officesAction()
     {
         $officesCollection = new OfficesCollection();
-        return $this->render(
-        ':site:offices.html.twig',
-            [
-                'offices' => $officesCollection->getAllSortedByLabels()
-            ]
-        );
+        return $this->view->render(':site:offices.html.twig', [
+            'offices' => $officesCollection->getAllSortedByLabels()
+        ]);
     }
 
     protected function getAperos($url)
@@ -53,7 +59,9 @@ class StaticController extends SiteBaseController
     public function superAperoAction()
     {
         $aperos = $this->getAperos($this->getParameter('super_apero_csv_url'));
-        return $this->render(':site:superapero.html.twig', ['aperos' => $aperos]);
+        return $this->view->render(':site:superapero.html.twig', [
+            'aperos' => $aperos
+        ]);
     }
 
     public function voidAction(Request $request)
@@ -63,6 +71,6 @@ class StaticController extends SiteBaseController
             $params = $request->attributes->get('legacyContent');
         }
 
-        return $this->render('site/base.html.twig', $params);
+        return $this->view->render('site/base.html.twig', $params);
     }
 }

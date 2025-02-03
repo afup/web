@@ -8,10 +8,19 @@ use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\Twig\ViewRenderer;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class MemberController extends SiteBaseController
+class MemberController extends Controller
 {
     const DAYS_BEFORE_CALL_TO_UPDATE = 15;
+
+    private ViewRenderer $view;
+
+    public function __construct(ViewRenderer $view)
+    {
+        $this->view = $view;
+    }
 
     public function indexAction()
     {
@@ -44,20 +53,17 @@ class MemberController extends SiteBaseController
             $displayLinkToGeneralMeetingVote = true;
         }
 
-        return $this->render(
-            ':site:member/index.html.twig',
-            [
-                'badges' => $this->get(BadgesComputer::class)->getBadges($user),
-                'user' => $user,
-                'has_member_subscribed_to_techletter' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
-                'membership_fee_call_to_update' => null === $daysBeforeMembershipExpiration || $daysBeforeMembershipExpiration < self::DAYS_BEFORE_CALL_TO_UPDATE,
-                'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
-                'office_label' => $user->getNearestOfficeLabel(),
-                'has_general_meeting_planned' => $hasGeneralMeetingPlanned,
-                'has_user_rspved_to_next_general_meeting' => $generalMeetingFactory->hasUserRspvedToLastGeneralMeeting($user),
-                'membershipfee_end_date' => $dateFinCotisation,
-                'display_link_to_general_meeting_vote' => $displayLinkToGeneralMeetingVote,
-            ]
-        );
+        return $this->view->render('site/member/index.html.twig', [
+            'badges' => $this->get(BadgesComputer::class)->getBadges($user),
+            'user' => $user,
+            'has_member_subscribed_to_techletter' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
+            'membership_fee_call_to_update' => null === $daysBeforeMembershipExpiration || $daysBeforeMembershipExpiration < self::DAYS_BEFORE_CALL_TO_UPDATE,
+            'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
+            'office_label' => $user->getNearestOfficeLabel(),
+            'has_general_meeting_planned' => $hasGeneralMeetingPlanned,
+            'has_user_rspved_to_next_general_meeting' => $generalMeetingFactory->hasUserRspvedToLastGeneralMeeting($user),
+            'membershipfee_end_date' => $dateFinCotisation,
+            'display_link_to_general_meeting_vote' => $displayLinkToGeneralMeetingVote,
+        ]);
     }
 }

@@ -8,20 +8,26 @@ use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Offices\OfficesCollection;
 use AppBundle\Subtitles\Parser;
+use AppBundle\Twig\ViewRenderer;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class TalksController extends SiteBaseController
+class TalksController extends Controller
 {
+    private ViewRenderer $view;
+
+    public function __construct(ViewRenderer $view)
+    {
+        $this->view = $view;
+    }
+
     public function listAction()
     {
         $officesCollection = new OfficesCollection();
-        return $this->render(
-            ':site:talks/list.html.twig',
-            [
-                'offices' => $officesCollection->getAllSortedByLabels(),
-                'algolia_app_id' => $this->getParameter('algolia_app_id'),
-                'algolia_api_key' => $this->getParameter('algolia_frontend_api_key'),
-            ]
-        );
+        return $this->view->render('site/talks/list.html.twig', [
+            'offices' => $officesCollection->getAllSortedByLabels(),
+            'algolia_app_id' => $this->getParameter('algolia_app_id'),
+            'algolia_api_key' => $this->getParameter('algolia_frontend_api_key'),
+        ]);
     }
 
     /**
@@ -46,16 +52,13 @@ class TalksController extends SiteBaseController
         $parser = new Parser();
         $parsedContent = $parser->parse($talk->getTranscript());
 
-        return $this->render(
-            ':site:talks/show.html.twig',
-            [
-                'talk' => $talk,
-                'event' => $event,
-                'speakers' => $speakers,
-                'comments' => $comments,
-                'transcript' => $parsedContent,
-            ]
-        );
+        return $this->view->render('site/talks/show.html.twig', [
+            'talk' => $talk,
+            'event' => $event,
+            'speakers' => $speakers,
+            'comments' => $comments,
+            'transcript' => $parsedContent,
+        ]);
     }
 
     public function joindinAction($id, $slug)

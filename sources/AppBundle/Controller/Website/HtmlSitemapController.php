@@ -8,32 +8,33 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Twig\ViewRenderer;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class HtmlSitemapController extends SiteBaseController
+class HtmlSitemapController extends Controller
 {
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
+    private ViewRenderer $view;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator, ViewRenderer $view)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->view = $view;
     }
 
     public function displayAction()
     {
         $branche = new Branche();
 
-        return $this->render(
-            ':site:sitemap.html.twig',
-            [
-                'pages' => $this->buildLeafs($branche, Feuille::ID_FEUILLE_HEADER),
-                'association' => $this->buildLeafs($branche, Feuille::ID_FEUILLE_ANTENNES),
-                'members' => $this->members(),
-                'news' => $this->news(),
-                'talks' => $this->talks(),
-            ]
-        );
+        return $this->view->render('site/sitemap.html.twig', [
+            'pages' => $this->buildLeafs($branche, Feuille::ID_FEUILLE_HEADER),
+            'association' => $this->buildLeafs($branche, Feuille::ID_FEUILLE_ANTENNES),
+            'members' => $this->members(),
+            'news' => $this->news(),
+            'talks' => $this->talks(),
+        ]);
     }
 
     private function buildLeafs(Branche $branche, int $id): array

@@ -161,6 +161,9 @@ services:
         tags:
             -  { name: twig.extension }
 
+    AppBundle\Twig\ViewRenderer:
+        autowire: true
+
     AppBundle\Association\Form\HelpMessageExtension:
         class: AppBundle\Association\Form\HelpMessageExtension
         tags:
@@ -170,11 +173,6 @@ services:
         arguments: [ "%kernel.default_locale%" ]
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 100 }
-
-    AppBundle\Listener\LegacySiteListener:
-        autowire: true
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, priority: 100 }
 
     AppBundle\Event\Model\Repository\SpeakerRepository:
         class: AppBundle\Event\Model\Repository\SpeakerRepository
