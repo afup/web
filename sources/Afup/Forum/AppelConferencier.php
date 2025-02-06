@@ -160,7 +160,7 @@ class AppelConferencier
                                        $id_session,
                                        $debut,
                                        $fin,
-                                       $id_salle, $keynote)
+                                       $id_salle, $keynote = 0)
     {
         $requete = 'UPDATE afup_forum_planning SET ';
         $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
