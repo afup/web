@@ -489,8 +489,12 @@ class AppelConferencier
 
     public function modifierJoindinSession($id, $joindin)
     {
+        $value = 'NULL';
+        if ($joindin) {
+            $value = $this->_bdd->echapper($joindin);
+        }
         $requete = 'UPDATE afup_sessions SET ';
-        $requete .= ' joindin = ' . $this->_bdd->echapper($joindin);
+        $requete .= ' joindin = ' . $value;
         $requete .= ' WHERE session_id = ' . (int)$id;
 
         return $this->_bdd->executer($requete);
