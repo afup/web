@@ -333,6 +333,8 @@ framework:
     session:
         # https://symfony.com/doc/4.x/session/database.html#store-sessions-in-a-relational-database-mariadb-mysql-postgresql
         handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        # 24 heures
+        gc_maxlifetime: 86400
     fragments:       ~
     http_method_override: true
     assets: ~
