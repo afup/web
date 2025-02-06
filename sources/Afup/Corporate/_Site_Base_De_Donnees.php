@@ -18,7 +18,8 @@ class _Site_Base_De_Donnees extends Base_De_Donnees
             $conf->obtenir('database_name'),
             $conf->obtenir('database_user'),
             $conf->obtenir('database_password'),
-            $conf->obtenir('database_port')
+            $conf->obtenir('database_port'),
+            $conf->obtenir('database_timezone'),
         );
     }
 }
