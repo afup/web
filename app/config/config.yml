@@ -1,5 +1,4 @@
 imports:
-    - { resource: config.php }
     - { resource: security.yml }
     - { resource: services.yml }
 
@@ -357,6 +356,11 @@ ting:
                 port:     "%database_port%"
                 user:     "%database_user%"
                 password: "%database_password%"
+
+    databases_options:
+        main:
+            timezone: "%database_timezone%"
+
     repositories:
         event:
             namespace : AppBundle\Event\Model\Repository
