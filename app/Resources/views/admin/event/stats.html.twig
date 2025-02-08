@@ -5,7 +5,6 @@
     {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     {% if event == null %}
-
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
@@ -15,6 +14,7 @@
     {% else %}
         <div class="ui segment">
             <h2 class="ui header">Évolution des inscriptions</h2>
+            {% include 'admin/event/compare_event.html.twig' with {form: event_compare_form} only %}
             <div class="ui clearing divider"></div>
             <div id="container"></div>
         </div>
